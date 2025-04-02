@@ -1,125 +1,138 @@
-Return-Path: <stable+bounces-127452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9663CA79873
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 00:57:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAD2A798A8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 01:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB5BF17102B
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 22:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7702F3B2DAE
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 23:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E861F7575;
-	Wed,  2 Apr 2025 22:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E9F1F3B82;
+	Wed,  2 Apr 2025 23:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Go/Ed3Cw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796C61F7069;
-	Wed,  2 Apr 2025 22:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043C01E4A4;
+	Wed,  2 Apr 2025 23:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743634651; cv=none; b=E672WPwrSwJVDisrSbqz5F5iB81D5PSnBjqdabCmkd9fjcUCYqHN6sOgwAA5o2o2CxqU1cIQHvj0FPZu38pXMiwmma6n/el0HQwmRgXpsWE4BY10K8UkgzXP6NIp5nCZAjhUqsjtRbyWSpqfLQ4GO6jHFLLcKLlRqMzPF5NOOGY=
+	t=1743636057; cv=none; b=moIY4Uuvb1PYZFXjPMT14DWttjjmZH8xiysSTfmII8vPfvZgR+AgwWLNMBwEOByoFOdpg1Loc8j+BeQJtIQ0S7/np4pKw5JczZW6lBngTDu/YwaqRqgmbx0mH+KM3bDarUfkLIF9KCDP4UKl/Pq1MUOvTMdGWZ46Y2QOnFBUYO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743634651; c=relaxed/simple;
-	bh=vGIq4dsFR4Rj0DOR4i84KnH+g25lukcU+8tDpHWA0Z8=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=NRaK8lxE/3DXBwAiz4HdI58hH8Xq4x1ueUH9JXbWl1lPzsUWlxx2jPsWLkp9CSefU3NT1nDuenW6O7o68sMi+KLQLXe62bCkyND33iT70AoedC3iX6EuNB+GFAtqRW7Bsu+MwZo1lGKY/VFk/cWcI/QGIrH8jyYAqTNIW8GrWrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5874AC4CEDD;
-	Wed,  2 Apr 2025 22:57:31 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1u072Z-00000006Z2U-2cT5;
-	Wed, 02 Apr 2025 18:58:35 -0400
-Message-ID: <20250402225835.476356782@goodmis.org>
-User-Agent: quilt/0.68
-Date: Wed, 02 Apr 2025 18:57:39 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Vincent Donnefort <vdonnefort@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>,
- Jann Horn <jannh@google.com>
-Subject: [for-linus][PATCH 4/4] ring-buffer: Use flush_kernel_vmap_range() over flush_dcache_folio()
-References: <20250402225735.849814084@goodmis.org>
+	s=arc-20240116; t=1743636057; c=relaxed/simple;
+	bh=nX3/gruz24nzISNsLYUs3H9vqQmZwbmWGJB7cUGfVoE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GhfBES/VW7/IMLwIhyeddbVvCuyy0hA9+6APbD337JxR0awkiWjzbdqfoYpwO8AvjRRnjQys/piG76TUsdU8HoLso874yfGbBFvFNlruTMmdtjnus+XCqvANbrZI0/VtSUz6SYVR6N8CHjIiaR40CH1RI6ngedpVEw42D0r/Ki0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Go/Ed3Cw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599CBC4CEE9;
+	Wed,  2 Apr 2025 23:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743636056;
+	bh=nX3/gruz24nzISNsLYUs3H9vqQmZwbmWGJB7cUGfVoE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Go/Ed3Cwz/alHDySGecwArKJVHQHZ1FiDwWom+1wYsVT3Usv/pWCphRpdwbkcjCUy
+	 qsIIpr7lSAElm2FpzUok2EsykLU1VTbH0CAKJWtJS7MtY0Em8sC6ASdCwMx4UvkGzt
+	 +78zmwiSD7ELL37ErjeIV0cz5h5z1/V6skXrO52aS6p5nr5gier26m3B5oiBOj4RDk
+	 KkpTdTiwta9c21E/bUj02YLk62/pyFp0bZwB+LaH+UwcQszJOqceUy3aWtukwKRtyD
+	 JFiNzkE1rRovBAl86Er2h2hP3DzX0MeR5uQzXGzLz8cm5hLjm7uwDgniSsCUjh6wRm
+	 hKBNB7W/f2CLQ==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 v2 00/10] KVM: arm64: Backport of SVE fixes to v5.15
+Date: Thu, 03 Apr 2025 00:20:15 +0100
+Message-Id: <20250403-stable-sve-5-15-v2-0-30a36a78a20a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADDG7WcC/2WNwQqDMBBEf0X23JVkm22lp/5H8aBmo6GikkhoE
+ f+9Idce3wzz5oAowUuER3VAkOSjX5cMdKlgmLplFPQ2M5AiVle6Ydy7fhaMSZBRM/bO3tk0ZAf
+ XQV5tQZz/FOMLuNYMbU4nH/c1fMtN0qUrRqPoz5g0KmyMVcLOaa3o+ZawyFyvYYT2PM8fURId9
+ bUAAAA=
+X-Change-ID: 20250326-stable-sve-5-15-bfd75482dcfa
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Oleg Nesterov <oleg@redhat.com>, Oliver Upton <oliver.upton@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Eric Auger <eauger@redhat.com>, Wilco Dijkstra <wilco.dijkstra@arm.com>, 
+ Eric Auger <eric.auger@redhat.com>, Florian Weimer <fweimer@redhat.com>, 
+ Fuad Tabba <tabba@google.com>, Jeremy Linton <jeremy.linton@arm.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, James Clark <james.clark@linaro.org>
+X-Mailer: b4 0.15-dev-c25d1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2164; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=nX3/gruz24nzISNsLYUs3H9vqQmZwbmWGJB7cUGfVoE=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBn7cZLdrB0NO2dtFqvf0MXWLWp0zeFLn8mNybRYe1e
+ XZtDk0yJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ+3GSwAKCRAk1otyXVSH0EkJB/
+ 9+jsZvsVXLDPs6gcGZVxpGmfa//H8yI2IrfxewqHudBfTQOgLqbs5oOQpH7gK1HD1HjkcjO9nrBvTV
+ ZguofnrYaUcdjZUx2jPX7WQC+16vQDJajTLeLtcMdGuLrwpLUV3hOZwjZZIwp0F9ONX+NnCaPeBdJW
+ dJtvP4O0nby/ZzzOpg8VReOitP4c3uRSXhXvr444ulUHfIigt0+8RLKiLGIaWj6cL9p+8nCfz8p0TA
+ QyksgcZPw5IisW3/LMfmSpeHwA7sIcPfcZFTGZV8oKSSMah+y2y+x9xInYjcdiMalI4kO9ckHZLHwm
+ CqVr1OAguVRimiy+R2aGXkMjUMrEjd
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: Steven Rostedt <rostedt@goodmis.org>
+This series backports some recent fixes for SVE/KVM interactions from
+Mark Rutland to v5.15.
 
-Some architectures do not have data cache coherency between user and
-kernel space. For these architectures, the cache needs to be flushed on
-both the kernel and user addresses so that user space can see the updates
-the kernel has made.
-
-Instead of using flush_dcache_folio() and playing with virt_to_folio()
-within the call to that function, use flush_kernel_vmap_range() which
-takes the virtual address and does the work for those architectures that
-need it.
-
-This also fixes a bug where the flush of the reader page only flushed one
-page. If the sub-buffer order is 1 or more, where the sub-buffer size
-would be greater than a page, it would miss the rest of the sub-buffer
-content, as the "reader page" is not just a page, but the size of a
-sub-buffer.
-
-Link: https://lore.kernel.org/all/CAG48ez3w0my4Rwttbc5tEbNsme6tc0mrSN95thjXUFaJ3aQ6SA@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Link: https://lore.kernel.org/20250402144953.920792197@goodmis.org
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions");
-Suggested-by: Jann Horn <jannh@google.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Changes in v2:
+- Resend with Greg and the stable list added.
+- Link to v1: https://lore.kernel.org/r/20250402-stable-sve-5-15-v1-0-84d0e5ff1102@kernel.org
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index f25966b3a1fc..d4b0f7b55cce 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -6016,7 +6016,7 @@ static void rb_update_meta_page(struct ring_buffer_per_cpu *cpu_buffer)
- 	meta->read = cpu_buffer->read;
- 
- 	/* Some archs do not have data cache coherency between kernel and user-space */
--	flush_dcache_folio(virt_to_folio(cpu_buffer->meta_page));
-+	flush_kernel_vmap_range(cpu_buffer->meta_page, PAGE_SIZE);
- }
- 
- static void
-@@ -7319,7 +7319,8 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
- 
- out:
- 	/* Some archs do not have data cache coherency between kernel and user-space */
--	flush_dcache_folio(virt_to_folio(cpu_buffer->reader_page->page));
-+	flush_kernel_vmap_range(cpu_buffer->reader_page->page,
-+				buffer->subbuf_size + BUF_PAGE_HDR_SIZE);
- 
- 	rb_update_meta_page(cpu_buffer);
- 
+---
+Fuad Tabba (1):
+      KVM: arm64: Calculate cptr_el2 traps on activating traps
+
+Marc Zyngier (1):
+      KVM: arm64: Get rid of host SVE tracking/saving
+
+Mark Brown (4):
+      KVM: arm64: Discard any SVE state when entering KVM guests
+      arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE
+      arm64/fpsimd: Have KVM explicitly say which FP registers to save
+      arm64/fpsimd: Stop using TIF_SVE to manage register saving in KVM
+
+Mark Rutland (4):
+      KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
+      KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+      KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+      KVM: arm64: Eagerly switch ZCR_EL{1,2}
+
+ arch/arm64/include/asm/fpsimd.h         |   4 +-
+ arch/arm64/include/asm/kvm_host.h       |  17 +++--
+ arch/arm64/include/asm/kvm_hyp.h        |   7 ++
+ arch/arm64/include/asm/processor.h      |   7 ++
+ arch/arm64/kernel/fpsimd.c              | 117 +++++++++++++++++++++++---------
+ arch/arm64/kernel/process.c             |   3 +
+ arch/arm64/kernel/ptrace.c              |   3 +
+ arch/arm64/kernel/signal.c              |   3 +
+ arch/arm64/kvm/arm.c                    |   1 -
+ arch/arm64/kvm/fpsimd.c                 |  72 +++++++++-----------
+ arch/arm64/kvm/hyp/entry.S              |   5 ++
+ arch/arm64/kvm/hyp/include/hyp/switch.h |  86 +++++++++++++++--------
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c      |   9 ++-
+ arch/arm64/kvm/hyp/nvhe/switch.c        |  52 +++++++++-----
+ arch/arm64/kvm/hyp/vhe/switch.c         |   4 ++
+ arch/arm64/kvm/reset.c                  |   3 +
+ 16 files changed, 266 insertions(+), 127 deletions(-)
+---
+base-commit: 0c935c049b5c196b83b968c72d348ae6fff83ea2
+change-id: 20250326-stable-sve-5-15-bfd75482dcfa
+
+Best regards,
 -- 
-2.47.2
-
+Mark Brown <broonie@kernel.org>
 
 
