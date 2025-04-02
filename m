@@ -1,125 +1,159 @@
-Return-Path: <stable+bounces-127432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6707EA79648
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 22:10:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F469A7968E
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 22:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CEF51894474
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 20:11:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1BC7170E8B
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 20:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4951EF399;
-	Wed,  2 Apr 2025 20:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0581F150B;
+	Wed,  2 Apr 2025 20:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dwG9Tynz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82A919CCEC;
-	Wed,  2 Apr 2025 20:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440DE1F1317;
+	Wed,  2 Apr 2025 20:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743624646; cv=none; b=erN32zZHcOcgYPNHV4QAfDEeebNEJrktQ8bV3WtEIWz/Ojngv9VdaWKTUstH4psEzbw/AosDPnjQXuYiR2LgSFPj0yA8EuR0zqsYBtBvpPHBAaOxgDFSzoPIWQbpx4oL0OssjYENaQPJ1DJucXuOwg5prx1lL9infG5IVppAs0c=
+	t=1743625687; cv=none; b=kkcPaBQFqRsv+NUQ29h9Ku1o9TYE3O4y6cwgUbglNt0ZT20GlvDhqh6EzYjr8fevy7mIN4oMMgyindN3LPf5q+b354QmndU35u0AogGFe8B1eXoOzjSOz6XZYbT083cqzWNkffWWhXGT6B0opVm8N1DA5/Z7oj3E4XzHkOEDcPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743624646; c=relaxed/simple;
-	bh=8zW6/RMnhtv8yr1yURreD6JKFTv60EVXaB39y2/XfEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jiiEfW2inKvroxdxCddJLWr29Lo0LDHRHlV/VpmUPSc99FGsVxR3S3OESGvdzMIfMl9rADkP2sZm8vpWsNIrWEgqosKwo+OFS/6YL7mHQQmSvWzU2dji6NDCv7uOek3u6az1qi3BCMInf0+8MHrpSguPUdvtbUvP/dsiMaGbwbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC11FC4CEDD;
-	Wed,  2 Apr 2025 20:10:43 +0000 (UTC)
-Date: Wed, 2 Apr 2025 21:10:41 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Peter Collingbourne <pcc@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] string: Add load_unaligned_zeropad() code path to
- sized_strscpy()
-Message-ID: <Z-2ZwThH-7rkQW86@arm.com>
-References: <20250329000338.1031289-1-pcc@google.com>
- <20250329000338.1031289-2-pcc@google.com>
+	s=arc-20240116; t=1743625687; c=relaxed/simple;
+	bh=pMI4VvrhdHCySyXCh3UEy27QIl3KjZTJ74eGiusFQ3Q=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z88XDW/1BjaS4YR2gCeeaXfhBh62m6xlDbKillwWCz6PQ7kTbL7ibiShPHFna4fs7JIZLEhmAQmdgsKnr/MK3zFHq6jjoEqVhuV7jhaYZvxd14M6N+EsahnjUOXfzJvQdxN0m3W98Z+TorscxIQFu5mwXPnPhuAvcdJP9d0IMew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dwG9Tynz; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1743625685; x=1775161685;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ti6s4TIDQavVBsdtxADl8QYz9QBjQ5A0z4Mg7FW8S0I=;
+  b=dwG9Tynz3VHlapsl/sxadefXGRrxTHRhB7OuLfQFv/ZhkOUSN0UJDT+E
+   NAPEoJcMB0c/2xcXLRF8qxCWTYxLIDwGK2HaIarmOQbH+swxFqaLRyGeG
+   CdkpfLzrHwKrxJr+jplRuBpLB11ds42OqeD9I6/MINIPPRveT+hnUrEwp
+   g=;
+X-IronPort-AV: E=Sophos;i="6.15,183,1739836800"; 
+   d="scan'208";a="392332186"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2025 20:28:02 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:1643]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.18:2525] with esmtp (Farcaster)
+ id 1e781972-352e-4290-b038-58ec050c9ede; Wed, 2 Apr 2025 20:28:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 1e781972-352e-4290-b038-58ec050c9ede
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 2 Apr 2025 20:27:57 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.8) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 2 Apr 2025 20:27:54 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: Steve French <sfrench@samba.org>
+CC: Paulo Alcantara <pc@manguebit.com>, Ronnie Sahlberg
+	<ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, "Tom
+ Talpey" <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, Enzo
+ Matsumiya <ematsumiya@suse.de>, Wang Zhaolong <wangzhaolong1@huawei.com>,
+	"Kuniyuki Iwashima" <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <linux-cifs@vger.kernel.org>,
+	<samba-technical@lists.samba.org>, <stable@vger.kernel.org>
+Subject: [PATCH v2 1/2] Revert "smb: client: Fix netns refcount imbalance causing leaks and use-after-free"
+Date: Wed, 2 Apr 2025 13:26:47 -0700
+Message-ID: <20250402202714.6799-2-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250402202714.6799-1-kuniyu@amazon.com>
+References: <20250402202714.6799-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250329000338.1031289-2-pcc@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D037UWB001.ant.amazon.com (10.13.138.123) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Fri, Mar 28, 2025 at 05:03:36PM -0700, Peter Collingbourne wrote:
-> diff --git a/lib/string.c b/lib/string.c
-> index eb4486ed40d25..b632c71df1a50 100644
-> --- a/lib/string.c
-> +++ b/lib/string.c
-> @@ -119,6 +119,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
->  	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
->  		return -E2BIG;
->  
-> +#ifndef CONFIG_DCACHE_WORD_ACCESS
->  #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
->  	/*
->  	 * If src is unaligned, don't cross a page boundary,
-> @@ -133,12 +134,14 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
->  	/* If src or dest is unaligned, don't do word-at-a-time. */
->  	if (((long) dest | (long) src) & (sizeof(long) - 1))
->  		max = 0;
-> +#endif
->  #endif
->  
->  	/*
-> -	 * read_word_at_a_time() below may read uninitialized bytes after the
-> -	 * trailing zero and use them in comparisons. Disable this optimization
-> -	 * under KMSAN to prevent false positive reports.
-> +	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-> +	 * uninitialized bytes after the trailing zero and use them in
-> +	 * comparisons. Disable this optimization under KMSAN to prevent
-> +	 * false positive reports.
->  	 */
->  	if (IS_ENABLED(CONFIG_KMSAN))
->  		max = 0;
-> @@ -146,7 +149,11 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
->  	while (max >= sizeof(unsigned long)) {
->  		unsigned long c, data;
->  
-> +#ifdef CONFIG_DCACHE_WORD_ACCESS
-> +		c = load_unaligned_zeropad(src+res);
-> +#else
->  		c = read_word_at_a_time(src+res);
-> +#endif
->  		if (has_zero(c, &data, &constants)) {
->  			data = prep_zero_mask(c, data, &constants);
->  			data = create_zero_mask(data);
+This reverts commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef.
 
-Kees mentioned the scenario where this crosses the page boundary and we
-pad the source with zeros. It's probably fine but there are 70+ cases
-where the strscpy() return value is checked, I only looked at a couple.
+The commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
+rmmod") is not only a bogus fix for LOCKDEP null-ptr-deref but also
+introduces a real issue, TCP sockets leak, which will be explained in
+detail in the next revert.
 
-Could we at least preserve the behaviour with regards to page boundaries
-and keep the existing 'max' limiting logic? If I read the code
-correctly, a fall back to reading one byte at a time from an unmapped
-page would panic. We also get this behaviour if src[0] is reading from
-an invalid address, though for arm64 the panic would be in
-ex_handler_load_unaligned_zeropad() when count >= 8.
+Also, CNA assigned CVE-2024-54680 to it but is rejecting it. [0]
 
-Reading across tag granule (but not across page boundary) and causing a
-tag check fault would result in padding but we can live with this and
-only architectures that do MTE-style tag checking would get the new
-behaviour.
+Thus, we are reverting the commit and its follow-up commit 4e7f1644f2ac
+("smb: client: Fix netns refcount imbalance causing leaks and
+use-after-free").
 
-What I haven't checked is whether a tag check fault in
-ex_handler_load_unaligned_zeropad() would confuse the KASAN logic for
-MTE (it would be a second tag check fault while processing the first).
-At a quick look, it seems ok but it might be worth checking.
+Link: https://lore.kernel.org/all/2025040248-tummy-smilingly-4240@gregkh/ #[0]
+Fixes: 4e7f1644f2ac ("smb: client: Fix netns refcount imbalance causing leaks and use-after-free")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+---
+ fs/smb/client/connect.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 10a7c28d2d44..137a611c5ab0 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -300,7 +300,6 @@ cifs_abort_connection(struct TCP_Server_Info *server)
+ 			 server->ssocket->flags);
+ 		sock_release(server->ssocket);
+ 		server->ssocket = NULL;
+-		put_net(cifs_net_ns(server));
+ 	}
+ 	server->sequence_number = 0;
+ 	server->session_estab = false;
+@@ -3367,12 +3366,8 @@ generic_ip_connect(struct TCP_Server_Info *server)
+ 		/*
+ 		 * Grab netns reference for the socket.
+ 		 *
+-		 * This reference will be released in several situations:
+-		 * - In the failure path before the cifsd thread is started.
+-		 * - In the all place where server->socket is released, it is
+-		 *   also set to NULL.
+-		 * - Ultimately in clean_demultiplex_info(), during the final
+-		 *   teardown.
++		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
++		 * teardown.
+ 		 */
+ 		get_net(net);
+ 
+@@ -3388,8 +3383,10 @@ generic_ip_connect(struct TCP_Server_Info *server)
+ 	}
+ 
+ 	rc = bind_socket(server);
+-	if (rc < 0)
++	if (rc < 0) {
++		put_net(cifs_net_ns(server));
+ 		return rc;
++	}
+ 
+ 	/*
+ 	 * Eventually check for other socket options to change from
+@@ -3444,6 +3441,9 @@ generic_ip_connect(struct TCP_Server_Info *server)
+ 	    (server->rfc1001_sessinit == -1 && sport == htons(RFC1001_PORT)))
+ 		rc = ip_rfc1001_connect(server);
+ 
++	if (rc < 0)
++		put_net(cifs_net_ns(server));
++
+ 	return rc;
+ }
+ 
 -- 
-Catalin
+2.48.1
+
 
