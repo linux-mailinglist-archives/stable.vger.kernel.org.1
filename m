@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-127410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEBBA78EEC
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BDAA78FA3
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 15:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB527A40BF
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 12:46:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151C63B29F1
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 13:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C8C23A9B0;
-	Wed,  2 Apr 2025 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D4D23A9A0;
+	Wed,  2 Apr 2025 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="F/Yn087g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fg4pWlCc"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF9923A9A4;
-	Wed,  2 Apr 2025 12:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D926E23A98E;
+	Wed,  2 Apr 2025 13:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743598043; cv=none; b=hLxwtbjmNLOVIwKJBrfQ8+P1z7zxzq7mV2Ux4IxqDtQBq3EFnrt4tGc6u6p3/YExpZ/9iPvD/GwQJsZFENhCxviUZZFdWPpyhkG43VxvtrcPOXBM78KQcuLDGCUceJDP1cYDgtTmmkVREsgDtfyfYIpbYg283B0H1hjgJbO928c=
+	t=1743600107; cv=none; b=caPbwCP8BPW2un9T+MEOmvSX916xQdw3KGl2FtpE4r+45ovjjQeNwkwl4Dt3xyBV7/yVb2iGEmoV7Sn9ctM2Ox8w+5eDTXnx17QMneT/29xIir1KzNeBLqWSkYow57B/qySrylmRiOJ+ctltpp0MdjP48tU9L83Gl6vvet8LNwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743598043; c=relaxed/simple;
-	bh=I0q8yuccgOTwPasdvh8g2GR8Zcmx2hyT3zKwoj4ieVM=;
+	s=arc-20240116; t=1743600107; c=relaxed/simple;
+	bh=Aih92G9gvTghe7QDVHm0e4Bv2q0GnJ+JdVDu8fRsnKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TaNXjCaXmqQBok5jkMpceextMCQFhF9X/Mzf91VDbkg9omiTSNHMHGMajpjc7+tL6BeWoUjv1aZn88YG4aGkMB2voIYgHIPtQOiZlHF69mxFijq9TOgtvSjju38+hwToRqvpmWz99uXdElmmHiHt4P3km1lW+/SI6gsjvGGpP94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=F/Yn087g; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=iNrXwLiaCyxw5lMHmTmgzkArPeaL8QrC1vfZuM5wnc4=; b=F/Yn087gqPQgTAh2YdjKH/VtZ5
-	NU/GYeFc9oCxswyI2Y0uLKR+owwsSciPOgIoAkecu/HWGBS7g0rEdkJ0FXrVo5E39sbEooN8Nv8k4
-	ZJlpu+UdPZDOwuRUHnP2vjxNxnnLOZUaBVlwW4gD+4US5UPYYeZ7MsP2N8QatRVoSuv8nGyj4CyG3
-	brkMQRuxSOc17oj+BYJejgnoMSEtJTb8RkXJ0YVHKtvw/o6xR/Ovyp1GCBjjwlvPBw+vhUS0AA/ax
-	u8qTbhqPFkJoi0kVc1TR+hEgmUrREjo51ZfXVD00KIa6BjqwCm5UMPucUkMwseDLYhaA/ztgyDFES
-	ye1dYBHA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzxUu-000000071Gk-2xtB;
-	Wed, 02 Apr 2025 12:47:12 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4A6CF30049D; Wed,  2 Apr 2025 14:47:12 +0200 (CEST)
-Date: Wed, 2 Apr 2025 14:47:12 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Harshit Agarwal <harshit@nutanix.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-kernel@vger.kernel.org, Jon Kohler <jon@nutanix.com>,
-	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
-	Rahul Chunduru <rahul.chunduru@nutanix.com>,
-	Will Ton <william.ton@nutanix.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] sched/rt: Fix race in push_rt_task
-Message-ID: <20250402124712.GN25239@noisy.programming.kicks-ass.net>
-References: <20250225180553.167995-1-harshit@nutanix.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAz0OAtXM5FjtV9PzEqUZqGsvQv2KeRa+FDPDazCA7cW7JkW1t79sdk6/rTQdU4lhcHsjN0p1OCudscm6RoBDxRTyPHBp+8VSG31/Z1rpjJ2f3B7dgkjL1+Oli4V2W0TXIx6PFdXA+HtW1DXuYCWGrPsSsb471z3NTpLE8HkhxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fg4pWlCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E34C4CEDD;
+	Wed,  2 Apr 2025 13:21:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743600106;
+	bh=Aih92G9gvTghe7QDVHm0e4Bv2q0GnJ+JdVDu8fRsnKw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fg4pWlCcQcP7HnsKGaDEbrkfkblDOGpTcbrlRJOnedb1q2+4v9SJQIRQTXmQCdTOg
+	 VUTBigSa1YtEyYsWkGTCVTmKazYadFjIlT6RJOy8stdB2y4jBZwbd0dBJgiBI84ihI
+	 65/0GmuValgKQrIMuPgxGpm5BKw8rDX0oyWriSYp0dmSSsobwV37E7b/FBe6I0/mZB
+	 MikxeamJLxzwt62zQanPpeLf/v/vSxsFCjkcKmjlgaoY5+G7GNcDalvKndshnLiPem
+	 qunmLPDMG0pAEJ5EnMeKAjXYLOhgMvD9i0RXyqisMPmiZqPhIPKeskTjwCLkTScIhv
+	 3vri5mqzg9QfA==
+Date: Wed, 2 Apr 2025 14:21:41 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] sctp: check transport existence before processing a send
+ primitive
+Message-ID: <20250402132141.GO214849@horms.kernel.org>
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,83 +65,95 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250225180553.167995-1-harshit@nutanix.com>
+In-Reply-To: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
 
-On Tue, Feb 25, 2025 at 06:05:53PM +0000, Harshit Agarwal wrote:
-
-> Details
-> =======
-> Let's look at the following scenario to understand this race.
+On Wed, Apr 02, 2025 at 12:25:36PM +0200, Ricardo Cañuelo Navarro wrote:
+> sctp_sendmsg() re-uses associations and transports when possible by
+> doing a lookup based on the socket endpoint and the message destination
+> address, and then sctp_sendmsg_to_asoc() sets the selected transport in
+> all the message chunks to be sent.
 > 
-> 1) CPU A enters push_rt_task
->   a) CPU A has chosen next_task = task p.
->   b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
->   c) CPU A identifies CPU X as a destination CPU (X < Z).
->   d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
->   e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
->      locked CPU X’s rq, and thus, CPU A must wait.
+> There's a possible race condition if another thread triggers the removal
+> of that selected transport, for instance, by explicitly unbinding an
+> address with setsockopt(SCTP_SOCKOPT_BINDX_REM), after the chunks have
+> been set up and before the message is sent. This causes the access to
+> the transport data in sctp_outq_select_transport(), when the association
+> outqueue is flushed, to do a use-after-free read.
 > 
-> 2) At CPU Z
->   a) Previous task has completed execution and thus, CPU Z enters
->      schedule, locks its own rq after CPU A releases it.
->   b) CPU Z dequeues previous task and begins executing task p.
->   c) CPU Z unlocks its rq.
->   d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
->      lock) which triggers the schedule function on CPU Z.
->   e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
->   f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+> This patch addresses this scenario by checking if the transport still
+> exists right after the chunks to be sent are set up to use it and before
+> proceeding to sending them. If the transport was freed since it was
+> found, the send is aborted. The reason to add the check here is that
+> once the transport is assigned to the chunks, deleting that transport
+> is safe, since it will also set chunk->transport to NULL in the affected
+> chunks. This scenario is correctly handled already, see Fixes below.
 > 
-> 3) At CPU B
->   a) CPU B enters try_to_wake_up with input task p.
->   b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
->      B.state = WAKING.
->   c) CPU B via select_task_rq determines CPU Y as the target CPU.
+> The bug was found by a private syzbot instance (see the error report [1]
+> and the C reproducer that triggers it [2]).
 > 
-> 4) The race
->   a) CPU A acquires CPU X’s lock and relocks CPU Z.
->   b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
->      still on CPU Z.
->   c) CPU A failed to notice task p had been dequeued from CPU Z while
->      CPU A was waiting for locks in double_lock_balance. If CPU A knew
->      that task p had been dequeued, it would return NULL forcing
->      push_rt_task to give up the task p's migration.
->   d) CPU B updates task p.cpu = Y and calls ttwu_queue.
->   e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
->      p.on_rq = 1.
->   f) CPU B unlocks CPU Y, triggering memory synchronization.
->   g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
->      has not migrated.
->   h) CPU A decides to migrate p to CPU X.
-> 
-> This leads to A dequeuing p from Y's queue and various crashes down the
-> line.
-> 
-> Solution
-> ========
-> The solution here is fairly simple. After obtaining the lock (at 4a),
-> the check is enhanced to make sure that the task is still at the head of
-> the pushable tasks list. If not, then it is anyway not suitable for
-> being pushed out.
-> 
-> Testing
-> =======
-> The fix is tested on a cluster of 3 nodes, where the panics due to this
-> are hit every couple of days. A fix similar to this was deployed on such
-> cluster and was stable for more than 30 days.
-> 
-> Co-developed-by: Jon Kohler <jon@nutanix.com>
-> Signed-off-by: Jon Kohler <jon@nutanix.com>
-> Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-> Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-> Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-> Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-> Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-> Tested-by: Will Ton <william.ton@nutanix.com>
-> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-after-free_Read_in_sctp_outq_select_transport.txt [1]
+> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-after-free_Read_in_sctp_outq_select_transport__repro.c [2]
 > Cc: stable@vger.kernel.org
+> Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list chunks in sctp_assoc_rm_peer")
+> Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
 > ---
+>  net/sctp/socket.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index 36ee34f483d703ffcfe5ca9e6cc554fba24c75ef..9c5ff44fa73cae6a6a04790800cc33dfa08a8da9 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -1787,17 +1787,24 @@ static int sctp_sendmsg_check_sflags(struct sctp_association *asoc,
+>  	return 1;
+>  }
+>  
+> +static union sctp_addr *sctp_sendmsg_get_daddr(struct sock *sk,
+> +					       const struct msghdr *msg,
+> +					       struct sctp_cmsgs *cmsgs);
+> +
+>  static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+>  				struct msghdr *msg, size_t msg_len,
+>  				struct sctp_transport *transport,
+>  				struct sctp_sndrcvinfo *sinfo)
+>  {
+> +	struct sctp_transport *aux_transport = NULL;
+>  	struct sock *sk = asoc->base.sk;
+> +	struct sctp_endpoint *ep = sctp_sk(sk)->ep;
+>  	struct sctp_sock *sp = sctp_sk(sk);
+>  	struct net *net = sock_net(sk);
+>  	struct sctp_datamsg *datamsg;
+>  	bool wait_connect = false;
+>  	struct sctp_chunk *chunk;
+> +	union sctp_addr *daddr;
+>  	long timeo;
+>  	int err;
+>  
+> @@ -1869,6 +1876,15 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+>  		sctp_set_owner_w(chunk);
+>  		chunk->transport = transport;
+>  	}
+> +	/* Fail if transport was deleted after lookup in sctp_sendmsg() */
+> +	daddr = sctp_sendmsg_get_daddr(sk, msg, NULL);
+> +	if (daddr) {
+> +		sctp_endpoint_lookup_assoc(ep, daddr, &aux_transport);
+> +		if (!aux_transport || aux_transport != transport) {
+> +			sctp_datamsg_free(datamsg);
+> +			goto err;
 
-Thanks, I've picked this up to land after -rc1.
+Hi Ricardo,
 
+This is not a full review, and I would suggest waiting for one from others.
+But this will result in the local variable err being used uninitialised.
 
+Flagged by Smatch.
+
+> +		}
+> +	}
+>  
+>  	err = sctp_primitive_SEND(net, asoc, datamsg);
+>  	if (err) {
+
+-- 
+pw-bot: changes-requested
 
