@@ -1,143 +1,106 @@
-Return-Path: <stable+bounces-127370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44702A78664
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 04:23:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7243DA78682
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 04:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A44B7A3ABB
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 02:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F7EB3A5773
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 02:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9753E13A244;
-	Wed,  2 Apr 2025 02:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF22126C1E;
+	Wed,  2 Apr 2025 02:42:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6885812FF6F;
-	Wed,  2 Apr 2025 02:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F9B23A9;
+	Wed,  2 Apr 2025 02:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743560553; cv=none; b=ArjeVGqZxuvVzTsO/brxlrdwqAiDFjWrkrv+96sKk4XGpQdpkQPl1P/h66kG/joZSeT0sapcoij/HEfrqq6ZTF1hZR1wsYqb2XTmgUpfF4M1MUOGeNeU4s4O79Q156b4qWe+iivokMVqzaJMofuGv0pRMRuKmJX8j80S4lKEUBQ=
+	t=1743561731; cv=none; b=ORZwKtzZXBD1GBE1ZYYsvPBdJhqb/y1LruDKrWRjQ0KJWTkQ1JFrxevJ3edcb+ZFZMx00FJ5dqGLeEcxl+lQZ7iblLrp/dtJsaBwTcDTPAcpj6s0PwdiG14pMTxFtV8h55xSLNnKc5NQAbE1o6nM7yxPbYLY0wOLWsPjxa8Q+8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743560553; c=relaxed/simple;
-	bh=CaUW0ta9y1HPT2mikD1OR2HWLEd3oigGjMY+qI7XmjI=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=d2pYtNUjEfVn61Kl+tW88Q0cvTvXFZgDieTp5Yl653dUWcStUWYFq0YrEfizH7domnpxaw/+NXb8OKaH3SihbsaF26TcG1F7qeL5xIHdcRYjFzEgSBuGCHyqkmhs28k7A8nYeQfkmLrs3yNpizbhLeKW3KxpB5QA/BmyW4T7pcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A33AC4CEF3;
-	Wed,  2 Apr 2025 02:22:33 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tznlP-00000006MOo-1T4Y;
-	Tue, 01 Apr 2025 22:23:35 -0400
-Message-ID: <20250402022335.198455535@goodmis.org>
-User-Agent: quilt/0.68
-Date: Tue, 01 Apr 2025 22:23:12 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Libo Chen <libo.chen@oracle.com>
-Subject: [for-linus][PATCH 4/4] tracing: Verify event formats that have "%*p.."
-References: <20250402022308.372786127@goodmis.org>
+	s=arc-20240116; t=1743561731; c=relaxed/simple;
+	bh=7tPfO4YljEpw7kJklhNj2drCqG4KDq+vh0zUeK403dg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kCtEhUr0Ha5lXRXPOJ+BqwfXQD6Hy1wGjU77UXVA5Ws+jb6cuA9VGssLPZAuqq0HZggzQ+SGifXbfx41YQKal7IvY3ZQ1ICQFzoYNZHxvUQHEDcqX5/Je2xcRLeRSVl/wVcK+eEM0mdzW0zUdr+pRP+9NU7HtvY0RgHyAXFJIEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowACHvwf5o+xnYpT9BA--.59661S2;
+	Wed, 02 Apr 2025 10:42:02 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: hverkuil@xs4all.nl,
+	mchehab@kernel.org
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: gspca: Add error handling for stv06xx_read_sensor()
+Date: Wed,  2 Apr 2025 10:41:41 +0800
+Message-ID: <20250402024141.2936-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACHvwf5o+xnYpT9BA--.59661S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrtw4xKrykGFy5tFW8AF18Krg_yoW8JF4rpF
+	WfWryFv3yjya17WF1UJw1v93W5t3ySyFW5Cr9Fqwn5Zw17JrsFvFyFy3W0vws7GF9xC3Wf
+	trn5KayUWas7AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcTA2fsHqyzxwABsX
 
-From: Steven Rostedt <rostedt@goodmis.org>
+In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
+checked. A proper implementation can be found in vv6410_dump(). Add a
+check in loop condition and propergate error code to fix this issue.
 
-The trace event verifier checks the formats of trace events to make sure
-that they do not point at memory that is not in the trace event itself or
-in data that will never be freed. If an event references data that was
-allocated when the event triggered and that same data is freed before the
-event is read, then the kernel can crash by reading freed memory.
-
-The verifier runs at boot up (or module load) and scans the print formats
-of the events and checks their arguments to make sure that dereferenced
-pointers are safe. If the format uses "%*p.." the verifier will ignore it,
-and that could be dangerous. Cover this case as well.
-
-Also add to the sample code a use case of "%*pbl".
-
-Link: https://lore.kernel.org/all/bcba4d76-2c3f-4d11-baf0-02905db953dd@oracle.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Link: https://lore.kernel.org/20250327195311.2d89ec66@gandalf.local.home
-Reported-by: Libo Chen <libo.chen@oracle.com>
-Reviewed-by: Libo Chen <libo.chen@oracle.com>
-Tested-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- kernel/trace/trace_events.c                | 7 +++++++
- samples/trace_events/trace-events-sample.h | 8 ++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 8638b7f7ff85..069e92856bda 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -470,6 +470,7 @@ static void test_event_printk(struct trace_event_call *call)
- 			case '%':
- 				continue;
- 			case 'p':
-+ do_pointer:
- 				/* Find dereferencing fields */
- 				switch (fmt[i + 1]) {
- 				case 'B': case 'R': case 'r':
-@@ -498,6 +499,12 @@ static void test_event_printk(struct trace_event_call *call)
- 						continue;
- 					if (fmt[i + j] == '*') {
- 						star = true;
-+						/* Handle %*pbl case */
-+						if (!j && fmt[i + 1] == 'p') {
-+							arg++;
-+							i++;
-+							goto do_pointer;
-+						}
- 						continue;
- 					}
- 					if ((fmt[i + j] == 's')) {
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 999f78d380ae..1a05fc153353 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -319,7 +319,8 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
+diff --git a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
+index 5a47dcbf1c8e..303b055fefea 100644
+--- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
++++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
+@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
+ static int hdcs_dump(struct sd *sd)
+ {
+ 	u16 reg, val;
++	int err = 0;
  
--	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
-+		  __entry->foo, __entry->bar,
+ 	pr_info("Dumping sensor registers:\n");
  
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -370,7 +371,10 @@ TRACE_EVENT(foo_bar,
- 
- 		  __get_str(str), __get_str(lstr),
- 		  __get_bitmask(cpus), __get_cpumask(cpum),
--		  __get_str(vstr))
-+		  __get_str(vstr),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array(cpus))
- );
- 
- /*
+-	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
+-		stv06xx_read_sensor(sd, reg, &val);
++	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
++		err = stv06xx_read_sensor(sd, reg, &val);
+ 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
+ 	}
+-	return 0;
++	return (err < 0) ? err : 0;
+ }
 -- 
-2.47.2
-
+2.42.0.windows.2
 
 
