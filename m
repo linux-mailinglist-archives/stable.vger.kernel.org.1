@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-127460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C33A798BB
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 01:23:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EB9A798B7
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 01:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6461718903DF
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 23:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201211719D8
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 23:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93C51FAC55;
-	Wed,  2 Apr 2025 23:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8838C1FBE9E;
+	Wed,  2 Apr 2025 23:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d76twxCE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMKbjuMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2A1FAC48;
-	Wed,  2 Apr 2025 23:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EEA1F8747;
+	Wed,  2 Apr 2025 23:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743636083; cv=none; b=oSaoRVpxxWPnEuXNhyTfmI9ZlnYp+EvJtKS4D+2vXB7uCdFIkjMBwE5Ts7ow9+UNbCVNO5ojisJ1X4/qFRnzgy7k9Yg+HNYoz45iD3QSSvmV4mi0+ALDlY2ivOijhXaOQeLKXliUHEWte2AZppIsOAAzQVjkgCzQMWK1eT2N104=
+	t=1743636087; cv=none; b=ME/ntOV8htANVFyxJi0ssy7kzYBgaxUzadNPsXty72bd21+sPzo6sO8oHZJF+T/HwsmSz9mNvleFUyG06Ck7f6KuWmz0mopCKsfOqs+WNynBAjM64retk3APuPs5bKnUm9lp1zLOn9c4SaELRICn5cxXPaV7Gsc5B3v46bS3OO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743636083; c=relaxed/simple;
-	bh=e9qvF2o7uVNtfQASnyy4CdQbnEmB3uPMMDe207tDMbc=;
+	s=arc-20240116; t=1743636087; c=relaxed/simple;
+	bh=94B73exkvxZIp7PjZglkCZBY40cUsa7OpOScJsLUoog=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BN+pDwTP93D5leRqMbnIUImCSxQwGLfo4U9DztbTDXvZeWnT8sPZ1O1fOx54lvF4eKpDCqW96SpSjDV/VLl/zY5n+CytND8YSNHTkeVGFcqsMtTzl5siG983I6lcLBvEVwuNbHXt7bwSCoL6x4CkYrignII1HbgpzHTQHB7bygA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d76twxCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8192C4CEDD;
-	Wed,  2 Apr 2025 23:21:18 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=elydRZIuMhd3u7l+kemvD2S/OnJ/VqQBJq34H3lXrP6EPOEuiWfIyRNpJuCmv/z0DuBG8z0Airrbk8Ksato5GhUYNvnW+uGMjj6FC68563bD+z3xomI8+Za1q7VIKmb60YcHowwrGFWefuCCQ61x278Sy+6Kg+8qVhSq0b8Yjig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMKbjuMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E63FC4CEDD;
+	Wed,  2 Apr 2025 23:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743636082;
-	bh=e9qvF2o7uVNtfQASnyy4CdQbnEmB3uPMMDe207tDMbc=;
+	s=k20201202; t=1743636086;
+	bh=94B73exkvxZIp7PjZglkCZBY40cUsa7OpOScJsLUoog=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=d76twxCEnqhtukperv0HOO/yvbxwaRcOA33X0/ouHliMohTeCVWl7vc1J5hPVhSuu
-	 uXj7n2eKAduWaEPJ+CzqhP/PG2FHg50auU6xUpc2TvI7PY6/+HsSieVowFpd+OXoVY
-	 WhdIhZTFSs88gfm1S8FgfI5ElhsMxlyac6SiTMFTORvJlxTxddN12oVPVYqUogqvgH
-	 sWP/KrMf1mnT9FwblrSizykABl1QD4qp4lW7eN7nvdT2e8ip5pianzhN36RTbEIRFb
-	 55OhmovD6m3wMO06Bw2mcHz29Mgd/eY3DHZmU1ivyRGY5SaY2Wnun8KUfaZNTjLcJ8
-	 wMMT7UQTLsbFA==
+	b=pMKbjuMTsbbVsQ6RiJwc/eiFmkOBCHEYLWOz2hVVUFfK17YfiIsDSWyRen77OCAaQ
+	 Pkwtr6J1sAkjPDuFu+/JCrjStPS0RWWG7l89YTHH5Wf/WR1OKmi+tRP68oYRc/1KrV
+	 wkUke4vcUCIyQmXFP9a6VCQEkFVRdM2vhJc9b10NJdCoLD3fnfVy89kR7DkxZKyyFP
+	 gwJyf4mYCLyziuoT98x+aPgXPnfpO12I/CBweatKI2DVCIVJ5b8ULkC7pxFa/bp9vW
+	 7WZKn/PMGYRwRh8L+RtUwOTAyMMejMWN3xwVKQASk9ehXX4uhygoiXbzFBoBoUD3WS
+	 dMk4y9K8emBvA==
 From: Mark Brown <broonie@kernel.org>
-Date: Thu, 03 Apr 2025 00:20:22 +0100
-Subject: [PATCH 5.15 v2 07/10] KVM: arm64: Remove host FPSIMD saving for
- non-protected KVM
+Date: Thu, 03 Apr 2025 00:20:23 +0100
+Subject: [PATCH 5.15 v2 08/10] KVM: arm64: Remove VHE host restore of
+ CPACR_EL1.ZEN
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250403-stable-sve-5-15-v2-7-30a36a78a20a@kernel.org>
+Message-Id: <20250403-stable-sve-5-15-v2-8-30a36a78a20a@kernel.org>
 References: <20250403-stable-sve-5-15-v2-0-30a36a78a20a@kernel.org>
 In-Reply-To: <20250403-stable-sve-5-15-v2-0-30a36a78a20a@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -66,34 +66,38 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
  Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
  Fuad Tabba <tabba@google.com>
 X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2943; i=broonie@kernel.org;
- h=from:subject:message-id; bh=IYSm9LOHiakFHli8QpJhz4RyCAaedNNXODj93c0ElHY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBn7cZRAiw8fTObijRUYHvuAUQ8JqfR9J23+Sw7pEnA
- 6Y43d+aJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ+3GUQAKCRAk1otyXVSH0MB+B/
- wJ4puNvT47y3n3mvZUN9xNBPAL8/XtQpcTXrAHfZfMEEtdqCYHJdZUCkGRmt3PUU/Ic/KC5jQqN/5k
- SaxQrxRBAkBn4hvEA/3BoSjbqqA6Mur4G8H8mtQdXd60twTL8lUtWarXUdLrj3Jy+wRoGq8sORdCpF
- pvSusjb9EuuDbu3a4HtU8gtW1QFAhOR4jgeS+qivFoa/DPMbctIPu17WdjzJyOcrG3qW+2WyXdpdkv
- jDUDHDKTgqHA4+4121g1Rqo89zO3AUfhipoyG4+3WMZkL33/lbLs2PV0DBSJHOwynSPV/C3tAGXygw
- Yjvq0+mtwtmcWv+I6Rd7ndyFNfltdZ
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3514; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=z0T8Mw2Gv92zuKeVWJq8mDeqr184OynN7N95pkdbt3E=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBn7cZRBfZOBeK2OmNmHazZfCtH0LV8u0J8SI75zjb6
+ vtv1PnuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ+3GUQAKCRAk1otyXVSH0JX8B/
+ 9O5K4zPEulEboWPndCoZmFR/gJDM+51xzE5xFJFykGJahqqCzLPfgygouQrEQin75mLAt7iIO5hLU1
+ lUt5d5xlYH38BaPLk1Jk5+c0il8HI4eT0lbqG0v3gEv1nFmcS9ef1KJuZtdQujAIlyhen7QHv76zij
+ 8UQPuRGISnwiELRx6SQneicDZgPb811J0vsW8hXL3xTleCTfj16ow71IBBf/uC4vm3AYi3XtMp4KHI
+ 5Lyt6T2kr5OxCpV7Ao3zashkUVOnCWHMrK4A7QGuZtQyqQ/tKAajWjLt1FIGsOT50ExV56nbpp+fPK
+ jd8OugE0BV2ImQ+/iqJKVwoUY1nujX
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
+[ Upstream commit 459f059be702056d91537b99a129994aa6ccdd35 ]
 
-Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-and the code to do this is never used. Protected KVM still needs to
-save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-the host (and to avoid revealing to the host whether the guest used
-FPSIMD/SVE/SME), and that code needs to be retained.
+When KVM is in VHE mode, the host kernel tries to save and restore the
+configuration of CPACR_EL1.ZEN (i.e. CPTR_EL2.ZEN when HCR_EL2.E2H=1)
+across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
+configuration may be clobbered by hyp when running a vCPU. This logic is
+currently redundant.
 
-Remove the unused code and data structures.
+The VHE hyp code unconditionally configures CPTR_EL2.ZEN to 0b01 when
+returning to the host, permitting host kernel usage of SVE.
 
-To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-header, where it is only invoked when KVM is in protected mode.
+Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
+state, there's no need to save/restore the state of the EL0 SVE trap.
+The kernel can safely save/restore state without trapping, as described
+above, and will restore userspace state (including trap controls) before
+returning to userspace.
+
+Remove the redundant logic.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Reviewed-by: Mark Brown <broonie@kernel.org>
@@ -104,56 +108,60 @@ Cc: Fuad Tabba <tabba@google.com>
 Cc: Marc Zyngier <maz@kernel.org>
 Cc: Oliver Upton <oliver.upton@linux.dev>
 Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20250210195226.1215254-4-mark.rutland@arm.com
 Signed-off-by: Marc Zyngier <maz@kernel.org>
+[Rework for refactoring of where the flags are stored -- broonie]
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h       | 1 -
- arch/arm64/kvm/fpsimd.c                 | 1 -
- arch/arm64/kvm/hyp/include/hyp/switch.h | 6 +-----
- 3 files changed, 1 insertion(+), 7 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |  1 -
+ arch/arm64/kvm/fpsimd.c           | 15 ---------------
+ 2 files changed, 16 deletions(-)
 
 diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index ecae31b0dab3..06e8d4645ecd 100644
+index 06e8d4645ecd..3d4e2396a2d7 100644
 --- a/arch/arm64/include/asm/kvm_host.h
 +++ b/arch/arm64/include/asm/kvm_host.h
-@@ -333,7 +333,6 @@ struct kvm_vcpu_arch {
- 	struct kvm_guest_debug_arch external_debug_state;
- 
- 	struct thread_info *host_thread_info;	/* hyp VA */
--	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
- 
- 	struct {
- 		/* {Break,watch}point registers */
+@@ -421,7 +421,6 @@ struct kvm_vcpu_arch {
+ #define KVM_ARM64_DEBUG_DIRTY		(1 << 0)
+ #define KVM_ARM64_FP_ENABLED		(1 << 1) /* guest FP regs loaded */
+ #define KVM_ARM64_FP_HOST		(1 << 2) /* host FP regs loaded */
+-#define KVM_ARM64_HOST_SVE_ENABLED	(1 << 4) /* SVE enabled for EL0 */
+ #define KVM_ARM64_GUEST_HAS_SVE		(1 << 5) /* SVE exposed to guest */
+ #define KVM_ARM64_VCPU_SVE_FINALIZED	(1 << 6) /* SVE config completed */
+ #define KVM_ARM64_GUEST_HAS_PTRAUTH	(1 << 7) /* PTRAUTH exposed to guest */
 diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
-index 2afa2521bce1..1ef9d6cb91ee 100644
+index 1ef9d6cb91ee..1360ddd4137b 100644
 --- a/arch/arm64/kvm/fpsimd.c
 +++ b/arch/arm64/kvm/fpsimd.c
-@@ -55,7 +55,6 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_vcpu *vcpu)
- 	}
- 
- 	vcpu->arch.host_thread_info = kern_hyp_va(ti);
--	vcpu->arch.host_fpsimd_state = kern_hyp_va(fpsimd);
- error:
- 	return ret;
- }
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index 269ec3587210..cc102e46b0e2 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -251,11 +251,7 @@ static inline bool __hyp_handle_fpsimd(struct kvm_vcpu *vcpu)
- 	}
- 	isb();
- 
--	if (vcpu->arch.flags & KVM_ARM64_FP_HOST) {
--		__fpsimd_save_state(vcpu->arch.host_fpsimd_state);
--		vcpu->arch.flags &= ~KVM_ARM64_FP_HOST;
--	}
+@@ -83,9 +83,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+ 	 */
+ 	fpsimd_save_and_flush_cpu_state();
+ 	vcpu->arch.flags &= ~KVM_ARM64_FP_HOST;
 -
-+	/* Restore the guest state */
- 	if (sve_guest)
- 		__hyp_sve_restore_guest(vcpu);
- 	else
+-	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+-		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
+ }
+ 
+ /*
+@@ -142,18 +139,6 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
+ 		}
+ 
+ 		fpsimd_save_and_flush_cpu_state();
+-	} else if (has_vhe() && system_supports_sve()) {
+-		/*
+-		 * The FPSIMD/SVE state in the CPU has not been touched, and we
+-		 * have SVE (and VHE): CPACR_EL1 (alias CPTR_EL2) has been
+-		 * reset to CPACR_EL1_DEFAULT by the Hyp code, disabling SVE
+-		 * for EL0.  To avoid spurious traps, restore the trap state
+-		 * seen by kvm_arch_vcpu_load_fp():
+-		 */
+-		if (vcpu->arch.flags & KVM_ARM64_HOST_SVE_ENABLED)
+-			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_ZEN_EL0EN);
+-		else
+-			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
+ 	}
+ 
+ 	local_irq_restore(flags);
 
 -- 
 2.39.5
