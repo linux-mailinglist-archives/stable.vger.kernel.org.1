@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-127653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A91AA7A6DF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDCEA7A6D8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3051764B3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25CE18989A6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2B8250BFF;
-	Thu,  3 Apr 2025 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9524EF7A;
+	Thu,  3 Apr 2025 15:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FO2zWPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODfsuB9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2189A24EF7A;
-	Thu,  3 Apr 2025 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B7B188A3A;
+	Thu,  3 Apr 2025 15:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693968; cv=none; b=k33W7rAAE1q7Rkhi0G5Qm+0UjrPAOnC0f0iqaDG19LAPX/PrAuuyhGEPuIkwwM3yIZWzGFo4WLkf5BRBq0jMc6eGramRrqoNBKyNQOUfhCM1A1j8avyysvuz2b5ZfV4EwtLtG5LAI8F33Pw2rUX9/d54T7wWpMWoVunYJUhmuiE=
+	t=1743694024; cv=none; b=sP7nplL7G4nGlxCKTW5ZsErRwdLanlWg2hRrxKw3hhhMNHLsRS+Wsi7LT/8m6KJacT3nRbB90VpVt6QMg2UavZMb66wnEKHrvLoEJH48dPmBUpe095vpWzW85mw/vLsheFgCh1pe4JSiyyH4Toax9XBCRdtL0MocC1ejqZJJ/uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693968; c=relaxed/simple;
-	bh=beNZAMnQiseOT2SOxwvpT6u2J0r/XFHSQV3xDJzAMpA=;
+	s=arc-20240116; t=1743694024; c=relaxed/simple;
+	bh=/zibdpqmJ1nCP4osSTA4fUXyPWmPD7xKubfj6XPKNLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s14EnwD0NShFB84TzybtS49gA4WXxqPsKxK+haIDNE+9wZijtk2nYb91F+FuEYr7XOsfOq1l6ZpmYjj36QptEMIGLuT2LL87O4IL34CEo6hZ2E63LwMKcSzwEnD8xFSc74rNjdTb+/1cD/J9gt+Id975B58ZjOIibGzR0p0kIjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FO2zWPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE5EC4CEE3;
-	Thu,  3 Apr 2025 15:26:07 +0000 (UTC)
+	 MIME-Version; b=dN8JkYbEp+rPSGTjZJK5R+AkbVbFcRIWsLiqud4hzNNRsJngUHcFHl/uiV6z5aXSEJagrOPQvcUmra7trN5jBWs3garaCFu2dyQ70BuIs3hqZGiRoyX7RpMHgA5cQqsL0YsXjyWCqzyKpj7pEju4tRZxPhq+dGrm2QZjml5Pj7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODfsuB9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11F7C4CEE8;
+	Thu,  3 Apr 2025 15:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693968;
-	bh=beNZAMnQiseOT2SOxwvpT6u2J0r/XFHSQV3xDJzAMpA=;
+	s=korg; t=1743694024;
+	bh=/zibdpqmJ1nCP4osSTA4fUXyPWmPD7xKubfj6XPKNLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FO2zWPLdPIe6UT8MprZSbAadv1Sj45R1IYWMZGGH0bnmcChEoWHIDgfz/zT1hJKt
-	 uZeiAzCMNf/0SL2osV6H1XLqswGRCaKfHZn4evvR+WTEncMnVcQwlua6V8KUrjfc8r
-	 K9svRsVWpj2s/Gi8yUlNqEE609LLLqUWMB4irEvI=
+	b=ODfsuB9WQ/Jo6s7cXdQz4HqaXAEBmgYmYG17Kulm/NeiA/rbHxPMuLo87ze+EO+80
+	 mDXsyhBrHHgIA4e1BX5KO9hk+upO/bN1dR2HqOiuHTeYgGZeyO9MZrjpKTtiWlERQ8
+	 +Y3ka2TefSHAfJePUmjqCkxHihhnpZJQHePWQiyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.13 09/23] counter: stm32-lptimer-cnt: fix error handling when enabling
+	Wang Kefeng <wangkefeng.wang@huawei.com>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.6 05/26] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
 Date: Thu,  3 Apr 2025 16:20:26 +0100
-Message-ID: <20250403151622.543558538@linuxfoundation.org>
+Message-ID: <20250403151622.571146287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +65,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
+commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
 
-In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
-a timeout error is raised, by regmap_read_poll_timeout. It may happen,
-when the lptimer runs on a slow clock, and the clock is gated only
-few times during the polling.
+The common pattern in arm is to emit a "8<--- cut here ---" line for
+faults, but it was missing for do_PrefetchAbort(). Add it.
 
-Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
-So the 'enable' state in sysfs wrongly lies on the counter being
-correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
-
-To fix both issues:
-- enable the clock before writing CMP, ARR and polling ISR bits. It will
-avoid the possible timeout error.
-- clear the ENABLE bit in CR and disable the clock in the error path.
-
-Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ arch/arm/mm/fault.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
- 		return 0;
- 	}
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -563,6 +563,7 @@ do_PrefetchAbort(unsigned long addr, uns
+ 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
+ 		return;
  
-+	ret = clk_enable(priv->clk);
-+	if (ret)
-+		goto disable_cnt;
-+
- 	/* LP timer must be enabled before writing CMP & ARR */
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
++	pr_alert("8<--- cut here ---\n");
+ 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
+ 		inf->name, ifsr, addr);
  
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
- 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
- 			   STM32_LPTIM_CMPOKCF_ARROKCF);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
--	ret = clk_enable(priv->clk);
--	if (ret) {
--		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
--		return ret;
--	}
- 	priv->enabled = true;
- 
- 	/* Start LP timer in continuous mode */
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
- 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
-+
-+disable_clk:
-+	clk_disable(priv->clk);
-+disable_cnt:
-+	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
-+
-+	return ret;
- }
- 
- static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
