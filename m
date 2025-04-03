@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-128103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FEDA7AF40
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33213A7AF43
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B62E188AABA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:40:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697EC188ED86
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376F123BCFC;
-	Thu,  3 Apr 2025 19:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C7C23C392;
+	Thu,  3 Apr 2025 19:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXVBleea"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Un7CgENr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F3B23BCF4;
-	Thu,  3 Apr 2025 19:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ABF23BFBC;
+	Thu,  3 Apr 2025 19:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707977; cv=none; b=RWZSfa9cdJMJRGDH9P3yDy8Iy159gBBFUqWyJY/m4Q2celgXbcEuut25WwfLoajPHRf7jvZyjvklbC7KYb+ZsG/y7wkS/eIj7a6eRymuRovKi0HqxGoq6EpdkJJjlCABVwG9Q+lk/8neq5zCx1SzjhIQ0Uhsui1O50vFW/K+tIU=
+	t=1743707978; cv=none; b=ERJn7ECH30KFad77xE1D1uwKGHRyTHNODm6kkUe3B1lMPlrwLhsvHe23ou6J16+lyEh45y4AoxZX2LrKMkNXjS/fPSCBRj7B9rlIFJ3oC5meIPnh4kExilNM7+CgPIQ5MEray8c6tGPHbPS8+aYgA0Ulo438PuCLdd99H0LZTV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707977; c=relaxed/simple;
-	bh=BIR6ob1l1DZPxoWa9Ad2gCsTWGJeuh0Yb2+GnSwr4UM=;
+	s=arc-20240116; t=1743707978; c=relaxed/simple;
+	bh=0kgwTRCEtBEzBgu+kF1qMTp8q+Ccqf1TuFatw8OGfNI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TNrW3ngeo7YB+UKcMq3GwtTXA2Qol/cEswVLFI7V4S/i+2a2B0/N0AVtWNXPT44XTt1szxZjm565wg6xmto9J04fE3UiXi2/WieBRi1Eg2lCS4a1Jbo58/ll2TXnKvKXoJmTDtA70P3AvX+vKBRhk+gkMfr+FIkBmc3zzjPFCnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXVBleea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB26C4CEE9;
-	Thu,  3 Apr 2025 19:19:35 +0000 (UTC)
+	 MIME-Version; b=c2WylUF62XQLXmV8kPiz5yX0zFOMgc1kMFpsq4Xk40aie1V1DXejLeDPdRwTjmMa59UdHc/Zlf3LxZqoooAYZjKpXE7zKjMkQoiumhBFSSA9PhFgju4PLaG6jDCWDN3OhFGmOXOjKSRrk8IyCm5VytQr7WaaW0nQX2IUcPUoPY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Un7CgENr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4065C4CEEB;
+	Thu,  3 Apr 2025 19:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707976;
-	bh=BIR6ob1l1DZPxoWa9Ad2gCsTWGJeuh0Yb2+GnSwr4UM=;
+	s=k20201202; t=1743707978;
+	bh=0kgwTRCEtBEzBgu+kF1qMTp8q+Ccqf1TuFatw8OGfNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXVBleeaaisbWc1/4t8NNHvS3yJgrD4rfSC9BJs9DznwMtstwAhgP3xJII85Bz5lG
-	 XoW1yCymkFfzOkYFn4bg62kY7PXkk+KBUeB3+flbkIMPCMa+zQKWwElAL2JMhvObEr
-	 ZJhOsLSzvKNUK/WLR3UIIe5XK3ScRB30cFijLqejJazQIYXBesggGGi2EvydlLLzEL
-	 XiNsYxv7hNVwtYfLop5/rWNw4vnwGYA4DZkO3hJeXlUz6mbJeDSvnL8ts/2g1OAIGk
-	 CgCXaKXm0/1crgipavFM0ywqfMKF7fqU95wz0tb/x3JormCW14Pcbh8jITh/VIh5Ow
-	 4hP05VAuXoa+A==
+	b=Un7CgENrieYWfTZQ43J5kdjo+l1KlPfF5Zj9nPKD6uUBZULDahJY+QPUxAJq0Q1F8
+	 xnLeUnhpjFLSyomQvi5NL0qckrzxzooax0HhdfVF+kTrjVeOr2GB+o4my6Thqy+lDh
+	 48RbXBXoKO5Vn14IWPUbfuZIG95hdm7SZ8fIZDiObA35jcNE0p65rrwasFHs3VWQkd
+	 1VFt18ZP/JLdYIKukeBdoEkQRQdTnFyrXUWAWnkrmSRlxFHAHpRh6KIEWxZXhb/bSP
+	 Rgfy4h74RPDgModC5urln9aUINS1KWNNPub5jMaaAyOKEEMla7VUxNAS2EvjK6A6EQ
+	 MiziVumatT5nA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+Cc: David Yat Sin <David.YatSin@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	dakr@kernel.org
-Subject: [PATCH AUTOSEL 6.1 09/20] drivers: base: devres: Allow to release group on device release
-Date: Thu,  3 Apr 2025 15:19:02 -0400
-Message-Id: <20250403191913.2681831-9-sashal@kernel.org>
+	Felix.Kuehling@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 10/20] drm/amdkfd: clamp queue size to minimum
+Date: Thu,  3 Apr 2025 15:19:03 -0400
+Message-Id: <20250403191913.2681831-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191913.2681831-1-sashal@kernel.org>
 References: <20250403191913.2681831-1-sashal@kernel.org>
@@ -67,74 +72,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: David Yat Sin <David.YatSin@amd.com>
 
-[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
+[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
 
-When releasing a device, if the release action causes a group to be
-released, a warning is emitted because it can't find the group. This
-happens because devres_release_all() moves the entire list to a todo
-list and also move the group markers. Considering r* normal resource
-nodes and g1 a group resource node:
+If queue size is less than minimum, clamp it to minimum to prevent
+underflow when writing queue mqd.
 
-		    g1 -----------.
-		    v		  v
-	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
-
-After devres_release_all(), dev->devres_head becomes empty and the todo
-list it iterates on becomes:
-
-			       g1
-			       v
-	r1 -> r2 -> r3-> r4 -> g1[0]
-
-When a call to component_del() is made and takes down the aggregate
-device, a warning like this happen:
-
-	RIP: 0010:devres_release_group+0x362/0x530
-	...
-	Call Trace:
-	 <TASK>
-	 component_unbind+0x156/0x380
-	 component_unbind_all+0x1d0/0x270
-	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
-	 take_down_aggregate_device+0xc1/0x160
-	 component_del+0x1c6/0x3e0
-	 intel_hdcp_component_fini+0xf1/0x170 [xe]
-	 xe_display_fini+0x1e/0x40 [xe]
-
-Because the devres group corresponding to the hdcp component cannot be
-found. Just ignore this corner case: if the dev->devres_head is empty
-and the caller is trying to remove a group, it's likely in the process
-of device cleanup so just ignore it instead of warning.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
+ include/uapi/linux/kfd_ioctl.h           |  2 ++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 35d1e2864696f..9d0ea5c14bc50 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -684,6 +684,13 @@ int devres_release_group(struct device *dev, void *id)
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index f83574107eb85..773913a7d6e90 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -208,6 +208,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
+ 		return -EINVAL;
+ 	}
  
- 		release_nodes(dev, &todo);
-+	} else if (list_empty(&dev->devres_head)) {
-+		/*
-+		 * dev is probably dying via devres_release_all(): groups
-+		 * have already been removed and are on the process of
-+		 * being released - don't touch and don't warn.
-+		 */
-+		spin_unlock_irqrestore(&dev->devres_lock, flags);
- 	} else {
- 		WARN_ON(1);
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	if (!access_ok((const void __user *) args->read_pointer_address,
+ 			sizeof(uint32_t))) {
+ 		pr_err("Can't access read pointer\n");
+@@ -464,6 +469,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
+ 		return -EINVAL;
+ 	}
+ 
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	properties.queue_address = args->ring_base_address;
+ 	properties.queue_size = args->ring_size;
+ 	properties.queue_percent = args->queue_percentage;
+diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
+index 42b60198b6c5f..deed930ed3051 100644
+--- a/include/uapi/linux/kfd_ioctl.h
++++ b/include/uapi/linux/kfd_ioctl.h
+@@ -55,6 +55,8 @@ struct kfd_ioctl_get_version_args {
+ #define KFD_MAX_QUEUE_PERCENTAGE	100
+ #define KFD_MAX_QUEUE_PRIORITY		15
+ 
++#define KFD_MIN_QUEUE_RING_SIZE		1024
++
+ struct kfd_ioctl_create_queue_args {
+ 	__u64 ring_base_address;	/* to KFD */
+ 	__u64 write_pointer_address;	/* from KFD */
 -- 
 2.39.5
 
