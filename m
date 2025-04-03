@@ -1,114 +1,126 @@
-Return-Path: <stable+bounces-127954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771FBA7AD97
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:08:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9B5A7AD96
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05178176B26
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2ECE1896A21
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2452328D848;
-	Thu,  3 Apr 2025 19:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9AC28EA51;
+	Thu,  3 Apr 2025 19:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WN287TCZ"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="WwDPGAVS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30C328D836;
-	Thu,  3 Apr 2025 19:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527C28EA50;
+	Thu,  3 Apr 2025 19:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707468; cv=none; b=fznWCqSOe0iRGR9+/ThiG0SWyCYDygToMYfbfqUk0IW+NAgGdO51ZqZ+EENcVL02+tjFM8vl986hdmw+DXv1tddMfat+cG+5nMuG/33BO43zDTpeFmGQTMU8skqUCRG/wV3cGVDiZaBEvTK1U3GZd8NYVhj5Ej1UWIZY6S5Cak4=
+	t=1743707516; cv=none; b=YBmag2dOkGBCDKEvWqKt9rvVmd0fJVRQkChHDFKo0B/NXYVbiqil7va5obx+LS5G6NocIrDEFVGv+Bmr+Ui/xxgS4nKfplo80yHObFDvxDmjTKggadnRaNbaYc4lFfeebZqFmvN4Und0xU27o8/U4eTjiDDeRLkRYQvNhfCGt5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707468; c=relaxed/simple;
-	bh=TcvEGJ6+kDIkGSbkDlox3kWTb4rDObBfnOvnpRdWC9A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I83fG4NK3x6RpWrNdoTd/pGnAgz29cO8ldw3IU6AcxyXf2HFndPih4VTR8qh1r9D392KDygqXOgSwSr1rcL+fTAdckHgiaEkCXTJK3URw1CuEbMvs4LMyqDs1ST7/clx0fbXcppdyvTcLc/GEXsZobkIDxnQlCF3vnXGnnDDxBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WN287TCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1423C4CEE8;
-	Thu,  3 Apr 2025 19:11:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707468;
-	bh=TcvEGJ6+kDIkGSbkDlox3kWTb4rDObBfnOvnpRdWC9A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WN287TCZjIxVU3gd2MROkVj1Sf4eJG6o1pTpWj5m5iOHmGGmha7W8pacZJy85Jv66
-	 vtEI6WauE/XZpqNvZ0D3+sNVsI7+4TL43vRUDZh3wzJ86hRszk+clCvcuQvhM0bCSO
-	 7GYj14zdu8gp10MAOm7ByRHxR6mUDEmVp2yfVDrth43WDxF8Bkn1HqPtLUUXMS8jlf
-	 MAqr0lyl6Y7XtvI6SscSlb/pVtxO3fyvpnIxB0Tq9sToTe/b0Bh7yqjS22sKZH0HI1
-	 XJSyKDGtc+dMwlaKqU68n4DDIq2dKS6aZ68wROKssK24r81mydwM4lVRG0FHzUNtuW
-	 KAG09J7/QR9EQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 14/14] Bluetooth: hci_uart: fix race during initialization
-Date: Thu,  3 Apr 2025 15:10:36 -0400
-Message-Id: <20250403191036.2678799-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403191036.2678799-1-sashal@kernel.org>
-References: <20250403191036.2678799-1-sashal@kernel.org>
+	s=arc-20240116; t=1743707516; c=relaxed/simple;
+	bh=SUF+FEvZ0V/1XiQErPBCBUZApPbnbBjViybnTHmlfjs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iiXZN3yQ1Biu/+G4zyewhOuWTSa/Xrrt2YxFYbS4BRMYL4Y0NPqLHV9Ru9EnbL5LHGKmZN9t0tsEHcauY67BX1IxclEUwOXC9E+aj2UrjzRqUQ7LtmjxiOmL2qU9Z5Akr7rF8VczAKKr/SMUn1CM2y+KP6+JFnKdFIWbrqrk7hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=WwDPGAVS; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1743707515; x=1775243515;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=vovxfpKJgf6ol6D0CSE6J0UKWexkXXL6DC9c0tr1dr0=;
+  b=WwDPGAVSB3MUCW6lnXIDj8kNyDEF6eugvbSr4l+ct9GqgxC0NqQBtYP7
+   cUi8+Ub+8f3gnMOcFunXRFs5tdMKeZ85Ns1ksav5zFycpq8BKMbR+Z7YC
+   o5MuB2NMQkOE1d4+UhuvykKslm2yWnW038yChLDZGXPjY6alweRdhVLAI
+   M=;
+X-IronPort-AV: E=Sophos;i="6.15,186,1739836800"; 
+   d="scan'208";a="392813403"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 19:11:53 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:32116]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.147:2525] with esmtp (Farcaster)
+ id 724021ac-06b5-4828-8460-c9fe5bea7dc1; Thu, 3 Apr 2025 19:11:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 724021ac-06b5-4828-8460-c9fe5bea7dc1
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 3 Apr 2025 19:11:51 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.41) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 3 Apr 2025 19:11:47 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <jirislaby@kernel.org>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <ematsumiya@suse.de>,
+	<horms@kernel.org>, <kuba@kernel.org>, <kuni1840@gmail.com>,
+	<kuniyu@amazon.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<peterz@infradead.org>, <sfrench@samba.org>, <stable@vger.kernel.org>,
+	<wangzhaolong1@huawei.com>, <willemb@google.com>
+Subject: Re: [PATCH v1 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Thu, 3 Apr 2025 12:11:28 -0700
+Message-ID: <20250403191138.20479-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <568f7245-05c9-4061-b2f4-5d9d38b5c212@kernel.org>
+References: <568f7245-05c9-4061-b2f4-5d9d38b5c212@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWA001.ant.amazon.com (10.13.139.83) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Date: Thu, 3 Apr 2025 12:46:43 +0200
+> On 03. 04. 25, 4:07, Kuniyuki Iwashima wrote:
+> ...
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -2324,6 +2324,12 @@ static void __sk_destruct(struct rcu_head *head)
+> >   		__netns_tracker_free(net, &sk->ns_tracker, false);
+> >   		net_passive_dec(net);
+> >   	}
+> > +
+> > +#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
+> 
+> I don't know if this is the right approach at all (it appears not to 
+> me), but:
+> 
+> Having this check in random files looks error prone. Perhaps you want to 
+> introduce some macro like SOCK_NEEDS_OWNER? Or you introduce sk_put_owner().
 
-[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
+include/net/sock.h and net/core/sock.c are not random files.
 
-'hci_register_dev()' calls power up function, which is executed by
-kworker - 'hci_power_on()'. This function does access to bluetooth chip
-using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-be executed before setting this bit. In that case HCI init logic fails.
+Also, __sk_destruct() is the other single user where all sockets
+are destroyed, so we have no reason to make sk_put_owner() available
+for modules.
 
-Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-'hci_uart_register_dev()'.
+But, I'll define sk_put_owner() with sk_set_owner() under the same
+config guard because I noticed I need to clear sk_owner in
+sk_clone_lock() for MPTCP, which needs sk_clear_owner() or another
+ifdef.
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+> 
+> > +	if (sk->sk_owner)
+> 
+> The if is not needed.
+
+Exactly, will remove it.
+
+Thanks!
+
 ---
- drivers/bluetooth/hci_ldisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 600c88fc3145f..8e4a23cd40218 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -703,12 +703,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
- 
- 	hu->proto = p;
- 
-+	set_bit(HCI_UART_PROTO_READY, &hu->flags);
-+
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
- 	}
- 
--	set_bit(HCI_UART_PROTO_READY, &hu->flags);
- 	return 0;
- }
- 
--- 
-2.39.5
-
+pw-bot: cr
 
