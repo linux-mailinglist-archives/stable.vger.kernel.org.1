@@ -1,205 +1,166 @@
-Return-Path: <stable+bounces-127627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD46DA7A698
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B5FA7A6AA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0787D189879B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33913BAB39
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102162512E0;
-	Thu,  3 Apr 2025 15:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D546C25179D;
+	Thu,  3 Apr 2025 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th/0S+7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yalNQVaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED9824EF7A;
-	Thu,  3 Apr 2025 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C14250BE9;
+	Thu,  3 Apr 2025 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693904; cv=none; b=bk/Drue5j45TbqD99yRfsHJJI5NjIR5E/evv9sdBUdjp9xUhd4FE40qBWBExVYzP2MQjNfejI051saE8uS9LY9+x24vu5NTolFmY4nErics42Fx9dL3/83HGFj1MeP5FBjW5q+s5yGGvegDhVvlkciQ8PN/nmliFMHmqxqHXSzc=
+	t=1743693856; cv=none; b=I32eZJsRP4Cmq9+uwm8731CHCmLyudeMYOTfpGo6KK+DMsLQecre8QpN0JhtTHO8pGlmpa5nDjzoJWeV6EwyHnHyqFrRL5CAHCTDdjpTcZ+v1ZQLmOS3khUWJus3hPouuyNsELsrG60eOkibhCTsYaKBoS3mVuostdGM+AIDA/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693904; c=relaxed/simple;
-	bh=PI66Uzhh//hg0m/mX1FaOXb4mcFJ9gknPfwNvkdpYuY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eS15YW5kC1u8SKi8YwCKBoMAG+xDxOAa6u0Au/M2TTGo4YUFhbMtpNyWgxYt5ejyBihZbAjQ7bNEzza5oTgW5CdKawRZduq2W5fRA3ooFgykmVH097nPhRKlc4r0t7G9ho/PFYYpbZZkgy85Yu8H5d8c88x58PY31eSbpIHfPrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Th/0S+7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA26C4CEE3;
-	Thu,  3 Apr 2025 15:25:04 +0000 (UTC)
+	s=arc-20240116; t=1743693856; c=relaxed/simple;
+	bh=nv3kfUFhT1kO0v4xKSEQh25Kz9+RUkrFBVH/taQyRXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q+nCyQzRuOmYoDdW9TVspKsPLDWBIoGT6Hf9DQEX17f72lUMax1lK8KOwIuaRGaDfPsQk1FaSsZPOj65EHvbEcjFgTGHj7K5AW7TNSNLVqZKSEKCcZJ00th8eBWKqnPuSyE6v7a42RtMYAhl89vXRTulUYFp9M1MJ7Y8iDuDrOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yalNQVaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E7AC4CEE3;
+	Thu,  3 Apr 2025 15:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693904;
-	bh=PI66Uzhh//hg0m/mX1FaOXb4mcFJ9gknPfwNvkdpYuY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Th/0S+7gjMrfN34A7PAURE7fjohIXxPs/jzT8WhrqYMwN7NscMP8zKxLAPibUshJJ
-	 M1n2UwecRufZUMv5o4XPdt8ChpIvYpLYXaXIEBxML23rUHp82dklaiy/l1P3F0K3mx
-	 5Uixs09sZIWKXXQGNN9tla9A38hLPV8d/nJuRc6g=
+	s=korg; t=1743693856;
+	bh=nv3kfUFhT1kO0v4xKSEQh25Kz9+RUkrFBVH/taQyRXE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=yalNQVaSyAxwNVHJeUjUNG4Z53OxxhR4aD87RBCkIBUi3zKAeyZJxW4yGxxOc/gSI
+	 ZjmK+mvU5nF9wj1n6/IBIJDbQ0ShnT3RZ1FJAD79xdTzrkVwWSMintsRXdaUqi0g3S
+	 vmgQH90dYrqJrJaLvpvoxlj1PN9xpxpFAbOna/0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.12 00/22] 6.12.22-rc1 review
-Date: Thu,  3 Apr 2025 16:20:10 +0100
-Message-ID: <20250403151622.055059925@linuxfoundation.org>
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 01/22] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
+Date: Thu,  3 Apr 2025 16:20:11 +0100
+Message-ID: <20250403151622.092774770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.22-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.22-rc1
-X-KernelTest-Deadline: 2025-04-05T15:16+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.12.22 release.
-There are 22 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.22-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-thanks,
+commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
 
-greg k-h
+Many Poly/Plantronics headset families name the feature, input,
+and/or output units in a such a way to produce control names
+that are not recognized by user space. As such, the volume and
+mute events do not get routed to the headset's audio controls.
 
--------------
-Pseudo-Shortlog of commits:
+As an example from a product family:
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.22-rc1
+The microphone mute control is named
+Headset Microphone Capture Switch
+and the headset volume control is named
+Headset Earphone Playback Volume
 
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: bch2_ioctl_subvolume_destroy() fixes
+The quirk fixes these to become
+Headset Capture Switch
+Headset Playback Volume
 
-John Keeping <jkeeping@inmusicbrands.com>
-    serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-Cheick Traore <cheick.traore@foss.st.com>
-    serial: stm32: do not deassert RS485 RTS GPIO prematurely
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    perf tools: Fix up some comments and code to properly use the event_source bus
-
-Luo Qiu <luoqiu@kylinsec.com.cn>
-    memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
-
-Michal Pecio <michal.pecio@gmail.com>
-    usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-
-Michal Pecio <michal.pecio@gmail.com>
-    usb: xhci: Don't skip on Stopped - Length Invalid
-
-Dominique Martinet <dominique.martinet@atmark-techno.com>
-    net: usb: usbnet: restore usb%d name exception for local mac addresses
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion FE990B composition
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion FN990B composition
-
-Sherry Sun <sherry.sun@nxp.com>
-    tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
-
-Cameron Williams <cang1@live.co.uk>
-    tty: serial: 8250: Add Brainboxes XC devices
-
-Cameron Williams <cang1@live.co.uk>
-    tty: serial: 8250: Add some more device IDs
-
-William Breathitt Gray <wbg@kernel.org>
-    counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-
-Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-    counter: stm32-lptimer-cnt: fix error handling when enabling
-
-Dhruv Deshpande <dhrv.d@proton.me>
-    ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
-
-Maxim Mikityanskiy <maxtram95@gmail.com>
-    netfilter: socket: Lookup orig tuple for IPv6 SNAT
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Don't write DP_MSTM_CTRL after LT
-
-Scott Mayhew <smayhew@redhat.com>
-    nfsd: fix legacy client tracking initialization
-
-Minjoong Kim <pwn9uin@gmail.com>
-    atm: Fix NULL pointer dereference
-
-Terry Junge <linuxhid@cosmicgizmosystems.com>
-    HID: hid-plantronics: Add mic mute mapping and generalize quirks
-
-Terry Junge <linuxhid@cosmicgizmosystems.com>
-    ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
-
-
--------------
-
-Diffstat:
-
- Makefile                                          |   4 +-
- drivers/counter/microchip-tcb-capture.c           |  19 +++
- drivers/counter/stm32-lptimer-cnt.c               |  24 ++--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  16 +--
- drivers/hid/hid-plantronics.c                     | 144 ++++++++++------------
- drivers/memstick/host/rtsx_usb_ms.c               |   1 +
- drivers/net/usb/qmi_wwan.c                        |   2 +
- drivers/net/usb/usbnet.c                          |  21 +++-
- drivers/tty/serial/8250/8250_dma.c                |   2 +-
- drivers/tty/serial/8250/8250_pci.c                |  46 +++++++
- drivers/tty/serial/fsl_lpuart.c                   |  17 +++
- drivers/tty/serial/stm32-usart.c                  |   4 +-
- drivers/usb/host/xhci-ring.c                      |   4 +
- drivers/usb/host/xhci.h                           |  13 +-
- fs/bcachefs/fs-ioctl.c                            |   6 +-
- fs/nfsd/nfs4recover.c                             |   1 -
- net/atm/mpc.c                                     |   2 +
- net/ipv6/netfilter/nf_socket_ipv6.c               |  23 ++++
- sound/pci/hda/patch_realtek.c                     |   1 +
- sound/usb/mixer_quirks.c                          |  51 ++++++++
- tools/perf/Documentation/intel-hybrid.txt         |  12 +-
- tools/perf/Documentation/perf-list.txt            |   2 +-
- tools/perf/arch/x86/util/iostat.c                 |   2 +-
- tools/perf/builtin-stat.c                         |   2 +-
- tools/perf/util/mem-events.c                      |   2 +-
- tools/perf/util/pmu.c                             |   4 +-
- 26 files changed, 298 insertions(+), 127 deletions(-)
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -4156,6 +4156,52 @@ static void snd_dragonfly_quirk_db_scale
+ 	}
+ }
+ 
++/*
++ * Some Plantronics headsets have control names that don't meet ALSA naming
++ * standards. This function fixes nonstandard source names. By the time
++ * this function is called the control name should look like one of these:
++ * "source names Playback Volume"
++ * "source names Playback Switch"
++ * "source names Capture Volume"
++ * "source names Capture Switch"
++ * If any of the trigger words are found in the name then the name will
++ * be changed to:
++ * "Headset Playback Volume"
++ * "Headset Playback Switch"
++ * "Headset Capture Volume"
++ * "Headset Capture Switch"
++ * depending on the current suffix.
++ */
++static void snd_fix_plt_name(struct snd_usb_audio *chip,
++			     struct snd_ctl_elem_id *id)
++{
++	/* no variant of "Sidetone" should be added to this list */
++	static const char * const trigger[] = {
++		"Earphone", "Microphone", "Receive", "Transmit"
++	};
++	static const char * const suffix[] = {
++		" Playback Volume", " Playback Switch",
++		" Capture Volume", " Capture Switch"
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(trigger); i++)
++		if (strstr(id->name, trigger[i]))
++			goto triggered;
++	usb_audio_dbg(chip, "no change in %s\n", id->name);
++	return;
++
++triggered:
++	for (i = 0; i < ARRAY_SIZE(suffix); i++)
++		if (strstr(id->name, suffix[i])) {
++			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
++			snprintf(id->name, sizeof(id->name), "Headset%s",
++				 suffix[i]);
++			return;
++		}
++	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
++}
++
+ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
+ 				  struct usb_mixer_elem_info *cval, int unitid,
+ 				  struct snd_kcontrol *kctl)
+@@ -4173,5 +4219,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
+ 			cval->min_mute = 1;
+ 		break;
+ 	}
++
++	/* ALSA-ify some Plantronics headset control names */
++	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
++	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
++		snd_fix_plt_name(mixer->chip, &kctl->id);
+ }
+ 
 
 
 
