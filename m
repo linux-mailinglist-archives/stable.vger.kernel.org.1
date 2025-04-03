@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-127879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB9DA7ACC6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:50:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8949A7ACA8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA20177067
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:44:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD2EF7A7041
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D6E281362;
-	Thu,  3 Apr 2025 19:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A46281506;
+	Thu,  3 Apr 2025 19:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWtIdoku"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AS3WYJ9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01513281357;
-	Thu,  3 Apr 2025 19:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AB328137E;
+	Thu,  3 Apr 2025 19:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707300; cv=none; b=bxe9aAaM2A+v+3A8gingOwdX16rzpicncsKP3+r2bD0s77drLgEQ7mWdHKSCBc0+oIWTdJbiPPLLfT9IBbMsNNhTTMT+7kl8bqI1SQzOaVengCgBEIYc301NRPvHFrroLQV3/eYh4VlIW3kIVrOMvSpPKjLWsoRerC/XdPE/j1k=
+	t=1743707301; cv=none; b=Af2FjgYWkQNE0bXjU5Q1rr/XGmt7xun4+v0NnoB9VkUU5xdcWaZb9/WGP21KE50EgC9bYnZcVhBCG8qVXGQCmt9vEjZNfaV0Z0sf4q+bOSlDnZtiZ43upWy8MnHEaS643E0GpPdkvSmDfHLVDkNHNiA43MY0N3PFQ0XohzrzmZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707300; c=relaxed/simple;
-	bh=/Yub4lT7aD2xIVcZqeAHU83N1ZmhwzTtby6qqIoLDC0=;
+	s=arc-20240116; t=1743707301; c=relaxed/simple;
+	bh=o/RE6Pq0biWl9XpOsNg8l1IOp1SAIm5gTZGWKOVv3ko=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ebLLT6zCGGUU+WEx7WU1VZvBt4VwpEQgf1A/tnhyPcJ24dx7Fx6T7ywQFlEUB3tbSs/hfug/kVBnINWO3okB3XnPno5rZ988/w9A6ii6stfIOSDQSXCUywHxcivznYOK+U1vRg6hkNR+g8XWNINIkUUa5kcOpCZXpnI0t5fyyks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWtIdoku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BCAC4CEE3;
-	Thu,  3 Apr 2025 19:08:18 +0000 (UTC)
+	 MIME-Version; b=tJBK0trWnKlBZGhPJoTfL1zY7aAcwS4Lp8gPUtI2QhLCLnkA0n8TsAeUetobUNgBhjYQj6Yp/0nTjHuTmTNAwWMN0QqTiH93vDIFavw7z8Qx4zLkcvTCT7uytc/nPyRUsrZMl75HObHnQKK4qHtaokzTeOSnLCieRGY+9oKyPF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AS3WYJ9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57401C4CEE3;
+	Thu,  3 Apr 2025 19:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707299;
-	bh=/Yub4lT7aD2xIVcZqeAHU83N1ZmhwzTtby6qqIoLDC0=;
+	s=k20201202; t=1743707301;
+	bh=o/RE6Pq0biWl9XpOsNg8l1IOp1SAIm5gTZGWKOVv3ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWtIdoku/BhdgucHJt3XDJuSWCwOrMC/NzkwRQEXPNDSBcS1T+pxH7U4ZDBlSmAlz
-	 PPIUNBtYTiS+IJ9jo+stVFXibQgArW7soAW7gW10ysAcG2IRzv1oH83rp4iaDuu2/m
-	 LaR/YxJXaKMy3SdWlxjilFmeZ9f0SJJ+FfPtrIiQdDp9yfOLhQ7pMIRLDBkD2XKVEl
-	 qovzvRDO/zvH47S7vfwPIYGWICl36/eJLDR/0yqsVlNORVbVkOGX/LJQ+gWbUWQ04y
-	 X29vEnYhWlcMdAO3YPfizDqe2MmC3yFaptXfgHyvXmeP8gsVGLk8HgdBFW1ngH/bN9
-	 KibK3+T7FEsbA==
+	b=AS3WYJ9gYqf/owq5TJadY8zM8PjKHJ5hhHGc5FWTDwjjj5Y+YesLc77NsN8dO2qY7
+	 d8EN7HdUJrEIdbqmWNqpJhBajPvWbW4bft1WLL26GftjRIm6r9b06VYeHw7HuN4i6d
+	 H7QUrdvc207wK1uS6eUp62XrY05Bm40nhewoXSzJcc3yXlzfK9+vnMZ7yHEijKcjpR
+	 fs42+0gDynk6dLc4nnmAclFwjiyv8oatEBlTKZjenkev34wdBqYC7cG6mc+mfn9NXX
+	 5kv0DkspapYO/SrAjxpt1buJHEswAwRH7KoPikqTOa1zKgUEL6FuG57MMxun2J3INy
+	 mdO8KQF2dMQeg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manish Dharanenthiran <quic_mdharane@quicinc.com>,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Chao Yu <chao@kernel.org>,
+	syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 14/26] wifi: ath12k: Fix invalid data access in ath12k_dp_rx_h_undecap_nwifi
-Date: Thu,  3 Apr 2025 15:07:33 -0400
-Message-Id: <20250403190745.2677620-14-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 15/26] f2fs: fix to avoid out-of-bounds access in f2fs_truncate_inode_blocks()
+Date: Thu,  3 Apr 2025 15:07:34 -0400
+Message-Id: <20250403190745.2677620-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190745.2677620-1-sashal@kernel.org>
 References: <20250403190745.2677620-1-sashal@kernel.org>
@@ -67,134 +66,91 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9a0dddfb30f120db3851627935851d262e4e7acb ]
+[ Upstream commit e6494977bd4a83862118a05f57a8df40256951c0 ]
 
-In certain cases, hardware might provide packets with a
-length greater than the maximum native Wi-Fi header length.
-This can lead to accessing and modifying fields in the header
-within the ath12k_dp_rx_h_undecap_nwifi function for
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type and
-potentially resulting in invalid data access and memory corruption.
+syzbot reports an UBSAN issue as below:
 
-Add a sanity check before processing the SKB to prevent invalid
-data access in the undecap native Wi-Fi function for the
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type.
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/f2fs/node.h:381:10
+index 18446744073709550692 is out of range for type '__le32[5]' (aka 'unsigned int[5]')
+CPU: 0 UID: 0 PID: 5318 Comm: syz.0.0 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ get_nid fs/f2fs/node.h:381 [inline]
+ f2fs_truncate_inode_blocks+0xa5e/0xf60 fs/f2fs/node.c:1181
+ f2fs_do_truncate_blocks+0x782/0x1030 fs/f2fs/file.c:808
+ f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:836
+ f2fs_truncate+0x417/0x720 fs/f2fs/file.c:886
+ f2fs_file_write_iter+0x1bdb/0x2550 fs/f2fs/file.c:5093
+ aio_write+0x56b/0x7c0 fs/aio.c:1633
+ io_submit_one+0x8a7/0x18a0 fs/aio.c:2052
+ __do_sys_io_submit fs/aio.c:2111 [inline]
+ __se_sys_io_submit+0x171/0x2e0 fs/aio.c:2081
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f238798cde9
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+index 18446744073709550692 (decimal, unsigned long long)
+= 0xfffffffffffffc64 (hexadecimal, unsigned long long)
+= -924 (decimal, long long)
 
-Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250211090302.4105141-1-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+In f2fs_truncate_inode_blocks(), UBSAN detects that get_nid() tries to
+access .i_nid[-924], it means both offset[0] and level should zero.
+
+The possible case should be in f2fs_do_truncate_blocks(), we try to
+truncate inode size to zero, however, dn.ofs_in_node is zero and
+dn.node_page is not an inode page, so it fails to truncate inode page,
+and then pass zeroed free_from to f2fs_truncate_inode_blocks(), result
+in this issue.
+
+	if (dn.ofs_in_node || IS_INODE(dn.node_page)) {
+		f2fs_truncate_data_blocks_range(&dn, count);
+		free_from += count;
+	}
+
+I guess the reason why dn.node_page is not an inode page could be: there
+are multiple nat entries share the same node block address, once the node
+block address was reused, f2fs_get_node_page() may load a non-inode block.
+
+Let's add a sanity check for such condition to avoid out-of-bounds access
+issue.
+
+Reported-by: syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/66fdcdf3.050a0220.40bef.0025.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 42 +++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ fs/f2fs/node.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 70ad035acac75..8d9315038a75e 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2484,6 +2484,29 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
- 	ieee80211_rx_napi(ar->hw, pubsta, msdu, napi);
- }
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index dedba481b66d0..d93282c1ed384 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1134,7 +1134,14 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
+ 	trace_f2fs_truncate_inode_blocks_enter(inode, from);
  
-+static bool ath12k_dp_rx_check_nwifi_hdr_len_valid(struct ath12k_base *ab,
-+						   struct hal_rx_desc *rx_desc,
-+						   struct sk_buff *msdu)
-+{
-+	struct ieee80211_hdr *hdr;
-+	u8 decap_type;
-+	u32 hdr_len;
-+
-+	decap_type = ath12k_dp_rx_h_decap_type(ab, rx_desc);
-+	if (decap_type != DP_RX_DECAP_TYPE_NATIVE_WIFI)
-+		return true;
-+
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if ((likely(hdr_len <= DP_MAX_NWIFI_HDR_LEN)))
-+		return true;
-+
-+	ab->soc_stats.invalid_rbm++;
-+	WARN_ON_ONCE(1);
-+	return false;
-+}
-+
- static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 				     struct sk_buff *msdu,
- 				     struct sk_buff_head *msdu_list,
-@@ -2542,6 +2565,11 @@ static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 		}
+ 	level = get_node_path(inode, from, offset, noffset);
+-	if (level < 0) {
++	if (level <= 0) {
++		if (!level) {
++			level = -EFSCORRUPTED;
++			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
++					__func__, inode->i_ino,
++					from, ADDRS_PER_INODE(inode));
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++		}
+ 		trace_f2fs_truncate_inode_blocks_exit(inode, level);
+ 		return level;
  	}
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu))) {
-+		ret = -EINVAL;
-+		goto free_out;
-+	}
-+
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rx_status);
- 	ath12k_dp_rx_h_mpdu(ar, msdu, rx_desc, rx_status);
- 
-@@ -2867,6 +2895,9 @@ static int ath12k_dp_rx_h_verify_tkip_mic(struct ath12k *ar, struct ath12k_peer
- 		    RX_FLAG_IV_STRIPPED | RX_FLAG_DECRYPTED;
- 	skb_pull(msdu, hal_rx_desc_sz);
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rxs);
- 	ath12k_dp_rx_h_undecap(ar, msdu, rx_desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, rxs, true);
-@@ -3590,6 +3621,9 @@ static int ath12k_dp_rx_h_null_q_desc(struct ath12k *ar, struct sk_buff *msdu,
- 		skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 		skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 	}
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	ath12k_dp_rx_h_mpdu(ar, msdu, desc, status);
-@@ -3634,7 +3668,7 @@ static bool ath12k_dp_rx_h_reo_err(struct ath12k *ar, struct sk_buff *msdu,
- 	return drop;
- }
- 
--static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
-+static bool ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 					struct ieee80211_rx_status *status)
- {
- 	struct ath12k_base *ab = ar->ab;
-@@ -3652,6 +3686,9 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 	skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 	skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return true;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	status->flag |= (RX_FLAG_MMIC_STRIPPED | RX_FLAG_MMIC_ERROR |
-@@ -3659,6 +3696,7 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 
- 	ath12k_dp_rx_h_undecap(ar, msdu, desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, status, false);
-+	return false;
- }
- 
- static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
-@@ -3677,7 +3715,7 @@ static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
- 	case HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR:
- 		err_bitmap = ath12k_dp_rx_h_mpdu_err(ab, rx_desc);
- 		if (err_bitmap & HAL_RX_MPDU_ERR_TKIP_MIC) {
--			ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
-+			drop = ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
- 			break;
- 		}
- 		fallthrough;
 -- 
 2.39.5
 
