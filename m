@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-127822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246B5A7AC21
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:34:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E34A7AC06
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0507917D1F6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9304C1884EC1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AE52698A0;
-	Thu,  3 Apr 2025 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467D1269AF2;
+	Thu,  3 Apr 2025 19:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZwEADBH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFfutzwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8488D269899;
-	Thu,  3 Apr 2025 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8692571BD;
+	Thu,  3 Apr 2025 19:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707166; cv=none; b=Qe4T55h2f4oWdP+k9hL1NwBKu7zJxXOfueEi1SwCfZTgaN8Ozw3fJ4Cv8NwMI8Os0DUAtV692HFqgVSdurat7X6pxCBuKGGtdk85q+snYWqjUCykqMPmGCXr2AwTMNAPMaD5pW1eaqrpUoasDRb/qdqCXPbm8CuKJvzXZvwVRaA=
+	t=1743707170; cv=none; b=RTZN7+t5cqvUPhG8DOk5on11TUjriA+99Tady21tJ0i+aEfkYj+YHwC/RpsNCgVpPldvGbLN500luQw49kAzkxP6WbI/l2sxeW8Aa0wOWeg88PMdV3Mx3o07H3GBQMgWUNPdKx0oUJduLc1en/sS+6b0WK3AEgqoy50Y/OxBNTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707166; c=relaxed/simple;
-	bh=gHL983/4Paj9RUeaojNW1KJ40fSB9x+SqPIDpBipqS4=;
+	s=arc-20240116; t=1743707170; c=relaxed/simple;
+	bh=VXmZH9V6z/axWCJeBB01zjQefHERyCjM+PgwTOtgH/s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VuiCgbSkjJDLF9dwDyDx7D51qaLEFEcT4KUvBo7t544jJhSgqCeQvKoSF4ZtiPrEsiaDa9fta4ioPYickAnwqRQ8DFjImeF39BbcarkxEkZeD9I1ZVnL1iyswvwbDC6cXHE/sNRBAjNMDb6EA/bbrLmSLRJJpoolvj+KxQm5VuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZwEADBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2855DC4CEE8;
-	Thu,  3 Apr 2025 19:06:05 +0000 (UTC)
+	 MIME-Version; b=eaK3gOxKfVffdLflJ1+e6ndumH2vGSXkZ9HTT0FVBs4CFCgN6r6ZPueRBVYt+U8J/xDXuAhQhoNonzG8u6t12lSnsMmfXjL0iFQl3Ww9vpnfho+o2ac31lmyolqVg0NzLwpLPpw7ZF4R+y4DU0gX2D76fXT8af8zySLzUInajfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFfutzwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADA0C4CEE3;
+	Thu,  3 Apr 2025 19:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707166;
-	bh=gHL983/4Paj9RUeaojNW1KJ40fSB9x+SqPIDpBipqS4=;
+	s=k20201202; t=1743707169;
+	bh=VXmZH9V6z/axWCJeBB01zjQefHERyCjM+PgwTOtgH/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZwEADBHdWwVHJmhDx9A6TTCCSRAdopqk8EtLs07q14YiECGwqBiAXVhXd30MEOEP
-	 sFHPranqZ9EfbP/fGLcKrB1CvVHvhUgJd5yQ6QLKPhB0mQ2NKfVYl3UYisY4Pg2G4b
-	 bkXczulmnAgXDHy6uxZLyDQ/heukxHQU998iIpssB8vPtC9+1DrnEe6g3762wL5a8e
-	 yWGnrjFezicq3sNgvsDSWVSkrw53lJS0Dlb9CvIcWc1xKURahhrr9Nb57cX1Ke/hu5
-	 VaMSjQr/cHFKngweOPY6QB5ZOQLP6jzZV2IkF8mX/nGrP3557dB2ZIVEF/HLCdCGjH
-	 g4LyHXTvmRbFw==
+	b=qFfutzwxkTEV2QxibpFIQkGBzX7Jb0CwZWHGgLVUv9EooCLeu2nMA9hpp5vAH+5lw
+	 KG8UYoWVcShJeH+qMBJhO963DCrpnEFlNVKeocP7MHXNZyJ9/eoUvNkJDp7/lVzRfD
+	 4RYtPJkXH8CsCcUue8rB5rhNZV5HwlACvd8s3xYB8WGsrplUbGW8SmBxxPLByuNgjX
+	 +UxrHYSFIbFiyFwD/5sEMgGWAKFxCOTtDsn1ayEYu4eK0EV2/Vg8omzpfKuVS2Xmit
+	 bUyqTwmRc+qU5+mJ8ycqT6E4OJ6lJ0rztXrDGeldRrS3o5fiShJV7BVS2zQQDAG2JT
+	 F8OqlQlB2R91w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 04/47] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
-Date: Thu,  3 Apr 2025 15:05:12 -0400
-Message-Id: <20250403190555.2677001-4-sashal@kernel.org>
+	corbet@lwn.net,
+	akpm@linux-foundation.org,
+	paulmck@kernel.org,
+	thuth@redhat.com,
+	rostedt@goodmis.org,
+	bp@alien8.de,
+	ardb@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 05/47] ata: libata-core: Add 'external' to the libata.force kernel parameter
+Date: Thu,  3 Apr 2025 15:05:13 -0400
+Message-Id: <20250403190555.2677001-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
 References: <20250403190555.2677001-1-sashal@kernel.org>
@@ -66,47 +74,140 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+[ Upstream commit deca423213cb33feda15e261e7b5b992077a6a08 ]
 
-Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
-to fetch the next entry from the destination ring. This is incorrect because
-ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
-rings. This leads to invalid entry fetches, causing potential data corruption or
-crashes due to accessing incorrect memory locations. This happens because the
-source ring and destination ring have different handling mechanisms and using
-the wrong function results in incorrect pointer arithmetic and ring management.
+Commit ae1f3db006b7 ("ata: ahci: do not enable LPM on external ports")
+changed so that LPM is not enabled on external ports (hotplug-capable or
+eSATA ports).
 
-To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
-ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
-that the correct function is used for fetching entries from the destination
-ring, preventing invalid memory accesses.
+This is because hotplug and LPM are mutually exclusive, see 7.3.1 Hot Plug
+Removal Detection and Power Management Interaction in AHCI 1.3.1.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+This does require that firmware has set the appropate bits (HPCP or ESP)
+in PxCMD (which is a per port register in the AHCI controller).
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+If the firmware has failed to mark a port as hotplug-capable or eSATA in
+PxCMD, then there is currently not much a user can do.
+
+If LPM is enabled on the port, hotplug insertions and removals will not be
+detected on that port.
+
+In order to allow a user to fix up broken firmware, add 'external' to the
+libata.force kernel parameter.
+
+libata.force can be specified either on the kernel command line, or as a
+kernel module parameter.
+
+For more information, see Documentation/admin-guide/kernel-parameters.txt.
+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250130133544.219297-4-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../admin-guide/kernel-parameters.txt         |  2 +
+ drivers/ata/libata-core.c                     | 38 +++++++++++++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 5c6749bc4039d..1706ec27eb9c0 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2533,7 +2533,7 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
- 		dest_idx = 0;
- move_next:
- 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
--		ath12k_hal_srng_src_get_next_entry(ab, srng);
-+		ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		num_buffs_reaped++;
- 	}
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index d401577b5a6ac..607a8937f1754 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3028,6 +3028,8 @@
+ 			* max_sec_lba48: Set or clear transfer size limit to
+ 			  65535 sectors.
  
++			* external: Mark port as external (hotplug-capable).
++
+ 			* [no]lpm: Enable or disable link power management.
+ 
+ 			* [no]setxfer: Indicate if transfer speed mode setting
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index c085dd81ebe7f..52b78d22c831a 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -88,6 +88,7 @@ struct ata_force_param {
+ 	unsigned int	xfer_mask;
+ 	unsigned int	quirk_on;
+ 	unsigned int	quirk_off;
++	unsigned int	pflags_on;
+ 	u16		lflags_on;
+ 	u16		lflags_off;
+ };
+@@ -331,6 +332,35 @@ void ata_force_cbl(struct ata_port *ap)
+ 	}
+ }
+ 
++/**
++ *	ata_force_pflags - force port flags according to libata.force
++ *	@ap: ATA port of interest
++ *
++ *	Force port flags according to libata.force and whine about it.
++ *
++ *	LOCKING:
++ *	EH context.
++ */
++static void ata_force_pflags(struct ata_port *ap)
++{
++	int i;
++
++	for (i = ata_force_tbl_size - 1; i >= 0; i--) {
++		const struct ata_force_ent *fe = &ata_force_tbl[i];
++
++		if (fe->port != -1 && fe->port != ap->print_id)
++			continue;
++
++		/* let pflags stack */
++		if (fe->param.pflags_on) {
++			ap->pflags |= fe->param.pflags_on;
++			ata_port_notice(ap,
++					"FORCE: port flag 0x%x forced -> 0x%x\n",
++					fe->param.pflags_on, ap->pflags);
++		}
++	}
++}
++
+ /**
+  *	ata_force_link_limits - force link limits according to libata.force
+  *	@link: ATA link of interest
+@@ -486,6 +516,7 @@ static void ata_force_quirks(struct ata_device *dev)
+ 	}
+ }
+ #else
++static inline void ata_force_pflags(struct ata_port *ap) { }
+ static inline void ata_force_link_limits(struct ata_link *link) { }
+ static inline void ata_force_xfermask(struct ata_device *dev) { }
+ static inline void ata_force_quirks(struct ata_device *dev) { }
+@@ -5452,6 +5483,8 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
+ #endif
+ 	ata_sff_port_init(ap);
+ 
++	ata_force_pflags(ap);
++
+ 	return ap;
+ }
+ EXPORT_SYMBOL_GPL(ata_port_alloc);
+@@ -6264,6 +6297,9 @@ EXPORT_SYMBOL_GPL(ata_platform_remove_one);
+ 	{ "no" #name,	.lflags_on	= (flags) },	\
+ 	{ #name,	.lflags_off	= (flags) }
+ 
++#define force_pflag_on(name, flags)			\
++	{ #name,	.pflags_on	= (flags) }
++
+ #define force_quirk_on(name, flag)			\
+ 	{ #name,	.quirk_on	= (flag) }
+ 
+@@ -6323,6 +6359,8 @@ static const struct ata_force_param force_tbl[] __initconst = {
+ 	force_lflag_on(rstonce,		ATA_LFLAG_RST_ONCE),
+ 	force_lflag_onoff(dbdelay,	ATA_LFLAG_NO_DEBOUNCE_DELAY),
+ 
++	force_pflag_on(external,	ATA_PFLAG_EXTERNAL),
++
+ 	force_quirk_onoff(ncq,		ATA_QUIRK_NONCQ),
+ 	force_quirk_onoff(ncqtrim,	ATA_QUIRK_NO_NCQ_TRIM),
+ 	force_quirk_onoff(ncqati,	ATA_QUIRK_NO_NCQ_ON_ATI),
 -- 
 2.39.5
 
