@@ -1,71 +1,55 @@
-Return-Path: <stable+bounces-127987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B94A7ADDF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:15:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27827A7ADEA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7B5188CD65
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:11:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7E2217B273
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD016296BE8;
-	Thu,  3 Apr 2025 19:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF172296BF7;
+	Thu,  3 Apr 2025 19:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu7zNH0W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GId0DBmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9252A296BE5;
-	Thu,  3 Apr 2025 19:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93BE296BF1;
+	Thu,  3 Apr 2025 19:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707687; cv=none; b=MfaQt+YzwVx+G5cJ1qWQi61x70EXMeCaoONYk1z80DN0+GTxmXPJ448a3dLfqKFkON8HOI9fiiaJDWqKNYPlPh8blKm0ZSDbtHtYRU1NtYxIy9B8zjxoRbd4XCZjrpNnOHdFJHM+XDfCeaStFIfMIVrCrQfBs1OS9qgzv3A/44A=
+	t=1743707688; cv=none; b=rd2f8b5n4SB8A14hkfJ1pxIld2jYgoc/qkBcw42ZfH7Wd45Id6ikESp/oF8qca54pRMxE5if7V2PqsCaBE8lwyB0bYP6IG1wIIT0xR9EZ/BEqIKTfdCh0ifsTs3DSufX167CGP6DWhxpDJDddSqBxkT2s9faESh30bcSTM9Pok0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707687; c=relaxed/simple;
-	bh=rkKuz933FEHxdUL/5+1WUTOu7CoJgDLgYSN+J1Ym2w4=;
+	s=arc-20240116; t=1743707688; c=relaxed/simple;
+	bh=ZNwexitviy7NlhVq3AdcoS8b2uVehiHwlPIKoJZAgEc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MNAnjVpiJZukL/HqJjdz+JvdnYJirdOthtyFgdVAvN6JecOwMsfrBvMV7an1xOpGUvNVLMLnzCt/+/S0SLVpHPc6mZ+Yp9HicjUb/ISA3gQYnY2fnSy1TkvU9DSZ74MgNYJD6J/LYvMAV80vGTaxTLRp1Sq+JQNKMWPWeF6hXeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu7zNH0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68715C4CEE3;
-	Thu,  3 Apr 2025 19:14:45 +0000 (UTC)
+	 MIME-Version; b=MlPfFnCdhbiJaz8PIDn+a5uqsy0JWsfA0xGONayHs7k1YHFjxeYR2/efi+QH+dfXrTg7OcE1WZu1jEqRKQ3pOFmRoTKZnf07FRr5ax4/bjGg+M5g9fZteUUDKlRSy5BuHjNRzS2xiix3pCQAvuSbGRUA1vmoX8OYzPzEmeI5Jkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GId0DBmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80DAC4CEEA;
+	Thu,  3 Apr 2025 19:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707687;
-	bh=rkKuz933FEHxdUL/5+1WUTOu7CoJgDLgYSN+J1Ym2w4=;
+	s=k20201202; t=1743707688;
+	bh=ZNwexitviy7NlhVq3AdcoS8b2uVehiHwlPIKoJZAgEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hu7zNH0Wn9OexD7i/nYjV3zzSLFao2uK93T32EYgVIacGHy6ZwPj+IKBW59TLh2m8
-	 QlRUUhzDy+bTLas4MY0Ev05vSS3QpUYASQpQSEoUtVvmsHrlmD2htMAT+1nJc/437s
-	 6HgUQKe+gbyK8db7utgQfRAvdWTk3tMgP1DUYYRy7A6T4wapd9FO7kbIYJ5TUSBYZl
-	 0lzeaNlSW+MWrSlsmfXbEVlLWK837bindwUlhNXLF0yhar3Hz66h4ZBX26Rac4YC86
-	 kgYm4IeXpYHxVZDuGcR1GDQyBiCG5mokyFsT023j7VRmTjI05oj5id6GHmdeANzC4m
-	 nyhufohAGEX/g==
+	b=GId0DBmwFHN6Fy8B/4Ug1vwu9riO/fqxik0xTc95c3NsBkdy7/A8fpnl7aO4C1DaG
+	 fPfq0NqoLPF8o7XTY39qQlcYqiB3BVrcttu7zWgTrsuYwLPrUJBJ2seOEI+YOaI7uA
+	 WEeIYoUK/eznk3ZBAQxwSyg+Vg/621FR71xCtApcpGUJ42oBfh0lv/W3Nijnf2JhTl
+	 yLlRFW2e2sB6CgAqiRZql2zdJl7N4cADc3reFJESfzfph2iwnAOnGCajsZZ1l05Hpv
+	 JnMWMtzZbcFkNm/sx/+uh6+AzOpoYf4b5t46J/UfZ6mm/0itB6/xKXr9DH+G8ok7pC
+	 gg9KAh0xGtlhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryan Seto <ryanseto@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	austin.zheng@amd.com,
-	jun.lei@amd.com,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	siqueira@igalia.com,
-	alex.hung@amd.com,
-	colin.i.king@gmail.com,
-	aurabindo.pillai@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 32/44] drm/amd/display: Prevent VStartup Overflow
-Date: Thu,  3 Apr 2025 15:13:01 -0400
-Message-Id: <20250403191313.2679091-32-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 33/44] PCI: Enable Configuration RRS SV early
+Date: Thu,  3 Apr 2025 15:13:02 -0400
+Message-Id: <20250403191313.2679091-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -80,50 +64,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Ryan Seto <ryanseto@amd.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 29c1c20496a7a9bafe2bc2f833d69aa52e0f2c2d ]
+[ Upstream commit 3f8c4959fc18e477801386a625e726c59f52a2c4 ]
 
-[Why]
-For some VR headsets with large blanks, it's possible
-to overflow the OTG_VSTARTUP_PARAM:VSTARTUP_START
-register. This can lead to incorrect DML calculations
-and underflow downstream.
+Following a reset, a Function may respond to Config Requests with Request
+Retry Status (RRS) Completion Status to indicate that it is temporarily
+unable to process the Request, but will be able to process the Request in
+the future (PCIe r6.0, sec 2.3.1).
 
-[How]
-Min the calcualted max_vstartup_lines with the max
-value of the register.
+If the Configuration RRS Software Visibility feature is enabled and a Root
+Complex receives RRS for a config read of the Vendor ID, the Root Complex
+completes the Request to the host by returning PCI_VENDOR_ID_PCI_SIG,
+0x0001 (sec 2.3.2).
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Ryan Seto <ryanseto@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The Config RRS SV feature applies only to Root Ports and is not directly
+related to pci_scan_bridge_extend().  Move the RRS SV enable to
+set_pcie_port_type() where we handle other PCIe-specific configuration.
+
+Link: https://lore.kernel.org/r/20250303210217.199504-1-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c  | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/probe.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index 8ed49a9df3780..c1ff869512f27 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -15,6 +15,7 @@
- //#define DML_MODE_SUPPORT_USE_DPM_DRAM_BW
- //#define DML_GLOBAL_PREFETCH_CHECK
- #define ALLOW_SDPIF_RATE_LIMIT_PRE_CSTATE
-+#define DML_MAX_VSTARTUP_START 1023
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 246744d8d268a..1ca47ef892c6c 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1374,8 +1374,6 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+ 	pci_write_config_word(dev, PCI_BRIDGE_CONTROL,
+ 			      bctl & ~PCI_BRIDGE_CTL_MASTER_ABORT);
  
- const char *dml2_core_internal_bw_type_str(enum dml2_core_internal_bw_type bw_type)
- {
-@@ -3726,6 +3727,7 @@ static unsigned int CalculateMaxVStartup(
- 	dml2_printf("DML::%s: vblank_avail = %u\n", __func__, vblank_avail);
- 	dml2_printf("DML::%s: max_vstartup_lines = %u\n", __func__, max_vstartup_lines);
- #endif
-+	max_vstartup_lines = (unsigned int)math_min2(max_vstartup_lines, DML_MAX_VSTARTUP_START);
- 	return max_vstartup_lines;
- }
+-	pci_enable_rrs_sv(dev);
+-
+ 	if ((secondary || subordinate) && !pcibios_assign_all_busses() &&
+ 	    !is_cardbus && !broken) {
+ 		unsigned int cmax, buses;
+@@ -1616,6 +1614,11 @@ void set_pcie_port_type(struct pci_dev *pdev)
+ 	pdev->pcie_cap = pos;
+ 	pci_read_config_word(pdev, pos + PCI_EXP_FLAGS, &reg16);
+ 	pdev->pcie_flags_reg = reg16;
++
++	type = pci_pcie_type(pdev);
++	if (type == PCI_EXP_TYPE_ROOT_PORT)
++		pci_enable_rrs_sv(pdev);
++
+ 	pci_read_config_dword(pdev, pos + PCI_EXP_DEVCAP, &pdev->devcap);
+ 	pdev->pcie_mpss = FIELD_GET(PCI_EXP_DEVCAP_PAYLOAD, pdev->devcap);
  
+@@ -1632,7 +1635,6 @@ void set_pcie_port_type(struct pci_dev *pdev)
+ 	 * correctly so detect impossible configurations here and correct
+ 	 * the port type accordingly.
+ 	 */
+-	type = pci_pcie_type(pdev);
+ 	if (type == PCI_EXP_TYPE_DOWNSTREAM) {
+ 		/*
+ 		 * If pdev claims to be downstream port but the parent
 -- 
 2.39.5
 
