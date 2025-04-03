@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-127608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B5FA7A6AA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D03A7A668
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33913BAB39
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0985B7A4ECF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D546C25179D;
-	Thu,  3 Apr 2025 15:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B684250C09;
+	Thu,  3 Apr 2025 15:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yalNQVaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwJUeOLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C14250BE9;
-	Thu,  3 Apr 2025 15:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CD024DFE8;
+	Thu,  3 Apr 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693856; cv=none; b=I32eZJsRP4Cmq9+uwm8731CHCmLyudeMYOTfpGo6KK+DMsLQecre8QpN0JhtTHO8pGlmpa5nDjzoJWeV6EwyHnHyqFrRL5CAHCTDdjpTcZ+v1ZQLmOS3khUWJus3hPouuyNsELsrG60eOkibhCTsYaKBoS3mVuostdGM+AIDA/I=
+	t=1743693837; cv=none; b=TiOJdpthrsIJDDEhjE5cUdu2pd4OZphpB8LcL43WTmTM/XpteeYG43CEEAkyBglvOROfRUt04Ehq79Y8QHo21vnO7N0drVB40vl/SyGkE3dbsitYdbmRYG9ZWnmZGGE7kyyrPksZZHNPTQ19iWNfaJk8Puzrssob3Ma+3wYMI2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693856; c=relaxed/simple;
-	bh=nv3kfUFhT1kO0v4xKSEQh25Kz9+RUkrFBVH/taQyRXE=;
+	s=arc-20240116; t=1743693837; c=relaxed/simple;
+	bh=JSgC1vWwNoATHuYemnQaXipqO3Tq9GOKfKflIxuLuHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+nCyQzRuOmYoDdW9TVspKsPLDWBIoGT6Hf9DQEX17f72lUMax1lK8KOwIuaRGaDfPsQk1FaSsZPOj65EHvbEcjFgTGHj7K5AW7TNSNLVqZKSEKCcZJ00th8eBWKqnPuSyE6v7a42RtMYAhl89vXRTulUYFp9M1MJ7Y8iDuDrOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yalNQVaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E7AC4CEE3;
-	Thu,  3 Apr 2025 15:24:15 +0000 (UTC)
+	 MIME-Version; b=eJHmkwVdia5aYt0DvvG9l2MWjGXJzKFH+f6SSmNpJeR7/Dm2PxpWIr6eDbGibAK92OFqF6FxgzKabt2kpzYBDmQuhRq9tWGyjRRXzVX3//ZP7FPZDMszuKndGdEZSEKL73KwfA6JOh8qhIl8nBj/97UtgN2JyYo3TQCnarz4qPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwJUeOLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459DCC4CEE3;
+	Thu,  3 Apr 2025 15:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693856;
-	bh=nv3kfUFhT1kO0v4xKSEQh25Kz9+RUkrFBVH/taQyRXE=;
+	s=korg; t=1743693836;
+	bh=JSgC1vWwNoATHuYemnQaXipqO3Tq9GOKfKflIxuLuHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yalNQVaSyAxwNVHJeUjUNG4Z53OxxhR4aD87RBCkIBUi3zKAeyZJxW4yGxxOc/gSI
-	 ZjmK+mvU5nF9wj1n6/IBIJDbQ0ShnT3RZ1FJAD79xdTzrkVwWSMintsRXdaUqi0g3S
-	 vmgQH90dYrqJrJaLvpvoxlj1PN9xpxpFAbOna/0Q=
+	b=AwJUeOLKFl8bSsrU86ZVr0yoI05dIG8ylaEh9h94QexPOXXLiiGIchIXweNDtgIfx
+	 LnU54yARLBZw8BNqKJwgFUwege4TBKzwz8Xu847EGMEk4WQdyXGvogvtpl28sjahal
+	 R0iL9rTxr9bEQcl2E8TmkCJhhCI9B/B3UzpEaPhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 01/22] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
+	Andres Traumann <andres.traumann.01@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.14 07/21] ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
 Date: Thu,  3 Apr 2025 16:20:11 +0100
-Message-ID: <20250403151622.092774770@linuxfoundation.org>
+Message-ID: <20250403151621.348600275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+From: Andres Traumann <andres.traumann.01@gmail.com>
 
-commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
+commit be8cd366beb80c709adbc7688ee72750f5aee3ff upstream.
 
-Many Poly/Plantronics headset families name the feature, input,
-and/or output units in a such a way to produce control names
-that are not recognized by user space. As such, the volume and
-mute events do not get routed to the headset's audio controls.
+This patch applies the ALC294 bass speaker fixup (ALC294_FIXUP_BASS_SPEAKER_15),
+previously introduced in commit a7df7f909cec ("ALSA: hda: improve bass
+speaker support for ASUS Zenbook UM5606WA"), to the ASUS Zenbook UM5606KA.
+This hardware configuration matches ASUS Zenbook UM5606WA, where DAC NID
+0x06 was removed from the bass speaker (NID 0x15), routing both speaker
+pins to DAC NID 0x03.
 
-As an example from a product family:
+This resolves the bass speaker routing issue, ensuring correct audio
+output on ASUS UM5606KA.
 
-The microphone mute control is named
-Headset Microphone Capture Switch
-and the headset volume control is named
-Headset Earphone Playback Volume
-
-The quirk fixes these to become
-Headset Capture Switch
-Headset Playback Volume
-
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Andres Traumann <andres.traumann.01@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250325102535.8172-1-andres.traumann.01@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -4156,6 +4156,52 @@ static void snd_dragonfly_quirk_db_scale
- 	}
- }
- 
-+/*
-+ * Some Plantronics headsets have control names that don't meet ALSA naming
-+ * standards. This function fixes nonstandard source names. By the time
-+ * this function is called the control name should look like one of these:
-+ * "source names Playback Volume"
-+ * "source names Playback Switch"
-+ * "source names Capture Volume"
-+ * "source names Capture Switch"
-+ * If any of the trigger words are found in the name then the name will
-+ * be changed to:
-+ * "Headset Playback Volume"
-+ * "Headset Playback Switch"
-+ * "Headset Capture Volume"
-+ * "Headset Capture Switch"
-+ * depending on the current suffix.
-+ */
-+static void snd_fix_plt_name(struct snd_usb_audio *chip,
-+			     struct snd_ctl_elem_id *id)
-+{
-+	/* no variant of "Sidetone" should be added to this list */
-+	static const char * const trigger[] = {
-+		"Earphone", "Microphone", "Receive", "Transmit"
-+	};
-+	static const char * const suffix[] = {
-+		" Playback Volume", " Playback Switch",
-+		" Capture Volume", " Capture Switch"
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(trigger); i++)
-+		if (strstr(id->name, trigger[i]))
-+			goto triggered;
-+	usb_audio_dbg(chip, "no change in %s\n", id->name);
-+	return;
-+
-+triggered:
-+	for (i = 0; i < ARRAY_SIZE(suffix); i++)
-+		if (strstr(id->name, suffix[i])) {
-+			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
-+			snprintf(id->name, sizeof(id->name), "Headset%s",
-+				 suffix[i]);
-+			return;
-+		}
-+	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
-+}
-+
- void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 				  struct usb_mixer_elem_info *cval, int unitid,
- 				  struct snd_kcontrol *kctl)
-@@ -4173,5 +4219,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			cval->min_mute = 1;
- 		break;
- 	}
-+
-+	/* ALSA-ify some Plantronics headset control names */
-+	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
-+	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
-+		snd_fix_plt_name(mixer->chip, &kctl->id);
- }
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10784,6 +10784,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
+ 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
++	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
+ 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
