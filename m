@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-127620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD020A7A6B7
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB24A7A69F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75E4F3B3B1A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CFE3BA20A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03920250C08;
-	Thu,  3 Apr 2025 15:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696EE25178D;
+	Thu,  3 Apr 2025 15:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0tcz8ID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+U2B3TT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40A52505DD;
-	Thu,  3 Apr 2025 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170F6251788;
+	Thu,  3 Apr 2025 15:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693887; cv=none; b=lr/DXlt88FvpMuo+WmsySEojXeG72BeaJY/sxM3NtG3qQ8PtLoFGF/M4e04y+gUjcqiROixLWZ8Za4byfrflrkU0wa1gNcOmGVR03nucT2UMO2cQrB2JtF+m/B4qAZVa4PL0/GDZ37i+2MBtE/t41xfKtcMtQ8TMmtsHSmfO3Cc=
+	t=1743693842; cv=none; b=LOPYSKbZt+pazxsP7OS0dQyJm1s2mEbhv5xWUZq/K3/Sxb9UV4oFhjLJkicFXboLu00H3vGO9kJh3XRSlD3o54lub5B5hkPnJKYhNbNmdaCtZuRk7Rlmmhf5VizGeLke+QDUv3z4SEUdloKj5yX0pZRSDlAxeg2vL35PWflfLjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693887; c=relaxed/simple;
-	bh=Nj2hi0Md5wlC3W4QgHHBXeU+0c7WaPpQH5Y9lMPdymU=;
+	s=arc-20240116; t=1743693842; c=relaxed/simple;
+	bh=r1dA5lSIgOOWL8yLre+/l4mp5MCVkqe7K+DsAjdyKm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UICz5JStkjhjhVv+xmoP4IdJHmjqqYQfAlTw+eOS4G1AmJkOfK2EDnCDoOHW8g/ay1s7JN8Jq0SD470AphTVAIg0ogH0xCE+bt+ScLa11L3IVIYzUEj1EFyJPHM8/pq5cb440ZfWlCZ6y/YqPIzWyUbdvddrjyIx2EqE9tB21TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0tcz8ID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B604C4CEE3;
-	Thu,  3 Apr 2025 15:24:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jQ99Qpx11DxUzM4OoM3m+6DH7HIuFWXq6ezm/Vt6XfYLZ4qZ+TcU4KPrroAfwxS8csTNf4SmrfBVhM4JCQEWIurcTjB4JYJVnCkvTYv62i3G+KMlSZ2Yb8ulfmKxih15jmLgZwXKSOdwBavsw7o6hNIzO/DOaynnTL3GZI3g96Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+U2B3TT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44917C4CEE3;
+	Thu,  3 Apr 2025 15:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693887;
-	bh=Nj2hi0Md5wlC3W4QgHHBXeU+0c7WaPpQH5Y9lMPdymU=;
+	s=korg; t=1743693841;
+	bh=r1dA5lSIgOOWL8yLre+/l4mp5MCVkqe7K+DsAjdyKm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0tcz8IDbZjRwE49+ENV2S1dO2NAb5F0nAR4w1TU6r0vs1B8g+PiLxgVwgtGqB9Va
-	 tXXlRadeaZGQBjAlYoVncs7GxsjLa5jBppzhlCtBnSX247cKJ8nsEZkBHf5slRYtgF
-	 ZNhOlZA1TyVUluArEXa2ikvnbdT9BemV0uwNPQDg=
+	b=L+U2B3TTRh1W2YnWUeHle/qNTuYBxG3S84EBYGcRdPVu60LmB5UOL1jiGMTGnUuVh
+	 TF9UbxsZ1RdaotS6i8GObw+5jtq7Coni1aaL/wkXTUEU9JuTi68RY6vbND5ZY5qGeU
+	 Ez+f/EjF4yVSAkUt4cUK2zu+LFa7tP02CcxKyLsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minjoong Kim <pwn9uin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 03/22] atm: Fix NULL pointer dereference
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.14 09/21] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
 Date: Thu,  3 Apr 2025 16:20:13 +0100
-Message-ID: <20250403151622.145298718@linuxfoundation.org>
+Message-ID: <20250403151621.405343357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,132 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjoong Kim <pwn9uin@gmail.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-commit bf2986fcf82a449441f9ee4335df19be19e83970 upstream.
+commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
 
-When MPOA_cache_impos_rcvd() receives the msg, it can trigger
-Null Pointer Dereference Vulnerability if both entry and
-holding_time are NULL. Because there is only for the situation
-where entry is NULL and holding_time exists, it can be passed
-when both entry and holding_time are NULL. If these are NULL,
-the entry will be passd to eg_cache_put() as parameter and
-it is referenced by entry->use code in it.
+Hardware initialize of the timer counter channel does not occur on probe
+thus leaving the Count in an undefined state until the first
+function_write() callback is executed. Fix this by performing the proper
+hardware initialization during probe.
 
-kasan log:
-
-[    3.316691] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006:I
-[    3.317568] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[    3.318188] CPU: 3 UID: 0 PID: 79 Comm: ex Not tainted 6.14.0-rc2 #102
-[    3.318601] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[    3.319298] RIP: 0010:eg_cache_remove_entry+0xa5/0x470
-[    3.319677] Code: c1 f7 6e fd 48 c7 c7 00 7e 38 b2 e8 95 64 54 fd 48 c7 c7 40 7e 38 b2 48 89 ee e80
-[    3.321220] RSP: 0018:ffff88800583f8a8 EFLAGS: 00010006
-[    3.321596] RAX: 0000000000000006 RBX: ffff888005989000 RCX: ffffffffaecc2d8e
-[    3.322112] RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000030
-[    3.322643] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6558b88
-[    3.323181] R10: 0000000000000003 R11: 203a207972746e65 R12: 1ffff11000b07f15
-[    3.323707] R13: dffffc0000000000 R14: ffff888005989000 R15: ffff888005989068
-[    3.324185] FS:  000000001b6313c0(0000) GS:ffff88806d380000(0000) knlGS:0000000000000000
-[    3.325042] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    3.325545] CR2: 00000000004b4b40 CR3: 000000000248e000 CR4: 00000000000006f0
-[    3.326430] Call Trace:
-[    3.326725]  <TASK>
-[    3.326927]  ? die_addr+0x3c/0xa0
-[    3.327330]  ? exc_general_protection+0x161/0x2a0
-[    3.327662]  ? asm_exc_general_protection+0x26/0x30
-[    3.328214]  ? vprintk_emit+0x15e/0x420
-[    3.328543]  ? eg_cache_remove_entry+0xa5/0x470
-[    3.328910]  ? eg_cache_remove_entry+0x9a/0x470
-[    3.329294]  ? __pfx_eg_cache_remove_entry+0x10/0x10
-[    3.329664]  ? console_unlock+0x107/0x1d0
-[    3.329946]  ? __pfx_console_unlock+0x10/0x10
-[    3.330283]  ? do_syscall_64+0xa6/0x1a0
-[    3.330584]  ? entry_SYSCALL_64_after_hwframe+0x47/0x7f
-[    3.331090]  ? __pfx_prb_read_valid+0x10/0x10
-[    3.331395]  ? down_trylock+0x52/0x80
-[    3.331703]  ? vprintk_emit+0x15e/0x420
-[    3.331986]  ? __pfx_vprintk_emit+0x10/0x10
-[    3.332279]  ? down_trylock+0x52/0x80
-[    3.332527]  ? _printk+0xbf/0x100
-[    3.332762]  ? __pfx__printk+0x10/0x10
-[    3.333007]  ? _raw_write_lock_irq+0x81/0xe0
-[    3.333284]  ? __pfx__raw_write_lock_irq+0x10/0x10
-[    3.333614]  msg_from_mpoad+0x1185/0x2750
-[    3.333893]  ? __build_skb_around+0x27b/0x3a0
-[    3.334183]  ? __pfx_msg_from_mpoad+0x10/0x10
-[    3.334501]  ? __alloc_skb+0x1c0/0x310
-[    3.334809]  ? __pfx___alloc_skb+0x10/0x10
-[    3.335283]  ? _raw_spin_lock+0xe0/0xe0
-[    3.335632]  ? finish_wait+0x8d/0x1e0
-[    3.335975]  vcc_sendmsg+0x684/0xba0
-[    3.336250]  ? __pfx_vcc_sendmsg+0x10/0x10
-[    3.336587]  ? __pfx_autoremove_wake_function+0x10/0x10
-[    3.337056]  ? fdget+0x176/0x3e0
-[    3.337348]  __sys_sendto+0x4a2/0x510
-[    3.337663]  ? __pfx___sys_sendto+0x10/0x10
-[    3.337969]  ? ioctl_has_perm.constprop.0.isra.0+0x284/0x400
-[    3.338364]  ? sock_ioctl+0x1bb/0x5a0
-[    3.338653]  ? __rseq_handle_notify_resume+0x825/0xd20
-[    3.339017]  ? __pfx_sock_ioctl+0x10/0x10
-[    3.339316]  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-[    3.339727]  ? selinux_file_ioctl+0xa4/0x260
-[    3.340166]  __x64_sys_sendto+0xe0/0x1c0
-[    3.340526]  ? syscall_exit_to_user_mode+0x123/0x140
-[    3.340898]  do_syscall_64+0xa6/0x1a0
-[    3.341170]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[    3.341533] RIP: 0033:0x44a380
-[    3.341757] Code: 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c00
-[    3.343078] RSP: 002b:00007ffc1d404098 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[    3.343631] RAX: ffffffffffffffda RBX: 00007ffc1d404458 RCX: 000000000044a380
-[    3.344306] RDX: 000000000000019c RSI: 00007ffc1d4040b0 RDI: 0000000000000003
-[    3.344833] RBP: 00007ffc1d404260 R08: 0000000000000000 R09: 0000000000000000
-[    3.345381] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-[    3.346015] R13: 00007ffc1d404448 R14: 00000000004c17d0 R15: 0000000000000001
-[    3.346503]  </TASK>
-[    3.346679] Modules linked in:
-[    3.346956] ---[ end trace 0000000000000000 ]---
-[    3.347315] RIP: 0010:eg_cache_remove_entry+0xa5/0x470
-[    3.347737] Code: c1 f7 6e fd 48 c7 c7 00 7e 38 b2 e8 95 64 54 fd 48 c7 c7 40 7e 38 b2 48 89 ee e80
-[    3.349157] RSP: 0018:ffff88800583f8a8 EFLAGS: 00010006
-[    3.349517] RAX: 0000000000000006 RBX: ffff888005989000 RCX: ffffffffaecc2d8e
-[    3.350103] RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000030
-[    3.350610] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6558b88
-[    3.351246] R10: 0000000000000003 R11: 203a207972746e65 R12: 1ffff11000b07f15
-[    3.351785] R13: dffffc0000000000 R14: ffff888005989000 R15: ffff888005989068
-[    3.352404] FS:  000000001b6313c0(0000) GS:ffff88806d380000(0000) knlGS:0000000000000000
-[    3.353099] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    3.353544] CR2: 00000000004b4b40 CR3: 000000000248e000 CR4: 00000000000006f0
-[    3.354072] note: ex[79] exited with irqs disabled
-[    3.354458] note: ex[79] exited with preempt_count 1
-
-Signed-off-by: Minjoong Kim <pwn9uin@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250322105200.14981-1-pwn9uin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Reported-by: Csókás Bence <csokas.bence@prolan.hu>
+Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
+Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/mpc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -1314,6 +1314,8 @@ static void MPOA_cache_impos_rcvd(struct
- 	holding_time = msg->content.eg_info.holding_time;
- 	dprintk("(%s) entry = %p, holding_time = %u\n",
- 		mpc->dev->name, entry, holding_time);
-+	if (entry == NULL && !holding_time)
-+		return;
- 	if (entry == NULL && holding_time) {
- 		entry = mpc->eg_ops->add_entry(msg, mpc);
- 		mpc->eg_ops->put(entry);
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -368,6 +368,25 @@ static int mchp_tc_probe(struct platform
+ 			channel);
+ 	}
+ 
++	/* Disable Quadrature Decoder and position measure */
++	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
++	if (ret)
++		return ret;
++
++	/* Setup the period capture mode */
++	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
++				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
++				 ATMEL_TC_TCCLKS,
++				 ATMEL_TC_CMR_MASK);
++	if (ret)
++		return ret;
++
++	/* Enable clock and trigger counter */
++	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
++			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
++	if (ret)
++		return ret;
++
+ 	priv->tc_cfg = tcb_config;
+ 	priv->regmap = regmap;
+ 	counter->name = dev_name(&pdev->dev);
 
 
 
