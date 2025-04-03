@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-128080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9301DA7AEFB
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC930A7AEFA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802141886BD4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307FF1889941
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A5622B587;
-	Thu,  3 Apr 2025 19:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6C022B59C;
+	Thu,  3 Apr 2025 19:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALDpoIN2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B0ugh2/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9636822AE7B;
-	Thu,  3 Apr 2025 19:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E6122ACF2;
+	Thu,  3 Apr 2025 19:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707925; cv=none; b=ENrPB/Gijf+jSHyv/KEoLCiVkf7rWzuyMetk+FHpVeEO2q46UGiDgsTAkQ5oamlG/kXT2hi44kUEsUli/fUU8leCd7Kalx++nhhQYYlb9XYtZ1Nq7kLzsnJ/3GryvtauHa82NzDpO1qcvqm2CAdN7EG3ApdOdCSLuupOH+rVyJQ=
+	t=1743707926; cv=none; b=C2Itbhr0I5+Hh86D5GVP5P9unHwmhlCT6SQWKTzV/b2sXzAi89rS50fKazMpKXaLjlQd3Tr5YBCU2dBhDn5/XOPTPidAwx8tV1zmbPhkk0oLY+F+C+4tAbAhYH8efQSUCsyQ1aZ0qDa9vvhuOjdiwaCzMKeYAWrewj9QFpeZJLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707925; c=relaxed/simple;
-	bh=mAR3N1DA9p1RenB4FLtVcyLd7Odi/j8YsFwqNJ8Zgfg=;
+	s=arc-20240116; t=1743707926; c=relaxed/simple;
+	bh=M5lvlBDnklOV6b79U716TEv+nYlJaQwiJHtLbD2K4mo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cUuzQGue2DprUsg39IvLpzQ0z0wB/yJACR8tAFhAfBUc1KqABIBkwVHxCPJAfLJCr9YyPoRlQmCsQKpsU5S2kLSpvuZGVVdRwoLOzPBMwqkdB9xwDHCgWAc5PVAL8szfpWKg7c+zvKhms5PRyHDc3cDy5P3OfeaN585HqSDwAq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALDpoIN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A457CC4CEE3;
-	Thu,  3 Apr 2025 19:18:42 +0000 (UTC)
+	 MIME-Version; b=NsQGJeT1+Sx8f/HNeiagHtxGirGPxN72K5uFTmhXvv2J3GoAnM9olAvhP9ydToeD4RDe9VW+jpMYQpgHpyyWvLEQDNiNDbfwwuCSzUY5d0lgoZnai6oS7+1DZgky1Q6FXVShtJBo+9unkpGaMJ1UF4KzG9DIW+aW4E7IpljUBQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0ugh2/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95819C4AF0F;
+	Thu,  3 Apr 2025 19:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707924;
-	bh=mAR3N1DA9p1RenB4FLtVcyLd7Odi/j8YsFwqNJ8Zgfg=;
+	s=k20201202; t=1743707925;
+	bh=M5lvlBDnklOV6b79U716TEv+nYlJaQwiJHtLbD2K4mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALDpoIN2GXmO8UuBXdmMDS6UiIuzS1Yyh9tuIk/mE3RW1BrmD1yhyDD/JReaKLd9j
-	 LMSxGa4EsqTJxWz9RP6kPMtOILMJ5RtVwnPzUuTKelFRgMStL52wduHl4BUkeispMN
-	 cPJJfHH2cZHAqvsZvjvn0VnNN8cmmeiC2jx0JO5Xe3sDgxtPfjm94u4x1BiaFEQ8go
-	 82B0CmZno7Mj2lk+CYNn+sraMYYSAGnctkBS0To3cTazQxFxuWefCRNkx6jjeuLIPW
-	 2tIiTfO8/ljicD/CmGa0gmUeGK4sAuyivAyM4HJcwKPdkIT7boVr/OoneLey0suS+H
-	 AB4uiaWNfLEwg==
+	b=B0ugh2/YyYxCzf/5jShxHLAGsE7DoJD/jM9cUnDEELU+Ji2GUSL6ok98+RQf8mw5i
+	 5MnFZ18+NR/QpsciaCIb6ZBXvKNTkW8XsvCZLKOUM2fc3BBtDx688RaxgQ5dQTjizr
+	 qwppGUX6NoSqeJ8uulfT/uzkCVQgS93xS3axu4lt3dKMnC1tovFx38ZVs35m+52lyf
+	 AvQPkVDOu3Uik//uJih3JNYTLQCc6eAH5MBDJxcuwBt1NF0Un2tjAdyoFjVyT1/OHB
+	 BJzf0KWJAQkDGedJvAdb7M8H1u44TBIyIB0TNSi61l0tSxitowcnlWpxyiQ3ymI2QX
+	 Qigj8sWbZcmRw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 09/23] drm/bridge: panel: forbid initializing a panel with unknown connector type
-Date: Thu,  3 Apr 2025 15:18:02 -0400
-Message-Id: <20250403191816.2681439-9-sashal@kernel.org>
+	rafael@kernel.org,
+	dakr@kernel.org
+Subject: [PATCH AUTOSEL 6.6 10/23] drivers: base: devres: Allow to release group on device release
+Date: Thu,  3 Apr 2025 15:18:03 -0400
+Message-Id: <20250403191816.2681439-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191816.2681439-1-sashal@kernel.org>
 References: <20250403191816.2681439-1-sashal@kernel.org>
@@ -72,54 +67,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
+[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
 
-Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
-drm_panel_bridge_add_typed() and derivatives are deprecated for this.
+When releasing a device, if the release action causes a group to be
+released, a warning is emitted because it can't find the group. This
+happens because devres_release_all() moves the entire list to a todo
+list and also move the group markers. Considering r* normal resource
+nodes and g1 a group resource node:
 
-drm_panel_init() won't prevent initializing a panel with a
-DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
-users doing it, so take this as an opportinuty to document a valid
-connector type must be passed.
+		    g1 -----------.
+		    v		  v
+	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
 
-Returning an error if this rule is violated is not possible because
-drm_panel_init() is a void function. Add at least a warning to make any
-violations noticeable, especially to non-upstream drivers.
+After devres_release_all(), dev->devres_head becomes empty and the todo
+list it iterates on becomes:
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
+			       g1
+			       v
+	r1 -> r2 -> r3-> r4 -> g1[0]
+
+When a call to component_del() is made and takes down the aggregate
+device, a warning like this happen:
+
+	RIP: 0010:devres_release_group+0x362/0x530
+	...
+	Call Trace:
+	 <TASK>
+	 component_unbind+0x156/0x380
+	 component_unbind_all+0x1d0/0x270
+	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
+	 take_down_aggregate_device+0xc1/0x160
+	 component_del+0x1c6/0x3e0
+	 intel_hdcp_component_fini+0xf1/0x170 [xe]
+	 xe_display_fini+0x1e/0x40 [xe]
+
+Because the devres group corresponding to the hdcp component cannot be
+found. Just ignore this corner case: if the dev->devres_head is empty
+and the caller is trying to remove a group, it's likely in the process
+of device cleanup so just ignore it instead of warning.
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/base/devres.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-index cfbe020de54e0..98df4788d096f 100644
---- a/drivers/gpu/drm/drm_panel.c
-+++ b/drivers/gpu/drm/drm_panel.c
-@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
-  * @dev: parent device of the panel
-  * @funcs: panel operations
-  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
-- *	the panel interface
-+ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
-  *
-  * Initialize the panel structure for subsequent registration with
-  * drm_panel_add().
-@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
- void drm_panel_init(struct drm_panel *panel, struct device *dev,
- 		    const struct drm_panel_funcs *funcs, int connector_type)
- {
-+	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
-+		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
-+
- 	INIT_LIST_HEAD(&panel->list);
- 	INIT_LIST_HEAD(&panel->followers);
- 	mutex_init(&panel->follower_lock);
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index e9b0d94aeabd9..8a0f000221271 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -687,6 +687,13 @@ int devres_release_group(struct device *dev, void *id)
+ 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+ 
+ 		release_nodes(dev, &todo);
++	} else if (list_empty(&dev->devres_head)) {
++		/*
++		 * dev is probably dying via devres_release_all(): groups
++		 * have already been removed and are on the process of
++		 * being released - don't touch and don't warn.
++		 */
++		spin_unlock_irqrestore(&dev->devres_lock, flags);
+ 	} else {
+ 		WARN_ON(1);
+ 		spin_unlock_irqrestore(&dev->devres_lock, flags);
 -- 
 2.39.5
 
