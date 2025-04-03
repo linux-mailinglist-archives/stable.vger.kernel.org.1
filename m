@@ -1,107 +1,228 @@
-Return-Path: <stable+bounces-127489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B767DA79DC6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 10:15:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42658A79E60
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 10:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B8667A6154
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 08:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F15D7173D6A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 08:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F41D224B15;
-	Thu,  3 Apr 2025 08:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5778230BF1;
+	Thu,  3 Apr 2025 08:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFNiwOUs"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rbexkvlx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2058.outbound.protection.outlook.com [40.107.100.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047921991C1;
-	Thu,  3 Apr 2025 08:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743668107; cv=none; b=s9io7dR4m7DXSe3kVWpH/vyXfV9l0QHfk472XfEe4CX7Yff7ve2cowsLekVmmJLICbnfsf4TjlkAOF/jTa4F8dCzDc1MOlpOWcDJJZxO4wLwPo778i/T2mx3w0DAPUUUhmCSVSoHN3qhgOlHAxtFRRDJvgM/t3lk2TmBEydpGVE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743668107; c=relaxed/simple;
-	bh=d60uPl3O2WNH5zTqvohDJrR3czaNKY19sBaIVAZLdEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kuip9jl+3cCXqK0qGKFk1VUPHrovfGqgQGtVIa2H3b4kErsxoQNlcp11RAH+WBhKrjpaWOxV7060AzJV05gF6lZ/qNZBLi5f4knGmNxksJqxqVtKZkB0WtMhq0fFod9W/CKE1k4/l3shKFMfd491rkvMfZ9D2DC96FHn7CH0Rpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFNiwOUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B46C4CEE3;
-	Thu,  3 Apr 2025 08:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743668106;
-	bh=d60uPl3O2WNH5zTqvohDJrR3czaNKY19sBaIVAZLdEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LFNiwOUsMEPYtNg5Bx6D9qMpJC7DlLB4iItNbA4oWNdMZ1GvKPtq2zq5VLKCdHSGj
-	 EVzfidldRIQpWsLv6FhFTspFjE541FQSpDquAwIUk2JXUrNIQ/Qw1zif6wDi0/4BkG
-	 7Qz697KSheeDzgcWYUJAwXb+kCnhw9eornzE3S+Hqr8o2siesRjz95sx8RzqCGhhYd
-	 0rA46zwyb9d7h5BEejUNDhJsdRLhS1f38bZ2ahnWmjZICj1iT33Lel/9PfsGZCX+wz
-	 vo+94QV8+2XIMg/6nu0zkMGvO7rHi9CoEzIl0j1oJWpzn8p2dqNyVd1Z6jQWt73fcB
-	 trbAPoHObZ/aw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1u0FjC-000000006t4-3pw4;
-	Thu, 03 Apr 2025 10:15:10 +0200
-Date: Thu, 3 Apr 2025 10:15:10 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Cristian Marussi <cristian.marussi@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	arm-scmi@vger.kernel.org, sudeep.holla@arm.com,
-	james.quinlan@broadcom.com, f.fainelli@gmail.com,
-	vincent.guittot@linaro.org, peng.fan@oss.nxp.com,
-	michal.simek@amd.com, quic_sibis@quicinc.com,
-	dan.carpenter@linaro.org, maz@kernel.org, stable@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: [RFC PATCH 1/3] firmware: arm_scmi: Ensure that the message-id
- supports fastchannel
-Message-ID: <Z-5Dji5dbDsKXZE_@hovoldconsulting.com>
-References: <20250401122545.1941755-1-cristian.marussi@arm.com>
- <20250401122545.1941755-2-cristian.marussi@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF071DE3A0;
+	Thu,  3 Apr 2025 08:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743669742; cv=fail; b=WikJ/0N+4ZUy+1Q8eM1VPbkLaoQWRsln47x7FmanSXHNqP+Z334SZmJhuEBF0rseXZ9fRBUs36ZHFU1ltTfcmRtneczal6503+/Yup/tN1PGp4nIRsAze+X9SQIU/Ck0DTpQBawWKALe084Bz4WzV+eR6kmTHmA10Hj49tydAxI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743669742; c=relaxed/simple;
+	bh=2JcBifxUi6+XXxnUqTjCjWBsNpV7fKPZbFab55yGUfI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=pdsWOkiP1fvkkUm/uYMIBAv003I3U1I6Tg1shhIGyGofmZPlRWQJjfxtv414uVD/I8s12GOvPd/7NEp46XZjPKD67jBTLMoQ8+ObvtyZIyae/zo9pLGS6Ps4+ansoomfZEdb107l5cloiAAK8h6B06rGY5OV/em2NOIqNBAhe78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rbexkvlx; arc=fail smtp.client-ip=40.107.100.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f10+wehW8bFpzGtijMqjt/3gsmbBh7jr98DlYil1qU5hbI/enYX/cfWVXDkOs9PpQTkWvzpkO5bF1LIoeb6zgeO+LUEPBr947XJ6X+XqvAIYDI6wvrAuoIdWeIXKezTWIbc/suaeYYSF1LJXq//FtfWLhFYlZKyeLtQuMBPSX7SZ741SeMOV/Zsg2qfADgnvNw+FTERJ15AOGXNJDa9ATwfG5GOSEdKGjP2Egh92sp1IU/NcdQnA7dKLrs8y40QTuadIpEmS0DOlKaTeDlGbYC1xBaGrgP9w445xk0+P+Z4fynaYWRfkGUrKsYE3RXtgW3lAIgyr24g6A98u8heYAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=El2xaTEnOOOpwm7Rskayfn1Qr90/GGP1T6VkkxEuHxg=;
+ b=bZFuzY7cPKzQJ4dAOwRyRDdZe6It0uQZXQpqU7uKgW28CQQJC1frQ5hm6cmgC6OVueKfqLCMLEGM366QnlrP1DDp9pd1nSgEKR9/ju/sMOHYeqhRQInEXhGS4qIr8zzFFdMRCJzRZwMxWBqpQXPqXX7XhnT/YRGXZdj497tng9otBtib141LaW7vq/ahGklFPSzHyAapCTrYZIGYhj3R+Y/1VW+HroDeHYknEgK/nvWCbqzeAhpxNSHFb8I/xg4YXwbckiMKORwUZEMyur51Mbbxpu0bCjymB3o+bxZijNw77wCAV3fYdM/zo8q+U6MH5aPuX72H63LNShkqDIHDww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=El2xaTEnOOOpwm7Rskayfn1Qr90/GGP1T6VkkxEuHxg=;
+ b=rbexkvlx70mMWgQJSjEgWpHvhhzx3fps+qJzcuobvp5XLEHPCw+S0N8hTgZlgxLyN6h48PvzuSKeS4IS6dp3aDE2ZMJ//ctKigqEM9WpfKCBiF9z6g67ukuVtdUiGSR7gqnWOMEl4ELaFW/ddnAFUqUF2Mel7MwXaGHD/1fzUTU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5040.namprd12.prod.outlook.com (2603:10b6:5:38b::19)
+ by MN0PR12MB6199.namprd12.prod.outlook.com (2603:10b6:208:3c4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.42; Thu, 3 Apr
+ 2025 08:42:18 +0000
+Received: from DM4PR12MB5040.namprd12.prod.outlook.com
+ ([fe80::a3dc:7ea1:9cc7:ce0f]) by DM4PR12MB5040.namprd12.prod.outlook.com
+ ([fe80::a3dc:7ea1:9cc7:ce0f%4]) with mapi id 15.20.8583.041; Thu, 3 Apr 2025
+ 08:42:17 +0000
+Message-ID: <fb2be281-4652-4bd4-939a-26b82cd790d0@amd.com>
+Date: Thu, 3 Apr 2025 14:12:10 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] HID: amd_sfh: Fix SRA sensor when it's the only sensor
+To: Mario Limonciello <superm1@kernel.org>, mario.limonciello@amd.com,
+ basavaraj.natikar@amd.com, jikos@kernel.org, bentiss@kernel.org,
+ ilpo.jarvinen@linux.intel.com, Shyam-sundar.S-k@amd.com,
+ akshata.mukundshetty@amd.com
+Cc: Yijun Shen <Yijun.Shen@dell.com>, stable@vger.kernel.org,
+ linux-input@vger.kernel.org
+References: <20250403031242.1267561-1-superm1@kernel.org>
+Content-Language: en-US
+From: Basavaraj Natikar <bnatikar@amd.com>
+In-Reply-To: <20250403031242.1267561-1-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0181.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:be::14) To DM4PR12MB5040.namprd12.prod.outlook.com
+ (2603:10b6:5:38b::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401122545.1941755-2-cristian.marussi@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5040:EE_|MN0PR12MB6199:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ce7843a-1d7a-447a-9a65-08dd728b70bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TFp4SWNaaWNXSkFwUmR0bUU2bGtwNFZNeFZwVm1FRG8zcTNvL3p5SE1LTk54?=
+ =?utf-8?B?SDV0ZVdzQ1dWeitwYVRaWGovaG5FcVp2YVNreEp2WnVxSzFac2k4d2lRSnow?=
+ =?utf-8?B?TEkwemwvMFlxSXZpTTlDeWtqWjQwQ3Fad1dQVTlWVlpZVi9aaGpWRmxRUEJH?=
+ =?utf-8?B?aDN5RUpkaXQwNCtKMHZ4ZFVZd3dERllnaVdpcWx5VmFIeUhjU0hJdGQ1RTA1?=
+ =?utf-8?B?Si9PSU9zTFhTVkM3Q2tqd0Y4cXFyOWVXZGhIMFZwenczRC9hL2tJWEFTQ1BO?=
+ =?utf-8?B?b1hISCs1ckdRWWhtVlZ2c3psRHJ2Tk1Nd2EyeloydENtY05RemJZWGdJSW13?=
+ =?utf-8?B?Q3R0ZTdBazdKaFFJMms0MS95WWVxUU9LZGhQYTl6TTFxNnBPNUp1Y0J4K21L?=
+ =?utf-8?B?cHEzM2U4M2NLVDA3L21Pb0lHbFhZQUpkM2NTK3U0K2lkcjVKSlF3RW94TEp3?=
+ =?utf-8?B?SkFsUEFCUHhvZkQ3aHFjTkpGcjVJd3QwT2Fqb1JVc1kxbVdMV3BYSDJjYncz?=
+ =?utf-8?B?RGJVdllFbE5hQmdsc0FFZ2lIU1ZoL0cxczZMd2p5WGRVdU8yd0xmbUx1eXEz?=
+ =?utf-8?B?MkpWYVNPTDRjTHArSjJnOFcwSzFpemppTEhrRm5lZTdZcWtKMTAvWDd4WVpV?=
+ =?utf-8?B?aXNnSExMSmUvTW41NHVCSkRqWUF6eGFiWER1V0QrUG13S2FXZG43OE05OU1v?=
+ =?utf-8?B?RzFqRktjVU9SdTVhT0pBMkNzQTJIVXh3Vms3Z09yNkhlbDNPQnQ1WkRwbjBV?=
+ =?utf-8?B?MFUxY0R6aFlnV3hORnNTdnpqdkdpTCs1a04vYVh1NmtvM1pFcFZpYjRpTkdl?=
+ =?utf-8?B?dVVkVFBNTFgyR1c2NWhhZTVNOHQvWGM4MXB4YWRRN3RZTW1FSTBCOFhJMEM0?=
+ =?utf-8?B?SUJjV2l5NCtPRXdMc1ZmYlh6WXhKWStkejdmVVhNUWh0VVZWeVhMY2tKc3hC?=
+ =?utf-8?B?L3dVRFBGVm1FS1FlLzE2c0paSEZOdlVqb2lQb1Y3K3U5cDVjT1NsWXI1aEk1?=
+ =?utf-8?B?Tlg5OEQxdTdDeDJHL0tva2ZQYnZsTlU2cllKSGJxL0tFUVc2ekdoVk4zWklU?=
+ =?utf-8?B?WUxtc0lWOS9yZFFobDB6c09uUzdaR0Qrc0Z2UGFFVmFlcVUzQU5UOWl6WkRk?=
+ =?utf-8?B?RzdnWStwOGFHZnBSZ3lnQitsRURGdVZOc2JIaERXSG9OS05oNVF5bTNGRnV5?=
+ =?utf-8?B?RjBFblNwSWVhQ2NtYmI0TTZsaXJPbktJd1lFd0lmNDlsZUJLQlJuOC9Xak5T?=
+ =?utf-8?B?Rlg1N291bWFLam1PTFYyQkpMOG5YMzlSL1BtZzZrUEtJT0t4WlJCSzRSUFFU?=
+ =?utf-8?B?azZtK2syS1VGb3NpWFZVT1JFZldueGpzVVZYM0x3ZmVtK0IxNmo2eVdJWDRz?=
+ =?utf-8?B?OEdZbFpodkFtRGkxNVBaaWtvcktBUXhnZ0JJUmk5VENzUDdKdURvazIwS0Mv?=
+ =?utf-8?B?RThlZzR4cUR2OGwybUVZa2JFU3hSOUtnRnBIbnNoRDVSNGdJR2xhK2l3LzhM?=
+ =?utf-8?B?QjFjR2FWeFVlNDJRQ01KV3FvbDFKR2hGWGphVWlobTlYTlBoOUtLYy9leXh1?=
+ =?utf-8?B?SjRlYktDaWpva1NjRTZIN1JYaDBRTnJlRW1tN1ZzRnJQVTlxQTFHRVhQS3Vn?=
+ =?utf-8?B?SnFBZDF3ZExqMjgzb29WZTROcFhTTnk3b1JsZ3NVb3IzMnBROWxQblNncUZR?=
+ =?utf-8?B?U0NURWJtTjFQZ2E3bytFUEVSVWRoOGtoWEM5R1FXZDEyd2p4L245VGp5WWJI?=
+ =?utf-8?B?QTNnQ2pMVXdtNm8yeFBpTUxSbFNVZHcybkR1U01vVjRycWlVakFiYjM5RWk0?=
+ =?utf-8?B?bXNyWkdiNWV1SlkwRThRdlR2eEEwUndIaS9kOFJWUUozZTdteHpnVDArWFhU?=
+ =?utf-8?Q?pdro0gOwD+trG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5040.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aVZLRWtySlFjMEMwZ3BaKy9oR1BibDNxTGsxTnFRQmNWM0JyVTRHWWJiaTRO?=
+ =?utf-8?B?L2RncjRZY2xOS0JUVDVMbFp6OWh3SEZnR2xjRm1Jamp6M3J2ci9hRkVBc0Nz?=
+ =?utf-8?B?S3pEamQxamx3WlhsSXQ2aHVDckwzNE9haXlmZ2VFMUl0REhieTlVM0Q2TXFh?=
+ =?utf-8?B?cGlJVFhrZEN5eENaRWE2VHFHdlBMRkllbzdpRkVaWmhhZ3lTam5jZWFURnM5?=
+ =?utf-8?B?QmlwN1RkOEpvcFMrb0oyWmpyZEY5THVVdHp4ZEYzWW9vSXBDSkQ1c0g1aEo3?=
+ =?utf-8?B?WjB1MERBdllxZ0srRDQ4cDZBck10ZFVFMEYzdElEOTVGOHhyN2E2N1RDK0xj?=
+ =?utf-8?B?NzZGRkl4TzhTQzVDZVhxci9BRURPbGJpSVFQbFpHK2FiYkxJNE9oVUlOdU1x?=
+ =?utf-8?B?STZWSUZiWkh2alN3dC9jUEVKRmF6RFdTKzFKSWFyK3ZTdGNvaXp5dzg3enlG?=
+ =?utf-8?B?cEM2R0M1eWRYZWtFVnc4dHpOL2tLc213ZDRWLzJMYmZkWmRSU3Z1Z0JqSkRi?=
+ =?utf-8?B?bkJ0L09sNGc0TVVTVFhNbW9iSFlUa3cyWjJKOGFYakQ3NmlEM0FJRms0TUIy?=
+ =?utf-8?B?Y1Q1UjIyOVJPaGlremE2cTEwWE53KzZ1VlVBVzNRUEQwTGRFQ2JDejMySnNt?=
+ =?utf-8?B?aFpQL2t3QkN6SEY4NU5sVDhCSGlsTGV0Slh0UVRFTUkxRWcrQ2s3V3p4d0F1?=
+ =?utf-8?B?NUt2a1o3UnVDUTlGb055REJlSmR3dk1OR0dBb2Jtd25ELzhQUm5YQlc5MHlV?=
+ =?utf-8?B?ak1EWG1nc2NTSnRNRlZwTGoxS3lOMGJ4N05SQW92UG1rS3pDNXhWaHBOcHAw?=
+ =?utf-8?B?bDlLVXk2YStKSGY4RWwwUEtMTENHMEtacitGMUh5TW5qV1BVd1ZvQVVTTlRX?=
+ =?utf-8?B?TFMreHJWZHdUU0JnV1FsMGc5ajFkNk5oV2QzVFdJQ1dyTm44T0hJVU9qMWFa?=
+ =?utf-8?B?RWxNSGtUaUorN3hnQUJib3hGYjVDWUVlZVpkUmt1eWxaZ2ZpdFhXMnBIMVlJ?=
+ =?utf-8?B?K2Y3K1hSMTk0Vlo2a2F2TTduQ2dzcldwOVJBb3p4SERJYSt4KzVCN1ByYVhu?=
+ =?utf-8?B?OVFNTTNweVpMa2xQZWpSY0srWWhrT2g2djY0MXpBSFJCTVV4TGpubFVUcnVS?=
+ =?utf-8?B?SlhvdjA3cVU0dmhwRmxnMmN4dGIxcFB0WmdkQXAzR1NaLzVpaTg4OWEvN3c2?=
+ =?utf-8?B?amJvUjNKNGp1aU84Wk9rM1Bvczc2RFVtZHVJRElLQ0FTeEFGNWE0ZCt1bU1G?=
+ =?utf-8?B?MGxWRlFBYUF5dk5oaHJQNlluWVJkNFVHS0owZDZ0S3pJOUZCYUtVS1ZEdkUv?=
+ =?utf-8?B?OXpoS2pCY0hRYy9JM25MNUV4NXZ6OGZKczJPTm85ZlRTOE5qNkZYdjU1ckNm?=
+ =?utf-8?B?MHRibWNVdS8vUlk4bDlvSmV3U2xvNHlVbGJXQ0dIRzdza0tNcXlsMkdVU2JH?=
+ =?utf-8?B?S3ZVR3NqUHhVaXNINmd6N3V0ZmIxMXZ1MEZld0tGV1JZZ3hzd3hHbk9LL3BE?=
+ =?utf-8?B?aTlRc3oyVnZscWhJMmoxTVhpd295MmVNQVllVXpNTmVZNDVMSVJ5SEtSNmRx?=
+ =?utf-8?B?Q0tCVFZKOEFwNnBEcVNzdis2bGk5S2NpNkxDTkJFd0hISWNMRnFFTk9rSHZW?=
+ =?utf-8?B?R3F6cjFVL3pmayszOXJWQ0grZFd0L0J4d250aDBFc0xlNldTWVhiT09ackhC?=
+ =?utf-8?B?c21ZT1Ewd1dSV0FLUVVkYjIwY3N6cUpacmJvYmxCZlRyQnMwU2EvWTZRWUo3?=
+ =?utf-8?B?RFBYOWQ0bmpOc2pySks0QVp3MGMrWVhSNDYzVHVPZFkxdEdFQmxoU0xuNWN6?=
+ =?utf-8?B?VzVja0pnYUZ5UFdYZGNkYU1UMG9zVnRiRUVPQXdWc3JmL0l6bzNFd0xrMXd0?=
+ =?utf-8?B?L251YUxmZDE2TmJpdXJsRTF2d0FDQkFQaHB6VGxJdTBUeit1RG5wWXplNlBa?=
+ =?utf-8?B?ZVFUNmVMNUEzRVNhRjRYQkw1TjFaUHorY0NTbFk1S0p6NCtpRkxxUzVzd2xx?=
+ =?utf-8?B?eVhCbFVnQlZkVytvelJIT2pPVnBMVG00Z2UwenJjdDZ2OUZPb1pJc0JnbVps?=
+ =?utf-8?B?U1AraUYyWGU3ZEJnWEUxV0xWbU9GbCtwNDhuSXlKcGdkWFdlRU8weXdwKzkv?=
+ =?utf-8?Q?istneVq19DDcIDff80vQUFtnq?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ce7843a-1d7a-447a-9a65-08dd728b70bb
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5040.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 08:42:17.7548
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mj5zj9/yFgLsag4Q91+Y2Vd85TbtAsXZVfW38XXhrm4spO64+6QyvdN/U7+QCUv8SfOxDbTPhrQW/NU8qm7eUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6199
 
-On Tue, Apr 01, 2025 at 01:25:43PM +0100, Cristian Marussi wrote:
-> From: Sibi Sankar <quic_sibis@quicinc.com>
-> 
-> Currently the perf and powercap protocol relies on the protocol domain
-> attributes, which just ensures that one fastchannel per domain, before
-> instantiating fastchannels for all possible message-ids. Fix this by
-> ensuring that each message-id supports fastchannel before initialization.
-> 
-> Logs:
-> scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
-> scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
-> scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
-> 
-> CC: stable@vger.kernel.org
-> Reported-by: Johan Hovold <johan+linaro@kernel.org>
-> Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-> Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
-> Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-> [Cristian: Modified the condition checked to establish support or not]
-> Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+
+On 4/3/2025 8:42 AM, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>
+> On systems that only have an SRA sensor connected to SFH the sensor
+> doesn't get enabled due to a bad optimization condition of breaking
+> the sensor walk loop.
+>
+> This optimization is unnecessary in the first place because if there
+> is only one device then the loop only runs once. Drop the condition
+> and explicitly mark sensor as enabled.
+>
+> Reported-by: Yijun Shen <Yijun.Shen@dell.com>
+> Fixes: d1c444b47100d ("HID: amd_sfh: Add support to export device operating states")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
-> Since PROTOCOL_MESSAGE_ATTRIBUTES, used to check if message_id is supported,
-> is a mandatory command, it cannot fail so we must bail-out NOT only if FC was
-> not supported for that command but also if the query fails as a whole; so the
-> condition checked for bailing out is modified to:
-> 
-> 	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
-> 
-> Removed also Tested-by and Reviewed-by tags since I modified the logic.
+>   drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+> index 25f0ebfcbd5f5..c1bdf1e0d44af 100644
+> --- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+> +++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+> @@ -134,9 +134,6 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+>   	for (i = 0; i < cl_data->num_hid_devices; i++) {
+>   		cl_data->sensor_sts[i] = SENSOR_DISABLED;
+>   
+> -		if (cl_data->num_hid_devices == 1 && cl_data->sensor_idx[0] == SRA_IDX)
+> -			break;
+> -
+>   		if (cl_data->sensor_idx[i] == SRA_IDX) {
+>   			info.sensor_idx = cl_data->sensor_idx[i];
+>   			writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
+> @@ -145,8 +142,10 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+>   				(privdata, cl_data->sensor_idx[i], ENABLE_SENSOR);
+>   
+>   			cl_data->sensor_sts[i] = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
+> -			if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
+> +			if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
+> +				cl_data->is_any_sensor_enabled = true;
+>   				privdata->dev_en.is_sra_present = true;
+> +			}
+>   			continue;
+>   		}
+>   
 
-This still works as intended:
+Looks like once SRA is enabled then SRA is not handled properly in failure cases.
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Thanks,
+--
+Basavaraj
+
 
