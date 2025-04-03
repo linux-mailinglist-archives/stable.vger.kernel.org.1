@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-127628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31492A7A69C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8710A7A6A5
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21413189CE0B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2730C189A0B1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4A12512F8;
-	Thu,  3 Apr 2025 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFCD24E000;
+	Thu,  3 Apr 2025 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9YYVrYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyMlFNmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398082512E3;
-	Thu,  3 Apr 2025 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1D7188A3A;
+	Thu,  3 Apr 2025 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693907; cv=none; b=hVLupZEo01VNsLPhoRoYPPrRf5P39SE87CL5PRuMZOmnHkVXNIsNyQAt20gA5TZu6okP2EH9gxanGYQW24qYLr/ApRzHIDuiQ82lln4PiNntf3XPAgboA71NWkiXQvz+lT/kNOLLNOIvuMWpFvTGLFeOkZkyfo4vzq5gXLOba7I=
+	t=1743693929; cv=none; b=dP6VjJYR34vzbtZ9+SsD6Sfug1VpMDBJ0bZ2PPIOOfhajAa4r1WymJbgSw9akGeBgsdfP2/I0ZDCInl85kAzWa30Vy0dF9ZCqCIhwABknfv403bHV0Gl0TbHQTRxoCKAA2kGdagWl52fXWF+5UIClkab6x8Cbu2g92CJW29PiCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693907; c=relaxed/simple;
-	bh=XMQ8JwzuQxkUV4bf1qvC3Tc9zmQPNLOZnJrAy588n9k=;
+	s=arc-20240116; t=1743693929; c=relaxed/simple;
+	bh=uXA30JCLzJTT14OHpzPqaPg35gbJ77xqTRTNVDq0Y0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+XvY11VldbzTn6A1LlBh6bJUZ1xgZu5vy+lL8v1Sz9W1zHS6oWqRXOvbORpEatNW8JzhxkkMIuetH3QSzYYoKFfJAIPcx4M8sggYJOhRRrgW+A2Sqr8n9bZ5gWAwyOBGs7QBjRd958ypmpQb4errxaSGR3jy3W9QMazCN/ITZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9YYVrYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A52C4CEE8;
-	Thu,  3 Apr 2025 15:25:06 +0000 (UTC)
+	 MIME-Version; b=MMHAShUnFprz36TlMSZYRQnj1abe/zCeLviCZB5+PciHqKys2HUDX2Z02PMKnM0QXIN85Ghro/E+THXyBBlZz+BdWLBdES2Zwo/6i4/acaaVKXksZDEkjNeyl+Hb94vjTL131tQn+cXLTXxFLx9wze1cRce2HMOT4MrkKtekJrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyMlFNmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B99C4CEE3;
+	Thu,  3 Apr 2025 15:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693907;
-	bh=XMQ8JwzuQxkUV4bf1qvC3Tc9zmQPNLOZnJrAy588n9k=;
+	s=korg; t=1743693929;
+	bh=uXA30JCLzJTT14OHpzPqaPg35gbJ77xqTRTNVDq0Y0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9YYVrYXPfnyeGufxgA8Hr3wwy5UGck0l4DrBRML1GNjgiG5c/l4N3ADMiPkyp+LD
-	 O14dQ4st5wvPPcHyPzO0A0yXCavjeAJQVdlQYBA+3snpST4rP4KZOZ83XMiSTzhTej
-	 Va4uLe896PiHbGqISpWHu9PCNImR/c1ouIY09j2k=
+	b=RyMlFNmpRkXPhJcR0F85X5LXKbIdvRNLr9otIHBujBFayjVPFOYbN5T/M2ShaogzB
+	 3BeT6RDB2h/otwSKHnffN8UWdwCVOSFGSvTNnqRtSeYpgosaxmsFg6hyrQXY3pNtfr
+	 2DuDfWK4kEDo80KXM/BM78teu8DqP8JthL09as7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 21/22] serial: 8250_dma: terminate correct DMA in tx_dma_flush()
-Date: Thu,  3 Apr 2025 16:20:31 +0100
-Message-ID: <20250403151622.652694492@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 15/23] net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+Date: Thu,  3 Apr 2025 16:20:32 +0100
+Message-ID: <20250403151622.713127897@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit a26503092c75abba70a0be2aa01145ecf90c2a22 upstream.
+commit e8cdd91926aac2c53a23925c538ad4c44be4201f upstream.
 
-When flushing transmit side DMA, it is the transmit channel that should
-be terminated, not the receive channel.
+Add the following Telit Cinterion FE990B composition:
+0x10b0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
 
-Fixes: 9e512eaaf8f40 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Reported-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250224121831.1429323-1-jkeeping@inmusicbrands.com
+usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250227112441.3653819-2-fabio.porcedda@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -162,7 +162,7 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
- 
--	dmaengine_terminate_async(dma->rxchan);
-+	dmaengine_terminate_async(dma->txchan);
- }
- 
- int serial8250_rx_dma(struct uart_8250_port *p)
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1365,6 +1365,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10b0, 0)}, /* Telit FE990B */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
 
 
 
