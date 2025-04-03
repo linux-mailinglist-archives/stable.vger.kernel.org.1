@@ -1,208 +1,135 @@
-Return-Path: <stable+bounces-127654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79C6A7A6B5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5516DA7A692
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE17189B092
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D2F3B8E38
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A7250C02;
-	Thu,  3 Apr 2025 15:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF961250BF5;
+	Thu,  3 Apr 2025 15:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4Hv+G+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhbhx/Sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD092505DE;
-	Thu,  3 Apr 2025 15:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFA024C077;
+	Thu,  3 Apr 2025 15:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693970; cv=none; b=cRNeeQ5OuBoK7ywarW7dHxVAnkxDx4TwxkN93rAHwmCF554RyO9uC/ryI61HqrjfT82QS7rzgYy5dLOsSulT8WBZBdTlfK9dGMXGm+IUPqFIpSTS1kFjWOqIwcMXrCdVOZ7uVvhCTLOQmAlNIMShxgiCd3re8WDfMnO6qZwDTTo=
+	t=1743693812; cv=none; b=QfrY1pS9HjhhdjwtvcKyrjm9xMYi74hSjn+FIKeKvEEqWrAY/oAD3/n6g/1q0/LFG7Fzk585EOC6Y+pNi51UVv7vs7v1I733yupf+5So7yqpZqbzwvr7lopIp+h5n9GAcuTjcxyUwy3f7jIiUq0VKRmQcbVZmbZLMiPO7VVwnVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693970; c=relaxed/simple;
-	bh=zD3sLcrr7AiPTDhQQ22ezRNOpgw+79oBjucXKnkTFZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c7j3AraqNNcRyE6shjoISdcR6wi7Cvt6ddNJqZNkpyZlUJyYwoVYW51y9IyVDnMIZdz5fmLe/ei3U4GaAkI8/28cfZL1blbTERb92FeCZ715amhnZB9iL1fCae854CUEwNMjk5gW8LwLTHOIy/B2TS7ofYFctqb0dWzn7ytaavU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4Hv+G+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8D1C4CEE3;
-	Thu,  3 Apr 2025 15:26:09 +0000 (UTC)
+	s=arc-20240116; t=1743693812; c=relaxed/simple;
+	bh=Dl89KQI48zbz6I7ABLfToTa0qBS0+FKvMzZ/DF59Ht8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kThEaEt2YygvB8rzkQYvzvFkRhusWdq+R9j/SCeUj3vzNiLpLbV2kEwGbED5ppoHyEfMawoBDngu1nM+IHUOR8q1ra9raEZrBGw1i6sZ1oJKnkjqk9Jsp8d94WXBWAFFq6tmjYrR403QPQndlnOHy78cPFg4XT7OGlvn0It83Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhbhx/Sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC54FC4CEE3;
+	Thu,  3 Apr 2025 15:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693970;
-	bh=zD3sLcrr7AiPTDhQQ22ezRNOpgw+79oBjucXKnkTFZ8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T4Hv+G+caXHZ/e8h6WuLyvE3dNi1/GQzMlN2J8T9W9xiYLB0FYF2Xx5baaLRPPSjX
-	 klgiWUNPovyneDm3aNjZlb5I6au+p+E78npg11hf5V1a0jVJdqUBuKNUZP+HypvPrX
-	 rFP/Zowyk7yW5jd1s/yx8H78suThyH//L9UYvjEo=
+	s=korg; t=1743693812;
+	bh=Dl89KQI48zbz6I7ABLfToTa0qBS0+FKvMzZ/DF59Ht8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mhbhx/SrG/MuwG2hz6T9m8X9KyEviym9iogxGeObDiaVsSF8kgONZXWB9JAXgkmHA
+	 UOEz4TSHP9Wp8204+XhTR9zFl+rdaW9IXImJ+KUGlyOYkwDZHPiFqEIWaGkQGhv97M
+	 BlWqSNRTC9S9ra6J5KuOj9b6mKyX+BBzS3RYLsOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.13 00/23] 6.13.10-rc1 review
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 13/21] net: usb: qmi_wwan: add Telit Cinterion FN990B composition
 Date: Thu,  3 Apr 2025 16:20:17 +0100
-Message-ID: <20250403151622.273788569@linuxfoundation.org>
+Message-ID: <20250403151621.518071241@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.10-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.13.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.13.10-rc1
-X-KernelTest-Deadline: 2025-04-05T15:16+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.13.10 release.
-There are 23 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.10-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-and the diffstat can be found below.
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-thanks,
+commit 9dba9a45f8ca64a7df32aada14c20a3153af1ac8 upstream.
 
-greg k-h
+Add the following Telit Cinterion FN990B composition:
 
--------------
-Pseudo-Shortlog of commits:
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.13.10-rc1
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250205171649.618162-3-fabio.porcedda@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: bch2_ioctl_subvolume_destroy() fixes
-
-John Keeping <jkeeping@inmusicbrands.com>
-    serial: 8250_dma: terminate correct DMA in tx_dma_flush()
-
-Cheick Traore <cheick.traore@foss.st.com>
-    serial: stm32: do not deassert RS485 RTS GPIO prematurely
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    perf tools: Fix up some comments and code to properly use the event_source bus
-
-Luo Qiu <luoqiu@kylinsec.com.cn>
-    memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
-
-Michal Pecio <michal.pecio@gmail.com>
-    usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-
-Michal Pecio <michal.pecio@gmail.com>
-    usb: xhci: Don't skip on Stopped - Length Invalid
-
-Dominique Martinet <dominique.martinet@atmark-techno.com>
-    net: usb: usbnet: restore usb%d name exception for local mac addresses
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion FE990B composition
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion FN990B composition
-
-Sherry Sun <sherry.sun@nxp.com>
-    tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
-
-Cameron Williams <cang1@live.co.uk>
-    tty: serial: 8250: Add Brainboxes XC devices
-
-Cameron Williams <cang1@live.co.uk>
-    tty: serial: 8250: Add some more device IDs
-
-William Breathitt Gray <wbg@kernel.org>
-    counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-
-Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-    counter: stm32-lptimer-cnt: fix error handling when enabling
-
-Andres Traumann <andres.traumann.01@gmail.com>
-    ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
-
-Dhruv Deshpande <dhrv.d@proton.me>
-    ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
-
-Maxim Mikityanskiy <maxtram95@gmail.com>
-    netfilter: socket: Lookup orig tuple for IPv6 SNAT
-
-Abel Wu <wuyun.abel@bytedance.com>
-    cgroup/rstat: Fix forceidle time in cpu.stat
-
-Scott Mayhew <smayhew@redhat.com>
-    nfsd: fix legacy client tracking initialization
-
-Minjoong Kim <pwn9uin@gmail.com>
-    atm: Fix NULL pointer dereference
-
-Terry Junge <linuxhid@cosmicgizmosystems.com>
-    HID: hid-plantronics: Add mic mute mapping and generalize quirks
-
-Terry Junge <linuxhid@cosmicgizmosystems.com>
-    ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
-
-
--------------
-
-Diffstat:
-
- Makefile                                  |   4 +-
- drivers/counter/microchip-tcb-capture.c   |  19 ++++
- drivers/counter/stm32-lptimer-cnt.c       |  24 +++--
- drivers/hid/hid-plantronics.c             | 144 ++++++++++++++----------------
- drivers/memstick/host/rtsx_usb_ms.c       |   1 +
- drivers/net/usb/qmi_wwan.c                |   2 +
- drivers/net/usb/usbnet.c                  |  21 +++--
- drivers/tty/serial/8250/8250_dma.c        |   2 +-
- drivers/tty/serial/8250/8250_pci.c        |  46 ++++++++++
- drivers/tty/serial/fsl_lpuart.c           |  17 ++++
- drivers/tty/serial/stm32-usart.c          |   4 +-
- drivers/usb/host/xhci-ring.c              |   4 +
- drivers/usb/host/xhci.h                   |  13 ++-
- fs/bcachefs/fs-ioctl.c                    |   6 +-
- fs/nfsd/nfs4recover.c                     |   1 -
- kernel/cgroup/rstat.c                     |  29 +++---
- net/atm/mpc.c                             |   2 +
- net/ipv6/netfilter/nf_socket_ipv6.c       |  23 +++++
- sound/pci/hda/patch_realtek.c             |   2 +
- sound/usb/mixer_quirks.c                  |  51 +++++++++++
- tools/perf/Documentation/intel-hybrid.txt |  12 +--
- tools/perf/Documentation/perf-list.txt    |   2 +-
- tools/perf/arch/x86/util/iostat.c         |   2 +-
- tools/perf/builtin-stat.c                 |   2 +-
- tools/perf/util/mem-events.c              |   2 +-
- tools/perf/util/pmu.c                     |   4 +-
- 26 files changed, 308 insertions(+), 131 deletions(-)
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1368,6 +1368,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 
 
 
