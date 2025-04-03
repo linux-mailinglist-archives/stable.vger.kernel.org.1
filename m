@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-127606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DF1A7A6C3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4742AA7A6EB
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:33:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A766179237
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CBEA17A91D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0210251796;
-	Thu,  3 Apr 2025 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2711624CEE5;
+	Thu,  3 Apr 2025 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VivV8Uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3wtWsyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3282505C1;
-	Thu,  3 Apr 2025 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92D3188A3A;
+	Thu,  3 Apr 2025 15:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693851; cv=none; b=rxrqE57pcRd3QCWvnaf6Hp9WP1eeBz97HWjNLLRMfPeFjVF1mm23xTv1blwORmI5d2NJ4nlxqcCfHrcVKR2tyjjZ5e3DebUXBAto6BMgxaSwNbjhp64pJa4Pg7scwLHh2z1dTStFJGT7oOYvKaMbdXZoy3H7RpVLlxMDXsKRHAU=
+	t=1743694021; cv=none; b=iY9OBzKHDIVyQp3GaNGBaXtua1QdOWm+cT0gy9f8EG9DwO0F4eUoGzGf5kyP2YA5VSxOY1CTeG/tqz60dhyqEmvHLkS77x1sz6qR+ZN37j4ssJ4GtGZ2Np2PNuiA0TYp23w8KNWZhgBLSBnB7ZxCkwegkZocy+VBccCYnNF9hSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693851; c=relaxed/simple;
-	bh=8pCIFlTp7ZQfpyV9b6qqh6EVBK/Fe474ubMkYaJ2FjU=;
+	s=arc-20240116; t=1743694021; c=relaxed/simple;
+	bh=kjYe3Efpepfsnv/dl7n86aP47rLOVYOWZwcmApiikYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtKxlHlgtxDOV92hKRk8RVdLi5XkfVfqRE67x46JJvGYuV48OWUZjV84z7DHgheG1fkV9kZydmSk0IatO18pAuhwiyAMqqnYINRIaotJx0j+AgYW1/sut6TSJv/6UOg3AalyVg73D4km094fG/eT8JrVK/HCfgNeAHooMNlLKjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VivV8Uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59CAC4CEE3;
-	Thu,  3 Apr 2025 15:24:10 +0000 (UTC)
+	 MIME-Version; b=KmuvjXAGNRZznet+ik9GNXySY593PBEzUAP6D7bPvUglG/P9cg/PJHDg2EEEHZKtjWEkAHDs5sT79TSprXjLXutzcAoN4Tv+6yGZjF2j8p73+h5qUXp7JHtb0R0N2u81btsn+ME0wXpsIvceTlf7WmW2D2+4CZnOsPuUGswodfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3wtWsyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBFAC4CEE3;
+	Thu,  3 Apr 2025 15:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693851;
-	bh=8pCIFlTp7ZQfpyV9b6qqh6EVBK/Fe474ubMkYaJ2FjU=;
+	s=korg; t=1743694021;
+	bh=kjYe3Efpepfsnv/dl7n86aP47rLOVYOWZwcmApiikYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VivV8UzfrZ1842xeR4avVZQgRl6e9mXa+fRPtYxX2ez9GmMmB5s/cJ4azYSXCcHE
-	 iuFUNqvfDlH37NPWGzRyw8ceqPcFKPbCxs/D9JPQdW1WS2JOY0FtO3WihGjMyQS5AF
-	 kawSBaJEwcJ0XhC/f799HPqQeWUDjouwfw2D5P9g=
+	b=f3wtWsyYT3oILFBi98oYA69XS5/LWk9PHDwAtvItDk6m66+diWQ5OkNgLZWf9cm0p
+	 AecJOgm0Kn5sASxKgGD0YEV0YlL0iKNppgjvhRsMCRiF2eUrf7xTOeJ6GbTXD2+VA7
+	 1zuLJSfw5mkgCxNPqQxI/r1sPUiNzmSxytK/Bi18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14 21/21] serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+	Mark Brown <broonie@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Wang Kefeng <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.6 04/26] ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
 Date: Thu,  3 Apr 2025 16:20:25 +0100
-Message-ID: <20250403151621.732133796@linuxfoundation.org>
+Message-ID: <20250403151622.542513914@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit a26503092c75abba70a0be2aa01145ecf90c2a22 upstream.
+commit 169f9102f9198b04afffa6164372a4ba4070f412 upstream.
 
-When flushing transmit side DMA, it is the transmit channel that should
-be terminated, not the receive channel.
+Under PAN emulation when dumping backtraces from things like the
+LKDTM EXEC_USERSPACE test[1], a double fault (which would hang a CPU)
+would happen because of dump_instr() attempting to read a userspace
+address. Make sure copy_from_kernel_nofault() does not attempt this
+any more.
 
-Fixes: 9e512eaaf8f40 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Reported-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250224121831.1429323-1-jkeeping@inmusicbrands.com
+Closes: https://lava.sirena.org.uk/scheduler/job/497571
+Link: https://lore.kernel.org/all/202401181125.D48DCB4C@keescook/ [1]
+
+Reported-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/fault.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -162,7 +162,7 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -25,6 +25,13 @@
  
--	dmaengine_terminate_async(dma->rxchan);
-+	dmaengine_terminate_async(dma->txchan);
- }
+ #include "fault.h"
  
- int serial8250_rx_dma(struct uart_8250_port *p)
++bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
++{
++	unsigned long addr = (unsigned long)unsafe_src;
++
++	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
++}
++
+ #ifdef CONFIG_MMU
+ 
+ /*
 
 
 
