@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-127587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22FCA7A68F
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B17A7A68C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4EA3B99EF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D572178AFD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8AA2517A7;
-	Thu,  3 Apr 2025 15:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AACD2512FD;
+	Thu,  3 Apr 2025 15:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxK0lyc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTx3vDtl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B82251793;
-	Thu,  3 Apr 2025 15:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF08250C09;
+	Thu,  3 Apr 2025 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693805; cv=none; b=BhjmmAgXlv0MXUiOXI0bauWx+szXhSMLw0eSnSbslvjVFnEqmZvZfx9dOzrr4O05+vF9V8KKgJdgQUjMVRn9agTF1ZdofThCKhIcCNlHHmx5jkUZp0vriX/hw0XvcXFHjCpG+c44yESklEtmYZliYxO2X054RyDJSEaU0qQxAcY=
+	t=1743693769; cv=none; b=dVMsd4MFvZ3MLsxmh5slQMvxDX0hEcqb1EsjeqzNNoL1rojK9zAK6/A0+H5Fwxgri4IxQBMqkbZ1Pc2owupn9btPe5ajm5GHyIbG02DVTq7HXDdSTfZmkc+Y+dYIl+5L8YFTaNUo1I5u5KQ0szSN7mcPUCvAafun11oxeXjuyW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693805; c=relaxed/simple;
-	bh=pVbEn94qM0ocDWiaZS8wkV1i3PaoEd/WmxAMM+RaGXQ=;
+	s=arc-20240116; t=1743693769; c=relaxed/simple;
+	bh=AjatFXcagwLA9Kl1BmJQBpMKOk/OqubPAV/Mtols4N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzpm1OZ3pwZ6QEY3MSwkl2tPTc/ap0L5S5/PCihpre8KwLd0w0xkL/Tu3PE8CwIxttbTtYxHkeMlKYkTCsoUaNvcHQi81yEhCo2bPsVm+PMTVG6T37ZQlnlYEAjl3RHZdQ8BcRsMYznzXMagw2gCbjlH7b28NZXxDzHSjweW7Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxK0lyc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA2EC4CEE3;
-	Thu,  3 Apr 2025 15:23:24 +0000 (UTC)
+	 MIME-Version; b=EqyK1uLgxhLvVoGjr6KAtwajrS772/1KGA5kvo0t8j73S2svfU5Y43eMJc6TXEYaMRaf3EPNXxCRfiiYmTRI3l0HgQxIRClCTuA4vprGsbO0i6k6D5OkCHZq2/rGD0Mjt1jjMRXARgFg+tT5099nlCaTLgFA2iFFgjjtZFPpEfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTx3vDtl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC53C4CEEE;
+	Thu,  3 Apr 2025 15:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693804;
-	bh=pVbEn94qM0ocDWiaZS8wkV1i3PaoEd/WmxAMM+RaGXQ=;
+	s=korg; t=1743693769;
+	bh=AjatFXcagwLA9Kl1BmJQBpMKOk/OqubPAV/Mtols4N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxK0lyc7+s356IzKpVjIW9TbhnraohK7P/7kOhYCR/QetmZXwVk/EKhYYUDWKIxf6
-	 gRh4cqi48in/EyoL7ESL4JDF2Al2WdRPh4FJZ1vV5Z0Jb4ucbrfRofkY7Yf7VVDL0R
-	 9QEQt5reMj9ifcGvWv4uri7w+f5/F2zPHIBk5buI=
+	b=tTx3vDtlCciy9TqXl8/zKoazJtJH9Huj0R3zvB/5AYsagjDhfpWIW3jadTtRWPMfO
+	 So3CFSahYbhREiZ9Lrk0HDiFUgMXr0jHxY6B1DeGW7hnfIEJTe+utuywQkocmaLxPx
+	 EEdEcFIbBEqK0DODXMkUEGrTVsWNbdyt1ScVBcSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.14 10/21] tty: serial: 8250: Add some more device IDs
+	Abhishek Tamboli <abhishektamboli9@gmail.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 19/22] usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
 Date: Thu,  3 Apr 2025 16:20:14 +0100
-Message-ID: <20250403151621.435870194@linuxfoundation.org>
+Message-ID: <20250403151621.482493334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
+References: <20250403151620.960551909@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Abhishek Tamboli <abhishektamboli9@gmail.com>
 
-commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
+commit a7bb96b18864225a694e3887ac2733159489e4b0 upstream.
 
-These card IDs got missed the first time around.
+Fix potential dereferencing of ERR_PTR() in find_format_by_pix()
+and uvc_v4l2_enum_format().
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
+Fix the following smatch errors:
+
+drivers/usb/gadget/function/uvc_v4l2.c:124 find_format_by_pix()
+error: 'fmtdesc' dereferencing possible ERR_PTR()
+
+drivers/usb/gadget/function/uvc_v4l2.c:392 uvc_v4l2_enum_format()
+error: 'fmtdesc' dereferencing possible ERR_PTR()
+
+Also, fix similar issue in uvc_v4l2_try_format() for potential
+dereferencing of ERR_PTR().
+
+Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
+Link: https://lore.kernel.org/r/20240815102202.594812-1-abhishektamboli9@gmail.com
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/gadget/function/uvc_v4l2.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5253,6 +5253,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
- 	/*
- 	 * Brainboxes UC-235/246
- 	 */
-@@ -5373,6 +5381,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
- 	/*
- 	 * Brainboxes UC-420
- 	 */
+--- a/drivers/usb/gadget/function/uvc_v4l2.c
++++ b/drivers/usb/gadget/function/uvc_v4l2.c
+@@ -121,6 +121,9 @@ static struct uvcg_format *find_format_b
+ 	list_for_each_entry(format, &uvc->header->formats, entry) {
+ 		struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
+ 
++		if (IS_ERR(fmtdesc))
++			continue;
++
+ 		if (fmtdesc->fcc == pixelformat) {
+ 			uformat = format->fmt;
+ 			break;
+@@ -240,6 +243,7 @@ uvc_v4l2_try_format(struct file *file, v
+ 	struct uvc_video *video = &uvc->video;
+ 	struct uvcg_format *uformat;
+ 	struct uvcg_frame *uframe;
++	const struct uvc_format_desc *fmtdesc;
+ 	u8 *fcc;
+ 
+ 	if (fmt->type != video->queue.queue.type)
+@@ -265,7 +269,10 @@ uvc_v4l2_try_format(struct file *file, v
+ 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
+ 	fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
+ 	fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
+-	fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
++	fmtdesc = to_uvc_format(uformat);
++	if (IS_ERR(fmtdesc))
++		return PTR_ERR(fmtdesc);
++	fmt->fmt.pix.pixelformat = fmtdesc->fcc;
+ 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
+ 	fmt->fmt.pix.priv = 0;
+ 
+@@ -378,6 +385,9 @@ uvc_v4l2_enum_format(struct file *file,
+ 		f->flags |= V4L2_FMT_FLAG_COMPRESSED;
+ 
+ 	fmtdesc = to_uvc_format(uformat);
++	if (IS_ERR(fmtdesc))
++		return PTR_ERR(fmtdesc);
++
+ 	f->pixelformat = fmtdesc->fcc;
+ 
+ 	strscpy(f->description, fmtdesc->name, sizeof(f->description));
 
 
 
