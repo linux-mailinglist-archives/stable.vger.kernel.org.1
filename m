@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-127467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78769A79A53
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 05:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 249CBA79A5D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 05:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A41188DE48
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 03:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 619CC1894CF3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 03:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4303C189B9C;
-	Thu,  3 Apr 2025 03:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC21922FA;
+	Thu,  3 Apr 2025 03:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXhoE9Qj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmO5Ip20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24AE1854;
-	Thu,  3 Apr 2025 03:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2B1898F8;
+	Thu,  3 Apr 2025 03:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743649880; cv=none; b=pk3bb54x5Zy9sJK1J86li9wBJAlOHYciHImw7feL6Uug4h8swJ4RE/EDd4yqbBpCfOlb7o43OT0AqnMQAdEkiL/tS/dBmZpIYhsT99ipQcjD2XMTSL4mxibmHEv7sARaNvtTbEM1XsARlOEWk9vINuFIAznf6i6ZJHcoPAzp+e0=
+	t=1743649986; cv=none; b=OGH1QsZMDeXWl+gX3ooyU8dld8t7Nl78029wbLUs/MpaD4oIjV4suqBC1ZmHkHx6iPFO6da21/WM6R8KDJBnXlXtts8D6Shg4UX3KVn64eORJfBXJ6RDgxm19CwDbIi0j5vDmfQqX5tzG+lzc+OXlyAqm2dYWPemLz6bCMeC3Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743649880; c=relaxed/simple;
-	bh=fzE1msjPvpWi+ZpNMges2+SYdgyK49I6lJrHs42pJW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wjg65uAe8Z6q3szuPVljLfzsvZHE6wfYbyCCC2WxNbClV13/G4wiuDC/eS/4fqu+avPWrSmOjW+2SZ1jAVkow//2G02ujQym1ODDeKHKWBM69ItdbvXJKYAcYMoG5ENv/Zccnb2gEdJ5Y5Vjgm7c0Hk/hVVG+sL7Q49KmCQS94s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXhoE9Qj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF95DC4CEDD;
-	Thu,  3 Apr 2025 03:11:17 +0000 (UTC)
+	s=arc-20240116; t=1743649986; c=relaxed/simple;
+	bh=cfAz2y3DcHMdjlHZUxc+Uob2ZacBWNhyibtQ0HxKTfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fuB0D6aED4v7l7IdqPQntTlUiXUopbhwZ0MGumgyJPNllzygV0PzHztn48n9CKSlpEQ6M5SO2FZQeL29hhngMckH93HFa2CaUx+RvLagRuN19kNjxVHJ2mfnKuVwkNNv5FoL7OxaIus8bP/hDz1Mlpb/mX6nr/BjHNrNBWq5iWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmO5Ip20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3342C4CEDD;
+	Thu,  3 Apr 2025 03:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743649878;
-	bh=fzE1msjPvpWi+ZpNMges2+SYdgyK49I6lJrHs42pJW8=;
+	s=k20201202; t=1743649984;
+	bh=cfAz2y3DcHMdjlHZUxc+Uob2ZacBWNhyibtQ0HxKTfQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YXhoE9QjOThQGT9QMT2f8aW6wNiqlhlW7LsD6yFYyBPfZ5f0bmMyg4qcit5c9LEn2
-	 lIuMD23Xdt0kitXJB1Vp1tuQFbF82CqTGtVw9SPZWbGV9fTNZ+85KF5mv28XkLsUjS
-	 rvjsYtm/Jvb7cbvVV5Oxe06wAPo4qrki/emJXcRiRtlxnsdxufhKUlnWexGGcPrdYM
-	 JplQ6ZYBAwm8pY+uflbK86B9OsVOl96AgoAN5xtcQD8zeLzoBjt8HQOF7WYzp6qIPy
-	 1/LAapuFvmNtQz/MQ3MpQaGpsSlom384oryGMP0Xmf09agNR2N8T6S3ZS4qhur43up
-	 ZUZ3aUkN3ZfxA==
+	b=hmO5Ip201G/sb1PUZQ94AzlM9NDgaApPlQ8AMRHMosnr4pFeM4aq/TykgN40mLCg+
+	 XW7cYX+eRkuFmfSGCq9HUG68qXGgH5qCWvoUzjFeK31uE4b/IQZnvHdSXw/gFRPe/+
+	 /moJVMcXr8YPaI9dOcfJ7I3e1BL5zlejgcJUX552PbQS9K2atc7BJUkDDhoU464KY3
+	 PIUMbfHWD4JeVVIOmEyo0n/KAH5Df0BWHmWOS7lFo0Zz/3cPknLwqd3QIaccgXLXCW
+	 M0sxVo5hQBOQG2gX0LKc0bCdoWq4QHgBCT44/Xz4DFCucnPL/omWq/KdjoGMTlGRjV
+	 gOx+YaXfGneyw==
 From: Mario Limonciello <superm1@kernel.org>
 To: mario.limonciello@amd.com,
+	basavaraj.natikar@amd.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
 	Shyam-sundar.S-k@amd.com,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
+	akshata.mukundshetty@amd.com
 Cc: Yijun Shen <Yijun.Shen@dell.com>,
 	stable@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH] platform/x86: amd: pmf: Fix STT limits
-Date: Wed,  2 Apr 2025 22:11:04 -0500
-Message-ID: <20250403031106.1266090-1-superm1@kernel.org>
+	linux-input@vger.kernel.org
+Subject: [PATCH] HID: amd_sfh: Fix SRA sensor when it's the only sensor
+Date: Wed,  2 Apr 2025 22:12:28 -0500
+Message-ID: <20250403031242.1267561-1-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,42 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-On some platforms it has been observed that STT limits are not being applied
-properly causing poor performance as power limits are set too low.
+On systems that only have an SRA sensor connected to SFH the sensor
+doesn't get enabled due to a bad optimization condition of breaking
+the sensor walk loop.
 
-STT limits that are sent to the platform are supposed to be in Q8.8
-format.  Convert them before sending.
+This optimization is unnecessary in the first place because if there
+is only one device then the loop only runs once. Drop the condition
+and explicitly mark sensor as enabled.
 
 Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Policy Binary")
+Fixes: d1c444b47100d ("HID: amd_sfh: Add support to export device operating states")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/platform/x86/amd/pmf/tee-if.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index 5d513161d7302..9a51258df0564 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -123,7 +123,7 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index 25f0ebfcbd5f5..c1bdf1e0d44af 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -134,9 +134,6 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		cl_data->sensor_sts[i] = SENSOR_DISABLED;
  
- 		case PMF_POLICY_STT_SKINTEMP_APU:
- 			if (dev->prev_data->stt_skintemp_apu != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val << 8, NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_APU: %u\n", val);
- 				dev->prev_data->stt_skintemp_apu = val;
- 			}
-@@ -131,7 +131,7 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
+-		if (cl_data->num_hid_devices == 1 && cl_data->sensor_idx[0] == SRA_IDX)
+-			break;
+-
+ 		if (cl_data->sensor_idx[i] == SRA_IDX) {
+ 			info.sensor_idx = cl_data->sensor_idx[i];
+ 			writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
+@@ -145,8 +142,10 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 				(privdata, cl_data->sensor_idx[i], ENABLE_SENSOR);
  
- 		case PMF_POLICY_STT_SKINTEMP_HS2:
- 			if (dev->prev_data->stt_skintemp_hs2 != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val << 8, NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_HS2: %u\n", val);
- 				dev->prev_data->stt_skintemp_hs2 = val;
- 			}
+ 			cl_data->sensor_sts[i] = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
+-			if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
++			if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
++				cl_data->is_any_sensor_enabled = true;
+ 				privdata->dev_en.is_sra_present = true;
++			}
+ 			continue;
+ 		}
+ 
 -- 
 2.43.0
 
