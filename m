@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-128116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE97A7AF54
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:48:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552EFA7AF6C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9175188EAF5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:43:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF52D3B9BB0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77225EFBE;
-	Thu,  3 Apr 2025 19:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BF725F794;
+	Thu,  3 Apr 2025 19:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQ07aJZY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joHM7v9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0BF25EFB9;
-	Thu,  3 Apr 2025 19:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A8525F78E;
+	Thu,  3 Apr 2025 19:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743708012; cv=none; b=hMeo2rd5vUlrwSk3UqL+eHXM8lFnS7Zf9x0XLMPTmzw+pyMIM2hAmM3GL9ZRxO2OYvxrcOQF1Xc9mywqim0BJs3vsAHBM2vb776b1lJGIt2bSyX/5knEgckUu01X27VD2fQXmJo11A48bVg6cqb3QGwT5gaI2MgDwXsRe/f110Y=
+	t=1743708013; cv=none; b=N8uzbDxg9v2UiEFdHolljr/EXiU+Y052+5RapMG7/MiSMF3DLiYtaxhwgaw64+7v5/+lQWFcE/rzrcH7tDOhInwqsbaM4eLjqwsFOXUthiTrOOD3aMAwZA3APWUtvWfs8MztNSKKk3EDoZ3BHyv7v7CTGpGPdvV5Fx03Z+emyUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743708012; c=relaxed/simple;
-	bh=kPL1CEsADV/4TIGWyac9i15zkG+j8F7+SHFAHkP5sUA=;
+	s=arc-20240116; t=1743708013; c=relaxed/simple;
+	bh=II+x6mrmAM9y9kllTPt8t+WSMECNLUZKJyi88SaC90Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JccQeIi98Z5uFzZmX1teAlZDXkLUxdave1NxzRmzVP137p81eFJW07ajM9sKt9TZp5yqp0oOb4XubB8VkDmhygmqlEH+wbzrQX3/vZZghxIBLnoRLQRkqAy0Vo3fxzqX44mYy+0eiY8Fm/EgXgR60ARTV26nWUAgKUFXUMT5X2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ07aJZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C28AC4CEE9;
-	Thu,  3 Apr 2025 19:20:09 +0000 (UTC)
+	 MIME-Version; b=t1uOZu0E5ZljilJbnhGDxIIZwtz0RDQsAruMabMUxnSU7w573BlKMzWoFx+rEhskY3hDjvRH68Tm+84y4qvveL4LjjDRcGjPYDxZrTwcx9uCZZer7unzvnnMae6of7u+41BiQjRLEu+6o4p2aKY2fXmivcC/IdMUfylaKr8yyzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joHM7v9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C9DC4CEE3;
+	Thu,  3 Apr 2025 19:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743708011;
-	bh=kPL1CEsADV/4TIGWyac9i15zkG+j8F7+SHFAHkP5sUA=;
+	s=k20201202; t=1743708013;
+	bh=II+x6mrmAM9y9kllTPt8t+WSMECNLUZKJyi88SaC90Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQ07aJZYpY4DxMPi5wNNEl+ComOVNN+tmxdoqYFJBODVm6P+s3Z4mbFQGr7wUswfa
-	 V1AC28oACZELw5SE+/ccISDCZv79P9epbBIqyxNg3dkTphK7zEtWJeghz4606jvqe0
-	 WMls2U2x0igl4/EFoy4s9fooBr4OLkT9yn/fN7s5nz1CTQNEeEAZbgEX3/fGGXSyt5
-	 QsEadpi2rW3FyuIM7oWLFLNaCtsStSOFscTYnr/Q7+AHT3VxVA8csuhqnwaiUQ39B/
-	 bbsz7zXbUXEkD4UDwPC7wBw4wjpAPqMF0WZemQR3gZVdIJNM/KBpFChjimN7+CquqT
-	 IaFROg6+OQiDg==
+	b=joHM7v9ThpSSA6u2msDHEn4llylkhdcGE3OL6ZlMeor/VcPry4c6+hUXkV0569ZLF
+	 lPcNWlIJrTOJON+EMXhOLOHQ875cG2WDZu6Wp2Ai8gfaItwW/G6hCehzsQDJ+YLUMy
+	 0hXF73giHREzxV8iPfGDETD3s6ON0gLVekK5Ou/MyrSbpfvRzKag3F/aCYVowdu1fK
+	 cQx3+iHFcyET1xT7LZwpOEA7nHd2c5LzsuxHLJuyCylJ4FYqumcuVgzTohFAD2J7hs
+	 M9qYicc96M3D0xPUmcv1LmxtpBodCFBMlamQfmWMHV3JSt0i4/94Uq5zS+s2EFYSIE
+	 KM1rzVAocaIlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhikai Zhai <zhikai.zhai@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	christian.koenig@amd.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	chiahsuan.chung@amd.com,
-	bhuvanachandra.pinninti@amd.com,
-	martin.leung@amd.com,
-	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 02/12] drm/amd/display: Update Cursor request mode to the beginning prefetch always
-Date: Thu,  3 Apr 2025 15:19:51 -0400
-Message-Id: <20250403192001.2682149-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 03/12] drm: panel-orientation-quirks: Add support for AYANEO 2S
+Date: Thu,  3 Apr 2025 15:19:52 -0400
+Message-Id: <20250403192001.2682149-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403192001.2682149-1-sashal@kernel.org>
 References: <20250403192001.2682149-1-sashal@kernel.org>
@@ -77,93 +71,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
+[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
 
-[Why]
-The double buffer cursor registers is updated by the cursor
-vupdate event. There is a gap between vupdate and cursor data
-fetch if cursor fetch data reletive to cursor position.
-Cursor corruption will happen if we update the cursor surface
-in this gap.
+AYANEO 2S uses the same panel and orientation as the AYANEO 2.
 
-[How]
-Modify the cursor request mode to the beginning prefetch always
-and avoid wraparound calculation issues.
+Update the AYANEO 2 DMI match to also match AYANEO 2S.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: John Edwards <uejji@uejji.net>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dcn10/dcn10_hw_sequencer.c | 22 ++++++++-----------
- .../gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c |  2 +-
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index bc603c8af3b66..b31c31c39783f 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -1838,20 +1838,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	dc->hwss.get_position(&pipe_ctx, 1, &position);
- 	vpos = position.vertical_count;
- 
--	/* Avoid wraparound calculation issues */
--	vupdate_start += stream->timing.v_total;
--	vupdate_end += stream->timing.v_total;
--	vpos += stream->timing.v_total;
--
- 	if (vpos <= vupdate_start) {
- 		/* VPOS is in VACTIVE or back porch. */
- 		lines_to_vupdate = vupdate_start - vpos;
--	} else if (vpos > vupdate_end) {
--		/* VPOS is in the front porch. */
--		return;
- 	} else {
--		/* VPOS is in VUPDATE. */
--		lines_to_vupdate = 0;
-+		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
- 	}
- 
- 	/* Calculate time until VUPDATE in microseconds. */
-@@ -1859,13 +1850,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
- 	us_to_vupdate = lines_to_vupdate * us_per_line;
- 
-+	/* Stall out until the cursor update completes. */
-+	if (vupdate_end < vupdate_start)
-+		vupdate_end += stream->timing.v_total;
-+
-+	/* Position is in the range of vupdate start and end*/
-+	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
-+		us_to_vupdate = 0;
-+
- 	/* 70 us is a conservative estimate of cursor update time*/
- 	if (us_to_vupdate > 70)
- 		return;
- 
--	/* Stall out until the cursor update completes. */
--	if (vupdate_end < vupdate_start)
--		vupdate_end += stream->timing.v_total;
- 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
- 	udelay(us_to_vupdate + us_vupdate);
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-index 127055044cf1a..faab14e343a4e 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
- 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
- 
- 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
--	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
-+	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
- }
- 
- void hubp31_soft_reset(struct hubp *hubp, bool reset)
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index bf90a5be956fe..6bb8d4502ca8e 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -166,10 +166,10 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
+-	}, {	/* AYA NEO AYANEO 2 */
++	}, {	/* AYA NEO AYANEO 2/2S */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
+-		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
+ 		},
+ 		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
 -- 
 2.39.5
 
