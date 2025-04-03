@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-128024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7F3A7AE48
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EABA7AE49
 	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68713160AD9
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:19:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92E618806C8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BDD1FFC5F;
-	Thu,  3 Apr 2025 19:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36EF20298F;
+	Thu,  3 Apr 2025 19:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dDATM6Kd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SrvYb5aC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D811FFC55;
-	Thu,  3 Apr 2025 19:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B28C1FFC4E;
+	Thu,  3 Apr 2025 19:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707786; cv=none; b=AuYNmboHoHHanBCvPBy9LKkp7jLcFPsJP0qeRwXzfhIc9u1uAdamMAajOE925aJvJjJXwc7r8RMSMuagBg4yJsvDvoJxLq2KWo6d5S5W8eyEPvgb4HWC9Zip/Czpo8PuM8h7IjjFmvCrlGemssvKhs5bdKbMfA3LCHrXeeJZwHI=
+	t=1743707790; cv=none; b=qj9Chl8pyp0DYcZdeqNksjBQ4AIURpHuiOmVAIcY5tF9OD0mL5HKCm24G710JOZZK05EqddyVBvrqEoMcaJnbV4PpFvtcWzg9ZLTYtdTN1sAuB6H8QOeJgrZ+qwbDFf3+yRoFW4CLG9ye6tsTQsbWE4nysAghaNIPhhZLEMZu2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707786; c=relaxed/simple;
-	bh=sDaOFhGbRXKWWgBDXTjF3gFFkmNVkCcMKXVKbM97/jg=;
+	s=arc-20240116; t=1743707790; c=relaxed/simple;
+	bh=SAaVT5xL1/xkJan04m2q6BElqCElm+ckUg/oWX730+o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bqRuCvYy0CBzBo9J6MDjsVrm8pMr7E8g164B5EvDGe2jUWfS8DHUIN7bBjDPkjsae2vK0Np1ZvNgq8CKD8Oi7d6mgBnrKoVgN0a7ouR0eGM3PNEdzOiN6LyU84wYxv6G/dBx/iq1hPxeL0UXDdMvpOJI700DGjj081vl2h4rjt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dDATM6Kd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A8EC4CEE3;
-	Thu,  3 Apr 2025 19:16:24 +0000 (UTC)
+	 MIME-Version; b=dAJpuMcxZU/+n43maj6Nx99zfZJe5VV8ZCdET82ZboZUy8bOCBxWaTBmiwiy8zpbW1BYcluQZUN7eRWVNp/WHubIvkQvm8elsT41FDFq8bVmSSYYdOQe6bCn9r5dKgOfuF4KS3lk1p6lwnDMWZJmMa1TYlD03KITb0bB+nXilaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SrvYb5aC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ACAC4CEE3;
+	Thu,  3 Apr 2025 19:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707785;
-	bh=sDaOFhGbRXKWWgBDXTjF3gFFkmNVkCcMKXVKbM97/jg=;
+	s=k20201202; t=1743707789;
+	bh=SAaVT5xL1/xkJan04m2q6BElqCElm+ckUg/oWX730+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDATM6KdwA8pBnk71COgokFTPaH5slXGlZJ6aKzqfl15z76e0RYKEdHFVe8Z/CAth
-	 HIHdR/bRgA3zmYV+ZAS7sjrhNjKxsjeeudlZCD7dZNYcT6vIN4Us2IX4n+LPl1NNmc
-	 cwWQCDvO19g4ci9A/rQ8RbtzB/3me8S0HvfjZeB4JHHwuYWI4csJiegKiFJvqGgiBH
-	 GG30+Ye782RzGiieInIteze1bULL4ceWQkos5Z8jcu1wAd2oBDAs+Jv26zAzOGFtm5
-	 Q/EgAp4hMlHexTajZ0PFBYH+7GocjaSIUXyul4yKDR+jhIthn/v0a4xf7diq+VYjcn
-	 ckLNiekzf/XDg==
+	b=SrvYb5aCOVUnLjXQVtpVFMYgzKYptr3A0pSur9/eO3s4gzBslkKK/s/qW0GEy9ooY
+	 KamXqvFpIzpseqiGDzWR6Qbz0vHoxsNesAhu0D4vtcAH5lNmubCQsMEY8mEiJ7gG3g
+	 jQZemap45+rWrINZ9/jFsATpR+0/CaY6qtampj61bkxarvzbMTm8XKb+m+rAFKvjhP
+	 6NSAx6fXcCDwTgtvFVxA7uOTrPApw5MEHA1rzOckea2KDDMOClXfETvHfAL6TKpsCO
+	 Mh+vINDvV8+ftzXkBGvzlKZHGteg22wI32B+PO6uzs6r8uxLFmRUPZjuu+oiBZLj+v
+	 mtdMxGsCkuWGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shawn Lin <shawn.lin@rock-chips.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	manivannan.sadhasivam@linaro.org,
-	kw@linux.com,
-	gregkh@linuxfoundation.org,
-	lpieralisi@kernel.org,
-	heiko@sntech.de,
-	linux-pci@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.13 25/37] PCI: Add Rockchip Vendor ID
-Date: Thu,  3 Apr 2025 15:15:01 -0400
-Message-Id: <20250403191513.2680235-25-sashal@kernel.org>
+	kenneth.feng@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	boyuan.zhang@amd.com,
+	Jun.Ma2@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 26/37] drm/amdgpu: handle amdgpu_cgs_create_device() errors in amd_powerplay_create()
+Date: Thu,  3 Apr 2025 15:15:02 -0400
+Message-Id: <20250403191513.2680235-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191513.2680235-1-sashal@kernel.org>
 References: <20250403191513.2680235-1-sashal@kernel.org>
@@ -69,82 +68,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 20bbb083bbc9d3f8db390f2e35e168f1b23dae8a ]
+[ Upstream commit 1435e895d4fc967d64e9f5bf81e992ac32f5ac76 ]
 
-Move PCI_VENDOR_ID_ROCKCHIP from pci_endpoint_test.c to pci_ids.h and
-reuse it in pcie-rockchip-host.c.
+Add error handling to propagate amdgpu_cgs_create_device() failures
+to the caller. When amdgpu_cgs_create_device() fails, release hwmgr
+and return -ENOMEM to prevent null pointer dereference.
 
-Link: https://lore.kernel.org/r/20250218092120.2322784-2-cassel@kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[v1]->[v2]: Change error code from -EINVAL to -ENOMEM. Free hwmgr.
+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c            | 1 -
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- drivers/pci/controller/pcie-rockchip.h      | 1 -
- include/linux/pci_ids.h                     | 2 ++
- 4 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 3aaaf47fa4ee2..b5c8422fd2f04 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -85,7 +85,6 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
- #define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
- 
--#define PCI_VENDOR_ID_ROCKCHIP			0x1d87
- #define PCI_DEVICE_ID_ROCKCHIP_RK3588		0x3588
- 
- static DEFINE_IDA(pci_endpoint_test_ida);
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index 5adac6adc046f..6a46be17aa91b 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -367,7 +367,7 @@ static int rockchip_pcie_host_init_port(struct rockchip_pcie *rockchip)
- 		}
- 	}
- 
--	rockchip_pcie_write(rockchip, ROCKCHIP_VENDOR_ID,
-+	rockchip_pcie_write(rockchip, PCI_VENDOR_ID_ROCKCHIP,
- 			    PCIE_CORE_CONFIG_VENDOR);
- 	rockchip_pcie_write(rockchip,
- 			    PCI_CLASS_BRIDGE_PCI_NORMAL << 8,
-diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-index a51b087ce8786..f9eaac9c8ee5d 100644
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -198,7 +198,6 @@
- #define AXI_WRAPPER_NOR_MSG			0xc
- 
- #define PCIE_RC_SEND_PME_OFF			0x11960
--#define ROCKCHIP_VENDOR_ID			0x1d87
- #define PCIE_LINK_IS_L2(x) \
- 	(((x) & PCIE_CLIENT_DEBUG_LTSSM_MASK) == PCIE_CLIENT_DEBUG_LTSSM_L2)
- #define PCIE_LINK_TRAINING_DONE(x) \
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 1a2594a38199f..2a9ca3dbaa0e9 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2609,6 +2609,8 @@
- 
- #define PCI_VENDOR_ID_ZHAOXIN		0x1d17
- 
-+#define PCI_VENDOR_ID_ROCKCHIP		0x1d87
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 26624a716fc60..f8434158a4022 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -51,6 +51,11 @@ static int amd_powerplay_create(struct amdgpu_device *adev)
+ 	hwmgr->adev = adev;
+ 	hwmgr->not_vf = !amdgpu_sriov_vf(adev);
+ 	hwmgr->device = amdgpu_cgs_create_device(adev);
++	if (!hwmgr->device) {
++		kfree(hwmgr);
++		return -ENOMEM;
++	}
 +
- #define PCI_VENDOR_ID_HYGON		0x1d94
- 
- #define PCI_VENDOR_ID_META		0x1d9b
+ 	mutex_init(&hwmgr->msg_lock);
+ 	hwmgr->chip_family = adev->family;
+ 	hwmgr->chip_id = adev->asic_type;
 -- 
 2.39.5
 
