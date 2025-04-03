@@ -1,110 +1,106 @@
-Return-Path: <stable+bounces-127511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C655EA7A2D1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:26:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3943AA7A2E8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FF597A3E9B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:25:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8361888AB2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F5624CED7;
-	Thu,  3 Apr 2025 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F263224CEF1;
+	Thu,  3 Apr 2025 12:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="ZkPi3PFk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9Qonby/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987492066DB;
-	Thu,  3 Apr 2025 12:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A922218DB10;
+	Thu,  3 Apr 2025 12:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743683171; cv=none; b=SyzoaOJOlMRwsrCYXmGZJsIJRbXQ+Uk2WOnZz9G8RtcO7hJp5DJl9M4zNSQXIo+09SWG1U7SgG+JHnXRX8nWvH9HIFboM+MR4/PTDI7Mv6n7j5sZRw1qDuUYsxTuYoI46X6TCxaioXQspsbBgQch7tDHEodDNCsiItvPQYKq9qM=
+	t=1743683467; cv=none; b=nzcfNBWFuBdNPevswGza3DRfYvPOpXE3NCTWZN9WR/x6pETSGXcYXGwzo1ObtMsgK4TQB1VdcAq7M87YGsVDRODxYlkO6GWtOnZtWcyod7UIYOzhWUUuQ/GqRrG04gfMm6iklHuIL/AF41VZhGaHAnlVopXUjJu/RGAYfa/Z8G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743683171; c=relaxed/simple;
-	bh=iASQGzh0VvwZMf757gdapgNz7NYswb6FYL1Z0BWsk2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hsIWvwMopS5Ol73UBGyikMrBTPceF/TUqzORjP9WvLu1OlS/KMmtW8DpZ0/AstG/1dP10e2WkDHAFpL0FQVXauAudVF1r78J7U2M5uAl6ATuwF3RzQO6qus/YzNDXlVppj156RgFmvdRqHeTvJFAN0nopvLAHhcqd226NPHFEI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=ZkPi3PFk; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1743683164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xVAG3hFiIEdM+Jd/To+sNmSTBWE7HCzx/1+ORr6F7iU=;
-	b=ZkPi3PFksh4z3nmW9IMzbp3k/eOZ7OwEstmA+YVHx2L4TqNFllDzuiotO2vOKv1geLsZB8
-	1xFbxAHHG9S7G/6xgZ68f5nqmuxooCoW+rWa51LoNQgEYrac1rMInoLj18myCjA8T+k0+E
-	3GUq/BxO9IRaELk8FLlUUiyJUpQ6Uqw=
-To: Corentin Chary <corentin.chary@gmail.com>
-Cc: "Luke D. Jones" <luke@ljones.dev>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] asus-laptop: Fix an uninitialized variable
-Date: Thu,  3 Apr 2025 15:26:01 +0300
-Message-ID: <20250403122603.18172-1-arefev@swemel.ru>
+	s=arc-20240116; t=1743683467; c=relaxed/simple;
+	bh=CnLDYb7XZk5vPljE2pxTY39nAE8xucWgsLuFG2jWdfA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PoXICnDT5nl+zPbms4GIozTYDgyGspZdQmxppujOx7fI+G4UgaJzjd1wylRQPGYCUwgmbR2pVFZEpKaPMf0wj7ECNg8PaWd+w/ipYd9AfqbNb0+kyKhSx+roXTJk2qHvo4h3M4WF1+UoyQuQCrQfh2w4XUjUHAls/Kw0Bb5j2M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9Qonby/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5ACC4CEE3;
+	Thu,  3 Apr 2025 12:31:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743683467;
+	bh=CnLDYb7XZk5vPljE2pxTY39nAE8xucWgsLuFG2jWdfA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I9Qonby/7j19j+SswfqKWHC0aQs6UqsHf+JxuilqUVw+7fb2RYNWrQuJg25ADCyio
+	 Lu+wroI7lUcJJUf8GD49OVNn5AiM2qmqipnAx4BMAO9PQ2YQfgc2uyfGFD3iUG98dI
+	 2DLlPAgRLxNXTX4pMs/wGiMpUwN5dC/BdkKaF5igkRMHGLyY2/TWqFvcisvLyhFDzo
+	 mwCgOn9WwMaYNnhembITGhZ0LcTSgvkpZV3nBjWYh7ipLNEe5CrXvqcyZZSwrNKvkV
+	 b7VT8d0QoScZyCN9NAW2XtGUEacqRMbHQm1LJbHAtPWAM4YsqOwv6omYV//5l+/qF8
+	 ZQlTbfkeuoOhA==
+Date: Thu, 3 Apr 2025 14:31:02 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/nouveau: Prevent signalled fences in pending list
+Message-ID: <Z-5_hh8kPv8btF6k@pollux>
+References: <20250403101353.42880-2-phasta@kernel.org>
+ <c779bc2f-06af-4278-8bb5-08afc074b580@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c779bc2f-06af-4278-8bb5-08afc074b580@amd.com>
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+On Thu, Apr 03, 2025 at 02:08:06PM +0200, Christian K�nig wrote:
+> Am 03.04.25 um 12:13 schrieb Philipp Stanner:
+> 
+> > @@ -235,6 +227,19 @@ nouveau_fence_emit(struct nouveau_fence *fence)
+> >  			       &fctx->lock, fctx->context, ++fctx->sequence);
+> >  	kref_get(&fctx->fence_ref);
+> >  
+> > +	fence->cb.func = nouveau_fence_cleanup_cb;
+> > +	/* Adding a callback runs into __dma_fence_enable_signaling(), which will
+> > +	 * ultimately run into nouveau_fence_no_signaling(), where a WARN_ON
+> > +	 * would fire because the refcount can be dropped there.
+> > +	 *
+> > +	 * Increment the refcount here temporarily to work around that.
+> > +	 */
+> > +	dma_fence_get(&fence->base);
+> > +	ret = dma_fence_add_callback(&fence->base, &fence->cb, nouveau_fence_cleanup_cb);
+> 
+> That looks like a really really awkward approach. The driver basically uses a the DMA fence infrastructure as middle layer and callbacks into itself to cleanup it's own structures.
+> 
+> Additional to that we don't guarantee any callback order for the DMA fence and so it can be that mix cleaning up the callback with other work which is certainly not good when you want to guarantee that the cleanup happens under the same lock.
+> 
+> Instead the call to dma_fence_signal_locked() should probably be removed from nouveau_fence_signal() and into nouveau_fence_context_kill() and nouveau_fence_update().
+> 
+> This way nouveau_fence_is_signaled() can call this function as well.
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
+Yes, I think this would work as well. It wouldn't work if only
+dma_fence_signal() is called on this fence, but that should be fine.
 
-In this case, the algorithm should be less noisy.
+So, I agree that's probably the better approach.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> BTW: nouveau_fence_no_signaling() looks completely broken as well. It calls nouveau_fence_is_signaled() and then list_del() on the fence head.
 
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org 
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-V1 -> V2: 
-Added check of the return value it as Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> suggested.
-Changed initialization of 'val' variable it as Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> suggested.
+It does indeed look broken, as in the fence may not be signaled at all. If at
+all, it should call dma_fence_is_signaled() instead.
 
- drivers/platform/x86/asus-laptop.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+> As far as I can see that is completely superfluous and should probably be dropped. IIRC I once had a patch to clean that up but it was dropped for some reason.
 
-diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
-index d460dd194f19..ff674c6d0bbb 100644
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -427,10 +427,12 @@ static int asus_pega_lucid_set(struct asus_laptop *asus, int unit, bool enable)
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
- {
- 	int i, delta;
--	unsigned long long val;
-+	acpi_status status;
-+	unsigned long long val = (unsigned long long)curr;
- 	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
--
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
--- 
-2.43.0
-
+Agreed, to me it looks unnecessary as well.
 
