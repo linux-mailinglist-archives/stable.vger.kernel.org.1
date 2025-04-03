@@ -1,130 +1,143 @@
-Return-Path: <stable+bounces-128152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D0DA7B0C1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 23:23:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAD3A7B184
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 23:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570E1189EDDD
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:20:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770173A330E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FA81632C8;
-	Thu,  3 Apr 2025 21:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940511FA15E;
+	Thu,  3 Apr 2025 21:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7V+SNqS"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="B5vuQkS/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161762E62BF;
-	Thu,  3 Apr 2025 21:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948E719EED2
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 21:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743714929; cv=none; b=B2nyCqdvcfkcE3J3JW0gd0xpUaP09SGR4JelU65U0V7DPYP5ghBaTuNq07lFHLQTvdI13W1cY1HS3YJhIxTXN02FBpYRSEONuyL7PYFQ3SGEa+1A9gNFttwx0v0iZUcHZX6MlltjWUsqXNeLp3ycqR1pne9LCoveSMIQZIv4v8Y=
+	t=1743715891; cv=none; b=Zh3/MjNDQ0fZRLh1zwIKwMeGtRkLFNPL1Lk8PReBV3bEJroXRq3med44+uK453ASZV5cGVABrIScj694RmUqPGr5jluOJFLv//Qa8JALk8x8WuqGR4quAOZZl5AFo7OGc1Ks1+UmmPjDZbdadv2mhpbmrfd1Uc2T98Tf6xtXVYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743714929; c=relaxed/simple;
-	bh=HwCQpAQIh5B4VTTn8FN0DhJiCQM3f6//dB8KKhrCFJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TXjkSWOb6cwyRJMdfW8HdjRxr3Qr/PwA1IFzfVJ+upSXSygK0iIk2peSZ+C8sgIBg2+L6LOLKFAr7QNZAsMINFKYb+qPPWtH8nEkDekjwyMmElNsyJvleF1OD7Gq80QP452BkdiBSTwMF3of8o9o0s6o+Py8UW7qnGtnfBIji8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7V+SNqS; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so9397135e9.1;
-        Thu, 03 Apr 2025 14:15:26 -0700 (PDT)
+	s=arc-20240116; t=1743715891; c=relaxed/simple;
+	bh=wmH981GE7NB8avOxeQuOBjPEsDZkeKkAIkl4REbfjxM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WQpJyQ8c1VPglsEkwB4RHQ6D+DNzI6lL3p8iXgEB5ZG76GVxqPol0kmVob9kQZ5i/YZD9Q7mrGGlu0nNy0DTlflBDb7a/+eBrY7MXi8RXl3Qxr5vSTy6x5w1O8Ve9Ani9BdBGWtwDWN6WmU2aGV54edBznKBRaFntjHqoFq2cDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=B5vuQkS/; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54b0d638e86so1552222e87.1
+        for <stable@vger.kernel.org>; Thu, 03 Apr 2025 14:31:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743714925; x=1744319725; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fvD1Km7wGFLtWOqgEFNWRLw6eJ4esFFynlnh8JehOFY=;
-        b=V7V+SNqSGYdah8Jilg6dLHkREWfB1Bp9/f+yy643BcEceO0ewH1rWVTAAlr+C43zOV
-         UBKfIOsidAlQDYQoG+mHin9muwkCFEbBvSZ2qNIB0tL9dgv6lCOXq0KudLJsjPRJgU61
-         k8jNtwH35PCKSZT9H/feQjtLq1HPll60QbtdMPGD5hz5oPQR4dZLhjQwouaVOsz8sR4l
-         yYX7s5niyvqlsV7SHrPM5/N4qsRJdjlvA6TAz6Xgd3bxBRaMGiDd+HmjYGH/PiA4q6Q8
-         NDNYbwynT142i/gGhPVGUSxusCzQ+dulstxEDSR3F4+p0KwJve++IlM6yhrbrl+YNuj2
-         m9Gw==
+        d=chromium.org; s=google; t=1743715886; x=1744320686; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hjSF7rIGuoGtaKvs9zxkuKyK56xOJ/Ay8l6UKNTY2Eo=;
+        b=B5vuQkS/k/MYI4QvGeEVjT6XEvXOwnP4U5bJoMT3krrQ9O8CpXybI2JDfxZmWGlHjB
+         sVR7k1tvrdcj3PzTJ/dNVugZ3eK1dyhBD5DYH1HtDeToYoEjXrOjVc+UlOVhNqbSks7u
+         zY90pL0SXAxeS+V+Xv/qXn0+mriP7ylXLy5F4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743714925; x=1744319725;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fvD1Km7wGFLtWOqgEFNWRLw6eJ4esFFynlnh8JehOFY=;
-        b=b1c2ZzQZUobnhp+F7VV2itBpSfFf0xKIqV/1E0dyq+FpWXfDyha2ApNXlzs0PRMpZw
-         2FP7JEkVfUyAXpyhdfUd/IfNHbC9z62ETDqlckU52CA+vE6O1xmPHS+59keUycGGkhp3
-         896vcbG5hri4OK12S7dKgkyMLlLPEd+eC7AO9lLot0pId1yFCVSUAsTRJ/hZwF3UbkBV
-         tFD0zGrpsoAzJY4B83+Ppvu5R2cTp7TW2vPP07m5o1Ot0g5AorOxM3yZnLiI44SnF75i
-         2aPY1j86byKVHn80fuB74GvmXGsjIvZwu7uIMQcYM+A+PS9oy42bvdKB7rEi9OX4n1kH
-         pyzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWB4jeDaQaErJHAwZ+kCrbP0lYQn1Fo15rO47hJ0eqIPeQ6Mf3NLVnr46OPxc1R8HX8s1Xw8yoDI0C2G0X@vger.kernel.org, AJvYcCWMb4hKZ0fHutHYCKzEXAtcwe/E4r+/Crd4ZgVDGXFgRbwmWx+3zuM++MPnioI/kDunzSDQgs1WyvnO8o8ktGO3@vger.kernel.org, AJvYcCX+Q7lv5auI0QlaMJwGTnw/ho2JP7dn2VK3+g+MPdci59WNVYc4nb26zrxcwFVbjnMwdQhPHPYt@vger.kernel.org, AJvYcCXe5k4Yxx2rxJv0GrskGsdgbMtDnuhgmQ+/+cIkg4mdgQhpcjjdJeu5J8AmSHf/IkCMv8Z6pEAgsKEYR8IW@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVbbjFVuIsfHwN3hdUX5WsKWUHyv2MO7IbSotEVjYzanTFudGF
-	TEdIwmGo/B0nngG6DL3/n7TqyMGU80AvVtxQ8cRZCVEf0Kie1yQa
-X-Gm-Gg: ASbGnctQkMd54GTd6M3wkuAHBbnfVSI88c+H4lfPxG8sfYQwoBa/WjCQ/TgTjZthlBY
-	sNAI9tOAbiS2g7feT/llX4CuCBnBWnL5VyMzjXhmPiNOCMa7LAEO7oi9PzilmVf6Hkl2+jTj3eZ
-	+jP1MN621LfdOtAYhxG38K0j/sASxAleinduGZsm9GjAZ80rYCE3PltDxKOMVPJXZnWnClH+Cpr
-	Jdm+FKolxfKJb/QksgNgKDpa8J1Xuns7wizZ43QhZ+9pgOMa/6Uf7pJrBMjuUcDw7Vi1bBLFC6A
-	tTgcP4QRcFdiAkkgbfqteHIyJ2++8Y0Lgahf2jl5Szamfro/9g7y9jRiQdIku1Be6Dba8aQwHei
-	A7V6PF6Y=
-X-Google-Smtp-Source: AGHT+IGBaHYjceQBSmbH3010b6NTsG3JdQrqaS3chq0W1aRj/OYqtwyl5jYbNbbhjuezGo2AbkFbvg==
-X-Received: by 2002:a05:600c:3494:b0:43c:f8fc:f697 with SMTP id 5b1f17b1804b1-43ed0bc8d96mr2756455e9.9.1743714925141;
-        Thu, 03 Apr 2025 14:15:25 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec17b0a38sm31305665e9.34.2025.04.03.14.15.24
+        d=1e100.net; s=20230601; t=1743715886; x=1744320686;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hjSF7rIGuoGtaKvs9zxkuKyK56xOJ/Ay8l6UKNTY2Eo=;
+        b=otbJeNlsFsbqZkBSMzyXq9Z065VsoLMtrv/J9kPStMUK+8aXdHsSD3vbP3CusMjBIG
+         Lu981JIdOHPFU9xwJzmryosRm5f6N150SEjSvgTssAaPhyHi3LMhti5UYyD9BVbLDga1
+         mb1a2FhDeEbbpQB8ZnaaXK0733CqFQwZ8BOqlgtjzPQyZ9c3iqGQZBjFE0SI0rQrYU4h
+         K0pxNxgbz8d59KlCGbA/JGoMSJXDS6TFePMwdOIRmmjsHizEqIPmNA5D1vblPeF61gjT
+         pCGhhAwMV+HlxGiufJIGEvj7mqJfrAvbHGeRJUY6BCafjl1GlL1yvzupdeNmImi9m1aH
+         V6tA==
+X-Forwarded-Encrypted: i=1; AJvYcCXm8afEktTTBUvoNx6gbgfum2xu3kjDadMYcfT2Hq3equI145LRo4/+PWww0SfXe1CYbPLCxdQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU6mYq5d5bD1l3MCUC381UAgnTKAmPYx3vgNMrzCA7PfjCpjMS
+	J1dToBDKIszzCa/7mLznhk+v8g++kykWxgDF/I+xsLTzEDHFPz1X/fHlJzWeig==
+X-Gm-Gg: ASbGnct3BRtuyY4YX6+T3PSXawqjOksXxjXOh0KSF1VnmEEiPPZvtAdvEt31OmlGE+B
+	GPKtAqa7oXAoW0oUesAKe9drrKWeKWPZy5h1hJaT1YYLxiz5bKqbdJ68J9H0B9EM3ftC2T8VlVU
+	5AACkCHu7curbB54H8tBUWECWF6JuZnoAgtNXNcTbm48Ho5EB48dqb5JTBwaTncqVWWVIIUL6Wc
+	t4dGXOlNszug6NMNWnDnRN7cnAvdSQ3TyT2BCaPqAN2gHP72eYoFogAmY2TnnAVXFR32SN8UEfC
+	XoIDy9hZSucSXYR8jHrSqZggC1XYgwL/ubd3NeZbQGCcEv7GGRPOYtD/w0fLmU6ezIICOUMY+OC
+	OZGUt40fEvBYL+r4Edk+lPIiE
+X-Google-Smtp-Source: AGHT+IFGh41JyNQ0kY4SKRyKQPfhOBTc1Kd5OKVwu4LAE7c7CdYOFKWYEFFOQUbjdl57cF/YjkaUvQ==
+X-Received: by 2002:a05:6512:334e:b0:549:8963:eb05 with SMTP id 2adb3069b0e04-54c227dd3ddmr150486e87.37.1743715886542;
+        Thu, 03 Apr 2025 14:31:26 -0700 (PDT)
+Received: from ribalda.c.googlers.com (216.148.88.34.bc.googleusercontent.com. [34.88.148.216])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e65d6d5sm252938e87.181.2025.04.03.14.31.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 14:15:24 -0700 (PDT)
-Date: Thu, 3 Apr 2025 22:15:22 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Peter Collingbourne <pcc@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook
- <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, Andrey Konovalov
- <andreyknvl@gmail.com>, Mark Rutland <mark.rutland@arm.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] string: Add load_unaligned_zeropad() code path
- to sized_strscpy()
-Message-ID: <20250403221522.328b174b@pumpkin>
-In-Reply-To: <CAMn1gO55tC78BpD+KuFgygg1Of57pr16O4BvKsUsrpo830-jEw@mail.gmail.com>
-References: <20250329000338.1031289-1-pcc@google.com>
-	<20250329000338.1031289-2-pcc@google.com>
-	<Z-2ZwThH-7rkQW86@arm.com>
-	<CAMn1gO55tC78BpD+KuFgygg1Of57pr16O4BvKsUsrpo830-jEw@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 03 Apr 2025 14:31:25 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v4 0/4] media: uvcvideo: Introduce
+ V4L2_META_FMT_UVC_MSXU_1_5 + other meta fixes
+Date: Thu, 03 Apr 2025 21:31:23 +0000
+Message-Id: <20250403-uvc-meta-v4-0-877aa6475975@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACv+7mcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwNj3dKyZN3c1JJE3VRTUzNzc+MUQ6PEVCWg8oKi1LTMCrBR0bG1tQD
+ z0bzRWgAAAA==
+X-Change-ID: 20250403-uvc-meta-e556773d12ae
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Wed, 2 Apr 2025 17:08:51 -0700
-Peter Collingbourne <pcc@google.com> wrote:
+This series introduces a new metadata format for UVC cameras and adds a
+couple of improvements to the UVC metadata handling.
 
-> On Wed, Apr 2, 2025 at 1:10=E2=80=AFPM Catalin Marinas <catalin.marinas@a=
-rm.com> wrote:
-..
-> > Reading across tag granule (but not across page boundary) and causing a
-> > tag check fault would result in padding but we can live with this and
-> > only architectures that do MTE-style tag checking would get the new
-> > behaviour. =20
->=20
-> By "padding" do you mean the extra (up to sizeof(unsigned long)) nulls
-> now written to the destination? It seems unlikely that code would
-> deliberately depend on the nulls not being written, the number of
-> nulls written is not part of the documented interface contract and
-> will vary right now depending on how close the source string is to a
-> page boundary. If code is accidentally depending on nulls not being
-> written, that's almost certainly a bug anyway (because of the page
-> boundary thing) and we should fix it if discovered by this change.
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v4:
+- Rename format to V4L2_META_FMT_UVC_MSXU_1_5 (Thanks Mauro)
+- Flag the new format with a quirk.
+- Autodetect MSXU devices.
+- Link to v3: https://lore.kernel.org/linux-media/20250313-uvc-metadata-v3-0-c467af869c60@chromium.org/
 
-There was an issue with one of the copy routines writing beyond
-the expected point in a destination buffer.
-I can't remember the full details, but it would match strscpy().
+Changes in v3:
+- Fix doc syntax errors.
+- Link to v2: https://lore.kernel.org/r/20250306-uvc-metadata-v2-0-7e939857cad5@chromium.org
 
-	David
+Changes in v2:
+- Add metadata invalid fix
+- Move doc note to a separate patch
+- Introuce V4L2_META_FMT_UVC_CUSTOM (thanks HdG!).
+- Link to v1: https://lore.kernel.org/r/20250226-uvc-metadata-v1-1-6cd6fe5ec2cb@chromium.org
+
+---
+Ricardo Ribalda (4):
+      media: uvcvideo: Do not mark valid metadata as invalid
+      media: Documentation: Add note about UVCH length field
+      media: uvcvideo: Introduce V4L2_META_FMT_UVC_MSXU_1_5
+      media: uvcvideo: Auto-set UVC_QUIRK_MSXU_META
+
+ .../userspace-api/media/v4l/meta-formats.rst       |  1 +
+ .../media/v4l/metafmt-uvc-msxu-1-5.rst             | 23 ++++++
+ .../userspace-api/media/v4l/metafmt-uvc.rst        |  4 +-
+ MAINTAINERS                                        |  1 +
+ drivers/media/usb/uvc/uvc_metadata.c               | 96 ++++++++++++++++++++--
+ drivers/media/usb/uvc/uvc_video.c                  | 12 +--
+ drivers/media/usb/uvc/uvcvideo.h                   |  1 +
+ drivers/media/v4l2-core/v4l2-ioctl.c               |  1 +
+ include/linux/usb/uvc.h                            |  3 +
+ include/uapi/linux/videodev2.h                     |  1 +
+ 10 files changed, 130 insertions(+), 13 deletions(-)
+---
+base-commit: 4e82c87058f45e79eeaa4d5bcc3b38dd3dce7209
+change-id: 20250403-uvc-meta-e556773d12ae
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
