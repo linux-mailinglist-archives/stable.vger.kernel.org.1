@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-127611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF01A7A6AD
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51461A7A6D0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18AAC3BAC3C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DFF3B9122
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9A250BF9;
-	Thu,  3 Apr 2025 15:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AEE2512CB;
+	Thu,  3 Apr 2025 15:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swwdCyk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV7X03bO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA11E2505C1;
-	Thu,  3 Apr 2025 15:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30842512C4;
+	Thu,  3 Apr 2025 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693863; cv=none; b=Qq9SmblRI8rSwwxRvqJ8MbykDsz8KcocPqjxLBCAkFKFJJdXlEeg+z+RG5PjgdcLsKDgLjKIlFuAmueGRX8bvXV06OBd6s0z/p3a6dcHxFkRfbs17V/u9cgWJFzg9+6ymov/81KH4nzbJQGsZKk8wdshR7GiNx9BijknzYqOctA=
+	t=1743693973; cv=none; b=jHX4eUJaIT7+ChZ9jJvyfHNCXiPKp6MsB8Ha8vzykUTOjh6YQBcPu1EtoqHC9AkLBQIXv2q61VIY9+CZwdTtk4eQ/Lr92XfH9Fz/M8locN+r5jg4krV04Z3sVogqRIIQbQiNUgbNn8CBZ8vNm+Lt/5/htQDC3G01dRPOX6Jc1jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693863; c=relaxed/simple;
-	bh=TQk5GAC+yIGchf5sKPu+b/cjf50MpzJOnDdeqqovitk=;
+	s=arc-20240116; t=1743693973; c=relaxed/simple;
+	bh=lloxQRw7LtSD0oDkqj09DVX+e1XGoQfz08dGtN08FiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjGEPsWICtJOV/2zRPh65tgwwHAFLQjPGJ/4pcSKHWu6ciuNkBYZXzc+2cRJoxEqzq/vLk3XXSo/7eX6hYSotraLX3DRF8GnUwvNsOCYEYIqJ+j37FFBacKz/xHA75/AkrjIbk4FSxldoAWPRaH2fkMZfOF/C3CYosIusn7ATNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swwdCyk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11959C4CEE3;
-	Thu,  3 Apr 2025 15:24:22 +0000 (UTC)
+	 MIME-Version; b=nSt59xiSIz5NIMKK1V9T+cABcJ5HGEnlKviTsp02jzjFP5QlXfIjXr3rr+Rzp2aVpTMd3BC1/8+DlRj/FugSVmEP5MCp9Yfls7R7hvVGJBZiXsbGaSIja3KB7RzoO68OTFsrcBTNtKL9IiqDKG9rxy5mNnEQdByvMdkgliBNQZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV7X03bO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD28C4CEE3;
+	Thu,  3 Apr 2025 15:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693863;
-	bh=TQk5GAC+yIGchf5sKPu+b/cjf50MpzJOnDdeqqovitk=;
+	s=korg; t=1743693972;
+	bh=lloxQRw7LtSD0oDkqj09DVX+e1XGoQfz08dGtN08FiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swwdCyk1NHCxcr0o7cAknTXcr856mOK3LwjnfH5jaqmZpldyfxgVw1hS5Blfr//tp
-	 J6/JQEJQu0VIMbBe7kb9S7ATtCh+2MlAdcsJZXpqqCsvyc4nluvlWuKby50I7wyBh9
-	 RREhzBy/zqUt9AA6ZSOEwdSe9DpWp1zHIWOrwwAs=
+	b=SV7X03bOq7SQyIjndTijh+FMMdmE5zXAm+4OOunAYzoFIEtuFoQkst3hqy7gt5GKi
+	 +Hjvz7AUMfSYtnES7EOgVOF4RStQWdkfC4qPTcjwNDCOlfur1Md29fjK7qpT1ntPs9
+	 HFvQvR6VEctH42qCiIUmhDK3DRRiTZfPx87Y6Yg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.12 12/22] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 01/26] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
 Date: Thu,  3 Apr 2025 16:20:22 +0100
-Message-ID: <20250403151622.390649696@linuxfoundation.org>
+Message-ID: <20250403151622.457061895@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-commit f5cb528d6441eb860250a2f085773aac4f44085e upstream.
+commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
 
-According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
-register only can be changed when the transmitter is disabled.
-So disable the transmitter before changing RS485 related registers and
-re-enable it after the change is done.
+Many Poly/Plantronics headset families name the feature, input,
+and/or output units in a such a way to produce control names
+that are not recognized by user space. As such, the volume and
+mute events do not get routed to the headset's audio controls.
 
-Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
+As an example from a product family:
+
+The microphone mute control is named
+Headset Microphone Capture Switch
+and the headset volume control is named
+Headset Earphone Playback Volume
+
+The quirk fixes these to become
+Headset Capture Switch
+Headset Playback Volume
+
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1483,6 +1483,19 @@ static int lpuart32_config_rs485(struct
- 
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
-+	u32 ctrl;
-+
-+	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
-+	ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+	if (ctrl & UARTCTRL_TE) {
-+		/* wait for the transmit engine to complete */
-+		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
-+		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
-+
-+		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
-+			cpu_relax();
-+	}
-+
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	if (rs485->flags & SER_RS485_ENABLED) {
-@@ -1502,6 +1515,10 @@ static int lpuart32_config_rs485(struct
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3575,6 +3575,52 @@ static void snd_dragonfly_quirk_db_scale
  	}
+ }
  
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
++/*
++ * Some Plantronics headsets have control names that don't meet ALSA naming
++ * standards. This function fixes nonstandard source names. By the time
++ * this function is called the control name should look like one of these:
++ * "source names Playback Volume"
++ * "source names Playback Switch"
++ * "source names Capture Volume"
++ * "source names Capture Switch"
++ * If any of the trigger words are found in the name then the name will
++ * be changed to:
++ * "Headset Playback Volume"
++ * "Headset Playback Switch"
++ * "Headset Capture Volume"
++ * "Headset Capture Switch"
++ * depending on the current suffix.
++ */
++static void snd_fix_plt_name(struct snd_usb_audio *chip,
++			     struct snd_ctl_elem_id *id)
++{
++	/* no variant of "Sidetone" should be added to this list */
++	static const char * const trigger[] = {
++		"Earphone", "Microphone", "Receive", "Transmit"
++	};
++	static const char * const suffix[] = {
++		" Playback Volume", " Playback Switch",
++		" Capture Volume", " Capture Switch"
++	};
++	int i;
 +
-+	if (ctrl & UARTCTRL_TE)
-+		lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	for (i = 0; i < ARRAY_SIZE(trigger); i++)
++		if (strstr(id->name, trigger[i]))
++			goto triggered;
++	usb_audio_dbg(chip, "no change in %s\n", id->name);
++	return;
 +
- 	return 0;
++triggered:
++	for (i = 0; i < ARRAY_SIZE(suffix); i++)
++		if (strstr(id->name, suffix[i])) {
++			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
++			snprintf(id->name, sizeof(id->name), "Headset%s",
++				 suffix[i]);
++			return;
++		}
++	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
++}
++
+ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
+ 				  struct usb_mixer_elem_info *cval, int unitid,
+ 				  struct snd_kcontrol *kctl)
+@@ -3592,5 +3638,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
+ 			cval->min_mute = 1;
+ 		break;
+ 	}
++
++	/* ALSA-ify some Plantronics headset control names */
++	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
++	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
++		snd_fix_plt_name(mixer->chip, &kctl->id);
  }
  
 
