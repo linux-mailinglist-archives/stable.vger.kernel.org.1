@@ -1,140 +1,93 @@
-Return-Path: <stable+bounces-127673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DABBA7A6EA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:33:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32128A7A709
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA8917A889
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E56C7A61D0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35822505DD;
-	Thu,  3 Apr 2025 15:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C2024E000;
+	Thu,  3 Apr 2025 15:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeW1j71F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYR9xEbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B156F188A3A;
-	Thu,  3 Apr 2025 15:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE6223708
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 15:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743694016; cv=none; b=ttz4SW2gyu5Cu+dyc4O/To85PECTXR2IVdRrmJzIvDwLyA5J51mzhkLn5Cu13iuGkTcyVG6K/p8yD4gnwuoPRfNeWIkzG1nJwWj1woprAzYTUdmo5qEzAEfNIMkM/yIoxWSPQMrLWz2lymBjuCA6PEoDOHyg5g3CT3PBQU8pn7U=
+	t=1743694716; cv=none; b=rB6mYV94bbqL3a4ykoHgHsp4SKZomDO/xER3LV3DzwPMxPNAyleIKhU4ogG+svLhEr8bcUaiEqiIu56c5NxSr4PLCaTP+60cImGDjCvRPIzJbJcDg1jRscvv7WGjNUZfBvlXwbht2AX6CRCMuC9BC2AWOwPjPR+3Wvarmknw1a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743694016; c=relaxed/simple;
-	bh=ZplhR95TTUrFjd1kkzVPuYGGzIdy6KV2Ey7eNXr0ev0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpiWsq4YdAn0J236ObdU6mh/t9pECSPRilBWsWPOBGYOWtE8iGb+krQNn9+2cPcedZTlcAPfReIhlT3bEIAq0T2s/De4VWFBTxrVD0YZ1mclZ9j4gomlYOylqzoy33khaUEmNynHkhEqw/ilC4qENKpwATeG9I/1gu9XWauGLs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeW1j71F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E3BC4CEE3;
-	Thu,  3 Apr 2025 15:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743694016;
-	bh=ZplhR95TTUrFjd1kkzVPuYGGzIdy6KV2Ey7eNXr0ev0=;
+	s=arc-20240116; t=1743694716; c=relaxed/simple;
+	bh=Se0R1BUtqVb1qs0h/P0tt+4CzrtEA5CGiQsgwZ9DBxU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OlPViehfAKG6m/HlbTGtBSQjXjfko4AAKOW6RrrIosEloHD1Mn0FM4VX5f/dQhvtaCSXSdVGFHkBhRhLSydYDaobrBC9IYqYcU3c/8OVs0GYsv271rq8brJJ8xiMDbWhpmTaob0VzGHcJ4cNl+p3ErvlsaOY1RLVOwwiKe/8M5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYR9xEbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5F0C4CEE3;
+	Thu,  3 Apr 2025 15:38:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743694715;
+	bh=Se0R1BUtqVb1qs0h/P0tt+4CzrtEA5CGiQsgwZ9DBxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeW1j71Fw+Iy8b14QsriHbVoUf5vpi/3BKESXIMVMBcAWznC8hBsel87PordUhTOD
-	 fPuUhxeV0kmnW7v1TiL2M8g7bmlXeZ6ZAGMqJ/Z7CxvSsIOU2ORtWlVoX2oetTFtiH
-	 2dMdK1NywK1VDw/MA5GDxV26vT2e15Jkq12k1byg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=kYR9xEbglRX+QYZU4h2oapXZSXUEM1NjP9d8AHOaAcY8j+njbIW05ISCNjHaLLnmX
+	 NQzrSk60H3PsiiX0VgNsIy9xJYumVklw+CSsSj/QrXtSf2wgE5hhXehxmDgUP7eTxo
+	 Fe9o3OCGfxhFITQk2GZRA0IYYzj8ypuERWRMrFTQChjmFZHx//avSM15w/Gtf0DvIO
+	 6ubcZm5ZBFXwn4U6FRzpLMUkGgrLwQCP9OuUqBeix4+fn93V/3YPQ0ZyAGLPJJDke+
+	 Ikm7EhDjtAgbl4CphtCBQL7ZqZbnElIHJO7bOMLsSRZ9+60UTx5XChVdUd8xst4w8Z
+	 HlumpHTeoAkIA==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 26/26] usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
-Date: Thu,  3 Apr 2025 16:20:47 +0100
-Message-ID: <20250403151623.171251386@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 v2 08/10] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+Date: Thu,  3 Apr 2025 11:38:30 -0400
+Message-Id: <20250403110634-167416a09a632a75@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250403-stable-sve-5-15-v2-8-30a36a78a20a@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+[ Sasha's backport helper bot ]
 
-------------------
+Hi,
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-commit a7bb96b18864225a694e3887ac2733159489e4b0 upstream.
+The upstream commit SHA1 provided is correct: 459f059be702056d91537b99a129994aa6ccdd35
 
-Fix potential dereferencing of ERR_PTR() in find_format_by_pix()
-and uvc_v4l2_enum_format().
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Mark Brown<broonie@kernel.org>
+Commit author: Mark Rutland<mark.rutland@arm.com>
 
-Fix the following smatch errors:
+Status in newer kernel trees:
+6.13.y | Present (different SHA1: d2bee9b77726)
+6.12.y | Present (different SHA1: a504f87f3a50)
+6.6.y | Present (different SHA1: e9532540dae7)
+6.1.y | Not found
 
-drivers/usb/gadget/function/uvc_v4l2.c:124 find_format_by_pix()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-drivers/usb/gadget/function/uvc_v4l2.c:392 uvc_v4l2_enum_format()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-Also, fix similar issue in uvc_v4l2_try_format() for potential
-dereferencing of ERR_PTR().
-
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Link: https://lore.kernel.org/r/20240815102202.594812-1-abhishektamboli9@gmail.com
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note: The patch differs from the upstream commit:
 ---
- drivers/usb/gadget/function/uvc_v4l2.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+1:  459f059be7020 < -:  ------------- KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+-:  ------------- > 1:  0c935c049b5c1 Linux 5.15.179
+---
 
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -121,6 +121,9 @@ static struct uvcg_format *find_format_b
- 	list_for_each_entry(format, &uvc->header->formats, entry) {
- 		const struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
- 
-+		if (IS_ERR(fmtdesc))
-+			continue;
-+
- 		if (fmtdesc->fcc == pixelformat) {
- 			uformat = format->fmt;
- 			break;
-@@ -240,6 +243,7 @@ uvc_v4l2_try_format(struct file *file, v
- 	struct uvc_video *video = &uvc->video;
- 	struct uvcg_format *uformat;
- 	struct uvcg_frame *uframe;
-+	const struct uvc_format_desc *fmtdesc;
- 	u8 *fcc;
- 
- 	if (fmt->type != video->queue.queue.type)
-@@ -265,7 +269,10 @@ uvc_v4l2_try_format(struct file *file, v
- 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
- 	fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
- 	fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
--	fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
-+	fmtdesc = to_uvc_format(uformat);
-+	if (IS_ERR(fmtdesc))
-+		return PTR_ERR(fmtdesc);
-+	fmt->fmt.pix.pixelformat = fmtdesc->fcc;
- 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
- 	fmt->fmt.pix.priv = 0;
- 
-@@ -375,6 +382,9 @@ uvc_v4l2_enum_format(struct file *file,
- 		return -EINVAL;
- 
- 	fmtdesc = to_uvc_format(uformat);
-+	if (IS_ERR(fmtdesc))
-+		return PTR_ERR(fmtdesc);
-+
- 	f->pixelformat = fmtdesc->fcc;
- 
- 	return 0;
+Results of testing on various branches:
 
-
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
