@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87529A7A6C6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B254A7A6E6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 856663BB6AF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3286178A97
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DF12512CC;
-	Thu,  3 Apr 2025 15:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2480D250BE5;
+	Thu,  3 Apr 2025 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUpry9Qp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obLlXEu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C2C2505DD;
-	Thu,  3 Apr 2025 15:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CB024EF7A;
+	Thu,  3 Apr 2025 15:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693946; cv=none; b=NRvDXaN2+brtPd/PvKLPEij6iKzuzCg1fGNCcgNtAvgegfOVNlccil6DBcnYus9YOlMfHOrOa9arZMC93/pg8yHVXzh4e5KQBzO6xrC1fAazZBF1YmnMRzD/a2Kd1oGAL7tbTHOk6WhSu9JbcRtN0uZbB7WNDZnwuRBBG8gq0XM=
+	t=1743693992; cv=none; b=p/8UzLftKcZtxyOGNH8ULbsxXiag18HhXqCiYsqq8hAliaCoxJj79TNoINz292rA5uvWD6maqMYQAspvLd8822edV9JfbyTUiD0128dFGIct6t6MwQn095akzW9KmexKRtmpiMtm0x8VnmNTf1z3rUsqTLXjo6uE4UnTduvptWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693946; c=relaxed/simple;
-	bh=My7WQz5GxVFAH1VtP154X+WGPAWTpR2ztGArcWIzCeg=;
+	s=arc-20240116; t=1743693992; c=relaxed/simple;
+	bh=G1XRTrEMGntnNfoKZku0CH5jH1S/5jfbjBXTuJy9jg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QByWaGGaUHhi34FewsIN7kIM0ANrIzcY77QNuceoP0tsKCK1gnyJ1iU/GwH98qJ2uZrhHEV1AJzQ0KojFy/kVQmSlPzH07MAnvPGQ/LK3mng5h6PRCzJZZN05F7qBeDaqXV47FptUH4cE9RfyZcrzuyLDUxZGtD1Oh8NtRFS2+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUpry9Qp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE543C4CEE3;
-	Thu,  3 Apr 2025 15:25:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P/Ucloxiq/RP6SKIl+nHPn7YnsnhCvvlmm30PRM2c8zNtVTFU4rkwHSYC2lGGEwIe9Da3IXPRtEF6njD9J8IzCLpHKRwT4YJmWvoh/t8Jwa77stLsBlyrxyKvldWfg0zUTzWcgrpQ6U7tpMNGXkrK2EsJtZ0yHM2RqgOq8Mh7H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obLlXEu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07680C4CEE3;
+	Thu,  3 Apr 2025 15:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693946;
-	bh=My7WQz5GxVFAH1VtP154X+WGPAWTpR2ztGArcWIzCeg=;
+	s=korg; t=1743693992;
+	bh=G1XRTrEMGntnNfoKZku0CH5jH1S/5jfbjBXTuJy9jg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUpry9Qp6vGg2DNeQwAEcBcEwehRh1ou46UseQZLE0224s++pc/+CzoOSe0AW2ijm
-	 qenXv0Jnbkmdz87X13j3x5uaX4WmBVbsODYXDzALYvyIzJ4kpgJAVd4qkpZTe3xb11
-	 9dGPncSJ7nBobfhwCf+iPIsZ9+ipMHNLApi59aOI=
+	b=obLlXEu0/QQFR5ducrmqxV8QMwmi/kSgo40e/30jzIFnr5sAMb50GvKMAcmflDI4g
+	 7s8W4/xJQ00illxnxkXZ0mcl6Y2P27Mu9lcFCpUq0WIeVgKr3h9n4qFkou2fn0v9Ra
+	 8ppfuFEn1iBwAP1nmA2XqttKwiHLFSDgJ0jTJmAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Cheick Traore <cheick.traore@foss.st.com>
-Subject: [PATCH 6.13 21/23] serial: stm32: do not deassert RS485 RTS GPIO prematurely
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.6 17/26] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
 Date: Thu,  3 Apr 2025 16:20:38 +0100
-Message-ID: <20250403151622.894026722@linuxfoundation.org>
+Message-ID: <20250403151622.921045116@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-commit 2790ce23951f0c497810c44ad60a126a59c8d84c upstream.
+commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
 
-If stm32_usart_start_tx is called with an empty xmit buffer, RTS GPIO
-could be deasserted prematurely, as bytes in TX FIFO are still
-transmitting.
-So this patch remove rts disable when xmit buffer is empty.
+Hardware initialize of the timer counter channel does not occur on probe
+thus leaving the Count in an undefined state until the first
+function_write() callback is executed. Fix this by performing the proper
+hardware initialization during probe.
 
-Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Link: https://lore.kernel.org/r/20250320152540.709091-1-cheick.traore@foss.st.com
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Reported-by: Csókás Bence <csokas.bence@prolan.hu>
+Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
+Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/stm32-usart.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct
- {
- 	struct tty_port *tport = &port->state->port;
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -368,6 +368,25 @@ static int mchp_tc_probe(struct platform
+ 			channel);
+ 	}
  
--	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
--		stm32_usart_rs485_rts_disable(port);
-+	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
- 		return;
--	}
- 
- 	stm32_usart_rs485_rts_enable(port);
- 
++	/* Disable Quadrature Decoder and position measure */
++	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
++	if (ret)
++		return ret;
++
++	/* Setup the period capture mode */
++	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
++				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
++				 ATMEL_TC_TCCLKS,
++				 ATMEL_TC_CMR_MASK);
++	if (ret)
++		return ret;
++
++	/* Enable clock and trigger counter */
++	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
++			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
++	if (ret)
++		return ret;
++
+ 	priv->tc_cfg = tcb_config;
+ 	priv->regmap = regmap;
+ 	counter->name = dev_name(&pdev->dev);
 
 
 
