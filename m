@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-127818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6313FA7ABF6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:30:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD04A7AC1E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 799411895980
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26AA016A2ED
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410872690CB;
-	Thu,  3 Apr 2025 19:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B70D256C84;
+	Thu,  3 Apr 2025 19:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EE6KPY94"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UH9FRWjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7887268FD7;
-	Thu,  3 Apr 2025 19:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199552571A6;
+	Thu,  3 Apr 2025 19:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707155; cv=none; b=DbxZICA5vGp9kH2hM5gn1gFK/uBlKe2O1HVm1TcC2tZQE6JD154dz/Nu/vjrAIhts8fSTPk+BHu4FG5awvLbZXKFw25HbAOY20LQw22+mW16Ib21yR5vzMRRfDJeGYgJ/k6ahZVLMxcLQMYP8Ah/2zPbE2CQ1K5hrWBB0a7KQFQ=
+	t=1743707162; cv=none; b=fgDCmNRPVZ2ub6m2GbHadw2eoTPuhqEmE5yDULLC4meDSin2s9nd+BM+FCxklv/yfLMnMquXL+ikKibF9tdhKaf5bZmDhLG5oU0boZ+Xi8T0jXMj+pmiv87wZdolzytfIsWW4+tyv93HYRmlbeOgTKqpiI8w8eJQofj1ZFwWr+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707155; c=relaxed/simple;
-	bh=pbn86FTWVBRDEjw1khVpontfVhI57wkmC0bHWaQKsv4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kHX7w9+H1/dEtjPVKoeWMk45RdeYV8tok1vj2UhcE0vZOBL7GsqzVEA8NR93JdH2llhKPZt4V3kZ5iBgQuvhZUfW2qiCWanJwJf7a7dhUINRSBo3o/E4FW09HvvivbDmMMBldilS1juJ6Rcclr3eB+MVKtwhnRKuKdbtoiEEZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EE6KPY94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42E0C4CEE3;
-	Thu,  3 Apr 2025 19:05:52 +0000 (UTC)
+	s=arc-20240116; t=1743707162; c=relaxed/simple;
+	bh=/t8vcH3qynDQfOLkw7QMZ8Gv/WuYDCcCpzwNN7E5DRU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qpQuV+K5iVDyd7cSNxoeJqueddo26wPz5aRNyX6xwowfoQLtB8ig2RaPgh4xdD24hLPEkBoX1k7/msXevz/WcuDegtv+cFg7vMsKVXOU4bV0y7bVzgUdrdc5LmImuGyCk7YltxR+QSa5wNsntvPOxyrCQ1qd/7bwtdQBJS46naE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UH9FRWjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9538FC4CEE3;
+	Thu,  3 Apr 2025 19:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707154;
-	bh=pbn86FTWVBRDEjw1khVpontfVhI57wkmC0bHWaQKsv4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EE6KPY94/dkiny3KBso8Fo+CZ/Ke3maDYFWrY1y1uhbdm2IAeeegjs2B1j7RHsSug
-	 1PTwrP1Tbu29daxZZw8gl61V/MWStsVoJfl3qvK+4U1fdqRF8zN3JM7GVyvXu+QUyX
-	 TZLE6+FJnCjHbGOapMiACBNRuQMTXM1ku9O1yGJXi5znfsxSPYnim73QoTdz0DsVJR
-	 gIs/glnA30YU74iH1GsOt/OuaULBOhBbvwWdKDzG/Nt6Cms7OEdKm7ufossvGa33lI
-	 WE2/LnWl36D5yzhMdbO6LY1B9qSTXxgIofL5o3agPUssaKH/NayJgiDzenxpaedmEH
-	 P+Gut0oF337Lg==
+	s=k20201202; t=1743707161;
+	bh=/t8vcH3qynDQfOLkw7QMZ8Gv/WuYDCcCpzwNN7E5DRU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UH9FRWjGu5ZwFHUb17PreHUrToRiNIhpdM3T8rDUoG/Ma/mnIL2Xq/SEmsA4GzYPL
+	 2SFpe1H+2b9+ar734pC0bWtVPl+uriDxJNV4J/uq/hhCpK5eKXIQr0h3vFYRssJe0g
+	 3lMw5rfum8T9pV5+YonSLUGqTCDtB9ulgwenHnuGJDrxwVgTUquLlqMm8VvBT3qECh
+	 rPiNqUnHN2KCoJkqvCwurYQ2GQ5zlMB40sD/oAKl3xDQGUNUEgNWRdXD7rYs+/wxi7
+	 w/Sl5YiP1FZLeQuJQCBgdpa2rxhKAC/i8ofGyv7FHV8ALPzdn4cp6Df/0NSDlyG/R1
+	 VP9XIYX2HXgmg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pedro Nishiyama <nishiyama.pedro@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: P Praneesh <quic_ppranees@quicinc.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 49/49] Bluetooth: Add quirk for broken READ_PAGE_SCAN_TYPE
-Date: Thu,  3 Apr 2025 15:04:08 -0400
-Message-Id: <20250403190408.2676344-49-sashal@kernel.org>
+	jjohnson@kernel.org,
+	ath11k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 01/47] wifi: ath11k: Fix DMA buffer allocation to resolve SWIOTLB issues
+Date: Thu,  3 Apr 2025 15:05:09 -0400
+Message-Id: <20250403190555.2677001-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
-References: <20250403190408.2676344-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,57 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.9
+X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 127881334eaad639e0a19a399ee8c91d6c9dc982 ]
+[ Upstream commit 1bcd20981834928ccc5d981aacb806bb523d8b29 ]
 
-Some fake controllers cannot be initialized because they return a smaller
-report than expected for READ_PAGE_SCAN_TYPE.
+Currently, the driver allocates cacheable DMA buffers for rings like
+HAL_REO_DST and HAL_WBM2SW_RELEASE. The buffers for HAL_WBM2SW_RELEASE
+are large (1024 KiB), exceeding the SWIOTLB slot size of 256 KiB. This
+leads to "swiotlb buffer is full" error messages on systems without an
+IOMMU that use SWIOTLB, causing driver initialization failures. The driver
+calls dma_map_single() with these large buffers obtained from kzalloc(),
+resulting in ring initialization errors on systems without an IOMMU that
+use SWIOTLB.
 
-Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+To address these issues, replace the flawed buffer allocation mechanism
+with the appropriate DMA API. Specifically, use dma_alloc_noncoherent()
+for cacheable DMA buffers, ensuring proper freeing of buffers with
+dma_free_noncoherent().
+
+Error log:
+[   10.194343] ath11k_pci 0000:04:00.0: swiotlb buffer is full (sz:1048583 bytes), total 32768 (slots), used 2529 (slots)
+[   10.194406] ath11k_pci 0000:04:00.0: failed to set up tcl_comp ring (0) :-12
+[   10.194781] ath11k_pci 0000:04:00.0: failed to init DP: -12
+
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+
+Reported-by: Tim Harvey <tharvey@gateworks.com>
+Closes: https://lore.kernel.org/all/20241210041133.GA17116@lst.de/
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Tested-by: Tim Harvey <tharvey@gateworks.com>
+Link: https://patch.msgid.link/20250119164219.647059-2-quic_ppranees@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_sync.c    | 3 ++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp.c | 35 +++++++++-------------------
+ 1 file changed, 11 insertions(+), 24 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 6f06d20093a7a..8d4c5cb1496c9 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -362,6 +362,14 @@ enum {
- 	 * This quirk must be set before hci_register_dev is called.
- 	 */
- 	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
-+
-+	/* When this quirk is set, the HCI_OP_READ_PAGE_SCAN_TYPE command is
-+	 * skipped. This is required for a subset of the CSR controller clones
-+	 * which erroneously claim to support it.
-+	 *
-+	 * This quirk must be set before hci_register_dev is called.
-+	 */
-+	HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE,
- };
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index fbf666d0ecf1d..f124b7329e1ac 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index bb455e96a715a..cb4d47ae129e8 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4156,7 +4156,8 @@ static int hci_read_page_scan_type_sync(struct hci_dev *hdev)
- 	 * support the Read Page Scan Type command. Check support for
- 	 * this command in the bit mask of supported commands.
- 	 */
--	if (!(hdev->commands[13] & 0x01))
-+	if (!(hdev->commands[13] & 0x01) ||
-+	    test_bit(HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE, &hdev->quirks))
- 		return 0;
+ #include <crypto/hash.h>
+@@ -104,14 +104,12 @@ void ath11k_dp_srng_cleanup(struct ath11k_base *ab, struct dp_srng *ring)
+ 	if (!ring->vaddr_unaligned)
+ 		return;
  
- 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_PAGE_SCAN_TYPE,
+-	if (ring->cached) {
+-		dma_unmap_single(ab->dev, ring->paddr_unaligned, ring->size,
+-				 DMA_FROM_DEVICE);
+-		kfree(ring->vaddr_unaligned);
+-	} else {
++	if (ring->cached)
++		dma_free_noncoherent(ab->dev, ring->size, ring->vaddr_unaligned,
++				     ring->paddr_unaligned, DMA_FROM_DEVICE);
++	else
+ 		dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligned,
+ 				  ring->paddr_unaligned);
+-	}
+ 
+ 	ring->vaddr_unaligned = NULL;
+ }
+@@ -249,25 +247,14 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab, struct dp_srng *ring,
+ 		default:
+ 			cached = false;
+ 		}
+-
+-		if (cached) {
+-			ring->vaddr_unaligned = kzalloc(ring->size, GFP_KERNEL);
+-			if (!ring->vaddr_unaligned)
+-				return -ENOMEM;
+-
+-			ring->paddr_unaligned = dma_map_single(ab->dev,
+-							       ring->vaddr_unaligned,
+-							       ring->size,
+-							       DMA_FROM_DEVICE);
+-			if (dma_mapping_error(ab->dev, ring->paddr_unaligned)) {
+-				kfree(ring->vaddr_unaligned);
+-				ring->vaddr_unaligned = NULL;
+-				return -ENOMEM;
+-			}
+-		}
+ 	}
+ 
+-	if (!cached)
++	if (cached)
++		ring->vaddr_unaligned = dma_alloc_noncoherent(ab->dev, ring->size,
++							      &ring->paddr_unaligned,
++							      DMA_FROM_DEVICE,
++							      GFP_KERNEL);
++	else
+ 		ring->vaddr_unaligned = dma_alloc_coherent(ab->dev, ring->size,
+ 							   &ring->paddr_unaligned,
+ 							   GFP_KERNEL);
 -- 
 2.39.5
 
