@@ -1,61 +1,75 @@
-Return-Path: <stable+bounces-127962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60650A7ADA9
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713FEA7ADAD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205FE16D8F0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:05:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F4AC3A936A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E4525D540;
-	Thu,  3 Apr 2025 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC45125D8E6;
+	Thu,  3 Apr 2025 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IugURZ5p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Izgpaq8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B2425D200;
-	Thu,  3 Apr 2025 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87832253B56;
+	Thu,  3 Apr 2025 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707610; cv=none; b=O/1OxFNkXdYjY59FKnpTr4Bkvb3BIhigUdojlc3pMkRnqpyFd1Lu9ZuPxGx40tQTFwsaVZBlJui0JmHUNdTJ7tO3fUjPstzY2rtdpWhkOL1gIoMjSvcGVNvLAHK/Vud9C1vMwbr620ScwzLitlGSP9DuzOmICkgOljj9CYoQCeo=
+	t=1743707617; cv=none; b=TrO3ynk6jDBrVt8Rt5YI5FbON7YCjRx8sDHS5EpKjvvKqapWoXq44QqqHR/1YG7veNPdZqWj4jDITw5LnIsm2541MTPJnwNpLf9iAkoewsW/g84Lt8XSdwIqkQBycLQBd22V7O9vU7DlUaJyPwhESrzqltb+hUVhXU3lX6bdWBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707610; c=relaxed/simple;
-	bh=sG/AiAstuaQ/32X+ZrLgYD5zESvAfyYQtKUJSAJuaQo=;
+	s=arc-20240116; t=1743707617; c=relaxed/simple;
+	bh=QoFL3C+pqb3ZA6QT+RVsVDHuPJ7V7FTtn3PQ6iuLvYM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QZlR116SatF2ORDYYfq8ZPT9Uwbd0EY7NgBuEtBvUD4qurFPqI/Q7IiRw4OSQgBhpJJ7wa1wu6hoO1XZDmAOM3r4JOva2P41VWixyXvN/0Pu27HpxljuRMI2HDdRwXuZgnPV9GW0B9oNqleplgW/GdQCyQf4C+qpDAkw3QqCa64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IugURZ5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EFFC4CEE3;
-	Thu,  3 Apr 2025 19:13:29 +0000 (UTC)
+	 MIME-Version; b=EcCzTILDPaaEj/BuSLhgPbK3MSTCv3yfN99BzNjXQHZAq5uBipd2z+0U012OQlSb8jJkmr1SDgbc191xUtrvDab9uzgKk5mKo4R1lq8tS1TnbibOZkIPClFy8fqfLJpN9aBEgQ+BCO7/Y8IKo8lnZGsL17Il0oVmixR5N9/ENOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Izgpaq8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F908C4CEE3;
+	Thu,  3 Apr 2025 19:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707610;
-	bh=sG/AiAstuaQ/32X+ZrLgYD5zESvAfyYQtKUJSAJuaQo=;
+	s=k20201202; t=1743707617;
+	bh=QoFL3C+pqb3ZA6QT+RVsVDHuPJ7V7FTtn3PQ6iuLvYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IugURZ5pNC5NXoe4xz/MbFEQMGuOn1atcWYLoYWN1/jDLoN8ToVEKNMNg92ZSsBQF
-	 X+w7wyGBoL1nnBzSxXcFXzdCIgX3cGt4MAHdSdVQMmPPn2/wDszCu8IoAHiF0LsR8X
-	 NDgLKHj6Bntp6oa9mWfKsoZp9kwyJ74sDz3bgKVzZD48MmG73prythTH1DBNde5PNT
-	 DwmYUFOTvnfmKV0DGY55bb4QdCyW09HCEBQsmx7fDRZjJILQbESHduVIBQzFHkEkpI
-	 WDc0KlvOUicmQxEPEywydy9Mmq9sQCgq70JJyNXtS8Fv7Sx8v6znF7vFBkq1OdEnPs
-	 nx2d9rTX/qsPQ==
+	b=Izgpaq8os+x9/9ObeXmI68fhd3abzjL9J85u2ze8Y3L/SZmcQJRK1yfIa5sg+yk2j
+	 31ga+TSYegSRTbvIwzh3Jx0GxO+2q5KId3FITKAMQBIntx6opUO1CW/N1hy1j9el/a
+	 e82QXHZf2CFxk4Kpm97fTOmr6vBO12PmzWyHPoJ0TU9qtq6mIZ8XnISEE8RZYIAXwf
+	 RTUX0gk5jZK6DaYyJNOdIyUfn6C4LNaPtwqkui+B0JVyd/OT8jpGux9VV9b9h/fDt/
+	 UqrsKuPdmOH1kDOcXutuUrUzG6T1S3OrBjazIggQgxfEl7uU7qfwvHDXRJ9iTM6AJh
+	 1jURVmUFMnSww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+Cc: Zhikai Zhai <zhikai.zhai@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
+	bhuvanachandra.pinninti@amd.com,
+	chiahsuan.chung@amd.com,
+	Aric.Cyr@amd.com,
+	siqueira@igalia.com,
+	wayne.lin@amd.com,
+	alex.hung@amd.com,
+	mwen@igalia.com,
+	tjakobi@math.uni-bielefeld.de,
+	peterson.guo@amd.com,
+	ivlipski@amd.com,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 07/44] drm/xe/vf: Don't try to trigger a full GT reset if VF
-Date: Thu,  3 Apr 2025 15:12:36 -0400
-Message-Id: <20250403191313.2679091-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 08/44] drm/amd/display: Update Cursor request mode to the beginning prefetch always
+Date: Thu,  3 Apr 2025 15:12:37 -0400
+Message-Id: <20250403191313.2679091-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -70,117 +84,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Zhikai Zhai <zhikai.zhai@amd.com>
 
-[ Upstream commit 459777724d306315070d24608fcd89aea85516d6 ]
+[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
 
-VFs don't have access to the GDRST(0x941c) register that driver
-uses to reset a GT. Attempt to trigger a reset using debugfs:
+[Why]
+The double buffer cursor registers is updated by the cursor
+vupdate event. There is a gap between vupdate and cursor data
+fetch if cursor fetch data reletive to cursor position.
+Cursor corruption will happen if we update the cursor surface
+in this gap.
 
- $ cat /sys/kernel/debug/dri/0000:00:02.1/gt0/force_reset
+[How]
+Modify the cursor request mode to the beginning prefetch always
+and avoid wraparound calculation issues.
 
-or due to a hang condition detected by the driver leads to:
-
- [ ] xe 0000:00:02.1: [drm] GT0: trying reset from force_reset [xe]
- [ ] xe 0000:00:02.1: [drm] GT0: reset queued
- [ ] xe 0000:00:02.1: [drm] GT0: reset started
- [ ] ------------[ cut here ]------------
- [ ] xe 0000:00:02.1: [drm] GT0: VF is trying to write 0x1 to an inaccessible register 0x941c+0x0
- [ ] WARNING: CPU: 3 PID: 3069 at drivers/gpu/drm/xe/xe_gt_sriov_vf.c:996 xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
- [ ] RIP: 0010:xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
- [ ] Call Trace:
- [ ]  <TASK>
- [ ]  ? show_regs+0x6c/0x80
- [ ]  ? __warn+0x93/0x1c0
- [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
- [ ]  ? report_bug+0x182/0x1b0
- [ ]  ? handle_bug+0x6e/0xb0
- [ ]  ? exc_invalid_op+0x18/0x80
- [ ]  ? asm_exc_invalid_op+0x1b/0x20
- [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
- [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
- [ ]  ? xe_gt_tlb_invalidation_reset+0xef/0x110 [xe]
- [ ]  ? __mutex_unlock_slowpath+0x41/0x2e0
- [ ]  xe_mmio_write32+0x64/0x150 [xe]
- [ ]  do_gt_reset+0x2f/0xa0 [xe]
- [ ]  gt_reset_worker+0x14e/0x1e0 [xe]
- [ ]  process_one_work+0x21c/0x740
- [ ]  worker_thread+0x1db/0x3c0
-
-Fix that by sending H2G VF_RESET(0x5507) action instead.
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4078
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131182502.852-1-michal.wajdeczko@intel.com
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c          |  4 ++++
- drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 16 ++++++++++++++++
- drivers/gpu/drm/xe/xe_gt_sriov_vf.h |  1 +
- 3 files changed, 21 insertions(+)
+ .../amd/display/dc/hubp/dcn31/dcn31_hubp.c    |  2 +-
+ .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 22 ++++++++-----------
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 9f4f27d1ef4a9..8a20e6744836c 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -32,6 +32,7 @@
- #include "xe_gt_pagefault.h"
- #include "xe_gt_printk.h"
- #include "xe_gt_sriov_pf.h"
-+#include "xe_gt_sriov_vf.h"
- #include "xe_gt_sysfs.h"
- #include "xe_gt_tlb_invalidation.h"
- #include "xe_gt_topology.h"
-@@ -676,6 +677,9 @@ static int do_gt_reset(struct xe_gt *gt)
- {
- 	int err;
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
+index c2900c79a2d35..7fd582a8a4ba9 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
+@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
+ 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
  
-+	if (IS_SRIOV_VF(gt_to_xe(gt)))
-+		return xe_gt_sriov_vf_reset(gt);
-+
- 	xe_gsc_wa_14015076503(gt, true);
- 
- 	xe_mmio_write32(&gt->mmio, GDRST, GRDOM_FULL);
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-index cca5d57328021..9c30cbd9af6e1 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-@@ -58,6 +58,22 @@ static int vf_reset_guc_state(struct xe_gt *gt)
- 	return err;
+ 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
+-	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
++	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
  }
  
-+/**
-+ * xe_gt_sriov_vf_reset - Reset GuC VF internal state.
-+ * @gt: the &xe_gt
-+ *
-+ * It requires functional `GuC MMIO based communication`_.
-+ *
-+ * Return: 0 on success or a negative error code on failure.
-+ */
-+int xe_gt_sriov_vf_reset(struct xe_gt *gt)
-+{
-+	if (!xe_device_uc_enabled(gt_to_xe(gt)))
-+		return -ENODEV;
-+
-+	return vf_reset_guc_state(gt);
-+}
-+
- static int guc_action_match_version(struct xe_guc *guc,
- 				    u32 wanted_branch, u32 wanted_major, u32 wanted_minor,
- 				    u32 *branch, u32 *major, u32 *minor, u32 *patch)
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
-index 912d208142616..ba6c5d74e326f 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
-@@ -12,6 +12,7 @@ struct drm_printer;
- struct xe_gt;
- struct xe_reg;
+ void hubp31_soft_reset(struct hubp *hubp, bool reset)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
+index 44e405e9bc971..13f9e9b439f6a 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
+@@ -1992,20 +1992,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 	dc->hwss.get_position(&pipe_ctx, 1, &position);
+ 	vpos = position.vertical_count;
  
-+int xe_gt_sriov_vf_reset(struct xe_gt *gt);
- int xe_gt_sriov_vf_bootstrap(struct xe_gt *gt);
- int xe_gt_sriov_vf_query_config(struct xe_gt *gt);
- int xe_gt_sriov_vf_connect(struct xe_gt *gt);
+-	/* Avoid wraparound calculation issues */
+-	vupdate_start += stream->timing.v_total;
+-	vupdate_end += stream->timing.v_total;
+-	vpos += stream->timing.v_total;
+-
+ 	if (vpos <= vupdate_start) {
+ 		/* VPOS is in VACTIVE or back porch. */
+ 		lines_to_vupdate = vupdate_start - vpos;
+-	} else if (vpos > vupdate_end) {
+-		/* VPOS is in the front porch. */
+-		return;
+ 	} else {
+-		/* VPOS is in VUPDATE. */
+-		lines_to_vupdate = 0;
++		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
+ 	}
+ 
+ 	/* Calculate time until VUPDATE in microseconds. */
+@@ -2013,13 +2004,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
+ 	us_to_vupdate = lines_to_vupdate * us_per_line;
+ 
++	/* Stall out until the cursor update completes. */
++	if (vupdate_end < vupdate_start)
++		vupdate_end += stream->timing.v_total;
++
++	/* Position is in the range of vupdate start and end*/
++	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
++		us_to_vupdate = 0;
++
+ 	/* 70 us is a conservative estimate of cursor update time*/
+ 	if (us_to_vupdate > 70)
+ 		return;
+ 
+-	/* Stall out until the cursor update completes. */
+-	if (vupdate_end < vupdate_start)
+-		vupdate_end += stream->timing.v_total;
+ 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
+ 	udelay(us_to_vupdate + us_vupdate);
+ }
 -- 
 2.39.5
 
