@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5516DA7A692
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC643A7A6CD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D2F3B8E38
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 307BB179D3A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF961250BF5;
-	Thu,  3 Apr 2025 15:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115E0250C12;
+	Thu,  3 Apr 2025 15:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhbhx/Sr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTTZoNSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFA024C077;
-	Thu,  3 Apr 2025 15:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C9A2505DD;
+	Thu,  3 Apr 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693812; cv=none; b=QfrY1pS9HjhhdjwtvcKyrjm9xMYi74hSjn+FIKeKvEEqWrAY/oAD3/n6g/1q0/LFG7Fzk585EOC6Y+pNi51UVv7vs7v1I733yupf+5So7yqpZqbzwvr7lopIp+h5n9GAcuTjcxyUwy3f7jIiUq0VKRmQcbVZmbZLMiPO7VVwnVo=
+	t=1743693897; cv=none; b=eSKJH+TNGX1VUMlJBMA8IGYjcKRAm0dJI4gXCOshwEMckRwftzC1rh32ljEgKzQ7EzTe6cqhUWneFT84XjZ1KuT8uysf5fMy6LJqTBIm9jt6Uk974Awbn65G1W+dCodo9XBuLCyZaZCrZl2awVWqSc2vqguTwIn1B2sE/8+GINY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693812; c=relaxed/simple;
-	bh=Dl89KQI48zbz6I7ABLfToTa0qBS0+FKvMzZ/DF59Ht8=;
+	s=arc-20240116; t=1743693897; c=relaxed/simple;
+	bh=hwrTPshLl0KZY7ckvUMoEz8A2I86+B9A/Dt1iGgb2DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kThEaEt2YygvB8rzkQYvzvFkRhusWdq+R9j/SCeUj3vzNiLpLbV2kEwGbED5ppoHyEfMawoBDngu1nM+IHUOR8q1ra9raEZrBGw1i6sZ1oJKnkjqk9Jsp8d94WXBWAFFq6tmjYrR403QPQndlnOHy78cPFg4XT7OGlvn0It83Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhbhx/Sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC54FC4CEE3;
-	Thu,  3 Apr 2025 15:23:31 +0000 (UTC)
+	 MIME-Version; b=tIvsM3a9Y95nhxZY2seS7akM38hUzJ7CIiR+D+Y7H0c9t84+hcyIy1h6tq5XZ1kHtNoq4GRBiTmg/1hylwZkqbvT2MNPpLPBn3S7w93q3YVpW14fU1XuN5nlxAw8sTN/JLL0saoPcn6aJE+kayiDVSCjKb570uMOIXGc1lSDvTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTTZoNSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F180BC4CEE3;
+	Thu,  3 Apr 2025 15:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693812;
-	bh=Dl89KQI48zbz6I7ABLfToTa0qBS0+FKvMzZ/DF59Ht8=;
+	s=korg; t=1743693897;
+	bh=hwrTPshLl0KZY7ckvUMoEz8A2I86+B9A/Dt1iGgb2DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhbhx/SrG/MuwG2hz6T9m8X9KyEviym9iogxGeObDiaVsSF8kgONZXWB9JAXgkmHA
-	 UOEz4TSHP9Wp8204+XhTR9zFl+rdaW9IXImJ+KUGlyOYkwDZHPiFqEIWaGkQGhv97M
-	 BlWqSNRTC9S9ra6J5KuOj9b6mKyX+BBzS3RYLsOk=
+	b=QTTZoNSlN+1YgDTrGbzz8fYH9mnCB9xbpkCA7PSXqdfqltkNrA31EwC3ovSSaEMU5
+	 81An1rdd2ZIP2DCJHETdQVVzQ84f/hl1JlRxFc4jWOSXHEK5kXvTZJPaUNNtrU8/g5
+	 y7QPks+46bs6vBtk+pYYWCYS0xX26IRV7MTV5NqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 13/21] net: usb: qmi_wwan: add Telit Cinterion FN990B composition
+	Dhruv Deshpande <dhrv.d@proton.me>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 07/22] ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
 Date: Thu,  3 Apr 2025 16:20:17 +0100
-Message-ID: <20250403151621.518071241@linuxfoundation.org>
+Message-ID: <20250403151622.253072114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Dhruv Deshpande <dhrv.d@proton.me>
 
-commit 9dba9a45f8ca64a7df32aada14c20a3153af1ac8 upstream.
+commit 35ef1c79d2e09e9e5a66e28a66fe0df4368b0f3d upstream.
 
-Add the following Telit Cinterion FN990B composition:
+The mute LED on this HP laptop uses ALC236 and requires a quirk to function.
+This patch enables the existing quirk for the device.
 
-0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
-        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
-T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN990
-S:  SerialNumber=43b38f19
-C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Tested on my laptop and the LED behaviour works as intended.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Link: https://patch.msgid.link/20250205171649.618162-3-fabio.porcedda@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dhruv Deshpande <dhrv.d@proton.me>
+Link: https://patch.msgid.link/20250317085621.45056-1-dhrv.d@proton.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/qmi_wwan.c |    1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1368,6 +1368,7 @@ static const struct usb_device_id produc
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10441,6 +10441,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
++	SND_PCI_QUIRK(0x103c, 0x881e, "HP Laptop 15s-du3xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
 
 
 
