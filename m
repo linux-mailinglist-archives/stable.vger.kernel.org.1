@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-128067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89108A7AED9
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:36:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B60A7AED6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D313A189BB53
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F4BC17972F
 	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965A1225A4F;
-	Thu,  3 Apr 2025 19:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31920226863;
+	Thu,  3 Apr 2025 19:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIDNBaw8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfxGs8qW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C605225A37;
-	Thu,  3 Apr 2025 19:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A41226527;
+	Thu,  3 Apr 2025 19:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707890; cv=none; b=rseA146vJqIj86Sdlh356SCCw7hCErA02h8tWhCSfNXKm2Bkt4xpF3WzDvtWqoW9TXcfiDmRhZSpYQY7IyCLpwk5ttRybdS4c3kJ7e5KrEvzDPFO9LcDaemq1U9kd8hjWic4iEzxKLDbXlYwNdgOVXUJRUl82qvK5cgdjjeE7KA=
+	t=1743707892; cv=none; b=cT654L4OwvIjLY/ed3u+S02WRbtcSNoCXvKzZVFf/9/SUUTw/55ZP2bMctgi8rl2yDG1OZOphc1JYFsQD7VqvS/zK/Uzx1jIlV+mTBoZWUbXbAvyqxCRpyWWCmwmD+lV2zvnTvxvNVoXL06tBdG4mFNo8H357ldYPxXSz+vHkUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707890; c=relaxed/simple;
-	bh=dKnG5qd+3/3kVo1g7Fg1kZrzyAlc8FuYugQ5qhKCPpQ=;
+	s=arc-20240116; t=1743707892; c=relaxed/simple;
+	bh=4Z0q3Xs/H9AZcmWQTqJHE7x55UJuKGQjIQM0FFvzNiQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AQvgR0FImcTD9blR6iUlVcGD1uQecsgF1OJaR0sMyFu3IZD9TsB9dQO+n55nSgCgeYFLRHoIHvwWKmHmlMxldwpZdOFD4lKYXSP1IWu8HHBNEkwHDDc07/2G3+ZKq439c4XddG+ouiynLtbBxqn/YKoZKQ6MwRK0XbAu1z2Irr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIDNBaw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C4EC4CEE3;
-	Thu,  3 Apr 2025 19:18:08 +0000 (UTC)
+	 MIME-Version; b=NECM8iTnYMVN/o/sY+2/kVtIc65SlhSNmkVOub64qWoQ96FTsxBiU23KME6e1X6fD315ej5Rw4jUyW+9zBOHLD369/w9LC81KvtQ4DS+X/6FpzratHLGkWOVl6nBfjBEMORCbqGohr+feaeVpinvDXsLnyRGctxv7j1ct0PrjmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfxGs8qW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB541C4CEE8;
+	Thu,  3 Apr 2025 19:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707890;
-	bh=dKnG5qd+3/3kVo1g7Fg1kZrzyAlc8FuYugQ5qhKCPpQ=;
+	s=k20201202; t=1743707891;
+	bh=4Z0q3Xs/H9AZcmWQTqJHE7x55UJuKGQjIQM0FFvzNiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIDNBaw8YWZ0EpsyMz26YG4KkoaKjZAciy5UEFdU1XMHs2hyHRfS53L6OI3I+cQb/
-	 59ovMtjq6jzaXDuZgcut3jiHKCpdGbIldR/KA87VoCYqks9zHzuldFMeXtF/SojdUh
-	 re3ksxsfBgzPlb/M5ug6uEpMTcXqOIjfXWN5/7fGJ/I4Syirw48PFCKs8S4gnyGwNv
-	 CGtEpMbjfxk91Pel0Y1AZP6iqJXfXiqI/AKuBui6gT2eqX41Zhj7BUBPbXCJcw09XY
-	 rMNSAGkLGian5su7PxYeKJrBItN6PvAYTNVwjJvYmH2SYDPL0ViGHf4MaigFtyrZIG
-	 HysUy/+KdFoGA==
+	b=GfxGs8qWSAGt+Jlwg+MxSmvQfBM56bLfvZBsT6bcaqNEH62g6gBCq7H+mwyl9R2B8
+	 Bgsudy38bKe+oBZ4RbhUeSNqeDjliXsj4WkaK7UbE+jkHajX/S/3wBcqKu2AnhNmQa
+	 PKxcTjlGLXqCaNTtxStdFLxoZx7wx/IbYuFXVBp5+v5qp/wo/+trCLOzG1tEvEI7b6
+	 7XVYpdx0KB1OYyvgcb/ytvjCwuEiGk4+iKDRphzKqhhRXXGujreUz0Dh1ufvmhYHLX
+	 po3d5lLVQ97WCo//p+oaEb4P1/e3sPGF6gvVwzI1StbS8ox9nhWt/cJVtr7Cnthaqi
+	 27oCkHzogaBng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
-	krzysztof.kozlowski@linaro.org,
-	linux@treblig.org,
-	u.kleine-koenig@baylibre.com,
-	linux-omap@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 29/33] fbdev: omapfb: Add 'plane' value check
-Date: Thu,  3 Apr 2025 15:16:52 -0400
-Message-Id: <20250403191656.2680995-29-sashal@kernel.org>
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 30/33] tracing: probe-events: Add comments about entry data storing code
+Date: Thu,  3 Apr 2025 15:16:53 -0400
+Message-Id: <20250403191656.2680995-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191656.2680995-1-sashal@kernel.org>
 References: <20250403191656.2680995-1-sashal@kernel.org>
@@ -70,55 +65,80 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+Add comments about entry data storing code to __store_entry_arg() and
+traceprobe_get_entry_data_size(). These are a bit complicated because of
+building the entry data storing code and scanning it.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
+This just add comments, no behavior change.
 
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
+Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
 
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
-
-Add check for this value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index 5832485ab998c..c29b6236952b3 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2749,9 +2749,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 16a5e368e7b77..578919962e5df 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -770,6 +770,10 @@ static int check_prepare_btf_string_fetch(char *typename,
+ 
+ #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
+ 
++/*
++ * Add the entry code to store the 'argnum'th parameter and return the offset
++ * in the entry data buffer where the data will be stored.
++ */
+ static int __store_entry_arg(struct trace_probe *tp, int argnum)
  {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
+ 	struct probe_entry_arg *earg = tp->entry_arg;
+@@ -793,6 +797,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
+ 		tp->entry_arg = earg;
+ 	}
  
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
-+
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
++	/*
++	 * The entry code array is repeating the pair of
++	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
++	 * and the rest of entries are filled with [FETCH_OP_END].
++	 *
++	 * To reduce the redundant function parameter fetching, we scan the entry
++	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
++	 * parameter. If it doesn't match, update 'offset' to find the last
++	 * offset.
++	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
++	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
++	 * return data offset so that caller can find the data offset in the entry
++	 * data buffer.
++	 */
+ 	offset = 0;
+ 	for (i = 0; i < earg->size - 1; i++) {
+ 		switch (earg->code[i].op) {
+@@ -826,6 +844,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
+ 	if (!earg)
+ 		return 0;
  
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
++	/*
++	 * earg->code[] array has an operation sequence which is run in
++	 * the entry handler.
++	 * The sequence stopped by FETCH_OP_END and each data stored in
++	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
++	 * stores the data at the data buffer + its offset, and all data are
++	 * "unsigned long" size. The offset must be increased when a data is
++	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
++	 * code array.
++	 */
+ 	for (i = 0; i < earg->size; i++) {
+ 		switch (earg->code[i].op) {
+ 		case FETCH_OP_END:
 -- 
 2.39.5
 
