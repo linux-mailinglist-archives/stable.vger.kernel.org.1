@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-127643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC488A7A6C5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08500A7A6E5
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 659A93BB686
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD08176957
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E4024C080;
-	Thu,  3 Apr 2025 15:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4500A250C0D;
+	Thu,  3 Apr 2025 15:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBSgkstL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6j+xVHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6832505DD;
-	Thu,  3 Apr 2025 15:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16EB2505C1;
+	Thu,  3 Apr 2025 15:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693943; cv=none; b=jJUO4Ad6SmEqFzqMkZz2VYdhXqIWWC3KHJwIr/n4GcdUWjaEWXXLghPT26De95aR/PQ+9LAErhYQJGhjBe6rKICmASACG2UDAfjqfORR68fnTFvlXA4btDVKd5XSTIzpQ8pDBR6KjLXZ11WfhLvnBr5i1MjFs1mAAAkDaTV9A74=
+	t=1743693990; cv=none; b=bKMtkbhsfTJ1+ioTKRTpGrQnAJsMf8nxo8PeS2ymHT3VMwopPdsK16oT35NcqTKimhXBExQuySTAXwBSG/KwPk1ARJaOaGssae7JHRtMx959qXP5oNB9nZjokrrwSHGXpWZWRsuKpUOjIEuroLHE2NxusmYX2GebAQA1hUA0sqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693943; c=relaxed/simple;
-	bh=Iy+x5J656xWYoaEgdKhNBVaxDn4URtsRfaaBb4SuwIk=;
+	s=arc-20240116; t=1743693990; c=relaxed/simple;
+	bh=r+3axtWO3E66sB26o5uxpSHDqR2J59CveZjN1PEs0SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJj9eBJq+7YZqGhvl3QNjth6pSWfb+q18VK9QDb6UQYPKhfwKO+aOxkSebkdccW4KPyn0/DI9TXr5B681UdS8cmUkuC4ZvIHOg6FPsKAXOW5jkJ/i/PLFFhiL5igy+3nG80UJ4E6A9uMpSI62JQrEGa4CqxfxQ+X0RFq4w9KHR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBSgkstL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44881C4CEE7;
-	Thu,  3 Apr 2025 15:25:43 +0000 (UTC)
+	 MIME-Version; b=YNLpRZXUZ/fJjvxtQy1tlcL/qj4uHyzeafhyiKSjWadc/e6rHkY5pXi1AN4XF+DqxnvteHBxFCX4b5MfPOKt9NrFNeVEh/FuHWFDog+wJQIKp8G7GIMZQwmId1iXNe6BziEYy/oR+IflP9kGIbQ7J7AZlD3+yTBbVXkA8ZCCVlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6j+xVHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB5AC4CEE3;
+	Thu,  3 Apr 2025 15:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693943;
-	bh=Iy+x5J656xWYoaEgdKhNBVaxDn4URtsRfaaBb4SuwIk=;
+	s=korg; t=1743693989;
+	bh=r+3axtWO3E66sB26o5uxpSHDqR2J59CveZjN1PEs0SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBSgkstLjJ8NfJoF15QTe2RIjOhMs0Sjw07YVs7hSzkSfvTm8yDxAebdrwYVhjp1c
-	 vdadiCtJDrlJp9XSiclfDoEFvf3bQ2voAjvKRWpRnKOyNAcfZBP/0FGaVkYaHH9Z/l
-	 Xrk7deA5ZoRaW3mCmcbHhh4cT/mdZ2jKAKlKs1v0=
+	b=n6j+xVHF43uwLgKKEHS6yER8etU0SVe4v1e451IPddiPX0DwZfL4LmiPwOB+Bz1dC
+	 jIakZe1c+aLNCNQU+ColfA//6afOl+7o01uRxl+QSKwRI/YrGezAUjwNpU56t2Z/Vh
+	 qr7h5IvAP1m45qNziPOgYr/AavB/qK+gZByIpf9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.13 20/23] perf tools: Fix up some comments and code to properly use the event_source bus
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.6 16/26] counter: stm32-lptimer-cnt: fix error handling when enabling
 Date: Thu,  3 Apr 2025 16:20:37 +0100
-Message-ID: <20250403151622.855031191@linuxfoundation.org>
+Message-ID: <20250403151622.890436415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-commit 0cced76a0276610e86e8b187c09f0e9ef85b9299 upstream.
+commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
 
-In sysfs, the perf events are all located in
-/sys/bus/event_source/devices/ but some places ended up hard-coding the
-location to be at the root of /sys/devices/ which could be very risky as
-you do not exactly know what type of device you are accessing in sysfs
-at that location.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-So fix this all up by properly pointing everything at the bus device
-list instead of the root of the sysfs devices/ tree.
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/2025021955-implant-excavator-179d@gregkh
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
+
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/Documentation/intel-hybrid.txt |   12 ++++++------
- tools/perf/Documentation/perf-list.txt    |    2 +-
- tools/perf/arch/x86/util/iostat.c         |    2 +-
- tools/perf/builtin-stat.c                 |    2 +-
- tools/perf/util/mem-events.c              |    2 +-
- tools/perf/util/pmu.c                     |    4 ++--
- 6 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/tools/perf/Documentation/intel-hybrid.txt
-+++ b/tools/perf/Documentation/intel-hybrid.txt
-@@ -8,15 +8,15 @@ Part of events are available on core cpu
- on atom cpu and even part of events are available on both.
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
+ 		return 0;
+ 	}
  
- Kernel exports two new cpu pmus via sysfs:
--/sys/devices/cpu_core
--/sys/devices/cpu_atom
-+/sys/bus/event_source/devices/cpu_core
-+/sys/bus/event_source/devices/cpu_atom
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
++
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
- The 'cpus' files are created under the directories. For example,
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
--cat /sys/devices/cpu_core/cpus
-+cat /sys/bus/event_source/devices/cpu_core/cpus
- 0-15
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
--cat /sys/devices/cpu_atom/cpus
-+cat /sys/bus/event_source/devices/cpu_atom/cpus
- 16-23
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
- It indicates cpu0-cpu15 are core cpus and cpu16-cpu23 are atom cpus.
-@@ -60,8 +60,8 @@ can't carry pmu information. So now this
- type. The PMU type ID is stored at attr.config[63:32].
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
  
- PMU type ID is retrieved from sysfs.
--/sys/devices/cpu_atom/type
--/sys/devices/cpu_core/type
-+/sys/bus/event_source/devices/cpu_atom/type
-+/sys/bus/event_source/devices/cpu_core/type
- 
- The new attr.config layout for PERF_TYPE_HARDWARE:
- 
---- a/tools/perf/Documentation/perf-list.txt
-+++ b/tools/perf/Documentation/perf-list.txt
-@@ -188,7 +188,7 @@ in the CPU vendor specific documentation
- 
- The available PMUs and their raw parameters can be listed with
- 
--  ls /sys/devices/*/format
-+  ls /sys/bus/event_source/devices/*/format
- 
- For example the raw event "LSD.UOPS" core pmu event above could
- be specified as
---- a/tools/perf/arch/x86/util/iostat.c
-+++ b/tools/perf/arch/x86/util/iostat.c
-@@ -32,7 +32,7 @@
- #define MAX_PATH 1024
- #endif
- 
--#define UNCORE_IIO_PMU_PATH	"devices/uncore_iio_%d"
-+#define UNCORE_IIO_PMU_PATH	"bus/event_source/devices/uncore_iio_%d"
- #define SYSFS_UNCORE_PMU_PATH	"%s/"UNCORE_IIO_PMU_PATH
- #define PLATFORM_MAPPING_PATH	UNCORE_IIO_PMU_PATH"/die%d"
- 
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -97,7 +97,7 @@
- #include <internal/threadmap.h>
- 
- #define DEFAULT_SEPARATOR	" "
--#define FREEZE_ON_SMI_PATH	"devices/cpu/freeze_on_smi"
-+#define FREEZE_ON_SMI_PATH	"bus/event_source/devices/cpu/freeze_on_smi"
- 
- static void print_counters(struct timespec *ts, int argc, const char **argv);
- 
---- a/tools/perf/util/mem-events.c
-+++ b/tools/perf/util/mem-events.c
-@@ -189,7 +189,7 @@ static bool perf_pmu__mem_events_support
- 	if (!e->event_name)
- 		return true;
- 
--	scnprintf(path, PATH_MAX, "%s/devices/%s/events/%s", mnt, pmu->name, e->event_name);
-+	scnprintf(path, PATH_MAX, "%s/bus/event_source/devices/%s/events/%s", mnt, pmu->name, e->event_name);
- 
- 	return !stat(path, &st);
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
  }
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -35,12 +35,12 @@
- #define UNIT_MAX_LEN	31 /* max length for event unit name */
  
- enum event_source {
--	/* An event loaded from /sys/devices/<pmu>/events. */
-+	/* An event loaded from /sys/bus/event_source/devices/<pmu>/events. */
- 	EVENT_SRC_SYSFS,
- 	/* An event loaded from a CPUID matched json file. */
- 	EVENT_SRC_CPU_JSON,
- 	/*
--	 * An event loaded from a /sys/devices/<pmu>/identifier matched json
-+	 * An event loaded from a /sys/bus/event_source/devices/<pmu>/identifier matched json
- 	 * file.
- 	 */
- 	EVENT_SRC_SYS_JSON,
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
