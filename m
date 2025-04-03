@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-127816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FD8A7AC16
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43319A7AC1A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E69F178EAF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0ED17DBCB
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25264268C60;
-	Thu,  3 Apr 2025 19:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2CE268FC7;
+	Thu,  3 Apr 2025 19:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkafPM1e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rikYMoCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D81268C59;
-	Thu,  3 Apr 2025 19:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77745268C79;
+	Thu,  3 Apr 2025 19:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707150; cv=none; b=GVhkBpud99Piii02GIgBf1noVu2KTX4SEoX/Vt/lWFMRHU6Ei3lSLGbqXgtQMhyzgaic3tYcIlNSMliH+5syWG7ad4mz7Xzcov0PRCONskYP/qDSunVgNhFtoUTX6PUrOsmVw6SZBsy5Q7zhWqNirp+Yg1/kZH8VeUFwLkdX+wo=
+	t=1743707152; cv=none; b=F9SSrWMDMdP5nokGvf2uMYbf0skt57ei6Mxve2FBTBTqIleiIzpstAPw9cZvaI8yhNmICLONgFIxaM6zOARQts1QV287yaEyrCkYo0hzUkvoNrzuJRAIKFhTnJPiilmyX5qcy2+GzfZ19V3RK2dd0JYAAdE9LTy2lcBePeLLUVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707150; c=relaxed/simple;
-	bh=pT4Q3S01Su1Abesxq99U45A/8NkbW73u1b0G/aLZtOI=;
+	s=arc-20240116; t=1743707152; c=relaxed/simple;
+	bh=HitsAg6pmYFZf2yLH62ARWmF/7q598X1GbMeIHSzOfo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XUFrv+1e85MxkEjxus1jU5HXCsKILeUAesCFLfSRu08OMM8SFQSaDA9ZRzV3Qrx2kDztnvIVA0GvfentECJRT43JfZ8lS7lFh5n1zPAl5c2dan0nVmzsKuhR6yo7FNKcDhbHkfSSNkSDK7EwasyTPC2QQMyGxgghYG5IYXu6DbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkafPM1e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5E4C4CEE8;
-	Thu,  3 Apr 2025 19:05:49 +0000 (UTC)
+	 MIME-Version; b=BX/6mQHI5RzWHCxUzS3h0STwLBbXPOxVCb27xJuK6t8NWbvIGcsjeyH2jcRUvVmJqQQgRTe2+LXi17lvYlatvkZ/0UTnUP4E3EDucjY1NxWWYDYV0RlZcr9Bq/fsaSJqfELHXddoQYSkwk6Ixo+xXnBpscya1RPIaNS4S7fEaZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rikYMoCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AC3C4CEEA;
+	Thu,  3 Apr 2025 19:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707150;
-	bh=pT4Q3S01Su1Abesxq99U45A/8NkbW73u1b0G/aLZtOI=;
+	s=k20201202; t=1743707152;
+	bh=HitsAg6pmYFZf2yLH62ARWmF/7q598X1GbMeIHSzOfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkafPM1eiyMr2ZOIWoKgpiA/v0BxvLQ/D+pDjbytUg/UB0l5EBmhACreB0dEZfdO/
-	 Yo9YNoTgg7je6Lvx0o6LMyojQPA20C7YAm+1eMgXlHo+xbXZbkPN7i22tgjI2Za1Yk
-	 wcQEcVULvkrakILqLeKi179tg6Pf3W5IA+G6VN0pWMkXt0eXzD3pHqcNZsRLM7ww45
-	 5l8RNjZKN+4Y/773MvfUjGr6QRuJ2Zsnjo18vCBlHz9l9MBa4YQw8cD5NLBQrXMnfC
-	 /I6DqP7S9bgF/3Ebn4w4ABxyMR/JrtkBmMOJjGT5ksS1Xu9cxiW/E/LB6vJY5QruIx
-	 d+OVwEw+8YUjg==
+	b=rikYMoCxWSyZn/0Dt4bffeR6nFFOCZ6WvX7SaYsU4KBH4ebM8ky9znRhyzHeezytm
+	 vCQHtshL55zUOsjsJm4xw5uA9sPCnzG3nY4FbrCzqtxibp+JvqzfXsn73E9AToNRec
+	 V1aeUdEci0Z/rmSavxLGFVe9S02B03M5IjDurbUP9tc8rTkhm6G+wX9g50Hq5usoxv
+	 LhXwigVwF0PqONT7CogIZK8Hnpk8tdFSw1xrCd2gwyPBRrYt1TjNYnQKjQIMLp/AUM
+	 8hAA5X9VwzJw8hItA5w1gx9VcVSbRfjLc5aqp59z+aWAAziAgvBjnTLaXBFniQQ1Fe
+	 Z7/+IUmPxREgg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Pedro Nishiyama <nishiyama.pedro@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
 	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 47/49] Bluetooth: qca: simplify WCN399x NVM loading
-Date: Thu,  3 Apr 2025 15:04:06 -0400
-Message-Id: <20250403190408.2676344-47-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 48/49] Bluetooth: Add quirk for broken READ_VOICE_SETTING
+Date: Thu,  3 Apr 2025 15:04:07 -0400
+Message-Id: <20250403190408.2676344-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
 References: <20250403190408.2676344-1-sashal@kernel.org>
@@ -67,53 +73,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
 
-[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
+[ Upstream commit ff26b2dd6568392f60fa67a4e58279938025c3af ]
 
-The WCN399x code has two separate cases for loading the NVM data. In
-preparation to adding support for WCN3950, which also requires similar
-quirk, split the "variant" to be specified explicitly and merge two
-snprintfs into a single one.
+Some fake controllers cannot be initialized because they return a smaller
+report than expected for READ_VOICE_SETTING.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ include/net/bluetooth/hci.h      | 8 ++++++++
+ include/net/bluetooth/hci_core.h | 4 ++++
+ net/bluetooth/hci_sync.c         | 3 +++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 04d02c746ec0f..dd2c0485b9848 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -785,6 +785,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		   const char *firmware_name)
- {
- 	struct qca_fw_config config = {};
-+	const char *variant = "";
- 	int err;
- 	u8 rom_ver = 0;
- 	u32 soc_ver;
-@@ -879,13 +880,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN3990:
- 		case QCA_WCN3991:
- 		case QCA_WCN3998:
--			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02xu.bin", rom_ver);
--			} else {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02x.bin", rom_ver);
--			}
-+			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
-+				variant = "u";
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 6203bd8663b74..6f06d20093a7a 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -354,6 +354,14 @@ enum {
+ 	 * during the hdev->setup vendor callback.
+ 	 */
+ 	HCI_QUIRK_FIXUP_LE_EXT_ADV_REPORT_PHY,
 +
-+			snprintf(config.fwname, sizeof(config.fwname),
-+				 "qca/crnv%02x%s.bin", rom_ver, variant);
- 			break;
- 		case QCA_WCN3988:
- 			snprintf(config.fwname, sizeof(config.fwname),
++	/* When this quirk is set, the HCI_OP_READ_VOICE_SETTING command is
++	 * skipped. This is required for a subset of the CSR controller clones
++	 * which erroneously claim to support it.
++	 *
++	 * This quirk must be set before hci_register_dev is called.
++	 */
++	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
+ };
+ 
+ /* HCI device flags */
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index ea798f07c5a2d..71921367f0f06 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1931,6 +1931,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 	((dev)->commands[20] & 0x10 && \
+ 	 !test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks))
+ 
++#define read_voice_setting_capable(dev) \
++	((dev)->commands[9] & 0x04 && \
++	 !test_bit(HCI_QUIRK_BROKEN_READ_VOICE_SETTING, &(dev)->quirks))
++
+ /* Use enhanced synchronous connection if command is supported and its quirk
+  * has not been set.
+  */
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7b2b04d6b8563..bb455e96a715a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -3720,6 +3720,9 @@ static int hci_read_local_name_sync(struct hci_dev *hdev)
+ /* Read Voice Setting */
+ static int hci_read_voice_setting_sync(struct hci_dev *hdev)
+ {
++	if (!read_voice_setting_capable(hdev))
++		return 0;
++
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_VOICE_SETTING,
+ 				     0, NULL, HCI_CMD_TIMEOUT);
+ }
 -- 
 2.39.5
 
