@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-128065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9377CA7AED0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:35:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B929A7AEDE
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E3E17F0E2
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:31:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F21189BBFA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A566A225402;
-	Thu,  3 Apr 2025 19:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D0122578D;
+	Thu,  3 Apr 2025 19:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYtgk2vn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0lQ4iPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6CD224B0E;
-	Thu,  3 Apr 2025 19:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9248C225776;
+	Thu,  3 Apr 2025 19:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707883; cv=none; b=kPPBWAJTs577bbbeCiK2iMSgVG7WvR4U+QbgKrAG7OxHA0ySd8a9ADg1Z8NXRopVtT22qQQZYbi5vwDq8DxkN3g+JBYyX7aOjCqOsAdoLR+NkFgi3eNLH2eRD3iZKj+RguDfKjXzVX8VhjsWKIeABiLI/gio7p91ttt3wHrImpM=
+	t=1743707887; cv=none; b=eE5ppcL+kTOXvGE8evB/A3NDkPjY1OTXajdbWzGfqR0t2qGS1vrvfdZNjWrEftdZ+VQDNYLwg/oz2seNiql4+R3s+eD/bXGlDUI7AcrmPoNGZpy/4/bIXmfoZ7ddZfFE6Nk7LE52rXgYmm/unn9jf1ZPe1SGnmWNS4AXd6214hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707883; c=relaxed/simple;
-	bh=IG7F6U3gfOQMS8ntvj31o+mv8hA3t80Jqo5rURTTYQ8=;
+	s=arc-20240116; t=1743707887; c=relaxed/simple;
+	bh=V1qxuGy8Y+Lg5Bwu/IvIatMzbJSrmut+cqT/owMEmmY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mfvQGdmFMgl+JpJS0lvxblftntVthfu0hmLyAiTuuw523ZS05OTQRUQN+ud79hgwJFV9aRMqt5hgqU86vZv5g41LDJidO+j7D5YZUT/R8UFcTId3rp7foNhFzcb/3gpgVaMeOvAZhzeFaVWw4dmOkulf/vCxk/0VMbBg92fgdm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYtgk2vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21A0C4CEE8;
-	Thu,  3 Apr 2025 19:18:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hd+S/X1L1GkOEFObkqeTm7bU2c1Qnt4ZjY6wV4s+WdMFMBtR616xHYFqzTnuIastvQRWbblYy65C88vqMVDQX231ewfmp3Er7dwTcVLI+ZPE3ix/tpVcMeEmC8oBeoAYcxE7GjRAHGlwpak9MyGbTThqWvYcAgHmyU3HxwrAaCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0lQ4iPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85447C4CEE3;
+	Thu,  3 Apr 2025 19:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707883;
-	bh=IG7F6U3gfOQMS8ntvj31o+mv8hA3t80Jqo5rURTTYQ8=;
+	s=k20201202; t=1743707887;
+	bh=V1qxuGy8Y+Lg5Bwu/IvIatMzbJSrmut+cqT/owMEmmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYtgk2vnrVVAOcdzjw9RCJQURmxi8KcT+ckXa9TSu/84nmDdqalDy1th0FxSZ0bB5
-	 +pXdQrX6QanpKuu4yKBXBhuA7nxoXR/7TeA/ayLD7WQIAxoUfJ1l931wFdjHaDN7pB
-	 lIV1Np5zkDk/AAqzd7FihE8W23qVWJsvrnGSyf4TGmnkq+ptmCYSELBO6p8uZf5PUS
-	 5BOnU63K0Mf7Mi3wkJk0vrmbRIajN3y1ekKD50vMJzKNYRR/YHCZazjvlQgIjbg/rH
-	 FGW3B6u2X9eaTHR2V4qQTGXt8q4SyeX5syYcV3vd7smi2ArvG/H28qmFQ9xikEj541
-	 2ezSPxTduO9kg==
+	b=R0lQ4iPD9uSjAG4znbwWBM4jheKfHgc60GKkXy6CmT3ePS7Q6/M9fgb3lmoVhmz9q
+	 IdIfGbBAsRI7hZwSayaLTaGb/xRi53j7IJPKDm4P147J1Dv6akQT5ggXgEIOXgiaip
+	 zcOj4PeDtZE/ugkesaclor8xJSn/8hrRaeMcXGr4Bhy4EJo/DrRfA8XzCinuJMvp0x
+	 YPVLvLjQH/qjTGQaUxjjQVswLZprqMbIDqWsYO2OmJ96KZ0feIMchSlbdk5cuEZK+D
+	 6nl6q1surz0toaBAT+04albKIN1EyAhYVm0qfPnF2OuMTi8FOj5YYvm+AOmTyzBonD
+	 3eK5mtySrPWnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryo Takakura <ryotkkr98@gmail.com>,
-	"Luis Claudio R . Goncalves" <lgoncalv@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nirmal.patel@linux.intel.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-pci@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 27/33] PCI: vmd: Make vmd_dev::cfg_lock a raw_spinlock_t type
-Date: Thu,  3 Apr 2025 15:16:50 -0400
-Message-Id: <20250403191656.2680995-27-sashal@kernel.org>
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	lijo.lazar@amd.com,
+	sunil.khatri@amd.com,
+	Hawking.Zhang@amd.com,
+	Jun.Ma2@amd.com,
+	Yunxiang.Li@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 28/33] drm/amdgpu: grab an additional reference on the gang fence v2
+Date: Thu,  3 Apr 2025 15:16:51 -0400
+Message-Id: <20250403191656.2680995-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191656.2680995-1-sashal@kernel.org>
 References: <20250403191656.2680995-1-sashal@kernel.org>
@@ -75,107 +75,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 18056a48669a040bef491e63b25896561ee14d90 ]
+[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
 
-The access to the PCI config space via pci_ops::read and pci_ops::write is
-a low-level hardware access. The functions can be accessed with disabled
-interrupts even on PREEMPT_RT. The pci_lock is a raw_spinlock_t for this
-purpose.
+We keep the gang submission fence around in adev, make sure that it
+stays alive.
 
-A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
-acquired with disabled interrupts. The vmd_dev::cfg_lock is accessed in
-the same context as the pci_lock.
+v2: fix memory leak on retry
 
-Make vmd_dev::cfg_lock a raw_spinlock_t type so it can be used with
-interrupts disabled.
-
-This was reported as:
-
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  Call Trace:
-   rt_spin_lock+0x4e/0x130
-   vmd_pci_read+0x8d/0x100 [vmd]
-   pci_user_read_config_byte+0x6f/0xe0
-   pci_read_config+0xfe/0x290
-   sysfs_kf_bin_read+0x68/0x90
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Acked-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-[bigeasy: reword commit message]
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-off-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/r/20250218080830.ufw3IgyX@linutronix.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: add back report info from
-https://lore.kernel.org/lkml/20241218115951.83062-1-ryotkkr98@gmail.com/]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 9d9596947350f..94ceec50a2b94 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -125,7 +125,7 @@ struct vmd_irq_list {
- struct vmd_dev {
- 	struct pci_dev		*dev;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 96845541b2d25..31d4df9688981 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6575,18 +6575,26 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
+ {
+ 	struct dma_fence *old = NULL;
  
--	spinlock_t		cfg_lock;
-+	raw_spinlock_t		cfg_lock;
- 	void __iomem		*cfgbar;
++	dma_fence_get(gang);
+ 	do {
+ 		dma_fence_put(old);
+ 		old = amdgpu_device_get_gang(adev);
+ 		if (old == gang)
+ 			break;
  
- 	int msix_count;
-@@ -391,7 +391,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
+-		if (!dma_fence_is_signaled(old))
++		if (!dma_fence_is_signaled(old)) {
++			dma_fence_put(gang);
+ 			return old;
++		}
  
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		*value = readb(addr);
-@@ -406,7 +406,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
+ 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
+ 			 old, gang) != old);
+ 
++	/*
++	 * Drop it once for the exchanged reference in adev and once for the
++	 * thread local reference acquired in amdgpu_device_get_gang().
++	 */
++	dma_fence_put(old);
+ 	dma_fence_put(old);
+ 	return NULL;
  }
- 
-@@ -426,7 +426,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		writeb(value, addr);
-@@ -444,7 +444,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -1009,7 +1009,7 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	if (features & VMD_FEAT_OFFSET_FIRST_VECTOR)
- 		vmd->first_vec = 1;
- 
--	spin_lock_init(&vmd->cfg_lock);
-+	raw_spin_lock_init(&vmd->cfg_lock);
- 	pci_set_drvdata(dev, vmd);
- 	err = vmd_enable_domain(vmd, features);
- 	if (err)
 -- 
 2.39.5
 
