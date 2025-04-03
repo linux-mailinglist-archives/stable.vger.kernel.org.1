@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-127949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9807A7AD89
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:07:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC92A7AD8B
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10940173063
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B36893B911E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA5228C5B6;
-	Thu,  3 Apr 2025 19:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E328C5D7;
+	Thu,  3 Apr 2025 19:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMwfD/rv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg00Y+ts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FEB28C5A6;
-	Thu,  3 Apr 2025 19:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499328C5CD;
+	Thu,  3 Apr 2025 19:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707459; cv=none; b=grm9A4iNi8cJtXGL7N/Hkjmjm6sJMebxGpoulFsU5lMez5ewQW8/kL1Pw89d5bHI8HDU4h5RVGxe1y2rccTWJCkgG03mhQk3+TiUw63Lb+07m54sO3oUoE0dA4oIza5T1c1a0Wa+y2N+sue6CECb+0Su/z3azms2AaeFy9H7NDI=
+	t=1743707460; cv=none; b=dH7Fh4zgph/vUjIHHpCZNhMI8/CJA+y18tzFEzcOVftRA22v/42XxPhtn1MeWWYwU0eJh3oG3kwi5Vavjzmc55k0vhfxy4aqSsXzwjpj2SwHi25MnMSYhsX2rAmYddeLqfXV+mEQEPCEhFRKXLeU4nu4yX8mqmH5H4WdSCiV1WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707459; c=relaxed/simple;
-	bh=orlZzE6F90+mKEG4LC7/xb21b1erZCviTbFPJNvEUWU=;
+	s=arc-20240116; t=1743707460; c=relaxed/simple;
+	bh=3yIRUbe0hMIpYYr+v/4lvN42VzxTKWRdxPDj7VKRCmU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t2krJFHqGBqbEu9UsoyG/fmzMbrHoe7E/lt4RRC0gTTNfZ6WgY/a4AWWtBfaPq9zVKwqaMBR1gAtJ9IEFgbLhzgZApSyOQ51HH9v+1lO6SK5N68YDs7p6W8cDtOyEa/UZF6nlkMw6pleIlMMWmbA4uMwlk2NfrqRBSOJk9orBY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMwfD/rv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62307C4CEE8;
-	Thu,  3 Apr 2025 19:10:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uXvEKB/OMQj4akALaOwfrtAGkwIWqv8emA19jEZU798qi6Tcdp6E/3ttuaJMlVOtn5vtQ1LuhRCmAyDmejKU2k8OSmSEGwN9Ycww0AZTDDay4tuVNTlv01LWd4XUD8uYm1mAp4qYxde7QfWmX+bAGjfpXX4XDimNkFsJLjMqvnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg00Y+ts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C1FC4CEEA;
+	Thu,  3 Apr 2025 19:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707458;
-	bh=orlZzE6F90+mKEG4LC7/xb21b1erZCviTbFPJNvEUWU=;
+	s=k20201202; t=1743707460;
+	bh=3yIRUbe0hMIpYYr+v/4lvN42VzxTKWRdxPDj7VKRCmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMwfD/rvy6Gc5LsJ7k14W8IzzgqPlXOgi4KBNp0ORFIKdGyEC16I463tH7ce9UO1n
-	 B9xMJdfHt+ff9U1QA/D/cvq9yWXaU28uE+vOtV2Btlr57y405/fHqB/C7HdvkBycho
-	 7CoEWW8vBS89O3WUPcqRM5OTiRn0WYeq1lV07XknWtned9MLW5i4PTlDWjywQ2Jnlf
-	 R6h/PvhYE/TmlBrEXJt5gnBaRTClclhWKffDkwWmZd8HyOyphX5M3Wh7ZC6xp7vcdE
-	 0/0FBoKvJYZ2Xiw+ugOWjIlfnhZhQkWEP4ky9N0b82iQgrxUuYGMluKk2bbcOi9oSE
-	 zMKI6xwMgTv9g==
+	b=qg00Y+tsZSGNupMzlbROiGcrgUAtVlzAHU0KjVUPS7fsicR7Ghl6B+H7XrtM8ysMk
+	 4YPdQn5DAoVcpcdqEf1ktkCCDbCLlDOT2QBWrVHDUHefHUzAJhj1naEYSrt5e85lyt
+	 cmUpU4WiU0gm9KDBWckjs/NN1tp35RNuVEkDPRUTISsJbmChm7XwvMbEd+MPfC9g9/
+	 8VF3j3EP2lE0XwGvXX56yseAuPCcoM0itBv18LpCBCfq2p/XE8P3F7Hre0IALJ23/I
+	 akK7dTrUWHUd9d/BkRqBPDuDqStDl+hiiiFOWIH8YKW9z/IbQiAkjWCb4s/7zbGcac
+	 Wk7yphH/89xPg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bhupesh <bhupesh@igalia.com>,
-	syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	kees@kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 09/14] ext4: ignore xattrs past end
-Date: Thu,  3 Apr 2025 15:10:31 -0400
-Message-Id: <20250403191036.2678799-9-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 10/14] scsi: st: Fix array overflow in st_setup()
+Date: Thu,  3 Apr 2025 15:10:32 -0400
+Message-Id: <20250403191036.2678799-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191036.2678799-1-sashal@kernel.org>
 References: <20250403191036.2678799-1-sashal@kernel.org>
@@ -65,149 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Bhupesh <bhupesh@igalia.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit c8e008b60492cf6fd31ef127aea6d02fd3d314cd ]
+[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
 
-Once inside 'ext4_xattr_inode_dec_ref_all' we should
-ignore xattrs entries past the 'end' entry.
+Change the array size to follow parms size instead of a fixed value.
 
-This fixes the following KASAN reported issue:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
-Read of size 4 at addr ffff888012c120c4 by task repro/2065
-
-CPU: 1 UID: 0 PID: 2065 Comm: repro Not tainted 6.13.0-rc2+ #11
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1fd/0x300
- ? tcp_gro_dev_warn+0x260/0x260
- ? _printk+0xc0/0x100
- ? read_lock_is_recursive+0x10/0x10
- ? irq_work_queue+0x72/0xf0
- ? __virt_addr_valid+0x17b/0x4b0
- print_address_description+0x78/0x390
- print_report+0x107/0x1f0
- ? __virt_addr_valid+0x17b/0x4b0
- ? __virt_addr_valid+0x3ff/0x4b0
- ? __phys_addr+0xb5/0x160
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- kasan_report+0xcc/0x100
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ? ext4_xattr_delete_inode+0xd30/0xd30
- ? __ext4_journal_ensure_credits+0x5f0/0x5f0
- ? __ext4_journal_ensure_credits+0x2b/0x5f0
- ? inode_update_timestamps+0x410/0x410
- ext4_xattr_delete_inode+0xb64/0xd30
- ? ext4_truncate+0xb70/0xdc0
- ? ext4_expand_extra_isize_ea+0x1d20/0x1d20
- ? __ext4_mark_inode_dirty+0x670/0x670
- ? ext4_journal_check_start+0x16f/0x240
- ? ext4_inode_is_fast_symlink+0x2f2/0x3a0
- ext4_evict_inode+0xc8c/0xff0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- ? do_raw_spin_unlock+0x53/0x8a0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- evict+0x4ac/0x950
- ? proc_nr_inodes+0x310/0x310
- ? trace_ext4_drop_inode+0xa2/0x220
- ? _raw_spin_unlock+0x1a/0x30
- ? iput+0x4cb/0x7e0
- do_unlinkat+0x495/0x7c0
- ? try_break_deleg+0x120/0x120
- ? 0xffffffff81000000
- ? __check_object_size+0x15a/0x210
- ? strncpy_from_user+0x13e/0x250
- ? getname_flags+0x1dc/0x530
- __x64_sys_unlinkat+0xc8/0xf0
- do_syscall_64+0x65/0x110
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x434ffd
-Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 8
-RSP: 002b:00007ffc50fa7b28 EFLAGS: 00000246 ORIG_RAX: 0000000000000107
-RAX: ffffffffffffffda RBX: 00007ffc50fa7e18 RCX: 0000000000434ffd
-RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000005
-RBP: 00007ffc50fa7be0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffc50fa7e08 R14: 00000000004bbf30 R15: 0000000000000001
- </TASK>
-
-The buggy address belongs to the object at ffff888012c12000
- which belongs to the cache filp of size 360
-The buggy address is located 196 bytes inside of
- freed 360-byte region [ffff888012c12000, ffff888012c12168)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12c12
-head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x40(head|node=0|zone=0)
-page_type: f5(slab)
-raw: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-raw: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-head: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000001 ffffea00004b0481 ffffffffffffffff 0000000000000000
-head: 0000000000000002 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888012c11f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff888012c12000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff888012c12080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                           ^
- ffff888012c12100: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
- ffff888012c12180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Reported-by: syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b244bda78289b00204ed
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Bhupesh <bhupesh@igalia.com>
-Link: https://patch.msgid.link/20250128082751.124948-2-bhupesh@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/scsi/st.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 19982a682b9c1..f32e720e9e202 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1152,15 +1152,24 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 49e149d28954a..2b5e3e2ba3b8b 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -4124,7 +4124,7 @@ static void validate_options(void)
+  */
+ static int __init st_setup(char *str)
  {
- 	struct inode *ea_inode;
- 	struct ext4_xattr_entry *entry;
-+	struct ext4_iloc iloc;
- 	bool dirty = false;
- 	unsigned int ea_ino;
- 	int err;
- 	int credits;
-+	void *end;
-+
-+	if (block_csum)
-+		end = (void *)bh->b_data + bh->b_size;
-+	else {
-+		ext4_get_inode_loc(parent, &iloc);
-+		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
-+	}
+-	int i, len, ints[5];
++	int i, len, ints[ARRAY_SIZE(parms) + 1];
+ 	char *stp;
  
- 	/* One credit for dec ref on ea_inode, one for orphan list addition, */
- 	credits = 2 + extra_credits;
- 
--	for (entry = first; !IS_LAST_ENTRY(entry);
-+	for (entry = first; (void *)entry < end && !IS_LAST_ENTRY(entry);
- 	     entry = EXT4_XATTR_NEXT(entry)) {
- 		if (!entry->e_value_inum)
- 			continue;
+ 	stp = get_options(str, ARRAY_SIZE(ints), ints);
 -- 
 2.39.5
 
