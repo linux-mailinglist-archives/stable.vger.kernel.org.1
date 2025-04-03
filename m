@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-127573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B17A7A68C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BE6A7A686
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D572178AFD
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38493B9786
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AACD2512FD;
-	Thu,  3 Apr 2025 15:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F04F2512EC;
+	Thu,  3 Apr 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTx3vDtl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skXitZ8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF08250C09;
-	Thu,  3 Apr 2025 15:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEAC250C09;
+	Thu,  3 Apr 2025 15:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693769; cv=none; b=dVMsd4MFvZ3MLsxmh5slQMvxDX0hEcqb1EsjeqzNNoL1rojK9zAK6/A0+H5Fwxgri4IxQBMqkbZ1Pc2owupn9btPe5ajm5GHyIbG02DVTq7HXDdSTfZmkc+Y+dYIl+5L8YFTaNUo1I5u5KQ0szSN7mcPUCvAafun11oxeXjuyW0=
+	t=1743693776; cv=none; b=cXy/sKMcLHtl3tZwbr3yPQt4dX+HdD0JlCw9Epo+Y9z8BSO3tL4LvZnER9T9rWTDiU1wipyCUobWQDZTBWLRbmEbiIpDP2huYs9exu23jgY22nXNxIq/soTYzjCHs72wVE9KTsfwG3fYcEc0gqLdqXFk/FvwhchSgbaDmURL3R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693769; c=relaxed/simple;
-	bh=AjatFXcagwLA9Kl1BmJQBpMKOk/OqubPAV/Mtols4N4=;
+	s=arc-20240116; t=1743693776; c=relaxed/simple;
+	bh=HqzhFAgOmxuVIW7KuqSlvkzi/kFxYvVUYxwF74zN3SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqyK1uLgxhLvVoGjr6KAtwajrS772/1KGA5kvo0t8j73S2svfU5Y43eMJc6TXEYaMRaf3EPNXxCRfiiYmTRI3l0HgQxIRClCTuA4vprGsbO0i6k6D5OkCHZq2/rGD0Mjt1jjMRXARgFg+tT5099nlCaTLgFA2iFFgjjtZFPpEfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTx3vDtl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC53C4CEEE;
-	Thu,  3 Apr 2025 15:22:48 +0000 (UTC)
+	 MIME-Version; b=KjHfA5F87sKNAlK3vhPUkpcQEKUrqm76jvW+bVI9cyZ30pVQDgoT4j7Bhr/BnYqdTD0c9phr9/ZZIiy5e7flwLsr0ynV5d85mkKCJ15L17zZw5oAk+oqIhPF8B9GK9hKYGuvfle8Ab+rNgAvCSaV/dh+hbz6GNiBMQUte9poHVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skXitZ8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AD0C4CEE3;
+	Thu,  3 Apr 2025 15:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693769;
-	bh=AjatFXcagwLA9Kl1BmJQBpMKOk/OqubPAV/Mtols4N4=;
+	s=korg; t=1743693774;
+	bh=HqzhFAgOmxuVIW7KuqSlvkzi/kFxYvVUYxwF74zN3SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTx3vDtlCciy9TqXl8/zKoazJtJH9Huj0R3zvB/5AYsagjDhfpWIW3jadTtRWPMfO
-	 So3CFSahYbhREiZ9Lrk0HDiFUgMXr0jHxY6B1DeGW7hnfIEJTe+utuywQkocmaLxPx
-	 EEdEcFIbBEqK0DODXMkUEGrTVsWNbdyt1ScVBcSU=
+	b=skXitZ8XG165TWChM/f1wut4kGsoU3/RlJhHKcgszozvLmMiWOXpWLd3QRzLMNuts
+	 RCu4DZE3Cd8NzxIOYlPBi4MP0W5x/vbexOxxQJ+QtkxU5iNJ7WVBnMgO1Udk7OUmPA
+	 DqQE6Igyq9tF+uH68XCueMyBCvnJjY0HGN/itKDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 19/22] usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
-Date: Thu,  3 Apr 2025 16:20:14 +0100
-Message-ID: <20250403151621.482493334@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 20/22] usb: typec: ucsi: Fix NULL pointer access
+Date: Thu,  3 Apr 2025 16:20:15 +0100
+Message-ID: <20250403151621.508122640@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
 References: <20250403151620.960551909@linuxfoundation.org>
@@ -66,75 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit a7bb96b18864225a694e3887ac2733159489e4b0 upstream.
+commit b13abcb7ddd8d38de769486db5bd917537b32ab1 upstream.
 
-Fix potential dereferencing of ERR_PTR() in find_format_by_pix()
-and uvc_v4l2_enum_format().
+Resources should be released only after all threads that utilize them
+have been destroyed.
+This commit ensures that resources are not released prematurely by waiting
+for the associated workqueue to complete before deallocating them.
 
-Fix the following smatch errors:
-
-drivers/usb/gadget/function/uvc_v4l2.c:124 find_format_by_pix()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-drivers/usb/gadget/function/uvc_v4l2.c:392 uvc_v4l2_enum_format()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-Also, fix similar issue in uvc_v4l2_try_format() for potential
-dereferencing of ERR_PTR().
-
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Link: https://lore.kernel.org/r/20240815102202.594812-1-abhishektamboli9@gmail.com
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Cc: stable <stable@kernel.org>
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/uvc_v4l2.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -121,6 +121,9 @@ static struct uvcg_format *find_format_b
- 	list_for_each_entry(format, &uvc->header->formats, entry) {
- 		struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1313,11 +1313,11 @@ static int ucsi_init(struct ucsi *ucsi)
  
-+		if (IS_ERR(fmtdesc))
-+			continue;
+ err_unregister:
+ 	for (con = connector; con->port; con++) {
++		if (con->wq)
++			destroy_workqueue(con->wq);
+ 		ucsi_unregister_partner(con);
+ 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
+ 		ucsi_unregister_port_psy(con);
+-		if (con->wq)
+-			destroy_workqueue(con->wq);
+ 		typec_unregister_port(con->port);
+ 		con->port = NULL;
+ 	}
+@@ -1479,10 +1479,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 
+ 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
+ 		cancel_work_sync(&ucsi->connector[i].work);
+-		ucsi_unregister_partner(&ucsi->connector[i]);
+-		ucsi_unregister_altmodes(&ucsi->connector[i],
+-					 UCSI_RECIPIENT_CON);
+-		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 
+ 		if (ucsi->connector[i].wq) {
+ 			struct ucsi_work *uwork;
+@@ -1497,6 +1493,11 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 			mutex_unlock(&ucsi->connector[i].lock);
+ 			destroy_workqueue(ucsi->connector[i].wq);
+ 		}
 +
- 		if (fmtdesc->fcc == pixelformat) {
- 			uformat = format->fmt;
- 			break;
-@@ -240,6 +243,7 @@ uvc_v4l2_try_format(struct file *file, v
- 	struct uvc_video *video = &uvc->video;
- 	struct uvcg_format *uformat;
- 	struct uvcg_frame *uframe;
-+	const struct uvc_format_desc *fmtdesc;
- 	u8 *fcc;
++		ucsi_unregister_partner(&ucsi->connector[i]);
++		ucsi_unregister_altmodes(&ucsi->connector[i],
++					 UCSI_RECIPIENT_CON);
++		ucsi_unregister_port_psy(&ucsi->connector[i]);
+ 		typec_unregister_port(ucsi->connector[i].port);
+ 	}
  
- 	if (fmt->type != video->queue.queue.type)
-@@ -265,7 +269,10 @@ uvc_v4l2_try_format(struct file *file, v
- 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
- 	fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
- 	fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
--	fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
-+	fmtdesc = to_uvc_format(uformat);
-+	if (IS_ERR(fmtdesc))
-+		return PTR_ERR(fmtdesc);
-+	fmt->fmt.pix.pixelformat = fmtdesc->fcc;
- 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
- 	fmt->fmt.pix.priv = 0;
- 
-@@ -378,6 +385,9 @@ uvc_v4l2_enum_format(struct file *file,
- 		f->flags |= V4L2_FMT_FLAG_COMPRESSED;
- 
- 	fmtdesc = to_uvc_format(uformat);
-+	if (IS_ERR(fmtdesc))
-+		return PTR_ERR(fmtdesc);
-+
- 	f->pixelformat = fmtdesc->fcc;
- 
- 	strscpy(f->description, fmtdesc->name, sizeof(f->description));
 
 
 
