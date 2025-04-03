@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-128094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E56A7AF24
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:43:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C66A7AEFC
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599433ABD72
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:38:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C87AF7A7818
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5262522FF58;
-	Thu,  3 Apr 2025 19:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523CD230BDA;
+	Thu,  3 Apr 2025 19:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3ekbNnb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDBDUK36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AA722FF2D;
-	Thu,  3 Apr 2025 19:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA742309A8;
+	Thu,  3 Apr 2025 19:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707953; cv=none; b=NJ3A/xxmUVgUVZml8oqq2Q3VyMYMoVX2s5Ii0xnS4PCO86nyI4nSvekfTdMqn5mC2lwfZ/5Ciwn3ozPJCfir9RM8/ecYiXJSMLVR3n8fVvF5DVOEyObswgqHf0U8TVHd1jjEaKGF2NlO4LfWvoNbHKmrXy53wkP1xFjBS5ZTdxE=
+	t=1743707959; cv=none; b=tnZyt4WKVnhg03Zu0d6qrzwRUp4qyD3AU6Y18mKanGxrNZSRnbjVHY+mbXQxkEXv9bH7DDQ0+Df9HspUzm9RUbugzddlWRoaDJ39wcSN2Tridoc4/nXPse1FTCDBveIg1MBGWSjdr/95UL1amOvYhExBwad9KSKpu5Xj59auwHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707953; c=relaxed/simple;
-	bh=mBUu4pm+sHvPxcapb9L/4VvTmLov074qVOE6ZfKbcfU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jJc2UKxMrsvQYnl0+E7B3leiPask3dTtyLGAYZIJ5WrQ1QYORdrDuxXxuQQ8XyyKjMHgvQt7H2Wt/Lq6D7TXSuK4/WMwI/BhtCoH2J9Uu+L/xxLVMWjx3REUP6/PWm6Q2Ugctxn6jZlz4WmMO2VnwTrNAWuN/CPAddzVxWs/YwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3ekbNnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E736C4CEEA;
-	Thu,  3 Apr 2025 19:19:12 +0000 (UTC)
+	s=arc-20240116; t=1743707959; c=relaxed/simple;
+	bh=aCUomGsdaP+/h1uVvks0w3gDQ3U8zxPSSxUAoF+OzKk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PXuFdC/XsxCdzYJy2nmuUIzfcIPbeIDrczJtWRL6m4NRIV9KhILf9wStw2z24gIdGWmwoXTJsoDNwuA3ysbUa9Q8s4qDhhz1hM/K4hy7oNgidFLh3J814EFXsjiGqfHaA/bYuoyXj3EPOEYAbZ8fChrDoi2XDOtT0gxtQ+OXQpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDBDUK36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9040EC4CEE3;
+	Thu,  3 Apr 2025 19:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707952;
-	bh=mBUu4pm+sHvPxcapb9L/4VvTmLov074qVOE6ZfKbcfU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3ekbNnb+PX3PTXztbaT98GIQbJxIUcLCz87b/QJLH2t6Fjw7qGKb/S1ckEsOTXU6
-	 seoHkN46f3WGTPQpazXs3CybzO/65oG+a4kus/RlhRKAtL8MiGmwEBnzMNLj/Jvgu3
-	 4va8RpLVIlzlp8wdklYMBHzvql/+v2d1RIH64ISmxL09kCI9TIZpwDW+IbxawObMKV
-	 MUfOmcaMtroEI1jYe1jzcyscn6Nfv5U4JoNsqS7avJDvKpvLKfRH2vuBM2qHzSBpnd
-	 RoeWzI87uK/CAU6ih4R8MQnuFgsn5g1icv49s65sHwHeFmFkvNf7zr33soAS2AkSMH
-	 mbYyoWYVS+E8w==
+	s=k20201202; t=1743707958;
+	bh=aCUomGsdaP+/h1uVvks0w3gDQ3U8zxPSSxUAoF+OzKk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EDBDUK36LKpVZpOoPRU+g4EY83A1L1lMo4dzMqouI7u3BnBI228bsx7yhnBXOuVQi
+	 5HOU63nI9V2nwjrgq53bHK1CDampq7OQ2+rfoj4g1ykkmL0ja1/WcuEuUUgebnoTYx
+	 qvYAvGO3YGy4LTZ3HpYBWpsOTjDl7aAeIUFdk/ADzhEycFxSNX0Jrmwaffn9H6a80z
+	 NmZyYGTbqBdFZr+GjGb+3jAH4Ed/sNS6b3ICbpAxVre08nTvW5XRqjT/wiKDLfDRtC
+	 q0P4fjUOjHHvYOeEA5kZ87bHXgyGOKdmEaW5SNIeRIFxOtYtW6zP3iAuzGih9mWFih
+	 f9qSfjN4j8j/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	peterhuewe@gmx.de,
-	linux-integrity@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 23/23] tpm, tpm_tis: Workaround failed command reception on Infineon devices
-Date: Thu,  3 Apr 2025 15:18:16 -0400
-Message-Id: <20250403191816.2681439-23-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 01/20] drm: allow encoder mode_set even when connectors change for crtc
+Date: Thu,  3 Apr 2025 15:18:54 -0400
+Message-Id: <20250403191913.2681831-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250403191816.2681439-1-sashal@kernel.org>
-References: <20250403191816.2681439-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,116 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.85
+X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit de9e33df7762abbfc2a1568291f2c3a3154c6a9d ]
+[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
 
-Some Infineon devices have a issue where the status register will get
-stuck with a quick REQUEST_USE / COMMAND_READY sequence. This is not
-simply a matter of requiring a longer timeout; the work around is to
-retry the command submission. Add appropriate logic to do this in the
-send path.
+In certain use-cases, a CRTC could switch between two encoders
+and because the mode being programmed on the CRTC remains
+the same during this switch, the CRTC's mode_changed remains false.
+In such cases, the encoder's mode_set also gets skipped.
 
-This is fixed in later firmware revisions, but those are not always
-available, and cannot generally be easily updated from outside a
-firmware environment.
+Skipping mode_set on the encoder for such cases could cause an issue
+because even though the same CRTC mode was being used, the encoder
+type could have changed like the CRTC could have switched from a
+real time encoder to a writeback encoder OR vice-versa.
 
-Testing has been performed with a simple repeated loop of doing a
-TPM2_CC_GET_CAPABILITY for TPM_CAP_PROP_MANUFACTURER using the Go code
-at:
+Allow encoder's mode_set to happen even when connectors changed on a
+CRTC and not just when the mode changed.
 
-  https://the.earth.li/~noodles/tpm-stuff/timeout-reproducer-simple.go
-
-It can take several hours to reproduce, and several million operations.
-
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 17 ++++++++++++++---
- drivers/char/tpm/tpm_tis_core.h |  1 +
- include/linux/tpm.h             |  1 +
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index f6aa0dfadb93e..7ade8bd12ab26 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -464,7 +464,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index b097bff1cd18e..66d223c2d9ab9 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1389,7 +1389,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
+ 		mode = &new_crtc_state->mode;
+ 		adjusted_mode = &new_crtc_state->adjusted_mode;
  
- 		if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 					&priv->int_queue, false) < 0) {
--			rc = -ETIME;
-+			if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+				rc = -EAGAIN;
-+			else
-+				rc = -ETIME;
- 			goto out_err;
- 		}
- 		status = tpm_tis_status(chip);
-@@ -481,7 +484,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
+-		if (!new_crtc_state->mode_changed)
++		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
+ 			continue;
  
- 	if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 				&priv->int_queue, false) < 0) {
--		rc = -ETIME;
-+		if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+			rc = -EAGAIN;
-+		else
-+			rc = -ETIME;
- 		goto out_err;
- 	}
- 	status = tpm_tis_status(chip);
-@@ -546,9 +552,11 @@ static int tpm_tis_send_main(struct tpm_chip *chip, const u8 *buf, size_t len)
- 		if (rc >= 0)
- 			/* Data transfer done successfully */
- 			break;
--		else if (rc != -EIO)
-+		else if (rc != -EAGAIN && rc != -EIO)
- 			/* Data transfer failed, not recoverable */
- 			return rc;
-+
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 	}
- 
- 	/* go and do it */
-@@ -1147,6 +1155,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		priv->timeout_max = TIS_TIMEOUT_MAX_ATML;
- 	}
- 
-+	if (priv->manufacturer_id == TPM_VID_IFX)
-+		set_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags);
-+
- 	if (is_bsw()) {
- 		priv->ilb_base_addr = ioremap(INTEL_LEGACY_BLK_BASE_ADDR,
- 					ILB_REMAP_SIZE);
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index 13e99cf65efe4..369496a6aebf1 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -89,6 +89,7 @@ enum tpm_tis_flags {
- 	TPM_TIS_INVALID_STATUS		= 1,
- 	TPM_TIS_DEFAULT_CANCELLATION	= 2,
- 	TPM_TIS_IRQ_TESTED		= 3,
-+	TPM_TIS_STATUS_VALID_RETRY	= 4,
- };
- 
- struct tpm_tis_data {
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 4ee9d13749adc..5f4998626a988 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -272,6 +272,7 @@ enum tpm2_cc_attrs {
- #define TPM_VID_WINBOND  0x1050
- #define TPM_VID_STM      0x104A
- #define TPM_VID_ATML     0x1114
-+#define TPM_VID_IFX      0x15D1
- 
- enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_BOOTSTRAPPED		= BIT(0),
+ 		drm_dbg_atomic(dev, "modeset on [ENCODER:%d:%s]\n",
 -- 
 2.39.5
 
