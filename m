@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08500A7A6E5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87529A7A6C6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD08176957
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 856663BB6AF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4500A250C0D;
-	Thu,  3 Apr 2025 15:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DF12512CC;
+	Thu,  3 Apr 2025 15:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6j+xVHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUpry9Qp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16EB2505C1;
-	Thu,  3 Apr 2025 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C2C2505DD;
+	Thu,  3 Apr 2025 15:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693990; cv=none; b=bKMtkbhsfTJ1+ioTKRTpGrQnAJsMf8nxo8PeS2ymHT3VMwopPdsK16oT35NcqTKimhXBExQuySTAXwBSG/KwPk1ARJaOaGssae7JHRtMx959qXP5oNB9nZjokrrwSHGXpWZWRsuKpUOjIEuroLHE2NxusmYX2GebAQA1hUA0sqQ=
+	t=1743693946; cv=none; b=NRvDXaN2+brtPd/PvKLPEij6iKzuzCg1fGNCcgNtAvgegfOVNlccil6DBcnYus9YOlMfHOrOa9arZMC93/pg8yHVXzh4e5KQBzO6xrC1fAazZBF1YmnMRzD/a2Kd1oGAL7tbTHOk6WhSu9JbcRtN0uZbB7WNDZnwuRBBG8gq0XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693990; c=relaxed/simple;
-	bh=r+3axtWO3E66sB26o5uxpSHDqR2J59CveZjN1PEs0SE=;
+	s=arc-20240116; t=1743693946; c=relaxed/simple;
+	bh=My7WQz5GxVFAH1VtP154X+WGPAWTpR2ztGArcWIzCeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNLpRZXUZ/fJjvxtQy1tlcL/qj4uHyzeafhyiKSjWadc/e6rHkY5pXi1AN4XF+DqxnvteHBxFCX4b5MfPOKt9NrFNeVEh/FuHWFDog+wJQIKp8G7GIMZQwmId1iXNe6BziEYy/oR+IflP9kGIbQ7J7AZlD3+yTBbVXkA8ZCCVlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6j+xVHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB5AC4CEE3;
-	Thu,  3 Apr 2025 15:26:29 +0000 (UTC)
+	 MIME-Version; b=QByWaGGaUHhi34FewsIN7kIM0ANrIzcY77QNuceoP0tsKCK1gnyJ1iU/GwH98qJ2uZrhHEV1AJzQ0KojFy/kVQmSlPzH07MAnvPGQ/LK3mng5h6PRCzJZZN05F7qBeDaqXV47FptUH4cE9RfyZcrzuyLDUxZGtD1Oh8NtRFS2+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUpry9Qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE543C4CEE3;
+	Thu,  3 Apr 2025 15:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693989;
-	bh=r+3axtWO3E66sB26o5uxpSHDqR2J59CveZjN1PEs0SE=;
+	s=korg; t=1743693946;
+	bh=My7WQz5GxVFAH1VtP154X+WGPAWTpR2ztGArcWIzCeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6j+xVHF43uwLgKKEHS6yER8etU0SVe4v1e451IPddiPX0DwZfL4LmiPwOB+Bz1dC
-	 jIakZe1c+aLNCNQU+ColfA//6afOl+7o01uRxl+QSKwRI/YrGezAUjwNpU56t2Z/Vh
-	 qr7h5IvAP1m45qNziPOgYr/AavB/qK+gZByIpf9Y=
+	b=KUpry9Qp6vGg2DNeQwAEcBcEwehRh1ou46UseQZLE0224s++pc/+CzoOSe0AW2ijm
+	 qenXv0Jnbkmdz87X13j3x5uaX4WmBVbsODYXDzALYvyIzJ4kpgJAVd4qkpZTe3xb11
+	 9dGPncSJ7nBobfhwCf+iPIsZ9+ipMHNLApi59aOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 16/26] counter: stm32-lptimer-cnt: fix error handling when enabling
-Date: Thu,  3 Apr 2025 16:20:37 +0100
-Message-ID: <20250403151622.890436415@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Cheick Traore <cheick.traore@foss.st.com>
+Subject: [PATCH 6.13 21/23] serial: stm32: do not deassert RS485 RTS GPIO prematurely
+Date: Thu,  3 Apr 2025 16:20:38 +0100
+Message-ID: <20250403151622.894026722@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Cheick Traore <cheick.traore@foss.st.com>
 
-commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
+commit 2790ce23951f0c497810c44ad60a126a59c8d84c upstream.
 
-In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
-a timeout error is raised, by regmap_read_poll_timeout. It may happen,
-when the lptimer runs on a slow clock, and the clock is gated only
-few times during the polling.
+If stm32_usart_start_tx is called with an empty xmit buffer, RTS GPIO
+could be deasserted prematurely, as bytes in TX FIFO are still
+transmitting.
+So this patch remove rts disable when xmit buffer is empty.
 
-Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
-So the 'enable' state in sysfs wrongly lies on the counter being
-correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
-
-To fix both issues:
-- enable the clock before writing CMP, ARR and polling ISR bits. It will
-avoid the possible timeout error.
-- clear the ENABLE bit in CR and disable the clock in the error path.
-
-Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
+Link: https://lore.kernel.org/r/20250320152540.709091-1-cheick.traore@foss.st.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/tty/serial/stm32-usart.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
- 		return 0;
- 	}
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct
+ {
+ 	struct tty_port *tport = &port->state->port;
  
-+	ret = clk_enable(priv->clk);
-+	if (ret)
-+		goto disable_cnt;
-+
- 	/* LP timer must be enabled before writing CMP & ARR */
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
- 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
- 			   STM32_LPTIM_CMPOKCF_ARROKCF);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
--	ret = clk_enable(priv->clk);
--	if (ret) {
--		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
--		return ret;
+-	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
+-		stm32_usart_rs485_rts_disable(port);
++	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
+ 		return;
 -	}
- 	priv->enabled = true;
  
- 	/* Start LP timer in continuous mode */
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
- 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
-+
-+disable_clk:
-+	clk_disable(priv->clk);
-+disable_cnt:
-+	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
-+
-+	return ret;
- }
+ 	stm32_usart_rs485_rts_enable(port);
  
- static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
