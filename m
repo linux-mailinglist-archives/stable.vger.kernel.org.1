@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-127781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C0AA7AB49
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA53A7ABA9
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9298F189AB68
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6143F17154F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B3D2627F5;
-	Thu,  3 Apr 2025 19:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22296263C65;
+	Thu,  3 Apr 2025 19:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkmKrlwp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSpHyGYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D4B2620EE;
-	Thu,  3 Apr 2025 19:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A79253B69;
+	Thu,  3 Apr 2025 19:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707072; cv=none; b=p//EOdgTC+aICRcMLY7wEEKGM1D+zCqpwH1NKIzvNQHaEdjrqy60sVhT/tw1omaBNJq9gW6Szjwj5pamKXomHaKsgdlUxpste35UKfRLez7bFTYs2MSPf7GVhvaHHPd1oN1afQJpxmkl1Kr+RbwZr7r4wkATxPOqLMHAN+OIOEI=
+	t=1743707075; cv=none; b=HP8Tto12ZrdpwvnKdX/lrF2wBaow/JazIKuD8kdcZ/XdrJoDshYikWP1/mNPjHNwedZQCCF3qJE9OegRFvVSo4bPcjnKOaaiYW2ZLL4c7FY8wImpikTcgJ4u+7N0zpBfWeJaE8NAHjvupKw5KS7ivfE5ziciD3DJLdLUnvYXCnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707072; c=relaxed/simple;
-	bh=g0zBLxavqYSYO0LoA1sa/2C1ksx9MMtJvA8PF7M0r7c=;
+	s=arc-20240116; t=1743707075; c=relaxed/simple;
+	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MaZFu6gvM6WU35xpUmfvQpAiIq/hTLm433vccPvFi4ZGkR6eumEJhj8YJIAefdQrE6R5CM1oVznkbD08chQANdYk2+J//Tp7h0otaV91bFtCWbD6dwN6xjplNFHhwQ19zhpN1o9JBSDmXYM1UPRXeYkHvNti/KCRnwAH15lHgsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkmKrlwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509A4C4CEEA;
-	Thu,  3 Apr 2025 19:04:31 +0000 (UTC)
+	 MIME-Version; b=qdWt3ILZzQVNiSToTzQVq0zOA9c7riYXvymg3/hB2iCPhBK2Ewd++ojboVqh8d7swJjYYY5sVwJ0hTcUGO38KB6q3Nn7SOWEkY/e0tbETuI56gF6JKP3u7kNsW1FVqQ8G/pthCS5HUBvxct2ZwHoH8k0UAePDEg70p1BTdDeTu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSpHyGYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A66C4CEE8;
+	Thu,  3 Apr 2025 19:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707072;
-	bh=g0zBLxavqYSYO0LoA1sa/2C1ksx9MMtJvA8PF7M0r7c=;
+	s=k20201202; t=1743707075;
+	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkmKrlwpXS7+oKnH+9BOY83hP2Bp76FCNVxTLDzoOJ7ZiuwcWbJe4HgvE0dNUzbfF
-	 OJjXsiMMntRUrcPpuYNnMg7aY/nCEhCI56KXuRjo2sqQGeW6xmXuzGcb9kP3nGq+g9
-	 m1k4plIyFk2bNv4fpnGVCe2BSE6huSwTJjCQzY1VoztVz3Hk7OKUTm/+NVmD9/K8jd
-	 lLLAONIySmMFQJyyg7ZGxX9gMRnZ6QBseftCklCaS1/GPJ4Rx/zSwrBZzEGPrBwaiw
-	 ZD6QxkUYcK1WpFMF6yRjCanifrv2kgoTCCpnkdbCQGWEPU5UudbgOxpsedLM7xRhwD
-	 zFbIMT/OTD87A==
+	b=eSpHyGYslNXBeV3hWHSdYjA3jLUyHagxTePmAu77wN8V/p/Q5LuHVobg//0h4FciG
+	 qcPsxft0CbcKxnlhiIn8bDfap8cIk/szbvHsbmgL5eguaU5qkGBtHIsIlK896ejMVg
+	 aWZczMzcJWwH3DawvRSWuSTGxMkGzdbkUBTR6tj0PgBcCAd5OkMdTVHZtj2OBCQIq1
+	 LG9LZaIzgMg5My199N3qJGLn17U6nW8jIYYdwrxDRKsbpvop9PfDweqAJK0laP3IgO
+	 FAiE72ersSbAmIVsVpu7EPwdfzvcxL3Vh/8BkxosMWTBqNKzxD1KBloqCQkQiqAAy6
+	 O7OQxvf0zQ4Xg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chaohai Chen <wdhh66@163.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Max Schulze <max.schulze@online.de>,
+	David Hollis <dhollis@davehollis.com>,
+	Sven Kreiensen <s.kreiensen@lyconsys.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 12/49] scsi: target: spc: Fix RSOC parameter data header size
-Date: Thu,  3 Apr 2025 15:03:31 -0400
-Message-Id: <20250403190408.2676344-12-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	shannon.nelson@amd.com,
+	sd@queasysnail.net,
+	jacob.e.keller@intel.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 13/49] net: usb: asix_devices: add FiberGecko DeviceID
+Date: Thu,  3 Apr 2025 15:03:32 -0400
+Message-Id: <20250403190408.2676344-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
 References: <20250403190408.2676344-1-sashal@kernel.org>
@@ -67,38 +75,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Chaohai Chen <wdhh66@163.com>
+From: Max Schulze <max.schulze@online.de>
 
-[ Upstream commit b50532318793d28a7628c1ffc129a2226e83e495 ]
+[ Upstream commit 4079918ae720e842ed7dff65fedeb9980b374995 ]
 
-The SPC document states that "The COMMAND DATA LENGTH field indicates the
-length in bytes of the command descriptor list".
+The FiberGecko is a small USB module that connects a 100 Mbit/s SFP
 
-The length should be subtracted by 4 to represent the length of the
-description list, not 3.
-
-Signed-off-by: Chaohai Chen <wdhh66@163.com>
-Link: https://lore.kernel.org/r/20250115070739.216154-1-wdhh66@163.com
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Max Schulze <max.schulze@online.de>
+Tested-by: Max Schulze <max.schulze@online.de>
+Suggested-by: David Hollis <dhollis@davehollis.com>
+Reported-by: Sven Kreiensen <s.kreiensen@lyconsys.com>
+Link: https://patch.msgid.link/20250212150957.43900-2-max.schulze@online.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_spc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
-index ea14a38356814..61c065702350e 100644
---- a/drivers/target/target_core_spc.c
-+++ b/drivers/target/target_core_spc.c
-@@ -2243,7 +2243,7 @@ spc_emulate_report_supp_op_codes(struct se_cmd *cmd)
- 			response_length += spc_rsoc_encode_command_descriptor(
- 					&buf[response_length], rctd, descr);
- 		}
--		put_unaligned_be32(response_length - 3, buf);
-+		put_unaligned_be32(response_length - 4, buf);
- 	} else {
- 		response_length = spc_rsoc_encode_one_command_descriptor(
- 				&buf[response_length], rctd, descr,
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 57d6e5abc30e8..da24941a6e444 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -1421,6 +1421,19 @@ static const struct driver_info hg20f9_info = {
+ 	.data = FLAG_EEPROM_MAC,
+ };
+ 
++static const struct driver_info lyconsys_fibergecko100_info = {
++	.description = "LyconSys FiberGecko 100 USB 2.0 to SFP Adapter",
++	.bind = ax88178_bind,
++	.status = asix_status,
++	.link_reset = ax88178_link_reset,
++	.reset = ax88178_link_reset,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
++		 FLAG_MULTI_PACKET,
++	.rx_fixup = asix_rx_fixup_common,
++	.tx_fixup = asix_tx_fixup,
++	.data = 0x20061201,
++};
++
+ static const struct usb_device_id	products [] = {
+ {
+ 	// Linksys USB200M
+@@ -1578,6 +1591,10 @@ static const struct usb_device_id	products [] = {
+ 	// Linux Automation GmbH USB 10Base-T1L
+ 	USB_DEVICE(0x33f7, 0x0004),
+ 	.driver_info = (unsigned long) &lxausb_t1l_info,
++}, {
++	/* LyconSys FiberGecko 100 */
++	USB_DEVICE(0x1d2a, 0x0801),
++	.driver_info = (unsigned long) &lyconsys_fibergecko100_info,
+ },
+ 	{ },		// END
+ };
 -- 
 2.39.5
 
