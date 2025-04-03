@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-127760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3DAA7AAEC
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:17:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C68A7AA86
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9597E17654A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:12:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00A1188FE99
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA9925D54C;
-	Thu,  3 Apr 2025 19:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4A925D8F3;
+	Thu,  3 Apr 2025 19:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuRr6qZK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LtH7P9tB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB47825D545;
-	Thu,  3 Apr 2025 19:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EF7254B08;
+	Thu,  3 Apr 2025 19:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707032; cv=none; b=iMU0IAaUwyIOF5Nsl29WYnOPp+Qgz3Tlnn28OLmT34RRAaNt+W7Olj+fTK2Ard4Bc9RUd/dehc6oduRsJlftOiZ788PK43lQ7O4KP06rk8+fWG2XCP54X+SrowC+K5NtULdaHMA/38JWvKYyY0zeu2etwNA9qjQL0x6WfZGoIKk=
+	t=1743707034; cv=none; b=FQ7oA5j6bCk9xnb8Xw3s1SNfsaCcRKKuas8HBZR+Q6VmUGE3eyVDVr+oYFP/yaacBuoHyGa11YTd7hlzTPfyFasxkstnSVKMw5SovZFR6sRQnZYaAfaLEid1EDtw0agXGeg8cDbuQLAGhh3DBtD5idhD52eYSwqf0Lka/rRgmVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707032; c=relaxed/simple;
-	bh=rah6D8OWkHRxe+bJjTLRhrS3HWCEoLiMWAroXUx9P7E=;
+	s=arc-20240116; t=1743707034; c=relaxed/simple;
+	bh=End1NAdSCSyOu41pzCZOf9EQRzOV129eLfdzAXqYER0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q2kA0hFm214XdFFmT6YHLUJWlwGHliqwnfOFlARC5+4QsQ4xVpO+GwY1exILFOAdLSDixGxFdnqkjoruEXKm9zMcFux9CbWQY7iXWTXdGLK0LiMVBgIsUvoUhzM3ZKKxjzCY4XDly10zyqfzqATobmFSe0DyCJ5RYtEJLhgUG5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuRr6qZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB984C4CEE3;
-	Thu,  3 Apr 2025 19:03:51 +0000 (UTC)
+	 MIME-Version; b=brFq2XHEgON5VrkFsteIl3+7tfjOJx6rN6lrW6RquzbJ/PMTOJBHVVRXEYQwI0e4ADrmCOILbgxh50g1WGxdaGr6B5dABgymLso2j3eaPvE9e3Y/Vdm2Z1PYscJxW4AeIZVhZSxb6CaBLqi8X2gkkDcZq22USUA9BKG2lg0b2ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LtH7P9tB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC5C4CEE8;
+	Thu,  3 Apr 2025 19:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707032;
-	bh=rah6D8OWkHRxe+bJjTLRhrS3HWCEoLiMWAroXUx9P7E=;
+	s=k20201202; t=1743707034;
+	bh=End1NAdSCSyOu41pzCZOf9EQRzOV129eLfdzAXqYER0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KuRr6qZKH5LGqeVszXQX5uPmjU8/5ZFQAgAQbkuAsM/MtwDFsRj1kdvho2gkbiLpT
-	 fFVQNmlHVouneTX2VxdFgbDJOppMZ/nksLrY2AqnwvftQpKNp9C9dq0fxjwFuzwMOk
-	 PKzOWZ/vETRxkZT7TT/z6DEDLNJ0NpOOJjSpQoGznqWEoJNt6kR7Kz4U/ARImTrrY8
-	 OPTiEYrKg+IM2PHFpCDb0fYOzSDTc75kL3aAGV4lSZPX2fV+HANcFYG7lr6gnY5B8O
-	 XjbB1s2lKFLkQFUHvTOlIbHdop6nrY/d7HeKuYYhbHg4E1w31L5htQWypIkSIM5e8C
-	 ij1nopDy+lM9g==
+	b=LtH7P9tBdJoArK+bIckWNxJssdB+wyNAGZ6NEtTkOFed766mDRNz9C13D9+9P4v06
+	 gssXgqcd4MwvYiqSa6TEeW3DCki5d54j9o9QwySRm7GEikaZ07H6vsYqUZpevByJ8q
+	 9hIN45ZDkTN8FeoQLXXUvoiP1GtfnwZIcTSYjmxyM1bitZ9mIYwIaEq7ci6ycCha2H
+	 iFk1ODUY/9KNVQJZLiJ+jcbgvx2/zj8wDZyzupRPAlumiiRgvKV905zvCbfP+yD6+b
+	 LLGjcZRlbrjIaGi3uSKF80o0hQUhbjLrB+9MocgFvGriPpxFCr+i+pSUXtb8/ASgTc
+	 2OYCN5YCQ0XuA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dorian Cruveiller <doriancruveiller@gmail.com>,
+Cc: Kiran K <kiran.k@intel.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
 	luiz.dentz@gmail.com,
 	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 45/54] Bluetooth: btusb: Add new VID/PID for WCN785x
-Date: Thu,  3 Apr 2025 15:02:00 -0400
-Message-Id: <20250403190209.2675485-45-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 46/54] Bluetooth: btintel_pcie: Add device id of Whale Peak
+Date: Thu,  3 Apr 2025 15:02:01 -0400
+Message-Id: <20250403190209.2675485-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -67,68 +67,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Dorian Cruveiller <doriancruveiller@gmail.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit c7629ccfa175e16bb44a60c469214e1a6051f63d ]
+[ Upstream commit 6b8c05e52d66e4fe4ab1df4c6e15f339ecd9aa51 ]
 
-Add VID 0489 & PID e10d for Qualcomm WCN785x USB Bluetooth chip.
+Add device of Whale Peak.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+Output of sudo lspci -v  -s 00:14.7:
 
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e10d Rev= 0.01
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
+00:14.7 Bluetooth: Intel Corporation Device e476
+        Subsystem: Intel Corporation Device 0011
+        Flags: bus master, fast devsel, latency 0, IRQ 16, IOMMU group 11
+        Memory at 11011c30000 (64-bit, non-prefetchable) [size=16K]
+        Capabilities: [c8] Power Management version 3
+        Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+        Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00
+        Capabilities: [80] MSI-X: Enable+ Count=32 Masked-
+        Capabilities: [100] Latency Tolerance Reporting
+        Kernel driver in use: btintel_pcie
+        Kernel modules: btintel_pcie
 
-Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
+Signed-off-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btintel_pcie.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index a0fc465458b2f..2cfaee948bbe9 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -376,6 +376,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe0f3), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe10d), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 091ffe3e14954..6130854b6658a 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -36,6 +36,7 @@
+ /* Intel Bluetooth PCIe device id table */
+ static const struct pci_device_id btintel_pcie_table[] = {
+ 	{ BTINTEL_PCI_DEVICE(0xA876, PCI_ANY_ID) },
++	{ BTINTEL_PCI_DEVICE(0xE476, PCI_ANY_ID) },
+ 	{ 0 }
+ };
+ MODULE_DEVICE_TABLE(pci, btintel_pcie_table);
 -- 
 2.39.5
 
