@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-127598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7830A7A699
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A83BA7A683
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E045B3B55B8
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3023B957C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1EC2517AA;
-	Thu,  3 Apr 2025 15:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2A92512D8;
+	Thu,  3 Apr 2025 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4o9vz+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kfe1KgQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE42512FD;
-	Thu,  3 Apr 2025 15:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B992D188A3A;
+	Thu,  3 Apr 2025 15:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693832; cv=none; b=lIWCs8GopQFfzFjzfEj7IrkRE88V+dAps1+Xc3J9ICDn3Mwjb6SbDYqOruiJgn0qmN8dgyOk/Wf1kR4KyhFwpd81Bf/l2k8yK4/ohCuZ9AGx/kTRtik2JRQIv3BADF5hM6ORkiROoy8rE5ujY4dxNTWua2GYQCbK4jB1+3mVz7A=
+	t=1743693755; cv=none; b=qJGwxNZoDdwXm/Wpr8JgZDK3mb4oiEwlbf8hVxBxWOMcUP0MHTAf1ptLLfVFKY1526vGoWVynAmePIPvV34iqrV/PrZ4Lmqr1aG/3dQqwI/KJSJSeJJUQpJCvJy49ypjOCOYs4m8iRZbnTNpk3anDCHvRd8EbwbuntVntHf0j3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693832; c=relaxed/simple;
-	bh=YIet+fdinwjc8UDzBQqdJzcVfZ5lYhh8CRprmku7SKE=;
+	s=arc-20240116; t=1743693755; c=relaxed/simple;
+	bh=qLAQrtbFe+hLqWpTg+jK/q1DPQtyeUCoShCWSwGN+jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNMo1U1QXmZ3g4ovLJhehyO8lqhhbqJkTRce0XBBT5LCdkDcHcxV4V0ZXqPeRnV3Pw1VrgP9CWhFhsIxht2TLwGIpjvug2b6xaRNFT50KwNw7LnrCIRJbqmBziYLUnFrcalLsYFqAzJwI7//8sNK/XJyql5vWiGcVruVZ/FhNHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4o9vz+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B47EC4CEE3;
-	Thu,  3 Apr 2025 15:23:51 +0000 (UTC)
+	 MIME-Version; b=gkhdfLXuqwZJCpaf85l13OQVnEOxDIWYbeD9JAM81p2pBMTWJIB6oKmvGsZrE5/KeNelB+Bi9TBWzlD00kAF+nZP+1cJtDjJeq9CaF8vS45JQNtgvN3U9lO2OglKZEpMr2gYAn6ewXWhyFcKLf04Gel2jy/3e2Tgf5kKY1FSO7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kfe1KgQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330B2C4CEE3;
+	Thu,  3 Apr 2025 15:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693831;
-	bh=YIet+fdinwjc8UDzBQqdJzcVfZ5lYhh8CRprmku7SKE=;
+	s=korg; t=1743693755;
+	bh=qLAQrtbFe+hLqWpTg+jK/q1DPQtyeUCoShCWSwGN+jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4o9vz+mqLscstpUgzj8hrZUxclrYtNKMaTqxxS2E7nykbEPs7ryGo6KhJYKC+C7Y
-	 fvZLcRVOdSBR7frtNYB9eXoo9ULOB/wGLi2g+hM2EHE/kERKOOMVMhrm4GXOTDlIif
-	 3s+UooWi3DXPu2FQk5L8Xt6u4DCN1AYMGcsVhejQ=
+	b=Kfe1KgQrPNZ8kwaNIH4eD4IXpUaT344lAJvns9P9+pPl/xeDJXVLEmKAKJmvbn/Qb
+	 qsWOU/nnM966jjqPqTE2Np2avfwgDk+xIk/6HYU14Hv8Zolo+LQXPKYO/QKjhHRTeS
+	 l3nfwaV7YrgbEBUXwLOajxQ+ScX+GOYE/Ge7movM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxim@isovalent.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.14 05/21] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 14/22] net: usb: qmi_wwan: add Telit Cinterion FN990B composition
 Date: Thu,  3 Apr 2025 16:20:09 +0100
-Message-ID: <20250403151621.284980820@linuxfoundation.org>
+Message-ID: <20250403151621.339958118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
+References: <20250403151620.960551909@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
+commit 9dba9a45f8ca64a7df32aada14c20a3153af1ac8 upstream.
 
-nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
-restore the original 5-tuple in case of SNAT, to be able to find the
-right socket (if any). Then socket_match() can correctly check whether
-the socket was transparent.
+Add the following Telit Cinterion FN990B composition:
 
-However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
-conntrack lookup, making xt_socket fail to match on the socket when the
-packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
-pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
-with the node's external address. Cilium leverages Envoy to enforce L7
-policies, and Envoy uses transparent sockets. Cilium inserts an iptables
-prerouting rule that matches on `-m socket --transparent` and redirects
-the packets to localhost, but it fails to match SNATed IPv6 packets due
-to that missing conntrack lookup.
-
-Closes: https://github.com/cilium/cilium/issues/37932
-Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250205171649.618162-3-fabio.porcedda@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ipv6/netfilter/nf_socket_ipv6.c
-+++ b/net/ipv6/netfilter/nf_socket_ipv6.c
-@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 	struct sk_buff *data_skb = NULL;
- 	int doff = 0;
- 	int thoff = 0, tproto;
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn const *ct;
-+#endif
- 
- 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
- 	if (tproto < 0) {
-@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 		return NULL;
- 	}
- 
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	/* Do the lookup with the original socket address in
-+	 * case this is a reply packet of an established
-+	 * SNAT-ted connection.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (ct &&
-+	    ((tproto != IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
-+	     (tproto == IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_RELATED_REPLY)) &&
-+	    (ct->status & IPS_SRC_NAT_DONE)) {
-+		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
-+		dport = (tproto == IPPROTO_TCP) ?
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
-+	}
-+#endif
-+
- 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
- 				     sport, dport, indev);
- }
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1375,6 +1375,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 
 
 
