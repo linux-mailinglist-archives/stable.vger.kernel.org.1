@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-127575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BE6A7A686
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F891A7A6B8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38493B9786
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5ED3BAEC1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F04F2512EC;
-	Thu,  3 Apr 2025 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554592512C7;
+	Thu,  3 Apr 2025 15:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skXitZ8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+kJ8Wae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEAC250C09;
-	Thu,  3 Apr 2025 15:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBBD250C0D;
+	Thu,  3 Apr 2025 15:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693776; cv=none; b=cXy/sKMcLHtl3tZwbr3yPQt4dX+HdD0JlCw9Epo+Y9z8BSO3tL4LvZnER9T9rWTDiU1wipyCUobWQDZTBWLRbmEbiIpDP2huYs9exu23jgY22nXNxIq/soTYzjCHs72wVE9KTsfwG3fYcEc0gqLdqXFk/FvwhchSgbaDmURL3R0=
+	t=1743693893; cv=none; b=bwjnCtDwg9hV9wshjnuicNM3bvLh+x5n63qGK1qsuk54Cxw9m617Ivq1PiZ2EzcDRGxv0Cn163F5WlpfYUjgO90AIyWwldM41wIrtvh2zGfaaUUgcpd4SPTIHhr5osQej281PO/Zc4/KwXNaKhkN1XH3mw5CVi35Zkp7Nvpo0mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693776; c=relaxed/simple;
-	bh=HqzhFAgOmxuVIW7KuqSlvkzi/kFxYvVUYxwF74zN3SY=;
+	s=arc-20240116; t=1743693893; c=relaxed/simple;
+	bh=fbX0CDd9uqFOBvFZ2DT9QH6z63fI0psyfNtQnD90VPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjHfA5F87sKNAlK3vhPUkpcQEKUrqm76jvW+bVI9cyZ30pVQDgoT4j7Bhr/BnYqdTD0c9phr9/ZZIiy5e7flwLsr0ynV5d85mkKCJ15L17zZw5oAk+oqIhPF8B9GK9hKYGuvfle8Ab+rNgAvCSaV/dh+hbz6GNiBMQUte9poHVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skXitZ8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AD0C4CEE3;
-	Thu,  3 Apr 2025 15:22:54 +0000 (UTC)
+	 MIME-Version; b=uVvgclD9OFcTPw4Q8y1epuY3bcbl8xYlnXPZOc3MS4amXnlvBkvle8QHFHFh1PBl40uOTZyL/0EM3LcEcdk+dIVhwIwHqlafL3p9AEOFzy/h16OS66z5WX7zExu9EjUL8b28AxQD4bGEjTgQUkgw1zLKW92z7qPVoCStaNOWJXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+kJ8Wae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25572C4CEE5;
+	Thu,  3 Apr 2025 15:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693774;
-	bh=HqzhFAgOmxuVIW7KuqSlvkzi/kFxYvVUYxwF74zN3SY=;
+	s=korg; t=1743693892;
+	bh=fbX0CDd9uqFOBvFZ2DT9QH6z63fI0psyfNtQnD90VPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skXitZ8XG165TWChM/f1wut4kGsoU3/RlJhHKcgszozvLmMiWOXpWLd3QRzLMNuts
-	 RCu4DZE3Cd8NzxIOYlPBi4MP0W5x/vbexOxxQJ+QtkxU5iNJ7WVBnMgO1Udk7OUmPA
-	 DqQE6Igyq9tF+uH68XCueMyBCvnJjY0HGN/itKDQ=
+	b=g+kJ8WaefRpRi7bEtAOJmps7Y+WnwRCQvVg1AUZS1bVgioqwkw5R9oSlM+WRI2Q1H
+	 YyE4qmUpMbFjnh+pVtapWL3bL6xFNKZ1mg6C4Xw4T5Q1ukduuF5mIPKaOdsCuOE38c
+	 zdg/x/Dx/JgCUYRp3CcMac1jRrf13jKFfEsRCnmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 20/22] usb: typec: ucsi: Fix NULL pointer access
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.12 05/22] drm/amd/display: Dont write DP_MSTM_CTRL after LT
 Date: Thu,  3 Apr 2025 16:20:15 +0100
-Message-ID: <20250403151621.508122640@linuxfoundation.org>
+Message-ID: <20250403151622.197488472@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
-References: <20250403151620.960551909@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit b13abcb7ddd8d38de769486db5bd917537b32ab1 upstream.
+commit bc068194f548ef1f230d96c4398046bf59165992 upstream.
 
-Resources should be released only after all threads that utilize them
-have been destroyed.
-This commit ensures that resources are not released prematurely by waiting
-for the associated workqueue to complete before deallocating them.
+[Why]
+Observe after suspend/resme, we can't light up mst monitors under specific
+mst hub. The reason is that driver still writes DPCD DP_MSTM_CTRL after LT.
+It's forbidden even we write the same value for that dpcd register.
 
-Cc: stable <stable@kernel.org>
-Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250305111739.1489003-2-akuchynski@chromium.org
+[How]
+We already resume the mst branch device dpcd settings during
+resume_mst_branch_status(). Leverage drm_dp_mst_topology_queue_probe() to
+only probe the topology, not calling drm_dp_mst_topology_mgr_resume() which
+will set DP_MSTM_CTRL as well.
+
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1313,11 +1313,11 @@ static int ucsi_init(struct ucsi *ucsi)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3231,8 +3231,7 @@ static int dm_resume(void *handle)
+ 	struct dm_atomic_state *dm_state = to_dm_atomic_state(dm->atomic_obj.state);
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	struct dc_state *dc_state;
+-	int i, r, j, ret;
+-	bool need_hotplug = false;
++	int i, r, j;
+ 	struct dc_commit_streams_params commit_params = {};
  
- err_unregister:
- 	for (con = connector; con->port; con++) {
-+		if (con->wq)
-+			destroy_workqueue(con->wq);
- 		ucsi_unregister_partner(con);
- 		ucsi_unregister_altmodes(con, UCSI_RECIPIENT_CON);
- 		ucsi_unregister_port_psy(con);
--		if (con->wq)
--			destroy_workqueue(con->wq);
- 		typec_unregister_port(con->port);
- 		con->port = NULL;
+ 	if (dm->dc->caps.ips_support) {
+@@ -3427,23 +3426,16 @@ static int dm_resume(void *handle)
+ 		    aconnector->mst_root)
+ 			continue;
+ 
+-		ret = drm_dp_mst_topology_mgr_resume(&aconnector->mst_mgr, true);
+-
+-		if (ret < 0) {
+-			dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
+-					aconnector->dc_link);
+-			need_hotplug = true;
+-		}
++		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
  	}
-@@ -1479,10 +1479,6 @@ void ucsi_unregister(struct ucsi *ucsi)
+ 	drm_connector_list_iter_end(&iter);
  
- 	for (i = 0; i < ucsi->cap.num_connectors; i++) {
- 		cancel_work_sync(&ucsi->connector[i].work);
--		ucsi_unregister_partner(&ucsi->connector[i]);
--		ucsi_unregister_altmodes(&ucsi->connector[i],
--					 UCSI_RECIPIENT_CON);
--		ucsi_unregister_port_psy(&ucsi->connector[i]);
+-	if (need_hotplug)
+-		drm_kms_helper_hotplug_event(ddev);
+-
+ 	amdgpu_dm_irq_resume_late(adev);
  
- 		if (ucsi->connector[i].wq) {
- 			struct ucsi_work *uwork;
-@@ -1497,6 +1493,11 @@ void ucsi_unregister(struct ucsi *ucsi)
- 			mutex_unlock(&ucsi->connector[i].lock);
- 			destroy_workqueue(ucsi->connector[i].wq);
- 		}
+ 	amdgpu_dm_smu_write_watermarks_table(adev);
+ 
++	drm_kms_helper_hotplug_event(ddev);
 +
-+		ucsi_unregister_partner(&ucsi->connector[i]);
-+		ucsi_unregister_altmodes(&ucsi->connector[i],
-+					 UCSI_RECIPIENT_CON);
-+		ucsi_unregister_port_psy(&ucsi->connector[i]);
- 		typec_unregister_port(ucsi->connector[i].port);
- 	}
+ 	return 0;
+ }
  
 
 
