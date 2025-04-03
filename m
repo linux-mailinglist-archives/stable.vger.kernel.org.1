@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-127680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C310A7A6E1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2BAA7A6BD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CCD3B6A21
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C63283BB2C0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DD82505D0;
-	Thu,  3 Apr 2025 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5905D25178B;
+	Thu,  3 Apr 2025 15:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTIhGQHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/D1SUqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216224CEE5;
-	Thu,  3 Apr 2025 15:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15625251781;
+	Thu,  3 Apr 2025 15:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743694034; cv=none; b=lzHlWYpxqWYEDNqoQe7v/r+H12eQ0FsY3njaS16fws+GP1DJKnMUOzUphe2x8ElzICvjaXKPe0MuqgZYBLiEbjLaOPtNOxqUlGpuNQkS68OvuIMDFhmtd85Wf665zQoAkzC3M37CvYtHFU6AJQ/cpGB2tqmrVU6eZkywjOAeQTI=
+	t=1743693912; cv=none; b=GbPS8HGWLCjBDVKXRudGNqV6KzA5fogMhUlkrrO/JYeFLLQOX7P8q/zSOQIGkfG9MEd4PNe+q+WUgCeFRVg/LU5W6VCrd5uXdUezLc3cgAtUIsO0z3QM/lskZfgNwBC1GkTyot2h4dPRWwY3Mr5WR67CPiGwZa3m7c0w+PuM0J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743694034; c=relaxed/simple;
-	bh=aPr8c50VZeUZdkJnVrQIPWbHy0y1zrd9XJekLgJSc6Q=;
+	s=arc-20240116; t=1743693912; c=relaxed/simple;
+	bh=gmMRPGrvVjRkwNNWOc1Canu0QHQzeqvYW2UgbmuhvQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIy9iPMFEnorT7r9knlDu+rYoLNpnfL6xHZaVeKOGVtJwMS2/agFwbPW10p+PhLdCwxDqrwo28blQUdmObsEezYPBUpvp7H1nd0NUFL3QKgKToqw6W5z01IGnYn00Dg8XCyR4MoHXmiaqxnRMl95iMj+g7m0T5aEssznte/DvCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTIhGQHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F0DC4CEE3;
-	Thu,  3 Apr 2025 15:27:13 +0000 (UTC)
+	 MIME-Version; b=kuBlAB99rB3yFV5wJuovnsyF4oEKCF2xtRczSpmTkTRJbJUlXNhJK1kMQoKqcWRjFFODm8OIM4m1GvZm2unSGmuPpkbgXGJx4GahQvytNZtPIJ+7lKOW2VLOEeVuc3QTeYYXo2wpZ4NJNZchYnCESxhgEQe3EeHb2rStMAmxuJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/D1SUqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C84C4CEE7;
+	Thu,  3 Apr 2025 15:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743694033;
-	bh=aPr8c50VZeUZdkJnVrQIPWbHy0y1zrd9XJekLgJSc6Q=;
+	s=korg; t=1743693911;
+	bh=gmMRPGrvVjRkwNNWOc1Canu0QHQzeqvYW2UgbmuhvQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTIhGQHVx5k/ktfvaFDprdzlYlQDQ7DjjIKqn4M3xOYTdhzXqNZlvyRlLX66iWHUe
-	 BDJmmvmnurpehNnssVR2fwnksLFxzvbJhGJPWahn9MElORtidwcEx4kG01s2SXlkWV
-	 S2FUD8xXagTEPxQ7SxPgF5S5n1jmkejy3U4iXRaA=
+	b=Z/D1SUqUCxLgN9HO1TbzVqLD+42zNrJD8XkqcTL6nfcNU57Aavv1UPpcsEudXTDkP
+	 cfMldLyeMdrFBUDR/B8HmWVTSsIPaQdcbDk7i26jFqQaFPCcUzhWnIuNz8B9dWI56j
+	 06ulP4GqJTHmY47r6WmZ3FxcxJVAa3pnaJChFP70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	Imre Deak <imre.deak@intel.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.6 09/26] drm/dp_mst: Add a helper to queue a topology probe
+	stable <stable@kernel.org>,
+	Cheick Traore <cheick.traore@foss.st.com>
+Subject: [PATCH 6.12 20/22] serial: stm32: do not deassert RS485 RTS GPIO prematurely
 Date: Thu,  3 Apr 2025 16:20:30 +0100
-Message-ID: <20250403151622.684402831@linuxfoundation.org>
+Message-ID: <20250403151622.621701042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Cheick Traore <cheick.traore@foss.st.com>
 
-commit dbaeef363ea54f4c18112874b77503c72ba60fec upstream.
+commit 2790ce23951f0c497810c44ad60a126a59c8d84c upstream.
 
-A follow up i915 patch will need to reprobe the MST topology after the
-initial probing, add a helper for this.
+If stm32_usart_start_tx is called with an empty xmit buffer, RTS GPIO
+could be deasserted prematurely, as bytes in TX FIFO are still
+transmitting.
+So this patch remove rts disable when xmit buffer is empty.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240722165503.2084999-3-imre.deak@intel.com
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
+Link: https://lore.kernel.org/r/20250320152540.709091-1-cheick.traore@foss.st.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |   27 ++++++++++++++++++++++++++
- include/drm/display/drm_dp_mst_helper.h       |    2 +
- 2 files changed, 29 insertions(+)
+ drivers/tty/serial/stm32-usart.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3686,6 +3686,33 @@ drm_dp_mst_topology_mgr_invalidate_mstb(
- }
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct
+ {
+ 	struct tty_port *tport = &port->state->port;
  
- /**
-+ * drm_dp_mst_topology_queue_probe - Queue a topology probe
-+ * @mgr: manager to probe
-+ *
-+ * Queue a work to probe the MST topology. Driver's should call this only to
-+ * sync the topology's HW->SW state after the MST link's parameters have
-+ * changed in a way the state could've become out-of-sync. This is the case
-+ * for instance when the link rate between the source and first downstream
-+ * branch device has switched between UHBR and non-UHBR rates. Except of those
-+ * cases - for instance when a sink gets plugged/unplugged to a port - the SW
-+ * state will get updated automatically via MST UP message notifications.
-+ */
-+void drm_dp_mst_topology_queue_probe(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	mutex_lock(&mgr->lock);
-+
-+	if (drm_WARN_ON(mgr->dev, !mgr->mst_state || !mgr->mst_primary))
-+		goto out_unlock;
-+
-+	drm_dp_mst_topology_mgr_invalidate_mstb(mgr->mst_primary);
-+	drm_dp_mst_queue_probe_work(mgr);
-+
-+out_unlock:
-+	mutex_unlock(&mgr->lock);
-+}
-+EXPORT_SYMBOL(drm_dp_mst_topology_queue_probe);
-+
-+/**
-  * drm_dp_mst_topology_mgr_suspend() - suspend the MST manager
-  * @mgr: manager to suspend
-  *
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -859,6 +859,8 @@ int drm_dp_check_act_status(struct drm_d
- void drm_dp_mst_dump_topology(struct seq_file *m,
- 			      struct drm_dp_mst_topology_mgr *mgr);
+-	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
+-		stm32_usart_rs485_rts_disable(port);
++	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
+ 		return;
+-	}
  
-+void drm_dp_mst_topology_queue_probe(struct drm_dp_mst_topology_mgr *mgr);
-+
- void drm_dp_mst_topology_mgr_suspend(struct drm_dp_mst_topology_mgr *mgr);
- int __must_check
- drm_dp_mst_topology_mgr_resume(struct drm_dp_mst_topology_mgr *mgr,
+ 	stm32_usart_rs485_rts_enable(port);
+ 
 
 
 
