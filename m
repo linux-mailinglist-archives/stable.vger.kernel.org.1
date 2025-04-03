@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-127756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E955DA7AAA3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:14:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444F6A7AAD3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A836C7A8D90
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1FE17BE5C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C836F25C6F9;
-	Thu,  3 Apr 2025 19:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D16325D1F3;
+	Thu,  3 Apr 2025 19:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MaiGOzT6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nehykLpi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822D625C6EE;
-	Thu,  3 Apr 2025 19:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C755725D1EA;
+	Thu,  3 Apr 2025 19:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707024; cv=none; b=DJ3t1x+V9qNLzBUCvhmwX8rE9HNGshkRIe/lQcuUyrqANr326SmJx0nQQDlRZxRkgTtJ7Hd555a+xLIBe4IHuOG5OODI2mNA9i68IKgm8mjU9LO0nvr0+8zYs9KkPkmoEyHxI6eytR3+qCIZE7w36nYWrG06kVBWhXu3cAI08dU=
+	t=1743707027; cv=none; b=nHm+G1ot6d2Pbw9pXfDKUoMMpq5EmWENZ1nC5UefiWMDJwUySHZNK8dhYJqM7igEtOuaSwpjXdgVpRD9m1SLkJ3eg9MRLMoKgFTqbdIKWZZje6KgWxWJe2w3Rx/p9Cz7c4uADuc2sHkwtwys8YN5oMp1K1a+Dgp4i3g8h6R+log=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707024; c=relaxed/simple;
-	bh=ocUmumNNqTn8lwXlmZIoT+GwMG8uU3C5LnKpYpZ+rKc=;
+	s=arc-20240116; t=1743707027; c=relaxed/simple;
+	bh=NilAVgNUnea1icERfhytbZ+XwefVTD71Tzk6Trb40CQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IBXOTpP0xeff3QYxuyoQr6u0INsMMb7MlKXRODz8fgWvDV+3eSBRPbrhIghJbeBhwmyS2C3FJI4r7hH1JYo7DM82lpiu7XmJcCc8n8nHUm1qPJ71rIf2Wua4FcONhB/Zdrd1pg+lNgxYDRbyEF4Fr4ajbRkCFOmQQL/fXT78aVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MaiGOzT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F49C4CEE9;
-	Thu,  3 Apr 2025 19:03:42 +0000 (UTC)
+	 MIME-Version; b=jWbC7VfqpS6fPO0CXpCIZbDx2A1aApLt49XG0SZYlUL9ySR8wCTIlgJH6InE9oZuWUDKAwKjwvyedoxjY5r/iFE9pZeUXbx59+JeELfLWRgArW7RiHWBHTGoiTcymSrwZftDZaDSYryjwq8q+/t0+h4CVa6H5B4DLnQkbo7YdkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nehykLpi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7611C4CEE8;
+	Thu,  3 Apr 2025 19:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707024;
-	bh=ocUmumNNqTn8lwXlmZIoT+GwMG8uU3C5LnKpYpZ+rKc=;
+	s=k20201202; t=1743707027;
+	bh=NilAVgNUnea1icERfhytbZ+XwefVTD71Tzk6Trb40CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaiGOzT6YEDeOAHSFt5JFavP98pkaVYGuDEEC0uxMYLlc5/Qvv6wE7defhXXhWIuj
-	 H9PIgQrVCLYa4oF/2gz8OFH3LmvsZaP0rTrds2gmgA/3w9ffIi/OuSCmcf6oMQ8wtf
-	 AXP7rEGcADiJKv54hKh/UElK52Sx6BNNV2Vhe3xIAV1j4zKS0ASVraTzTXOQGReG/J
-	 nhQ4c/nXaJOxKERWt6VFhwTk2DMdflBbpmLa9q/JZSggQ+KHqEL6H1dej3XHSh9smI
-	 8spUUszMzwsTX2+qS31+NbWzsISPPJp0ipc1huI9LxISJTEuEO+G4XfuOTbx5A7hfZ
-	 EVzq6QXYnIypw==
+	b=nehykLpiNWWTY5Ru3hy218VWrDu+1h74rnoUTcurv1WZMnUqF59GbqbeR8cahkRHz
+	 Q4ijOiiIop6gUGFBxWIs8QZ7BfgDV1V099KcU3ymcLVM6ZOG+j+dQss9pRNnGF1I4+
+	 zYBHSkliyNtNqeEB4aVq7fftwc1hB/UWrKbeAr1iGG393JEKLLMEvBPYaejXlQL7Lq
+	 /DrpvcsiIRkyekAA8LEjMgCqm6uD40o9pKtlEvdpiN8xO0iv4BaCnBvtFvYPpsfSdB
+	 qnxSkiOfjEHEbdmhyKQSJ8LLiyLXHxtxijkk2x/5GsfcjsCQ7AmdTQmlwBZx/++f+K
+	 yOGOLJ38kZPNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 41/54] btrfs: harden block_group::bg_list against list_del() races
-Date: Thu,  3 Apr 2025 15:01:56 -0400
-Message-Id: <20250403190209.2675485-41-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 42/54] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Thu,  3 Apr 2025 15:01:57 -0400
+Message-Id: <20250403190209.2675485-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -69,95 +71,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Boris Burkov <boris@bur.io>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit 7511e29cf1355b2c47d0effb39e463119913e2f6 ]
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-As far as I can tell, these calls of list_del_init() on bg_list cannot
-run concurrently with btrfs_mark_bg_unused() or btrfs_mark_bg_to_reclaim(),
-as they are in transaction error paths and situations where the block
-group is readonly.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-However, if there is any chance at all of racing with mark_bg_unused(),
-or a different future user of bg_list, better to be safe than sorry.
+Add the USB ID to mt76x2u driver.
 
-Otherwise we risk the following interleaving (bg_list refcount in parens)
-
-T1 (some random op)                       T2 (btrfs_mark_bg_unused)
-                                        !list_empty(&bg->bg_list); (1)
-list_del_init(&bg->bg_list); (1)
-                                        list_move_tail (1)
-btrfs_put_block_group (0)
-                                        btrfs_delete_unused_bgs
-                                             bg = list_first_entry
-                                             list_del_init(&bg->bg_list);
-                                             btrfs_put_block_group(bg); (-1)
-
-Ultimately, this results in a broken ref count that hits zero one deref
-early and the real final deref underflows the refcount, resulting in a WARNING.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c |  8 ++++++++
- fs/btrfs/transaction.c | 12 ++++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 3014a1a23efdb..6d615711f0400 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -2874,7 +2874,15 @@ int btrfs_finish_extent_commit(struct btrfs_trans_handle *trans)
- 						   block_group->length,
- 						   &trimmed);
- 
-+		/*
-+		 * Not strictly necessary to lock, as the block_group should be
-+		 * read-only from btrfs_delete_unused_bgs().
-+		 */
-+		ASSERT(block_group->ro);
-+		spin_lock(&fs_info->unused_bgs_lock);
- 		list_del_init(&block_group->bg_list);
-+		spin_unlock(&fs_info->unused_bgs_lock);
-+
- 		btrfs_unfreeze_block_group(block_group);
- 		btrfs_put_block_group(block_group);
- 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index aca83a98b75a2..c0e9d4bbe380d 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -160,7 +160,13 @@ void btrfs_put_transaction(struct btrfs_transaction *transaction)
- 			cache = list_first_entry(&transaction->deleted_bgs,
- 						 struct btrfs_block_group,
- 						 bg_list);
-+			/*
-+			 * Not strictly necessary to lock, as no other task will be using a
-+			 * block_group on the deleted_bgs list during a transaction abort.
-+			 */
-+			spin_lock(&transaction->fs_info->unused_bgs_lock);
- 			list_del_init(&cache->bg_list);
-+			spin_unlock(&transaction->fs_info->unused_bgs_lock);
- 			btrfs_unfreeze_block_group(cache);
- 			btrfs_put_block_group(cache);
- 		}
-@@ -2096,7 +2102,13 @@ static void btrfs_cleanup_pending_block_groups(struct btrfs_trans_handle *trans)
- 
-        list_for_each_entry_safe(block_group, tmp, &trans->new_bgs, bg_list) {
-                btrfs_dec_delayed_refs_rsv_bg_inserts(fs_info);
-+		/*
-+		* Not strictly necessary to lock, as no other task will be using a
-+		* block_group on the new_bgs list during a transaction abort.
-+		*/
-+	       spin_lock(&fs_info->unused_bgs_lock);
-                list_del_init(&block_group->bg_list);
-+	       spin_unlock(&fs_info->unused_bgs_lock);
-        }
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index e832ad53e2393..a4f4d12f904e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -22,6 +22,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
 -- 
 2.39.5
