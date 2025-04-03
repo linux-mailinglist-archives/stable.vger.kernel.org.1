@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-127984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE57A7ADD7
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:14:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDD7A7ADE0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB6901885000
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:10:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8433F1605D2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5821325E478;
-	Thu,  3 Apr 2025 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896AE262ED6;
+	Thu,  3 Apr 2025 19:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6dYHZ8b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBuH+QjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1488A25E471;
-	Thu,  3 Apr 2025 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45313262ED0;
+	Thu,  3 Apr 2025 19:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707676; cv=none; b=Bt4fnPIdi7p0rAI59GLJ86FkIUhe77ZkqQiEeefrDD4WXxZpBg5oNLYJD7u9sF9cvEI3HZvDHh+vO0ufI2oquNgJr3R4Q2u7MxacqZ4zC29GxE2UiQLYEyRlV5HegBmwPK/U4b7RVQ8ilv2bqOT40xLObzcO1IeX+zn6fg/vvc0=
+	t=1743707678; cv=none; b=tusQK1ZTvlEjnr+CBiHGznnsMUTe/bSRaH6XHC+9wkcx4RvgHBaCbZtFzjRxN4YUoJ98TsMfDUnZTIrT8PdFwbHEIPfoq42N9iSkeKiTb6fL42TJfiJaRFNwTvbf0f5Ypnp4Q+hKtZ+VgZJzRBavO2hA892zdNUqb1fOphJm5IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707676; c=relaxed/simple;
-	bh=bYDF03y7wMr/7fpD3lfeArDZi4hx1ONU08HD9qmFx7o=;
+	s=arc-20240116; t=1743707678; c=relaxed/simple;
+	bh=71wBi/cNBET7g7tuz2d1oBbbk5rq2cJkkfj8t+08GTU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DnLxxKi5ch8vJYi/rYJTIGv4XYSOAa7Pem+U8JZB0RGD4BWFuqAye6IXwWKw3hw9aFcG/iITbJJGWJZB6A2qe97mOwpckkit7Y9RqMxBcaeCQthAcQW/G0/us/cljaH+E4dk6MzD/Z2/Svb9qJ9FiFH9V/2BovqbdeMimXHC39U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6dYHZ8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BDCC4CEEA;
-	Thu,  3 Apr 2025 19:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u4zDtRGQKmebmrTBRhwsVhIx0xKGm4wqIIj0B0bF8uKqA37XoU0fp+Plv5/igPIcfA5Rd55xsgzuIih8kp5NX4vFtrLvMA+wppkvJc41yR2lUF/fE/v0RmMHH4S9t/oNM+/Er074OJ+aMNVgK0Sez6wWUss7RpsbfU97ixJaicY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBuH+QjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97257C4CEE3;
+	Thu,  3 Apr 2025 19:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707676;
-	bh=bYDF03y7wMr/7fpD3lfeArDZi4hx1ONU08HD9qmFx7o=;
+	s=k20201202; t=1743707678;
+	bh=71wBi/cNBET7g7tuz2d1oBbbk5rq2cJkkfj8t+08GTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6dYHZ8baKwt9agcsfPdxoS0PlwkqzkhwDqKdrMjwLofJrw0gFKrf2o3JFy8esuDc
-	 qT4/D9lONS6Sj8vmFnoDnJ2EYFfXOIFZjVwSNBO7+o1D1/1MaCCMFaELaPal+eand+
-	 0TflB2O8czW2ZPxKSr8CsnnWp447abL1PJjDPvEm5VWq5vlyChSSL0JFPTguSZ/zVp
-	 10GBX9qKKC0V7aHwDCyZgizgAncPKbv0UbLsr/ljhjdmKhgPsOHqk+xqyZsJLKdzty
-	 +Z2jSxpAovNYqWcdujVsSlenp4QaCKzw95OjY61mD33IQtH6G0irRWcboi7RHqE25V
-	 hkUz/tQ6qnuuw==
+	b=WBuH+QjAvTrLe3JdD6N32A7iweSTs54Ez/o4QXpclFpUKcDAs/nJNBvIUeyxixi2r
+	 grEE2CGDYyHm5r5JAt3xDGVFqewhlATYyfdbM/YmuLZHEPsU+xoQnjjRuWXLu/Ouan
+	 GYCgPGHAUIKi0gYSCMOP17+r11OtrJ5d3MydbnzX3TUfKoFJEvCXMV5p+alTQlRjZi
+	 mFPJ4+gaLUVLYk2+6HyZj3E382c8THPUXsJikvb34WaO9NHMroJWXmM5p03yM6BLXn
+	 d6dJTXChd1GumN5dCJ3MxQ2+z2YyaIx4Lw1sCMh8/EF6CCgQ/nT4c0c3IWpi/8VXCf
+	 bGaU7LgBsqr5g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
+Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
+	manivannan.sadhasivam@linaro.org,
+	kw@linux.com,
+	gregkh@linuxfoundation.org,
+	lpieralisi@kernel.org,
 	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 29/44] drm/rockchip: stop passing non struct drm_device to drm_err() and friends
-Date: Thu,  3 Apr 2025 15:12:58 -0400
-Message-Id: <20250403191313.2679091-29-sashal@kernel.org>
+	linux-pci@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 30/44] PCI: Add Rockchip Vendor ID
+Date: Thu,  3 Apr 2025 15:12:59 -0400
+Message-Id: <20250403191313.2679091-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -71,174 +69,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit abeef1f9eaf9301cc98a6841dab5f72de5c95360 ]
+[ Upstream commit 20bbb083bbc9d3f8db390f2e35e168f1b23dae8a ]
 
-The expectation is that the struct drm_device based logging helpers get
-passed an actual struct drm_device pointer rather than some random
-struct pointer where you can dereference the ->dev member.
+Move PCI_VENDOR_ID_ROCKCHIP from pci_endpoint_test.c to pci_ids.h and
+reuse it in pcie-rockchip-host.c.
 
-Convert drm_err(hdmi, ...) to dev_err(hdmi->dev, ...). This matches
-current usage, but drops "[drm] *ERROR*" prefix from logging.
-
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/f42da4c9943a2f2a9de4272b7849e72236d4c3f9.1737644530.git.jani.nikula@intel.com
+Link: https://lore.kernel.org/r/20250218092120.2322784-2-cassel@kernel.org
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c    | 16 ++++++++--------
- drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c | 16 ++++++++--------
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/misc/pci_endpoint_test.c            | 1 -
+ drivers/pci/controller/pcie-rockchip-host.c | 2 +-
+ drivers/pci/controller/pcie-rockchip.h      | 1 -
+ include/linux/pci_ids.h                     | 2 ++
+ 4 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index e7a6669c46b07..f737e7d46e667 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -203,7 +203,7 @@ static int rockchip_hdmi_parse_dt(struct rockchip_hdmi *hdmi)
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index d5ac71a493865..b002740acf8d5 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -88,7 +88,6 @@
+ #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
+ #define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
  
- 	hdmi->regmap = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
- 	if (IS_ERR(hdmi->regmap)) {
--		drm_err(hdmi, "Unable to get rockchip,grf\n");
-+		dev_err(hdmi->dev, "Unable to get rockchip,grf\n");
- 		return PTR_ERR(hdmi->regmap);
- 	}
+-#define PCI_VENDOR_ID_ROCKCHIP			0x1d87
+ #define PCI_DEVICE_ID_ROCKCHIP_RK3588		0x3588
  
-@@ -214,7 +214,7 @@ static int rockchip_hdmi_parse_dt(struct rockchip_hdmi *hdmi)
- 	if (IS_ERR(hdmi->ref_clk)) {
- 		ret = PTR_ERR(hdmi->ref_clk);
- 		if (ret != -EPROBE_DEFER)
--			drm_err(hdmi, "failed to get reference clock\n");
-+			dev_err(hdmi->dev, "failed to get reference clock\n");
- 		return ret;
- 	}
- 
-@@ -222,7 +222,7 @@ static int rockchip_hdmi_parse_dt(struct rockchip_hdmi *hdmi)
- 	if (IS_ERR(hdmi->grf_clk)) {
- 		ret = PTR_ERR(hdmi->grf_clk);
- 		if (ret != -EPROBE_DEFER)
--			drm_err(hdmi, "failed to get grf clock\n");
-+			dev_err(hdmi->dev, "failed to get grf clock\n");
- 		return ret;
- 	}
- 
-@@ -302,16 +302,16 @@ static void dw_hdmi_rockchip_encoder_enable(struct drm_encoder *encoder)
- 
- 	ret = clk_prepare_enable(hdmi->grf_clk);
- 	if (ret < 0) {
--		drm_err(hdmi, "failed to enable grfclk %d\n", ret);
-+		dev_err(hdmi->dev, "failed to enable grfclk %d\n", ret);
- 		return;
- 	}
- 
- 	ret = regmap_write(hdmi->regmap, hdmi->chip_data->lcdsel_grf_reg, val);
- 	if (ret != 0)
--		drm_err(hdmi, "Could not write to GRF: %d\n", ret);
-+		dev_err(hdmi->dev, "Could not write to GRF: %d\n", ret);
- 
- 	clk_disable_unprepare(hdmi->grf_clk);
--	drm_dbg(hdmi, "vop %s output to hdmi\n", ret ? "LIT" : "BIG");
-+	dev_dbg(hdmi->dev, "vop %s output to hdmi\n", ret ? "LIT" : "BIG");
- }
- 
- static int
-@@ -574,7 +574,7 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
- 	ret = rockchip_hdmi_parse_dt(hdmi);
- 	if (ret) {
- 		if (ret != -EPROBE_DEFER)
--			drm_err(hdmi, "Unable to parse OF data\n");
-+			dev_err(hdmi->dev, "Unable to parse OF data\n");
- 		return ret;
- 	}
- 
-@@ -582,7 +582,7 @@ static int dw_hdmi_rockchip_bind(struct device *dev, struct device *master,
- 	if (IS_ERR(hdmi->phy)) {
- 		ret = PTR_ERR(hdmi->phy);
- 		if (ret != -EPROBE_DEFER)
--			drm_err(hdmi, "failed to get phy\n");
-+			dev_err(hdmi->dev, "failed to get phy\n");
- 		return ret;
- 	}
- 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-index cebd72bf1ef25..6bbc84c5d716d 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-@@ -170,7 +170,7 @@ static void dw_hdmi_qp_rk3588_hpd_work(struct work_struct *work)
- 	if (drm) {
- 		changed = drm_helper_hpd_irq_event(drm);
- 		if (changed)
--			drm_dbg(hdmi, "connector status changed\n");
-+			dev_dbg(hdmi->dev, "connector status changed\n");
- 	}
- }
- 
-@@ -287,7 +287,7 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
+ static DEFINE_IDA(pci_endpoint_test_ida);
+diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
+index 5adac6adc046f..6a46be17aa91b 100644
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -367,7 +367,7 @@ static int rockchip_pcie_host_init_port(struct rockchip_pcie *rockchip)
  		}
  	}
- 	if (hdmi->port_id < 0) {
--		drm_err(hdmi, "Failed to match HDMI port ID\n");
-+		dev_err(hdmi->dev, "Failed to match HDMI port ID\n");
- 		return hdmi->port_id;
- 	}
  
-@@ -311,20 +311,20 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
- 	hdmi->regmap = syscon_regmap_lookup_by_phandle(dev->of_node,
- 						       "rockchip,grf");
- 	if (IS_ERR(hdmi->regmap)) {
--		drm_err(hdmi, "Unable to get rockchip,grf\n");
-+		dev_err(hdmi->dev, "Unable to get rockchip,grf\n");
- 		return PTR_ERR(hdmi->regmap);
- 	}
+-	rockchip_pcie_write(rockchip, ROCKCHIP_VENDOR_ID,
++	rockchip_pcie_write(rockchip, PCI_VENDOR_ID_ROCKCHIP,
+ 			    PCIE_CORE_CONFIG_VENDOR);
+ 	rockchip_pcie_write(rockchip,
+ 			    PCI_CLASS_BRIDGE_PCI_NORMAL << 8,
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index 11def598534b2..14954f43e5e9a 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -200,7 +200,6 @@
+ #define AXI_WRAPPER_NOR_MSG			0xc
  
- 	hdmi->vo_regmap = syscon_regmap_lookup_by_phandle(dev->of_node,
- 							  "rockchip,vo-grf");
- 	if (IS_ERR(hdmi->vo_regmap)) {
--		drm_err(hdmi, "Unable to get rockchip,vo-grf\n");
-+		dev_err(hdmi->dev, "Unable to get rockchip,vo-grf\n");
- 		return PTR_ERR(hdmi->vo_regmap);
- 	}
+ #define PCIE_RC_SEND_PME_OFF			0x11960
+-#define ROCKCHIP_VENDOR_ID			0x1d87
+ #define PCIE_LINK_IS_L2(x) \
+ 	(((x) & PCIE_CLIENT_DEBUG_LTSSM_MASK) == PCIE_CLIENT_DEBUG_LTSSM_L2)
+ #define PCIE_LINK_TRAINING_DONE(x) \
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 1a2594a38199f..2a9ca3dbaa0e9 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2609,6 +2609,8 @@
  
- 	ret = devm_clk_bulk_get_all_enabled(hdmi->dev, &clks);
- 	if (ret < 0) {
--		drm_err(hdmi, "Failed to get clocks: %d\n", ret);
-+		dev_err(hdmi->dev, "Failed to get clocks: %d\n", ret);
- 		return ret;
- 	}
+ #define PCI_VENDOR_ID_ZHAOXIN		0x1d17
  
-@@ -332,7 +332,7 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
- 						    GPIOD_OUT_HIGH);
- 	if (IS_ERR(hdmi->enable_gpio)) {
- 		ret = PTR_ERR(hdmi->enable_gpio);
--		drm_err(hdmi, "Failed to request enable GPIO: %d\n", ret);
-+		dev_err(hdmi->dev, "Failed to request enable GPIO: %d\n", ret);
- 		return ret;
- 	}
++#define PCI_VENDOR_ID_ROCKCHIP		0x1d87
++
+ #define PCI_VENDOR_ID_HYGON		0x1d94
  
-@@ -340,7 +340,7 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
- 	if (IS_ERR(hdmi->phy)) {
- 		ret = PTR_ERR(hdmi->phy);
- 		if (ret != -EPROBE_DEFER)
--			drm_err(hdmi, "failed to get phy: %d\n", ret);
-+			dev_err(hdmi->dev, "failed to get phy: %d\n", ret);
- 		return ret;
- 	}
- 
-@@ -403,7 +403,7 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
- 	connector = drm_bridge_connector_init(drm, encoder);
- 	if (IS_ERR(connector)) {
- 		ret = PTR_ERR(connector);
--		drm_err(hdmi, "failed to init bridge connector: %d\n", ret);
-+		dev_err(hdmi->dev, "failed to init bridge connector: %d\n", ret);
- 		return ret;
- 	}
- 
+ #define PCI_VENDOR_ID_META		0x1d9b
 -- 
 2.39.5
 
