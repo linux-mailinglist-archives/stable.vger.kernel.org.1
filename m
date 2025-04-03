@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-127665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8FEA7A6CF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDA6A7A676
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F01D18965AE
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13BF47A5660
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AD92505D2;
-	Thu,  3 Apr 2025 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77599250BE8;
+	Thu,  3 Apr 2025 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+LqlREU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jclqrhzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441822505DE;
-	Thu,  3 Apr 2025 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A12188A3A;
+	Thu,  3 Apr 2025 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693997; cv=none; b=ZtR/FHxNOKk6hBNLwesipdRyBTXNkBjcF+BL1z8s8G6/3s6ltcQrNgz69tiyEjZw3HUWbhcWOn6vWYkic5WH432fOvLf2gDJ4RCeZLJcQw6/JAM0K8DGdEKgrwmNQnhfuYpl8XOxegREm+Zsl+utLrNdCbKVAsYVRkpWLRpsF+w=
+	t=1743694002; cv=none; b=S+Jy7BUCo8SA067bMl0iFn9eyJkR2etLRBsOd8s2tn6K//djbGlrCYdmwXjNz59jgpGqxa8GlpqO1NPPinyvL7Zz1KrWm2BkUfF0nO3PB4iUICdNxWgCSLKCCrgkxwdA/lctkZaB1iM3B5Za7TSEBkddibWvd+XaI6QireRXKcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693997; c=relaxed/simple;
-	bh=mXpTcb5Wbqq0BijhMlmSCMU1OOayE5F6Jvrmu9Rk5Wc=;
+	s=arc-20240116; t=1743694002; c=relaxed/simple;
+	bh=EFBk6Ik1OfDt2v3PqJA0HYxxqJl4pBMrF6q7xb4phgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ou+o0GkMIA4BDOriYCn6lpuPBv8RW5cQXGMObkrNlDP+VfZsDXIL8kxY/ucO3ZKBiUAF/8ubqggqQzg80KO8GBk36FyNKRJvHxyJ8B1J+3TmPpQN3+1l0Kyz01Iqno9mdylYQGtAJ1Wj3PeJCI9vINwkcU4idLlGFpPJWFomk64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+LqlREU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D338EC4CEE3;
-	Thu,  3 Apr 2025 15:26:36 +0000 (UTC)
+	 MIME-Version; b=hGtdQRTvqQHgCLVgGcUG2X8p/VMms6+gVmEmZSMXcHF87a6bdxBk2enIbqz5LgI6gpseH8VtRqSrLmkrCTzH0Zy6pPVNrtOF4gXBn3vGKrf/q4dIEBoencN/76xt3Sa+xAtyjNdbImy1zvo31wpBQmCGoJRXcorkTxbi6cXgqXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jclqrhzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA9AC4CEE3;
+	Thu,  3 Apr 2025 15:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693997;
-	bh=mXpTcb5Wbqq0BijhMlmSCMU1OOayE5F6Jvrmu9Rk5Wc=;
+	s=korg; t=1743694002;
+	bh=EFBk6Ik1OfDt2v3PqJA0HYxxqJl4pBMrF6q7xb4phgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+LqlREUGIcbTps1A0kDrGv2U/TniRU6xu2Vz26/TYkE739tBUFn6Yv2PWdXXjpWV
-	 R2E+myfImWwtKx5bBT49IHmpdzsaTD8Faf6vHH0pCN616Fo6rkzmMj5YOACDZd1GzT
-	 gVeSC/5kNDT4Lfg5zHM6uzomn1i1lSi2TrI19InQ=
+	b=jclqrhzoDRfzUV4bDiROG+tIZtKgpE0X4TqIXWIJr8rUDx5AvZ9cg8v+lgPsLaxSY
+	 S4kgsTkRIfLOyc/t99TeBK28XYanD6rUil7kEOM4Ociw3oxMANzDcapUzORq9gitKl
+	 5Qlb7KRwAStqJ/gD5y0yWuoPKnA6oE7On9Fobs70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 19/26] tty: serial: 8250: Add Brainboxes XC devices
-Date: Thu,  3 Apr 2025 16:20:40 +0100
-Message-ID: <20250403151622.975520535@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.6 20/26] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+Date: Thu,  3 Apr 2025 16:20:41 +0100
+Message-ID: <20250403151623.002388217@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
 References: <20250403151622.415201055@linuxfoundation.org>
@@ -65,67 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 5c7e2896481a177bbda41d7850f05a9f5a8aee2b upstream.
+commit f5cb528d6441eb860250a2f085773aac4f44085e upstream.
 
-These ExpressCard devices use the OxPCIE chip and can be used with
-this driver.
+According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
+register only can be changed when the transmitter is disabled.
+So disable the transmitter before changing RS485 related registers and
+re-enable it after the change is done.
 
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/DB7PR02MB3802907A9360F27F6CD67AAFC4D62@DB7PR02MB3802.eurprd02.prod.outlook.com
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/tty/serial/fsl_lpuart.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -2577,6 +2577,22 @@ static struct pci_serial_quirk pci_seria
- 		.setup		= pci_oxsemi_tornado_setup,
- 	},
- 	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4026,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4021,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
- 		.vendor         = PCI_VENDOR_ID_INTEL,
- 		.device         = 0x8811,
- 		.subvendor	= PCI_ANY_ID,
-@@ -5469,6 +5485,20 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-235
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-475
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1488,6 +1488,19 @@ static int lpuart32_config_rs485(struct
  
- 	/*
- 	 * Perle PCI-RAS cards
+ 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+ 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
++	u32 ctrl;
++
++	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
++	ctrl = lpuart32_read(&sport->port, UARTCTRL);
++	if (ctrl & UARTCTRL_TE) {
++		/* wait for the transmit engine to complete */
++		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
++		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
++
++		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
++			cpu_relax();
++	}
++
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ 
+ 	if (rs485->flags & SER_RS485_ENABLED) {
+@@ -1507,6 +1520,10 @@ static int lpuart32_config_rs485(struct
+ 	}
+ 
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
++
++	if (ctrl & UARTCTRL_TE)
++		lpuart32_write(&sport->port, ctrl, UARTCTRL);
++
+ 	return 0;
+ }
+ 
 
 
 
