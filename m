@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-128009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295D4A7AE26
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB522A7AE28
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C92C1887D2C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68795188D5EF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416071F75AC;
-	Thu,  3 Apr 2025 19:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F401F875D;
+	Thu,  3 Apr 2025 19:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJ5p0Elw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQNDt18Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F253A1F7545;
-	Thu,  3 Apr 2025 19:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92731F8755;
+	Thu,  3 Apr 2025 19:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707751; cv=none; b=frZz/cq1Sxp5sT3xVyR0D5vu41aHf75AYNiU9pxnW+IM4cLAmTThKuFNupcDgFUnTM86pKOeq5Wocl/aTGiCL1yWQ8Xj6bj9f1OxsE6dJShcMOn+vUYKdESnnj6q/y6gfwpflWi72/h4L6g4d47TL0y2FBUYFG5rTeMGer/oVmU=
+	t=1743707752; cv=none; b=fIch1YfR6/dFT0lAW6fthk4QU7mnVLDBgRNGTg+o/osUrOv9joKNa84Q8/TeBZySAHzxneeNM4FnQuPNTmfKCtHoUEvDBSvOANV4+9sVV/F3MrkFNy9lkedGZZ6pMzfYQ6Mb51zMnmNK7qkF8Kt50GMedFUkqS1g7OKRkG5y6VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707751; c=relaxed/simple;
-	bh=jQJElT4pbVhlyvkBB+m3RJyIKNlYHyiw45iY8Hdr7o4=;
+	s=arc-20240116; t=1743707752; c=relaxed/simple;
+	bh=9vLA05UqALd9HAN6zu0mr5Jdmu90GO+dK/JXjUDyrN0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kaUmY26gWHkU8o3bDHUdUHue8eb8TYgsaWx6R7SJC5hxjdIv9BqnUzQDIwkX3FrU1wnrbpLmcyzk4DiooMuPqyMJ4ODO9ACztFXvZ8LZY8hJzyNo4KNy0UKGzbNG0t7zj+0ufVxww9h3lwIiz72Y1X+J6RoHMe8Bt2ecb8o5CaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJ5p0Elw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AB1C4CEE3;
-	Thu,  3 Apr 2025 19:15:49 +0000 (UTC)
+	 MIME-Version; b=Cj8w5Z6ACtD0SHEZLRoWfTeln9g1rMcA+CCj5JiB3dI2/Ke6+umq2+97E2HB1qxvJcQG0VDw/FlxiO8hwYlDrVCN11jIH4QoS9vqjDoR8uPo4LWDnOrqIciikbVoz6AQlASaHhZxagDsHvBDsYx+Kq11FnIa+FuNwQmsMYW+eqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQNDt18Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D99C4CEE8;
+	Thu,  3 Apr 2025 19:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707750;
-	bh=jQJElT4pbVhlyvkBB+m3RJyIKNlYHyiw45iY8Hdr7o4=;
+	s=k20201202; t=1743707752;
+	bh=9vLA05UqALd9HAN6zu0mr5Jdmu90GO+dK/JXjUDyrN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJ5p0ElwtBw2nF/Z3wMTw6bQ7Tuh8BOqi2hB4Wjj5hSVBBlnYQnDsDFOjOG9haRlG
-	 kmxNM27VOeE7s5mVkfdizKaWXiD5savQva8dFOJxitD9DObWKiQHMMeBgd5NDHlI22
-	 LkAWULe+UfHxn3nuai15CMmKPq+waMC7s36qgyZR48ONio4B1EC1ui9CNBMuJaRI3e
-	 D4IqqwF/V8l36N+ztPSBMaWAH/Id4J8ZlgwofS1Wawe9+47049Mmycdk2U/66EkQD6
-	 Tdh7bPe5+X8BM/fdhGWyIf6Fe+eaY7a/fwnPYqZdVeZ5zpeocgIZLsO7qRxIBx43sU
-	 L+gcuZZGFk5/A==
+	b=PQNDt18QTyyQRjItlA7Ce/E3PCJgW/gcMvxugFj67zaobeFsK1u9iJH58bdChCsLh
+	 6YyBqAzOUqzyqIKwznut33lF8w9dJBhoFQF0tBSZkSb8yV2Xk8iQo7bcIJ/V7yoy/g
+	 rmGKZdlShAB7104FiSm5DGOfC58fowmCiUG6Wwg/t3wcD5AwuO/lkb45fefaEiVumF
+	 aTSRw1bCJYdUWIqdWihzXhNOkhzgFkBwDXn0r2CmaP021m4eV/J9HvLatWcn2+4SPP
+	 Mv7ufRx8ts4Gc4OrzuzvHSQZkkQTBWqv1T18z1CtFiYgHpj6X7V6hxD0UCwtxwkPAI
+	 /r4b8x7t8fFpw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Andrew Wyatt <fewtarius@steamfork.org>,
 	John Edwards <uejji@uejji.net>,
+	Paco Avelar <pacoavelar@hotmail.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -54,9 +55,9 @@ Cc: Andrew Wyatt <fewtarius@steamfork.org>,
 	airlied@gmail.com,
 	simona@ffwll.ch,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 10/37] drm: panel-orientation-quirks: Add quirk for AYA NEO Slide
-Date: Thu,  3 Apr 2025 15:14:46 -0400
-Message-Id: <20250403191513.2680235-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 11/37] drm: panel-orientation-quirks: Add new quirk for GPD Win 2
+Date: Thu,  3 Apr 2025 15:14:47 -0400
+Message-Id: <20250403191513.2680235-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191513.2680235-1-sashal@kernel.org>
 References: <20250403191513.2680235-1-sashal@kernel.org>
@@ -73,46 +74,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Wyatt <fewtarius@steamfork.org>
 
-[ Upstream commit 132c89ef8872e602cfb909377815111d121fe8d7 ]
+[ Upstream commit a860eb9c6ba6cdbf32e3e01a606556e5a90a2931 ]
 
-The AYANEO Slide uses a 1080x1920 portrait LCD panel.  This is the same
-panel used on the AYANEO Air Plus, but the DMI data is too different to
-match both with one entry.
+Some GPD Win 2 units shipped with the correct DMI strings.
 
-Add a DMI match to correctly rotate the panel on the AYANEO Slide.
-
-This also covers the Antec Core HS, which is a rebranded AYANEO Slide with
-the exact same hardware and DMI strings.
+Add a DMI match to correctly rotate the panel on these units.
 
 Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
 Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
+Tested-by: Paco Avelar <pacoavelar@hotmail.com>
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-4-uejji@uejji.net
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-5-uejji@uejji.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index b5f6ae0459459..b57078cfdd80f 100644
+index b57078cfdd80f..384a8dcf454fb 100644
 --- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
 +++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -244,6 +244,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
+@@ -339,6 +339,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_BOARD_NAME, "Default string"),
  		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
-+	}, {	/* AYA NEO SLIDE */
+ 		.driver_data = (void *)&gpd_win2,
++	}, {	/* GPD Win 2 (correct DMI strings) */
 +		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "SLIDE"),
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "WIN2")
 +		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {    /* AYN Loki Max */
++		.driver_data = (void *)&lcd720x1280_rightside_up,
+ 	}, {	/* GPD Win 3 */
  		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
 -- 
 2.39.5
 
