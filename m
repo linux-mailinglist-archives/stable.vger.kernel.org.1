@@ -1,65 +1,68 @@
-Return-Path: <stable+bounces-127992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8F7A7ADF1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:17:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82D8A7ADC0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683F01890500
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B77E17A2A7F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796DA296C14;
-	Thu,  3 Apr 2025 19:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8A92989BA;
+	Thu,  3 Apr 2025 19:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwJD2XMx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iC7gOp9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430325E825;
-	Thu,  3 Apr 2025 19:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332F92989B4;
+	Thu,  3 Apr 2025 19:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707698; cv=none; b=qP2OH5EL9pWgPKN3R+OIFVxVDComOBjgWdgR/JsTHFT8C8yUwZpHboK/0bSAaMdZFeBk3eARxIH6aDQ9uAwFPXh7vQ8TCbhDGbDzWoEfDA1rVW6UpKN8BNzPNSOMOBwfXbd1qzWEGmYBfs36eGX1t+olITJfneRcpQtCq0GfbnY=
+	t=1743707703; cv=none; b=UFh3LBdpA5+U7/zVnHCRQ/VKr/yweGVdDvPca1QwZ9AabWMuGU6qiO7ZM1i2rK8gqi1lrjH6VhFmoJBaUhdpvJp0Y2HI6tQRgwDLzzBMxc2BkuD+LBAq7BA84WUq5QKwENpIylHz6bDOwEB8OJRxSHnuk0bDbTxH5OQPVpY65zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707698; c=relaxed/simple;
-	bh=kaRu9WvREo0g3PGur8HUiN9Nxn15RedJRMDDs3epyfE=;
+	s=arc-20240116; t=1743707703; c=relaxed/simple;
+	bh=adClCm1nphhGtk98Brbo2vPo0yvjrBadq/WuJneXcD0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rfie0tBfHIfM75pk3onfEctSUvNRcmEdYJ5ans6kGFKrWAcoCpZU/HgTjBFkJzLkqSaHszInzCKNzlpZN8M/7ugplTD37GrhzPa5OhGBYo16jJ2k6ukBC07XxTY9vxGUvTmmFnielPDo09s9l9uQ4JAcgBjFkDnm7wFQWDP2oiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwJD2XMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FD5C4CEE9;
-	Thu,  3 Apr 2025 19:14:56 +0000 (UTC)
+	 MIME-Version; b=tm53wuFceWF/qaWdKtoaxePTYOZgm6hsrXzi90OwF7/dlyCYIrDI8SdxYS5Lk/sgwtniUchKBCKOJ/qyPppzaUFWYfEZNU+T+U8JT6QNsK3N/MF+IUidbjNUfhQZ3FqEllmqg4hCMTXbhARO3fac5w9mtctae56hqtB+E+9T2/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iC7gOp9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BE2C4CEE3;
+	Thu,  3 Apr 2025 19:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707698;
-	bh=kaRu9WvREo0g3PGur8HUiN9Nxn15RedJRMDDs3epyfE=;
+	s=k20201202; t=1743707703;
+	bh=adClCm1nphhGtk98Brbo2vPo0yvjrBadq/WuJneXcD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwJD2XMxd/hXiONDOXk7ek3P5kT+v6kRxkH3uQ3kFudDBYEZwart4Mv+9pzW1GQW2
-	 hCemSLfSKe44G3uapm7av0kvbuyLO2V4MW2wlQUnty7/aEfDnjYPUje+oHX+XyuS7G
-	 FZtRbZUgq/BOqp8XDALUn5eXgtu4JfzjtosoBQDFyqDdJ3R7IV6N9djG46LFwqr+6s
-	 qDZ9JxXPz5zDaEQSXIF94EwYglIx2LA6QimiGFT8WCEmJ41B7jx/GPApKy5G2320Xm
-	 RYfnZDA6wPjF67+Uik98SHDHaBo//6fc3gYC/+FOo+AS+dC6GDMsP4I2qwBvbBZQ21
-	 BSk0jkys65jKA==
+	b=iC7gOp9t6aJEqOf6d2QqXXyuuSv7pcuDGXlYpvpp1I4Pks83ohpLmwFck8BthLosH
+	 ngfhDKFkS5BwloKy0NryvjbHely78kPJvgWCwsazXx6VSymAKxbkqrqCtSXVx3TV0c
+	 FXZ8dJVU1lVlnb6vO25VgP5vMivwl5qZKU18B6tQmJ+dtxrBV61UgJF+A6KF5JDHAJ
+	 wo3GBvoW9rSKW94N/kD8VJtgUZ3sItCwRQVS+b0AkgB4oAYNa/rdCYkx030xwZoXO9
+	 XcsihN8DHgjV45ow8SRCxCcdJ3pbaV4z0dp435sG+RuwjXpURqKLwKYTgs2OZ1OrW0
+	 MJbsHZMGf0hTg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lijo.lazar@amd.com,
-	sunil.khatri@amd.com,
-	Hawking.Zhang@amd.com,
-	Jun.Ma2@amd.com,
-	Yunxiang.Li@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 37/44] drm/amdgpu: grab an additional reference on the gang fence v2
-Date: Thu,  3 Apr 2025 15:13:06 -0400
-Message-Id: <20250403191313.2679091-37-sashal@kernel.org>
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	wintera@linux.ibm.com,
+	twinkler@linux.ibm.com,
+	mjrosato@linux.ibm.com,
+	gbayer@linux.ibm.com,
+	jroedel@suse.de,
+	lukas@wunner.de,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 38/44] s390/pci: Support mmap() of PCI resources except for ISM devices
+Date: Thu,  3 Apr 2025 15:13:07 -0400
+Message-Id: <20250403191313.2679091-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -69,61 +72,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Christian König <christian.koenig@amd.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
+[ Upstream commit aa9f168d55dc47c0de564f7dfe0e90467c9fee71 ]
 
-We keep the gang submission fence around in adev, make sure that it
-stays alive.
+So far s390 does not allow mmap() of PCI resources to user-space via the
+usual mechanisms, though it does use it for RDMA. For the PCI sysfs
+resource files and /proc/bus/pci it defines neither HAVE_PCI_MMAP nor
+ARCH_GENERIC_PCI_MMAP_RESOURCE. For vfio-pci s390 previously relied on
+disabled VFIO_PCI_MMAP and now relies on setting pdev->non_mappable_bars
+for all devices.
 
-v2: fix memory leak on retry
+This is partly because access to mapped PCI resources from user-space
+requires special PCI load/store memory-I/O (MIO) instructions, or the
+special MMIO syscalls when these are not available. Still, such access is
+possible and useful not just for RDMA, in fact not being able to mmap() PCI
+resources has previously caused extra work when testing devices.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+One thing that doesn't work with PCI resources mapped to user-space though
+is the s390 specific virtual ISM device. Not only because the BAR size of
+256 TiB prevents mapping the whole BAR but also because access requires use
+of the legacy PCI instructions which are not accessible to user-space on
+systems with the newer MIO PCI instructions.
+
+Now with the pdev->non_mappable_bars flag ISM can be excluded from mapping
+its resources while making this functionality available for all other PCI
+devices. To this end introduce a minimal implementation of PCI_QUIRKS and
+use that to set pdev->non_mappable_bars for ISM devices only. Then also set
+ARCH_GENERIC_PCI_MMAP_RESOURCE to take advantage of the generic
+implementation of pci_mmap_resource_range() enabling only the newer sysfs
+mmap() interface. This follows the recommendation in
+Documentation/PCI/sysfs-pci.rst.
+
+Link: https://lore.kernel.org/r/20250226-vfio_pci_mmap-v7-3-c5c0f1d26efd@linux.ibm.com
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/s390/Kconfig           |  4 +---
+ arch/s390/include/asm/pci.h |  3 +++
+ arch/s390/pci/Makefile      |  2 +-
+ arch/s390/pci/pci_fixup.c   | 23 +++++++++++++++++++++++
+ drivers/s390/net/ism_drv.c  |  1 -
+ include/linux/pci_ids.h     |  1 +
+ 6 files changed, 29 insertions(+), 5 deletions(-)
+ create mode 100644 arch/s390/pci/pci_fixup.c
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 018dfccd771ba..fe40bbead6222 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6851,18 +6851,26 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
- {
- 	struct dma_fence *old = NULL;
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 9c9ec08d78c71..e48741e001476 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -41,9 +41,6 @@ config AUDIT_ARCH
+ config NO_IOPORT_MAP
+ 	def_bool y
  
-+	dma_fence_get(gang);
- 	do {
- 		dma_fence_put(old);
- 		old = amdgpu_device_get_gang(adev);
- 		if (old == gang)
- 			break;
+-config PCI_QUIRKS
+-	def_bool n
+-
+ config ARCH_SUPPORTS_UPROBES
+ 	def_bool y
  
--		if (!dma_fence_is_signaled(old))
-+		if (!dma_fence_is_signaled(old)) {
-+			dma_fence_put(gang);
- 			return old;
-+		}
+@@ -258,6 +255,7 @@ config S390
+ 	select PCI_DOMAINS		if PCI
+ 	select PCI_MSI			if PCI
+ 	select PCI_MSI_ARCH_FALLBACKS	if PCI_MSI
++	select PCI_QUIRKS		if PCI
+ 	select SPARSE_IRQ
+ 	select SWIOTLB
+ 	select SYSCTL_EXCEPTION_TRACE
+diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+index 474e1f8d1d3c2..d2086af3434c0 100644
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -11,6 +11,9 @@
+ #include <asm/pci_insn.h>
+ #include <asm/sclp.h>
  
- 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
- 			 old, gang) != old);
++#define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
++#define arch_can_pci_mmap_wc()		1
++
+ #define PCIBIOS_MIN_IO		0x1000
+ #define PCIBIOS_MIN_MEM		0x10000000
  
+diff --git a/arch/s390/pci/Makefile b/arch/s390/pci/Makefile
+index df73c5182990a..1810e0944a4ed 100644
+--- a/arch/s390/pci/Makefile
++++ b/arch/s390/pci/Makefile
+@@ -5,6 +5,6 @@
+ 
+ obj-$(CONFIG_PCI)	+= pci.o pci_irq.o pci_clp.o \
+ 			   pci_event.o pci_debug.o pci_insn.o pci_mmio.o \
+-			   pci_bus.o pci_kvm_hook.o pci_report.o
++			   pci_bus.o pci_kvm_hook.o pci_report.o pci_fixup.o
+ obj-$(CONFIG_PCI_IOV)	+= pci_iov.o
+ obj-$(CONFIG_SYSFS)	+= pci_sysfs.o
+diff --git a/arch/s390/pci/pci_fixup.c b/arch/s390/pci/pci_fixup.c
+new file mode 100644
+index 0000000000000..35688b6450983
+--- /dev/null
++++ b/arch/s390/pci/pci_fixup.c
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Exceptions for specific devices,
++ *
++ * Copyright IBM Corp. 2025
++ *
++ * Author(s):
++ *   Niklas Schnelle <schnelle@linux.ibm.com>
++ */
++#include <linux/pci.h>
++
++static void zpci_ism_bar_no_mmap(struct pci_dev *pdev)
++{
 +	/*
-+	 * Drop it once for the exchanged reference in adev and once for the
-+	 * thread local reference acquired in amdgpu_device_get_gang().
++	 * ISM's BAR is special. Drivers written for ISM know
++	 * how to handle this but others need to be aware of their
++	 * special nature e.g. to prevent attempts to mmap() it.
 +	 */
-+	dma_fence_put(old);
- 	dma_fence_put(old);
- 	return NULL;
- }
++	pdev->non_mappable_bars = 1;
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM,
++			PCI_DEVICE_ID_IBM_ISM,
++			zpci_ism_bar_no_mmap);
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 2f34761e64135..60ed70a39d2cc 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -20,7 +20,6 @@
+ MODULE_DESCRIPTION("ISM driver for s390");
+ MODULE_LICENSE("GPL");
+ 
+-#define PCI_DEVICE_ID_IBM_ISM 0x04ED
+ #define DRV_NAME "ism"
+ 
+ static const struct pci_device_id ism_device_table[] = {
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 2a9ca3dbaa0e9..5bd122a9afdc6 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -518,6 +518,7 @@
+ #define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM	0x0251
+ #define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM_PCIE 0x0361
+ #define PCI_DEVICE_ID_IBM_ICOM_FOUR_PORT_MODEL	0x252
++#define PCI_DEVICE_ID_IBM_ISM		0x04ed
+ 
+ #define PCI_SUBVENDOR_ID_IBM		0x1014
+ #define PCI_SUBDEVICE_ID_IBM_SATURN_SERIAL_ONE_PORT	0x03d4
 -- 
 2.39.5
 
