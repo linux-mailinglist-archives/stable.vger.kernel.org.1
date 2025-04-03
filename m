@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-127621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206CAA7A66D
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:25:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22FCA7A68F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C45F87A23A8
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4EA3B99EF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEF62505DE;
-	Thu,  3 Apr 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8AA2517A7;
+	Thu,  3 Apr 2025 15:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdGdlwf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxK0lyc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F3C250C09;
-	Thu,  3 Apr 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B82251793;
+	Thu,  3 Apr 2025 15:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693890; cv=none; b=fR/RtwNEFYboLonqI+owO5opmPQUtNGUZSd4cIIJAS40CPFxlmNiwhFVHQzrgk3E76ttzEpX+ILPtNYPGtuMQQCVlXxq62+udzWOR8EKay7pc/0/b7l57mt2IVhYojfSR0IKoM9ttcaPbgINYfG/SZt89x7RdecxYbs+n3ui+O8=
+	t=1743693805; cv=none; b=BhjmmAgXlv0MXUiOXI0bauWx+szXhSMLw0eSnSbslvjVFnEqmZvZfx9dOzrr4O05+vF9V8KKgJdgQUjMVRn9agTF1ZdofThCKhIcCNlHHmx5jkUZp0vriX/hw0XvcXFHjCpG+c44yESklEtmYZliYxO2X054RyDJSEaU0qQxAcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693890; c=relaxed/simple;
-	bh=7JcZYiEK+0oYqdy2Thoq0SQGD2xBL9Gxd4C6M2YC7xg=;
+	s=arc-20240116; t=1743693805; c=relaxed/simple;
+	bh=pVbEn94qM0ocDWiaZS8wkV1i3PaoEd/WmxAMM+RaGXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmVsHV91fN1aTTqgXUMdyCLhd9lDKbJ4AVuM3nRxbsQrbj3Zi5GHpJvjirngox0AM0xruk6vLsTVFGfnL5dTKyR8MRA+fsg0i5WhV7wYx4QqiKWPDgiDbvMm6J/ZbfL2+871v62iyYCYnMIfNUIvNXfx91+ToORoKUcIHqvxUks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdGdlwf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44EFC4CEE3;
-	Thu,  3 Apr 2025 15:24:49 +0000 (UTC)
+	 MIME-Version; b=jzpm1OZ3pwZ6QEY3MSwkl2tPTc/ap0L5S5/PCihpre8KwLd0w0xkL/Tu3PE8CwIxttbTtYxHkeMlKYkTCsoUaNvcHQi81yEhCo2bPsVm+PMTVG6T37ZQlnlYEAjl3RHZdQ8BcRsMYznzXMagw2gCbjlH7b28NZXxDzHSjweW7Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxK0lyc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA2EC4CEE3;
+	Thu,  3 Apr 2025 15:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693890;
-	bh=7JcZYiEK+0oYqdy2Thoq0SQGD2xBL9Gxd4C6M2YC7xg=;
+	s=korg; t=1743693804;
+	bh=pVbEn94qM0ocDWiaZS8wkV1i3PaoEd/WmxAMM+RaGXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdGdlwf7Ct7WYfG2ZDWYAuMnE45KdLhaulA8znpIBAnNxWl+Ys3lEMtQwMn8zPnCr
-	 XflScUffp54uDWnpSQjy5aLjoBYJO5UI0XmH16WNGy46AKSdKZzC9JN00bWNlBosR1
-	 urX253ivZJggYuDCDIF6y0mpQNYh4TKaY/8CGcaw=
+	b=fxK0lyc7+s356IzKpVjIW9TbhnraohK7P/7kOhYCR/QetmZXwVk/EKhYYUDWKIxf6
+	 gRh4cqi48in/EyoL7ESL4JDF2Al2WdRPh4FJZ1vV5Z0Jb4ucbrfRofkY7Yf7VVDL0R
+	 9QEQt5reMj9ifcGvWv4uri7w+f5/F2zPHIBk5buI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jur van der Burg <jur@avtware.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 04/22] nfsd: fix legacy client tracking initialization
+	stable <stable@kernel.org>,
+	Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.14 10/21] tty: serial: 8250: Add some more device IDs
 Date: Thu,  3 Apr 2025 16:20:14 +0100
-Message-ID: <20250403151622.170971525@linuxfoundation.org>
+Message-ID: <20250403151621.435870194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit de71d4e211eddb670b285a0ea477a299601ce1ca upstream.
+commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
 
-Get rid of the nfsd4_legacy_tracking_ops->init() call in
-check_for_legacy_methods().  That will be handled in the caller
-(nfsd4_client_tracking_init()).  Otherwise, we'll wind up calling
-nfsd4_legacy_tracking_ops->init() twice, and the second time we'll
-trigger the BUG_ON() in nfsd4_init_recdir().
+These card IDs got missed the first time around.
 
-Fixes: 74fd48739d04 ("nfsd: new Kconfig option for legacy client tracking")
-Reported-by: Jur van der Burg <jur@avtware.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219580
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4recover.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -2052,7 +2052,6 @@ static inline int check_for_legacy_metho
- 		path_put(&path);
- 		if (status)
- 			return -ENOTDIR;
--		status = nn->client_tracking_ops->init(net);
- 	}
- 	return status;
- }
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5253,6 +5253,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
+ 	/*
+ 	 * Brainboxes UC-235/246
+ 	 */
+@@ -5373,6 +5381,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
+ 	/*
+ 	 * Brainboxes UC-420
+ 	 */
 
 
 
