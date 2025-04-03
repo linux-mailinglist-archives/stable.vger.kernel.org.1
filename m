@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8228DA7A6C4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1B5A7A6B1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34D62177BF1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB274189ACFA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D1C251792;
-	Thu,  3 Apr 2025 15:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AB4250BF7;
+	Thu,  3 Apr 2025 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzNvun38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyvHgiDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C718A2505D2;
-	Thu,  3 Apr 2025 15:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1C9250BE7;
+	Thu,  3 Apr 2025 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693853; cv=none; b=oWUzSZDN7tabG2HXsP677Ikh8KYEl0Q4ECqqhVzEanR5+ZtemS5elHhHOMsWeRakz8bMJ9DMmcEE/XcfRTdvHKG6yWvP3KxNKmtOVkXAZ4BnNkLOU8ptqeQU7dr288fXxbPf3ElLMTtYaxEWi62zXxfbUU8oBR7pk5Wb4bzsOOY=
+	t=1743693958; cv=none; b=O37IjwCWdr0IHzs4KtY2q5VuW93YZBD1zlXv5gk8eTwe8XKytL/poiaG2b0dgj06hq162zFqQ7mYkYliwTDkscsQw91zQ6KHPDGd/EBCcHwEAtNzsXo2qLLzE736RGQ/riM324NLdfGAkxws4YUfeTagSM5HATlcHPUw489SDFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693853; c=relaxed/simple;
-	bh=QuS6bwbD4Q7jBb4F/AP0K+Bu7uxaUcscvQFFy8oRfvM=;
+	s=arc-20240116; t=1743693958; c=relaxed/simple;
+	bh=lofMlRktAYU/G/TAA8vFn1P2Kahj/1eU4EXBlgb1f1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIRTF1TadKOEDc/8XxriljKRd6t3rfRm1OyycmL53JWLBPh9bu9AKUW4Mt29kTx2KYMO2r4sc6VxMDDtXGSbsXLzlkB44SXtCqOUvxn2jutRgO0/RgXl+W3Z2MCGoOIkfzZbZjUyGMp0BsPBOmxj4FvOF1JbDkxds7KPDiw+vGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzNvun38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DABAC4CEE3;
-	Thu,  3 Apr 2025 15:24:13 +0000 (UTC)
+	 MIME-Version; b=tD918PxFc419aIwUj9Nsl17M5d35/AaHCy5AjduOvSkWTXdhI4Go5z50FIcnnZBEncr1CLZp3RJBoBK/hJzNbcikD1dOLCMmObqI0TPBaunK7VKrG3wb6WiOf3HLA3fhUmfAIctdVTDODl8ljVs7vTYPmrvgMXI5ZywoSR/JLZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyvHgiDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC169C4CEE3;
+	Thu,  3 Apr 2025 15:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693853;
-	bh=QuS6bwbD4Q7jBb4F/AP0K+Bu7uxaUcscvQFFy8oRfvM=;
+	s=korg; t=1743693958;
+	bh=lofMlRktAYU/G/TAA8vFn1P2Kahj/1eU4EXBlgb1f1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzNvun383z+szwUlKX8UfYmxOfLk5u30ryNI/hCFTw5rowk1QOUsCcMWq60AJuKtK
-	 0hTVpKf2dhePG7kucSuZavK25FDVrrYazf6+9potE13tCzt4BKO9nnHrnPQLRQucni
-	 rxljQWtWDrvYQCuY9EtYHm4Jbk1D4BW5y5HvqNcQ=
+	b=EyvHgiDXwcxNkV8+IY1FmCkgGWOa8VbvwHGHY+uYqzeRnITTRGb+Nb+x4zJ4iu1KJ
+	 l5HASpaYRw8ejxgcxiC32jkIQUkeKxlFgJHiBiPPJdH2AwcJtC8yB5zKEMTliTeP6b
+	 ayP4G9Nb18MGPFRPK2u8whGwKm6dXsn36ZAN+was=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Qiu <luoqiu@kylinsec.com.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.14 18/21] memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.13 05/23] cgroup/rstat: Fix forceidle time in cpu.stat
 Date: Thu,  3 Apr 2025 16:20:22 +0100
-Message-ID: <20250403151621.648263075@linuxfoundation.org>
+Message-ID: <20250403151622.431025548@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,186 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Qiu <luoqiu@kylinsec.com.cn>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-commit 4676741a3464b300b486e70585c3c9b692be1632 upstream.
+commit c4af66a95aa3bc1d4f607ebd4eea524fb58946e3 upstream.
 
-This fixes the following crash:
+The commit b824766504e4 ("cgroup/rstat: add force idle show helper")
+retrieves forceidle_time outside cgroup_rstat_lock for non-root cgroups
+which can be potentially inconsistent with other stats.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in rtsx_usb_ms_poll_card+0x159/0x200 [rtsx_usb_ms]
-Read of size 8 at addr ffff888136335380 by task kworker/6:0/140241
+Rather than reverting that commit, fix it in a way that retains the
+effort of cleaning up the ifdef-messes.
 
-CPU: 6 UID: 0 PID: 140241 Comm: kworker/6:0 Kdump: loaded Tainted: G            E      6.14.0-rc6+ #1
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: LENOVO 30FNA1V7CW/1057, BIOS S0EKT54A 07/01/2024
-Workqueue: events rtsx_usb_ms_poll_card [rtsx_usb_ms]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x51/0x70
- print_address_description.constprop.0+0x27/0x320
- ? rtsx_usb_ms_poll_card+0x159/0x200 [rtsx_usb_ms]
- print_report+0x3e/0x70
- kasan_report+0xab/0xe0
- ? rtsx_usb_ms_poll_card+0x159/0x200 [rtsx_usb_ms]
- rtsx_usb_ms_poll_card+0x159/0x200 [rtsx_usb_ms]
- ? __pfx_rtsx_usb_ms_poll_card+0x10/0x10 [rtsx_usb_ms]
- ? __pfx___schedule+0x10/0x10
- ? kick_pool+0x3b/0x270
- process_one_work+0x357/0x660
- worker_thread+0x390/0x4c0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x190/0x1d0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2d/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 161446:
- kasan_save_stack+0x20/0x40
- kasan_save_track+0x10/0x30
- __kasan_kmalloc+0x7b/0x90
- __kmalloc_noprof+0x1a7/0x470
- memstick_alloc_host+0x1f/0xe0 [memstick]
- rtsx_usb_ms_drv_probe+0x47/0x320 [rtsx_usb_ms]
- platform_probe+0x60/0xe0
- call_driver_probe+0x35/0x120
- really_probe+0x123/0x410
- __driver_probe_device+0xc7/0x1e0
- driver_probe_device+0x49/0xf0
- __device_attach_driver+0xc6/0x160
- bus_for_each_drv+0xe4/0x160
- __device_attach+0x13a/0x2b0
- bus_probe_device+0xbd/0xd0
- device_add+0x4a5/0x760
- platform_device_add+0x189/0x370
- mfd_add_device+0x587/0x5e0
- mfd_add_devices+0xb1/0x130
- rtsx_usb_probe+0x28e/0x2e0 [rtsx_usb]
- usb_probe_interface+0x15c/0x460
- call_driver_probe+0x35/0x120
- really_probe+0x123/0x410
- __driver_probe_device+0xc7/0x1e0
- driver_probe_device+0x49/0xf0
- __device_attach_driver+0xc6/0x160
- bus_for_each_drv+0xe4/0x160
- __device_attach+0x13a/0x2b0
- rebind_marked_interfaces.isra.0+0xcc/0x110
- usb_reset_device+0x352/0x410
- usbdev_do_ioctl+0xe5c/0x1860
- usbdev_ioctl+0xa/0x20
- __x64_sys_ioctl+0xc5/0xf0
- do_syscall_64+0x59/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 161506:
- kasan_save_stack+0x20/0x40
- kasan_save_track+0x10/0x30
- kasan_save_free_info+0x36/0x60
- __kasan_slab_free+0x34/0x50
- kfree+0x1fd/0x3b0
- device_release+0x56/0xf0
- kobject_cleanup+0x73/0x1c0
- rtsx_usb_ms_drv_remove+0x13d/0x220 [rtsx_usb_ms]
- platform_remove+0x2f/0x50
- device_release_driver_internal+0x24b/0x2e0
- bus_remove_device+0x124/0x1d0
- device_del+0x239/0x530
- platform_device_del.part.0+0x19/0xe0
- platform_device_unregister+0x1c/0x40
- mfd_remove_devices_fn+0x167/0x170
- device_for_each_child_reverse+0xc9/0x130
- mfd_remove_devices+0x6e/0xa0
- rtsx_usb_disconnect+0x2e/0xd0 [rtsx_usb]
- usb_unbind_interface+0xf3/0x3f0
- device_release_driver_internal+0x24b/0x2e0
- proc_disconnect_claim+0x13d/0x220
- usbdev_do_ioctl+0xb5e/0x1860
- usbdev_ioctl+0xa/0x20
- __x64_sys_ioctl+0xc5/0xf0
- do_syscall_64+0x59/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Last potentially related work creation:
- kasan_save_stack+0x20/0x40
- kasan_record_aux_stack+0x85/0x90
- insert_work+0x29/0x100
- __queue_work+0x34a/0x540
- call_timer_fn+0x2a/0x160
- expire_timers+0x5f/0x1f0
- __run_timer_base.part.0+0x1b6/0x1e0
- run_timer_softirq+0x8b/0xe0
- handle_softirqs+0xf9/0x360
- __irq_exit_rcu+0x114/0x130
- sysvec_apic_timer_interrupt+0x72/0x90
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-
-Second to last potentially related work creation:
- kasan_save_stack+0x20/0x40
- kasan_record_aux_stack+0x85/0x90
- insert_work+0x29/0x100
- __queue_work+0x34a/0x540
- call_timer_fn+0x2a/0x160
- expire_timers+0x5f/0x1f0
- __run_timer_base.part.0+0x1b6/0x1e0
- run_timer_softirq+0x8b/0xe0
- handle_softirqs+0xf9/0x360
- __irq_exit_rcu+0x114/0x130
- sysvec_apic_timer_interrupt+0x72/0x90
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-
-The buggy address belongs to the object at ffff888136335000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 896 bytes inside of
- freed 2048-byte region [ffff888136335000, ffff888136335800)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x136330
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 0017ffffc0000040 ffff888100042f00 ffffea000417a000 dead000000000002
-raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 0017ffffc0000040 ffff888100042f00 ffffea000417a000 dead000000000002
-head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 0017ffffc0000003 ffffea0004d8cc01 ffffffffffffffff 0000000000000000
-head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888136335280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888136335300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888136335380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff888136335400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888136335480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Fixes: 6827ca573c03 ("memstick: rtsx_usb_ms: Support runtime power management")
-Signed-off-by: Luo Qiu <luoqiu@kylinsec.com.cn>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/4B7BC3E6E291E6F2+20250317101438.25650-1-luoqiu@kylinsec.com.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: b824766504e4 ("cgroup/rstat: add force idle show helper")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memstick/host/rtsx_usb_ms.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/cgroup/rstat.c |   29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
-@@ -813,6 +813,7 @@ static void rtsx_usb_ms_drv_remove(struc
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -612,36 +612,33 @@ static void cgroup_force_idle_show(struc
+ void cgroup_base_stat_cputime_show(struct seq_file *seq)
+ {
+ 	struct cgroup *cgrp = seq_css(seq)->cgroup;
+-	u64 usage, utime, stime, ntime;
++	struct cgroup_base_stat bstat;
  
- 	host->eject = true;
- 	cancel_work_sync(&host->handle_req);
-+	cancel_delayed_work_sync(&host->poll_card);
+ 	if (cgroup_parent(cgrp)) {
+ 		cgroup_rstat_flush_hold(cgrp);
+-		usage = cgrp->bstat.cputime.sum_exec_runtime;
++		bstat = cgrp->bstat;
+ 		cputime_adjust(&cgrp->bstat.cputime, &cgrp->prev_cputime,
+-			       &utime, &stime);
+-		ntime = cgrp->bstat.ntime;
++			       &bstat.cputime.utime, &bstat.cputime.stime);
+ 		cgroup_rstat_flush_release(cgrp);
+ 	} else {
+-		/* cgrp->bstat of root is not actually used, reuse it */
+-		root_cgroup_cputime(&cgrp->bstat);
+-		usage = cgrp->bstat.cputime.sum_exec_runtime;
+-		utime = cgrp->bstat.cputime.utime;
+-		stime = cgrp->bstat.cputime.stime;
+-		ntime = cgrp->bstat.ntime;
++		root_cgroup_cputime(&bstat);
+ 	}
  
- 	mutex_lock(&host->host_mutex);
- 	if (host->req) {
+-	do_div(usage, NSEC_PER_USEC);
+-	do_div(utime, NSEC_PER_USEC);
+-	do_div(stime, NSEC_PER_USEC);
+-	do_div(ntime, NSEC_PER_USEC);
++	do_div(bstat.cputime.sum_exec_runtime, NSEC_PER_USEC);
++	do_div(bstat.cputime.utime, NSEC_PER_USEC);
++	do_div(bstat.cputime.stime, NSEC_PER_USEC);
++	do_div(bstat.ntime, NSEC_PER_USEC);
+ 
+ 	seq_printf(seq, "usage_usec %llu\n"
+ 			"user_usec %llu\n"
+ 			"system_usec %llu\n"
+ 			"nice_usec %llu\n",
+-			usage, utime, stime, ntime);
++			bstat.cputime.sum_exec_runtime,
++			bstat.cputime.utime,
++			bstat.cputime.stime,
++			bstat.ntime);
+ 
+-	cgroup_force_idle_show(seq, &cgrp->bstat);
++	cgroup_force_idle_show(seq, &bstat);
+ }
+ 
+ /* Add bpf kfuncs for cgroup_rstat_updated() and cgroup_rstat_flush() */
 
 
 
