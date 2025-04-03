@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-127630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2BAA7A6BD
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3CBA7A6BF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C63283BB2C0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35F9E3B87A2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5905D25178B;
-	Thu,  3 Apr 2025 15:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D46E250BF7;
+	Thu,  3 Apr 2025 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/D1SUqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eopB/ODI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15625251781;
-	Thu,  3 Apr 2025 15:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE4A24C080;
+	Thu,  3 Apr 2025 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693912; cv=none; b=GbPS8HGWLCjBDVKXRudGNqV6KzA5fogMhUlkrrO/JYeFLLQOX7P8q/zSOQIGkfG9MEd4PNe+q+WUgCeFRVg/LU5W6VCrd5uXdUezLc3cgAtUIsO0z3QM/lskZfgNwBC1GkTyot2h4dPRWwY3Mr5WR67CPiGwZa3m7c0w+PuM0J4=
+	t=1743693924; cv=none; b=HOMYmPLOFQG3bD8c5jgExhcY7dI1XpfKTbn3KSUtbfCNlXra8P2oVVt6Rgz+1bSSoY7aDRpQeYwIG6YKiLEuwdK5acIjhoA4VbKEiHq92TqGen7o/fRODfCsUfQbw7xzRMslNJQvTlP2RKiXM8rVwkMJYB2WZ8Lgw3+Zf3v9ofU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693912; c=relaxed/simple;
-	bh=gmMRPGrvVjRkwNNWOc1Canu0QHQzeqvYW2UgbmuhvQU=;
+	s=arc-20240116; t=1743693924; c=relaxed/simple;
+	bh=uBjQgKlH50tOsrxR54PW1lQVI23OLHyjZ8J7gFsDVGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuBlAB99rB3yFV5wJuovnsyF4oEKCF2xtRczSpmTkTRJbJUlXNhJK1kMQoKqcWRjFFODm8OIM4m1GvZm2unSGmuPpkbgXGJx4GahQvytNZtPIJ+7lKOW2VLOEeVuc3QTeYYXo2wpZ4NJNZchYnCESxhgEQe3EeHb2rStMAmxuJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/D1SUqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C84C4CEE7;
-	Thu,  3 Apr 2025 15:25:11 +0000 (UTC)
+	 MIME-Version; b=BhDNmNaZOp7hLq+uPJxLMO+yfsFPaDGgHqr3iG6XounnMHPGG6UygJzWuop1DS0gTSgC7d4WvemdYiTwi8CjKKRce4w/afdumm1KuWEKEqZFmJydj7wzR4kg4LVbwQx1YQyice1yxEngugXEbhJbWBi+G25ZNE17Feu3J6UEphQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eopB/ODI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13BBC4CEE3;
+	Thu,  3 Apr 2025 15:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693911;
-	bh=gmMRPGrvVjRkwNNWOc1Canu0QHQzeqvYW2UgbmuhvQU=;
+	s=korg; t=1743693924;
+	bh=uBjQgKlH50tOsrxR54PW1lQVI23OLHyjZ8J7gFsDVGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/D1SUqUCxLgN9HO1TbzVqLD+42zNrJD8XkqcTL6nfcNU57Aavv1UPpcsEudXTDkP
-	 cfMldLyeMdrFBUDR/B8HmWVTSsIPaQdcbDk7i26jFqQaFPCcUzhWnIuNz8B9dWI56j
-	 06ulP4GqJTHmY47r6WmZ3FxcxJVAa3pnaJChFP70=
+	b=eopB/ODI82n+dPVyHxkh5pOxB0X7tgV4T8c+4K3YvKQ+xZm130J+8dBaW6xu+3zJv
+	 TQHaAbftqRm9t5A9d/3M6iJjDdwN2CJw8JfLzUZylfrVQl1aMVHI4wlvIDMiowZSV8
+	 146Bx9JS3M7uWAfQ47ieh+Uo2k4G4uHzN+LV8/o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Cheick Traore <cheick.traore@foss.st.com>
-Subject: [PATCH 6.12 20/22] serial: stm32: do not deassert RS485 RTS GPIO prematurely
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.13 13/23] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
 Date: Thu,  3 Apr 2025 16:20:30 +0100
-Message-ID: <20250403151622.621701042@linuxfoundation.org>
+Message-ID: <20250403151622.656287194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 2790ce23951f0c497810c44ad60a126a59c8d84c upstream.
+commit f5cb528d6441eb860250a2f085773aac4f44085e upstream.
 
-If stm32_usart_start_tx is called with an empty xmit buffer, RTS GPIO
-could be deasserted prematurely, as bytes in TX FIFO are still
-transmitting.
-So this patch remove rts disable when xmit buffer is empty.
+According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
+register only can be changed when the transmitter is disabled.
+So disable the transmitter before changing RS485 related registers and
+re-enable it after the change is done.
 
-Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
+Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Link: https://lore.kernel.org/r/20250320152540.709091-1-cheick.traore@foss.st.com
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/stm32-usart.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct
- {
- 	struct tty_port *tport = &port->state->port;
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1484,6 +1484,19 @@ static int lpuart32_config_rs485(struct
  
--	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
--		stm32_usart_rs485_rts_disable(port);
-+	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
- 		return;
--	}
+ 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+ 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
++	u32 ctrl;
++
++	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
++	ctrl = lpuart32_read(&sport->port, UARTCTRL);
++	if (ctrl & UARTCTRL_TE) {
++		/* wait for the transmit engine to complete */
++		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
++		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
++
++		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
++			cpu_relax();
++	}
++
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
  
- 	stm32_usart_rs485_rts_enable(port);
+ 	if (rs485->flags & SER_RS485_ENABLED) {
+@@ -1503,6 +1516,10 @@ static int lpuart32_config_rs485(struct
+ 	}
+ 
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
++
++	if (ctrl & UARTCTRL_TE)
++		lpuart32_write(&sport->port, ctrl, UARTCTRL);
++
+ 	return 0;
+ }
  
 
 
