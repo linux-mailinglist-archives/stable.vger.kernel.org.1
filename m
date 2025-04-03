@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-127870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4CAA7ACA7
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:46:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC82A7ACB0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFE418999BA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 443F23B5771
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3A327E1DB;
-	Thu,  3 Apr 2025 19:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D94F27F4C1;
+	Thu,  3 Apr 2025 19:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKPc2rI9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Na3yaw6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1FB258CC4;
-	Thu,  3 Apr 2025 19:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE8327EC9F;
+	Thu,  3 Apr 2025 19:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707278; cv=none; b=gj8CPv8c++Wo0eUz2c460Ib1zVpmgnMZOdZ6fGsg5A44k43CpXnBxpTIO2XRxKjF9gYHP1gq7AGX1YR0Ls9atSXEc+rOxqBxhuPQ64p70D+R25SUkMPFvkQuT6SVEujaK7HMQigsQ3J7Lxcfo0O90U5yjEIB3Z1WC0RtffLj5Rk=
+	t=1743707282; cv=none; b=lMHDXcQ3SZaCD8PD6dJI4HbibfYeDfjIHK1hvfjWdyhQuDS2HGF5ESPdfCmom5jbtMkvFu23+7BLIHyI/1Aoq8bJ8UQK+15OYHSuwSKR/SABmtFJlnil9Um7vsqtmTx9Xv+jo+PEwROUOGNwxqdGHejNYJGmVTR6qyLUg415y28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707278; c=relaxed/simple;
-	bh=K2We6ttfT2NRzab29J4tAo+tCc735Er7VDiK3//0el4=;
+	s=arc-20240116; t=1743707282; c=relaxed/simple;
+	bh=EA7Ez8Tc0aaKXscV+78M5q/uX17RpyefBZgXtCBt7uw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QWYsRrdmMLuJ7cYc6sibFL/kMD38drXskEs+VVNMH3gvfnFMh8PPlq8e4srE5o9yGo6z6tCNk6W/Cf6ZjRvCIdfOTuwCAM/wJ4iuhDmV5dIiapXD9szgaHQz/0IDsvXIKolnY8ZJxKjkFQzPlm3yYEf6TDoQr9dtmXjcmItdJ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKPc2rI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEABC4CEE3;
-	Thu,  3 Apr 2025 19:07:57 +0000 (UTC)
+	 MIME-Version; b=nVdASARO/RxSbp93E7nuzBFLaln3+MTAZTUCexeQzgqMFOLvAa+/kLVPE8eoFHDFKLEODtWqFoaG/XoJCnBjQAEU5PpvYtMtY+dwzGDfa+NdLANkbNT+f/waBFq/DYzquF9AxxA/2XC7bQNfgHVDsKjYLGFNHE29x6k9ezMJ3/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Na3yaw6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B1EC4CEE3;
+	Thu,  3 Apr 2025 19:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707278;
-	bh=K2We6ttfT2NRzab29J4tAo+tCc735Er7VDiK3//0el4=;
+	s=k20201202; t=1743707281;
+	bh=EA7Ez8Tc0aaKXscV+78M5q/uX17RpyefBZgXtCBt7uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKPc2rI9lmMxUzm49bmV8Vi0dUGHdhJ26w+3VqOPfvBsqh3A+YFKP88oKQ8uIt9rZ
-	 TF4qnQVtGuIKYnK3tYutqB16SrTz2GyZ7X0GAwK1z3iBJfStSPhG7DdH44kKgHVz2f
-	 Xhdkhean4fjRFBNRrxfQJplOckh0fUyZd+cmc/USCmKsS6O6bd/Vke4IXgyV17f7u7
-	 IDxcGNLLy2NXZMkZt/IAENrvFh2RTMiVLJgSf4UFafCIv/P6lCxbmXV2fo0KP+2TVE
-	 UzSmG+CoBztFL+MJ3GoDrcLi1Cr0l4ThEeTOPQJP0OR2ifAh/zkW6UowPo+3yJ0z4y
-	 1yZ7U+sS8KlDg==
+	b=Na3yaw6e6YMwTdtJeKimXfE8cDPjshzYY5OtQsz4p+XQEA3umMqYKtRBDJ14V/wvx
+	 8Lm5eUjRpQ8Gtb3o9T9xPvdI0xlAvkMLnG5gJujBjMc87dnPf5HZ0PHDxT0IPjs8Ht
+	 J01Fw1JOR7Y/lrn5hQCma/kvBT4Zb+fsdNjU4oz2DcYMbFb/TXglS4zMTOMUkm2zLE
+	 LsVvCLrjoJqRCfAfJN/hks5ILjmG9kDjuwF2sqosW7y92ur8LHa4umcViZpQtJLRR4
+	 aP74DQUW/DIbX9q+ryAPletGVSprgGDBHX/gGw/zSUi56rB15Ke3rKmhpQ7qyWClnb
+	 ipDwjOgKKkgmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Xing <kerneljasonxing@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/26] page_pool: avoid infinite loop to schedule delayed worker
-Date: Thu,  3 Apr 2025 15:07:24 -0400
-Message-Id: <20250403190745.2677620-5-sashal@kernel.org>
+	shaggy@kernel.org,
+	aha310510@gmail.com,
+	dmantipov@yandex.ru,
+	eadavis@qq.com,
+	jfs-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 06/26] jfs: Fix uninit-value access of imap allocated in the diMount() function
+Date: Thu,  3 Apr 2025 15:07:25 -0400
+Message-Id: <20250403190745.2677620-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190745.2677620-1-sashal@kernel.org>
 References: <20250403190745.2677620-1-sashal@kernel.org>
@@ -71,66 +70,81 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
+[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
 
-We noticed the kworker in page_pool_release_retry() was waken
-up repeatedly and infinitely in production because of the
-buggy driver causing the inflight less than 0 and warning
-us in page_pool_inflight()[1].
+syzbot reports that hex_dump_to_buffer is using uninit-value:
 
-Since the inflight value goes negative, it means we should
-not expect the whole page_pool to get back to work normally.
+=====================================================
+BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
+diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
+jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
+evict+0x723/0xd10 fs/inode.c:796
+iput_final fs/inode.c:1946 [inline]
+iput+0x97b/0xdb0 fs/inode.c:1972
+txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
+txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-This patch mitigates the adverse effect by not rescheduling
-the kworker when detecting the inflight negative in
-page_pool_release_retry().
+Uninit was created at:
+slab_post_alloc_hook mm/slub.c:4121 [inline]
+slab_alloc_node mm/slub.c:4164 [inline]
+__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
+kmalloc_noprof include/linux/slab.h:901 [inline]
+diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
+jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
+jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
+get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
+get_tree_bdev+0x37/0x50 fs/super.c:1659
+jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
+vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
+do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
+path_mount+0x742/0x1f10 fs/namespace.c:3887
+do_mount fs/namespace.c:3900 [inline]
+__do_sys_mount fs/namespace.c:4111 [inline]
+__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
+__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
+x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+=====================================================
 
-[1]
-[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
-[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
-...
-[Mon Feb 10 20:36:11 2025] Call Trace:
-[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
-[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
-[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
-[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
-[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
-[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
-[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
-[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
-Note: before this patch, the above calltrace would flood the
-dmesg due to repeated reschedule of release_dw kworker.
+The reason is that imap is not properly initialized after memory
+allocation. It will cause the snprintf() function to write uninitialized
+data into linebuf within hex_dump_to_buffer().
 
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix this by using kzalloc instead of kmalloc to clear its content at the
+beginning in diMount().
+
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_imap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 31f923e7b5c40..2f2f63c8cf4b0 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -865,7 +865,13 @@ static void page_pool_release_retry(struct work_struct *wq)
- 	int inflight;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index b30e4cf2f5794..8b876e2db8c60 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
+ 	 * allocate/initialize the in-memory inode map control structure
+ 	 */
+ 	/* allocate the in-memory inode map control structure. */
+-	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
++	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
+ 	if (imap == NULL)
+ 		return -ENOMEM;
  
- 	inflight = page_pool_release(pool);
--	if (!inflight)
-+	/* In rare cases, a driver bug may cause inflight to go negative.
-+	 * Don't reschedule release if inflight is 0 or negative.
-+	 * - If 0, the page_pool has been destroyed
-+	 * - if negative, we will never recover
-+	 * in both cases no reschedule is necessary.
-+	 */
-+	if (inflight <= 0)
- 		return;
- 
- 	/* Periodic warning */
 -- 
 2.39.5
 
