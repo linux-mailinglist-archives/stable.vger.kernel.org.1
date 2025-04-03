@@ -1,126 +1,114 @@
-Return-Path: <stable+bounces-127955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9B5A7AD96
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:08:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CB4A7AD9F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2ECE1896A21
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:03:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895E83BA77D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9AC28EA51;
-	Thu,  3 Apr 2025 19:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6235E25BAD7;
+	Thu,  3 Apr 2025 19:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="WwDPGAVS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="leLdJ+od"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527C28EA50;
-	Thu,  3 Apr 2025 19:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1981C25BAD4;
+	Thu,  3 Apr 2025 19:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707516; cv=none; b=YBmag2dOkGBCDKEvWqKt9rvVmd0fJVRQkChHDFKo0B/NXYVbiqil7va5obx+LS5G6NocIrDEFVGv+Bmr+Ui/xxgS4nKfplo80yHObFDvxDmjTKggadnRaNbaYc4lFfeebZqFmvN4Und0xU27o8/U4eTjiDDeRLkRYQvNhfCGt5k=
+	t=1743707599; cv=none; b=UXFBe8CDc9WHSvFauYhml6CXhw817ThuOLNFJN3eF3FLu3M6KDEdp0BLxbL5r7ceoIGvkCUMPvByMY7vIZvqavnoswCk3+kpIybS50CJO5Ix+Zd6jfQC6K4LwIEYidSBEq5z8vsQDMPYvtroxwmkirZL2r0zLCYhd2QOgSbetA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707516; c=relaxed/simple;
-	bh=SUF+FEvZ0V/1XiQErPBCBUZApPbnbBjViybnTHmlfjs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iiXZN3yQ1Biu/+G4zyewhOuWTSa/Xrrt2YxFYbS4BRMYL4Y0NPqLHV9Ru9EnbL5LHGKmZN9t0tsEHcauY67BX1IxclEUwOXC9E+aj2UrjzRqUQ7LtmjxiOmL2qU9Z5Akr7rF8VczAKKr/SMUn1CM2y+KP6+JFnKdFIWbrqrk7hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=WwDPGAVS; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1743707515; x=1775243515;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vovxfpKJgf6ol6D0CSE6J0UKWexkXXL6DC9c0tr1dr0=;
-  b=WwDPGAVSB3MUCW6lnXIDj8kNyDEF6eugvbSr4l+ct9GqgxC0NqQBtYP7
-   cUi8+Ub+8f3gnMOcFunXRFs5tdMKeZ85Ns1ksav5zFycpq8BKMbR+Z7YC
-   o5MuB2NMQkOE1d4+UhuvykKslm2yWnW038yChLDZGXPjY6alweRdhVLAI
-   M=;
-X-IronPort-AV: E=Sophos;i="6.15,186,1739836800"; 
-   d="scan'208";a="392813403"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 19:11:53 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:32116]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.147:2525] with esmtp (Farcaster)
- id 724021ac-06b5-4828-8460-c9fe5bea7dc1; Thu, 3 Apr 2025 19:11:52 +0000 (UTC)
-X-Farcaster-Flow-ID: 724021ac-06b5-4828-8460-c9fe5bea7dc1
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 3 Apr 2025 19:11:51 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.101.41) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 3 Apr 2025 19:11:47 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <jirislaby@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <ematsumiya@suse.de>,
-	<horms@kernel.org>, <kuba@kernel.org>, <kuni1840@gmail.com>,
-	<kuniyu@amazon.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<peterz@infradead.org>, <sfrench@samba.org>, <stable@vger.kernel.org>,
-	<wangzhaolong1@huawei.com>, <willemb@google.com>
-Subject: Re: [PATCH v1 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-Date: Thu, 3 Apr 2025 12:11:28 -0700
-Message-ID: <20250403191138.20479-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <568f7245-05c9-4061-b2f4-5d9d38b5c212@kernel.org>
-References: <568f7245-05c9-4061-b2f4-5d9d38b5c212@kernel.org>
+	s=arc-20240116; t=1743707599; c=relaxed/simple;
+	bh=AS4RaIshtcU30uLBqrbLWUqtMzDm0R+BHz6wn5S4PGo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Lth0qRLDF+8TvE0mDOWdwdYS8OtIFz7p7rxprjd+MTN5MrdQiK14owPAIXuKwNTIRN718ZJsiPrecXLBStql6nS2Qa6FI5b6p/1MkUFMyoZEE1jZbKXGVPUO27C9ZOVT/YWowsQBwlSAlcmC6nLAaNKWdjtR9eINZXRJfNGnP0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=leLdJ+od; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9441AC4CEE3;
+	Thu,  3 Apr 2025 19:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743707598;
+	bh=AS4RaIshtcU30uLBqrbLWUqtMzDm0R+BHz6wn5S4PGo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=leLdJ+odZ61X9Yu06Rp4KBGbQ4tMXwj0SNQE+FK6e65QZV9hqXByVqBkY0XbW+szR
+	 n/YHODia+6eNKe3c2f31Djf7P1FtmZcXiYwAWia1Zba+Xa53xZcsNVR3US8Md+naiz
+	 sjrCx1ZLQuuz1wcjBaFK3Xj7nqxMp1J5fX44KzdG4J3HEgCDE3n74kDc9O6O4ne2v1
+	 hhVoCzAKd+PUfDLrW9XYWXU9/sEuxKOfnHjHZEk0uf47BjDnLfNfq0/UbBlzfd+sTD
+	 tUDbdZsESIoyQS92MIW+R5mg5xGZ/oo3MQaq5GHlupLkpBkoWphdGMOVUxqC6qxS3D
+	 5VRDPM7+Q/kaQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 01/44] drm: allow encoder mode_set even when connectors change for crtc
+Date: Thu,  3 Apr 2025 15:12:30 -0400
+Message-Id: <20250403191313.2679091-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWA001.ant.amazon.com (10.13.139.83) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Jiri Slaby <jirislaby@kernel.org>
-Date: Thu, 3 Apr 2025 12:46:43 +0200
-> On 03. 04. 25, 4:07, Kuniyuki Iwashima wrote:
-> ...
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -2324,6 +2324,12 @@ static void __sk_destruct(struct rcu_head *head)
-> >   		__netns_tracker_free(net, &sk->ns_tracker, false);
-> >   		net_passive_dec(net);
-> >   	}
-> > +
-> > +#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
-> 
-> I don't know if this is the right approach at all (it appears not to 
-> me), but:
-> 
-> Having this check in random files looks error prone. Perhaps you want to 
-> introduce some macro like SOCK_NEEDS_OWNER? Or you introduce sk_put_owner().
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-include/net/sock.h and net/core/sock.c are not random files.
+[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
 
-Also, __sk_destruct() is the other single user where all sockets
-are destroyed, so we have no reason to make sk_put_owner() available
-for modules.
+In certain use-cases, a CRTC could switch between two encoders
+and because the mode being programmed on the CRTC remains
+the same during this switch, the CRTC's mode_changed remains false.
+In such cases, the encoder's mode_set also gets skipped.
 
-But, I'll define sk_put_owner() with sk_set_owner() under the same
-config guard because I noticed I need to clear sk_owner in
-sk_clone_lock() for MPTCP, which needs sk_clear_owner() or another
-ifdef.
+Skipping mode_set on the encoder for such cases could cause an issue
+because even though the same CRTC mode was being used, the encoder
+type could have changed like the CRTC could have switched from a
+real time encoder to a writeback encoder OR vice-versa.
 
+Allow encoder's mode_set to happen even when connectors changed on a
+CRTC and not just when the mode changed.
 
-> 
-> > +	if (sk->sk_owner)
-> 
-> The if is not needed.
-
-Exactly, will remove it.
-
-Thanks!
-
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-pw-bot: cr
+ drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index 5186d2114a503..32902f77f00dd 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1376,7 +1376,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
+ 		mode = &new_crtc_state->mode;
+ 		adjusted_mode = &new_crtc_state->adjusted_mode;
+ 
+-		if (!new_crtc_state->mode_changed)
++		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
+ 			continue;
+ 
+ 		drm_dbg_atomic(dev, "modeset on [ENCODER:%d:%s]\n",
+-- 
+2.39.5
+
 
