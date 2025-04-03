@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-127655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51461A7A6D0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59290A7A6DD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DFF3B9122
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8EC217A124
 	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AEE2512CB;
-	Thu,  3 Apr 2025 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FF82505D2;
+	Thu,  3 Apr 2025 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV7X03bO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Si3on5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30842512C4;
-	Thu,  3 Apr 2025 15:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44DF24E000;
+	Thu,  3 Apr 2025 15:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693973; cv=none; b=jHX4eUJaIT7+ChZ9jJvyfHNCXiPKp6MsB8Ha8vzykUTOjh6YQBcPu1EtoqHC9AkLBQIXv2q61VIY9+CZwdTtk4eQ/Lr92XfH9Fz/M8locN+r5jg4krV04Z3sVogqRIIQbQiNUgbNn8CBZ8vNm+Lt/5/htQDC3G01dRPOX6Jc1jo=
+	t=1743693960; cv=none; b=sqZEQinV51qA6TqfHy/BRgHESxQq4EySmaw1g4EiK7SnD2wC/ltT/9hCO3PWB/6AykDDXO1wjykxUI2VwD8vBuKE1oOVJKPz/SYloyhqTt3/79ioodd9XJtVyu9oYkAj1ayqSYcFWncqUnQDvQ51iBRG//WLfVpvzLcaE5i3Ku4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693973; c=relaxed/simple;
-	bh=lloxQRw7LtSD0oDkqj09DVX+e1XGoQfz08dGtN08FiE=;
+	s=arc-20240116; t=1743693960; c=relaxed/simple;
+	bh=MKTRZp8PXtwysCTdVIzvru0kGbX5xuAZEgX+deEEXQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSt59xiSIz5NIMKK1V9T+cABcJ5HGEnlKviTsp02jzjFP5QlXfIjXr3rr+Rzp2aVpTMd3BC1/8+DlRj/FugSVmEP5MCp9Yfls7R7hvVGJBZiXsbGaSIja3KB7RzoO68OTFsrcBTNtKL9IiqDKG9rxy5mNnEQdByvMdkgliBNQZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV7X03bO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD28C4CEE3;
-	Thu,  3 Apr 2025 15:26:12 +0000 (UTC)
+	 MIME-Version; b=ftGx7sAkIimec3akY4eG3czvCBge8I5KTzO3m0FY4Tztg3yu5SV6FkN+4IEUk7CM6G4hiqM2VvDAR7kQxjp/hEWxj9iouBepeepcBXTXs6FUrW+qMhbFMU8B7DzIaOmOBwdd2ZfAlIYDu3Zmi0juPORZ97ZWhCsfRbyn2ixr6+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Si3on5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B72C4CEE3;
+	Thu,  3 Apr 2025 15:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693972;
-	bh=lloxQRw7LtSD0oDkqj09DVX+e1XGoQfz08dGtN08FiE=;
+	s=korg; t=1743693960;
+	bh=MKTRZp8PXtwysCTdVIzvru0kGbX5xuAZEgX+deEEXQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SV7X03bOq7SQyIjndTijh+FMMdmE5zXAm+4OOunAYzoFIEtuFoQkst3hqy7gt5GKi
-	 +Hjvz7AUMfSYtnES7EOgVOF4RStQWdkfC4qPTcjwNDCOlfur1Md29fjK7qpT1ntPs9
-	 HFvQvR6VEctH42qCiIUmhDK3DRRiTZfPx87Y6Yg4=
+	b=k/Si3on5oU4bx1fhWvJrh1Z+vbzTWbjnEPK79BiHixsXMl9UwPKi//vSPvy9XA/87
+	 yiXLgRMYQ6LZRx4k+/QTW76sBbWoXuaovzHYqsZr+9LwirZsgp/kwkVzBzZMEqFHOQ
+	 xuTSk3TiLWb8nNuawC6ylhU9d13+urC9KF17fe0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 01/26] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
-Date: Thu,  3 Apr 2025 16:20:22 +0100
-Message-ID: <20250403151622.457061895@linuxfoundation.org>
+	Maxim Mikityanskiy <maxim@isovalent.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.13 06/23] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+Date: Thu,  3 Apr 2025 16:20:23 +0100
+Message-ID: <20250403151622.459060825@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
+commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
 
-Many Poly/Plantronics headset families name the feature, input,
-and/or output units in a such a way to produce control names
-that are not recognized by user space. As such, the volume and
-mute events do not get routed to the headset's audio controls.
+nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
+restore the original 5-tuple in case of SNAT, to be able to find the
+right socket (if any). Then socket_match() can correctly check whether
+the socket was transparent.
 
-As an example from a product family:
+However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
+conntrack lookup, making xt_socket fail to match on the socket when the
+packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
 
-The microphone mute control is named
-Headset Microphone Capture Switch
-and the headset volume control is named
-Headset Earphone Playback Volume
+IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
+pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
+with the node's external address. Cilium leverages Envoy to enforce L7
+policies, and Envoy uses transparent sockets. Cilium inserts an iptables
+prerouting rule that matches on `-m socket --transparent` and redirects
+the packets to localhost, but it fails to match SNATed IPv6 packets due
+to that missing conntrack lookup.
 
-The quirk fixes these to become
-Headset Capture Switch
-Headset Playback Volume
-
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Closes: https://github.com/cilium/cilium/issues/37932
+Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
+Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3575,6 +3575,52 @@ static void snd_dragonfly_quirk_db_scale
- 	}
- }
+--- a/net/ipv6/netfilter/nf_socket_ipv6.c
++++ b/net/ipv6/netfilter/nf_socket_ipv6.c
+@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 	struct sk_buff *data_skb = NULL;
+ 	int doff = 0;
+ 	int thoff = 0, tproto;
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn const *ct;
++#endif
  
-+/*
-+ * Some Plantronics headsets have control names that don't meet ALSA naming
-+ * standards. This function fixes nonstandard source names. By the time
-+ * this function is called the control name should look like one of these:
-+ * "source names Playback Volume"
-+ * "source names Playback Switch"
-+ * "source names Capture Volume"
-+ * "source names Capture Switch"
-+ * If any of the trigger words are found in the name then the name will
-+ * be changed to:
-+ * "Headset Playback Volume"
-+ * "Headset Playback Switch"
-+ * "Headset Capture Volume"
-+ * "Headset Capture Switch"
-+ * depending on the current suffix.
-+ */
-+static void snd_fix_plt_name(struct snd_usb_audio *chip,
-+			     struct snd_ctl_elem_id *id)
-+{
-+	/* no variant of "Sidetone" should be added to this list */
-+	static const char * const trigger[] = {
-+		"Earphone", "Microphone", "Receive", "Transmit"
-+	};
-+	static const char * const suffix[] = {
-+		" Playback Volume", " Playback Switch",
-+		" Capture Volume", " Capture Switch"
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(trigger); i++)
-+		if (strstr(id->name, trigger[i]))
-+			goto triggered;
-+	usb_audio_dbg(chip, "no change in %s\n", id->name);
-+	return;
-+
-+triggered:
-+	for (i = 0; i < ARRAY_SIZE(suffix); i++)
-+		if (strstr(id->name, suffix[i])) {
-+			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
-+			snprintf(id->name, sizeof(id->name), "Headset%s",
-+				 suffix[i]);
-+			return;
-+		}
-+	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
-+}
-+
- void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 				  struct usb_mixer_elem_info *cval, int unitid,
- 				  struct snd_kcontrol *kctl)
-@@ -3592,5 +3638,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			cval->min_mute = 1;
- 		break;
+ 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
+ 	if (tproto < 0) {
+@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 		return NULL;
  	}
-+
-+	/* ALSA-ify some Plantronics headset control names */
-+	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
-+	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
-+		snd_fix_plt_name(mixer->chip, &kctl->id);
- }
  
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	/* Do the lookup with the original socket address in
++	 * case this is a reply packet of an established
++	 * SNAT-ted connection.
++	 */
++	ct = nf_ct_get(skb, &ctinfo);
++	if (ct &&
++	    ((tproto != IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
++	     (tproto == IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_RELATED_REPLY)) &&
++	    (ct->status & IPS_SRC_NAT_DONE)) {
++		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
++		dport = (tproto == IPPROTO_TCP) ?
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
++	}
++#endif
++
+ 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
+ 				     sport, dport, indev);
+ }
 
 
 
