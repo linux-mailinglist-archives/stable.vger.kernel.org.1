@@ -1,121 +1,133 @@
-Return-Path: <stable+bounces-127508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6575EA7A285
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:10:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03200A7A2A2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85ACE1895412
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00CA8173730
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD0424DFF9;
-	Thu,  3 Apr 2025 12:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CCF24CEFE;
+	Thu,  3 Apr 2025 12:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="hlx9jNGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrHLCxiA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAFB24DFE5
-	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 12:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311924CEF8;
+	Thu,  3 Apr 2025 12:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743682188; cv=none; b=TSLkLnydfk6nY2c+sLwehh8c1X/LsC0CRM3vROIKaajlHdJCrGuaFTw6304VhLiAQnwWJbNE39zXv/nSmJcjsKUsHI0+Qeo3WsAJ6m9fT5ou6Aar3PLzn3g8TDumNTi8c/qL8n2b7UfjRts25VnUfNunraVxx1K7C1/hcSWkprs=
+	t=1743682511; cv=none; b=LLOPwiXvEKtPCVyCyJ1NgY21VVV3CHg3MEEP+MF9s2AcAFUa519uRsYzhVmXuZwzMXvOmnVcV9vlOEMHnDT4yO2UCYdWsTATDzaYNe4aue1w5RkUtsmUP1cXvhfvMp8R71xEE8Zmwg5MgEVXDZDJOA9iA2+Cp6oytdZsVt6TkHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743682188; c=relaxed/simple;
-	bh=u+QydgONUJr0Pgq4GMp0nMeH0yflfwhSQuo2N5MBQqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j9sHZDP7WJmu4+tbjtgjoOJ/dI+HLSwmj6t9pL5UBAO+jMMCN1Zl4i/nyx9akKMgwRw4wl5YSDFKnSVuzYCpdKYq0EjlFgNqnnxD8I4ZDPVfeOkXpk2Tfcc7+ZmPPpp8L5uJZfWOJulj3KtuRCIuV3XeFutlXaKW6wqgGrL01x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=hlx9jNGy; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-39bf44be22fso590621f8f.0
-        for <stable@vger.kernel.org>; Thu, 03 Apr 2025 05:09:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1743682185; x=1744286985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/hptSX/e+wVcPnTsnjXvYnqoZa1uA7tV0UWABvKf2BA=;
-        b=hlx9jNGynCImd2KKgJHBNCuPCyW3lRGVtaENcGAaCTqmUZ3ADvO2ro2HV3xC5AeJQ7
-         vtZNsEsqghC0yu4e815V9gEwNr1YfDnLXOe6MTQOIstxENYBmsfeCFE2xpk24po/TtAb
-         MggZ9+V0LogV4ZW5AfW0s7GV3CpQ+uutK6r8/p62/CejMyM2cLuZc9UttQtlWtrwMxxE
-         8wtaaf8vZ6hLB5cPQe50xWcTAe9VPir/cU4H9ytPeTgr/wf36wsfw3eVw+UeMBD3fosd
-         +yVmQMi3KVKOX5/qzd2x04FttcVtOhRKp3lV5BfEfTGAkpxKBaGUOED33J3v7JOLLJe5
-         FCvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743682185; x=1744286985;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/hptSX/e+wVcPnTsnjXvYnqoZa1uA7tV0UWABvKf2BA=;
-        b=sDD88G+7rrhBTWzjR3r7AEwC0/LYaBvvK9PXuMB8AiNAGYw0sj1YmPpVlvDRosmp+C
-         RtOWW4QSrHD9GbhiK3VRBV05wfCpDjSW7Fio+QkWCuw05c8y54XiP/w0vcbSL3iT36Hv
-         xNTwhR//GrkF5q/BeGIxVQ8j/HD3XPTVcOa4JBsKu2z27f6/4yhcgL343LBsaibLMxNT
-         uaVgMWcXP3WWHggaScifG92joen9aZ/VR5rZODVQZcJt4cD9QbJeIrcG837ZBubcnNVm
-         uLrc9Omxo7Sab4Z9fKwMnzeJ2OxpwWyGgbq6yPV5hg7SyzJRgpzcj2nreGkrPRlifbZD
-         q2YA==
-X-Forwarded-Encrypted: i=1; AJvYcCXY06+188szuUPdHFuKF2rMMhztFIKWHaHwi0HgN0g9aR1/YM/xt1Q0MKSWuQqaVfn3f/aDWPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCTBuflbF5RPXMvOjNHhXAUfsFa72M1H6PT1QgITbLq+AtehfI
-	fL2dtwNB2wYJNXYy5rwcec7RNqDhroJe4uciQ5JKvKPyel4/Iy95rAnUgPH/YDk=
-X-Gm-Gg: ASbGnct7pQfufPEVZI/DThkxP3GxpoSvOyiGgrokkBjeOfOQJeJvRKwknKxgkDEfWKy
-	4P04LN+XZgf0hfnau32MsORUODaiDK+0yWA12dP8zxMlj4WZfDHXydH32pWRqpnuRhV4yDYraZq
-	fmhr2X5TD/hKuYfcmsjFf2/nDGQtE5Rbv0TuOgNG8tdgyeOvzgYpVx2Kw6ktalg8f+meRKLU7DD
-	L3PbbBNKR5KG1xNS7WA3P0GVro1P1y0tCygpPM/WX9bdBhTiqzCY+ZYrAjFn6Q8y/lOAnhZ81mQ
-	ZBK6HOL0x72FIPaIyDbacZFzma+OHs5QkfHQN0lL+y0=
-X-Google-Smtp-Source: AGHT+IHLLUD7pDwTg6uhsblFpe0xvqHhHyMGzPKJ/KkeiJ9ysFXJkpnNXvqJTXR+YplK0GjxarW+sw==
-X-Received: by 2002:a05:6000:2a81:b0:39c:30d8:a80 with SMTP id ffacd0b85a97d-39c30d80e4emr1264559f8f.19.1743682184983;
-        Thu, 03 Apr 2025 05:09:44 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:298f:3031:1c99:fc5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec1663046sm20599155e9.13.2025.04.03.05.09.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 05:09:43 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Guixin Liu <kanie@linux.alibaba.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] gpio: tegra186: fix resource handling in ACPI probe path
-Date: Thu,  3 Apr 2025 14:09:41 +0200
-Message-ID: <174368218005.27851.1117630791127381361.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250327032349.78809-1-kanie@linux.alibaba.com>
-References: <20250327032349.78809-1-kanie@linux.alibaba.com>
+	s=arc-20240116; t=1743682511; c=relaxed/simple;
+	bh=23ExgsOKUXblOVPYfpCtRZ12RIlo+qDHaQOvltMZl7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p+0iJVZWlm8Mhmp5+MjucFl8g5EZ9rt2jAbddzjPfcoFkKXFirmORxWfaCQM3WKyGnBvVbN0DCHP5Zm8EHvrJ1pKxNIm7/kqx89gRM8AbxG/WQMp+NjrJrHk+cbdVBjfJN5sKl98LJvoMSpxX2jzXjwnQQj/uZq0LwpIjBEMMuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrHLCxiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF9BC4CEE3;
+	Thu,  3 Apr 2025 12:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743682511;
+	bh=23ExgsOKUXblOVPYfpCtRZ12RIlo+qDHaQOvltMZl7s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LrHLCxiAwjQCI0ybe94JIwngEW+zI94NC/ou43BS0+cv+8SmSw4+7Ex8qnriCsSku
+	 3tXw7kLy9E0S3Dd1atnFuePV7eHzS0kjqX8wBYDgxZZFrKIcaN7fDXBZrrOwY0CWjb
+	 HfH1Esos/2/L3zWHSbx3cQ92OBvNoOx3lBXUlDLeNLFdaEde9m2+ZwUgU4fHFGT91z
+	 dyihYLM+npFPyVNOTej23OmRHzrazGv19wVrbD6a8ThyAh5hFr/CBdrcCeH4c6vE0S
+	 SRjackvg7LqFuTHEYe3vyZwV3LAZHW7e3nVYmUSYar9hlBTivGH1RaToVJwDKHfboX
+	 TWIPJpyYezOCQ==
+Date: Thu, 3 Apr 2025 17:41:02 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, 
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>, dave.hansen@linux.intel.com, x86@kernel.org, 
+	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+Message-ID: <qkhrxoonvpmp7udbvak4qq6uujjkskzec2kezzfooonndaroxq@5bkl6ly6xslv>
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+ <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
+ <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
+ <7cgiqaoeosg3vekjkcm5iorn5djdqbqv3evijgho6tvonzhe2t@jzn56u4ad7v3>
+ <67edade5e3e6d_1a6d929450@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67edade5e3e6d_1a6d929450@dwillia2-xfh.jf.intel.com.notmuch>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-
-
-On Thu, 27 Mar 2025 11:23:49 +0800, Guixin Liu wrote:
-> When the Tegra186 GPIO controller is probed through ACPI matching,
-> the driver emits two error messages during probing:
->   "tegra186-gpio NVDA0508:00: invalid resource (null)"
->   "tegra186-gpio NVDA0508:00: invalid resource (null)"
+On Wed, Apr 02, 2025 at 02:36:37PM -0700, Dan Williams wrote:
+> Naveen N Rao wrote:
+> > On Tue, Apr 01, 2025 at 10:07:18AM -0500, Tom Lendacky wrote:
+> > > On 4/1/25 02:57, Kirill Shutemov wrote:
+> > > > On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
+> > > >> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> > > >> address space) via /dev/mem results in an SEPT violation.
+> > > >>
+> > > >> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> > > >> unencrypted mapping where the kernel had established an encrypted
+> > > >> mapping previously.
+> > > >>
+> > > >> Teach __ioremap_check_other() that this address space shall always be
+> > > >> mapped as encrypted as historically it is memory resident data, not MMIO
+> > > >> with side-effects.
+> > > > 
+> > > > I am not sure if all AMD platforms would survive that.
+> > > > 
+> > > > Tom?
+> > > 
+> > > I haven't tested this, yet, but with SME the BIOS is not encrypted, so
+> > > that would need an unencrypted mapping.
+> > > 
+> > > Could you qualify your mapping with a TDX check? Or can you do something
+> > > in the /dev/mem support to map appropriately?
+> > > 
+> > > I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
+> > > from accessing ROM areas under SNP as those can trigger #VC for a page
+> > > that is mapped encrypted but has not been validated. He's looking at
+> > > possibly adding something to x86_platform_ops that can be overridden.
+> > > The application would get a bad return code vs an exception.
+> > 
+> > The thought with x86_platform_ops was that TDX may want to differ and 
+> > setup separate ranges to deny access to. For SEV-SNP, we primarily want 
+> > to disallow the video ROM range at this point. Something like the below.
+> > 
+> > If this is not something TDX wants, then we should be able to add a 
+> > check for SNP in devmem_is_allowed() directly without the 
+> > x86_platform_ops.
 > 
-> Fix this by getting resource first and then do the ioremap.
+> So I think there are 2 problems is a range consistently mapped by early
+> init code + various ioremap callers, and for encrypted mappings is there
+> potential unvalidated access that needs to be prevented outright.
 > 
-> [...]
+> The theoretical use case I have in mind is that userspace PCI drivers
+> have no real reason to be blocked in a confidential VM. Most of the
+> validation work to transition MMIO from shared to private is driven by
+> userspace anyway so it is unfortunate that after the end of that
+> conversion devmem and PCI-sysfs still block mappings.
+> 
+> However, there is no need to do pre-enabling for a theoretical use case.
+> So I am ok if devmem_is_allowed() globally says no for TVMs and then see
+> who screams with a practical problem that causes.
 
-Applied, thanks!
+That makes sense. I have posted that patch with some changes:
+https://lore.kernel.org/all/20250403120228.2344377-1-naveen@kernel.org/T/#u
 
-[1/1] gpio: tegra186: fix resource handling in ACPI probe path
-      commit: 380c913737edb4ec03974f653feee6cbfbb7e013
+It should be trivial to add a change for Intel to block the first 1MB 
+for TVMs.
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+Thanks,
+Naveen
+
 
