@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-127804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C301CA7ABE0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:28:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD383A7ABC0
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B27DB7A7DBB
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:23:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16CF8189A318
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2782673AC;
-	Thu,  3 Apr 2025 19:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF7A2676D1;
+	Thu,  3 Apr 2025 19:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtmjMxlc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XiT0xYCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2BA2673A0;
-	Thu,  3 Apr 2025 19:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EB6267398;
+	Thu,  3 Apr 2025 19:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707129; cv=none; b=lV6xaGwTWptQVocSHQWaRhpY15GnGKSSvk4CTwwT6BVVviTZv5+ecgXiEBNOFbwsC4Mw3uZu/cCpSJfA/7Oh2BCi7Uo5SFWNvgs5mxmvjeOl4QBFv1oyWch7obyUy+v+BZcsgLf62dGMlVlg0Rbci/F8I9Odr30x9q02wa9ugkU=
+	t=1743707131; cv=none; b=s7WSyyqGoazoKk6Tg5u2LJ0CkDLHDOLxioTNeQ0mbRS+H7+naHI8Z+KtHXnWlDxbO8KXqhkJ1gLdmX6aQyckI2W+kZ4chUsjTQqP07mTtW00iuuPcgwVZlW7cZcyiHnbap1T4GZNSY8qAU0dE30EH1fepYVgO4nDBSkCrhYjIIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707129; c=relaxed/simple;
-	bh=3J3hZkM/SZWxNodO3DllCHKUec55Vmh7HqP/UlOs3lI=;
+	s=arc-20240116; t=1743707131; c=relaxed/simple;
+	bh=ePURtSpA1U+2aAC+6iPVCJE4ede696nUnEyd3K/kgvw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s7P3SZFfCBD0FSE7LerklYo3EhW+CVCNssMW/xUJR6TLeZG55EPQzv9lLV0qaIgl/Ti/aKrd85byhkk8bEb8QxR5YzArIFkoBMntfLPmMuZWqjOjHZOSxTHYnaGFx5kNrlzEcRVf7kUIa7i/2ragA+5APZNhC3Z3vH5aN9pvFnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtmjMxlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791E1C4CEE3;
-	Thu,  3 Apr 2025 19:05:28 +0000 (UTC)
+	 MIME-Version; b=NiuekXV6ejwjko39UsXsYaWFP2MJp8xIZaQ90rUonc82y6lIjILhLY7sCQmweTPSIUqFkD6XOyAUK1GIvpEO4D5kNaa+umFJIqYqtOONqxv7gHTJxxtL4qoqRiUyDggzDTvVIX4/cAmhk66u4Vp7M1koSy1EgxrreYXuP96VV4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XiT0xYCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1A9C4CEE8;
+	Thu,  3 Apr 2025 19:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707129;
-	bh=3J3hZkM/SZWxNodO3DllCHKUec55Vmh7HqP/UlOs3lI=;
+	s=k20201202; t=1743707131;
+	bh=ePURtSpA1U+2aAC+6iPVCJE4ede696nUnEyd3K/kgvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtmjMxlcHDLmeY1uMu5dZ9Wmv6NAg8bkSkMLacUG577l5SNbFiT5oK2NNAW+rC6+/
-	 1MZkzwfZYkjCwIxrww/SK6JF+LcoqRkj3A9yddCCmeFXxq16t3w3fijYnFFHO1WXUB
-	 LviVSV6MQTpRdI/dEEPxNLDyG2BA+GYzAfppOCldRt4lia9lxjx/LqbHCfNnabSafc
-	 8tvqlmhu2ou8sH4D/TG/GvIfmjXKP3IBYxodhHTw61L9wlrHm19fcoQWCExfJkag+B
-	 ZaM0dZTUUSadUCiQwtAWSMCNfyjYQTqhwCMQEkbR4El+rZy94kkIzbAak1DrKcbmKu
-	 QK8sovIPww5nA==
+	b=XiT0xYCanZ1GlJQOPsb9OkG2GjBYnZ3M2FAR9NP+h3rx6l8B4xqcXLsupcYYCyyIv
+	 an6wZ3cZU3fXZvd6LC7az7yJDofr5WFTIT9GDqbSQ7dyCyH+gUKZh9TCgY6Sx2KbgA
+	 3tKw/BJ93FiHmjvwLlBf3hM7DRDN4Wz8f+1mavIZDGY0+RWeyLTzzUMqO0HW5aSDNj
+	 IB4ufsGsL7u/YBWBBBX9asrcOOe9WfbdZvLswjf5ON1np/XIWSZfU5mOA+gPF84QE9
+	 JlZjCgveSwfiRoQiqIarU78mAAZMx2cXBYSzSpnLeakRMLUnYFUJ83L1w9PBcX8ypH
+	 tMN8JbnAEhksQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Jie Fan <fanjie@uniontech.com>,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Niklas Cassel <cassel@kernel.org>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dlemoal@kernel.org,
-	linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 35/49] ahci: Marvell 88SE9215 controllers prefer DMA for ATAPI
-Date: Thu,  3 Apr 2025 15:03:54 -0400
-Message-Id: <20250403190408.2676344-35-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 36/49] btrfs: reject out-of-band dirty folios during writeback
+Date: Thu,  3 Apr 2025 15:03:55 -0400
+Message-Id: <20250403190408.2676344-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
 References: <20250403190408.2676344-1-sashal@kernel.org>
@@ -69,102 +67,156 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 0507c777f5d8f9e34b137d28ee263599a7b81242 ]
+[ Upstream commit 7ca3e84980ef6484a5c6f004aa180b61ce0c37d9 ]
 
-We use CD/DVD drives under Marvell 88SE9215 SATA controller on many
-Loongson-based machines. We found its PIO doesn't work well, and on the
-opposite its DMA seems work very well.
+[OUT-OF-BAND DIRTY FOLIOS]
+An out-of-band folio means the folio is marked dirty but without
+notifying the filesystem.
 
-We don't know the detail of the 88SE9215 SATA controller, but we have
-tested different CD/DVD drives and they all have problems under 88SE9215
-(but they all work well under an Intel SATA controller). So, we consider
-this problem is bound to 88SE9215 SATA controller rather than bound to
-CD/DVD drives.
+This can lead to various problems, not limited to:
 
-As a solution, we define a new dedicated AHCI board id which is named
-board_ahci_yes_fbs_atapi_dma for 88SE9215, and for this id we set the
-AHCI_HFLAG_ATAPI_DMA_QUIRK and ATA_QUIRK_ATAPI_MOD16_DMA flags on the
-SATA controller in order to prefer ATAPI DMA.
+- No folio::private to track per block status
 
-Reported-by: Yuli Wang <wangyuli@uniontech.com>
-Tested-by: Jie Fan <fanjie@uniontech.com>
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250318104314.2160526-1-chenhuacai@loongson.cn
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+- No proper space reserved for such a dirty folio
+
+[HISTORY IN BTRFS]
+This used to be a problem related to get_user_page(), but with the
+introduction of pin_user_pages*(), we should no longer hit such
+case anymore.
+
+In btrfs, we have a long history of catching such out-of-band dirty
+folios by:
+
+- Mark the folio ordered during delayed allocation
+
+- Check the folio ordered flag during writeback
+  If the folio has no ordered flag, it means it doesn't go through
+  delayed allocation, thus it's definitely an out-of-band
+  one.
+
+  If we got one, we go through COW fixup, which will re-dirty the folio
+  with proper handling in another workqueue.
+
+[PROBLEMS OF COW-FIXUP]
+Such workaround is a blockage for us to migrate to iomap (it requires
+extra flags to trace if a folio is dirtied by the fs or not) and I'd
+argue it's not data checksum safe, since if a folio can be marked dirty
+without informing the fs, the content can also change at any time.
+
+But with the introduction of pin_user_pages*() during v5.8 merge
+window, such out-of-band dirty folio such be treated as a bug.
+Ext4 has treated such case by warning and erroring out even before
+pin_user_pages*().
+
+Furthermore, there are already proofs that such folio ordered flag
+tracking can be screwed up by incorrect error handling, check the commit
+messages of the following commits:
+
+ 06f364284794 ("btrfs: do proper folio cleanup when cow_file_range() failed")
+ c2b47df81c8e ("btrfs: do proper folio cleanup when run_delalloc_nocow() failed")
+
+[FIXES]
+Unlike btrfs, ext4 and xfs (iomap) never bother handling such
+out-of-band dirty folios.
+
+- Ext4 just warns and errors out
+- Iomap always follows the folio/block dirty flags
+
+And there is nothing really COW specific, xfs also supports COW too.
+
+Here we take one step towards ext4 by doing warning and erroring out.
+But since the cow fixup thing is introduced from the beginning, we keep
+the old behavior for non-experimental builds, and only do the new warning
+for experimental builds before we're 100% sure and remove cow fixup.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c    | 11 ++++++++++-
- drivers/ata/ahci.h    |  1 +
- drivers/ata/libahci.c |  4 ++++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 28 +++++++++++++++++++++++++++-
+ fs/btrfs/inode.c     | 15 +++++++++++++++
+ 2 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index f4cc57d7a6a65..6e81fa91e858b 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -63,6 +63,7 @@ enum board_ids {
- 	board_ahci_pcs_quirk_no_devslp,
- 	board_ahci_pcs_quirk_no_sntf,
- 	board_ahci_yes_fbs,
-+	board_ahci_yes_fbs_atapi_dma,
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 95d3cf2e15c84..33998bae09720 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1440,12 +1440,14 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 	       start + len <= folio_start + folio_size(folio));
  
- 	/* board IDs for specific chipsets in alphabetical order */
- 	board_ahci_al,
-@@ -188,6 +189,14 @@ static const struct ata_port_info ahci_port_info[] = {
- 		.udma_mask	= ATA_UDMA6,
- 		.port_ops	= &ahci_ops,
- 	},
-+	[board_ahci_yes_fbs_atapi_dma] = {
-+		AHCI_HFLAGS	(AHCI_HFLAG_YES_FBS |
-+				 AHCI_HFLAG_ATAPI_DMA_QUIRK),
-+		.flags		= AHCI_FLAG_COMMON,
-+		.pio_mask	= ATA_PIO4,
-+		.udma_mask	= ATA_UDMA6,
-+		.port_ops	= &ahci_ops,
-+	},
- 	/* by chipsets */
- 	[board_ahci_al] = {
- 		AHCI_HFLAGS	(AHCI_HFLAG_NO_PMP | AHCI_HFLAG_NO_MSI),
-@@ -590,7 +599,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
- 	  .driver_data = board_ahci_yes_fbs },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
--	  .driver_data = board_ahci_yes_fbs },
-+	  .driver_data = board_ahci_yes_fbs_atapi_dma },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
- 	  .driver_data = board_ahci_yes_fbs },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9235),
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 8f40f75ba08cf..10a5fe02f0a45 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -246,6 +246,7 @@ enum {
- 	AHCI_HFLAG_NO_SXS		= BIT(26), /* SXS not supported */
- 	AHCI_HFLAG_43BIT_ONLY		= BIT(27), /* 43bit DMA addr limit */
- 	AHCI_HFLAG_INTEL_PCS_QUIRK	= BIT(28), /* apply Intel PCS quirk */
-+	AHCI_HFLAG_ATAPI_DMA_QUIRK	= BIT(29), /* force ATAPI to use DMA */
+ 	ret = btrfs_writepage_cow_fixup(folio);
+-	if (ret) {
++	if (ret == -EAGAIN) {
+ 		/* Fixup worker will requeue */
+ 		folio_redirty_for_writepage(bio_ctrl->wbc, folio);
+ 		folio_unlock(folio);
+ 		return 1;
+ 	}
++	if (ret < 0)
++		return ret;
  
- 	/* ap->flags bits */
- 
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index fdfa7b2662180..a28ffe1e59691 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -1321,6 +1321,10 @@ static void ahci_dev_config(struct ata_device *dev)
- {
- 	struct ahci_host_priv *hpriv = dev->link->ap->host->private_data;
- 
-+	if ((dev->class == ATA_DEV_ATAPI) &&
-+	    (hpriv->flags & AHCI_HFLAG_ATAPI_DMA_QUIRK))
-+		dev->quirks |= ATA_QUIRK_ATAPI_MOD16_DMA;
+ 	for (cur = start; cur < start + len; cur += fs_info->sectorsize)
+ 		set_bit((cur - folio_start) >> fs_info->sectorsize_bits, &range_bitmap);
+@@ -1549,6 +1551,30 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+ 	 * The proper bitmap can only be initialized until writepage_delalloc().
+ 	 */
+ 	bio_ctrl->submit_bitmap = (unsigned long)-1;
 +
- 	if (hpriv->flags & AHCI_HFLAG_SECT255) {
- 		dev->max_sectors = 255;
- 		ata_dev_info(dev,
++	/*
++	 * If the page is dirty but without private set, it's marked dirty
++	 * without informing the fs.
++	 * Nowadays that is a bug, since the introduction of
++	 * pin_user_pages*().
++	 *
++	 * So here we check if the page has private set to rule out such
++	 * case.
++	 * But we also have a long history of relying on the COW fixup,
++	 * so here we only enable this check for experimental builds until
++	 * we're sure it's safe.
++	 */
++	if (IS_ENABLED(CONFIG_BTRFS_EXPERIMENTAL) &&
++	    unlikely(!folio_test_private(folio))) {
++		WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
++		btrfs_err_rl(fs_info,
++	"root %lld ino %llu folio %llu is marked dirty without notifying the fs",
++			     inode->root->root_key.objectid,
++			     btrfs_ino(inode), folio_pos(folio));
++		ret = -EUCLEAN;
++		goto done;
++	}
++
+ 	ret = set_folio_extent_mapped(folio);
+ 	if (ret < 0)
+ 		goto done;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index d1acae2d6d33d..550dd1d997162 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2916,6 +2916,21 @@ int btrfs_writepage_cow_fixup(struct folio *folio)
+ 	if (folio_test_ordered(folio))
+ 		return 0;
+ 
++	/*
++	 * For experimental build, we error out instead of EAGAIN.
++	 *
++	 * We should not hit such out-of-band dirty folios anymore.
++	 */
++	if (IS_ENABLED(CONFIG_BTRFS_EXPERIMENTAL)) {
++		WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
++		btrfs_err_rl(fs_info,
++	"root %lld ino %llu folio %llu is marked dirty without notifying the fs",
++			     BTRFS_I(inode)->root->root_key.objectid,
++			     btrfs_ino(BTRFS_I(inode)),
++			     folio_pos(folio));
++		return -EUCLEAN;
++	}
++
+ 	/*
+ 	 * folio_checked is set below when we create a fixup worker for this
+ 	 * folio, don't try to create another one if we're already
 -- 
 2.39.5
 
