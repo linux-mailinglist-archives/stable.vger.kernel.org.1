@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-127917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632CEA7AD31
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:59:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F534A7AD34
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 691EF189AEFF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:54:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D94E188573F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8787D29C354;
-	Thu,  3 Apr 2025 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC75429CB31;
+	Thu,  3 Apr 2025 19:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXKDtJI9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DF1MJuQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4361429C34D;
-	Thu,  3 Apr 2025 19:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885E929CB2A;
+	Thu,  3 Apr 2025 19:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707387; cv=none; b=ooJfQV9Met+8m6kF9xehQPpEbUvqTpqQXrluITYHTNtqlBX9fk68AR9yKui/uKKXdoyq15mJ44JJCoiZ78k2tW3ili6VGdCG2uM6pqHAKqENd11yE/DE2CYVM+8+2zAq0W112769P0Fq+1wbIQ5xIwGmm7bbKJiHN7/Gy7cDRfU=
+	t=1743707388; cv=none; b=tS+0Non6hYwhljM6uMc04kK4bMGC+Uy7cDdtCwPBca0Yjo9JevVvmuIPSmkazxzaxLzJh8AkFvTK8NMuIQNeK7/13E09/R7rrvJSnnhkWhbzXM4eV8jNGE0IKBS+gFSQ+Cwvf4DpyiD43zPWAgmCri0lZc5dfGqMRanxqCXNYps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707387; c=relaxed/simple;
-	bh=Zq+0AP8gsHqmJcUziJWmCJYKY0VglrKzpJLlKp0o9WA=;
+	s=arc-20240116; t=1743707388; c=relaxed/simple;
+	bh=DVDSYkX8QcK6aHQm4JKvNqMkTmiW1bPUhQeAxGQEbtE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eZw9zxafGcS8JILKrSDFwTtd2bq2NYJfwGDwN6BI4kpdxvPBpacgtX0dHtXAv/GxxKi3RbDTdyhH2tRi+h9axFhFVTvy/LbI0vDB1bNdNk65UY7Khy4IB8nss1tRKs5S4BQuew8SqH+8S23GEmsIdP8eS9HJM43CP3Uxq0v3ADw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXKDtJI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11C4C4CEE8;
-	Thu,  3 Apr 2025 19:09:45 +0000 (UTC)
+	 MIME-Version; b=tbh5jTpXj+NlMgmQmXCbRMlzdXBexGC7CaCw9tKgJFH3QNq/58NjdHLFCGcWA943nTwJSabR/whICXoPiXTjCCFE9+z4oCV6zY13cDxrnEtHEY4aBm7F9SG9TzBgPZCNbNxopbipodbYCjlUdyYs6+WViB0Nt4TcyWBdEHdx2Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DF1MJuQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367C8C4CEE3;
+	Thu,  3 Apr 2025 19:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707386;
-	bh=Zq+0AP8gsHqmJcUziJWmCJYKY0VglrKzpJLlKp0o9WA=;
+	s=k20201202; t=1743707388;
+	bh=DVDSYkX8QcK6aHQm4JKvNqMkTmiW1bPUhQeAxGQEbtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXKDtJI9d71P4zeGmbde6xpCGZ1NDAAvkivB3jiHdHtPimyyMe0LQjLt5VnYzaDeL
-	 xqqpHQ4GLse8B3TB/lsS1L7MaLen+H6PQzZCokwPacXJp9CTWzxGMf1poSDAxsFUfF
-	 dX/18BSS8SUAkObK2DPi4mwYsRkTNLG/HaYtb1VgR6cOzMKmASo4esV/KWptkrbCUH
-	 RLrmnDfZglh1yXde8EALXHS6AMa0EsFGnEz0bbu7G44kRFWoRJH8BdNYa58TXdGqAk
-	 dhTurkYMjyxiKj236ce90xxs4XVPzq74ar7umo5ryJjcly5mGehlIRqe28anVMZvhf
-	 BC+2lsSKI2WoQ==
+	b=DF1MJuQg6niBE0EywnPcKG0sMqOz2mUsUkWgtsURAhTLbq++3y/B7D/XmmHMywdgF
+	 DQ63mekE8AcV50lWkj4SkmX2m1CnKX7GCKjvzTPl9eHBURvKH1tyfrmfZop1+0EIGY
+	 oM1P71fcBfXec9HY6nBplK2F1llhx9TBIbprDGEasRyIHjfCRNgUwuHc33vPTf3OhR
+	 zoYr9dG/cMOVvwhh84+swlbrtQ0lIU5H82JAPSlDj0XLxG18/of3Yx0S2r4XGlpYj4
+	 m3KFEr9e3sXWW4dBNIF1bWVxFfbD3SYQWAbvmAG61WvJLnixUuyhj7z6rxjYELG0az
+	 bwxBzGSYWcY5A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+Cc: Daniel Kral <d.kral@proxmox.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 5.15 08/16] f2fs: fix to avoid out-of-bounds access in f2fs_truncate_inode_blocks()
-Date: Thu,  3 Apr 2025 15:09:16 -0400
-Message-Id: <20250403190924.2678291-8-sashal@kernel.org>
+	dlemoal@kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 09/16] ahci: add PCI ID for Marvell 88SE9215 SATA Controller
+Date: Thu,  3 Apr 2025 15:09:17 -0400
+Message-Id: <20250403190924.2678291-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190924.2678291-1-sashal@kernel.org>
 References: <20250403190924.2678291-1-sashal@kernel.org>
@@ -66,91 +66,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Chao Yu <chao@kernel.org>
+From: Daniel Kral <d.kral@proxmox.com>
 
-[ Upstream commit e6494977bd4a83862118a05f57a8df40256951c0 ]
+[ Upstream commit 885251dc35767b1c992f6909532ca366c830814a ]
 
-syzbot reports an UBSAN issue as below:
+Add support for Marvell Technology Group Ltd. 88SE9215 SATA 6 Gb/s
+controller, which is e.g. used in the DAWICONTROL DC-614e RAID bus
+controller and was not automatically recognized before.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/f2fs/node.h:381:10
-index 18446744073709550692 is out of range for type '__le32[5]' (aka 'unsigned int[5]')
-CPU: 0 UID: 0 PID: 5318 Comm: syz.0.0 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- get_nid fs/f2fs/node.h:381 [inline]
- f2fs_truncate_inode_blocks+0xa5e/0xf60 fs/f2fs/node.c:1181
- f2fs_do_truncate_blocks+0x782/0x1030 fs/f2fs/file.c:808
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:836
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:886
- f2fs_file_write_iter+0x1bdb/0x2550 fs/f2fs/file.c:5093
- aio_write+0x56b/0x7c0 fs/aio.c:1633
- io_submit_one+0x8a7/0x18a0 fs/aio.c:2052
- __do_sys_io_submit fs/aio.c:2111 [inline]
- __se_sys_io_submit+0x171/0x2e0 fs/aio.c:2081
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f238798cde9
+Tested with a DAWICONTROL DC-614e RAID bus controller.
 
-index 18446744073709550692 (decimal, unsigned long long)
-= 0xfffffffffffffc64 (hexadecimal, unsigned long long)
-= -924 (decimal, long long)
-
-In f2fs_truncate_inode_blocks(), UBSAN detects that get_nid() tries to
-access .i_nid[-924], it means both offset[0] and level should zero.
-
-The possible case should be in f2fs_do_truncate_blocks(), we try to
-truncate inode size to zero, however, dn.ofs_in_node is zero and
-dn.node_page is not an inode page, so it fails to truncate inode page,
-and then pass zeroed free_from to f2fs_truncate_inode_blocks(), result
-in this issue.
-
-	if (dn.ofs_in_node || IS_INODE(dn.node_page)) {
-		f2fs_truncate_data_blocks_range(&dn, count);
-		free_from += count;
-	}
-
-I guess the reason why dn.node_page is not an inode page could be: there
-are multiple nat entries share the same node block address, once the node
-block address was reused, f2fs_get_node_page() may load a non-inode block.
-
-Let's add a sanity check for such condition to avoid out-of-bounds access
-issue.
-
-Reported-by: syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/66fdcdf3.050a0220.40bef.0025.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Daniel Kral <d.kral@proxmox.com>
+Link: https://lore.kernel.org/r/20250304092030.37108-1-d.kral@proxmox.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/ata/ahci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index b6758887540f2..ae6d65f2ea06a 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1105,7 +1105,14 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
- 	trace_f2fs_truncate_inode_blocks_enter(inode, from);
- 
- 	level = get_node_path(inode, from, offset, noffset);
--	if (level < 0) {
-+	if (level <= 0) {
-+		if (!level) {
-+			level = -EFSCORRUPTED;
-+			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
-+					__func__, inode->i_ino,
-+					from, ADDRS_PER_INODE(inode));
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+		}
- 		trace_f2fs_truncate_inode_blocks_exit(inode, level);
- 		return level;
- 	}
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index ff5f83c5af00e..408a25956f6e0 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -595,6 +595,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
++	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TTI, 0x0642), /* highpoint rocketraid 642L */
 -- 
 2.39.5
 
