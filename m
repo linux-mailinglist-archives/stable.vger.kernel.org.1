@@ -1,341 +1,148 @@
-Return-Path: <stable+bounces-127518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66E8A7A334
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:58:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FE1A7A342
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A17175640
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:58:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011BE17602F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 13:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4C924E004;
-	Thu,  3 Apr 2025 12:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662E424E010;
+	Thu,  3 Apr 2025 13:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pfSyGgga"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aZkc34u/"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09F124CEE2;
-	Thu,  3 Apr 2025 12:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93102475C8;
+	Thu,  3 Apr 2025 13:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743685109; cv=none; b=GJswGbEzqbFeVZPERQjTHhVJ6t6PxSwG1Te9BULJzkCfqOgwqocjv5OtQdxXQINj7PKB3s+6oV4V71JVICrn/O7cjlrEqwhmt7B31uDBmjkO6yWOLnkNd0RhCQ8T0GKIgQD/jq9y5fZk8khhPrZHU/lvb2XM1PehYDklwdjDdbU=
+	t=1743685219; cv=none; b=bT1vF40Tbhd1OfVjBwMYxV3oRikJJDC3VCZLzecyyN4nwMO8JJNFMaP8t8Q+4RAnSedC/8BxGYbbxaDWT8ybpz44GjTG839c60Bb34mxrcgz6i57gI3HGpfaoCOZFN8r0NFutnWKOK7nkjfhr/RcSw+qsJbOGrXoRpHaZza+7Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743685109; c=relaxed/simple;
-	bh=sxiep8gCGudJan3Zw9ZvrXWuaD0lqJY2Z6MOC6n22q0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ElyH8obwZyffI9g4y+6ByF8oHVxycdoV//D1G86BTqoNdkq0UBVpZUHZTP+WL+vhev2o6j93CLiGkomCwV/nIxcCenTB+uWpHNLGZ1uZRzWBJKaIKef7p8+5AJX1xXDek7FQ7ut6+hdf9TOp3CVLbPiSfBYWZbWbc5+a1oAlLoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pfSyGgga; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4ZT1xj0znYz9sJ3;
-	Thu,  3 Apr 2025 14:58:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1743685097; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p9Yu87OM1Kk/dzENFohPQvz+XQJNRWjvxxcj7tVV9OA=;
-	b=pfSyGggaIc/VQp3hWyip5B2ZYX27tQ4lM965xiL7qRcb+U40E0mzyzQtZqzpLoSI1LIUZK
-	7SKIf0hrxgueN0lIzO15laP8f+zDt4LGBJyOogmyAkgj5B1SiXit3H0t6ek5QFd8Us1tzg
-	CL9Ku5z/ytM+EEi4VKJO4Xbiaz3X/Ez/pi/1V/xM+Gcg50DGjvKvwFal1HJYmrA4e4iuVc
-	G17m/qjNlcSrvt3Uujsxh+oYYUxn/vXWNw72C2uW79p/SuGSX1FaY+xUSZLJxvQB4FEoNt
-	ez1dmTD6/cpReaOUy8WOZXLqb8K+XDyRNgRQh8Gq71SL2ubkEM/llk7WopViNg==
-Message-ID: <2558c9cf0cf28867238eb21950ce2a3f862c15c3.camel@mailbox.org>
-Subject: Re: [PATCH v2] drm/nouveau: Prevent signalled fences in pending list
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Philipp
- Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo
- Krummrich <dakr@kernel.org>,  David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-Date: Thu, 03 Apr 2025 14:58:13 +0200
-In-Reply-To: <c779bc2f-06af-4278-8bb5-08afc074b580@amd.com>
-References: <20250403101353.42880-2-phasta@kernel.org>
-	 <c779bc2f-06af-4278-8bb5-08afc074b580@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1743685219; c=relaxed/simple;
+	bh=IEhYObtxppx8CuRi68rU6PopuKt5DVUHoQXFKVtmvYM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kSYg8T3kIQn4xGd29BN42K5XhKRHaAY6O4/wGz2QRRv6ELgqVcumXAelfo7iL/qy1rXaTZ1skXqc7lWjqOT3tw9kr1TOuIJ1GmevsmfWZtBiOsyyDPKOLF626uRA463REO6OeXodbJDGvYtq5WkXEnsiXzo42Jbt501w/K4mZ8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aZkc34u/; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 533BHZtu026188;
+	Thu, 3 Apr 2025 13:00:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=EP4qpoFtbIDYMe5jqR9VC/GJb0ApO
+	ZouTNUuNyEExxo=; b=aZkc34u/JQdGSuthywaVXAd5l+Ou/7QfLDwQs4eJ9jJCp
+	MwD8rlQAcWu/HUBH/yOHkJtQYiqf+rs46JCwVAiO/Ct8tPPag0fWcuY8tAqX9R63
+	kQJQ8sgcxS5Am3AyrYudWDSg3+zg0+Rkb+3WgQeE67yG9znP5V5wFIVfwFxLGXFY
+	5/ahgILcWAxf2GerKBd4610t+3/lf7FPtGCgz4zjIv49pkqt2bt8fXaUzfbt+cpz
+	Uq261tcqvSDCOkChtLsInUyl6k+uAwfHbId1v0Zzb5OYg36Uz92xJp1pYxGe0ZZU
+	YoyjJUdliLBea/YSGrHB9pivQrOA95Ezat/Dsbgvw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45p79ccxhf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 03 Apr 2025 12:59:59 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 533CpQgN002582;
+	Thu, 3 Apr 2025 12:59:59 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 45pr8t6x82-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 03 Apr 2025 12:59:59 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 533CxwlR015628;
+	Thu, 3 Apr 2025 12:59:58 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 45pr8t6x6x-1;
+	Thu, 03 Apr 2025 12:59:58 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: bvanassche@acm.org, dledford@redhat.com, jgg@ziepe.ca,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org
+Cc: alok.a.tiwari@oracle.com, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, darren.kenny@oracle.com
+Subject: [PATCH 5.4.y] RDMA/srpt: Support specifying the srpt_service_guid parameter
+Date: Thu,  3 Apr 2025 05:59:13 -0700
+Message-ID: <20250403125955.2553106-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 454gqqwsipek8x3kykm7ffixgytojkho
-X-MBO-RS-ID: dc3d724127511047ef2
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-03_05,2025-04-02_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504030057
+X-Proofpoint-GUID: 5MT97sSxaMMe9WjphYhxaFP_0cocvPxz
+X-Proofpoint-ORIG-GUID: 5MT97sSxaMMe9WjphYhxaFP_0cocvPxz
 
-On Thu, 2025-04-03 at 14:08 +0200, Christian K=C3=B6nig wrote:
-> Am 03.04.25 um 12:13 schrieb Philipp Stanner:
-> > Nouveau currently relies on the assumption that dma_fences will
-> > only
-> > ever get signalled through nouveau_fence_signal(), which takes care
-> > of
-> > removing a signalled fence from the list
-> > nouveau_fence_chan.pending.
-> >=20
-> > This self-imposed rule is violated in nouveau_fence_done(), where
-> > dma_fence_is_signaled() can signal the fence without removing it
-> > from
-> > the list. This enables accesses to already signalled fences through
-> > the
-> > list, which is a bug.
-> >=20
-> > Furthermore, it must always be possible to use standard dma_fence
-> > methods an a dma_fence and observe valid behavior. The canonical
-> > way of
-> > ensuring that signalling a fence has additional effects is to add
-> > those
-> > effects to a callback and register it on that fence.
-> >=20
-> > Move the code from nouveau_fence_signal() into a dma_fence
-> > callback.
-> > Register that callback when creating the fence.
-> >=20
-> > Cc: <stable@vger.kernel.org> # 4.10+
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > ---
-> > Changes in v2:
-> > =C2=A0 - Remove Fixes: tag. (Danilo)
-> > =C2=A0 - Remove integer "drop" and call nvif_event_block() in the fence
-> > =C2=A0=C2=A0=C2=A0 callback. (Danilo)
-> > ---
-> > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 52 +++++++++++++-------=
--
-> > ----
-> > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.h |=C2=A0 1 +
-> > =C2=A02 files changed, 29 insertions(+), 24 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > index 7cc84472cece..cf510ef9641a 100644
-> > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > @@ -50,24 +50,24 @@ nouveau_fctx(struct nouveau_fence *fence)
-> > =C2=A0	return container_of(fence->base.lock, struct
-> > nouveau_fence_chan, lock);
-> > =C2=A0}
-> > =C2=A0
-> > -static int
-> > -nouveau_fence_signal(struct nouveau_fence *fence)
-> > +static void
-> > +nouveau_fence_cleanup_cb(struct dma_fence *dfence, struct
-> > dma_fence_cb *cb)
-> > =C2=A0{
-> > -	int drop =3D 0;
-> > +	struct nouveau_fence_chan *fctx;
-> > +	struct nouveau_fence *fence;
-> > +
-> > +	fence =3D container_of(dfence, struct nouveau_fence, base);
-> > +	fctx =3D nouveau_fctx(fence);
-> > =C2=A0
-> > -	dma_fence_signal_locked(&fence->base);
-> > =C2=A0	list_del(&fence->head);
-> > =C2=A0	rcu_assign_pointer(fence->channel, NULL);
-> > =C2=A0
-> > =C2=A0	if (test_bit(DMA_FENCE_FLAG_USER_BITS, &fence-
-> > >base.flags)) {
-> > -		struct nouveau_fence_chan *fctx =3D
-> > nouveau_fctx(fence);
-> > -
-> > =C2=A0		if (!--fctx->notify_ref)
-> > -			drop =3D 1;
-> > +			nvif_event_block(&fctx->event);
-> > =C2=A0	}
-> > =C2=A0
-> > =C2=A0	dma_fence_put(&fence->base);
-> > -	return drop;
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static struct nouveau_fence *
-> > @@ -93,8 +93,7 @@ nouveau_fence_context_kill(struct
-> > nouveau_fence_chan *fctx, int error)
-> > =C2=A0		if (error)
-> > =C2=A0			dma_fence_set_error(&fence->base, error);
-> > =C2=A0
-> > -		if (nouveau_fence_signal(fence))
-> > -			nvif_event_block(&fctx->event);
-> > +		dma_fence_signal_locked(&fence->base);
-> > =C2=A0	}
-> > =C2=A0	fctx->killed =3D 1;
-> > =C2=A0	spin_unlock_irqrestore(&fctx->lock, flags);
-> > @@ -127,11 +126,10 @@ nouveau_fence_context_free(struct
-> > nouveau_fence_chan *fctx)
-> > =C2=A0	kref_put(&fctx->fence_ref, nouveau_fence_context_put);
-> > =C2=A0}
-> > =C2=A0
-> > -static int
-> > +static void
-> > =C2=A0nouveau_fence_update(struct nouveau_channel *chan, struct
-> > nouveau_fence_chan *fctx)
-> > =C2=A0{
-> > =C2=A0	struct nouveau_fence *fence;
-> > -	int drop =3D 0;
-> > =C2=A0	u32 seq =3D fctx->read(chan);
-> > =C2=A0
-> > =C2=A0	while (!list_empty(&fctx->pending)) {
-> > @@ -140,10 +138,8 @@ nouveau_fence_update(struct nouveau_channel
-> > *chan, struct nouveau_fence_chan *fc
-> > =C2=A0		if ((int)(seq - fence->base.seqno) < 0)
-> > =C2=A0			break;
-> > =C2=A0
-> > -		drop |=3D nouveau_fence_signal(fence);
-> > +		dma_fence_signal_locked(&fence->base);
-> > =C2=A0	}
-> > -
-> > -	return drop;
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static void
-> > @@ -152,7 +148,6 @@ nouveau_fence_uevent_work(struct work_struct
-> > *work)
-> > =C2=A0	struct nouveau_fence_chan *fctx =3D container_of(work,
-> > struct nouveau_fence_chan,
-> > =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > uevent_work);
-> > =C2=A0	unsigned long flags;
-> > -	int drop =3D 0;
-> > =C2=A0
-> > =C2=A0	spin_lock_irqsave(&fctx->lock, flags);
-> > =C2=A0	if (!list_empty(&fctx->pending)) {
-> > @@ -161,11 +156,8 @@ nouveau_fence_uevent_work(struct work_struct
-> > *work)
-> > =C2=A0
-> > =C2=A0		fence =3D list_entry(fctx->pending.next,
-> > typeof(*fence), head);
-> > =C2=A0		chan =3D rcu_dereference_protected(fence->channel,
-> > lockdep_is_held(&fctx->lock));
-> > -		if (nouveau_fence_update(chan, fctx))
-> > -			drop =3D 1;
-> > +		nouveau_fence_update(chan, fctx);
-> > =C2=A0	}
-> > -	if (drop)
-> > -		nvif_event_block(&fctx->event);
-> > =C2=A0
-> > =C2=A0	spin_unlock_irqrestore(&fctx->lock, flags);
-> > =C2=A0}
-> > @@ -235,6 +227,19 @@ nouveau_fence_emit(struct nouveau_fence
-> > *fence)
-> > =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &fctx->lock, fctx->contex=
-t, ++fctx-
-> > >sequence);
-> > =C2=A0	kref_get(&fctx->fence_ref);
-> > =C2=A0
-> > +	fence->cb.func =3D nouveau_fence_cleanup_cb;
-> > +	/* Adding a callback runs into
-> > __dma_fence_enable_signaling(), which will
-> > +	 * ultimately run into nouveau_fence_no_signaling(), where
-> > a WARN_ON
-> > +	 * would fire because the refcount can be dropped there.
-> > +	 *
-> > +	 * Increment the refcount here temporarily to work around
-> > that.
-> > +	 */
-> > +	dma_fence_get(&fence->base);
-> > +	ret =3D dma_fence_add_callback(&fence->base, &fence->cb,
-> > nouveau_fence_cleanup_cb);
->=20
-> That looks like a really really awkward approach. The driver
-> basically uses a the DMA fence infrastructure as middle layer and
-> callbacks into itself to cleanup it's own structures.
+From: Bart Van Assche <bvanassche@acm.org>
 
-What else are callbacks good for, if not to do something automatically
-when the fence gets signaled?
+[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
 
-> Additional to that we don't guarantee any callback order for the DMA
-> fence and so it can be that mix cleaning up the callback with other
-> work which is certainly not good when you want to guarantee that the
-> cleanup happens under the same lock.
+Make loading ib_srpt with this parameter set work. The current behavior is
+that setting that parameter while loading the ib_srpt kernel module
+triggers the following kernel crash:
 
-Isn't my perception correct that the primary issue you have with this
-approach is that dma_fence_put() is called from within the callback? Or
-do you also take issue with deleting from the list?
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Call Trace:
+ <TASK>
+ parse_one+0x18c/0x1d0
+ parse_args+0xe1/0x230
+ load_module+0x8de/0xa60
+ init_module_from_file+0x8b/0xd0
+ idempotent_init_module+0x181/0x240
+ __x64_sys_finit_module+0x5a/0xb0
+ do_syscall_64+0x5f/0xe0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
->=20
-> Instead the call to dma_fence_signal_locked() should probably be
-> removed from nouveau_fence_signal() and into
-> nouveau_fence_context_kill() and nouveau_fence_update().
->=20
-> This way nouveau_fence_is_signaled() can call this function as well.
+Cc: LiHonggang <honggangli@163.com>
+Reported-by: LiHonggang <honggangli@163.com>
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Alok: Backport to 5.4.y since the commit has already been backported to
+5.15y, 5.10.y, and 4.19.y]
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Which "this function"? dma_fence_signal_locked()
-
->=20
-> BTW: nouveau_fence_no_signaling() looks completely broken as well. It
-> calls nouveau_fence_is_signaled() and then list_del() on the fence
-> head.
-
-I can assure you that a great many things in Nouveau look completely
-broken.
-
-The question for us is always the cost-benefit-ratio when fixing bugs.
-There are fixes that solve the bug with reasonable effort, and there
-are great reworks towards an ideal state.
-
-P.
-
-
->=20
-> As far as I can see that is completely superfluous and should
-> probably be dropped. IIRC I once had a patch to clean that up but it
-> was dropped for some reason.
->=20
-> Regards,
-> Christian.
->=20
->=20
-> > +	dma_fence_put(&fence->base);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > =C2=A0	ret =3D fctx->emit(fence);
-> > =C2=A0	if (!ret) {
-> > =C2=A0		dma_fence_get(&fence->base);
-> > @@ -246,8 +251,7 @@ nouveau_fence_emit(struct nouveau_fence *fence)
-> > =C2=A0			return -ENODEV;
-> > =C2=A0		}
-> > =C2=A0
-> > -		if (nouveau_fence_update(chan, fctx))
-> > -			nvif_event_block(&fctx->event);
-> > +		nouveau_fence_update(chan, fctx);
-> > =C2=A0
-> > =C2=A0		list_add_tail(&fence->head, &fctx->pending);
-> > =C2=A0		spin_unlock_irq(&fctx->lock);
-> > @@ -270,8 +274,8 @@ nouveau_fence_done(struct nouveau_fence *fence)
-> > =C2=A0
-> > =C2=A0		spin_lock_irqsave(&fctx->lock, flags);
-> > =C2=A0		chan =3D rcu_dereference_protected(fence->channel,
-> > lockdep_is_held(&fctx->lock));
-> > -		if (chan && nouveau_fence_update(chan, fctx))
-> > -			nvif_event_block(&fctx->event);
-> > +		if (chan)
-> > +			nouveau_fence_update(chan, fctx);
-> > =C2=A0		spin_unlock_irqrestore(&fctx->lock, flags);
-> > =C2=A0	}
-> > =C2=A0	return dma_fence_is_signaled(&fence->base);
-> > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.h
-> > b/drivers/gpu/drm/nouveau/nouveau_fence.h
-> > index 8bc065acfe35..e6b2df7fdc42 100644
-> > --- a/drivers/gpu/drm/nouveau/nouveau_fence.h
-> > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.h
-> > @@ -10,6 +10,7 @@ struct nouveau_bo;
-> > =C2=A0
-> > =C2=A0struct nouveau_fence {
-> > =C2=A0	struct dma_fence base;
-> > +	struct dma_fence_cb cb;
-> > =C2=A0
-> > =C2=A0	struct list_head head;
-> > =C2=A0
->=20
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index d03a4f2e006f..f5fd8c1058ce 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -79,12 +79,16 @@ module_param(srpt_srq_size, int, 0444);
+ MODULE_PARM_DESC(srpt_srq_size,
+ 		 "Shared receive queue (SRQ) size.");
+ 
++static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
++{
++	return kstrtou64(buffer, 16, (u64 *)kp->arg);
++}
+ static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
+ {
+ 	return sprintf(buffer, "0x%016llx", *(u64 *)kp->arg);
+ }
+-module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
+-		  0444);
++module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
++		  &srpt_service_guid, 0444);
+ MODULE_PARM_DESC(srpt_service_guid,
+ 		 "Using this value for ioc_guid, id_ext, and cm_listen_id instead of using the node_guid of the first HCA.");
+ 
+-- 
+2.46.0
 
 
