@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-127629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE6A7A670
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E368A7A6D2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D99567A4F6B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8613B7D4A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB66251783;
-	Thu,  3 Apr 2025 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CAF2505DD;
+	Thu,  3 Apr 2025 15:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlLUjQ2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBwOrM1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9913D2512FF;
-	Thu,  3 Apr 2025 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA36524C077;
+	Thu,  3 Apr 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693909; cv=none; b=N0SpLAo8Q+wi9tVxQ6HS67S3/DZ7hHCOMGBHN9A3gBfT8IvjfzoBXrzgORaEydMw0qpCQ9cOFIpm5F4aoNP9ey7ULfU+Y0u7wj9hetAVkxLbOQQ/08HbnXVmRAtdcZtFZDiSdzaEuxobfme220BCTmSbQeMsWqp2+pSrbzMNnMU=
+	t=1743693977; cv=none; b=buDm0k4q8JKQvxb5/1J7wR8nlJJK3XjlJDF0BSt3q1r7HcRCUmVTz5b1T/MvfR+GVKUo+F0VwJNn4egJXyC4TlHGOEFXqE0kMEv3PvT78IXqfgahsueIXyDtLJqoG2Xd7WYs27k2t260Lw6X/Lr662NAc8OHDfXKX75/W5MQsCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693909; c=relaxed/simple;
-	bh=ZDzV9+cg5mVAHSwXwS9h/wI+/M+7i9sOblt2VtoytEw=;
+	s=arc-20240116; t=1743693977; c=relaxed/simple;
+	bh=dCa44yXbuw5ZvJdtCV6fOe6jkupLdATTVtUwS0anmQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6nSAr6K5TWog/k7uo8BvA+C+PHAOEXodAFllpBDPFIf1fu8T9+2cl/92rfgDDXSoM4fZYAYj47dhS8pjXUHnuPxhrBbKAc6PFmUHUZWQoT/IMOpLNN8AeoYY3xoQsGE23g0JQ34H8NHUm9Au/CKvMCtNQ6nkTTkWQTQaFQx0Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlLUjQ2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3314FC4CEE3;
-	Thu,  3 Apr 2025 15:25:09 +0000 (UTC)
+	 MIME-Version; b=rPl7tlJ9SlF3Jq6AqvISlI9zqfxJ4VeGsT7C8bIr4qHRsZVn4x4I5nKVO2mjif37C9ANT62pSCDQz/MQl8W/mRB3gUb8OYvdA6QBtsb+7I+DjsMToSzqwYYKRG9boKbOcM1swTFAuhblA+mNhlFa++KZkJnVQvXBjUR3LaiYCFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBwOrM1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E97EC4CEE3;
+	Thu,  3 Apr 2025 15:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693909;
-	bh=ZDzV9+cg5mVAHSwXwS9h/wI+/M+7i9sOblt2VtoytEw=;
+	s=korg; t=1743693977;
+	bh=dCa44yXbuw5ZvJdtCV6fOe6jkupLdATTVtUwS0anmQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlLUjQ2YEwRdBg2SACdBrNoEXHBDgRmptkLR0B5vWEsgG5XmVERHheHGdEp7vyd1r
-	 xjGV206jSYH9Xoyr7+KdHJoZztkxkr8U344zhH4TmHO1nJ+a/sDaoYtcwNa6zP8OQ6
-	 SSxjK+zqWIiLIiKp7j4zT4XfolSm84oX2aiffWjw=
+	b=mBwOrM1FH8ld5uQgB5/szvWNAd9VGikPcDhl7Vy0qyem/spuw6MgMUWIa0bzeLcAu
+	 i5QPLO0os5xKuAaPn5RPCTwLUSy72u8uVpEgqYPa6olk/SVj0waGbZzXxOFIEsa6ff
+	 MO0TfiNKN9n0dH0zB0wdavepSBUIDKvWq3EZQLfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.12 22/22] bcachefs: bch2_ioctl_subvolume_destroy() fixes
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Lendacky <thomas.lendacky@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 11/26] mm/page_alloc: fix memory accept before watermarks gets initialized
 Date: Thu,  3 Apr 2025 16:20:32 +0100
-Message-ID: <20250403151622.681251535@linuxfoundation.org>
+Message-ID: <20250403151622.739326418@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +70,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 707549600c4a012ed71c0204a7992a679880bf33 ]
+commit 800f1059c99e2b39899bdc67a7593a7bea6375d8 upstream.
 
-bch2_evict_subvolume_inodes() was getting stuck - due to incorrectly
-pruning the dcache.
+Watermarks are initialized during the postcore initcall.  Until then, all
+watermarks are set to zero.  This causes cond_accept_memory() to
+incorrectly skip memory acceptance because a watermark of 0 is always met.
 
-Also, fix missing permissions checks.
+This can lead to a premature OOM on boot.
 
-Reported-by: Alexander Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+
+Link: https://lkml.kernel.org/r/20250310082855.2587122-1-kirill.shutemov@linux.intel.com
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Cc: Thomas Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/bcachefs/fs-ioctl.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/page_alloc.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/bcachefs/fs-ioctl.c
-+++ b/fs/bcachefs/fs-ioctl.c
-@@ -520,10 +520,12 @@ static long bch2_ioctl_subvolume_destroy
- 		ret = -ENOENT;
- 		goto err;
- 	}
--	ret = __bch2_unlink(dir, victim, true);
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6653,7 +6653,7 @@ static bool try_to_accept_memory_one(str
+ 
+ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+-	long to_accept;
++	long to_accept, wmark;
+ 	bool ret = false;
+ 
+ 	if (!has_unaccepted_memory())
+@@ -6662,8 +6662,18 @@ static bool cond_accept_memory(struct zo
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
++	wmark = high_wmark_pages(zone);
 +
-+	ret =   inode_permission(file_mnt_idmap(filp), d_inode(victim), MAY_WRITE) ?:
-+		__bch2_unlink(dir, victim, true);
- 	if (!ret) {
- 		fsnotify_rmdir(dir, victim);
--		d_delete(victim);
-+		d_invalidate(victim);
- 	}
- err:
- 	inode_unlock(dir);
++	/*
++	 * Watermarks have not been initialized yet.
++	 *
++	 * Accepting one MAX_ORDER page to ensure progress.
++	 */
++	if (!wmark)
++		return try_to_accept_memory_one(zone);
++
+ 	/* How much to accept to get to high watermark? */
+-	to_accept = high_wmark_pages(zone) -
++	to_accept = wmark -
+ 		    (zone_page_state(zone, NR_FREE_PAGES) -
+ 		    __zone_watermark_unusable_free(zone, order, 0) -
+ 		    zone_page_state(zone, NR_UNACCEPTED));
 
 
 
