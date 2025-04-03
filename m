@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E23A7A6CE
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1A7A7A680
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6626317941C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855EF18993C5
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B672512D8;
-	Thu,  3 Apr 2025 15:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5E5250C14;
+	Thu,  3 Apr 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBqV+9FV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5gRQI5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D7724DFE8;
-	Thu,  3 Apr 2025 15:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A8C2505D6;
+	Thu,  3 Apr 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693902; cv=none; b=HM+XSwwv+Cg9M0oZq8s6KzsvbGuHpvrYth05yx6aDayNnlw99GxLqoPPv++iyIOHGFOJU2tGFqASPiYuYE8TcrDpQr1InezqMsKzTtR3NzqrqT6oiCp/G/AiUaO6G3nvNa+HvylircB8H0I/IAhzQ7u80TkEhQdYkjQX9YfXzIg=
+	t=1743693819; cv=none; b=XfXdCCeQQ+FzztmQbiOw5ZKTWG585AKTr+d5oInAlvn2RD/0yunHrhg3ideqaJvnLCqW3dv8eNXZbSfiuEEG3Y11aKiadfE6sDrCk9aVPvEtD4ycWKvIKUFA7UdnQ+E4JTY0a5vPueQsAseGdL5f7F7ft861i6AfHhcSKxefwBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693902; c=relaxed/simple;
-	bh=aC3jH8O9ioR+mBAggWGaR3qLmtUWTQDsqjAELIihUlk=;
+	s=arc-20240116; t=1743693819; c=relaxed/simple;
+	bh=g7X/m/b6uBrwsPQY8W20gjRLbd7pDeapJ39zVVDXlks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qCyEDweEPTMf4cybyA4ZPWspUInKD3ByOFMmSud0WXSBXrBT1Ua24rvye40z2qRF5Gn9/L9JBxayRdtLakR/aZrIYFJ/W0yTVJoNcAooda/IaoOAJwaa5zpE8xMBsk7I5Kz9tHR3b8gsegb8U1HSLKa05M2SB4RMT7e7ca2UFyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBqV+9FV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4489C4CEE3;
-	Thu,  3 Apr 2025 15:25:01 +0000 (UTC)
+	 MIME-Version; b=L0mocLgAXb9TIXxTogTaKG1+o15sR4N+lLsDuQZmObBRK+avgo/N6L5PRCyy7YAiCb33qQGDvQFr0Rx44NxnRjXN6i1eVPz5PQ8BSEDK35+WQvyGRCiEKna0D3yEJJzSLSdvedc76oIvYdIeAhOGEAoKh4MzghIU54T86g90/l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5gRQI5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D353C4CEE8;
+	Thu,  3 Apr 2025 15:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693902;
-	bh=aC3jH8O9ioR+mBAggWGaR3qLmtUWTQDsqjAELIihUlk=;
+	s=korg; t=1743693819;
+	bh=g7X/m/b6uBrwsPQY8W20gjRLbd7pDeapJ39zVVDXlks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBqV+9FVdBqT+kSJLsPqo1uldCgYUZ4tNKoN7Veg1tc9F661dT2HBBh0ZEfN6efaf
-	 kiNvUkSq0rA4g8NfVvxo0pOElheIh1cLJWMSbY4uiGcTYxRDbLx+BQQlGe6g1sirrm
-	 IbOCQpj75bDxOxBsKcwoeT44oXlEAbSgDmg8jAD8=
+	b=y5gRQI5SZqJ5ZY/VrQMNalTx9UulLfCJEA7rTEa1QeOxNwEISY36zbChIxYqgkUZ4
+	 H24fya5OriR88FKI9NI2MxPuk4073CKM5E06jL1ryf6D0eLNhPJr4cZhFxYTv5JqIJ
+	 5UAAjy+GMsnlT1uP6lW7JMd36q2DFtFX0qFRW768=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.12 09/22] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-Date: Thu,  3 Apr 2025 16:20:19 +0100
-Message-ID: <20250403151622.308559947@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.14 16/21] usb: xhci: Dont skip on Stopped - Length Invalid
+Date: Thu,  3 Apr 2025 16:20:20 +0100
+Message-ID: <20250403151621.594981179@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-References: <20250403151622.055059925@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
+commit 58d0a3fab5f4fdc112c16a4c6d382f62097afd1c upstream.
 
-Hardware initialize of the timer counter channel does not occur on probe
-thus leaving the Count in an undefined state until the first
-function_write() callback is executed. Fix this by performing the proper
-hardware initialization during probe.
+Up until commit d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are
+returned when isoc ring is stopped") in v6.11, the driver didn't skip
+missed isochronous TDs when handling Stoppend and Stopped - Length
+Invalid events. Instead, it erroneously cleared the skip flag, which
+would cause the ring to get stuck, as future events won't match the
+missed TD which is never removed from the queue until it's cancelled.
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Reported-by: Csókás Bence <csokas.bence@prolan.hu>
-Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
-Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+This buggy logic seems to have been in place substantially unchanged
+since the 3.x series over 10 years ago, which probably speaks first
+and foremost about relative rarity of this case in normal usage, but
+by the spec I see no reason why it shouldn't be possible.
+
+After d56b0b2ab142, TDs are immediately skipped when handling those
+Stopped events. This poses a potential problem in case of Stopped -
+Length Invalid, which occurs either on completed TDs (likely already
+given back) or Link and No-Op TRBs. Such event won't be recognized
+as matching any TD (unless it's the rare Link TRB inside a TD) and
+will result in skipping all pending TDs, giving them back possibly
+before they are done, risking isoc data loss and maybe UAF by HW.
+
+As a compromise, don't skip and don't clear the skip flag on this
+kind of event. Then the next event will skip missed TDs. A downside
+of not handling Stopped - Length Invalid on a Link inside a TD is
+that if the TD is cancelled, its actual length will not be updated
+to account for TRBs (silently) completed before the TD was stopped.
+
+I had no luck producing this sequence of completion events so there
+is no compelling demonstration of any resulting disaster. It may be
+a very rare, obscure condition. The sole motivation for this patch
+is that if such unlikely event does occur, I'd rather risk reporting
+a cancelled partially done isoc frame as empty than gamble with UAF.
+
+This will be fixed more properly by looking at Stopped event's TRB
+pointer when making skipping decisions, but such rework is unlikely
+to be backported to v6.12, which will stay around for a few years.
+
+Fixes: d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are returned when isoc ring is stopped")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/usb/host/xhci-ring.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -368,6 +368,25 @@ static int mchp_tc_probe(struct platform
- 			channel);
- 	}
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2865,6 +2865,10 @@ static int handle_tx_event(struct xhci_h
+ 		if (!ep_seg) {
  
-+	/* Disable Quadrature Decoder and position measure */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
-+	if (ret)
-+		return ret;
+ 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
++				/* this event is unlikely to match any TD, don't skip them all */
++				if (trb_comp_code == COMP_STOPPED_LENGTH_INVALID)
++					return 0;
 +
-+	/* Setup the period capture mode */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
-+				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
-+				 ATMEL_TC_TCCLKS,
-+				 ATMEL_TC_CMR_MASK);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable clock and trigger counter */
-+	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-+			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+	if (ret)
-+		return ret;
-+
- 	priv->tc_cfg = tcb_config;
- 	priv->regmap = regmap;
- 	counter->name = dev_name(&pdev->dev);
+ 				skip_isoc_td(xhci, td, ep, status);
+ 				if (!list_empty(&ep_ring->td_list))
+ 					continue;
 
 
 
