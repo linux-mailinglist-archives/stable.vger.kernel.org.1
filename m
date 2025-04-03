@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-127831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4279AA7AC3F
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:36:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048CDA7AC47
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 047A617A279
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3FEC7A7959
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539A726AAB6;
-	Thu,  3 Apr 2025 19:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB88A26B0A9;
+	Thu,  3 Apr 2025 19:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTAR191I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFxasqeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C782571DA;
-	Thu,  3 Apr 2025 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5C226B098;
+	Thu,  3 Apr 2025 19:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707187; cv=none; b=CIVjdyssdxYJNcxIrfzfsoGaIf1KHa0oKuuMRyivUddf5kGX9iLmC49hV0YcUrpZMHsIvwgaMekgFeQF0tJSzzlMASBKEvX8nFYFmovln3puh3s1CQEGZTzwLOBKhly/AWJ0uWlorFSvnldNFXwGgz9DGTd/hpJcOsnOVtkNt14=
+	t=1743707188; cv=none; b=haCvsLxG8ipo2CG4cvKwBY5E19gcohed1UeR5/2uGN55ys92iTHmB1VIc0RdyDsfWItLdTa25BGHY4TQiXkMQJTlkiYQIIGtOAOIsKcZep4r06KxsGp28OBwivoo2vsCYSgqxvYcerl3AMSYWBpLn5KJOPqB/o91N+mzMquQafw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707187; c=relaxed/simple;
-	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
+	s=arc-20240116; t=1743707188; c=relaxed/simple;
+	bh=AlMhY7Ff80oUbhp+LnDAY2StSfaQ3MlOZ9U1sDD1tYc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xhl2L/EPKN/jTUDRNBUnw6wGHIc//5ebFzJ5WZQ7OPG1xdsiijQCJ1Mm03CcPghah9NnqU1RAFkDmRPDHm3IUmKMq2Gw/k8XJZ8TsbFswUGx/cb64ewfv0cLgocnc4hSCfWa5rw1M3+s3YRMBCWlOPUfVl/vNjBiAyM6g4GeXHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTAR191I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47D8C4CEE3;
-	Thu,  3 Apr 2025 19:06:24 +0000 (UTC)
+	 MIME-Version; b=KuWo6AGC0NZuLSXeAJMjFnHmDJ535y4zp4OrJF5r8z2P4AETXX/igeywMkSKXqG/W6GPz4/bZnSZ1OoBLDHWI3lmWes1f3HJRk+4oe4ID+UkhnA4Vmju7iCFb8E8j+fcRfE2MKEz4ZbnjiV4gdpgbVP504r9NXcrxeeUYhG5NuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFxasqeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CA3C4CEE8;
+	Thu,  3 Apr 2025 19:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707186;
-	bh=kJ2jEXmnju3HLRFGJ99O6SI8AOeIJq7v6im4cDEw3pY=;
+	s=k20201202; t=1743707188;
+	bh=AlMhY7Ff80oUbhp+LnDAY2StSfaQ3MlOZ9U1sDD1tYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FTAR191IksHEw1Oyn0SNvFx00FcH25IZKnf0hgEE5Zo+xDUVd+AmiiqDuUmVlbbka
-	 /gruoi7fY0oJm+OAGQTfpgTxLY84nhe+OEUh8QSf99vkYIn5ceHj/m9eP9kqB92+TK
-	 Ccg5qJ2qXkstzv07xY3wrnmt5yz4HFN6ughXy3iWycT3meaZylBUebQtFkUWJ/v/QC
-	 uOYAxcheMvJXnRqIb/hcbSd1hQ9RT8isGMGELAtZ1Q06gmarHuz39UgMW3fyDeqv6S
-	 vqt0+P1EwE3Av3WIJnAk/KDRQi648qczL3b+80SYC3ZUT9Ry9HFcXVvZoz9cYa0dZS
-	 I8k+8mb60/Hlw==
+	b=HFxasqeX3eIvBwW7TBODItYzhaQbNi9jadMRXd9sPeVn2/okNH5VFT5lNRatISmae
+	 sSOVZbcN8fmpEYbZdTsqXbIXofRl643UGIDpOMGDI8IHizua+Ws0WV1IURtzAoBbZJ
+	 EX7YtXE9jJ9fJMHD5XYDAXUCC4G7nGJF0c5qyJLm8jVuRE2oWpNDE7jBYNwuPjpgqu
+	 zzZlBgrD3U3ej6Ej5fHbhyOHJFOltCi2dDt3gycTDSKb7UeH1mG819Vogteu3xqjF2
+	 AmMdy86/nxsk/h8mlFo9ee1pbIxvDyy0YopyR5AWXEGDhOPLbJ4VlQB/T/Stci6PIA
+	 6xgSdza+HBlWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Max Schulze <max.schulze@online.de>,
-	David Hollis <dhollis@davehollis.com>,
-	Sven Kreiensen <s.kreiensen@lyconsys.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jason Xing <kerneljasonxing@gmail.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
+	hawk@kernel.org,
+	ilias.apalodimas@linaro.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	pabeni@redhat.com,
-	shannon.nelson@amd.com,
-	jacob.e.keller@intel.com,
-	sd@queasysnail.net,
-	horms@kernel.org,
-	linux-usb@vger.kernel.org,
+	kuba@kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 13/47] net: usb: asix_devices: add FiberGecko DeviceID
-Date: Thu,  3 Apr 2025 15:05:21 -0400
-Message-Id: <20250403190555.2677001-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 14/47] page_pool: avoid infinite loop to schedule delayed worker
+Date: Thu,  3 Apr 2025 15:05:22 -0400
+Message-Id: <20250403190555.2677001-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
 References: <20250403190555.2677001-1-sashal@kernel.org>
@@ -76,58 +71,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Max Schulze <max.schulze@online.de>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit 4079918ae720e842ed7dff65fedeb9980b374995 ]
+[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
 
-The FiberGecko is a small USB module that connects a 100 Mbit/s SFP
+We noticed the kworker in page_pool_release_retry() was waken
+up repeatedly and infinitely in production because of the
+buggy driver causing the inflight less than 0 and warning
+us in page_pool_inflight()[1].
 
-Signed-off-by: Max Schulze <max.schulze@online.de>
-Tested-by: Max Schulze <max.schulze@online.de>
-Suggested-by: David Hollis <dhollis@davehollis.com>
-Reported-by: Sven Kreiensen <s.kreiensen@lyconsys.com>
-Link: https://patch.msgid.link/20250212150957.43900-2-max.schulze@online.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since the inflight value goes negative, it means we should
+not expect the whole page_pool to get back to work normally.
+
+This patch mitigates the adverse effect by not rescheduling
+the kworker when detecting the inflight negative in
+page_pool_release_retry().
+
+[1]
+[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
+[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
+...
+[Mon Feb 10 20:36:11 2025] Call Trace:
+[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
+[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
+[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
+[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
+[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
+[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
+[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
+[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
+Note: before this patch, the above calltrace would flood the
+dmesg due to repeated reschedule of release_dw kworker.
+
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_devices.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/core/page_pool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 57d6e5abc30e8..da24941a6e444 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -1421,6 +1421,19 @@ static const struct driver_info hg20f9_info = {
- 	.data = FLAG_EEPROM_MAC,
- };
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a813d30d21353..7b20f6fcb82c0 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -1066,7 +1066,13 @@ static void page_pool_release_retry(struct work_struct *wq)
+ 	int inflight;
  
-+static const struct driver_info lyconsys_fibergecko100_info = {
-+	.description = "LyconSys FiberGecko 100 USB 2.0 to SFP Adapter",
-+	.bind = ax88178_bind,
-+	.status = asix_status,
-+	.link_reset = ax88178_link_reset,
-+	.reset = ax88178_link_reset,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
-+		 FLAG_MULTI_PACKET,
-+	.rx_fixup = asix_rx_fixup_common,
-+	.tx_fixup = asix_tx_fixup,
-+	.data = 0x20061201,
-+};
-+
- static const struct usb_device_id	products [] = {
- {
- 	// Linksys USB200M
-@@ -1578,6 +1591,10 @@ static const struct usb_device_id	products [] = {
- 	// Linux Automation GmbH USB 10Base-T1L
- 	USB_DEVICE(0x33f7, 0x0004),
- 	.driver_info = (unsigned long) &lxausb_t1l_info,
-+}, {
-+	/* LyconSys FiberGecko 100 */
-+	USB_DEVICE(0x1d2a, 0x0801),
-+	.driver_info = (unsigned long) &lyconsys_fibergecko100_info,
- },
- 	{ },		// END
- };
+ 	inflight = page_pool_release(pool);
+-	if (!inflight)
++	/* In rare cases, a driver bug may cause inflight to go negative.
++	 * Don't reschedule release if inflight is 0 or negative.
++	 * - If 0, the page_pool has been destroyed
++	 * - if negative, we will never recover
++	 * in both cases no reschedule is necessary.
++	 */
++	if (inflight <= 0)
+ 		return;
+ 
+ 	/* Periodic warning for page pools the user can't see */
 -- 
 2.39.5
 
