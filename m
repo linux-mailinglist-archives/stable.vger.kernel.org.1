@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-127657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E368A7A6D2
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A314A7A6C1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8613B7D4A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D923BB4FF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CAF2505DD;
-	Thu,  3 Apr 2025 15:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFE4250C0B;
+	Thu,  3 Apr 2025 15:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBwOrM1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KpIy2LU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA36524C077;
-	Thu,  3 Apr 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6B7188A3A;
+	Thu,  3 Apr 2025 15:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693977; cv=none; b=buDm0k4q8JKQvxb5/1J7wR8nlJJK3XjlJDF0BSt3q1r7HcRCUmVTz5b1T/MvfR+GVKUo+F0VwJNn4egJXyC4TlHGOEFXqE0kMEv3PvT78IXqfgahsueIXyDtLJqoG2Xd7WYs27k2t260Lw6X/Lr662NAc8OHDfXKX75/W5MQsCw=
+	t=1743693931; cv=none; b=MoCvOIfnzFq4qPLH1t4xW/a0ZgwGhwtNb11jHXdDaJL5sIEwY4D0M/d406lm6M0teD7JKySvV1Yt5vqbhUMmWtClDVqI+eGGFsETCffWFaUiNhvdz07Mv3myk//Hkw8RiDt4+SH48ZGZk9Cnc5J8bJR04ERBGHdZaxvM+b1l+4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693977; c=relaxed/simple;
-	bh=dCa44yXbuw5ZvJdtCV6fOe6jkupLdATTVtUwS0anmQc=;
+	s=arc-20240116; t=1743693931; c=relaxed/simple;
+	bh=nHmMH2bzKKM//cfdt90B/YYZXPsSrbvqKtnN5YbrWYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPl7tlJ9SlF3Jq6AqvISlI9zqfxJ4VeGsT7C8bIr4qHRsZVn4x4I5nKVO2mjif37C9ANT62pSCDQz/MQl8W/mRB3gUb8OYvdA6QBtsb+7I+DjsMToSzqwYYKRG9boKbOcM1swTFAuhblA+mNhlFa++KZkJnVQvXBjUR3LaiYCFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBwOrM1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E97EC4CEE3;
-	Thu,  3 Apr 2025 15:26:17 +0000 (UTC)
+	 MIME-Version; b=ML5zs7hNT3r1wKOlmRycd2r5v90ulfmsW042lEgruc4w7saRrdPHig5/Uwx0C5cUm7s28LoT+wbGzUoGXJeadXsTpmSsSw3wZkMUato3X92HPa+ij5ZeOubQUsGWw24tGYbo8GXNxwmby8JpMcKfVzMU/NOdOClDbUnxdO6W/BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KpIy2LU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F9CC4CEE3;
+	Thu,  3 Apr 2025 15:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693977;
-	bh=dCa44yXbuw5ZvJdtCV6fOe6jkupLdATTVtUwS0anmQc=;
+	s=korg; t=1743693931;
+	bh=nHmMH2bzKKM//cfdt90B/YYZXPsSrbvqKtnN5YbrWYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBwOrM1FH8ld5uQgB5/szvWNAd9VGikPcDhl7Vy0qyem/spuw6MgMUWIa0bzeLcAu
-	 i5QPLO0os5xKuAaPn5RPCTwLUSy72u8uVpEgqYPa6olk/SVj0waGbZzXxOFIEsa6ff
-	 MO0TfiNKN9n0dH0zB0wdavepSBUIDKvWq3EZQLfQ=
+	b=2KpIy2LUrX2JS6/4A9gPczXwIkA3EmxNA5eQZTfXJyrMqJ4ag4jzcGyZX+zUaia2f
+	 vSpoU11tJ3D1mUdrlbSMtA7DptssSDDg8bfdkUePaRtrBOfKVKl6OdiPpad/O14MS1
+	 14iq+ylQ/4yPgRfgH5iiLFjnJDA3ru6b+oEnj0sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Lendacky <thomas.lendacky@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 11/26] mm/page_alloc: fix memory accept before watermarks gets initialized
-Date: Thu,  3 Apr 2025 16:20:32 +0100
-Message-ID: <20250403151622.739326418@linuxfoundation.org>
+	Ahmed Naseef <naseefkm@gmail.com>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 16/23] net: usb: usbnet: restore usb%d name exception for local mac addresses
+Date: Thu,  3 Apr 2025 16:20:33 +0100
+Message-ID: <20250403151622.739276264@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-commit 800f1059c99e2b39899bdc67a7593a7bea6375d8 upstream.
+commit 2ea396448f26d0d7d66224cb56500a6789c7ed07 upstream.
 
-Watermarks are initialized during the postcore initcall.  Until then, all
-watermarks are set to zero.  This causes cond_accept_memory() to
-incorrectly skip memory acceptance because a watermark of 0 is always met.
+commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
+that local addresses always came from the kernel, but some devices hand
+out local mac addresses so we ended up with point-to-point devices with
+a mac set by the driver, renaming to eth%d when they used to be named
+usb%d.
 
-This can lead to a premature OOM on boot.
+Userspace should not rely on device name, but for the sake of stability
+restore the local mac address check portion of the naming exception:
+point to point devices which either have no mac set by the driver or
+have a local mac handed out by the driver will keep the usb%d name.
 
-To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+(some USB LTE modems are known to hand out a stable mac from the locally
+administered range; that mac appears to be random (different for
+mulitple devices) and can be reset with device-specific commands, so
+while such devices would benefit from getting a OUI reserved, we have
+to deal with these and might as well preserve the existing behavior
+to avoid breaking fragile openwrt configurations and such on upgrade.)
 
-Link: https://lkml.kernel.org/r/20250310082855.2587122-1-kirill.shutemov@linux.intel.com
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Cc: Ashish Kalra <ashish.kalra@amd.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-Cc: Thomas Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
+Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
+Cc: stable@vger.kernel.org
+Tested-by: Ahmed Naseef <naseefkm@gmail.com>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/usb/usbnet.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6653,7 +6653,7 @@ static bool try_to_accept_memory_one(str
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbn
+ }
+ EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
  
- static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
--	long to_accept;
-+	long to_accept, wmark;
- 	bool ret = false;
- 
- 	if (!has_unaccepted_memory())
-@@ -6662,8 +6662,18 @@ static bool cond_accept_memory(struct zo
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
- 
-+	wmark = high_wmark_pages(zone);
-+
-+	/*
-+	 * Watermarks have not been initialized yet.
-+	 *
-+	 * Accepting one MAX_ORDER page to ensure progress.
++static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
++{
++	/* Point to point devices which don't have a real MAC address
++	 * (or report a fake local one) have historically used the usb%d
++	 * naming. Preserve this..
 +	 */
-+	if (!wmark)
-+		return try_to_accept_memory_one(zone);
++	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
++		(is_zero_ether_addr(net->dev_addr) ||
++		 is_local_ether_addr(net->dev_addr));
++}
 +
- 	/* How much to accept to get to high watermark? */
--	to_accept = high_wmark_pages(zone) -
-+	to_accept = wmark -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
- 		    __zone_watermark_unusable_free(zone, order, 0) -
- 		    zone_page_state(zone, NR_UNACCEPTED));
+ static void intr_complete (struct urb *urb)
+ {
+ 	struct usbnet	*dev = urb->context;
+@@ -1762,13 +1773,11 @@ usbnet_probe (struct usb_interface *udev
+ 		if (status < 0)
+ 			goto out1;
+ 
+-		// heuristic:  "usb%d" for links we know are two-host,
+-		// else "eth%d" when there's reasonable doubt.  userspace
+-		// can rename the link if it knows better.
++		/* heuristic: rename to "eth%d" if we are not sure this link
++		 * is two-host (these links keep "usb%d")
++		 */
+ 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
+-		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
+-		     /* somebody touched it*/
+-		     !is_zero_ether_addr(net->dev_addr)))
++		    !usbnet_needs_usb_name_format(dev, net))
+ 			strscpy(net->name, "eth%d", sizeof(net->name));
+ 		/* WLAN devices should always be named "wlan%d" */
+ 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
 
 
 
