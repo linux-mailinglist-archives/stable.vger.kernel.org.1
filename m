@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-127592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDF4A7A67E
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E23A7A6CE
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA7A1898090
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6626317941C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F99250BFF;
-	Thu,  3 Apr 2025 15:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B672512D8;
+	Thu,  3 Apr 2025 15:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlrJHrYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBqV+9FV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27644250BF8;
-	Thu,  3 Apr 2025 15:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D7724DFE8;
+	Thu,  3 Apr 2025 15:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693817; cv=none; b=LeDO7DDwuJErbTX1mWYiFQEvoENBodQ4SCn8Tk7qmzUGNOYaTo+Q7iAtctXJ2iDXX3x2b9vER3ITtoI4Jm6rJl8CNXmZDFO3cj52lTx/Sju8oV88r4pH03G9ltP/CndMkOgIP6EFdbslhGLhH+NkuJ1dnk0t0VLFb7SEdnUNmMw=
+	t=1743693902; cv=none; b=HM+XSwwv+Cg9M0oZq8s6KzsvbGuHpvrYth05yx6aDayNnlw99GxLqoPPv++iyIOHGFOJU2tGFqASPiYuYE8TcrDpQr1InezqMsKzTtR3NzqrqT6oiCp/G/AiUaO6G3nvNa+HvylircB8H0I/IAhzQ7u80TkEhQdYkjQX9YfXzIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693817; c=relaxed/simple;
-	bh=W/dIKav3ta7YPzY5+OVMyR0fI7l0U8eN49go4eYjsV0=;
+	s=arc-20240116; t=1743693902; c=relaxed/simple;
+	bh=aC3jH8O9ioR+mBAggWGaR3qLmtUWTQDsqjAELIihUlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+1Nu9ZLO2M3GJfWDelQeE3QsEJ35C6fepAPGkV8q2E9TxyWO+K7dhQbuoJ6JeyqqVAejFY6PRCmdZ94bAL2I9O+crFBpriebpnpQpYVGnuELoz2+CW4OxFYxbeUGWVn9KUrnyYbmKMqaeLOPqPLEgWJFZRXezKjjsypK9trP9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlrJHrYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C58C4CEE3;
-	Thu,  3 Apr 2025 15:23:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qCyEDweEPTMf4cybyA4ZPWspUInKD3ByOFMmSud0WXSBXrBT1Ua24rvye40z2qRF5Gn9/L9JBxayRdtLakR/aZrIYFJ/W0yTVJoNcAooda/IaoOAJwaa5zpE8xMBsk7I5Kz9tHR3b8gsegb8U1HSLKa05M2SB4RMT7e7ca2UFyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBqV+9FV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4489C4CEE3;
+	Thu,  3 Apr 2025 15:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693817;
-	bh=W/dIKav3ta7YPzY5+OVMyR0fI7l0U8eN49go4eYjsV0=;
+	s=korg; t=1743693902;
+	bh=aC3jH8O9ioR+mBAggWGaR3qLmtUWTQDsqjAELIihUlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlrJHrYq3nHSohW44Y+8dCbTALY5zCZ26UAaWbJ0GUciA3OcIO4rgfPJOfDJLXERf
-	 R5r3ufTpuqWWOAm2kOFxh8+bhvXFZO7VTiLFnh1cMgNEz9jXHIzUdwjQPwgtJygehL
-	 yFs9ARAINMVAlngdK/3nqHI3RlouDeKjt9/7S+Uw=
+	b=bBqV+9FVdBqT+kSJLsPqo1uldCgYUZ4tNKoN7Veg1tc9F661dT2HBBh0ZEfN6efaf
+	 kiNvUkSq0rA4g8NfVvxo0pOElheIh1cLJWMSbY4uiGcTYxRDbLx+BQQlGe6g1sirrm
+	 IbOCQpj75bDxOxBsKcwoeT44oXlEAbSgDmg8jAD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Naseef <naseefkm@gmail.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 15/21] net: usb: usbnet: restore usb%d name exception for local mac addresses
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.12 09/22] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
 Date: Thu,  3 Apr 2025 16:20:19 +0100
-Message-ID: <20250403151621.568019842@linuxfoundation.org>
+Message-ID: <20250403151622.308559947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-commit 2ea396448f26d0d7d66224cb56500a6789c7ed07 upstream.
+commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
 
-commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
-that local addresses always came from the kernel, but some devices hand
-out local mac addresses so we ended up with point-to-point devices with
-a mac set by the driver, renaming to eth%d when they used to be named
-usb%d.
+Hardware initialize of the timer counter channel does not occur on probe
+thus leaving the Count in an undefined state until the first
+function_write() callback is executed. Fix this by performing the proper
+hardware initialization during probe.
 
-Userspace should not rely on device name, but for the sake of stability
-restore the local mac address check portion of the naming exception:
-point to point devices which either have no mac set by the driver or
-have a local mac handed out by the driver will keep the usb%d name.
-
-(some USB LTE modems are known to hand out a stable mac from the locally
-administered range; that mac appears to be random (different for
-mulitple devices) and can be reset with device-specific commands, so
-while such devices would benefit from getting a OUI reserved, we have
-to deal with these and might as well preserve the existing behavior
-to avoid breaking fragile openwrt configurations and such on upgrade.)
-
-Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
-Cc: stable@vger.kernel.org
-Tested-by: Ahmed Naseef <naseefkm@gmail.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Reported-by: Csókás Bence <csokas.bence@prolan.hu>
+Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
+Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbn
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -368,6 +368,25 @@ static int mchp_tc_probe(struct platform
+ 			channel);
+ 	}
  
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
-+	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
++	/* Disable Quadrature Decoder and position measure */
++	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
++	if (ret)
++		return ret;
 +
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1762,13 +1773,11 @@ usbnet_probe (struct usb_interface *udev
- 		if (status < 0)
- 			goto out1;
- 
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
++	/* Setup the period capture mode */
++	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
++				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
++				 ATMEL_TC_TCCLKS,
++				 ATMEL_TC_CMR_MASK);
++	if (ret)
++		return ret;
++
++	/* Enable clock and trigger counter */
++	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
++			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
++	if (ret)
++		return ret;
++
+ 	priv->tc_cfg = tcb_config;
+ 	priv->regmap = regmap;
+ 	counter->name = dev_name(&pdev->dev);
 
 
 
