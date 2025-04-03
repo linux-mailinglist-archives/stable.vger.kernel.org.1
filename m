@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-127572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946ADA7A68B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206CAA7A66D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1139178AB4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C45F87A23A8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8FC250C02;
-	Thu,  3 Apr 2025 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEF62505DE;
+	Thu,  3 Apr 2025 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+seGw6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdGdlwf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DDE2512E7;
-	Thu,  3 Apr 2025 15:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F3C250C09;
+	Thu,  3 Apr 2025 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693767; cv=none; b=H7crD8qJ+PqqiQVHap6GMZiivartUJ/HvR8eWp9eYli8rC8paDxqa/QsUlBPwYKKsCOU9SR7NaYtW1FvmNPjlpz9XUMeYZkYqw6fbKzWjiQDoEKGkHCNDX8aC8bF4mMWPnoyv5MqWLL4E/r2ZTgaGhvorXwG9CU9QI1Pw1BKpfw=
+	t=1743693890; cv=none; b=fR/RtwNEFYboLonqI+owO5opmPQUtNGUZSd4cIIJAS40CPFxlmNiwhFVHQzrgk3E76ttzEpX+ILPtNYPGtuMQQCVlXxq62+udzWOR8EKay7pc/0/b7l57mt2IVhYojfSR0IKoM9ttcaPbgINYfG/SZt89x7RdecxYbs+n3ui+O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693767; c=relaxed/simple;
-	bh=2ELRtG6kO9x/L3ZRItKRoiBNhONiE6r0w1DWquGaveg=;
+	s=arc-20240116; t=1743693890; c=relaxed/simple;
+	bh=7JcZYiEK+0oYqdy2Thoq0SQGD2xBL9Gxd4C6M2YC7xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=maj0I6Cn2CHyDChAcR1fjHfofGlsMFDiIyKEt5+IYP8u9irN+q6eOVuIaI+dekZ1FsvNgmDdI75TDQ23iwuy12Y+50QtqMtw4yFOmt1Hdfpbc7tFZ7PnQIS3Y+/4VJtWgkTx72VfDaBEPZqZk4wwadVcamVWsc6gjcau4b9BvII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+seGw6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129EBC4CEED;
-	Thu,  3 Apr 2025 15:22:45 +0000 (UTC)
+	 MIME-Version; b=QmVsHV91fN1aTTqgXUMdyCLhd9lDKbJ4AVuM3nRxbsQrbj3Zi5GHpJvjirngox0AM0xruk6vLsTVFGfnL5dTKyR8MRA+fsg0i5WhV7wYx4QqiKWPDgiDbvMm6J/ZbfL2+871v62iyYCYnMIfNUIvNXfx91+ToORoKUcIHqvxUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdGdlwf7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44EFC4CEE3;
+	Thu,  3 Apr 2025 15:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693766;
-	bh=2ELRtG6kO9x/L3ZRItKRoiBNhONiE6r0w1DWquGaveg=;
+	s=korg; t=1743693890;
+	bh=7JcZYiEK+0oYqdy2Thoq0SQGD2xBL9Gxd4C6M2YC7xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+seGw6BRS85RBi8xCOcFp90GQQkrOQ4NANJlc4Lu3j9L75zahTWEM2o1ZzoacEtV
-	 T4T5+n0RzYfbZNlc3fK75oaJG29jvZYBUdhAs1ixbjClIf87wamHa8OEDfUtwZl3iL
-	 3w2rvzbDVV/sSBhsdBiOOlK/Gk1xfi7sIbTuc1M4=
+	b=pdGdlwf7Ct7WYfG2ZDWYAuMnE45KdLhaulA8znpIBAnNxWl+Ys3lEMtQwMn8zPnCr
+	 XflScUffp54uDWnpSQjy5aLjoBYJO5UI0XmH16WNGy46AKSdKZzC9JN00bWNlBosR1
+	 urX253ivZJggYuDCDIF6y0mpQNYh4TKaY/8CGcaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 18/22] serial: 8250_dma: terminate correct DMA in tx_dma_flush()
-Date: Thu,  3 Apr 2025 16:20:13 +0100
-Message-ID: <20250403151621.453796199@linuxfoundation.org>
+	Jur van der Burg <jur@avtware.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 04/22] nfsd: fix legacy client tracking initialization
+Date: Thu,  3 Apr 2025 16:20:14 +0100
+Message-ID: <20250403151622.170971525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
-References: <20250403151620.960551909@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-commit a26503092c75abba70a0be2aa01145ecf90c2a22 upstream.
+commit de71d4e211eddb670b285a0ea477a299601ce1ca upstream.
 
-When flushing transmit side DMA, it is the transmit channel that should
-be terminated, not the receive channel.
+Get rid of the nfsd4_legacy_tracking_ops->init() call in
+check_for_legacy_methods().  That will be handled in the caller
+(nfsd4_client_tracking_init()).  Otherwise, we'll wind up calling
+nfsd4_legacy_tracking_ops->init() twice, and the second time we'll
+trigger the BUG_ON() in nfsd4_init_recdir().
 
-Fixes: 9e512eaaf8f40 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Reported-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250224121831.1429323-1-jkeeping@inmusicbrands.com
+Fixes: 74fd48739d04 ("nfsd: new Kconfig option for legacy client tracking")
+Reported-by: Jur van der Burg <jur@avtware.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219580
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4recover.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -146,7 +146,7 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
- 
--	dmaengine_terminate_async(dma->rxchan);
-+	dmaengine_terminate_async(dma->txchan);
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -2052,7 +2052,6 @@ static inline int check_for_legacy_metho
+ 		path_put(&path);
+ 		if (status)
+ 			return -ENOTDIR;
+-		status = nn->client_tracking_ops->init(net);
+ 	}
+ 	return status;
  }
- 
- int serial8250_rx_dma(struct uart_8250_port *p)
 
 
 
