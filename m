@@ -1,105 +1,214 @@
-Return-Path: <stable+bounces-127648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EC0A7A6AF
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19973A7A6EE
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A07541895D97
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C4BE17AB96
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206422505DD;
-	Thu,  3 Apr 2025 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2512505DE;
+	Thu,  3 Apr 2025 15:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i54xOL3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5KZNVVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AE1250BE7;
-	Thu,  3 Apr 2025 15:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6498924E4B2;
+	Thu,  3 Apr 2025 15:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693955; cv=none; b=DA2S1ZY85RnFiyTCYBipmxoxG/4/TRSaeUUqRQrH2BWCrDrr/6LrhQJLeSdt2mAQgx5bLYTYo7LJfRnEXuZCeuqVAJDnWBsujvlyXcwImH5DK6MaEjnFUPsipMw8xc4QRtYhHhsKAor+mYmq22rGvsQ//26mYuVqaW0P1vrNw3A=
+	t=1743694036; cv=none; b=XZq/RZfCUZWAh1o/YCrhpGEqCZqTq0F6DITrEfOvUTuLPnZsWfkFEl77MvDBgU/BVXFsXX0QgZHasr5AgL6nB8wVGLeUqFvY33CHNxW/u0N7qLlLjb8YAim0AuqWk1z6O9iZ/iDXNHCvr/hdD6x7dTogCUVGqUR5anZC6ZJ1Tjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693955; c=relaxed/simple;
-	bh=xcbDClS51o8GOhdcW+Fvtx8/rrFnlarZE3w71Fy9yM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtHW+dj+wwaGN5xuQZ1ateTGd8cjUnAnliKxC8UN6V+eAINMFdsNheZSzOQNvcxzkv8coBm5n0hrUPvYLpabVWOSWuF3XXeZUYM3B0fPVts2jC8mfSo/rSj3Fh5rtlqXJCTXVsBK2t6rUy6RX57GTtQrFKY8KRSi7ONLy1eUIxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i54xOL3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AC4C4CEE3;
-	Thu,  3 Apr 2025 15:25:55 +0000 (UTC)
+	s=arc-20240116; t=1743694036; c=relaxed/simple;
+	bh=ddWj3Z13XW8uzI3RDW2AgxXUlibDcIvQOoriVbRvwhg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MrYcdYeQABkwjorT521P9Dgbzxc2wlNPcqE7XaPcYR5BnUN+ovCbPhuOFW4y8Zsv1n3q051kRJ6EX98HSc0yHLVDgg+5+HcNJbD1U6EWVrlNN2HNDQQ5wulEivmfu3QcrftxyoZT8+PuJVxg/7up83VyvrgyqBNCRQIj4aePeKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5KZNVVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA23EC4CEE5;
+	Thu,  3 Apr 2025 15:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693955;
-	bh=xcbDClS51o8GOhdcW+Fvtx8/rrFnlarZE3w71Fy9yM8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i54xOL3HuoFoDyBDSPmwPUIOM5egY68vwbLCOhaPn3bqrwpng01KjW9MluYlj7jKC
-	 ahZdaZR8b7wHCylC0EEc+K68eLChD166yH5vS3fMr/G+bn5ja5BQsKNiTt0AvqlZk4
-	 QmDKl1X8+2BStpghBC5en+kgvEXhrQL1lSEPcdPE=
+	s=korg; t=1743694036;
+	bh=ddWj3Z13XW8uzI3RDW2AgxXUlibDcIvQOoriVbRvwhg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=y5KZNVVRybc5Y/mlrSMuLsLkN6Q5BqtxDbqToeoqB263DDxbqONdsnahMJCin3x2z
+	 w65RE92CAn5pYnNT31ccGNrISWJhzm6/T6hs+svw9Z+osGoBgHxoBOujhzu5xDVZAN
+	 KBO+hmWNHBDpQR87iDSf/loxHZzO+Wu9SfZiaTFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jur van der Burg <jur@avtware.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 04/23] nfsd: fix legacy client tracking initialization
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.6 00/26] 6.6.86-rc1 review
 Date: Thu,  3 Apr 2025 16:20:21 +0100
-Message-ID: <20250403151622.403482042@linuxfoundation.org>
+Message-ID: <20250403151622.415201055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.86-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.86-rc1
+X-KernelTest-Deadline: 2025-04-05T15:16+00:00
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.6.86 release.
+There are 26 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
+Anything received after that time might be too late.
 
-From: Scott Mayhew <smayhew@redhat.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.86-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-commit de71d4e211eddb670b285a0ea477a299601ce1ca upstream.
+thanks,
 
-Get rid of the nfsd4_legacy_tracking_ops->init() call in
-check_for_legacy_methods().  That will be handled in the caller
-(nfsd4_client_tracking_init()).  Otherwise, we'll wind up calling
-nfsd4_legacy_tracking_ops->init() twice, and the second time we'll
-trigger the BUG_ON() in nfsd4_init_recdir().
+greg k-h
 
-Fixes: 74fd48739d04 ("nfsd: new Kconfig option for legacy client tracking")
-Reported-by: Jur van der Burg <jur@avtware.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219580
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/nfsd/nfs4recover.c |    1 -
- 1 file changed, 1 deletion(-)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -2052,7 +2052,6 @@ static inline int check_for_legacy_metho
- 		path_put(&path);
- 		if (status)
- 			return -ENOTDIR;
--		status = nn->client_tracking_ops->init(net);
- 	}
- 	return status;
- }
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.86-rc1
+
+Abhishek Tamboli <abhishektamboli9@gmail.com>
+    usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
+
+John Keeping <jkeeping@inmusicbrands.com>
+    serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+
+Luo Qiu <luoqiu@kylinsec.com.cn>
+    memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
+
+Dominique Martinet <dominique.martinet@atmark-techno.com>
+    net: usb: usbnet: restore usb%d name exception for local mac addresses
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    net: usb: qmi_wwan: add Telit Cinterion FN990B composition
+
+Sherry Sun <sherry.sun@nxp.com>
+    tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+
+Cameron Williams <cang1@live.co.uk>
+    tty: serial: 8250: Add Brainboxes XC devices
+
+Cameron Williams <cang1@live.co.uk>
+    tty: serial: 8250: Add some more device IDs
+
+William Breathitt Gray <wbg@kernel.org>
+    counter: microchip-tcb-capture: Fix undefined counter channel state on probe
+
+Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+    counter: stm32-lptimer-cnt: fix error handling when enabling
+
+Dhruv Deshpande <dhrv.d@proton.me>
+    ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
+
+Maxim Mikityanskiy <maxtram95@gmail.com>
+    netfilter: socket: Lookup orig tuple for IPv6 SNAT
+
+Manivannan Sadhasivam <mani@kernel.org>
+    scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
+
+Changhuang Liang <changhuang.liang@starfivetech.com>
+    reset: starfive: jh71x0: Fix accessing the empty member on JH7110 SoC
+
+Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+    mm/page_alloc: fix memory accept before watermarks gets initialized
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Don't write DP_MSTM_CTRL after LT
+
+Imre Deak <imre.deak@intel.com>
+    drm/dp_mst: Add a helper to queue a topology probe
+
+Imre Deak <imre.deak@intel.com>
+    drm/dp_mst: Factor out function to queue a topology probe work
+
+Alex Hung <alex.hung@amd.com>
+    drm/amd/display: Check denominator crb_pipes before used
+
+Yanjun Yang <yangyj.ee@gmail.com>
+    ARM: Remove address checking for MMUless devices
+
+Kees Cook <keescook@chromium.org>
+    ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
+
+Kees Cook <keescook@chromium.org>
+    ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
+
+Minjoong Kim <pwn9uin@gmail.com>
+    atm: Fix NULL pointer dereference
+
+Terry Junge <linuxhid@cosmicgizmosystems.com>
+    HID: hid-plantronics: Add mic mute mapping and generalize quirks
+
+Terry Junge <linuxhid@cosmicgizmosystems.com>
+    ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/arm/mm/fault.c                                |   8 ++
+ drivers/counter/microchip-tcb-capture.c            |  19 +++
+ drivers/counter/stm32-lptimer-cnt.c                |  24 ++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  16 +--
+ .../drm/amd/display/dc/dcn315/dcn315_resource.c    |   2 +-
+ drivers/gpu/drm/display/drm_dp_mst_topology.c      |  36 +++++-
+ drivers/hid/hid-plantronics.c                      | 144 ++++++++++-----------
+ drivers/memstick/host/rtsx_usb_ms.c                |   1 +
+ drivers/net/usb/qmi_wwan.c                         |   2 +
+ drivers/net/usb/usbnet.c                           |  21 ++-
+ drivers/reset/starfive/reset-starfive-jh71x0.c     |   3 +
+ drivers/tty/serial/8250/8250_dma.c                 |   2 +-
+ drivers/tty/serial/8250/8250_pci.c                 |  46 +++++++
+ drivers/tty/serial/fsl_lpuart.c                    |  17 +++
+ drivers/ufs/host/ufs-qcom.c                        |   4 +-
+ drivers/usb/gadget/function/uvc_v4l2.c             |  12 +-
+ include/drm/display/drm_dp_mst_helper.h            |   2 +
+ mm/page_alloc.c                                    |  14 +-
+ net/atm/mpc.c                                      |   2 +
+ net/ipv6/netfilter/nf_socket_ipv6.c                |  23 ++++
+ sound/pci/hda/patch_realtek.c                      |   1 +
+ sound/usb/mixer_quirks.c                           |  51 ++++++++
+ 23 files changed, 340 insertions(+), 114 deletions(-)
 
 
 
