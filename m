@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-128085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18672A7AF10
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:41:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DFFA7AEDB
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50EEC3B416A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:35:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DA8A7A714B
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B60122D4D6;
-	Thu,  3 Apr 2025 19:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D2F22D4FA;
+	Thu,  3 Apr 2025 19:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OB1VzOz7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyu1mXZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABDB22D4CD;
-	Thu,  3 Apr 2025 19:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25F022D4F1;
+	Thu,  3 Apr 2025 19:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707933; cv=none; b=l1YdXhz8/wgRjNt+8H47Pc++lg4a2iXJSFbe1Km7R77eib8IzJ4Fpi2emq5Yq2urHSZtE5iCJVm9H22gcosjyP06T5uThbOz1PVK6toz7cmAX3XK3tebgtwBQdw0/feYNs41yKVEm847pbuNirnk/vtYKg7MYNq6E3vK7htO8fs=
+	t=1743707934; cv=none; b=Hj5Bjb7xIq2Og6Tdnhc4DP2ht14F5nSSX3gNoGdHl3GaFpp7HKaMAXuPtLukoL+RvOrwQRPPyxymZls9Ob/u5I2NTkhghud2QWp93MFsJOdjjtyK/WgsNZGsf0hyE7WtgTjJOyZBPcGQ8buzZtu0Va459TucMYO6XY4/8dHtoiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707933; c=relaxed/simple;
-	bh=3yOn4USbalgOi1HsP2QZNo5mp0EAqTwWyd2mr1Sb1bI=;
+	s=arc-20240116; t=1743707934; c=relaxed/simple;
+	bh=fHHa5YtVpzTI6SmQLGgzI/7XrpJ+aC0VIE1wTUtS+8E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ej1lTFoXMZHsp90T1bK8u2+KDXRA0oZ9+N6Pbkv96vZfBSL71CkRf8+uhaNvXoIx6E1662EVrzm8+TcdtJs+5OZ6k+vecFl0gIKakOpaYIJRsTtYpSdXR1JkZSMjH7Fbsx2tYm0Ohg9Xwvf7ZYuEd5H12iynnoHUL3TAYPa3Et8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OB1VzOz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA0BC4CEE3;
-	Thu,  3 Apr 2025 19:18:51 +0000 (UTC)
+	 MIME-Version; b=WR8GssduG/6nVgsPGHHtF6Jx3wZYb3zLdjQhaoZ3pBv0NYNqMiFtDcG4l6rsb+2c12xAR9SteFgwQuG2iNNWMV5yC1uJi8aK7wngIISA7y58hcdGWqoXQQMGjm43hIuqsMW/V9Ofef42scqQeK6YsAarIFGOaN1nUJiqJNj7erc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyu1mXZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEA0C4CEE3;
+	Thu,  3 Apr 2025 19:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707932;
-	bh=3yOn4USbalgOi1HsP2QZNo5mp0EAqTwWyd2mr1Sb1bI=;
+	s=k20201202; t=1743707934;
+	bh=fHHa5YtVpzTI6SmQLGgzI/7XrpJ+aC0VIE1wTUtS+8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OB1VzOz7+80oT96S3JrxJC480F1DKGoL4kS/1/o+3djfenvhJtg6cq5I4IyHmc6Jq
-	 rqOWnRTwo0jpB3VcK4M35+dTLLBZy47hPpHwdagXUz0z4q8baSZBsVgLhVPyJS+wM6
-	 F05Qs3zS7gl45JQ5MFBEv6AkzJA4bnqS+HUUOJpVNa5Qtf6UdIjFbyzJLNGsNo99lj
-	 93D4SXq/GtLAw7LM75KGAt9Rwa6R52LTOqCYb90eiZcOLVWDpPHXluU4f3QqmOZAer
-	 Srbp3BSREWqVVGFWk+Yjjs3scno9hqOEerpLWb9xQ5Kj5NFiFYB7PbyIuRQJyOFWoR
-	 /90tPmDog7m4g==
+	b=Xyu1mXZKc2mbhKw9UD4AIVMyvbMAamSzZU9lgkLYJbdPf5ptkClmVUfmaiov5KrXs
+	 h9mXVYnS46XnwTIcXK49rUZ70nUx7N8nQChOlrz4DFYKg9QmotktH61obVcK4qeqPE
+	 BvQ7dU+PxMC/tGXqkyEeRRByWXZJ2vhUQWYtEFW2W2DrtzQChKYVNLSNxWc1/MZTrq
+	 dC+jO+NOiOYQE90ncMS3rffFHmgv1Pta6ozmM0D3W1Leg3ptZgtwxA0P2DK6gbXQL/
+	 LSP1qpAubHVmvdTUHApFrQkIkWZQjFqD9iV7jDwgX1ReB7G3wfVXWAc6KtOIqsbTHM
+	 yztFIOp2bnbqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Yang <Philip.Yang@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
+	p.zabel@pengutronix.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 14/23] drm/amdkfd: debugfs hang_hws skip GPU with MES
-Date: Thu,  3 Apr 2025 15:18:07 -0400
-Message-Id: <20250403191816.2681439-14-sashal@kernel.org>
+	matthias.bgg@gmail.com,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 15/23] drm/mediatek: mtk_dpi: Move the input_2p_en bit to platform data
+Date: Thu,  3 Apr 2025 15:18:08 -0400
+Message-Id: <20250403191816.2681439-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191816.2681439-1-sashal@kernel.org>
 References: <20250403191816.2681439-1-sashal@kernel.org>
@@ -72,42 +72,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit fe9d0061c413f8fb8c529b18b592b04170850ded ]
+[ Upstream commit c90876a695dd83e76680b88b40067275a5982811 ]
 
-debugfs hang_hws is used by GPU reset test with HWS, for MES this crash
-the kernel with NULL pointer access because dqm->packet_mgr is not setup
-for MES path.
+In preparation for adding support for MT8195's HDMI reserved DPI
+instance, move the input_2p_en bit for DP_INTF to platform data.
 
-Skip GPU with MES for now, MES hang_hws debugfs interface will be
-supported later.
+While at it, remove the input_2pixel member from platform data as
+having this bit implies that the 2pixel feature must be enabled.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-7-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 9d0b0bf70ad1e..2786d47961e07 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -1388,6 +1388,11 @@ int kfd_debugfs_hang_hws(struct kfd_node *dev)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index bc073a6b367e5..e4a3bd3989d8a 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -127,14 +127,14 @@ struct mtk_dpi_yc_limit {
+  * @is_ck_de_pol: Support CK/DE polarity.
+  * @swap_input_support: Support input swap function.
+  * @support_direct_pin: IP supports direct connection to dpi panels.
+- * @input_2pixel: Input pixel of dp_intf is 2 pixel per round, so enable this
+- *		  config to enable this feature.
+  * @dimension_mask: Mask used for HWIDTH, HPORCH, VSYNC_WIDTH and VSYNC_PORCH
+  *		    (no shift).
+  * @hvsize_mask: Mask of HSIZE and VSIZE mask (no shift).
+  * @channel_swap_shift: Shift value of channel swap.
+  * @yuv422_en_bit: Enable bit of yuv422.
+  * @csc_enable_bit: Enable bit of CSC.
++ * @input_2p_en_bit: Enable bit for input two pixel per round feature.
++ *		     If present, implies that the feature must be enabled.
+  * @pixels_per_iter: Quantity of transferred pixels per iteration.
+  * @edge_cfg_in_mmsys: If the edge configuration for DPI's output needs to be set in MMSYS.
+  */
+@@ -148,12 +148,12 @@ struct mtk_dpi_conf {
+ 	bool is_ck_de_pol;
+ 	bool swap_input_support;
+ 	bool support_direct_pin;
+-	bool input_2pixel;
+ 	u32 dimension_mask;
+ 	u32 hvsize_mask;
+ 	u32 channel_swap_shift;
+ 	u32 yuv422_en_bit;
+ 	u32 csc_enable_bit;
++	u32 input_2p_en_bit;
+ 	u32 pixels_per_iter;
+ 	bool edge_cfg_in_mmsys;
+ };
+@@ -610,9 +610,9 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
+ 		mtk_dpi_dual_edge(dpi);
+ 		mtk_dpi_config_disable_edge(dpi);
  	}
+-	if (dpi->conf->input_2pixel) {
+-		mtk_dpi_mask(dpi, DPI_CON, DPINTF_INPUT_2P_EN,
+-			     DPINTF_INPUT_2P_EN);
++	if (dpi->conf->input_2p_en_bit) {
++		mtk_dpi_mask(dpi, DPI_CON, dpi->conf->input_2p_en_bit,
++			     dpi->conf->input_2p_en_bit);
+ 	}
+ 	mtk_dpi_sw_reset(dpi, false);
  
-+	if (dev->kfd->shared_resources.enable_mes) {
-+		dev_err(dev->adev->dev, "Inducing MES hang is not supported\n");
-+		return -EINVAL;
-+	}
-+
- 	return dqm_debugfs_hang_hws(dev->dqm);
- }
+@@ -980,12 +980,12 @@ static const struct mtk_dpi_conf mt8195_dpintf_conf = {
+ 	.output_fmts = mt8195_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
+ 	.pixels_per_iter = 4,
+-	.input_2pixel = true,
+ 	.dimension_mask = DPINTF_HPW_MASK,
+ 	.hvsize_mask = DPINTF_HSIZE_MASK,
+ 	.channel_swap_shift = DPINTF_CH_SWAP,
+ 	.yuv422_en_bit = DPINTF_YUV422_EN,
+ 	.csc_enable_bit = DPINTF_CSC_ENABLE,
++	.input_2p_en_bit = DPINTF_INPUT_2P_EN,
+ };
  
+ static int mtk_dpi_probe(struct platform_device *pdev)
 -- 
 2.39.5
 
