@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-127559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD58A7A5B4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B03A7A5C6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C93B2164D24
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB583AE0D7
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028B62500CD;
-	Thu,  3 Apr 2025 14:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986DC2500DE;
+	Thu,  3 Apr 2025 14:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOkzUol6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCX1QEnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76102505A4
-	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 14:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559962500C5
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 14:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743691972; cv=none; b=U7q6U3MPYc1sXXqaBqypg59TGo0TOKOB1mjPgPWoHWmwogXKv+A6sTw9di+Ei0ZpPXPALY+riwY86ioT6DGaujDBTDSp0fzFwAGDNts5KtzSVgWDJrJMsa3VmZ28MPKL6qGgymdbWmAymn0QvrwvSrSeHNmynUFjIoVHvYByvbo=
+	t=1743692061; cv=none; b=pk6XS1ouQBL6qmFyiOVXXLnLZIXv5L3CcnPf863RhPfJwKhB3mydWjdGTAJnPo4kJy0F+8yrfSWJ1dP14iSU3mAQnNBIIHrWAAT8//JTiK2zllJZyORnVN7DSooggKexLVjPBrUWAyp9mUerFefwpQjj7DO7kuPcE99V+gE0yOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743691972; c=relaxed/simple;
-	bh=39+2Zy+n/7FbP3hAeFStoHGygZ+QE4Mo1EYhmuQjlqA=;
+	s=arc-20240116; t=1743692061; c=relaxed/simple;
+	bh=bjHsE498GvFpBMUWpqL8nDc4Q6/iNiEANfOkEixkVxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XTp0a5argYJ0VO8NXYc8Yx/uXp1wbnNxkEGmPPz7/HRLCjnrIQ9L2oUVBWy+7E0vxoWP6mlT7YAT2Inf9xLhTvyebZnvm1FszUTc/yWJ9XOVcBRROv1RkltsyT5c1kqf+RSYUTpcVTzzICqbHrOCYU4i13Jd7k46V8NpJzE0pDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOkzUol6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502D8C4CEE3;
-	Thu,  3 Apr 2025 14:52:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAVgAnCfhEMu4ZMlcMt/P0KJcno1mEySF9BhG/vHIwbhQXrk8T73U5hdfgTHbEE8tmcsx0sOHwpHMAaUFpJoaPxtC9yRfSmIubhHsVaZLpr2YfvOwyxAfxhQgfxVHESfTdThSgn4ZCLfEodus5+8SprZq2ur63zgCo+2NB1mXDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCX1QEnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726ACC4CEE3;
+	Thu,  3 Apr 2025 14:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743691972;
-	bh=39+2Zy+n/7FbP3hAeFStoHGygZ+QE4Mo1EYhmuQjlqA=;
+	s=korg; t=1743692060;
+	bh=bjHsE498GvFpBMUWpqL8nDc4Q6/iNiEANfOkEixkVxo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jOkzUol6tIAnTbG9Ic2+cyLHOxu1AEIatshAGF5SnpYefLBt/nfAA251Emyb9Ua5p
-	 SrzsB+uEmboTPlhS3AVv79fpVqNkbr4XLHVQpo8ougKxj37GXnNnB+3zgG1BYbG3aa
-	 XUU2gscRRhYmTrV0lIIgxIdfQubTO8Vu6EWoaX/c=
-Date: Thu, 3 Apr 2025 15:51:25 +0100
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "Manthey, Norbert" <nmanthey@amazon.de>
-Cc: "sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Improving Linux Commit Backporting
-Message-ID: <2025040311-overstate-satin-1a8f@gregkh>
-References: <f7ceac1ce5b3b42b36c7557feceadbb111e4850d.camel@amazon.de>
- <2025040348-living-blurred-eb56@gregkh>
- <2025040348-grant-unstylish-a78b@gregkh>
+	b=ZCX1QEnU9mAvFEy3F+mJb6k+KBimzqehW4hswTg8+Zf4AUGz5osy/vggSw9fKlhpf
+	 rWspaH6NYbY7N9hSaxiy/zJoNKTciA8ejSDpI3y9JH5+la1K7MEb8/jFGqdenH9RA5
+	 zftv2nY0cVOoeScrL+E38q5zq4XCVq84CXURjVqA=
+Date: Thu, 3 Apr 2025 15:52:53 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Kang Wenlin <wenlin.kang@windriver.com>
+Cc: stable@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+	ebiederm@xmission.com, keescook@chromium.org,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH 6.6.y 0/6] Backported patches to fix selftest tpdir2
+Message-ID: <2025040344-coma-strict-4e8f@gregkh>
+References: <20250402082656.4177277-1-wenlin.kang@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,55 +55,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025040348-grant-unstylish-a78b@gregkh>
+In-Reply-To: <20250402082656.4177277-1-wenlin.kang@windriver.com>
 
-On Thu, Apr 03, 2025 at 02:57:34PM +0100, gregkh@linuxfoundation.org wrote:
-> On Thu, Apr 03, 2025 at 02:45:35PM +0100, gregkh@linuxfoundation.org wrote:
-> > On Thu, Apr 03, 2025 at 01:15:28PM +0000, Manthey, Norbert wrote:
-> > > Dear Linux Stable Maintainers,
-> > > 
-> > > while maintaining downstream Linux releases, we noticed that we have to
-> > > backport some patches manually, because they are not picked up by your
-> > > automated backporting. Some of these backports can be done with
-> > > improved cherry-pick tooling. We have implemented a script/tool "git-
-> > > fuzzy-pick" which we would like to share. Besides picking more commits,
-> > > the tool also supports executing a validation script right after
-> > > picking, e.g. compiling the modified source file. Picking stats and
-> > > details are presented below.
-> > > 
-> > > We would like to discuss whether you can integrate this improved tool
-> > > into into your daily workflows. We already found the stable-tools
-> > > repository [1] with some scripts that help automate backporting. To
-> > > contribute git-fuzzy-pick there, we would need you to declare a license
-> > > for the current state of this repository.
-> > 
-> > There's no need for us to declare the license for the whole repo, you
-> > just need to pick a license for your script to be under.  Anything
-> > that's under a valid open source license is fine with me.
-> > 
-> > That being said, I did just go and add SPDX license lines to all of the
-> > scripts that I wrote, or that was already defined in the comments of the
-> > files, to make it more obvious what they are under.
+On Wed, Apr 02, 2025 at 04:26:50PM +0800, Kang Wenlin wrote:
+> From: Wenlin Kang <wenlin.kang@windriver.com>
 > 
-> Wait, you should be looking at the scripts in the stable-queue.git tree
-> in the scripts/ directory.  You pointed at a private repo of some things
-> that Sasha uses for his work, which is specific to his workflow.
+> The selftest tpdir2 terminated with a 'Segmentation fault' during loading. 
+> 
+> root@localhost:~# cd linux-kenel/tools/testing/selftests/arm64/abi && make
+> root@localhost:~/linux-kernel/tools/testing/selftests/arm64/abi# ./tpidr2
+> Segmentation fault
+> 
+> The cause of this is the __arch_clear_user() failure.
+> 
+> load_elf_binary() [fs/binfmt_elf.c]
+>   -> if (likely(elf_bss != elf_brk) && unlikely(padzero(elf_bes)))
+>     -> padzero()
+>       -> clear_user() [arch/arm64/include/asm/uaccess.h]
+>         -> __arch_clear_user() [arch/arm64/lib/clear_user.S]
+> 
+> For more details, please see:
+> https://lore.kernel.org/lkml/1d0342f3-0474-482b-b6db-81ca7820a462@t-8ch.de/T/
 
-Also, one final things.  Doing backports to older kernels is a harder
-task than doing it for newer kernels.  This means you need to do more
-work, and have a more experienced developer do that work, as the nuances
-are tricky and slight and they must understand the code base really
-well.
+This is just a userspace issue (i.e. don't do that, and if you do want
+to do that, use a new kernel!)
 
-Attempting to automate this, and make it a "junior developer" task
-assignment is ripe for errors and problems and tears (on my side and
-yours.)  We have loads of examples of this in the past, please don't
-duplicate the errors of others and think that "somehow, this time it
-will be different!", but rather "learn from our past mistakes and only
-make new ones."
+Why do these changes need to be backported, do you have real users that
+are crashing in this way to require these changes?
 
-Good luck with backporting, as I know just how hard of a task this
-really is.  And obviously, you are learning that too :)
+thanks,
 
 greg k-h
 
