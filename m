@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-127840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C2FA7AC42
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DDAA7AC48
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0AB3188ADD3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA05A1899459
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51526F46C;
-	Thu,  3 Apr 2025 19:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012C926FA53;
+	Thu,  3 Apr 2025 19:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktgdy73Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a3xsnZng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8D426E166;
-	Thu,  3 Apr 2025 19:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFEB26FA45;
+	Thu,  3 Apr 2025 19:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707214; cv=none; b=BX1ixvfgrcOW4f5UOGGvdOy1Cy5C5q5FEApCuW48kftOayqfy1+TE48G+cpsTcQBJb//Q/ZqhMUQHFmALWxrnar8qI0RlWUD8EjWtDkcXqMioiSjVU/kOqEtdUrFxh/2jM+3KjzUVzs8yKy9twsx9z/+94RZ3Y26lAffVI2PVwA=
+	t=1743707216; cv=none; b=fgxUF6kbtokfU0bnFZPgrwxdrACe5HvQYpCGanODSPAtcOjwuva8a4MMh6RyP8WaJQsQOmuDVGMqBNM06cDNxGDqXtPlOUDe3qCexekGg+GgZ9DDSlX9E+RRzQs8YaGhvfMXQw6kkT2J6key3iF7NxmxWrHYAyA/VXS6f38ZOdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707214; c=relaxed/simple;
-	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
+	s=arc-20240116; t=1743707216; c=relaxed/simple;
+	bh=biff+y5CO/LGp/6H2MKDDrr1C1tIENa+pvU9gLtDvNc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dswB1Rxa2ty8Dg7uHXNplQTyu5HaZn3Hnp/UYGmR1z38TuH2gcYajrjhCN9KvzIA6TlYjJXc+u5F/g8wYli+aphtgKZzBk/+DmaixngTlC5zhOaMXU3nnNakIDKpLKnGZdins7xskz4kiSucPc+A+OyN6gat6i+ynG+GgMfyhPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktgdy73Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C01C4CEE8;
-	Thu,  3 Apr 2025 19:06:53 +0000 (UTC)
+	 MIME-Version; b=IB8IsiMWK2EbXvXgoUA7+JCuVAkaTRUsRBStXHi61ACMlbSBMko2fe06h45BOdPSPmObNeVz7IoYfa9RPLB5F4kezQ9ZFoKRZ0cY9pT/7Aqm8BEe+udsCEz6oq+PpSwkDJL5bLxiSrisWbb8YzXQsv+jl4kw9whv+TdBq0V0bjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a3xsnZng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30670C4CEE3;
+	Thu,  3 Apr 2025 19:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707214;
-	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
+	s=k20201202; t=1743707216;
+	bh=biff+y5CO/LGp/6H2MKDDrr1C1tIENa+pvU9gLtDvNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktgdy73Z3lp11eCqFK5v8bluA6YX5tQ96HzA9ECY8afe8upmla3u6lQaJkL4NflPL
-	 IN6xF1QqhfwjZWw0eJ1TES4r5UliLSypK4sgMlj6RfE3imNK4qBQG+Rou7F2NzKDSx
-	 2gE22leb4io7lHoamBG9AK3W48l6rwLCY8Ha17aTwadhIvyIY8cjKerTPdwZ6/XM9v
-	 rl202oR5Z+b22KArz5HQ+Dzp19xETgVFbjoIZJpVNb/oj4MxMKbvBmfFTqIqic0wWB
-	 HK9mk9ANU2ELFlVldisAnj5OMPBm+kfFqKKiz8cm4c24rmzpn3iqh3ZWcRdJg71S7x
-	 vqn+kK3nf+7pg==
+	b=a3xsnZngJbpgt5uQP5sxng9Mziasi/H4pxAxTHRMnOQewj2HlSIlaiWP2ONuveMkK
+	 o+qqKp9oa57D+2KwBcZowxed3ktHszB7t61sitsomHtSkY62sc8LmpLdAzSpoSKCF+
+	 t6YX2q74Zas6vd3mEm7BnFmDf04OB89SrqhR0txaYUSrABCBv3s+ArmTraI7WDTet4
+	 US7otHs2xkZrpzGnN7SW0Rgfw/K/qwTa/iwgwHjrGTNLt9cD7ZZI0vsxdBhdAuTtLH
+	 97vgh39oLWd4IgDIyfzu6RUutlc5kSAE+m1EnpndRawOYv4NPnM/68UQf4Mvsk2e4V
+	 om+KYUvkR8uCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	Philip Pemberton <lists@philpem.me.uk>,
-	Damien Le Moal <dlemoal@kernel.org>,
+Cc: Birger Koblitz <mail@birger-koblitz.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 23/47] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
-Date: Thu,  3 Apr 2025 15:05:31 -0400
-Message-Id: <20250403190555.2677001-23-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 24/47] net: sfp: add quirk for 2.5G OEM BX SFP
+Date: Thu,  3 Apr 2025 15:05:32 -0400
+Message-Id: <20250403190555.2677001-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
 References: <20250403190555.2677001-1-sashal@kernel.org>
@@ -66,55 +72,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Birger Koblitz <mail@birger-koblitz.de>
 
-[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
+[ Upstream commit a85035561025063125f81090e4f2bd65da368c83 ]
 
-atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
-has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
+The OEM SFP-2.5G-BX10-D/U SFP module pair is meant to operate with
+2500Base-X. However, in their EEPROM they incorrectly specify:
+Transceiver codes   : 0x00 0x12 0x00 0x00 0x12 0x00 0x01 0x05 0x00
+BR, Nominal         : 2500MBd
 
-However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
-on a port at initialization time, before any devices are scanned.
+Use sfp_quirk_2500basex for this module to allow 2500Base-X mode anyway.
+Tested on BananaPi R3.
 
-If a controller detects a connected device that only supports PIO, we set
-the flag ATA_DFLAG_PIO.
-
-Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
-device only supports PIO.
-
-Reported-by: Philip Pemberton <lists@philpem.me.uk>
-Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
-Tested-by: Philip Pemberton <lists@philpem.me.uk>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/20250218-b4-lkmsub-v1-1-1e51dcabed90@birger-koblitz.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 3b303d4ae37a0..16cd676eae1f9 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -1542,8 +1542,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
- 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
- 	tf.command = ATA_CMD_PACKET;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index dcec92625cf65..9a5de80acd2f7 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -515,6 +515,8 @@ static const struct sfp_quirk sfp_quirks[] = {
  
--	/* is it pointless to prefer PIO for "safety reasons"? */
--	if (ap->flags & ATA_FLAG_PIO_DMA) {
-+	/*
-+	 * Do not use DMA if the connected device only supports PIO, even if the
-+	 * port prefers PIO commands via DMA.
-+	 *
-+	 * Ideally, we should call atapi_check_dma() to check if it is safe for
-+	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
-+	 * Since we can't check the command, perhaps we should only use pio?
-+	 */
-+	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
- 		tf.protocol = ATAPI_PROT_DMA;
- 		tf.feature |= ATAPI_PKT_DMA;
- 	} else {
+ 	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
 -- 
 2.39.5
 
