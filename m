@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-127852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA87A7AC78
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66823A7AC88
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B3B41744A5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2335416C25C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AB32777E9;
-	Thu,  3 Apr 2025 19:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DC227780F;
+	Thu,  3 Apr 2025 19:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJUzGJYT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzMCSjlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827D627701E;
-	Thu,  3 Apr 2025 19:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B0A277804;
+	Thu,  3 Apr 2025 19:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707240; cv=none; b=g6E6caz245Ti/DOsEgEfTizl2gD//itQLQcYv/G9WcPafg3rxodPb4OFQqj3MAqONXEKjiZVA26Ob3ET+z6PjiC0MQvJq4snB4VGvaARy4l6Cug2WmlniF91Ws8bXpHgsLiz88AqsVEAF9+r+5d2IxNBiR/N2eiWCCJp2+e1Leg=
+	t=1743707242; cv=none; b=QnYG+EKX73uhSSwh+etU+ec/I9rSySvBMhtXUi+Macr1pFYHChlUR9IZ8JnfH5Bc4zmvq477iFFlZ2JKKIU9YePT3lp+fdl/j5tt9Z9R7d6ihxG5gdtGQZxxpAQ2Y4L8GCazL5CcT4l+Omfw9EOUqaJ8oLmQ3sG3jtjYiGwlOrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707240; c=relaxed/simple;
-	bh=Ew3XPZ2QZfomNXYGl+8NX7xTXBfA4ZH8Eh+wY9CBdmU=;
+	s=arc-20240116; t=1743707242; c=relaxed/simple;
+	bh=4yJmhhGvOCIorjEfxIkFak6PjpCmAbv87X+zawKb7pc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rakfDsR9SaSgnMPA7QPfThr8SY5WucFXsRlr/+buInWbS/S+I/5Evc1Dn7LzurkgihcjArgD04lgxzjQ9IScCI0jy2SFIiAB3x4s61x2bsHxoyOOdYj9O27nnqv0wV2LXjpzpGzLKLTDYOuFlkVrRpWOki4UsIPV1aV4cpcgBOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJUzGJYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C79C4CEE8;
-	Thu,  3 Apr 2025 19:07:19 +0000 (UTC)
+	 MIME-Version; b=kpiMbxSTP7dba7jCkBeXU/93GtBmgvfbhnMDD5PDnLHIIrbNGQoa/3q2VdMChKtPuuYdzUG+NvqO2pVe9NTZMxj+f+LOYnsiIM2kdZ1cbmmcNq4ZwzW56je40geWg+ATmK62kndMh9VZ8LiTRvQ3wkEdKkoYsXnWt8lYgdvV6vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzMCSjlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A15C4AF0C;
+	Thu,  3 Apr 2025 19:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707240;
-	bh=Ew3XPZ2QZfomNXYGl+8NX7xTXBfA4ZH8Eh+wY9CBdmU=;
+	s=k20201202; t=1743707242;
+	bh=4yJmhhGvOCIorjEfxIkFak6PjpCmAbv87X+zawKb7pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJUzGJYTSfY4oYWYvB45c2nNxtI6VAusVlKoXXAYHo+DDyOWDNhGDpAFtpL4+jrJC
-	 mKn/LC3co4Ipj3wNgjEb5oGVYJc1W83K4kRkSfkxoOtnM5JqSb4t4v9X6l5BchG1JQ
-	 iW3q4A3MSd+L0y9QiVugG6jCvIJ2fyO/QtB67uet5iXYJPIETutgL1tdQbEV1IjX7u
-	 b7T1eBJRAaLoCZeN1E4JEA0faX8rSup97z5lNmbt8452xVvHJ5hwIAxenzw7unadFF
-	 inyRis8LuEVhkzju+V7VqnyOWNu9/t2i04o+ypEvUJFpVAL9CGRBFLxtRAiM7py2I2
-	 n4pfSqNIMIoLQ==
+	b=BzMCSjlXqY0H6rt1ZsYrb4kFx12c2XHUvYBBnmTpqqtg0ATm9uhkFJp9iqypahxZr
+	 08Qr/gF7tcuvv9ENbr+o3RSlAw1+YINR1U8Mmc0eJplZocFNEp8QxbinE9zwbclqGy
+	 KhpFqEG7Ur1R6fJ48cPAmp5b7i80il+055KTeE1v77SuPPeSROKehb/CIU/rbrPdW5
+	 E24Z1/OinL4bOff2lr5KGbylU6dHUymWEQ+9Kt3vGZVf1uTDMTOCd6zLaNK3UZ2a14
+	 bnqxZYnKTvY9L+HGc2EObZNe0jxezo/MRiWzn5YkZr/uBcKG5zE77fS1L9xwG6d9kG
+	 +7Hz36sS1Hw6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Jie Fan <fanjie@uniontech.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 34/47] scsi: st: Fix array overflow in st_setup()
-Date: Thu,  3 Apr 2025 15:05:42 -0400
-Message-Id: <20250403190555.2677001-34-sashal@kernel.org>
+	dlemoal@kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 35/47] ahci: Marvell 88SE9215 controllers prefer DMA for ATAPI
+Date: Thu,  3 Apr 2025 15:05:43 -0400
+Message-Id: <20250403190555.2677001-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
 References: <20250403190555.2677001-1-sashal@kernel.org>
@@ -62,41 +64,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
+[ Upstream commit 0507c777f5d8f9e34b137d28ee263599a7b81242 ]
 
-Change the array size to follow parms size instead of a fixed value.
+We use CD/DVD drives under Marvell 88SE9215 SATA controller on many
+Loongson-based machines. We found its PIO doesn't work well, and on the
+opposite its DMA seems work very well.
 
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+We don't know the detail of the 88SE9215 SATA controller, but we have
+tested different CD/DVD drives and they all have problems under 88SE9215
+(but they all work well under an Intel SATA controller). So, we consider
+this problem is bound to 88SE9215 SATA controller rather than bound to
+CD/DVD drives.
+
+As a solution, we define a new dedicated AHCI board id which is named
+board_ahci_yes_fbs_atapi_dma for 88SE9215, and for this id we set the
+AHCI_HFLAG_ATAPI_DMA_QUIRK and ATA_QUIRK_ATAPI_MOD16_DMA flags on the
+SATA controller in order to prefer ATAPI DMA.
+
+Reported-by: Yuli Wang <wangyuli@uniontech.com>
+Tested-by: Jie Fan <fanjie@uniontech.com>
+Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
+Tested-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250318104314.2160526-1-chenhuacai@loongson.cn
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/ahci.c    | 11 ++++++++++-
+ drivers/ata/ahci.h    |  1 +
+ drivers/ata/libahci.c |  4 ++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 0dc37fc6f2367..a17441635ff3a 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -4119,7 +4119,7 @@ static void validate_options(void)
-  */
- static int __init st_setup(char *str)
- {
--	int i, len, ints[5];
-+	int i, len, ints[ARRAY_SIZE(parms) + 1];
- 	char *stp;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 14dd1b432ac34..650122deb480d 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -63,6 +63,7 @@ enum board_ids {
+ 	board_ahci_pcs_quirk_no_devslp,
+ 	board_ahci_pcs_quirk_no_sntf,
+ 	board_ahci_yes_fbs,
++	board_ahci_yes_fbs_atapi_dma,
  
- 	stp = get_options(str, ARRAY_SIZE(ints), ints);
+ 	/* board IDs for specific chipsets in alphabetical order */
+ 	board_ahci_al,
+@@ -188,6 +189,14 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
++	[board_ahci_yes_fbs_atapi_dma] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_YES_FBS |
++				 AHCI_HFLAG_ATAPI_DMA_QUIRK),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	/* by chipsets */
+ 	[board_ahci_al] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_NO_PMP | AHCI_HFLAG_NO_MSI),
+@@ -590,7 +599,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
+-	  .driver_data = board_ahci_yes_fbs },
++	  .driver_data = board_ahci_yes_fbs_atapi_dma },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9235),
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 8f40f75ba08cf..10a5fe02f0a45 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -246,6 +246,7 @@ enum {
+ 	AHCI_HFLAG_NO_SXS		= BIT(26), /* SXS not supported */
+ 	AHCI_HFLAG_43BIT_ONLY		= BIT(27), /* 43bit DMA addr limit */
+ 	AHCI_HFLAG_INTEL_PCS_QUIRK	= BIT(28), /* apply Intel PCS quirk */
++	AHCI_HFLAG_ATAPI_DMA_QUIRK	= BIT(29), /* force ATAPI to use DMA */
+ 
+ 	/* ap->flags bits */
+ 
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index fdfa7b2662180..a28ffe1e59691 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1321,6 +1321,10 @@ static void ahci_dev_config(struct ata_device *dev)
+ {
+ 	struct ahci_host_priv *hpriv = dev->link->ap->host->private_data;
+ 
++	if ((dev->class == ATA_DEV_ATAPI) &&
++	    (hpriv->flags & AHCI_HFLAG_ATAPI_DMA_QUIRK))
++		dev->quirks |= ATA_QUIRK_ATAPI_MOD16_DMA;
++
+ 	if (hpriv->flags & AHCI_HFLAG_SECT255) {
+ 		dev->max_sectors = 255;
+ 		ata_dev_info(dev,
 -- 
 2.39.5
 
