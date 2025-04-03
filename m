@@ -1,300 +1,214 @@
-Return-Path: <stable+bounces-127701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523D0A7A748
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:51:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC79BA7A77B
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 18:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8CD172840
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B439C18983AF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5250E250BE5;
-	Thu,  3 Apr 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1C12512DA;
+	Thu,  3 Apr 2025 16:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bhPJRBOq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QACvxo3h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142BF24EF8C
-	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 15:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EC62505C5
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 16:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743695472; cv=none; b=nxV87sO2jZeXkAyaPrL9O+Mf460KgkO81rcItwV5uanw9GNH27e3SC+9nprK3ANI0q6Xfi8dPqXYLZeFZkE2qM9dsU1o+JkeUnjYJToPXwOh84WRgqfJXfCPs4E9exW7caPMyRl4M9IqOOV5ZD3m6zMDAUnwMcneham3NqCov3M=
+	t=1743696158; cv=none; b=Vyfou21cyGNzgz4iheCq3sAFE+qyF6KvuJvF5gd0l0rZkVZ/J8K4u6T+rH3U1btuMofJk/0dv4VysxgV/QaISYhLYUMHsa20K4qbt2yENn1FL5biAgd+M01WOdrhPe8fWRqs/ySO0B5EqLgiCZwS2Gswa1ys6DSMdoueCAHKp9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743695472; c=relaxed/simple;
-	bh=1e7yC1eFo1tl/1ENpe9JTpIuYNl2ZAT7YyhwQFdruYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z/hMgTWdo/UDVTga7VOccl22Q8GMnJsc1rW/W6g/ysPZcKoe/Kgu8LjApLt2VODTw+mSERnRc5SsHgIxMpelJKEn/o9mIvqpScOO88Nw1elrC5VNYCj9ymuxdt/WB9dyVp5rqv2Viigk/NwdaJwoiEyba9Iq7BxTRL5t5JfMi54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bhPJRBOq; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1743696158; c=relaxed/simple;
+	bh=prWl/oKjeICCpY8NVeCuorCzG8tznA9V1MVAwdGvN7I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oMonU/BNUv6Ns3lZAIET23N+04Ambp3lOjUWCRHfcX2g+goHHGFI3HUVRixJb0I+Ri5i1UpkwnnUZ1wALpeylmt1JBZmzdSNGe98obcvNzQo8TFZLQsTMVx5Y1AUOuAOiFKxk2PZ28104VMt4rNR78v9bSsExjoJI389ZGA0jbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QACvxo3h; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-39727fe912cso557304f8f.3
-        for <stable@vger.kernel.org>; Thu, 03 Apr 2025 08:51:09 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso9454215e9.2
+        for <stable@vger.kernel.org>; Thu, 03 Apr 2025 09:02:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743695468; x=1744300268; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2J2QLWZnqssrV8zudx3h9XG9hVG/cM/mFGc7QsgYvPM=;
-        b=bhPJRBOqUY4hMHCaq0W+ifsy4tq+slLDGBRyil1QVrzPpK1Kp52EfjFz5yjeCulCR9
-         EZirYvgHHA5F29F+M3CqCVgLMXqbvRhiboUBSNATBj8HHnTswZQQiIebVJwBrbxJTeBy
-         Jen5e4eASPa29iSo3/ws9Gx12EzypAIjByF/LVbsU5hcDVWIRCo5ElcJKy5LU94R6Lf9
-         t1Rv+7TSinG8dx+GW5KORoP3RP5ekK5Psd/Z0BMj+1U3Ny02MRmS7X4jytJcmqgx4ZvT
-         gHSOA+1k4AAD2jH3YMF22QL3X3CZen3Ke5qVFk9UPP8MFqkF30GL9H7mNV7LQd1qnPCr
-         78PA==
+        d=linaro.org; s=google; t=1743696154; x=1744300954; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BGxHCbeyYb+MzV1Ab/qs9UuRGLyJNxdDlt8RO81d10Q=;
+        b=QACvxo3hUWmo7bF0hEi98HCr59fO8fHhk95yiHsCU1HoN9riiN4kLIbJ4BYzC7Wzpn
+         DT/xrraiveqtZ3S7sB7XQprADdD3dQcamA9fHpcIYrvJz7FIgzIb4ixWtng4JN3XkZ0W
+         Keg35bOjugX23ADS9KTcdPEwv6YL0PtLC8ektDLKeMN0RQI1txJwfCzyoOQEp1Wg/rhF
+         yJ80QF67hNLg/3C2HJHarvl9/gB+7BDLihEgzmnBAg7skq3vKynH/vHFoIRDDHT+YU0h
+         qd8f7fpLJmL7+L1tQn6OqWe/lKPE6mNpF57jyQ6dD8L7+hBDDx9YmP6QPBnKdo4am2vN
+         8Pbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743695468; x=1744300268;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2J2QLWZnqssrV8zudx3h9XG9hVG/cM/mFGc7QsgYvPM=;
-        b=nhOq2x2YKFmHNVLJVxin3B1U4jm5+61GupfSaj9EzVopJo/gyZeFsE1d1ih1HS9g+/
-         lvxlcPvAXC91OigdwYS0hl2GxqcPAVgcgxxud1z2beNZCpT7MK7X/rxQfrLppCD27OVG
-         IO0P0A1bavvTfoX3hgGf+jG+nbB86gXGq+wwDqhXBZhkAY/FkrWwLhQQi1tv/vvnnsZx
-         c3t5T8Q0Qam4B8yzYVf2xMKKwJpi5hFy/MLrnC4U1iRZ7GeemveaAjnM8YiJr9Yv00XU
-         E0qXNs+NhNnzGoBwa/YKKC1JDwKnVVCDMHIVe5YGdGhcxkhhKhGE0J6+RfHj4DkS6K9Y
-         fFzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1tYGBtceZNq3CkwaKTyOGJldJhI5JXEghshh3g1GoMC7VnV9+8kb6CqOmniiJ40L8vHUe30U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyuwLDUfCIgo/j1iLwaeW5eAJ01FBGbh0jZvIrLY0Ea/C5mKkX
-	OJfDXrWJQWzcx4Kl9Qjq0uW8jDRwExasC0PX14puNv7Qmix5aNprwmH7YKm2qAQ=
-X-Gm-Gg: ASbGncv42C1Xxw+habGV2rRDvlSQugtILz/9oBMMTNb8gSVNs8AsvCCrWHaF0EvZiLZ
-	z0cwNQI4Vw1/m2RfHhSxANWc3gTqp0eyt3lwv4G0h15kj2fKoDmpOR+On2xJ3HDPo9SuQYUQDb4
-	EpOSpJ9B7ri4FeW4+d97UiGz6rw/iQ/aqTwCVh9WdbbiaqJBP3lHY8oztBeGRAdN8oOFMCWIv1a
-	sErD9AOjzJ2n8WMXwLm2z7Kat7vCvRk8Wlgsui7Cz4VAIpzVkd1YfOpkmTdvdrMr7xdpSaskX3q
-	eEJUhgLS0cbtbap95gZxe7cWwAbQSgOcasy1qpMFgq20CM2CZwsP37nul3Mav7E=
-X-Google-Smtp-Source: AGHT+IFfmB17gjHz9nh+1iS0Zop96uQ6lrjEOfXp/zRFvcGY0csh6X1W8kAngr57zCaj8+UAvkqhKQ==
-X-Received: by 2002:a05:6000:40e1:b0:38f:2ffc:1e99 with SMTP id ffacd0b85a97d-39c29805ec2mr6623824f8f.49.1743695468306;
-        Thu, 03 Apr 2025 08:51:08 -0700 (PDT)
-Received: from [192.168.68.117] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-39c3020d5d1sm2146603f8f.77.2025.04.03.08.51.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Apr 2025 08:51:07 -0700 (PDT)
-Message-ID: <69e32e9d-f263-4ed8-bd25-5e09dae9c20d@linaro.org>
-Date: Thu, 3 Apr 2025 16:51:07 +0100
+        d=1e100.net; s=20230601; t=1743696154; x=1744300954;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BGxHCbeyYb+MzV1Ab/qs9UuRGLyJNxdDlt8RO81d10Q=;
+        b=FeyVtyOAb4uzV2749XqrB5XerinayIcLkyLsAARNelzIAdKJd82+8XCPT04Ak+0HGF
+         TxRS3U+DWUzhjegfFLDRbcoW8M13aFRVApKpSeO4ycdwuJCqRgdICFCCvxycCi/EgZ5I
+         1vcbea/66hcM/EvVFOVlWSqchPVDdItteHDc6MpreNmv4g0bQp8d7Qv3wcHnOm2JIm8W
+         uMd1Gl7o8POdiGCVNmuuu/NOBRxKKWMpEOzn+tyLqBP4hZlDruqF07qxukCz2k4U9xml
+         Z4uYbz2ZSbFwpeG5T+Yr45R9I8zYEfyJnKrk4wqIm6zIgjFGIwGyr5/aJqhSDzTQjv7C
+         okSg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8A8K+dbLSvvD7O+3lT/8+9lh4Uqrjp3EHk9EL4NH+2gF0DBkIla8VS5wnHVPYRN8vAeF+R6I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuZPFdiXLh2nikctFpcSTenkJCiO0wgGrZ1iX+zORbD337lwkS
+	6eDHhQqwT6NeVpdshfJzEb1BVf5y5lBAx8sxTqSyadHsSnj/hRf2XPU16B3b1Dk=
+X-Gm-Gg: ASbGncsnnmqS6v0DPX8nqmUDlOlVcuQ56REdtP2KdwHvr8AyIS+YeCK5wor0OzunVtE
+	3ZEBldbJ/29TWrB3oaeOeZEC2KWWU2MQ8wMEw3xq7MiInDAMI51dFcvqrfcZ6Wq5y1qD+5l9ZZ1
+	CHEvM50HC5ZmertPgbfMrrUzomRR+EY+UkehDbnR/RDZ1lE7ap7CnxP5ss18JeWkuVXqt9n05LZ
+	4sQCNR+98yzlLgRauK7u5fNDGJWMTLGc37acVw+dmd9oCYx+Ma+1vLM1eakTuxUb3Z57eDPcDN5
+	SJDyMsPuXwB3Kd/JRWTWaq+E8V4U8TCwTxTUSVQ2STIEIAYlJKKj8EOdMRK08S+/rMwUrA==
+X-Google-Smtp-Source: AGHT+IHlLfWrjl1pJEbIehA/TvECe+DFfF7GwTjvWr48M60HR1U3VlaUWlMl7YRIt0U7CPSoj1yfHQ==
+X-Received: by 2002:a05:600c:4f88:b0:43d:762:e0c4 with SMTP id 5b1f17b1804b1-43ec14e531dmr27974775e9.27.1743696153851;
+        Thu, 03 Apr 2025 09:02:33 -0700 (PDT)
+Received: from localhost.localdomain ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec34bbc64sm21811285e9.21.2025.04.03.09.02.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 09:02:30 -0700 (PDT)
+From: srinivas.kandagatla@linaro.org
+To: broonie@kernel.org
+Cc: lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/2] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
+Date: Thu,  3 Apr 2025 17:02:08 +0100
+Message-Id: <20250403160209.21613-2-srinivas.kandagatla@linaro.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250403160209.21613-1-srinivas.kandagatla@linaro.org>
+References: <20250403160209.21613-1-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] ASoC: codecs:lpass-wsa-macro: Fix logic of
- enabling vi channels
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: broonie@kernel.org, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
- pierre-louis.bossart@linux.dev, linux-sound@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Manikantan R <quic_manrav@quicinc.com>
-References: <20250403124247.7313-1-srinivas.kandagatla@linaro.org>
- <20250403124247.7313-3-srinivas.kandagatla@linaro.org>
- <pzyw3swuj4gqynxtp7kxbludyf6qq7fdfjaphw73tezzqocrda@i3f2knhbocme>
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+
 From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <pzyw3swuj4gqynxtp7kxbludyf6qq7fdfjaphw73tezzqocrda@i3f2knhbocme>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Currently the VI feedback rate is set to fixed 8K, fix this by getting
+the correct rate from params_rate.
 
+Without this patch incorrect rate will be set on the VI feedback
+recording resulting in rate miss match and audio artifacts.
 
-On 03/04/2025 15:35, Dmitry Baryshkov wrote:
-> On Thu, Apr 03, 2025 at 01:42:47PM +0100, srinivas.kandagatla@linaro.org wrote:
->> From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
->>
->> Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
->> paths eventhough we enable both of them. Fix this bug by adding proper
->> checks and rearranging some of the common code to able to allow setting
->> both TX0 and TX1 paths
->>
->> Without this patch only one channel gets enabled in VI path instead of 2
->> channels. End result would be 1 channel recording instead of 2.
-> 
-> Could you please rearrange the code to make the patch more obvious?
-Will try it in next version.
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+---
+ sound/soc/codecs/lpass-wsa-macro.c | 39 +++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-> 
->>
->> Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
->> Cc: stable@vger.kernel.org
->> Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
->> Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
->> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
->> ---
->>   sound/soc/codecs/lpass-wsa-macro.c | 112 +++++++++++++++++------------
->>   1 file changed, 68 insertions(+), 44 deletions(-)
->>
->> diff --git a/sound/soc/codecs/lpass-wsa-macro.c b/sound/soc/codecs/lpass-wsa-macro.c
->> index ac119847bc22..c9e7f185f2bc 100644
->> --- a/sound/soc/codecs/lpass-wsa-macro.c
->> +++ b/sound/soc/codecs/lpass-wsa-macro.c
->> @@ -1469,46 +1469,11 @@ static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
->>   	return 0;
->>   }
->>   
->> -static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
->> -					struct snd_kcontrol *kcontrol,
->> -					int event)
->> -{
->> -	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
->> -	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
->> -	u32 tx_reg0, tx_reg1;
->> -	u32 rate_val;
->>   
->> -	switch (wsa->pcm_rate_vi) {
->> -	case 8000:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
->> -		break;
->> -	case 16000:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
->> -		break;
->> -	case 24000:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
->> -		break;
->> -	case 32000:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
->> -		break;
->> -	case 48000:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
->> -		break;
->> -	default:
->> -		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
->> -		break;
->> -	}
-> 
-> This can go to the wsa_macro_enable_disable_vi_sense().
-Not sure I undestood this, v4 looks much clearner without this hunk.
+diff --git a/sound/soc/codecs/lpass-wsa-macro.c b/sound/soc/codecs/lpass-wsa-macro.c
+index c989d82d1d3c..ac119847bc22 100644
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -63,6 +63,10 @@
+ #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
+ #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
+@@ -407,6 +411,7 @@ struct wsa_macro {
+ 	int ear_spkr_gain;
+ 	int spkr_gain_offset;
+ 	int spkr_mode;
++	u32 pcm_rate_vi;
+ 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
+ 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
+ 	struct regmap *regmap;
+@@ -1280,6 +1285,7 @@ static int wsa_macro_hw_params(struct snd_pcm_substream *substream,
+ 			       struct snd_soc_dai *dai)
+ {
+ 	struct snd_soc_component *component = dai->component;
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	int ret;
+ 
+ 	switch (substream->stream) {
+@@ -1291,6 +1297,11 @@ static int wsa_macro_hw_params(struct snd_pcm_substream *substream,
+ 				__func__, params_rate(params));
+ 			return ret;
+ 		}
++		break;
++	case SNDRV_PCM_STREAM_CAPTURE:
++		if (dai->id == WSA_MACRO_AIF_VI)
++			wsa->pcm_rate_vi = params_rate(params);
++
+ 		break;
+ 	default:
+ 		break;
+@@ -1465,6 +1476,28 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	u32 tx_reg0, tx_reg1;
++	u32 rate_val;
++
++	switch (wsa->pcm_rate_vi) {
++	case 8000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	case 16000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
++		break;
++	case 24000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
++		break;
++	case 32000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
++		break;
++	case 48000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
++		break;
++	default:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	}
+ 
+ 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+ 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+@@ -1476,7 +1509,7 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
+ 
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+-			/* Enable V&I sensing */
++		/* Enable V&I sensing */
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+@@ -1485,10 +1518,10 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg1,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-- 
+2.39.5
 
-> 
->> -
->> -	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
->> -		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
->> -		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
->> -	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
->> -		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
->> -		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
->> -	}
->> -
->> -	switch (event) {
->> -	case SND_SOC_DAPM_POST_PMU:
->> +static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
->> +						u32 tx_reg0, u32 tx_reg1, u32 val)
->> +{
->> +	if (enable) {
->>   		/* Enable V&I sensing */
->>   		snd_soc_component_update_bits(component, tx_reg0,
->>   					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
->> @@ -1518,10 +1483,10 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
->>   					      CDC_WSA_TX_SPKR_PROT_RESET);
->>   		snd_soc_component_update_bits(component, tx_reg0,
->>   					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
->> -					      rate_val);
->> +					      val);
-> 
-> No need for extra renames, they complicate reviewing.
-> 
->>   		snd_soc_component_update_bits(component, tx_reg1,
->>   					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
->> -					      rate_val);
->> +					      val);
->>   		snd_soc_component_update_bits(component, tx_reg0,
->>   					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
->>   					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
->> @@ -1534,9 +1499,7 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
->>   		snd_soc_component_update_bits(component, tx_reg1,
->>   					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
->>   					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
->> -		break;
->> -	case SND_SOC_DAPM_POST_PMD:
->> -		/* Disable V&I sensing */
->> +	} else {
->>   		snd_soc_component_update_bits(component, tx_reg0,
->>   					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
->>   					      CDC_WSA_TX_SPKR_PROT_RESET);
->> @@ -1549,6 +1512,67 @@ static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
->>   		snd_soc_component_update_bits(component, tx_reg1,
->>   					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
->>   					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
->> +	}
->> +}
->> +
->> +static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
->> +						 bool enable, u32 rate)
->> +{
->> +	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
->> +	u32 tx_reg0, tx_reg1;
->> +
->> +	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
->> +		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
->> +		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
->> +		wsa_macro_enable_disable_vi_sense(component, enable, tx_reg0, tx_reg1, rate);
-> 
-> As you are refactoring this piece of code, do you need tx_reg0 / tx_reg1
-> variables? Can you inline them instead?
-
-Ack.
-
-> 
->> +	}
->> +
->> +	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
->> +		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
->> +		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
->> +		wsa_macro_enable_disable_vi_sense(component, enable, tx_reg0, tx_reg1, rate);
->> +
->> +	}
->> +
-> 
-> Extra empty line.
-
-Ack
-
-> 
->> +}
->> +
->> +static int wsa_macro_enable_vi_feedback(struct snd_soc_dapm_widget *w,
->> +					struct snd_kcontrol *kcontrol,
->> +					int event)
->> +{
->> +	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
->> +	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
->> +	u32 rate_val;
->> +
->> +	switch (wsa->pcm_rate_vi) {
->> +	case 8000:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
->> +		break;
->> +	case 16000:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
->> +		break;
->> +	case 24000:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
->> +		break;
->> +	case 32000:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
->> +		break;
->> +	case 48000:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
->> +		break;
->> +	default:
->> +		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
->> +		break;
->> +	}
->> +
->> +	switch (event) {
->> +	case SND_SOC_DAPM_POST_PMU:
->> +		/* Enable V&I sensing */
->> +		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
->> +		break;
->> +	case SND_SOC_DAPM_POST_PMD:
->> +		/* Disable V&I sensing */
->> +		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
->>   		break;
->>   	}
->>   
->> -- 
->> 2.39.5
->>
-> 
 
