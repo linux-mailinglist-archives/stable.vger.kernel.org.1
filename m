@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-127829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02095A7AC31
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:35:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363BEA7AC1C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB8997A794F
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841A1188B734
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4202571CE;
-	Thu,  3 Apr 2025 19:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D05A2571D3;
+	Thu,  3 Apr 2025 19:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHeTfNe5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/f8KWj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3823326A0F7;
-	Thu,  3 Apr 2025 19:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37C626A1CB;
+	Thu,  3 Apr 2025 19:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707181; cv=none; b=PS9d9PCf7EecsTX6cbdK3QVDE3OmwPX+PUOYlxVLRjjKtazlk7DMMUh3JT/iO05qiXrv2R4LFHluVlny/kl22wzaeHIVgbbyq5jgq79XDDa6c3ZD6QrGZxyYDGHzzcgnTaeTaFmbZOHFzQlUJQin54H/d6nMEd9DBZj745NrOlQ=
+	t=1743707182; cv=none; b=fTBkns/mizKdNwrCvpJUH3cD55XFQg26v4BxaY1MVS9YMre/BZ74+EVbvBkO0AhGMRjtaVoxRNLiA+hyGpd4qObZEJ/HUlp66UgfkkiSRODQOk5W7rgHRQgptVV9+LWQVokkCMUghsoNfVKozvDP0eof/KGQg0yr98nuq9Ab/9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707181; c=relaxed/simple;
-	bh=mDYpLGljLMv3xA0BiRkGDSNlyUx8EaUoAYoGIdWRQZk=;
+	s=arc-20240116; t=1743707182; c=relaxed/simple;
+	bh=g0zBLxavqYSYO0LoA1sa/2C1ksx9MMtJvA8PF7M0r7c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fFVi44EM3ml6XlTn1+LPzCthtgcEeqK4XaAFBW4GtxsNH+P4sO0znfnfo+vht2EpRrGAXtVp4MR3xxIHexUur2Bx/u9wZVFfbXhKiGf1woBBwa7tEeEaxbNVdZJeE+GctBoaR/cIpG7gExMFtzcEAkNFT5vGreuokXYkYaY1/V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHeTfNe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7EC4CEE3;
-	Thu,  3 Apr 2025 19:06:20 +0000 (UTC)
+	 MIME-Version; b=RCuW6eF6k8IK6pmOn+16Cl4LU7+YjxPcHurAxe0icjexK7CdpQUYHUzqq1VvjL2Aog4e2duXrO+FZk3zphrFoE40nEsoXtfMLdrv+Ro1s5ksW2ddaR1jpQfxZGN/lZXM94F+6PLmQ4VDZFetWazkfgNIdFeRl7lIA08oPAHw2dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/f8KWj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9678AC4CEE8;
+	Thu,  3 Apr 2025 19:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707181;
-	bh=mDYpLGljLMv3xA0BiRkGDSNlyUx8EaUoAYoGIdWRQZk=;
+	s=k20201202; t=1743707182;
+	bh=g0zBLxavqYSYO0LoA1sa/2C1ksx9MMtJvA8PF7M0r7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHeTfNe5Pr/jABr3WzNSVi4BCAgdCc3CxdvmGoyEpa3gEu3ZuaTyG/FtVzcGNfU9h
-	 Bq+S54P/i9+CM7SbEpg+tvqON/pjzJuOAig1bSIA8Ws5SrN/P8IkznoObgEUzp2KAJ
-	 RDpC87YIXLj3HPiaaGdLv7BFV+892wmYBvgN8FjfMNx6E+jjVNmyjMshDkE+B08EUp
-	 dtVO/xesc51741B0eVZb9PGzRHuDix1bc8Su3CkSdoO294DvfENp056IbNZpF6ug/Y
-	 easXeVZKLac+Jph0soZdizgOjefVen7PXSQX2bYPcsFu/BTRXtUKGZA+u1NZogoSSW
-	 bVRWqkbJOJe+g==
+	b=g/f8KWj4WoRt2ql9cVEUKkbIc3WG0OozuYnJPD6vlkGk+VGp3OpZWhgqEL3Vk3JH0
+	 YdlGIA2zNfZVXclf3UHv/9xaNV299Vo6gyurKmt/DZNmapHQFXWtyZS0afpI+dFXlm
+	 wRDhcO4TMd2YcODgszC01GRoozZeoLL9ADsQEK2Qj19tmfQnPcRbUcrzDoFZvef0dS
+	 7ZceGqfdvwsePZTBYdfhaqppcagWdgLp2XLi/Dti7u2pgAW3nVQ/pB+Sai1iuJQZim
+	 xN7f8OJSHcwqAZHElsFUxXYcnKcYpWHAYDtQCR0SSk/lU6F3HKH1rZaGYIf1GRFNBY
+	 ZeYB+l26ztA6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Chaohai Chen <wdhh66@163.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/47] wifi: mac80211: ensure sdata->work is canceled before initialized.
-Date: Thu,  3 Apr 2025 15:05:19 -0400
-Message-Id: <20250403190555.2677001-11-sashal@kernel.org>
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 12/47] scsi: target: spc: Fix RSOC parameter data header size
+Date: Thu,  3 Apr 2025 15:05:20 -0400
+Message-Id: <20250403190555.2677001-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190555.2677001-1-sashal@kernel.org>
 References: <20250403190555.2677001-1-sashal@kernel.org>
@@ -66,48 +67,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Chaohai Chen <wdhh66@163.com>
 
-[ Upstream commit 6c93fd502023dd919b5987ccbe990735410edd49 ]
+[ Upstream commit b50532318793d28a7628c1ffc129a2226e83e495 ]
 
-This wiphy work is canceled when the iface is stopped,
-and shouldn't be queued for a non-running iface.
-If it happens to be queued for a non-running iface (due to a bug)
-it can cause a corruption of wiphy_work_list when ieee80211_setup_sdata
-is called. Make sure to cancel it in this case and warn on.
+The SPC document states that "The COMMAND DATA LENGTH field indicates the
+length in bytes of the command descriptor list".
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250205110958.99204c767c10.I84ce27a239059f6009cee197b252549a11426046@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The length should be subtracted by 4 to represent the length of the
+description list, not 3.
+
+Signed-off-by: Chaohai Chen <wdhh66@163.com>
+Link: https://lore.kernel.org/r/20250115070739.216154-1-wdhh66@163.com
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/target/target_core_spc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index af9055252e6df..82eb53ea9464d 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -8,7 +8,7 @@
-  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (c) 2016        Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -812,6 +812,9 @@ static void ieee80211_set_multicast_list(struct net_device *dev)
-  */
- static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
- {
-+	if (WARN_ON(!list_empty(&sdata->work.entry)))
-+		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
-+
- 	/* free extra data */
- 	ieee80211_free_keys(sdata, false);
- 
+diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+index ea14a38356814..61c065702350e 100644
+--- a/drivers/target/target_core_spc.c
++++ b/drivers/target/target_core_spc.c
+@@ -2243,7 +2243,7 @@ spc_emulate_report_supp_op_codes(struct se_cmd *cmd)
+ 			response_length += spc_rsoc_encode_command_descriptor(
+ 					&buf[response_length], rctd, descr);
+ 		}
+-		put_unaligned_be32(response_length - 3, buf);
++		put_unaligned_be32(response_length - 4, buf);
+ 	} else {
+ 		response_length = spc_rsoc_encode_one_command_descriptor(
+ 				&buf[response_length], rctd, descr,
 -- 
 2.39.5
 
