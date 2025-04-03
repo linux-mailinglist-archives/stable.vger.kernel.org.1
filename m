@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-127570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7C0A7A687
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:27:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A8EA7A669
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F09C1769D9
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38F9B7A3DEA
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C549E2512E2;
-	Thu,  3 Apr 2025 15:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9265E2517B1;
+	Thu,  3 Apr 2025 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxtqXRs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hwg14mVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F610250C19;
-	Thu,  3 Apr 2025 15:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF942512DE;
+	Thu,  3 Apr 2025 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693761; cv=none; b=WOBDDSPKKQbyRDWXs90Ciztodkyiv/H3viOkdD2vj0nmn+X0T9k6pKkbEDFIrejkBlk0xE/jG+OkpA1/u+v1DCvyI5iakH6tg7OV/K1MRrqXtigNOMFdSBQA4V6V5IGS6KSwyR3DNPCg4T/IGMcyPmAETIDI/nrcZC3+4msOYGA=
+	t=1743693839; cv=none; b=Xl5oYrt0sxIZ/fYYhzH597iVtFjSSTBoKNQP+MI+rBMf6auqx3yWN30QUU8dTpn12MZWdd4oyxhhce6eYzPrwSctnaqSAutyEPbHUfD9mEVkqB4axDCQHNojtZ48c9uK64zGo2oRFgAwIwgJjVdTRM+bhdONvyJY7G4j0WffLHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693761; c=relaxed/simple;
-	bh=IdcDNps2HZFNEtwp9Rft7VL4C+1MiUbklcfbzqLczsw=;
+	s=arc-20240116; t=1743693839; c=relaxed/simple;
+	bh=fS4dbSudEvTWbyGUtjMYKQW3Cu2jKCcGXjzDhtRyeg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcYrGsAS0cVwASdruHDNPFm/zKoNvbK/UKF5ePpejIj6BuhWF0rV22qfANLWxF8eDYfIEWlcNihq5K2jTcVT9oUZtG+X2sVMDheMubsmKTcLzMW01zwVvDbKjAkTor8afL89rSU3/B3vCnYljxuu1DsujoShhaViaDVYFr6pUgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxtqXRs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132EAC4CEE3;
-	Thu,  3 Apr 2025 15:22:40 +0000 (UTC)
+	 MIME-Version; b=fim1Uwi8W3quJMu8TLOX9PFCvDJ/nWNWkKUzsz+2I5JXZ/kqwFRakNmI84aTwEC2IKMhGbiKMm8+1YngwevKLXlxdO4Ea8G44mZAkJt7Et8ZUAMNs+EsJJNmkUnRncXWkoNFA088pS6FiL8I2evGfMK2QQtdiBC4BVADnz3WvQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hwg14mVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA305C4CEE5;
+	Thu,  3 Apr 2025 15:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693761;
-	bh=IdcDNps2HZFNEtwp9Rft7VL4C+1MiUbklcfbzqLczsw=;
+	s=korg; t=1743693839;
+	bh=fS4dbSudEvTWbyGUtjMYKQW3Cu2jKCcGXjzDhtRyeg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxtqXRs7s9idP1c/UgUOshiZktmEWhwbsjK8g6UW4YX1AxS2JdGWmhQrC/GaIgyYI
-	 FHktSaUMPK2Ub22koYJlJlqIMkIqylyaVAeyJRgD9p4/L+AgW3YPiEjvFOxTb2luXq
-	 OURu1yGN7vF9BZsl3gNL8eXwLuaaxhjD2SN3DgcU=
+	b=Hwg14mVl9W3RuyJl62rgtsnQYn6qv6AalDbsQGfhcRAvKOgrP/UoO45rxYFBmU4oJ
+	 Fk4e18F91fWX+U1++P7tD5RND+p7g3DE9Fl2tg35m7jBcrmgvCj8oPt7ooCCju2C+F
+	 ++CHDCRd8GdfkAW/ADUif67wkkYu7VfG/Gwgh9Fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Naseef <naseefkm@gmail.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 16/22] net: usb: usbnet: restore usb%d name exception for local mac addresses
-Date: Thu,  3 Apr 2025 16:20:11 +0100
-Message-ID: <20250403151621.397603868@linuxfoundation.org>
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.14 08/21] counter: stm32-lptimer-cnt: fix error handling when enabling
+Date: Thu,  3 Apr 2025 16:20:12 +0100
+Message-ID: <20250403151621.376612940@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
-References: <20250403151620.960551909@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-commit 2ea396448f26d0d7d66224cb56500a6789c7ed07 upstream.
+commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
 
-commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
-that local addresses always came from the kernel, but some devices hand
-out local mac addresses so we ended up with point-to-point devices with
-a mac set by the driver, renaming to eth%d when they used to be named
-usb%d.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-Userspace should not rely on device name, but for the sake of stability
-restore the local mac address check portion of the naming exception:
-point to point devices which either have no mac set by the driver or
-have a local mac handed out by the driver will keep the usb%d name.
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
 
-(some USB LTE modems are known to hand out a stable mac from the locally
-administered range; that mac appears to be random (different for
-mulitple devices) and can be reset with device-specific commands, so
-while such devices would benefit from getting a OUI reserved, we have
-to deal with these and might as well preserve the existing behavior
-to avoid breaking fragile openwrt configurations and such on upgrade.)
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
 
-Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
-Cc: stable@vger.kernel.org
-Tested-by: Ahmed Naseef <naseefkm@gmail.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbn
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
+ 		return 0;
+ 	}
  
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
-+	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
 +
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1761,13 +1772,11 @@ usbnet_probe (struct usb_interface *udev
- 		if (status < 0)
- 			goto out1;
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
+ 
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
+ }
+ 
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
