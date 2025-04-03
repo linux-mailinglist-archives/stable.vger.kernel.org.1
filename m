@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-127567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EE4A7A675
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:26:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7830A7A699
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33B73189BCA4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E045B3B55B8
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE892512D9;
-	Thu,  3 Apr 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1EC2517AA;
+	Thu,  3 Apr 2025 15:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdBOx4hn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4o9vz+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4F250C02;
-	Thu,  3 Apr 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE42512FD;
+	Thu,  3 Apr 2025 15:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693753; cv=none; b=sKWXM8fCGug0URVncOpoYwJJZh7WqnQbWZ+KTamQsyqTIKYmUTD9O/f69PjdjpVoNwNtw8g/13AUwuIxAUrcFuZMXE7xoeFuQGCn+lKQ9AMlSCPWmdPwu3iGiqqgHEugYalKCPEeWuyXUlvnnelGt4q9QtVpzrcox/AJHT394mo=
+	t=1743693832; cv=none; b=lIWCs8GopQFfzFjzfEj7IrkRE88V+dAps1+Xc3J9ICDn3Mwjb6SbDYqOruiJgn0qmN8dgyOk/Wf1kR4KyhFwpd81Bf/l2k8yK4/ohCuZ9AGx/kTRtik2JRQIv3BADF5hM6ORkiROoy8rE5ujY4dxNTWua2GYQCbK4jB1+3mVz7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693753; c=relaxed/simple;
-	bh=UWQNiqRHXOJ8vG5kQEhTDiArkjbFQG3SlRx1W6ziaXY=;
+	s=arc-20240116; t=1743693832; c=relaxed/simple;
+	bh=YIet+fdinwjc8UDzBQqdJzcVfZ5lYhh8CRprmku7SKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqo2OEWY9FsGflnvFhdIHjS1p/5IwcT0H0eL+iD4b7oDxpycIn155HVgfwWQz9FfN8x1z2PYUQfGYlaK6dfP3ZlsD5vkrymvfC4QP/dzd06OraXZkKIbr/m4VnfpPef1MW+zbKxusgtfPr8WDTcRw8FF7xcCvpYBczrk6sh2aCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdBOx4hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC149C4CEE3;
-	Thu,  3 Apr 2025 15:22:32 +0000 (UTC)
+	 MIME-Version; b=JNMo1U1QXmZ3g4ovLJhehyO8lqhhbqJkTRce0XBBT5LCdkDcHcxV4V0ZXqPeRnV3Pw1VrgP9CWhFhsIxht2TLwGIpjvug2b6xaRNFT50KwNw7LnrCIRJbqmBziYLUnFrcalLsYFqAzJwI7//8sNK/XJyql5vWiGcVruVZ/FhNHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4o9vz+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B47EC4CEE3;
+	Thu,  3 Apr 2025 15:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693753;
-	bh=UWQNiqRHXOJ8vG5kQEhTDiArkjbFQG3SlRx1W6ziaXY=;
+	s=korg; t=1743693831;
+	bh=YIet+fdinwjc8UDzBQqdJzcVfZ5lYhh8CRprmku7SKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdBOx4hn4D7ZaMQkJKSZA6hPc4m+VEttHCx8IwzJ3mRfFoh1UQYhakXwXJJpDoMKN
-	 +Y3TkCnvksl+HT5AINT0ekRl6rwDVK1lnCGsS2PcRfCJLcXnAS0w/uLmUJ+kBJqRso
-	 BK5c0QZfWkwAYGUkcxCeCq5Wzc6E0ny+mCsYNt/Q=
+	b=i4o9vz+mqLscstpUgzj8hrZUxclrYtNKMaTqxxS2E7nykbEPs7ryGo6KhJYKC+C7Y
+	 fvZLcRVOdSBR7frtNYB9eXoo9ULOB/wGLi2g+hM2EHE/kERKOOMVMhrm4GXOTDlIif
+	 3s+UooWi3DXPu2FQk5L8Xt6u4DCN1AYMGcsVhejQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 13/22] tty: serial: 8250: Add Brainboxes XC devices
-Date: Thu,  3 Apr 2025 16:20:08 +0100
-Message-ID: <20250403151621.309714911@linuxfoundation.org>
+	Maxim Mikityanskiy <maxim@isovalent.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.14 05/21] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+Date: Thu,  3 Apr 2025 16:20:09 +0100
+Message-ID: <20250403151621.284980820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
-References: <20250403151620.960551909@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-commit 5c7e2896481a177bbda41d7850f05a9f5a8aee2b upstream.
+commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
 
-These ExpressCard devices use the OxPCIE chip and can be used with
-this driver.
+nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
+restore the original 5-tuple in case of SNAT, to be able to find the
+right socket (if any). Then socket_match() can correctly check whether
+the socket was transparent.
 
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/DB7PR02MB3802907A9360F27F6CD67AAFC4D62@DB7PR02MB3802.eurprd02.prod.outlook.com
+However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
+conntrack lookup, making xt_socket fail to match on the socket when the
+packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
+
+IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
+pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
+with the node's external address. Cilium leverages Envoy to enforce L7
+policies, and Envoy uses transparent sockets. Cilium inserts an iptables
+prerouting rule that matches on `-m socket --transparent` and redirects
+the packets to localhost, but it fails to match SNATed IPv6 packets due
+to that missing conntrack lookup.
+
+Closes: https://github.com/cilium/cilium/issues/37932
+Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
+Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -2597,6 +2597,22 @@ static struct pci_serial_quirk pci_seria
- 		.setup		= pci_oxsemi_tornado_setup,
- 	},
- 	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4026,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4021,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
- 		.vendor         = PCI_VENDOR_ID_INTEL,
- 		.device         = 0x8811,
- 		.subvendor	= PCI_ANY_ID,
-@@ -5489,6 +5505,20 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-235
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-475
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
+--- a/net/ipv6/netfilter/nf_socket_ipv6.c
++++ b/net/ipv6/netfilter/nf_socket_ipv6.c
+@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 	struct sk_buff *data_skb = NULL;
+ 	int doff = 0;
+ 	int thoff = 0, tproto;
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn const *ct;
++#endif
  
- 	/*
- 	 * Perle PCI-RAS cards
+ 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
+ 	if (tproto < 0) {
+@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 		return NULL;
+ 	}
+ 
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	/* Do the lookup with the original socket address in
++	 * case this is a reply packet of an established
++	 * SNAT-ted connection.
++	 */
++	ct = nf_ct_get(skb, &ctinfo);
++	if (ct &&
++	    ((tproto != IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
++	     (tproto == IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_RELATED_REPLY)) &&
++	    (ct->status & IPS_SRC_NAT_DONE)) {
++		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
++		dport = (tproto == IPPROTO_TCP) ?
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
++	}
++#endif
++
+ 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
+ 				     sport, dport, indev);
+ }
 
 
 
