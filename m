@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-127678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157A4A7A6E0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F527A7A6A4
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 756393B8B00
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC6A1896C87
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD4B2505D6;
-	Thu,  3 Apr 2025 15:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D69B250C01;
+	Thu,  3 Apr 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSdl1nN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/ojNi1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CB0188A3A;
-	Thu,  3 Apr 2025 15:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DD424C077;
+	Thu,  3 Apr 2025 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743694029; cv=none; b=HPQZPeCpo4ftKYFvjyyb8Ox9bicqhW7rQ+AhWRo305WZsla36FAws0huzWvNhXkBY+u1vKNQw8j2rFmCXUOL9aumj0YQFacs+eYQKseCvhGGNnZ6yBwlIMW+DSGsvWKoKZeNJunwwdSqf9hTWMhE6rtSCF3cU88y7H61sm+cQhg=
+	t=1743693922; cv=none; b=hYykJSl4Hb14e6Rlpj+VxFLrmpeJsEJCCMTcCy+1hwJnkQ6QuXytTQe1LcU4a/3kWYYKxD1wiMejNuXvytp/MBUJ6RtcWfnLNruZzWf+7ih0Z9pgfQyZM++yMM5CwxDHhlusfnjQLp1Xx9FVp8l36jEntpoplbBzkWb/56X8fsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743694029; c=relaxed/simple;
-	bh=+SZmby7JXte8km4UnK2OIJUpdtQpJFxK9UYKkJscpA8=;
+	s=arc-20240116; t=1743693922; c=relaxed/simple;
+	bh=fQMC5Cwrb/FsLXDDqnsEPDPURR5ncnG/oRvGHX4O+ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7mfmlJge4NZQoiV+kOFrZb5wdqqYHF5ZIHw3iwwZ7HPTncNazIIe0mfwYP8Ufp1iHKeihzXyN+aSzOoCC44URtWyJs0n1ufdZspGZyA5JML0WeWUsAIX/otdNZDfJBEZpV0bxmyoncDzX/ozx5ConGbJl2umyTPJbx5DkRKRkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSdl1nN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2138C4CEE5;
-	Thu,  3 Apr 2025 15:27:08 +0000 (UTC)
+	 MIME-Version; b=MtBCoSyxa2CjLhQawTuFaRQyb+mbNoTFGn41JIfBiYEfOGVqd0jcs6krpE+fMPh7qqkl/25LUwwY7EdBfm1SNYsZsDY+mUmNr4WZejlHeN6gUYu0lK3fRfCowlDqvcC/dFSGgCgdW59ISFNvYdXawZq6g6hJT9MmiooZd+4x1SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/ojNi1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CA3C4CEE3;
+	Thu,  3 Apr 2025 15:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743694029;
-	bh=+SZmby7JXte8km4UnK2OIJUpdtQpJFxK9UYKkJscpA8=;
+	s=korg; t=1743693921;
+	bh=fQMC5Cwrb/FsLXDDqnsEPDPURR5ncnG/oRvGHX4O+ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSdl1nN3XiD/r8Clr+A83YpzM1lVqLURrH92IbUGZ/Gd+RHcmauInejKycRsh1Qur
-	 5m70jWEG5LjO4rfn6D4ary/3A1Fef1nrZHyJJTK0OUHPRTJ439GmKLicWPGQmSpbOT
-	 IBfQvNJ0hsCxLXfzcXIsuAfj656e6YpTFgB+q1Sk=
+	b=m/ojNi1n73v1gnRC5b3lf9zww3kTlcm5EAP+ChFmjnlap12tQX9GAVx1+BsULeQzF
+	 JaYRJNjCNrJtWNP3ZWDs9bTtosArB+Pp2Ltj1mDgwiE6Lw90WXVeVIlh595xSTp6sg
+	 oc0i5d1yGm961uypR506JEx44ipwSmJpaLMg78DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 6.6 07/26] drm/amd/display: Check denominator crb_pipes before used
-Date: Thu,  3 Apr 2025 16:20:28 +0100
-Message-ID: <20250403151622.627391457@linuxfoundation.org>
+	Cameron Williams <cang1@live.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.13 12/23] tty: serial: 8250: Add Brainboxes XC devices
+Date: Thu,  3 Apr 2025 16:20:29 +0100
+Message-ID: <20250403151622.628613383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit ea79068d4073bf303f8203f2625af7d9185a1bc6 upstream.
+commit 5c7e2896481a177bbda41d7850f05a9f5a8aee2b upstream.
 
-[WHAT & HOW]
-A denominator cannot be 0, and is checked before used.
+These ExpressCard devices use the OxPCIE chip and can be used with
+this driver.
 
-This fixes 2 DIVIDE_BY_ZERO issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/DB7PR02MB3802907A9360F27F6CD67AAFC4D62@DB7PR02MB3802.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-@@ -1753,7 +1753,7 @@ static int dcn315_populate_dml_pipes_fro
- 				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
- 						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -2728,6 +2728,22 @@ static struct pci_serial_quirk pci_seria
+ 		.setup		= pci_oxsemi_tornado_setup,
+ 	},
+ 	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4026,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4021,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
+ 		.vendor         = PCI_VENDOR_ID_INTEL,
+ 		.device         = 0x8811,
+ 		.subvendor	= PCI_ANY_ID,
+@@ -5615,6 +5631,20 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-235
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-475
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
  
--				if (remaining_det_segs > MIN_RESERVED_DET_SEGS)
-+				if (remaining_det_segs > MIN_RESERVED_DET_SEGS && crb_pipes != 0)
- 					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
- 							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
- 				if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
+ 	/*
+ 	 * Perle PCI-RAS cards
 
 
 
