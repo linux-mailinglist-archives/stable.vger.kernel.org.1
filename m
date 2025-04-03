@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-127791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3EBA7ABB0
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:25:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26101A7ABBF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F7CD7A8F3E
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:20:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B8CF179E41
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4867264A96;
-	Thu,  3 Apr 2025 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6C9264F82;
+	Thu,  3 Apr 2025 19:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiLL+yPS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFuzHmfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFDF264A93;
-	Thu,  3 Apr 2025 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4952561D6;
+	Thu,  3 Apr 2025 19:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707101; cv=none; b=p2+I7IxbpP8eMLGJcccpKSwH47BKUuVDWMut2NZieeTXBYradZaGnYklV5/Hpo5tvMHrdoyjAAbqcGFEQUatglHUfXoKsvXuDhRICYYIJPQdm3Btf+6WTwC9Yn5elmwCVgYWc6MLE6FOLRZigUqxjQcROYEa8Vi6RVnOpAYeoPk=
+	t=1743707103; cv=none; b=rdCa+Fpqh1VR5WzYHgatS+bLlEI6c35N/wm/QGb/VYXUDdVAlvWwd6JZcwpPPRKUFD4fZ2R34HRv5CyL7AagXsyl3wuuIKXvEAYvQXrp+aIBK3c/s/YwZIhh63giAteFCC53U+XXwht44SKjDjnW0BSp+LTf0Nrcc5FXMVzjzvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707101; c=relaxed/simple;
-	bh=DKtMNqkGSl3Jk+kOCm2sYF+Agp8jjR0lL5uamaFFRtQ=;
+	s=arc-20240116; t=1743707103; c=relaxed/simple;
+	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XWi5X7k8MlWF1z5H/WgAGtNkvOvsjlXUKsIkgsZo1HCwrtbjsP2K9G4cbcXbJta9XrQ2oh1xVT/3gB1nEemKpO0pZUWiKJ3HPDchyhZH3kS9SBG4WHiDeXdjb4TEn0gipw5qa2qJ8al2ItFAN7j1L5oPv3GmtBFNyr/b2XWyAKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiLL+yPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D9EC4CEE3;
-	Thu,  3 Apr 2025 19:04:59 +0000 (UTC)
+	 MIME-Version; b=eva7hZmbUfqqguq0hFLF8+Skp6Vhfc06Am7gz0KUp5Dv11JPXsac5OW5YTWQxiSYAl1G+KvDWH4RiM1BTdydj66d/iRTA8GoJNNv7SO3hTQO4444v6L45fTXeuuTnf0Jilcxrv5GgHR0HAZfm+qnZebY0V39KBsmQKwojE3Niio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFuzHmfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891CAC4CEE9;
+	Thu,  3 Apr 2025 19:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707101;
-	bh=DKtMNqkGSl3Jk+kOCm2sYF+Agp8jjR0lL5uamaFFRtQ=;
+	s=k20201202; t=1743707102;
+	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiLL+yPS/LJfBuhh/BimlqYqd5DmNsxUbAGfgM2P9tFyPrPzlP69b9E2OXlumxTOW
-	 Gd8B2mAJmnzwo/qQihomaeFmuV5E6oiSTz6vHoHm81ySf4sX87gcHspW6pgD/ZAk8o
-	 CmeeHRSGA1+DlT5vr8lmM6vvCcZG4XIfx7M1aOfAq9YH/8aTmDLQPML5UudV9V3O96
-	 l86lWFdWms84zypz1A7fJzWcOWraQ9C0uTo9PaII/sx9MYZt3OuXPhYtR80waOOTv/
-	 S1wIMzzhPA7GF/n4qsdxszfd0izRhM31qlHycDjulAcF9HbOPKNnxbqRO5+Y+h7PV1
-	 ryXwl8xAwKjNA==
+	b=LFuzHmfIredzAfk1u1CXrg9OviDeP4enRyARAbpml8bnkbCKDBnGejx7MkgSmm9CE
+	 nSALjTRqyxyeaahy8nP5EeCF1GPx3MafkG2tZvi6vxeMlDwAR+ETYuGccZqdFD+k9u
+	 gNY0BSbioxd3pOahF5tJX1MrRNqnEBQiiYtJXn00DNOghPR/7XTQbioUBWVemQ8rMe
+	 VNhxBYJINpZIFDkmoBYgbVij5XpQBudTdgJaSAjLf+R7CioUZYmUis7/tA3/21r6Fx
+	 /BxhN6le7v65TMLOeTZm4t7DZ8SminnGZm0EWwbOAKS85hc0tFiB2dtwqAV0dlQycG
+	 eD8f12AB1opWw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Philip Pemberton <lists@philpem.me.uk>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shaggy@kernel.org,
-	rand.sec96@gmail.com,
-	rbrasga@uci.edu,
-	niharchaithanya@gmail.com,
-	aha310510@gmail.com,
-	ghanshyam1898@gmail.com,
-	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.13 22/49] jfs: add sanity check for agwidth in dbMount
-Date: Thu,  3 Apr 2025 15:03:41 -0400
-Message-Id: <20250403190408.2676344-22-sashal@kernel.org>
+	linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 23/49] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
+Date: Thu,  3 Apr 2025 15:03:42 -0400
+Message-Id: <20250403190408.2676344-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
 References: <20250403190408.2676344-1-sashal@kernel.org>
@@ -72,39 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
+[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
 
-The width in dmapctl of the AG is zero, it trigger a divide error when
-calculating the control page level in dbAllocAG.
+atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
+has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
 
-To avoid this issue, add a check for agwidth in dbAllocAG.
+However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
+on a port at initialization time, before any devices are scanned.
 
-Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+If a controller detects a connected device that only supports PIO, we set
+the flag ATA_DFLAG_PIO.
+
+Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
+device only supports PIO.
+
+Reported-by: Philip Pemberton <lists@philpem.me.uk>
+Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
+Tested-by: Philip Pemberton <lists@philpem.me.uk>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-eh.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 9ac1fc2ed05bc..0e1019382cf51 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
-+	if (!bmp->db_agwidth) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
- 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 3b303d4ae37a0..16cd676eae1f9 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1542,8 +1542,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
+ 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
+ 	tf.command = ATA_CMD_PACKET;
+ 
+-	/* is it pointless to prefer PIO for "safety reasons"? */
+-	if (ap->flags & ATA_FLAG_PIO_DMA) {
++	/*
++	 * Do not use DMA if the connected device only supports PIO, even if the
++	 * port prefers PIO commands via DMA.
++	 *
++	 * Ideally, we should call atapi_check_dma() to check if it is safe for
++	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
++	 * Since we can't check the command, perhaps we should only use pio?
++	 */
++	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
+ 		tf.protocol = ATAPI_PROT_DMA;
+ 		tf.feature |= ATAPI_PKT_DMA;
+ 	} else {
 -- 
 2.39.5
 
