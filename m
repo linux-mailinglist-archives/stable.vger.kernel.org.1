@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-127921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E60A7AD3B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C5EA7AD3D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17AB5189CFA3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:55:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45EA189D545
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5AA29DB96;
-	Thu,  3 Apr 2025 19:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A622BD597;
+	Thu,  3 Apr 2025 19:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+RpAYE5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNtf7aUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F4029DB91;
-	Thu,  3 Apr 2025 19:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC182BD590;
+	Thu,  3 Apr 2025 19:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707394; cv=none; b=GWVlwy455jaRqqMbKtPMt9OQIWMbpWQHanjFnEDwqSoQomarihyM9lLYYNb59D9wswNDaJ1rbBkgXy2A561Otj6WfKF0BScO9H9D1MtIuHI0F01njNvLuvCvmePuTgevKbOMlgFLEa5/FW9x5W+I8FKVZ4wLv7GrRYWJ/KDMojM=
+	t=1743707396; cv=none; b=iJzg01DfQUeM4FABlZYbaOUmL4Y2zaAxME8C/s+jeA8CvfWoc3m9XXtP5tFOn1k9SK+otOxJTbEFwJw4BrEIv3vhq90ae/C0TGnu/3ZBXBEnFjfplhZRXZqsD4Qq2euWla7IiaJqbv+X/bCTZ7YhZU936okVj3Qc5q27h3ILdTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707394; c=relaxed/simple;
-	bh=IBfMB9cJ5OXUmoCp0wVcbbAfq2SiLFxAFew3z0+FGbs=;
+	s=arc-20240116; t=1743707396; c=relaxed/simple;
+	bh=k3JtT1044L+E/0ZKJrYQfqsGEng/GOGW9/OU9mKWewI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fs6j4nAd9V8b17Br0QD4dAJSul5uf7kTw0jyLD1cyMbLjz2ACOCztWtji4NxGxg8S3vBAWZLhkviL7rt329vSYD7giRM+hlOWddRg7CNt44/VKvsEE5syGq2kys2L1CNo1nubWOSu7tukQIeQw0tL8z4FntZ3Yb9a/7191cFZD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+RpAYE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE00C4CEE9;
-	Thu,  3 Apr 2025 19:09:51 +0000 (UTC)
+	 MIME-Version; b=C2I88PXgXLQ9iEVVrqVsPX3S1CjZubRitS0uA8RmbmCXyE6BkNVhUQxYG7QrKrgs+5F47UHKhJwAiG5W/qBfPFP0nfEGpYsUAez5UKrN4zbRVYW8Mdauo1hjj92STYbzKZvg4wAvv6MVglYkZTFGV7FCqnxWLXlD1AQxRs95urU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNtf7aUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB07C4CEE3;
+	Thu,  3 Apr 2025 19:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707392;
-	bh=IBfMB9cJ5OXUmoCp0wVcbbAfq2SiLFxAFew3z0+FGbs=;
+	s=k20201202; t=1743707395;
+	bh=k3JtT1044L+E/0ZKJrYQfqsGEng/GOGW9/OU9mKWewI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+RpAYE5g0BkDlAR4r7M9Nc5MWMJrAz7vSEDtCuFvUUlD0/eGXJkI/fRoAtVZI9w5
-	 AO/GQyrAvawrUgP+xHe3WRvYzjK9EZ+MxbB62v3alDJXdKDofc4XyFHFdXPTN1wQ1I
-	 RFY16vr3ewOJUJYaFCdoWBfO1+KsjMCpRYAJSWFpQ6vJwTvFypxffiwQRmh3qBhZ84
-	 RfY1lhHdFYMLkkoEtHmhiCKTsqNajrVk1v6uF6YELEOqu2LjgfqtGIMOK3lVWsHKTn
-	 mgEDw/B+iRQzy8w4x+gOo6OiUppkn/OtLWj+pizELJlXKGkAYv5+FfrVKKatkHqWf5
-	 ab/PAOiACpM4Q==
+	b=lNtf7aUWq8T/N8thtUa1ulR4nwkpFRQ/q8AJBMPtinMp/+jxhofEQ6DXlrL9yASxH
+	 Sjm4yN8wP6tAKvtD4vEgG3QyuzeoDJuLG4IetxIeOR0M91iPmnY1+zeUbK7XXSc4Of
+	 vk2YC9QLBGDKolP9uTXWHsEZ3YXj1XnCLU1WUrwZgEdSCJRivwUqEgJR+bm938G193
+	 gsg9chavbyQZ2qxig6zuvcegoE0Yig0H0xUdzeghomI3Ej1Ri8ql2rpiebh21QWxV3
+	 t003KI06k47fA9gjYo1ZHENFRNVsUFUecZkjqTI9sSLIyPjOaLmoLnZqm28wlvY4yo
+	 ZzuxEb2iATXkg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 12/16] scsi: st: Fix array overflow in st_setup()
-Date: Thu,  3 Apr 2025 15:09:20 -0400
-Message-Id: <20250403190924.2678291-12-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 13/16] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Thu,  3 Apr 2025 15:09:21 -0400
+Message-Id: <20250403190924.2678291-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190924.2678291-1-sashal@kernel.org>
 References: <20250403190924.2678291-1-sashal@kernel.org>
@@ -62,41 +66,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-Change the array size to follow parms size instead of a fixed value.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Add the USB ID to mt76x2u driver.
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 1551d533c7196..956b3b9c5aad5 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -4109,7 +4109,7 @@ static void validate_options(void)
-  */
- static int __init st_setup(char *str)
- {
--	int i, len, ints[5];
-+	int i, len, ints[ARRAY_SIZE(parms) + 1];
- 	char *stp;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 2575369e44e20..9369515f36a3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -21,6 +21,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
- 	stp = get_options(str, ARRAY_SIZE(ints), ints);
 -- 
 2.39.5
 
