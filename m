@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-127875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA492A7ACD1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6A2A7ACDD
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC585176946
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:43:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD6A1767E3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2D1280A4E;
-	Thu,  3 Apr 2025 19:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFD1280CC4;
+	Thu,  3 Apr 2025 19:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckhavqIK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oa0OnqrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD629254851;
-	Thu,  3 Apr 2025 19:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE5258CEE;
+	Thu,  3 Apr 2025 19:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707292; cv=none; b=l+z932u9TVpuaHr/u2A7q2h0EAEmo7BEEoyEGvers0E+y9J5qyVqcPiu1/Dm9WZHiF1o1qPl7wji70Yynw/cMfL2k0WmQnD3mKj/YZBTmZOG8cuXHFrX3AKw5tzWqSJcAb6naXglWd+7FuXSjqRmNDKocKuWrEPUPepc3toPgr8=
+	t=1743707296; cv=none; b=AC2rPO/OMZ8R2/tjIspJ7H1QFPSI0MZNi7s/MshvYban1vG+TFg/uT+g412gkNdxULHxt+U6IhehR4TcFzmI/qs4UoQ8e9f8XOGteDKsDlqkEvJlnWBYSH3Hnv+V2FDGNjYlu4Eahjr0tW8WfMgZN5rgfierZGuFDXWuchFdL3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707292; c=relaxed/simple;
-	bh=T09NxNiBN5hYF3css4xVOOXFGHp8gCmb0a5rRx5/Bdg=;
+	s=arc-20240116; t=1743707296; c=relaxed/simple;
+	bh=DKtMNqkGSl3Jk+kOCm2sYF+Agp8jjR0lL5uamaFFRtQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FiscxK7ptmg59bki6slE8mTiGKagrAYXaWFc2NUzQHlXWVapC0xUjMJrQIIHR53rPRMfeB8u8+jZTAoQ4fvatw34Ll4u8I7YOEmqKcD+yzcBY3pN3Etx9AtILUf3dW7belQ58ycSvftErDmjvOuXqP/ut3QKOTbgqoJ7liqIZaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckhavqIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016F9C4CEE8;
-	Thu,  3 Apr 2025 19:08:10 +0000 (UTC)
+	 MIME-Version; b=X2dd15XCkd+PMcLb006FmrWJxgXVD8CZ6b3jaNq0WSXyB+IX+sExYfxs5uLAx8xkZeITL7SF0xtJYxsX7KR4x62HJGcDTyxw/0YWC5nwqfqAdI3TSVZlFx1V8MKZ3aDAHczF6HIiT0//FEK3lsWC3M3Ox4dE6oI0FFYl6mSsblY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oa0OnqrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA414C4CEE8;
+	Thu,  3 Apr 2025 19:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707292;
-	bh=T09NxNiBN5hYF3css4xVOOXFGHp8gCmb0a5rRx5/Bdg=;
+	s=k20201202; t=1743707295;
+	bh=DKtMNqkGSl3Jk+kOCm2sYF+Agp8jjR0lL5uamaFFRtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckhavqIKTwLvNvcWUuWXdKm9W7WeCDFoG1otFOTOEqFdKJE1V3WJGVf3uGaUdeknt
-	 LOV1junXFfxmd/RLghoVm6hBafbbn98ZCWixoxeNUIiCd897P/7JOvCXSkqBGhNZF0
-	 seRlIegJZifcKxHYLvyX+cYZ1Vy5pX9fNiaW6IXCW/EcL+6DmYKZqTSp3p3kOUad7I
-	 sZh8PpnBsOPyjqQlrA8EZPfj1MU1rGebnxhcjDuwkurEAiOeALWPPRbi/+7vxUIJSW
-	 RLRPEZQqx+25a0NyqLWgAXjjruAt0rQEHbSRN572SOuq53BZGS33qa0SeQH2M02y3J
-	 LvQm84+UY+IMA==
+	b=Oa0OnqrXledPhDDH+3nE5O5bugtwr+Mb7i837WwfD0XA1L1anXPCaNEkRWaUJG5oZ
+	 tFi2bYQRm0O55JgrVejvvgNZjenigu6MSolhNP3GNJGueDoEqa8mfjsIrKtllJ7Tgp
+	 QI4LbawS1+Y1PlD86U+Gv5FMSNCduoMVyR2o+95KiiOHpAikRQ8QrJiGaHwnVeSIxC
+	 tJLb2PaoqUZegsnkJfEt6a7Oq2QbgEQjkO3gq7RCUe/k9xxsZYTTJHUPcJRhhgTRYy
+	 LnxUv2XMvIDPqz7YTSOeBeNH/MChzU611S/sm7lmKumiwIwrIWzj/eowsskO8kt+e8
+	 EzEnCq/mp5urQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com,
+	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
+	rand.sec96@gmail.com,
+	peili.dev@gmail.com,
 	aha310510@gmail.com,
-	dmantipov@yandex.ru,
-	quic_zhonhan@quicinc.com,
+	ghanshyam1898@gmail.com,
+	niharchaithanya@gmail.com,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.6 10/26] jfs: Prevent copying of nlink with value 0 from disk inode
-Date: Thu,  3 Apr 2025 15:07:29 -0400
-Message-Id: <20250403190745.2677620-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 11/26] jfs: add sanity check for agwidth in dbMount
+Date: Thu,  3 Apr 2025 15:07:30 -0400
+Message-Id: <20250403190745.2677620-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190745.2677620-1-sashal@kernel.org>
 References: <20250403190745.2677620-1-sashal@kernel.org>
@@ -72,112 +74,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit b61e69bb1c049cf507e3c654fa3dc1568231bd07 ]
+[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
 
-syzbot report a deadlock in diFree. [1]
+The width in dmapctl of the AG is zero, it trigger a divide error when
+calculating the control page level in dbAllocAG.
 
-When calling "ioctl$LOOP_SET_STATUS64", the offset value passed in is 4,
-which does not match the mounted loop device, causing the mapping of the
-mounted loop device to be invalidated.
+To avoid this issue, add a check for agwidth in dbAllocAG.
 
-When creating the directory and creating the inode of iag in diReadSpecial(),
-read the page of fixed disk inode (AIT) in raw mode in read_metapage(), the
-metapage data it returns is corrupted, which causes the nlink value of 0 to be
-assigned to the iag inode when executing copy_from_dinode(), which ultimately
-causes a deadlock when entering diFree().
-
-To avoid this, first check the nlink value of dinode before setting iag inode.
-
-[1]
-WARNING: possible recursive locking detected
-6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0 Not tainted
---------------------------------------------
-syz-executor301/5309 is trying to acquire lock:
-ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
-
-but task is already holding lock:
-ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&(imap->im_aglock[index]));
-  lock(&(imap->im_aglock[index]));
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-5 locks held by syz-executor301/5309:
- #0: ffff8880422a4420 (sb_writers#9){.+.+}-{0:0}, at: mnt_want_write+0x3f/0x90 fs/namespace.c:515
- #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: inode_lock_nested include/linux/fs.h:850 [inline]
- #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: filename_create+0x260/0x540 fs/namei.c:4026
- #2: ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2460 [inline]
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocAG+0x4b7/0x1e50 fs/jfs/jfs_imap.c:1669
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2477 [inline]
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocAG+0x869/0x1e50 fs/jfs/jfs_imap.c:1669
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5309 Comm: syz-executor301 Not tainted 6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_deadlock_bug+0x483/0x620 kernel/locking/lockdep.c:3037
- check_deadlock kernel/locking/lockdep.c:3089 [inline]
- validate_chain+0x15e2/0x5920 kernel/locking/lockdep.c:3891
- __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5202
- lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
- __mutex_lock_common kernel/locking/mutex.c:608 [inline]
- __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
- diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
- jfs_evict_inode+0x32d/0x440 fs/jfs/inode.c:156
- evict+0x4e8/0x9b0 fs/inode.c:725
- diFreeSpecial fs/jfs/jfs_imap.c:552 [inline]
- duplicateIXtree+0x3c6/0x550 fs/jfs/jfs_imap.c:3022
- diNewIAG fs/jfs/jfs_imap.c:2597 [inline]
- diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- diAllocAG+0x17dc/0x1e50 fs/jfs/jfs_imap.c:1669
- diAlloc+0x1d2/0x1630 fs/jfs/jfs_imap.c:1590
- ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
- jfs_mkdir+0x1c5/0xba0 fs/jfs/namei.c:225
- vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
- do_mkdirat+0x264/0x3a0 fs/namei.c:4280
- __do_sys_mkdirat fs/namei.c:4295 [inline]
- __se_sys_mkdirat fs/namei.c:4293 [inline]
- __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=355da3b3a74881008e8f
+Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
 Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 8b876e2db8c60..9a6d504228e7c 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -456,7 +456,7 @@ struct inode *diReadSpecial(struct super_block *sb, ino_t inum, int secondary)
- 	dp += inum % 8;		/* 8 inodes per 4K page */
- 
- 	/* copy on-disk inode to in-memory inode */
--	if ((copy_from_dinode(dp, ip)) != 0) {
-+	if ((copy_from_dinode(dp, ip) != 0) || (ip->i_nlink == 0)) {
- 		/* handle bad return by returning NULL for ip */
- 		set_nlink(ip, 1);	/* Don't want iput() deleting it */
- 		iput(ip);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 9ac1fc2ed05bc..0e1019382cf51 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
++	if (!bmp->db_agwidth) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+ 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
 -- 
 2.39.5
 
