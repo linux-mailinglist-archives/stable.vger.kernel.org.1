@@ -1,78 +1,148 @@
-Return-Path: <stable+bounces-127496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34274A7A061
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 11:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D556A7A08A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 11:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B99F3173879
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 09:47:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109701739A3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 09:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2511244195;
-	Thu,  3 Apr 2025 09:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600962459EE;
+	Thu,  3 Apr 2025 09:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Unq4Y2Ev"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD25F78F58;
-	Thu,  3 Apr 2025 09:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DC13D531;
+	Thu,  3 Apr 2025 09:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743673653; cv=none; b=raKcqbzwCp4CyHwLKHr7CwCe2TlJmyNykkW6RXMSII7YiuDM7Vle4a9auTh/mLFmG6SgVac7BsFjpYnWGnOYHOfY2xSfteJLpjEIRdauwG2K4jS4PQcv9TVNlnb+qCd/yYB/woCxY2T1ARZOoJgjpWartk0rGyT+mUSiIDIGStg=
+	t=1743674306; cv=none; b=E1PWa908OQ2XqyVi86y8Z0t6YWTJsq/GHfoV9AD0GugutfR24znw0OEVvc8x85Z8Fkt2f2i8JoObkYvIvwd4G5W542NPYftkYoVL0+kx93liYJ0KS/fj5xpWBlCxUi9OWZG89a2KliPu6WhPC5PH5OEiqcD7cl8bVBD8r27bE6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743673653; c=relaxed/simple;
-	bh=6zobr+z8sKB+pPfr/ot4tpcb6Bc4NQ/pj7nUWow2KRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UlqvP5F2oYNVbNzlW18Iqir4iKkSRc5Z/1KSFU8W6K0CoOLDLCdo46U+FsXFDm9JZIvvcwas2cXQ7eqriQ646r4uvo+asN9MhvTQTN/n60dIX9RBQBnP1quvRbmYRpkylArqklvA6nNVB5I6NBFZ4u2/Nqab3XRd26giMnb1f50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFF5C4CEE3;
-	Thu,  3 Apr 2025 09:47:30 +0000 (UTC)
-Date: Thu, 3 Apr 2025 10:47:28 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Peter Collingbourne <pcc@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] string: Add load_unaligned_zeropad() code path to
- sized_strscpy()
-Message-ID: <Z-5ZMOqhca_Z6FV7@arm.com>
-References: <20250403000703.2584581-1-pcc@google.com>
- <20250403000703.2584581-2-pcc@google.com>
+	s=arc-20240116; t=1743674306; c=relaxed/simple;
+	bh=Znl9X9FpTIGF2OsT13x7/fGoEi2ygGGP8eazYnBsR6A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DZAK7iUvkYXr/ShoipniM3CoH0aCwz4w+jmhGaFaxEQ+hYk6BOM7kPytY8NNbS5CFyijTcdITth1FCRXQ20KqioEEQuGkKMnfaetfd2Cam4miulBO2KmeKUH5NbMONyYeB5pKRPQv0ftgPG99zk3b9eZSNPGKM9Tzvy+8SzgA94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Unq4Y2Ev; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ayy35oKwof2JTIj+vzq+S1Uxz24/XsuIZVSRWIasD48=; b=Unq4Y2EvB3btFhXlJJiS8SM/co
+	L1SuZeV2mtqzIQoDm6yRLtSJAvnk23toy7h3vA4nHYWyXe6OCFr8a1hqQawkftGC8NMbRpQTFeZ1C
+	ySrqrpHoTvcsMpIdAWAVry/mFFTryMoWaYbgNHsqhblaV3YHSlTjnN+PHCLg8lE1k6ZNDpVpR+8N4
+	hVD6dqG22FykwegIrWHkPLSglwor0Nkp3kIt/YWJluyDB8N+FGRvNTN1WZNDJfAEPdGoKc+IqgtFz
+	WUuuVmfMkPT6vaF0k9VtEFyWAseniKNrq0MzBZc7AhCHBgaDvb3XE6kPMLZ1fodGv55sNBuVwwHnF
+	I15qP7nA==;
+Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u0HKp-00AljK-Qd; Thu, 03 Apr 2025 11:58:07 +0200
+From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] sctp: check transport existence before processing a
+ send primitive
+In-Reply-To: <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+ <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+Date: Thu, 03 Apr 2025 11:58:00 +0200
+Message-ID: <87tt75efdj.fsf@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250403000703.2584581-2-pcc@google.com>
+Content-Type: text/plain
 
-On Wed, Apr 02, 2025 at 05:06:59PM -0700, Peter Collingbourne wrote:
-> The call to read_word_at_a_time() in sized_strscpy() is problematic
-> with MTE because it may trigger a tag check fault when reading
-> across a tag granule (16 bytes) boundary. To make this code
-> MTE compatible, let's start using load_unaligned_zeropad()
-> on architectures where it is available (i.e. architectures that
-> define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-> takes care of page boundaries as well as tag granule boundaries,
-> also disable the code preventing crossing page boundaries when using
-> load_unaligned_zeropad().
-> 
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-> Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-> Cc: stable@vger.kernel.org
+Thanks for reviewing, answers below:
 
-Up to you if you want to keep the panic behaviour on unmapped pages.
-Either way:
+On Wed, Apr 02 2025 at 15:40:56, Xin Long <lucien.xin@gmail.com> wrote:
+> The data send path:
+>
+>   sctp_endpoint_lookup_assoc() ->
+>   sctp_sendmsg_to_asoc()
+>
+> And the transport removal path:
+>
+>   sctp_sf_do_asconf() ->
+>   sctp_process_asconf() ->
+>   sctp_assoc_rm_peer()
+>
+> are both protected by the same socket lock.
+>
+> Additionally, when a path is removed, sctp_assoc_rm_peer() updates the
+> transport of all existing chunks in the send queues (peer->transmitted
+> and asoc->outqueue.out_chunk_list) to NULL.
+>
+> It will be great if you can reproduce the issue locally and help check
+> how the potential race occurs.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+That's true but if there isn't enough space in the send buffer, then
+sctp_sendmsg_to_asoc() will release the lock temporarily.
+
+The scenario that the reproducer generates is the following:
+
+        Thread A                                  Thread B
+        --------------------                      --------------------
+(1)     sctp_sendmsg()
+          lock_sock()
+          sctp_sendmsg_to_asoc()
+            sctp_wait_for_sndbuf()
+              release_sock()
+                                                  sctp_setsockopt(SCTP_SOCKOPT_BINDX_REM)
+                                                    lock_sock()
+                                                    sctp_setsockopt_bindx()
+                                                    sctp_send_asconf_del_ip()
+                                                      ...
+                                                    release_sock()
+                                                      process rcv backlog:
+                                                        sctp_do_sm()
+                                                          sctp_sf_do_asconf()
+                                                            ...
+                                                              sctp_assoc_rm_peer()
+              lock_sock()
+(2)          chunk->transport = transport
+             sctp_primitive_SEND()
+               ...
+               sctp_outq_select_transport()
+*BUG*            switch (new_transport->state)
+
+
+Notes:
+------
+
+Both threads operate on the same socket.
+
+1. Here, sctp_endpoint_lookup_assoc() finds and returns an existing
+association and transport.
+
+2. At this point, `transport` is already deleted. chunk->transport is
+not set to NULL because sctp_assoc_rm_peer() ran _before_ the transport
+was assigned to the chunk.
+
+> We should avoid an extra hashtable lookup on this hot TX path, as it would
+> negatively impact performance.
+
+Good point. I can't really tell the performance impact of the lookup
+here, my experience with the SCTP implementation is very limited. Do you
+have any suggestions or alternatives about how to deal with this?
+
+Thanks,
+Ricardo
 
