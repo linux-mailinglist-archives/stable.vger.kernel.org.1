@@ -1,143 +1,136 @@
-Return-Path: <stable+bounces-127474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E537A79AB5
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 06:00:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1C8A79ABB
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 06:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECCDF189454D
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 04:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3223E172780
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 04:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06B31990AF;
-	Thu,  3 Apr 2025 03:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IWbYgMh5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7554195FEF;
+	Thu,  3 Apr 2025 04:08:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663AF2581;
-	Thu,  3 Apr 2025 03:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0E62CA6;
+	Thu,  3 Apr 2025 04:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743652795; cv=none; b=mXg0m2Y80Z2jb3dWcGc8mB4PgPi88HWGaXPyexIfSJC9CCjcEv77+y8FTYSYb/8E/bBs+o6kmm8zu98k57q2Tg4v37wLDswb5pWhJjLtnuBMouVVpgidtW483WJxhp0zFYpMrkh+U5y+osfkzCC5vBqe5HvJN3ENnQ/8uwbk3yw=
+	t=1743653297; cv=none; b=dXQooj6f5/5PE0OyJisIh+pVxs9keaLbzSRhybwZA12jLa6iRhyafOE0dncM0bKrYTsEDlo0gEf81ixMjCPe3/KNIOAKd8bXaySOElI/FgQ4CAvk+MTdw4TcGtjPUlOze1H2eEiAxZcwe7qcxPgTFfA17P8TYRBJGHZ1B8lfdpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743652795; c=relaxed/simple;
-	bh=a1W8uK/mtFZRgxv1ycxIHxj31XYVSUtlLTwzZB8HCBQ=;
-	h=Date:To:From:Subject:Message-Id; b=MF1f7OKrpfmHWhR38su/maSZtfcfcgyGdelOZ71cNL7twU+QN+jr5xvfUWS0oj7nJv0gpZQrRkYca0nPWI5QejxR0pAIUlH5Ovgo8wYnCD1Av51EOq6K35UWI9aCPbUQ45hlignyna+e8p3pzVxp5kYaDagSVDlmFKAXUkrtANo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IWbYgMh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F0BC4CEE3;
-	Thu,  3 Apr 2025 03:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1743652795;
-	bh=a1W8uK/mtFZRgxv1ycxIHxj31XYVSUtlLTwzZB8HCBQ=;
-	h=Date:To:From:Subject:From;
-	b=IWbYgMh5WVUS8UlkU4CribUjZbLpCnenRBx8PpXl/kFqhD0ReBBjaKk3l4yInFmdg
-	 JcItI257rcFK5o8E+fE4Ps0cHw6jEdYcReT1XEWuSKJdVMYY20sAlg+kKihRNUu8mB
-	 gMCcd77d7kctOM8kt0rnlaX/q+12U5hN0jEuYnLQ=
-Date: Wed, 02 Apr 2025 20:59:54 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,osalvador@suse.de,linmiaohe@huawei.com,vishal.moola@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250403035955.07F0BC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1743653297; c=relaxed/simple;
+	bh=LvcBl0KnY0rHS0+2sFt/mQyPKZ5eFqfZE7GqNKwSm84=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zru4eBYFdNA/us2G/gPe9TY365UaTbyjcKZUf6YHaiXsIoVulK4ebYgU8M995kOxVw4fGKgyVyfKcf9m48wT0XLeCZnPt9NkOo80jpxFp8GjB0MVvLJfToeQl6oaw/g1VPqUw/utPnfDO1RepYzUFhtwt7kbX74uWuAdB05M0uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.198])
+	by gateway (Coremail) with SMTP id _____8CxaWqpCe5nnNavAA--.32558S3;
+	Thu, 03 Apr 2025 12:08:09 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.198])
+	by front1 (Coremail) with SMTP id qMiowMAxSsSlCe5nJjZtAA--.29844S2;
+	Thu, 03 Apr 2025 12:08:08 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>
+Cc: linux-pci@vger.kernel.org,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Huacai Chen <chenhuacai@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Xianglai Li <lixianglai@loongson.cn>
+Subject: [PATCH V2] PCI: Add ACS quirk for Loongson PCIe
+Date: Thu,  3 Apr 2025 12:07:56 +0800
+Message-ID: <20250403040756.720409-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMAxSsSlCe5nJjZtAA--.29844S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr45Kw1fZw4xAF48Gry8Zwc_yoW5JF1Upr
+	13CrsrKF4rtr4jvrn5Ja4UGrn5ZFWkA3429FW7Ca4Yga1fAas8Xry2kF1rKF4ayFZ7Xr1x
+	Z3yDur1UuayqywbCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
+	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
+	2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
+	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73
+	UjIFyTuYvjxUc0eHDUUUU
 
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do
+not allow peer-to-peer transactions between Root Ports. Add an ACS quirk
+so each Root Port can be in a separate IOMMU group.
 
-The patch titled
-     Subject: mm/compaction: fix bug in hugetlb handling pathway
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: mm/compaction: fix bug in hugetlb handling pathway
-Date: Mon, 31 Mar 2025 19:10:24 -0700
-
-The compaction code doesn't take references on pages until we're certain
-we should attempt to handle it.
-
-In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
-without taking a reference to the folio associated with our pfn.  If our
-folio's refcount drops to 0, compound_nr() becomes unpredictable, making
-low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
-this should rarely happen (if ever).
-
-Fix this by storing the folio statistics earlier on the stack (just like
-the THP and Buddy cases).
-
-Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
-in isolate_migratepages_block") to make backporting easier.
-
-Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
-Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
+V2: Add more device ids.
 
- mm/compaction.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/mm/compaction.c~mm-compaction-fix-bug-in-hugetlb-handling-pathway
-+++ a/mm/compaction.c
-@@ -981,13 +981,13 @@ isolate_migratepages_block(struct compac
- 		}
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 8d610c17e0f2..eee96ad03614 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4995,6 +4995,18 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
- 		if (PageHuge(page)) {
-+			const unsigned int order = compound_order(page);
- 			/*
- 			 * skip hugetlbfs if we are not compacting for pages
- 			 * bigger than its order. THPs and other compound pages
- 			 * are handled below.
- 			 */
- 			if (!cc->alloc_contig) {
--				const unsigned int order = compound_order(page);
- 
- 				if (order <= MAX_PAGE_ORDER) {
- 					low_pfn += (1UL << order) - 1;
-@@ -1011,8 +1011,8 @@ isolate_migratepages_block(struct compac
- 				 /* Do not report -EBUSY down the chain */
- 				if (ret == -EBUSY)
- 					ret = 0;
--				low_pfn += compound_nr(page) - 1;
--				nr_scanned += compound_nr(page) - 1;
-+				low_pfn += (1UL << order) - 1;
-+				nr_scanned += (1UL << order) - 1;
- 				goto isolate_fail;
- 			}
- 
-_
-
-Patches currently in -mm which might be from vishal.moola@gmail.com are
-
-mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
++
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -5128,6 +5140,17 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
+-- 
+2.47.1
 
 
