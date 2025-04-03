@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-127650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59290A7A6DD
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35F2A7A68E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8EC217A124
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAFAB189CAC1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FF82505D2;
-	Thu,  3 Apr 2025 15:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E312528E8;
+	Thu,  3 Apr 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Si3on5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv4yM0NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44DF24E000;
-	Thu,  3 Apr 2025 15:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220B2528E3;
+	Thu,  3 Apr 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693960; cv=none; b=sqZEQinV51qA6TqfHy/BRgHESxQq4EySmaw1g4EiK7SnD2wC/ltT/9hCO3PWB/6AykDDXO1wjykxUI2VwD8vBuKE1oOVJKPz/SYloyhqTt3/79ioodd9XJtVyu9oYkAj1ayqSYcFWncqUnQDvQ51iBRG//WLfVpvzLcaE5i3Ku4=
+	t=1743693846; cv=none; b=BLCdspo90FioqLIzLuoLe64SF+JN97tf7hBPlZxSreP60PPuQtJ0TGEr05v+cT5yXIPLTGj0RSU1gtcgNFJIxbYz9f/CBFqn1O58uSAm98kiHNpxJWHZl+0bgdXNGvtTnokRAsReQQZt7w2CmUbw8npmywQy5XsvIuj7S8hYcCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693960; c=relaxed/simple;
-	bh=MKTRZp8PXtwysCTdVIzvru0kGbX5xuAZEgX+deEEXQA=;
+	s=arc-20240116; t=1743693846; c=relaxed/simple;
+	bh=2doeibbupG141z1j+KCgNPEVAdQA8fm8ys2xHDGeWKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftGx7sAkIimec3akY4eG3czvCBge8I5KTzO3m0FY4Tztg3yu5SV6FkN+4IEUk7CM6G4hiqM2VvDAR7kQxjp/hEWxj9iouBepeepcBXTXs6FUrW+qMhbFMU8B7DzIaOmOBwdd2ZfAlIYDu3Zmi0juPORZ97ZWhCsfRbyn2ixr6+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Si3on5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B72C4CEE3;
-	Thu,  3 Apr 2025 15:26:00 +0000 (UTC)
+	 MIME-Version; b=in80KDohVzfWRNyDYQmURhH80xYLJn/LSwdhaninXVcYrFd3MMM4X9ycvqIJSntWh8y3yiArRaZeFW4Ajmj+z9LymShoUXXD++Y66vU8Y7HCXqqwV/TyKmFlLfWS2cEzr1a7hS6zAg2Qc7l1zG+1GyN+OUUTX9LqkWmCTMSTZgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv4yM0NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8ECC4CEE3;
+	Thu,  3 Apr 2025 15:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693960;
-	bh=MKTRZp8PXtwysCTdVIzvru0kGbX5xuAZEgX+deEEXQA=;
+	s=korg; t=1743693846;
+	bh=2doeibbupG141z1j+KCgNPEVAdQA8fm8ys2xHDGeWKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/Si3on5oU4bx1fhWvJrh1Z+vbzTWbjnEPK79BiHixsXMl9UwPKi//vSPvy9XA/87
-	 yiXLgRMYQ6LZRx4k+/QTW76sBbWoXuaovzHYqsZr+9LwirZsgp/kwkVzBzZMEqFHOQ
-	 xuTSk3TiLWb8nNuawC6ylhU9d13+urC9KF17fe0A=
+	b=jv4yM0NXOZLGsw8fSg8z+k3yxUZEfVrN6/GWw6BS1rmMEA5Q4ZFbhXvu4D9xTXtgP
+	 sFxXughWrZBifa9plA6SrE4Laom35Lz5skJP8uQpWcW3lf47NR0dcgBxqvUBB2tLse
+	 hqai1gv1Xr1D1zd7/Um2RDHAc2ZjLr3h523ESPII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxim@isovalent.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.13 06/23] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+	stable <stable@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 6.14 19/21] perf tools: Fix up some comments and code to properly use the event_source bus
 Date: Thu,  3 Apr 2025 16:20:23 +0100
-Message-ID: <20250403151622.459060825@linuxfoundation.org>
+Message-ID: <20250403151621.674268435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
+commit 0cced76a0276610e86e8b187c09f0e9ef85b9299 upstream.
 
-nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
-restore the original 5-tuple in case of SNAT, to be able to find the
-right socket (if any). Then socket_match() can correctly check whether
-the socket was transparent.
+In sysfs, the perf events are all located in
+/sys/bus/event_source/devices/ but some places ended up hard-coding the
+location to be at the root of /sys/devices/ which could be very risky as
+you do not exactly know what type of device you are accessing in sysfs
+at that location.
 
-However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
-conntrack lookup, making xt_socket fail to match on the socket when the
-packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
+So fix this all up by properly pointing everything at the bus device
+list instead of the root of the sysfs devices/ tree.
 
-IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
-pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
-with the node's external address. Cilium leverages Envoy to enforce L7
-policies, and Envoy uses transparent sockets. Cilium inserts an iptables
-prerouting rule that matches on `-m socket --transparent` and redirects
-the packets to localhost, but it fails to match SNATed IPv6 packets due
-to that missing conntrack lookup.
-
-Closes: https://github.com/cilium/cilium/issues/37932
-Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/2025021955-implant-excavator-179d@gregkh
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tools/perf/Documentation/intel-hybrid.txt |   12 ++++++------
+ tools/perf/Documentation/perf-list.txt    |    2 +-
+ tools/perf/arch/x86/util/iostat.c         |    2 +-
+ tools/perf/builtin-stat.c                 |    2 +-
+ tools/perf/util/mem-events.c              |    2 +-
+ tools/perf/util/pmu.c                     |    4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/net/ipv6/netfilter/nf_socket_ipv6.c
-+++ b/net/ipv6/netfilter/nf_socket_ipv6.c
-@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 	struct sk_buff *data_skb = NULL;
- 	int doff = 0;
- 	int thoff = 0, tproto;
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn const *ct;
-+#endif
+--- a/tools/perf/Documentation/intel-hybrid.txt
++++ b/tools/perf/Documentation/intel-hybrid.txt
+@@ -8,15 +8,15 @@ Part of events are available on core cpu
+ on atom cpu and even part of events are available on both.
  
- 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
- 	if (tproto < 0) {
-@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 		return NULL;
- 	}
+ Kernel exports two new cpu pmus via sysfs:
+-/sys/devices/cpu_core
+-/sys/devices/cpu_atom
++/sys/bus/event_source/devices/cpu_core
++/sys/bus/event_source/devices/cpu_atom
  
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	/* Do the lookup with the original socket address in
-+	 * case this is a reply packet of an established
-+	 * SNAT-ted connection.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (ct &&
-+	    ((tproto != IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
-+	     (tproto == IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_RELATED_REPLY)) &&
-+	    (ct->status & IPS_SRC_NAT_DONE)) {
-+		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
-+		dport = (tproto == IPPROTO_TCP) ?
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
-+	}
-+#endif
-+
- 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
- 				     sport, dport, indev);
+ The 'cpus' files are created under the directories. For example,
+ 
+-cat /sys/devices/cpu_core/cpus
++cat /sys/bus/event_source/devices/cpu_core/cpus
+ 0-15
+ 
+-cat /sys/devices/cpu_atom/cpus
++cat /sys/bus/event_source/devices/cpu_atom/cpus
+ 16-23
+ 
+ It indicates cpu0-cpu15 are core cpus and cpu16-cpu23 are atom cpus.
+@@ -60,8 +60,8 @@ can't carry pmu information. So now this
+ type. The PMU type ID is stored at attr.config[63:32].
+ 
+ PMU type ID is retrieved from sysfs.
+-/sys/devices/cpu_atom/type
+-/sys/devices/cpu_core/type
++/sys/bus/event_source/devices/cpu_atom/type
++/sys/bus/event_source/devices/cpu_core/type
+ 
+ The new attr.config layout for PERF_TYPE_HARDWARE:
+ 
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -188,7 +188,7 @@ in the CPU vendor specific documentation
+ 
+ The available PMUs and their raw parameters can be listed with
+ 
+-  ls /sys/devices/*/format
++  ls /sys/bus/event_source/devices/*/format
+ 
+ For example the raw event "LSD.UOPS" core pmu event above could
+ be specified as
+--- a/tools/perf/arch/x86/util/iostat.c
++++ b/tools/perf/arch/x86/util/iostat.c
+@@ -32,7 +32,7 @@
+ #define MAX_PATH 1024
+ #endif
+ 
+-#define UNCORE_IIO_PMU_PATH	"devices/uncore_iio_%d"
++#define UNCORE_IIO_PMU_PATH	"bus/event_source/devices/uncore_iio_%d"
+ #define SYSFS_UNCORE_PMU_PATH	"%s/"UNCORE_IIO_PMU_PATH
+ #define PLATFORM_MAPPING_PATH	UNCORE_IIO_PMU_PATH"/die%d"
+ 
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -97,7 +97,7 @@
+ #include <internal/threadmap.h>
+ 
+ #define DEFAULT_SEPARATOR	" "
+-#define FREEZE_ON_SMI_PATH	"devices/cpu/freeze_on_smi"
++#define FREEZE_ON_SMI_PATH	"bus/event_source/devices/cpu/freeze_on_smi"
+ 
+ static void print_counters(struct timespec *ts, int argc, const char **argv);
+ 
+--- a/tools/perf/util/mem-events.c
++++ b/tools/perf/util/mem-events.c
+@@ -189,7 +189,7 @@ static bool perf_pmu__mem_events_support
+ 	if (!e->event_name)
+ 		return true;
+ 
+-	scnprintf(path, PATH_MAX, "%s/devices/%s/events/%s", mnt, pmu->name, e->event_name);
++	scnprintf(path, PATH_MAX, "%s/bus/event_source/devices/%s/events/%s", mnt, pmu->name, e->event_name);
+ 
+ 	return !stat(path, &st);
  }
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -36,12 +36,12 @@
+ #define UNIT_MAX_LEN	31 /* max length for event unit name */
+ 
+ enum event_source {
+-	/* An event loaded from /sys/devices/<pmu>/events. */
++	/* An event loaded from /sys/bus/event_source/devices/<pmu>/events. */
+ 	EVENT_SRC_SYSFS,
+ 	/* An event loaded from a CPUID matched json file. */
+ 	EVENT_SRC_CPU_JSON,
+ 	/*
+-	 * An event loaded from a /sys/devices/<pmu>/identifier matched json
++	 * An event loaded from a /sys/bus/event_source/devices/<pmu>/identifier matched json
+ 	 * file.
+ 	 */
+ 	EVENT_SRC_SYS_JSON,
 
 
 
