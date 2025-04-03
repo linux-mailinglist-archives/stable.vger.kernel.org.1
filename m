@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-127867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64C7A7ACA3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:46:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671C1A7AC95
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579303BA616
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:40:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90B6F189BB87
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D5727D760;
-	Thu,  3 Apr 2025 19:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E287427D786;
+	Thu,  3 Apr 2025 19:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lA8SU3pY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0s6qoIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46FB27CCF7;
-	Thu,  3 Apr 2025 19:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9977227D77F;
+	Thu,  3 Apr 2025 19:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707271; cv=none; b=aRznkSkg31LPWKA0/AOLDd0FMDmtIDd+d1qt2VT3ezXvgoIxQCJit4frDG6rw+L5LKHhzWIadT5VrsKlEQdWWBFBQ5XqdN3P1SEXIDMkqHiX3U5CthZ0y5LLBz97I8CMtIaKmcw4smeS5KIlp6ZBl/jjytWbZ0wK2dS7V+9Y2us=
+	t=1743707273; cv=none; b=PiZ7Fn3LXHaveHsb8+O1svGPI0xP2wC2VC76OaUFGcUWTUVGa5QK2wIIxbCcgOAq/8tw6hAcZIc7LUj9+OW9q/VCvucgdihZsdYHiN8xzKow42cLaK7dh7jFrtsW+oW2rYl4NTyxw0S1nAKov8f7n52oYRE0NQQ51CdhG4hyj0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707271; c=relaxed/simple;
-	bh=Uod12YOpHwXDSMRHEIb0XSjBOKoLLyNPXRB30S/B5uk=;
+	s=arc-20240116; t=1743707273; c=relaxed/simple;
+	bh=G0h4UFeQC29x4Ftgnub9inmXYtnCE0F0FEY/LS3V9Ps=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KjD+1zXNS2gznua3JgGMlvOffwMhZE1iyK/L9Is5rlvfossUt5EFLVZdsOsbvFfj+Tgr4M1aI7NjVzsLRpcz+nY7ji0pNRFiLYLcMuTROHX39+1C0UHHr3rc1q8eF4rrTGIb930XzUTNu8cPYEgugJj6wUCcMSJIBilRjKhbck4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lA8SU3pY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCF6C4CEE8;
-	Thu,  3 Apr 2025 19:07:50 +0000 (UTC)
+	 MIME-Version; b=QOYQ87Af+I7wGBxeGbqHK5JF0hJr0ScA7YrEiOgI1orW3YPNXVdVBNqzk6nRbL9mAZpH4yq9gtr1gpxpl7xVZC91pYink1hInHOUOTU051S6juNaBYp2Q3wzT80sgre3opbRtr5ijyblxizXkwG3r4YW+pOBgdZckq/BJKM1EM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0s6qoIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDDCC4CEE3;
+	Thu,  3 Apr 2025 19:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707271;
-	bh=Uod12YOpHwXDSMRHEIb0XSjBOKoLLyNPXRB30S/B5uk=;
+	s=k20201202; t=1743707273;
+	bh=G0h4UFeQC29x4Ftgnub9inmXYtnCE0F0FEY/LS3V9Ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA8SU3pY3KfhqirmBPtEOGnrxh4e2WHh7XWPBDw8xw03g0F9jHGm4wpRhdfff1UON
-	 RNIkW7GTooT7c+COKnjhC0XIvSn59FRMGNe1udMrBDXh2avO1m/xSyQUuL0GGChufs
-	 EzpyT3zDkOwbPnQCHNmDaQeJ4yN5NiKyz/YrOyytaJ+5z4R8ZCjQ1kjAVlhNsjiTna
-	 T6GSRg+ROzgABFMfQWgNtUGfPzJ26XBGldtuwlzuHsgF51lkd2vaXCdPe8ub7H6XSF
-	 ja3ybIIrp7jjfJp2ZKAfi1wr9AJyKwE4dmL5BUTIfsUo8svBQOxWD/xdbRuCRxTNaR
-	 ePeF3d7PxkG3w==
+	b=g0s6qoIwOuRqS0I302Vi/t0mvZooZbDgnu4aBF6BDo1gt+KYpfTVhitJzQeadi24i
+	 Mx2zVuOBbMrbnsT8b8ZD3EEpKCCgF3ZqQ0Xxqc20I0U5m7WSJCQcO69Xdbfz1PbHAx
+	 kzWvwyQ24JIHySOdRmLYtrlq9G5dNpnM75fKp9qVPrkXMxaZvaFSiWOrJdH5BLUXZN
+	 QJewMrMiri9G6BTz++yqjs2ONEk+VtaOzRUsC4JvLbP3btMBmwefTR8bDMIrEWYHu/
+	 +cQLLc8S9stt9dz9ute7J2EVrYX4lHOZFQspTEKynjHslAJzj73yFJeBhGXXTxWHpm
+	 Z1XlO4FLAE07Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+Cc: Chaohai Chen <wdhh66@163.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.6 02/26] f2fs: don't retry IO for corrupted data scenario
-Date: Thu,  3 Apr 2025 15:07:21 -0400
-Message-Id: <20250403190745.2677620-2-sashal@kernel.org>
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/26] scsi: target: spc: Fix RSOC parameter data header size
+Date: Thu,  3 Apr 2025 15:07:22 -0400
+Message-Id: <20250403190745.2677620-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190745.2677620-1-sashal@kernel.org>
 References: <20250403190745.2677620-1-sashal@kernel.org>
@@ -65,48 +67,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Chao Yu <chao@kernel.org>
+From: Chaohai Chen <wdhh66@163.com>
 
-[ Upstream commit 1534747d3170646ddeb9ea5f7caaac90359707cf ]
+[ Upstream commit b50532318793d28a7628c1ffc129a2226e83e495 ]
 
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
-F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+The SPC document states that "The COMMAND DATA LENGTH field indicates the
+length in bytes of the command descriptor list".
 
-If node block is loaded successfully, but its content is inconsistent, it
-doesn't need to retry IO.
+The length should be subtracted by 4 to represent the length of the
+description list, not 3.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Chaohai Chen <wdhh66@163.com>
+Link: https://lore.kernel.org/r/20250115070739.216154-1-wdhh66@163.com
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/target/target_core_spc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 7ad4a92417591..173832fd0168e 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -764,8 +764,12 @@ void f2fs_update_inode_page(struct inode *inode)
- 		if (err == -ENOENT)
- 			return;
- 
-+		if (err == -EFSCORRUPTED)
-+			goto stop_checkpoint;
-+
- 		if (err == -ENOMEM || ++count <= DEFAULT_RETRY_IO_COUNT)
- 			goto retry;
-+stop_checkpoint:
- 		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_UPDATE_INODE);
- 		return;
- 	}
+diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+index 50290abc07bc2..f110f932ba054 100644
+--- a/drivers/target/target_core_spc.c
++++ b/drivers/target/target_core_spc.c
+@@ -2243,7 +2243,7 @@ spc_emulate_report_supp_op_codes(struct se_cmd *cmd)
+ 			response_length += spc_rsoc_encode_command_descriptor(
+ 					&buf[response_length], rctd, descr);
+ 		}
+-		put_unaligned_be32(response_length - 3, buf);
++		put_unaligned_be32(response_length - 4, buf);
+ 	} else {
+ 		response_length = spc_rsoc_encode_one_command_descriptor(
+ 				&buf[response_length], rctd, descr,
 -- 
 2.39.5
 
