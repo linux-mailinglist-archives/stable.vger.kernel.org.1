@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-127785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8958BA7AB77
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:20:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F19A7ABA4
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D46F01891915
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:19:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25D607A8BEC
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680412561AA;
-	Thu,  3 Apr 2025 19:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0669E2641E8;
+	Thu,  3 Apr 2025 19:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HI9fll22"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAQh3W2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1412641CB;
-	Thu,  3 Apr 2025 19:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81CD2641E2;
+	Thu,  3 Apr 2025 19:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707085; cv=none; b=TujjDO3nxPvxPqQRh+gPrjnZvcma3VX2YAkT7dzz7LRmNyEIUrWwHI80wF/YtrroORvBhAYklCPp2c+jcBDZxeC0emoTsSOwyDG1ANu9Cu6se4HHiDXCGHNhxZvOFmCfKAy4bSkgMSu4aKiCr+PRLNZdkx6XSgv/KaGVuVlnmsg=
+	t=1743707087; cv=none; b=RTVyVA6a5RLfkvL3NADFM3SiuGP6+CqEj+UXbz9hlItxkNasS8qLx/iYRS55L6bo1wrbRaPiycAJcl6iB+GjBQkmEcGfDezerZhKwoXCk+bJZ7aI5j8uW4xLmvYqBPj7aWUfnqtgI85n4eInXljmV70ArNHmnZMOaLdYTjTTT4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707085; c=relaxed/simple;
-	bh=8ewpeq0OK6g4Il4a93bjITEon6bZwlZPoq3eFcyv+ag=;
+	s=arc-20240116; t=1743707087; c=relaxed/simple;
+	bh=549qfMrQeuNBpSjztJHEajMHuoWAKsoH8OhuOMqkqwY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UOXrr/1P4zgnO2RRRQgjPmqdLQ3jPqrvjjQ5f98Qh8GxgdoWKA4UMA5sHYHdTVLojXvcZs15BPvAHFAKsmxyCOf+oM6GBY/b0eRbXfDJ8pINUZsq4nR3N95BRKkBtXVodr0hsN6dYprxgoHrBahpvJ5QmAFIdJhQmmogzeHQjk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HI9fll22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB98C4CEE3;
-	Thu,  3 Apr 2025 19:04:43 +0000 (UTC)
+	 MIME-Version; b=aR5XNRJEsnr0ifxxy5CRhlDp+29oQ6Dzd6rIDpdVRAZ48pPNzREY29YJDko7zJc2/sDWH4t9BjVDS33s7Qd9mdJEGiv1R1JFnMDI8t3SqPvFCdsQTzmgf7DEDtN9/QPJWhsy2T5mlLPivAZ+h2WRgJTGyYaBgYuRbkbr1bAgI8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAQh3W2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7806FC4CEE3;
+	Thu,  3 Apr 2025 19:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707085;
-	bh=8ewpeq0OK6g4Il4a93bjITEon6bZwlZPoq3eFcyv+ag=;
+	s=k20201202; t=1743707087;
+	bh=549qfMrQeuNBpSjztJHEajMHuoWAKsoH8OhuOMqkqwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HI9fll22r7HFzvtFs/B9Gs7l9zp52qYuzZxG9ab6m/vdxoBA6UAJPQCLEtL3VaByU
-	 mSdbGrSOAqtMOcd0AWV7kB5Xmb+e084ZxHEY6GsJvqaPVlAhbBhAzORK6Et6r4M5wP
-	 u0Pnm0Vgf/klfSUMnO5QqqdnHxafqUdfryP9S5jR2GK8fx3PFg5ih57Az1d6oorj6P
-	 nn0Nf3lmZ2okMwvvokXK4I/MHdBM+pJKbKV1ZRXudyAF20eIrlPv7mvlE8aEHsuG5c
-	 SANZZcX1O/mc/mRPGERlDi2ki0//KD1a8Ar6R3CU8iiYQXHuU4oUmmvaiTM5ckSOje
-	 LsSMPnQSDgNfw==
+	b=TAQh3W2e+5NXAonQjkl8Txiez4nFOcZl2oCEFe7HKx0coOlEY8d576rgOMFP+im1J
+	 AZpqV3x31fasFw9chT2A6HdmIFkItYXSl0JYFMA9Cyb3PfFIYEVukrHD/l8TphHWYL
+	 zdssscRuiAX5rKaBhNN5Ssv00xfAtZ9FzZr75ATnDNBzjeSWo8zGxcniO0Bq3jf+Vi
+	 VhgvVdF4MT3PdSlbba23jO0Z2RZfRp9qz5Zop90j4WInUDeWALoeGF8p2/XMfx8RyG
+	 Li9J78++4BxZfuM0WiC0CbAVFXg7AMDan6qHbf9MWsqiaekPdTr+MBJQDgMBlPVaAf
+	 f9dG2urYUAMdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mailhol.vincent@wanadoo.fr,
-	haibo.chen@nxp.com,
-	frank.li@nxp.com,
-	u.kleine-koenig@baylibre.com,
-	dimitri.fedrau@liebherr.com,
-	linux-can@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 16/49] can: flexcan: add NXP S32G2/S32G3 SoC support
-Date: Thu,  3 Apr 2025 15:03:35 -0400
-Message-Id: <20250403190408.2676344-16-sashal@kernel.org>
+	shaggy@kernel.org,
+	aha310510@gmail.com,
+	dmantipov@yandex.ru,
+	eadavis@qq.com,
+	jfs-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.13 17/49] jfs: Fix uninit-value access of imap allocated in the diMount() function
+Date: Thu,  3 Apr 2025 15:03:36 -0400
+Message-Id: <20250403190408.2676344-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190408.2676344-1-sashal@kernel.org>
 References: <20250403190408.2676344-1-sashal@kernel.org>
@@ -70,61 +70,81 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 8503a4b1a24d32e95f3a233062e8f1dc0b2052bd ]
+[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
 
-Add device type data for S32G2/S32G3 SoC.
+syzbot reports that hex_dump_to_buffer is using uninit-value:
 
-FlexCAN module from S32G2/S32G3 is similar with i.MX SoCs, but interrupt
-management is different.
+=====================================================
+BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
+diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
+jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
+evict+0x723/0xd10 fs/inode.c:796
+iput_final fs/inode.c:1946 [inline]
+iput+0x97b/0xdb0 fs/inode.c:1972
+txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
+txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-On S32G2/S32G3 SoC, there are separate interrupts for state change, bus
-errors, Mailboxes 0-7 and Mailboxes 8-127 respectively.
-In order to handle this FlexCAN hardware particularity, first reuse the
-'FLEXCAN_QUIRK_NR_IRQ_3' quirk provided by mcf5441x's irq handling
-support. Secondly, use the newly introduced
-'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk which handles the case where two
-separate mailbox ranges are controlled by independent hardware interrupt
-lines.
+Uninit was created at:
+slab_post_alloc_hook mm/slub.c:4121 [inline]
+slab_alloc_node mm/slub.c:4164 [inline]
+__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
+kmalloc_noprof include/linux/slab.h:901 [inline]
+diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
+jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
+jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
+get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
+get_tree_bdev+0x37/0x50 fs/super.c:1659
+jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
+vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
+do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
+path_mount+0x742/0x1f10 fs/namespace.c:3887
+do_mount fs/namespace.c:3900 [inline]
+__do_sys_mount fs/namespace.c:4111 [inline]
+__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
+__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
+x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+=====================================================
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Link: https://patch.msgid.link/20250113120704.522307-4-ciprianmarian.costea@oss.nxp.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The reason is that imap is not properly initialized after memory
+allocation. It will cause the snprintf() function to write uninitialized
+data into linebuf within hex_dump_to_buffer().
+
+Fix this by using kzalloc instead of kmalloc to clear its content at the
+beginning in diMount().
+
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/jfs/jfs_imap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index a8a4cc4c064d9..b347a1c93536d 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -386,6 +386,16 @@ static const struct flexcan_devtype_data fsl_lx2160a_r1_devtype_data = {
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR,
- };
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index a360b24ed320c..cf16655cd26ba 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
+ 	 * allocate/initialize the in-memory inode map control structure
+ 	 */
+ 	/* allocate the in-memory inode map control structure. */
+-	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
++	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
+ 	if (imap == NULL)
+ 		return -ENOMEM;
  
-+static const struct flexcan_devtype_data nxp_s32g2_devtype_data = {
-+	.quirks = FLEXCAN_QUIRK_DISABLE_RXFG | FLEXCAN_QUIRK_ENABLE_EACEN_RRS |
-+		FLEXCAN_QUIRK_DISABLE_MECR | FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-+		FLEXCAN_QUIRK_USE_RX_MAILBOX | FLEXCAN_QUIRK_SUPPORT_FD |
-+		FLEXCAN_QUIRK_SUPPORT_ECC | FLEXCAN_QUIRK_NR_IRQ_3 |
-+		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
-+		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR |
-+		FLEXCAN_QUIRK_SECONDARY_MB_IRQ,
-+};
-+
- static const struct can_bittiming_const flexcan_bittiming_const = {
- 	.name = DRV_NAME,
- 	.tseg1_min = 4,
-@@ -2055,6 +2065,7 @@ static const struct of_device_id flexcan_of_match[] = {
- 	{ .compatible = "fsl,vf610-flexcan", .data = &fsl_vf610_devtype_data, },
- 	{ .compatible = "fsl,ls1021ar2-flexcan", .data = &fsl_ls1021a_r2_devtype_data, },
- 	{ .compatible = "fsl,lx2160ar1-flexcan", .data = &fsl_lx2160a_r1_devtype_data, },
-+	{ .compatible = "nxp,s32g2-flexcan", .data = &nxp_s32g2_devtype_data, },
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, flexcan_of_match);
 -- 
 2.39.5
 
