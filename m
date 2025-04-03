@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-128125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13CFA7AF77
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:52:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D63FA7AF3F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FB2617BB25
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:45:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C98B77A58F9
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311226157E;
-	Thu,  3 Apr 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D50C26159B;
+	Thu,  3 Apr 2025 19:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wmr4+Fmc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUJXApbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C9261572;
-	Thu,  3 Apr 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD52F261593;
+	Thu,  3 Apr 2025 19:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743708029; cv=none; b=Wjp7cpTdaZPYfsOy1M9+Qi3lnHJNuTU5OljCOHr1InUxRPUmmU2VkvXBPuT5opzLImZdl7NzBNG4hqiIr3ENiOkDn4e2pzS2P4g+QKPEP4UTU+Xog8i6AsBJ5w7aIU3676omeg6sMowK4U1WnjDdvvk16G47SnNTTeyQRWo2rNw=
+	t=1743708031; cv=none; b=MQsE6WbWg/lckZWDlSe44NWC7b4+E8jwAylYqOOd5elI0/0YIgtvpkwAq5j2PLE3cDJY5s8T71UGbHVnop0s8UnB1rTeEGzfHNqWcP0Ac4pw5Xma3NU/7O3Nq0NWNkMxura+QWdpakKK8J85RVWXbmiDkjs6PjQyOX68jbHxJ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743708029; c=relaxed/simple;
-	bh=pCmyw+57uV8ZJYghvhdI5iLMyESg4RzTGJujrEavo5Y=;
+	s=arc-20240116; t=1743708031; c=relaxed/simple;
+	bh=p4WEQc/g/dzlD2OLiEdzMYJMBo88GrdIO9065zpmUCs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FQisYgNGE/LcFCmnoe14s220xZL5eV0hCmWiEsazmK9Ndsn1XL2IxGrLX/ovaAmLjQ9GgvQwsgcFEsTJzUoM0tolh+aybQjUgaIEghkpjAr/aamiSMp0dVBIuwcSzvqVCRorJBwvD9DgnD3Q/ZIbFOO+WH/VldGI8nc+/tVIjtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wmr4+Fmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA034C4CEE8;
-	Thu,  3 Apr 2025 19:20:27 +0000 (UTC)
+	 MIME-Version; b=UUU5brdYmERuRWOPVzLzm35vkONdfPhfiWA+sNDKb+wlz9lUFTobO3+66aqfHMcEGzT2mjuwvJdopN+i3THssD1s4SshlVqRRwDAYg1WTmFkq3AoPfUfTAbRw+v9C1yfWgn2Lc0WKT7WfqWPtU8D1eBap6BO4trvoPphelQuzyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUJXApbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4366C4CEE8;
+	Thu,  3 Apr 2025 19:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743708029;
-	bh=pCmyw+57uV8ZJYghvhdI5iLMyESg4RzTGJujrEavo5Y=;
+	s=k20201202; t=1743708030;
+	bh=p4WEQc/g/dzlD2OLiEdzMYJMBo88GrdIO9065zpmUCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wmr4+FmcrjSLwqdmdzwJxfp0MxZUTKflrssfENjHj8RgZCIFMj4Se52yFUSQKlPz8
-	 kH0KA3F9DCqe3e1FMdOUhR3YEoRD/5paVmMwpNvFkBhaONLLS/wOukpIdMUUo/xJNU
-	 i6OjKu7U4mIIj2drBnzvV1K4G8ZJjhMbXtmqrs/71pDw3OXlldEjRgoFdI+MDqKOzf
-	 laPCph2w0StvJ+yNyXqFo+ZNU5Y82kAuaKIzw3k6Z6UEawdt5+eE5XZ289G/+heHg8
-	 jFNi7i1X/B7ffY/6diWDVZ6qqy5M6SCpYcFA+/CDXVOU26bFVeCDZPi9UeEAlKSlgL
-	 yEBcgmhNWJwjw==
+	b=NUJXApbWJ034C0PlCzfWrJ1Pa+seG9/HtQk3XLksckg0T7rZrUHcmsk+vUSNglgTD
+	 t1lAK9ghqjxuvyLKz+8TESwCOtoFRUn1SPmATH9Nqwlxtd3tuXT75+AUogCFjquG2Q
+	 SUcr+3jAvnhARgkwRJ4g26GZH+MFC1e/exT7q/eQIfEIUfTSKokMykJIy7iuTqUvJV
+	 jX9yP9+p+VMy6KPOrA+1so9m4nFKf83LR77OVTcrC7JVLrI9+LGayPoxp0/4jqrurO
+	 4N6I269IE6cYxlvvAxkWem9EWBr65nts8thFlDGohCYK4GBX9hQxUJzJw7/V4N8RFf
+	 zN+NeVaVQsxFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>,
-	krzysztof.kozlowski@linaro.org,
-	linux@treblig.org,
-	u.kleine-koenig@baylibre.com,
-	linux-omap@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 11/12] fbdev: omapfb: Add 'plane' value check
-Date: Thu,  3 Apr 2025 15:20:00 -0400
-Message-Id: <20250403192001.2682149-11-sashal@kernel.org>
+Cc: Ayush Jain <Ayush.jain3@amd.com>,
+	warthog9@eaglescrag.net,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 12/12] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
+Date: Thu,  3 Apr 2025 15:20:01 -0400
+Message-Id: <20250403192001.2682149-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403192001.2682149-1-sashal@kernel.org>
 References: <20250403192001.2682149-1-sashal@kernel.org>
@@ -70,55 +65,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: Ayush Jain <Ayush.jain3@amd.com>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+Handle missing parent directories for LOG_FILE path to prevent test
+failures. If the parent directories don't exist, create them to ensure
+the tests proceed successfully.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
-
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
-
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
-
-Add check for this value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <warthog9@eaglescrag.net>
+Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
+Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index b2d6e6df21615..d852bef1d507f 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
- {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
- 
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index aecea16cbd02f..2109bd42c144a 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4282,6 +4282,14 @@ if (defined($opt{"LOG_FILE"})) {
+     if ($opt{"CLEAR_LOG"}) {
+ 	unlink $opt{"LOG_FILE"};
+     }
 +
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
- 
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
++    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
++        my $dir = $1;
++        if (! -d $dir) {
++            mkpath($dir) or die "Failed to create directories '$dir': $!";
++            print "\nThe log directory $dir did not exist, so it was created.\n";
++        }
++    }
+     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
+     LOG->autoflush(1);
+ }
 -- 
 2.39.5
 
