@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-127576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FA8A7A678
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:26:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE065A7A691
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871461896ECA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A53D3B8E1F
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BD22512F8;
-	Thu,  3 Apr 2025 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755D8250BE7;
+	Thu,  3 Apr 2025 15:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFy0zXDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHGjEf4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFE32512EB;
-	Thu,  3 Apr 2025 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0324C077;
+	Thu,  3 Apr 2025 15:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693777; cv=none; b=H3M/a5ljeHjSmT+XFDi68va7ue5IVC2tO7889zO9n/E+2X+3VL6KSkJPC0II1ZxmG7weS8sHEexkxn++rVC1832pr+Y9IALKU4qfrHgcj80Rw7egV5SJemorE4aZjBWIX2xxzaoc9EoKerYbYh/6ehTjqq25dUhtW96RuVA+VI4=
+	t=1743693810; cv=none; b=OrIbA/kdFnuTHkabU0fSmiotFtIh+1zgBbaaNmBtdULBpHAIAWemv1EczcCy4M3XdzEeGySQsA7x3kbz88XPASR1WH6oKrUhhKq75NRDVzqugcsSGCzVZbFe6gBxjJe+S2okCG79MZEVdRCAw003IfkT068RoqVByvcMpOuHdyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693777; c=relaxed/simple;
-	bh=cYmscPfGjl4WNWzynbyM7ygS8pIhhYBnuNAhbzvDLr8=;
+	s=arc-20240116; t=1743693810; c=relaxed/simple;
+	bh=01OaeUrnslI5I8Nd3vXW4ZBLrmcIxi0UqwZp+lyyWrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GDFXy8FT49dg9PEixHAch9uBrRxgTxyR5A9bKlmPGA3/kiuSlF6osA2BR4FVXukpqY2HiVuy8Qh7M3AIIX5DwGoUQ8ZvwNPz/4ITyBPtP7l1t4bQjPhSKzcv/Y6EWdbM71s0ChYOGXKWoXd2OFH1mR9IZFRSGnhO7beXhApa9Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFy0zXDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A487BC4CEE7;
-	Thu,  3 Apr 2025 15:22:56 +0000 (UTC)
+	 MIME-Version; b=OkgMgqmg54mYYGOw/dbtEOuFZjE6jk0PHrmRTSXRyopg5qrnTB0H4DARYXHz+1dOaDtOdujIhi6rU6msPbq2ny3B81OSunnCvJFXkbK3M1pq6oN6aaF6ISmb9dko6Q0kCexnOxHT4Obb8wLYxqyEIQmeZCVv01AiiHaRN4Lbxkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHGjEf4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61929C4CEE7;
+	Thu,  3 Apr 2025 15:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693777;
-	bh=cYmscPfGjl4WNWzynbyM7ygS8pIhhYBnuNAhbzvDLr8=;
+	s=korg; t=1743693809;
+	bh=01OaeUrnslI5I8Nd3vXW4ZBLrmcIxi0UqwZp+lyyWrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFy0zXDxlLZDXZ1i5AVdFGTtpFsL0lT4v0FV0cO85gIbm47AmxEhlAYt7b8w/glVS
-	 oUlDytphRxQgP+rPjgOwIdAf6+WfqoMCW+OuKCGzVbrJrALzAqaRkWaFE3ZI+CBRVj
-	 lxLP/+6xFPdzRfyOGKHNDy529TCVGIfQLNp2WhCg=
+	b=mHGjEf4A24KUAVZDWqMdqG9Ce5xqQjVtVLRd+qnitUEkXaP79/L44XclmHPhSYHqH
+	 3eAOkJWm1iAydiu0pt2PyHp8zE+FqmpWpE2666QBUg3vZpjdUV9ZjN88p9ObQMhuIg
+	 lp1uEuATZbvZci++5j6YHC/StNp0Jzfc+vMROEiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 21/22] media: i2c: et8ek8: Dont strip remove function when driver is builtin
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.14 12/21] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
 Date: Thu,  3 Apr 2025 16:20:16 +0100
-Message-ID: <20250403151621.533638623@linuxfoundation.org>
+Message-ID: <20250403151621.491520181@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
-References: <20250403151620.960551909@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 545b215736c5c4b354e182d99c578a472ac9bfce upstream.
+commit f5cb528d6441eb860250a2f085773aac4f44085e upstream.
 
-Using __exit for the remove function results in the remove callback
-being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
-unbound (e.g. using sysfs or hotplug), the driver is just removed
-without the cleanup being performed. This results in resource leaks. Fix
-it by compiling in the remove callback unconditionally.
+According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
+register only can be changed when the transmitter is disabled.
+So disable the transmitter before changing RS485 related registers and
+re-enable it after the change is done.
 
-This also fixes a W=1 modpost warning:
-
-	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
-
-Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
- drivers/media/i2c/et8ek8/et8ek8_driver.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
-+++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-@@ -1460,7 +1460,7 @@ err_mutex:
- 	return ret;
- }
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1484,6 +1484,19 @@ static int lpuart32_config_rs485(struct
  
--static void __exit et8ek8_remove(struct i2c_client *client)
-+static void et8ek8_remove(struct i2c_client *client)
- {
- 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
- 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
-@@ -1502,7 +1502,7 @@ static struct i2c_driver et8ek8_i2c_driv
- 		.of_match_table	= et8ek8_of_table,
- 	},
- 	.probe_new	= et8ek8_probe,
--	.remove		= __exit_p(et8ek8_remove),
-+	.remove		= et8ek8_remove,
- 	.id_table	= et8ek8_id_table,
- };
+ 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+ 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
++	u32 ctrl;
++
++	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
++	ctrl = lpuart32_read(&sport->port, UARTCTRL);
++	if (ctrl & UARTCTRL_TE) {
++		/* wait for the transmit engine to complete */
++		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
++		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
++
++		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
++			cpu_relax();
++	}
++
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ 
+ 	if (rs485->flags & SER_RS485_ENABLED) {
+@@ -1503,6 +1516,10 @@ static int lpuart32_config_rs485(struct
+ 	}
+ 
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
++
++	if (ctrl & UARTCTRL_TE)
++		lpuart32_write(&sport->port, ctrl, UARTCTRL);
++
+ 	return 0;
+ }
  
 
 
