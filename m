@@ -1,148 +1,85 @@
-Return-Path: <stable+bounces-127497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D556A7A08A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 11:58:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931CFA7A0A1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 12:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109701739A3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 09:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A37189161E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 10:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600962459EE;
-	Thu,  3 Apr 2025 09:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793A5224891;
+	Thu,  3 Apr 2025 10:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Unq4Y2Ev"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="Gco/Q5Af"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DC13D531;
-	Thu,  3 Apr 2025 09:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F43C0B
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 10:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743674306; cv=none; b=E1PWa908OQ2XqyVi86y8Z0t6YWTJsq/GHfoV9AD0GugutfR24znw0OEVvc8x85Z8Fkt2f2i8JoObkYvIvwd4G5W542NPYftkYoVL0+kx93liYJ0KS/fj5xpWBlCxUi9OWZG89a2KliPu6WhPC5PH5OEiqcD7cl8bVBD8r27bE6Q=
+	t=1743674780; cv=none; b=HtymvC24bNkHhfXYYRR/vrzAdCjkfkJlS83w4t+WV8gJVzZN99byfSlivMM15xPeZJdKOH9vx6lsyVOJ0jPMLms18x8RXD0u+hMTjcgsmqIUoEwZu1+wtgkrXH3DDAPmlzTfrGQ1tixHnqQc7mb4N1gM4Ehd4RA+QFikBlvx6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743674306; c=relaxed/simple;
-	bh=Znl9X9FpTIGF2OsT13x7/fGoEi2ygGGP8eazYnBsR6A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DZAK7iUvkYXr/ShoipniM3CoH0aCwz4w+jmhGaFaxEQ+hYk6BOM7kPytY8NNbS5CFyijTcdITth1FCRXQ20KqioEEQuGkKMnfaetfd2Cam4miulBO2KmeKUH5NbMONyYeB5pKRPQv0ftgPG99zk3b9eZSNPGKM9Tzvy+8SzgA94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Unq4Y2Ev; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ayy35oKwof2JTIj+vzq+S1Uxz24/XsuIZVSRWIasD48=; b=Unq4Y2EvB3btFhXlJJiS8SM/co
-	L1SuZeV2mtqzIQoDm6yRLtSJAvnk23toy7h3vA4nHYWyXe6OCFr8a1hqQawkftGC8NMbRpQTFeZ1C
-	ySrqrpHoTvcsMpIdAWAVry/mFFTryMoWaYbgNHsqhblaV3YHSlTjnN+PHCLg8lE1k6ZNDpVpR+8N4
-	hVD6dqG22FykwegIrWHkPLSglwor0Nkp3kIt/YWJluyDB8N+FGRvNTN1WZNDJfAEPdGoKc+IqgtFz
-	WUuuVmfMkPT6vaF0k9VtEFyWAseniKNrq0MzBZc7AhCHBgaDvb3XE6kPMLZ1fodGv55sNBuVwwHnF
-	I15qP7nA==;
-Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=localhost)
-	by fanzine2.igalia.com with utf8esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1u0HKp-00AljK-Qd; Thu, 03 Apr 2025 11:58:07 +0200
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] sctp: check transport existence before processing a
- send primitive
-In-Reply-To: <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
-References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
- <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
-Date: Thu, 03 Apr 2025 11:58:00 +0200
-Message-ID: <87tt75efdj.fsf@igalia.com>
+	s=arc-20240116; t=1743674780; c=relaxed/simple;
+	bh=5prlmyoajPG2ixj1DUhrDPm5FErOJGDMDYnCt5RFvJY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=kxFzUl0lVfwOtkLJLUIirY1ID2kfLwkTsNflpsFHVzsZq3COdSjWkSQul5bmjrSqFPS68C0hGQmv77+cM7trg5XRoQbpIT0/vFPGzoL6A2MGOJGTdQK8oSMYRU+WBS708qbNMxp7FdDwmEFyvf8IjuDpr5bDBOAoN+Ki4G144Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=Gco/Q5Af; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2c68fd223bcso223917fac.1
+        for <stable@vger.kernel.org>; Thu, 03 Apr 2025 03:06:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mvista.com; s=google; t=1743674777; x=1744279577; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5prlmyoajPG2ixj1DUhrDPm5FErOJGDMDYnCt5RFvJY=;
+        b=Gco/Q5AfUMcjAQ6D34juPaBQgaZqRiTlSwI0QNtIOWdlba4aJ0So/iml5YPzbN8EuY
+         Gwf27uy9SRgDiO+4ggg5VH+CYgyqkeKS77OvhIDG/HftgIQ53UM6xTervs69QwmN3ogs
+         gDcw1IsiUZi0bUn5z86sGZps0VdneZeL/T7Hs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743674777; x=1744279577;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5prlmyoajPG2ixj1DUhrDPm5FErOJGDMDYnCt5RFvJY=;
+        b=Neer/AGZfUWH+oQmavFryD9h101+kmzx5OENkhBPO6tnLnKX2Ta9YB90evHHt7Rtgd
+         SAvvozV/YsK0s7HL021GSBFcyMEGmSVZ/v6fFHD8yCWNfdICKtpzOXc4m2y3LGle3cxl
+         vgmSleEMuu3oUHT+apj9UQpZFttHS7kbb3dRHRyiTRWm7oy7Gro9jFHejNoE/EAxajaU
+         wqNJdpxFqnV22fSNKI+zttRmx8CdfcsFlSFd0tYVmtzGnnM56csvX7wH4axqbYD+VWYb
+         SIJilurRzRKETyuzKuXjI4ywaT+y5J9c8ZKnaplTr5SS9l09F7qAxVcdhjtZteD7FKxy
+         jkSg==
+X-Gm-Message-State: AOJu0YyvPeKB5uvcs1hls2aT6ReK6AI6j+qpU9pLWqpXl9Pc0yEutvW1
+	wIGNf3DDWXVeXotfkqAytQQqqyqgXL9oYIc+OI3/XO7onQQQuoC2I2gsBJgiB8JJgCEYi4GL8ii
+	kJfHPRPiak3yQue35bnQCRjMSHPPZWFS+OdBeYr+kg6VVSE0eDJw=
+X-Gm-Gg: ASbGncvfvp6ltm5L8MVntPmIOWD4JB6Ubqvr4W4ddtFGW3adzL4sXY2w/RGS0EI+L8D
+	CX9SpvImzhLyG8x11BHx1/UjgZRdmGnTdIAqW7Y0Nm34FPUyY2zIXC781UxzPuZwM/d2ZnVy6Vs
+	W01WvlQnGu23ciwqnWUmyTc14p0KFNdLZZg7TH
+X-Google-Smtp-Source: AGHT+IFGbgJ1CSoxOpLavnWAK0w0m5SAQBfO4BNkF2nqvfmCBi/vJJpLfUOMeJ7J9FhIUvyVNg3yfeHflItj/qBWsHQ=
+X-Received: by 2002:a05:6870:7247:b0:2c8:5db8:f23a with SMTP id
+ 586e51a60fabf-2cbcf5ace64mr11177300fac.20.1743674777501; Thu, 03 Apr 2025
+ 03:06:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Hardik Gohil <hgohil@mvista.com>
+Date: Thu, 3 Apr 2025 15:36:05 +0530
+X-Gm-Features: AQ5f1JpnzHtyP2DoSsJWOT3LyOsBvdWKDwiCf5Jv-BW18MmgUDDWPkPO0jpi3Bk
+Message-ID: <CAH+zgeGNArHoJw4rfd+Q-WQhv_rk+5wke7kYz_LaXNjXNocQew@mail.gmail.com>
+Subject: Request to back-port this patch to v5.4 stable tree
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thanks for reviewing, answers below:
+Hello Greg,
 
-On Wed, Apr 02 2025 at 15:40:56, Xin Long <lucien.xin@gmail.com> wrote:
-> The data send path:
->
->   sctp_endpoint_lookup_assoc() ->
->   sctp_sendmsg_to_asoc()
->
-> And the transport removal path:
->
->   sctp_sf_do_asconf() ->
->   sctp_process_asconf() ->
->   sctp_assoc_rm_peer()
->
-> are both protected by the same socket lock.
->
-> Additionally, when a path is removed, sctp_assoc_rm_peer() updates the
-> transport of all existing chunks in the send queues (peer->transmitted
-> and asoc->outqueue.out_chunk_list) to NULL.
->
-> It will be great if you can reproduce the issue locally and help check
-> how the potential race occurs.
+This patch applies cleanly to the v5.4 kernel.
 
-That's true but if there isn't enough space in the send buffer, then
-sctp_sendmsg_to_asoc() will release the lock temporarily.
+dmaengine: ti: edma: Add some null pointer checks to the edma_probe
 
-The scenario that the reproducer generates is the following:
-
-        Thread A                                  Thread B
-        --------------------                      --------------------
-(1)     sctp_sendmsg()
-          lock_sock()
-          sctp_sendmsg_to_asoc()
-            sctp_wait_for_sndbuf()
-              release_sock()
-                                                  sctp_setsockopt(SCTP_SOCKOPT_BINDX_REM)
-                                                    lock_sock()
-                                                    sctp_setsockopt_bindx()
-                                                    sctp_send_asconf_del_ip()
-                                                      ...
-                                                    release_sock()
-                                                      process rcv backlog:
-                                                        sctp_do_sm()
-                                                          sctp_sf_do_asconf()
-                                                            ...
-                                                              sctp_assoc_rm_peer()
-              lock_sock()
-(2)          chunk->transport = transport
-             sctp_primitive_SEND()
-               ...
-               sctp_outq_select_transport()
-*BUG*            switch (new_transport->state)
-
-
-Notes:
-------
-
-Both threads operate on the same socket.
-
-1. Here, sctp_endpoint_lookup_assoc() finds and returns an existing
-association and transport.
-
-2. At this point, `transport` is already deleted. chunk->transport is
-not set to NULL because sctp_assoc_rm_peer() ran _before_ the transport
-was assigned to the chunk.
-
-> We should avoid an extra hashtable lookup on this hot TX path, as it would
-> negatively impact performance.
-
-Good point. I can't really tell the performance impact of the lookup
-here, my experience with the SCTP implementation is very limited. Do you
-have any suggestions or alternatives about how to deal with this?
-
-Thanks,
-Ricardo
+[upstream commit 6e2276203ac9ff10fc76917ec9813c660f627369]
 
