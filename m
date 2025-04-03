@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-127676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDCEA7A6D8
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE11A7A6B2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25CE18989A6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:27:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9AD3BAD1A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9524EF7A;
-	Thu,  3 Apr 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CA2250BFF;
+	Thu,  3 Apr 2025 15:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODfsuB9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFAJqxke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B7B188A3A;
-	Thu,  3 Apr 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CCD24E000;
+	Thu,  3 Apr 2025 15:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743694024; cv=none; b=sP7nplL7G4nGlxCKTW5ZsErRwdLanlWg2hRrxKw3hhhMNHLsRS+Wsi7LT/8m6KJacT3nRbB90VpVt6QMg2UavZMb66wnEKHrvLoEJH48dPmBUpe095vpWzW85mw/vLsheFgCh1pe4JSiyyH4Toax9XBCRdtL0MocC1ejqZJJ/uo=
+	t=1743693875; cv=none; b=uJYbSQ7dr6lL/941EJzTq6e5Q98UPbjCg9MSR7itrsupkCWBVBzI8b1GX2+jFkp3aT41OBJCxDG+3ZnWYO4nPo2vRloZuob7PnUMN2jNCDloyeBJt2N8l+7IN8FuC2EPIosd+dxAgI+QZpB9tvPbWFbyan27ECl4y8hLDM4QfEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743694024; c=relaxed/simple;
-	bh=/zibdpqmJ1nCP4osSTA4fUXyPWmPD7xKubfj6XPKNLc=;
+	s=arc-20240116; t=1743693875; c=relaxed/simple;
+	bh=JJ7orOaJQUoRb7ShQMl6MywuG4ZDw6xRElOpfaxJY14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dN8JkYbEp+rPSGTjZJK5R+AkbVbFcRIWsLiqud4hzNNRsJngUHcFHl/uiV6z5aXSEJagrOPQvcUmra7trN5jBWs3garaCFu2dyQ70BuIs3hqZGiRoyX7RpMHgA5cQqsL0YsXjyWCqzyKpj7pEju4tRZxPhq+dGrm2QZjml5Pj7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODfsuB9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11F7C4CEE8;
-	Thu,  3 Apr 2025 15:27:03 +0000 (UTC)
+	 MIME-Version; b=YU5zPSZWIwrjXTH8i15S2+DQjl1HBCnR0OCwQy2V54E7mZlpNWsA9Przn2DGpT+ounaJmu2ZjgS62cIHglG/1ctghn24KpkJOMg4gRrbUsqiSDqhoSJHdV+M3j2LJv/jTwYiR6iu6eJzbAl5fAqi92Yv/9Y856Ossm9zb6rudCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFAJqxke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F270FC4CEE3;
+	Thu,  3 Apr 2025 15:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743694024;
-	bh=/zibdpqmJ1nCP4osSTA4fUXyPWmPD7xKubfj6XPKNLc=;
+	s=korg; t=1743693875;
+	bh=JJ7orOaJQUoRb7ShQMl6MywuG4ZDw6xRElOpfaxJY14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODfsuB9WQ/Jo6s7cXdQz4HqaXAEBmgYmYG17Kulm/NeiA/rbHxPMuLo87ze+EO+80
-	 mDXsyhBrHHgIA4e1BX5KO9hk+upO/bN1dR2HqOiuHTeYgGZeyO9MZrjpKTtiWlERQ8
-	 +Y3ka2TefSHAfJePUmjqCkxHihhnpZJQHePWQiyc=
+	b=SFAJqxkey+7YeZV/18yQ9yRANmwcUqoq3+fG4u3BuihezdqUaWI0VtlhCo4CJsRlo
+	 +eVYbxz6WZ0gPcNliT3/ZlHkSzIkpfTb8jc3SXT82YYcWQqJg9eKWcy7Pe7WUfvhgt
+	 EcJXgEk9dhN2OpoYNGZYvLAYmRga43h3UYoFK3ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.6 05/26] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 16/22] usb: xhci: Dont skip on Stopped - Length Invalid
 Date: Thu,  3 Apr 2025 16:20:26 +0100
-Message-ID: <20250403151622.571146287@linuxfoundation.org>
+Message-ID: <20250403151622.505793580@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+References: <20250403151622.055059925@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,38 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
+commit 58d0a3fab5f4fdc112c16a4c6d382f62097afd1c upstream.
 
-The common pattern in arm is to emit a "8<--- cut here ---" line for
-faults, but it was missing for do_PrefetchAbort(). Add it.
+Up until commit d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are
+returned when isoc ring is stopped") in v6.11, the driver didn't skip
+missed isochronous TDs when handling Stoppend and Stopped - Length
+Invalid events. Instead, it erroneously cleared the skip flag, which
+would cause the ring to get stuck, as future events won't match the
+missed TD which is never removed from the queue until it's cancelled.
 
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+This buggy logic seems to have been in place substantially unchanged
+since the 3.x series over 10 years ago, which probably speaks first
+and foremost about relative rarity of this case in normal usage, but
+by the spec I see no reason why it shouldn't be possible.
+
+After d56b0b2ab142, TDs are immediately skipped when handling those
+Stopped events. This poses a potential problem in case of Stopped -
+Length Invalid, which occurs either on completed TDs (likely already
+given back) or Link and No-Op TRBs. Such event won't be recognized
+as matching any TD (unless it's the rare Link TRB inside a TD) and
+will result in skipping all pending TDs, giving them back possibly
+before they are done, risking isoc data loss and maybe UAF by HW.
+
+As a compromise, don't skip and don't clear the skip flag on this
+kind of event. Then the next event will skip missed TDs. A downside
+of not handling Stopped - Length Invalid on a Link inside a TD is
+that if the TD is cancelled, its actual length will not be updated
+to account for TRBs (silently) completed before the TD was stopped.
+
+I had no luck producing this sequence of completion events so there
+is no compelling demonstration of any resulting disaster. It may be
+a very rare, obscure condition. The sole motivation for this patch
+is that if such unlikely event does occur, I'd rather risk reporting
+a cancelled partially done isoc frame as empty than gamble with UAF.
+
+This will be fixed more properly by looking at Stopped event's TRB
+pointer when making skipping decisions, but such rework is unlikely
+to be backported to v6.12, which will stay around for a few years.
+
+Fixes: d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are returned when isoc ring is stopped")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/fault.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-ring.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -563,6 +563,7 @@ do_PrefetchAbort(unsigned long addr, uns
- 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
- 		return;
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2866,6 +2866,10 @@ static int handle_tx_event(struct xhci_h
+ 		if (!ep_seg) {
  
-+	pr_alert("8<--- cut here ---\n");
- 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
- 		inf->name, ifsr, addr);
- 
+ 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
++				/* this event is unlikely to match any TD, don't skip them all */
++				if (trb_comp_code == COMP_STOPPED_LENGTH_INVALID)
++					return 0;
++
+ 				skip_isoc_td(xhci, td, ep, status);
+ 				if (!list_empty(&ep_ring->td_list))
+ 					continue;
 
 
 
