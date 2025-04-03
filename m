@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-128124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDA7A7AF3B
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:45:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13CFA7AF77
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8871B7A6FFE
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FB2617BB25
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDBA261396;
-	Thu,  3 Apr 2025 19:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311226157E;
+	Thu,  3 Apr 2025 19:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKGFXrX5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wmr4+Fmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE11261389;
-	Thu,  3 Apr 2025 19:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C9261572;
+	Thu,  3 Apr 2025 19:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743708026; cv=none; b=F1IECPST8KkDwM+FASiZ9a4lhwDcNeQsLm8vn6I54/t9yXhr5ubmFb3Ur75D4FRCttMru4yqK7JJJ1d8EwcMaggwjviT5WT3g1UWj1arERtKxGoJSynajqConW8xucHM6oMaoOpsQCV+fc7GbCNVdUUisx/M6nWEZK2FSar9FXs=
+	t=1743708029; cv=none; b=Wjp7cpTdaZPYfsOy1M9+Qi3lnHJNuTU5OljCOHr1InUxRPUmmU2VkvXBPuT5opzLImZdl7NzBNG4hqiIr3ENiOkDn4e2pzS2P4g+QKPEP4UTU+Xog8i6AsBJ5w7aIU3676omeg6sMowK4U1WnjDdvvk16G47SnNTTeyQRWo2rNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743708026; c=relaxed/simple;
-	bh=+tBY6UKWekhQJduG+EZZK0/ueq1BweiGDOAn9x+7Voc=;
+	s=arc-20240116; t=1743708029; c=relaxed/simple;
+	bh=pCmyw+57uV8ZJYghvhdI5iLMyESg4RzTGJujrEavo5Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jOBZKjooave54BVL6vJb0/ngHe4yExx92tKpHCGDHUZAT8QI1YQrseFAJ20i8UbSfvhAFUQF43YYaiCxa4ZAd/HC1320X8ATffzYtD7abcuwhdA+X09HZ5J4iLA/VgcJX2DafLMTT9uegLlt0+BGwryYRN24cMXXugm1qjEDppE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKGFXrX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A06C4CEE3;
-	Thu,  3 Apr 2025 19:20:24 +0000 (UTC)
+	 MIME-Version; b=FQisYgNGE/LcFCmnoe14s220xZL5eV0hCmWiEsazmK9Ndsn1XL2IxGrLX/ovaAmLjQ9GgvQwsgcFEsTJzUoM0tolh+aybQjUgaIEghkpjAr/aamiSMp0dVBIuwcSzvqVCRorJBwvD9DgnD3Q/ZIbFOO+WH/VldGI8nc+/tVIjtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wmr4+Fmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA034C4CEE8;
+	Thu,  3 Apr 2025 19:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743708026;
-	bh=+tBY6UKWekhQJduG+EZZK0/ueq1BweiGDOAn9x+7Voc=;
+	s=k20201202; t=1743708029;
+	bh=pCmyw+57uV8ZJYghvhdI5iLMyESg4RzTGJujrEavo5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKGFXrX5IScWLvIhJdMq2MyM6SZlZu+a64frc1CPQtfTD8epdfG9P0qTkxgqE5p9i
-	 xJ5eUrN02SWjwzvoy1um2g8OnyxaKnsSzlfDWvqB/JnMQsK4cb4dAVxlLKoFdlhMMR
-	 hp6/w1rSUpajDxyu04BgJfHD2/HDctLxm7hicLEl1cCvw5zR9PMakjFKg5Ul1S8xkH
-	 W9huzk+3xtZoifrMufrm7MKK5jPdCf4CB2MWtFOf5vJgv3095wNjP+07l8WvFYfsZ4
-	 qmGt8dxIS374wV8LpEkeVwYmAi1iHkjUiZwb/tLy07jWVNacUtxuTSP5pxrRntaKWm
-	 6w4RvXK7ycq+A==
+	b=Wmr4+FmcrjSLwqdmdzwJxfp0MxZUTKflrssfENjHj8RgZCIFMj4Se52yFUSQKlPz8
+	 kH0KA3F9DCqe3e1FMdOUhR3YEoRD/5paVmMwpNvFkBhaONLLS/wOukpIdMUUo/xJNU
+	 i6OjKu7U4mIIj2drBnzvV1K4G8ZJjhMbXtmqrs/71pDw3OXlldEjRgoFdI+MDqKOzf
+	 laPCph2w0StvJ+yNyXqFo+ZNU5Y82kAuaKIzw3k6Z6UEawdt5+eE5XZ289G/+heHg8
+	 jFNi7i1X/B7ffY/6diWDVZ6qqy5M6SCpYcFA+/CDXVOU26bFVeCDZPi9UeEAlKSlgL
+	 yEBcgmhNWJwjw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryo Takakura <ryotkkr98@gmail.com>,
-	"Luis Claudio R . Goncalves" <lgoncalv@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	nirmal.patel@linux.intel.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-pci@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15 10/12] PCI: vmd: Make vmd_dev::cfg_lock a raw_spinlock_t type
-Date: Thu,  3 Apr 2025 15:19:59 -0400
-Message-Id: <20250403192001.2682149-10-sashal@kernel.org>
+	krzysztof.kozlowski@linaro.org,
+	linux@treblig.org,
+	u.kleine-koenig@baylibre.com,
+	linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 11/12] fbdev: omapfb: Add 'plane' value check
+Date: Thu,  3 Apr 2025 15:20:00 -0400
+Message-Id: <20250403192001.2682149-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403192001.2682149-1-sashal@kernel.org>
 References: <20250403192001.2682149-1-sashal@kernel.org>
@@ -69,113 +65,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Leonid Arapov <arapovl839@gmail.com>
 
-[ Upstream commit 18056a48669a040bef491e63b25896561ee14d90 ]
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-The access to the PCI config space via pci_ops::read and pci_ops::write is
-a low-level hardware access. The functions can be accessed with disabled
-interrupts even on PREEMPT_RT. The pci_lock is a raw_spinlock_t for this
-purpose.
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
 
-A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
-acquired with disabled interrupts. The vmd_dev::cfg_lock is accessed in
-the same context as the pci_lock.
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
 
-Make vmd_dev::cfg_lock a raw_spinlock_t type so it can be used with
-interrupts disabled.
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
 
-This was reported as:
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  Call Trace:
-   rt_spin_lock+0x4e/0x130
-   vmd_pci_read+0x8d/0x100 [vmd]
-   pci_user_read_config_byte+0x6f/0xe0
-   pci_read_config+0xfe/0x290
-   sysfs_kf_bin_read+0x68/0x90
+Add check for this value.
 
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Acked-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-[bigeasy: reword commit message]
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-off-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/r/20250218080830.ufw3IgyX@linutronix.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: add back report info from
-https://lore.kernel.org/lkml/20241218115951.83062-1-ryotkkr98@gmail.com/]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 10a078ef4799d..1195c570599c0 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -108,7 +108,7 @@ struct vmd_irq_list {
- struct vmd_dev {
- 	struct pci_dev		*dev;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index b2d6e6df21615..d852bef1d507f 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
+ {
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
  
--	spinlock_t		cfg_lock;
-+	raw_spinlock_t		cfg_lock;
- 	void __iomem		*cfgbar;
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
++
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
  
- 	int msix_count;
-@@ -386,7 +386,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		*value = readb(addr);
-@@ -401,7 +401,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -421,7 +421,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		writeb(value, addr);
-@@ -439,7 +439,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -850,7 +850,7 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	if (features & VMD_FEAT_OFFSET_FIRST_VECTOR)
- 		vmd->first_vec = 1;
- 
--	spin_lock_init(&vmd->cfg_lock);
-+	raw_spin_lock_init(&vmd->cfg_lock);
- 	pci_set_drvdata(dev, vmd);
- 	err = vmd_enable_domain(vmd, features);
- 	if (err)
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
 -- 
 2.39.5
 
