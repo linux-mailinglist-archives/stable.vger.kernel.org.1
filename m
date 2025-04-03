@@ -1,113 +1,204 @@
-Return-Path: <stable+bounces-127558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7129A7A58C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:44:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E7CA7A577
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C7A916CB27
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99E147A5A1D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6210124EF82;
-	Thu,  3 Apr 2025 14:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8526724EF99;
+	Thu,  3 Apr 2025 14:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItRO2NR2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BQhtYpCY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0724EA85
-	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 14:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB42A24EF7D;
+	Thu,  3 Apr 2025 14:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743691407; cv=none; b=IB/w9yHyk0wsgrf1RTmSObBkXl/EAyG+ZtVyW1jIZOZ2qbgtUBq+qtC5vHrF9ujcGW0C+kGeR/yjqbTVzNCbxcpReIwnamkEi3AhAGqQQOxFxen8O5QIOfj/tb7njItK9ebi/Uga1XtGcVkhEWK5iffTgsqB3EhY8Md4yPvmY1c=
+	t=1743691342; cv=none; b=ICyYrfwEFo50LNkk1YjJ3dKSs3YQ8YSk783Xe/2n7L85ccRPVE7Hrhxp34IJQaA3j8AhSfVYo6sR5tMQYfRySnCaIyf2aVy3EFFseEZh2f0WNK4Kpn9ONKCqp/mkGmJoYJG9tK8856EobaFv6fNcAO5l0EyeN6K2vPcHpKKgzbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743691407; c=relaxed/simple;
-	bh=JMRAmSTMRPgnH9BUVyUjuMHk4izlrheRKz0+8s14GrM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lBRIEqbTUresaCSGd+j0kKh21AYGG0T4qeO2gIBCOu0Tek3BNJ7/Fa9S1TT2mvp5lp9XrA/HMQsYOwBFeLYTND9AKsTH8OBn/aQMVN4G+AyQx6iHCaOO6Ho7f5KdK7JWyNUiFir50uuIRpbs2nmwF0dwnGYuTSN/q7goiydCXNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItRO2NR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F808C4CEE5;
-	Thu,  3 Apr 2025 14:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743691406;
-	bh=JMRAmSTMRPgnH9BUVyUjuMHk4izlrheRKz0+8s14GrM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ItRO2NR2XvgJq3ufWXK8FKsdedGaES0Q9YWzCNmLxPSR8VD/u10t+yy2ql9WqJ9W6
-	 odDeU8PNXOi/9qez2r8A4XcGBPe4u1kZ7S+xju+TUFdOCs5cnEdU+IUeT5+on7+PYo
-	 7ADa0cqycpw4qKgxpz0qTC6HbNUd6IUTLiUrODuQ=
-Subject: FAILED: patch "[PATCH] serial: stm32: do not deassert RS485 RTS GPIO prematurely" failed to apply to 5.15-stable tree
-To: cheick.traore@foss.st.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 03 Apr 2025 15:41:48 +0100
-Message-ID: <2025040348-sudoku-backspace-0802@gregkh>
+	s=arc-20240116; t=1743691342; c=relaxed/simple;
+	bh=Zry1Yrol56/KX1aeEhCxv0Cg25fLUtDNop8HonNdjPM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XMtiw2YCSTYjMG47BE9v5cWT4ovC8hf/xDJ/QogSbNMQwMX6yApPltNLjbRxkdUTL/+LUZ02L4Z564tqnVyG5l28J69Nd1mlcPl4Ux0bO5xzDRdJNGxbuLhcFKeMs52QekYDtRa4fbPl01Wp9nWEW/3t4MAeI1z0QTwdDBwJcec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BQhtYpCY; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-85d9a87660fso88182739f.1;
+        Thu, 03 Apr 2025 07:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743691340; x=1744296140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zeoDb9T68HON4+pT2o4m+OL30KX0Z6zhqrCCdtzjaWI=;
+        b=BQhtYpCYRdqQhScW52gcZgDHo/5auY8GDde5ivG+tpeeFEKQZB/CFa1/IhAhehsapR
+         GDowryAeH/DuEJuC1nT4np75jaS8o9sY+1w2a43olEo4An6ht+JJUYyQ/vF3lgslb24c
+         upHMeouJnIBhyAMQ29eQap398rsmcffO8+w9qUgvt43cdgHtdLt9VcNIM0eoHz/tbieJ
+         YQ3LeFVHABEZq9m0GZKpr5Akgtp6BSRUSWY++cyvGvgZl0aw8TFyEK2Yp0e9OPp21lVq
+         ofSPCkSe9MH4Yq/cgaPj50ojOg7hncxt7pS0dI09fJjNvKr2BA8otPL/sn9J86k8TAf7
+         2ujw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743691340; x=1744296140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zeoDb9T68HON4+pT2o4m+OL30KX0Z6zhqrCCdtzjaWI=;
+        b=bC3Zs6BUCUUrKEHnn0BJULI2jG5bSj5r89VOdMZmjxb/StoMgo64Y67nh4jMm0AC3+
+         dGJ3byA7OydJdnYVqfCb/U4kggcbQOAd07by1HYeMmllUjgRmszvIk1J0FuM0nbs1WxH
+         4aZWEXD8W0Wch5X9vFE/Lw7GkWDfrIJjp3Z0cVgVcMfqje0qwRgBwHpl1QaakHHYVCwy
+         fuDhvnayI9O7oxnbH+juiVFkTgilHCFsLQvLrPWOEFS0HBDhfsM5TQtnKblXH0VBLHBS
+         ath39NjM8HDc2H48prDczRncsvPgJshNC6RbLBgLsvvUcsLjEGIVFAa+JgX9KX4gXo4U
+         Eugw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/kKh0odlXTDynai+yrkQcKAawUK9I9EeBVFr6vW4nHiDoQk+3YJMNCmJRPnH5zaTmsd5xiqPmHHxlExk=@vger.kernel.org, AJvYcCU3TKQ1IkHJ2ajPLk26UX2ARtb4YYVY7IQMozyjxgle4VYjtCpYDv3nns/DemTGeSkL4dL1uNixhwzqBg==@vger.kernel.org, AJvYcCUOx9wAftOQxRKmjfWP/i3lkLCtn8p3aV2DQUKcAygwHvv0TgTkXr+2MirsozjO1F8Oa6CY4q7C@vger.kernel.org, AJvYcCVBUyPMKsnlOdJE8l3RuqsGl95e19cbaXahXMMnUwOSjIG8U26Tq4L0zNy8J0DD47sEfUsFEcWL@vger.kernel.org
+X-Gm-Message-State: AOJu0YyP5cDwBqSOfTLcWhZ6iGnhnNgOwpIvkQ1/rQaQs1QpTybGWdSK
+	T30yeBWD4dN5dE3J6/8pZ5WFp4AdEfGXgbbjPWF4RdK5Tzlwy70goYoH40GcIl25mKVAyQXMetP
+	hDl3HueZwwmuxYOEfDgeFJ2PO+pI=
+X-Gm-Gg: ASbGncsYJxVHC1hzxNXSDHFsq/5RJbK5ntvz/50NdOQHLRISp3VT1nbT8BwfpUNtC9Q
+	69fQT/OF+/IyEjuUsV7AOv75GPIG95V6nry+Z40RIkWrLnPuPw4Mt+SptEZjZD2xX1ho4Bm0nTu
+	Y2TBhPjrVMJ3JfOUq/XFQNR4DNqYHozP3hN3dYrvbFaCQMIh7WNzHBYV311OU=
+X-Google-Smtp-Source: AGHT+IGNRyxDi7DahaAnymdSbr7DQycN0ZdLw//2LEvSHgTrzxm8aOaPQKMKp2kUdY5SWnF/e0614nQcpCl/EzjRxG4=
+X-Received: by 2002:a05:6e02:12ec:b0:3d6:d179:a182 with SMTP id
+ e9e14a558f8ab-3d6dd824cb5mr37846045ab.20.1743691339808; Thu, 03 Apr 2025
+ 07:42:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+ <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com> <87tt75efdj.fsf@igalia.com>
+In-Reply-To: <87tt75efdj.fsf@igalia.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 3 Apr 2025 10:42:08 -0400
+X-Gm-Features: ATxdqUHaFX6L76fecmJqYz3mIbUdj6YZ5tkatolAjwkKUce-j3bzGLhgqW-KjgY
+Message-ID: <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
+Subject: Re: [PATCH] sctp: check transport existence before processing a send primitive
+To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Apr 3, 2025 at 5:58=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@ig=
+alia.com> wrote:
+>
+> Thanks for reviewing, answers below:
+>
+> On Wed, Apr 02 2025 at 15:40:56, Xin Long <lucien.xin@gmail.com> wrote:
+> > The data send path:
+> >
+> >   sctp_endpoint_lookup_assoc() ->
+> >   sctp_sendmsg_to_asoc()
+> >
+> > And the transport removal path:
+> >
+> >   sctp_sf_do_asconf() ->
+> >   sctp_process_asconf() ->
+> >   sctp_assoc_rm_peer()
+> >
+> > are both protected by the same socket lock.
+> >
+> > Additionally, when a path is removed, sctp_assoc_rm_peer() updates the
+> > transport of all existing chunks in the send queues (peer->transmitted
+> > and asoc->outqueue.out_chunk_list) to NULL.
+> >
+> > It will be great if you can reproduce the issue locally and help check
+> > how the potential race occurs.
+>
+> That's true but if there isn't enough space in the send buffer, then
+> sctp_sendmsg_to_asoc() will release the lock temporarily.
+>
+Oh right, I missed that. Thanks.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> The scenario that the reproducer generates is the following:
+>
+>         Thread A                                  Thread B
+>         --------------------                      --------------------
+> (1)     sctp_sendmsg()
+>           lock_sock()
+>           sctp_sendmsg_to_asoc()
+>             sctp_wait_for_sndbuf()
+>               release_sock()
+>                                                   sctp_setsockopt(SCTP_SO=
+CKOPT_BINDX_REM)
+>                                                     lock_sock()
+>                                                     sctp_setsockopt_bindx=
+()
+>                                                     sctp_send_asconf_del_=
+ip()
+>                                                       ...
+>                                                     release_sock()
+>                                                       process rcv backlog=
+:
+>                                                         sctp_do_sm()
+>                                                           sctp_sf_do_asco=
+nf()
+>                                                             ...
+>                                                               sctp_assoc_=
+rm_peer()
+>               lock_sock()
+> (2)          chunk->transport =3D transport
+>              sctp_primitive_SEND()
+>                ...
+>                sctp_outq_select_transport()
+> *BUG*            switch (new_transport->state)
+>
+>
+> Notes:
+> ------
+>
+> Both threads operate on the same socket.
+>
+> 1. Here, sctp_endpoint_lookup_assoc() finds and returns an existing
+> association and transport.
+>
+> 2. At this point, `transport` is already deleted. chunk->transport is
+> not set to NULL because sctp_assoc_rm_peer() ran _before_ the transport
+> was assigned to the chunk.
+>
+> > We should avoid an extra hashtable lookup on this hot TX path, as it wo=
+uld
+> > negatively impact performance.
+>
+> Good point. I can't really tell the performance impact of the lookup
+> here, my experience with the SCTP implementation is very limited. Do you
+> have any suggestions or alternatives about how to deal with this?
+>
+I think the correct approach is to follow how sctp_assoc_rm_peer()
+handles this.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+You can use asoc->peer.last_sent_to (which isn't really used elsewhere)
+to temporarily store the transport before releasing the socket lock and
+sleeping in sctp_sendmsg_to_asoc(). After waking up and reacquiring the
+lock, restore the transport back to asoc->peer.last_sent_to.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2790ce23951f0c497810c44ad60a126a59c8d84c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040348-sudoku-backspace-0802@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Additionally, during an ASCONF update, ensure asoc->peer.last_sent_to
+is set to a valid transport if it matches the transport being removed.
 
-Possible dependencies:
+For example:
 
+in sctp_wait_for_sndbuf():
 
+    asoc->peer.last_sent_to =3D *tp;
+    release_sock(sk);
+    current_timeo =3D schedule_timeout(current_timeo);
+    lock_sock(sk);
+    *tp =3D asoc->peer.last_sent_to;
+    asoc->peer.last_sent_to =3D NULL;
 
-thanks,
+in sctp_assoc_rm_peer():
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2790ce23951f0c497810c44ad60a126a59c8d84c Mon Sep 17 00:00:00 2001
-From: Cheick Traore <cheick.traore@foss.st.com>
-Date: Thu, 20 Mar 2025 16:25:40 +0100
-Subject: [PATCH] serial: stm32: do not deassert RS485 RTS GPIO prematurely
-
-If stm32_usart_start_tx is called with an empty xmit buffer, RTS GPIO
-could be deasserted prematurely, as bytes in TX FIFO are still
-transmitting.
-So this patch remove rts disable when xmit buffer is empty.
-
-Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Link: https://lore.kernel.org/r/20250320152540.709091-1-cheick.traore@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 4c97965ec43b..ad06b760cfca 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct uart_port *port)
- {
- 	struct tty_port *tport = &port->state->port;
- 
--	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
--		stm32_usart_rs485_rts_disable(port);
-+	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
- 		return;
--	}
- 
- 	stm32_usart_rs485_rts_enable(port);
- 
-
+    if (asoc->peer.last_sent_to =3D=3D peer)
+        asoc->peer.last_sent_to =3D transport;
 
