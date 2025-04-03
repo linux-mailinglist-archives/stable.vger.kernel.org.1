@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-127764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638E9A7AB25
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:18:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE97A7AB2A
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E11333AD401
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693E417287E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5637025DB17;
-	Thu,  3 Apr 2025 19:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEB825DCFB;
+	Thu,  3 Apr 2025 19:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKEiTQ/a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huPGJh3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119AC25DB11;
-	Thu,  3 Apr 2025 19:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B705254B11;
+	Thu,  3 Apr 2025 19:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707039; cv=none; b=LItCN0k96UgcPHnVgWVsN/bBfomFshxaNZx0e6GlSCay4cBAxi0b5EE56afGGogyQXcAQtZVXdHByb+n04+/zpr+uZFAc8IRyEYgs7QJLAw8ybAtE8GGV5iRW3L+rqzkYlHIeZ51rintI6gjm16j3NEjwicsQ/jPkfXqQ1f+voA=
+	t=1743707040; cv=none; b=pGLZ2t+Fm/HC4I7yvxhuGGp+GYUMK7kAvdNDFC25kdgMe+2b3OKWarr935XJHHBGTWML+jVLK+tiD50lRdaRm+VKGcvR8T7Z7Vspqton4kerR1ItHR6LZhFpZW5tisUjXrd6m6Cnr09/gvaT4StXN/yXPr8va+9qWP6EnK0exZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707039; c=relaxed/simple;
-	bh=hJRTGhledZwajml62iIPZi4kRkaNysKEWAC3ocQfQ04=;
+	s=arc-20240116; t=1743707040; c=relaxed/simple;
+	bh=RyMTmU1OPq0djL736PFY/rdS3rZ1vG6PTHsM/WGCJU8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pyt/GiGGrTxan2+sIsXMBR6yeaSPOIvbVGTEHbPlIjmqdk6p3D15A10TL1+UrIuUVh193y85/xReA7uHp6d/Kxm4Zz+Db/R3zdFMyRJ7UBKKrdpKN07tEP6Ks04Rztb57OupXkVzsp1k+SG16EjHld8zYAZ5+ms1GfddJKTX7mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKEiTQ/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC62C4CEE3;
-	Thu,  3 Apr 2025 19:03:57 +0000 (UTC)
+	 MIME-Version; b=GZpeWW6h12KrizpG/76OtK45aKJMrmQu8EBYZH4x0Egp7rLTi0Y7P8nrphZb7it+ywRxybjq1b1tSrvXLhuD4U/xLTr/Od1wEZum++RMgz8eTytxaYWheWEOIkiO+a0ay4dQgofWwecaVkJKpbgQnb/G6CE66B7aJ7pGnwju99s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huPGJh3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B96C4CEE9;
+	Thu,  3 Apr 2025 19:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707038;
-	bh=hJRTGhledZwajml62iIPZi4kRkaNysKEWAC3ocQfQ04=;
+	s=k20201202; t=1743707040;
+	bh=RyMTmU1OPq0djL736PFY/rdS3rZ1vG6PTHsM/WGCJU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKEiTQ/aNVEJfjkJ2G+NGUPs2heDeC2n4bvJRdk8EFClqcO3d6sCkJOyhK815UPdd
-	 ns67vUHmgNA8DNPXZLJl1TVSOnvvtVu4qiU67tZKy437EiVC7AHQLoupbHLRK29lvu
-	 LyHZuaKNs+mDft5arrK5V8kiJ+g0sljGJs9YsP7o0Tk1WwaX1N+8NkJsg8ue67C3ZG
-	 yTMZVvDFiSyb9c4eZqv8dB9fNyOfJ922vlHEB9eDSCSWomxld51z/3W/tUTLotWNOZ
-	 La3F4MA1sgE1l06QVL3h/mwYDSGN4CXZnkmAGdbfg1VOgRKuZwfDR3cyuGmxw+x1bE
-	 5tkTlqyCN6rvQ==
+	b=huPGJh3T0y8E3UoSb0u3W78em65+gl0WBLsb7YYTxU8YaZQWcLJH43CX+R/+FxtFE
+	 z5AbkdNnHY2khAnrgX2MzGD34GBo/yJ6wMbMSZSvshDVhR5YyNrVBLOgPCfOift9a6
+	 U6BrZcO4fsHfVWbgu2Oegoy0ZAliHvznX1y9OtmV+uqEOZ/5eyxti137j6jij9O6XT
+	 R31YCg9g+hpnGdNfG8Rm2s9Rqo1nJj6nQ1bg/EsZYAXeXHZEB1nGHJCNkDB5lzzpKX
+	 38QtKQDPLnKmqQbghcm0BpPed0/r12fDachgsB2OYEmNxwIePb5muoyRxrue6z8gBY
+	 5eOYEG6Tgzjig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiande Lu <jiande.lu@mediatek.com>,
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
 	luiz.dentz@gmail.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-bluetooth@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 49/54] Bluetooth: btusb: Add 2 HWIDs for MT7922
-Date: Thu,  3 Apr 2025 15:02:04 -0400
-Message-Id: <20250403190209.2675485-49-sashal@kernel.org>
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 50/54] Bluetooth: hci_qca: use the power sequencer for wcn6750
+Date: Thu,  3 Apr 2025 15:02:05 -0400
+Message-Id: <20250403190209.2675485-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -71,57 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Jiande Lu <jiande.lu@mediatek.com>
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
 
-[ Upstream commit a88643b7e48506777e175e80c902c727ddd90851 ]
+[ Upstream commit 852cfdc7a5a5af54358325c1e0f490cc178d9664 ]
 
-Add below HWIDs for MediaTek MT7922 USB Bluetooth chip.
-VID 0x0489, PID 0xe152
-VID 0x0489, PID 0xe153
+Older boards are having entry "enable-gpios" in dts, we can safely assume
+latest boards which are supporting PMU node enrty will support power
+sequencer.
 
-Patch has been tested successfully and controller is recognized
-device pair successfully.
-
-MT7922 module bring up message as below.
-Bluetooth: Core ver 2.22
-Bluetooth: HCI device and connection manager initialized
-Bluetooth: HCI socket layer initialized
-Bluetooth: L2CAP socket layer initialized
-Bluetooth: SCO socket layer initialized
-Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
-Bluetooth: hci0: Device setup in 2284925 usecs
-Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
-Bluetooth: hci0: AOSP extensions version v1.00
-Bluetooth: BNEP (Ethernet Emulation) ver 1.3
-Bluetooth: BNEP filters: protocol multicast
-Bluetooth: BNEP socket layer initialized
-Bluetooth: MGMT ver 1.22
-Bluetooth: RFCOMM TTY layer initialized
-Bluetooth: RFCOMM socket layer initialized
-Bluetooth: RFCOMM ver 1.11
-
-Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
+Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bluetooth/hci_qca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 3f151779ad355..6ad74ce4b979e 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -668,6 +668,10 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe102), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe152), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe153), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x3804), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x38e4), .driver_info = BTUSB_MEDIATEK |
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 0ac2168f1dc4f..d2fd08aceb179 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2359,6 +2359,7 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 	switch (qcadev->btsoc_type) {
+ 	case QCA_WCN6855:
+ 	case QCA_WCN7850:
++	case QCA_WCN6750:
+ 		if (!device_property_present(&serdev->dev, "enable-gpios")) {
+ 			/*
+ 			 * Backward compatibility with old DT sources. If the
+@@ -2378,7 +2379,6 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 	case QCA_WCN3990:
+ 	case QCA_WCN3991:
+ 	case QCA_WCN3998:
+-	case QCA_WCN6750:
+ 		qcadev->bt_power->dev = &serdev->dev;
+ 		err = qca_init_regulators(qcadev->bt_power, data->vregs,
+ 					  data->num_vregs);
 -- 
 2.39.5
 
