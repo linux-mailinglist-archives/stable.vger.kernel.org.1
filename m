@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-127958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7553BA7ADA3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:09:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3319A7ADA1
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1381C3BACF1
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:04:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D86D1B603EF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CBF25C70B;
-	Thu,  3 Apr 2025 19:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FC625D1E9;
+	Thu,  3 Apr 2025 19:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NzLLLEDi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4nhbtwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB125C705;
-	Thu,  3 Apr 2025 19:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D4225D1E6;
+	Thu,  3 Apr 2025 19:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707603; cv=none; b=MgyAnpbUn9iiyS6cua9GCnhVGdvm+i6qRSZjOYswGQwknoDBobdFhfyqS45iw7kV3rpG8b6fCijqfZIRw9RZzUf6iugVq6x+U2LQufzmHzXsRn7P5OyV0UC4rfGjiJrmha5T5PURHjsAFcQsCb+NRj8kh6p6Jy2cLByMGg6tNMU=
+	t=1743707605; cv=none; b=G3stJJENo7AJn18D2ryaYR/+hTRi0fd46FzDHfs8RoBvKsQA4sCHKAHRaQgSiNG2hWlanWnRO+p/aIkYzPMqqhDIqYHIWtq5gdl3QFADa6BbGvtS/QrB7yLPmiL7XZRUy9vUVCL085oaqWrMZiZiHgaKpB7QfQsGq1i9InSZ/dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707603; c=relaxed/simple;
-	bh=Od6xNWqg5f1TGcVxQW6t87mVJrpqg1QBQau9rDrcCbc=;
+	s=arc-20240116; t=1743707605; c=relaxed/simple;
+	bh=EKdo6glVJ5uwfI//1+P8dkxEj9XhjdNxCeuyPd/eAPg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IXW668YUDBpC44OsAAnW7qWOnQGNMLLvt539k0cmXJ5Flllsi1Jrgpv5fEA/fr1276GDw8Q/NXNFfn+6UV+zNpI3im+q9qN7YThOA8LQoRgY1khEvZgVzCq3fqBPVaDunfH5qf80ULzMWr8yDPX/bLa8e6rX28YiLgNtcJrACCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NzLLLEDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB47C4CEE3;
-	Thu,  3 Apr 2025 19:13:21 +0000 (UTC)
+	 MIME-Version; b=Lsf9ODgERioAdUNt3ZsWeMc+uEb9pryV9axyzqaXJNPI+R8jH4Egsn8K4WMWBTUBDfb/2mZ4DMZPrdJsYTl6lBNHCgnTozSLZUlTDBWxdEButiDZE7ElvhHIF9nGp1WpBsCN1mjKuYglG7eXbMC/vCE4zHyTxyE1Jv5J/g3RDcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4nhbtwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43347C4CEE9;
+	Thu,  3 Apr 2025 19:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707602;
-	bh=Od6xNWqg5f1TGcVxQW6t87mVJrpqg1QBQau9rDrcCbc=;
+	s=k20201202; t=1743707604;
+	bh=EKdo6glVJ5uwfI//1+P8dkxEj9XhjdNxCeuyPd/eAPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzLLLEDiM5pVl7mLHWB9RQwLwsGvU5uec/xEjZB7VNpF4ryZtFDltRwHUgBDOGApz
-	 TvaPrPpsz8cE5nbI6uh4tMDDEF+bThtB56GYsWikosTIpyrRTi912hHnzo/gBH/vww
-	 8rIDSQzQajsaNgyIBAWFjYv7CWS1SAS+se5J2Lhc7+SfwbcxlotvC7pV0HAaknMyFE
-	 3SG2RGL9GZiYpTqssqOfEOsdYXijLxvUXJtt5nZpNu00guSIbuqMgPAunj2nzOtehG
-	 t9snVEKE0piex2UiSX8jfEa2Qta2TJhS3myX4sH0Np8K+aoFwu/5ytwjBvHRE16lIz
-	 5pyR6L3/YipJQ==
+	b=J4nhbtwxVtFV98KFbap5pev82KSlYL52LiWhtk8yKSdQaFJ2ImEehxKXZ6Aey3k/Q
+	 5aj+GUl1JStMZeh6nXuUG/gszDD7GUd0s2NBYobcHWPokubqAjxgH28mxN4sBj1GXU
+	 eeq+2N8tlIjRmbWbWgg+U1G+9QFECrJ4RSwPcMVrCCVjxYKuWLImucbELIaobVgUqD
+	 /vIZ50nE+22XxtZGZBBLYzUqMFU8J47k2aQmjM+VXvQcdbQf+M0c+p2+ThhS1Lm2Y4
+	 1+hoC1sKNW5QKneKYy9eRZddJDNbcA/q3vN38LZFjQ4jHajFeRpspWwgjd5xPM9OZC
+	 0DkoCrh/p0pPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Derek Foreman <derek.foreman@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Clint Taylor <Clinton.A.Taylor@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	andy.yan@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	tursulin@ursulin.net,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 03/44] drm/rockchip: Don't change hdmi reference clock rate
-Date: Thu,  3 Apr 2025 15:12:32 -0400
-Message-Id: <20250403191313.2679091-3-sashal@kernel.org>
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 04/44] drm/xe/bmg: Add new PCI IDs
+Date: Thu,  3 Apr 2025 15:12:33 -0400
+Message-Id: <20250403191313.2679091-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -75,68 +75,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Derek Foreman <derek.foreman@collabora.com>
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
 
-[ Upstream commit 1854df7087be70ad54e24b2e308d7558ebea9f27 ]
+[ Upstream commit fa8ffaae1b15236b8afb0fbbc04117ff7c900a83 ]
 
-The code that changes hdmi->ref_clk was accidentally copied from
-downstream code that sets a different clock. We don't actually
-want to set any clock here at all.
+Add 3 new PCI IDs for BMG.
 
-Setting this clock incorrectly leads to incorrect timings for
-DDC, CEC, and HDCP signal generation.
+v2: Fix typo -> Replace '.' with ','
 
-No Fixes listed, as the theoretical timing error in DDC appears to
-still be within tolerances and harmless - and HDCP and CEC are not
-yet supported.
-
-Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241217201708.3320673-1-derek.foreman@collabora.com
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Reviewed-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250128162015.3288675-1-shekhar.chauhan@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ include/drm/intel/pciids.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-index e498767a0a667..cebd72bf1ef25 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
-@@ -54,7 +54,6 @@ struct rockchip_hdmi_qp {
- 	struct regmap *regmap;
- 	struct regmap *vo_regmap;
- 	struct rockchip_encoder encoder;
--	struct clk *ref_clk;
- 	struct dw_hdmi_qp *hdmi;
- 	struct phy *phy;
- 	struct gpio_desc *enable_gpio;
-@@ -81,7 +80,6 @@ static void dw_hdmi_qp_rockchip_encoder_enable(struct drm_encoder *encoder)
- 	if (crtc && crtc->state) {
- 		rate = drm_hdmi_compute_mode_clock(&crtc->state->adjusted_mode,
- 						   8, HDMI_COLORSPACE_RGB);
--		clk_set_rate(hdmi->ref_clk, rate);
- 		/*
- 		 * FIXME: Temporary workaround to pass pixel clock rate
- 		 * to the PHY driver until phy_configure_opts_hdmi
-@@ -330,17 +328,6 @@ static int dw_hdmi_qp_rockchip_bind(struct device *dev, struct device *master,
- 		return ret;
- 	}
+diff --git a/include/drm/intel/pciids.h b/include/drm/intel/pciids.h
+index 77c826589ec11..4035e215c962a 100644
+--- a/include/drm/intel/pciids.h
++++ b/include/drm/intel/pciids.h
+@@ -846,7 +846,10 @@
+ 	MACRO__(0xE20B, ## __VA_ARGS__), \
+ 	MACRO__(0xE20C, ## __VA_ARGS__), \
+ 	MACRO__(0xE20D, ## __VA_ARGS__), \
+-	MACRO__(0xE212, ## __VA_ARGS__)
++	MACRO__(0xE210, ## __VA_ARGS__), \
++	MACRO__(0xE212, ## __VA_ARGS__), \
++	MACRO__(0xE215, ## __VA_ARGS__), \
++	MACRO__(0xE216, ## __VA_ARGS__)
  
--	for (i = 0; i < ret; i++) {
--		if (!strcmp(clks[i].id, "ref")) {
--			hdmi->ref_clk = clks[1].clk;
--			break;
--		}
--	}
--	if (!hdmi->ref_clk) {
--		drm_err(hdmi, "Missing ref clock\n");
--		return -EINVAL;
--	}
--
- 	hdmi->enable_gpio = devm_gpiod_get_optional(hdmi->dev, "enable",
- 						    GPIOD_OUT_HIGH);
- 	if (IS_ERR(hdmi->enable_gpio)) {
+ /* PTL */
+ #define INTEL_PTL_IDS(MACRO__, ...) \
 -- 
 2.39.5
 
