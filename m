@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-127639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0098A7A6A6
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B800A7A6E3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F25189CE7E
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E19178A16
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4815F250BE5;
-	Thu,  3 Apr 2025 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75311250BE8;
+	Thu,  3 Apr 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3IVzUW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPpayEJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B9D24C080;
-	Thu,  3 Apr 2025 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337D7250BE5;
+	Thu,  3 Apr 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693934; cv=none; b=blTnOTgGoArtV95SHFMWVCYSqH5XiD6GyIydemZ4QG2eKnDOQa2FlEyb4+4YnyfLHWt++5HSZZQswthKtJRNCFBdF+J25imo2j9c/kfmPFegrfbqqk/p6Ftj95FqCexDY92aVl+PdOHTAbO83/kBiad8htzeXijyi9gEMDEGYnE=
+	t=1743693985; cv=none; b=eNiNIuT66en+8VlupfJtR/jF+7w3G3lHkFVFvBlexBJF9YMPGff48yDHTrY/aKbRuPA2xRGVUxeGFjmkvRmgkCJRolULJrwVmcEASMOHDTnsLfynef7dCmrX5bzBWqVGCIA8GUEkZu7reDncEsfhFYDOaHlxpNSqArcc1hd+T6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693934; c=relaxed/simple;
-	bh=I/17kl+9U4EmSdbEMESF5XPvrSwVTOJXZsTgwgfmJ2s=;
+	s=arc-20240116; t=1743693985; c=relaxed/simple;
+	bh=5c391lQAO/ZqFJORrLE5iH93pQU8SO0Bk/iqSV+Cjg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThES6P9ZgV4N+t+5VnIfd9L28pxIU6PjO2YKIs96Fxb8Hj5uiVg3mSfDSz+IaZqRAVdZDD/PwKHnCP2ZutLl9h+LaHTplKxH8Zgxr0fZeGEXbhOpznRVsDtENkuHDVANJG/EalEtV1FzrxOfp39BBzHliL+4l888wJMUnIFr/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3IVzUW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B4C4CEE3;
-	Thu,  3 Apr 2025 15:25:33 +0000 (UTC)
+	 MIME-Version; b=thRbTHpItKUcYoQI3cJj7vE9n6pqBJeiIMaKzVcAdXNlX2FreIz1em666s1S2kXlYUqA0pTeLXGwKSfevvkri+c8EiigMGUvvpsokJvWl3CzIDPH68PNT0EL/u2CleuiBJUD0utK1L0JIQDGErKjgNp+3UIi4epEFidEbG9WQqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPpayEJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0ED5C4CEE3;
+	Thu,  3 Apr 2025 15:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693933;
-	bh=I/17kl+9U4EmSdbEMESF5XPvrSwVTOJXZsTgwgfmJ2s=;
+	s=korg; t=1743693985;
+	bh=5c391lQAO/ZqFJORrLE5iH93pQU8SO0Bk/iqSV+Cjg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3IVzUW6J/Ug2xQmYNhLOfzQ9noX1n7UemgoLxTtXBKYBRavALBx4tEkp97q+znxE
-	 4WwoV2GH7QVFewuOYAZifTMPLKM3Y5ZcCGlMvp+KNhvfwtcA1JwEgIsuPkBI2vzgQ+
-	 XqykFTcmEK0moUa3XTEESBfJhpobvfFTrc8OK36A=
+	b=iPpayEJbzUZJGui2MMzuW+fb1I8ZiEY0g7NR4U9bNb++RiqPmE6RpJOmYR4j2tqO5
+	 SuEb9qmGJQt2PNvJSRoHnUvfW0AnO9R2Y/t2OnKIO7i5RgramMiO1J8jNzAfD96fv+
+	 KPQwc+86bpqdnTcBqo3t+CKGHjzblLCS1gnglVZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.13 17/23] usb: xhci: Dont skip on Stopped - Length Invalid
-Date: Thu,  3 Apr 2025 16:20:34 +0100
-Message-ID: <20250403151622.770891959@linuxfoundation.org>
+	Maxim Mikityanskiy <maxim@isovalent.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 14/26] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+Date: Thu,  3 Apr 2025 16:20:35 +0100
+Message-ID: <20250403151622.829318449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
+References: <20250403151622.415201055@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-commit 58d0a3fab5f4fdc112c16a4c6d382f62097afd1c upstream.
+commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
 
-Up until commit d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are
-returned when isoc ring is stopped") in v6.11, the driver didn't skip
-missed isochronous TDs when handling Stoppend and Stopped - Length
-Invalid events. Instead, it erroneously cleared the skip flag, which
-would cause the ring to get stuck, as future events won't match the
-missed TD which is never removed from the queue until it's cancelled.
+nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
+restore the original 5-tuple in case of SNAT, to be able to find the
+right socket (if any). Then socket_match() can correctly check whether
+the socket was transparent.
 
-This buggy logic seems to have been in place substantially unchanged
-since the 3.x series over 10 years ago, which probably speaks first
-and foremost about relative rarity of this case in normal usage, but
-by the spec I see no reason why it shouldn't be possible.
+However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
+conntrack lookup, making xt_socket fail to match on the socket when the
+packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
 
-After d56b0b2ab142, TDs are immediately skipped when handling those
-Stopped events. This poses a potential problem in case of Stopped -
-Length Invalid, which occurs either on completed TDs (likely already
-given back) or Link and No-Op TRBs. Such event won't be recognized
-as matching any TD (unless it's the rare Link TRB inside a TD) and
-will result in skipping all pending TDs, giving them back possibly
-before they are done, risking isoc data loss and maybe UAF by HW.
+IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
+pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
+with the node's external address. Cilium leverages Envoy to enforce L7
+policies, and Envoy uses transparent sockets. Cilium inserts an iptables
+prerouting rule that matches on `-m socket --transparent` and redirects
+the packets to localhost, but it fails to match SNATed IPv6 packets due
+to that missing conntrack lookup.
 
-As a compromise, don't skip and don't clear the skip flag on this
-kind of event. Then the next event will skip missed TDs. A downside
-of not handling Stopped - Length Invalid on a Link inside a TD is
-that if the TD is cancelled, its actual length will not be updated
-to account for TRBs (silently) completed before the TD was stopped.
-
-I had no luck producing this sequence of completion events so there
-is no compelling demonstration of any resulting disaster. It may be
-a very rare, obscure condition. The sole motivation for this patch
-is that if such unlikely event does occur, I'd rather risk reporting
-a cancelled partially done isoc frame as empty than gamble with UAF.
-
-This will be fixed more properly by looking at Stopped event's TRB
-pointer when making skipping decisions, but such rework is unlikely
-to be backported to v6.12, which will stay around for a few years.
-
-Fixes: d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are returned when isoc ring is stopped")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-4-mathias.nyman@linux.intel.com
+Closes: https://github.com/cilium/cilium/issues/37932
+Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
+Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2862,6 +2862,10 @@ static int handle_tx_event(struct xhci_h
- 		if (!ep_seg) {
+--- a/net/ipv6/netfilter/nf_socket_ipv6.c
++++ b/net/ipv6/netfilter/nf_socket_ipv6.c
+@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 	struct sk_buff *data_skb = NULL;
+ 	int doff = 0;
+ 	int thoff = 0, tproto;
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn const *ct;
++#endif
  
- 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
-+				/* this event is unlikely to match any TD, don't skip them all */
-+				if (trb_comp_code == COMP_STOPPED_LENGTH_INVALID)
-+					return 0;
+ 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
+ 	if (tproto < 0) {
+@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 		return NULL;
+ 	}
+ 
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	/* Do the lookup with the original socket address in
++	 * case this is a reply packet of an established
++	 * SNAT-ted connection.
++	 */
++	ct = nf_ct_get(skb, &ctinfo);
++	if (ct &&
++	    ((tproto != IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
++	     (tproto == IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_RELATED_REPLY)) &&
++	    (ct->status & IPS_SRC_NAT_DONE)) {
++		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
++		dport = (tproto == IPPROTO_TCP) ?
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
++	}
++#endif
 +
- 				skip_isoc_td(xhci, td, ep, status);
- 				if (!list_empty(&ep_ring->td_list))
- 					continue;
+ 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
+ 				     sport, dport, indev);
+ }
 
 
 
