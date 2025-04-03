@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-127896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3305A7ACFB
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:54:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8864A7AD05
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492F0167120
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7211817CE6E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35333290091;
-	Thu,  3 Apr 2025 19:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0F5290BA1;
+	Thu,  3 Apr 2025 19:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvoaXDna"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKM+vJew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2B9290088;
-	Thu,  3 Apr 2025 19:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC0C2900B8;
+	Thu,  3 Apr 2025 19:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707340; cv=none; b=VVfzvwPb7MnVDcJhyKTtT6hYJIINL2yZ7U2By+lS/bC3tX21y8VpdZxOAtFYFGZ5QKMsTRX6AOJoTxrwwbY+gFNzKDjRr5GYthwOa918kD4GQ4lv/nJ3vZYWVVY9RvvcXLn+nlpJ5Em3CKfyUg0g+/i17JD33h4kYPMWXeV3qM4=
+	t=1743707342; cv=none; b=VDwCkkEUDg5n6DFcDbwMOv3AkdXl0TJk/4EVrG+Z0jRDxRjT/xJLlVQUZJHxjw5rHkJl1TCWxdtxrb1c03XrZS1qb5ikbVVR02N6Fz9827362iUJCKxticARbKie0V+tA3d1zBjxhTukEtoiQwb0rrn/AJViGbGFsnMyq4vkHCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707340; c=relaxed/simple;
-	bh=ttmiWx3+Mwc3SZYHTVvJ7P+mUP0prsrgRiAnl8RsPlo=;
+	s=arc-20240116; t=1743707342; c=relaxed/simple;
+	bh=afB4jn4Gr2F2yDWPtKTx/4f2itcQDc+MrHNXMyT6G0I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CWzSrAeu0bmBoKxEKOLxa2qR7ZMMyLAThADwHy+96TkmQ0yyFs4ztWzhJTlcfpP2Z2xJAXZg39MifRRTKEyRZGyWlEOJayMZPks5wxqqii7zTqk3im2nrvti+1/XqGBvwZX4aURkoM7mCw++RIoiVGLeB3P6Xy8poHviUePaf1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvoaXDna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787B0C4CEE8;
-	Thu,  3 Apr 2025 19:08:58 +0000 (UTC)
+	 MIME-Version; b=bqo7sjwYv9EwsbbNdNBiPFjfl4xUmDrf+rad0+UvN6x443GI2B3y6qeVFC1as8S8oLhFYm7wr5oS3zfKHyAnjJFEyxUd6BkOfE6om3UXZu9ach/M3SMtEioTCQ4nYk/SEp2pNe8kBX9JZDMh6JDcLkdtDi/fQctm4MEPmU+P470=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKM+vJew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB3FC4CEEB;
+	Thu,  3 Apr 2025 19:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707339;
-	bh=ttmiWx3+Mwc3SZYHTVvJ7P+mUP0prsrgRiAnl8RsPlo=;
+	s=k20201202; t=1743707342;
+	bh=afB4jn4Gr2F2yDWPtKTx/4f2itcQDc+MrHNXMyT6G0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvoaXDnaRwRisjOh8VKNr+WNoOY6OVxJjx4QorpCol9otrUEO4LlwTVDGqX4eImQD
-	 gupEwlLR6FOnjmSipaP6m1I37X/1f022gSzUmBz7ljq+zWkST9WWiv39QM15Csd87u
-	 xlutJxw+PW8+yBoCGA1UZ60qsorjfWW7alOs/pGd6ulWg9/MsIqUbkM8NlVCW+6URQ
-	 dbmUw4HvPnyAvTItjbo8jr+l0ry7J0mScrUq0AeuJxSeG2Ea2JLhc5+0k4cCrzgrKm
-	 cRufUePurED47lbF/AR1F8/t0acEb5JkoteCL9ZE1deG+TV59qRTjOZ4pFHnJ9ZW2k
-	 laxXIAB7tyDzw==
+	b=DKM+vJewULJyXuvZroZzbvtDDZrLkZSvaumFjYshwuBN5KKlPucKnFNk7kWLlsePG
+	 1CMV1tSK+uufA8ihguwsrveiIR4kq9mL9oW3UzVsTplxAsB45U2JyiQlYazuOrGL5q
+	 Zb4+bOf3Izo3z3OKsBWe3Pt0zkMNaosz2/sGlJoqLl7x4Q6RUE6SJ37PorQ2WLtdbH
+	 vQhS7tQF/SKVVM+suqAH3EMe1OsXV78+xPXlCcGtDcSLbUc9vJENxXfwOMngcqvFHf
+	 F22St1l7AH+79iHgoGEL4ZdWN6CueSYsN92CdE+y6Ia6kxRRuQDPaN3C/nFNkhaUOT
+	 GpP0jDW7IIcSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rand Deeb <rand.sec96@gmail.com>,
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
-	eadavis@qq.com,
-	peili.dev@gmail.com,
-	ghanshyam1898@gmail.com,
-	niharchaithanya@gmail.com,
 	aha310510@gmail.com,
+	quic_zhonhan@quicinc.com,
+	dmantipov@yandex.ru,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.1 05/18] fs/jfs: Prevent integer overflow in AG size calculation
-Date: Thu,  3 Apr 2025 15:08:31 -0400
-Message-Id: <20250403190845.2678025-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 06/18] jfs: Prevent copying of nlink with value 0 from disk inode
+Date: Thu,  3 Apr 2025 15:08:32 -0400
+Message-Id: <20250403190845.2678025-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190845.2678025-1-sashal@kernel.org>
 References: <20250403190845.2678025-1-sashal@kernel.org>
@@ -71,54 +70,114 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 7fcbf789629cdb9fbf4e2172ce31136cfed11e5e ]
+[ Upstream commit b61e69bb1c049cf507e3c654fa3dc1568231bd07 ]
 
-The JFS filesystem calculates allocation group (AG) size using 1 <<
-l2agsize in dbExtendFS(). When l2agsize exceeds 31 (possible with >2TB
-aggregates on 32-bit systems), this 32-bit shift operation causes undefined
-behavior and improper AG sizing.
+syzbot report a deadlock in diFree. [1]
 
-On 32-bit architectures:
-- Left-shifting 1 by 32+ bits results in 0 due to integer overflow
-- This creates invalid AG sizes (0 or garbage values) in
-sbi->bmap->db_agsize
-- Subsequent block allocations would reference invalid AG structures
-- Could lead to:
-  - Filesystem corruption during extend operations
-  - Kernel crashes due to invalid memory accesses
-  - Security vulnerabilities via malformed on-disk structures
+When calling "ioctl$LOOP_SET_STATUS64", the offset value passed in is 4,
+which does not match the mounted loop device, causing the mapping of the
+mounted loop device to be invalidated.
 
-Fix by casting to s64 before shifting:
-bmp->db_agsize = (s64)1 << l2agsize;
+When creating the directory and creating the inode of iag in diReadSpecial(),
+read the page of fixed disk inode (AIT) in raw mode in read_metapage(), the
+metapage data it returns is corrupted, which causes the nlink value of 0 to be
+assigned to the iag inode when executing copy_from_dinode(), which ultimately
+causes a deadlock when entering diFree().
 
-This ensures 64-bit arithmetic even on 32-bit architectures. The cast
-matches the data type of db_agsize (s64) and follows similar patterns in
-JFS block calculation code.
+To avoid this, first check the nlink value of dinode before setting iag inode.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[1]
+WARNING: possible recursive locking detected
+6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0 Not tainted
+--------------------------------------------
+syz-executor301/5309 is trying to acquire lock:
+ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+but task is already holding lock:
+ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&(imap->im_aglock[index]));
+  lock(&(imap->im_aglock[index]));
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+5 locks held by syz-executor301/5309:
+ #0: ffff8880422a4420 (sb_writers#9){.+.+}-{0:0}, at: mnt_want_write+0x3f/0x90 fs/namespace.c:515
+ #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: inode_lock_nested include/linux/fs.h:850 [inline]
+ #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: filename_create+0x260/0x540 fs/namei.c:4026
+ #2: ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
+ #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2460 [inline]
+ #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
+ #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocAG+0x4b7/0x1e50 fs/jfs/jfs_imap.c:1669
+ #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2477 [inline]
+ #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
+ #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocAG+0x869/0x1e50 fs/jfs/jfs_imap.c:1669
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5309 Comm: syz-executor301 Not tainted 6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_deadlock_bug+0x483/0x620 kernel/locking/lockdep.c:3037
+ check_deadlock kernel/locking/lockdep.c:3089 [inline]
+ validate_chain+0x15e2/0x5920 kernel/locking/lockdep.c:3891
+ __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5202
+ lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+ __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+ __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+ diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
+ jfs_evict_inode+0x32d/0x440 fs/jfs/inode.c:156
+ evict+0x4e8/0x9b0 fs/inode.c:725
+ diFreeSpecial fs/jfs/jfs_imap.c:552 [inline]
+ duplicateIXtree+0x3c6/0x550 fs/jfs/jfs_imap.c:3022
+ diNewIAG fs/jfs/jfs_imap.c:2597 [inline]
+ diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
+ diAllocAG+0x17dc/0x1e50 fs/jfs/jfs_imap.c:1669
+ diAlloc+0x1d2/0x1630 fs/jfs/jfs_imap.c:1590
+ ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
+ jfs_mkdir+0x1c5/0xba0 fs/jfs/namei.c:225
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdirat fs/namei.c:4295 [inline]
+ __se_sys_mkdirat fs/namei.c:4293 [inline]
+ __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=355da3b3a74881008e8f
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
+ fs/jfs/jfs_imap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 3d4c7373a25e0..11b6be462575c 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -3403,7 +3403,7 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
- 	oldl2agsize = bmp->db_agl2size;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 309b5f6e977d7..155f66812934a 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -456,7 +456,7 @@ struct inode *diReadSpecial(struct super_block *sb, ino_t inum, int secondary)
+ 	dp += inum % 8;		/* 8 inodes per 4K page */
  
- 	bmp->db_agl2size = l2agsize;
--	bmp->db_agsize = 1 << l2agsize;
-+	bmp->db_agsize = (s64)1 << l2agsize;
- 
- 	/* compute new number of AG */
- 	agno = bmp->db_numag;
+ 	/* copy on-disk inode to in-memory inode */
+-	if ((copy_from_dinode(dp, ip)) != 0) {
++	if ((copy_from_dinode(dp, ip) != 0) || (ip->i_nlink == 0)) {
+ 		/* handle bad return by returning NULL for ip */
+ 		set_nlink(ip, 1);	/* Don't want iput() deleting it */
+ 		iput(ip);
 -- 
 2.39.5
 
