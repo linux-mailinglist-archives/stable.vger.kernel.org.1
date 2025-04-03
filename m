@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-128142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8A0A7AFA3
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A84A7AF94
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 810AE170F3C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324EE4405F2
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307352E62A0;
-	Thu,  3 Apr 2025 19:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E442E62B2;
+	Thu,  3 Apr 2025 19:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URasdw7Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3EUOwXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA82E5DC0;
-	Thu,  3 Apr 2025 19:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8E02E62AC;
+	Thu,  3 Apr 2025 19:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743708071; cv=none; b=qadW/l35MQqB74QGAtRroJ552wOz0YYFEgXTWTpS723ur7nYNuVaZYP3NIgNVrLn5RQgi9ES0dCcQ45zOVb04ohlfLioik07LFLiaQzYVKKLj4XJSJWct8nq9ioqKWmct+Ed6J1ndgroadAhGlBP2duM0iMj2wQgupPFCqnrxgM=
+	t=1743708072; cv=none; b=gfCFtO59Z63GWSDar1UBKEQISREelpus8TFahE7ZpkK0hT1EqJRrl3to1mViTcixeqxEpQQNkW+Tlu6n2oXr+FX4oRpcqUl5C+2M9cy3q8L6o0dNcV1stodQ5xI2dKqxn7uh3R/82cba6p/tyONtRCT6tny/ckdK8htunJcwEsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743708071; c=relaxed/simple;
-	bh=YOPuyiUY3GxPp++wU/RIprdHiMfY/V+JLjOaL0Fp508=;
+	s=arc-20240116; t=1743708072; c=relaxed/simple;
+	bh=fSTP9hk2r75CUO4xrkqPz0MKNapjvhfwvVYOZuFXBcs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hzu0TWehq2udE9dOlVvLK79xJCG+u0kc8S4nNGSWougnT08iLAYusNN+k51IrEjZgcIGwIZCi0hcIN3g/fVDJKEEgxXGexWnCh48MmHHchXwHHMcpZqA7m+nafrcqHuEpo8g8u81+pmpjJT6BoLEbPz9dWD1gArCgqJuftxPpbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URasdw7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EE2C4CEE8;
-	Thu,  3 Apr 2025 19:21:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p8QP30S5SQWgNPbToX/aFVRDT5HdMAXVnc6I27Ze5hUKagTnztHw2x97XYH12piybcHMI0WRFi0SSe1dM4bbQJKBPYVDnrYCqzOAzaI87/xP8dBEAel96CToj0n6Ou/cueSSaVRBeYtnzs7Wrti58fIZAUbEfPMglU9IPZ1Id14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3EUOwXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54B3C4CEEB;
+	Thu,  3 Apr 2025 19:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743708070;
-	bh=YOPuyiUY3GxPp++wU/RIprdHiMfY/V+JLjOaL0Fp508=;
+	s=k20201202; t=1743708071;
+	bh=fSTP9hk2r75CUO4xrkqPz0MKNapjvhfwvVYOZuFXBcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URasdw7YY5QDkkKjVqxn0TVsNDYvyCvfdpB81ren8r8gGMIDtZHn+p/DFxE/F/Aw6
-	 /R67zYwJqgh20vk4zmCLxjFuSPbP2nvsKGw09hdy0Yco92LP89Jasf0PyDrO8lruZL
-	 xVCW/jgtjGh/sp4Y/jooaexbpUorst/QAVH9wcDPvQnyejVHTYM0j3oCljUP7T3b+s
-	 ZpydvHhU2KKf1CbwesfHwxBGWZ8Zd6TwAXOxVSe0zCu875W63KLbUDXgw21WZMvBMI
-	 SES5S+4m5SVG+HypzE7oHCVCgaegoNwMhdzrQHkRs4mhFQPJRokGb/o792IV+q3TKj
-	 9PMc3XcB8ToWw==
+	b=P3EUOwXUSLtpoP6ACPe3/jWJADvTuSNhnCecNcGUudE9pYBmirYNdlfT45XnUKawg
+	 05j6BoGL5jHcSWj1ky+h9R+C8nXlMe2cRHX50Q80AfpH+N8tW6a+6D/fU/mrEOq/bU
+	 bQCD0hteWcgPG+qvdHTMg/DSYW2c21S2YapfYLDZPrhSxkONbkXA1Mt/AuZr21S7k7
+	 xe9S3RPCbMGb1hl/bSFiAb7UlEkI5pkyaSenxOFmdngEfp9PfV1ywMVyOYfr9Cy7Cg
+	 R8FZJfHEJamnZakMk5uOQgsDCzJ827kGWCWwOa+ENnOnkPQC7E5hhLUdcglITUft2x
+	 RazAYUU3dg81g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+Cc: Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	krzysztof.kozlowski@linaro.org,
-	tzimmermann@suse.de,
-	u.kleine-koenig@baylibre.com,
-	linux@treblig.org,
-	linux-omap@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 8/9] fbdev: omapfb: Add 'plane' value check
-Date: Thu,  3 Apr 2025 15:20:49 -0400
-Message-Id: <20250403192050.2682427-8-sashal@kernel.org>
+	peterhuewe@gmx.de,
+	linux-integrity@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 9/9] tpm: End any active auth session before shutdown
+Date: Thu,  3 Apr 2025 15:20:50 -0400
+Message-Id: <20250403192050.2682427-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403192050.2682427-1-sashal@kernel.org>
 References: <20250403192050.2682427-1-sashal@kernel.org>
@@ -66,60 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+[ Upstream commit 1dbf74e00a5f882b04b398399b6def65cd51ef21 ]
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+Lazy flushing of TPM auth sessions can interact badly with IMA + kexec,
+resulting in loaded session handles being leaked across the kexec and
+not cleaned up. Fix by ensuring any active auth session is ended before
+the TPM is told about the shutdown, matching what is done when
+suspending.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
+Before:
 
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
+root@debian-qemu-efi:~# systemctl kexec
+…
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+- 0x2000000
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
+(repeat kexec steps)
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+- 0x2000000
+- 0x2000001
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
 
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
+After:
 
-Add check for this value.
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
+root@debian-qemu-efi:~# systemctl kexec
+…
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm-chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index 34e8171856e95..5570f2359d073 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2787,9 +2787,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
- {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
- 
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
-+
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
- 
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 17fbd7f7a2954..b33e938d80e8a 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -290,6 +290,7 @@ static int tpm_class_shutdown(struct device *dev)
+ 	down_write(&chip->ops_sem);
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+ 		if (!tpm_chip_start(chip)) {
++			tpm2_end_auth_session(chip);
+ 			tpm2_shutdown(chip, TPM2_SU_CLEAR);
+ 			tpm_chip_stop(chip);
+ 		}
 -- 
 2.39.5
 
