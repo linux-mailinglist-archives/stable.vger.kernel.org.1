@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-127750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4614CA7AA61
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E858BA7AA62
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2BC3BB135
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51D613BB3F3
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F0525487B;
-	Thu,  3 Apr 2025 19:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F0425A655;
+	Thu,  3 Apr 2025 19:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZI5ybgB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBFzGy34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692D125A625;
-	Thu,  3 Apr 2025 19:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2436425A63F;
+	Thu,  3 Apr 2025 19:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707012; cv=none; b=hK0P5WExjZSDwGXjrLcSLhm6KSVuov2kzHqIoBXYUVDbHvPrXNa1RvcxJlU0T9r6Srz2f162TPeKG/qcbieWZEDXYXxvmIksj3u4FCf8PwZmdmlFF5r/iRGVsExY5HY+C5RLCn44M5EnMO9/uvkADIwy/j5CrRRT9fdtmL/0zK8=
+	t=1743707013; cv=none; b=Qqhz4vsoeYQqZVu+vEVAPDpdloMWzw5xGQ4Xjkj1aPO/8pBo7m8GGSWmWpSv25eoR6QJOP7iTgUA4EaLtZVDeXKFXql5Z3T4unYLTVjwMjKF4OXAWfmyLhpi51aKUtNlaAA5ywnB/qoctzEh9/aTonv1mQN2B4uqAvYJ24rbKR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707012; c=relaxed/simple;
-	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
+	s=arc-20240116; t=1743707013; c=relaxed/simple;
+	bh=uJP93/zm2QzJmoe04w54MNPmLGsSDC/muk0UZWcC2KE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XXpijr01dyLhV8qC3FbdLJURLfboNv5FcfOPNoyVx7Vjs7y+8LZQCzElXvXv2AtUzCKrf6fxBEBw/LU6TeZArr4mVO3OakGgplV+8hhmvgskw/+pQgOuXJtZxI64lAu3q08B3Gi4fMYggShjTMmZCljAp302Cs4ImB4bJ7cDsB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZI5ybgB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F77C4CEE8;
-	Thu,  3 Apr 2025 19:03:29 +0000 (UTC)
+	 MIME-Version; b=fOQqyKAUsnze4YkoR2e/bg9Tqy/zzFx/fzDRiSWGwx1GqFJt2S/63jsG/5RJ7W2E6FFSjBWg7oSQLdL8ret88Wl7huyw5lz4VmsOvMrzkgb9+cD9/4Uc19kIEjvepGBWB89cpiLeC7CuLAlzqIL4s3RPyH0rQA1CBdueKGqo7ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBFzGy34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE16C4CEEC;
+	Thu,  3 Apr 2025 19:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707010;
-	bh=e2X8vBO+kcgjTqY+W0KycZj3PvkeEu+edKkaEEPzrlA=;
+	s=k20201202; t=1743707012;
+	bh=uJP93/zm2QzJmoe04w54MNPmLGsSDC/muk0UZWcC2KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZI5ybgBeTP31Pl4wIzNNMa1YurR+q+/QMoUKnL3fs9KTcaoXRdiGFiAayZFzV9FR
-	 XLi0ztakVznvsku9FEjWCgF19ALcqxR6lVaEDc618HrGy61Hg+aPGu0kn0/VCk3kLG
-	 PkGNXxTyzAkohWvwAKIm6lfv1O98eWxYCkLYupKB5qt+B+789p7kDxnGwjR11oFRnL
-	 vJJH638Eio/g044yRJnvW1U0lygyIttRHtd/c7f3XFwrpgF66Cl0QDMvqD1qZGMG4e
-	 wgZJ03Olfe+n3UtQbgN62MWbzPAPv+9gJW7d/aZjnqddYw4p/8f6I7hTEc5hAwQAZj
-	 Ry17kQ44el7iw==
+	b=JBFzGy34gFwXql2fpsmfEiy/ukaHA1FubOQZF56dizDFADEGSB5vNgPUu80I1v/KI
+	 6mK744cdqG0vXYnoEML3+FnaIHBf74bkDb0xwHmxK3WuzT7UwCi+uTCUavDCLRePqN
+	 Mtk1nNASEh46QYtjscVb/U3MhKp0WttCIlbOcxgBXI0vd6zCHGSWPHVnvzUEr2qCPe
+	 uQP4D2cOZdQteaufEOV6QiVt1nQfGoZnZefLwq87R7woRxlwktIN5LZ28AXQK3/3hj
+	 geuH/H7KzqTyvY3JJc3tZpSkypgojrKUIEtDmsKn8Pykk4gzljzfMcH0QzVMmm8MAs
+	 EbemmsMo9n3rA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Bhupesh <bhupesh@igalia.com>,
+	syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 35/54] wifi: mac80211: fix userspace_selectors corruption
-Date: Thu,  3 Apr 2025 15:01:50 -0400
-Message-Id: <20250403190209.2675485-35-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	kees@kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 36/54] ext4: ignore xattrs past end
+Date: Thu,  3 Apr 2025 15:01:51 -0400
+Message-Id: <20250403190209.2675485-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -67,93 +70,144 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Bhupesh <bhupesh@igalia.com>
 
-[ Upstream commit 700014d3ad1fd6e55c8f9ffa817514d3fbb5286e ]
+[ Upstream commit c8e008b60492cf6fd31ef127aea6d02fd3d314cd ]
 
-Spotted during code review, the selectors need to be large
-enough for a 128-bit bitmap, not a single unsigned long,
-otherwise we have stack corruption.
+Once inside 'ext4_xattr_inode_dec_ref_all' we should
+ignore xattrs entries past the 'end' entry.
 
-We should also allow passing selectors from userspace, but
-that should be a separate change.
+This fixes the following KASAN reported issue:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.8f1bcf96a504.Ibeb8970c82a30c97279a4cc4e68faca5df1813a5@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
+Read of size 4 at addr ffff888012c120c4 by task repro/2065
+
+CPU: 1 UID: 0 PID: 2065 Comm: repro Not tainted 6.13.0-rc2+ #11
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x1fd/0x300
+ ? tcp_gro_dev_warn+0x260/0x260
+ ? _printk+0xc0/0x100
+ ? read_lock_is_recursive+0x10/0x10
+ ? irq_work_queue+0x72/0xf0
+ ? __virt_addr_valid+0x17b/0x4b0
+ print_address_description+0x78/0x390
+ print_report+0x107/0x1f0
+ ? __virt_addr_valid+0x17b/0x4b0
+ ? __virt_addr_valid+0x3ff/0x4b0
+ ? __phys_addr+0xb5/0x160
+ ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
+ kasan_report+0xcc/0x100
+ ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
+ ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
+ ? ext4_xattr_delete_inode+0xd30/0xd30
+ ? __ext4_journal_ensure_credits+0x5f0/0x5f0
+ ? __ext4_journal_ensure_credits+0x2b/0x5f0
+ ? inode_update_timestamps+0x410/0x410
+ ext4_xattr_delete_inode+0xb64/0xd30
+ ? ext4_truncate+0xb70/0xdc0
+ ? ext4_expand_extra_isize_ea+0x1d20/0x1d20
+ ? __ext4_mark_inode_dirty+0x670/0x670
+ ? ext4_journal_check_start+0x16f/0x240
+ ? ext4_inode_is_fast_symlink+0x2f2/0x3a0
+ ext4_evict_inode+0xc8c/0xff0
+ ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
+ ? do_raw_spin_unlock+0x53/0x8a0
+ ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
+ evict+0x4ac/0x950
+ ? proc_nr_inodes+0x310/0x310
+ ? trace_ext4_drop_inode+0xa2/0x220
+ ? _raw_spin_unlock+0x1a/0x30
+ ? iput+0x4cb/0x7e0
+ do_unlinkat+0x495/0x7c0
+ ? try_break_deleg+0x120/0x120
+ ? 0xffffffff81000000
+ ? __check_object_size+0x15a/0x210
+ ? strncpy_from_user+0x13e/0x250
+ ? getname_flags+0x1dc/0x530
+ __x64_sys_unlinkat+0xc8/0xf0
+ do_syscall_64+0x65/0x110
+ entry_SYSCALL_64_after_hwframe+0x67/0x6f
+RIP: 0033:0x434ffd
+Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 8
+RSP: 002b:00007ffc50fa7b28 EFLAGS: 00000246 ORIG_RAX: 0000000000000107
+RAX: ffffffffffffffda RBX: 00007ffc50fa7e18 RCX: 0000000000434ffd
+RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000005
+RBP: 00007ffc50fa7be0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007ffc50fa7e08 R14: 00000000004bbf30 R15: 0000000000000001
+ </TASK>
+
+The buggy address belongs to the object at ffff888012c12000
+ which belongs to the cache filp of size 360
+The buggy address is located 196 bytes inside of
+ freed 360-byte region [ffff888012c12000, ffff888012c12168)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12c12
+head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x40(head|node=0|zone=0)
+page_type: f5(slab)
+raw: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
+raw: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
+head: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
+head: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
+head: 0000000000000001 ffffea00004b0481 ffffffffffffffff 0000000000000000
+head: 0000000000000002 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff888012c11f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888012c12000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> ffff888012c12080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                           ^
+ ffff888012c12100: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
+ ffff888012c12180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+Reported-by: syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b244bda78289b00204ed
+Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Bhupesh <bhupesh@igalia.com>
+Link: https://patch.msgid.link/20250128082751.124948-2-bhupesh@igalia.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/ext4/xattr.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 64fa3fba244eb..4951e4fa7373a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -9648,8 +9648,6 @@ EXPORT_SYMBOL(ieee80211_disable_rssi_reports);
- 
- static void ieee80211_ml_reconf_selectors(unsigned long *userspace_selectors)
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 7647e9f6e1903..6ff94cdf1515c 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1176,15 +1176,24 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
  {
--	*userspace_selectors = 0;
--
- 	/* these selectors are mandatory for ML reconfiguration */
- 	set_bit(BSS_MEMBERSHIP_SELECTOR_SAE_H2E, userspace_selectors);
- 	set_bit(BSS_MEMBERSHIP_SELECTOR_HE_PHY, userspace_selectors);
-@@ -9669,7 +9667,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 		                sdata->u.mgd.reconf.removed_links;
- 	u16 link_mask, valid_links;
- 	unsigned int link_id;
--	unsigned long userspace_selectors;
-+	unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
- 	size_t orig_len = len;
- 	u8 i, group_key_data_len;
- 	u8 *pos;
-@@ -9777,7 +9775,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 	}
+ 	struct inode *ea_inode;
+ 	struct ext4_xattr_entry *entry;
++	struct ext4_iloc iloc;
+ 	bool dirty = false;
+ 	unsigned int ea_ino;
+ 	int err;
+ 	int credits;
++	void *end;
++
++	if (block_csum)
++		end = (void *)bh->b_data + bh->b_size;
++	else {
++		ext4_get_inode_loc(parent, &iloc);
++		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
++	}
  
- 	ieee80211_vif_set_links(sdata, valid_links, sdata->vif.dormant_links);
--	ieee80211_ml_reconf_selectors(&userspace_selectors);
-+	ieee80211_ml_reconf_selectors(userspace_selectors);
- 	link_mask = 0;
- 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
- 		struct cfg80211_bss *cbss = add_links_data->link[link_id].bss;
-@@ -9823,7 +9821,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
- 		link->u.mgd.conn = add_links_data->link[link_id].conn;
- 		if (ieee80211_prep_channel(sdata, link, link_id, cbss,
- 					   true, &link->u.mgd.conn,
--					   &userspace_selectors)) {
-+					   userspace_selectors)) {
- 			link_info(link, "mlo: reconf: prep_channel failed\n");
- 			goto disconnect;
- 		}
-@@ -10157,14 +10155,14 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 	 */
- 	if (added_links) {
- 		bool uapsd_supported;
--		unsigned long userspace_selectors;
-+		unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
+ 	/* One credit for dec ref on ea_inode, one for orphan list addition, */
+ 	credits = 2 + extra_credits;
  
- 		data = kzalloc(sizeof(*data), GFP_KERNEL);
- 		if (!data)
- 			return -ENOMEM;
- 
- 		uapsd_supported = true;
--		ieee80211_ml_reconf_selectors(&userspace_selectors);
-+		ieee80211_ml_reconf_selectors(userspace_selectors);
- 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
- 		     link_id++) {
- 			struct ieee80211_supported_band *sband;
-@@ -10240,7 +10238,7 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 						     data->link[link_id].bss,
- 						     true,
- 						     &data->link[link_id].conn,
--						     &userspace_selectors);
-+						     userspace_selectors);
- 			if (err)
- 				goto err_free;
- 		}
+-	for (entry = first; !IS_LAST_ENTRY(entry);
++	for (entry = first; (void *)entry < end && !IS_LAST_ENTRY(entry);
+ 	     entry = EXT4_XATTR_NEXT(entry)) {
+ 		if (!entry->e_value_inum)
+ 			continue;
 -- 
 2.39.5
 
