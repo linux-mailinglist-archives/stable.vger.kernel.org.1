@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01E2A7A667
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:24:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EE4A7A675
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 650D87A306A
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33B73189BCA4
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CF42505D6;
-	Thu,  3 Apr 2025 15:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE892512D9;
+	Thu,  3 Apr 2025 15:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkVqFUQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdBOx4hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC612512F2;
-	Thu,  3 Apr 2025 15:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4F250C02;
+	Thu,  3 Apr 2025 15:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693829; cv=none; b=sZ7eysTz/VzjvXiciXicSOhCchMoaQK8G0nZ2RqWmnJGfNfud0MfMoONJcjkTlZt86oVKCQWH/4BpD5z9Y/bECylYI8GxN3XK/8vdHhDxy34BXb2Lsk9ruaRiRuUWHgXCls1VbANbw5nS1i4fioSzKnkfmt7h/SW39uqoMuL0F0=
+	t=1743693753; cv=none; b=sKWXM8fCGug0URVncOpoYwJJZh7WqnQbWZ+KTamQsyqTIKYmUTD9O/f69PjdjpVoNwNtw8g/13AUwuIxAUrcFuZMXE7xoeFuQGCn+lKQ9AMlSCPWmdPwu3iGiqqgHEugYalKCPEeWuyXUlvnnelGt4q9QtVpzrcox/AJHT394mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693829; c=relaxed/simple;
-	bh=zwCqDl7yhcmDMVPb4kbeohG2EOv1M/DcDG/vpeJYDSk=;
+	s=arc-20240116; t=1743693753; c=relaxed/simple;
+	bh=UWQNiqRHXOJ8vG5kQEhTDiArkjbFQG3SlRx1W6ziaXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ3UvLl0iQmHmZUoYsosFqgemC+MR6aF08eOjLU3tFFg/RKZnsK3pn4cuYRkIiJMKCpqOqjNny9UBHF3BKaGF82u+8RWkIQPCbbJ8N3dbLct0ILZbwmOv6RorGVoWrpp3DeAXU5+Ll6FU1h2pAihGhHitXP/DCtjpb/zDv+z+Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkVqFUQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047A8C4CEE3;
-	Thu,  3 Apr 2025 15:23:48 +0000 (UTC)
+	 MIME-Version; b=uqo2OEWY9FsGflnvFhdIHjS1p/5IwcT0H0eL+iD4b7oDxpycIn155HVgfwWQz9FfN8x1z2PYUQfGYlaK6dfP3ZlsD5vkrymvfC4QP/dzd06OraXZkKIbr/m4VnfpPef1MW+zbKxusgtfPr8WDTcRw8FF7xcCvpYBczrk6sh2aCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdBOx4hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC149C4CEE3;
+	Thu,  3 Apr 2025 15:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693829;
-	bh=zwCqDl7yhcmDMVPb4kbeohG2EOv1M/DcDG/vpeJYDSk=;
+	s=korg; t=1743693753;
+	bh=UWQNiqRHXOJ8vG5kQEhTDiArkjbFQG3SlRx1W6ziaXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkVqFUQjVmZPDNBWWy7zGL1VA2GVHFOv1CXmplhIFu92kih9pkITyxt1Ewx2FG3bg
-	 TwMtcneqrd+qUsCyoOYkA0x9vxDmpgV0lmiQ+0QTrE7g8iT/wftkVvf7WJx4moskWa
-	 TLYRNtWPq2o/0THUxMwRh+W94fy6e8qgzZb6N7L4=
+	b=qdBOx4hn4D7ZaMQkJKSZA6hPc4m+VEttHCx8IwzJ3mRfFoh1UQYhakXwXJJpDoMKN
+	 +Y3TkCnvksl+HT5AINT0ekRl6rwDVK1lnCGsS2PcRfCJLcXnAS0w/uLmUJ+kBJqRso
+	 BK5c0QZfWkwAYGUkcxCeCq5Wzc6E0ny+mCsYNt/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Wu <wuyun.abel@bytedance.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.14 04/21] cgroup/rstat: Fix forceidle time in cpu.stat
+	Cameron Williams <cang1@live.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 13/22] tty: serial: 8250: Add Brainboxes XC devices
 Date: Thu,  3 Apr 2025 16:20:08 +0100
-Message-ID: <20250403151621.253194807@linuxfoundation.org>
+Message-ID: <20250403151621.309714911@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
+References: <20250403151620.960551909@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Wu <wuyun.abel@bytedance.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit c4af66a95aa3bc1d4f607ebd4eea524fb58946e3 upstream.
+commit 5c7e2896481a177bbda41d7850f05a9f5a8aee2b upstream.
 
-The commit b824766504e4 ("cgroup/rstat: add force idle show helper")
-retrieves forceidle_time outside cgroup_rstat_lock for non-root cgroups
-which can be potentially inconsistent with other stats.
+These ExpressCard devices use the OxPCIE chip and can be used with
+this driver.
 
-Rather than reverting that commit, fix it in a way that retains the
-effort of cleaning up the ifdef-messes.
-
-Fixes: b824766504e4 ("cgroup/rstat: add force idle show helper")
-Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/DB7PR02MB3802907A9360F27F6CD67AAFC4D62@DB7PR02MB3802.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/rstat.c |   29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -612,36 +612,33 @@ static void cgroup_force_idle_show(struc
- void cgroup_base_stat_cputime_show(struct seq_file *seq)
- {
- 	struct cgroup *cgrp = seq_css(seq)->cgroup;
--	u64 usage, utime, stime, ntime;
-+	struct cgroup_base_stat bstat;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -2597,6 +2597,22 @@ static struct pci_serial_quirk pci_seria
+ 		.setup		= pci_oxsemi_tornado_setup,
+ 	},
+ 	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4026,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4021,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
+ 		.vendor         = PCI_VENDOR_ID_INTEL,
+ 		.device         = 0x8811,
+ 		.subvendor	= PCI_ANY_ID,
+@@ -5489,6 +5505,20 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-235
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-475
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
  
- 	if (cgroup_parent(cgrp)) {
- 		cgroup_rstat_flush_hold(cgrp);
--		usage = cgrp->bstat.cputime.sum_exec_runtime;
-+		bstat = cgrp->bstat;
- 		cputime_adjust(&cgrp->bstat.cputime, &cgrp->prev_cputime,
--			       &utime, &stime);
--		ntime = cgrp->bstat.ntime;
-+			       &bstat.cputime.utime, &bstat.cputime.stime);
- 		cgroup_rstat_flush_release(cgrp);
- 	} else {
--		/* cgrp->bstat of root is not actually used, reuse it */
--		root_cgroup_cputime(&cgrp->bstat);
--		usage = cgrp->bstat.cputime.sum_exec_runtime;
--		utime = cgrp->bstat.cputime.utime;
--		stime = cgrp->bstat.cputime.stime;
--		ntime = cgrp->bstat.ntime;
-+		root_cgroup_cputime(&bstat);
- 	}
- 
--	do_div(usage, NSEC_PER_USEC);
--	do_div(utime, NSEC_PER_USEC);
--	do_div(stime, NSEC_PER_USEC);
--	do_div(ntime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.sum_exec_runtime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.utime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.stime, NSEC_PER_USEC);
-+	do_div(bstat.ntime, NSEC_PER_USEC);
- 
- 	seq_printf(seq, "usage_usec %llu\n"
- 			"user_usec %llu\n"
- 			"system_usec %llu\n"
- 			"nice_usec %llu\n",
--			usage, utime, stime, ntime);
-+			bstat.cputime.sum_exec_runtime,
-+			bstat.cputime.utime,
-+			bstat.cputime.stime,
-+			bstat.ntime);
- 
--	cgroup_force_idle_show(seq, &cgrp->bstat);
-+	cgroup_force_idle_show(seq, &bstat);
- }
- 
- /* Add bpf kfuncs for cgroup_rstat_updated() and cgroup_rstat_flush() */
+ 	/*
+ 	 * Perle PCI-RAS cards
 
 
 
