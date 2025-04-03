@@ -1,204 +1,110 @@
-Return-Path: <stable+bounces-127555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E7CA7A577
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:42:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD58A7A5B4
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 16:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99E147A5A1D
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C93B2164D24
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 14:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8526724EF99;
-	Thu,  3 Apr 2025 14:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028B62500CD;
+	Thu,  3 Apr 2025 14:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BQhtYpCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOkzUol6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB42A24EF7D;
-	Thu,  3 Apr 2025 14:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76102505A4
+	for <stable@vger.kernel.org>; Thu,  3 Apr 2025 14:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743691342; cv=none; b=ICyYrfwEFo50LNkk1YjJ3dKSs3YQ8YSk783Xe/2n7L85ccRPVE7Hrhxp34IJQaA3j8AhSfVYo6sR5tMQYfRySnCaIyf2aVy3EFFseEZh2f0WNK4Kpn9ONKCqp/mkGmJoYJG9tK8856EobaFv6fNcAO5l0EyeN6K2vPcHpKKgzbs=
+	t=1743691972; cv=none; b=U7q6U3MPYc1sXXqaBqypg59TGo0TOKOB1mjPgPWoHWmwogXKv+A6sTw9di+Ei0ZpPXPALY+riwY86ioT6DGaujDBTDSp0fzFwAGDNts5KtzSVgWDJrJMsa3VmZ28MPKL6qGgymdbWmAymn0QvrwvSrSeHNmynUFjIoVHvYByvbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743691342; c=relaxed/simple;
-	bh=Zry1Yrol56/KX1aeEhCxv0Cg25fLUtDNop8HonNdjPM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XMtiw2YCSTYjMG47BE9v5cWT4ovC8hf/xDJ/QogSbNMQwMX6yApPltNLjbRxkdUTL/+LUZ02L4Z564tqnVyG5l28J69Nd1mlcPl4Ux0bO5xzDRdJNGxbuLhcFKeMs52QekYDtRa4fbPl01Wp9nWEW/3t4MAeI1z0QTwdDBwJcec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BQhtYpCY; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-85d9a87660fso88182739f.1;
-        Thu, 03 Apr 2025 07:42:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743691340; x=1744296140; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zeoDb9T68HON4+pT2o4m+OL30KX0Z6zhqrCCdtzjaWI=;
-        b=BQhtYpCYRdqQhScW52gcZgDHo/5auY8GDde5ivG+tpeeFEKQZB/CFa1/IhAhehsapR
-         GDowryAeH/DuEJuC1nT4np75jaS8o9sY+1w2a43olEo4An6ht+JJUYyQ/vF3lgslb24c
-         upHMeouJnIBhyAMQ29eQap398rsmcffO8+w9qUgvt43cdgHtdLt9VcNIM0eoHz/tbieJ
-         YQ3LeFVHABEZq9m0GZKpr5Akgtp6BSRUSWY++cyvGvgZl0aw8TFyEK2Yp0e9OPp21lVq
-         ofSPCkSe9MH4Yq/cgaPj50ojOg7hncxt7pS0dI09fJjNvKr2BA8otPL/sn9J86k8TAf7
-         2ujw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743691340; x=1744296140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zeoDb9T68HON4+pT2o4m+OL30KX0Z6zhqrCCdtzjaWI=;
-        b=bC3Zs6BUCUUrKEHnn0BJULI2jG5bSj5r89VOdMZmjxb/StoMgo64Y67nh4jMm0AC3+
-         dGJ3byA7OydJdnYVqfCb/U4kggcbQOAd07by1HYeMmllUjgRmszvIk1J0FuM0nbs1WxH
-         4aZWEXD8W0Wch5X9vFE/Lw7GkWDfrIJjp3Z0cVgVcMfqje0qwRgBwHpl1QaakHHYVCwy
-         fuDhvnayI9O7oxnbH+juiVFkTgilHCFsLQvLrPWOEFS0HBDhfsM5TQtnKblXH0VBLHBS
-         ath39NjM8HDc2H48prDczRncsvPgJshNC6RbLBgLsvvUcsLjEGIVFAa+JgX9KX4gXo4U
-         Eugw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/kKh0odlXTDynai+yrkQcKAawUK9I9EeBVFr6vW4nHiDoQk+3YJMNCmJRPnH5zaTmsd5xiqPmHHxlExk=@vger.kernel.org, AJvYcCU3TKQ1IkHJ2ajPLk26UX2ARtb4YYVY7IQMozyjxgle4VYjtCpYDv3nns/DemTGeSkL4dL1uNixhwzqBg==@vger.kernel.org, AJvYcCUOx9wAftOQxRKmjfWP/i3lkLCtn8p3aV2DQUKcAygwHvv0TgTkXr+2MirsozjO1F8Oa6CY4q7C@vger.kernel.org, AJvYcCVBUyPMKsnlOdJE8l3RuqsGl95e19cbaXahXMMnUwOSjIG8U26Tq4L0zNy8J0DD47sEfUsFEcWL@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP5cDwBqSOfTLcWhZ6iGnhnNgOwpIvkQ1/rQaQs1QpTybGWdSK
-	T30yeBWD4dN5dE3J6/8pZ5WFp4AdEfGXgbbjPWF4RdK5Tzlwy70goYoH40GcIl25mKVAyQXMetP
-	hDl3HueZwwmuxYOEfDgeFJ2PO+pI=
-X-Gm-Gg: ASbGncsYJxVHC1hzxNXSDHFsq/5RJbK5ntvz/50NdOQHLRISp3VT1nbT8BwfpUNtC9Q
-	69fQT/OF+/IyEjuUsV7AOv75GPIG95V6nry+Z40RIkWrLnPuPw4Mt+SptEZjZD2xX1ho4Bm0nTu
-	Y2TBhPjrVMJ3JfOUq/XFQNR4DNqYHozP3hN3dYrvbFaCQMIh7WNzHBYV311OU=
-X-Google-Smtp-Source: AGHT+IGNRyxDi7DahaAnymdSbr7DQycN0ZdLw//2LEvSHgTrzxm8aOaPQKMKp2kUdY5SWnF/e0614nQcpCl/EzjRxG4=
-X-Received: by 2002:a05:6e02:12ec:b0:3d6:d179:a182 with SMTP id
- e9e14a558f8ab-3d6dd824cb5mr37846045ab.20.1743691339808; Thu, 03 Apr 2025
- 07:42:19 -0700 (PDT)
+	s=arc-20240116; t=1743691972; c=relaxed/simple;
+	bh=39+2Zy+n/7FbP3hAeFStoHGygZ+QE4Mo1EYhmuQjlqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XTp0a5argYJ0VO8NXYc8Yx/uXp1wbnNxkEGmPPz7/HRLCjnrIQ9L2oUVBWy+7E0vxoWP6mlT7YAT2Inf9xLhTvyebZnvm1FszUTc/yWJ9XOVcBRROv1RkltsyT5c1kqf+RSYUTpcVTzzICqbHrOCYU4i13Jd7k46V8NpJzE0pDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOkzUol6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502D8C4CEE3;
+	Thu,  3 Apr 2025 14:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1743691972;
+	bh=39+2Zy+n/7FbP3hAeFStoHGygZ+QE4Mo1EYhmuQjlqA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jOkzUol6tIAnTbG9Ic2+cyLHOxu1AEIatshAGF5SnpYefLBt/nfAA251Emyb9Ua5p
+	 SrzsB+uEmboTPlhS3AVv79fpVqNkbr4XLHVQpo8ougKxj37GXnNnB+3zgG1BYbG3aa
+	 XUU2gscRRhYmTrV0lIIgxIdfQubTO8Vu6EWoaX/c=
+Date: Thu, 3 Apr 2025 15:51:25 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Manthey, Norbert" <nmanthey@amazon.de>
+Cc: "sashal@kernel.org" <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Improving Linux Commit Backporting
+Message-ID: <2025040311-overstate-satin-1a8f@gregkh>
+References: <f7ceac1ce5b3b42b36c7557feceadbb111e4850d.camel@amazon.de>
+ <2025040348-living-blurred-eb56@gregkh>
+ <2025040348-grant-unstylish-a78b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
- <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com> <87tt75efdj.fsf@igalia.com>
-In-Reply-To: <87tt75efdj.fsf@igalia.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 3 Apr 2025 10:42:08 -0400
-X-Gm-Features: ATxdqUHaFX6L76fecmJqYz3mIbUdj6YZ5tkatolAjwkKUce-j3bzGLhgqW-KjgY
-Message-ID: <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
-Subject: Re: [PATCH] sctp: check transport existence before processing a send primitive
-To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025040348-grant-unstylish-a78b@gregkh>
 
-On Thu, Apr 3, 2025 at 5:58=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@ig=
-alia.com> wrote:
->
-> Thanks for reviewing, answers below:
->
-> On Wed, Apr 02 2025 at 15:40:56, Xin Long <lucien.xin@gmail.com> wrote:
-> > The data send path:
-> >
-> >   sctp_endpoint_lookup_assoc() ->
-> >   sctp_sendmsg_to_asoc()
-> >
-> > And the transport removal path:
-> >
-> >   sctp_sf_do_asconf() ->
-> >   sctp_process_asconf() ->
-> >   sctp_assoc_rm_peer()
-> >
-> > are both protected by the same socket lock.
-> >
-> > Additionally, when a path is removed, sctp_assoc_rm_peer() updates the
-> > transport of all existing chunks in the send queues (peer->transmitted
-> > and asoc->outqueue.out_chunk_list) to NULL.
-> >
-> > It will be great if you can reproduce the issue locally and help check
-> > how the potential race occurs.
->
-> That's true but if there isn't enough space in the send buffer, then
-> sctp_sendmsg_to_asoc() will release the lock temporarily.
->
-Oh right, I missed that. Thanks.
+On Thu, Apr 03, 2025 at 02:57:34PM +0100, gregkh@linuxfoundation.org wrote:
+> On Thu, Apr 03, 2025 at 02:45:35PM +0100, gregkh@linuxfoundation.org wrote:
+> > On Thu, Apr 03, 2025 at 01:15:28PM +0000, Manthey, Norbert wrote:
+> > > Dear Linux Stable Maintainers,
+> > > 
+> > > while maintaining downstream Linux releases, we noticed that we have to
+> > > backport some patches manually, because they are not picked up by your
+> > > automated backporting. Some of these backports can be done with
+> > > improved cherry-pick tooling. We have implemented a script/tool "git-
+> > > fuzzy-pick" which we would like to share. Besides picking more commits,
+> > > the tool also supports executing a validation script right after
+> > > picking, e.g. compiling the modified source file. Picking stats and
+> > > details are presented below.
+> > > 
+> > > We would like to discuss whether you can integrate this improved tool
+> > > into into your daily workflows. We already found the stable-tools
+> > > repository [1] with some scripts that help automate backporting. To
+> > > contribute git-fuzzy-pick there, we would need you to declare a license
+> > > for the current state of this repository.
+> > 
+> > There's no need for us to declare the license for the whole repo, you
+> > just need to pick a license for your script to be under.  Anything
+> > that's under a valid open source license is fine with me.
+> > 
+> > That being said, I did just go and add SPDX license lines to all of the
+> > scripts that I wrote, or that was already defined in the comments of the
+> > files, to make it more obvious what they are under.
+> 
+> Wait, you should be looking at the scripts in the stable-queue.git tree
+> in the scripts/ directory.  You pointed at a private repo of some things
+> that Sasha uses for his work, which is specific to his workflow.
 
-> The scenario that the reproducer generates is the following:
->
->         Thread A                                  Thread B
->         --------------------                      --------------------
-> (1)     sctp_sendmsg()
->           lock_sock()
->           sctp_sendmsg_to_asoc()
->             sctp_wait_for_sndbuf()
->               release_sock()
->                                                   sctp_setsockopt(SCTP_SO=
-CKOPT_BINDX_REM)
->                                                     lock_sock()
->                                                     sctp_setsockopt_bindx=
-()
->                                                     sctp_send_asconf_del_=
-ip()
->                                                       ...
->                                                     release_sock()
->                                                       process rcv backlog=
-:
->                                                         sctp_do_sm()
->                                                           sctp_sf_do_asco=
-nf()
->                                                             ...
->                                                               sctp_assoc_=
-rm_peer()
->               lock_sock()
-> (2)          chunk->transport =3D transport
->              sctp_primitive_SEND()
->                ...
->                sctp_outq_select_transport()
-> *BUG*            switch (new_transport->state)
->
->
-> Notes:
-> ------
->
-> Both threads operate on the same socket.
->
-> 1. Here, sctp_endpoint_lookup_assoc() finds and returns an existing
-> association and transport.
->
-> 2. At this point, `transport` is already deleted. chunk->transport is
-> not set to NULL because sctp_assoc_rm_peer() ran _before_ the transport
-> was assigned to the chunk.
->
-> > We should avoid an extra hashtable lookup on this hot TX path, as it wo=
-uld
-> > negatively impact performance.
->
-> Good point. I can't really tell the performance impact of the lookup
-> here, my experience with the SCTP implementation is very limited. Do you
-> have any suggestions or alternatives about how to deal with this?
->
-I think the correct approach is to follow how sctp_assoc_rm_peer()
-handles this.
+Also, one final things.  Doing backports to older kernels is a harder
+task than doing it for newer kernels.  This means you need to do more
+work, and have a more experienced developer do that work, as the nuances
+are tricky and slight and they must understand the code base really
+well.
 
-You can use asoc->peer.last_sent_to (which isn't really used elsewhere)
-to temporarily store the transport before releasing the socket lock and
-sleeping in sctp_sendmsg_to_asoc(). After waking up and reacquiring the
-lock, restore the transport back to asoc->peer.last_sent_to.
+Attempting to automate this, and make it a "junior developer" task
+assignment is ripe for errors and problems and tears (on my side and
+yours.)  We have loads of examples of this in the past, please don't
+duplicate the errors of others and think that "somehow, this time it
+will be different!", but rather "learn from our past mistakes and only
+make new ones."
 
-Additionally, during an ASCONF update, ensure asoc->peer.last_sent_to
-is set to a valid transport if it matches the transport being removed.
+Good luck with backporting, as I know just how hard of a task this
+really is.  And obviously, you are learning that too :)
 
-For example:
-
-in sctp_wait_for_sndbuf():
-
-    asoc->peer.last_sent_to =3D *tp;
-    release_sock(sk);
-    current_timeo =3D schedule_timeout(current_timeo);
-    lock_sock(sk);
-    *tp =3D asoc->peer.last_sent_to;
-    asoc->peer.last_sent_to =3D NULL;
-
-in sctp_assoc_rm_peer():
-
-    if (asoc->peer.last_sent_to =3D=3D peer)
-        asoc->peer.last_sent_to =3D transport;
+greg k-h
 
