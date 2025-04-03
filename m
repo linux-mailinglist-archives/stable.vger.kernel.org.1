@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-127996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD755A7AE04
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:18:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B0CA7AE0D
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 22:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E3953A9C4D
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:12:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 225B4188173C
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 20:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C4A1EF396;
-	Thu,  3 Apr 2025 19:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FD619CCEA;
+	Thu,  3 Apr 2025 19:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqCmGQEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tV696Xw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBF01EEA2C;
-	Thu,  3 Apr 2025 19:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E235F151985;
+	Thu,  3 Apr 2025 19:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707709; cv=none; b=sqd8JQSXlJnPnZIk+a5a3SyYqUvC0nwvm3A+ZWg9CWnh8FcdhDkbcY1M5hhsaq37CDUhm9c7B33TNa17YY3gPIr4aRspJR19RXSwUw/yt1WUyudMEuxl4pw3a6Y34lgquqIvut3/s12KQ4kZ3Djs86LOfBnKM3T6jY04LAq5zxU=
+	t=1743707712; cv=none; b=Yor3TQUh3iWn/ez2dr3027hHgcp3Km2TqilRuBA9Bpr1c97JlXDO1+pIpzcRguiXO71BM6mwdL/cwqfPx6djGqP61tXX0oXF1BlNWR0DHd/d82TdqdyNO6CNUGeRNH6ZStsdK6wXpCIJ/Nde8BlUPMOzJPFjXzkOAUki24kt24Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707709; c=relaxed/simple;
-	bh=r+jGbRe1qTe8mUrlj+W7WsE9TH+Jz+fpGST/vO7nmD4=;
+	s=arc-20240116; t=1743707712; c=relaxed/simple;
+	bh=hO6U5WrxRVAMYwkM/iIS3xZ9VwrEt8WUz9xANMqLcvM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CiRTdw4NmI6NQGWjko6lrDoZ5+KF25VM6DMs7ji5+pkcrb6vuPhGXolEAAhHnn4Bc7jCI5WPHil5BmzQ2zq62HnJBXxPZ+l3w+EtbXOzb3+IOg0SKnDB1v1YIKGJvA4a2619bq4E8ZkW+dNmUYyfx6Jk4AVzG85kxG1rAdHoDko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqCmGQEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8B7C4CEEB;
-	Thu,  3 Apr 2025 19:15:08 +0000 (UTC)
+	 MIME-Version; b=lE+HXyrVxP26cqWalByUjmd1C2HBzlwY7xSXqBsFkFWT8bXE7DWIcDMYNmF2fKu7+IxRR1+2ECy4B6zO4PtDgcRYu0jHbA68Dz3t5MVVEsLpRwg5b6ex0owD13XmWrdIZBt0YtNAE3lBBhyzRzsIENbJST1n+r5GjSgqsb3raJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tV696Xw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99286C4CEE3;
+	Thu,  3 Apr 2025 19:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743707709;
-	bh=r+jGbRe1qTe8mUrlj+W7WsE9TH+Jz+fpGST/vO7nmD4=;
+	s=k20201202; t=1743707710;
+	bh=hO6U5WrxRVAMYwkM/iIS3xZ9VwrEt8WUz9xANMqLcvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqCmGQEKYX9+FiNNvDnDGagtQHTx0NWstKhNhe0toXdZ1jGXhvHeD5h5HIKiPA0ml
-	 ClVZk6qe8my7LlScFhsEtKENrq4go2Y8rfqD+GChxjfHvMi2LH3iKhJVN0+HMZAiQN
-	 EwJdWF1wVZwKws7K67lslMQaTjnTeVKorz2+KooEp4l5UIr741xZ3beBn2Ex9cgosx
-	 X4nUWXitkF95h6hbwqXn+d4qlaoceZygDPaGfEWX4EbZTQsAOfFbG3VjVyHmUq77+c
-	 UQztI7REm3hTvpwJx8o4yG9rcrcFosaqJ2LxuoqgtgJb312A0VsClHbaddtWClhepQ
-	 rzql+7kxy1dYA==
+	b=tV696Xw1we5ax0duJyozkQM2nIYImEqe3UCIQDSACMxrbOoTJgjiZxhsrASAYJl/s
+	 OYCmPHxBZlPRdpygrlaZx/z+TMyj0qhtGk51rA38yLUjMckyXd090oNOoEhU4RyRqA
+	 6Myo5fwBNLU1V96omQ41gylU+b8LByvvvvcPaYVQt5GLKmiRVnrhHRc1i5m3/iZd/r
+	 u+ltRw2HvJBfoptuzXIy6w16qCpwLdnS0V4FzT/uFuQFhjoORRv/6HvzkKWjbpeNNb
+	 BlewLa79RUtfAS6isbh/CTGhabBN1QF7ASnqk+qO4EGcscPjSQzvdOifizJAoSOFsO
+	 485aCelnEHVnw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+Cc: Ayush Jain <Ayush.jain3@amd.com>,
+	warthog9@eaglescrag.net,
 	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 41/44] tracing: probe-events: Add comments about entry data storing code
-Date: Thu,  3 Apr 2025 15:13:10 -0400
-Message-Id: <20250403191313.2679091-41-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 42/44] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
+Date: Thu,  3 Apr 2025 15:13:11 -0400
+Message-Id: <20250403191313.2679091-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
 References: <20250403191313.2679091-1-sashal@kernel.org>
@@ -65,80 +65,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Ayush Jain <Ayush.jain3@amd.com>
 
-[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
+[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
 
-Add comments about entry data storing code to __store_entry_arg() and
-traceprobe_get_entry_data_size(). These are a bit complicated because of
-building the entry data storing code and scanning it.
+Handle missing parent directories for LOG_FILE path to prevent test
+failures. If the parent directories don't exist, create them to ensure
+the tests proceed successfully.
 
-This just add comments, no behavior change.
-
-Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: <warthog9@eaglescrag.net>
+Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
+Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ tools/testing/ktest/ktest.pl | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 8f58ee1e8858a..2eeecb6c95eea 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -770,6 +770,10 @@ static int check_prepare_btf_string_fetch(char *typename,
- 
- #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
- 
-+/*
-+ * Add the entry code to store the 'argnum'th parameter and return the offset
-+ * in the entry data buffer where the data will be stored.
-+ */
- static int __store_entry_arg(struct trace_probe *tp, int argnum)
- {
- 	struct probe_entry_arg *earg = tp->entry_arg;
-@@ -793,6 +797,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
- 		tp->entry_arg = earg;
- 	}
- 
-+	/*
-+	 * The entry code array is repeating the pair of
-+	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
-+	 * and the rest of entries are filled with [FETCH_OP_END].
-+	 *
-+	 * To reduce the redundant function parameter fetching, we scan the entry
-+	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
-+	 * parameter. If it doesn't match, update 'offset' to find the last
-+	 * offset.
-+	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
-+	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
-+	 * return data offset so that caller can find the data offset in the entry
-+	 * data buffer.
-+	 */
- 	offset = 0;
- 	for (i = 0; i < earg->size - 1; i++) {
- 		switch (earg->code[i].op) {
-@@ -826,6 +844,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
- 	if (!earg)
- 		return 0;
- 
-+	/*
-+	 * earg->code[] array has an operation sequence which is run in
-+	 * the entry handler.
-+	 * The sequence stopped by FETCH_OP_END and each data stored in
-+	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
-+	 * stores the data at the data buffer + its offset, and all data are
-+	 * "unsigned long" size. The offset must be increased when a data is
-+	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
-+	 * code array.
-+	 */
- 	for (i = 0; i < earg->size; i++) {
- 		switch (earg->code[i].op) {
- 		case FETCH_OP_END:
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 8c8da966c641b..a5f7fdd0c1fbb 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4303,6 +4303,14 @@ if (defined($opt{"LOG_FILE"})) {
+     if ($opt{"CLEAR_LOG"}) {
+ 	unlink $opt{"LOG_FILE"};
+     }
++
++    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
++        my $dir = $1;
++        if (! -d $dir) {
++            mkpath($dir) or die "Failed to create directories '$dir': $!";
++            print "\nThe log directory $dir did not exist, so it was created.\n";
++        }
++    }
+     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
+     LOG->autoflush(1);
+ }
 -- 
 2.39.5
 
