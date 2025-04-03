@@ -1,138 +1,89 @@
-Return-Path: <stable+bounces-127520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39477A7A376
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9369CA7A37E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAF913B525C
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 13:12:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93CF63B4E87
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 13:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA5A24E4A0;
-	Thu,  3 Apr 2025 13:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0CC24E004;
+	Thu,  3 Apr 2025 13:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VMOxqC5Y"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvbDGYOR"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD4F24E004;
-	Thu,  3 Apr 2025 13:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E16D529;
+	Thu,  3 Apr 2025 13:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743685986; cv=none; b=BHptxGcIi8w7R0ndmRTHGDT3ExdLJcZu+QWpAyJ9Cobqc+MKWCL1pXpY5vz1K3fqSUnFdIJ9D1Ds29YCzWDQ2K5DI7uQqkHuHeRw+Jm0fJD4szzd3mdbFfhMN6HL7CvCGkLxx2t6ss2KvfK1pTi5PvpRAHWJ/sfwvIKdqQ1s1DM=
+	t=1743686132; cv=none; b=DJjvLwkIuDfFyT4naejRXuk8Srquk8yJ4c0jxMJpJ9eod9C8HRx+GdMDsxh8ySBJcflfmAh9Iid4eKLV2ZcQGr9lJENN7yvSVwN8hFfIKYJiqf7V590AmjU6CIqa9ri63K7HM73zpzPRkCpRjlAsi1a8I9Oi8e5mmU6c7LqMpwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743685986; c=relaxed/simple;
-	bh=5PQtbwEoH1ime2NIIHH/Tl3NtKI6Qa7OnDQh1ZfSalM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRWM0oS52pS/T6VHgxG2WBbi28sbVBZam3aSt/TE9CmUXVSzIIX47YwDPFsScff2sblJOuCQ5fBJKIBb8JY8uCOaCvuuYOBhem8lMZ9LetGwDXUd9DsW5jEMUGIZKhz8hE/fydBhh6Kk1zC5XUEGUYJig29XXjNcVQULw+Fxdfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VMOxqC5Y; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 533A9Fhs024797;
-	Thu, 3 Apr 2025 13:12:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5PQtbw
-	EoH1ime2NIIHH/Tl3NtKI6Qa7OnDQh1ZfSalM=; b=VMOxqC5YnuW2Hj7Cb7CVYb
-	g31xUYj4c/zUEYA9w40rGsdUWmpXq+xNgeIOoRBPILaIKfzK6KPXcoKuC/QHJm8p
-	r3fpH/cWOzrR6vyihIc8q+eVkPpTT4cAcB/qIiJtktIT25aLA7CObemupkc5+Fik
-	ITv6W7abukMgg6fLVrTMJve/8DpS1qzU5arYXq+2qLp/ji5PN83kwmEWmOOHv2CC
-	KIh4yhFjVUvF8qRTHtai2plpC5XWQcBkZVJZmC1K4td2Fem9nmMBcZkKDgRF1FYw
-	ZsFvTUCNWTKgIQY+v4jqCXYNc0R2dWuoNeHt78MgB39NXJutogPIqi0U8vPkMeeQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45scdr3r38-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Apr 2025 13:12:58 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 533A1jvB009923;
-	Thu, 3 Apr 2025 13:12:57 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pv6p4wsj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Apr 2025 13:12:57 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 533DCr8v54198736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Apr 2025 13:12:53 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A10A20043;
-	Thu,  3 Apr 2025 13:12:53 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83B2F2004B;
-	Thu,  3 Apr 2025 13:12:52 +0000 (GMT)
-Received: from [9.179.17.170] (unknown [9.179.17.170])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  3 Apr 2025 13:12:52 +0000 (GMT)
-Message-ID: <e73b185d-2a33-400d-b351-3e353d78cb4a@linux.ibm.com>
-Date: Thu, 3 Apr 2025 15:12:52 +0200
+	s=arc-20240116; t=1743686132; c=relaxed/simple;
+	bh=r4n/nElshuEC+N/oCbbDCl2TaTMzeqJvA0E1GhChm2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NPqvyhZhAe7bLJb2yCIb7/hev4nul60olypF8h01lvpRESUoWxy3riFiWViUaEV+42BX83gMK02kpy+Cz/CSFMNW/M/lavXzFNan9tuFIrwmZFFXcb/PUx7pJeBBOIWtlDmz39U7w/dNjbIDCQk57stzQg1oTmRw69mcxyBLuqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvbDGYOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D6C4CEE3;
+	Thu,  3 Apr 2025 13:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743686131;
+	bh=r4n/nElshuEC+N/oCbbDCl2TaTMzeqJvA0E1GhChm2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JvbDGYORWxXFYqROzffePhwsr3Gp9fXm75EwuFZpPa1CWJ0B/HHQXNKE8FFykhtuN
+	 ABrrdG1HJW9UFSzkn5f4amdVgsn1ckORpYuX/JUBNNhEs9HrXaBjefz4+iMoAtTawS
+	 fQyiuoGferImQDO+gcmNi2laXyu0uc5zrTkAgOAGejOOMBxfXSq4PKt4rdW8kHi8BY
+	 6fmnxStLeYEjFgssbD5NuRFupOZVAliz+iiyqmZMv1GxzSBDyqCZxa2e4zGdD8P2N9
+	 RpNGNyf/+fIhKKwCQHfCLtTb5nPcsulrdrPV7rF0Lfy0uvDGl/e5z4So0rA0C+075A
+	 CxD5w/7dDFVFA==
+Date: Thu, 3 Apr 2025 15:15:25 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: phasta@kernel.org
+Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/nouveau: Prevent signalled fences in pending list
+Message-ID: <Z-6J7bngU2JtfMMN@pollux>
+References: <20250403101353.42880-2-phasta@kernel.org>
+ <c779bc2f-06af-4278-8bb5-08afc074b580@amd.com>
+ <2558c9cf0cf28867238eb21950ce2a3f862c15c3.camel@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
-References: <20250402203621.940090-1-david@redhat.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20250402203621.940090-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: q6wVE3KcHk-luemwwcUmDRRd8C2FoJv9
-X-Proofpoint-GUID: q6wVE3KcHk-luemwwcUmDRRd8C2FoJv9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-03_05,2025-04-02_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 mlxlogscore=449
- lowpriorityscore=0 mlxscore=0 impostorscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504030057
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2558c9cf0cf28867238eb21950ce2a3f862c15c3.camel@mailbox.org>
 
-Am 02.04.25 um 22:36 schrieb David Hildenbrand:
-[...]>
-> Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
-> Reported-by: Chandra Merla <cmerla@redhat.com>
-> Cc: <Stable@vger.kernel.org>
-> Cc: Cornelia Huck <cohuck@redhat.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Eric Farman <farman@linux.ibm.com>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Sven Schnelle <svens@linux.ibm.com>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Wei Wang <wei.w.wang@intel.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Thu, Apr 03, 2025 at 02:58:13PM +0200, Philipp Stanner wrote:
+> On Thu, 2025-04-03 at 14:08 +0200, Christian König wrote:
+> > Am 03.04.25 um 12:13 schrieb Philipp Stanner:
+> 
+> > BTW: nouveau_fence_no_signaling() looks completely broken as well. It
+> > calls nouveau_fence_is_signaled() and then list_del() on the fence
+> > head.
+> 
+> I can assure you that a great many things in Nouveau look completely
+> broken.
+> 
+> The question for us is always the cost-benefit-ratio when fixing bugs.
+> There are fixes that solve the bug with reasonable effort, and there
+> are great reworks towards an ideal state.
 
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+That's just an additional thing that Christian noticed. It isn't really directly
+related to what you want to fix with your patch.
 
-I will apply this to our internal s390 tree and let it sit for a
-day to get CI coverage.
-
-Alexander, Vasily, Heiko,
-please then schedule for the s390/fixes branch if there is no CI fallout.
-
-
+I think the function can simply be dropped.
 
