@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-127659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F22A7A6D4
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:31:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0098A7A6A6
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9783BBBEA
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F25189CE7E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A147250BFD;
-	Thu,  3 Apr 2025 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4815F250BE5;
+	Thu,  3 Apr 2025 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIvTwmsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3IVzUW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB46188A3A;
-	Thu,  3 Apr 2025 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B9D24C080;
+	Thu,  3 Apr 2025 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693982; cv=none; b=HKWSr77M0hwrU08W064YtPcDwebMh0C3kzpq8O91KvBh7lp0qfIANUfKxS90NnFe+D488yiPUqAUyBLrmht3FQlMiUrBy5Vt0nEapzu9ayEo5UuqSASIDFNz+rrtv+E7teKt/vTrw9pFsLfYm6eLRtlkGGrMyiZtSGdQFrRJvw4=
+	t=1743693934; cv=none; b=blTnOTgGoArtV95SHFMWVCYSqH5XiD6GyIydemZ4QG2eKnDOQa2FlEyb4+4YnyfLHWt++5HSZZQswthKtJRNCFBdF+J25imo2j9c/kfmPFegrfbqqk/p6Ftj95FqCexDY92aVl+PdOHTAbO83/kBiad8htzeXijyi9gEMDEGYnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693982; c=relaxed/simple;
-	bh=45RN4MZ1onXE8IgHC06jd02JqSqqs4zc2LJK7YqzO6M=;
+	s=arc-20240116; t=1743693934; c=relaxed/simple;
+	bh=I/17kl+9U4EmSdbEMESF5XPvrSwVTOJXZsTgwgfmJ2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdWFIDWYk/hNjYBzQQN//mbdQQ4qABJBBNF6p6mgWedKtLrolj9i/Ko3Tjnlm3CTWcVTa/K+ZvLEi/Dd53PmkqA29EWSQVnsVm4/m1n2RK0XxYmuBXTaqSGiMHO5g4Gm1TbLqg9jCpTge2LU5MN+pFycWE8pRCe4wY3ZG+TebNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIvTwmsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAF3C4CEE3;
-	Thu,  3 Apr 2025 15:26:22 +0000 (UTC)
+	 MIME-Version; b=ThES6P9ZgV4N+t+5VnIfd9L28pxIU6PjO2YKIs96Fxb8Hj5uiVg3mSfDSz+IaZqRAVdZDD/PwKHnCP2ZutLl9h+LaHTplKxH8Zgxr0fZeGEXbhOpznRVsDtENkuHDVANJG/EalEtV1FzrxOfp39BBzHliL+4l888wJMUnIFr/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3IVzUW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B4C4CEE3;
+	Thu,  3 Apr 2025 15:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693982;
-	bh=45RN4MZ1onXE8IgHC06jd02JqSqqs4zc2LJK7YqzO6M=;
+	s=korg; t=1743693933;
+	bh=I/17kl+9U4EmSdbEMESF5XPvrSwVTOJXZsTgwgfmJ2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIvTwmsUVPKZeC1hZU8sr0oMp/8a1HUQExaEozk5HsgvqgaQ7Th/iY0u77QH30S+z
-	 Lr83K0O1d+Ts97ut3+edH912ayi9yRdwJVJUp/gbjUce4/DXxC4oF1pYyHAtjn0di8
-	 so+1SxklvT2ESwNcrvVE1W+CwHNAQcbXx9VyPgY4=
+	b=P3IVzUW6J/Ug2xQmYNhLOfzQ9noX1n7UemgoLxTtXBKYBRavALBx4tEkp97q+znxE
+	 4WwoV2GH7QVFewuOYAZifTMPLKM3Y5ZcCGlMvp+KNhvfwtcA1JwEgIsuPkBI2vzgQ+
+	 XqykFTcmEK0moUa3XTEESBfJhpobvfFTrc8OK36A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 13/26] scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.13 17/23] usb: xhci: Dont skip on Stopped - Length Invalid
 Date: Thu,  3 Apr 2025 16:20:34 +0100
-Message-ID: <20250403151622.800792545@linuxfoundation.org>
+Message-ID: <20250403151622.770891959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151622.415201055@linuxfoundation.org>
-References: <20250403151622.415201055@linuxfoundation.org>
+In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+References: <20250403151622.273788569@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 64506b3d23a337e98a74b18dcb10c8619365f2bd upstream.
+commit 58d0a3fab5f4fdc112c16a4c6d382f62097afd1c upstream.
 
-Otherwise, it will result in a NULL pointer dereference as below:
+Up until commit d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are
+returned when isoc ring is stopped") in v6.11, the driver didn't skip
+missed isochronous TDs when handling Stoppend and Stopped - Length
+Invalid events. Instead, it erroneously cleared the skip flag, which
+would cause the ring to get stuck, as future events won't match the
+missed TD which is never removed from the queue until it's cancelled.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-Call trace:
- mutex_lock+0xc/0x54
- platform_device_msi_free_irqs_all+0x14/0x20
- ufs_qcom_remove+0x34/0x48 [ufs_qcom]
- platform_remove+0x28/0x44
- device_remove+0x4c/0x80
- device_release_driver_internal+0xd8/0x178
- driver_detach+0x50/0x9c
- bus_remove_driver+0x6c/0xbc
- driver_unregister+0x30/0x60
- platform_driver_unregister+0x14/0x20
- ufs_qcom_pltform_exit+0x18/0xb94 [ufs_qcom]
- __arm64_sys_delete_module+0x180/0x260
- invoke_syscall+0x44/0x100
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0xdc
- el0t_64_sync_handler+0xc0/0xc4
- el0t_64_sync+0x190/0x194
+This buggy logic seems to have been in place substantially unchanged
+since the 3.x series over 10 years ago, which probably speaks first
+and foremost about relative rarity of this case in normal usage, but
+by the spec I see no reason why it shouldn't be possible.
 
-Cc: stable@vger.kernel.org # 6.3
-Fixes: 519b6274a777 ("scsi: ufs: qcom: Add MCQ ESI config vendor specific ops")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-2-45ad8b62f02e@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+After d56b0b2ab142, TDs are immediately skipped when handling those
+Stopped events. This poses a potential problem in case of Stopped -
+Length Invalid, which occurs either on completed TDs (likely already
+given back) or Link and No-Op TRBs. Such event won't be recognized
+as matching any TD (unless it's the rare Link TRB inside a TD) and
+will result in skipping all pending TDs, giving them back possibly
+before they are done, risking isoc data loss and maybe UAF by HW.
+
+As a compromise, don't skip and don't clear the skip flag on this
+kind of event. Then the next event will skip missed TDs. A downside
+of not handling Stopped - Length Invalid on a Link inside a TD is
+that if the TD is cancelled, its actual length will not be updated
+to account for TRBs (silently) completed before the TD was stopped.
+
+I had no luck producing this sequence of completion events so there
+is no compelling demonstration of any resulting disaster. It may be
+a very rare, obscure condition. The sole motivation for this patch
+is that if such unlikely event does occur, I'd rather risk reporting
+a cancelled partially done isoc frame as empty than gamble with UAF.
+
+This will be fixed more properly by looking at Stopped event's TRB
+pointer when making skipping decisions, but such rework is unlikely
+to be backported to v6.12, which will stay around for a few years.
+
+Fixes: d56b0b2ab142 ("usb: xhci: ensure skipped isoc TDs are returned when isoc ring is stopped")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1918,10 +1918,12 @@ static int ufs_qcom_probe(struct platfor
- static int ufs_qcom_remove(struct platform_device *pdev)
- {
- 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
-+	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2862,6 +2862,10 @@ static int handle_tx_event(struct xhci_h
+ 		if (!ep_seg) {
  
- 	pm_runtime_get_sync(&(pdev)->dev);
- 	ufshcd_remove(hba);
--	platform_msi_domain_free_irqs(hba->dev);
-+	if (host->esi_enabled)
-+		platform_msi_domain_free_irqs(hba->dev);
- 	return 0;
- }
- 
+ 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
++				/* this event is unlikely to match any TD, don't skip them all */
++				if (trb_comp_code == COMP_STOPPED_LENGTH_INVALID)
++					return 0;
++
+ 				skip_isoc_td(xhci, td, ep, status);
+ 				if (!list_empty(&ep_ring->td_list))
+ 					continue;
 
 
 
