@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-127740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0621A7AA49
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:10:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FFA7AA3E
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 21:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E241C3AECC9
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:07:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2837179ECF
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 19:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031932586D9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB016258CC8;
 	Thu,  3 Apr 2025 19:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQ3bPRcR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVk6qFzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD32F2586C8;
-	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15592586FE;
+	Thu,  3 Apr 2025 19:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743706991; cv=none; b=GCAr6U55PPNRAMHtAODKimgDh/tHZJIb3DSbFbBxys0gQC2saYuOJrJ7alfgUcEX8vGNWnGgZ6dwsMBjmORJ2q4T+Z6y/iXwp179T+i7kQqyfoz07KUYLrbqT5ooZ+ZzyTHny9NLdbdQiUBfUMr+q7s1gQDs7YHpPIDMe1WBtT0=
+	t=1743706992; cv=none; b=WgyoTDMxMppfJ8CUy+fhMu1vwCP0MxkJGlej+L0LTlJ5muchQQlJes//sj13gcaHPwaZxC7h3oq+XtacOea/wuQiBg3Q+5s/hBBPpR0/LSlKKdq3m8mqlZfSoSjAdSiHdMD924l+WqMc5/WEkDrsEHJS6W6dntIJJVqyFjurEWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743706991; c=relaxed/simple;
-	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
+	s=arc-20240116; t=1743706992; c=relaxed/simple;
+	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SUkQ6STpcw8jVfpd4wMdiRS0AhugDiphfw5gqISLMDvV4X32fiNBnc2d/FITKRZqEng58j/ui9EyujoEDDQ54kCh6zAVBCNGEYIX8O5pPRblCyCFERNim6TZQziZpqQzB9DrEQ51myo1zSr/mcotWeYMbjRflg6WCH1y+Nen1uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQ3bPRcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C641C4CEE3;
-	Thu,  3 Apr 2025 19:03:10 +0000 (UTC)
+	 MIME-Version; b=NggwZTWcyy3b1GxWkH7sH9fFEDEpDZNqw7h22LmnDXZicRPZhLrjD16BJ4MxQlxHX6/jRM/fXZRfBtX+guL+jGq+fAJGXubH3eHEEWGyAUDkR/kHyoX2TK+Ndnyr4fZlTCfZtiEqb4oyU/ajBNdX+uUuRvdrikNZAGkBCgMYdtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVk6qFzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C27C4CEE8;
+	Thu,  3 Apr 2025 19:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743706991;
-	bh=UbRoaPQiaPriiA58VAy2/csM024QjLTwPDPpJTqe79I=;
+	s=k20201202; t=1743706992;
+	bh=ZCC9jh7ZVX2fGD7QT2FFdDBEpGSuODp4SIPv7b74Fa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQ3bPRcRK0uqXoXpyIymwwYbRsUjR+x18djjFDnBuGqbUopgN9RaD0VgOSNxp5BUP
-	 8yHBXgpz5fWyy0tjDP3Bzl/t1L67OcKCbNokFwNKn69jKBHpz9yrig562AStrL9pPD
-	 MT4MSrwKkwGYl9O0kk4J1u1tv7JeHkqgWn/agBiZ7z2b0PfeEcXDvrqClW607dM4qI
-	 XgeX1KWm26GbGHNzgU6FX59mCMCJmbLTORhR1+VMHIKNfz0PeOZpP0KQek3LTtofDR
-	 1J9S7WpBPhiYo0wNW7D1MU558DdPzSaDxaqpPVAOq+xxbxBRoVu6adGReaQK7rZW0c
-	 hW/0Acf6uV72w==
+	b=JVk6qFzAm3dctCyKtljgQcwzh3hQLSIujXw24z6VrOTVpX01hg4MJOy73N2ohUz0k
+	 NKLsbRFtW2lcN5SbT3TaXh5rUMJaU0Hg7hvbWbj5CQ1uX8BVrFy9HDjL+K/FCAl4ta
+	 OViBpbLNxot3WVhpMU4Gp8Yi2hH+qBVXgVHWo7mKiedMBnaApgZWd0A9IoiWKOBWfx
+	 LmxkNy0GeO/2zwsBi4F00B/GWIyw58KDJtZId8KwSMZUZGtA8gVNDu9j1A6Kg1h16F
+	 Yduu7vjClhsDGWIL5Sqref/cmWvRTz1vQ3zvhP+QZavYHv83Aso78X0478vL8xG9Gg
+	 hbZgE0BLGS7fQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zenm Chen <zenmchen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Philip Pemberton <lists@philpem.me.uk>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 25/54] wifi: rtw88: Add support for Mercusys MA30N and D-Link DWA-T185 rev. A1
-Date: Thu,  3 Apr 2025 15:01:40 -0400
-Message-Id: <20250403190209.2675485-25-sashal@kernel.org>
+	linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 26/54] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
+Date: Thu,  3 Apr 2025 15:01:41 -0400
+Message-Id: <20250403190209.2675485-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250403190209.2675485-1-sashal@kernel.org>
 References: <20250403190209.2675485-1-sashal@kernel.org>
@@ -65,38 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 80c4668d024ff7b5427d90b5fad655ce9461c7b1 ]
+[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
 
-Add two more USB IDs found in
-https://github.com/RinCat/RTL88x2BU-Linux-Driver
-to support Mercusys MA30N and D-Link DWA-T185 rev. A1.
+atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
+has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
 
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250210073610.4174-1-zenmchen@gmail.com
+However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
+on a port at initialization time, before any devices are scanned.
+
+If a controller detects a connected device that only supports PIO, we set
+the flag ATA_DFLAG_PIO.
+
+Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
+device only supports PIO.
+
+Reported-by: Philip Pemberton <lists@philpem.me.uk>
+Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
+Tested-by: Philip Pemberton <lists@philpem.me.uk>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-eh.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-index 8883300fc6adb..572d1f31832ee 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-@@ -73,6 +73,10 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* ELECOM WDB-867DU3S */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0107, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30H */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x010a, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30N */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3322, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 3b303d4ae37a0..16cd676eae1f9 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1542,8 +1542,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
+ 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
+ 	tf.command = ATA_CMD_PACKET;
+ 
+-	/* is it pointless to prefer PIO for "safety reasons"? */
+-	if (ap->flags & ATA_FLAG_PIO_DMA) {
++	/*
++	 * Do not use DMA if the connected device only supports PIO, even if the
++	 * port prefers PIO commands via DMA.
++	 *
++	 * Ideally, we should call atapi_check_dma() to check if it is safe for
++	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
++	 * Since we can't check the command, perhaps we should only use pio?
++	 */
++	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
+ 		tf.protocol = ATAPI_PROT_DMA;
+ 		tf.feature |= ATAPI_PKT_DMA;
+ 	} else {
 -- 
 2.39.5
 
