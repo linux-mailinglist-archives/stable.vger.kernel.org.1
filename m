@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-127589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE065A7A691
-	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:28:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B75A7A679
+	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 17:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A53D3B8E1F
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA5E189BED7
 	for <lists+stable@lfdr.de>; Thu,  3 Apr 2025 15:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755D8250BE7;
-	Thu,  3 Apr 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB338250C19;
+	Thu,  3 Apr 2025 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHGjEf4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuOSbZcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0324C077;
-	Thu,  3 Apr 2025 15:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63187250C0C;
+	Thu,  3 Apr 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743693810; cv=none; b=OrIbA/kdFnuTHkabU0fSmiotFtIh+1zgBbaaNmBtdULBpHAIAWemv1EczcCy4M3XdzEeGySQsA7x3kbz88XPASR1WH6oKrUhhKq75NRDVzqugcsSGCzVZbFe6gBxjJe+S2okCG79MZEVdRCAw003IfkT068RoqVByvcMpOuHdyE=
+	t=1743693781; cv=none; b=Im+LbKMrGgYjBxFesomrJJk2u3kTOma/D6xRGipCAUSvjkOApJxKDfb5L4XowVnAkZ4U8S0KuU2oeroT70bjldT+L4cYD9hWkZznfIWkc57C+vxcjCHKP+GGWhIjTqZDwJOdqJlEnmotrQfyxpx9ESCo7jYkxuNqvLyc8B5FYE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743693810; c=relaxed/simple;
-	bh=01OaeUrnslI5I8Nd3vXW4ZBLrmcIxi0UqwZp+lyyWrU=;
+	s=arc-20240116; t=1743693781; c=relaxed/simple;
+	bh=P0ZE6g/oe83yw1lv+asdx+ndZPrp3IUYc0FY387OT0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkgMgqmg54mYYGOw/dbtEOuFZjE6jk0PHrmRTSXRyopg5qrnTB0H4DARYXHz+1dOaDtOdujIhi6rU6msPbq2ny3B81OSunnCvJFXkbK3M1pq6oN6aaF6ISmb9dko6Q0kCexnOxHT4Obb8wLYxqyEIQmeZCVv01AiiHaRN4Lbxkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHGjEf4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61929C4CEE7;
-	Thu,  3 Apr 2025 15:23:29 +0000 (UTC)
+	 MIME-Version; b=fW3p9VMT8ec4sgg4NnveUfZ53jnvdJ6xvTV8YqskpR4tqiMJoB9jvd/T5qjciT5O0unUpS2xVBCdlPB8gyV/PRkSjNUP2uIZHBuw+8NalC4kQVcmSOuGkuyYfZJXLY/C81ml7DnPagE4y0+b29eIybFtiNsmsay1eC5Usbpy51M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuOSbZcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9166AC4CEE3;
+	Thu,  3 Apr 2025 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743693809;
-	bh=01OaeUrnslI5I8Nd3vXW4ZBLrmcIxi0UqwZp+lyyWrU=;
+	s=korg; t=1743693779;
+	bh=P0ZE6g/oe83yw1lv+asdx+ndZPrp3IUYc0FY387OT0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHGjEf4A24KUAVZDWqMdqG9Ce5xqQjVtVLRd+qnitUEkXaP79/L44XclmHPhSYHqH
-	 3eAOkJWm1iAydiu0pt2PyHp8zE+FqmpWpE2666QBUg3vZpjdUV9ZjN88p9ObQMhuIg
-	 lp1uEuATZbvZci++5j6YHC/StNp0Jzfc+vMROEiM=
+	b=nuOSbZcASNSt4MUKFRDU9gt5Wbw5jl++dMG2yxr09eeOLfpy/fXRtF5VEdw82eQB2
+	 FafwhHOOg//hFZPuAKVxHPGreSSks96SLLmxJ44RRNFr/KsbJSBlr5ZBIVoUDq82CH
+	 SmStcCA1qX26LbZvOIt1q81oB/GJXkYf4Dd77mDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.14 12/21] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
-Date: Thu,  3 Apr 2025 16:20:16 +0100
-Message-ID: <20250403151621.491520181@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.1 22/22] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
+Date: Thu,  3 Apr 2025 16:20:17 +0100
+Message-ID: <20250403151621.559365552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
-References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151620.960551909@linuxfoundation.org>
+References: <20250403151620.960551909@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit f5cb528d6441eb860250a2f085773aac4f44085e upstream.
+commit 83964a29379cb08929a39172780a4c2992bc7c93 upstream.
 
-According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
-register only can be changed when the transmitter is disabled.
-So disable the transmitter before changing RS485 related registers and
-re-enable it after the change is done.
+The current solution for powering off the Apalis iMX6 is not functioning
+as intended. To resolve this, it is necessary to power off the
+vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
+state. This ensures the carrier board is properly informed to initiate
+its power-off sequence.
 
-Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
+The new solution uses the regulator-poweroff driver, which will power
+off the regulator during a system shutdown.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm/boot/dts/imx6qdl-apalis.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1484,6 +1484,19 @@ static int lpuart32_config_rs485(struct
+--- a/arch/arm/boot/dts/imx6qdl-apalis.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-apalis.dtsi
+@@ -101,6 +101,11 @@
+ 		};
+ 	};
  
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
-+	u32 ctrl;
++	poweroff {
++		compatible = "regulator-poweroff";
++		cpu-supply = <&vgen2_reg>;
++	};
 +
-+	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
-+	ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+	if (ctrl & UARTCTRL_TE) {
-+		/* wait for the transmit engine to complete */
-+		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
-+		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
-+
-+		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
-+			cpu_relax();
-+	}
-+
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ 	reg_module_3v3: regulator-module-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-always-on;
+@@ -220,10 +225,6 @@
+ 	status = "disabled";
+ };
  
- 	if (rs485->flags & SER_RS485_ENABLED) {
-@@ -1503,6 +1516,10 @@ static int lpuart32_config_rs485(struct
- 	}
+-&clks {
+-	fsl,pmic-stby-poweroff;
+-};
+-
+ /* Apalis SPI1 */
+ &ecspi1 {
+ 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+@@ -511,7 +512,6 @@
  
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
-+
-+	if (ctrl & UARTCTRL_TE)
-+		lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+
- 	return 0;
- }
+ 	pmic: pmic@8 {
+ 		compatible = "fsl,pfuze100";
+-		fsl,pmic-stby-poweroff;
+ 		reg = <0x08>;
  
+ 		regulators {
 
 
 
