@@ -1,118 +1,124 @@
-Return-Path: <stable+bounces-128352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEEDA7C5A0
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 23:39:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED00A7C66B
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 00:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFC73189E905
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 21:39:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 455A37A442D
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 22:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B512215075;
-	Fri,  4 Apr 2025 21:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDE61A23B0;
+	Fri,  4 Apr 2025 22:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="HRmLs/pc"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="N1AKPZmB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B4182BC
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 21:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7912E62B2
+	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 22:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743802755; cv=none; b=MWyF5haHLCowR7CLGbAEwUFj0+3J3UsaQQDBy25Vf1WDKrA8f8ugPAWJcWo3p1NaPE2zMahuGZ2pGpMymS0z5V6r8YWRIfOsVl+jgwqTHr/WwwwYWo41h47BlKRKJlXudyfelFhWdM1hIkvcAUyD08k4aZB6tgP0vin7puvidew=
+	t=1743806568; cv=none; b=R8qfEsb78uTwaSWTSyXt6vbfn7bLwiNyGQwSK4V5rZyxCPF8IdivEYiA0W++h7eB87hHVItkq3dfIjwFDWMaHdgZn7wAZc1IoyjInYJKcmIIvxgWfYJoxfhRXxVtJbbu3U6bOUEAGqgSkGiJUqaHABXJXFDP4y/fN9M+9Syt+D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743802755; c=relaxed/simple;
-	bh=QABGtXWp+PTfrHwfQTr0E/H0tw1hzN30Yy/M1wIGo/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MxbwSv4ptGfw9Iz0tOB9vwzBBqEBFrnBT+HteVze/Dnkna6J+N6I7b6a3yh0FJvtfITvicLN17ZoKyaqr/Vl7aYpmDNHM/kTb4aZuajQ2hHFmY2CBluuTd308fBHdkGkBwHv6SwoqRAmMpNmxmz4qkfDqSj9jU48wr8On76sF3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=HRmLs/pc; arc=none smtp.client-ip=209.85.166.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-85e14ce87ceso79086239f.1
-        for <stable@vger.kernel.org>; Fri, 04 Apr 2025 14:39:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1743802753; x=1744407553; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ENJyUpYAa//xspw6u0+Ksfea+gHqJHq1I/Onh0TI3hk=;
-        b=HRmLs/pcPxX8s8c4WpG0MAsDYZPDkC+MtEFt760cgWVB4kc0RR6Vyhye5y0xjyeslk
-         viB+xD1W7P4ZTJPTrK1iRC6ZPouOt1+oMA1NJpGbHjNTBB+qOAaefEFnnGV7fIbzB45a
-         +KkzOcDXAFzwo2OG+0ANI1Gj3KjEq78lx8PuU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743802753; x=1744407553;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ENJyUpYAa//xspw6u0+Ksfea+gHqJHq1I/Onh0TI3hk=;
-        b=YA+/vHJvhDAbnCDwYzqAzJi05/pWH3CSMi2OfPpW3zk4t/NjRG5aPSjBPm7HPy1Lhm
-         IToMP2TUdT24FS8Y5qrOnm7gY0U42pKdxOQRWiMNezW68cNLC4/Ofz9Oi9YRWFsNYTZz
-         YfOQq+u2ewOnAdR6Zwpk8ssf6ZKnoy9vDIC+1QmSOzHOK20BnS5T7ubnlaOtzLR2XR77
-         HUI0NRtsKqJY4MeirD1AFzCDP5PYjJLB/kEajdF1YlrIlmX3CZNRV7/rnE7XyX6vjp4i
-         2BUoOSwbPzHTsnIu3VmNb07UpAKa2gaGJ2u4r56esxsNOmaPQHgv1fbVWXzZBmVIA5qT
-         pcJw==
-X-Gm-Message-State: AOJu0Ywhg3tNj1ezYCnsLSLhAmQPEJs6331yYyoV2j4zSB2x8wKZuFqy
-	DeMTnPv8/AQWlUVXkgpJPHOWUvnQXPS5fUFCcfSP/wSxgIScRZo8soKmny4NbA==
-X-Gm-Gg: ASbGncsDMIEcjE4nv+YtFw+n8/QTqetvPsj83NrZqVI6ABDgqGYmGNvFqxgX3JMMYw6
-	aIHlXCXlSv/NZq6vTtQ2Yrx5TzSjFepI/vF2SxLSTSjxBB8mOTBYmP8ibnR4nCI3whE6L8N1Mcq
-	9CKMToBVLszDkPoes9BKbaQMFO476yBSOTaM2v4ox3gfK06e5GmjORDg3eZzSHjQXtckLpIThj0
-	kyS/u1oc0HoaqVTKJhuCwF5lxoIwvDapIQiA/HqqT0EYujU+zDU5F9Hn1+PEzVAsiAMpMzDMxVc
-	CR+k15Ywe+uoNcFPf+vXLj393bW2Qc1gHlNBgO5t0P8BsOdMRRK23V0XxFjFJg==
-X-Google-Smtp-Source: AGHT+IGbcf6tz83rGLyBLgsZksMjls6nLeRdxxAHiAxj22AgIjPSRs4Lq7yykuQU6PSnh2BoV0s99g==
-X-Received: by 2002:a05:6602:3fd5:b0:85e:16e9:5e8d with SMTP id ca18e2360f4ac-860ef3c3fe5mr1303615639f.7.1743802752986;
-        Fri, 04 Apr 2025 14:39:12 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f4b5d3f057sm990829173.113.2025.04.04.14.39.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Apr 2025 14:39:12 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Fri, 4 Apr 2025 15:39:10 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 00/23] 6.13.10-rc1 review
-Message-ID: <Z_BRfgnJ_6gzLlCI@fedora64.linuxtx.org>
-References: <20250403151622.273788569@linuxfoundation.org>
+	s=arc-20240116; t=1743806568; c=relaxed/simple;
+	bh=NCiUDgIJUFQ7WvglxqBHj8zMTldLi1Rerkypwrr1nO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SvzIQ1hkilI8Os/Uv93E4NrEZCcD5PfZi40TAWsq/G0XmJXK0xaGMOur2H7tXMfhM0IKXhZND4kxC4iKZKmJIMugS+APKO91E27rugWqIFI5eSzZ0YuDMyvY1qCt3T0/3Ks7/dKDzwy9lT2m0/njQday7256aUPf+wtJccQwt9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=N1AKPZmB; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 534L4HGm011467;
+	Fri, 4 Apr 2025 22:42:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=6W8z79XH0jMbEdZtlmUZtuF/iT9Yb
+	u/JhwqF1/lr5Js=; b=N1AKPZmB2mJjyNuYsraEjfQEA3IhtbtgpbCQBtW7TdbRq
+	8Bt4iAEiBYVoWPeahYUClxdGpQ/47Uzu06h3pYARKsPCQp5B0jqpUQuDHi4H134E
+	fVBWYfpapdixH533EZA9FRgcNlLVVSBT9DE/E8bCdr8ZSaXVkfjUe8ofxU3o4A2Y
+	3T6+Nx4enq1Dx6RdgdmjBLXP19bJZDroIsv3vUyUA7BDusRDnXZjwRU4bCEdPkzC
+	Ee74wsQ7V9G8S6b5Lbr0BZPo+Cx+2P42sRhAsIkvfovg5dJnhzjseST2ieEvdbme
+	mHvoq9FplGeQmQdbouH+fCuAmXKPs9NE0elIwrftg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45p9dtr5fp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 04 Apr 2025 22:42:43 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 534Kd8u8036124;
+	Fri, 4 Apr 2025 22:42:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45t2nunbxr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 04 Apr 2025 22:42:42 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 534MggcA027581;
+	Fri, 4 Apr 2025 22:42:42 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 45t2nunbxj-1;
+	Fri, 04 Apr 2025 22:42:42 +0000
+From: Yifei Liu <yifei.l.liu@oracle.com>
+To: jdamato@fastly.com
+Cc: yifei.l.liu@oracle.com, stable@vger.kernel.org,
+        aleksander.lobakin@intel.com, jack.vogel@oracle.com
+Subject: [PATCH Linux-6.12.y 1/1] idpf: Don't hard code napi_struct size
+Date: Fri,  4 Apr 2025 15:42:12 -0700
+Message-ID: <20250404224212.16753-1-yifei.l.liu@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-04_10,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2504040156
+X-Proofpoint-ORIG-GUID: _D0qGTerNn97FfYm1Mo4f5gzi5r1ebDM
+X-Proofpoint-GUID: _D0qGTerNn97FfYm1Mo4f5gzi5r1ebDM
 
-On Thu, Apr 03, 2025 at 04:20:17PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.10 release.
-> There are 23 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Joe Damato <jdamato@fastly.com>
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+commit 49717ef01ce1b6dbe4cd12bee0fc25e086c555df upstream.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+The sizeof(struct napi_struct) can change. Don't hardcode the size to
+400 bytes and instead use "sizeof(struct napi_struct)".
+
+Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20241004105407.73585-1-jdamato@fastly.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 49717ef01ce1b6dbe4cd12bee0fc25e086c555df)
+[Yifei: In Linux-6.12.y, it still hard code the size of napi_struct,
+adding a member will lead the entire build failed]
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index f0537826f840..9c1fe84108ed 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -438,7 +438,8 @@ struct idpf_q_vector {
+ 	__cacheline_group_end_aligned(cold);
+ };
+ libeth_cacheline_set_assert(struct idpf_q_vector, 112,
+-			    424 + 2 * sizeof(struct dim),
++			    24 + sizeof(struct napi_struct) +
++			    2 * sizeof(struct dim),
+ 			    8 + sizeof(cpumask_var_t));
+ 
+ struct idpf_rx_queue_stats {
+-- 
+2.46.0
+
 
