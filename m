@@ -1,98 +1,149 @@
-Return-Path: <stable+bounces-128293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE86AA7BC40
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:06:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6F5A7BC44
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A5EB17BC8C
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 12:04:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB43017B267
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 12:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563A21D86F6;
-	Fri,  4 Apr 2025 12:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083051DDA2D;
+	Fri,  4 Apr 2025 12:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oTyLFmgE"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FliFonRz"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06D01B413D;
-	Fri,  4 Apr 2025 12:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBC413AA2D;
+	Fri,  4 Apr 2025 12:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743768232; cv=none; b=tRQAPxmCxWsQf4ilKSHX0E7zanaJjmK80ZSejxmOV69tazD5JFSRL2EZ4nQLc414xsU2JeEMv1SEZtXYMn1G5pme39l/ILH34vkgx7XCjvV1PHqioOnR8WnFQ7ODHXjXenr6JUHIMjfalPy+IHBNB9dJDy1N0k3megd0OsSTq6s=
+	t=1743768352; cv=none; b=iSAiyw9oE6kozOIgkt87EV1r7ENs0JD8LJG2LuR4LLf3Wzy10i1wBvd/ZCWI0z5rgTzSQ2+PQ1aTHCyXyRE6ZHjdQQ8O3HYM2TwMfC3bF4+lDdC7VqilFGm8vadtJHZR7yZAO5k4fPSKFdBswlfWUAfVaSgyjKt6wzW1VAZdP6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743768232; c=relaxed/simple;
-	bh=ZI5wJ8BR09ARuliN4nqM+CrGGKh5oUrZXe8E0m9FvAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jv58UiQmqWrfPcv4/PpFGVmLXYWNHscaBJ2e7Ckyse/eyUkMqxAakzRiZtMHt01hBwvX8j42dU23Ydmke/q4CQQ8/dT5Rf8b7hRtWB1lk+jokImiqTTEl+ps2e9z+173yBSKMjo2I+VgpcPrzcgTwFPN8zUwqh0qYxm7ERfhS2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oTyLFmgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BFEC4CEE9;
-	Fri,  4 Apr 2025 12:03:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743768231;
-	bh=ZI5wJ8BR09ARuliN4nqM+CrGGKh5oUrZXe8E0m9FvAc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oTyLFmgEBT+07sTu/+fvK57Y/imkAZm/ujiX+INZF0ClaZTloQ4GLlKVrMI/YH5Uz
-	 jwBqyG2SGn/4pvyHqiifFi2YbwGACAqN/p4IEL9K6Zbf1ImdXzQumySkOHEd+u4O1L
-	 E523QpgGbHOqpl5q1cffFajofL6di8LiipOsDx2zYhsbFlLB/tBuyxW2y4DbihGQLa
-	 SoF1OZ6yey/NjUlEKoGLcKSs29umj7z8BlBl3+/sPLN6/rRDqE8ewvpynFPfCnRBhv
-	 /F4kERpX0DZYsh+s0b5Pk1FzubJvaUkxiegPRDwLjz5EROqPPpKgonTDtNQobmaV52
-	 mSfu5MtuCIKqQ==
-Date: Fri, 4 Apr 2025 13:03:45 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.12 00/22] 6.12.22-rc1 review
-Message-ID: <de860da4-89aa-44b8-9235-2de83db7678c@sirena.org.uk>
-References: <20250403151622.055059925@linuxfoundation.org>
+	s=arc-20240116; t=1743768352; c=relaxed/simple;
+	bh=CKICFswTagr4M5w0rTnDXDPxJT/HGpOKJpeTFfAm058=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SDDAQC07MEpkgm6PDDc7go29xj6su4h0vJVhQnTzdQL0aUgUQzjXTVpt8hN/LHhKAFGHIDrk2r7cmUwpsGNL4u1cAr7Hh9UIStTEpfXPJ6VpouJ7xIYf55QModGMC/5f8PN4XV+q71KNuoEKTmY3XizH8fr1RssYYGIBDvzo93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FliFonRz; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5341iPpW012823;
+	Fri, 4 Apr 2025 12:05:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=gdRE9A
+	feY0sv/9P4CQuo5UaCAIb69zipdGKQZI+5fZQ=; b=FliFonRzNX0UDeCjhbCu1p
+	5Dg/h9QhYusvGa7f9JSYYyC7v0kWvXRov1/e5fAqSavFeKIbb9KHrIWhnqy5iksT
+	D1V24AxjzCJoy3YsPUe3b4Ntmd3/znQu/SeFRI4H1bDCLAV2l0z2eW84/XidPWNq
+	8EdcQh/fhjCHrz7vi9AUhFzJ/IQzY/D7hZnRgn0hTRqerXQpaMUeJpXEA4G6P0+/
+	jC2E0DvuNmmEjcubOLT5xcA1Hpme36eP0jKMSrOs9o7cOELwvX6COV8Nn9lHwWJm
+	FL9VF4/LrhAIUHUcA3gABVoh3a5g25bchG4GeHI9UChXoEJ9irqh01RbJQyermRg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45t2qbu3d9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Apr 2025 12:05:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 534B8QAV001877;
+	Fri, 4 Apr 2025 12:05:44 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45t2ch2v78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Apr 2025 12:05:44 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 534C5dwN55116130
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 4 Apr 2025 12:05:39 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 91BD82004E;
+	Fri,  4 Apr 2025 12:05:39 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1316020040;
+	Fri,  4 Apr 2025 12:05:39 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.152.224.212])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  4 Apr 2025 12:05:39 +0000 (GMT)
+Date: Fri, 4 Apr 2025 14:05:37 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+        Thomas Huth
+ <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+        Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger
+ <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Wei Wang
+ <wei.w.wang@intel.com>,
+        Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+Message-ID: <20250404140537.54c1e464.pasic@linux.ibm.com>
+In-Reply-To: <20250404013208-mutt-send-email-mst@kernel.org>
+References: <20250402203621.940090-1-david@redhat.com>
+	<20250403161836.7fe9fea5.pasic@linux.ibm.com>
+	<20250403103127-mutt-send-email-mst@kernel.org>
+	<20250404060204.04db301d.pasic@linux.ibm.com>
+	<20250404013208-mutt-send-email-mst@kernel.org>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2KoyYZXN9BOREGI3"
-Content-Disposition: inline
-In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
-X-Cookie: You will soon forget this.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: E7GPCDF2y4xfi5bYTJ2LPr4e7-D0TdM6
+X-Proofpoint-GUID: E7GPCDF2y4xfi5bYTJ2LPr4e7-D0TdM6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-04_04,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0 phishscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=729
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504040079
 
+On Fri, 4 Apr 2025 01:33:28 -0400
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
---2KoyYZXN9BOREGI3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> > 
+> > I think, a consequence of this design is that all queues need to be
+> > created and allocated at initialization time.  
+> 
+> Why? after feature negotiation.
 
-On Thu, Apr 03, 2025 at 04:20:10PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.22 release.
-> There are 22 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+What I mean is, with this change having queues that exist but are not
+set up before the device becomes operational is not viable any more.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Let me use the virtio-net example again. I assume by the current spec
+it would be OK to have max_virtqueue_pairs quite big e.g. 64, just in
+case the guest ends up having many vCPUs hotplugged. But start out with
+2 vcpus, 2 queue pairs and initially doing VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET with 2.
 
---2KoyYZXN9BOREGI3
-Content-Type: application/pgp-signature; name="signature.asc"
+And then grow the guest to 8 vcpus, 'discover' virtqueues
+2(I-1) receiveqI, 2(I-1)+1 transmitqI for 2 < I < 9 (I is a natural number)
+and do another VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET with 8.
 
------BEGIN PGP SIGNATURE-----
+Please notice that the controlq would sit at index 128 (64*2) all along. That
+is in the old world. In the new world we don't do holes, so we need to
+allocate all the virtqueues up to controlq up-front. To avoid having
+holes. Or any queue-pairs that are discoverd after the initial vq discovery
+would need to have an index larger than controlq has.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfvyqAACgkQJNaLcl1U
-h9AL3gf9EjDWknAgsVsrT6MMC018ljOI58ROK1wFOgc5k3d3pu7LHE3yz2+TpKbk
-HHjO7d5IRiYA2iDwVJASxXqRCu7uKmW3XPRaExVhsmW7EiLlwzpd5qKCIpzgIK2r
-UrSyv03K8iYsRV57XqwCH1NTyWmc+mgA/DTjMZPQ2Vt7EMjzPilquoU3YqunTOQf
-mRp0Bfq30lyiDy/QY2IvGTuoU/vvB7FS0oLjmHhM5L4e0K0nZIdoMzykSPGFigs5
-wacgf4rZfV1Oumeq41o8wfRHQmfc7RSivsBbGYSGXufmIuVHNMIO357DkjFY3y+b
-QhXFEbOEFgjB7O24ElOMl2w1uZN0aQ==
-=4InQ
------END PGP SIGNATURE-----
-
---2KoyYZXN9BOREGI3--
+Regards,
+Halil
 
