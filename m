@@ -1,79 +1,89 @@
-Return-Path: <stable+bounces-128336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91774A7C0F1
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 17:50:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D20DA7C18E
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 18:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B89189F345
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D913BAD1F
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A471F540F;
-	Fri,  4 Apr 2025 15:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6844A206F23;
+	Fri,  4 Apr 2025 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hpGEbGVA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sFAIJ8oY"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="ZPECPA+J"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E31E5B74
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 15:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBBD1F0E31;
+	Fri,  4 Apr 2025 16:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743781819; cv=none; b=ZSZSjnMXEG2nYpISJnLYchorKiaLS5Uoj4jc+DG6VdytiUAmO6ObwIe4DaOFt5o2ADFibSI81/PI4ci/tQkQm5pxD9wEtp9NhErGZsD+PeuOQq9HPV+pXfc4lXdyfitZC1i7iIRWUQCr+ID+u5/aaq5NT85epOqJ475UEoVqvVg=
+	t=1743784221; cv=none; b=tGRkC/0HfHzm26oKRTSy5Z+Lb2y1d6Rbfai57oWbkm+5xbQzRfLVYfVYdW2Vs3OdxI4Tt3LSDe2yUWJYpZTGATeU8Ch/0rydQp2i8swgtm2Cjtmn+d6v3CFKWqaL0y5fL7z7aQiXyKAHR5RMjbZT9q7rX3KoKgoUzQ3ALZY4L7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743781819; c=relaxed/simple;
-	bh=35PV+5ddnRVz11ZvPWH4+UaunTSCZMcU0E9PGaTK9+8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZArx3WDBVRntPYBUrjwhKEDbz0f9Pr4WOQQJyiLKwTD1gnNRe4ebRz7SCVK/OnF1UyUxbSegwXmhKOIexaog18UHiFh1vF8FFn1Hsorl+2EWuAdVIApuVsS3Hi6H0c9+Dlfaa+SyKFhIZybt9jK9XTH1Q/7rJPSswTYLOZQjKkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hpGEbGVA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sFAIJ8oY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743781814;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=HkRNIj2ue8FoQE9JZeX2lVvEt6DbURmQXqgUo2ZfHlQ=;
-	b=hpGEbGVAWUJo2Sle9bF1a9zj6x4tirDKkLTa1alErP+iLMVjzOMMYKmeB9C/nrPikfu90v
-	+Xn6hyaxDP2okgHaO6BJlG9KcooTqEIlQsy6xH6f2SeVqqa4gW6m8mI4louz0XO5XXxPiP
-	aYknffqA/TeJpnBCw9xiZqs+Q6bFpq22HoDpMm9WsIHputiY9b7Xyv0Nfw2PZlQTyDoVaS
-	3myDgmYcEa1Ajvipxw24TSuTrJQwTt+wdDd++ZKlfBJIfezh7YF5ILL59P1tEoAlMSrf77
-	g/jhLgT6qZRCcuvH2rlTcdWO9v4zy8gniLxa28sLWarZaZZQDfSVnmS+r+MPMg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743781814;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=HkRNIj2ue8FoQE9JZeX2lVvEt6DbURmQXqgUo2ZfHlQ=;
-	b=sFAIJ8oYC7QG/X+afj7ATHcmverTBYSJtD0Rjgqzrhq/NvnwJno5dvVLQFjHInBAgj9mvF
-	q6PJBvcDOYk+hJBA==
-To: stable@vger.kernel.org
-Subject: Don't backport 757b000f7b93 ("timekeeping: Fix possible
- inconsistencies in _COARSE clockids")
-Date: Fri, 04 Apr 2025 17:50:13 +0200
-Message-ID: <87ecy8udsa.ffs@tglx>
+	s=arc-20240116; t=1743784221; c=relaxed/simple;
+	bh=WCrYYWI0xDyuwaFoWdGAyOq91c6ty/Guoy1qj2whQVI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FKWER4PRNRQrliQWBWfYN56gWiUkeOEuh42SjXTziWZPHtobaB6mMpz5EKrdN97zU1uUJQ++qw3ZbN/goJ7Og5+XcXR1yxfuct5yt3mF+NNmsrYWRoIFHNABum1KbjVXrPBmXRAaeiswKPQg9gui6NwuU3tRxvgLTxI3lF5glwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=ZPECPA+J; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 851AA40407
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1743784212; bh=WCrYYWI0xDyuwaFoWdGAyOq91c6ty/Guoy1qj2whQVI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ZPECPA+Jz5xIq0/kTgqLnp/yxU1lQlWMEyoq8bzMuKbFlN81wLn2Bct8zFi5h2hHV
+	 SaYJpQtqmEvh+IqwJIkzxvqc5C4iWv8VYy/48C4gOMDrJX6dLCzgJVZNUzo2eL0ws8
+	 4ls4BIvI/J89NFeofNokYVYGzfzZpRKj3tLyw3tvoNcesKFm6SYoOGfQ7aNQBxn3X7
+	 mpJisIRt4xOK4+aVgRh6kMokANLfOvxyVMGO+HK+2VosX7p/NWL3QVteLyEjxt1jPa
+	 ZMo31ybgQKsJyI7v30soWOIU8wNlwL141rtWL6cUqmEu9Oq1bk8FP/gppxy5JMnvxY
+	 SIP0CRtHKBWfg==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 851AA40407;
+	Fri,  4 Apr 2025 16:30:12 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Kent Overstreet <kent.overstreet@linux.dev>, Markus Elfring
+ <Markus.Elfring@web.de>
+Cc: linux-bcachefs@vger.kernel.org, vulab@iscas.ac.cn,
+ stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] bcachefs: Add error handling for zlib_deflateInit2()
+In-Reply-To: <morzv5ulzvkdpkegs33bwdocnn3hftxviqmw4wkvlh2qnsfagd@trk7lpvqj37k>
+References: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
+ <667bcd67-aac4-425c-b100-d25dc86eb6a9@web.de>
+ <morzv5ulzvkdpkegs33bwdocnn3hftxviqmw4wkvlh2qnsfagd@trk7lpvqj37k>
+Date: Fri, 04 Apr 2025 10:30:11 -0600
+Message-ID: <87ldsfga98.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Kent Overstreet <kent.overstreet@linux.dev> writes:
 
-It turned out that this commit causes a regression for adjtimex() users,
-so it will be reverted in mainline.
+> On Fri, Apr 04, 2025 at 04:20:18PM +0200, Markus Elfring wrote:
+>> =E2=80=A6
+>> > > Add an error check and return 0 immediately if the initialzation fai=
+ls.
+>> >
+>> > Applied
+>>=20
+>> Did you try to avoid a typo in such a change description?
+>
+> Typos add character :)
 
-There is a different fix available which does not have that problem,
-which will be marked with a Fixes tag and will be suitable for
-backporting.
+Actually, that one *took away* a character ...
 
-Thanks,
+(couldn't resist)
 
-        tglx
-
-
+jon
 
