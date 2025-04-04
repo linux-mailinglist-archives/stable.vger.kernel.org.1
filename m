@@ -1,236 +1,124 @@
-Return-Path: <stable+bounces-128312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B27A7BDD1
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:30:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B00CA7BDDD
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5BCC3B8C36
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:30:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE0257A7602
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8AD1EF0AB;
-	Fri,  4 Apr 2025 13:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC8E1F12E8;
+	Fri,  4 Apr 2025 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtXAdIaX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRw0/5lr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621911EF096;
-	Fri,  4 Apr 2025 13:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA371EF0B4;
+	Fri,  4 Apr 2025 13:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743773311; cv=none; b=d0uXDn+fNeB729XQOlnVil/mm71lVd+pclYN8rkE5vn0jm8fB2Cbov4aTq8MhkOqlQi8uJg0hAa8ZlU7wCAR3ORn4X27bkmv+9qlhEdpg1qpn0xeb9u3Qbw1mLqZuai3KY4M2s9lR6ygGTdSHSdq+4fY03oTPwm5veKG47h/8Lg=
+	t=1743773486; cv=none; b=Png4Dxewpegi6fxm2P6E2recPWYMWmxNTLyKI5g2vY/gwdfBmpMrjQNzId9W2ENa8l3iORDMP/8C80Gsk3NV04dsZC3BRwDKC06EkZeQyW3Ah3UtV6v0dcMc2z/fRfkABzKWJZ080Ooj/8cEqeEw6gCrBPMlchOlm6gcZ51oWr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743773311; c=relaxed/simple;
-	bh=8am3I0YCErYUO2PgNgYpMqXVi36aEv+QHl9QuGEDE0g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fYU9xxP4GFbH3j1/bPZK5YEVrCu4N6cZ7xUn7SE3yLwXhCYKQHbmmhno3wmPNDEy3HlDYcWJYA1pSQdAAWhFtW31+hRY9uRW0m204O+nSKvHuaFzBdBoEccawIkKKWLE7ULdxOLbsxgK83RNYCd61kRCDP5uSHb+jYXvnPQVyac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtXAdIaX; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff6e91cff5so1931305a91.2;
-        Fri, 04 Apr 2025 06:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743773308; x=1744378108; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1EvrIpOY5/BQY+g5/bXbxzle3Uu4BHi9J4gn0QSKck=;
-        b=BtXAdIaXd9obJnvwBcE3BCtQwyqHt+JqfD315MptHeqe8jqweYo6iv9Imx8IQMytIO
-         Csj2doRnas0fhftgQvxAYTVPBPil6RXB+j6DyqkN+lj+JGgtiv0ERqRMuyGsMKFhzyE2
-         APV3FPCE3CMlHwj8eA9VTD0+wJvxs6nrKgn9BFl5vN2x4ixpO3b3DP/rAR+18wbt2Ulv
-         jGcYpVW5mxpRypPiB84MWeLl4m1fB0EgE3Y5gvDZxt2QHk2mmAWVb43PUggtvqcUBOlb
-         KXXyCqJKTiNTaKKlxsWj2pMKwcP3jOFXb3hDQLQY9eVzV/tA/62JgRIfJwnjf05corUR
-         83Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743773308; x=1744378108;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L1EvrIpOY5/BQY+g5/bXbxzle3Uu4BHi9J4gn0QSKck=;
-        b=oEFC4KdlioH745ySxkEHt0mYV5B2/rzWmeJoJs9hmPSF/dunLR8ru/QDarMG+bNxev
-         I2ShDKr+7aoZLj8PzIlF0LSFBPIU0DVqppAmKEiOjTDA246L7mI9wlsV9JU60hQjaAoG
-         glu1F5TYVxKBYQB8umoc7euFw6MCPhXRnuu2NBNJqXGXwMZoY3MR0ygXJVvMshmM/wa3
-         mIGDEj7RnhuGv5W+Z5zZt63+Nc7qIA3S/2JGO/XEbcojbb4DLyDxZklKqPknDv/lAPXV
-         oYTmjC2NlLhXJpkMfiXc2ldRavQOfuwOYw7G8NzFUYjqO8O71CIae9uR3vXNMfY/jm00
-         34/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVw617jhxX9maWuvpe788Sv+2ULjqCowRrZnCr9zI9C/GPmK4hfuk9rP2mNyftDWj9JM5teFZex1mWAZWc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrJnEw60rnggP10D/9CvR2c1pnRhY1xS4aP3T4WCcIjVgY4+Mt
-	fOXCSxU6J3ZKRmPJYLH47sCVoRhq8mUiwosIzLDkMWK8tM0JsctZD/bO4zGwqFgx9Zy6ijN9OQy
-	5AxrEnAXkwfZzZEnzNWPWaEPD+OQ=
-X-Gm-Gg: ASbGnctE83I1QlEgUZvoq6J6mVfhgmZCOUUCjLUiH/DkVeW2lDujqs1XSvjzjh0gbOQ
-	vAUStZdEGdLA9Z2ofKdL0l0y+/BSDoviY0dxpsG/bw9qrUpF7SmhukFd8DOIauy0dp13f6f9n/j
-	hXlTrXFp/VrGh+kdqXl/5vDwZW8ep9pi9InKI9DtCO
-X-Google-Smtp-Source: AGHT+IEH3oSAaHUxdWxzytgERI3jEbHxHJwBXGrj94vlYzIgv60oEEOga0t/vF9UsR7u5ZJVVEVDpQRL1UPkN/SYW60=
-X-Received: by 2002:a17:90a:d883:b0:2fe:a0ac:5fcc with SMTP id
- 98e67ed59e1d1-306a6245becmr3055286a91.34.1743773308463; Fri, 04 Apr 2025
- 06:28:28 -0700 (PDT)
+	s=arc-20240116; t=1743773486; c=relaxed/simple;
+	bh=XXQZ09bPH3uX50yBfzvfiKn0d77qpTduFA7PDJNahUc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hp9sgSwquHNN9K5NiC3NFl0i0LrvSEYfrQBwynu7shkh0shx0fRTxMp4Sr4Fw6MWqth5DFUvcWNszMT4J2cVYorWB1u4WrJMcoJfKP02oWOV7OKDEgWbtvEaB0HWStq8EIKek2YSK7gehGvGaeYYivi9/vuFnxMHQFXcO4hCYUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRw0/5lr; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743773484; x=1775309484;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XXQZ09bPH3uX50yBfzvfiKn0d77qpTduFA7PDJNahUc=;
+  b=fRw0/5lrimOORqZOJ2Ecu/hc1uFzbW5YNbgltdrhD/Ua48Ui48659s/D
+   EwhBOhTjZs0gdVFqweczg1nxo3HKX2/cGl+gl3DlfJqfA1dFi3WeDMdJd
+   kzqZqItcXKeVU4dzEe6Xcu3iNMpJ59lOPQXPp0sB3oT5XyZ2s0Wvituki
+   MnirP/XU/wOUQM9j6xqReRvCmZIV5rMgqkO8UCQiNLL7tKgfq7q1o+RGr
+   yvR/vHhoWlYrptLOmtxKq+BLciP6AaxCsWfZwTCEsRPUiZHCz6pblbqYv
+   4QUsYb1/uaxomydCSAR1/0wJqJ4e079ZXafZ51+ZjmLXgXZ0EYCuJGRV+
+   w==;
+X-CSE-ConnectionGUID: woo/S7n+SkO1nELk/o0cSA==
+X-CSE-MsgGUID: 2YLuP7FKRQuFQ3QhD2aflw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11394"; a="67685232"
+X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
+   d="scan'208";a="67685232"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 06:31:24 -0700
+X-CSE-ConnectionGUID: rMnguxCbTMORS/p4egsM8Q==
+X-CSE-MsgGUID: J681zUOZRambgbHyvuOVGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,188,1739865600"; 
+   d="scan'208";a="164522584"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.248.2])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 06:31:20 -0700
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org
+Cc: linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	liam.r.girdwood@intel.com,
+	stable@vger.kernel.org,
+	simont@opensource.cirrus.com
+Subject: [PATCH for v6.15] ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S16
+Date: Fri,  4 Apr 2025 16:32:13 +0300
+Message-ID: <20250404133213.4658-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250403151621.130541515@linuxfoundation.org> <CADo9pHjHSDjbGHrx1bY0JAxPRNWW63772wGt0e4wQ_kDq50JhA@mail.gmail.com>
-In-Reply-To: <CADo9pHjHSDjbGHrx1bY0JAxPRNWW63772wGt0e4wQ_kDq50JhA@mail.gmail.com>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Fri, 4 Apr 2025 15:28:15 +0200
-X-Gm-Features: ATxdqUGgEPhFd7pK9_-fqa9Wl-BBCEXuGiINgFnjtn_Peku-eWbJr_Dz5WTiQlg
-Message-ID: <CADo9pHhFbPMfURmsAdxaUX0R9pp0aaPxD3KW3PEh2B5iT_YATg@mail.gmail.com>
-Subject: Re: [PATCH 6.14 00/21] 6.14.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Works good on my laptop too with the same OS
+Asus laptops with sound PCI subsystem ID 1043:1f43 have the DMICs
+connected to the host instead of the CS42L43 so need the
+SOC_SDW_CODEC_MIC quirk.
 
-Dell Latitude 7390 Intel(R) Core(TM) i5-8350U (8) @ 3.60 GHz
+Link: https://github.com/thesofproject/sof/issues/9930
+Fixes: 084344970808 ("ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S14")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: stable@vger.kernel.org
+---
+Hi,
 
-Den fre 4 apr. 2025 kl 12:18 skrev Luna Jernberg <droidbittin@gmail.com>:
->
-> Tested-by: Luna Jernberg <droidbittin@gmail.com>
->
-> AMD Ryzen 5 5600 6-Core Processor:
-> https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
-> https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
-> https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
-> motherboard :)
->
-> running Arch Linux with the testing repos enabled:
-> https://archlinux.org/ https://archboot.com/
-> https://wiki.archlinux.org/title/Arch_Testing_Team
->
-> (still building on my Dell Latitude laptop)
->
-> Den tors 3 apr. 2025 kl 17:25 skrev Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org>:
-> >
-> > This is the start of the stable review cycle for the 6.14.1 release.
-> > There are 21 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.1-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> > -------------
-> > Pseudo-Shortlog of commits:
-> >
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >     Linux 6.14.1-rc1
-> >
-> > John Keeping <jkeeping@inmusicbrands.com>
-> >     serial: 8250_dma: terminate correct DMA in tx_dma_flush()
-> >
-> > Cheick Traore <cheick.traore@foss.st.com>
-> >     serial: stm32: do not deassert RS485 RTS GPIO prematurely
-> >
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >     perf tools: Fix up some comments and code to properly use the event_source bus
-> >
-> > Luo Qiu <luoqiu@kylinsec.com.cn>
-> >     memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
-> >
-> > Michal Pecio <michal.pecio@gmail.com>
-> >     usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-> >
-> > Michal Pecio <michal.pecio@gmail.com>
-> >     usb: xhci: Don't skip on Stopped - Length Invalid
-> >
-> > Dominique Martinet <dominique.martinet@atmark-techno.com>
-> >     net: usb: usbnet: restore usb%d name exception for local mac addresses
-> >
-> > Fabio Porcedda <fabio.porcedda@gmail.com>
-> >     net: usb: qmi_wwan: add Telit Cinterion FE990B composition
-> >
-> > Fabio Porcedda <fabio.porcedda@gmail.com>
-> >     net: usb: qmi_wwan: add Telit Cinterion FN990B composition
-> >
-> > Sherry Sun <sherry.sun@nxp.com>
-> >     tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
-> >
-> > Cameron Williams <cang1@live.co.uk>
-> >     tty: serial: 8250: Add Brainboxes XC devices
-> >
-> > Cameron Williams <cang1@live.co.uk>
-> >     tty: serial: 8250: Add some more device IDs
-> >
-> > William Breathitt Gray <wbg@kernel.org>
-> >     counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-> >
-> > Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> >     counter: stm32-lptimer-cnt: fix error handling when enabling
-> >
-> > Andres Traumann <andres.traumann.01@gmail.com>
-> >     ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
-> >
-> > Dhruv Deshpande <dhrv.d@proton.me>
-> >     ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
-> >
-> > Maxim Mikityanskiy <maxtram95@gmail.com>
-> >     netfilter: socket: Lookup orig tuple for IPv6 SNAT
-> >
-> > Abel Wu <wuyun.abel@bytedance.com>
-> >     cgroup/rstat: Fix forceidle time in cpu.stat
-> >
-> > Minjoong Kim <pwn9uin@gmail.com>
-> >     atm: Fix NULL pointer dereference
-> >
-> > Terry Junge <linuxhid@cosmicgizmosystems.com>
-> >     HID: hid-plantronics: Add mic mute mapping and generalize quirks
-> >
-> > Terry Junge <linuxhid@cosmicgizmosystems.com>
-> >     ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
-> >
-> >
-> > -------------
-> >
-> > Diffstat:
-> >
-> >  Makefile                                  |   4 +-
-> >  drivers/counter/microchip-tcb-capture.c   |  19 ++++
-> >  drivers/counter/stm32-lptimer-cnt.c       |  24 +++--
-> >  drivers/hid/hid-plantronics.c             | 144 ++++++++++++++----------------
-> >  drivers/memstick/host/rtsx_usb_ms.c       |   1 +
-> >  drivers/net/usb/qmi_wwan.c                |   2 +
-> >  drivers/net/usb/usbnet.c                  |  21 +++--
-> >  drivers/tty/serial/8250/8250_dma.c        |   2 +-
-> >  drivers/tty/serial/8250/8250_pci.c        |  46 ++++++++++
-> >  drivers/tty/serial/fsl_lpuart.c           |  17 ++++
-> >  drivers/tty/serial/stm32-usart.c          |   4 +-
-> >  drivers/usb/host/xhci-ring.c              |   4 +
-> >  drivers/usb/host/xhci.h                   |  13 ++-
-> >  kernel/cgroup/rstat.c                     |  29 +++---
-> >  net/atm/mpc.c                             |   2 +
-> >  net/ipv6/netfilter/nf_socket_ipv6.c       |  23 +++++
-> >  sound/pci/hda/patch_realtek.c             |   2 +
-> >  sound/usb/mixer_quirks.c                  |  51 +++++++++++
-> >  tools/perf/Documentation/intel-hybrid.txt |  12 +--
-> >  tools/perf/Documentation/perf-list.txt    |   2 +-
-> >  tools/perf/arch/x86/util/iostat.c         |   2 +-
-> >  tools/perf/builtin-stat.c                 |   2 +-
-> >  tools/perf/util/mem-events.c              |   2 +-
-> >  tools/perf/util/pmu.c                     |   4 +-
-> >  24 files changed, 304 insertions(+), 128 deletions(-)
-> >
-> >
-> >
+The S16 variant of the Zenbook has 4 PCH connected DMICs and the new
+topology needed for it is released alongside with the -2ch variant for
+the S14.
+
+Add a Fixes tag so this is backported to 6.14 since we have at least one
+user with this laptop without audio support.
+
+Regards,
+Peter
+
+ sound/soc/intel/boards/sof_sdw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 90dafa810b2e..095d08b3fc82 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -764,6 +764,7 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 
+ static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1e13, "ASUS Zenbook S14", SOC_SDW_CODEC_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1f43, "ASUS Zenbook S16", SOC_SDW_CODEC_MIC),
+ 	{}
+ };
+ 
+-- 
+2.49.0
+
 
