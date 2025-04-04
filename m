@@ -1,73 +1,60 @@
-Return-Path: <stable+bounces-128283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57088A7B8A9
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 10:17:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D5EA7B90B
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 10:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65F5A1795CA
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 08:17:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A90927A8651
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 08:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D7D188CB1;
-	Fri,  4 Apr 2025 08:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EA81A23AA;
+	Fri,  4 Apr 2025 08:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MOlDocqH"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="nnhfEQeH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03031CD3F
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 08:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBFA19F462;
+	Fri,  4 Apr 2025 08:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743754645; cv=none; b=Qhfo+68RBVceZZs3HFCqNLFrSR7TkESLw/uj9jc8/XR0Qney4nAZ2CvMINbq444KB0iTB/2PlNVIxvL3Dgoz7/jvJ2jux7B0O40y/4EfLPiirx4WXb6SQ3qM9ZDhEswJ92Exf1EfrgyjwAVkl5SRyAY/8EFR6rZTVboirchA+oU=
+	t=1743755871; cv=none; b=e3f/PbhZPb4WCPi0FWFoVK3PJKsFqgRjvwwVGFdXH6HlyDh8MRwxvEVPA+EzRac/iO2TeaT73IQsRRwr/WZZhoRCLXUWJEiM48+GId74kkf4s+k/OxcgttCQ88HKBWexOkfKPL3Aysp6TST4vHtFx6YJ0Pk+mMUptb+L4tDcoHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743754645; c=relaxed/simple;
-	bh=e02cM4R1rabkKdpv0fMVX5NelBsQhTZnE1vEIOu25tQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ia3JdynbGhWM/aU9jMgh6rIO5Tp9Q3HVUZklJZuSst5fW4GIMGPZztKVcB3+14YfSI88gE0FcF2e1a3t8dNZFtGks4R4RmMkb81fr/yNiY1GSKH/GPkm+3BxR26cuHvPPwLkSXq0dGnNTNF4ZY7T8oN35/xF3jumVdaQltNBpBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MOlDocqH; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743754644; x=1775290644;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=e02cM4R1rabkKdpv0fMVX5NelBsQhTZnE1vEIOu25tQ=;
-  b=MOlDocqHRXDzzCqPffcNLQ7BbR3P2Ln7c7zfWr98DEWkImNO9BQQrRQw
-   Lx5HuJvmeZlbQtI7zWJihHjAKjWweVTLyZwxMrzL4qYAXrvzheeONteOS
-   Rh1wsrfa7K5SNhuIAFMZpOdnFWUjMZtuvj/FBD3xIzwPNdLilhSFoIin8
-   jCuhsk38nDh9x6cNCgMjeIo2x+q7XoKSi4nt7Qh0tSeKrHjqQ91sHOH4c
-   FWALxDtxWCRk2IgK5li0Bz3fuPg7DsWdnJ1feVt0dtMLsVAmTdsqyCPbL
-   Io6Eu6LqVbb6sFgPWzFcwmVO6bKXld3060RRymrTQFgGrIN8I5pDtD028
-   g==;
-X-CSE-ConnectionGUID: CrK+7T4wQZOYpMtUEgxq0A==
-X-CSE-MsgGUID: olvlE/k2Q1mgIMMrnjJceg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="45078274"
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
-   d="scan'208";a="45078274"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 01:17:23 -0700
-X-CSE-ConnectionGUID: hcnaVYezRkKOHWodik+HRw==
-X-CSE-MsgGUID: jBT1B4KuQ3ulxn2lV0uSXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
-   d="scan'208";a="132453241"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2025 01:17:21 -0700
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: jani.nikula@linux.intel.com,
-	mitulkumar.ajitkumar.golani@intel.com,
-	arun.r.murthy@intel.com,
-	stable@vger.kernel.org,
-	ville.syrjala@linux.intel.com
-Subject: [PATCH] drm/i915/vrr: Add vrr.vsync_{start,end} in vrr_params_changed
-Date: Fri,  4 Apr 2025 13:35:40 +0530
-Message-ID: <20250404080540.2059511-1-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1743755871; c=relaxed/simple;
+	bh=pLibqvIcw1SHorZ/STK72m6aN/tlhopq9FXsc2/2oGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q5C19f6lKPmgs6Ag6fqZp1aMJHB54cTVfEpqpnKl1U5zegDams87TtYb9EUzM6nXsogwPFZBZrRx1ccwudcjtWttiSceeoeMrkLzf0QzwiBr54h/b6xoFNjD0I0kIVt3Khl9eGaN5ougK7JODt6rl8x3dMqQHFa4IX3UiIx1UQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=nnhfEQeH; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost.localdomain (unknown [5.181.23.154])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 319674487843;
+	Fri,  4 Apr 2025 08:30:48 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 319674487843
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1743755448;
+	bh=ny7HwWXxKnGKVGDtPWStKsa49RNI8QK9Rh+xecVN+hU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nnhfEQeH+4iUZRxuAfxl4Ojn7z68V9h6+xvsGZJ2f8kq84KcpEOfgUpT686fwaBen
+	 dhKonu5Drm4xz+26lYxDB5C55fSI2ly1NHcbLY3+CHwz8iWyTcoN2vJimR4SuCkHLM
+	 Z6Ns/18LDvQnKQORNb7ZVtfDZWy+fQqBoke9Jtuc=
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+To: linux-ext4@vger.kernel.org
+Cc: Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	"Theodore Ts'o" <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ext4: fix off-by-one error in do_split
+Date: Fri,  4 Apr 2025 08:28:05 +0000
+Message-ID: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,37 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the missing vrr parameters in vrr_params_changed() helper.
-This ensures that changes in vrr.vsync_{start,end} trigger a call to
-appropriate helpers to update the VRR registers.
+Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
+caused by out-of-bounds access due to incorrect splitting in do_split.
 
-Fixes: e8cd188e91bb ("drm/i915/display: Compute vrr_vsync params")
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
+
+CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+ add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
+ make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
+ ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
+ ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
+ ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
+ vfs_symlink+0x137/0x2e0 fs/namei.c:4615
+ do_symlinkat+0x222/0x3a0 fs/namei.c:4641
+ __do_sys_symlink fs/namei.c:4662 [inline]
+ __se_sys_symlink fs/namei.c:4660 [inline]
+ __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+The following loop is located right above 'if' statement.
+
+for (i = count-1; i >= 0; i--) {
+	/* is more than half of this entry in 2nd half of the block? */
+	if (size + map[i].size/2 > blocksize/2)
+		break;
+	size += map[i].size;
+	move++;
+}
+
+'i' in this case could go down to -1, in which case sum of active entries
+wouldn't exceed half the block size, but previous behaviour would also do
+split in half if sum would exceed at the very last block, which in case of
+having too many long name files in a single block could lead to
+out-of-bounds access and following use-after-free.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index c540e2cae1f0..ced8ba0f8d6d 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -969,7 +969,9 @@ static bool vrr_params_changed(const struct intel_crtc_state *old_crtc_state,
- 		old_crtc_state->vrr.vmin != new_crtc_state->vrr.vmin ||
- 		old_crtc_state->vrr.vmax != new_crtc_state->vrr.vmax ||
- 		old_crtc_state->vrr.guardband != new_crtc_state->vrr.guardband ||
--		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full;
-+		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full ||
-+		old_crtc_state->vrr.vsync_start != new_crtc_state->vrr.vsync_start ||
-+		old_crtc_state->vrr.vsync_end != new_crtc_state->vrr.vsync_end;
- }
- 
- static bool cmrr_params_changed(const struct intel_crtc_state *old_crtc_state,
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index cb5cb33b1d91..e9712e64ec8f 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1971,7 +1971,7 @@ static struct ext4_dir_entry_2 *do_split(handle_t *handle, struct inode *dir,
+ 	 * split it in half by count; each resulting block will have at least
+ 	 * half the space free.
+ 	 */
+-	if (i > 0)
++	if (i >= 0)
+ 		split = count - move;
+ 	else
+ 		split = count/2;
 -- 
-2.45.2
+2.43.0
 
 
