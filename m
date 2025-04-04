@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-128268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8399A7B425
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:32:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6486EA7B413
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2EAD7A856F
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:28:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F1E3BA7CA
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D33C218ADD;
-	Fri,  4 Apr 2025 00:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DE619D07B;
+	Fri,  4 Apr 2025 00:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYv//QHj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S14nG+fL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A8D19D07C;
-	Fri,  4 Apr 2025 00:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183D21930A;
+	Fri,  4 Apr 2025 00:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725294; cv=none; b=k6Eg6S8jBCpeG4A3YJssK+SsWpLuS71GrsKarl5lyPFrd1tQub9oMntuheqsUZQgrLyGlPFE8ZTC2Qoeubv1Af845qZb74ZN4NBjavVFlmh/0S/dj5IfQ1dazsXzx8GWcp88aicDglRMqnG5fE8Wucl1OUWz3hl8Ne0ZOdI2iSQ=
+	t=1743725296; cv=none; b=QNBvG8b76vCPb3Cj4MYKanfuxTeVfe49iimDg/ic0skljopG17mTTJ8nnpeUnO69M3zazsDFB258sNi38Gtr6/H7A8ri+ngpIcQ2VZHwvm8tcXXhMFCyj4Dp73Aa0NdEBDAsHdX2NCnKkoJIoSDmxOUiF3LVU+dlqKLZnCWslp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725294; c=relaxed/simple;
-	bh=lUA8vM9tBV4MG0sxT8IeCLiocZpMZjkb3aDRq0kXYeI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CIvPKyG/rBd8+UcT7rtigsEcMrpTXwiWAkvOoxLFQ7JQseChAo8SoosZGRu1wsMlmBCqHTpi2oBbq52Fh5c0YCe5I3inUdi7vgxlERdQ8WMrBv/X9uKOKycxsR9W4tZx0NZyiLLcrexq4380OOVS9lHWEvfS+NFVY+RvqfQP/H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYv//QHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7097BC4CEE3;
-	Fri,  4 Apr 2025 00:08:13 +0000 (UTC)
+	s=arc-20240116; t=1743725296; c=relaxed/simple;
+	bh=T2lrDZMpW5FzWg6jAjAkGYig6WQSR9D3iLhX1va/tdM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aiimlNIwThBHmoqfrMSCYrq6Yj4S7G7ueiqvOB5Boza9+jbwUTJMZHxQ54aSJrYGj7ZqYHkKPw95qXTsKxvbvjqMJrxOC0opEXwJfA/NU2aO86sGkcts37VtT1zIKld76WSpJIoZj+ts4fpXai8I3pNz+UIw3kKLmYTQDYUGRxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S14nG+fL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0DEC4CEE3;
+	Fri,  4 Apr 2025 00:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725294;
-	bh=lUA8vM9tBV4MG0sxT8IeCLiocZpMZjkb3aDRq0kXYeI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iYv//QHjg2u6sAi6pUikFGUgB7sM9iXdsjiEN+hQVGwzKXK7D7n5YVDxaNYarpV6e
-	 Rc52X89of5CcWvQD+e9wEJr8V8kbPCeik7mF8p96e8YR1G9fSNhBJ3rsTWfOw1zyYp
-	 CoBtTL058jKC1J910LqPPMNkviMkm2AMRjNyo7Zegfw1zRiTyyCbzJUHL5iEArpJZ1
-	 H5BnSueQWn4GBQ+dx/2OkAsVIU0KTc07GpwwJHV90lNpWxoDXMLo/JU8dPyQqqr0ni
-	 yuZxPj+KKVq5KP+N3gsIxrtBJz2crwmfxpgj9p16FxzQ4THRGCQcABQqda/hpIM5E8
-	 8RkUbYZXnT7nA==
+	s=k20201202; t=1743725296;
+	bh=T2lrDZMpW5FzWg6jAjAkGYig6WQSR9D3iLhX1va/tdM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S14nG+fLmjz3puQVcKgtSMBMXCp5L5VZsGo3vENTlle9xZ3rLno/h2DV3cGXr8Iky
+	 OUIg9Sj8oSbCFgNbSyNcufeBX8WhdQ4YnZv5rmVlo3CmT5hEtN3qqCvsCEc44vPQqA
+	 +JYW4RkIr0EqQ/qrnIIIoeTPEVx2HuWUQ/xP2FfXYLE60FkCH833t6+XZM2Udztilg
+	 PkAg2gFnkpSkKshSMZZPpLNNU9E7yPHoUJmnN9WH6Rk9nzrh3jrc9ScXN3nLXmfz4h
+	 IC2pe3De52OuAtP1YubdxgguthxM3tirXYyCfJptTsX6yaF01E8zM1LLfiaNDUajov
+	 oAVJMEMlvdBbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	paulburton@kernel.org,
-	cfu@wavecomp.com,
-	jiaxun.yang@flygoat.com,
-	arikalo@gmail.com,
-	dragan.mladjenovic@syrmia.com,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/6] MIPS: cm: Detect CM quirks from device tree
-Date: Thu,  3 Apr 2025 20:08:02 -0400
-Message-Id: <20250404000809.2689525-1-sashal@kernel.org>
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/6] crypto: null - Use spin lock instead of mutex
+Date: Thu,  3 Apr 2025 20:08:03 -0400
+Message-Id: <20250404000809.2689525-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404000809.2689525-1-sashal@kernel.org>
+References: <20250404000809.2689525-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,105 +66,99 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+As the null algorithm may be freed in softirq context through
+af_alg, use spin locks instead of mutexes to protect the default
+null algorithm.
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
-
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 696b40beb774f..0f31324998c0a 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
-  */
- extern int mips_cm_is64;
+diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
+index 5b84b0f7cc178..3378670286535 100644
+--- a/crypto/crypto_null.c
++++ b/crypto/crypto_null.c
+@@ -17,10 +17,10 @@
+ #include <crypto/internal/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/mm.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
  
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
- #endif
- }
+-static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
++static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
+ static struct crypto_sync_skcipher *crypto_default_null_skcipher;
+ static int crypto_default_null_skcipher_refcnt;
  
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
-+
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 611ef512c0b81..159354ac9335b 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
+@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
  
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -196,6 +198,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap_nocache(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
+ struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
  {
- 	phys_addr_t addr;
++	struct crypto_sync_skcipher *ntfm = NULL;
+ 	struct crypto_sync_skcipher *tfm;
+ 
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	tfm = crypto_default_null_skcipher;
+ 
+ 	if (!tfm) {
+-		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
+-		if (IS_ERR(tfm))
+-			goto unlock;
+-
+-		crypto_default_null_skcipher = tfm;
++		spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
++		if (IS_ERR(ntfm))
++			return ntfm;
++
++		spin_lock_bh(&crypto_default_null_skcipher_lock);
++		tfm = crypto_default_null_skcipher;
++		if (!tfm) {
++			tfm = ntfm;
++			ntfm = NULL;
++			crypto_default_null_skcipher = tfm;
++		}
+ 	}
+ 
+ 	crypto_default_null_skcipher_refcnt++;
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
+ 
+-unlock:
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	crypto_free_sync_skcipher(ntfm);
+ 
+ 	return tfm;
+ }
+@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
+ 
+ void crypto_put_default_null_skcipher(void)
+ {
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	struct crypto_sync_skcipher *tfm = NULL;
++
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	if (!--crypto_default_null_skcipher_refcnt) {
+-		crypto_free_sync_skcipher(crypto_default_null_skcipher);
++		tfm = crypto_default_null_skcipher;
+ 		crypto_default_null_skcipher = NULL;
+ 	}
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++	crypto_free_sync_skcipher(tfm);
+ }
+ EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
+ 
 -- 
 2.39.5
 
