@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-128263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62875A7B405
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:30:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522F1A7B403
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A345217516B
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:28:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C0163BA193
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B9020A5EA;
-	Fri,  4 Apr 2025 00:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9B920C00F;
+	Fri,  4 Apr 2025 00:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3K9mN60"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0aWhfMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FAF14F9EB;
-	Fri,  4 Apr 2025 00:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07A14F9EB;
+	Fri,  4 Apr 2025 00:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725278; cv=none; b=oFCaAiAVTxeEpUNgO3Nu5ugAcWO4CDVjwceufzKnvWpUGCpQAOjyUs/eg4kkg7T73EURMkkBDT5VkjcZ+eKj/ebOxhYT1EmrzO0Tc9vuTyEDjaQlmOQwhHtAV4ocWYH9LjO7dKZn6yLBuxwemQYnc026/M5QQ9s/8V7Pba90cA0=
+	t=1743725281; cv=none; b=ZLy786HseX4YVOpjxD9PgUHeXm0rBRsWF/17DIBkOEU+OnVZWqiBmdGJUsO8H8CwcPJpbtZ3jhwTCxZwm04YvPqm6amXy8HDkyvJAFmKIzt8jNGNVvUtnk3SMw/TTtbFsf9IDGYoFmIngTP0qOkP7Xq+ZUgLYUYLW77kwPJ/Kmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725278; c=relaxed/simple;
-	bh=T2lrDZMpW5FzWg6jAjAkGYig6WQSR9D3iLhX1va/tdM=;
+	s=arc-20240116; t=1743725281; c=relaxed/simple;
+	bh=xLyzOR5hGmlEjjKhed6HMgHMahwf9hr0eTGU0vzuFNk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OgLok5YA03DPI945uzxpgIYEFAHF1i8vqhQ3NImphPZWosohD4kHnxxJKAGOX+FS3+eajzknIz1De6nw0C7Q7kqg7o6+uSGY+6mZgAr3hn2ws41LDQhhyc70z8Tdq7Mw7De6bwZJbj26fB8k5Isj/ZN967h0iLCq3ziJKUaS0HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3K9mN60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72991C4CEE3;
-	Fri,  4 Apr 2025 00:07:57 +0000 (UTC)
+	 MIME-Version; b=iBtOSCSM4wikOmfjsj+b1VykPMkTTGHmsVHMNpvR7oIarwOuzDufnBiS3r5iPdk/enm30R9b9FOfOrO8tfaJ/J5xcWbFQ9z34G9fF/KbzNmEaurPzRh+7Xm1SFkchvOIP14scJEJE7hF3ZFChF34vTuoOhmUQgm7QcJ0Df4n2CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0aWhfMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB03C4CEE3;
+	Fri,  4 Apr 2025 00:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725278;
-	bh=T2lrDZMpW5FzWg6jAjAkGYig6WQSR9D3iLhX1va/tdM=;
+	s=k20201202; t=1743725281;
+	bh=xLyzOR5hGmlEjjKhed6HMgHMahwf9hr0eTGU0vzuFNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3K9mN607bfgxN3g/MUai1LYCLxZQgnENT1qpvjAWtcBCfjR20OVv1czql/KfxvLs
-	 RSMGEWKAZOKJr8mQjaA5xm5YayUWwnqfDcqFki5OMVhpG8Gm0MtemCzuV10bnVN6mL
-	 +Grq71ekjhFa+BUBwvuUZqZTJU2fDxestueuQ+fPR7F18646+im4t1vZUICDLUt3Lv
-	 WCeSPPOw0QyZM+F/CLPsWyRvo3mgBzchgl0NqSSU88pys5b8h2gs1qQeDDrlvjK5sA
-	 u2zoXKhuOJZN3bw6mxPSnkJZFlmLi5o0yvWu71q1EHD+RltSfOSehciqBlookGA4zY
-	 IlmjNSDwmvAAw==
+	b=X0aWhfMKouQcnHybdXxXDdeug3UD5axuoaod1l17rouiz82DSmeZ/AFooNOz4D/xm
+	 KNa7OxwNgUkxJ4GMlMvWRxwW0rSU6xarq32DBERv91HW15UnVAKu7BcwHu/ucol+JR
+	 kqu/KHJ+px+yFtjXeqmol9XoG1u6tEzNQA6BHogqoHiamtzHJS/OiKq/ZomfwjbiY/
+	 KHnoojKiqrQIDWS3dzLJr+rBWXU+q7ZCot2vKBD8llwkC9pA0DvJCIS12sp9VR2wVQ
+	 g8+vP4mtPdi9M6AvXPVK4mwG7372/vhwNZZKvHrhh2X2p4apZx3FC4GXs+qofVPSJY
+	 yYB/ipW1yElFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/6] crypto: null - Use spin lock instead of mutex
-Date: Thu,  3 Apr 2025 20:07:45 -0400
-Message-Id: <20250404000751.2689430-2-sashal@kernel.org>
+	sre@kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/6] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
+Date: Thu,  3 Apr 2025 20:07:46 -0400
+Message-Id: <20250404000751.2689430-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000751.2689430-1-sashal@kernel.org>
 References: <20250404000751.2689430-1-sashal@kernel.org>
@@ -66,99 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.235
 Content-Transfer-Encoding: 8bit
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
+[ Upstream commit e3f88665a78045fe35c7669d2926b8d97b892c11 ]
 
-As the null algorithm may be freed in softirq context through
-af_alg, use spin locks instead of mutexes to protect the default
-null algorithm.
+In the ssi_protocol_probe() function, &ssi->work is bound with
+ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
+within the ssip_pn_ops structure is capable of starting the
+work.
 
-Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+If we remove the module which will call ssi_protocol_remove()
+to make a cleanup, it will free ssi through kfree(ssi),
+while the work mentioned above will be used. The sequence
+of operations that may lead to a UAF bug is as follows:
+
+CPU0                                    CPU1
+
+                        | ssip_xmit_work
+ssi_protocol_remove     |
+kfree(ssi);             |
+                        | struct hsi_client *cl = ssi->cl;
+                        | // use ssi
+
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in ssi_protocol_remove().
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ drivers/hsi/clients/ssi_protocol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
-index 5b84b0f7cc178..3378670286535 100644
---- a/crypto/crypto_null.c
-+++ b/crypto/crypto_null.c
-@@ -17,10 +17,10 @@
- #include <crypto/internal/skcipher.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/mm.h>
-+#include <linux/spinlock.h>
- #include <linux/string.h>
- 
--static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
-+static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
- static struct crypto_sync_skcipher *crypto_default_null_skcipher;
- static int crypto_default_null_skcipher_refcnt;
- 
-@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
- 
- struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
- {
-+	struct crypto_sync_skcipher *ntfm = NULL;
- 	struct crypto_sync_skcipher *tfm;
- 
--	mutex_lock(&crypto_default_null_skcipher_lock);
-+	spin_lock_bh(&crypto_default_null_skcipher_lock);
- 	tfm = crypto_default_null_skcipher;
- 
- 	if (!tfm) {
--		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
--		if (IS_ERR(tfm))
--			goto unlock;
--
--		crypto_default_null_skcipher = tfm;
-+		spin_unlock_bh(&crypto_default_null_skcipher_lock);
-+
-+		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
-+		if (IS_ERR(ntfm))
-+			return ntfm;
-+
-+		spin_lock_bh(&crypto_default_null_skcipher_lock);
-+		tfm = crypto_default_null_skcipher;
-+		if (!tfm) {
-+			tfm = ntfm;
-+			ntfm = NULL;
-+			crypto_default_null_skcipher = tfm;
-+		}
- 	}
- 
- 	crypto_default_null_skcipher_refcnt++;
-+	spin_unlock_bh(&crypto_default_null_skcipher_lock);
- 
--unlock:
--	mutex_unlock(&crypto_default_null_skcipher_lock);
-+	crypto_free_sync_skcipher(ntfm);
- 
- 	return tfm;
- }
-@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
- 
- void crypto_put_default_null_skcipher(void)
- {
--	mutex_lock(&crypto_default_null_skcipher_lock);
-+	struct crypto_sync_skcipher *tfm = NULL;
-+
-+	spin_lock_bh(&crypto_default_null_skcipher_lock);
- 	if (!--crypto_default_null_skcipher_refcnt) {
--		crypto_free_sync_skcipher(crypto_default_null_skcipher);
-+		tfm = crypto_default_null_skcipher;
- 		crypto_default_null_skcipher = NULL;
- 	}
--	mutex_unlock(&crypto_default_null_skcipher_lock);
-+	spin_unlock_bh(&crypto_default_null_skcipher_lock);
-+
-+	crypto_free_sync_skcipher(tfm);
- }
- EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
- 
+diff --git a/drivers/hsi/clients/ssi_protocol.c b/drivers/hsi/clients/ssi_protocol.c
+index 96d0eccca3aa7..8f7c4fd100d62 100644
+--- a/drivers/hsi/clients/ssi_protocol.c
++++ b/drivers/hsi/clients/ssi_protocol.c
+@@ -403,6 +403,7 @@ static void ssip_reset(struct hsi_client *cl)
+ 	del_timer(&ssi->rx_wd);
+ 	del_timer(&ssi->tx_wd);
+ 	del_timer(&ssi->keep_alive);
++	cancel_work_sync(&ssi->work);
+ 	ssi->main_state = 0;
+ 	ssi->send_state = 0;
+ 	ssi->recv_state = 0;
 -- 
 2.39.5
 
