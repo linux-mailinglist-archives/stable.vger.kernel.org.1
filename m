@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-128207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A7A7B359
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:16:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3A4A7B356
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F036B3B79F4
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40F3A189C807
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AC31F4CAC;
-	Fri,  4 Apr 2025 00:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4BB155342;
+	Fri,  4 Apr 2025 00:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5ikD+0K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzPf8vrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88B1552E3;
-	Fri,  4 Apr 2025 00:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49061F4E48;
+	Fri,  4 Apr 2025 00:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725146; cv=none; b=EBnGo7g6YXYh0Q7qiCe6HPGLl++rkN8qAmQ8564GfO477WrvxUb4S4mQcSDF95iVEnlvcJismdp697A7bReUjzJ/HEHQGdG9CKp+BHJLouf0GdGGmBUcfG0QoY1a01WuU2IMPCEb7e7BZ1MQJq3o9z1QFAXO6HAmWmep/isbQ4Q=
+	t=1743725147; cv=none; b=AXwI7N/1qaHivpurirks3vLDPIDgC90e5FbNpbP68efgGmXNzGnQllHDbuB1Up0HRuG39jE3kyG6csLNZwqmUyaS5uunAA2hpAQse8OwIUACmfGy02KAmyjucuB2u4EoXwGyTuQ47t6VR0BMxj1FupyYxjqMPbQG9b2/Rs9yD4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725146; c=relaxed/simple;
-	bh=OEphS++aiw5Zon+jzaEsnLlRZocxSiGBmdEBgLHZP4M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pJAwFIToZUKb0aWApW+lG8ggqyGzRSEu+FZEVoUHkAtLGXQe88rAeUqwxEV0e/dnoZD1JjsiBbS1p02BOYy+hfiWxKGq246y2CEr3huMjfBI0rh5noyOtKaHhbEbjVfy3XIWEl1KUHYQg3B+3KjKGcSiWs9z/0kDkVJGM4i+cw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5ikD+0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F81C4CEE3;
-	Fri,  4 Apr 2025 00:05:44 +0000 (UTC)
+	s=arc-20240116; t=1743725147; c=relaxed/simple;
+	bh=OZJ8hheOS8Ry/K/+nWGhn/y10IT0LzxBcz3eLA7JdZA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qgB/y3+hjHqHu/p2NbJu0WW4i/3Gqz5HgE6UIaRhwHmMkX5eMKHr8fhtMKbE4hfM4cd7Ie2KH9JBiHBq51sgtqRRepsQkCACVEwDboj0AGifZhlB1B2/vVH/5aXAyfW75IMpOZsfxjp2nijN0h1XbGr7Iesu/oxd+K8DCMOs2Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzPf8vrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE99C4CEEE;
+	Fri,  4 Apr 2025 00:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725146;
-	bh=OEphS++aiw5Zon+jzaEsnLlRZocxSiGBmdEBgLHZP4M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=o5ikD+0KSfr0htuQNl4ZXJtI1lbmzwPhBYXqXCQ6b9iP5NL5m+3c+ICVB8W3tZU6H
-	 jCUabzv9DUH1u/dHZxK94AUdLBPAK6RcbwrMfAqRb3HUUyJP925dDbu3aHxpe0mLa/
-	 nJxJguQxxEMSdSBNU72pDYNqod6sx8cux2IiPMBLBQXAR1H606vSLHlplq65TM2z/j
-	 E0dHO6gu0WNfudQNyr+cPhbdOvKTueqvCR9FghS7TnpatDyiZWCT/7WnjYUN4tEJ34
-	 LHyrdKNNZwbdxMb0/quLmSkGiPe2G0HVDk2XpO7MCYJ9Redy7Gvkl1E9QqiAdtRcKb
-	 AK13tiTFb79Sg==
+	s=k20201202; t=1743725147;
+	bh=OZJ8hheOS8Ry/K/+nWGhn/y10IT0LzxBcz3eLA7JdZA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rzPf8vrWiFfNqMm92UAgpFDALaE4EMejz1gIfZ1IGk/C1q/6dMxu2BRDaI8otPIaz
+	 ikq9uoFpNQuE2Nl1Lueb5g3p7h45I79HDD8lG0YLwux1m+MEdCDms+yzi1mR9Bi7T9
+	 hklWvQ1e1FPou62SZLlLywAtI1Z/cwh57MaBf1L3uMhwia1soD4C9j+I8s4ewTk7B6
+	 6JKDMYER0Iu+vZqeupVywIEGKuex90DG3esxHd3iw+FLJWawKJSYTVmr+TRVDQyF5P
+	 fnNoDuxohMVm8wMAgonDy1Uk0+XE5alrCARTFZZicC40Us20fPWv90Ou4/AeR3SreC
+	 TDDloR/Bg8lXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Amery Hung <ameryhung@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	shuah@kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 01/20] selftests/bpf: Fix stdout race condition in traffic monitor
-Date: Thu,  3 Apr 2025 20:05:21 -0400
-Message-Id: <20250404000541.2688670-1-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 02/20] pinctrl: renesas: rza2: Fix potential NULL pointer dereference
+Date: Thu,  3 Apr 2025 20:05:22 -0400
+Message-Id: <20250404000541.2688670-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404000541.2688670-1-sashal@kernel.org>
+References: <20250404000541.2688670-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,115 +68,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit b99f27e90268b1a814c13f8bd72ea1db448ea257 ]
+[ Upstream commit f752ee5b5b86b5f88a5687c9eb0ef9b39859b908 ]
 
-Fix a race condition between the main test_progs thread and the traffic
-monitoring thread. The traffic monitor thread tries to print a line
-using multiple printf and use flockfile() to prevent the line from being
-torn apart. Meanwhile, the main thread doing io redirection can reassign
-or close stdout when going through tests. A deadlock as shown below can
-happen.
+`chip.label` in rza2_gpio_register() could be NULL.
+Add the missing check.
 
-       main                      traffic_monitor_thread
-       ====                      ======================
-                                 show_transport()
-                                 -> flockfile(stdout)
-
-stdio_hijack_init()
--> stdout = open_memstream(log_buf, log_cnt);
-   ...
-   env.subtest_state->stdout_saved = stdout;
-
-                                    ...
-                                    funlockfile(stdout)
-stdio_restore_cleanup()
--> fclose(env.subtest_state->stdout_saved);
-
-After the traffic monitor thread lock stdout, A new memstream can be
-assigned to stdout by the main thread. Therefore, the traffic monitor
-thread later will not be able to unlock the original stdout. As the
-main thread tries to access the old stdout, it will hang indefinitely
-as it is still locked by the traffic monitor thread.
-
-The deadlock can be reproduced by running test_progs repeatedly with
-traffic monitor enabled:
-
-for ((i=1;i<=100;i++)); do
-  ./test_progs -a flow_dissector_skb* -m '*'
-done
-
-Fix this by only calling printf once and remove flockfile()/funlockfile().
-
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250213233217.553258-1-ameryhung@gmail.com
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/20250210232552.1545887-1-chenyuan0y@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/network_helpers.c | 33 ++++++++-----------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
-index 27784946b01b8..af0ee70a53f9f 100644
---- a/tools/testing/selftests/bpf/network_helpers.c
-+++ b/tools/testing/selftests/bpf/network_helpers.c
-@@ -771,12 +771,13 @@ static const char *pkt_type_str(u16 pkt_type)
- 	return "Unknown";
- }
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index af689d7c117f3..4b94c8b917d0e 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -243,6 +243,9 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 	int ret;
  
-+#define MAX_FLAGS_STRLEN 21
- /* Show the information of the transport layer in the packet */
- static void show_transport(const u_char *packet, u16 len, u32 ifindex,
- 			   const char *src_addr, const char *dst_addr,
- 			   u16 proto, bool ipv6, u8 pkt_type)
- {
--	char *ifname, _ifname[IF_NAMESIZE];
-+	char *ifname, _ifname[IF_NAMESIZE], flags[MAX_FLAGS_STRLEN] = "";
- 	const char *transport_str;
- 	u16 src_port, dst_port;
- 	struct udphdr *udp;
-@@ -817,29 +818,21 @@ static void show_transport(const u_char *packet, u16 len, u32 ifindex,
- 
- 	/* TCP or UDP*/
- 
--	flockfile(stdout);
-+	if (proto == IPPROTO_TCP)
-+		snprintf(flags, MAX_FLAGS_STRLEN, "%s%s%s%s",
-+			 tcp->fin ? ", FIN" : "",
-+			 tcp->syn ? ", SYN" : "",
-+			 tcp->rst ? ", RST" : "",
-+			 tcp->ack ? ", ACK" : "");
+ 	chip.label = devm_kasprintf(priv->dev, GFP_KERNEL, "%pOFn", np);
++	if (!chip.label)
++		return -ENOMEM;
 +
- 	if (ipv6)
--		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d",
-+		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d%s\n",
- 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
--		       dst_addr, dst_port, transport_str, len);
-+		       dst_addr, dst_port, transport_str, len, flags);
- 	else
--		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d",
-+		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d%s\n",
- 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
--		       dst_addr, dst_port, transport_str, len);
--
--	if (proto == IPPROTO_TCP) {
--		if (tcp->fin)
--			printf(", FIN");
--		if (tcp->syn)
--			printf(", SYN");
--		if (tcp->rst)
--			printf(", RST");
--		if (tcp->ack)
--			printf(", ACK");
--	}
--
--	printf("\n");
--	funlockfile(stdout);
-+		       dst_addr, dst_port, transport_str, len, flags);
- }
+ 	chip.parent = priv->dev;
+ 	chip.ngpio = priv->npins;
  
- static void show_ipv6_packet(const u_char *packet, u32 ifindex, u8 pkt_type)
 -- 
 2.39.5
 
