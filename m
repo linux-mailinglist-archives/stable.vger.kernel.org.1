@@ -1,140 +1,129 @@
-Return-Path: <stable+bounces-128284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D5EA7B90B
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 10:38:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212A4A7B9B2
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 11:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A90927A8651
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 08:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B77A1763BF
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 09:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EA81A23AA;
-	Fri,  4 Apr 2025 08:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A1B1A23AA;
+	Fri,  4 Apr 2025 09:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="nnhfEQeH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DqyAhQ/g";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="peDUtEPX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBFA19F462;
-	Fri,  4 Apr 2025 08:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABC12E62C9;
+	Fri,  4 Apr 2025 09:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743755871; cv=none; b=e3f/PbhZPb4WCPi0FWFoVK3PJKsFqgRjvwwVGFdXH6HlyDh8MRwxvEVPA+EzRac/iO2TeaT73IQsRRwr/WZZhoRCLXUWJEiM48+GId74kkf4s+k/OxcgttCQ88HKBWexOkfKPL3Aysp6TST4vHtFx6YJ0Pk+mMUptb+L4tDcoHU=
+	t=1743758331; cv=none; b=p9NFoO9Istav8Ow2aeqZajZbtAvIIh4XA3I/ltlb4dy8OPGkm4qU9R0oTO6QxufRLkdWdk+WORbZqHOmnnvt7BCF+1EeczTff8GLt8X242FLwxMLcnH1Dw8UFhp7ZD6VyP7/8uEAComPTgzPIbnYq2ZF1DbGSu++5GE7ZSvOO8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743755871; c=relaxed/simple;
-	bh=pLibqvIcw1SHorZ/STK72m6aN/tlhopq9FXsc2/2oGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q5C19f6lKPmgs6Ag6fqZp1aMJHB54cTVfEpqpnKl1U5zegDams87TtYb9EUzM6nXsogwPFZBZrRx1ccwudcjtWttiSceeoeMrkLzf0QzwiBr54h/b6xoFNjD0I0kIVt3Khl9eGaN5ougK7JODt6rl8x3dMqQHFa4IX3UiIx1UQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=nnhfEQeH; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost.localdomain (unknown [5.181.23.154])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 319674487843;
-	Fri,  4 Apr 2025 08:30:48 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 319674487843
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1743755448;
-	bh=ny7HwWXxKnGKVGDtPWStKsa49RNI8QK9Rh+xecVN+hU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nnhfEQeH+4iUZRxuAfxl4Ojn7z68V9h6+xvsGZJ2f8kq84KcpEOfgUpT686fwaBen
-	 dhKonu5Drm4xz+26lYxDB5C55fSI2ly1NHcbLY3+CHwz8iWyTcoN2vJimR4SuCkHLM
-	 Z6Ns/18LDvQnKQORNb7ZVtfDZWy+fQqBoke9Jtuc=
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-To: linux-ext4@vger.kernel.org
-Cc: Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] ext4: fix off-by-one error in do_split
-Date: Fri,  4 Apr 2025 08:28:05 +0000
-Message-ID: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1743758331; c=relaxed/simple;
+	bh=fyTaIY2BAO+p0MeQne6Bh2DNeG94rOH1KBRGOAsHeP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nxIEYfEmiFqw/hqIHeSnII0l4IHZ/RU+vns6CJsus//6OtFahACZbaASCCcuPHH6Y2UgHR5p5mA/cMRuIHdWQ0EoYH2NLKN2EicHhjpxHocrL6IPeRHwL+DrdOI9wUY2KxN1fldrUZ9yuNggqOsFGuwi2UB6miakZyItK+PGkkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DqyAhQ/g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=peDUtEPX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 4 Apr 2025 11:18:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1743758328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HK96lOWlxWav3ybrlzdl8oaeYhZkEROOiVP73gtJrns=;
+	b=DqyAhQ/gvauAWV2/pAW7UO7rWPJmsn1Bdx4NMG2T+UrCxNvKsYnsykUKuVUghDa9R9Z0Dv
+	WlWTEldjf/eBtSpRT5uj9mZHyrk3a+3x68WgrjhakRkgoUCQer6CtuhLx35dWtwHwzrIy3
+	wTEo4kw6l6+MBeM4bYZnQA85K9lHoBmgJtxpuCfl3zY9SO+Z0Nrm+20gn/3LdP593AcU4s
+	rIrIZqAvpIvot3GUfHUY9oFSpbuNf1WX1ljNXRgfhIyR38kbc0EFvbcBgjvWuRmRqvKvzL
+	u5WzIggStRCi7Fqqn49N2v8oTB2gZ0ykUQsKLF3iIPVDVRAwkVB9YiSt4otPLA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1743758328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HK96lOWlxWav3ybrlzdl8oaeYhZkEROOiVP73gtJrns=;
+	b=peDUtEPXoLxXOhq/ZzXqU/BktoR+SFIkIEzSvR93y8GEEI/ADjudEBjOud5GEQcmGNK2sS
+	DVlLzkgC3jd+YvCg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Greg KH <greg@kroah.com>, Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
+	Alyssa Ross <hi@alyssa.is>, John Ogness <john.ogness@linutronix.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] loop: Properly send KOBJ_CHANGED uevent for disk device
+Message-ID: <20250404105216-0392cf08-c351-4c68-9080-eddb4a2c4201@linutronix.de>
+References: <20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de>
+ <2025031759-unlined-candle-1d91@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025031759-unlined-candle-1d91@gregkh>
 
-Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
-caused by out-of-bounds access due to incorrect splitting in do_split.
++ Christoph who added the uevent suppression originally
 
-BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
-Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
+On Mon, Mar 17, 2025 at 03:33:55PM +0100, Greg KH wrote:
+> On Mon, Mar 17, 2025 at 03:13:25PM +0100, Thomas Weiﬂschuh wrote:
+> > The wording "uncork" in the code comment indicates that it is expected that
+> > the suppressed event instances are automatically sent after unsuppressing.
+> > This is not the case, they are discarded.
+> > In effect this means that no "changed" events are emitted on the device
+> > itself by default. On the other hand each discovered partition does trigger
+> > a "changed" event on the loop device itself. Therefore no event is emitted for
+> > devices without partitions.
+> > 
+> > This leads to udev missing the device creation and prompting workarounds in
+> > userspace, see the linked util-linux/losetup bug.
+> > 
+> > Explicitly emit the events and drop the confusingly worded comments.
+> > 
+> > Link: https://github.com/util-linux/util-linux/issues/2434
+> > Fixes: 3448914e8cc5 ("loop: Add LOOP_CONFIGURE ioctl")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > ---
+> >  drivers/block/loop.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> > index c05fe27a96b64f1f1ea3868510fdd0c7f4937f55..fbc67ff29e07c15f2e3b3e225a4a37df016fe9de 100644
+> > --- a/drivers/block/loop.c
+> > +++ b/drivers/block/loop.c
+> > @@ -654,8 +654,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+> >  
+> >  	error = 0;
+> >  done:
+> > -	/* enable and uncork uevent now that we are done */
+> >  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+> > +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+> 
+> Why not just remove the place where the uevent was suppressed to start
+> with?  It feels by manually sending a change event, you are doing
+> exactly what the suppress was trying to prevent, which makes me think
+> this is wrong.
 
-CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
- add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
- make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
- ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
- ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
- vfs_symlink+0x137/0x2e0 fs/namei.c:4615
- do_symlinkat+0x222/0x3a0 fs/namei.c:4641
- __do_sys_symlink fs/namei.c:4662 [inline]
- __se_sys_symlink fs/namei.c:4660 [inline]
- __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+The suppression was intentionally added in
+commit 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+to "make sure userspace reacting to the change event will see the new device
+state by generating the event only when the device is setup".
+The device is completely setup after loop_configure() and
+*I think* the same is true for loop_change_fd().
+This commit would also be the correct target for Fixes:.
 
-The following loop is located right above 'if' statement.
 
-for (i = count-1; i >= 0; i--) {
-	/* is more than half of this entry in 2nd half of the block? */
-	if (size + map[i].size/2 > blocksize/2)
-		break;
-	size += map[i].size;
-	move++;
-}
-
-'i' in this case could go down to -1, in which case sum of active entries
-wouldn't exceed half the block size, but previous behaviour would also do
-split in half if sum would exceed at the very last block, which in case of
-having too many long name files in a single block could lead to
-out-of-bounds access and following use-after-free.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: stable@vger.kernel.org
-Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
----
- fs/ext4/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index cb5cb33b1d91..e9712e64ec8f 100644
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1971,7 +1971,7 @@ static struct ext4_dir_entry_2 *do_split(handle_t *handle, struct inode *dir,
- 	 * split it in half by count; each resulting block will have at least
- 	 * half the space free.
- 	 */
--	if (i > 0)
-+	if (i >= 0)
- 		split = count - move;
- 	else
- 		split = count/2;
--- 
-2.43.0
-
+Thomas
 
