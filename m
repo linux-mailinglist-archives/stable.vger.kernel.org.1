@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-128251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DACCA7B3EB
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7481A7B3E0
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35EC91750EC
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 856B33B931F
 	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61D2206F19;
-	Fri,  4 Apr 2025 00:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DB1207A27;
+	Fri,  4 Apr 2025 00:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rs9YoA0s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Shmhrbk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEAF20766F;
-	Fri,  4 Apr 2025 00:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AAC207A15;
+	Fri,  4 Apr 2025 00:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725244; cv=none; b=fx157cp+utk7Vro/aJlPvTHcYuuXvBY2yFiAK01woh1vTnUuv79qeLIDdzd5Lx+nO8ULs8ufz5oo8Je0T2UlIstKpD/e351nmMMdJz/qIGEiEbDV5OgAFjV+wMrQFPZloQE/Etv9qDGGee/0VYtTV8mTAzUJjyHjQDcSgpEosTw=
+	t=1743725246; cv=none; b=ksYywxjnzKRV+9zKAYcTXhsPoCQmkeN6XxSwXazTl4egjxBVe7VvSR/zMav7gW5t3NGe4dt5tensXBaRoqX+whCDiBKBzQxWUvk+FKax5ZvY/OadiQRHtWCVDThiyHWGL8ry1wRpNwM18ZedIjq0JdUcsQSVvw2dgghHJTiQT/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725244; c=relaxed/simple;
-	bh=KtlHusmjeBo2ehofOvWtPiyNsUDcFcYrXb7AQYaismI=;
+	s=arc-20240116; t=1743725246; c=relaxed/simple;
+	bh=qAFMZV2aApkx8qfJAIYVX87dmWAvqhw/SRZbQWQkLuI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nVsIlkz/GUv1JkzeSN4X0wQDEBV7c6c4Y92X3Mco548MePCRdSLTXmNCdDeuNFsHJienbueM892WOlpERY+knn2VM5fl3bK4/RVBQc2LNEQsGsCoDS1tjldmEY4SAcdDU7N1mMiIyGmQbvpy7siGzGd5tulqxiBTjcy0HHTxEYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rs9YoA0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7B5C4CEE3;
-	Fri,  4 Apr 2025 00:07:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TKYzLSY/imOzSJdIVAu6cnaUD/nLTPK0mAMVMRpEjGCeT0Nn/BdxpqRqZaixJ2s6KTyzU5ZhoUYudMyC4mpEA7/FzcQIcOXgMpnOTK73qBeP70HDkoXnW6c2bS3US1q9/s6tnNrkgZhmvTB6fH/R48nihMplh+MPRMtZsbyp+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Shmhrbk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06D0C4CEE3;
+	Fri,  4 Apr 2025 00:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725244;
-	bh=KtlHusmjeBo2ehofOvWtPiyNsUDcFcYrXb7AQYaismI=;
+	s=k20201202; t=1743725246;
+	bh=qAFMZV2aApkx8qfJAIYVX87dmWAvqhw/SRZbQWQkLuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rs9YoA0sa3KkIGTa+lCewrYq8uceQdS5afhY/u6DI/t18lAmB3ZquZZbv7KNJzmsi
-	 gyeZBf3UucPLVWUTYhLsJ6hrBAp0Ltgg2LhqtN0RrlZtEOtc83sO/tJt3pikWVzv3c
-	 8D655J63xserPiuBz5+I1BWKTZEKeVkQw5ClEx3vVfvUzLMkQyKseXiViolmCPuQgF
-	 oAkcb0fdOWuVaXusq+zW8iC1TdsWhfgQY0kvm4qjoUVSE6k47CZQ3RpYltGZhxC4G4
-	 IZvyPV2NMFzjReEq40RIsYjaG5FXaQEEBSuBXnAVFCMmUyiBxwo5buJrLKdkM+jkpW
-	 oPYHv+TAFKbLw==
+	b=Shmhrbk/0bXT/h5Pch38hphrmaPIPMhSXaBew7sHDLYwR0LsH2FUA6Xz2FTcG8oDe
+	 LgReNXDMRtmbX/1bqNpu3PwrbhaOu3qQCtSE8vvbw8Kgikd1emJ0mKJQDrohdU6NV7
+	 Rfa2U8ES8ZhVcz6bhEthRuAmlVgcewyJkz1PJ/JCJNqa7Ip8VxffwFFQMMuUUtb/0S
+	 6MyfOF8qHCEqeGgVVmRv7JhyMvI2RIN5Y9RSAQXUR1u1yAQVT+rOKmEi88BpXhlRqU
+	 +LeFg35RPccTLB0DY5nRdOKXutqcBeor8Ore7wZbNMUbOCE54Q7w9ZFE8IG+Ki/KdU
+	 2DEpu80WjWthg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	David Heideberg <david@ixit.cz>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agordeev@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 09/10] s390/tty: Fix a potential memory leak bug
-Date: Thu,  3 Apr 2025 20:06:59 -0400
-Message-Id: <20250404000700.2689158-9-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org
+Subject: [PATCH AUTOSEL 6.1 10/10] x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on X86_32
+Date: Thu,  3 Apr 2025 20:07:00 -0400
+Message-Id: <20250404000700.2689158-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000700.2689158-1-sashal@kernel.org>
 References: <20250404000700.2689158-1-sashal@kernel.org>
@@ -62,58 +67,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+[ Upstream commit d9f87802676bb23b9425aea8ad95c76ad9b50c6e ]
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+I was unable to find a good description of the ServerWorks CNB20LE
+chipset. However, it was probably exclusively used with the Pentium III
+processor (this CPU model was used in all references to it that I
+found where the CPU model was provided: dmesgs in [1] and [2];
+[3] page 2; [4]-[7]).
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+As is widely known, the Pentium III processor did not support the 64-bit
+mode, support for which was introduced by Intel a couple of years later.
+So it is safe to assume that no systems with the CNB20LE chipset have
+amd64 and the CONFIG_PCI_CNB20LE_QUIRK may now depend on X86_32.
+
+Additionally, I have determined that most computers with the CNB20LE
+chipset did have ACPI support and this driver was inactive on them.
+I have submitted a patch to remove this driver, but it was met with
+resistance [8].
+
+[1] Jim Studt, Re: Problem with ServerWorks CNB20LE and lost interrupts
+    Linux Kernel Mailing List, https://lkml.org/lkml/2002/1/11/111
+
+[2] RedHat Bug 665109 - e100 problems on old Compaq Proliant DL320
+    https://bugzilla.redhat.com/show_bug.cgi?id=665109
+
+[3] R. Hughes-Jones, S. Dallison, G. Fairey, Performance Measurements on
+    Gigabit Ethernet NICs and Server Quality Motherboards,
+    http://datatag.web.cern.ch/papers/pfldnet2003-rhj.doc
+
+[4] "Hardware for Linux",
+    Probe #d6b5151873 of Intel STL2-bd A28808-302 Desktop Computer (STL2)
+    https://linux-hardware.org/?probe=d6b5151873
+
+[5] "Hardware for Linux", Probe #0b5d843f10 of Compaq ProLiant DL380
+    https://linux-hardware.org/?probe=0b5d843f10
+
+[6] Ubuntu Forums, Dell Poweredge 2400 - Adaptec SCSI Bus AIC-7880
+    https://ubuntuforums.org/showthread.php?t=1689552
+
+[7] Ira W. Snyder, "BISECTED: 2.6.35 (and -git) fail to boot: APIC problems"
+    https://lkml.org/lkml/2010/8/13/220
+
+[8] Bjorn Helgaas, "Re: [PATCH] x86/pci: drop ServerWorks / Broadcom
+    CNB20LE PCI host bridge driver"
+    https://lore.kernel.org/lkml/20220318165535.GA840063@bhelgaas/T/
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Signed-off-by: David Heideberg <david@ixit.cz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250321-x86_x2apic-v3-6-b0cbaa6fa338@ixit.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/Kconfig | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 971fbb52740bf..432dad2a22664 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index ca8dd7e5585f0..f103c858c003c 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2795,13 +2795,21 @@ config MMCONF_FAM10H
+ 	depends on X86_64 && PCI_MMCONFIG && ACPI
  
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
+ config PCI_CNB20LE_QUIRK
+-	bool "Read CNB20LE Host Bridge Windows" if EXPERT
+-	depends on PCI
++	bool "Read PCI host bridge windows from the CNB20LE chipset" if EXPERT
++	depends on X86_32 && PCI
+ 	help
+ 	  Read the PCI windows out of the CNB20LE host bridge. This allows
+ 	  PCI hotplug to work on systems with the CNB20LE chipset which do
+ 	  not have ACPI.
+ 
++	  The ServerWorks (later Broadcom) CNB20LE was a chipset designed
++	  most probably only for Pentium III.
 +
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
++	  To find out if you have such a chipset, search for a PCI device with
++	  1166:0009 PCI IDs, for example by executing
++		lspci -nn | grep '1166:0009'
++	  The code is inactive if there is none.
 +
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
- 		}
+ 	  There's no public spec for this chipset, and this functionality
+ 	  is known to be incomplete.
+ 
 -- 
 2.39.5
 
