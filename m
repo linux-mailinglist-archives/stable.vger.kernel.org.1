@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-128170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF98A7B2EB
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:06:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E0AA7B2F1
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2187189B29C
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:06:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EBF170375
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0196B17A2FF;
-	Fri,  4 Apr 2025 00:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA218C32C;
+	Fri,  4 Apr 2025 00:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdQARpbJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVUMGFQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD629178CF8;
-	Fri,  4 Apr 2025 00:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E57E18BC3F;
+	Fri,  4 Apr 2025 00:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725063; cv=none; b=ZKGPnJa22pJwL5WA78sjGjoXkWQN5Lc17TGjALWANRgsAoO7L7Mab69lUXu2mkRqDCwv79pWDWVVDf+moHN+UTNZALTcMeZT3yLmMHiFNtoBYIfgAMCc+z9295qKsYokn6jbEJhUMsFsuMu/A5qWBuOETobEFYN8DaiPG6uYPOE=
+	t=1743725066; cv=none; b=HZo6YXti6sQ2jvpOBSSsVpvJxEw45iaf8j3gOhk87Og8vIwLUk3b0AuqtF0+gXjc101fQ5xgV0esR4PFC0cErOGDWOomDoJpYGbsaPV6cJb+VplrYL8ZqBRo510rZ4dkuOD+AMX3jXJECAw8Y8bqUDH2xJQOv2MKyU8hyiUc+xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725063; c=relaxed/simple;
-	bh=Vs7ETizBunCJX9rKsc3qwP8DPfDySkX/BY3oWLYBDu0=;
+	s=arc-20240116; t=1743725066; c=relaxed/simple;
+	bh=tlVOcF69TDTf7UxAp0r3OROQx2LEOVK/tm0B01q4DIk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dC+GOv2+5X84tTno62uAlRP/qeA2Adza7MhwAEztXNAVrfEeqBqvhFdqTXd/0IlOY/OdLudyl5+Tqu/v6DSedZQE1mw43rooBcYTZPWcZCfuR50W84PFTmqoVJ5e6/S3DO145rmHCA5zGYa/7yiPQoCWfKGoF0/DE3MExlYvuEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdQARpbJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09145C4CEE9;
-	Fri,  4 Apr 2025 00:04:21 +0000 (UTC)
+	 MIME-Version; b=YSCvqbuGKtdNBZrkp6RYBHFINx2CQ2e0XOiszQxag3Wq52ruFtH6FOtnfMESktAzPlIi9VF/ogphLDIh5GdOJJ4TYSiz0Ss7kM1OCgdKYd5S0O5fwDstOlBMRpu2i1wrEYZxPzEoAAdcSG7VQxtq5Ci1P5BGxkhf+fuqdb8sH70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVUMGFQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F75C4CEE3;
+	Fri,  4 Apr 2025 00:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725063;
-	bh=Vs7ETizBunCJX9rKsc3qwP8DPfDySkX/BY3oWLYBDu0=;
+	s=k20201202; t=1743725065;
+	bh=tlVOcF69TDTf7UxAp0r3OROQx2LEOVK/tm0B01q4DIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdQARpbJpH8KE8p7ZBTqMRGn4vzmhsTpAGOEOaQdHHnwQG6DB9bui9UPF8rxCUmAO
-	 D8aav3hpLP+ExBMqwC2i+DCckIkBMEW3ic/sCwPRSSLfCMPZ141U95/HvMiFIMQ4Rc
-	 MDL2W/vKsEN4EoQ1vbK6SxOTA/Lqgj7lFIoHRZZWfSO5ZyJPc7OwkqPMqjbk8iUclY
-	 tRrpV3+fW2kwPwwAVKj7amPI+VpLrU9UowVjJd7PpwrUh7eRxk2aZrHRY67nGedjT6
-	 G2A1nbk6e8HBA/853okaSuheVUm83kceaW1ZM83RDNr8bTAlJY+LOFZqTulG9rIr8E
-	 1gVs4GaxHhEgQ==
+	b=lVUMGFQ7yRkDaR3XSttZeoTEJloh8fdeeCUeDh8/OJiPt5PbJgxTYwu/YtwXxvE4Q
+	 gjSEkJSUhhIQbPIR7OxDnkmcuAMVGM9OPk0LhXSHAvYC3Peu9/rcdjuBDxHHS75PyH
+	 bbyGEOZVh+MPKaCRA1FnkdDjDBSsmEe8+Sk6lOK9pmrvEwa/AxFkkj5+WhZM/Y4xx1
+	 7nvUHXGzzMfUQvzglcj7gTxt4tgycKgQj7GUUa7UASpQhvkPij9g/S+4L9ibrwdld9
+	 vgxOys4yzI5QzU4vz6cC/rcmcFyarLx4FAl5HN7JdLZfpLGxRq2dbRtntbhIrxBYW0
+	 tJpxrGLbzmHdg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yonghong Song <yonghong.song@linux.dev>,
-	Vlad Poenaru <thevlad@meta.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 09/23] bpf: Fix kmemleak warning for percpu hashmap
-Date: Thu,  3 Apr 2025 20:03:46 -0400
-Message-Id: <20250404000402.2688049-9-sashal@kernel.org>
+	sre@kernel.org
+Subject: [PATCH AUTOSEL 6.14 10/23] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
+Date: Thu,  3 Apr 2025 20:03:47 -0400
+Message-Id: <20250404000402.2688049-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000402.2688049-1-sashal@kernel.org>
 References: <20250404000402.2688049-1-sashal@kernel.org>
@@ -69,90 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit 11ba7ce076e5903e7bdc1fd1498979c331b3c286 ]
+[ Upstream commit e3f88665a78045fe35c7669d2926b8d97b892c11 ]
 
-Vlad Poenaru reported the following kmemleak issue:
+In the ssi_protocol_probe() function, &ssi->work is bound with
+ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
+within the ssip_pn_ops structure is capable of starting the
+work.
 
-  unreferenced object 0x606fd7c44ac8 (size 32):
-    backtrace (crc 0):
-      pcpu_alloc_noprof+0x730/0xeb0
-      bpf_map_alloc_percpu+0x69/0xc0
-      prealloc_init+0x9d/0x1b0
-      htab_map_alloc+0x363/0x510
-      map_create+0x215/0x3a0
-      __sys_bpf+0x16b/0x3e0
-      __x64_sys_bpf+0x18/0x20
-      do_syscall_64+0x7b/0x150
-      entry_SYSCALL_64_after_hwframe+0x4b/0x53
+If we remove the module which will call ssi_protocol_remove()
+to make a cleanup, it will free ssi through kfree(ssi),
+while the work mentioned above will be used. The sequence
+of operations that may lead to a UAF bug is as follows:
 
-Further investigation shows the reason is due to not 8-byte aligned
-store of percpu pointer in htab_elem_set_ptr():
-  *(void __percpu **)(l->key + key_size) = pptr;
+CPU0                                    CPU1
 
-Note that the whole htab_elem alignment is 8 (for x86_64). If the key_size
-is 4, that means pptr is stored in a location which is 4 byte aligned but
-not 8 byte aligned. In mm/kmemleak.c, scan_block() scans the memory based
-on 8 byte stride, so it won't detect above pptr, hence reporting the memory
-leak.
+                        | ssip_xmit_work
+ssi_protocol_remove     |
+kfree(ssi);             |
+                        | struct hsi_client *cl = ssi->cl;
+                        | // use ssi
 
-In htab_map_alloc(), we already have
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in ssi_protocol_remove().
 
-        htab->elem_size = sizeof(struct htab_elem) +
-                          round_up(htab->map.key_size, 8);
-        if (percpu)
-                htab->elem_size += sizeof(void *);
-        else
-                htab->elem_size += round_up(htab->map.value_size, 8);
-
-So storing pptr with 8-byte alignment won't cause any problem and can fix
-kmemleak too.
-
-The issue can be reproduced with bpf selftest as well:
-  1. Enable CONFIG_DEBUG_KMEMLEAK config
-  2. Add a getchar() before skel destroy in test_hash_map() in prog_tests/for_each.c.
-     The purpose is to keep map available so kmemleak can be detected.
-  3. run './test_progs -t for_each/hash_map &' and a kmemleak should be reported.
-
-Reported-by: Vlad Poenaru <thevlad@meta.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20250224175514.2207227-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/hashtab.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hsi/clients/ssi_protocol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 4a9eeb7aef855..c308300fc72f6 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -198,12 +198,12 @@ static bool htab_is_percpu(const struct bpf_htab *htab)
- static inline void htab_elem_set_ptr(struct htab_elem *l, u32 key_size,
- 				     void __percpu *pptr)
- {
--	*(void __percpu **)(l->key + key_size) = pptr;
-+	*(void __percpu **)(l->key + roundup(key_size, 8)) = pptr;
- }
- 
- static inline void __percpu *htab_elem_get_ptr(struct htab_elem *l, u32 key_size)
- {
--	return *(void __percpu **)(l->key + key_size);
-+	return *(void __percpu **)(l->key + roundup(key_size, 8));
- }
- 
- static void *fd_htab_map_get_ptr(const struct bpf_map *map, struct htab_elem *l)
-@@ -2354,7 +2354,7 @@ static int htab_percpu_map_gen_lookup(struct bpf_map *map, struct bpf_insn *insn
- 	*insn++ = BPF_EMIT_CALL(__htab_map_lookup_elem);
- 	*insn++ = BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 3);
- 	*insn++ = BPF_ALU64_IMM(BPF_ADD, BPF_REG_0,
--				offsetof(struct htab_elem, key) + map->key_size);
-+				offsetof(struct htab_elem, key) + roundup(map->key_size, 8));
- 	*insn++ = BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_0, 0);
- 	*insn++ = BPF_MOV64_PERCPU_REG(BPF_REG_0, BPF_REG_0);
- 
+diff --git a/drivers/hsi/clients/ssi_protocol.c b/drivers/hsi/clients/ssi_protocol.c
+index afe470f3661c7..6105ea9a6c6aa 100644
+--- a/drivers/hsi/clients/ssi_protocol.c
++++ b/drivers/hsi/clients/ssi_protocol.c
+@@ -401,6 +401,7 @@ static void ssip_reset(struct hsi_client *cl)
+ 	del_timer(&ssi->rx_wd);
+ 	del_timer(&ssi->tx_wd);
+ 	del_timer(&ssi->keep_alive);
++	cancel_work_sync(&ssi->work);
+ 	ssi->main_state = 0;
+ 	ssi->send_state = 0;
+ 	ssi->recv_state = 0;
 -- 
 2.39.5
 
