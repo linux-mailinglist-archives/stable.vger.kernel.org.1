@@ -1,104 +1,57 @@
-Return-Path: <stable+bounces-128277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA98DA7B75B
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 07:33:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3295CA7B7CC
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 08:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5007A178A41
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 05:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B112A177CFB
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 06:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B891624DD;
-	Fri,  4 Apr 2025 05:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05B018BC3F;
+	Fri,  4 Apr 2025 06:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RWgGmVDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdBbSfqx"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4E42E62C0
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 05:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDAA18BBB9
+	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 06:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743744817; cv=none; b=dKN8OsuU+A39TRkKyzUZ2tOBCpmlx51QuM46rPeS2Bbxxruwe51bacRvQo0xcbEU4q0QSizTsLJKFv+wK1LM6G0b8Cwp0+hqFgsadzzfyrflYdXi8ywllr+jvJ5CiSpRMdly9tQvBaBXRKU76pvRLK5zLKcXC447Wu/1gdnyF08=
+	t=1743748181; cv=none; b=biZdd31Y+Q58dEdrmclm9FpaHBNf5b9x7Vy0Q0wjnSDa8Ufxj0EPIrDlbWvUiXGunBmyA3w+IQcsb7am6+OeZRJQpYD5hUIrTQGofiXtqW+mXZle8ugPQrRXC9fNNWSYGRTzs7QPASVdkP7/da9W3tk9YGuwtPRzkl1nNkjQh+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743744817; c=relaxed/simple;
-	bh=t5YrEvo1Qv7V/OOCE0jzPDPPWuEcHK5DHyugrkXD3oU=;
+	s=arc-20240116; t=1743748181; c=relaxed/simple;
+	bh=feOoLpQa/cJAk+pk/sonn+0c4v3wNV8n3E+WLUjvy6w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ryunYYsT7ud2w/w9/4IquMaT3oZbqTPmk6dUixVAISiqrW9Pe0pz3XpnWfprMMKeo57fbp6M7eAIN6VS+SxzeI1vTK88X3TJnL9/z9M0Yoz8JLwvqT0lWnUm0728HNQ/BDPc5v90hZY1Z7wtjuHWl2WPNhr1K32yP3T54zWx+nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RWgGmVDV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743744815;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W8DadzuBkB0b+TswMeRC57LXNTfY/qY6jGCVQ+lHwe0=;
-	b=RWgGmVDVEz2mbKbGB/sZ/+MSuhg3xTGQWDw5nXp1ATy/WmNtcLDQkdVaWKBnWso3QUMmQe
-	V22vKxkcmsBVGkq4R0nja3WP7cCbQqrFmIr/FOh6/CpV+kqqKQjytir+cbxT1aok1rW0bq
-	nZE4tjtqjfmHpnRfwFF+Zxhcc/ybTlQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-rw7wkYhLN-y9c-nmto45Rw-1; Fri, 04 Apr 2025 01:33:33 -0400
-X-MC-Unique: rw7wkYhLN-y9c-nmto45Rw-1
-X-Mimecast-MFC-AGG-ID: rw7wkYhLN-y9c-nmto45Rw_1743744813
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4394c489babso8248835e9.1
-        for <Stable@vger.kernel.org>; Thu, 03 Apr 2025 22:33:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743744812; x=1744349612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W8DadzuBkB0b+TswMeRC57LXNTfY/qY6jGCVQ+lHwe0=;
-        b=Wir4b6PJyE9WjwvdjMoh+HiYc2F/VFHAhrRFnUXLenhv04KPSY8K5V55QG4o2GXErP
-         RNxBbwYSuXR/Oy0KjVOhh/2QfDv4TCLuCR/C2yZs21oaJK5DFGyUeZkE59B+AOnFP6gx
-         rSRZE2fXIrKw81BVHr1X2LRJDT39ID53spSleI052UNDFl2b0HIOjLZKhLWrYogHLZUp
-         MtVbe3O/J1IGAw/GSSVe9Zn8uMb/unfNf2ozTIfXApZ6PKpFVUPBe/qcSssCPgsv2UsB
-         jB99c4M+J/cayN0in2zJrtYfEhiBFG6e6oO9JY9iNqw+vBRTNsmc23kxoRBCSJXpMSMl
-         SV0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXPO89aIQXJ9z1GSG63HNP+9JNvHBd3Br5jlj+Yf2M5Y+CeH0fQVUhB75sordQeWjQlmgaJZeI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRmnCW0r4xjxOJistagcyBXvS9MAsL/Cjt+5X9Z4rMPvIBsuoa
-	FdwgFavGHmGCg7U25kfBa9/RDd03U9+nwPa1WWb6xNbSlMcQl8L77BWt2MhdXYAhOG1SSddPqEm
-	Qvs08S1c5tSRffDoMbiyaeG/PNFszUr/gPNdIWJ9jHAA5upgCQvKFNlhPpxKXDw==
-X-Gm-Gg: ASbGncuQ1G9Lpy2nkkZa1FK5MOuiOuJDb/svjyqu/jutqtJFeZpPvps52jfSN7yiDzh
-	TYrWt/H+tFgV/Y9tqmcUrsS7TWAGk//Dl3x6LGCb1RjU+sbqvDncn0dQE3a9L9K3qhiYxyMYgfz
-	ESgrfUV/IcfFlD8aZvx+pIMsz2XK7QdlVtrA9RI9pZpkmwFPcU5AjJnEZicAgTxfyfxNhY97NfK
-	wylmNUI2TMNPyV6pYpRTMN0cquSCpOQjaL9AdFKjKOCPkbpz2aWbuNzzGsF31hPhsj62P9Ie+xg
-	mAZduhIrbg==
-X-Received: by 2002:a05:600c:6986:b0:43d:a90:9f1 with SMTP id 5b1f17b1804b1-43ecf822cf4mr12380165e9.6.1743744812316;
-        Thu, 03 Apr 2025 22:33:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOWcVoqDuuU1EzwnYMSgwjMR/a8JCeY7bzgZQlbtecRuO04aJY8fG8iABZRmySxq9rz0/+0A==
-X-Received: by 2002:a05:600c:6986:b0:43d:a90:9f1 with SMTP id 5b1f17b1804b1-43ecf822cf4mr12380055e9.6.1743744811973;
-        Thu, 03 Apr 2025 22:33:31 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec342a3dfsm36561555e9.4.2025.04.03.22.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 22:33:31 -0700 (PDT)
-Date: Fri, 4 Apr 2025 01:33:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Halil Pasic <pasic@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-	Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-	Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-Message-ID: <20250404013208-mutt-send-email-mst@kernel.org>
-References: <20250402203621.940090-1-david@redhat.com>
- <20250403161836.7fe9fea5.pasic@linux.ibm.com>
- <20250403103127-mutt-send-email-mst@kernel.org>
- <20250404060204.04db301d.pasic@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=SzYvO20yslwxA/BdoOD5JabQQIbGJHI+RwV09yWbZ4+m3Skoa6UgUAu0lnOQcwuQNeYiEpsgrvjG3A4Q+M2oz6bJWGG+lrSLJnRA4n1dQO1otZVXs3kNdJjed65scpj2RIlB3Y/fhn3hkrkx/fG1mTZ2VkbAGw9txv3ZzTjQJ2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdBbSfqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C955C4CEE5;
+	Fri,  4 Apr 2025 06:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1743748179;
+	bh=feOoLpQa/cJAk+pk/sonn+0c4v3wNV8n3E+WLUjvy6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EdBbSfqx17cVOH96F6yPfvNhLgX2Lcrgx5NoMQWSbE5RADONGY2j4+/qUYzfN83qf
+	 ejVc3PV+yFHspdRKSR03FSsskk0UqOjrpobOsh0kSwPfVcHiW+rVS4HihL+msJINKE
+	 qOi6sb/dNhWBMsfxcb03abe61TDL6IO+E+j/ZZnM=
+Date: Fri, 4 Apr 2025 07:28:11 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Justin Tee <justin.tee@broadcom.com>
+Cc: Justin Tee <justintee8345@gmail.com>,
+	Bin Lan <bin.lan.cn@windriver.com>, stable@vger.kernel.org,
+	bass@buaa.edu.cn, islituo@gmail.com, loberman@redhat.com,
+	martin.petersen@oracle.com
+Subject: Re: [PATCH 5.10.y] scsi: lpfc: Fix a possible data race in
+ lpfc_unregister_fcf_rescan()
+Message-ID: <2025040400-retool-spouse-0ecc@gregkh>
+References: <20250403032915.443616-1-bin.lan.cn@windriver.com>
+ <20250403032915.443616-2-bin.lan.cn@windriver.com>
+ <d808abf5-a999-4821-a24a-388fee184ffc@windriver.com>
+ <CAAmqgVM--YEC=hNt5H8DVUwvN9G5p=UX86X-VqKQG2wH9Re7+w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,75 +60,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250404060204.04db301d.pasic@linux.ibm.com>
+In-Reply-To: <CAAmqgVM--YEC=hNt5H8DVUwvN9G5p=UX86X-VqKQG2wH9Re7+w@mail.gmail.com>
 
-On Fri, Apr 04, 2025 at 06:02:04AM +0200, Halil Pasic wrote:
-> On Thu, 3 Apr 2025 10:35:33 -0400
-> "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> 
-> > On Thu, Apr 03, 2025 at 04:18:36PM +0200, Halil Pasic wrote:
-> > > On Wed,  2 Apr 2025 22:36:21 +0200
-> [..]
-> > > 
-> > > 5.5.2 Virtqueues
-> > > 
-> > > 0
-> > >     inflateq 
-> > > 1
-> > >     deflateq 
-> > > 2
-> > >     statsq 
-> > > 3
-> > >     free_page_vq 
-> > > 4
-> > >     reporting_vq  
-> > 
-> > Indeed. Unfortunately, no one at all implemented this properly as
-> > per spec :(.
-> > 
-> > Balloon is the worst offender here but other devices are broken
-> > too in some configurations.
-> > 
-> > 
-> > Given it has been like this for many years I'm inclined in this
-> > instance to fix the spec not the implementations.
-> > 
-> 
-> I understand! For me at least knowing if we are going to change the
-> spec or the implementations is pretty important. It would probably
-> make sense to spin a patch for the spec, just for the unlikely case that
-> somebody did end up implementing this by the spec and wants to protest.
-> 
-> I think, a consequence of this design is that all queues need to be
-> created and allocated at initialization time.
+On Thu, Apr 03, 2025 at 01:58:00PM -0700, Justin Tee wrote:
+> This electronic communication and the information and any files transmitted 
+> with it, or attached to it, are confidential and are intended solely for 
+> the use of the individual or entity to whom it is addressed and may contain 
+> information that is confidential, legally privileged, protected by privacy 
+> laws, or otherwise restricted from disclosure to anyone else. If you are 
+> not the intended recipient or the person responsible for delivering the 
+> e-mail to the intended recipient, you are hereby notified that any use, 
+> copying, distributing, dissemination, forwarding, printing, or copying of 
+> this e-mail is strictly prohibited. If you received this e-mail in error, 
+> please return the e-mail to the sender, delete it from your computer, and 
+> destroy any printed copy of it.
 
-Why? after feature negotiation.
-
-> I mean in the spec we have something like 
-> """
-> 5.1.6.5.6.1 Driver Requirements: Automatic receive steering in multiqueue mode
-> The driver MUST configure the virtqueues before enabling them with the VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET command. 
-> """
-> 
-> For example one could want to hotplug 2 more vCPUs and still have a
-> queue-pair per cpu (and a controlq). Those 2 extra queue-pairs could
-> in theory be allocated on-demand instead of having to allocate memory
-> for the rings for all the queues corresponding to the maxed out setup.
-> I've had a look at the Linux virtio-net and it does allocate all the
-> queues up front.
-> 
-> Also with this design, I believe we would effectively prohibit "holes".
-
-For existing devices at least.
-
-> Now if holes are prohibited, IMHO it does not make a whole lot of
-> sense for the virtio_find_vqs() to support holes. Because the holes
-> and a fair amount of complexity. Of course that would make sense as a
-> cleanup on top.
-> 
-> Regards,
-> Halil
-
-
-
+Now deleted.
 
