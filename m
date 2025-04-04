@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-128236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FD9A7B3CF
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:26:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3C9A7B3C2
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58E7A7A42A3
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:22:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13DBB18912CA
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8994520370C;
-	Fri,  4 Apr 2025 00:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCEA2040B0;
+	Fri,  4 Apr 2025 00:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiNSXXPt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSv/B5b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418DE18FC91;
-	Fri,  4 Apr 2025 00:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE84C20409A;
+	Fri,  4 Apr 2025 00:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725210; cv=none; b=Hf2yg87/bskJcjnRSRQ610Zb3eCZQ8JtyC02NzJ90RQdGoXq874nc0OWWn8UrbOeKLsV+gvplX/dUsh3+8SZ4YXRlSyNzS2JlAxAhD20HqJUCXCcA4Ux8CweCtWBUttLWsFu+MBdjJbEnNFtScwNTILQn0BvVFiKJxGtj2hWKtw=
+	t=1743725211; cv=none; b=s9TfHCutY0UxdInRQVXlpcp+MNfrNvRmKy7Em09ZrtrvcGGd0QHxBaYdpBpJapKMpCXKvv9Ke7cm+QvpBki3GIvd2QzcHuNrel6Zg6tAX5NZC+zLmSy+6cEZFwiqiInDrlFt7Wjbwb3AQrBBVxhSRIZcNwwY9ehOlmPbLlF2iCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725210; c=relaxed/simple;
-	bh=JSFwJZEgvBBAEh3o/BWvEhtTm1uFo2p9JFN1QMelrkE=;
+	s=arc-20240116; t=1743725211; c=relaxed/simple;
+	bh=QwLzINMbv2zgSv1/FxCNaD/DrH9nc42/Y9VEWhmUXI0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RbUBS3xmxzJzbZnhi74f+pWJIFPXGy6oAPjFCWTYWm3iQVMdaSZGslksX6n13Q0ngsrWIJavDhWwb0pjiYBXhZBzkOK0EC2nFkPJ4FRMdI8ZrKK974VYCCgFGPEZPP1Oqm57zM+DDpc2JJ4zJlz1Ffoobz2y22ExBhuGOYy5A0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiNSXXPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A7BC4CEE3;
-	Fri,  4 Apr 2025 00:06:49 +0000 (UTC)
+	 MIME-Version; b=AgaOHHNzCavFeUShbdGVBVPdfwi89oW8QvAoAvYRfcbiaEJYZWWGuALZEQHqCr0gXhmvuEbRH5drFUuACuclPeLx09XANva2WYLzH8j8Wnlx8JrB+0OcqNvVHBmbQoHFJxB3UQKF/OL6v95ioHpdLkoEnGq4GsdZqw42Hv9Z1K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSv/B5b0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE45C4CEE5;
+	Fri,  4 Apr 2025 00:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725210;
-	bh=JSFwJZEgvBBAEh3o/BWvEhtTm1uFo2p9JFN1QMelrkE=;
+	s=k20201202; t=1743725211;
+	bh=QwLzINMbv2zgSv1/FxCNaD/DrH9nc42/Y9VEWhmUXI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiNSXXPthKAnWRKFCUDXul1AgJCJcOWRcHs9jh7eeek2xUx+2wtQSNWNeegBpRp71
-	 YsMUbYQ1YTh2BWe2F+0r315ejpUu4DN2Wlgy2GrQFzOnrCPvcMK9GEcT7r0LnU03EM
-	 /dolA+DS6qyoUW7y8DQOBJUoZbb+Pf8B5yBMDdmHSeTxIyQGPbsgr09GYlQ3cbc6xy
-	 fg5lHWfj+U8NzgYpGDTUzcgvTXP3FeSlrJ8E2WT5toonrrBXL2/yKrsoskJmXa8z6c
-	 6arogRqAD0ruhDrJxjopP+kjtMnqj7U8dAtuKYpu8R/lT8oCoC0Sb0hHho+Lz79WdZ
-	 7W//vj5mKXkUw==
+	b=KSv/B5b0S73amyJG3CJSN7io1PpwaP5xucL5Q3DMznxcI6vLBHsWlPDGoh5CMTc98
+	 MKJZmAiK0vHZ4QqTeusS2vhG/+A7d2EZHlpdImSgm7tGMl9LZa1bWHMcz/qJm6pLYW
+	 NrtZtg2Tbyctnmrw/7c3QNMFT0RRDTdZHS4t6IlbYaitOdr5V2vRKr/s4J/vHmuwMw
+	 lzfmWemCwmu8gYOphBdTdoLJ9bRugpl3B/7wgIxaUf97v3+ZFKGzbo1LhbSGtVvokT
+	 mJfhBOPF2+cOQU+t5lPURg5W7CjKuJ1D4frCUvLN7UJsf4xRvHzqG+pI4dI+G5CUwJ
+	 OH1XUOqbM/F1A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+Cc: Sewon Nam <swnam0729@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agordeev@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 10/16] s390/tty: Fix a potential memory leak bug
-Date: Thu,  3 Apr 2025 20:06:18 -0400
-Message-Id: <20250404000624.2688940-10-sashal@kernel.org>
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 11/16] bpf: bpftool: Setting error code in do_loader()
+Date: Thu,  3 Apr 2025 20:06:19 -0400
+Message-Id: <20250404000624.2688940-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000624.2688940-1-sashal@kernel.org>
 References: <20250404000624.2688940-1-sashal@kernel.org>
@@ -67,53 +69,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Sewon Nam <swnam0729@gmail.com>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+[ Upstream commit 02a4694107b4c830d4bd6d194e98b3ac0bc86f29 ]
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+We are missing setting error code in do_loader() when
+bpf_object__open_file() fails. This means the command's exit status code
+will be successful, even though the operation failed. So make sure to
+return the correct error code. To maintain consistency with other
+locations where bpf_object__open_file() is called, return -1.
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+  [0] Closes: https://github.com/libbpf/bpftool/issues/156
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sewon Nam <swnam0729@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/d3b5b4b4-19bb-4619-b4dd-86c958c4a367@stanley.mountain/t/#u
+Link: https://lore.kernel.org/bpf/20250311031238.14865-1-swnam0729@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/bpf/bpftool/prog.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 892c18d2f87e9..d3edacb6ee148 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 90ae2ea61324c..174e076e56af2 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1924,6 +1924,7 @@ static int do_loader(int argc, char **argv)
  
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
- 		}
+ 	obj = bpf_object__open_file(file, &open_opts);
+ 	if (!obj) {
++		err = -1;
+ 		p_err("failed to open object file");
+ 		goto err_close_obj;
+ 	}
 -- 
 2.39.5
 
