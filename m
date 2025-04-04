@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-128204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC02A7B371
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:18:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F63A7B34E
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16F387A8A2C
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:14:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B68216E817
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7E21F4174;
-	Fri,  4 Apr 2025 00:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD921F4297;
+	Fri,  4 Apr 2025 00:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pjRKDZMx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXuzJyAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8C01F416B;
-	Fri,  4 Apr 2025 00:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208E51F4169;
+	Fri,  4 Apr 2025 00:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725137; cv=none; b=YtwztIdrEPcka5Dk8vmvGIVlHovf2QOGKFZ8NbQ3JVCrVy+p68wtYPckXomvTj+QPnS6JbrYVgOEFzrnwaWtO7L7TAhRxZfZkGCZohJWnduCEm/PmxXUhgYWx7sH2v5SeLWWr5nZYbhcoQu0HSjAnqgRgje0X3L/RekDbkDSXyQ=
+	t=1743725139; cv=none; b=amz6rfonGnrrJbCNpMZMweoIJfU81vTY+l6GQwoqXq63cgf9FH2T5XGRRCdbmLTHJuxmtYyAO+oNhqKQuZ62r/22bbHbvc8+g/1N+eOoMBdJjbssvXcTPq3sQnaPfJYZslN48wSgroGa3j3DVlFUyAAZjfGp+ZOEGDR/N8tSX9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725137; c=relaxed/simple;
-	bh=pNvTf28+ixdueGTWviJvbynkNUwxzQURnKIMKPOntGY=;
+	s=arc-20240116; t=1743725139; c=relaxed/simple;
+	bh=e5RyO+AZ9x3PVZLJ/XfuNStV0atV5+YiTuU4XRtK238=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cAbS6aJLkphV0HqKP4T6BD+2p7N2+9RccloF1aeLGQzpooinJlnHAKuRtezzPHkrg60NoN+qFgIqTlY3UP+CuwZDobJk4AtfvhnXz/iOUCpuuGpSYmpCHqxbNTpxcJ6MXjTRFspam54elezI8InChuoNCGKqBbUtjYd58mYJDOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pjRKDZMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F74C4CEE5;
-	Fri,  4 Apr 2025 00:05:35 +0000 (UTC)
+	 MIME-Version; b=nMebs/fHdcQkRYOpcNsLfYWwcQJ2oORensaGHUesYVVfg37LDyinGXAir6F0g46qpoH6Nh6esM9NRLD95cWt8E74WEMzTxbnI/cv6xHtvLinzFLqIfivdHDoMydiSPqHfuNkXwQ7V80hvjBQYSpErT0PjfoNTpH+gKDJVjZpVLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXuzJyAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2EFC4CEE3;
+	Fri,  4 Apr 2025 00:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725137;
-	bh=pNvTf28+ixdueGTWviJvbynkNUwxzQURnKIMKPOntGY=;
+	s=k20201202; t=1743725138;
+	bh=e5RyO+AZ9x3PVZLJ/XfuNStV0atV5+YiTuU4XRtK238=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjRKDZMxFkJaIcggWrZ2Jk1PFNOBCpQ3BVko3A2dp6RAjKlwqnZH96znklZ3GfQTF
-	 pNW/McsNh4DYFEcPD5vnYUG6+fq9Teg96PcQQ4HrOEa7bF6Rn5YCJ1yNUZb5Hbyuyf
-	 fHNWS58X+g4FhZaXn5b2vz1qxLuGgO7/2mg1BS6pBGVD6W/P3pOUFUKSC7xOxqZMfb
-	 VnOfQsnYnFvQzrjhsWeBSmwcmrrszSZt4muMkt2ZCf5z7pMdxT3nEAsAm6ud9kw5qT
-	 y6z0eZeSUSO2GY24XSdEoyCR3dHcFXNhUn3xzIDiFvI3xym3dW/OFY65IlBlYiHxk5
-	 OOv09L6tBeNJQ==
+	b=lXuzJyAV/zFl2+zi1ZO0kQJ3xcOew56/hT86d6i9nIu0xgjlSeDu+URRxMf7n8gYp
+	 I99Ohiq8KrMi3Lu7yLF6YXpAqPtQ6o0XI7ar+UvQOajRz3bli1KzOqwTCQgO5SWu67
+	 VSkh2ZlTO9wuCO5DwJQz9i7+Yv9E+EU2WFfr/XF1xa4z+TAuW7AX+Fq6O8bGoy4dMK
+	 fyd88NcouWm2KaX6D3eAVkHIWhJB5kozcjrSMGHuCcYuU6fb/YALylnEtPS2/NQMMo
+	 VGain/uP0eBGI4k+EySIkbZFpLWE9rzgMTTCwgP6KAC7OPvL/QNHT1C5LAR4xhwKwf
+	 U9E1m4Mg1Rtqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	David Heideberg <david@ixit.cz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.13 20/22] x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on X86_32
-Date: Thu,  3 Apr 2025 20:04:49 -0400
-Message-Id: <20250404000453.2688371-20-sashal@kernel.org>
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 21/22] mailbox: pcc: Fix the possible race in updation of chan_in_use flag
+Date: Thu,  3 Apr 2025 20:04:50 -0400
+Message-Id: <20250404000453.2688371-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000453.2688371-1-sashal@kernel.org>
 References: <20250404000453.2688371-1-sashal@kernel.org>
@@ -67,98 +63,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Huisong Li <lihuisong@huawei.com>
 
-[ Upstream commit d9f87802676bb23b9425aea8ad95c76ad9b50c6e ]
+[ Upstream commit 9779d45c749340ab461d595c1a4a664cb28f3007 ]
 
-I was unable to find a good description of the ServerWorks CNB20LE
-chipset. However, it was probably exclusively used with the Pentium III
-processor (this CPU model was used in all references to it that I
-found where the CPU model was provided: dmesgs in [1] and [2];
-[3] page 2; [4]-[7]).
+The function mbox_chan_received_data() calls the Rx callback of the
+mailbox client driver. The callback might set chan_in_use flag from
+pcc_send_data(). This flag's status determines whether the PCC channel
+is in use.
 
-As is widely known, the Pentium III processor did not support the 64-bit
-mode, support for which was introduced by Intel a couple of years later.
-So it is safe to assume that no systems with the CNB20LE chipset have
-amd64 and the CONFIG_PCI_CNB20LE_QUIRK may now depend on X86_32.
+However, there is a potential race condition where chan_in_use is
+updated incorrectly due to concurrency between the interrupt handler
+(pcc_mbox_irq()) and the command sender(pcc_send_data()).
 
-Additionally, I have determined that most computers with the CNB20LE
-chipset did have ACPI support and this driver was inactive on them.
-I have submitted a patch to remove this driver, but it was met with
-resistance [8].
+The 'chan_in_use' flag of a channel is set to true after sending a
+command. And the flag of the new command may be cleared erroneous by
+the interrupt handler afer mbox_chan_received_data() returns,
 
-[1] Jim Studt, Re: Problem with ServerWorks CNB20LE and lost interrupts
-    Linux Kernel Mailing List, https://lkml.org/lkml/2002/1/11/111
+As a result, the interrupt being level triggered can't be cleared in
+pcc_mbox_irq() and it will be disabled after the number of handled times
+exceeds the specified value. The error log is as follows:
 
-[2] RedHat Bug 665109 - e100 problems on old Compaq Proliant DL320
-    https://bugzilla.redhat.com/show_bug.cgi?id=665109
+  |  kunpeng_hccs HISI04B2:00: PCC command executed timeout!
+  |  kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110
+  |  irq 13: nobody cared (try booting with the "irqpoll" option)
+  |  Call trace:
+  |   dump_backtrace+0x0/0x210
+  |   show_stack+0x1c/0x2c
+  |   dump_stack+0xec/0x130
+  |   __report_bad_irq+0x50/0x190
+  |   note_interrupt+0x1e4/0x260
+  |   handle_irq_event+0x144/0x17c
+  |   handle_fasteoi_irq+0xd0/0x240
+  |   __handle_domain_irq+0x80/0xf0
+  |   gic_handle_irq+0x74/0x2d0
+  |   el1_irq+0xbc/0x140
+  |   mnt_clone_write+0x0/0x70
+  |   file_update_time+0xcc/0x160
+  |   fault_dirty_shared_page+0xe8/0x150
+  |   do_shared_fault+0x80/0x1d0
+  |   do_fault+0x118/0x1a4
+  |   handle_pte_fault+0x154/0x230
+  |   __handle_mm_fault+0x1ac/0x390
+  |   handle_mm_fault+0xf0/0x250
+  |   do_page_fault+0x184/0x454
+  |   do_translation_fault+0xac/0xd4
+  |   do_mem_abort+0x44/0xb4
+  |   el0_da+0x40/0x74
+  |   el0_sync_handler+0x60/0xb4
+  |   el0_sync+0x168/0x180
+  |  handlers:
+  |   pcc_mbox_irq
+  |  Disabling IRQ #13
 
-[3] R. Hughes-Jones, S. Dallison, G. Fairey, Performance Measurements on
-    Gigabit Ethernet NICs and Server Quality Motherboards,
-    http://datatag.web.cern.ch/papers/pfldnet2003-rhj.doc
+To solve this issue, pcc_mbox_irq() must clear 'chan_in_use' flag before
+the call to mbox_chan_received_data().
 
-[4] "Hardware for Linux",
-    Probe #d6b5151873 of Intel STL2-bd A28808-302 Desktop Computer (STL2)
-    https://linux-hardware.org/?probe=d6b5151873
-
-[5] "Hardware for Linux", Probe #0b5d843f10 of Compaq ProLiant DL380
-    https://linux-hardware.org/?probe=0b5d843f10
-
-[6] Ubuntu Forums, Dell Poweredge 2400 - Adaptec SCSI Bus AIC-7880
-    https://ubuntuforums.org/showthread.php?t=1689552
-
-[7] Ira W. Snyder, "BISECTED: 2.6.35 (and -git) fail to boot: APIC problems"
-    https://lkml.org/lkml/2010/8/13/220
-
-[8] Bjorn Helgaas, "Re: [PATCH] x86/pci: drop ServerWorks / Broadcom
-    CNB20LE PCI host bridge driver"
-    https://lore.kernel.org/lkml/20220318165535.GA840063@bhelgaas/T/
-
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Signed-off-by: David Heideberg <david@ixit.cz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250321-x86_x2apic-v3-6-b0cbaa6fa338@ixit.cz
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Tested-by: Robbie King <robbiek@xsightlabs.com>
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+(sudeep.holla: Minor updates to the subject, commit message and comment)
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/mailbox/pcc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 757333fe82c76..15d4e10b26145 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2972,13 +2972,21 @@ config MMCONF_FAM10H
- 	depends on X86_64 && PCI_MMCONFIG && ACPI
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 82102a4c5d688..8fd4d0f79b090 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -333,10 +333,16 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+ 		return IRQ_NONE;
  
- config PCI_CNB20LE_QUIRK
--	bool "Read CNB20LE Host Bridge Windows" if EXPERT
--	depends on PCI
-+	bool "Read PCI host bridge windows from the CNB20LE chipset" if EXPERT
-+	depends on X86_32 && PCI
- 	help
- 	  Read the PCI windows out of the CNB20LE host bridge. This allows
- 	  PCI hotplug to work on systems with the CNB20LE chipset which do
- 	  not have ACPI.
++	/*
++	 * Clear this flag after updating interrupt ack register and just
++	 * before mbox_chan_received_data() which might call pcc_send_data()
++	 * where the flag is set again to start new transfer. This is
++	 * required to avoid any possible race in updatation of this flag.
++	 */
++	pchan->chan_in_use = false;
+ 	mbox_chan_received_data(chan, NULL);
  
-+	  The ServerWorks (later Broadcom) CNB20LE was a chipset designed
-+	  most probably only for Pentium III.
-+
-+	  To find out if you have such a chipset, search for a PCI device with
-+	  1166:0009 PCI IDs, for example by executing
-+		lspci -nn | grep '1166:0009'
-+	  The code is inactive if there is none.
-+
- 	  There's no public spec for this chipset, and this functionality
- 	  is known to be incomplete.
+ 	check_and_ack(pchan, chan);
+-	pchan->chan_in_use = false;
  
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.39.5
 
