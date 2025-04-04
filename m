@@ -1,165 +1,158 @@
-Return-Path: <stable+bounces-128253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7481A7B3E0
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:27:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2C5A7B3EC
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 856B33B931F
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:26:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C501753BA
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DB1207A27;
-	Fri,  4 Apr 2025 00:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838020767D;
+	Fri,  4 Apr 2025 00:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Shmhrbk/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kC335v8o"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AAC207A15;
-	Fri,  4 Apr 2025 00:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8726520765E;
+	Fri,  4 Apr 2025 00:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725246; cv=none; b=ksYywxjnzKRV+9zKAYcTXhsPoCQmkeN6XxSwXazTl4egjxBVe7VvSR/zMav7gW5t3NGe4dt5tensXBaRoqX+whCDiBKBzQxWUvk+FKax5ZvY/OadiQRHtWCVDThiyHWGL8ry1wRpNwM18ZedIjq0JdUcsQSVvw2dgghHJTiQT/I=
+	t=1743725245; cv=none; b=QHZrjTVdPXX38ZPyTAjlJd3sjrQtB5by1CdOXmxIDailcs+rI8ryloTYMWRgRderrS9ERXbXVuKSY31f1C1wfXdj/xaKkaU2lcMhhQOG6JVmHg0Tr8ZZ1ZZp43tAKpbrkf70KMJ+Yd8AhlwYeFv3f6r2YK61nvLXAo1Qwom/ewU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725246; c=relaxed/simple;
-	bh=qAFMZV2aApkx8qfJAIYVX87dmWAvqhw/SRZbQWQkLuI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TKYzLSY/imOzSJdIVAu6cnaUD/nLTPK0mAMVMRpEjGCeT0Nn/BdxpqRqZaixJ2s6KTyzU5ZhoUYudMyC4mpEA7/FzcQIcOXgMpnOTK73qBeP70HDkoXnW6c2bS3US1q9/s6tnNrkgZhmvTB6fH/R48nihMplh+MPRMtZsbyp+/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Shmhrbk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06D0C4CEE3;
-	Fri,  4 Apr 2025 00:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725246;
-	bh=qAFMZV2aApkx8qfJAIYVX87dmWAvqhw/SRZbQWQkLuI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Shmhrbk/0bXT/h5Pch38hphrmaPIPMhSXaBew7sHDLYwR0LsH2FUA6Xz2FTcG8oDe
-	 LgReNXDMRtmbX/1bqNpu3PwrbhaOu3qQCtSE8vvbw8Kgikd1emJ0mKJQDrohdU6NV7
-	 Rfa2U8ES8ZhVcz6bhEthRuAmlVgcewyJkz1PJ/JCJNqa7Ip8VxffwFFQMMuUUtb/0S
-	 6MyfOF8qHCEqeGgVVmRv7JhyMvI2RIN5Y9RSAQXUR1u1yAQVT+rOKmEi88BpXhlRqU
-	 +LeFg35RPccTLB0DY5nRdOKXutqcBeor8Ore7wZbNMUbOCE54Q7w9ZFE8IG+Ki/KdU
-	 2DEpu80WjWthg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	David Heideberg <david@ixit.cz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.1 10/10] x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on X86_32
-Date: Thu,  3 Apr 2025 20:07:00 -0400
-Message-Id: <20250404000700.2689158-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000700.2689158-1-sashal@kernel.org>
-References: <20250404000700.2689158-1-sashal@kernel.org>
+	s=arc-20240116; t=1743725245; c=relaxed/simple;
+	bh=wwpb9s8kG3kLPEw7M7GRVujwurSFOziTKoDed26JFQA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RUMSyUdo0/4bCFf63O83e+IHX24Ues2bypptF9GoGHqB//A8KpyGiNkID5ShJpi5S39WxpbvoYN+vsxS//2qZZiOdod+gGy0YfR9wAX5bxxjAL9Hd4o51ALlIvNmMmkWyB1dT8jFHo29X+APR4I0v1uaUa06IpHlyRn0RD2WQOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kC335v8o; arc=none smtp.client-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3f8d2f8d890so868981b6e.0;
+        Thu, 03 Apr 2025 17:07:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743725242; x=1744330042; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xinD1XJ5zJ/zFBRlXFxdReOtuK0q42vMXByaQxIVb3M=;
+        b=kC335v8oSxt1oY/bwdJGqeO+gLkgDaEzRFJj2FqsdBPVlryP3KMzmcAP19qANs3CD9
+         XoKVOZ+IBm5CKtGLrZiYAtiCOY6d20ByosbppRHniviOGMfvuC7v4kX804bkd66fQZKj
+         yXz/HGnWHpLseszilWdeFxf2taJ4MN8J9PZ4t9g3Y9ecbGCUwyFipnEMLFPDlbm0tnCB
+         3N/0uRcMLMVESdhJ2fAp8enVlWLxwsGRsfVNjICWtWs4N6V2Gn1ajPyqhBWa5XP+RnpN
+         mg8/hDGpDevIMA5uawNIIKdX92VH6qVUwWABFC2UlyVkav0ayuE7uubNsBEnNk0TBMMk
+         cxMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743725242; x=1744330042;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xinD1XJ5zJ/zFBRlXFxdReOtuK0q42vMXByaQxIVb3M=;
+        b=Mv+RzWqPE7sAtveaGDQNTOGsUXenDiaK2oOIO9iJ2Y/VzsFffg5ZoNcv4Sub5OntAF
+         zYO6HZPifJkubQA3NP7o4AWmxjzF5bjXSPwtaOAd+N4BpxYB4HP2DABgLQrHrraA6KmF
+         wOF98stWa8mBA/eNniFMuRRIQmml/lWeeMsYmOqteEixVJOS559sljqOrHTmFnt8lw75
+         qUJAI5DyBBZg21YN4Gm+6ccw4ZnqdEaG150jXv61kKQJFXSJcXpbXtm3D1gBtOsZKvud
+         85b+r5den9piUFcbqrv5CuNjpo/jjzPM9t2fQw+rs6he5Ve3L40OHMbdrM8/0VB23jBk
+         a4ig==
+X-Forwarded-Encrypted: i=1; AJvYcCXfGRN5F23+2AwpwoNyDfgoJ/i95aADG//GSUWsAsF6s+g2hwCy5Wh/3P2yMYmPE1PGoxym/xZQoeZTxDE=@vger.kernel.org, AJvYcCXnprMxsht2KeoyjnvvwYxnNZaLVtMegNpg4oKNZc0Jrlkh05Nc33SeZDCL7SEYtduEQAP2pUya@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgrTs4u+l8ycsj/T0S/SuikuxrAR4q5LVGp2P7ItjITQW4sMMZ
+	UZQrH0UNw+oZoV9ZbUgpko1f625Qx+QEMm8VkiBaI016vm07+Ind
+X-Gm-Gg: ASbGncsmUHzggfDlW2itm/onHsZSCI5KVQA3V2HV5qDQpgMjhBK9TYneE6lVnTflmLX
+	t2YatVv7K52ISQDoM4U4wnBjpnRo907j1aPrrt45endwSGLPeimYg++N/EzZjE35+0Etd9OzV+/
+	9bHziV/gAtmFxDPk78ygmSKYuoHVylcUCKObiQ+mXIUu6U1atzlcxsxlaSPUrT6FFoAAJBFN5I8
+	3CnW2dYYy4/J1LWns5L5xcslDm3XEqLfqqbB5iIa29eo00fYzYgX9vNPPiOwy+uA7uqqUO97sxs
+	B0TSRnZtRy7I93jG4bspwgCeH/yjhX//foFAbqDwtv2CRdJ9IuNPl/SgcWBteCskSJxxhezr
+X-Google-Smtp-Source: AGHT+IExKNvOJV29wP7FfCm4xMdNsOUlULzTGuvDptMUeEJuGnrdYvDkZy5Z1OSbjeNgQVjC4l0xqg==
+X-Received: by 2002:a05:6808:1644:b0:3f8:91d1:d950 with SMTP id 5614622812f47-4004564e62dmr774828b6e.38.1743725242536;
+        Thu, 03 Apr 2025 17:07:22 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6040c4aab95sm428188eaf.1.2025.04.03.17.07.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Apr 2025 17:07:21 -0700 (PDT)
+Message-ID: <fd60ac3d-fb21-4a90-85eb-b065f8711b95@gmail.com>
+Date: Thu, 3 Apr 2025 17:07:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.132
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/22] 6.12.22-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250403151622.055059925@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCZ7gLLgUJMbXO7gAKCRBhV5kVtWN2DlsbAJ9zUK0VNvlLPOclJV3YM5HQ
+ LkaemACgkF/tnkq2cL6CVpOk3NexhMLw2xzOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
+ WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
+ pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
+ hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
+ OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
+ Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
+ oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
+ 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
+ BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
+ +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
+ FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
+ 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
+ vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
+ WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
+ HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
+ HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
+ Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
+ kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
+ aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
+ y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJn
+ uAtCBQkxtc7uAAoJEGFXmRW1Y3YOJHUAoLuIJDcJtl7ZksBQa+n2T7T5zXoZAJ9EnFa2JZh7
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250403151622.055059925@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+On 4/3/25 08:20, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.22 release.
+> There are 22 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.22-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit d9f87802676bb23b9425aea8ad95c76ad9b50c6e ]
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-I was unable to find a good description of the ServerWorks CNB20LE
-chipset. However, it was probably exclusively used with the Pentium III
-processor (this CPU model was used in all references to it that I
-found where the CPU model was provided: dmesgs in [1] and [2];
-[3] page 2; [4]-[7]).
-
-As is widely known, the Pentium III processor did not support the 64-bit
-mode, support for which was introduced by Intel a couple of years later.
-So it is safe to assume that no systems with the CNB20LE chipset have
-amd64 and the CONFIG_PCI_CNB20LE_QUIRK may now depend on X86_32.
-
-Additionally, I have determined that most computers with the CNB20LE
-chipset did have ACPI support and this driver was inactive on them.
-I have submitted a patch to remove this driver, but it was met with
-resistance [8].
-
-[1] Jim Studt, Re: Problem with ServerWorks CNB20LE and lost interrupts
-    Linux Kernel Mailing List, https://lkml.org/lkml/2002/1/11/111
-
-[2] RedHat Bug 665109 - e100 problems on old Compaq Proliant DL320
-    https://bugzilla.redhat.com/show_bug.cgi?id=665109
-
-[3] R. Hughes-Jones, S. Dallison, G. Fairey, Performance Measurements on
-    Gigabit Ethernet NICs and Server Quality Motherboards,
-    http://datatag.web.cern.ch/papers/pfldnet2003-rhj.doc
-
-[4] "Hardware for Linux",
-    Probe #d6b5151873 of Intel STL2-bd A28808-302 Desktop Computer (STL2)
-    https://linux-hardware.org/?probe=d6b5151873
-
-[5] "Hardware for Linux", Probe #0b5d843f10 of Compaq ProLiant DL380
-    https://linux-hardware.org/?probe=0b5d843f10
-
-[6] Ubuntu Forums, Dell Poweredge 2400 - Adaptec SCSI Bus AIC-7880
-    https://ubuntuforums.org/showthread.php?t=1689552
-
-[7] Ira W. Snyder, "BISECTED: 2.6.35 (and -git) fail to boot: APIC problems"
-    https://lkml.org/lkml/2010/8/13/220
-
-[8] Bjorn Helgaas, "Re: [PATCH] x86/pci: drop ServerWorks / Broadcom
-    CNB20LE PCI host bridge driver"
-    https://lore.kernel.org/lkml/20220318165535.GA840063@bhelgaas/T/
-
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Signed-off-by: David Heideberg <david@ixit.cz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250321-x86_x2apic-v3-6-b0cbaa6fa338@ixit.cz
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/Kconfig | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index ca8dd7e5585f0..f103c858c003c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2795,13 +2795,21 @@ config MMCONF_FAM10H
- 	depends on X86_64 && PCI_MMCONFIG && ACPI
- 
- config PCI_CNB20LE_QUIRK
--	bool "Read CNB20LE Host Bridge Windows" if EXPERT
--	depends on PCI
-+	bool "Read PCI host bridge windows from the CNB20LE chipset" if EXPERT
-+	depends on X86_32 && PCI
- 	help
- 	  Read the PCI windows out of the CNB20LE host bridge. This allows
- 	  PCI hotplug to work on systems with the CNB20LE chipset which do
- 	  not have ACPI.
- 
-+	  The ServerWorks (later Broadcom) CNB20LE was a chipset designed
-+	  most probably only for Pentium III.
-+
-+	  To find out if you have such a chipset, search for a PCI device with
-+	  1166:0009 PCI IDs, for example by executing
-+		lspci -nn | grep '1166:0009'
-+	  The code is inactive if there is none.
-+
- 	  There's no public spec for this chipset, and this functionality
- 	  is known to be incomplete.
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.39.5
-
+Florian
 
