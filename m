@@ -1,108 +1,189 @@
-Return-Path: <stable+bounces-128323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B63A7BF01
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:21:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599A5A7BF0B
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D8717C3C0
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9549B1794E5
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD77A1F3B83;
-	Fri,  4 Apr 2025 14:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3711F3B92;
+	Fri,  4 Apr 2025 14:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vT+D0GGQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JjSrOLJM"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0E61F37C3;
-	Fri,  4 Apr 2025 14:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBCD847B;
+	Fri,  4 Apr 2025 14:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743776429; cv=none; b=KoFcFZIe6kWRScvrZ3AY6j9hrr26N0JKrMl7D+Wl36QjAQgKc7D9M7bsFGa/uWt0GkQqXeIPEUCSjNfuC2d6rBN5hGiRtzJ7GmPzD+xCh8vlphwBgflZWwvZKduVFjeX/d8QxoqKjCs9Qosq4YEhEOqWBzqv9YtpWJ0hVeAbmVw=
+	t=1743776572; cv=none; b=cl/RXQKqtjiRPZCXBULvQcy2bSqKyd7ae/C9JKxkQFddfmRaAYnlvAz3C1SEYZ7oe3rEog7HyhPUhxN4LaZ2IuWlljJWkvheLKvt6eJZw6C6t4eSokW8NE2lF3yVpJLIFgr5wcxLUViCTyKZU8zPfkshgJ2mVuLKcydarrLNQGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743776429; c=relaxed/simple;
-	bh=dVpKr/sYMzgqeXhXFJ/oZY/Tfs3XC3VCCz70DzidYf0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=X+afsTARtoDwYmdfYMUwXsu+ycnRTPfLo6uMKKowYz0B9R1ovcBMC52kRusEjuLnk4lejv5VH5UnLd4r802/zMPmfT5gyJBxGNV/D9IQVIuRSkH45skB59h7G7hYQw/PfwwMdoOujNsuW81FRSf/Scw0RPtlhQoGOHcPO8o80Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vT+D0GGQ; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1743776419; x=1744381219; i=markus.elfring@web.de;
-	bh=dVpKr/sYMzgqeXhXFJ/oZY/Tfs3XC3VCCz70DzidYf0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=vT+D0GGQuvufa88f8kp8v062bZpYRfG5rNn/CdUc6Ok5dyX5pXUTjt73Nkbt4gaI
-	 PgeaCwNJwvgzArkw2YltKmDd5W7WuGISJR90hGq5WSibb8MNApPlmRAJUVgAkZbVn
-	 k/8xBlOSG0trz6Nc9xxHXB+jvcQ1DmBpzroKwA4aADKMsAwFC+WMRzVSI9QjgUQNq
-	 76RuRj3NHeFslEJ4vgzVt16gw/sErr1rOR01Oa5hE83xExTzJlR+KC7ChZ7Jif0eZ
-	 mln6LybRGIui4fMGk5PPCiZxZk1Qt3hxF/Tp0ZJl+zAPl5Qzg+FnrozwGCKvFAp+B
-	 4sysicG1e2aERP+GSA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.27]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M4sbr-1tymlI28vf-00EGpL; Fri, 04
- Apr 2025 16:20:19 +0200
-Message-ID: <667bcd67-aac4-425c-b100-d25dc86eb6a9@web.de>
-Date: Fri, 4 Apr 2025 16:20:18 +0200
+	s=arc-20240116; t=1743776572; c=relaxed/simple;
+	bh=mFBXTwEhQKFDjcZ3xXqeDdUzR3kLcAmTHhPWdwLV2j0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ftV3VtHwbngu10u3Nl9yiOXggXx9bnB0w2yoWBeeMmSN+Oq1YkeApeGQYVbiwRpk8Gkdd1VY2ouCmkUIJ1MoHGlRecdHDudtBldXPh8NPGl/HxflDRy4x3rqXIomy7XQmqXuK8wB57QZKw6Zx9IwRr848at1t5tVg7pxi8J9pMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjSrOLJM; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d589ed2b47so7087515ab.2;
+        Fri, 04 Apr 2025 07:22:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743776570; x=1744381370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uF8Eg/CK7XzuoF+shmNXDLBMaetMNlz/WflJhGpXfFc=;
+        b=JjSrOLJMpt3Qy3SLjC0TDd934nEY1JVljGtSRzVQ+UilCIn3mChPSy0C0a99V5zwoM
+         MMLh21rYi+JYzyTceWjNKk22AXshqt3vrnkOQH4Lxw9cqvSKCue523V70/TfpdHbjwcw
+         jajH5Z9YZJTbVbr7VVHAZfhMnLTab5IUuDmGC6T/4NgWlLfsXmfZ3OBX8jF/J6aXsUdq
+         KaRSIGeO1b9d+vfX4y8teTjFvhMBvi/JJ7pzA3ZzNFEBpubebX7JgmHAZBen+2zq/rDm
+         zh4sZcWM6UV4Ig1xWtciLcr66x7s/q+/B2u0V/jzDbF9t/GGYQZKIfQLnKS7IzKBoXQ2
+         sLZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743776570; x=1744381370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uF8Eg/CK7XzuoF+shmNXDLBMaetMNlz/WflJhGpXfFc=;
+        b=bMzJcNn7joZzP5E8VPKzge+sWxRcIGLOzjWbkazsp7h5thGzd/+cOUMrr0UuBt369m
+         kuioUya/KZygW+slC/GxWQ9A5RDo1YfegzOD81gBWOXBkou57EAoF7UfKgKBaamAjEHL
+         KveZUVlkAc3OP2Z/Yl8uq1d+NPdxLhZhr/E+Zu3p3g1YgRM+Xv5LBXa0gtdAnrcVj9KD
+         509m2nigMTvcW7bgNNPXFrJiVtYR+jtkOsvMuRUWwBJs7BY3k9U26rfnSGyvSmDQYyaD
+         /bhiEt0w03nBEBCNoaPg/Obbih+OabqSd/tWyBCVBxiKoQ6UpK+pz6NI7F6siFwAzb5d
+         nn8A==
+X-Forwarded-Encrypted: i=1; AJvYcCV3jc/MU/Y30AEM2jaH4KNEAJNJGv70s0lmgkivbuH6AnxUEUIWiKslejhSIpRReQVVdJ7pOCwvR77H9bo=@vger.kernel.org, AJvYcCW/CjTVQabZXCvp+Y6kLcBq59NAGjkbF172WRXCsC+H8GeMUJNvXVPKz3MXp096pgBYh/p7bMJV@vger.kernel.org, AJvYcCWx/G+J4aA2zv9pe8oY2NRhCuIwr2P6M83xRGAv+DiCavUDKTA3EHqYHLpbPSWhY8nFf0qagfYD@vger.kernel.org, AJvYcCX1uAVaPz63tT9sFAMQS0jcW+3Z9mvEGMSuZQy9fxxjiJRfmWuT1k3UOOdqntym94gnMyrEnHmq6R64FQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu/3cQnxHYMKzzaGod9zN0fiW5VJp8fnMbt2Xjpms6SnEPaVbD
+	XVBr+3EzXdNlUUiFt/Rn6hFbEYBNezlyZCXJSZ5eczxyY4+KpQGENZynNA3tiFRdxfzhgZNwWfL
+	AQKsdieOgNDwNUuyE8pwMPM4T9+8=
+X-Gm-Gg: ASbGnctH4r1CYiSHTpT0f6R/ynyZppuxXloze2/h31gYVrZ2RO+oefqOPDWMYRph5iS
+	7QcBBmK2tJM+t1pJMC9ZC/jSIKOHpF0Gn6Ky54IEKye04tKRdZRzr+92TgJxkvqlIYVQHiw2pA0
+	sS6+I8s1k2hLAcWHmkPiY5SKNjGguh
+X-Google-Smtp-Source: AGHT+IGqE3jq7vSaeNlWZlaY6Rmf5YCoZyFZnfH4P/4GbXj+4pcuknK8aVGw3rlDDBSWZaMH1HIrWw3SGnuf2u0S7Lc=
+X-Received: by 2002:a05:6e02:16cb:b0:3d0:4b3d:75ba with SMTP id
+ e9e14a558f8ab-3d6e3ee1632mr36224115ab.4.1743776569662; Fri, 04 Apr 2025
+ 07:22:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Kent Overstreet <kent.overstreet@linux.dev>,
- linux-bcachefs@vger.kernel.org, vulab@iscas.ac.cn
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
-Subject: Re: [PATCH] bcachefs: Add error handling for zlib_deflateInit2()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
-Content-Type: text/plain; charset=UTF-8
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+ <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+ <87tt75efdj.fsf@igalia.com> <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
+ <CADvbK_d+vr-t7D1GZJ86gG6oS+Nzy7MDVh_+7Je6hqCdez4Axw@mail.gmail.com> <87r028dyye.fsf@igalia.com>
+In-Reply-To: <87r028dyye.fsf@igalia.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 4 Apr 2025 10:22:38 -0400
+X-Gm-Features: ATxdqUFqJZzOz7__HX2olSvI6YOoUaTBczjRn0Vq4YkQ2y534PCmeDUmyD3BkGU
+Message-ID: <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
+Subject: Re: [PATCH] sctp: check transport existence before processing a send primitive
+To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:m9dyMti2xaz8zIWG+21CGOyDk02i+2gzChDbCE1fHNANLYIuzOP
- u/jgZIhvsfBWcTOnJRbXcy906ATPuII7wXgXcHXcVpmXrqkDgGgHnKT6QgM3piWzFVWX0dH
- gPSi+1eZeJ5K2i0tQ1kzTyrCllXYo7RqgFpEKPpknl+kb48J46gysHz31FqkeGfOfbWWFd8
- lAARsG30s9aCY/PuxcriA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UAK3iNBi4KA=;+VCTiQDIa2IGjGyuE7S3R1YngIZ
- Kgbg7/4YxYlgHQ6HsymLPtsLEOZVPrfH6qANK878G8IHOVINgsP9m9X5nIxTn8C9GtiL+FGNw
- 8FUiU2FzbbUKt0OZ07Rs4q3LP4RQi8VAGj0ikq1Huzvrbc48xZl+bNOOsAAB5CthRzbqBNYEj
- W1YQjR7VQjuDc0Uk6Ebg3372DS3hp61mYtDtKJWni/o9UtRGTeERa5xZu9xYwLCpBcOfhWiwd
- bycrZbgFrBGD67Na8lKtSJ1Do0JcT3GWhKiF9Luv/hVskFGj/9mfSATL98kNCSXj7jt57+ori
- 0Z5AjafMs6q/8tj3cYZo6HRkD5Hhuy+N3nySptZCtVIvkiuu5mJ82PYBof+u6IMV58R7JG+WP
- nolmA5Gr6qae8mQjAgHwXqFd+m3rNhaaa77Vv+w9rAu6S+d3u4YpVrgmS5mCPasyzscrrKq5l
- UkkTkU1sgKWz1ddJWWzZArDVFl1g2ZIzdRS9jQto3VdQ724ItYXUoeqwnSzOyt/F8bmO/eK7H
- Z4tbtK+yc9B6iokrweD+9ycROP0QWNRtLycP86iJ7pLFBPXoCrwblGn7I0aWFpO894i8Hgd5O
- IJn0PPu0Rt3Hu4YnvbU2A38kp+gMxJ2vQgr+bZfDfOpsDCl7oblXB4Rcg6LLW9Xe0KM/IiWHV
- PwCP9Ghll3j0SnakfZSgCY4EN7yGiZBzgCdSeq8S2KNARn2MbiI0hOTzWw66jSdxK7uXRs40w
- UP4myRbXCO4Or8R67iYcYXDreI2iFX667RObnTt+uxdIm6PnZQXW5xkJEjuc7vlgi+uTG3HqN
- b/5JokO6A+o28cJE04avh/y4GUQD5/aLCeNY70Yf0BDk/XtLx2hpxwR7tVbSseZwMft5qjPqN
- icd5V5rhcq5j66mRuZQetS6NmxFyiad40GkAghysH6uIljqyPALRTS/rxIGkraL6Rb3BOiXSM
- i9k0VwzzAPaINpSOnZKSpfieWMNhrLDxCF925zgilbD7iG4lt6IgEZ+E+HvwHMI8zlGl7vbw9
- qM2cGmbvwuCtHBKmyrqUvQqyPg4WzOI4OQ9OM4i2xAs5RhxF1SM4QLt5F7Uo7/wqKfN6c6KBS
- 7pk+G6/2ozz1zyCM75Q7Q8qoPmVrWHKAzpuyYwV3kzvdcaUvB4Ool3TZDTsyeK4ygtn0gwkwu
- pgkUfWcJrRp00g9I6fk3vXRHb1JQ3FAIcrxG3Su6QT37B3nT4UXJmEP7r1RJe/32mIzjvHXs9
- GyOfTgQcKkiXapguIW9LYuGKrTsqJbjSzWZYQjLSkJJaTNf3mkivUNs5YN1hJmCLDiZlSonh8
- PuIbdKdI6kNEv4b2wWX/Y2d0Hxi/rTrEluWKhGfuUofxf14nhP13OElXEoSilrAsDqSgUVxbj
- Cc2/UqDRKYXnYO6V5v1H1ey8pLHfF92EN3in37HZvF903fi6cVBZRbIuJ/8f43oDE3NWo7o9m
- mH9o4/uZlGgmkTVV+TY4foctj3hpQxuF9y2xfqE9Z+WYfQwN/Z8HC3aiMRtc35LDR5qa/TA==
 
-=E2=80=A6
-> > Add an error check and return 0 immediately if the initialzation fails=
-.
+On Fri, Apr 4, 2025 at 6:05=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@ig=
+alia.com> wrote:
 >
-> Applied
+> Thanks for the suggestion!
+>
+> On Thu, Apr 03 2025 at 14:44:18, Xin Long <lucien.xin@gmail.com> wrote:
+>
+> > @@ -9234,7 +9236,7 @@ static int sctp_wait_for_sndbuf(struct
+> > sctp_association *asoc, long *timeo_p,
+> >                                           TASK_INTERRUPTIBLE);
+> >                 if (asoc->base.dead)
+> >                         goto do_dead;
+> > -               if (!*timeo_p)
+> > +               if (!*timeo_p || (t && t->dead))
+> >                         goto do_nonblock;
+> >                 if (sk->sk_err || asoc->state >=3D SCTP_STATE_SHUTDOWN_=
+PENDING)
+> >                         goto do_error;
+>
+> I suppose checking t->dead should be done after locking the socket
+> again, where sctp_assoc_rm_peer() may have had a chance to run, rather
+> than here?
+>
+It shouldn't matter, as long as it's protected by the socket lock.
+The logic would be similar to checking asoc->base.dead.
 
-Did you try to avoid a typo in such a change description?
+> Something like this:
+>
+> @@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
+tion *asoc, long *timeo_p,
+>         pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
+>                  *timeo_p, msg_len);
+>
+> -       /* Increment the association's refcnt.  */
+> +       /* Increment the transport and association's refcnt. */
+> +       if (transport)
+> +               sctp_transport_hold(transport);
+>         sctp_association_hold(asoc);
+>
+>         /* Wait on the association specific sndbuf space. */
+> @@ -9252,6 +9256,8 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
+tion *asoc, long *timeo_p,
+>                 lock_sock(sk);
+>                 if (sk !=3D asoc->base.sk)
+>                         goto do_error;
+> +               if (transport && transport->dead)
+> +                       goto do_nonblock;
+>
+>                 *timeo_p =3D current_timeo;
+>         }
+> @@ -9259,7 +9265,9 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
+tion *asoc, long *timeo_p,
+>  out:
+>         finish_wait(&asoc->wait, &wait);
+>
+> -       /* Release the association's refcnt.  */
+> +       /* Release the transport and association's refcnt. */
+> +       if (transport)
+> +               sctp_transport_put(transport);
+>         sctp_association_put(asoc);
+>
+>         return err;
+>
+>
+> So by the time the sending thread re-claims the socket lock it can tell
+> whether someone else removed the transport by checking transport->dead
+> (set in sctp_transport_free()) and there's a guarantee that the
+> transport hasn't been freed yet because we hold a reference to it.
+>
+> If the whole receive path through sctp_assoc_rm_peer() is protected by
+> the same socket lock, as you said, this should be safe. The tests I ran
+> seem to work fine. If you're ok with it I'll send another patch to
+> supersede this one.
+>
+LGTM.
 
-Regards,
-Markus
+>
+> > You will need to reintroduce the dead bit in struct sctp_transport and
+> > set it in sctp_transport_free(). Note this field was previously removed=
+ in:
+> >
+> > commit 47faa1e4c50ec26e6e75dcd1ce53f064bd45f729
+> > Author: Xin Long <lucien.xin@gmail.com>
+> > Date:   Fri Jan 22 01:49:09 2016 +0800
+> >
+> >     sctp: remove the dead field of sctp_transport
+>
+> I understand that none of the transport->dead checks from that commit
+> are necessary anymore, since they were replaced by refcnt checks, and
+> that we'll only bring the bit back for this particular check we're doing
+> now, correct?
+Correct, only the 'dead' bit and set it in sctp_transport_free().
+
+Thanks.
 
