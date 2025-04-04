@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-128162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84EDA7B2D0
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:04:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA85CA7B2DC
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68FC23AF836
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B01717355D
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AFD3C38;
-	Fri,  4 Apr 2025 00:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1141F16B;
+	Fri,  4 Apr 2025 00:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHYUn5Ag"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcZ7mmNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AC212B94;
-	Fri,  4 Apr 2025 00:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CCD1C68F;
+	Fri,  4 Apr 2025 00:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725048; cv=none; b=MDo1yUXpNFzFrVb+gQ69gDzTN/RmWM6IwAO6w01Ke/E7sn2G2vzS5lAMtBewjCB4rSRn9sbTE40dOivQrCe/HGAyo7c4zJafGIjWHdEtUc2uRCLVzpj/gix7dWB7cegamRrx0zmXFlOaVpOScFhcOPqJ1mlhmWfDxw45iY2i6PQ=
+	t=1743725051; cv=none; b=GYUXaX4T+6AoP91AlKNPDaAFlHfiq49boaYmHFTvDLKg9Ta332se5nTBTrNilzoaA6RUMERVly/nG4HwHgvK0Vy1jssjrAFMIvf6FfdNNa6M4IW+CuphMBz50y7Oyg9p/Z0xGYxDtfri1PpLIcgxMJDxOpgWq169ID90AzKjHhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725048; c=relaxed/simple;
-	bh=N1rx+buJgba+EBFZDjpuHz7VBrsBZQiPgC9nHkyWe28=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bM3Ap4Q3wUDymVZf6mndcrj2dl6tclOBoLDb+5S4TFTqw8jJ7NWiROB13t6k4wGR05grithWvASJhgUbKHiKfbdqJ+YzzfQ4hXIGgowyTyjk2PANjwcG9jocwyZ6ijN40U1GVYYRjGDbplv0NUxnudIkti53kNNs6JwCgTs8XhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHYUn5Ag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4D1C4CEE3;
-	Fri,  4 Apr 2025 00:04:06 +0000 (UTC)
+	s=arc-20240116; t=1743725051; c=relaxed/simple;
+	bh=dtZ31VqiZ0O9EDaiThtnCOlAuWfoY2HcCWNL9e7r/bc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Ohk3yqLDHeEdZlbNqP30JQ0h2FIF0xbj7Mb5w+j2IqD1c4LAZHPFq0rXtdtL3Hzc6SvTcJiRv8bIRgRMeApaxkI1GcLMtmn1wcO4o1kvmOLTvM35iFTmxcJdktF7t1HWjMkMByfcGJsXeTo7prEMajv0kTnf9knyUVhq8PwrJD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcZ7mmNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234FDC4CEEB;
+	Fri,  4 Apr 2025 00:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725047;
-	bh=N1rx+buJgba+EBFZDjpuHz7VBrsBZQiPgC9nHkyWe28=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OHYUn5AgMGdHuRCsuNl+u/8Ksx98wbWw8jgl+4Z3PvHOztRwR/Bp6L/232eV1R+u7
-	 J0VLq++fgUQQBc9RnpVM/zNIwi1x52cdQGsNUkzADBM0s5Z1xxUiq5dOiz96GFe6Z+
-	 Zuas4ry0tM29V7AOR5C841moSuA936/QJZnObCtWkwUdOg/fnuiKVcsQdrzFddSxcv
-	 eh7iNOU2edDymGwtbLPHre8cAbB/4467hrXkw2TnO7zNAvhCbVa3MDMJWsZ8ToAgxL
-	 g64h8LnyrQ4tutEZJNPFuy8L4QGovTD1Lvu+U7cTZcc7rqBHweC/rOTHCEZopBeATk
-	 7BXy19C4g2zSw==
+	s=k20201202; t=1743725049;
+	bh=dtZ31VqiZ0O9EDaiThtnCOlAuWfoY2HcCWNL9e7r/bc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZcZ7mmNytVbxG3LsOIbdTVp2bovz8kSnW1QL0gD7KYNr9eiK589yJjJA15HtXlyST
+	 4NG79lysrp0ZwVMxzed5ywP33T46pAYeT+c9iX8khTNEw32+qKmoCSoQf/sHftCs43
+	 FDYymSz7euu3zYAxoKB05gXkyXMAHDxhoOunQXUMY2zuLFgo/k/e36zyofB2EvMF9T
+	 +0BKDWSDkBNx1QfGkbXZ0fQLkGCH0IF/hYShs0T/xny4KaokasUXUt24YSecP14W+t
+	 PL4NxLAzquR4KVZqygLl9HqLjWog5nBtTGlAd8VvXR2fGv8XM5P9NcRjFFO4WEsD/Y
+	 qvE+IoZaYLogw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+Cc: Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ignat@cloudflare.com,
-	davem@davemloft.net,
-	andy@kernel.org,
-	angelogioacchino.delregno@collabora.com,
-	Jonathan.Cameron@huawei.com,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 01/23] crypto: ecdsa - Harden against integer overflows in DIV_ROUND_UP()
-Date: Thu,  3 Apr 2025 20:03:38 -0400
-Message-Id: <20250404000402.2688049-1-sashal@kernel.org>
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	shuah@kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 02/23] selftests/bpf: Fix stdout race condition in traffic monitor
+Date: Thu,  3 Apr 2025 20:03:39 -0400
+Message-Id: <20250404000402.2688049-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404000402.2688049-1-sashal@kernel.org>
+References: <20250404000402.2688049-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,99 +71,115 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit b16510a530d1e6ab9683f04f8fb34f2e0f538275 ]
+[ Upstream commit b99f27e90268b1a814c13f8bd72ea1db448ea257 ]
 
-Herbert notes that DIV_ROUND_UP() may overflow unnecessarily if an ecdsa
-implementation's ->key_size() callback returns an unusually large value.
-Herbert instead suggests (for a division by 8):
+Fix a race condition between the main test_progs thread and the traffic
+monitoring thread. The traffic monitor thread tries to print a line
+using multiple printf and use flockfile() to prevent the line from being
+torn apart. Meanwhile, the main thread doing io redirection can reassign
+or close stdout when going through tests. A deadlock as shown below can
+happen.
 
-  X / 8 + !!(X & 7)
+       main                      traffic_monitor_thread
+       ====                      ======================
+                                 show_transport()
+                                 -> flockfile(stdout)
 
-Based on this formula, introduce a generic DIV_ROUND_UP_POW2() macro and
-use it in lieu of DIV_ROUND_UP() for ->key_size() return values.
+stdio_hijack_init()
+-> stdout = open_memstream(log_buf, log_cnt);
+   ...
+   env.subtest_state->stdout_saved = stdout;
 
-Additionally, use the macro in ecc_digits_from_bytes(), whose "nbytes"
-parameter is a ->key_size() return value in some instances, or a
-user-specified ASN.1 length in the case of ecdsa_get_signature_rs().
+                                    ...
+                                    funlockfile(stdout)
+stdio_restore_cleanup()
+-> fclose(env.subtest_state->stdout_saved);
 
-Link: https://lore.kernel.org/r/Z3iElsILmoSu6FuC@gondor.apana.org.au/
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+After the traffic monitor thread lock stdout, A new memstream can be
+assigned to stdout by the main thread. Therefore, the traffic monitor
+thread later will not be able to unlock the original stdout. As the
+main thread tries to access the old stdout, it will hang indefinitely
+as it is still locked by the traffic monitor thread.
+
+The deadlock can be reproduced by running test_progs repeatedly with
+traffic monitor enabled:
+
+for ((i=1;i<=100;i++)); do
+  ./test_progs -a flow_dissector_skb* -m '*'
+done
+
+Fix this by only calling printf once and remove flockfile()/funlockfile().
+
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250213233217.553258-1-ameryhung@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ecc.c         |  2 +-
- crypto/ecdsa-p1363.c |  2 +-
- crypto/ecdsa-x962.c  |  4 ++--
- include/linux/math.h | 12 ++++++++++++
- 4 files changed, 16 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/network_helpers.c | 33 ++++++++-----------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/crypto/ecc.c b/crypto/ecc.c
-index 50ad2d4ed672c..6cf9a945fc6c2 100644
---- a/crypto/ecc.c
-+++ b/crypto/ecc.c
-@@ -71,7 +71,7 @@ EXPORT_SYMBOL(ecc_get_curve);
- void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
- 			   u64 *out, unsigned int ndigits)
+diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
+index 80844a5fb1fee..95e943270f359 100644
+--- a/tools/testing/selftests/bpf/network_helpers.c
++++ b/tools/testing/selftests/bpf/network_helpers.c
+@@ -771,12 +771,13 @@ static const char *pkt_type_str(u16 pkt_type)
+ 	return "Unknown";
+ }
+ 
++#define MAX_FLAGS_STRLEN 21
+ /* Show the information of the transport layer in the packet */
+ static void show_transport(const u_char *packet, u16 len, u32 ifindex,
+ 			   const char *src_addr, const char *dst_addr,
+ 			   u16 proto, bool ipv6, u8 pkt_type)
  {
--	int diff = ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
-+	int diff = ndigits - DIV_ROUND_UP_POW2(nbytes, sizeof(u64));
- 	unsigned int o = nbytes & 7;
- 	__be64 msd = 0;
+-	char *ifname, _ifname[IF_NAMESIZE];
++	char *ifname, _ifname[IF_NAMESIZE], flags[MAX_FLAGS_STRLEN] = "";
+ 	const char *transport_str;
+ 	u16 src_port, dst_port;
+ 	struct udphdr *udp;
+@@ -817,29 +818,21 @@ static void show_transport(const u_char *packet, u16 len, u32 ifindex,
  
-diff --git a/crypto/ecdsa-p1363.c b/crypto/ecdsa-p1363.c
-index eaae7214d69bc..4454f1f8f33f5 100644
---- a/crypto/ecdsa-p1363.c
-+++ b/crypto/ecdsa-p1363.c
-@@ -22,7 +22,7 @@ static int ecdsa_p1363_verify(struct crypto_sig *tfm,
- {
- 	struct ecdsa_p1363_ctx *ctx = crypto_sig_ctx(tfm);
- 	unsigned int keylen = crypto_sig_keysize(ctx->child);
--	unsigned int ndigits = DIV_ROUND_UP(keylen, sizeof(u64));
-+	unsigned int ndigits = DIV_ROUND_UP_POW2(keylen, sizeof(u64));
- 	struct ecdsa_raw_sig sig;
+ 	/* TCP or UDP*/
  
- 	if (slen != 2 * keylen)
-diff --git a/crypto/ecdsa-x962.c b/crypto/ecdsa-x962.c
-index 6a77c13e192b1..90a04f4b9a2f5 100644
---- a/crypto/ecdsa-x962.c
-+++ b/crypto/ecdsa-x962.c
-@@ -81,8 +81,8 @@ static int ecdsa_x962_verify(struct crypto_sig *tfm,
- 	struct ecdsa_x962_signature_ctx sig_ctx;
- 	int err;
- 
--	sig_ctx.ndigits = DIV_ROUND_UP(crypto_sig_keysize(ctx->child),
--				       sizeof(u64));
-+	sig_ctx.ndigits = DIV_ROUND_UP_POW2(crypto_sig_keysize(ctx->child),
-+					    sizeof(u64));
- 
- 	err = asn1_ber_decoder(&ecdsasignature_decoder, &sig_ctx, src, slen);
- 	if (err < 0)
-diff --git a/include/linux/math.h b/include/linux/math.h
-index f5f18dc3616b0..0198c92cbe3ef 100644
---- a/include/linux/math.h
-+++ b/include/linux/math.h
-@@ -34,6 +34,18 @@
-  */
- #define round_down(x, y) ((x) & ~__round_mask(x, y))
- 
-+/**
-+ * DIV_ROUND_UP_POW2 - divide and round up
-+ * @n: numerator
-+ * @d: denominator (must be a power of 2)
-+ *
-+ * Divides @n by @d and rounds up to next multiple of @d (which must be a power
-+ * of 2). Avoids integer overflows that may occur with __KERNEL_DIV_ROUND_UP().
-+ * Performance is roughly equivalent to __KERNEL_DIV_ROUND_UP().
-+ */
-+#define DIV_ROUND_UP_POW2(n, d) \
-+	((n) / (d) + !!((n) & ((d) - 1)))
+-	flockfile(stdout);
++	if (proto == IPPROTO_TCP)
++		snprintf(flags, MAX_FLAGS_STRLEN, "%s%s%s%s",
++			 tcp->fin ? ", FIN" : "",
++			 tcp->syn ? ", SYN" : "",
++			 tcp->rst ? ", RST" : "",
++			 tcp->ack ? ", ACK" : "");
 +
- #define DIV_ROUND_UP __KERNEL_DIV_ROUND_UP
+ 	if (ipv6)
+-		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d",
++		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d%s\n",
+ 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
+-		       dst_addr, dst_port, transport_str, len);
++		       dst_addr, dst_port, transport_str, len, flags);
+ 	else
+-		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d",
++		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d%s\n",
+ 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
+-		       dst_addr, dst_port, transport_str, len);
+-
+-	if (proto == IPPROTO_TCP) {
+-		if (tcp->fin)
+-			printf(", FIN");
+-		if (tcp->syn)
+-			printf(", SYN");
+-		if (tcp->rst)
+-			printf(", RST");
+-		if (tcp->ack)
+-			printf(", ACK");
+-	}
+-
+-	printf("\n");
+-	funlockfile(stdout);
++		       dst_addr, dst_port, transport_str, len, flags);
+ }
  
- #define DIV_ROUND_DOWN_ULL(ll, d) \
+ static void show_ipv6_packet(const u_char *packet, u32 ifindex, u8 pkt_type)
 -- 
 2.39.5
 
