@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-128270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC85A7B429
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:33:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF5DA7B41E
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D69D57A8714
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:29:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C027A189B5E7
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E278621C9E3;
-	Fri,  4 Apr 2025 00:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D871419D8B2;
+	Fri,  4 Apr 2025 00:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QnEjRs5M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUtHOAF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D91221C188;
-	Fri,  4 Apr 2025 00:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FA121CC5F;
+	Fri,  4 Apr 2025 00:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725298; cv=none; b=EXlxc4f4FFa3TnZ+EjAnsZKSFAE7kkZo+8szO7yxyxnYhhbGPmkZElxc71AmhCCNqy8DjElJDuTlUKWuqGhMh46gFz2uGI2/JfUGzQovomzbYGSwHRq3uu+KMkXL9BNwyWuGEMaoMaEzYdj8UujSZvgLwnFe+d5hkIrZeZKm9Lw=
+	t=1743725300; cv=none; b=YI6OJUWEQfVq9z+j1KZRAeMPhGkg9sONDGYnqOrvNbr1c5hcgyrK+YLTdsZ2KjWMSqrdFEQyY3Z8BVtS1uSN/YxbCdVlE8291FBh7vjd2x3k6ZifEeBas+bErOuhj+u4hIf0EUJrplqzVM/6KIynmpj35EKLAShTmn4P84E59AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725298; c=relaxed/simple;
-	bh=Jw2vNYlpCXcAjx4h9+VdViP6otNJSnyGM8rTn0+NN38=;
+	s=arc-20240116; t=1743725300; c=relaxed/simple;
+	bh=33HMVPuk/lOrNcVuJK/s1l/HE5LH4t7VwHK418H+oA0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C6UGViukAiMBWmoNgNsV+PXfLsFFWcA0eeN0lrrDtkvPYQR0XdRlWKKC+SqqLi2l2rltp/hrQXBlhBvr4/6i7q/SL3963NYRCTX0Iv3g/zcbIeNmtkJ3gzvZ5J0mtfuXy8Wa6iEe049qqRxDJxkm7lBg0Awv6eOnw6rzRDKQ9+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QnEjRs5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00ADC4CEE5;
-	Fri,  4 Apr 2025 00:08:17 +0000 (UTC)
+	 MIME-Version; b=V1+OhN301xaI2RQqScDSC4yCNzFDvM6Yb2PkLvOGPiVPW0iIX8RecmKAjBsRt7RyeYGrizzBl4T5goyojTi8S7IgyE9Wbqqqh+u86JWFr2XaAtfNuHej2bs4mf9gfsNNVXh4qPtm9J9At8ACBFN6w21saAvu+3ONEYEOFe8NRoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUtHOAF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D610C4CEE9;
+	Fri,  4 Apr 2025 00:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725298;
-	bh=Jw2vNYlpCXcAjx4h9+VdViP6otNJSnyGM8rTn0+NN38=;
+	s=k20201202; t=1743725300;
+	bh=33HMVPuk/lOrNcVuJK/s1l/HE5LH4t7VwHK418H+oA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnEjRs5MIVFqJgkuFGIvEQ0cYm1XdlXWJfaD7MtcAYW37hZSXTOqoBbKCQYYNCxfu
-	 qA28UnOnhHWe+LCdZH2tSnS02GN+uyWlJIIL0bhY6t2/2jIwBqEJZX7mM4v/9VKmvb
-	 3iFMH9zii48vAh6o9+d3Lkbol8xzYO2cITnaq9yNsff6xV/VmyLfDA/VdkOeFWIiPf
-	 D8P+Q8SvFstqGATfaif7gophqkVaizn15USkQkng+mStQtRIa6AO+jLa+R9j4JjKqs
-	 yFemBUyRFgDMYfFcr60IltnV2WHBoPhPrYPhBV2MPpEXT3iluHnwNXQvYk70tOK6+v
-	 HJTXuLuNxdt3Q==
+	b=hUtHOAF3p/fn0ujJVw8ABM3Lp2HiiWH5QXqUaGm+WG8kr0EiTIS6e2vV9ctL65arL
+	 /OtpGf6B0UsX2UuoRoxGocCZBbc/08vq0QthDdTDr3oHW7Qwcu2YuFrAKJem8N/874
+	 uJ35s8gM+4iqwf5pWIJcBN8eg2yLteXiuOL5y9O3tLBDjxUyPZJ83FkLAmoxSh/YRF
+	 5/KBLyhH+e1qRn//dIw/cMbEBZ+P6OZ20O36TZ1+iJWGUDoHoEglAcOimUTCigQAJ+
+	 7j60ixaQYNNNb2pMFaDDsJH86ypjURCQOmSTLK2kAfW9RDQtlfdFI/OW23Xr/+DQ7X
+	 ve0oyiOm6zcDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: Heiko Stuebner <heiko@sntech.de>,
 	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sre@kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/6] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
-Date: Thu,  3 Apr 2025 20:08:04 -0400
-Message-Id: <20250404000809.2689525-3-sashal@kernel.org>
+	mturquette@baylibre.com,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 4/6] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
+Date: Thu,  3 Apr 2025 20:08:05 -0400
+Message-Id: <20250404000809.2689525-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000809.2689525-1-sashal@kernel.org>
 References: <20250404000809.2689525-1-sashal@kernel.org>
@@ -66,52 +68,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit e3f88665a78045fe35c7669d2926b8d97b892c11 ]
+[ Upstream commit b20150d499b3ee5c2d632fbc5ac94f98dd33accf ]
 
-In the ssi_protocol_probe() function, &ssi->work is bound with
-ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
-within the ssip_pn_ops structure is capable of starting the
-work.
+of_clk_get_hw_from_clkspec() checks all available clock-providers by
+comparing their of nodes to the one from the clkspec. If no matching
+clock provider is found, the function returns -EPROBE_DEFER to cause a
+re-check at a later date. If a matching clock provider is found, an
+authoritative answer can be retrieved from it whether the clock exists
+or not.
 
-If we remove the module which will call ssi_protocol_remove()
-to make a cleanup, it will free ssi through kfree(ssi),
-while the work mentioned above will be used. The sequence
-of operations that may lead to a UAF bug is as follows:
+This does not take into account that the clock-provider may never
+appear, because it's node is disabled. This can happen when a clock is
+optional, provided by a separate block which never gets enabled.
 
-CPU0                                    CPU1
+One example of this happening is the rk3588's VOP, which has optional
+additional display clocks coming from PLLs inside the hdmiphy blocks.
+These can be used for better rates, but the system will also work
+without them.
 
-                        | ssip_xmit_work
-ssi_protocol_remove     |
-kfree(ssi);             |
-                        | struct hsi_client *cl = ssi->cl;
-                        | // use ssi
+The problem around that is described in the followups to[1]. As we
+already know the of node of the presumed clock provider, add a check via
+of_device_is_available() whether this is a "valid" device node. This
+prevents eternal defer loops.
 
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in ssi_protocol_remove().
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/dri-devel/20250215-vop2-hdmi1-disp-modes-v1-3-81962a7151d6@collabora.com/ [1]
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250222223733.2990179-1-heiko@sntech.de
+[sboyd@kernel.org: Reword commit text a bit]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hsi/clients/ssi_protocol.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hsi/clients/ssi_protocol.c b/drivers/hsi/clients/ssi_protocol.c
-index 365b5d5967acc..5c139d7851729 100644
---- a/drivers/hsi/clients/ssi_protocol.c
-+++ b/drivers/hsi/clients/ssi_protocol.c
-@@ -403,6 +403,7 @@ static void ssip_reset(struct hsi_client *cl)
- 	del_timer(&ssi->rx_wd);
- 	del_timer(&ssi->tx_wd);
- 	del_timer(&ssi->keep_alive);
-+	cancel_work_sync(&ssi->work);
- 	ssi->main_state = 0;
- 	ssi->send_state = 0;
- 	ssi->recv_state = 0;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 56be3f97c265a..6ef5bf61fdd47 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4727,6 +4727,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
+ 	if (!clkspec)
+ 		return ERR_PTR(-EINVAL);
+ 
++	/* Check if node in clkspec is in disabled/fail state */
++	if (!of_device_is_available(clkspec->np))
++		return ERR_PTR(-ENOENT);
++
+ 	mutex_lock(&of_clk_mutex);
+ 	list_for_each_entry(provider, &of_clk_providers, link) {
+ 		if (provider->node == clkspec->np) {
 -- 
 2.39.5
 
