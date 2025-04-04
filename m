@@ -1,80 +1,88 @@
-Return-Path: <stable+bounces-128338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA62A7C1BC
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 18:47:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B28AA7C1C0
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 18:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593491795EC
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C152189DB58
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E661F2080F6;
-	Fri,  4 Apr 2025 16:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BF820D4E4;
+	Fri,  4 Apr 2025 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/kXM6+V"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D4/gF7VX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A22F20C004;
-	Fri,  4 Apr 2025 16:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DB91D5CC4
+	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 16:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743785255; cv=none; b=Gzfs+gXnEcyaGGnZd7oE/bwDOZlw2bsk4uEyx9ZazwM9HhQ8ItWeZb5vjyzURHALB/Ncfriyao6FPJZZvQl2KXCZXFVRLQ6BYx5FVfSOu1xd0BP2fUiYDAf2W3lgWetvwrJ3MpHzXP+F8d1j5z1MOlPwCYgdRDjQBouL+Te4zi0=
+	t=1743785355; cv=none; b=GfUUke9cM38xhUzC7kYhsyMpoFDD1woeyGjaX4CfM78Dmjjjxs3UhwZRxU4cfHqkfGzW4fu3wnI7nj5LV9VlKZMLI52Q4RkGnQQhtE7ltVn4SLHE+m/CF2riZF8QjThvV5LvxrdSuhsHVm+gFVjd5BXkThSFVRCEQbaCtRNaIEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743785255; c=relaxed/simple;
-	bh=9Iz38orDDWGWK2AIO290K6VwdNwDkNahYRb4oLv4U2A=;
+	s=arc-20240116; t=1743785355; c=relaxed/simple;
+	bh=PYNaU9lNwh0QL80kukIz0Ezcn5YI0WJC/oBVbZDs7CM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U/oyBqxY6k8jeVDb/d/MgnRadpYVUZgSvdlSouxU0CJbZUfB4TpR//Yr4Cjv8j4+ZwQywoww+3Hpco5vcO5yr+I1dlf0xNkK90ZvO5eEoBJs10xJCg5ohv8Lac58iQMj9TBxDibesmUI+X4Jv0g4FpI1hTrHsHz7evcIF3f0DJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/kXM6+V; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-72c0b4a038fso1473262a34.0;
-        Fri, 04 Apr 2025 09:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743785253; x=1744390053; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4qHFlUEgPfk8I50kLbzLY6Bfpxn+xaMagBJlQnZG6l0=;
-        b=O/kXM6+VCY7OfpkwJUs+dAp7P42QlYG8OEvl3igkiQo3CIri4LITHG0yDuOLf3SXxz
-         HvoXxv42uF8kMeltwg/JAIldl3+OauFR7NzPyiKTM+NMDv/p22REZeSab3sr9PGhTb+m
-         YHXy6HLHMXgN8Gqj7HiThNtwWXs0QTHIvfSYPIU7v2kmdaYv0cS6cRVExVx7tfJ/jTWj
-         Z/hwOXlVFZcxaeL7bZDlbl+PtoOCrNreewQC+DhSC49Rk3YV+Y6G5iDM2zB3239Zsrx2
-         hJZKlXIGKaoefFA/N5VqeUn7lee8QMxHZc+XhpNtXN/u9p3NgwFKGxIWl617IvaJI8Uq
-         AERg==
+	 In-Reply-To:Content-Type; b=jkoTqnCinqoT4ThWjWafBBMvmkObCtoaqmXkJ3ErgIYuWMNDjF9Kw8MQ3CyiEZjmf70Oa77whYaK4kBC/8JX87Y+TqqUfbLFn7x/MW8pmllFhyYpHNsb2aA2r0tpImFaDpuZEzIQYTflx+fKYOiQBbLbsFkCzJOFSVzQoO233yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D4/gF7VX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743785352;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UOZ43bBKMC//JtK0X3dZk7WsbqEz50U4BfU4WlfUSoc=;
+	b=D4/gF7VX7dDqVEimYewPi3q8vFjXW+uF5R8aFFBPFkwG2XgYod9coX2yT4Sd+kZKvrFePN
+	4ipazGwQum2M3TBu4ckAJ7+vBtQ17IDVvbB0eh7AKUV7T0SsUExnKBGgG29wfd9mszy/7x
+	FA25GGI68fXwicCFmleadViAKEuudgw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-pPjdxC4TNJCTVguDkQmgFw-1; Fri, 04 Apr 2025 12:49:10 -0400
+X-MC-Unique: pPjdxC4TNJCTVguDkQmgFw-1
+X-Mimecast-MFC-AGG-ID: pPjdxC4TNJCTVguDkQmgFw_1743785349
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf327e9a2so18994155e9.3
+        for <Stable@vger.kernel.org>; Fri, 04 Apr 2025 09:49:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743785253; x=1744390053;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
+        d=1e100.net; s=20230601; t=1743785349; x=1744390149;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4qHFlUEgPfk8I50kLbzLY6Bfpxn+xaMagBJlQnZG6l0=;
-        b=Q7pJHUsZk6nr7MwH2sfg87OK5gv113MsQaeBwK+B3tAxVlMYOIJHv51WqKnnEhs8mf
-         qgvP4bZUh4IgTmlrVqCmi3sT3+CqdkHQjaouXgDIKIypjqit3McEZo6/Pgh7Uu+mnzIG
-         3LgJ98GNpF3E18O296WdQctcowg0aNZ2c//tlu6YbKJeGnwSPDZWWw854IOzOc2zKAWz
-         FZvQWQOaKVT4/o6WjtvG/8B7lw6EIZP0ibCPVmcBYwejNQZgl5wA56Go9xxWaRlTmG1P
-         EWLbn8ZRh3iSwWZYHkmtmcfAVi4VkF2SZrCunzN5Or401SxA64rJGvm5whMPyg3sWbo/
-         vlSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhUxsgYmRajWV+jt5+lCON/K7NgcZMuo9pD4v81F/eS7md/d+dhteJMSJ36HSZyyxoddzwsoT4d1zUxeg=@vger.kernel.org, AJvYcCXIfgR1Fi1tnrGf3Vwv0RjYSXAOpsw3zzi5XYvIE21P3jtT2t/eZUTrybeM2tDtJPC/eCCPg9KY@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoaN/SB2oFOlclMXE6lcuGNqITzG1DU3XswrsSxayEEn7zZ62Z
-	ubBUpq8dSULwYwScPdS84wBgwiXv6PwBc201XF8VyVo5cfAjeKlX
-X-Gm-Gg: ASbGncv90BzcYka4yAIqmwe7vYd0Redg8+Z5W52hNf46tyKDqFhiwwNmSbZZt+6Z0Lv
-	tzk1V3NpXRJNuOlkeu3q7PXyYJheUJUzt3ztudeQGfOFx44Qd2hkyMm0vOXq2Vkm1DQMhaz8Ooi
-	h8ro/pCQquG1qVF6ovhXhyjBmchPbaQewGTYx18Ym7WcFTorDda46wAHdAwRCijVd4Yg1hOAgBT
-	gWZxrwkvIFKqE6sill2vULGRYnGy9vJW61XS/qVg1hA46PV3eGBJkB49LZZcj8tUaLEhU16p4o9
-	JZ1EInZ5S2pmvpmnWD/4UULE8aM2leNctp3Sy7ee6i6pdD/nRaOFOYbs2SZfcXbyDCteVzFr
-X-Google-Smtp-Source: AGHT+IFCDH1WQvthzsuCflHZaq+IszPEDGqFQeCGyzAal9s00Vvb1OROP01ro5EUqCKz7yjuxRvDLw==
-X-Received: by 2002:a05:6830:d84:b0:72a:48d4:290b with SMTP id 46e09a7af769-72e3686ffb6mr2691302a34.26.1743785253004;
-        Fri, 04 Apr 2025 09:47:33 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72e3043cc8esm726012a34.0.2025.04.04.09.47.31
+        bh=UOZ43bBKMC//JtK0X3dZk7WsbqEz50U4BfU4WlfUSoc=;
+        b=JQA9VAigRYberBAR44VXRODXy5sWfyAe5I9oZgVeQoiYAPB+TM9C4/x22RoD1fgtUx
+         xEaqHzDtrLK77xlxyT95PBoCaF4HDieSNMpwLE9sXJIUNbGitcRsG7b42X31qZHWg6Rj
+         cZPfY+HNP0esXVca5fXdp1rHqGZCBn2H3Wg+4DehfQ9+I6TCOcf/hNOteJObHl8cGW6s
+         lkmpy3019PyXdMPglB+4aAJVMu1QMhJB0voZqhBJRYZep2iSd/1k8LEup+tdvUb6x9dC
+         x9HJ3JiHxEGQ42MEX9u05i5aRGUeD4v5ZRlEk8gnzEzo5ZMf/kWDqLCwjcBs9NVntff6
+         Fnvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXt7ez3PRmKB2zKJPQVJ60P9sHLv5BU7iF0Peyy0zrxNLerkahgZbMgMAWz41Shzu9QpIsIqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt1KRrTSzlypjtROnprq++rhYeh8gEzw+I0wsvGDScQ6AFXo3i
+	WiXkIZFdsGXX5yXuYRCmyLJd4Qq+tpkWGhAAztT7+3uFA4w7whXyScmEDlzWlinFFFplJ2QnoPz
+	GDLqkU0SChpPwjSUVlMVK9wvrYxfuoYanBTkqXcxw6eHuQPMJ8L9u8g==
+X-Gm-Gg: ASbGncuO9H7kRYUWmEXiR7J5vBKRcPW/CtnRM+tqzeiZQSayny2nxECH38bh6WbQ9OO
+	piy75fkTrnW2CgvFZn/Itg0WXchQX/maO5j0Vxy1GyrcEXaY3fQXmKbXI7dSxHpWVMFTHc3Hv/9
+	Ynd4exXwVQSlgRz6/LScuPSA0Fa/La7amCxXsrlk3tVDyhb2ODrUW43sjp3Ml1hPexPPDq6aOpw
+	jScJq6WNfnadk9ZZj0ADD4s+nVUz67Ts17vWiAFC+MJAxImMDO6bRi3m6zlp0pB58iLDTJXv9Gb
+	xkFZ78fOGw9v8RaF5/HT3OP0qCNWp/NZshIOyK2N+Ez2WuY15kAJCr0g4tMLPx438c/osRGFs2z
+	Kcmi7qoIT/G/MOWJqp11/r6ILzJUuVezCe0mthal+lxc=
+X-Received: by 2002:a05:600c:5117:b0:43d:40b0:5b with SMTP id 5b1f17b1804b1-43ee076924bmr1492165e9.25.1743785349435;
+        Fri, 04 Apr 2025 09:49:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1GRfHkFTJWrFhSjeHpBspaUl1rM/3LxWWUNyF4GOrAnX6k7onjQMMhVScWt01nnZ/ucUY1Q==
+X-Received: by 2002:a05:600c:5117:b0:43d:40b0:5b with SMTP id 5b1f17b1804b1-43ee076924bmr1491965e9.25.1743785349001;
+        Fri, 04 Apr 2025 09:49:09 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c71b:7900:8752:fae3:f9c9:a07e? (p200300cbc71b79008752fae3f9c9a07e.dip0.t-ipconnect.de. [2003:cb:c71b:7900:8752:fae3:f9c9:a07e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec1794e94sm54808185e9.31.2025.04.04.09.49.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 09:47:32 -0700 (PDT)
-Message-ID: <2725cea1-4bb2-4adf-a43a-8edffb5a3fb8@gmail.com>
-Date: Fri, 4 Apr 2025 09:47:30 -0700
+        Fri, 04 Apr 2025 09:49:08 -0700 (PDT)
+Message-ID: <b30a0ff7-e885-462d-92d4-53f15accd1c0@redhat.com>
+Date: Fri, 4 Apr 2025 18:49:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,77 +90,217 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 00/23] 6.13.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250403151622.273788569@linuxfoundation.org>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
 Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250403151622.273788569@linuxfoundation.org>
+To: Halil Pasic <pasic@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ Chandra Merla <cmerla@redhat.com>, Stable@vger.kernel.org,
+ Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Wei Wang <wei.w.wang@intel.com>
+References: <20250402203621.940090-1-david@redhat.com>
+ <20250403161836.7fe9fea5.pasic@linux.ibm.com>
+ <e2936e2f-022c-44ee-bb04-f07045ee2114@redhat.com>
+ <20250404063619.0fa60a41.pasic@linux.ibm.com>
+ <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
+ <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
+ <20250404153620.04d2df05.pasic@linux.ibm.com>
+ <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+ <20250404160025.3ab56f60.pasic@linux.ibm.com>
+ <6f548b8b-8c6e-4221-a5d5-8e7a9013f9c3@redhat.com>
+ <20250404173910.6581706a.pasic@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250404173910.6581706a.pasic@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/3/25 08:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.10 release.
-> There are 23 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 04.04.25 17:39, Halil Pasic wrote:
+> On Fri, 4 Apr 2025 16:17:14 +0200
+> David Hildenbrand <david@redhat.com> wrote:
 > 
-> Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
-> Anything received after that time might be too late.
+>>> It is offered. And this is precisely why I'm so keen on having a
+>>> precise wording here.
+>>
+>> Yes, me too. The current phrasing in the spec is not clear.
+>>
+>> Linux similarly checks
+>> virtio_has_feature()->virtio_check_driver_offered_feature().
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Careful, that is a *driver* offered and not a *device* offered!
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Right, I was pointing at the usage of the term "offered". 
+virtio_check_driver_offered_feature(). (but was also confused about that 
+function)
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+virtio_has_feature() is clearer: "helper to determine if this device has 
+this feature."
+
+The way it's currently implemented is that it's essentially "device has 
+this feature and we know about it (->feature_table)"
+
+> 
+> We basically mandate that one can only check for a feature F with
+> virtio_has_feature() such that it is either in drv->feature_table or in
+> drv->feature_table_legacy.
+> 
+> AFAICT *device_features* obtained via dev->config->get_features(dev)
+> isn't even saved but is only used for binary and-ing it with the
+> driver_features to obtain the negotiated features.
+> 
+> That basically means that if I was, for the sake of fun do
+> 
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -1197,7 +1197,6 @@ static unsigned int features[] = {
+>          VIRTIO_BALLOON_F_MUST_TELL_HOST,
+>          VIRTIO_BALLOON_F_STATS_VQ,
+>          VIRTIO_BALLOON_F_DEFLATE_ON_OOM,
+> -       VIRTIO_BALLOON_F_FREE_PAGE_HINT,
+>          VIRTIO_BALLOON_F_PAGE_POISON,
+>          VIRTIO_BALLOON_F_REPORTING,
+>   };
+> 
+> I would end up with virtio_check_driver_offered_feature() calling
+> BUG().
+> 
+
+Right.
+
+> That basically means that Linux mandates implementing all previous
+> features regardless whether does are supposed to be optional ones or
+> not. Namely if you put the feature into drv->feature_table it will
+> get negotiated.
+> 
+> Which is not nice IMHO.
+
+I think the validate() callbacks allows for fixing that up.
+
+Like us unconditionally clearing VIRTIO_F_ACCESS_PLATFORM (I know, 
+that's a transport feature and a bit different for this reason).
+
+... not that I think the current way of achieving that is nice :)
+
+> 
+>>
+>>>
+>>> Usually for compatibility one needs negotiated. Because the feature
+>>> negotiation is mostly about compatibility. I.e. the driver should be
+>>> able to say, hey I don't know about that feature, and get compatible
+>>> behavior. If for example VIRTIO_BALLOON_F_FREE_PAGE_HINT and
+>>> VIRTIO_BALLOON_F_PAGE_REPORTING are both offered but only
+>>> VIRTIO_BALLOON_F_PAGE_REPORTING is negotiated. That would make
+>>> reporting_vq jump to +1 compared to the case where
+>>> VIRTIO_BALLOON_F_FREE_PAGE_HINT is not offered. Which is IMHO no
+>>> good, because for the features that the driver is going to reject in
+>>> most of the cases it should not matter if it was offered or not.
+>>
+>> Yes. The key part is that we may only add new features to the tail of
+>> our feature list; maybe we should document that as well.
+>>
+>> I agree that a driver that implements VIRTIO_BALLOON_F_PAGE_REPORTING
+>> *must* be aware that VIRTIO_BALLOON_F_FREE_PAGE_HINT exists. So queue
+>> existence is not about feature negotiation but about features being
+>> offered from the device.
+>>
+>> ... which is a bit the same behavior as with fixed-assigned numbers a
+>> bit. VIRTIO_BALLOON_F_PAGE_REPORTING was documented as "4" because
+>> VIRTIO_BALLOON_F_FREE_PAGE_HINT was documented to be "3" -- IOW, it
+>> already existed in the spec.
+> 
+> I don't agree with the comparison.  One obviously needs to avoid fatal
+> collisions when extending the spec, and has to consider prior art.
+
+Agreed. But IMHO it's similar to two out-of-spec driver starting to use 
+"queue index 5" in a fix-assigned world. It cannot work.
+
+> 
+> But ideally not implemented  or fenced optional features A should have no
+> impact to implemented optional or not optional features B -- unless the
+> features are actually interdependent, but then the spec would prohibit
+> the combo of having B but not A. And IMHO exactly this would have been
+> the advantage of fixed-assigned numbers: you may not care if the other
+> queueues exist or not.
+> 
+> Also like cloud-hypervisor has decided that they are going only to
+> support VIRTIO_BALLOON_F_REPORTING some weird OS could in theory
+> decide that they only care about VIRTIO_BALLOON_F_REPORTING. In that
+> setting having to look at VIRTIO_BALLOON_F_STATS_VQ and
+> VIRTIO_BALLOON_F_FREE_PAGE_HINT are offered is weird. But that is all water
+> under the bridge. We have to respect what is out there in the field.
+
+Yes, they would have to do the math based on offered features. 
+Definitely not nice, but as you say, that ship has sailed.
+
+[...]
+
+>>
+>> (as Linux supports all these features, it's easy. A driver that only
+>> supports some features has to calculate the queue index manually based
+>> on the offered features)
+> 
+> As I've tried to explain above, not implementing/accepting optional
+> features and then implementing/accepting a newer feature is problematic
+> with the current code. Supporting some features would work only as
+> supporting all features up to X.
+
+See above regarding validate().
+
+Again, doesn't win a beauty contest ... I'll send an improved 
+virtio-spec update next week, thanks!
+
 -- 
-Florian
+Cheers,
+
+David / dhildenb
+
 
