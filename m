@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-128265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A310A7B417
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B7A7B40D
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC3BC7A95BF
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D746173C49
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEE420E328;
-	Fri,  4 Apr 2025 00:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A47821422E;
+	Fri,  4 Apr 2025 00:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JimYgnTu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmOcGTdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F820CCF3;
-	Fri,  4 Apr 2025 00:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F7E2135C9;
+	Fri,  4 Apr 2025 00:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725282; cv=none; b=Apw1+Cet/mrNmJBDDx4P4H5jznvb3zzwuHBMMQkDuDyI+LSZQTuJb8lwi3yitWq9VKr7CSwKVVw/WmoBbaSo4/eoUSGw31NXXTjxkuPpW8ZcpvcKfofWwaWbT4Oe+QmNfKpZZZLzgl6wVU1FhL/ny8lkmpyQuXEs0f+Q983qGEc=
+	t=1743725285; cv=none; b=TplKoO6EyRASU+2+UbQlZfOjf52uDslX08WImOyVlEp0Dg4H8chdoGAqK3xdTdIzm2W1DWwEOpMMtBRj/hWrASHICxgXaG0GxZf2KCO7IcFec81usROQGQYTmjtWsZhxkDMgK49KRtFa1pfDtTaUpH/5QxFU+YG6xTvqbVf6MPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725282; c=relaxed/simple;
-	bh=9Hz5zFESRzUhIf6dl9cTCAYgmmtLRE0aWBglQKZctUA=;
+	s=arc-20240116; t=1743725285; c=relaxed/simple;
+	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gGDbbElRY/331aWattqMzw5Yjwlg8cMiyHVrgyhEa6o3nXJJWOEPOlVAyTzhWFwpkFGIWkJGtW0znMCmcvDFsbxTRBEgF66kRDKEPW+I0Yt7qFK3SagNYm3F0SAp5/3UgLyja68OmnJmuTk16ULDwUvqVuDGw0HLekL5bm1ZToc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JimYgnTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84ECCC4CEE5;
-	Fri,  4 Apr 2025 00:08:01 +0000 (UTC)
+	 MIME-Version; b=O0Sp97jvKgHS1VZg6hazRHqgjo9VXXS3lOyZ5ti7drZKUTYHGPDOkTjqeMCSsxPukF7bROZsmJix8V0OuvqZReAeudxRUf/908zet0tm/haSZBJIynga6KC5ccuyZgqo9gb7dqLKixua38FT9JGN9RTFolREo26NbqlNuXOy6g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmOcGTdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1FC4CEE9;
+	Fri,  4 Apr 2025 00:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725282;
-	bh=9Hz5zFESRzUhIf6dl9cTCAYgmmtLRE0aWBglQKZctUA=;
+	s=k20201202; t=1743725285;
+	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JimYgnTuXLBc/fyoFkRSQQBn97P7PawjO0NLj7w7De4SzNleZLOLJka+anMX3BqAP
-	 r7NLtGkgxW4iHbIbNCfLfOAj12EWsI0GFkpOxXxIUieSw1FcxoVGiwwXIqSWQa1/oU
-	 kcrIMU2lN8hwwsRm5DxQ7Pnjw2PoOCA2yvY2ZcYJwK4ELqqwyjMf5GLxfFt1H07iWh
-	 uPmzBN86kyKW898UoLnlTVPTjx7IqIFLWDVa8ZjQANkXvJAB7aK/Qc5MESc/ZYwCdz
-	 +xHkEmZIPlG1qubSwCOShyyQR1MjoI980gdQSZ9bYU1TR174LiBTfCkbhjiEafip13
-	 +XkvZllzJLtIw==
+	b=FmOcGTdRs2PVHcMgdPLv1WAJ/gtsvyCn37ODSWGAaMUZtED1hMnhwrpy4vMh+STBt
+	 tKKlPldefUt6P21Klr8c16ygNynC+9JjNYMWWBhrs39L3kGz91wgZlmCG0oJDs0DWt
+	 4CxCQCMG+qWZwryQZsyhMS5/SnZ1H6Xf2/f1QnsI4xCteSKlnERHNXXKCpYFrlLVFA
+	 qHY9ZMlEKZFuOEUEDeQx7zDGcw8qJh543C5D+YhVOgGC1IikkwCbUxdhC26Ud2uowC
+	 6TRAjNKVASukTA1g0PSXIEUhCFKpJaiwmUuTvw7oG3yrVn6tTyhzjieibhnpbveEzP
+	 aHX6y0IGaxwBA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 4/6] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
-Date: Thu,  3 Apr 2025 20:07:47 -0400
-Message-Id: <20250404000751.2689430-4-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 5/6] parisc: PDT: Fix missing prototype warning
+Date: Thu,  3 Apr 2025 20:07:48 -0400
+Message-Id: <20250404000751.2689430-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000751.2689430-1-sashal@kernel.org>
 References: <20250404000751.2689430-1-sashal@kernel.org>
@@ -68,58 +67,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.235
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit b20150d499b3ee5c2d632fbc5ac94f98dd33accf ]
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-of_clk_get_hw_from_clkspec() checks all available clock-providers by
-comparing their of nodes to the one from the clkspec. If no matching
-clock provider is found, the function returns -EPROBE_DEFER to cause a
-re-check at a later date. If a matching clock provider is found, an
-authoritative answer can be retrieved from it whether the clock exists
-or not.
+As reported by the kernel test robot, the following error occurs:
 
-This does not take into account that the clock-provider may never
-appear, because it's node is disabled. This can happen when a clock is
-optional, provided by a separate block which never gets enabled.
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
 
-One example of this happening is the rk3588's VOP, which has optional
-additional display clocks coming from PLLs inside the hdmiphy blocks.
-These can be used for better rates, but the system will also work
-without them.
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
 
-The problem around that is described in the followups to[1]. As we
-already know the of node of the presumed clock provider, add a check via
-of_device_is_available() whether this is a "valid" device node. This
-prevents eternal defer loops.
-
-Link: https://lore.kernel.org/dri-devel/20250215-vop2-hdmi1-disp-modes-v1-3-81962a7151d6@collabora.com/ [1]
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250222223733.2990179-1-heiko@sntech.de
-[sboyd@kernel.org: Reword commit text a bit]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 7dc3b0cca252a..950dfa059a209 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4858,6 +4858,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
- 	if (!clkspec)
- 		return ERR_PTR(-EINVAL);
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index fcc761b0e11b9..d20e8283c5b8a 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -62,6 +62,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
  
-+	/* Check if node in clkspec is in disabled/fail state */
-+	if (!of_device_is_available(clkspec->np))
-+		return ERR_PTR(-ENOENT);
-+
- 	mutex_lock(&of_clk_mutex);
- 	list_for_each_entry(provider, &of_clk_providers, link) {
- 		if (provider->node == clkspec->np) {
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
+ {
+@@ -73,6 +74,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
+ 
+ static int get_info_pat_new(void)
+ {
 -- 
 2.39.5
 
