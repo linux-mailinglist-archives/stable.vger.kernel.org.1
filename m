@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-128228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831FAA7B39C
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F65A7B3A6
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277F0188D773
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A636188706E
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89D81FF1CE;
-	Fri,  4 Apr 2025 00:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877FD1FF609;
+	Fri,  4 Apr 2025 00:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4y88TqM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QG/duPCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917D018B47D;
-	Fri,  4 Apr 2025 00:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F101FF1C9;
+	Fri,  4 Apr 2025 00:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725193; cv=none; b=XM3wGMpoos8c+Tx1cm7GAKmgjvC561VmjmHowLX7LrPrsuLL3i+3S1QnJ8BDX+XPT1Twq8jqVu6IuRUisEpgOVWLWnxvMbGBHQ8Z7WJwm2NxuQ3NfQGznljE5CytANWQ5ojfXETQ7+On9fnyaTOGzkjlqUPbha4v4tFgFQwkatg=
+	t=1743725196; cv=none; b=ZvwHwgA/1CwZVBZInFerqi0hT+uCrIpqabrCTVPapCOgB9RLqX5FS6VSi5vFgmNRycIV2AlKwmFGAk3rB74BSF9zXfKwGVRbh/0i180sbkt3MH63H/qQjOr2QENcoCoa3dQ4VlB0LiUk+zbJ538rDXKv1QRy6LGA7JXg4whT+lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725193; c=relaxed/simple;
-	bh=6MiLJJkju46L6xfTkIknXJhImciYRsXc3r8zjM2rMms=;
+	s=arc-20240116; t=1743725196; c=relaxed/simple;
+	bh=9Q+3d3LGkgEMYCftg/STadhPUfGGd9Slnlol3D4n09A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oUBYMzz0AuOto/4+EQCChz4bqW71Pr05R7gUWRQytzAL9HUOrCIuoaT95lImxri8BOKOC0xue1LQV+Z0oxoiNVXLXQ60l6BLLb/wxeE8zFirVB8FpPkOl6i8OFuVrM8WhkYhKyvy/N93G5QJHuoL+N1Ho5syao2LSoywTOynVr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4y88TqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02E9C4CEE3;
-	Fri,  4 Apr 2025 00:06:31 +0000 (UTC)
+	 MIME-Version; b=VTrkKhj6we8ISSp2QG2Xajmz8XD8cT3xA1+VEebu3+tNXjttxvZb58P12yZehj+lh3R6j+9aUMlRvEoWcdLXAox5T3PRjcxspZwUPL9ttb0l5PmXAFmUYha8J0pQPEXBR5j8gLzLWh/hp1MX672XMF4Ib3iYz57Uii1CQLk/qPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QG/duPCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908D9C4CEE5;
+	Fri,  4 Apr 2025 00:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725193;
-	bh=6MiLJJkju46L6xfTkIknXJhImciYRsXc3r8zjM2rMms=;
+	s=k20201202; t=1743725194;
+	bh=9Q+3d3LGkgEMYCftg/STadhPUfGGd9Slnlol3D4n09A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4y88TqM8c0qp0gtb5lBRxcsxL5tncG/YarNkmJXNk42TmzawLPhfdvx4mLUdqgeM
-	 JFPaBWiWflRDMrU5fWr6Oc5FRzFHFwSKvdfMs5wy06RvN+LyFrr5YJMSvvEcrb0B/A
-	 P9c1wxO4JRr8eCn35RvRLGFQVFc7NHmLd3mYZNXeEGUbl84Fmsr6Fw291aXAO/SJZ/
-	 5nLwDEZ93Xtz7xMw44Bvl5UKx0nxDkprJ2T0b/v+ebcKkXiXJcja00cvka/3YQhOCB
-	 TChgv/3/Iws/xFCVWqoudZpZ7AABVHucGAIq/jeKBpTjuhNlnrbMamRzXufy4LaZhB
-	 0b4COni1YSXLw==
+	b=QG/duPCD9X6DdSQMXJ59PtElwhyDi1rAXfg1zYb7LrINseaGBGh8ypL7eJoutLWLZ
+	 nhlvyD0hJ+UyCRCl3WgLep4ifGVQGHWiVqQDQb9dSkjExwvPgqp5yfQgJj536nVqmH
+	 fm9VHAUAxNaksb+uffzuV1cIPi88D+laFvvhz0Ckajl32pQNTRE8sCtv+a/EDOH6zG
+	 0tMfhD0XGRqd94vX/Ncqynr7FzZJW5HkCNHA9LZCXhbGayNbXAQNyqPFxwLY6kBLVk
+	 hJzwVqxbgvF6o6NGsKhRsHonyNK37z0DcbjiWz3xKi8t9wy9/96TrTyRlTHf6Fft2t
+	 LPHmXgyezn4zQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	dragan.mladjenovic@syrmia.com,
-	cfu@wavecomp.com,
-	paulburton@kernel.org,
-	arikalo@gmail.com,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/16] MIPS: cm: Detect CM quirks from device tree
-Date: Thu,  3 Apr 2025 20:06:10 -0400
-Message-Id: <20250404000624.2688940-2-sashal@kernel.org>
+	john.allen@amd.com,
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/16] crypto: ccp - Add support for PCI device 0x1134
+Date: Thu,  3 Apr 2025 20:06:11 -0400
+Message-Id: <20250404000624.2688940-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000624.2688940-1-sashal@kernel.org>
 References: <20250404000624.2688940-1-sashal@kernel.org>
@@ -69,105 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+[ Upstream commit 6cb345939b8cc4be79909875276aa9dc87d16757 ]
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+PCI device 0x1134 shares same register features as PCI device 0x17E0.
+Hence reuse same data for the new PCI device ID 0x1134.
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
-
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ drivers/crypto/ccp/sp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 696b40beb774f..0f31324998c0a 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
-  */
- extern int mips_cm_is64;
- 
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
- #endif
- }
- 
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
-+
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 3f00788b08718..4f75160f08949 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -243,6 +245,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
- {
- 	phys_addr_t addr;
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index b6ab56abeb682..4ee84719ae0bb 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -574,6 +574,7 @@ static const struct pci_device_id sp_pci_table[] = {
+ 	{ PCI_VDEVICE(AMD, 0x14CA), (kernel_ulong_t)&dev_vdata[5] },
+ 	{ PCI_VDEVICE(AMD, 0x15C7), (kernel_ulong_t)&dev_vdata[6] },
+ 	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[6] },
++	{ PCI_VDEVICE(AMD, 0x1134), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
+ 	/* Last entry must be zero */
 -- 
 2.39.5
 
