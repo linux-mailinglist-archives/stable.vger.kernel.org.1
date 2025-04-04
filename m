@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-128188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9577EA7B31E
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:11:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE443A7B320
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2349B3B3D8A
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:10:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A85C18845E1
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE091B412B;
-	Fri,  4 Apr 2025 00:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3FC1C6FF6;
+	Fri,  4 Apr 2025 00:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZiGSR32"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKHq+5D8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2785B1ACED5;
-	Fri,  4 Apr 2025 00:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD181EEC3;
+	Fri,  4 Apr 2025 00:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725103; cv=none; b=HK42xh/6Uhy2uExUhs2LEx5GVcit2beyTcdNQsUL771upOWKAZP259GsIO08YTo1SAN4+4N/WL3KAs9mAMNHizK//OXj6+E6JGeJChjA1pJ+CjOUYHqp8Yq1EWDw+hyNer75be6KsbSID3Mj+q66skZegROIuIBMHlyjzxUjBY4=
+	t=1743725107; cv=none; b=cBRid0RG+Ij+KJ+fms+ij9JpcS5tujixKB1VZDP4nrJn/rqaL03gjhrdXL1ub1CWvMWDK4vsJa+e3oipfLKAmYCeJ1u6aDdwvFlEcq/DJ6S/PtmN93kv7dbPvDNCc1D54a70k151sWSEpFc2OgQ2GpoAMH7CmGzfgVY9kYMlwCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725103; c=relaxed/simple;
-	bh=N1YA7dqa2h4bNP+N0xfdfZRydTChokeDkIqw65VqEqw=;
+	s=arc-20240116; t=1743725107; c=relaxed/simple;
+	bh=r7QFhLqGBIbqEB6bTak6YRf5D6NQBdcSnGBFjIBNgCc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ax6XOa5MDUonZ1RmW6ccMFqmPPIca0TiEuL88SwoeJ/espfEnbATamgSTRR2pWhnIARpTrBiQ0LO51MlMwF2ngoSP4QjCvWhv+sIs+jx2ArTkS5rVlZJPhhOGzvv1b0B+rsHdj0X7VwHgNrmYPsjQ7Hv9mm5mfeMWvY4XZIiRUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZiGSR32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5286BC4CEE3;
-	Fri,  4 Apr 2025 00:05:02 +0000 (UTC)
+	 MIME-Version; b=s2hleIBPn4XG6MUunF15WOqWfCH4ZLv+lc99nIWfeUin7TFau52xiNDb+ProJNI2MdpihXK3MRouGlt7LbmCMpxD/Wurz0CBE+H3Hm4JXlzs9zdMng5hqa9XdUmmrRhvW12TPAGUdaTLkSOc495GMtKxwJXFdMddCuk7HPbjn70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKHq+5D8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDCFC4CEE3;
+	Fri,  4 Apr 2025 00:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725103;
-	bh=N1YA7dqa2h4bNP+N0xfdfZRydTChokeDkIqw65VqEqw=;
+	s=k20201202; t=1743725106;
+	bh=r7QFhLqGBIbqEB6bTak6YRf5D6NQBdcSnGBFjIBNgCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZiGSR32R8xYQur9PpDiHJ7kbgcqDvBWTkVuGT1xd6AJoLumjFP3Z3quqI2mlnmRi
-	 aH3a4JVEjOwcwalrDGFZcGDdXE3qJIOYbCPaaRclT/V6AKYaJm6qzbrg8JIOp3DK39
-	 yT21S0mCNSB5J0fWQcycH5zfcy61+oLxKhZqBJN9KOgI8ULqMex6Kss3pYHavZ+45r
-	 ospMR8tMZhCt9VhFvAeomicyL1n7MM1lap1y67Ceee4p/bN5jK8B3v5yALAbbjFwT5
-	 rJkUiSIGvl1TftOHPaa6Q+fcj9TSL2sq2aDw930VfMRAVQh1zurB1v8mAmEMTJPQpM
-	 XjACF18rUa4gQ==
+	b=AKHq+5D8czIVFaOVZ+Ww5F5xT7b/XNpyeNEP3AquzhnAxqOZtJ5/WU6Ww6/y0glyR
+	 PzgJx1ojdELA5tXv5GgLGbfETSLHDHbco0CePZ469M/932HxIBpYPfX1PjpCK8LXNv
+	 PxXi2zRKg+11bt/LdQgaVHDbJlaplC7q9CxLU5JU+HV2h88p+OuB+ngtkcFJjxZrUC
+	 TxmXrSBYlKrL3HdZ0IHAd2o1qD1CWEQSaYhCQDLI6T6Sk4qGUFGL5qVsQQ2MwcYu7b
+	 qreg0kMlk+zLAntOLJQE8+UUcUzc867RtWpTln2Sq8USRejjGziLUFvhhrtryTVPNl
+	 B9m2yqIyta+Cw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Mastykin <mastichi@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 04/22] pinctrl: mcp23s08: Get rid of spurious level interrupts
-Date: Thu,  3 Apr 2025 20:04:33 -0400
-Message-Id: <20250404000453.2688371-4-sashal@kernel.org>
+	dragan.mladjenovic@syrmia.com,
+	cfu@wavecomp.com,
+	jiaxun.yang@flygoat.com,
+	paulburton@kernel.org,
+	arikalo@gmail.com,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 05/22] MIPS: cm: Detect CM quirks from device tree
+Date: Thu,  3 Apr 2025 20:04:34 -0400
+Message-Id: <20250404000453.2688371-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000453.2688371-1-sashal@kernel.org>
 References: <20250404000453.2688371-1-sashal@kernel.org>
@@ -65,86 +70,105 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Mastykin <mastichi@gmail.com>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-[ Upstream commit 7b0671b97f0872d6950ccc925e210cb3f67721bf ]
+[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
 
-irq_mask()/irq_unmask() are not called for nested interrupts. So level
-interrupts are never masked, chip's interrupt output is not cleared on
-INTCAP or GPIO read, the irq handler is uselessly called again. Nested
-irq handler is not called again, because interrupt reason is cleared by
-its first call.
-/proc/interrupts shows that number of chip's irqs is greater than
-number of nested irqs.
+Some information that should be retrieved at runtime for the Coherence
+Manager can be either absent or wrong. This patch allows checking if
+some of this information is available from the device tree and updates
+the internal variable accordingly.
 
-This patch adds masking and unmasking level interrupts inside irq handler.
+For now, only the compatible string associated with the broken HCI is
+being retrieved.
 
-Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
-Link: https://lore.kernel.org/20250122120504.1279790-1-mastichi@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
+ arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index b96e6368a9568..4d1f41488017e 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -382,6 +382,7 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- {
- 	struct mcp23s08 *mcp = data;
- 	int intcap, intcon, intf, i, gpio, gpio_orig, intcap_mask, defval, gpinten;
-+	bool need_unmask = false;
- 	unsigned long int enabled_interrupts;
- 	unsigned int child_irq;
- 	bool intf_set, intcap_changed, gpio_bit_changed,
-@@ -396,9 +397,6 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		goto unlock;
- 	}
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index 23ce951f445bb..754e96dba256c 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -59,6 +59,16 @@ extern phys_addr_t mips_cm_l2sync_phys_base(void);
+  */
+ extern int mips_cm_is64;
  
--	if (mcp_read(mcp, MCP_INTCAP, &intcap))
--		goto unlock;
--
- 	if (mcp_read(mcp, MCP_INTCON, &intcon))
- 		goto unlock;
- 
-@@ -408,6 +406,16 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 	if (mcp_read(mcp, MCP_DEFVAL, &defval))
- 		goto unlock;
- 
-+	/* Mask level interrupts to avoid their immediate reactivation after clearing */
-+	if (intcon) {
-+		need_unmask = true;
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten & ~intcon))
-+			goto unlock;
-+	}
++/*
++ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
++ *
++ * Some CM reports show that Hardware Cache Initialization is
++ * complete, but in reality it's not the case. They also incorrectly
++ * indicate that Hardware Cache Initialization is supported. This
++ * flags allows warning about this broken feature.
++ */
++extern bool mips_cm_is_l2_hci_broken;
 +
-+	if (mcp_read(mcp, MCP_INTCAP, &intcap))
-+		goto unlock;
-+
- 	/* This clears the interrupt(configurable on S18) */
- 	if (mcp_read(mcp, MCP_GPIO, &gpio))
- 		goto unlock;
-@@ -470,9 +478,18 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		}
- 	}
- 
-+	if (need_unmask) {
-+		mutex_lock(&mcp->lock);
-+		goto unlock;
-+	}
-+
- 	return IRQ_HANDLED;
- 
- unlock:
-+	if (need_unmask)
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten))
-+			dev_err(mcp->chip.parent, "can't unmask GPINTEN\n");
-+
- 	mutex_unlock(&mcp->lock);
- 	return IRQ_HANDLED;
+ /**
+  * mips_cm_error_report - Report CM cache errors
+  */
+@@ -97,6 +107,18 @@ static inline bool mips_cm_present(void)
+ #endif
  }
+ 
++/**
++ * mips_cm_update_property - update property from the device tree
++ *
++ * Retrieve the properties from the device tree if a CM node exist and
++ * update the internal variable based on this.
++ */
++#ifdef CONFIG_MIPS_CM
++extern void mips_cm_update_property(void);
++#else
++static void mips_cm_update_property(void) {}
++#endif
++
+ /**
+  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
+  *
+diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
+index 3eb2cfb893e19..9cfabaa94d010 100644
+--- a/arch/mips/kernel/mips-cm.c
++++ b/arch/mips/kernel/mips-cm.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include <linux/errno.h>
++#include <linux/of.h>
+ #include <linux/percpu.h>
+ #include <linux/spinlock.h>
+ 
+@@ -14,6 +15,7 @@
+ void __iomem *mips_gcr_base;
+ void __iomem *mips_cm_l2sync_base;
+ int mips_cm_is64;
++bool mips_cm_is_l2_hci_broken;
+ 
+ static char *cm2_tr[8] = {
+ 	"mem",	"gcr",	"gic",	"mmio",
+@@ -237,6 +239,18 @@ static void mips_cm_probe_l2sync(void)
+ 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
+ }
+ 
++void mips_cm_update_property(void)
++{
++	struct device_node *cm_node;
++
++	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
++	if (!cm_node)
++		return;
++	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
++	mips_cm_is_l2_hci_broken = true;
++	of_node_put(cm_node);
++}
++
+ int mips_cm_probe(void)
+ {
+ 	phys_addr_t addr;
 -- 
 2.39.5
 
