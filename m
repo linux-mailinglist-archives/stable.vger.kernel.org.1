@@ -1,448 +1,236 @@
-Return-Path: <stable+bounces-128311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438F5A7BDDB
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:31:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B27A7BDD1
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFE7817C435
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5BCC3B8C36
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE5A1F152A;
-	Fri,  4 Apr 2025 13:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8AD1EF0AB;
+	Fri,  4 Apr 2025 13:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7uhIxgd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtXAdIaX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA461F543F;
-	Fri,  4 Apr 2025 13:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621911EF096;
+	Fri,  4 Apr 2025 13:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743773289; cv=none; b=HoVoGLIouxSQtvzgxo+v/HePH3kVnRz2uB7xTypEX8Bis7BNL6f8p7bqkJljU3jhpmv+Q88xRyR/48Q5oAHmwJZt7R2q0yJy9Kk8YcWU+WCpyAxWaQANE7WyVFIbiy73cK0jhgyPxZ07e1pvgAzBzrh3DfbLgA7z2w9WHQq/aGg=
+	t=1743773311; cv=none; b=d0uXDn+fNeB729XQOlnVil/mm71lVd+pclYN8rkE5vn0jm8fB2Cbov4aTq8MhkOqlQi8uJg0hAa8ZlU7wCAR3ORn4X27bkmv+9qlhEdpg1qpn0xeb9u3Qbw1mLqZuai3KY4M2s9lR6ygGTdSHSdq+4fY03oTPwm5veKG47h/8Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743773289; c=relaxed/simple;
-	bh=HAv7NsSiFTK50k4Hz83uGNas7UoL/L6QevslpZ79Hvo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U2LfWlFfnnPgQXkMRHbj5I9nXA2xnDuhorhUH2QGcKp4Z4Jm+9FDyhZIEEYTLvUA8OJkvPNQIs6UBfxLQvEHgkujhsQr4/MDQulKl8hYp7BCRYhZp8VaF8cZ1r5Gj9FhYymA5cxfaWZzS+KaePYn2E3ITGTltoAZgOCdUV49OgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7uhIxgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED04C4CEE8;
-	Fri,  4 Apr 2025 13:28:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743773288;
-	bh=HAv7NsSiFTK50k4Hz83uGNas7UoL/L6QevslpZ79Hvo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Z7uhIxgdLxV6pUs71ncmGLGt+BUPrRLHK+LuVmSmPDqBEQnuAoMM1tvs+HdTku4Cz
-	 AEfN7oeLX/vGvT/vgIQq8lvJc9UWmZiwRs5ey2jm5o3vmb8YuwNM203Q4WzTY7eoZm
-	 VVL4Zl04SNHqYDYBcCcBBaIN6JpK0J1e/XmZlMXTBK6INNzoMS15rnAQhBkYspSN3Y
-	 2m7hh+oJ6ldB3mX3Nf6v97aDQsWza+DhqC/t0FXwBnZ3mhLxrH7DPrPYZHSvcNa4Tq
-	 WsgnoFS9m0fn3V+cqPce9DHJ1cA7BSFYGcn07M7HQzhqtkNBV7DUQU9E0I9MGrdCAe
-	 ljE/zDrsiAapg==
-From: Mark Brown <broonie@kernel.org>
-Date: Fri, 04 Apr 2025 14:23:45 +0100
-Subject: [PATCH RESEND 6.1 12/12] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+	s=arc-20240116; t=1743773311; c=relaxed/simple;
+	bh=8am3I0YCErYUO2PgNgYpMqXVi36aEv+QHl9QuGEDE0g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fYU9xxP4GFbH3j1/bPZK5YEVrCu4N6cZ7xUn7SE3yLwXhCYKQHbmmhno3wmPNDEy3HlDYcWJYA1pSQdAAWhFtW31+hRY9uRW0m204O+nSKvHuaFzBdBoEccawIkKKWLE7ULdxOLbsxgK83RNYCd61kRCDP5uSHb+jYXvnPQVyac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtXAdIaX; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff6e91cff5so1931305a91.2;
+        Fri, 04 Apr 2025 06:28:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743773308; x=1744378108; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=L1EvrIpOY5/BQY+g5/bXbxzle3Uu4BHi9J4gn0QSKck=;
+        b=BtXAdIaXd9obJnvwBcE3BCtQwyqHt+JqfD315MptHeqe8jqweYo6iv9Imx8IQMytIO
+         Csj2doRnas0fhftgQvxAYTVPBPil6RXB+j6DyqkN+lj+JGgtiv0ERqRMuyGsMKFhzyE2
+         APV3FPCE3CMlHwj8eA9VTD0+wJvxs6nrKgn9BFl5vN2x4ixpO3b3DP/rAR+18wbt2Ulv
+         jGcYpVW5mxpRypPiB84MWeLl4m1fB0EgE3Y5gvDZxt2QHk2mmAWVb43PUggtvqcUBOlb
+         KXXyCqJKTiNTaKKlxsWj2pMKwcP3jOFXb3hDQLQY9eVzV/tA/62JgRIfJwnjf05corUR
+         83Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743773308; x=1744378108;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L1EvrIpOY5/BQY+g5/bXbxzle3Uu4BHi9J4gn0QSKck=;
+        b=oEFC4KdlioH745ySxkEHt0mYV5B2/rzWmeJoJs9hmPSF/dunLR8ru/QDarMG+bNxev
+         I2ShDKr+7aoZLj8PzIlF0LSFBPIU0DVqppAmKEiOjTDA246L7mI9wlsV9JU60hQjaAoG
+         glu1F5TYVxKBYQB8umoc7euFw6MCPhXRnuu2NBNJqXGXwMZoY3MR0ygXJVvMshmM/wa3
+         mIGDEj7RnhuGv5W+Z5zZt63+Nc7qIA3S/2JGO/XEbcojbb4DLyDxZklKqPknDv/lAPXV
+         oYTmjC2NlLhXJpkMfiXc2ldRavQOfuwOYw7G8NzFUYjqO8O71CIae9uR3vXNMfY/jm00
+         34/A==
+X-Forwarded-Encrypted: i=1; AJvYcCVw617jhxX9maWuvpe788Sv+2ULjqCowRrZnCr9zI9C/GPmK4hfuk9rP2mNyftDWj9JM5teFZex1mWAZWc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrJnEw60rnggP10D/9CvR2c1pnRhY1xS4aP3T4WCcIjVgY4+Mt
+	fOXCSxU6J3ZKRmPJYLH47sCVoRhq8mUiwosIzLDkMWK8tM0JsctZD/bO4zGwqFgx9Zy6ijN9OQy
+	5AxrEnAXkwfZzZEnzNWPWaEPD+OQ=
+X-Gm-Gg: ASbGnctE83I1QlEgUZvoq6J6mVfhgmZCOUUCjLUiH/DkVeW2lDujqs1XSvjzjh0gbOQ
+	vAUStZdEGdLA9Z2ofKdL0l0y+/BSDoviY0dxpsG/bw9qrUpF7SmhukFd8DOIauy0dp13f6f9n/j
+	hXlTrXFp/VrGh+kdqXl/5vDwZW8ep9pi9InKI9DtCO
+X-Google-Smtp-Source: AGHT+IEH3oSAaHUxdWxzytgERI3jEbHxHJwBXGrj94vlYzIgv60oEEOga0t/vF9UsR7u5ZJVVEVDpQRL1UPkN/SYW60=
+X-Received: by 2002:a17:90a:d883:b0:2fe:a0ac:5fcc with SMTP id
+ 98e67ed59e1d1-306a6245becmr3055286a91.34.1743773308463; Fri, 04 Apr 2025
+ 06:28:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250404-stable-sve-6-1-v1-12-cd5c9eb52d49@kernel.org>
-References: <20250404-stable-sve-6-1-v1-0-cd5c9eb52d49@kernel.org>
-In-Reply-To: <20250404-stable-sve-6-1-v1-0-cd5c9eb52d49@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
- James Morse <james.morse@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Oliver Upton <oliver.upton@linux.dev>, Oleg Nesterov <oleg@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kvmarm@lists.linux.dev, kvmarm@lists.cs.columbia.edu, 
- Mark Brown <broonie@kernel.org>, stable@vger.kernel.org, 
- Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <tabba@google.com>
-X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13005; i=broonie@kernel.org;
- h=from:subject:message-id; bh=jBmdHfDYe/g7aZu/VzuVFBwig23sU36mad3b+6nEz3U=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBn7942oibtfVGmbUhn+8y5LJjRXUBjShmUF50TpW0a
- 2dgkBISJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ+/eNgAKCRAk1otyXVSH0F9fB/
- 484wab/Ot0iBMgHI4djOGBKHSbzTBl+yQZI30fRsmt7aMWGpY0KhPtv1ZlJjA4zDmwlVsAdq+HwaVv
- ajcbKZNtHtOZV3AHbXZ+XdVLTs5jeBi26PK+lgqO8l1IaML9DUyNDGkT3a6baymcrCKx93TxO/nQN5
- xbIY0miyREqjWyKm/vMxE/c3fFq7AxLgXW1PlfXuqPbQwRDODaS/H8rRR4mU10fQzrWUAT8h5baeN1
- 0GHDi0nG9TojFjyx5y3YvVTu7L1TGyma0yjIOULwQRXcvZ7X0UPc0d3H0S8HVOiUp472YqQmptuDWC
- RSR9uYgamfigjM4p+qEuV9sgsw98KB
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+References: <20250403151621.130541515@linuxfoundation.org> <CADo9pHjHSDjbGHrx1bY0JAxPRNWW63772wGt0e4wQ_kDq50JhA@mail.gmail.com>
+In-Reply-To: <CADo9pHjHSDjbGHrx1bY0JAxPRNWW63772wGt0e4wQ_kDq50JhA@mail.gmail.com>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Fri, 4 Apr 2025 15:28:15 +0200
+X-Gm-Features: ATxdqUGgEPhFd7pK9_-fqa9Wl-BBCEXuGiINgFnjtn_Peku-eWbJr_Dz5WTiQlg
+Message-ID: <CADo9pHhFbPMfURmsAdxaUX0R9pp0aaPxD3KW3PEh2B5iT_YATg@mail.gmail.com>
+Subject: Re: [PATCH 6.14 00/21] 6.14.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Mark Rutland <mark.rutland@arm.com>
+Works good on my laptop too with the same OS
 
-[ Upstream commit 59419f10045bc955d2229819c7cf7a8b0b9c5b59 ]
+Dell Latitude 7390 Intel(R) Core(TM) i5-8350U (8) @ 3.60 GHz
 
-In non-protected KVM modes, while the guest FPSIMD/SVE/SME state is live on the
-CPU, the host's active SVE VL may differ from the guest's maximum SVE VL:
-
-* For VHE hosts, when a VM uses NV, ZCR_EL2 contains a value constrained
-  by the guest hypervisor, which may be less than or equal to that
-  guest's maximum VL.
-
-  Note: in this case the value of ZCR_EL1 is immaterial due to E2H.
-
-* For nVHE/hVHE hosts, ZCR_EL1 contains a value written by the guest,
-  which may be less than or greater than the guest's maximum VL.
-
-  Note: in this case hyp code traps host SVE usage and lazily restores
-  ZCR_EL2 to the host's maximum VL, which may be greater than the
-  guest's maximum VL.
-
-This can be the case between exiting a guest and kvm_arch_vcpu_put_fp().
-If a softirq is taken during this period and the softirq handler tries
-to use kernel-mode NEON, then the kernel will fail to save the guest's
-FPSIMD/SVE state, and will pend a SIGKILL for the current thread.
-
-This happens because kvm_arch_vcpu_ctxsync_fp() binds the guest's live
-FPSIMD/SVE state with the guest's maximum SVE VL, and
-fpsimd_save_user_state() verifies that the live SVE VL is as expected
-before attempting to save the register state:
-
-| if (WARN_ON(sve_get_vl() != vl)) {
-|         force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
-|         return;
-| }
-
-Fix this and make this a bit easier to reason about by always eagerly
-switching ZCR_EL{1,2} at hyp during guest<->host transitions. With this
-happening, there's no need to trap host SVE usage, and the nVHE/nVHE
-__deactivate_cptr_traps() logic can be simplified to enable host access
-to all present FPSIMD/SVE/SME features.
-
-In protected nVHE/hVHE modes, the host's state is always saved/restored
-by hyp, and the guest's state is saved prior to exit to the host, so
-from the host's PoV the guest never has live FPSIMD/SVE/SME state, and
-the host's ZCR_EL1 is never clobbered by hyp.
-
-Fixes: 8c8010d69c132273 ("KVM: arm64: Save/restore SVE state for nVHE")
-Fixes: 2e3cf82063a00ea0 ("KVM: arm64: nv: Ensure correct VL is loaded before saving SVE state")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-9-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[ v6.6 lacks pKVM saving of host SVE state, pull in discovery of maximum
-  host VL separately -- broonie ]
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- arch/arm64/include/asm/kvm_host.h       |  1 +
- arch/arm64/include/asm/kvm_hyp.h        |  1 +
- arch/arm64/kvm/fpsimd.c                 | 19 ++++++------
- arch/arm64/kvm/hyp/entry.S              |  5 +++
- arch/arm64/kvm/hyp/include/hyp/switch.h | 55 +++++++++++++++++++++++++++++++++
- arch/arm64/kvm/hyp/nvhe/hyp-main.c      |  8 ++---
- arch/arm64/kvm/hyp/nvhe/pkvm.c          |  2 ++
- arch/arm64/kvm/hyp/nvhe/switch.c        | 30 +++++++++++-------
- arch/arm64/kvm/hyp/vhe/switch.c         |  4 +++
- arch/arm64/kvm/reset.c                  |  3 ++
- 10 files changed, 103 insertions(+), 25 deletions(-)
-
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index c13a0d5907e8..0935f9849510 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -67,6 +67,7 @@ enum kvm_mode kvm_get_mode(void);
- DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
- 
- extern unsigned int kvm_sve_max_vl;
-+extern unsigned int kvm_host_sve_max_vl;
- int kvm_arm_init_sve(void);
- 
- u32 __attribute_const__ kvm_target_cpu(void);
-diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
-index aa7fa2a08f06..1d0bb7624a1c 100644
---- a/arch/arm64/include/asm/kvm_hyp.h
-+++ b/arch/arm64/include/asm/kvm_hyp.h
-@@ -122,5 +122,6 @@ extern u64 kvm_nvhe_sym(id_aa64isar2_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64mmfr0_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64mmfr1_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64mmfr2_el1_sys_val);
-+extern unsigned int kvm_nvhe_sym(kvm_host_sve_max_vl);
- 
- #endif /* __ARM64_KVM_HYP_H__ */
-diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
-index df050e4d3562..3fd86b71ee37 100644
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -148,15 +148,16 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
- 	local_irq_save(flags);
- 
- 	if (vcpu->arch.fp_state == FP_STATE_GUEST_OWNED) {
--		if (vcpu_has_sve(vcpu)) {
--			__vcpu_sys_reg(vcpu, ZCR_EL1) = read_sysreg_el1(SYS_ZCR);
--
--			/* Restore the VL that was saved when bound to the CPU */
--			if (!has_vhe())
--				sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1,
--						       SYS_ZCR_EL1);
--		}
--
-+		/*
-+		 * Flush (save and invalidate) the fpsimd/sve state so that if
-+		 * the host tries to use fpsimd/sve, it's not using stale data
-+		 * from the guest.
-+		 *
-+		 * Flushing the state sets the TIF_FOREIGN_FPSTATE bit for the
-+		 * context unconditionally, in both nVHE and VHE. This allows
-+		 * the kernel to restore the fpsimd/sve state, including ZCR_EL1
-+		 * when needed.
-+		 */
- 		fpsimd_save_and_flush_cpu_state();
- 	}
- 
-diff --git a/arch/arm64/kvm/hyp/entry.S b/arch/arm64/kvm/hyp/entry.S
-index 435346ea1504..d8c94c45cb2f 100644
---- a/arch/arm64/kvm/hyp/entry.S
-+++ b/arch/arm64/kvm/hyp/entry.S
-@@ -44,6 +44,11 @@ alternative_if ARM64_HAS_RAS_EXTN
- alternative_else_nop_endif
- 	mrs	x1, isr_el1
- 	cbz	x1,  1f
-+
-+	// Ensure that __guest_enter() always provides a context
-+	// synchronization event so that callers don't need ISBs for anything
-+	// that would usually be synchonized by the ERET.
-+	isb
- 	mov	x0, #ARM_EXCEPTION_IRQ
- 	ret
- 
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index 0db90cb47308..275176e61d74 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -167,6 +167,61 @@ static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
- 	write_sysreg_el1(__vcpu_sys_reg(vcpu, ZCR_EL1), SYS_ZCR);
- }
- 
-+static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
-+{
-+	u64 zcr_el1, zcr_el2;
-+
-+	if (!guest_owns_fp_regs(vcpu))
-+		return;
-+
-+	if (vcpu_has_sve(vcpu)) {
-+		zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+
-+		write_sysreg_el2(zcr_el2, SYS_ZCR);
-+
-+		zcr_el1 = __vcpu_sys_reg(vcpu, ZCR_EL1);
-+		write_sysreg_el1(zcr_el1, SYS_ZCR);
-+	}
-+}
-+
-+static inline void fpsimd_lazy_switch_to_host(struct kvm_vcpu *vcpu)
-+{
-+	u64 zcr_el1, zcr_el2;
-+
-+	if (!guest_owns_fp_regs(vcpu))
-+		return;
-+
-+	/*
-+	 * When the guest owns the FP regs, we know that guest+hyp traps for
-+	 * any FPSIMD/SVE/SME features exposed to the guest have been disabled
-+	 * by either fpsimd_lazy_switch_to_guest() or kvm_hyp_handle_fpsimd()
-+	 * prior to __guest_entry(). As __guest_entry() guarantees a context
-+	 * synchronization event, we don't need an ISB here to avoid taking
-+	 * traps for anything that was exposed to the guest.
-+	 */
-+	if (vcpu_has_sve(vcpu)) {
-+		zcr_el1 = read_sysreg_el1(SYS_ZCR);
-+		__vcpu_sys_reg(vcpu, ZCR_EL1) = zcr_el1;
-+
-+		/*
-+		 * The guest's state is always saved using the guest's max VL.
-+		 * Ensure that the host has the guest's max VL active such that
-+		 * the host can save the guest's state lazily, but don't
-+		 * artificially restrict the host to the guest's max VL.
-+		 */
-+		if (has_vhe()) {
-+			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+			write_sysreg_el2(zcr_el2, SYS_ZCR);
-+		} else {
-+			zcr_el2 = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
-+			write_sysreg_el2(zcr_el2, SYS_ZCR);
-+
-+			zcr_el1 = vcpu_sve_max_vq(vcpu) - 1;
-+			write_sysreg_el1(zcr_el1, SYS_ZCR);
-+		}
-+	}
-+}
-+
- /*
-  * We trap the first access to the FP/SIMD to save the host context and
-  * restore the guest context lazily.
-diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-index 3cea4b6ac23e..b183cc866404 100644
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <hyp/adjust_pc.h>
-+#include <hyp/switch.h>
- 
- #include <asm/pgtable-types.h>
- #include <asm/kvm_asm.h>
-@@ -25,7 +26,9 @@ static void handle___kvm_vcpu_run(struct kvm_cpu_context *host_ctxt)
- {
- 	DECLARE_REG(struct kvm_vcpu *, vcpu, host_ctxt, 1);
- 
-+	fpsimd_lazy_switch_to_guest(kern_hyp_va(vcpu));
- 	cpu_reg(host_ctxt, 1) =  __kvm_vcpu_run(kern_hyp_va(vcpu));
-+	fpsimd_lazy_switch_to_host(kern_hyp_va(vcpu));
- }
- 
- static void handle___kvm_adjust_pc(struct kvm_cpu_context *host_ctxt)
-@@ -285,11 +288,6 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
- 	case ESR_ELx_EC_SMC64:
- 		handle_host_smc(host_ctxt);
- 		break;
--	case ESR_ELx_EC_SVE:
--		sysreg_clear_set(cptr_el2, CPTR_EL2_TZ, 0);
--		isb();
--		sve_cond_update_zcr_vq(ZCR_ELx_LEN_MASK, SYS_ZCR_EL2);
--		break;
- 	case ESR_ELx_EC_IABT_LOW:
- 	case ESR_ELx_EC_DABT_LOW:
- 		handle_host_mem_abort(host_ctxt);
-diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-index 93586bf80ec9..6042cdd3d887 100644
---- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
-+++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-@@ -9,6 +9,8 @@
- #include <nvhe/fixed_config.h>
- #include <nvhe/trap_handler.h>
- 
-+unsigned int kvm_host_sve_max_vl;
-+
- /*
-  * Set trap register values based on features in ID_AA64PFR0.
-  */
-diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
-index 58171926f9ba..47c7f3a675ae 100644
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -40,6 +40,9 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
- {
- 	u64 val = CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
- 
-+	if (!guest_owns_fp_regs(vcpu))
-+		__activate_traps_fpsimd32(vcpu);
-+
- 	/* !hVHE case upstream */
- 	if (1) {
- 		val |= CPTR_EL2_TTA | CPTR_NVHE_EL2_RES1;
-@@ -55,12 +58,24 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
- 
- 		if (!guest_owns_fp_regs(vcpu))
- 			val |= CPTR_EL2_TFP;
-+
-+		write_sysreg(val, cptr_el2);
- 	}
-+}
- 
--	if (!guest_owns_fp_regs(vcpu))
--		__activate_traps_fpsimd32(vcpu);
-+static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-+{
-+	/* !hVHE case upstream */
-+	if (1) {
-+		u64 val = CPTR_NVHE_EL2_RES1;
- 
--	write_sysreg(val, cptr_el2);
-+		if (!cpus_have_final_cap(ARM64_SVE))
-+			val |= CPTR_EL2_TZ;
-+		if (!cpus_have_final_cap(ARM64_SME))
-+			val |= CPTR_EL2_TSM;
-+
-+		write_sysreg(val, cptr_el2);
-+	}
- }
- 
- static void __activate_traps(struct kvm_vcpu *vcpu)
-@@ -89,7 +104,6 @@ static void __activate_traps(struct kvm_vcpu *vcpu)
- static void __deactivate_traps(struct kvm_vcpu *vcpu)
- {
- 	extern char __kvm_hyp_host_vector[];
--	u64 cptr;
- 
- 	___deactivate_traps(vcpu);
- 
-@@ -114,13 +128,7 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
- 
- 	write_sysreg(this_cpu_ptr(&kvm_init_params)->hcr_el2, hcr_el2);
- 
--	cptr = CPTR_EL2_DEFAULT;
--	if (vcpu_has_sve(vcpu) && (vcpu->arch.fp_state == FP_STATE_GUEST_OWNED))
--		cptr |= CPTR_EL2_TZ;
--	if (cpus_have_final_cap(ARM64_SME))
--		cptr &= ~CPTR_EL2_TSM;
--
--	write_sysreg(cptr, cptr_el2);
-+	__deactivate_cptr_traps(vcpu);
- 	write_sysreg(__kvm_hyp_host_vector, vbar_el2);
- }
- 
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index f24569ac26c2..179152bb9e42 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -134,6 +134,8 @@ static int __kvm_vcpu_run_vhe(struct kvm_vcpu *vcpu)
- 
- 	sysreg_save_host_state_vhe(host_ctxt);
- 
-+	fpsimd_lazy_switch_to_guest(vcpu);
-+
- 	/*
- 	 * ARM erratum 1165522 requires us to configure both stage 1 and
- 	 * stage 2 translation for the guest context before we clear
-@@ -164,6 +166,8 @@ static int __kvm_vcpu_run_vhe(struct kvm_vcpu *vcpu)
- 
- 	__deactivate_traps(vcpu);
- 
-+	fpsimd_lazy_switch_to_host(vcpu);
-+
- 	sysreg_restore_host_state_vhe(host_ctxt);
- 
- 	if (vcpu->arch.fp_state == FP_STATE_GUEST_OWNED)
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index f9d070473614..54e00ee631a0 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -42,11 +42,14 @@ static u32 kvm_ipa_limit;
- 				 PSR_AA32_I_BIT | PSR_AA32_F_BIT)
- 
- unsigned int kvm_sve_max_vl;
-+unsigned int kvm_host_sve_max_vl;
- 
- int kvm_arm_init_sve(void)
- {
- 	if (system_supports_sve()) {
- 		kvm_sve_max_vl = sve_max_virtualisable_vl();
-+		kvm_host_sve_max_vl = sve_max_vl();
-+		kvm_nvhe_sym(kvm_host_sve_max_vl) = kvm_host_sve_max_vl;
- 
- 		/*
- 		 * The get_sve_reg()/set_sve_reg() ioctl interface will need
-
--- 
-2.39.5
-
+Den fre 4 apr. 2025 kl 12:18 skrev Luna Jernberg <droidbittin@gmail.com>:
+>
+> Tested-by: Luna Jernberg <droidbittin@gmail.com>
+>
+> AMD Ryzen 5 5600 6-Core Processor:
+> https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
+> https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
+> https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
+> motherboard :)
+>
+> running Arch Linux with the testing repos enabled:
+> https://archlinux.org/ https://archboot.com/
+> https://wiki.archlinux.org/title/Arch_Testing_Team
+>
+> (still building on my Dell Latitude laptop)
+>
+> Den tors 3 apr. 2025 kl 17:25 skrev Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org>:
+> >
+> > This is the start of the stable review cycle for the 6.14.1 release.
+> > There are 21 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.1-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> >
+> > -------------
+> > Pseudo-Shortlog of commits:
+> >
+> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> >     Linux 6.14.1-rc1
+> >
+> > John Keeping <jkeeping@inmusicbrands.com>
+> >     serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+> >
+> > Cheick Traore <cheick.traore@foss.st.com>
+> >     serial: stm32: do not deassert RS485 RTS GPIO prematurely
+> >
+> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> >     perf tools: Fix up some comments and code to properly use the event_source bus
+> >
+> > Luo Qiu <luoqiu@kylinsec.com.cn>
+> >     memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
+> >
+> > Michal Pecio <michal.pecio@gmail.com>
+> >     usb: xhci: Apply the link chain quirk on NEC isoc endpoints
+> >
+> > Michal Pecio <michal.pecio@gmail.com>
+> >     usb: xhci: Don't skip on Stopped - Length Invalid
+> >
+> > Dominique Martinet <dominique.martinet@atmark-techno.com>
+> >     net: usb: usbnet: restore usb%d name exception for local mac addresses
+> >
+> > Fabio Porcedda <fabio.porcedda@gmail.com>
+> >     net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+> >
+> > Fabio Porcedda <fabio.porcedda@gmail.com>
+> >     net: usb: qmi_wwan: add Telit Cinterion FN990B composition
+> >
+> > Sherry Sun <sherry.sun@nxp.com>
+> >     tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+> >
+> > Cameron Williams <cang1@live.co.uk>
+> >     tty: serial: 8250: Add Brainboxes XC devices
+> >
+> > Cameron Williams <cang1@live.co.uk>
+> >     tty: serial: 8250: Add some more device IDs
+> >
+> > William Breathitt Gray <wbg@kernel.org>
+> >     counter: microchip-tcb-capture: Fix undefined counter channel state on probe
+> >
+> > Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> >     counter: stm32-lptimer-cnt: fix error handling when enabling
+> >
+> > Andres Traumann <andres.traumann.01@gmail.com>
+> >     ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
+> >
+> > Dhruv Deshpande <dhrv.d@proton.me>
+> >     ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
+> >
+> > Maxim Mikityanskiy <maxtram95@gmail.com>
+> >     netfilter: socket: Lookup orig tuple for IPv6 SNAT
+> >
+> > Abel Wu <wuyun.abel@bytedance.com>
+> >     cgroup/rstat: Fix forceidle time in cpu.stat
+> >
+> > Minjoong Kim <pwn9uin@gmail.com>
+> >     atm: Fix NULL pointer dereference
+> >
+> > Terry Junge <linuxhid@cosmicgizmosystems.com>
+> >     HID: hid-plantronics: Add mic mute mapping and generalize quirks
+> >
+> > Terry Junge <linuxhid@cosmicgizmosystems.com>
+> >     ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
+> >
+> >
+> > -------------
+> >
+> > Diffstat:
+> >
+> >  Makefile                                  |   4 +-
+> >  drivers/counter/microchip-tcb-capture.c   |  19 ++++
+> >  drivers/counter/stm32-lptimer-cnt.c       |  24 +++--
+> >  drivers/hid/hid-plantronics.c             | 144 ++++++++++++++----------------
+> >  drivers/memstick/host/rtsx_usb_ms.c       |   1 +
+> >  drivers/net/usb/qmi_wwan.c                |   2 +
+> >  drivers/net/usb/usbnet.c                  |  21 +++--
+> >  drivers/tty/serial/8250/8250_dma.c        |   2 +-
+> >  drivers/tty/serial/8250/8250_pci.c        |  46 ++++++++++
+> >  drivers/tty/serial/fsl_lpuart.c           |  17 ++++
+> >  drivers/tty/serial/stm32-usart.c          |   4 +-
+> >  drivers/usb/host/xhci-ring.c              |   4 +
+> >  drivers/usb/host/xhci.h                   |  13 ++-
+> >  kernel/cgroup/rstat.c                     |  29 +++---
+> >  net/atm/mpc.c                             |   2 +
+> >  net/ipv6/netfilter/nf_socket_ipv6.c       |  23 +++++
+> >  sound/pci/hda/patch_realtek.c             |   2 +
+> >  sound/usb/mixer_quirks.c                  |  51 +++++++++++
+> >  tools/perf/Documentation/intel-hybrid.txt |  12 +--
+> >  tools/perf/Documentation/perf-list.txt    |   2 +-
+> >  tools/perf/arch/x86/util/iostat.c         |   2 +-
+> >  tools/perf/builtin-stat.c                 |   2 +-
+> >  tools/perf/util/mem-events.c              |   2 +-
+> >  tools/perf/util/pmu.c                     |   4 +-
+> >  24 files changed, 304 insertions(+), 128 deletions(-)
+> >
+> >
+> >
 
