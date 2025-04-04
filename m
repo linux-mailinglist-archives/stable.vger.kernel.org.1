@@ -1,253 +1,234 @@
-Return-Path: <stable+bounces-128319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFFAA7BE43
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:49:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1E9A7BE87
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 15:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B22387A79DB
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:47:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 994157A7F20
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 13:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AE41F03F0;
-	Fri,  4 Apr 2025 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB461CEAB2;
+	Fri,  4 Apr 2025 13:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IQa0zimK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mZn0YbpO"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3702E62C4
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 13:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CB61F37D3
+	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 13:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743774536; cv=none; b=CgWBnlcZ1geU4ItdVnevBMDvy/hIoCCyWTSToemh+dnbcFTKT/Qb76/GSMokjWUYRC/lfcWYq7+gmiXila3IXZ4G9cOLdHGR/5L2L413gF2JEli+9vjmf4G3zEvZQMeTHaM2CS4uEHuX8bjbiGgMng1y15XH5ug2+y0fs6/Tmwk=
+	t=1743775123; cv=none; b=UslxVZcALbAnZEuOYDmG8o9l1GhaOwBbFTD6LnrcZYvPYBWiEy3FAcbswPn03640BU3LikbUxRbmCJ3HZXBDM14ZenZUUFJYRYOFaBvjoZu2oTo8saB5ayduMNZ80Sd0viLcowrW9b8eKr0xKT5bjxnzPNZ9a90BkwLR8a9Wlx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743774536; c=relaxed/simple;
-	bh=/LoNyuqZkNHlaGAsryiCLwoc4jmD6q9kXkjXuLH92HU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KsSr++sPsc8myuNLlU0Tg3WpAB+3sdoerq4Spxy6PGiJQTWnDX3MJiVB/TbKtxb5WC2kvjWl/rl/8x5zagFj70AeHbY9RXbl9Y1vEtHvL5+FufSBPglREE5MIHzwnw7JEzSdbDjMEjNfajc3EZdXRuidi+4ZZeFLMEI2Wm0ZTgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IQa0zimK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743774533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aIFufL6GeNlo+jVuLlnkG+OJQ7hMrZuqqKT+ehHwkXo=;
-	b=IQa0zimK6dyfFudAgopQ/q7kJ1K6tmFNgO5lR9TqDz7NDIN2oEjgZDGfn4M0yfHUiqRhhz
-	prCMcMf6GlIckwVHt73TAbWokbkSoQQc9rti60az1+cy6+VCXtFZJgnF4qqTB8Cm6U5cVD
-	15urB0/xgY0YrpCFFb+5luWtd9/MNjQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-JC5wTfmKMNi-Wa5_UAmmBg-1; Fri, 04 Apr 2025 09:48:52 -0400
-X-MC-Unique: JC5wTfmKMNi-Wa5_UAmmBg-1
-X-Mimecast-MFC-AGG-ID: JC5wTfmKMNi-Wa5_UAmmBg_1743774531
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912fe32a30so975489f8f.1
-        for <Stable@vger.kernel.org>; Fri, 04 Apr 2025 06:48:52 -0700 (PDT)
+	s=arc-20240116; t=1743775123; c=relaxed/simple;
+	bh=Pfj890P5IwbfTQahPjXr1drdBQeTDyPSELB4bM0oU9Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YxQOgwwG6XrveqNOWYdH5mXEqhSttj8hn2uVv5/dhZiSDp9p2a+1kJMg94rbloL4OGhQIeBg9bHukaXWXOBgL80DRLpa0Y8jqy0hzrjXcIOOHBZa2MrxjQguYCQPVqiyUHBnbrJ3ZWk839zBpZMSFLbygT+lkpO1GZbPydEN9/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mZn0YbpO; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-86b9d9b02cbso921692241.1
+        for <stable@vger.kernel.org>; Fri, 04 Apr 2025 06:58:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1743775120; x=1744379920; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aB9/4tnJAtBLw0ZsGKRcy+CITdDU2AAS4m+EOvznbRo=;
+        b=mZn0YbpOkvivRmzb/qUSB3sbDjRxkXSChEkbxgrHMzMaTcFXXKswsFdcwWVf2nUGfl
+         rzvmbxEK/szrUtfV7NdqeHrLZz11iV7c1dfNYNKJVCgfDBftu1KR/HNzfu8STz/q15+q
+         bt2rtfMGobd3+4jLfp2biuCFr0sbz2xN40EjvYNq8yKwz5q3rsuYF+vH+IqQG4tAgwUh
+         OtFx+7H1hBMUqLFHuWz9vMjIAaFc8dFnB2JeV/FYudvQraSjE1deHOyTT72Lg2nol5lh
+         4FJ6QO010ErayqkSkNLfOgdnkpsKUkj+fv/kOUwrVOupMH3tpCWT0ia+IAghDPljQgNz
+         uWwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743774531; x=1744379331;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aIFufL6GeNlo+jVuLlnkG+OJQ7hMrZuqqKT+ehHwkXo=;
-        b=K9ynqj5BEmftXFwR70vh8XvpivVbUF6qkKT8Mg12RHU05icr81cSjAF6Ky9I7mD+un
-         a2kD34eqMu/xF3cvbD2mvVYmZ1aDtteaptN4Uhkpxu8DBlX3C003EBzpy8IB1UXVPZ9K
-         sTPd+0diEz49WpmCNAZiumfMpdOzm7qYZz+GMPJsQRuMgXV/CmH7FKYSq4TfQt3xYPDY
-         2w0WU6pxC1n8nQk6GMk10CKdSShIGiDfH/3s5zpGQxSqKP2hA5mcLsIYJXD0xRXx1c5t
-         9eSqo/xjmlXz4cZCiRNVuNGylfrfP233YDANsVc307SDQuVCe6iYs6uGxsNq0twMwK2j
-         qWGA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7B7leYkFX4mC6svq4SrxN0kIAuHVa1rw6FwVvPdOA8oqbjxUy8zikc1LEeVdBqX9ouX7GRO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPrRLZw/FEUP4TVr1PUNjKwgJCTqliMRezTSzV1WkuiOIznxVn
-	PdlxtxYK2iTfBoNvP8LUj7nhyCycefNvFPsh1Y2rpH+VDZPH9NOOXpTKui2N5Qlj7I2i9gKRMVd
-	gXI0Tjvw0KnF0NgFW9a7ka4ZPPtN+fD9ReuI8IJSzTY+52W4w/1u1RQ==
-X-Gm-Gg: ASbGncu+vdAoeJpOlDYWvF1eRtw66CNyQV43NF7n6jwlTzFGBTqql3LJzVb9qWD6uOz
-	VrIXMGStDlCu/IQQbIfjqnCuDa8LDGEZ5Y6E4fOzyvkwVL8EObJH3xqMyliejzVFwNZwvXr/Tvl
-	f8/UN0M2oUId5hhVUY7Idbrd3Md1osjTwWXlJe8w0vUFCEvfCqd7vKlXJ+50806f/oCPuRXdOyH
-	4ylFY7N7qMerIgXoviq4dzM2eLHbxAZuocIdqIRrGzFA5oTCr9agJASy8iDpqAaiHtMPgcYfNHu
-	Kp4HnR+IUtEaHIc9xpS21W9KjcJ994sLIC7tOGloei3yKB7nJ1TqWz3hjERWMZKvMfAkEo5BZCx
-	q34imqxMsaZmG37ADyJ2EdNuObxplBNlTMSzvxFR0Xjc=
-X-Received: by 2002:a05:6000:248a:b0:391:39fb:59c8 with SMTP id ffacd0b85a97d-39cba93245dmr2879738f8f.25.1743774531192;
-        Fri, 04 Apr 2025 06:48:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhlPl7enqIiLMXYl6+JR/5GXEO9+RAt+ekX6lCH13CQz2tU1h487SfdpVFZg/GMaC+rM6XGA==
-X-Received: by 2002:a05:6000:248a:b0:391:39fb:59c8 with SMTP id ffacd0b85a97d-39cba93245dmr2879713f8f.25.1743774530824;
-        Fri, 04 Apr 2025 06:48:50 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c71b:7900:8752:fae3:f9c9:a07e? (p200300cbc71b79008752fae3f9c9a07e.dip0.t-ipconnect.de. [2003:cb:c71b:7900:8752:fae3:f9c9:a07e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020dacfsm4439713f8f.72.2025.04.04.06.48.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 06:48:50 -0700 (PDT)
-Message-ID: <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
-Date: Fri, 4 Apr 2025 15:48:49 +0200
+        d=1e100.net; s=20230601; t=1743775120; x=1744379920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aB9/4tnJAtBLw0ZsGKRcy+CITdDU2AAS4m+EOvznbRo=;
+        b=d7WXs9m1NlYLfFH9a1l3ANhFWZxQzqJgnXJRqzcsmVKFuWuY8LwUPrwFEIDa5naozX
+         iYKipRNJ5NC2TSRFu3TvQR3C63p165DU0thnbeR6Bj0ePrBIYlcnfs1zUyHXItlCMRvg
+         LubHW+xcYehQdqoI42MDRCo6qzKwvjgElQfNUZPmOsZ5xSatKfodYsEVery7ogQzoQjM
+         sLc2Zg3Qn0gd/5zzUDSsJU6XioOM3i76hL/5U9P+DJSLnQJc66lMfX1y7EQlMnC8e+5T
+         XD2xRa3Mr49awaSAQgaGxzngsHw0htB1hsjiIlyKTuyLuO9FnAN4w3YimZBgkM6a/j2Q
+         Kw0g==
+X-Gm-Message-State: AOJu0Yxh+FOt6zJHRIEhAySXqxS68Evu+7JWFBeK/WVu92rKivZA3dig
+	j8CXf/ERC7tdezKJ2vVW6shubRmHji+24DYpZ2+nZr7dTbrQ4HuHHlTQSCWV2T0x3jxSFGcUpCW
+	BW57UetgsbY2U0Ofp0Yo6g0dBHRIWIkiGM8yGQw==
+X-Gm-Gg: ASbGncsL82YZNfsM+DZBqPEyVC+l6lbnq1KOUh+uuI3aKfwSh6lob4ESlZu1AwT7WdI
+	YzEUScWh+VRyNljfPCCWK/BgdWbNu3I3JttVqMr1hnoqd5D++6KmLDSbxhYxW3qJmNScA3Ufcnq
+	LVtkAgvWFvHi61UMbDEdBTnS4IEx7P9J0jJ8RHrHT+sk0Dp//DjeqRWfF8t6Y=
+X-Google-Smtp-Source: AGHT+IGDDltg5ObO138k6zzOYL+wykiXZsnKn8Vh0cMA65TQ3tUMpH1ACOqRfxeVBXNWngIamyIeX+2FXG2uPojaJuY=
+X-Received: by 2002:a05:6102:3f42:b0:4bb:c8e5:aa8b with SMTP id
+ ada2fe7eead31-4c8554a106dmr2484511137.22.1743775120437; Fri, 04 Apr 2025
+ 06:58:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-To: Halil Pasic <pasic@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- Chandra Merla <cmerla@redhat.com>, Stable@vger.kernel.org,
- Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Wei Wang <wei.w.wang@intel.com>
-References: <20250402203621.940090-1-david@redhat.com>
- <20250403161836.7fe9fea5.pasic@linux.ibm.com>
- <e2936e2f-022c-44ee-bb04-f07045ee2114@redhat.com>
- <20250404063619.0fa60a41.pasic@linux.ibm.com>
- <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
- <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
- <20250404153620.04d2df05.pasic@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250404153620.04d2df05.pasic@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250403151621.130541515@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 4 Apr 2025 19:28:28 +0530
+X-Gm-Features: ATxdqUHv-en8o0wookVpU3iUOk9afvCFPma7LGlR77epx5goUvKncGk2Siry8JI
+Message-ID: <CA+G9fYs22cxdKD24MzsBZnjVtHx1DpauDyKvLzecBaFjTy3G=w@mail.gmail.com>
+Subject: Re: [PATCH 6.14 00/21] 6.14.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 04.04.25 15:36, Halil Pasic wrote:
-> On Fri, 4 Apr 2025 12:55:09 +0200
-> David Hildenbrand <david@redhat.com> wrote:
-> 
->> For virito-balloon, we should probably do the following:
->>
->>   From 38e340c2bb53c2a7cc7c675f5dfdd44ecf7701d9 Mon Sep 17 00:00:00 2001
->> From: David Hildenbrand <david@redhat.com>
->> Date: Fri, 4 Apr 2025 12:53:16 +0200
->> Subject: [PATCH] virtio-balloon: Fix queue index assignment for
->>    non-existing queues
->>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>    device-types/balloon/description.tex | 22 ++++++++++++++++------
->>    1 file changed, 16 insertions(+), 6 deletions(-)
->>
->> diff --git a/device-types/balloon/description.tex b/device-types/balloon/description.tex
->> index a1d9603..a7396ff 100644
->> --- a/device-types/balloon/description.tex
->> +++ b/device-types/balloon/description.tex
->> @@ -16,6 +16,21 @@ \subsection{Device ID}\label{sec:Device Types / Memory Balloon Device / Device I
->>      5
->>    
->>    \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtqueues}
->> +
->> +\begin{description}
->> +\item[inflateq] Exists unconditionally.
->> +\item[deflateq] Exists unconditionally.
->> +\item[statsq] Only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
->> +\item[free_page_vq] Only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
->> +\item[reporting_vq] Only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
-> 
-> s/is set/is negotiated/?
-> 
-> I think we should stick to "feature is offered" and "feature is
-> negotiated".
-> 
->> +\end{description}
->> +
->> +\begin{note}
->> +Virtqueue indexes are assigned sequentially for existing queues, starting
->> +with index 0; consequently, if a virtqueue does not exist, it does not get
->> +an index assigned. Assuming all virtqueues exist for a device, the indexes
->> +are:
->> +
->>    \begin{description}
->>    \item[0] inflateq
->>    \item[1] deflateq
->> @@ -23,12 +38,7 @@ \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtque
->>    \item[3] free_page_vq
->>    \item[4] reporting_vq
->>    \end{description}
->> -
->> -  statsq only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
->> -
->> -  free_page_vq only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
->> -
->> -  reporting_vq only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
->> +\end{note}
->>    
->>    \subsection{Feature bits}\label{sec:Device Types / Memory Balloon Device / Feature bits}
->>    \begin{description}
-> 
-> Sounds good to me! But I'm still a little confused by the "holes". What
-> confuses me is that i can think of at least 2 distinct types of "holes":
-> 1) Holes that can be filled later. The queue conceptually exists, but
->     there is no need to back it with any resources for now because it is
->     dormant (it can be seen a hole in comparison to queues that need to
->    materialize -- vring, notifiers, ...)
-> 2) Holes that can not be filled without resetting the device: i.e. if
->     certain features are not negotiated, then a queue X does not exist,
->     but subsequent queues retain their index.
+On Thu, 3 Apr 2025 at 20:54, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.14.1 release.
+> There are 21 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.14.1-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I think it is not about "negotiated", that might be the wrong terminology.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-E.g., in QEMU virtio_balloon_device_realize() we define the virtqueues 
-(virtio_add_queue()) if virtio_has_feature(s->host_features).
+## Build
+* kernel: 6.14.1-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 8dba5209f1d8c122539b8f9f164a6ed44c025bcf
+* git describe: v6.14-rc6-492-g8dba5209f1d8
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14=
+-rc6-492-g8dba5209f1d8/
 
-That is, it's independent of a feature negotiation (IIUC), it's static 
-for the device --  "host_features"
+## Test Regressions (compared to v6.14.0)
 
+## Metric Regressions (compared to v6.14.0)
 
-Is that really "negotiated" or is it "the device offers the feature X" ?
+## Test Fixes (compared to v6.14.0)
 
--- 
-Cheers,
+## Metric Fixes (compared to v6.14.0)
 
-David / dhildenb
+## Test result summary
+total: 114030, pass: 88585, fail: 7464, skip: 17981, xfail: 0
 
+## Build Summary
+* arc: 6 total, 5 passed, 1 failed
+* arm: 143 total, 137 passed, 6 failed
+* arm64: 58 total, 57 passed, 1 failed
+* i386: 22 total, 19 passed, 3 failed
+* mips: 38 total, 33 passed, 5 failed
+* parisc: 5 total, 3 passed, 2 failed
+* powerpc: 44 total, 43 passed, 1 failed
+* riscv: 27 total, 24 passed, 3 failed
+* s390: 26 total, 25 passed, 1 failed
+* sh: 6 total, 5 passed, 1 failed
+* sparc: 5 total, 3 passed, 2 failed
+* x86_64: 50 total, 49 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
