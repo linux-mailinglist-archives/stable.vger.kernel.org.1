@@ -1,189 +1,123 @@
-Return-Path: <stable+bounces-128324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599A5A7BF0B
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:22:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B729A7BFC5
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9549B1794E5
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:22:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1D6C18982A6
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3711F3B92;
-	Fri,  4 Apr 2025 14:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4C81F4169;
+	Fri,  4 Apr 2025 14:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JjSrOLJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC3eerwY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBCD847B;
-	Fri,  4 Apr 2025 14:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C4B1F2C5B
+	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 14:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743776572; cv=none; b=cl/RXQKqtjiRPZCXBULvQcy2bSqKyd7ae/C9JKxkQFddfmRaAYnlvAz3C1SEYZ7oe3rEog7HyhPUhxN4LaZ2IuWlljJWkvheLKvt6eJZw6C6t4eSokW8NE2lF3yVpJLIFgr5wcxLUViCTyKZU8zPfkshgJ2mVuLKcydarrLNQGI=
+	t=1743777864; cv=none; b=Om0ClrkKOOnYDOZgmFXB0+L6SUZK7gyWcLIQBfUVLfAAidtdr0jUKTpnQfh92fMvRhvoJFBSLMSauLh0HCdzpqAKQea3mv0+89vOMEZkrpfZMhKriht2Hb+tU4N/mpnfMp4My5LAuRT6s8vaiDD7jU1dRMJwXi5/chZs1QMjDcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743776572; c=relaxed/simple;
-	bh=mFBXTwEhQKFDjcZ3xXqeDdUzR3kLcAmTHhPWdwLV2j0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ftV3VtHwbngu10u3Nl9yiOXggXx9bnB0w2yoWBeeMmSN+Oq1YkeApeGQYVbiwRpk8Gkdd1VY2ouCmkUIJ1MoHGlRecdHDudtBldXPh8NPGl/HxflDRy4x3rqXIomy7XQmqXuK8wB57QZKw6Zx9IwRr848at1t5tVg7pxi8J9pMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjSrOLJM; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d589ed2b47so7087515ab.2;
-        Fri, 04 Apr 2025 07:22:50 -0700 (PDT)
+	s=arc-20240116; t=1743777864; c=relaxed/simple;
+	bh=E6utw/gDQf+fI4uGLBdnXPibG1fX3thq787NQIaKJ5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lzymzss9eUdTZdfcVwV5OpCZcWOIVa6dri2TFVYk1qiH5QYZ3DKx9m9Mrd8hfhNM4ZwQ1x8xAdfJIn/VjviG/rrjmefNAPitCPZ/Ii0vWj9Y3Pcoj+4aVVHdpic3PiqaQqb+QX2yec8EQDySn9nL3mXJOz2aT7YS8/BkypEXd5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC3eerwY; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3d45503af24so18909335ab.2
+        for <stable@vger.kernel.org>; Fri, 04 Apr 2025 07:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743776570; x=1744381370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uF8Eg/CK7XzuoF+shmNXDLBMaetMNlz/WflJhGpXfFc=;
-        b=JjSrOLJMpt3Qy3SLjC0TDd934nEY1JVljGtSRzVQ+UilCIn3mChPSy0C0a99V5zwoM
-         MMLh21rYi+JYzyTceWjNKk22AXshqt3vrnkOQH4Lxw9cqvSKCue523V70/TfpdHbjwcw
-         jajH5Z9YZJTbVbr7VVHAZfhMnLTab5IUuDmGC6T/4NgWlLfsXmfZ3OBX8jF/J6aXsUdq
-         KaRSIGeO1b9d+vfX4y8teTjFvhMBvi/JJ7pzA3ZzNFEBpubebX7JgmHAZBen+2zq/rDm
-         zh4sZcWM6UV4Ig1xWtciLcr66x7s/q+/B2u0V/jzDbF9t/GGYQZKIfQLnKS7IzKBoXQ2
-         sLZA==
+        d=linuxfoundation.org; s=google; t=1743777861; x=1744382661; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q7j6X65sUf/Y74e3CXgX1WG8fpjUk7SSrlyn4gxiEzw=;
+        b=ZC3eerwYx39T5BfKtQb39p6wikDB4pcOM2T9SzXdyMu4WIMZerTvetQgc2EzVSwLK8
+         cRuE816czvho7qunitzWT7nTpvAj7LccFp6C/HwGK89nrActqujBgtfEW+VSCVXOtKsR
+         YNVKz67w3CX6MVTXw7y/7QPu6CLizYtYKjTpQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743776570; x=1744381370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uF8Eg/CK7XzuoF+shmNXDLBMaetMNlz/WflJhGpXfFc=;
-        b=bMzJcNn7joZzP5E8VPKzge+sWxRcIGLOzjWbkazsp7h5thGzd/+cOUMrr0UuBt369m
-         kuioUya/KZygW+slC/GxWQ9A5RDo1YfegzOD81gBWOXBkou57EAoF7UfKgKBaamAjEHL
-         KveZUVlkAc3OP2Z/Yl8uq1d+NPdxLhZhr/E+Zu3p3g1YgRM+Xv5LBXa0gtdAnrcVj9KD
-         509m2nigMTvcW7bgNNPXFrJiVtYR+jtkOsvMuRUWwBJs7BY3k9U26rfnSGyvSmDQYyaD
-         /bhiEt0w03nBEBCNoaPg/Obbih+OabqSd/tWyBCVBxiKoQ6UpK+pz6NI7F6siFwAzb5d
-         nn8A==
-X-Forwarded-Encrypted: i=1; AJvYcCV3jc/MU/Y30AEM2jaH4KNEAJNJGv70s0lmgkivbuH6AnxUEUIWiKslejhSIpRReQVVdJ7pOCwvR77H9bo=@vger.kernel.org, AJvYcCW/CjTVQabZXCvp+Y6kLcBq59NAGjkbF172WRXCsC+H8GeMUJNvXVPKz3MXp096pgBYh/p7bMJV@vger.kernel.org, AJvYcCWx/G+J4aA2zv9pe8oY2NRhCuIwr2P6M83xRGAv+DiCavUDKTA3EHqYHLpbPSWhY8nFf0qagfYD@vger.kernel.org, AJvYcCX1uAVaPz63tT9sFAMQS0jcW+3Z9mvEGMSuZQy9fxxjiJRfmWuT1k3UOOdqntym94gnMyrEnHmq6R64FQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu/3cQnxHYMKzzaGod9zN0fiW5VJp8fnMbt2Xjpms6SnEPaVbD
-	XVBr+3EzXdNlUUiFt/Rn6hFbEYBNezlyZCXJSZ5eczxyY4+KpQGENZynNA3tiFRdxfzhgZNwWfL
-	AQKsdieOgNDwNUuyE8pwMPM4T9+8=
-X-Gm-Gg: ASbGnctH4r1CYiSHTpT0f6R/ynyZppuxXloze2/h31gYVrZ2RO+oefqOPDWMYRph5iS
-	7QcBBmK2tJM+t1pJMC9ZC/jSIKOHpF0Gn6Ky54IEKye04tKRdZRzr+92TgJxkvqlIYVQHiw2pA0
-	sS6+I8s1k2hLAcWHmkPiY5SKNjGguh
-X-Google-Smtp-Source: AGHT+IGqE3jq7vSaeNlWZlaY6Rmf5YCoZyFZnfH4P/4GbXj+4pcuknK8aVGw3rlDDBSWZaMH1HIrWw3SGnuf2u0S7Lc=
-X-Received: by 2002:a05:6e02:16cb:b0:3d0:4b3d:75ba with SMTP id
- e9e14a558f8ab-3d6e3ee1632mr36224115ab.4.1743776569662; Fri, 04 Apr 2025
- 07:22:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743777861; x=1744382661;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q7j6X65sUf/Y74e3CXgX1WG8fpjUk7SSrlyn4gxiEzw=;
+        b=Iy1x6r2HKdBOESj45ySYOJVhOqPpB59FrXqbOi7O1vvV/NS67RzYvsa/M1Y6S8wq9J
+         7DZnel5rjMnQNA3CfF22vXSdMhzeAnoCc5d9MWiknKnGph1VANsY1YSLbKIx5lDTBSwq
+         E8cqxxi0gdE2C35zF2c9yhlduhF+bfWfMc8Inrv0rMgl+Q0sErJ3cEMfIEZUzyqvihBf
+         5Piv8UkbYhQw09DKLnfYssHpQ9H8QED9Mq5kxqd+1eNB9hg0mrY9pimb1jUSnexXXP3x
+         la9WM2mfBU62VBwMdVZBsYispE1sOKS8WBia6rbBetdFfYHKbrlec7voztv3ZecGHdGQ
+         IYcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXGU2GzMnRatKlXZRgS/waDys1aJNHXx87OFjnMlwu1KCejWZdYoIDPjPVlUNSdbFvfjzbafg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmBBtvZogvryR8jqKxF3jgJGHrx7f+jIZpk9egN111vysmNyBW
+	tGHnX4Dq02HebN7odhr6ZjTzqmF92EwcXGYnT2L1xqUvagWHpNUuSSDs/LMR/ZE=
+X-Gm-Gg: ASbGnctyWrGiZ/Gzba1nDLgayT8INH9rtwZR4duD8zNysc5XuLD1cxOfGJB6NFZPBb4
+	LsOCvkk6mW4AAPW5SbcY2YRoAQrNYOlsi5eH5+rlhJcTaRpfARk3pBcYcxzaJGFk2Gka0jU6sC5
+	t8S8EjqsMvom5vzmPDtWDqHCedS9uhZewirBhs95w49xBsxQN8NvKaaz54GjG5s8lqy9sBqUlTu
+	X/kaZPLKqGosfL7PTGiE+5TBKocuT/zP4qxTtIyzJsnj6/1T3sgvLVjQfU1MzOuozZisuebhSU8
+	nf0vbReEo3y0VYGjc9X4/6YUru6mjXpca+iSy6eODjgabO/OAsu95hA=
+X-Google-Smtp-Source: AGHT+IEHkqDh9oJa2S3GGKDi+GP2V7X1hMJDHi7lwm71y2eKrCoA2PqIlJS9fMSkYj3RVmu94fwG0A==
+X-Received: by 2002:a05:6e02:1d9b:b0:3ce:8ed9:ca94 with SMTP id e9e14a558f8ab-3d6e3f6573dmr40989205ab.14.1743777860986;
+        Fri, 04 Apr 2025 07:44:20 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d6de79f070sm8236735ab.12.2025.04.04.07.44.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Apr 2025 07:44:20 -0700 (PDT)
+Message-ID: <3936bdd4-b776-49a5-b997-a7c6139c5f85@linuxfoundation.org>
+Date: Fri, 4 Apr 2025 08:44:19 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
- <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
- <87tt75efdj.fsf@igalia.com> <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
- <CADvbK_d+vr-t7D1GZJ86gG6oS+Nzy7MDVh_+7Je6hqCdez4Axw@mail.gmail.com> <87r028dyye.fsf@igalia.com>
-In-Reply-To: <87r028dyye.fsf@igalia.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Fri, 4 Apr 2025 10:22:38 -0400
-X-Gm-Features: ATxdqUFqJZzOz7__HX2olSvI6YOoUaTBczjRn0Vq4YkQ2y534PCmeDUmyD3BkGU
-Message-ID: <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
-Subject: Re: [PATCH] sctp: check transport existence before processing a send primitive
-To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 00/21] 6.14.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250403151621.130541515@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250403151621.130541515@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 4, 2025 at 6:05=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@ig=
-alia.com> wrote:
->
-> Thanks for the suggestion!
->
-> On Thu, Apr 03 2025 at 14:44:18, Xin Long <lucien.xin@gmail.com> wrote:
->
-> > @@ -9234,7 +9236,7 @@ static int sctp_wait_for_sndbuf(struct
-> > sctp_association *asoc, long *timeo_p,
-> >                                           TASK_INTERRUPTIBLE);
-> >                 if (asoc->base.dead)
-> >                         goto do_dead;
-> > -               if (!*timeo_p)
-> > +               if (!*timeo_p || (t && t->dead))
-> >                         goto do_nonblock;
-> >                 if (sk->sk_err || asoc->state >=3D SCTP_STATE_SHUTDOWN_=
-PENDING)
-> >                         goto do_error;
->
-> I suppose checking t->dead should be done after locking the socket
-> again, where sctp_assoc_rm_peer() may have had a chance to run, rather
-> than here?
->
-It shouldn't matter, as long as it's protected by the socket lock.
-The logic would be similar to checking asoc->base.dead.
+On 4/3/25 09:20, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.1 release.
+> There are 21 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 05 Apr 2025 15:16:11 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-> Something like this:
->
-> @@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
-tion *asoc, long *timeo_p,
->         pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
->                  *timeo_p, msg_len);
->
-> -       /* Increment the association's refcnt.  */
-> +       /* Increment the transport and association's refcnt. */
-> +       if (transport)
-> +               sctp_transport_hold(transport);
->         sctp_association_hold(asoc);
->
->         /* Wait on the association specific sndbuf space. */
-> @@ -9252,6 +9256,8 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
-tion *asoc, long *timeo_p,
->                 lock_sock(sk);
->                 if (sk !=3D asoc->base.sk)
->                         goto do_error;
-> +               if (transport && transport->dead)
-> +                       goto do_nonblock;
->
->                 *timeo_p =3D current_timeo;
->         }
-> @@ -9259,7 +9265,9 @@ static int sctp_wait_for_sndbuf(struct sctp_associa=
-tion *asoc, long *timeo_p,
->  out:
->         finish_wait(&asoc->wait, &wait);
->
-> -       /* Release the association's refcnt.  */
-> +       /* Release the transport and association's refcnt. */
-> +       if (transport)
-> +               sctp_transport_put(transport);
->         sctp_association_put(asoc);
->
->         return err;
->
->
-> So by the time the sending thread re-claims the socket lock it can tell
-> whether someone else removed the transport by checking transport->dead
-> (set in sctp_transport_free()) and there's a guarantee that the
-> transport hasn't been freed yet because we hold a reference to it.
->
-> If the whole receive path through sctp_assoc_rm_peer() is protected by
-> the same socket lock, as you said, this should be safe. The tests I ran
-> seem to work fine. If you're ok with it I'll send another patch to
-> supersede this one.
->
-LGTM.
+Compiled and booted on my test system. No dmesg regressions.
 
->
-> > You will need to reintroduce the dead bit in struct sctp_transport and
-> > set it in sctp_transport_free(). Note this field was previously removed=
- in:
-> >
-> > commit 47faa1e4c50ec26e6e75dcd1ce53f064bd45f729
-> > Author: Xin Long <lucien.xin@gmail.com>
-> > Date:   Fri Jan 22 01:49:09 2016 +0800
-> >
-> >     sctp: remove the dead field of sctp_transport
->
-> I understand that none of the transport->dead checks from that commit
-> are necessary anymore, since they were replaced by refcnt checks, and
-> that we'll only bring the bit back for this particular check we're doing
-> now, correct?
-Correct, only the 'dead' bit and set it in sctp_transport_free().
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Thanks.
+thanks,
+-- Shuah
 
