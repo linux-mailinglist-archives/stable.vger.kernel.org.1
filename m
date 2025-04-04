@@ -1,88 +1,55 @@
-Return-Path: <stable+bounces-128322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037FFA7BEE4
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:17:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B63A7BF01
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 16:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A45F18894FD
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:17:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D8717C3C0
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 14:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D4F1F416B;
-	Fri,  4 Apr 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD77A1F3B83;
+	Fri,  4 Apr 2025 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MQgRQrRV"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vT+D0GGQ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1181F3D21
-	for <stable@vger.kernel.org>; Fri,  4 Apr 2025 14:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0E61F37C3;
+	Fri,  4 Apr 2025 14:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743776244; cv=none; b=oB1kb8xnIJgdwfyuby/FERzPJRKAmVWEpNrKqGItFuahy0osCFVHsqTMuroe1u6itJvkzxlhqEdmCg0BhKp9+FOtiVo8AlBFwkUiJtULbzKvq6OfvY9ZBDZ9tTCDlmjwuRdxg4MAJ6DxEmp9JOzt2Dcz5cWjXk/ARWM39Pk5xew=
+	t=1743776429; cv=none; b=KoFcFZIe6kWRScvrZ3AY6j9hrr26N0JKrMl7D+Wl36QjAQgKc7D9M7bsFGa/uWt0GkQqXeIPEUCSjNfuC2d6rBN5hGiRtzJ7GmPzD+xCh8vlphwBgflZWwvZKduVFjeX/d8QxoqKjCs9Qosq4YEhEOqWBzqv9YtpWJ0hVeAbmVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743776244; c=relaxed/simple;
-	bh=pqMUlZ5ggwaGqc7Jf8UoGV7UJviwGrcnxt8jFNJ+ChI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HjqrG1lQB1q3LpW8lxCr+0yGKPNGlmHKPlftolZLWLrA8NYw2pBsPnxCT8GDWhzUtjU5EPi4PUW6BiYAJz/n/nYgsC/Kqani4IIDg/olJ2VA80Fb75vnVCczYcFC7xVzOTHM9x/qhn8ZqjVMyUl9fMD+q8UpkuwOHX/0pmCrbBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MQgRQrRV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743776241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YYP97SFevEMrsDa/3M9lWyqV8pmUiVIrFbb/z/mL3Z0=;
-	b=MQgRQrRVSNz0o2h7doRdHgBd2z/QbjDN4MMlVN5Pg0d+Y3AQo+tWO3+M7KDYnieBph5C1Q
-	Btqn8GLDXpsutCojMK65QE/3CPxfPri2TuzwJCi0DOHGhg+GP9rq5nmsa1/2g+22yFyZYw
-	uKf/x1aBLW5pAd2xKQ9IU6evnvhBLrQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-Q22UyJsKPQiJzuaSDc2v8Q-1; Fri, 04 Apr 2025 10:17:17 -0400
-X-MC-Unique: Q22UyJsKPQiJzuaSDc2v8Q-1
-X-Mimecast-MFC-AGG-ID: Q22UyJsKPQiJzuaSDc2v8Q_1743776236
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912d5f6689so1284531f8f.1
-        for <Stable@vger.kernel.org>; Fri, 04 Apr 2025 07:17:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743776236; x=1744381036;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YYP97SFevEMrsDa/3M9lWyqV8pmUiVIrFbb/z/mL3Z0=;
-        b=B7YBHsgEIWhNPtHoUsb1g/pF/2MLzawrBzsRUTLMj8Xk6ln2F8rdhUlBW8Qs3oSUJy
-         LkvBjbfjYLfhMPg5+9rdV5oWX+jr1ssA6FYfg2/yW+ENzwcI/DW2Upv6TuaEAf2Seg2L
-         rA/tS+7cA5ZTiB0glIHePoIjzD6/7qLXMSpbxhCTUg449WDINB1yAnZhbuYXbhlKjZS2
-         dX/Z3Z3e9SiGFiykg0wITAYlKLMKo8MYPgvQrMH0U3e/nCXqxTa1TTX5u2xX3geUxbkI
-         GM3L61pSL6NdgOcqf6i2VkC1YXWd3RQ8r6lrtm5RKjX75uFT2nC5Y7/27tpsucwC0Epo
-         77bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxRlwEWJ+OEam6DOwK/wjZinf3hcUVlQLjk/IhmEwtlqdROj26U3CCr2gt/obhHNEoKnTS9ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkKBpHo0ofhZuNsN8VH/RWYr/MywhTjf0gyCO+CT992II0mAHQ
-	sz1ovuL4x48T6f6GCR+eOHvaWpwJth5C6wp8NkoVV4NKjwIOwzWNy24+EiHvO6YqfOtvjB45g+O
-	9HUtBklLhRrkSp7Y1l42wFIoO4zzCqqHZdkFIQy0mWifI7jIUV5uS9g==
-X-Gm-Gg: ASbGncsmU7SKkW5QE8I4scnFkwK0SaC2VB6fyC16nbYrniRLjrR1bP9lNc9VRpuqMVu
-	Z1UoIBPOOC+l/5mx+ls7PdqKjLP8l+Z8DaqpVbfYnaKJS5dHQAy0aDcTsZLK0CbVJW7u/FNwfZf
-	XJ2SzmMy1ewuxkuIjhdfR3Bgtvd4fX3wVRUP6XTqYn7uAKPLxOZ8kl30j2VJv6A2souyKyjtCds
-	KAiyjJ3Ior7v4YEit7+PEOajDip6/daG4tYKH1K6lFXP3+muWjRcVuFV3Gd1AN4vhR9pKxHb3Sp
-	/0N0n2k9KqiWqBeDoKw4zjWkYhX0yHcJZSJgEwWfGKFofTswqnRDn+sDA2Xzh27aD0bfxe/STcc
-	CIBD77u9+DTyG0gADB45X2XWGVH9hpnLMTiW6vcAml6I=
-X-Received: by 2002:a5d:59ae:0:b0:39c:13fd:ec44 with SMTP id ffacd0b85a97d-39d07ad4dd0mr2783592f8f.5.1743776236349;
-        Fri, 04 Apr 2025 07:17:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzB4oRagYa80h55DAQhWRP4vFklx96QovmW2r4XQ4xCAa+3beYUWgZNPww/EaMcaEReuN57A==
-X-Received: by 2002:a5d:59ae:0:b0:39c:13fd:ec44 with SMTP id ffacd0b85a97d-39d07ad4dd0mr2783533f8f.5.1743776235896;
-        Fri, 04 Apr 2025 07:17:15 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c71b:7900:8752:fae3:f9c9:a07e? (p200300cbc71b79008752fae3f9c9a07e.dip0.t-ipconnect.de. [2003:cb:c71b:7900:8752:fae3:f9c9:a07e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c301a7225sm4454629f8f.26.2025.04.04.07.17.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 07:17:15 -0700 (PDT)
-Message-ID: <6f548b8b-8c6e-4221-a5d5-8e7a9013f9c3@redhat.com>
-Date: Fri, 4 Apr 2025 16:17:14 +0200
+	s=arc-20240116; t=1743776429; c=relaxed/simple;
+	bh=dVpKr/sYMzgqeXhXFJ/oZY/Tfs3XC3VCCz70DzidYf0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=X+afsTARtoDwYmdfYMUwXsu+ycnRTPfLo6uMKKowYz0B9R1ovcBMC52kRusEjuLnk4lejv5VH5UnLd4r802/zMPmfT5gyJBxGNV/D9IQVIuRSkH45skB59h7G7hYQw/PfwwMdoOujNsuW81FRSf/Scw0RPtlhQoGOHcPO8o80Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vT+D0GGQ; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1743776419; x=1744381219; i=markus.elfring@web.de;
+	bh=dVpKr/sYMzgqeXhXFJ/oZY/Tfs3XC3VCCz70DzidYf0=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vT+D0GGQuvufa88f8kp8v062bZpYRfG5rNn/CdUc6Ok5dyX5pXUTjt73Nkbt4gaI
+	 PgeaCwNJwvgzArkw2YltKmDd5W7WuGISJR90hGq5WSibb8MNApPlmRAJUVgAkZbVn
+	 k/8xBlOSG0trz6Nc9xxHXB+jvcQ1DmBpzroKwA4aADKMsAwFC+WMRzVSI9QjgUQNq
+	 76RuRj3NHeFslEJ4vgzVt16gw/sErr1rOR01Oa5hE83xExTzJlR+KC7ChZ7Jif0eZ
+	 mln6LybRGIui4fMGk5PPCiZxZk1Qt3hxF/Tp0ZJl+zAPl5Qzg+FnrozwGCKvFAp+B
+	 4sysicG1e2aERP+GSA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.27]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M4sbr-1tymlI28vf-00EGpL; Fri, 04
+ Apr 2025 16:20:19 +0200
+Message-ID: <667bcd67-aac4-425c-b100-d25dc86eb6a9@web.de>
+Date: Fri, 4 Apr 2025 16:20:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,155 +57,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-To: Halil Pasic <pasic@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- Chandra Merla <cmerla@redhat.com>, Stable@vger.kernel.org,
- Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Wei Wang <wei.w.wang@intel.com>
-References: <20250402203621.940090-1-david@redhat.com>
- <20250403161836.7fe9fea5.pasic@linux.ibm.com>
- <e2936e2f-022c-44ee-bb04-f07045ee2114@redhat.com>
- <20250404063619.0fa60a41.pasic@linux.ibm.com>
- <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
- <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
- <20250404153620.04d2df05.pasic@linux.ibm.com>
- <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
- <20250404160025.3ab56f60.pasic@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250404160025.3ab56f60.pasic@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+ linux-bcachefs@vger.kernel.org, vulab@iscas.ac.cn
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
+Subject: Re: [PATCH] bcachefs: Add error handling for zlib_deflateInit2()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:m9dyMti2xaz8zIWG+21CGOyDk02i+2gzChDbCE1fHNANLYIuzOP
+ u/jgZIhvsfBWcTOnJRbXcy906ATPuII7wXgXcHXcVpmXrqkDgGgHnKT6QgM3piWzFVWX0dH
+ gPSi+1eZeJ5K2i0tQ1kzTyrCllXYo7RqgFpEKPpknl+kb48J46gysHz31FqkeGfOfbWWFd8
+ lAARsG30s9aCY/PuxcriA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UAK3iNBi4KA=;+VCTiQDIa2IGjGyuE7S3R1YngIZ
+ Kgbg7/4YxYlgHQ6HsymLPtsLEOZVPrfH6qANK878G8IHOVINgsP9m9X5nIxTn8C9GtiL+FGNw
+ 8FUiU2FzbbUKt0OZ07Rs4q3LP4RQi8VAGj0ikq1Huzvrbc48xZl+bNOOsAAB5CthRzbqBNYEj
+ W1YQjR7VQjuDc0Uk6Ebg3372DS3hp61mYtDtKJWni/o9UtRGTeERa5xZu9xYwLCpBcOfhWiwd
+ bycrZbgFrBGD67Na8lKtSJ1Do0JcT3GWhKiF9Luv/hVskFGj/9mfSATL98kNCSXj7jt57+ori
+ 0Z5AjafMs6q/8tj3cYZo6HRkD5Hhuy+N3nySptZCtVIvkiuu5mJ82PYBof+u6IMV58R7JG+WP
+ nolmA5Gr6qae8mQjAgHwXqFd+m3rNhaaa77Vv+w9rAu6S+d3u4YpVrgmS5mCPasyzscrrKq5l
+ UkkTkU1sgKWz1ddJWWzZArDVFl1g2ZIzdRS9jQto3VdQ724ItYXUoeqwnSzOyt/F8bmO/eK7H
+ Z4tbtK+yc9B6iokrweD+9ycROP0QWNRtLycP86iJ7pLFBPXoCrwblGn7I0aWFpO894i8Hgd5O
+ IJn0PPu0Rt3Hu4YnvbU2A38kp+gMxJ2vQgr+bZfDfOpsDCl7oblXB4Rcg6LLW9Xe0KM/IiWHV
+ PwCP9Ghll3j0SnakfZSgCY4EN7yGiZBzgCdSeq8S2KNARn2MbiI0hOTzWw66jSdxK7uXRs40w
+ UP4myRbXCO4Or8R67iYcYXDreI2iFX667RObnTt+uxdIm6PnZQXW5xkJEjuc7vlgi+uTG3HqN
+ b/5JokO6A+o28cJE04avh/y4GUQD5/aLCeNY70Yf0BDk/XtLx2hpxwR7tVbSseZwMft5qjPqN
+ icd5V5rhcq5j66mRuZQetS6NmxFyiad40GkAghysH6uIljqyPALRTS/rxIGkraL6Rb3BOiXSM
+ i9k0VwzzAPaINpSOnZKSpfieWMNhrLDxCF925zgilbD7iG4lt6IgEZ+E+HvwHMI8zlGl7vbw9
+ qM2cGmbvwuCtHBKmyrqUvQqyPg4WzOI4OQ9OM4i2xAs5RhxF1SM4QLt5F7Uo7/wqKfN6c6KBS
+ 7pk+G6/2ozz1zyCM75Q7Q8qoPmVrWHKAzpuyYwV3kzvdcaUvB4Ool3TZDTsyeK4ygtn0gwkwu
+ pgkUfWcJrRp00g9I6fk3vXRHb1JQ3FAIcrxG3Su6QT37B3nT4UXJmEP7r1RJe/32mIzjvHXs9
+ GyOfTgQcKkiXapguIW9LYuGKrTsqJbjSzWZYQjLSkJJaTNf3mkivUNs5YN1hJmCLDiZlSonh8
+ PuIbdKdI6kNEv4b2wWX/Y2d0Hxi/rTrEluWKhGfuUofxf14nhP13OElXEoSilrAsDqSgUVxbj
+ Cc2/UqDRKYXnYO6V5v1H1ey8pLHfF92EN3in37HZvF903fi6cVBZRbIuJ/8f43oDE3NWo7o9m
+ mH9o4/uZlGgmkTVV+TY4foctj3hpQxuF9y2xfqE9Z+WYfQwN/Z8HC3aiMRtc35LDR5qa/TA==
 
-On 04.04.25 16:00, Halil Pasic wrote:
-> On Fri, 4 Apr 2025 15:48:49 +0200
-> David Hildenbrand <david@redhat.com> wrote:
-> 
->>> Sounds good to me! But I'm still a little confused by the "holes".
->>> What confuses me is that i can think of at least 2 distinct types of
->>> "holes": 1) Holes that can be filled later. The queue conceptually
->>> exists, but there is no need to back it with any resources for now
->>> because it is dormant (it can be seen a hole in comparison to queues
->>> that need to materialize -- vring, notifiers, ...)
->>> 2) Holes that can not be filled without resetting the device: i.e. if
->>>      certain features are not negotiated, then a queue X does not
->>> exist, but subsequent queues retain their index.
->>
->> I think it is not about "negotiated", that might be the wrong
->> terminology.
->>
->> E.g., in QEMU virtio_balloon_device_realize() we define the virtqueues
->> (virtio_add_queue()) if virtio_has_feature(s->host_features).
->>
->> That is, it's independent of a feature negotiation (IIUC), it's static
->> for the device --  "host_features"
->>
->>
->> Is that really "negotiated" or is it "the device offers the feature X"
->> ?
-> 
-> It is offered. And this is precisely why I'm so keen on having a precise
-> wording here.
+=E2=80=A6
+> > Add an error check and return 0 immediately if the initialzation fails=
+.
+>
+> Applied
 
-Yes, me too. The current phrasing in the spec is not clear.
+Did you try to avoid a typo in such a change description?
 
-Linux similarly checks 
-virtio_has_feature()->virtio_check_driver_offered_feature().
-
-> 
-> Usually for compatibility one needs negotiated. Because the feature
-> negotiation is mostly about compatibility. I.e. the driver should be
-> able to say, hey I don't know about that feature, and get compatible
-> behavior. If for example VIRTIO_BALLOON_F_FREE_PAGE_HINT and
-> VIRTIO_BALLOON_F_PAGE_REPORTING are both offered but only
-> VIRTIO_BALLOON_F_PAGE_REPORTING is negotiated. That would make reporting_vq
-> jump to +1 compared to the case where VIRTIO_BALLOON_F_FREE_PAGE_HINT is
-> not offered. Which is IMHO no good, because for the features that the
-> driver is going to reject in most of the cases it should not matter if
-> it was offered or not.
-
-Yes. The key part is that we may only add new features to the tail of 
-our feature list; maybe we should document that as well.
-
-I agree that a driver that implements VIRTIO_BALLOON_F_PAGE_REPORTING 
-*must* be aware that VIRTIO_BALLOON_F_FREE_PAGE_HINT exists. So queue 
-existence is not about feature negotiation but about features being 
-offered from the device.
-
-... which is a bit the same behavior as with fixed-assigned numbers a 
-bit. VIRTIO_BALLOON_F_PAGE_REPORTING was documented as "4" because 
-VIRTIO_BALLOON_F_FREE_PAGE_HINT was documented to be "3" -- IOW, it 
-already existed in the spec.
-
-Not perfect, but AFAIKS, not horrible.
-
-(as Linux supports all these features, it's easy. A driver that only 
-supports some features has to calculate the queue index manually based 
-on the offered features)
-
-> 
-> @MST: Please correct me if I'm wrong!
-> 
-> Regards,
-> Halil
-> 
-
-
--- 
-Cheers,
-
-David / dhildenb
-
+Regards,
+Markus
 
