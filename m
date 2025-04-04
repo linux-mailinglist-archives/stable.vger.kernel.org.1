@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-128199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE750A7B34A
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:15:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33176A7B341
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805763B8EA5
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:13:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C897D173245
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CBD1F0E36;
-	Fri,  4 Apr 2025 00:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692D91448D5;
+	Fri,  4 Apr 2025 00:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRb8Ixuw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ajBTl75I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BBC1F0986;
-	Fri,  4 Apr 2025 00:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56D1465A1;
+	Fri,  4 Apr 2025 00:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725127; cv=none; b=G5IGPukVQX6iGSJkOR0JUY1f81vwMlUCpCtVx6INc6353FJ2QDG1HTgKs5GVhO/rUN8CfhibzolZTXl+ETM/8/+KI6lWqKtsNARORLU7QnOfhgBMKtLJ+gzOUlD2Ahi47nzR+p8uo3YO8RrP2xdMemLAvTQsx7DpUT30p+UPHzs=
+	t=1743725131; cv=none; b=JGX7b3nylQBeCThOHVKTpUz0RRdwYlmmIUISQNOrSU5UCbUnSPpLIAj5ibxEPJ5Bjodw9oOSOw8BIMF2Xjf1MjLeMjmGE0he6l1bDMVZSvXrpnPJrJKhazGsAOEaZVSJiBCCnJ+gHGRLtwuLZjcuFBv6cOoE2Ky5N21VHkJhtNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725127; c=relaxed/simple;
-	bh=JSFwJZEgvBBAEh3o/BWvEhtTm1uFo2p9JFN1QMelrkE=;
+	s=arc-20240116; t=1743725131; c=relaxed/simple;
+	bh=++Lt+jTTYNcu9oPcAbtsWGYTU7EFvOohEY+9xVf6pDE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dHDMzyLAjj/XwZU7N1rPR4+teMErgU4qf2FmXM6amook/pNqKC7tUUZ5s6jxybBrlpNPwzAqMRH6EIDH8OUfhqqshLuvBggLIzyHx2yShKqYjt6222DNnilZWhqrzIkNohmiGfGYKhFUBBq/nfBvkUF8ynUY9kCwHcyeHgT7e1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRb8Ixuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF278C4CEE9;
-	Fri,  4 Apr 2025 00:05:26 +0000 (UTC)
+	 MIME-Version; b=ratnrRmLHTMXB+mwubvi6t7Iaz4x7vmvilsS6a07deaqX9TpWcafd/zQqiq+TBAcd7h7X9S3Kw02p34rumXRUWrE7bBUYiVWq2DQkCr6BMUXVs3v8cwHRjL76qGACpgpR2KBcniGvU5LuR4cs97HU0gt/KB1KfUdyGGjfzZ2TE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ajBTl75I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680AFC4CEE3;
+	Fri,  4 Apr 2025 00:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725127;
-	bh=JSFwJZEgvBBAEh3o/BWvEhtTm1uFo2p9JFN1QMelrkE=;
+	s=k20201202; t=1743725131;
+	bh=++Lt+jTTYNcu9oPcAbtsWGYTU7EFvOohEY+9xVf6pDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRb8IxuwkYEV3BKXvpwilpdKYWfaWUDbyS5ON2Ol96smiVuhCk+sxJES95v2/0Mtj
-	 nOGaj02qTLjvfrmpaN17aPGRSv55QYKRi6vcpzyvYaaQZZWura4TwIbRDlJG/E0ecY
-	 OS7gvab9uM29eIOfYgh/r6G8SyUAwzUbthrvoPTbLtZVtctLWOD1brz8L2xnXBx1Q/
-	 9LoibTdUSTDRz8r0W4mNMy2Mwn8rIXjVBOoAi1V9IaejINzRw/RXde2nn5u7PkVj5A
-	 soyYaQe/WuYIg2horGdb2dyrinwVC8DUPLpw1xi4e/9abcit97lFrZ7gfMposzBwKq
-	 kn5gWaitS1vWQ==
+	b=ajBTl75IPMMZAd7SfK8suHREh/P0Lf8B7B3x1aRebxoapxASmDl0S0sHp7XiXnwOr
+	 K501+WgeImzH2TDLGVnVbKitJpONoFhApOvo+6ONPYy5A08s4rdJ8CVSayiEAttLe7
+	 Ei2fMTTAOPvaTL0ISMYGbfm3gpz7iBu/d30H9B0xNZKtU/uYCsUG+cWyMWoCdmaC7j
+	 YcJItS6cmChaoJQxhcXQk43mYSOMnKJ/gnOhz+ZXiwWpFHZGtyUIT4vPtp5w8g6wNW
+	 S6DFbw+dbja7jk6bT2njxJBye5WTJyIkzodCzUR6sv8rriqmxhx5bx/kxWIGE7TpUC
+	 +VzDOBt0SwfTw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+Cc: Feng Yang <yangfeng@kylinos.cn>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agordeev@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 15/22] s390/tty: Fix a potential memory leak bug
-Date: Thu,  3 Apr 2025 20:04:44 -0400
-Message-Id: <20250404000453.2688371-15-sashal@kernel.org>
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	shuah@kernel.org,
+	yonghong.song@linux.dev,
+	mattbobrowski@google.com,
+	xukuohai@huawei.com,
+	yepeilin@google.com,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 16/22] selftests/bpf: Fix cap_enable_effective() return code
+Date: Thu,  3 Apr 2025 20:04:45 -0400
+Message-Id: <20250404000453.2688371-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000453.2688371-1-sashal@kernel.org>
 References: <20250404000453.2688371-1-sashal@kernel.org>
@@ -67,52 +74,136 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Feng Yang <yangfeng@kylinos.cn>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+[ Upstream commit 339c1f8ea11cc042c30c315c1a8f61e4b8a90117 ]
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+The caller of cap_enable_effective() expects negative error code.
+Fix it.
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Before:
+  failed to restore CAP_SYS_ADMIN: -1, Unknown error -1
+
+After:
+  failed to restore CAP_SYS_ADMIN: -3, No such process
+  failed to restore CAP_SYS_ADMIN: -22, Invalid argument
+
+Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250305022234.44932-1-yangfeng59949@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/testing/selftests/bpf/cap_helpers.c         | 8 ++++----
+ tools/testing/selftests/bpf/cap_helpers.h         | 1 +
+ tools/testing/selftests/bpf/prog_tests/verifier.c | 4 ++--
+ tools/testing/selftests/bpf/test_loader.c         | 6 +++---
+ 4 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 892c18d2f87e9..d3edacb6ee148 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
+diff --git a/tools/testing/selftests/bpf/cap_helpers.c b/tools/testing/selftests/bpf/cap_helpers.c
+index d5ac507401d7c..98f840c3a38f7 100644
+--- a/tools/testing/selftests/bpf/cap_helpers.c
++++ b/tools/testing/selftests/bpf/cap_helpers.c
+@@ -19,7 +19,7 @@ int cap_enable_effective(__u64 caps, __u64 *old_caps)
  
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
+ 	err = capget(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	if (old_caps)
+ 		*old_caps = (__u64)(data[1].effective) << 32 | data[0].effective;
+@@ -32,7 +32,7 @@ int cap_enable_effective(__u64 caps, __u64 *old_caps)
+ 	data[1].effective |= cap1;
+ 	err = capset(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	return 0;
+ }
+@@ -49,7 +49,7 @@ int cap_disable_effective(__u64 caps, __u64 *old_caps)
+ 
+ 	err = capget(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	if (old_caps)
+ 		*old_caps = (__u64)(data[1].effective) << 32 | data[0].effective;
+@@ -61,7 +61,7 @@ int cap_disable_effective(__u64 caps, __u64 *old_caps)
+ 	data[1].effective &= ~cap1;
+ 	err = capset(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	return 0;
+ }
+diff --git a/tools/testing/selftests/bpf/cap_helpers.h b/tools/testing/selftests/bpf/cap_helpers.h
+index 6d163530cb0fd..8dcb28557f762 100644
+--- a/tools/testing/selftests/bpf/cap_helpers.h
++++ b/tools/testing/selftests/bpf/cap_helpers.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/capability.h>
++#include <errno.h>
+ 
+ #ifndef CAP_PERFMON
+ #define CAP_PERFMON		38
+diff --git a/tools/testing/selftests/bpf/prog_tests/verifier.c b/tools/testing/selftests/bpf/prog_tests/verifier.c
+index 3ee40ee9413a9..88cb75b65cecd 100644
+--- a/tools/testing/selftests/bpf/prog_tests/verifier.c
++++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
+@@ -118,7 +118,7 @@ static void run_tests_aux(const char *skel_name,
+ 	/* test_verifier tests are executed w/o CAP_SYS_ADMIN, do the same here */
+ 	err = cap_disable_effective(1ULL << CAP_SYS_ADMIN, &old_caps);
+ 	if (err) {
+-		PRINT_FAIL("failed to drop CAP_SYS_ADMIN: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to drop CAP_SYS_ADMIN: %i, %s\n", err, strerror(-err));
+ 		return;
+ 	}
+ 
+@@ -128,7 +128,7 @@ static void run_tests_aux(const char *skel_name,
+ 
+ 	err = cap_enable_effective(old_caps, NULL);
+ 	if (err)
+-		PRINT_FAIL("failed to restore CAP_SYS_ADMIN: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to restore CAP_SYS_ADMIN: %i, %s\n", err, strerror(-err));
+ }
+ 
+ #define RUN(skel) run_tests_aux(#skel, skel##__elf_bytes, NULL)
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index 53b06647cf57d..8a403e5aa3145 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -773,7 +773,7 @@ static int drop_capabilities(struct cap_state *caps)
+ 
+ 	err = cap_disable_effective(caps_to_drop, &caps->old_caps);
+ 	if (err) {
+-		PRINT_FAIL("failed to drop capabilities: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to drop capabilities: %i, %s\n", err, strerror(-err));
+ 		return err;
+ 	}
+ 
+@@ -790,7 +790,7 @@ static int restore_capabilities(struct cap_state *caps)
+ 
+ 	err = cap_enable_effective(caps->old_caps, NULL);
+ 	if (err)
+-		PRINT_FAIL("failed to restore capabilities: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to restore capabilities: %i, %s\n", err, strerror(-err));
+ 	caps->initialized = false;
+ 	return err;
+ }
+@@ -959,7 +959,7 @@ void run_subtest(struct test_loader *tester,
+ 		if (subspec->caps) {
+ 			err = cap_enable_effective(subspec->caps, NULL);
+ 			if (err) {
+-				PRINT_FAIL("failed to set capabilities: %i, %s\n", err, strerror(err));
++				PRINT_FAIL("failed to set capabilities: %i, %s\n", err, strerror(-err));
+ 				goto subtest_cleanup;
+ 			}
  		}
 -- 
 2.39.5
