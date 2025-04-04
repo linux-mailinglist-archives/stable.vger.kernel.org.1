@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-128232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5593EA7B3BE
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:24:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F13A7B3B3
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CE317A985E
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB710189D0ED
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDD2200BB8;
-	Fri,  4 Apr 2025 00:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFC5200127;
+	Fri,  4 Apr 2025 00:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcfHTHJZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJAIcEmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95519200127;
-	Fri,  4 Apr 2025 00:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929263FF1;
+	Fri,  4 Apr 2025 00:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725200; cv=none; b=hUskt89uLQCulALodkUEWOGwNg60u0Sb2gI8Jyc6fUwtv0zQ5q2FSRst5gxO5FtiMATVoI4qjOVpYRuNtpNaGEvmaS40wjTTTofKU1oV2z5aK0REsDTjNhft0mmWRcgq7n5ZMK5iBZ6lfgVUVx9S90WKzeb70yBLe3qNygxnrtw=
+	t=1743725203; cv=none; b=oEzigHRWuubZr8GuzbsOOuK+4gEMQqGbyNHkowyXkIQACacrQ1oPmdIui3PRtVlhHDlVUjdUGvDGLpRt2mqn2A7iFcbez2LaVKKwywGbqC5fDazYVIOCS/e0qkojXK23+yJ/OHukqIZhnC+ka9rhFzr4pj0s+4zCbvOJISaARVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725200; c=relaxed/simple;
-	bh=jQgFMtpvIfsLgbacEuyFXfCo0xTll4YBnX56vt9tXP8=;
+	s=arc-20240116; t=1743725203; c=relaxed/simple;
+	bh=CUq0G/E1vqO3bDKwxsPSdPm3GOuDCkn4hZez8/KtrCg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PN0KroseX/fo4tbxxaa9/5hSHDQYtzKG/3wrlHTTQ1PLTn06AGiv3TraqAFQJyvGfAfxks+78DeAIyM5rLbBK4P76GlJDSXUhgQ94nfD8xkq9ZsEVHa5yCj48B7eScbfsOdP+al7S1oOV+wbpejkIuHGmvyPDwNL529j/DvZ054=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcfHTHJZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ACFC4CEE5;
-	Fri,  4 Apr 2025 00:06:38 +0000 (UTC)
+	 MIME-Version; b=V7+4NDiC9+lV/n8xkMtzcDgHXtO5tFbRSn4BS9zPtwZKJDRdRCW3KdMZee8aVX/qGdNoQeLyGr+zPlojaZM9GtjIAMVB/dd5gN4MxbErltqXmCsWAcn1Y706ZizNc5Fn915rtzyDICqOYamqev4sOrv3iTTbdiwnTx3/RRyMNro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJAIcEmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A4FC4CEF0;
+	Fri,  4 Apr 2025 00:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725200;
-	bh=jQgFMtpvIfsLgbacEuyFXfCo0xTll4YBnX56vt9tXP8=;
+	s=k20201202; t=1743725202;
+	bh=CUq0G/E1vqO3bDKwxsPSdPm3GOuDCkn4hZez8/KtrCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcfHTHJZj/69OZbKPUt+v5lqJPaBwQxElWDIpm8BiIzAonfi/D3zaLcex7u1hytbn
-	 wxD4r3Dsghp5dd8wg0iCGB4iwoO6xCrfcKJLHDLpwf2VCKgX7Rs3Nqelm25Pw5yrKS
-	 mNW0Q9GJN8iQCfpP6R7syQuGwoaN+tSkEOFv0soyE7MHpGaA9nmJcgGu5CZPOPUHFH
-	 Pr2T8g/K3GAlQWr5qZ3ggi9ErJOEgIxLKeQ06XECMCuDaGBZwSbNNTMoyvhussn2Z+
-	 exr3u/uaY+DwdhXxNrZioZVXLKwmo6Ss54yYUwreLxjnovOWRtLHTw6OCrrQyxOdmJ
-	 jtz78IT1ALKDg==
+	b=NJAIcEmF4xexico9cPqlbj7Snn9yuS62Y+wpwEdLqRQZtPJXxMxBqe+4loc1o34eD
+	 XYJdzZK6IQ8/PHKPruaL9rYqexdNVGuBUTjCFG45rSsVi5eZ9tPFk69S6KrkWdzk1n
+	 oejRky+w0WgNL/RMwswndSyt1S5/OBU5lwasRJ2ffu2PXZqbbIo+ghWpB5SA4cRDsb
+	 MmuVC2V2Cxg5JoWzrAs51v7QMcqtIP3NXWV1pPRg8S96y9eNmOGmJdLlNb4siEQ5ZZ
+	 5tGFzqYhaMbvg4C2LAp4M1XTXy8eTEOFGYjCvyruKv5tFAkGAyMRTisWr4WLq9tRYC
+	 POaAqpsdtysyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kpsingh@kernel.org,
-	mattbobrowski@google.com,
-	song@kernel.org,
-	daniel@iogearbox.net,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	bpf@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/16] bpf: Fix deadlock between rcu_tasks_trace and event_mutex.
-Date: Thu,  3 Apr 2025 20:06:14 -0400
-Message-Id: <20250404000624.2688940-6-sashal@kernel.org>
+	mturquette@baylibre.com,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/16] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
+Date: Thu,  3 Apr 2025 20:06:15 -0400
+Message-Id: <20250404000624.2688940-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000624.2688940-1-sashal@kernel.org>
 References: <20250404000624.2688940-1-sashal@kernel.org>
@@ -72,77 +68,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 4580f4e0ebdf8dc8d506ae926b88510395a0c1d1 ]
+[ Upstream commit b20150d499b3ee5c2d632fbc5ac94f98dd33accf ]
 
-Fix the following deadlock:
-CPU A
-_free_event()
-  perf_kprobe_destroy()
-    mutex_lock(&event_mutex)
-      perf_trace_event_unreg()
-        synchronize_rcu_tasks_trace()
+of_clk_get_hw_from_clkspec() checks all available clock-providers by
+comparing their of nodes to the one from the clkspec. If no matching
+clock provider is found, the function returns -EPROBE_DEFER to cause a
+re-check at a later date. If a matching clock provider is found, an
+authoritative answer can be retrieved from it whether the clock exists
+or not.
 
-There are several paths where _free_event() grabs event_mutex
-and calls sync_rcu_tasks_trace. Above is one such case.
+This does not take into account that the clock-provider may never
+appear, because it's node is disabled. This can happen when a clock is
+optional, provided by a separate block which never gets enabled.
 
-CPU B
-bpf_prog_test_run_syscall()
-  rcu_read_lock_trace()
-    bpf_prog_run_pin_on_cpu()
-      bpf_prog_load()
-        bpf_tracing_func_proto()
-          trace_set_clr_event()
-            mutex_lock(&event_mutex)
+One example of this happening is the rk3588's VOP, which has optional
+additional display clocks coming from PLLs inside the hdmiphy blocks.
+These can be used for better rates, but the system will also work
+without them.
 
-Delegate trace_set_clr_event() to workqueue to avoid
-such lock dependency.
+The problem around that is described in the followups to[1]. As we
+already know the of node of the presumed clock provider, add a check via
+of_device_is_available() whether this is a "valid" device node. This
+prevents eternal defer loops.
 
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250224221637.4780-1-alexei.starovoitov@gmail.com
+Link: https://lore.kernel.org/dri-devel/20250215-vop2-hdmi1-disp-modes-v1-3-81962a7151d6@collabora.com/ [1]
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250222223733.2990179-1-heiko@sntech.de
+[sboyd@kernel.org: Reword commit text a bit]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/clk/clk.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 9d8f60e0cb554..eebdde66564ec 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -400,7 +400,7 @@ static const struct bpf_func_proto bpf_trace_printk_proto = {
- 	.arg2_type	= ARG_CONST_SIZE,
- };
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 5bbd036f5295f..8474099e2cac1 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -5216,6 +5216,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
+ 	if (!clkspec)
+ 		return ERR_PTR(-EINVAL);
  
--static void __set_printk_clr_event(void)
-+static void __set_printk_clr_event(struct work_struct *work)
- {
- 	/*
- 	 * This program might be calling bpf_trace_printk,
-@@ -413,10 +413,11 @@ static void __set_printk_clr_event(void)
- 	if (trace_set_clr_event("bpf_trace", "bpf_trace_printk", 1))
- 		pr_warn_ratelimited("could not enable bpf_trace_printk events");
- }
-+static DECLARE_WORK(set_printk_work, __set_printk_clr_event);
- 
- const struct bpf_func_proto *bpf_get_trace_printk_proto(void)
- {
--	__set_printk_clr_event();
-+	schedule_work(&set_printk_work);
- 	return &bpf_trace_printk_proto;
- }
- 
-@@ -459,7 +460,7 @@ static const struct bpf_func_proto bpf_trace_vprintk_proto = {
- 
- const struct bpf_func_proto *bpf_get_trace_vprintk_proto(void)
- {
--	__set_printk_clr_event();
-+	schedule_work(&set_printk_work);
- 	return &bpf_trace_vprintk_proto;
- }
- 
++	/* Check if node in clkspec is in disabled/fail state */
++	if (!of_device_is_available(clkspec->np))
++		return ERR_PTR(-ENOENT);
++
+ 	mutex_lock(&of_clk_mutex);
+ 	list_for_each_entry(provider, &of_clk_providers, link) {
+ 		if (provider->node == clkspec->np) {
 -- 
 2.39.5
 
