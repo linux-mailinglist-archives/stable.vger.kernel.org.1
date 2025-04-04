@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-128242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87568A7B3BB
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:24:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2386DA7B3CE
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7987F3B731C
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8791890EF0
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7E2205AAD;
-	Fri,  4 Apr 2025 00:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A6B205E08;
+	Fri,  4 Apr 2025 00:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OX932clR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2PTRacn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1C720551E;
-	Fri,  4 Apr 2025 00:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8D718BC3F;
+	Fri,  4 Apr 2025 00:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725219; cv=none; b=m3FTyT7TpJSn4uxTHzFmB665neSMwTjZ6SongmI9p0MV9bMPFyNPl9Tpnb0JYtIVaOnKH12nsn1AVMF73aIiawpZpVBGNyA6Pr3GoGHSK1HSWd4tl9Hd5z6e8tczM1bwrq9YHk6gUNUf18fRDTnAeTILkoUAfySsz1gz/bB2GUY=
+	t=1743725225; cv=none; b=rTUC8dz+aA60KRD76mEn5KuGJsSdk2nVg+mJHQMhCp3XG9tlwL88WDI6TiYkH8DWgpnBa0iA3fST35+JV1VCyN965aD+bzVodjlsOp9Rbko61Kbr6MQ5P1B9G1qRlWAy1MEDEg6ZKeo48o7kyU+AQ0iyWVKCGguo5SHSbzZFmm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725219; c=relaxed/simple;
-	bh=2LZwgFsvQiuGHzmI3VxM3i5naQvHdkOqP1v6udfxjYs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F0oSZIlcvPJaGlQaTN9TYUVOIVJ5pKlaTLbJgZffFsbgsZXtGSXoGhu1UsST5XjhM06gvk/809mPdv9YBzt9PRRv8pSFYsLdEARUMcxM59Z88k1fLnzph7ypbk1G/1dw31QaSF7vvipnGkSl5M6Ds5gD9059Acr7rEP1vP/tTUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OX932clR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F650C4CEE3;
-	Fri,  4 Apr 2025 00:06:58 +0000 (UTC)
+	s=arc-20240116; t=1743725225; c=relaxed/simple;
+	bh=pUnn8vxwCFbiCaLWH2BwJ1k4g9VEAMybinWn0xgiA9U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qGx4SvJZpiP62y1kDmgmN7LMuKvcBQAFYujEVpwubhKII4GGVDGjv8qO5nglcbB9ci3b9fv1YKn6rmzldFnqy5czJZkVpEG4hDuaNxqHnPFDS831P8VDHjDejkXsiIqd4z1LqGSwMbn1oKetxL6tlLmrIJzaLhTVNccNCH22gSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2PTRacn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C60C4CEE3;
+	Fri,  4 Apr 2025 00:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725219;
-	bh=2LZwgFsvQiuGHzmI3VxM3i5naQvHdkOqP1v6udfxjYs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OX932clRxTT4L3vKXevJIfMhprtHF2gf95vMW8M7TrcYCOAdwzUYBRkLvZzKgVNyu
-	 HS2eCFrcOuhsriARcO+nQnJLp0mVSNxEt47yXRaBeAZqHbj6aErP8hrLyXjbkPyXKb
-	 EayIHgJDK5ZzmpjD3O2lsQueXcJvhvw40rojelrA3QyLrnTuxQfflCVpRdUcSEAdYS
-	 nE9UKanwLksWVh8Ne9xhftCH7KEYkuT3IbkJYFMXixG05SYe9j8IhscsbaJIIrK2Xi
-	 Cu+TB9Nv/iey+ui1o3rbpN4ol/Y6dJ2XVbfwzSkciq4EPE/Xaz0XrsNLBmU98GNkuL
-	 yL7uCgnwcVdsw==
+	s=k20201202; t=1743725225;
+	bh=pUnn8vxwCFbiCaLWH2BwJ1k4g9VEAMybinWn0xgiA9U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W2PTRacniIuO6EmamsbjPZ8DIsAuDyoLvZ8PTd7yME04oRuhI2tQv+i8fLX2NUkji
+	 RrBNiUQtUKNOCohIV1SxvnSG8wmwEIAroiforYC1l0/6/Miyxrm4LyNX/Q4NXZiHi7
+	 n8/SOaunyfddEoiLXOv9pwlt8AjKYDIKnXU2PRrUElPiWcnfXpe4SFDQU7828Wn/8p
+	 PW8GkTs31YrBnQgO0lXcuYjz6CcX9QcwuOG8WgFr8TOrT2uFfBu5DMp1QtmEydxbpr
+	 Jys/SBizI61dxX1zhvRSnf5XpqfcvReYsja0S/PNUfr9XJjGEWf5g5ac8Ls9dqu6q4
+	 yO7q1ZMFKCTdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Robbie King <robbiek@xsightlabs.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 16/16] mailbox: pcc: Always clear the platform ack interrupt first
-Date: Thu,  3 Apr 2025 20:06:24 -0400
-Message-Id: <20250404000624.2688940-16-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 01/10] pinctrl: renesas: rza2: Fix potential NULL pointer dereference
+Date: Thu,  3 Apr 2025 20:06:51 -0400
+Message-Id: <20250404000700.2689158-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000624.2688940-1-sashal@kernel.org>
-References: <20250404000624.2688940-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,107 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.85
+X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit cf1338c0e02880cd235a4590eeb15e2039c873bc ]
+[ Upstream commit f752ee5b5b86b5f88a5687c9eb0ef9b39859b908 ]
 
-The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
-for command completion flags and any error status before clearing the
-interrupt.
+`chip.label` in rza2_gpio_register() could be NULL.
+Add the missing check.
 
-The below sequence highlights an issue in the handling of PCC mailbox
-interrupts, specifically when dealing with doorbell notifications and
-acknowledgment between the OSPM and the platform where type3 and type4
-channels are sharing the interrupt.
-
--------------------------------------------------------------------------
-| T |       Platform Firmware         |    OSPM/Linux PCC driver        |
-|---|---------------------------------|---------------------------------|
-| 1 |                                 | Build message in shmem          |
-| 2 |                                 | Ring Type3 chan doorbell        |
-| 3 | Receives the doorbell interrupt |                                 |
-| 4 | Process the message from OSPM   |                                 |
-| 5 | Build response for the message  |                                 |
-| 6 | Ring Platform ACK interrupt on  |                                 |
-|   |  Type3 chan to OSPM             | Received the interrupt          |
-| 7 | Build Notification in Type4 Chan|                                 |
-| 8 |                                 | Start processing interrupt in   |
-|   |                                 |  pcc_mbox_irq() handler         |
-| 9 |                                 | Enter PCC handler for Type4 chan|
-|10 |                                 | Check command complete cleared  |
-|11 |                                 | Read the notification           |
-|12 |                                 | Clear Platform ACK interrupt    |
-|   | No effect from the previous step yet as the Platform ACK          |
-|   |  interrupt has not yet been triggered for this channel            |
-|13 | Ring Platform ACK interrupt on  |                                 |
-|   | Type4 chan to OSPM              |                                 |
-|14 |                                 | Enter PCC handler for Type3 chan|
-|15 |                                 | Command complete is set.        |
-|16 |                                 | Read the response.              |
-|17 |                                 | Clear Platform ACK interrupt    |
-|18 |                                 | Leave PCC handler for Type3     |
-|19 |                                 | Leave pcc_mbox_irq() handler    |
-|20 |                                 | Re-enter pcc_mbox_irq() handler |
-|21 |                                 | Enter PCC handler for Type4 chan|
-|22 |                                 | Leave PCC handler for Type4 chan|
-|23 |                                 | Enter PCC handler for Type3 chan|
-|24 |                                 | Leave PCC handler for Type3 chan|
-|25 |                                 | Leave pcc_mbox_irq() handler    |
--------------------------------------------------------------------------
-
-The key issue occurs when OSPM tries to acknowledge platform ack
-interrupt for a notification which is ready to be read and processed
-but the interrupt itself is not yet triggered by the platform.
-
-This ineffective acknowledgment leads to an issue later in time where
-the interrupt remains pending as we exit the interrupt handler without
-clearing the platform ack interrupt as there is no pending response or
-notification. The interrupt acknowledgment order is incorrect.
-
-To resolve this issue, the platform acknowledgment interrupt should
-always be cleared before processing the interrupt for any notifications
-or response.
-
-Reported-by: Robbie King <robbiek@xsightlabs.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Tested-by: Robbie King <robbiek@xsightlabs.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/20250210232552.1545887-1-chenyuan0y@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 8fd4d0f79b090..f8215a8f656a4 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -313,6 +313,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index 12126e30dc20f..e94a6120e1e81 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -242,6 +242,9 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
  	int ret;
  
- 	pchan = chan->con_priv;
+ 	chip.label = devm_kasprintf(priv->dev, GFP_KERNEL, "%pOFn", np);
++	if (!chip.label)
++		return -ENOMEM;
 +
-+	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-+		return IRQ_NONE;
-+
- 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
- 	    !pchan->chan_in_use)
- 		return IRQ_NONE;
-@@ -330,9 +334,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 		return IRQ_NONE;
- 	}
+ 	chip.parent = priv->dev;
+ 	chip.ngpio = priv->npins;
  
--	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
--		return IRQ_NONE;
--
- 	/*
- 	 * Clear this flag after updating interrupt ack register and just
- 	 * before mbox_chan_received_data() which might call pcc_send_data()
 -- 
 2.39.5
 
