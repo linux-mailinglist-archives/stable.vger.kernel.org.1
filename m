@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-128266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B7A7B40D
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:31:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50124A7B410
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D746173C49
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D5C17AD41
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A47821422E;
-	Fri,  4 Apr 2025 00:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64112770B;
+	Fri,  4 Apr 2025 00:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmOcGTdR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3gc3JAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F7E2135C9;
-	Fri,  4 Apr 2025 00:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7497D215040;
+	Fri,  4 Apr 2025 00:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725285; cv=none; b=TplKoO6EyRASU+2+UbQlZfOjf52uDslX08WImOyVlEp0Dg4H8chdoGAqK3xdTdIzm2W1DWwEOpMMtBRj/hWrASHICxgXaG0GxZf2KCO7IcFec81usROQGQYTmjtWsZhxkDMgK49KRtFa1pfDtTaUpH/5QxFU+YG6xTvqbVf6MPY=
+	t=1743725287; cv=none; b=Rht8+WmLsTmrexVFip+4Cp8mjHd4MSftrQaPVkJKbFdXSOaWVkPcVixP77aW3LuefLyGUBWHvOuaW6yOCulk6SGH0KUuRZYZhJ8b7TLVVpFcmBkePCculA92WBKcIS2fGrhJURZ1bJVJF7rKvop8llzQjnbpQI6i/5abiVTh6vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725285; c=relaxed/simple;
-	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
+	s=arc-20240116; t=1743725287; c=relaxed/simple;
+	bh=fy6K/0A91MG0pFmXDhOv6TsIjfALj5rlwoJr4E3lNPM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O0Sp97jvKgHS1VZg6hazRHqgjo9VXXS3lOyZ5ti7drZKUTYHGPDOkTjqeMCSsxPukF7bROZsmJix8V0OuvqZReAeudxRUf/908zet0tm/haSZBJIynga6KC5ccuyZgqo9gb7dqLKixua38FT9JGN9RTFolREo26NbqlNuXOy6g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmOcGTdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1FC4CEE9;
-	Fri,  4 Apr 2025 00:08:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fp9T5im28StM5nXGniMRHwaCmh+oURWluv1QCaIw9Il6APIitXk3s9mbNCMKnpJdDaSqq2CgMu45B97/CMAprzFqjEJHaB2+nifL1HFqgvyToiwcc3O8nKCN90esXSliK23HmGkHFSXHkG71Mh8xYB+tXSgsmDR0wRRDAsbIixI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3gc3JAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856EEC4CEE3;
+	Fri,  4 Apr 2025 00:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725285;
-	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
+	s=k20201202; t=1743725286;
+	bh=fy6K/0A91MG0pFmXDhOv6TsIjfALj5rlwoJr4E3lNPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmOcGTdRs2PVHcMgdPLv1WAJ/gtsvyCn37ODSWGAaMUZtED1hMnhwrpy4vMh+STBt
-	 tKKlPldefUt6P21Klr8c16ygNynC+9JjNYMWWBhrs39L3kGz91wgZlmCG0oJDs0DWt
-	 4CxCQCMG+qWZwryQZsyhMS5/SnZ1H6Xf2/f1QnsI4xCteSKlnERHNXXKCpYFrlLVFA
-	 qHY9ZMlEKZFuOEUEDeQx7zDGcw8qJh543C5D+YhVOgGC1IikkwCbUxdhC26Ud2uowC
-	 6TRAjNKVASukTA1g0PSXIEUhCFKpJaiwmUuTvw7oG3yrVn6tTyhzjieibhnpbveEzP
-	 aHX6y0IGaxwBA==
+	b=L3gc3JApFv/XrvGnaSRZws/v9NArzGHDzi9L5OOqCCZdsF4vtlV9R4fp8yx/75VEw
+	 RfWL2eZ7vwMd5YNu7nvASuiiCKjXoRjCnErV+hv1uZ615UcTXIL9qlIeviEYcXL4xY
+	 GM1jFTu3epRnzWqRch24h91oddEaasTSye3kL5F+C8VtBYkFJGHAeFw4AoyhRotcrR
+	 h+XUoX6Yu45fUG0fyJF26CCd2g/TkTMI9swD0AyZ1FpOUXvjbt+Y/sP7Wrdhpq94FJ
+	 GGOAnSHzQzHy1neEXo+FpwV7mFZ8QZDNMDY6cfbtQqr8fT2wmI732leOrxaCG2/063
+	 FH/ti8C8MVWMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Helge Deller <deller@gmx.de>,
+Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	David Heideberg <david@ixit.cz>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 5/6] parisc: PDT: Fix missing prototype warning
-Date: Thu,  3 Apr 2025 20:07:48 -0400
-Message-Id: <20250404000751.2689430-5-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org
+Subject: [PATCH AUTOSEL 5.10 6/6] x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on X86_32
+Date: Thu,  3 Apr 2025 20:07:49 -0400
+Message-Id: <20250404000751.2689430-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250404000751.2689430-1-sashal@kernel.org>
 References: <20250404000751.2689430-1-sashal@kernel.org>
@@ -62,54 +67,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.235
 Content-Transfer-Encoding: 8bit
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
+[ Upstream commit d9f87802676bb23b9425aea8ad95c76ad9b50c6e ]
 
-As reported by the kernel test robot, the following error occurs:
+I was unable to find a good description of the ServerWorks CNB20LE
+chipset. However, it was probably exclusively used with the Pentium III
+processor (this CPU model was used in all references to it that I
+found where the CPU model was provided: dmesgs in [1] and [2];
+[3] page 2; [4]-[7]).
 
-arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-      65 | void arch_report_meminfo(struct seq_file *m)
-         |      ^~~~~~~~~~~~~~~~~~~
+As is widely known, the Pentium III processor did not support the 64-bit
+mode, support for which was introduced by Intel a couple of years later.
+So it is safe to assume that no systems with the CNB20LE chipset have
+amd64 and the CONFIG_PCI_CNB20LE_QUIRK may now depend on X86_32.
 
-arch_report_meminfo() is declared in include/linux/proc_fs.h and only
-defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
-CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+Additionally, I have determined that most computers with the CNB20LE
+chipset did have ACPI support and this driver was inactive on them.
+I have submitted a patch to remove this driver, but it was met with
+resistance [8].
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+[1] Jim Studt, Re: Problem with ServerWorks CNB20LE and lost interrupts
+    Linux Kernel Mailing List, https://lkml.org/lkml/2002/1/11/111
+
+[2] RedHat Bug 665109 - e100 problems on old Compaq Proliant DL320
+    https://bugzilla.redhat.com/show_bug.cgi?id=665109
+
+[3] R. Hughes-Jones, S. Dallison, G. Fairey, Performance Measurements on
+    Gigabit Ethernet NICs and Server Quality Motherboards,
+    http://datatag.web.cern.ch/papers/pfldnet2003-rhj.doc
+
+[4] "Hardware for Linux",
+    Probe #d6b5151873 of Intel STL2-bd A28808-302 Desktop Computer (STL2)
+    https://linux-hardware.org/?probe=d6b5151873
+
+[5] "Hardware for Linux", Probe #0b5d843f10 of Compaq ProLiant DL380
+    https://linux-hardware.org/?probe=0b5d843f10
+
+[6] Ubuntu Forums, Dell Poweredge 2400 - Adaptec SCSI Bus AIC-7880
+    https://ubuntuforums.org/showthread.php?t=1689552
+
+[7] Ira W. Snyder, "BISECTED: 2.6.35 (and -git) fail to boot: APIC problems"
+    https://lkml.org/lkml/2010/8/13/220
+
+[8] Bjorn Helgaas, "Re: [PATCH] x86/pci: drop ServerWorks / Broadcom
+    CNB20LE PCI host bridge driver"
+    https://lore.kernel.org/lkml/20220318165535.GA840063@bhelgaas/T/
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Signed-off-by: David Heideberg <david@ixit.cz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250321-x86_x2apic-v3-6-b0cbaa6fa338@ixit.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/pdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/Kconfig | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index fcc761b0e11b9..d20e8283c5b8a 100644
---- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -62,6 +62,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
- #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
- #define PDT_ADDR_SINGLE_ERR	1UL
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 00ae2e2adcadb..a8aa6e0b47786 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2766,13 +2766,21 @@ config MMCONF_FAM10H
+ 	depends on X86_64 && PCI_MMCONFIG && ACPI
  
-+#ifdef CONFIG_PROC_FS
- /* report PDT entries via /proc/meminfo */
- void arch_report_meminfo(struct seq_file *m)
- {
-@@ -73,6 +74,7 @@ void arch_report_meminfo(struct seq_file *m)
- 	seq_printf(m, "PDT_cur_entries: %7lu\n",
- 			pdt_status.pdt_entries);
- }
-+#endif
+ config PCI_CNB20LE_QUIRK
+-	bool "Read CNB20LE Host Bridge Windows" if EXPERT
+-	depends on PCI
++	bool "Read PCI host bridge windows from the CNB20LE chipset" if EXPERT
++	depends on X86_32 && PCI
+ 	help
+ 	  Read the PCI windows out of the CNB20LE host bridge. This allows
+ 	  PCI hotplug to work on systems with the CNB20LE chipset which do
+ 	  not have ACPI.
  
- static int get_info_pat_new(void)
- {
++	  The ServerWorks (later Broadcom) CNB20LE was a chipset designed
++	  most probably only for Pentium III.
++
++	  To find out if you have such a chipset, search for a PCI device with
++	  1166:0009 PCI IDs, for example by executing
++		lspci -nn | grep '1166:0009'
++	  The code is inactive if there is none.
++
+ 	  There's no public spec for this chipset, and this functionality
+ 	  is known to be incomplete.
+ 
 -- 
 2.39.5
 
