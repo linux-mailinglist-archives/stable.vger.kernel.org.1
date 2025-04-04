@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-128206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14445A7B352
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:16:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A7A7B359
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 02:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0281F173DE0
-	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F036B3B79F4
+	for <lists+stable@lfdr.de>; Fri,  4 Apr 2025 00:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA561F462B;
-	Fri,  4 Apr 2025 00:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AC31F4CAC;
+	Fri,  4 Apr 2025 00:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJve4WC3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5ikD+0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449371F461C;
-	Fri,  4 Apr 2025 00:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88B1552E3;
+	Fri,  4 Apr 2025 00:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725140; cv=none; b=Yc7y84HfXreZaSNYLjH8r249TpyPylqD2Q50zCKBJQdOVaXvr8QIaIb6VFPQDgIZBKPK6sYN9Mo35I+SSA5XWsqnyZFpiW6nMzZPIkR8D2QcexKmJwgpC4zmGSicAZrJxW1s+/a5JLm3Pm4RD5kiTzVhF2azlVBSfaS8ryqHNoo=
+	t=1743725146; cv=none; b=EBnGo7g6YXYh0Q7qiCe6HPGLl++rkN8qAmQ8564GfO477WrvxUb4S4mQcSDF95iVEnlvcJismdp697A7bReUjzJ/HEHQGdG9CKp+BHJLouf0GdGGmBUcfG0QoY1a01WuU2IMPCEb7e7BZ1MQJq3o9z1QFAXO6HAmWmep/isbQ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725140; c=relaxed/simple;
-	bh=2LZwgFsvQiuGHzmI3VxM3i5naQvHdkOqP1v6udfxjYs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i8ZfB3c5qViQSy36c98+0KwUXbknyPoON2ERBdGfnv2u0Obbu7ibEwwzY76jPpFQDD1w22GTOAFXvnOmU58EDO/uaaqBl9wlDFz6MbTQxvqRbyqI+81vRBBrmBta71io15wsCMqD+fYgURzutepRVPWauVuIi3NtjZk09upGudA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJve4WC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEEAC4CEE5;
-	Fri,  4 Apr 2025 00:05:39 +0000 (UTC)
+	s=arc-20240116; t=1743725146; c=relaxed/simple;
+	bh=OEphS++aiw5Zon+jzaEsnLlRZocxSiGBmdEBgLHZP4M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pJAwFIToZUKb0aWApW+lG8ggqyGzRSEu+FZEVoUHkAtLGXQe88rAeUqwxEV0e/dnoZD1JjsiBbS1p02BOYy+hfiWxKGq246y2CEr3huMjfBI0rh5noyOtKaHhbEbjVfy3XIWEl1KUHYQg3B+3KjKGcSiWs9z/0kDkVJGM4i+cw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5ikD+0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F81C4CEE3;
+	Fri,  4 Apr 2025 00:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725140;
-	bh=2LZwgFsvQiuGHzmI3VxM3i5naQvHdkOqP1v6udfxjYs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJve4WC3QXiL1YoD1h4cyyQ0nZmYUq+velGfEvHlvdzsC+m4qlWONpALIDOep7wOP
-	 vHHqWgJ5t8jkGyFX5gMZCLCpgEEvanA3AqNa7VPoQWXaQD2v9Ke1hMsAjCBl+wsn6P
-	 GKgna+HmWBIkLa5MrcyvocC16xWFuRLk+STZG1+WTUE/8vq21XzfTOiRWf6ZjTkmj4
-	 ZaM6uwya7v9I0kd0/NP3Cf2+9SdO8obg+Bnx4wEYDdtOlVns/8CDJb3oetp/jJJYgY
-	 nFtL4FExyZ24DaEfubgvQgYDdjxVx/AqQMVrAWxRpQgYgTLAI+n2JS7m4q44xpg0ub
-	 ab9lVOeLcC8yw==
+	s=k20201202; t=1743725146;
+	bh=OEphS++aiw5Zon+jzaEsnLlRZocxSiGBmdEBgLHZP4M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o5ikD+0KSfr0htuQNl4ZXJtI1lbmzwPhBYXqXCQ6b9iP5NL5m+3c+ICVB8W3tZU6H
+	 jCUabzv9DUH1u/dHZxK94AUdLBPAK6RcbwrMfAqRb3HUUyJP925dDbu3aHxpe0mLa/
+	 nJxJguQxxEMSdSBNU72pDYNqod6sx8cux2IiPMBLBQXAR1H606vSLHlplq65TM2z/j
+	 E0dHO6gu0WNfudQNyr+cPhbdOvKTueqvCR9FghS7TnpatDyiZWCT/7WnjYUN4tEJ34
+	 LHyrdKNNZwbdxMb0/quLmSkGiPe2G0HVDk2XpO7MCYJ9Redy7Gvkl1E9QqiAdtRcKb
+	 AK13tiTFb79Sg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Robbie King <robbiek@xsightlabs.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 22/22] mailbox: pcc: Always clear the platform ack interrupt first
-Date: Thu,  3 Apr 2025 20:04:51 -0400
-Message-Id: <20250404000453.2688371-22-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	shuah@kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/20] selftests/bpf: Fix stdout race condition in traffic monitor
+Date: Thu,  3 Apr 2025 20:05:21 -0400
+Message-Id: <20250404000541.2688670-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000453.2688371-1-sashal@kernel.org>
-References: <20250404000453.2688371-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,107 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.9
+X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit cf1338c0e02880cd235a4590eeb15e2039c873bc ]
+[ Upstream commit b99f27e90268b1a814c13f8bd72ea1db448ea257 ]
 
-The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
-for command completion flags and any error status before clearing the
-interrupt.
+Fix a race condition between the main test_progs thread and the traffic
+monitoring thread. The traffic monitor thread tries to print a line
+using multiple printf and use flockfile() to prevent the line from being
+torn apart. Meanwhile, the main thread doing io redirection can reassign
+or close stdout when going through tests. A deadlock as shown below can
+happen.
 
-The below sequence highlights an issue in the handling of PCC mailbox
-interrupts, specifically when dealing with doorbell notifications and
-acknowledgment between the OSPM and the platform where type3 and type4
-channels are sharing the interrupt.
+       main                      traffic_monitor_thread
+       ====                      ======================
+                                 show_transport()
+                                 -> flockfile(stdout)
 
--------------------------------------------------------------------------
-| T |       Platform Firmware         |    OSPM/Linux PCC driver        |
-|---|---------------------------------|---------------------------------|
-| 1 |                                 | Build message in shmem          |
-| 2 |                                 | Ring Type3 chan doorbell        |
-| 3 | Receives the doorbell interrupt |                                 |
-| 4 | Process the message from OSPM   |                                 |
-| 5 | Build response for the message  |                                 |
-| 6 | Ring Platform ACK interrupt on  |                                 |
-|   |  Type3 chan to OSPM             | Received the interrupt          |
-| 7 | Build Notification in Type4 Chan|                                 |
-| 8 |                                 | Start processing interrupt in   |
-|   |                                 |  pcc_mbox_irq() handler         |
-| 9 |                                 | Enter PCC handler for Type4 chan|
-|10 |                                 | Check command complete cleared  |
-|11 |                                 | Read the notification           |
-|12 |                                 | Clear Platform ACK interrupt    |
-|   | No effect from the previous step yet as the Platform ACK          |
-|   |  interrupt has not yet been triggered for this channel            |
-|13 | Ring Platform ACK interrupt on  |                                 |
-|   | Type4 chan to OSPM              |                                 |
-|14 |                                 | Enter PCC handler for Type3 chan|
-|15 |                                 | Command complete is set.        |
-|16 |                                 | Read the response.              |
-|17 |                                 | Clear Platform ACK interrupt    |
-|18 |                                 | Leave PCC handler for Type3     |
-|19 |                                 | Leave pcc_mbox_irq() handler    |
-|20 |                                 | Re-enter pcc_mbox_irq() handler |
-|21 |                                 | Enter PCC handler for Type4 chan|
-|22 |                                 | Leave PCC handler for Type4 chan|
-|23 |                                 | Enter PCC handler for Type3 chan|
-|24 |                                 | Leave PCC handler for Type3 chan|
-|25 |                                 | Leave pcc_mbox_irq() handler    |
--------------------------------------------------------------------------
+stdio_hijack_init()
+-> stdout = open_memstream(log_buf, log_cnt);
+   ...
+   env.subtest_state->stdout_saved = stdout;
 
-The key issue occurs when OSPM tries to acknowledge platform ack
-interrupt for a notification which is ready to be read and processed
-but the interrupt itself is not yet triggered by the platform.
+                                    ...
+                                    funlockfile(stdout)
+stdio_restore_cleanup()
+-> fclose(env.subtest_state->stdout_saved);
 
-This ineffective acknowledgment leads to an issue later in time where
-the interrupt remains pending as we exit the interrupt handler without
-clearing the platform ack interrupt as there is no pending response or
-notification. The interrupt acknowledgment order is incorrect.
+After the traffic monitor thread lock stdout, A new memstream can be
+assigned to stdout by the main thread. Therefore, the traffic monitor
+thread later will not be able to unlock the original stdout. As the
+main thread tries to access the old stdout, it will hang indefinitely
+as it is still locked by the traffic monitor thread.
 
-To resolve this issue, the platform acknowledgment interrupt should
-always be cleared before processing the interrupt for any notifications
-or response.
+The deadlock can be reproduced by running test_progs repeatedly with
+traffic monitor enabled:
 
-Reported-by: Robbie King <robbiek@xsightlabs.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Tested-by: Robbie King <robbiek@xsightlabs.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+for ((i=1;i<=100;i++)); do
+  ./test_progs -a flow_dissector_skb* -m '*'
+done
+
+Fix this by only calling printf once and remove flockfile()/funlockfile().
+
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250213233217.553258-1-ameryhung@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/network_helpers.c | 33 ++++++++-----------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 8fd4d0f79b090..f8215a8f656a4 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -313,6 +313,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	int ret;
+diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
+index 27784946b01b8..af0ee70a53f9f 100644
+--- a/tools/testing/selftests/bpf/network_helpers.c
++++ b/tools/testing/selftests/bpf/network_helpers.c
+@@ -771,12 +771,13 @@ static const char *pkt_type_str(u16 pkt_type)
+ 	return "Unknown";
+ }
  
- 	pchan = chan->con_priv;
-+
-+	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-+		return IRQ_NONE;
-+
- 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
- 	    !pchan->chan_in_use)
- 		return IRQ_NONE;
-@@ -330,9 +334,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 		return IRQ_NONE;
- 	}
++#define MAX_FLAGS_STRLEN 21
+ /* Show the information of the transport layer in the packet */
+ static void show_transport(const u_char *packet, u16 len, u32 ifindex,
+ 			   const char *src_addr, const char *dst_addr,
+ 			   u16 proto, bool ipv6, u8 pkt_type)
+ {
+-	char *ifname, _ifname[IF_NAMESIZE];
++	char *ifname, _ifname[IF_NAMESIZE], flags[MAX_FLAGS_STRLEN] = "";
+ 	const char *transport_str;
+ 	u16 src_port, dst_port;
+ 	struct udphdr *udp;
+@@ -817,29 +818,21 @@ static void show_transport(const u_char *packet, u16 len, u32 ifindex,
  
--	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
--		return IRQ_NONE;
+ 	/* TCP or UDP*/
+ 
+-	flockfile(stdout);
++	if (proto == IPPROTO_TCP)
++		snprintf(flags, MAX_FLAGS_STRLEN, "%s%s%s%s",
++			 tcp->fin ? ", FIN" : "",
++			 tcp->syn ? ", SYN" : "",
++			 tcp->rst ? ", RST" : "",
++			 tcp->ack ? ", ACK" : "");
++
+ 	if (ipv6)
+-		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d",
++		printf("%-7s %-3s IPv6 %s.%d > %s.%d: %s, length %d%s\n",
+ 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
+-		       dst_addr, dst_port, transport_str, len);
++		       dst_addr, dst_port, transport_str, len, flags);
+ 	else
+-		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d",
++		printf("%-7s %-3s IPv4 %s:%d > %s:%d: %s, length %d%s\n",
+ 		       ifname, pkt_type_str(pkt_type), src_addr, src_port,
+-		       dst_addr, dst_port, transport_str, len);
 -
- 	/*
- 	 * Clear this flag after updating interrupt ack register and just
- 	 * before mbox_chan_received_data() which might call pcc_send_data()
+-	if (proto == IPPROTO_TCP) {
+-		if (tcp->fin)
+-			printf(", FIN");
+-		if (tcp->syn)
+-			printf(", SYN");
+-		if (tcp->rst)
+-			printf(", RST");
+-		if (tcp->ack)
+-			printf(", ACK");
+-	}
+-
+-	printf("\n");
+-	funlockfile(stdout);
++		       dst_addr, dst_port, transport_str, len, flags);
+ }
+ 
+ static void show_ipv6_packet(const u_char *packet, u32 ifindex, u8 pkt_type)
 -- 
 2.39.5
 
