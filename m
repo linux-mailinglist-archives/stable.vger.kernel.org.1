@@ -1,245 +1,179 @@
-Return-Path: <stable+bounces-128406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705AEA7CB04
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 19:32:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F901A7CB2D
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 20:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324BC172E1F
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 17:32:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9F5B176481
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 18:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87531C68F;
-	Sat,  5 Apr 2025 17:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C6535968;
+	Sat,  5 Apr 2025 18:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="es8LAqpX"
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="m7j3ccAW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gmmr-2.centrum.cz (gmmr-2.centrum.cz [46.255.227.203])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793BDDCD
-	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 17:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73B02E62B0;
+	Sat,  5 Apr 2025 18:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.227.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743874369; cv=none; b=EX2jdUcZ/KXG/8/pPS39cIQ/OVW/mzA+upeKoUwX7Re+vcl4Y/iGPiEF254mmjGER6J2vYFkGkSn04dDE7PMXUTiAN27+NVBIhqSB5LRIAGlemO8lXysoiqWxGbs7aVsOaDLdRSYWQ5FySUkp/HlnyPchC4Su6BCGMoW3GKVuXM=
+	t=1743877034; cv=none; b=B4LIQvQia4XyBGi0ani4PofWDJLCcoVl3OAYTgrOfHdMZIr68A6wy1Ol8bH6kRv2kNKho2F+7zABFbeNqoqI895BUYuepRWxAKMlPRzlrsrjyZpjNN/4ihHLH4+KuTcWJ8l24+fdcae+FXJzP3XkzKbRjt2S+HTbUbJmDi+/akU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743874369; c=relaxed/simple;
-	bh=xoBNN7prixtaDgSCdbTmSFGPv2Ap8qfLfsDVSVImHCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bhbri4m8a5KzSyaaz5XEmBTGGkSVYoQFQT8MDW4fbXoKPIITdEhYG9huei+Rjag2uJW/qS4tkppm0E7jix5j9/BKI0yODyPiRfAVtPU3ur2U+x6jg8qUsLmpO79W18FQzEkHmRIy/+hSOM5OuvnKwuNkSRDaQBiJeQaX8ccgiig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=es8LAqpX; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id DCBA84076187;
-	Sat,  5 Apr 2025 17:32:35 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru DCBA84076187
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1743874355;
-	bh=wpX2rOvpqhK6Qp+s+7osfVamD+rzWFUeIoyBVrwLceA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=es8LAqpX2HqYkJft8hR3BE8WWQZftPQqsXlXh27j/VxROvSTuta/OrifiHGFXQN2T
-	 1JiJLovPGGgBiK5//Tvc1TIpiQ+BPXiqZU2zELgYSjiEPP2NpQ57829l62Np0pMOiE
-	 VYAf6wD+CZ5fmQ6Nu3n/AOS++37K553G3ND4Pfg4=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1743877034; c=relaxed/simple;
+	bh=luOtqYfVD85MbMoLqCyNC5SqOmIlKomafTG8GNHn27I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XiPbJU0Uht20VIRtBW9Eh4bCxnJnfohgZH7HoL11JRoW52/Hn2q9ccZFvo1JbvFcBA2UWsBbqNvP5rrZ2XV1H9CjVsUVfPrI4LvdCwlhAWtx8oaY9u86eyYYWhoOEh8Qdj76g01tJ7WbHH2rmCNRkXlY9D9TN6mFwgVm32drNdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=m7j3ccAW; arc=none smtp.client-ip=46.255.227.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
+Received: from gmmr-2.centrum.cz (localhost [127.0.0.1])
+	by gmmr-2.centrum.cz (Postfix) with ESMTP id 9D222202AE47;
+	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1743877026; bh=yXYouCERO6MiAmq3afNjHMwOXCEudhdkAGgF935HzVA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=m7j3ccAWICyhF2V6BIxEhxdLHkMFmmKEDwEdUP17RP7ZKZyrC314v9WFf5a4BgxVj
+	 1hIqsadQTDCegMvkDqU1Azibz3NeqfDotLujTAkg1+sLIWfvwB9gfHSsMkaVg57KNu
+	 mB4pU1uRDBw/tWDS0XhEtPRX0mphO4x0B+6JzfxY=
+Received: from antispam35.centrum.cz (antispam35.cent [10.30.208.35])
+	by gmmr-2.centrum.cz (Postfix) with ESMTP id 9B2B9200B969;
+	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
+X-CSE-ConnectionGUID: LpEm3r6RQEeORUl2pCsA1Q==
+X-CSE-MsgGUID: V+tuc1VnQXy8xc/kD1A2Hg==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2FFAACUcvFn/03h/y5aGQEBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?RIBAQEBAQEBAQEBAQFACYFKgzSBcYRVkXKLeYYzjVoODwEBAQEBAQEBAQkuF?=
+ =?us-ascii?q?gQBAYR9CgKLKic4EwECBAEBAQEDAgMBAQEBAQEBAQENAQEGAQEBAQEBBgYBA?=
+ =?us-ascii?q?oEdhTVTgluECAIBAwEiDwFGEBgNAiYCAicvGYMCgjABAzGtdYEyGgJl3HACS?=
+ =?us-ascii?q?QVVZIEpgRouAYhPAYR8cIR3QoINgRWCeW+EG3WDDoJpBINIhA+CEB14hSQEE?=
+ =?us-ascii?q?ldrhW+CRoogSIEFHANZLAFVEw0KCwcFgWwDNQwLLhUyRTgdgXyDeIU6ghGCB?=
+ =?us-ascii?q?IkZhFotT4NzHUADCxgNSBEsNxQbBj0BbgeWaoQXAVgBNExbCsgOhCWETZUEh?=
+ =?us-ascii?q?3caM5dSHgOSZJh+pEuEaIF+gX8zIjCDIlIZjjwWFst+djwCBwEKAQEDCYI7j?=
+ =?us-ascii?q?S4zgUsBAQ?=
+IronPort-PHdr: A9a23:S/RxYBzQ3qIVxP3XCzJ4zVBlVkEcU1XcAAcZ59Idhq5Udez7ptK+Z
+ xaZva0m1Q6UBd6TwskHotSVmpioYXYH75eFvSJKW713fDhBpOMo2icNO4q7M3D9N+PgdCcgH
+ c5PBxdP9nC/NlVJSo6lPwWB6nK94iQPFRrhKAF7Ovr6GpLIj8Swyuu+54Dfbx9HiTezf79+N
+ gm6oRneusULhYZvKro9xxXUqXZUZupawn9lKl2Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElR
+ rFGDzooLn446tTzuRfMVQWA6WIQX3sZnBRVGwTK4w30UZn3sivhq+pywzKaMtHsTbA1Qjut8
+ aFmQwL1hSgdNj459GbXitFsjK9evRmsqQBzz5LSbYqIMvd1Y6HTcs4ARWdZXshfSTJMDJ6yY
+ YUMCOQOP+hYoIbhqFUBtha+GQqhCfnzxjJSmnP736s32PkhHwHc2wwgGsoDvm7Ko9XpLqcZT
+ O+6w7POzTDdbPNdxDDw55LSchAiu/6MWKh/cdDKxEY1CwPFik+fqZf/MzyJ1+UAqm6W5PdvW
+ uyzkWAosR1xoiSxycc2jInEnp8ZxkzL+Ct53Yo4Id22RVNnbNCkH5VduCKXOop5T84tQ29lu
+ zg3xLIFtJO5ciUHyZQqyhHCZ/GEcYWF4w/vWeWXLDxlh3xlYKqyihmz/ES61OHxVsm53ExUo
+ iZbktTArHIA2h7L5sSaSPZw/V2t1SiP2g3T8O1IPEE5mKnBJ5Miw7M9kIcYv17ZES/sgkr2i
+ bebdkAj+ue19evqeq7mppqAN49sjQH+L7gultS/AesmNggOWHCW+eu51LH65k35RalKjuUrn
+ qXFqpzVOdoUpqilAw9Pz4Yj7gyzACun0dgAnHkHKkxKeA6fgoXmOlzCOu70APe/jli2jjtn2
+ fDLMqfjD5jPNnTDla3ufbd5605S0gozytVf6opOBbEbI/L8QErxu8bCDhIiKQO03+LnB89m1
+ o8ERW2OA7eVMLnOvl+Q+uIvP+6MaZcPtzbnKPgq/fvugmUjmVIGZ6apwZ8XZ2qjHvh8P0qYY
+ GLggs0dHmcSogo+UOvqhUWNUDNQZnu/RKE86S8hCIKgE4jDQpqhgLub3Ce0BpFWfHxJCkiQE
+ Xf0cIWJQ+sMaC2WIs5uiTEEUbmhS4k81RGyrg/6zLxnLuvb+yECqJ3sysB55/fPmhEq6Tx0E
+ 8Od3nmCTm5qmGMEXiI5075hoUNjzleOyqx4g/1DFdxP/PNFSAg7OoDaz+xiEdDyXQDBccmVR
+ 1a6WNmmBisxTt0pz98Uf0l9A8mijgzE3yeyB78VlrqLBIE7867F3Hj+Odx9y3DY26kllFQmX
+ MRPOnO8hqJl9AjcGZTJk0OHmKaub6gc2zTN9GibwWqUoE5YSBJwUbnCXX0HfUvWsc726VjGT
+ 7CwErknLARBxtCYKqdQad3mk09GRPH9N9TaeW6xnH2wBRmQyrOKd4XlY38d0znFCEgYjwAT+
+ m6LOAkmCii8oGLeDTluGEr3bU3j/+Zwtm+1Q1MywVLCU0o007uz5w5QhvGGTf4X9qwLtT1nq
+ DhuGlu5mdXMBImuvQ1kKZ1Rfcl13l5BdmGR4wVnPZWlJrpKj0Iaeh8xtFG4hEY/MZlJjcV/9
+ CBi9wF1M6/NiDt8
+IronPort-Data: A9a23:AGCduqqg9G+79LRaHD6DMrB1sDVeBmItZBIvgKrLsJaIsI4StFCzt
+ garIBmAaanZZGWhedoiPNyx/UNQuJeEyIIySAQ4+C03HysTo+PIVI+TRqvS04J+DSFhoGZPt
+ Zh2hgzodZhsJpPkjk7wdOWn9D8kiPzgqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvU0
+ T/Ji5OZYQLNNwJcaDpOtvrf8E435pwehRtB1rAATaEW1LPhvyZNZH4vDfnZB2f1RIBSAtm7S
+ 47rpJml/nnU9gsaEdislLD2aCUiGtY+6iDT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
+ I4lWaqYEl51Y/KWyIzxZDEDe812FfUuFLYquhFTu+TLp6HNWyOEL/mDkCjalGDXkwp6KTgmy
+ BAWFNwCRjSbquft2uyBc8Rhof4eKJPzF5g240g1mFk1Dd5+KXzCa6rPoMRdwC9p3oZFEPDCf
+ dccLzF9BPjCS0ERfA1KVdRkxrru2SaXnz5w8Tp5oYI++WvayQVr+LHxNNPOPNeYLSlQth/B/
+ juZoTWpWHn2MvShiiaY+SuSgNb/jHPrU8UROOSRrN5l1Qj7Kms7TUd+uUGAifCjiUe7Ush3I
+ lAQ8zFoprpa3Fz7EPH+Uge+rXrCuQQTM/JMHOkqwAWMzLfI+QGfB3hCQjMpQMwrsoo6SCIn0
+ neNnsj1Hnp/vbuNU3Wf+7yI6zSoNkA9KW4EeD9BTgYf5dTniJ88gwiJTdt5FqOxyNrvFlnY2
+ CyDpiwzr6scgNRN1Kih+13DxTW2qfD0ohUduluRBD/4qFkjOcj6OORE9GTm0BqJF67BJnHpg
+ ZTOs5H2ADwmZX1VqBGwfQ==
+IronPort-HdrOrdr: A9a23:8IBfqa2G0WoSlVYuorbpqwqjBL8kLtp133Aq2lEZdPWaSKClfq
+ eV7ZMmPH7P+VIssR4b9+xoVJPrfZqYz+8X3WBzB8bGYOCFggqVxehZhOOI/9SjIVydygc378
+ hdmsZFZeEYdWIbsfrH
+X-Talos-CUID: 9a23:iuJwBW04JW5cSWvYzDqqX7xfPtgIdybHkk3pDkKfM1ttEqW+UnbJwfYx
+X-Talos-MUID: 9a23:4BZRfQVd+lILu7jq/AGvmCxpbflu2pS/WFAG1pYq4uDeFSMlbg==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.15,191,1739833200"; 
+   d="scan'208";a="110176982"
+Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
+  by antispam35.centrum.cz with ESMTP; 05 Apr 2025 20:17:06 +0200
+Received: from localhost.localdomain (nat-86.starnet.cz [178.255.168.86])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id 310E3809119F;
+	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
+From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
+To: linux-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	x86@kernel.org,
+	xen-devel@lists.xenproject.org,
+	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
 	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Miguel Garcia Roman <miguelgarciaroman8@gmail.com>,
-	syzbot+478c1bf0e6bf4a8f3a04@syzkaller.appspotmail.com,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1] Revert "fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super"
-Date: Sat,  5 Apr 2025 20:32:13 +0300
-Message-ID: <20250405173214.295405-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.49.0
+Subject: [PATCH 1/1] x86/cpu/topology: Don't limit CPUs to 1 for Xen PV guests due to disabled APIC
+Date: Sat,  5 Apr 2025 20:16:50 +0200
+Message-ID: <20250405181650.22827-2-arkamar@atlas.cz>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250405181650.22827-1-arkamar@atlas.cz>
+References: <20250405181650.22827-1-arkamar@atlas.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This reverts commit f9c572d02fcced59c68f0287680fef9a5e0f5c9a which is
-commit 91a4b1ee78cb100b19b70f077c247f211110348f upstream.
+Xen PV guests in DomU have APIC disabled by design, which causes
+topology_apply_cmdline_limits_early() to limit the number of possible
+CPUs to 1, regardless of the configured number of vCPUs.
 
-The backported version of the fix does a lot of things which it shouldn't
-do and which the upstream commit doesn't touch as well.
+This is a regression introduced in version 6.9 in commit 7c0edad3643f
+("x86/cpu/topology: Rework possible CPU management") which added an
+early check that limits CPUs if apic_is_disabled, without accounting for
+the fact that Xen PV guests always disable APIC even when SMP is
+supported.
 
-Various auto-formatting changes and duplicate assignments made by the
-ported version are not a big deal on its own, but what is more important,
-it just drops 'sbi->zone_max' initialization for an unknown reason.
-Original commit doesn't ever intend to do anything with that.
+This patch fixes the issue by skipping the apic_is_disabled check for
+Xen PV guests, allowing them to boot with the full set of configured vCPUs.
 
-Better revert this commit from the stable branch for now.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Fixes: 7c0edad3643f ("x86/cpu/topology: Rework possible CPU management")
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86@kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
 ---
+ arch/x86/kernel/cpu/topology.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-FWIW there exists another variant of this backport patch [1] which at a
-quick glance looks more appropriate and was posted nearly a year ago.
-
-I've added Roman - author of [1] - to Cc. Maybe he would be interested in
-resending this so that it'd appear in your queue again. Anyway, it's up to
-you to decide whether to take Roman's patch or just ignore it...
-
-[1]: https://lore.kernel.org/stable/20240424101114.192681-2-r.smirnov@omp.ru/
-
- fs/ntfs3/ntfs_fs.h |  2 --
- fs/ntfs3/super.c   | 68 +++++++++++++++-------------------------------
- 2 files changed, 22 insertions(+), 48 deletions(-)
-
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index f2f32e304b3d..05d9abd66b37 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -42,11 +42,9 @@ enum utf16_endian;
- #define MINUS_ONE_T			((size_t)(-1))
- /* Biggest MFT / smallest cluster */
- #define MAXIMUM_BYTES_PER_MFT		4096
--#define MAXIMUM_SHIFT_BYTES_PER_MFT	12
- #define NTFS_BLOCKS_PER_MFT_RECORD	(MAXIMUM_BYTES_PER_MFT / 512)
- 
- #define MAXIMUM_BYTES_PER_INDEX		4096
--#define MAXIMUM_SHIFT_BYTES_PER_INDEX	12
- #define NTFS_BLOCKS_PER_INODE		(MAXIMUM_BYTES_PER_INDEX / 512)
- 
- /* NTFS specific error code when fixup failed. */
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 674a16c0c66b..eee54214f4a3 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -680,7 +680,7 @@ static u32 true_sectors_per_clst(const struct NTFS_BOOT *boot)
-  * ntfs_init_from_boot - Init internal info from on-disk boot sector.
-  */
- static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
--		  u64 dev_size)
-+			       u64 dev_size)
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index 01456236a6dd..10aa7f471ec9 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -428,8 +428,13 @@ void __init topology_apply_cmdline_limits_early(void)
  {
- 	struct ntfs_sb_info *sbi = sb->s_fs_info;
- 	int err;
-@@ -705,12 +705,12 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 	unsigned int possible = nr_cpu_ids;
  
- 	/* 0x55AA is not mandaroty. Thanks Maxim Suhanov*/
- 	/*if (0x55 != boot->boot_magic[0] || 0xAA != boot->boot_magic[1])
--	 *  goto out;
-+	 *	goto out;
- 	 */
- 
- 	boot_sector_size = (u32)boot->bytes_per_sector[1] << 8;
- 	if (boot->bytes_per_sector[0] || boot_sector_size < SECTOR_SIZE ||
--		!is_power_of_2(boot_sector_size)) {
-+	    !is_power_of_2(boot_sector_size)) {
- 		goto out;
- 	}
- 
-@@ -733,49 +733,15 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 
- 	/* Check MFT record size. */
- 	if ((boot->record_size < 0 &&
--		 SECTOR_SIZE > (2U << (-boot->record_size))) ||
--		(boot->record_size >= 0 && !is_power_of_2(boot->record_size))) {
--		goto out;
--	}
--
--	/* Calculate cluster size */
--	sbi->cluster_size = boot_sector_size * sct_per_clst;
--	sbi->cluster_bits = blksize_bits(sbi->cluster_size);
--
--	if (boot->record_size >= 0) {
--		record_size = (u32)boot->record_size << sbi->cluster_bits;
--	} else if (-boot->record_size <= MAXIMUM_SHIFT_BYTES_PER_MFT) {
--		record_size = 1u << (-boot->record_size);
--	} else {
--		ntfs_err(sb, "%s: invalid record size %d.", "NTFS",
--			 boot->record_size);
--		goto out;
--	}
--
--	sbi->record_size = record_size;
--	sbi->record_bits = blksize_bits(record_size);
--	sbi->attr_size_tr = (5 * record_size >> 4); // ~320 bytes
--
--	if (record_size > MAXIMUM_BYTES_PER_MFT) {
--		ntfs_err(sb, "Unsupported bytes per MFT record %u.",
--			 record_size);
--		goto out;
--	}
--
--	if (boot->index_size >= 0) {
--		sbi->index_size = (u32)boot->index_size << sbi->cluster_bits;
--	} else if (-boot->index_size <= MAXIMUM_SHIFT_BYTES_PER_INDEX) {
--		sbi->index_size = 1u << (-boot->index_size);
--	} else {
--		ntfs_err(sb, "%s: invalid index size %d.", "NTFS",
--			 boot->index_size);
-+	     SECTOR_SIZE > (2U << (-boot->record_size))) ||
-+	    (boot->record_size >= 0 && !is_power_of_2(boot->record_size))) {
- 		goto out;
- 	}
- 
- 	/* Check index record size. */
- 	if ((boot->index_size < 0 &&
--		 SECTOR_SIZE > (2U << (-boot->index_size))) ||
--		(boot->index_size >= 0 && !is_power_of_2(boot->index_size))) {
-+	     SECTOR_SIZE > (2U << (-boot->index_size))) ||
-+	    (boot->index_size >= 0 && !is_power_of_2(boot->index_size))) {
- 		goto out;
- 	}
- 
-@@ -796,6 +762,9 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 		dev_size += sector_size - 1;
- 	}
- 
-+	sbi->cluster_size = boot_sector_size * sct_per_clst;
-+	sbi->cluster_bits = blksize_bits(sbi->cluster_size);
-+
- 	sbi->mft.lbo = mlcn << sbi->cluster_bits;
- 	sbi->mft.lbo2 = mlcn2 << sbi->cluster_bits;
- 
-@@ -816,9 +785,9 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	sbi->cluster_mask = sbi->cluster_size - 1;
- 	sbi->cluster_mask_inv = ~(u64)sbi->cluster_mask;
- 	sbi->record_size = record_size = boot->record_size < 0
--		? 1 << (-boot->record_size)
--		: (u32)boot->record_size
--		  << sbi->cluster_bits;
-+						 ? 1 << (-boot->record_size)
-+						 : (u32)boot->record_size
-+							   << sbi->cluster_bits;
- 
- 	if (record_size > MAXIMUM_BYTES_PER_MFT || record_size < SECTOR_SIZE)
- 		goto out;
-@@ -832,8 +801,8 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 		ALIGN(sizeof(enum ATTR_TYPE), 8);
- 
- 	sbi->index_size = boot->index_size < 0
--		? 1u << (-boot->index_size)
--		: (u32)boot->index_size << sbi->cluster_bits;
-+				  ? 1u << (-boot->index_size)
-+				  : (u32)boot->index_size << sbi->cluster_bits;
- 
- 	sbi->volume.ser_num = le64_to_cpu(boot->serial_num);
- 
-@@ -902,6 +871,13 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	sb->s_maxbytes = 0xFFFFFFFFull << sbi->cluster_bits;
- #endif
- 
-+	/*
-+	 * Compute the MFT zone at two steps.
-+	 * It would be nice if we are able to allocate 1/8 of
-+	 * total clusters for MFT but not more then 512 MB.
+-	/* 'maxcpus=0' 'nosmp' 'nolapic' */
+-	if (!setup_max_cpus || apic_is_disabled)
++	/* 'maxcpus=0' 'nosmp' 'nolapic'
++	 *
++	 * The apic_is_disabled check is ignored for Xen PV domains because Xen
++	 * disables ACPI in unprivileged PV DomU guests, which would otherwise limit
++	 * CPUs to 1, even if multiple vCPUs were configured.
 +	 */
-+	sbi->zone_max = min_t(CLST, 0x20000000 >> sbi->cluster_bits, clusters >> 3);
-+
- 	err = 0;
++	if (!setup_max_cpus || (!xen_pv_domain() && apic_is_disabled))
+ 		possible = 1;
  
- out:
+ 	/* 'possible_cpus=N' */
 -- 
-2.49.0
+2.48.1
 
 
