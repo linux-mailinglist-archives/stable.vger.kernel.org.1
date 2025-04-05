@@ -1,126 +1,56 @@
-Return-Path: <stable+bounces-128407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F901A7CB2D
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 20:17:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E07A7CBD0
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 22:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9F5B176481
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 18:17:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24FA43B2AD6
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 20:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C6535968;
-	Sat,  5 Apr 2025 18:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B8A1A5B98;
+	Sat,  5 Apr 2025 20:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="m7j3ccAW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/PJo5Bj"
 X-Original-To: stable@vger.kernel.org
-Received: from gmmr-2.centrum.cz (gmmr-2.centrum.cz [46.255.227.203])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73B02E62B0;
-	Sat,  5 Apr 2025 18:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.227.203
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB42719CC0E
+	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 20:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743877034; cv=none; b=B4LIQvQia4XyBGi0ani4PofWDJLCcoVl3OAYTgrOfHdMZIr68A6wy1Ol8bH6kRv2kNKho2F+7zABFbeNqoqI895BUYuepRWxAKMlPRzlrsrjyZpjNN/4ihHLH4+KuTcWJ8l24+fdcae+FXJzP3XkzKbRjt2S+HTbUbJmDi+/akU=
+	t=1743885306; cv=none; b=HcffPACQ75IjiDdysUXM3O0brwxghlBte798dQSgZIZMjjEzDvPyGK3DPhanZ7YGy0bOG3Z7g2RPL+1+1DNpPZCp4EaDbRNsxS3+Eu3ryJZ0mIrwTOIeQiouW4quRi8WLkRxQRAcdPqj/P2XkQGYzWtFOwd73UCNVX9GgUEHNjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743877034; c=relaxed/simple;
-	bh=luOtqYfVD85MbMoLqCyNC5SqOmIlKomafTG8GNHn27I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XiPbJU0Uht20VIRtBW9Eh4bCxnJnfohgZH7HoL11JRoW52/Hn2q9ccZFvo1JbvFcBA2UWsBbqNvP5rrZ2XV1H9CjVsUVfPrI4LvdCwlhAWtx8oaY9u86eyYYWhoOEh8Qdj76g01tJ7WbHH2rmCNRkXlY9D9TN6mFwgVm32drNdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=m7j3ccAW; arc=none smtp.client-ip=46.255.227.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
-Received: from gmmr-2.centrum.cz (localhost [127.0.0.1])
-	by gmmr-2.centrum.cz (Postfix) with ESMTP id 9D222202AE47;
-	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
-	t=1743877026; bh=yXYouCERO6MiAmq3afNjHMwOXCEudhdkAGgF935HzVA=;
+	s=arc-20240116; t=1743885306; c=relaxed/simple;
+	bh=Bht2whr9oldcW8MlRVjgit2iRnAtDlttpCg15khnpkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bs2WqdIima/rKAcCKlkKE5riNkyLXSI3ozKuP9x6Wa2x9X6HHepK9PVrhy43w3JlNBFpKjTnrLqQgChen/RyqfvMQOzw/BAw2fkw1zfmPPHYku4eOJ/y7fG/4TIWXyRZ2xKnTFl2h8Nv3T8+ucLj732lca9zbjDxD3NuOyQW2mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/PJo5Bj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52AC4CEE4;
+	Sat,  5 Apr 2025 20:35:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743885306;
+	bh=Bht2whr9oldcW8MlRVjgit2iRnAtDlttpCg15khnpkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7j3ccAWICyhF2V6BIxEhxdLHkMFmmKEDwEdUP17RP7ZKZyrC314v9WFf5a4BgxVj
-	 1hIqsadQTDCegMvkDqU1Azibz3NeqfDotLujTAkg1+sLIWfvwB9gfHSsMkaVg57KNu
-	 mB4pU1uRDBw/tWDS0XhEtPRX0mphO4x0B+6JzfxY=
-Received: from antispam35.centrum.cz (antispam35.cent [10.30.208.35])
-	by gmmr-2.centrum.cz (Postfix) with ESMTP id 9B2B9200B969;
-	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
-X-CSE-ConnectionGUID: LpEm3r6RQEeORUl2pCsA1Q==
-X-CSE-MsgGUID: V+tuc1VnQXy8xc/kD1A2Hg==
-X-ThreatScanner-Verdict: Negative
-X-IPAS-Result: =?us-ascii?q?A2FFAACUcvFn/03h/y5aGQEBAQEBAQEBAQEBAQEBAQEBA?=
- =?us-ascii?q?RIBAQEBAQEBAQEBAQFACYFKgzSBcYRVkXKLeYYzjVoODwEBAQEBAQEBAQkuF?=
- =?us-ascii?q?gQBAYR9CgKLKic4EwECBAEBAQEDAgMBAQEBAQEBAQENAQEGAQEBAQEBBgYBA?=
- =?us-ascii?q?oEdhTVTgluECAIBAwEiDwFGEBgNAiYCAicvGYMCgjABAzGtdYEyGgJl3HACS?=
- =?us-ascii?q?QVVZIEpgRouAYhPAYR8cIR3QoINgRWCeW+EG3WDDoJpBINIhA+CEB14hSQEE?=
- =?us-ascii?q?ldrhW+CRoogSIEFHANZLAFVEw0KCwcFgWwDNQwLLhUyRTgdgXyDeIU6ghGCB?=
- =?us-ascii?q?IkZhFotT4NzHUADCxgNSBEsNxQbBj0BbgeWaoQXAVgBNExbCsgOhCWETZUEh?=
- =?us-ascii?q?3caM5dSHgOSZJh+pEuEaIF+gX8zIjCDIlIZjjwWFst+djwCBwEKAQEDCYI7j?=
- =?us-ascii?q?S4zgUsBAQ?=
-IronPort-PHdr: A9a23:S/RxYBzQ3qIVxP3XCzJ4zVBlVkEcU1XcAAcZ59Idhq5Udez7ptK+Z
- xaZva0m1Q6UBd6TwskHotSVmpioYXYH75eFvSJKW713fDhBpOMo2icNO4q7M3D9N+PgdCcgH
- c5PBxdP9nC/NlVJSo6lPwWB6nK94iQPFRrhKAF7Ovr6GpLIj8Swyuu+54Dfbx9HiTezf79+N
- gm6oRneusULhYZvKro9xxXUqXZUZupawn9lKl2Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElR
- rFGDzooLn446tTzuRfMVQWA6WIQX3sZnBRVGwTK4w30UZn3sivhq+pywzKaMtHsTbA1Qjut8
- aFmQwL1hSgdNj459GbXitFsjK9evRmsqQBzz5LSbYqIMvd1Y6HTcs4ARWdZXshfSTJMDJ6yY
- YUMCOQOP+hYoIbhqFUBtha+GQqhCfnzxjJSmnP736s32PkhHwHc2wwgGsoDvm7Ko9XpLqcZT
- O+6w7POzTDdbPNdxDDw55LSchAiu/6MWKh/cdDKxEY1CwPFik+fqZf/MzyJ1+UAqm6W5PdvW
- uyzkWAosR1xoiSxycc2jInEnp8ZxkzL+Ct53Yo4Id22RVNnbNCkH5VduCKXOop5T84tQ29lu
- zg3xLIFtJO5ciUHyZQqyhHCZ/GEcYWF4w/vWeWXLDxlh3xlYKqyihmz/ES61OHxVsm53ExUo
- iZbktTArHIA2h7L5sSaSPZw/V2t1SiP2g3T8O1IPEE5mKnBJ5Miw7M9kIcYv17ZES/sgkr2i
- bebdkAj+ue19evqeq7mppqAN49sjQH+L7gultS/AesmNggOWHCW+eu51LH65k35RalKjuUrn
- qXFqpzVOdoUpqilAw9Pz4Yj7gyzACun0dgAnHkHKkxKeA6fgoXmOlzCOu70APe/jli2jjtn2
- fDLMqfjD5jPNnTDla3ufbd5605S0gozytVf6opOBbEbI/L8QErxu8bCDhIiKQO03+LnB89m1
- o8ERW2OA7eVMLnOvl+Q+uIvP+6MaZcPtzbnKPgq/fvugmUjmVIGZ6apwZ8XZ2qjHvh8P0qYY
- GLggs0dHmcSogo+UOvqhUWNUDNQZnu/RKE86S8hCIKgE4jDQpqhgLub3Ce0BpFWfHxJCkiQE
- Xf0cIWJQ+sMaC2WIs5uiTEEUbmhS4k81RGyrg/6zLxnLuvb+yECqJ3sysB55/fPmhEq6Tx0E
- 8Od3nmCTm5qmGMEXiI5075hoUNjzleOyqx4g/1DFdxP/PNFSAg7OoDaz+xiEdDyXQDBccmVR
- 1a6WNmmBisxTt0pz98Uf0l9A8mijgzE3yeyB78VlrqLBIE7867F3Hj+Odx9y3DY26kllFQmX
- MRPOnO8hqJl9AjcGZTJk0OHmKaub6gc2zTN9GibwWqUoE5YSBJwUbnCXX0HfUvWsc726VjGT
- 7CwErknLARBxtCYKqdQad3mk09GRPH9N9TaeW6xnH2wBRmQyrOKd4XlY38d0znFCEgYjwAT+
- m6LOAkmCii8oGLeDTluGEr3bU3j/+Zwtm+1Q1MywVLCU0o007uz5w5QhvGGTf4X9qwLtT1nq
- DhuGlu5mdXMBImuvQ1kKZ1Rfcl13l5BdmGR4wVnPZWlJrpKj0Iaeh8xtFG4hEY/MZlJjcV/9
- CBi9wF1M6/NiDt8
-IronPort-Data: A9a23:AGCduqqg9G+79LRaHD6DMrB1sDVeBmItZBIvgKrLsJaIsI4StFCzt
- garIBmAaanZZGWhedoiPNyx/UNQuJeEyIIySAQ4+C03HysTo+PIVI+TRqvS04J+DSFhoGZPt
- Zh2hgzodZhsJpPkjk7wdOWn9D8kiPzgqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvU0
- T/Ji5OZYQLNNwJcaDpOtvrf8E435pwehRtB1rAATaEW1LPhvyZNZH4vDfnZB2f1RIBSAtm7S
- 47rpJml/nnU9gsaEdislLD2aCUiGtY+6iDT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
- I4lWaqYEl51Y/KWyIzxZDEDe812FfUuFLYquhFTu+TLp6HNWyOEL/mDkCjalGDXkwp6KTgmy
- BAWFNwCRjSbquft2uyBc8Rhof4eKJPzF5g240g1mFk1Dd5+KXzCa6rPoMRdwC9p3oZFEPDCf
- dccLzF9BPjCS0ERfA1KVdRkxrru2SaXnz5w8Tp5oYI++WvayQVr+LHxNNPOPNeYLSlQth/B/
- juZoTWpWHn2MvShiiaY+SuSgNb/jHPrU8UROOSRrN5l1Qj7Kms7TUd+uUGAifCjiUe7Ush3I
- lAQ8zFoprpa3Fz7EPH+Uge+rXrCuQQTM/JMHOkqwAWMzLfI+QGfB3hCQjMpQMwrsoo6SCIn0
- neNnsj1Hnp/vbuNU3Wf+7yI6zSoNkA9KW4EeD9BTgYf5dTniJ88gwiJTdt5FqOxyNrvFlnY2
- CyDpiwzr6scgNRN1Kih+13DxTW2qfD0ohUduluRBD/4qFkjOcj6OORE9GTm0BqJF67BJnHpg
- ZTOs5H2ADwmZX1VqBGwfQ==
-IronPort-HdrOrdr: A9a23:8IBfqa2G0WoSlVYuorbpqwqjBL8kLtp133Aq2lEZdPWaSKClfq
- eV7ZMmPH7P+VIssR4b9+xoVJPrfZqYz+8X3WBzB8bGYOCFggqVxehZhOOI/9SjIVydygc378
- hdmsZFZeEYdWIbsfrH
-X-Talos-CUID: 9a23:iuJwBW04JW5cSWvYzDqqX7xfPtgIdybHkk3pDkKfM1ttEqW+UnbJwfYx
-X-Talos-MUID: 9a23:4BZRfQVd+lILu7jq/AGvmCxpbflu2pS/WFAG1pYq4uDeFSMlbg==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.15,191,1739833200"; 
-   d="scan'208";a="110176982"
-Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
-  by antispam35.centrum.cz with ESMTP; 05 Apr 2025 20:17:06 +0200
-Received: from localhost.localdomain (nat-86.starnet.cz [178.255.168.86])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id 310E3809119F;
-	Sat,  5 Apr 2025 20:17:06 +0200 (CEST)
-From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
-To: linux-kernel@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	x86@kernel.org,
-	xen-devel@lists.xenproject.org,
-	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] x86/cpu/topology: Don't limit CPUs to 1 for Xen PV guests due to disabled APIC
-Date: Sat,  5 Apr 2025 20:16:50 +0200
-Message-ID: <20250405181650.22827-2-arkamar@atlas.cz>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250405181650.22827-1-arkamar@atlas.cz>
-References: <20250405181650.22827-1-arkamar@atlas.cz>
+	b=a/PJo5BjwDjF7ZFGDVteeBKY3sz8PYgVgk1LM4RDP1QpK4pIGZWaxkVYtT99RdDs9
+	 znhcRUbFpKTMth0N7V5LcsdnL9x0MhF3LyOztx70r1iZA2lqxMLQ6Jepn8DPSYveuJ
+	 XXFlHecNjccd3bNvKOGJ2a9G5Dzpf1G4j/bQNM9VhmiFAZnlcSR1QXVRxnwkis1JT7
+	 nXurX5Ga9u3HEfDwRdKrScQ/YVp0rqNGV1VGlK5JDyW4FD6Knohb2Q4HqJUUfC/i1h
+	 STx7aAEbv2GFhc3tTAEvMlDvJWQ6Kby0Q47qV23+pQ3kgNL6Xkge6c5mEctVSIEQ1Z
+	 4qBwkevtHDcCw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: He Zhe <zhe.he@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] cifs: Fix UAF in cifs_demultiplex_thread()
+Date: Sat,  5 Apr 2025 16:35:00 -0400
+Message-Id: <20250405081033-d477a5f9d93c5288@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250405053611.4039379-1-zhe.he@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -130,50 +60,200 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Xen PV guests in DomU have APIC disabled by design, which causes
-topology_apply_cmdline_limits_early() to limit the number of possible
-CPUs to 1, regardless of the configured number of vCPUs.
+[ Sasha's backport helper bot ]
 
-This is a regression introduced in version 6.9 in commit 7c0edad3643f
-("x86/cpu/topology: Rework possible CPU management") which added an
-early check that limits CPUs if apic_is_disabled, without accounting for
-the fact that Xen PV guests always disable APIC even when SMP is
-supported.
+Hi,
 
-This patch fixes the issue by skipping the apic_is_disabled check for
-Xen PV guests, allowing them to boot with the full set of configured vCPUs.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Fixes: 7c0edad3643f ("x86/cpu/topology: Rework possible CPU management")
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
-Cc: xen-devel@lists.xenproject.org
-Cc: stable@vger.kernel.org # 6.9+
-Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+The upstream commit SHA1 provided is correct: d527f51331cace562393a8038d870b3e9916686f
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: He Zhe<zhe.he@windriver.com>
+Commit author: Zhang Xiaoxu<zhangxiaoxu5@huawei.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (different SHA1: 908b3b5e97d2)
+
+Note: The patch differs from the upstream commit:
 ---
- arch/x86/kernel/cpu/topology.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+1:  d527f51331cac ! 1:  fdd5e68583ce7 cifs: Fix UAF in cifs_demultiplex_thread()
+    @@ Metadata
+      ## Commit message ##
+         cifs: Fix UAF in cifs_demultiplex_thread()
+     
+    +    commit d527f51331cace562393a8038d870b3e9916686f upstream.
+    +
+         There is a UAF when xfstests on cifs:
+     
+           BUG: KASAN: use-after-free in smb2_is_network_name_deleted+0x27/0x160
+    @@ Commit message
+         Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+         Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+         Signed-off-by: Steve French <stfrench@microsoft.com>
+    +    [fs/cifs was moved to fs/smb/client since
+    +    38c8a9a52082 ("smb: move client and server files to common directory fs/smb").
+    +    We apply the patch to fs/cifs with some minor context changes.]
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+     
+    - ## fs/smb/client/cifsglob.h ##
+    -@@ fs/smb/client/cifsglob.h: static inline bool is_retryable_error(int error)
+    + ## fs/cifs/cifsglob.h ##
+    +@@ fs/cifs/cifsglob.h: static inline bool is_retryable_error(int error)
+      #define   MID_RETRY_NEEDED      8 /* session closed while this request out */
+      #define   MID_RESPONSE_MALFORMED 0x10
+      #define   MID_SHUTDOWN		 0x20
+    @@ fs/smb/client/cifsglob.h: static inline bool is_retryable_error(int error)
+      /* Flags */
+      #define   MID_WAIT_CANCELLED	 1 /* Cancelled while waiting for response */
+     
+    - ## fs/smb/client/transport.c ##
+    + ## fs/cifs/transport.c ##
+     @@
+      void
+      cifs_wake_up_task(struct mid_q_entry *mid)
+    @@ fs/smb/client/transport.c
+      	wake_up_process(mid->callback_data);
+      }
+      
+    -@@ fs/smb/client/transport.c: static void __release_mid(struct kref *refcount)
+    +@@ fs/cifs/transport.c: static void _cifs_mid_q_entry_release(struct kref *refcount)
+      	struct TCP_Server_Info *server = midEntry->server;
+      
+      	if (midEntry->resp_buf && (midEntry->mid_flags & MID_WAIT_CANCELLED) &&
+    @@ fs/smb/client/transport.c: static void __release_mid(struct kref *refcount)
+      	    server->ops->handle_cancelled_mid)
+      		server->ops->handle_cancelled_mid(midEntry, server);
+      
+    -@@ fs/smb/client/transport.c: wait_for_response(struct TCP_Server_Info *server, struct mid_q_entry *midQ)
+    +@@ fs/cifs/transport.c: wait_for_response(struct TCP_Server_Info *server, struct mid_q_entry *midQ)
+      	int error;
+      
+    - 	error = wait_event_state(server->response_q,
+    --				 midQ->mid_state != MID_REQUEST_SUBMITTED,
+    -+				 midQ->mid_state != MID_REQUEST_SUBMITTED &&
+    -+				 midQ->mid_state != MID_RESPONSE_RECEIVED,
+    - 				 (TASK_KILLABLE|TASK_FREEZABLE_UNSAFE));
+    + 	error = wait_event_freezekillable_unsafe(server->response_q,
+    +-				    midQ->mid_state != MID_REQUEST_SUBMITTED);
+    ++				    midQ->mid_state != MID_REQUEST_SUBMITTED &&
+    ++				    midQ->mid_state != MID_RESPONSE_RECEIVED);
+      	if (error < 0)
+      		return -ERESTARTSYS;
+    -@@ fs/smb/client/transport.c: cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
+      
+    - 	spin_lock(&server->mid_lock);
+    +@@ fs/cifs/transport.c: cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
+    + 
+    + 	spin_lock(&GlobalMid_Lock);
+      	switch (mid->mid_state) {
+     -	case MID_RESPONSE_RECEIVED:
+     +	case MID_RESPONSE_READY:
+    - 		spin_unlock(&server->mid_lock);
+    + 		spin_unlock(&GlobalMid_Lock);
+      		return rc;
+      	case MID_RETRY_NEEDED:
+    -@@ fs/smb/client/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
+    +@@ fs/cifs/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
+      	credits.instance = server->reconnect_instance;
+      
+      	add_credits(server, &credits, mid->optype);
+    @@ fs/smb/client/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
+      }
+      
+      static void
+    -@@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+    +@@ fs/cifs/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+      			send_cancel(server, &rqst[i], midQ[i]);
+    - 			spin_lock(&server->mid_lock);
+    + 			spin_lock(&GlobalMid_Lock);
+      			midQ[i]->mid_flags |= MID_WAIT_CANCELLED;
+     -			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED) {
+     +			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED ||
+    @@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cif
+      				midQ[i]->callback = cifs_cancelled_callback;
+      				cancelled_mid[i] = true;
+      				credits[i].value = 0;
+    -@@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+    +@@ fs/cifs/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+      		}
+      
+      		if (!midQ[i]->resp_buf ||
+    @@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cif
+      			rc = -EIO;
+      			cifs_dbg(FYI, "Bad MID state?\n");
+      			goto out;
+    -@@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
+    +@@ fs/cifs/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
+      	if (rc != 0) {
+      		send_cancel(server, &rqst, midQ);
+    - 		spin_lock(&server->mid_lock);
+    + 		spin_lock(&GlobalMid_Lock);
+     -		if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
+     +		if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
+     +		    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+      			/* no longer considered to be "in-flight" */
+    - 			midQ->callback = release_mid;
+    - 			spin_unlock(&server->mid_lock);
+    -@@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
+    + 			midQ->callback = DeleteMidQEntry;
+    + 			spin_unlock(&GlobalMid_Lock);
+    +@@ fs/cifs/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
+      	}
+      
+      	if (!midQ->resp_buf || !out_buf ||
+    @@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *
+      		rc = -EIO;
+      		cifs_server_dbg(VFS, "Bad MID state?\n");
+      		goto out;
+    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+      
+      	/* Wait for a reply - allow signals to interrupt. */
+      	rc = wait_event_interruptible(server->response_q,
+    @@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struc
+      		 (server->tcpStatus != CifsNew)));
+      
+      	/* Were we interrupted by a signal ? */
+    - 	spin_lock(&server->srv_lock);
+      	if ((rc == -ERESTARTSYS) &&
+     -		(midQ->mid_state == MID_REQUEST_SUBMITTED) &&
+     +		(midQ->mid_state == MID_REQUEST_SUBMITTED ||
+     +		 midQ->mid_state == MID_RESPONSE_RECEIVED) &&
+      		((server->tcpStatus == CifsGood) ||
+      		 (server->tcpStatus == CifsNew))) {
+    - 		spin_unlock(&server->srv_lock);
+    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+    + 
+    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+      		if (rc) {
+      			send_cancel(server, &rqst, midQ);
+    - 			spin_lock(&server->mid_lock);
+    + 			spin_lock(&GlobalMid_Lock);
+     -			if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
+     +			if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
+     +			    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+      				/* no longer considered to be "in-flight" */
+    - 				midQ->callback = release_mid;
+    - 				spin_unlock(&server->mid_lock);
+    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+    + 				midQ->callback = DeleteMidQEntry;
+    + 				spin_unlock(&GlobalMid_Lock);
+    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+      		return rc;
+      
+      	/* rcvd frame is ok */
+---
 
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index 01456236a6dd..10aa7f471ec9 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -428,8 +428,13 @@ void __init topology_apply_cmdline_limits_early(void)
- {
- 	unsigned int possible = nr_cpu_ids;
- 
--	/* 'maxcpus=0' 'nosmp' 'nolapic' */
--	if (!setup_max_cpus || apic_is_disabled)
-+	/* 'maxcpus=0' 'nosmp' 'nolapic'
-+	 *
-+	 * The apic_is_disabled check is ignored for Xen PV domains because Xen
-+	 * disables ACPI in unprivileged PV DomU guests, which would otherwise limit
-+	 * CPUs to 1, even if multiple vCPUs were configured.
-+	 */
-+	if (!setup_max_cpus || (!xen_pv_domain() && apic_is_disabled))
- 		possible = 1;
- 
- 	/* 'possible_cpus=N' */
--- 
-2.48.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 
