@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-128385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929A4A7C8FA
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 13:57:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450F7A7C8FB
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 13:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DBC53BBFC9
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 11:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9367D3BC219
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 11:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BC21DF990;
-	Sat,  5 Apr 2025 11:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7517A1E1DFB;
+	Sat,  5 Apr 2025 11:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szfafIKD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0eWOFE4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E9F8F64
-	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 11:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313918F64
+	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 11:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743854264; cv=none; b=ohAwqBG8hOIUyYZZmwOUo7QEl2eALYr6VZnSJ8xHQTAYwIE6e/Rm1v/7NFIAteJgU5+yOepIC8iIOkqZmuhZOucPMpiAt8j510LnW2acocWYH6cL5o+vx2alYgX00RobtQ7ydSk/BhbYdU0edMdSl/7RVjoARlc7DacF9Yf2nfo=
+	t=1743854266; cv=none; b=b1bcsXdXi5/eh6FldpvOkttftzcoszeTTBMePyj6ZFgeqcH5+rC8Y+/DARKLBU5RlrMS72GOkkrUORtytI7Y7rBocLrk8FLw3dBOR2GXUrdt5H+awY2OveAwOGJ6AK8Mii+3eIy45jh5OXaLZQdKcW9iLHnktNp3nlErnZYeWyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743854264; c=relaxed/simple;
-	bh=iHnvsqRzC8qMgAzQSBwqLKYaknUoXaBAasfL0DNNx4A=;
+	s=arc-20240116; t=1743854266; c=relaxed/simple;
+	bh=7xqen/OgMlRunOlF+gu+YyGJnmXRwSLv35NaJRaupTc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J6QCXjditYp1GYMV8JSR/sgD5R50wcl1DGSc3eNavTNMoBKTKsszGi+x94Rc0fLbuL+l3Z14PBA17ETWPGqw1N1oXzZA+ZoO+gYHZT0sfTP7riVN9lOSLA6g4NtiTZpuxlysY0w34fOv0+qfCba1w22zXWbxDB/Zrk/RbkwfoGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szfafIKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1A4C4CEE4;
-	Sat,  5 Apr 2025 11:57:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s58qjEg4PSMGInQfoKHw5aVvMxoRjmzWs0g6Jzyu4/oXHlJnStzv8XR0ITq0adanJv0zMkxxufP2D205H/zFeT6m6OnqIwhIrTQxFJI7OnLBQE/GpY5t7x5o5pYkK9gVWB542mzOwnJV2i6qQ8o9TPacnKtF7p/991+hmyDuVxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0eWOFE4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E9CC4CEE4;
+	Sat,  5 Apr 2025 11:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743854264;
-	bh=iHnvsqRzC8qMgAzQSBwqLKYaknUoXaBAasfL0DNNx4A=;
+	s=k20201202; t=1743854266;
+	bh=7xqen/OgMlRunOlF+gu+YyGJnmXRwSLv35NaJRaupTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szfafIKDQfSdcAn4kcbbIGfIh59Eol8xJrKt8Y1xevcaznxR6Nh4InTLMsdWTvEwd
-	 K0EJD8RdjjGPdxxCg6qC+dLl9M9nbfXho0tqMq3K/W1tWnNdSaWsQHFWFWa7uLJG4A
-	 xclBabyf4m8mlYcNBTw5o7ChoYb5gGfGjgY3euFjWgZud3frPYnfcXlqbyVkrjTF1a
-	 vJbTbxFe7hvUqmJlpDJsN9EZ/0a24evsOPr3EU5B6ATnHRRevx/izA9bqGKdnsC/U7
-	 14ANRBORfSbWmIYS+H6fw+8hyZLiQ9Rf6nitUH15WbiLAfxVL/7vLm313jI17jY64n
-	 U0S7Fbe/uD2Hw==
+	b=G0eWOFE4w5xRz9uCtpjoaR7Dtm+MqDgTo6uMIWNu9zUlNJNSOV8RSXhiARscyRGyq
+	 zkTWTIEAhhdML5GizUNaKArWTa3A9r+cxAqYaiOnUqFAYnuQqG8mUNn2n0oaTwBzd/
+	 WC+XVpNJLwY9+8n+tLbUXB9JxPD6tUX57RxuGuBxTaRTMz25+w+tOQPTmJX8jGYvMe
+	 0OMtn8h+onjJTcNO++LwsxtB0/snhzqQhvUv1sC5XdvEJLYqyvpedMLvMki4lZ2KS8
+	 geGghercmYJ9PkWOUayTGa6SmFqewXpmWOd7RaayELSp6IUhGRk0KuoMVEbw7ANuRZ
+	 ecbim3WpPW3gQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH RESEND 6.1 11/12] KVM: arm64: Calculate cptr_el2 traps on activating traps
-Date: Sat,  5 Apr 2025 07:57:42 -0400
-Message-Id: <20250405030025-f54a2889616bb943@stable.kernel.org>
+Subject: Re: [PATCH RESEND 6.1 02/12] arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE
+Date: Sat,  5 Apr 2025 07:57:44 -0400
+Message-Id: <20250405004608-f9e6ab16e8295af9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250404-stable-sve-6-1-v1-11-cd5c9eb52d49@kernel.org>
+In-Reply-To:  <20250404-stable-sve-6-1-v1-2-cd5c9eb52d49@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,22 +67,68 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 2fd5b4b0e7b440602455b79977bfa64dea101e6c
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Mark Brown<broonie@kernel.org>
-Commit author: Fuad Tabba<tabba@google.com>
+The upstream commit SHA1 provided is correct: baa8515281b30861cff3da7db70662d2a25c6440
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.13.y | Present (different SHA1: 626dcb1d742e)
-6.12.y | Present (different SHA1: e6cd28bbbf90)
-6.6.y | Present (different SHA1: 20c6561c4918)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2fd5b4b0e7b44 < -:  ------------- KVM: arm64: Calculate cptr_el2 traps on activating traps
--:  ------------- > 1:  d34afbc5f2f10 KVM: arm64: Calculate cptr_el2 traps on activating traps
+1:  baa8515281b30 ! 1:  dd25288bc37b5 arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE
+    @@ Metadata
+      ## Commit message ##
+         arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE
+     
+    +    [ Upstream commit baa8515281b30861cff3da7db70662d2a25c6440 ]
+    +
+         When we save the state for the floating point registers this can be done
+         in the form visible through either the FPSIMD V registers or the SVE Z and
+         P registers. At present we track which format is currently used based on
+    @@ Commit message
+         Reviewed-by: Marc Zyngier <maz@kernel.org>
+         Link: https://lore.kernel.org/r/20221115094640.112848-3-broonie@kernel.org
+         Signed-off-by: Will Deacon <will@kernel.org>
+    +    [ Mark: fix conflicts due to earlier backports ]
+    +    Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+    +    Signed-off-by: Mark Brown <broonie@kernel.org>
+     
+      ## arch/arm64/include/asm/fpsimd.h ##
+     @@ arch/arm64/include/asm/fpsimd.h: extern void fpsimd_kvm_prepare(void);
+    @@ arch/arm64/kernel/fpsimd.c: int vec_set_vector_length(struct task_struct *task,
+     +		task->thread.fp_type = FP_STATE_FPSIMD;
+     +	}
+      
+    - 	if (system_supports_sme() && type == ARM64_VEC_SME) {
+    - 		task->thread.svcr &= ~(SVCR_SM_MASK |
+    + 	if (system_supports_sme()) {
+    + 		if (type == ARM64_VEC_SME ||
+     @@ arch/arm64/kernel/fpsimd.c: static void sve_init_regs(void)
+      		fpsimd_bind_task_to_cpu();
+      	} else {
+      		fpsimd_to_sve(current);
+     +		current->thread.fp_type = FP_STATE_SVE;
+    + 		fpsimd_flush_task_state(current);
+      	}
+      }
+    - 
+     @@ arch/arm64/kernel/fpsimd.c: void fpsimd_flush_thread(void)
+      		current->thread.svcr = 0;
+      	}
+    @@ arch/arm64/kernel/ptrace.c: static int sve_set_common(struct task_struct *target
+      	}
+      
+     @@ arch/arm64/kernel/ptrace.c: static int sve_set_common(struct task_struct *target,
+    - 	 */
+      	fpsimd_sync_to_sve(target);
+    - 	set_tsk_thread_flag(target, TIF_SVE);
+    + 	if (type == ARM64_VEC_SVE)
+    + 		set_tsk_thread_flag(target, TIF_SVE);
+     +	target->thread.fp_type = FP_STATE_SVE;
+      
+      	BUILD_BUG_ON(SVE_PT_SVE_OFFSET != sizeof(header));
 ---
 
 Results of testing on various branches:
