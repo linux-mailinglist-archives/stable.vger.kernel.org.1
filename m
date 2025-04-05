@@ -1,143 +1,164 @@
-Return-Path: <stable+bounces-128401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88918A7C9AA
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 16:35:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0248FA7C9C1
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 16:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7034169C5B
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 14:35:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80BDF189AE13
+	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 14:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB101E1E19;
-	Sat,  5 Apr 2025 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5911D47AD;
+	Sat,  5 Apr 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wwansMkW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7qxemuh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFEE3FC3
-	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 14:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B763C51C5A;
+	Sat,  5 Apr 2025 14:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743863701; cv=none; b=NQ0rJQM4n6E35xi05IfK2yexGD+wp/F3DGXXoj6GwPFJm7GMNgsMY9nA4qmeeDxjD6sqajwH+YmrbecjngQLPInRaHJJxF30IepfroR9swVHQlWL1euqmDDK9euogMvP9OUnJr4qsZ006QJ+w4CvoyH11jsh4KTj6ZQejJWMEZg=
+	t=1743864881; cv=none; b=OQuhQr12opkReYP63metO65hLe5uo7g3IZNNf3gPP0C4/anIIYvpoIIiZypkB37CEmmPTtaEYeRGDjps5WDqwEnluBMKzMUYW846L2xUFD3mUEFOrWM7fbeuuAkA8ziwGGKqLTyL3w9oLE7ogIdSvgm+MgUrO+cSkjIqe7mw9+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743863701; c=relaxed/simple;
-	bh=Jz2jG35a8jxkfJR/K1JGWyUsAohw0IVAj9COzgsDaK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1UTN6BCipJHP6bWGCsgQA4bYe+fDXteIB50T4inwyFvwGikaejwxogE18aNO/QK1YFM21e3xVrt33TYO+xfx3dRImbc3yD/kgdyXsG3yvHmMKiUdHOWWoURDAh2Z6lHnNgMxcCzyAo9U3hoEM6/VftUXzTLVl/eMiDVC9rTkTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wwansMkW; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913d129c1aso2050901f8f.0
-        for <stable@vger.kernel.org>; Sat, 05 Apr 2025 07:34:59 -0700 (PDT)
+	s=arc-20240116; t=1743864881; c=relaxed/simple;
+	bh=W0hFo83763PwHhqGjvqrSnEmlQxHpIjB+dI7T/lyDqw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MZt6cFYHfLxK1VjxvZcIVBB9v0W136g9P+UsagVp7ympaNojeHT4gJJAXRa50K3KYZelPZuhVFvxsa7ZjK0K5ONb8kKt9tXk8K6+Me+nvVLURY6dZH61YrYJeq6tZ6l/8FiAxG29MlfI6Tf3Q7/89kYYfFGShwn2ZBMIFbSCoow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7qxemuh; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2264aefc45dso39739265ad.0;
+        Sat, 05 Apr 2025 07:54:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743863698; x=1744468498; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zhyg0t58cU1vi3f6vTrT4cSrowyxcOvo1z5RkDWvOMc=;
-        b=wwansMkWvgZTGyCaz691HGawa2IHcI4N/4QQAolFtDP8yQCSuT9jWXSCz+yHS4q1tz
-         yQwpPzNIVZ8v+tcwmAwkD2ldIK+S+rhkzBVFIGktjGzaVgZmhtgM29CE+kMDWvB6IV10
-         7FO4fCe+HFmsm+kv2BN0P2BosXnh6ouo8eJgjSfPPJ17As0N7bYmsK/jy3UT6u1OBLHH
-         A3a/l+pj/84GWozfC1F6kHIqYnG1120jUbnIfUfPP0jEfxgUo8ICgZc1lUumyQnR1EUW
-         DSeo+WHSgQU7S4DlPTwx1NRbQLdjhdEKFXGWMO+lsDBuVA2ejr5o01NbwrfEf5mo9NWx
-         /a+A==
+        d=gmail.com; s=20230601; t=1743864879; x=1744469679; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nKs0lwSpjYnhUeQPgpDR5O6PnIX9bK5Z7Homt3o7Oqw=;
+        b=k7qxemuhxC82lHrW4JLnQUnrZsxYNqvECxL9xsv8LHbtXQHRMgiUqXrK5BnL8bK0J1
+         96l6uf4qQ9CZjxKrw39nYtjpL3kqc6AcXTmqxRGn8ZHo9Ea1A6g0Dc47KXDFzYq5gtyW
+         nNb1mVqMN9oPgXUY7o3H1QLfQ6UTwHqwJVpbZAYEZDG90x+Sd6drbb94MogkEShWNVwa
+         0Zd4rYDGzQ72m3z1j3DAeQLsqnOH04vOXR/CA2048o8EYkl3TkAvncwzp4o2cdUOjmz2
+         Fft+0Hif78JqYe3EdY8U2twOm+Rm/Mb7gAb9em5ReBM62vH3okLwdNF4ckwjk5B0HmFg
+         nRzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743863698; x=1744468498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zhyg0t58cU1vi3f6vTrT4cSrowyxcOvo1z5RkDWvOMc=;
-        b=IRlvgwvccwTTbdem9YjTqZYn3yatLik4N0UWBl8NGLoMGC3VFNGCIivHbdcNUl3+Q/
-         9IH69/B8MTBOXLLpQ9Zr2cJsgFUlEly1alwsNAUSAEM/Q45gC2w3KxxsPlHOQGS/jRe7
-         LVWKizGahIAPVuHz8sdoQ+JNSluCeYO6U8e+mWZp00fQusV0/ERWnquENwE8Vpib7w5G
-         CWUy4kSraq1497diuXkYScD1vPp1hAHPRCHoI8zNmJQq9ljIRA2jYjhSk/f6gb+j0cSr
-         eJLbhLdu9ztawbFlYyNeW5y9SCZhpPwPUaalJyQq0hPxWr5+DtMvfLXmBP6F8wtIEwkG
-         YAFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWk8GVl2yCwKZ0/uXKHO5pvGsAVQ1DXQfp8bYRccdU21oiZqaCMt1uC9XXi0yoxIV73xNqL7hY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPrt8bjgAGQs70LdxZTjmTRzw/P92ytqIYVOPlnbMRrGdGEUSD
-	m7aBnsXgGUAo3wUfpXkaG2tR2nNjgGHloj2O4ZCdntQDP9sjORL8GSEZnK+JNbk=
-X-Gm-Gg: ASbGnctlmAGvaDoSZmaYAwKEWjW8Yd7vwOzMnggM9feAvTW56vxeH/QYG+osErEq0kc
-	2mPMRIfr6D965Iylzo9hRRFX6Cu13C+7QdZ6pZ4LqmjPBcOI7DpdPzbA99Ri2h+697d8uI2rncY
-	T72tMLBSsexLKtqVyoakFpN6oIxNkRAuMrokCrUGxtK7u4MVSWCBjaFwbK7eteSYIjCikCTgjfX
-	BOjOynQvf8EJTTkoY332wOTgjm2uUKRYbVTnnZFid/T9IcRJ8toBGV3SLjMJp+0kltpDKiiWlHU
-	i/Zo2becGZE/rOzpEvthnH5Ac6i1n3Ly2WBnM+z5hZCUTBcxSNrnylPhEBl1
-X-Google-Smtp-Source: AGHT+IE/M9txzHe0PtFaLgR9ct861DaYcfnp5n7x7JLLBKwz5m7VyOjZai/5+5Yi3USWwxC/jRVIdg==
-X-Received: by 2002:a5d:6d8f:0:b0:39c:e0e:b7ea with SMTP id ffacd0b85a97d-39cba942a90mr5605476f8f.20.1743863697655;
-        Sat, 05 Apr 2025 07:34:57 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39c301a7586sm7163739f8f.38.2025.04.05.07.34.56
+        d=1e100.net; s=20230601; t=1743864879; x=1744469679;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nKs0lwSpjYnhUeQPgpDR5O6PnIX9bK5Z7Homt3o7Oqw=;
+        b=iQqvW/kwHiMNLXEdB/CkECrSzd7c4Y1QCn8Pt8EEhgXivaAViRUoz6Z484bjTbVvGq
+         1raJ7jEASJrnfiHb/MWjo7trIkXKYyXNzo1JEu4TO19EhB6H6t0pxxkWbL5T3W+iqO4r
+         ASuFpyqhA5o8EFKmwvC5Gj+l8OwdGM+lLe4RBCfz/05vmuWAb566m/lD8alhqpmcGmRH
+         io+jKLPbsDsex8e5H1/QsPlSjO8Ckac3PSrWTq5lezuq4WyJvvh5bksxwSOLshIXtMPc
+         VIYjnetZoSpzmm+N48T1hhzchQnWRebAimTBE46fB8lSdMRSGCSOHCw3cGfQSxUkRkCc
+         944g==
+X-Forwarded-Encrypted: i=1; AJvYcCU459nXDQ8KkiRt9sl5hvTsOqO8RNLLqf9dydjhadAT7AF1G1Wqgxbo9NXbk4GIq1gSXp654GUw9Ra19hw=@vger.kernel.org, AJvYcCVVd0Nx9M/7AKaJ4i3qc6EiONSc7WUBMY22XIkSkFiOCdDDoxXRSpWExoHz87TgKEuoZ6XTgnV2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxObmSIZo1C0BKsUGcXUzdfEbhBnYsZEVA3pyYddhW6dF1HOrax
+	RpEgN8g4dhTl/udmud8MV+fM94LtmDjXqivaLFaMS15YJq2XwVg/
+X-Gm-Gg: ASbGncvt6CA9SGA6uAoUeCiV4GC5DYzFXAqlm140BVC1mL4JiYWoEPg8Xk+YzK00J05
+	lPPVKbq24ohql0l9KkQERCr56VdA4QJ5IsfL9XEWG2TAumWrBpg5F5Geqju45bdx06OT9MnouU2
+	gWDhBCCQKVeFLmOsgh9U+FHDl8hRLTbS+prbiBCvTwKA7KaYAjhIZRJVlrC13wmACypkdPpfG3G
+	b/sf+5+HRajurhpH08O1dEGFeyYWpzneQ1FR8lGOCw2Gdiunltox3Nino7qLkmib2OqvoxCDGF0
+	IUbQeAtOOYduc77djJK7ulsFoTkeDZqYhbOZxoF+1Fsr/PJHprpJaMWyZ4KizeJP/dNHd+ZOe88
+	bacuEyya0WM2gNOoKwOYtVAAqCJ3uhW8sLoJ7Fl3/rQ==
+X-Google-Smtp-Source: AGHT+IGaG+x1ud/97AzdLIBHj4DsVwQhF6qAy3rP10DkocE71F8Il3Fty01NOhrk0Z8YGiYjGzJaQg==
+X-Received: by 2002:a17:902:e552:b0:220:c813:dfcc with SMTP id d9443c01a7336-22a8a8b80a3mr92472285ad.40.1743864878867;
+        Sat, 05 Apr 2025 07:54:38 -0700 (PDT)
+Received: from localhost.localdomain (p12284229-ipxg45101marunouchi.tokyo.ocn.ne.jp. [60.39.60.229])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2297866dccbsm50694485ad.176.2025.04.05.07.54.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Apr 2025 07:34:57 -0700 (PDT)
-Date: Sat, 5 Apr 2025 17:34:53 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: gregkh@linuxfoundation.org, philipp.g.hortmann@gmail.com,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] staging: rtl8723bs: Add error handling for sd_read().
-Message-ID: <948e34d5-95b0-4f7f-acf2-c93cd2536300@stanley.mountain>
-References: <20250405140703.2419-1-vulab@iscas.ac.cn>
+        Sat, 05 Apr 2025 07:54:38 -0700 (PDT)
+From: Ryo Takakura <ryotkkr98@gmail.com>
+To: alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	bigeasy@linutronix.de,
+	conor.dooley@microchip.com,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	john.ogness@linutronix.de,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	pmladek@suse.com,
+	samuel.holland@sifive.com,
+	u.kleine-koenig@baylibre.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-serial@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ryo Takakura <ryotkkr98@gmail.com>
+Subject: [PATCH v2] serial: sifive: lock port in startup()/shutdown() callbacks
+Date: Sat,  5 Apr 2025 23:53:54 +0900
+Message-Id: <20250405145354.492947-1-ryotkkr98@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250405140703.2419-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Apr 05, 2025 at 10:07:02PM +0800, Wentao Liang wrote:
-> The sdio_read32() calls sd_read(), but does not handle the error if
-> sd_read() fails. This could lead to subsequent operations processing
-> invalid data. A proper implementation can be found in sdio_readN().
-> 
-> Add error handling to the sd_read(), ensuring that the memcpy() is
-> only performed when the read operation is successful.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org # v4.12+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
+startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
+The register is also accessed from write() callback.
 
+If console were printing and startup()/shutdown() callback
+gets called, its access to the register could be overwritten.
 
-You need to add an explanation here what changed in v3.
+Add port->lock to startup()/shutdown() callbacks to make sure
+their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
+write() callback.
 
-https://staticthinking.wordpress.com/2022/07/27/how-to-send-a-v2-patch/
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Cc: stable@vger.kernel.org
+---
 
->  drivers/staging/rtl8723bs/hal/sdio_ops.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> index 21e9f1858745..b21fd087c9a0 100644
-> --- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> +++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> @@ -185,9 +185,11 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
->  			return SDIO_ERR_VAL32;
->  
->  		ftaddr &= ~(u16)0x3;
-> -		sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> -		memcpy(&le_tmp, tmpbuf + shift, 4);
-> -		val = le32_to_cpu(le_tmp);
-> +		val = sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		if (!val) {
+This patch used be part of a series for converting sifive driver to
+nbcon[0]. It's now sent seperatly as the rest of the series does not
+need be applied to the stable branch.
 
-The sdio_read32() function now returns negative error codes.  Probably
-a bad idea.
+Sincerely,
+Ryo Takakura
 
-regards,
-dan carpenter
+[0] https://lore.kernel.org/all/20250405043833.397020-1-ryotkkr98@gmail.com/
 
-> +			memcpy(&le_tmp, tmpbuf + shift, 4);
-> +			val = le32_to_cpu(le_tmp);
-> +		}
->  
->  		kfree(tmpbuf);
->  	}
-> -- 
-> 2.42.0.windows.2
-> 
+---
+ drivers/tty/serial/sifive.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/tty/serial/sifive.c b/drivers/tty/serial/sifive.c
+index 5904a2d4c..054a8e630 100644
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -563,8 +563,11 @@ static void sifive_serial_break_ctl(struct uart_port *port, int break_state)
+ static int sifive_serial_startup(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_enable_rxwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ 
+ 	return 0;
+ }
+@@ -572,9 +575,12 @@ static int sifive_serial_startup(struct uart_port *port)
+ static void sifive_serial_shutdown(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_disable_rxwm(ssp);
+ 	__ssp_disable_txwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ }
+ 
+ /**
+-- 
+2.34.1
+
 
