@@ -1,171 +1,112 @@
-Return-Path: <stable+bounces-128409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85914A7CC83
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 04:10:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E076CA7CC91
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 04:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D961891593
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 02:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86DFF174AC9
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 02:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFE035976;
-	Sun,  6 Apr 2025 02:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NmuVZBQe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185DA3BBF2;
+	Sun,  6 Apr 2025 02:35:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350F36FC3;
-	Sun,  6 Apr 2025 02:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED8CF9DA;
+	Sun,  6 Apr 2025 02:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743905426; cv=none; b=atiAeHf1O1/2946SpuZXk4NH1sNLyxrgA9WBC9jOcZzncTSt2K35Rny2NE8IgNm3iOOCS7xEYTuiGCEuapQQBz08Oi4boEAgFL47+AnxTyVopqIm/vAHzEoMNmPFCUWEE7+Q6Jc30trh/fnP/VftSvySYs9ZWS7i8iS+4qmGBqI=
+	t=1743906947; cv=none; b=UHy38/2Ne4icbrS7kLJlvx35bSKg/Zrv62Nfl81wVu+DTS+x8GXmBWzhr9uEif445RpDZf0se3IYNr7KIOzyIrh1VsyMq9048oyFeWGx/BtUZna+FLK7coAC6edpBap9bm3OMbNc5qK9AE8RWejNC6lghIpkY1kq2cGT0zRMmro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743905426; c=relaxed/simple;
-	bh=rq+UJuHUiO3etF702qVSpgpAY5zF9H86GYrlKDApfSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P7NQMd7SUgpzzMZKklOicNmJurHmxbYSNT+adsygF7DBsXjVrPePjv0GSgjWPJ6zCh9fMvDR30YOsQOPhmxUFNU6c6EhljQtFlhfFTTWFmpNsyARh4sJXlgL9q0iUl04hCEZnBEC9PQG7AudmnGSec5vScO8zn/uljkD/GeZ0/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NmuVZBQe; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743905424; x=1775441424;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rq+UJuHUiO3etF702qVSpgpAY5zF9H86GYrlKDApfSc=;
-  b=NmuVZBQe6U7+VIHQGgNkZsC7FgncDZR5oxDBqeOT7G3/pEYuHD+uifH5
-   u6hBgu9d2fxpDsft8Kn4C37xTk3hWcHh406zPkweDuq+fuk7HdnPlqKnO
-   ck/XH67s4zdFz6d0kwZT/ktG25Oz83scavk0g5Z5L9nGndDdyVhPRLawv
-   pmQ1qJCdoV/OXABgsjiAFXyp9Fl+94fSYh0zHG/veO/LCabREDsN4tFUf
-   s+8iLqVOjrnykXLbZxI+srN3RW9sf17i/snwssz3SkTI6uPfowSpKkjjK
-   wm5g1ECqlKJNIsb5/WSdlwss5ddoYZ8++r6ErfiBZnol99+kR1JabK6t8
-   A==;
-X-CSE-ConnectionGUID: PwM/hcYQQRiwPGsZH5hdYw==
-X-CSE-MsgGUID: lA4eZILZTIulZcxi75Q+8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11395"; a="45433990"
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="45433990"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2025 19:10:23 -0700
-X-CSE-ConnectionGUID: X//MYxyTR5SfRgEcP7kAVA==
-X-CSE-MsgGUID: BU1KU/RWShiZAEYwyV93TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="132763052"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Apr 2025 19:10:21 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u1FSk-0002OX-37;
-	Sun, 06 Apr 2025 02:10:18 +0000
-Date: Sun, 6 Apr 2025 10:10:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1743906947; c=relaxed/simple;
+	bh=Mru3MaqtIzGklmw3niFULMv9qxTICrZtXR/bgaM/M9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PDK1c1PlHNMlxAHqQ+sV1qa34ZrGDhz4V5ee8AOzwglYt7uBQ2e1YjCdK785EC+/YFPlJvHfWMGQPfIohDOdh1fSIDVByyYCSLL3IY3Yk8ro2viPE9AZbMOdgRDHpMS0nk4DzXKQS2Uhw3QZe4Mr9SyBmmEIRKv1u4LD90FkQyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [221.222.48.127])
+	by APP-05 (Coremail) with SMTP id zQCowACHvgZz6PFnXc9zBg--.56688S2;
+	Sun, 06 Apr 2025 10:35:36 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: gregkh@linuxfoundation.org,
 	philipp.g.hortmann@gmail.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v4] staging: rtl8723bs: Add error handling for sd_read()
-Message-ID: <202504060905.XvK4ueHM-lkp@intel.com>
-References: <20250405160546.2639-1-vulab@iscas.ac.cn>
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] staging: rtl8723bs: Add error handling for sd_read()
+Date: Sun,  6 Apr 2025 10:35:13 +0800
+Message-ID: <20250406023513.2727-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250405160546.2639-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACHvgZz6PFnXc9zBg--.56688S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CryUuFW8JF1kKw4fuF1fXrb_yoW8GF4fpF
+	4kKa4qyrZ8Gay8u3W2g3s3AasYka4xGFW5WrWjkw4Svrn5ZwsavrWrKa4jqr4UWrnrAw4Y
+	qF1kCw15uw1UCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYEA2fxZK2uOAAAsE
 
-Hi Wentao,
+The sdio_read32() calls sd_read(), but does not handle the error if
+sd_read() fails. This could lead to subsequent operations processing
+invalid data. A proper implementation can be found in sdio_readN().
 
-kernel test robot noticed the following build errors:
+Add error handling for the sd_read() to free tmpbuf and return error
+code if sd_read() fails. This ensure that the memcpy() is only performed
+when the read operation is successful.
 
-[auto build test ERROR on staging/staging-testing]
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org # v4.12+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v5: Fix error code
+v4: Add change log and fix error code
+v3: Add Cc flag
+v2: Change code to initialize val
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/staging-rtl8723bs-Add-error-handling-for-sd_read/20250406-001458
-base:   staging/staging-testing
-patch link:    https://lore.kernel.org/r/20250405160546.2639-1-vulab%40iscas.ac.cn
-patch subject: [PATCH v4] staging: rtl8723bs: Add error handling for sd_read()
-config: arm64-randconfig-001-20250406 (https://download.01.org/0day-ci/archive/20250406/202504060905.XvK4ueHM-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 92c93f5286b9ff33f27ff694d2dc33da1c07afdd)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250406/202504060905.XvK4ueHM-lkp@intel.com/reproduce)
+ drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504060905.XvK4ueHM-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/staging/rtl8723bs/hal/sdio_ops.c:190:17: error: expected ';' after expression
-     190 |                         kfree(tmpbuf)
-         |                                      ^
-         |                                      ;
-   1 error generated.
-
-
-vim +190 drivers/staging/rtl8723bs/hal/sdio_ops.c
-
-   150	
-   151	static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
-   152	{
-   153		struct adapter *adapter;
-   154		u8 mac_pwr_ctrl_on;
-   155		u8 device_id;
-   156		u16 offset;
-   157		u32 ftaddr;
-   158		u8 shift;
-   159		u32 val;
-   160		s32 __maybe_unused err;
-   161		__le32 le_tmp;
-   162	
-   163		adapter = intfhdl->padapter;
-   164		ftaddr = _cvrt2ftaddr(addr, &device_id, &offset);
-   165	
-   166		rtw_hal_get_hwreg(adapter, HW_VAR_APFM_ON_MAC, &mac_pwr_ctrl_on);
-   167		if (
-   168			((device_id == WLAN_IOREG_DEVICE_ID) && (offset < 0x100)) ||
-   169			(!mac_pwr_ctrl_on) ||
-   170			(adapter_to_pwrctl(adapter)->fw_current_in_ps_mode)
-   171		) {
-   172			err = sd_cmd52_read(intfhdl, ftaddr, 4, (u8 *)&le_tmp);
-   173			return le32_to_cpu(le_tmp);
-   174		}
-   175	
-   176		/*  4 bytes alignment */
-   177		shift = ftaddr & 0x3;
-   178		if (shift == 0) {
-   179			val = sd_read32(intfhdl, ftaddr, NULL);
-   180		} else {
-   181			u8 *tmpbuf;
-   182	
-   183			tmpbuf = rtw_malloc(8);
-   184			if (!tmpbuf)
-   185				return SDIO_ERR_VAL32;
-   186	
-   187			ftaddr &= ~(u16)0x3;
-   188			err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
-   189			if (err) {
- > 190				kfree(tmpbuf)
-   191				return SDIO_ERR_VAL32;
-   192			}
-   193	
-   194			memcpy(&le_tmp, tmpbuf + shift, 4);
-   195			val = le32_to_cpu(le_tmp);
-   196	
-   197			kfree(tmpbuf);
-   198		}
-   199		return val;
-   200	}
-   201	
-
+diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+index 21e9f1858745..d79d41727042 100644
+--- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
++++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+@@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
+ 			return SDIO_ERR_VAL32;
+ 
+ 		ftaddr &= ~(u16)0x3;
+-		sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		if (err) {
++			kfree(tmpbuf);
++			return SDIO_ERR_VAL32;
++		}
++
+ 		memcpy(&le_tmp, tmpbuf + shift, 4);
+ 		val = le32_to_cpu(le_tmp);
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.42.0.windows.2
+
 
