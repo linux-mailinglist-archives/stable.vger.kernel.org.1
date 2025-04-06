@@ -1,259 +1,171 @@
-Return-Path: <stable+bounces-128408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E07A7CBD0
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 22:35:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85914A7CC83
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 04:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24FA43B2AD6
-	for <lists+stable@lfdr.de>; Sat,  5 Apr 2025 20:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D961891593
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 02:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B8A1A5B98;
-	Sat,  5 Apr 2025 20:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFE035976;
+	Sun,  6 Apr 2025 02:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/PJo5Bj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NmuVZBQe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB42719CC0E
-	for <stable@vger.kernel.org>; Sat,  5 Apr 2025 20:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350F36FC3;
+	Sun,  6 Apr 2025 02:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743885306; cv=none; b=HcffPACQ75IjiDdysUXM3O0brwxghlBte798dQSgZIZMjjEzDvPyGK3DPhanZ7YGy0bOG3Z7g2RPL+1+1DNpPZCp4EaDbRNsxS3+Eu3ryJZ0mIrwTOIeQiouW4quRi8WLkRxQRAcdPqj/P2XkQGYzWtFOwd73UCNVX9GgUEHNjc=
+	t=1743905426; cv=none; b=atiAeHf1O1/2946SpuZXk4NH1sNLyxrgA9WBC9jOcZzncTSt2K35Rny2NE8IgNm3iOOCS7xEYTuiGCEuapQQBz08Oi4boEAgFL47+AnxTyVopqIm/vAHzEoMNmPFCUWEE7+Q6Jc30trh/fnP/VftSvySYs9ZWS7i8iS+4qmGBqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743885306; c=relaxed/simple;
-	bh=Bht2whr9oldcW8MlRVjgit2iRnAtDlttpCg15khnpkU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bs2WqdIima/rKAcCKlkKE5riNkyLXSI3ozKuP9x6Wa2x9X6HHepK9PVrhy43w3JlNBFpKjTnrLqQgChen/RyqfvMQOzw/BAw2fkw1zfmPPHYku4eOJ/y7fG/4TIWXyRZ2xKnTFl2h8Nv3T8+ucLj732lca9zbjDxD3NuOyQW2mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/PJo5Bj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52AC4CEE4;
-	Sat,  5 Apr 2025 20:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743885306;
-	bh=Bht2whr9oldcW8MlRVjgit2iRnAtDlttpCg15khnpkU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/PJo5BjwDjF7ZFGDVteeBKY3sz8PYgVgk1LM4RDP1QpK4pIGZWaxkVYtT99RdDs9
-	 znhcRUbFpKTMth0N7V5LcsdnL9x0MhF3LyOztx70r1iZA2lqxMLQ6Jepn8DPSYveuJ
-	 XXFlHecNjccd3bNvKOGJ2a9G5Dzpf1G4j/bQNM9VhmiFAZnlcSR1QXVRxnwkis1JT7
-	 nXurX5Ga9u3HEfDwRdKrScQ/YVp0rqNGV1VGlK5JDyW4FD6Knohb2Q4HqJUUfC/i1h
-	 STx7aAEbv2GFhc3tTAEvMlDvJWQ6Kby0Q47qV23+pQ3kgNL6Xkge6c5mEctVSIEQ1Z
-	 4qBwkevtHDcCw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: He Zhe <zhe.he@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] cifs: Fix UAF in cifs_demultiplex_thread()
-Date: Sat,  5 Apr 2025 16:35:00 -0400
-Message-Id: <20250405081033-d477a5f9d93c5288@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250405053611.4039379-1-zhe.he@windriver.com>
-References: 
+	s=arc-20240116; t=1743905426; c=relaxed/simple;
+	bh=rq+UJuHUiO3etF702qVSpgpAY5zF9H86GYrlKDApfSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7NQMd7SUgpzzMZKklOicNmJurHmxbYSNT+adsygF7DBsXjVrPePjv0GSgjWPJ6zCh9fMvDR30YOsQOPhmxUFNU6c6EhljQtFlhfFTTWFmpNsyARh4sJXlgL9q0iUl04hCEZnBEC9PQG7AudmnGSec5vScO8zn/uljkD/GeZ0/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NmuVZBQe; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743905424; x=1775441424;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rq+UJuHUiO3etF702qVSpgpAY5zF9H86GYrlKDApfSc=;
+  b=NmuVZBQe6U7+VIHQGgNkZsC7FgncDZR5oxDBqeOT7G3/pEYuHD+uifH5
+   u6hBgu9d2fxpDsft8Kn4C37xTk3hWcHh406zPkweDuq+fuk7HdnPlqKnO
+   ck/XH67s4zdFz6d0kwZT/ktG25Oz83scavk0g5Z5L9nGndDdyVhPRLawv
+   pmQ1qJCdoV/OXABgsjiAFXyp9Fl+94fSYh0zHG/veO/LCabREDsN4tFUf
+   s+8iLqVOjrnykXLbZxI+srN3RW9sf17i/snwssz3SkTI6uPfowSpKkjjK
+   wm5g1ECqlKJNIsb5/WSdlwss5ddoYZ8++r6ErfiBZnol99+kR1JabK6t8
+   A==;
+X-CSE-ConnectionGUID: PwM/hcYQQRiwPGsZH5hdYw==
+X-CSE-MsgGUID: lA4eZILZTIulZcxi75Q+8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11395"; a="45433990"
+X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
+   d="scan'208";a="45433990"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2025 19:10:23 -0700
+X-CSE-ConnectionGUID: X//MYxyTR5SfRgEcP7kAVA==
+X-CSE-MsgGUID: BU1KU/RWShiZAEYwyV93TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
+   d="scan'208";a="132763052"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 05 Apr 2025 19:10:21 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u1FSk-0002OX-37;
+	Sun, 06 Apr 2025 02:10:18 +0000
+Date: Sun, 6 Apr 2025 10:10:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wentao Liang <vulab@iscas.ac.cn>, gregkh@linuxfoundation.org,
+	philipp.g.hortmann@gmail.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH v4] staging: rtl8723bs: Add error handling for sd_read()
+Message-ID: <202504060905.XvK4ueHM-lkp@intel.com>
+References: <20250405160546.2639-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250405160546.2639-1-vulab@iscas.ac.cn>
 
-[ Sasha's backport helper bot ]
+Hi Wentao,
 
-Hi,
+kernel test robot noticed the following build errors:
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+[auto build test ERROR on staging/staging-testing]
 
-The upstream commit SHA1 provided is correct: d527f51331cace562393a8038d870b3e9916686f
+url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/staging-rtl8723bs-Add-error-handling-for-sd_read/20250406-001458
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20250405160546.2639-1-vulab%40iscas.ac.cn
+patch subject: [PATCH v4] staging: rtl8723bs: Add error handling for sd_read()
+config: arm64-randconfig-001-20250406 (https://download.01.org/0day-ci/archive/20250406/202504060905.XvK4ueHM-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 92c93f5286b9ff33f27ff694d2dc33da1c07afdd)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250406/202504060905.XvK4ueHM-lkp@intel.com/reproduce)
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: He Zhe<zhe.he@windriver.com>
-Commit author: Zhang Xiaoxu<zhangxiaoxu5@huawei.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504060905.XvK4ueHM-lkp@intel.com/
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 908b3b5e97d2)
+All errors (new ones prefixed by >>):
 
-Note: The patch differs from the upstream commit:
----
-1:  d527f51331cac ! 1:  fdd5e68583ce7 cifs: Fix UAF in cifs_demultiplex_thread()
-    @@ Metadata
-      ## Commit message ##
-         cifs: Fix UAF in cifs_demultiplex_thread()
-     
-    +    commit d527f51331cace562393a8038d870b3e9916686f upstream.
-    +
-         There is a UAF when xfstests on cifs:
-     
-           BUG: KASAN: use-after-free in smb2_is_network_name_deleted+0x27/0x160
-    @@ Commit message
-         Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-         Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    [fs/cifs was moved to fs/smb/client since
-    +    38c8a9a52082 ("smb: move client and server files to common directory fs/smb").
-    +    We apply the patch to fs/cifs with some minor context changes.]
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-     
-    - ## fs/smb/client/cifsglob.h ##
-    -@@ fs/smb/client/cifsglob.h: static inline bool is_retryable_error(int error)
-    + ## fs/cifs/cifsglob.h ##
-    +@@ fs/cifs/cifsglob.h: static inline bool is_retryable_error(int error)
-      #define   MID_RETRY_NEEDED      8 /* session closed while this request out */
-      #define   MID_RESPONSE_MALFORMED 0x10
-      #define   MID_SHUTDOWN		 0x20
-    @@ fs/smb/client/cifsglob.h: static inline bool is_retryable_error(int error)
-      /* Flags */
-      #define   MID_WAIT_CANCELLED	 1 /* Cancelled while waiting for response */
-     
-    - ## fs/smb/client/transport.c ##
-    + ## fs/cifs/transport.c ##
-     @@
-      void
-      cifs_wake_up_task(struct mid_q_entry *mid)
-    @@ fs/smb/client/transport.c
-      	wake_up_process(mid->callback_data);
-      }
-      
-    -@@ fs/smb/client/transport.c: static void __release_mid(struct kref *refcount)
-    +@@ fs/cifs/transport.c: static void _cifs_mid_q_entry_release(struct kref *refcount)
-      	struct TCP_Server_Info *server = midEntry->server;
-      
-      	if (midEntry->resp_buf && (midEntry->mid_flags & MID_WAIT_CANCELLED) &&
-    @@ fs/smb/client/transport.c: static void __release_mid(struct kref *refcount)
-      	    server->ops->handle_cancelled_mid)
-      		server->ops->handle_cancelled_mid(midEntry, server);
-      
-    -@@ fs/smb/client/transport.c: wait_for_response(struct TCP_Server_Info *server, struct mid_q_entry *midQ)
-    +@@ fs/cifs/transport.c: wait_for_response(struct TCP_Server_Info *server, struct mid_q_entry *midQ)
-      	int error;
-      
-    - 	error = wait_event_state(server->response_q,
-    --				 midQ->mid_state != MID_REQUEST_SUBMITTED,
-    -+				 midQ->mid_state != MID_REQUEST_SUBMITTED &&
-    -+				 midQ->mid_state != MID_RESPONSE_RECEIVED,
-    - 				 (TASK_KILLABLE|TASK_FREEZABLE_UNSAFE));
-    + 	error = wait_event_freezekillable_unsafe(server->response_q,
-    +-				    midQ->mid_state != MID_REQUEST_SUBMITTED);
-    ++				    midQ->mid_state != MID_REQUEST_SUBMITTED &&
-    ++				    midQ->mid_state != MID_RESPONSE_RECEIVED);
-      	if (error < 0)
-      		return -ERESTARTSYS;
-    -@@ fs/smb/client/transport.c: cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
-      
-    - 	spin_lock(&server->mid_lock);
-    +@@ fs/cifs/transport.c: cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
-    + 
-    + 	spin_lock(&GlobalMid_Lock);
-      	switch (mid->mid_state) {
-     -	case MID_RESPONSE_RECEIVED:
-     +	case MID_RESPONSE_READY:
-    - 		spin_unlock(&server->mid_lock);
-    + 		spin_unlock(&GlobalMid_Lock);
-      		return rc;
-      	case MID_RETRY_NEEDED:
-    -@@ fs/smb/client/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
-    +@@ fs/cifs/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
-      	credits.instance = server->reconnect_instance;
-      
-      	add_credits(server, &credits, mid->optype);
-    @@ fs/smb/client/transport.c: cifs_compound_callback(struct mid_q_entry *mid)
-      }
-      
-      static void
-    -@@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
-    +@@ fs/cifs/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
-      			send_cancel(server, &rqst[i], midQ[i]);
-    - 			spin_lock(&server->mid_lock);
-    + 			spin_lock(&GlobalMid_Lock);
-      			midQ[i]->mid_flags |= MID_WAIT_CANCELLED;
-     -			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED) {
-     +			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED ||
-    @@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cif
-      				midQ[i]->callback = cifs_cancelled_callback;
-      				cancelled_mid[i] = true;
-      				credits[i].value = 0;
-    -@@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
-    +@@ fs/cifs/transport.c: compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
-      		}
-      
-      		if (!midQ[i]->resp_buf ||
-    @@ fs/smb/client/transport.c: compound_send_recv(const unsigned int xid, struct cif
-      			rc = -EIO;
-      			cifs_dbg(FYI, "Bad MID state?\n");
-      			goto out;
-    -@@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
-    +@@ fs/cifs/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
-      	if (rc != 0) {
-      		send_cancel(server, &rqst, midQ);
-    - 		spin_lock(&server->mid_lock);
-    + 		spin_lock(&GlobalMid_Lock);
-     -		if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
-     +		if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
-     +		    midQ->mid_state == MID_RESPONSE_RECEIVED) {
-      			/* no longer considered to be "in-flight" */
-    - 			midQ->callback = release_mid;
-    - 			spin_unlock(&server->mid_lock);
-    -@@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
-    + 			midQ->callback = DeleteMidQEntry;
-    + 			spin_unlock(&GlobalMid_Lock);
-    +@@ fs/cifs/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *ses,
-      	}
-      
-      	if (!midQ->resp_buf || !out_buf ||
-    @@ fs/smb/client/transport.c: SendReceive(const unsigned int xid, struct cifs_ses *
-      		rc = -EIO;
-      		cifs_server_dbg(VFS, "Bad MID state?\n");
-      		goto out;
-    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-      
-      	/* Wait for a reply - allow signals to interrupt. */
-      	rc = wait_event_interruptible(server->response_q,
-    @@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struc
-      		 (server->tcpStatus != CifsNew)));
-      
-      	/* Were we interrupted by a signal ? */
-    - 	spin_lock(&server->srv_lock);
-      	if ((rc == -ERESTARTSYS) &&
-     -		(midQ->mid_state == MID_REQUEST_SUBMITTED) &&
-     +		(midQ->mid_state == MID_REQUEST_SUBMITTED ||
-     +		 midQ->mid_state == MID_RESPONSE_RECEIVED) &&
-      		((server->tcpStatus == CifsGood) ||
-      		 (server->tcpStatus == CifsNew))) {
-    - 		spin_unlock(&server->srv_lock);
-    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-    + 
-    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-      		if (rc) {
-      			send_cancel(server, &rqst, midQ);
-    - 			spin_lock(&server->mid_lock);
-    + 			spin_lock(&GlobalMid_Lock);
-     -			if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
-     +			if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
-     +			    midQ->mid_state == MID_RESPONSE_RECEIVED) {
-      				/* no longer considered to be "in-flight" */
-    - 				midQ->callback = release_mid;
-    - 				spin_unlock(&server->mid_lock);
-    -@@ fs/smb/client/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-    + 				midQ->callback = DeleteMidQEntry;
-    + 				spin_unlock(&GlobalMid_Lock);
-    +@@ fs/cifs/transport.c: SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
-      		return rc;
-      
-      	/* rcvd frame is ok */
----
+>> drivers/staging/rtl8723bs/hal/sdio_ops.c:190:17: error: expected ';' after expression
+     190 |                         kfree(tmpbuf)
+         |                                      ^
+         |                                      ;
+   1 error generated.
 
-Results of testing on various branches:
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+vim +190 drivers/staging/rtl8723bs/hal/sdio_ops.c
+
+   150	
+   151	static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
+   152	{
+   153		struct adapter *adapter;
+   154		u8 mac_pwr_ctrl_on;
+   155		u8 device_id;
+   156		u16 offset;
+   157		u32 ftaddr;
+   158		u8 shift;
+   159		u32 val;
+   160		s32 __maybe_unused err;
+   161		__le32 le_tmp;
+   162	
+   163		adapter = intfhdl->padapter;
+   164		ftaddr = _cvrt2ftaddr(addr, &device_id, &offset);
+   165	
+   166		rtw_hal_get_hwreg(adapter, HW_VAR_APFM_ON_MAC, &mac_pwr_ctrl_on);
+   167		if (
+   168			((device_id == WLAN_IOREG_DEVICE_ID) && (offset < 0x100)) ||
+   169			(!mac_pwr_ctrl_on) ||
+   170			(adapter_to_pwrctl(adapter)->fw_current_in_ps_mode)
+   171		) {
+   172			err = sd_cmd52_read(intfhdl, ftaddr, 4, (u8 *)&le_tmp);
+   173			return le32_to_cpu(le_tmp);
+   174		}
+   175	
+   176		/*  4 bytes alignment */
+   177		shift = ftaddr & 0x3;
+   178		if (shift == 0) {
+   179			val = sd_read32(intfhdl, ftaddr, NULL);
+   180		} else {
+   181			u8 *tmpbuf;
+   182	
+   183			tmpbuf = rtw_malloc(8);
+   184			if (!tmpbuf)
+   185				return SDIO_ERR_VAL32;
+   186	
+   187			ftaddr &= ~(u16)0x3;
+   188			err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
+   189			if (err) {
+ > 190				kfree(tmpbuf)
+   191				return SDIO_ERR_VAL32;
+   192			}
+   193	
+   194			memcpy(&le_tmp, tmpbuf + shift, 4);
+   195			val = le32_to_cpu(le_tmp);
+   196	
+   197			kfree(tmpbuf);
+   198		}
+   199		return val;
+   200	}
+   201	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
