@@ -1,219 +1,259 @@
-Return-Path: <stable+bounces-128425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9141EA7CFC3
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 20:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02DCA7D0EC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 00:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61FD13A26CA
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 18:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C0903A62D6
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 22:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E145119DF9A;
-	Sun,  6 Apr 2025 18:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A2D221717;
+	Sun,  6 Apr 2025 22:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jPbiR3Vz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8CGobum"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0990191461
-	for <stable@vger.kernel.org>; Sun,  6 Apr 2025 18:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9849B2206B5;
+	Sun,  6 Apr 2025 22:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743964974; cv=none; b=Ii0AJfkmMw9eLbpTQzX7FKpw2E9wqnMvia4swkeK6RzWyCEq8qs5zsoqTaC3s1wdC7YN0HbxXRhMUbmjeNBwIaJLLlSVuE6x4GrGRG5WBVC/udSdxjvT+tHvIubaLnGAycCA3CDjBAC5rmtzC33lj5Abmk23eEDriTtr1HFxks8=
+	t=1743977704; cv=none; b=AFd3geGxjwXxHUB0vdpjVGmEsVNDtBepDHJI3JsaIbBWnAcnfuQJANMmpb4CjqIkBDWYP8qtwMzemp4FLVoos7GmlPrJkBR63Wv7VbdwHK68qKJVcjF0pQOXdLXpaAm4i5X1NEeCcrDo+HMBdk1p6dgTTEmwYaMLvpelrFV8LtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743964974; c=relaxed/simple;
-	bh=jkthnwIu4x2ab3rryn7gQmfrXQCW9AmPrBXkvq286QM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fjRz+Q5dc4eQdkBZoDGShNmMMMsV0YNVEs3lNTWGwzBX1yU9129ocxW0waEuIlQFH4kRtQEDAPXgQXZIchXrxnwII8Cz+1RynJ7jpqCA/WN2spImp70f3gvzfcQHFZhwTMZEe+VQoCnkcAOwTWH8JvdKhvAj9HWtUbcSbffewfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jPbiR3Vz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743964971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f4c8B490RwiITrJ+PXzql/YyOvDN55S409ylH6Wlhgw=;
-	b=jPbiR3VzmzK3U5KM0ypg2bdnc/f5urhMk2YtasnzBBMEdXv/tNfx9gUb4veFj3Vezn4exT
-	LYZRyZuoW4vUExMLdn0VIVJcrDPTLb0QWp+0irSM8mfLUDEsSoC/V/1X20fVWs6YlbG2N9
-	VT/9/X1Sc8Im3K3TzqrE3ay6D1v83bM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-sXY85GwoNcqEpkWUK7Yfjg-1; Sun, 06 Apr 2025 14:42:50 -0400
-X-MC-Unique: sXY85GwoNcqEpkWUK7Yfjg-1
-X-Mimecast-MFC-AGG-ID: sXY85GwoNcqEpkWUK7Yfjg_1743964969
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d51bd9b45so25047585e9.1
-        for <Stable@vger.kernel.org>; Sun, 06 Apr 2025 11:42:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743964969; x=1744569769;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1743977704; c=relaxed/simple;
+	bh=N43iJ8uAfLkUfdoT0DoDo+1pyWvAHJsldz/CgAIRBGo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c4IWJL2bOcFIDjkcsFzAZNG3tiJ9fFz859cyd9Igxx2d8sjUKZhQatkitE8tsiZT0BVuCur37ZVy4egKjsNAQXMd3f9mc/URHQLVgBj9sNJu13ML+wVCKFoi4ebpRyrnR2Eji585CCRU0TV1Q9Ms5bVLu0G7PAmvTp6sLHbnh1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8CGobum; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so31146485e9.1;
+        Sun, 06 Apr 2025 15:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743977701; x=1744582501; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f4c8B490RwiITrJ+PXzql/YyOvDN55S409ylH6Wlhgw=;
-        b=pMZFLj0emtjHULNruF6ptGydNBx/w9KwMY4AbjUQAIE1UlrQwvoP+tvdntgbXCjni/
-         XwQbjPdY/aolXmt0+pnO4NZv4sek5j5qLgquIQfIhynFyk3dOOhtSHQelw/d9vPTghwt
-         Axgd6YdWFSe8gJ/zsYMQ74E9JQwBKC1CC1l+lrPUecwxHXZG+ZJIMAA9Aqk42SEj+riJ
-         h6LDstDMzgADt0uA1+H168lajdiFJGPicMrOfL19oJtv1YTBKczzOX15orIYtQuumN3i
-         0zqh6WqzIvnSFK9cPyk3+E9rYNyF6OKy+5+N9v9eclW9qOjvxy+tGCaxYeN6DWodXDci
-         WBng==
-X-Forwarded-Encrypted: i=1; AJvYcCWYRb8sZ32jbOoEsWjjxI1D9QUtGWw7+CENprLIPbhHjXxsd/M8COkbWks/LVIpDzhg4MXFV7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT7mqxCVAd1mE3XMaiEX1p2Ca4fn3PwC0rK1K9Du9V9AczQIlx
-	ZRo6dVxF9otYgB6+qDxSg1OgzWmLqVvuX327TWXpEm+z/HuNcUK2TYyRrteDfuP2KYcl8U9+M7n
-	ikBhQOOg7gq+v+jgYr0AqjK1h5aGO8f+TUFDvYntGjYQdUgvtSeunNg==
-X-Gm-Gg: ASbGnct3NTD8sy3mv029091ps6Ml/Vii912VOLmqanEGPvUW0P13o9bg0v74hmy2s7j
-	snJf5Jwfx9KQnemRcDGhR7H7mPvDL8ZPMbIPGnlYRU6ZOQPThYBU4twqQJaFDUWZKoK3lhHbgCb
-	av5wF4us+PGOxDpXW2GxUhoS+s5iuovIaR4u4SuuARXNDGoQxLJvFWPhpD6CRHCrGd/I1B5Lcmv
-	m32YmTpfNqf18gTqxhmteDXGKSHdNj+kXXvaG50xlNeigGr7d7I0DevPu13WH8JFfJ81D3EZQTQ
-	+iUZt0P/LQ==
-X-Received: by 2002:a05:600c:1c02:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-43ecf9c3318mr77649345e9.26.1743964968807;
-        Sun, 06 Apr 2025 11:42:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJ7Ob0gGk+5s+Q1YLlqY/Rv4sutBh4ToTvYFi5jKg1vPDkOglX+EoRqjaRhaLmLLp6Pxa/Tg==
-X-Received: by 2002:a05:600c:1c02:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-43ecf9c3318mr77649235e9.26.1743964968402;
-        Sun, 06 Apr 2025 11:42:48 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c300968cfsm10197854f8f.16.2025.04.06.11.42.45
+        bh=fbjlynKWg/4l7XREwNXFX/8RA/bU/RRJTqy0Jin3hBE=;
+        b=Z8CGobumrQDIJ42dnVLWMZ5G4qHDhEeK59IlzKRqTmsw68MfJJT8zJ2IbxkWKNio/4
+         gIYk+mPLgJET1KOcXpf35EZDCjA+WX3wBuduxWA9rczrWF5kr9VxoJPQm1orpi61uSjO
+         40a+SNOKO+LjA+ttj4KBOh0fA2ThjFeMCMegGQN5niCye7VV535IX1ImQsAbr1+L3yVl
+         DfD01eoaH3LjIDHz6e4Fg5j8wc+A/mx5ZRsaw/JKPaEhvITeL/UfxxxKrtSDw2i2iu8U
+         GKqnrY35/DM1QxT7li3QLBxpjY2ZW26QKxvCKNh/419UCKfMQWJFYEbSQ77ItFPuOfyZ
+         z2kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743977701; x=1744582501;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fbjlynKWg/4l7XREwNXFX/8RA/bU/RRJTqy0Jin3hBE=;
+        b=TRf7ZS9Gb5LmLoSlOQEapaOPYM62q5kUEwzvSBHKLV+YObwpxYJizUJWI16tMWczWl
+         gS/gVVp2/hpdaYWXVEcT+C2Db080HeI31hig3VRHm2RIv3N6LKf/Mlz2aNyvuXAuZBEo
+         DEhiyQOC9WSQOFWPnRwxtzrdZptv0Bwm/Iy6x6vfXvR/EVyse5/0hWMmUDhWeZtscaYw
+         Z4f8XtHKmvVBleWqUTBPtCvKmXaOYh1pP6enSt9UA2ZpWYpRqRUlrMmaG3zatVe9yhyn
+         4qR2PVGnDdoJXvysIM0IocuolSY6D2SmNVVwnMvuvbf0+LUk8geF4J0YK7Wx/Fe+r/+f
+         WXog==
+X-Forwarded-Encrypted: i=1; AJvYcCUgDzR1UR2ns+w82m/fbkbTEzuQkUttK9mWmM/s5FgwGESWYvY+hn0R/L33EqFYryk42GgEes5O+lj0@vger.kernel.org, AJvYcCW6vYP6Sg8Psgx2FEYWtYPY7MZoduvJGPoK0aEq4LqWTbLCsjAfbX3MnOKJ1UcpP6+2byTQr0fPic4SpRfk@vger.kernel.org, AJvYcCWh2w4L4Y06Vf0xR+MvF4c2gLuGCTrpwaHqnb/Fp+6Wjy9GHI6scJ013fBbAamUxcnCEybC9zR1@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOI0Sqcj4HQ3mo4sXtEhS2yo6k6h/ALvf8i6dB3OG53tmegu8R
+	zjwwcfQQoc7bqvtAMg5buSCiSuxWOgnIC0k4nDgZUec1kRPy1lqD3fAVVg==
+X-Gm-Gg: ASbGncsTM0um2BjiyWPTJxSClvPDQpGNfVf4zdJZ62iWrcKcTLu8oB9xSt3Msu73N0N
+	2irMk0GxJAFALWy6WknRnqv11aG+rwK5nzkjifAzZw4YKkoTPytQPdC51YUjBuHpoA0s1huL43/
+	BgjwCNI4+F9h4Ds7XdsosMl5k7dQigHXOVV6puk25G9ha54r+IOXSbxDKCfqL/38Fvio9f3yrft
+	lTebsF/0IxKlVFRpBjclbUtOm964WdwRCrP1hNyPwEd4ZGosXgm2Cd10JjY3FMCsIZKFlM9HwyQ
+	V5Gg5Hy8S5kxyxyTrWI1F3hp75b9/pFwW0+8DPYFkLS8sqX9JC78MfhwQjOygCXohzgGrlma4xd
+	SVQ2mzZcaPiU0pQ==
+X-Google-Smtp-Source: AGHT+IEdcsmazJ3h4gV5FB1N2QFgWw4lBR8V7yh2Q970uDPmQsNJz+c+C9tAeyVOD9FOQdxcIx726Q==
+X-Received: by 2002:a05:600c:190b:b0:43d:fa5f:7d04 with SMTP id 5b1f17b1804b1-43ebf017220mr153587975e9.16.1743977700662;
+        Sun, 06 Apr 2025 15:15:00 -0700 (PDT)
+Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43ec366aa29sm111517055e9.39.2025.04.06.15.14.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Apr 2025 11:42:47 -0700 (PDT)
-Date: Sun, 6 Apr 2025 14:42:44 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Halil Pasic <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-	Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-	Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-Message-ID: <20250406144025-mutt-send-email-mst@kernel.org>
-References: <20250402203621.940090-1-david@redhat.com>
- <20250403161836.7fe9fea5.pasic@linux.ibm.com>
- <e2936e2f-022c-44ee-bb04-f07045ee2114@redhat.com>
- <20250404063619.0fa60a41.pasic@linux.ibm.com>
- <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
- <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
- <20250404153620.04d2df05.pasic@linux.ibm.com>
- <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+        Sun, 06 Apr 2025 15:15:00 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	"Lei Wei (QUIC)" <quic_leiwei@quicinc.com>
+Cc: stable@vger.kernel.org
+Subject: [RFC PATCH net-next v2 01/11] net: phylink: fix possible circular locking dep with config in-band
+Date: Mon,  7 Apr 2025 00:13:54 +0200
+Message-ID: <20250406221423.9723-2-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250406221423.9723-1-ansuelsmth@gmail.com>
+References: <20250406221423.9723-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 04, 2025 at 03:48:49PM +0200, David Hildenbrand wrote:
-> On 04.04.25 15:36, Halil Pasic wrote:
-> > On Fri, 4 Apr 2025 12:55:09 +0200
-> > David Hildenbrand <david@redhat.com> wrote:
-> > 
-> > > For virito-balloon, we should probably do the following:
-> > > 
-> > >   From 38e340c2bb53c2a7cc7c675f5dfdd44ecf7701d9 Mon Sep 17 00:00:00 2001
-> > > From: David Hildenbrand <david@redhat.com>
-> > > Date: Fri, 4 Apr 2025 12:53:16 +0200
-> > > Subject: [PATCH] virtio-balloon: Fix queue index assignment for
-> > >    non-existing queues
-> > > 
-> > > Signed-off-by: David Hildenbrand <david@redhat.com>
-> > > ---
-> > >    device-types/balloon/description.tex | 22 ++++++++++++++++------
-> > >    1 file changed, 16 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/device-types/balloon/description.tex b/device-types/balloon/description.tex
-> > > index a1d9603..a7396ff 100644
-> > > --- a/device-types/balloon/description.tex
-> > > +++ b/device-types/balloon/description.tex
-> > > @@ -16,6 +16,21 @@ \subsection{Device ID}\label{sec:Device Types / Memory Balloon Device / Device I
-> > >      5
-> > >    \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtqueues}
-> > > +
-> > > +\begin{description}
-> > > +\item[inflateq] Exists unconditionally.
-> > > +\item[deflateq] Exists unconditionally.
-> > > +\item[statsq] Only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
-> > > +\item[free_page_vq] Only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
-> > > +\item[reporting_vq] Only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
-> > 
-> > s/is set/is negotiated/?
-> > 
-> > I think we should stick to "feature is offered" and "feature is
-> > negotiated".
-> > 
-> > > +\end{description}
-> > > +
-> > > +\begin{note}
-> > > +Virtqueue indexes are assigned sequentially for existing queues, starting
-> > > +with index 0; consequently, if a virtqueue does not exist, it does not get
-> > > +an index assigned. Assuming all virtqueues exist for a device, the indexes
-> > > +are:
-> > > +
-> > >    \begin{description}
-> > >    \item[0] inflateq
-> > >    \item[1] deflateq
-> > > @@ -23,12 +38,7 @@ \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtque
-> > >    \item[3] free_page_vq
-> > >    \item[4] reporting_vq
-> > >    \end{description}
-> > > -
-> > > -  statsq only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
-> > > -
-> > > -  free_page_vq only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
-> > > -
-> > > -  reporting_vq only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
-> > > +\end{note}
-> > >    \subsection{Feature bits}\label{sec:Device Types / Memory Balloon Device / Feature bits}
-> > >    \begin{description}
-> > 
-> > Sounds good to me! But I'm still a little confused by the "holes". What
-> > confuses me is that i can think of at least 2 distinct types of "holes":
-> > 1) Holes that can be filled later. The queue conceptually exists, but
-> >     there is no need to back it with any resources for now because it is
-> >     dormant (it can be seen a hole in comparison to queues that need to
-> >    materialize -- vring, notifiers, ...)
-> > 2) Holes that can not be filled without resetting the device: i.e. if
-> >     certain features are not negotiated, then a queue X does not exist,
-> >     but subsequent queues retain their index.
-> 
-> I think it is not about "negotiated", that might be the wrong terminology.
-> 
-> E.g., in QEMU virtio_balloon_device_realize() we define the virtqueues
-> (virtio_add_queue()) if virtio_has_feature(s->host_features).
-> 
-> That is, it's independent of a feature negotiation (IIUC), it's static for
-> the device --  "host_features"
+Debug lock detection revealed a possible circular locking dependency between
+phylink_major_config() and phylink_bringup_phy().
 
+This was introduced by the addition of phy_config_inband(), which acquires
+the phydev lock. This made the locking order in phylink_bringup_phy()
+inconsistent, as it acquires the phydev lock before phylink's state_mutex.
 
-No no that is a bad idea. Breaks forward compatibility.
+A deadlock can occur when phylink_major_config() is called from
+phylink_resolve(), where the state_mutex is taken first and then the phydev
+lock. This is the reverse of the order used in phylink_bringup_phy().
 
-Oh my. I did not realize. It is really broken hopelessly.
+To avoid this circular dependency, change the locking order in
+phylink_bringup_phy() to match the pattern used in phylink_resolve(): take
+state_mutex first, then the phydev lock.
 
-Because, note, the guest looks at the guest features :)
+A sample lockdep warning is included below for reference:
 
+[  147.749178]
+[  147.750682] ======================================================
+[  147.756850] WARNING: possible circular locking dependency detected
+[  147.763019] 6.14.0-next-20250404+ #0 Tainted: G           O
+[  147.769189] ------------------------------------------------------
+[  147.775356] kworker/u16:0/12 is trying to acquire lock:
+[  147.780571] ffffff80ce9bcf08 (&dev->lock#2){+.+.}-{4:4}, at: phy_config_inband+0x44/0x90
+[  147.788672]
+[  147.788672] but task is already holding lock:
+[  147.794492] ffffff80c0dfbda0 (&pl->state_mutex){+.+.}-{4:4}, at: phylink_resolve+0x2c/0x6a8
+[  147.802840]
+[  147.802840] which lock already depends on the new lock.
+[  147.802840]
+[  147.811002]
+[  147.811002] the existing dependency chain (in reverse order) is:
+[  147.818472]
+[  147.818472] -> #1 (&pl->state_mutex){+.+.}-{4:4}:
+[  147.824647]        __mutex_lock+0x90/0x924
+[  147.828738]        mutex_lock_nested+0x20/0x28
+[  147.833173]        phylink_bringup_phy+0x210/0x700
+[  147.837954]        phylink_fwnode_phy_connect+0xe0/0x124
+[  147.843256]        phylink_of_phy_connect+0x18/0x20
+[  147.848124]        dsa_user_create+0x210/0x414
+[  147.852561]        dsa_port_setup+0xd4/0x14c
+[  147.856823]        dsa_register_switch+0xbb0/0xe40
+[  147.861605]        mt7988_probe+0xf8/0x140
+[  147.865694]        platform_probe+0x64/0xbc
+[  147.869869]        really_probe+0xbc/0x388
+[  147.873955]        __driver_probe_device+0x78/0x154
+[  147.878823]        driver_probe_device+0x3c/0xd4
+[  147.883430]        __device_attach_driver+0xb0/0x144
+[  147.888383]        bus_for_each_drv+0x6c/0xb0
+[  147.892732]        __device_attach+0x9c/0x19c
+[  147.897078]        device_initial_probe+0x10/0x18
+[  147.901771]        bus_probe_device+0xa8/0xac
+[  147.906118]        deferred_probe_work_func+0xb8/0x118
+[  147.911245]        process_one_work+0x224/0x610
+[  147.915769]        worker_thread+0x1b8/0x35c
+[  147.920029]        kthread+0x11c/0x1e8
+[  147.923769]        ret_from_fork+0x10/0x20
+[  147.927857]
+[  147.927857] -> #0 (&dev->lock#2){+.+.}-{4:4}:
+[  147.933686]        __lock_acquire+0x12b8/0x1ff0
+[  147.938209]        lock_acquire+0xf4/0x2d8
+[  147.942295]        __mutex_lock+0x90/0x924
+[  147.946383]        mutex_lock_nested+0x20/0x28
+[  147.950817]        phy_config_inband+0x44/0x90
+[  147.955252]        phylink_major_config+0x684/0xa64
+[  147.960120]        phylink_resolve+0x24c/0x6a8
+[  147.964554]        process_one_work+0x224/0x610
+[  147.969075]        worker_thread+0x1b8/0x35c
+[  147.973335]        kthread+0x11c/0x1e8
+[  147.977075]        ret_from_fork+0x10/0x20
+[  147.981162]
+[  147.981162] other info that might help us debug this:
+[  147.981162]
+[  147.989150]  Possible unsafe locking scenario:
+[  147.989150]
+[  147.995056]        CPU0                    CPU1
+[  147.999575]        ----                    ----
+[  148.004094]   lock(&pl->state_mutex);
+[  148.007748]                                lock(&dev->lock#2);
+[  148.013572]                                lock(&pl->state_mutex);
+[  148.019742]   lock(&dev->lock#2);
+[  148.023051]
+[  148.023051]  *** DEADLOCK ***
+[  148.023051]
+[  148.028958] 3 locks held by kworker/u16:0/12:
+[  148.033304]  #0: ffffff80c0011d48 ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_one_work+0x1a8/0x610
+[  148.044082]  #1: ffffffc081ca3dd8 ((work_completion)(&pl->resolve)){+.+.}-{0:0}, at: process_one_work+0x1d0/0x610
+[  148.054338]  #2: ffffff80c0dfbda0 (&pl->state_mutex){+.+.}-{4:4}, at: phylink_resolve+0x2c/0x6a8
+[  148.063119]
+[  148.063119] stack backtrace:
+[  148.067465] CPU: 3 UID: 0 PID: 12 Comm: kworker/u16:0 Tainted: G           O        6.14.0-next-20250404+ #0 NONE
+[  148.067472] Tainted: [O]=OOT_MODULE
+[  148.067474] Hardware name: Bananapi BPI-R4 2.5GE PoE (DT)
+[  148.067476] Workqueue: events_power_efficient phylink_resolve
+[  148.067482] Call trace:
+[  148.067484]  show_stack+0x14/0x1c (C)
+[  148.067492]  dump_stack_lvl+0x84/0xc0
+[  148.067497]  dump_stack+0x14/0x1c
+[  148.067500]  print_circular_bug+0x330/0x43c
+[  148.067505]  check_noncircular+0x124/0x134
+[  148.067508]  __lock_acquire+0x12b8/0x1ff0
+[  148.067512]  lock_acquire+0xf4/0x2d8
+[  148.067516]  __mutex_lock+0x90/0x924
+[  148.067521]  mutex_lock_nested+0x20/0x28
+[  148.067527]  phy_config_inband+0x44/0x90
+[  148.067531]  phylink_major_config+0x684/0xa64
+[  148.067535]  phylink_resolve+0x24c/0x6a8
+[  148.067539]  process_one_work+0x224/0x610
+[  148.067544]  worker_thread+0x1b8/0x35c
+[  148.067548]  kthread+0x11c/0x1e8
+[  148.067552]  ret_from_fork+0x10/0x20
 
-Now I am beginning to think we should leave the spec alone
-and fix the drivers ... Ugh ....
+Cc: stable@vger.kernel.org
+Fixes: 5fd0f1a02e75 ("net: phylink: add negotiation of in-band capabilities")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/phy/phylink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-
-
-> 
-> Is that really "negotiated" or is it "the device offers the feature X" ?
-> 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 69ca765485db..4a1edf19dfad 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2072,8 +2072,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 		     dev_name(&phy->mdio.dev), phy->drv->name, irq_str);
+ 	kfree(irq_str);
+ 
+-	mutex_lock(&phy->lock);
+ 	mutex_lock(&pl->state_mutex);
++	mutex_lock(&phy->lock);
+ 	pl->phydev = phy;
+ 	pl->phy_state.interface = interface;
+ 	pl->phy_state.pause = MLO_PAUSE_NONE;
+@@ -2115,8 +2115,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 		phy_disable_eee(phy);
+ 	}
+ 
+-	mutex_unlock(&pl->state_mutex);
+ 	mutex_unlock(&phy->lock);
++	mutex_unlock(&pl->state_mutex);
+ 
+ 	phylink_dbg(pl,
+ 		    "phy: %s setting supported %*pb advertising %*pb\n",
+-- 
+2.48.1
 
 
