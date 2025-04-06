@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-128422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF6AA7CEF8
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 18:30:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC5DA7CF7D
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 20:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C2D0188E1B3
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 16:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E472616A53D
+	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 18:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7909158545;
-	Sun,  6 Apr 2025 16:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49ECD19CC02;
+	Sun,  6 Apr 2025 18:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7wM+chn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eI4hyVwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C21528373;
-	Sun,  6 Apr 2025 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9A130E58;
+	Sun,  6 Apr 2025 18:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743957026; cv=none; b=T6NXivgwunzs3ioXmYYmXL4PcrCxuKhQmJ6oeeKpv0XFOBLpcOdlJjilFe8DNg1Pe08Tapao7E0AOgxuNUyD4ECgm+N1u3tVH0tHxYiJCHTsvWtlbd37H4YoDiuoGkNh+crfCiVHZYRQOUyG3cDHvFN+PNiB0DJqio2noGx3PSw=
+	t=1743963824; cv=none; b=h8LAyQZRiqLzIEq0dXw8spaFnvv4Lwb3y+Az+GpWcwwP8JcfN7DSZiys38m8wkCVDBifYw9Xidv6kWO3PV2BDlaC1MTlSrmoHdRLiAR8Ci31vJIqwh5QmStHHXs5mPhQKOGdc+rhQ1YvtXl5nnH3LPEeiMfCe1e5WL7SgJrNpZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743957026; c=relaxed/simple;
-	bh=vQCFZWMOiaKoc/kXSUfxLHYKkp0Ruejr/UYS1fzznws=;
+	s=arc-20240116; t=1743963824; c=relaxed/simple;
+	bh=hIwAtHENInLtBpsFxK+X5pk0U9zzW/RsOpqlXmUAH7o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XMTnBqPVzSsJVf5u7XEMxiWMaVae5e16steNRMq47WiMc3MX98VhReIXZ75mhruywh5decm+Pq9PYBklTMoFJqQMU80oG0JsSCTNDvpswBFWgwmWLW5YKBOS1GhQvtAJwDz0ac32wAUqNtzezvEdFxYVlGu3MMg7FWYlRghq5eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7wM+chn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5138EC4CEE3;
-	Sun,  6 Apr 2025 16:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743957025;
-	bh=vQCFZWMOiaKoc/kXSUfxLHYKkp0Ruejr/UYS1fzznws=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=dl5m0zGPODfnYItJKcc0ElFz0P/gdstpwXCb4SYn+C8VbTYMTEhpi/yTjGMU8ppGecY2nVKR81Qt5bjjnfdihoE1q2k8lY8MRi2LJKv4OgGIik4EdJkXZDeZdsJm1Ykj48ThXok0CtDbhnUwWLTk/7vOv/zkPjXJdLSOobpvXKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eI4hyVwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E255CC4CEE3;
+	Sun,  6 Apr 2025 18:23:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743963823;
+	bh=hIwAtHENInLtBpsFxK+X5pk0U9zzW/RsOpqlXmUAH7o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n7wM+chnlFOtX/t1OQDO75B4flyS40wd6qRy682KlnFd7JFEQD0dnfuJwaQOTWrHq
-	 aaha44D8l9ggQFL0Co+UKTNzCegp4K83MLUO7b+taNjBk9viW+Sikl0H4IFh0e2RhF
-	 Wl0zqZNR4dtttfTVmp11XdOylX8y77hNOwetl7Uw=
-Date: Sun, 6 Apr 2025 17:28:57 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Cengiz Can <cengiz.can@canonical.com>, security@ubuntu.com
-Cc: Salvatore Bonaccorso <carnil@debian.org>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lvc-patches@linuxtesting.org,
-	dutyrok@altlinux.org,
-	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
-	stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-Message-ID: <2025040619-enamel-escapable-2bc1@gregkh>
-References: <20241019191303.24048-1-kovalev@altlinux.org>
- <Z9xsx-w4YCBuYjx5@eldamar.lan>
- <d4mpuomgxqi7xppaewlpey6thec7h2fk4sm2iktqsx6bhwu5ph@ctkjksxmkgne>
- <2025032402-jam-immovable-2d57@gregkh>
- <7qi6est65ekz4kjktvmsbmywpo5n2kla2m3whbvq4dsckdcyst@e646jwjazvqh>
- <2025032404-important-average-9346@gregkh>
- <dzmprnddbx2qaukb7ukr5ngdx6ydwxynaq6ctxakem43yrczqb@y7dg7kzxsorc>
+	b=eI4hyVwUy5vQqnn7Bqy41q533twUQFJFiQ1W7WQFq9suTH3neSoLWt5gG/x7LW+MP
+	 dIxF++RBbW7ZM+TMU7nySIiquFGaTBEkgHx4AlHgr5d7q5R5gdGc47BA/uZRRny+JR
+	 +j7iA0iRipiuKUvc/+g9enmxhCPwfII65THxnpVz/ylbLejdltPW8YCXbVpETOnxr+
+	 rK+mvk7fF3VnasaDnQN3UnTz4opl1N2OISc9Oz8KZ5tcQdStGhzi8p1KXo1hX+I74t
+	 Py/izx09XyGVc5jI1Rwt/UjTIxsvVdmu7QHM+a0DMzmItv/jBWRT5pYdZy3JwvARp4
+	 sWVQW57aWdH3g==
+Date: Sun, 6 Apr 2025 20:23:38 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Roberto Ricci <io@r-ricci.it>
+Subject: Re: [PATCH v3] x86/e820: Fix handling of subpage regions when
+ calculating nosave ranges
+Message-ID: <Z_LGqgUhDrTmzj5r@gmail.com>
+References: <20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,24 +61,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dzmprnddbx2qaukb7ukr5ngdx6ydwxynaq6ctxakem43yrczqb@y7dg7kzxsorc>
+In-Reply-To: <20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz>
 
-On Sun, Apr 06, 2025 at 07:07:57PM +0300, Cengiz Can wrote:
-> On 24-03-25 11:53:51, Greg KH wrote:
-> > On Mon, Mar 24, 2025 at 09:43:18PM +0300, Cengiz Can wrote:
-> > > In the meantime, can we get this fix applied?
-> > 
-> > Please work with the filesystem maintainers to do so.
+
+* Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz> wrote:
+
+> The current implementation of e820__register_nosave_regions suffers from
+> multiple serious issues:
+>  - The end of last region is tracked by PFN, causing it to find holes
+>    that aren't there if two consecutive subpage regions are present
+>  - The nosave PFN ranges derived from holes are rounded out (instead of
+>    rounded in) which makes it inconsistent with how explicitly reserved
+>    regions are handled
 > 
-> Hello Christian, hello Alexander
+> Fix this by:
+>  - Treating reserved regions as if they were holes, to ensure consistent
+>    handling (rounding out nosave PFN ranges is more correct as the
+>    kernel does not use partial pages)
+>  - Tracking the end of the last RAM region by address instead of pages
+>    to detect holes more precisely
 > 
-> Can you help us with this?
+> Cc: stable@vger.kernel.org
+> Fixes: e5540f875404 ("x86/boot/e820: Consolidate 'struct e820_entry *entry' local variable names")
 
-What is "this"?  There is no context here at all, you know better!
+So why is this SHA1 indicated as the root cause? AFAICS that commit 
+does nothing but cleanups, so it cannot cause such regressions.
 
-Please submit "this" properly, like you all well know how to do, in
-order to get this resolved as soon as possible as this is considered
-an un-fixed CVE that you all are completely responsible for.
+Thanks,
 
-greg k-h
+	Ingo
 
