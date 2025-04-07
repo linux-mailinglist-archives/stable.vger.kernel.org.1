@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-128700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCF7A7EAF5
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:43:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C200A7EB0D
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B48717D668
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:37:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57ED14224A2
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B09267F65;
-	Mon,  7 Apr 2025 18:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D84F267F7D;
+	Mon,  7 Apr 2025 18:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TeclPCKu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8dwK1lF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2976A267B70;
-	Mon,  7 Apr 2025 18:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74A7267F53;
+	Mon,  7 Apr 2025 18:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049700; cv=none; b=XyRwDrhIDq7LI5v323lrByn7GuaXbzZl7bcmfvt06dcZ5PvilC/FjqT3g/K6bvPRgAPYmzDk4TD+q6cKU5IvrlfDlyLPjHXucyp7+kCqbB1iVrWcA7rTUbkZ/xp/b35nOFMfUpaVzB1VRZniAhOskn02E69XQVoTUwBd7BeI7nc=
+	t=1744049702; cv=none; b=CEsG8pMc4gOsoyWH3q3PmpKFva3rHLid0TXmOFIYlhilNGj7oMF8rVcPkOud8DrfoUPsK9bEEeNXni4lDGqW7oRauYHpj8J1KKz19wVR8jRRRAm+EdiRl8qvCHsVkpL3pkvTOEWjxswNShjYQDhmkIollBaL0yhpMsBvbZPsSUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049700; c=relaxed/simple;
-	bh=9MZmQ3RNAYgi3VfmPE9AOSD+2RKITI9HdG8hqPzZGAc=;
+	s=arc-20240116; t=1744049702; c=relaxed/simple;
+	bh=I7+BtqBSwD/aOxp3UhQs48Eo2OuppKK93/3YUDNmij4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EBe/F9GgXcnFN7edUU1F+jCinumWEg8dEMzoYRIqg3Tlddwg0mf6jjA4EZ7Eb6TyIlNWewWH0Y+TqR3uDIqFs7ZXid4e8Fd69wwjF0kOINmABSw0hwvW1NtvM0Jho+Y8H4xJWq6Px3LE14JdDgjp/5Gq0dGUV524srz/QWv+njA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TeclPCKu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A5DC4CEED;
-	Mon,  7 Apr 2025 18:14:58 +0000 (UTC)
+	 MIME-Version; b=dPT9f392G1ddVCTeAvkVdGRr97kry1fFZUDafZ2jEu2BF8HnVPtxqvlmM2REYlbqaWdYTjvfWLpH/16giNqbKBe9tTJCGqmopBRVIYTF9C/jiDdE039CDbeXU7tdvMTYCHzgUuyuA6IH6u9BqksunoaMW73rMGyvZUj7tPQw2ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8dwK1lF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77348C4CEDD;
+	Mon,  7 Apr 2025 18:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049700;
-	bh=9MZmQ3RNAYgi3VfmPE9AOSD+2RKITI9HdG8hqPzZGAc=;
+	s=k20201202; t=1744049701;
+	bh=I7+BtqBSwD/aOxp3UhQs48Eo2OuppKK93/3YUDNmij4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TeclPCKuEzTx16p/MUZpSi5QkVgPrb/tPw8hcqlT9E9A3Kt6Q9GGL5c577LLgO2I3
-	 yFu2sGvZSRLAz29bDGn8mvh1Ve7PmOsT06zfnVfQt7SCoNzEWBv0LKbGs+DASSmDsQ
-	 xJxG1lKGfGrpOGKJzlQ0sFO757mGXlZ3m0h7XsnHcEPAMyayQzuEu4bBhOPeizYCuD
-	 QVLb9QMRD2R4/e9yK9BgGz8C0r3+zbvEZ4CQLBsrWEeicpwfHR5eQRkZiRHSVcUOsr
-	 jIXTqVlcpV3OpxaeibStjbiBst7myb4pxgTPcHLtXM00ryMN5I4f9hxKXUNtSBIm54
-	 Rt55Ge+7zG2LA==
+	b=g8dwK1lF0iNB/lG2u47e560yglKy+1BVyn2hqmrKhJ4WGEXLUnDb0RFY1ATrq7xeC
+	 810+abg8m9pOFiDgt8+PyFm2YFAt7spUHhOU4B4qDADaTjYR9cJlEdGHdd74spFWNF
+	 lkYvEVdyct9Hl0vzF8BBtpKGcsfYm7QQAdzPmoZTg0t2PUgvE8/DfaxTndC+ur4G2z
+	 fXrtykBzFOtRKJWCx7y78xSP9FAiMUE+mmDEFD1Fdw/YeJe5S3hnsAI2aRu0JRRl5i
+	 qXwJtFp7APQm/WIJRlB+FRm4XoiYpm+eRkMyaEyd9KdGhjMyV6hCbNAXQ/f3PspjkK
+	 +Mfx6KVQIcWSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: John Stultz <jstultz@google.com>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	virtualization@lists.linux.dev,
-	linux-sound@vger.kernel.org,
-	kernel-team@android.com,
-	Betty Zhou <bettyzhou@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 05/13] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
-Date: Mon,  7 Apr 2025 14:14:39 -0400
-Message-Id: <20250407181449.3183687-5-sashal@kernel.org>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dmaengine@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/13] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+Date: Mon,  7 Apr 2025 14:14:40 -0400
+Message-Id: <20250407181449.3183687-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181449.3183687-1-sashal@kernel.org>
 References: <20250407181449.3183687-1-sashal@kernel.org>
@@ -72,106 +67,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.133
 Content-Transfer-Encoding: 8bit
 
-From: John Stultz <jstultz@google.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
+[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
 
-Betty reported hitting the following warning:
+Change the "wait for operation finish" logic to take interrupts into
+account.
 
-[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
-...
-[    8.713282][  T221] Call trace:
-[    8.713365][  T221]  __flush_work+0x8d0/0x914
-[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
-[    8.713570][  T221]  cancel_work_sync+0x24/0x34
-[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
-[    8.714139][  T221]  really_probe+0x1bc/0x4c8
-...
+When using dmatest with idxd DMA engine, it's possible that during
+longer tests, the interrupt notifying the finish of an operation
+happens during wait_event_freezable_timeout(), which causes dmatest to
+cleanup all the resources, some of which might still be in use.
 
-It seems we're hitting the error path in virtsnd_probe(), which
-triggers a virtsnd_remove() which iterates over the substreams
-calling cancel_work_sync() on the elapsed_period work_struct.
+This fix ensures that the wait logic correctly handles interrupts,
+preventing premature cleanup of resources.
 
-Looking at the code, from earlier in:
-virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
-
-We set snd->nsubstreams, allocate the snd->substreams, and if
-we then hit an error on the info allocation or something in
-virtsnd_ctl_query_info() fails, we will exit without having
-initialized the elapsed_period work_struct.
-
-When that error path unwinds we then call virtsnd_remove()
-which as long as the substreams array is allocated, will iterate
-through calling cancel_work_sync() on the uninitialized work
-struct hitting this warning.
-
-Takashi Iwai suggested this fix, which initializes the substreams
-structure right after allocation, so that if we hit the error
-paths we avoid trying to cleanup uninitialized data.
-
-Note: I have not yet managed to reproduce the issue myself, so
-this patch has had limited testing.
-
-Feedback or thoughts would be appreciated!
-
-Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: virtualization@lists.linux.dev
-Cc: linux-sound@vger.kernel.org
-Cc: kernel-team@android.com
-Reported-by: Betty Zhou <bettyzhou@google.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: John Stultz <jstultz@google.com>
-Message-Id: <20250116194114.3375616-1-jstultz@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/dma/dmatest.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
-index c10d91fff2fb0..1ddec1f4f05d5 100644
---- a/sound/virtio/virtio_pcm.c
-+++ b/sound/virtio/virtio_pcm.c
-@@ -337,6 +337,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 	if (!snd->substreams)
- 		return -ENOMEM;
+diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+index ffe621695e472..78b8a97b23637 100644
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -827,9 +827,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
-+	/*
-+	 * Initialize critical substream fields early in case we hit an
-+	 * error path and end up trying to clean up uninitialized structures
-+	 * elsewhere.
-+	 */
-+	for (i = 0; i < snd->nsubstreams; ++i) {
-+		struct virtio_pcm_substream *vss = &snd->substreams[i];
-+
-+		vss->snd = snd;
-+		vss->sid = i;
-+		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
-+		init_waitqueue_head(&vss->msg_empty);
-+		spin_lock_init(&vss->lock);
-+	}
-+
- 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return -ENOMEM;
-@@ -350,12 +365,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 		struct virtio_pcm_substream *vss = &snd->substreams[i];
- 		struct virtio_pcm *vpcm;
+-			wait_event_freezable_timeout(thread->done_wait,
+-					done->done,
+-					msecs_to_jiffies(params->timeout));
++			wait_event_timeout(thread->done_wait,
++					   done->done,
++					   msecs_to_jiffies(params->timeout));
  
--		vss->snd = snd;
--		vss->sid = i;
--		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
--		init_waitqueue_head(&vss->msg_empty);
--		spin_lock_init(&vss->lock);
--
- 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
- 		if (rc)
- 			goto on_exit;
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 -- 
 2.39.5
 
