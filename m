@@ -1,74 +1,48 @@
-Return-Path: <stable+bounces-128587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7E4A7E6ED
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:41:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA81CA7E7AE
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 19:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5143172494
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD17F3A874E
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652C620ADEF;
-	Mon,  7 Apr 2025 16:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NZMwloBV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911B5213E92;
+	Mon,  7 Apr 2025 16:57:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14145209F58;
-	Mon,  7 Apr 2025 16:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2154879B;
+	Mon,  7 Apr 2025 16:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744043615; cv=none; b=TKQ2qcosCcL/W4xON9hSCPgDeQvEtm8CVZsEmwjaqIbfzIosIVE2vBZQk27sE8kOxpGkQL5++CnRwzFMTodWNRIVJ7OJqpAymDHifhbUi9ubFSEhhdyp+hhV/rhj1sLVhKDsLcya0mrM7tZxtF5d+jEYgOVJ/xSAu0gSkX2wK88=
+	t=1744045037; cv=none; b=OSC0o6d0SYxNvDjuOI16uMmnqCt68KLakz+KwJHglUxqQqsD4oI3wodyJivtemWq/hMDtA/ITHjCp5gFl002zoGvXn5lQXITFydEF4axCCF7Bhj4G/Yl3zWBXwAyFhSLk+mrJAIds8pyVm2QOQ7iuGhx4xUxzqxpz/vYdVIdbI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744043615; c=relaxed/simple;
-	bh=oQ7eoiuM5px6vH+h8O4afdhoa/UwSO4MyLa4DCTEcmY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kZMUBvBEUh6uJPxV4QK4MnaNcO968qod6v+IplGAKNstQd188CKvOFb228QGd4WhTVutfePCX+2BXJEc9w/+ZdA+kEq/ozaTmORfq3HBcr0fyWqUbGnCgQqOwIeubOqOU5DX++W0DRxKHckwo/Na5W1bI06PWogqV4forCeBvHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NZMwloBV; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1744043614; x=1775579614;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HdaYzAQ6HTws9yOHwnViNaP4oKaeGL50/MaDUdNGU0c=;
-  b=NZMwloBVqBdvHjP2kFm60IY7/6HbkTyzPTd7GY+fygkm47VoUTnVaG5M
-   aUDRkT6f4aLk691N3TPR9jP5wAghPO62508QHkm/13gHrZiLiyhsnsXr5
-   +L3cchC6Q+2HyNJZnibUKCZ1Pit3ACbt7Bq26UOKRfPlf/XVbvrG+BvU2
-   M=;
-X-IronPort-AV: E=Sophos;i="6.15,194,1739836800"; 
-   d="scan'208";a="286343607"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 16:33:29 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:43942]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.147:2525] with esmtp (Farcaster)
- id 694dc543-fbed-4de5-b828-96d82a446545; Mon, 7 Apr 2025 16:33:27 +0000 (UTC)
-X-Farcaster-Flow-ID: 694dc543-fbed-4de5-b828-96d82a446545
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 16:33:26 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 7 Apr 2025 16:33:23 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
-CC: Simon Horman <horms@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-	Steve French <sfrench@samba.org>, Enzo Matsumiya <ematsumiya@suse.de>, "Wang
- Zhaolong" <wangzhaolong1@huawei.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v3 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-Date: Mon, 7 Apr 2025 09:33:11 -0700
-Message-ID: <20250407163313.22682-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1744045037; c=relaxed/simple;
+	bh=fVOlvEKHAoex+96mqsldAlAhMfNcp5FCshpoMDp/TAI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hSKbJSL7hVkz1e9oSrM3kNA7scXNVozRMatGxc76u7rFL6O1nhUxJfHi239Bjgjru/J9ofzXpHc99qz9rv8SUq4XLBoPVljLvtV7gInweG7ygIzefoLeMjLiY/WOYbk0h4SnXI4aVuCUDc0TJ/ige4G0ccGCXWK6iPiVnFPpr0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from localhost.localdomain (178.207.21.175) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 7 Apr
+ 2025 19:41:53 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Roman Smirnov <r.smirnov@omp.ru>, Steve French <sfrench@samba.org>,
+	Shirish Pargaonkar <shirishpargaonkar@gmail.com>, Sachin Prabhu
+	<sprabhu@redhat.com>, <linux-cifs@vger.kernel.org>,
+	<samba-technical@lists.samba.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15] cifs: fix integer overflow in match_server()
+Date: Mon, 7 Apr 2025 19:41:37 +0300
+Message-ID: <20250407164138.644037-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,283 +51,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA003.ant.amazon.com (10.13.139.18) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 04/07/2025 16:28:07
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 192443 [Apr 07 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 54 0.3.54
+ 464169e973265e881193cca5ab7aa5055e5b7016
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info:
+	omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;178.207.21.175:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.207.21.175
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/07/2025 16:31:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 4/7/2025 3:07:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-When I ran the repro [0] and waited a few seconds, I observed two
-LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-Reproduction Steps:
+[ Upstream commit 2510859475d7f46ed7940db0853f3342bf1b65ee ]
 
-  1) Mount CIFS
-  2) Add an iptables rule to drop incoming FIN packets for CIFS
-  3) Unmount CIFS
-  4) Unload the CIFS module
-  5) Remove the iptables rule
+The echo_interval is not limited in any way during mounting,
+which makes it possible to write a large number to it. This can
+cause an overflow when multiplying ctx->echo_interval by HZ in
+match_server().
 
-At step 3), the CIFS module calls sock_release() for the underlying
-TCP socket, and it returns quickly.  However, the socket remains in
-FIN_WAIT_1 because incoming FIN packets are dropped.
+Add constraints for echo_interval to smb3_fs_context_parse_param().
 
-At this point, the module's refcnt is 0 while the socket is still
-alive, so the following rmmod command succeeds.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-  # ss -tan
-  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
-  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
-
-  # lsmod | grep cifs
-  cifs                 1159168  0
-
-This highlights a discrepancy between the lifetime of the CIFS module
-and the underlying TCP socket.  Even after CIFS calls sock_release()
-and it returns, the TCP socket does not die immediately in order to
-close the connection gracefully.
-
-While this is generally fine, it causes an issue with LOCKDEP because
-CIFS assigns a different lock class to the TCP socket's sk->sk_lock
-using sock_lock_init_class_and_name().
-
-Once an incoming packet is processed for the socket or a timer fires,
-sk->sk_lock is acquired.
-
-Then, LOCKDEP checks the lock context in check_wait_context(), where
-hlock_class() is called to retrieve the lock class.  However, since
-the module has already been unloaded, hlock_class() logs a warning
-and returns NULL, triggering the null-ptr-deref.
-
-If LOCKDEP is enabled, we must ensure that a module calling
-sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
-while such a socket is still alive to prevent this issue.
-
-Let's hold the module reference in sock_lock_init_class_and_name()
-and release it when the socket is freed in sk_prot_free().
-
-Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
-that calls sock_lock_init_class_and_name() for a listening socket,
-which clones a socket by sk_clone_lock() without GFP_ZERO.
-
-[0]:
-CIFS_SERVER="10.0.0.137"
-CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
-DEV="enp0s3"
-CRED="/root/WindowsCredential.txt"
-
-MNT=$(mktemp -d /tmp/XXXXXX)
-mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
-
-iptables -A INPUT -s ${CIFS_SERVER} -j DROP
-
-for i in $(seq 10);
-do
-    umount ${MNT}
-    rmmod cifs
-    sleep 1
-done
-
-rm -r ${MNT}
-
-iptables -D INPUT -s ${CIFS_SERVER} -j DROP
-
-[1]:
-DEBUG_LOCKS_WARN_ON(1)
-WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
-Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
-CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
-...
-Call Trace:
- <IRQ>
- __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
- lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
- _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
- tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
-...
-
-BUG: kernel NULL pointer dereference, address: 00000000000000c4
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 0
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
-Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
-RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
-RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
-RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
-R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
-R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
-FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <IRQ>
- lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
- _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
- tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
- ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
- ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
- ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
- ip_list_rcv_finish (net/ipv4/ip_input.c:628)
- ip_list_rcv (net/ipv4/ip_input.c:670)
- __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
- netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
- napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
- e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
- __napi_poll.constprop.0 (net/core/dev.c:7191)
- net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
- handle_softirqs (kernel/softirq.c:561)
- __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
- irq_exit_rcu (kernel/softirq.c:680)
- common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
-  </IRQ>
- <TASK>
- asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
-Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
-RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
-RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
-RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
- default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
- do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
- cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
- start_secondary (arch/x86/kernel/smpboot.c:315)
- common_startup_64 (arch/x86/kernel/head_64.S:421)
- </TASK>
-Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
-CR2: 00000000000000c4
-
-Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Fixes: adfeb3e00e8e1 ("cifs: Make echo interval tunable")
 Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
 ---
-v3:
-  * Add kdoc for sk_owner
-  * Move sk_owner_put() to sk_prot_free()
+ fs/cifs/fs_context.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-v2: https://lore.kernel.org/netdev/20250403203619.36648-1-kuniyu@amazon.com/
-  * Clear sk_owner in sock_lock_init()
-  * Define helper under the same #if guard
-  * Remove redundant null check before module_put()
-
-v1: https://lore.kernel.org/netdev/20250403020837.51664-1-kuniyu@amazon.com/
----
- include/net/sock.h | 40 ++++++++++++++++++++++++++++++++++++++--
- net/core/sock.c    |  5 +++++
- 2 files changed, 43 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 8daf1b3b12c6..694f954258d4 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -339,6 +339,8 @@ struct sk_filter;
-   *	@sk_txtime_unused: unused txtime flags
-   *	@ns_tracker: tracker for netns reference
-   *	@sk_user_frags: xarray of pages the user is holding a reference on.
-+  *	@sk_owner: reference to the real owner of the socket that calls
-+  *		   sock_lock_init_class_and_name().
-   */
- struct sock {
- 	/*
-@@ -547,6 +549,10 @@ struct sock {
- 	struct rcu_head		sk_rcu;
- 	netns_tracker		ns_tracker;
- 	struct xarray		sk_user_frags;
-+
-+#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
-+	struct module		*sk_owner;
-+#endif
- };
- 
- struct sock_bh_locked {
-@@ -1583,6 +1589,35 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
- 	sk_mem_reclaim(sk);
- }
- 
-+#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
-+static inline void sk_owner_set(struct sock *sk, struct module *owner)
-+{
-+	__module_get(owner);
-+	sk->sk_owner = owner;
-+}
-+
-+static inline void sk_owner_clear(struct sock *sk)
-+{
-+	sk->sk_owner = NULL;
-+}
-+
-+static inline void sk_owner_put(struct sock *sk)
-+{
-+	module_put(sk->sk_owner);
-+}
-+#else
-+static inline void sk_owner_set(struct sock *sk, struct module *owner)
-+{
-+}
-+
-+static inline void sk_owner_clear(struct sock *sk)
-+{
-+}
-+
-+static inline void sk_owner_put(struct sock *sk)
-+{
-+}
-+#endif
- /*
-  * Macro so as to not evaluate some arguments when
-  * lockdep is not enabled.
-@@ -1592,13 +1627,14 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
-  */
- #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
- do {									\
-+	sk_owner_set(sk, THIS_MODULE);					\
- 	sk->sk_lock.owned = 0;						\
- 	init_waitqueue_head(&sk->sk_lock.wq);				\
- 	spin_lock_init(&(sk)->sk_lock.slock);				\
- 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
--			sizeof((sk)->sk_lock));				\
-+				   sizeof((sk)->sk_lock));		\
- 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
--				(skey), (sname));				\
-+				   (skey), (sname));			\
- 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
- } while (0)
- 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 323892066def..739a79859828 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2130,6 +2130,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
-  */
- static inline void sock_lock_init(struct sock *sk)
- {
-+	sk_owner_clear(sk);
-+
- 	if (sk->sk_kern_sock)
- 		sock_lock_init_class_and_name(
- 			sk,
-@@ -2226,6 +2228,9 @@ static void sk_prot_free(struct proto *prot, struct sock *sk)
- 	cgroup_sk_free(&sk->sk_cgrp_data);
- 	mem_cgroup_sk_free(sk);
- 	security_sk_free(sk);
-+
-+	sk_owner_put(sk);
-+
- 	if (slab != NULL)
- 		kmem_cache_free(slab, sk);
- 	else
+diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
+index fb3651513f83..3479f0072cf6 100644
+--- a/fs/cifs/fs_context.c
++++ b/fs/cifs/fs_context.c
+@@ -1088,6 +1088,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		}
+ 		break;
+ 	case Opt_echo_interval:
++		if (result.uint_32 < SMB_ECHO_INTERVAL_MIN ||
++		    result.uint_32 > SMB_ECHO_INTERVAL_MAX) {
++			cifs_errorf(fc, "echo interval is out of bounds\n");
++			goto cifs_parse_mount_err;
++		}
+ 		ctx->echo_interval = result.uint_32;
+ 		break;
+ 	case Opt_snapshot:
 -- 
-2.48.1
+2.43.0
 
 
