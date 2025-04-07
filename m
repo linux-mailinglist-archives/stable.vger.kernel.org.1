@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-128748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA45FA7EB4B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:50:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D187A7EB9E
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DBC189A676
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:49:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9457216CBCC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1CA278148;
-	Mon,  7 Apr 2025 18:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDB5278162;
+	Mon,  7 Apr 2025 18:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJEBpoT+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/zZNWjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4A527701E;
-	Mon,  7 Apr 2025 18:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D422571D8;
+	Mon,  7 Apr 2025 18:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049854; cv=none; b=NaxvkATXHBkOFgFANucTEQ5y24kRHkif0N8CQAbcR62qTxhTS6O5ncgZgj3dn7qM9RDytnH/DesVC6wbVZtHKCmZG0Nl0Q84wNOh8EijFBHyvThwY0IgcmoHi0pNQMwYE1lEW0T0OslsAAhobwxLvELy4wH8PpfxmzWqivrHeU8=
+	t=1744049860; cv=none; b=NK/yFK9P8K+I67TsKcMs+J7h5cfJ2gQJEiS9F7huAeeO5PLufYdGcjppDwRp5u3BgGvNN4Fnx7J5NUEjnKyxDbxclXjhPOgL2R33WaRHu3/wl5E6Lee/mi3HpALvUg5w3NK2E2/LTiG0lDYZ2RTY53CbaXJMbQF7eHYLyl3TqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049854; c=relaxed/simple;
-	bh=5evpH7KrkcUE9zXoSBjBvxbB9cUmImDEXNehQE3J3k8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QAxBKVjVyrC2NuIEWwqOh92opbOb+tnKrBNDpskyDWCxgRQ/BWhyd7ZSEFY6j4gQDjBOQlr7UVJ4a0NXe5UT13tbOMgeAM8HNMStQCfyBlYSn5ct1oW5nsAb2DEt+uaFeiMCX5zLiBhhNEjQvHEIri8V5AapNHUMFhpXH30Bv54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJEBpoT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EE8C4CEDD;
-	Mon,  7 Apr 2025 18:17:33 +0000 (UTC)
+	s=arc-20240116; t=1744049860; c=relaxed/simple;
+	bh=6gX4D+T6syUKIVlFxx20e215ZYktOO/C4FV6e//+H4s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mIqm/Q2CGkfrecF9GvUK2aegB5/7ro8BcUkGDSn7T63OK/UBLaWKE2xERlLe+z84Ob25b/h79gSnJ4RxWBKStfdH6TPWwiiQcp7liaoPxTE2kAvJPAnJt9J2oEwCnWwYyT6TNN2S1Zuxi6yBAFPQlUtKReDafb0X5nyvamwZf5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/zZNWjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DA5C4CEE9;
+	Mon,  7 Apr 2025 18:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049854;
-	bh=5evpH7KrkcUE9zXoSBjBvxbB9cUmImDEXNehQE3J3k8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJEBpoT+lyE17UgFJW2QWm77+DiirZmMAO38PSPiGNQ5aRoAv9w8zErjByaeonUun
-	 YO1gyCcLlFrWKHpe+3n88oxyjCcEcc4Bq/dQRO5i8g7E+01gy71FEFfiyAP4w5TdJy
-	 MSfUK6GUxzoKgwJP8ArNWrbTFTJMQ13RwhzewuXpQKWXsjhWW4JualRWAfWbiasTSY
-	 qKvmR5RbO6s5hiCnWqDsUUIHqzYv6Aa+IiMHFZehZE5t4oMvs1le1gEhIAq2T4g2MR
-	 10ZX8sKlKChFLAFJdo4q1HOM/o3hLaRixLIFeXMnCVjF7M90cdDVRV2wUZWDIp4kc6
-	 wiOUx18KpMeOw==
+	s=k20201202; t=1744049859;
+	bh=6gX4D+T6syUKIVlFxx20e215ZYktOO/C4FV6e//+H4s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u/zZNWjnCPFIgB0VWMXNKGVrlUqxUbsWPhtyWuZWOnfa81CPNP3FQzcFyB3KFZMQV
+	 /czkTNRQTtvgFcEGVGluoKfsi5zmPtn39QMODLtHP55lSHmYo8bV/WintfFTGYJL0S
+	 kAI1Rv9B7/8rKWpB4fwpe5LXCEx50LbczIr8aJXoPZl1zbrRi3WsFjck3C9exW3KrX
+	 Dei7lBG/j5PwB/wPA4Drkrivq17C8shOIogwtRan9pMlT9L71WyGcVK358GF3uLlgP
+	 ZQoV2237K7x53wHW/uxSo76GwOefTUfOjfT8W0AKh9mNWUofu9pibAR65BTCeZ6zM4
+	 G5HKiY705X5SQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pavel Begunkov <asml.silence@gmail.com>,
-	syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 7/7] io_uring: always do atomic put from iowq
-Date: Mon,  7 Apr 2025 14:17:18 -0400
-Message-Id: <20250407181718.3184348-7-sashal@kernel.org>
+	dennis.dalessandro@cornelisnetworks.com,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 1/6] qibfs: fix _another_ leak
+Date: Mon,  7 Apr 2025 14:17:29 -0400
+Message-Id: <20250407181734.3184450-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181718.3184348-1-sashal@kernel.org>
-References: <20250407181718.3184348-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,68 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.22
+X-stable-base: Linux 6.6.86
 Content-Transfer-Encoding: 8bit
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 390513642ee6763c7ada07f0a1470474986e6c1c ]
+[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
 
-io_uring always switches requests to atomic refcounting for iowq
-execution before there is any parallilism by setting REQ_F_REFCOUNT,
-and the flag is not cleared until the request completes. That should be
-fine as long as the compiler doesn't make up a non existing value for
-the flags, however KCSAN still complains when the request owner changes
-oter flag bits:
+failure to allocate inode => leaked dentry...
 
-BUG: KCSAN: data-race in io_req_task_cancel / io_wq_free_work
-...
-read to 0xffff888117207448 of 8 bytes by task 3871 on cpu 0:
- req_ref_put_and_test io_uring/refs.h:22 [inline]
+this one had been there since the initial merge; to be fair,
+if we are that far OOM, the odds of failing at that particular
+allocation are low...
 
-Skip REQ_F_REFCOUNT checks for iowq, we know it's set.
-
-Reported-by: syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/d880bc27fb8c3209b54641be4ff6ac02b0e5789a.1743679736.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 +-
- io_uring/refs.h     | 7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index cf28d29fffbf0..20b6a9ec9da70 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1777,7 +1777,7 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
- 	struct io_kiocb *req = container_of(work, struct io_kiocb, work);
- 	struct io_kiocb *nxt = NULL;
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index 11155e0fb8395..35d777976c295 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -55,6 +55,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
+ 	struct inode *inode = new_inode(dir->i_sb);
  
--	if (req_ref_put_and_test(req)) {
-+	if (req_ref_put_and_test_atomic(req)) {
- 		if (req->flags & IO_REQ_LINK_FLAGS)
- 			nxt = io_req_find_next(req);
- 		io_free_req(req);
-diff --git a/io_uring/refs.h b/io_uring/refs.h
-index 63982ead9f7da..0d928d87c4ed1 100644
---- a/io_uring/refs.h
-+++ b/io_uring/refs.h
-@@ -17,6 +17,13 @@ static inline bool req_ref_inc_not_zero(struct io_kiocb *req)
- 	return atomic_inc_not_zero(&req->refs);
- }
- 
-+static inline bool req_ref_put_and_test_atomic(struct io_kiocb *req)
-+{
-+	WARN_ON_ONCE(!(data_race(req->flags) & REQ_F_REFCOUNT));
-+	WARN_ON_ONCE(req_ref_zero_or_close_to_overflow(req));
-+	return atomic_dec_and_test(&req->refs);
-+}
-+
- static inline bool req_ref_put_and_test(struct io_kiocb *req)
- {
- 	if (likely(!(req->flags & REQ_F_REFCOUNT)))
+ 	if (!inode) {
++		dput(dentry);
+ 		error = -EPERM;
+ 		goto bail;
+ 	}
 -- 
 2.39.5
 
