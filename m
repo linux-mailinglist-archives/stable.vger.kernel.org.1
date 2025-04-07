@@ -1,145 +1,152 @@
-Return-Path: <stable+bounces-128573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5578A7E3E8
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:20:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0D6A7E3EC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B785E3BE12B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:07:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85BC216F265
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61FF1FCF54;
-	Mon,  7 Apr 2025 15:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93311FCFF8;
+	Mon,  7 Apr 2025 15:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIbal7lj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXdQ+RsL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8471FC7CA;
-	Mon,  7 Apr 2025 15:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91901FC7D1;
+	Mon,  7 Apr 2025 15:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744038336; cv=none; b=WAuellUqHiwkN0oGX8zHz+0MmhXmcPlJ908b6Svbwf0KGhJlwxqxdNCjbkRfwu9yuvYi4iohD1SRhIPcQwsJzNpWYAgZHjT+RcPaLUcPsydJe1sn1mDldwDRQO0MZwTBSKmNFW6gr06lf0OYEzt/oHuU7IdWAyWwCOte40YyWf4=
+	t=1744038680; cv=none; b=Xhk5W3LNY3FT5V/Y71kOVrzJ9kgbmQXRLsuIj5AlL8aQKGAWuRpN2JBaa6y/VB1t1zJg0aliUKa8XH5eVsGtL7ztrObDe0mUMMaK5hHBXiGvN4EUaePVjMTnxzmPrg4v3Tvt6wf83/JGyf1WBp2ioBMYNrdlHcOlOS+lg74u7fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744038336; c=relaxed/simple;
-	bh=l5rMPyLON8NGIZfdFdeRiGexk44gSXDJlocK3eGFhGQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KzMPqPpGM1T0bTQZMnk/kxrSiMC6SYR4g3x2H6fnxSvawGRRGcii3YuL8VMmwtBM35geSuU0czUa9/lkj8oiBx4sAXP7Lm8MGE8MYBKLcqTYMwMwgIy1AfJLt/CeCFBP1kHTtviMS8nKUb8Wi2KAd3U5SXw2pY5L8YuXcjD6iCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIbal7lj; arc=none smtp.client-ip=209.85.166.44
+	s=arc-20240116; t=1744038680; c=relaxed/simple;
+	bh=atOz65VaErisH3J5XXHhaVi19GkeVMbRupRNj5Z1mmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hXJk96z3LCfwHL/xgS0ZWthg41xPqOXHiCMZTX9UU/8Y9pFIlstzO0x08PIkFIa0/rEp1sYKZStWsF7A4scZklw6UshW5k/bdQ1PcHZgWq4m2PjnR6FLhH96iF0oFyH+Q9Kax6qTcw+bLZalVkSFxaQzkXvj7K2GuT+7gtAlV0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXdQ+RsL; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-85b3f92c8dfso143532139f.2;
-        Mon, 07 Apr 2025 08:05:34 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ac28e66c0e1so703330866b.0;
+        Mon, 07 Apr 2025 08:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744038333; x=1744643133; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l5rMPyLON8NGIZfdFdeRiGexk44gSXDJlocK3eGFhGQ=;
-        b=FIbal7ljCBPTYFq5ev9zJRzyC0NrfLn2sDFrrdM1WHnuLcRAHRoAY+ze8VKNo5c5gU
-         uMs1VkOPgodUymSJTd0aiU9DpRTmgpUuaGEK+w13aSr8kBfXBYyyWAEfbkX0U3TdIafN
-         lDoMXrLWc94LcpxUlXFcHq5zVVb4ROb/wubBWqX5JR6ewyn7spMpfWanrYol50YJE4Hc
-         gpO5RyRjtcqmBs6OHExyfi8maqaU6gC+/p7WchIJN8XsdcsMpqkv1SY57hxP6J0x2D+d
-         2zuCZYSBku5lCAWl3d37bb4ttOKCFdpplmPUIxC5uZTnTGJNkh80Xf3BuzHtvlE3Xumx
-         xKgw==
+        d=gmail.com; s=20230601; t=1744038676; x=1744643476; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BPKVLxrmgP1kLAt/KTla7WBRyna1u1Y2t95TcZMV9/s=;
+        b=PXdQ+RsL42KeoiCwM7WLfhOz4UiXNswhWV0hSuC1dqQSNsmxf6XCOnxflRMxDHy+Mu
+         8J40YY2ocOMrJ28O8GyA4fzfgW69nUnBd+ktU8m7h7zqpvlwQ30g6XgHcAhcn+G0DhW4
+         d54gEdh6AHamSnN/VwAdPK6FYAzScgSnuIJc2OQMWfNStqM1BtT5tXo4qxKNlh2KdWu7
+         Uwj7dd8PgA1pcPnUJITX/t/KnRmAou0iLm1ns66BWbCa202pUz8FUelpPLfi4/CGe3Yk
+         LBLYJJJLyKcN+aWTKC/IbLcNutufN5OydMQiG509SgQQDk5xSgWVxRVeXrXOrWt4NNqL
+         sBcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744038333; x=1744643133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l5rMPyLON8NGIZfdFdeRiGexk44gSXDJlocK3eGFhGQ=;
-        b=X0SpHpVIVEasfeCN6XpCr0xIMYxnwh21/IdyEvUPqw9cajxxVvZgsCuN8+qpPI6W3k
-         vd4n42OhTqzxeStxBzYMqsQDhnufWCTA2mkpG6INomQlWXwr06+klMgelII+i0BdjM4M
-         tA4iKO25XEi8ZgbgqNbWwa2cVOmrr7vu8l9o8PkWiwq1DwlvJVJBGBzflNhRJRZSzd0P
-         1svHUlf3yKr4DmQbKKnUJH492Dey9DX+YHKExyw1iSGa9JNo+IBPEq6zPPEXGGic/RQU
-         D92NsotIypqgQ1zgwSegnZzNyTGyuxhWLPhaOobgGquVRyB2IA81CYHPjnTTCu2/VhL1
-         aQuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgpong9wWPZpCmlxxPbLcPTjWaJa4N/hHLN6z2VH3Se4UFHgya2aBW5OmvUaB0WadlHlFN7+gGjWUooBw=@vger.kernel.org, AJvYcCXJ2z6Sx8sq6uMvbvmZjHy56OmB/qiTvjjSuHe4CGxrOTptPqk3guzA4QZPbqrRrkE+MFpo7jvB@vger.kernel.org, AJvYcCXWc5jAwt8oGbP4HNon58Ko+CV1Qj8mVp9ZzzmkcDgsjpBJ+S8vaj6G0PiK362WIwC8ZjDILN76lRPNeg==@vger.kernel.org, AJvYcCXzrqqe7ErqxKHN2SgOKaouBsUfibQ0xJr11nWiryOdi0GBW7jrlasP3J32iJ6mXtmCeIB72jS4@vger.kernel.org
-X-Gm-Message-State: AOJu0YygR2ma4lKIlsf5hM8r4/2A65vds3pM5241o0vV4dS3yvUfHJG7
-	mYx+Ep5nsjF55Dn1Smmqii8Msiw5dPOVkxAYQjQYd3o6/m4VZ2ISakmSx3OVNRL6teUgHNNFkes
-	14v+SnbAbfuYDpoZeTviEpMoPrOrdw/Oq
-X-Gm-Gg: ASbGncuZ29TMALdk0bScXfjmkC9ApKZN63g1XYrcPPafPDSsVCjJxmobNhLpfAFWEDb
-	2ne4iRbTWTGETTY0oTxF435c8s8PovrCS/pPJuXdVpJqCqH0u9xEMwGam+9Vjmec4VM+hY4QBrv
-	8RTkkXTKOmzMP3XZDuxMZ/ajbOKU5Ey/vXQf1AZfch4sarERwC4SGBs0Ikog==
-X-Google-Smtp-Source: AGHT+IF3I+vQSDuOBedXmdX/T50kiR5ajQm6UKhYNro+XWoy1mIZlzvfqcQuvZhjlXI0EfM2Fa1hvWdDfuhH2H7lIso=
-X-Received: by 2002:a05:6e02:260c:b0:3d3:f520:b7e0 with SMTP id
- e9e14a558f8ab-3d6e5307926mr121653945ab.6.1744038333557; Mon, 07 Apr 2025
- 08:05:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744038676; x=1744643476;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BPKVLxrmgP1kLAt/KTla7WBRyna1u1Y2t95TcZMV9/s=;
+        b=hfLqxELm4AkKbwKfYDX1BvkO8MpobQKqQx6chILkPGMmNaMml3Nw2A2w5PXyWfZVFV
+         8M/9phKRl6JIULJco9seB+4TfayC8VJS6zGvA3O/rqfWqlixgUA8Hd6qqOc7P7nFKVOT
+         UHPL5LrIAvkMenZrj7sWfzs/uUI7fnlaLTUNx43kPX6FT6cgV4jBUIoE6AcsHwqBmbAH
+         YsL892QApM1178rZPNGLbHiBmK6IhQlB5fFp7QlNEmluYgyUCbCwQ49re3yYhIKh4VZO
+         BoYm3Rnw0bbFYb/QqwsVeP8HxCPlemguTubUcvLSXsnwGscBRZukFjIZMud7EkwC/0Wn
+         pGCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZtBDefWP+CT3+nHuZc3/gsKjcyHaTB27RroOenZNVKHROznmeV0sRsgjn1a7tVhU8AwJsB+0HbSbz@vger.kernel.org, AJvYcCWFMfxtEXIhOvzNNL2HcwDVz3RDS/CSM7cKHystuGmr2brKVwbVVxHsOz5N6LpnATv9IqzJssKp@vger.kernel.org, AJvYcCXJqTvhS4iN1SlmaE6t1mVCj9TfDJ1O7duy9+ITB0A3F7wjih6rcZ9Vvy7V2+xVognCygGwXk2VCL+Ez6e1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYcN74DSqTT3izAHRgmpfyi+C17Cx2N1hGV2vT1IZFcSKpBRK7
+	a3fHjwvXSmwnYcL0Yxvffav5neRqz97r698idAxMe2VfP97RkySN
+X-Gm-Gg: ASbGncvk22PFrX8VET0p4c1cQZhuij+Sct5Gm0ivthzry6yj3cY9cJYOaOS+NybQHwj
+	Wjd4ya7Gda0960h3GQ48YNAmmPSKPTPHIek+/uaQzRnhmVFcc7G+T+anQf0yq1XIJNSD2xtutTD
+	mlHQyD3bcu6ERM9HtSMRSwUdRoNbuJUOX8W9cmYI10FQUDrKL1VHiDNzVu7uygaD1GMfI3dm0z1
+	hcI0LVn+knbHCKHVweOLaDJ8dJ4dQ1l+OiY1AbhpZwCSLdlzyWmHQes0seeIzo4kNdXbRaRQr0t
+	X9wYeCUDHjPqE+xgprqYyZiRUC9Yd1/JlMpMRoBQ8dUDO0A++v0dBz8w4u6sVTCxaMsmX0ZDLiu
+	twKcdc0rHYuemDPN9/fULjQ==
+X-Google-Smtp-Source: AGHT+IET4HXyrwU13Xc3O+Aq3s6wZlJ6wf/2HEKDuJEKTqVCzohJNdvokOuZ1PSon3sqjKjmWvIx+g==
+X-Received: by 2002:a17:906:e208:b0:ac7:ee99:2eb2 with SMTP id a640c23a62f3a-ac7ee993526mr709458866b.16.1744038675760;
+        Mon, 07 Apr 2025 08:11:15 -0700 (PDT)
+Received: from ?IPV6:2001:b07:aac:705d:5ff7:9a9f:a241:b899? ([2001:b07:aac:705d:5ff7:9a9f:a241:b899])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c013f660sm749255966b.89.2025.04.07.08.11.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Apr 2025 08:11:15 -0700 (PDT)
+Message-ID: <02cab60d-9748-4227-a4aa-33373ea0be38@gmail.com>
+Date: Mon, 7 Apr 2025 17:11:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com>
-In-Reply-To: <20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 7 Apr 2025 11:05:22 -0400
-X-Gm-Features: ATxdqUG_xJ3EtXrPnSfaJh2qYk9eV3oKprtjQm0b6WggPpNLQViQklfMXyzONwQ
-Message-ID: <CADvbK_fRgqPTJGK7w_ujuiSVqwt_XPUaisd2Qp_t--yf6NuS8A@mail.gmail.com>
-Subject: Re: [PATCH] sctp: detect and prevent references to a freed transport
- in sendmsg
-To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, revest@google.com, kernel-dev@igalia.com, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] gpio: pca953x: fix IRQ storm on system wake up
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ stable@vger.kernel.org, Francesco Dolcini <francesco.dolcini@toradex.com>
+References: <20250326173838.4617-1-francesco@dolcini.it>
+ <174368202234.27533.1000100252310062471.b4-ty@linaro.org>
+ <Z-6TGnGUEd4JkANQ@black.fi.intel.com>
+ <CAMRc=Me15MyNJiU9E-E2R9yHZ4XaS=zAuETvzKFh8=K0B4rKPw@mail.gmail.com>
+Content-Language: en-US
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+In-Reply-To: <CAMRc=Me15MyNJiU9E-E2R9yHZ4XaS=zAuETvzKFh8=K0B4rKPw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 4, 2025 at 10:54=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@i=
-galia.com> wrote:
->
-> sctp_sendmsg() re-uses associations and transports when possible by
-> doing a lookup based on the socket endpoint and the message destination
-> address, and then sctp_sendmsg_to_asoc() sets the selected transport in
-> all the message chunks to be sent.
->
-> There's a possible race condition if another thread triggers the removal
-> of that selected transport, for instance, by explicitly unbinding an
-> address with setsockopt(SCTP_SOCKOPT_BINDX_REM), after the chunks have
-> been set up and before the message is sent. This can happen if the send
-> buffer is full, during the period when the sender thread temporarily
-> releases the socket lock in sctp_wait_for_sndbuf().
->
-> This causes the access to the transport data in
-> sctp_outq_select_transport(), when the association outqueue is flushed,
-> to result in a use-after-free read.
->
-> This change avoids this scenario by having sctp_transport_free() signal
-> the freeing of the transport, tagging it as "dead". In order to do this,
-> the patch restores the "dead" bit in struct sctp_transport, which was
-> removed in
-> commit 47faa1e4c50e ("sctp: remove the dead field of sctp_transport").
->
-> Then, in the scenario where the sender thread has released the socket
-> lock in sctp_wait_for_sndbuf(), the bit is checked again after
-> re-acquiring the socket lock to detect the deletion. This is done while
-> holding a reference to the transport to prevent it from being freed in
-> the process.
->
-> If the transport was deleted while the socket lock was relinquished,
-> sctp_sendmsg_to_asoc() will return -EAGAIN to let userspace retry the
-> send.
->
-> The bug was found by a private syzbot instance (see the error report [1]
-> and the C reproducer that triggers it [2]).
->
-> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-=
-after-free_Read_in_sctp_outq_select_transport.txt [1]
-> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-=
-after-free_Read_in_sctp_outq_select_transport__repro.c [2]
-> Cc: stable@vger.kernel.org
-> Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list ch=
-unks in sctp_assoc_rm_peer")
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Signed-off-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
+On 03/04/2025 15:56, Bartosz Golaszewski wrote:
+> On Thu, Apr 3, 2025 at 3:54 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+>>
+>> +Cc: Geert
+>>
+>> On Thu, Apr 03, 2025 at 02:07:05PM +0200, Bartosz Golaszewski wrote:
+>>> On Wed, 26 Mar 2025 18:38:38 +0100, Francesco Dolcini wrote:
+>>
+>>>> If an input changes state during wake-up and is used as an interrupt
+>>>> source, the IRQ handler reads the volatile input register to clear the
+>>>> interrupt mask and deassert the IRQ line. However, the IRQ handler is
+>>>> triggered before access to the register is granted, causing the read
+>>>> operation to fail.
+>>>>
+>>>> As a result, the IRQ handler enters a loop, repeatedly printing the
+>>>> "failed reading register" message, until `pca953x_resume` is eventually
+>>>> called, which restores the driver context and enables access to
+>>>> registers.
+>>
+>> [...]
+>>
+>>> Applied, thanks!
+>>
+>> Won't this regress as it happens the last time [1]?
+>>
+>> [1]: https://lore.kernel.org/linux-gpio/CAMuHMdVnKX23yi7ir1LVxfXAMeeWMFzM+cdgSSTNjpn1OnC2xw@mail.gmail.com/
+>>
+> 
+> Ah, good catch. I'm wondering what the right fix here is but don't
+> really have any ideas at the moment. Any hints are appreciated.
+> 
+> For now, I'm dropping it.
+> 
+> Bart
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+I’ve found another possible solution: disable the PCA953x IRQ in
+pca953x_suspend() and re-enable it in pca953x_resume().
+This would prevent the ISR from being triggered while the regmap is in
+cache-only mode.
+The wake-up capability is preserved, since an IRQ can still wake the system
+even when disabled with disable_irq(), as long as it has wake enabled.
 
-Thanks
+This should avoid introducing regressions and still handle Geert’s use case
+properly.
+
+Andy, Bart, Geert - what do you think?
 
