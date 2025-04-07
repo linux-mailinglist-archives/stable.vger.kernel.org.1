@@ -1,142 +1,126 @@
-Return-Path: <stable+bounces-128559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948DFA7E0EC
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:20:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E989A7E168
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 852041752F0
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:16:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AB4F171B7A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878EB1D5ADB;
-	Mon,  7 Apr 2025 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD041CCEF0;
+	Mon,  7 Apr 2025 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="xr+G2O+1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ViwXnfdg"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-zteg10011401.me.com (pv50p00im-zteg10011401.me.com [17.58.6.41])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6115B1D4356
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E0F86355
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744035330; cv=none; b=rVIry8Lps+vI6weBA1zWufeY0FT+8Y6X6PDfj5p+8P6SsZvNi6j527o5hu+IaxqyXlP59RU265Y5ZJQ/fXVWV5si3N3k+YsYYH4PX92vOIJMkRyKECB8VnyEkSWqAwj/4TatsKxYxBcK1+BON5uvK8/tLp8BIibAAn62/enInII=
+	t=1744035576; cv=none; b=W4FSVIGb61LdZWPnQu3ddlYrcTmrWDRIaStoWR1nZeG7vBjBwpHy4pUGHb6v+4B2z5g2TC+vjWtS1FWbi5w/jGELG7GiGuL1uu7lZK9sVT57Y5xEE3uvygyB9WIyjbAKdTqNj89Rij/8TMDoFvvE8CYoPUrUAyn8TU0+sV1KRPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744035330; c=relaxed/simple;
-	bh=k/NhqmXqMjAs3F5HQX7dTOQOiXyVG5PqWH6nYgei5uk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PiTaisft4giaYrfuuo5LeIgEuWe79+OHnVF2gbagYkFV9EYLiiNz/8kU+WAehBbhCZky0mcChiTNb1qYqJ13VZvpPr8B31QvjzjZQSl8QtyG5cBRmiJzmNY8Fmr3DKW2ABjaGkI8ET2RfGwsPFnUGndyRF+wNiAncfIpGEPI21Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=xr+G2O+1; arc=none smtp.client-ip=17.58.6.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=7T26VJuyJwbsZaiErydUQg8Z7WGtRiOyU46qoCQwJq0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme;
-	b=xr+G2O+1OkvFDakPR8RugdYj0JoTfu3Q4LA9OcPtv8bX2/sti1M3/hvRS5ptBh5sK
-	 5BTSDXx0JLKu1pEnVLv0VbhnXT8dCsl/qvnh6PdfbptrixH7PoH+seHgLFFGhqSf9+
-	 7r49DjiNoqIy1RymUfcRKBv5xjCOU8HBRb6CttQycbr5/wKq3SsF07HcakFbbe6sUc
-	 FgvYvHzgGgjjtTvf8/24vV3U70M9RrDGaybbNWHng/WRgZl6z9gFz3JAB3UHOtuuR6
-	 b21UvmJVIaMZjlIJEHQ3GiXge73LMzYWXNiwyyB3Gc9BuYv/JWGFQY40GQDHFp8GSa
-	 M78//f6w9sCQA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011401.me.com (Postfix) with ESMTPSA id A125534BAA93;
-	Mon,  7 Apr 2025 14:15:23 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 07 Apr 2025 22:14:57 +0800
-Subject: [PATCH 2/2] PCI: of: Fix OF device node refcount leakages in
- of_pci_prop_intr_map()
+	s=arc-20240116; t=1744035576; c=relaxed/simple;
+	bh=+aLeG1QeHrKOcd8T6h1ZSIIRcGBHS90+cU4u5XEoCKQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qOHvG9+qeuMJ3rA7I0xhRxJZUq887BPsZKziknyHpEB7+gCTwT3CUM+010XC8k5ZtiPa8eLNC4ljCXyMabagixz2kW/EguuF/vAhG5URGSYifWVgSDYrBXh6F3c3IaFz9FZDEbLEf2MemDXtpn/H5CljVGr1/ohlQgPKPxphup4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ViwXnfdg; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744035574; x=1775571574;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+aLeG1QeHrKOcd8T6h1ZSIIRcGBHS90+cU4u5XEoCKQ=;
+  b=ViwXnfdgsZBZvVE95VAFJamennHfqOuc9GpBeP/J7R556HOjYakS393K
+   bo0mJHD0EcawyM2itfeBN5tG9gzRWEWAqZbYkzz22nZrH3vVwk7t115kX
+   EMsGzTRG7Sc1dKYMEdU7gndSrZGWVDmXdLQvMkxv59Zs6aO8CPyvy0/Ui
+   r7/c4LbkcWlFww8rH83+CnzULJf25twQNuVrjVrwcGr1uaozpg9tl+Aj6
+   lKSZD5WJJQavL/wcDpueUf2jhAOrI7JHPp3+8GANOy1JE3jMHy+MopFwm
+   h0Gs1HQWSuPinthxib4KjQeUm4J3QsCLvmdATVafEqTviLsP2n4EEiU8e
+   w==;
+X-CSE-ConnectionGUID: HWELZ5csReuypg6cjTi/ag==
+X-CSE-MsgGUID: mY3PLpfORR6HUM4MS0XnHA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45516550"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="45516550"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 07:19:34 -0700
+X-CSE-ConnectionGUID: K+NOaD77R2uSAXHASXkLnA==
+X-CSE-MsgGUID: y9f+4U2xTLeGdnOeW2JFeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="128302341"
+Received: from oandoniu-mobl3.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.196])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 07:19:32 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/xe/dma_buf: stop relying on placement in unmap
+Date: Mon,  7 Apr 2025 15:18:24 +0100
+Message-ID: <20250407141823.44504-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250407-fix_of_pci-v1-2-a14d981fd148@quicinc.com>
-References: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
-In-Reply-To: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>, 
- Lizhi Hou <lizhi.hou@amd.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: scVNjPYyeNyxt7kvVJyThEgLIdHRpPJp
-X-Proofpoint-ORIG-GUID: scVNjPYyeNyxt7kvVJyThEgLIdHRpPJp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_04,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0
- mlxlogscore=853 clxscore=1015 bulkscore=0 adultscore=0 phishscore=0
- spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2504070100
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+The is_vram() is checking the current placement, however if we consider
+exported VRAM with dynamic dma-buf, it looks possible for the xe driver
+to async evict the memory, notifying the importer, however importer does
+not have to call unmap_attachment() immediately, but rather just as
+"soon as possible", like when the dma-resv idles. Following from this we
+would then pipeline the move, attaching the fence to the manager, and
+then update the current placement. But when the unmap_attachment() runs
+at some later point we might see that is_vram() is now false, and take
+the complete wrong path when dma-unmapping the sg, leading to
+explosions.
 
-Successful of_irq_parse_raw() invocation will increase refcount
-of OF device node @out_irq[].np, but of_pci_prop_intr_map() does
-not decrease the refcount before return, so cause @out_irq[].np
-refcount leakages.
+To fix this check if the sgl was mapping a struct page.
 
-Fix by putting @out_irq[].np refcount before return.
+v2:
+  - The attachment can be mapped multiple times it seems, so we can't
+    really rely on encoding something in the attachment->priv. Instead
+    see if the page_link has an encoded struct page. For vram we expect
+    this to be NULL.
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Cc: Rob Herring (Arm) <robh@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
 ---
- drivers/pci/of_property.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/xe/xe_dma_buf.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index 506fcd5071139e0c11130f4c36f5082ed9789efb..4250a78fafbec4c29af124d7ba5ece7b0b785fb3 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -258,12 +258,16 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 	 * Parsing interrupt failed for all pins. In this case, it does not
- 	 * need to generate interrupt-map property.
- 	 */
--	if (!map_sz)
--		return 0;
-+	if (!map_sz) {
-+		ret = 0;
-+		goto out_put_nodes;
-+	}
- 
- 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
--	if (!int_map)
--		return -ENOMEM;
-+	if (!int_map) {
-+		ret = -ENOMEM;
-+		goto out_put_nodes;
-+	}
- 	mapp = int_map;
- 
- 	list_for_each_entry(child, &pdev->subordinate->devices, bus_list) {
-@@ -305,14 +309,12 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 	ret = of_changeset_add_prop_u32_array(ocs, np, "interrupt-map-mask",
- 					      int_map_mask,
- 					      ARRAY_SIZE(int_map_mask));
--	if (ret)
--		goto failed;
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index f67803e15a0e..f7a20264ea33 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_buf_attachment *attach,
+ 			     struct sg_table *sgt,
+ 			     enum dma_data_direction dir)
+ {
+-	struct dma_buf *dma_buf = attach->dmabuf;
+-	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
 -
--	kfree(int_map);
--	return 0;
- 
- failed:
- 	kfree(int_map);
-+out_put_nodes:
-+	for (i = 0; i < OF_PCI_MAX_INT_PIN; i++)
-+		of_node_put(out_irq[i].np);
- 	return ret;
- }
- 
-
+-	if (!xe_bo_is_vram(bo)) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 -- 
-2.34.1
+2.49.0
 
 
