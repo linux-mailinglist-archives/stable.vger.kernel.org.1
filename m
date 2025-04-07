@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-128461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805E5A7D65C
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:43:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E41A7D674
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115DF188902F
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:38:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CEA1884C1B
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269A022759B;
-	Mon,  7 Apr 2025 07:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A451221F35;
+	Mon,  7 Apr 2025 07:41:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BBB22578A;
-	Mon,  7 Apr 2025 07:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533619ABC6;
+	Mon,  7 Apr 2025 07:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744011479; cv=none; b=h+xDmdAcf9Y6kK0lxp8yy9ikSTShJn91eSQj7z6rklapNBlMPw/e1hXw7if81Dn7qh/ZVNzQAbBY0lyYnOcT6uhrBkt6NSUl3y52H6ne1ndLW2UFMyRSkGLq6Qy59jqaL6N0vGlDkK+bg/kxaav/5JhLB2WFb7yAoNbg16FiHY0=
+	t=1744011716; cv=none; b=UU1TJTONlqUaKzWPXwzTCoL/C54rLKusgaupxbj3ocvqvWoNF1fvQ27scUHvBfkpVCx6FtznkN61GNWpLE9uup+DH/04NWhjPpI3XHRwk5gYsgVsFTDnDWi1wD3JvrbwbGUXtS5x8mP5tIMBw9P599mC8qwYpiCQaJYsC9uO19I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744011479; c=relaxed/simple;
-	bh=p8L/crSaIvP89HYdkhQRcIOEzvOeFkDY8nSCAWshkQ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GGGqa+YloFcjQjoxJQBW6F9JL2lBizRUbzFEJ5Ebb/RECPPx0535JdfHJxuJHZnT4QrWk3mY9LBCEhQM3wSbWFU79w7qTgg/iY3QScY2+mKptzw0+ULklLFU3ah8nunxSrysnyqrfqjnGKL/9dePX7kb4bJVkxUOlE1PxPJtfm8=
+	s=arc-20240116; t=1744011716; c=relaxed/simple;
+	bh=4sYWNtAc4YF7YZg03HO0SzkfYuVw4goAQfDHPc5y0l0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DOwcIweB6EAtzAoOH1rBiN8x48R90fZFQ+K6FpX8Ij2GtTqTGDfTL+HjWjstOArsguINCo4eZ0Zb0vbwye5I/v2Kjmf3tp42Rw5xzfEH7yDd+RIZ0AilgSCHgoQAf24IRdon+gwdqWr3v2BY1YQvWU8tZGQXAcZFcbRn/EZ9kIw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA34j61gPNnaYzVBg--.32337S2;
-	Mon, 07 Apr 2025 15:37:34 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowABnCzixgfNnEbXVBg--.3292S2;
+	Mon, 07 Apr 2025 15:41:40 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: eajames@linux.ibm.com,
-	ninad@linux.ibm.com,
-	joel@jms.id.au,
-	jk@ozlabs.org
-Cc: linux-fsi@lists.ozlabs.org,
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	make24@iscas.ac.cn,
+	sam@ravnborg.org,
+	dawei.li@shingroup.cn
+Cc: sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	akpm@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] fsi/core: fix error handling in fsi_slave_init()
-Date: Mon,  7 Apr 2025 15:37:24 +0800
-Message-Id: <20250407073724.2578717-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] sparc: fix error handling in scan_one_device()
+Date: Mon,  7 Apr 2025 15:41:27 +0800
+Message-Id: <20250407074127.2581452-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -51,30 +52,29 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA34j61gPNnaYzVBg--.32337S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw4rWw17XFW8GFyDJrb_yoW8Wr4kpa
-	1DGa4FyryUGr1kKrsrZas7Zr98CrWIy34furWrGwn2krZxJ34Yyryjg340ya48JFWkGF48
-	X3srXrykWF1kXF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbsYFJUUUUU==
+X-CM-TRANSID:rQCowABnCzixgfNnEbXVBg--.3292S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8WF43GFg_yoWktwbEga
+	12v34UWr1fAwsagw43Ar4a9r1xtrnFyFWrK34Iyr1kJayrXrZrWrs5Gw4vvr9rWa17Cr1D
+	Za4qqrsFkr1SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
+	evJa73UjIFyTuYvjfUF0eHDUUUU
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Once cdev_device_add() failed, we should use put_device() to decrement
-reference count for cleanup. Or it could cause memory leak. Although
-operations in err_free_ida are similar to the operations in callback
-function fsi_slave_release(), put_device() is a correct handling
-operation as comments require when cdev_device_add() fails.
+Once of_device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+So fix this by calling put_device(), then the name can be freed in
+kobject_cleanup().
 
 As comment of device_add() says, 'if device_add() succeeds, you should
 call device_del() when you want to get rid of it. If device_add() has
@@ -83,35 +83,25 @@ not succeeded, use only put_device() to drop the reference count'.
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 371975b0b075 ("fsi/core: Fix error paths on CFAM init")
+Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/fsi/fsi-core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/sparc/kernel/of_device_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index 50e8736039fe..c494fc0bd747 100644
---- a/drivers/fsi/fsi-core.c
-+++ b/drivers/fsi/fsi-core.c
-@@ -1084,7 +1084,8 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
- 	rc = cdev_device_add(&slave->cdev, &slave->dev);
- 	if (rc) {
- 		dev_err(&slave->dev, "Error %d creating slave device\n", rc);
--		goto err_free_ida;
-+		put_device(&slave->dev);
-+		return rc;
+diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
+index f98c2901f335..4272746d7166 100644
+--- a/arch/sparc/kernel/of_device_64.c
++++ b/arch/sparc/kernel/of_device_64.c
+@@ -677,7 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+ 
+ 	if (of_device_register(op)) {
+ 		printk("%pOF: Could not register of device.\n", dp);
+-		kfree(op);
++		put_device(&op->dev);
+ 		op = NULL;
  	}
  
- 	/* Now that we have the cdev registered with the core, any fatal
-@@ -1110,8 +1111,6 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
- 
- 	return 0;
- 
--err_free_ida:
--	fsi_free_minor(slave->dev.devt);
- err_free:
- 	of_node_put(slave->dev.of_node);
- 	kfree(slave);
 -- 
 2.25.1
 
