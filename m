@@ -1,155 +1,104 @@
-Return-Path: <stable+bounces-128579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D44A7E51F
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:48:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D43A7E51A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:46:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7FCD1885B89
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:41:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83AF57A352C
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E5320127C;
-	Mon,  7 Apr 2025 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B74E2045B2;
+	Mon,  7 Apr 2025 15:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LAdjKIvb"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="S800ReA+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFAB200BA9;
-	Mon,  7 Apr 2025 15:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D9A2040B7;
+	Mon,  7 Apr 2025 15:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744040453; cv=none; b=keLyWKf8XJMNLigOPqm/SVC6smErikj9X9nUaxpjo+U1PHIW1Oq6UTfKxhwmBpsiCTPygSzdOQC+l5FR8HcG+VuieDAWHPIpz5ysag+TvQTqZDBViOerza1nsRZGJuD6Ge9v9Z5IaKmW9tRBGOOCHPfArso9AP+bDc0WFws0aL8=
+	t=1744040799; cv=none; b=sT2T6fZU91Y3xTCeNOlOMtz04TS51sQNwjfvwHnrFdzqrGncV2d7YNLHSqcjrhXdanZ0hF14Rp/+Pdvm7W9zXPOuiYVKVrGEw4YxZkEwvDEi40C3Xh9idc0xpXa6fNDyXtWCp8vldduW2rTkLqkaoIQo4BTFCel7kTQr0aD+BYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744040453; c=relaxed/simple;
-	bh=YV6q4DU/TzjXug7xwkUcpIGhmfVKBbrnpQR1f68Rq2U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XVTO/y3GmMYaV05U5rAS3KZeMF8PBwukiN3IOE1eIiaGy/DL3kXqmR/M9SWevX3ddxPa2Djw3tbjLxb+YxfRgBL+it7LpdDVz3QSDdcmdwkE05pvbv4BZLRTzAYsIVpcnMEVizhs+zMdBwkfP6WeqtRPkPgF/O4Br35SftPJzjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LAdjKIvb; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744040452; x=1775576452;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YV6q4DU/TzjXug7xwkUcpIGhmfVKBbrnpQR1f68Rq2U=;
-  b=LAdjKIvbYpmSmoiP3+PM1UcJK39/MUyz8BB3wGsJ5Upg9vxjsEHdWFbm
-   evpyj4acHyZu5KqERuPLXWNgjiTY8ZSoRenQK3+2NTPOn2qhfaExvqlgp
-   dC0b/md0wHFlotu8DJf3rY6Ym+Ti+IR7FI7EgnaMJ3iCrHuye2/FDbZv0
-   +ADkjJyO5A5Oj71yGHu2yH49Q5smqlUCtf7l1HynqupqVIOdKvlD2Ya4m
-   NeMBQfR8o+hRind8LoRdfylY4FbrWaojU83+CZtJxvc4oG1Jwg2sJQgct
-   EeCYZGvWF/JwSewzt58Fnd7VWvhH2VDRmj94yPMN68zLgffXGr6pbNXKU
-   g==;
-X-CSE-ConnectionGUID: BxqUjtbXT/OfKu4sCvwBvQ==
-X-CSE-MsgGUID: KRv/ZGQuTCSzspz3qvurlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45603380"
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="45603380"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:40:51 -0700
-X-CSE-ConnectionGUID: lAjlpR38SVmSojvCK9H2Pw==
-X-CSE-MsgGUID: Q3qlp6hHR6aZBR6VAO0MDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="132715896"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:40:48 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1u1oab-0000000A73r-3sQr;
-	Mon, 07 Apr 2025 18:40:45 +0300
-Date: Mon, 7 Apr 2025 18:40:45 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marek Vasut <marek.vasut@gmail.com>, stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v1] gpio: pca953x: fix IRQ storm on system wake up
-Message-ID: <Z_Px_ajf96J_LlcD@smile.fi.intel.com>
-References: <20250326173838.4617-1-francesco@dolcini.it>
- <174368202234.27533.1000100252310062471.b4-ty@linaro.org>
- <Z-6TGnGUEd4JkANQ@black.fi.intel.com>
- <CAMRc=Me15MyNJiU9E-E2R9yHZ4XaS=zAuETvzKFh8=K0B4rKPw@mail.gmail.com>
- <02cab60d-9748-4227-a4aa-33373ea0be38@gmail.com>
+	s=arc-20240116; t=1744040799; c=relaxed/simple;
+	bh=3JKH4GIY/au3jWTb2aoF3BWfc2VHv9ob16gBCK3dN4s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UoU1Sf5jG/xRZhXYFbiFchVjumr3JgPgFrtQ5nQNmULqdiK/1ShgOVsJcnavf34/hfZvPaGq8KfcSfkzG/KDrFaZT2DCILyeOfl45upDSWg97Cg6D3ZBg1KaOQuzW/e9lh+RUdrFofHfhoBPjDX1HC9FEAGAr6X7TlzHSjdSuK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=S800ReA+; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1744040798; x=1775576798;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=b8pk2WO7U7PSqWMxtkBKS4UJqO0G3TRNoE2CrucpvhE=;
+  b=S800ReA+/sKQb21IHwxHjs0mzBTeWHgDb124fMpcZNIXjc0H+Ycbf36z
+   tM9Ff54K5+R0hJpEXNLN8aWkhbFt5hRMkQRUcPlCjaq+/WUPtBU2GCWLH
+   actII9aS4GBomC985ZcvclposSc82tBZyU2Z4Ig3iFD+0k896fiNr1QTv
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.15,194,1739836800"; 
+   d="scan'208";a="38490008"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 15:46:37 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:25784]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.140:2525] with esmtp (Farcaster)
+ id c281f309-001c-49d5-88e9-1b8d465fd87f; Mon, 7 Apr 2025 15:46:35 +0000 (UTC)
+X-Farcaster-Flow-ID: c281f309-001c-49d5-88e9-1b8d465fd87f
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 15:46:35 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 15:46:31 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <horms@kernel.org>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <ematsumiya@suse.de>,
+	<kuba@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <peterz@infradead.org>,
+	<sfrench@samba.org>, <stable@vger.kernel.org>, <wangzhaolong1@huawei.com>,
+	<willemb@google.com>
+Subject: Re: [PATCH v2 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Mon, 7 Apr 2025 08:46:18 -0700
+Message-ID: <20250407154623.15542-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250407104559.GB395307@horms.kernel.org>
+References: <20250407104559.GB395307@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <02cab60d-9748-4227-a4aa-33373ea0be38@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWA003.ant.amazon.com (10.13.139.44) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Mon, Apr 07, 2025 at 05:11:14PM +0200, Emanuele Ghidoli wrote:
-> On 03/04/2025 15:56, Bartosz Golaszewski wrote:
-> > On Thu, Apr 3, 2025 at 3:54 PM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> >>
-> >> +Cc: Geert
-> >>
-> >> On Thu, Apr 03, 2025 at 02:07:05PM +0200, Bartosz Golaszewski wrote:
-> >>> On Wed, 26 Mar 2025 18:38:38 +0100, Francesco Dolcini wrote:
-> >>
-> >>>> If an input changes state during wake-up and is used as an interrupt
-> >>>> source, the IRQ handler reads the volatile input register to clear the
-> >>>> interrupt mask and deassert the IRQ line. However, the IRQ handler is
-> >>>> triggered before access to the register is granted, causing the read
-> >>>> operation to fail.
-> >>>>
-> >>>> As a result, the IRQ handler enters a loop, repeatedly printing the
-> >>>> "failed reading register" message, until `pca953x_resume` is eventually
-> >>>> called, which restores the driver context and enables access to
-> >>>> registers.
-
-[...]
-
-> >>> Applied, thanks!
-> >>
-> >> Won't this regress as it happens the last time [1]?
-> >>
-> >> [1]: https://lore.kernel.org/linux-gpio/CAMuHMdVnKX23yi7ir1LVxfXAMeeWMFzM+cdgSSTNjpn1OnC2xw@mail.gmail.com/
-> >>
-> > 
-> > Ah, good catch. I'm wondering what the right fix here is but don't
-> > really have any ideas at the moment. Any hints are appreciated.
-> > 
-> > For now, I'm dropping it.
-> > 
-> > Bart
+From: Simon Horman <horms@kernel.org>
+Date: Mon, 7 Apr 2025 11:45:59 +0100
+> > diff --git a/include/net/sock.h b/include/net/sock.h
+> > index 8daf1b3b12c6..4216d7d86150 100644
+> > --- a/include/net/sock.h
+> > +++ b/include/net/sock.h
+> > @@ -547,6 +547,10 @@ struct sock {
+> >  	struct rcu_head		sk_rcu;
+> >  	netns_tracker		ns_tracker;
+> >  	struct xarray		sk_user_frags;
+> > +
+> > +#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
+> > +	struct module		*sk_owner;
+> > +#endif
 > 
-> I’ve found another possible solution: disable the PCA953x IRQ in
-> pca953x_suspend() and re-enable it in pca953x_resume().
-> This would prevent the ISR from being triggered while the regmap is in
-> cache-only mode.
-> The wake-up capability is preserved, since an IRQ can still wake the system
-> even when disabled with disable_irq(), as long as it has wake enabled.
+> Not a proper review, but FWIIW, sk_owner should be added to the Kernel doc
+> for struct sock.
 
-Can you enable IRQ debugfs and dump the state of the wake* nodes for the
-respective interrupts? In this case we will be 100% sure it works as expected.
-
-> This should avoid introducing regressions and still handle Geert’s use case
-> properly.
-> 
-> Andy, Bart, Geert - what do you think?
-
-Sounds okay, but please double check the above.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks for catching!
+Will add kdoc in v3.
 
