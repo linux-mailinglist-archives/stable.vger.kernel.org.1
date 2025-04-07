@@ -1,216 +1,133 @@
-Return-Path: <stable+bounces-128467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAB5A7D71C
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:04:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F54A7D792
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B42E0188ADE4
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:04:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8280216AC9A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4233D221DB9;
-	Mon,  7 Apr 2025 08:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336EB227BAD;
+	Mon,  7 Apr 2025 08:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gZFHZBFJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hKV9wWN3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9A19CC05
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 08:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ABC227E86;
+	Mon,  7 Apr 2025 08:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744013062; cv=none; b=mwlzr6vrqVtPWoQnze+4i3CE06POFc4Hgp0BIGl+x/C8K9+q8EfhP8BPYUpJiV+SQz/9AD0L2/ikChG0iHabNLNO4XZWFPEe1XpnL4aViszy8rXfLz39LSCTKo8Rh8f4+lVMWmZvC7zGdgZuham13XBaVRrvGxRLGHMc68uYucg=
+	t=1744013906; cv=none; b=ZU0aPWMfd3658jbPXMTSVcdGZThhknkTiaiZBhQfYI/zq5PiumZ89EbWXCwlBTek+xkcGu0XdoxlWZ+wMYy014aUmIc15PXQOBRzMX9Iu1nngG1WD95dJ+hs62wc39q1NEixGXvbcUDsncbUgsgbZLNFmKqNbSxx24uRFN3nYBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744013062; c=relaxed/simple;
-	bh=7TnCmTzEaSfvHUAap+DisKRcdPyBOGyfTTrwSA8XN+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XmS1qvcVRW952ZrsDss//iYf0gdLJFRT2eDCUCEQTz25C+0Yi7/ch46QRz8LKm72EOW53/yelDGcSBJkvoIyog/OKjQoHOfbSk/j2ZgrmXlUSDl2hr5QFpJ968Z7vlQlZM6jwkyHpSP8qhdc+8hKJelhTKNwfcwe4o5pNmoauko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gZFHZBFJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744013058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8fp+goqsiDX/imKy8nA+uPVV6MYng1RFSM6Na0BmegY=;
-	b=gZFHZBFJSCeWcuSE7H2T+XSDAhNgG1COkrDkYJ7w9uo3cTrd74pNVngoUTpqt4/JFV6SFm
-	/RjpDFxXTuiCPz4wcQeXX7BlKYxibm+LPEHvE3cOxy/pMENhDjEm+puaeULKTpAkW65sWU
-	IF26p3ijqy2+vn25y4qd5Rip5/i4qvY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-nD_sw-RINJ2c-WL6QHh18Q-1; Mon, 07 Apr 2025 04:04:17 -0400
-X-MC-Unique: nD_sw-RINJ2c-WL6QHh18Q-1
-X-Mimecast-MFC-AGG-ID: nD_sw-RINJ2c-WL6QHh18Q_1744013056
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-39135d31ca4so2127040f8f.1
-        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 01:04:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744013056; x=1744617856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8fp+goqsiDX/imKy8nA+uPVV6MYng1RFSM6Na0BmegY=;
-        b=VfKURIKeRi48adX+fCz3e7iiiWwjDd6hyVD26ikHGoZgb3HzvNJk5Tp6TbNXOy1c2y
-         WdNooSPtPEFqzq/CjccyzRs66zUxMvuqXx8+BdQizZJ2U2HC5zhKg/07d1SjSwCnId/W
-         bw0gIGc4GBJdwN+g+4k/d5UIcPCLmVGrJlzl08eXOuyA/F/aEIWbCi99BqWEqPoNi1nr
-         Z6HPMBhAaiC9cwYAdq6wjiEkHIwxzrvWxfQ39LiSHclJHaxpUj78lZQqAoyGbEcQG5Fr
-         b/2dH1Bp41Xzb1AWFSzwiFgmlQDRXjHQNmXLGlsgbzFkWgAZieRY2Jy6zkXOzvqzofl+
-         U1hw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeGuHrKsENAGYDgMCh1YkA24wx8Z+sPoLRJ3S6vWHcXXk0WQfWKUR5AXc8Fa1/rgi4/0ct4aQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFROoK+3KeHP0U628zKnTbnSafIs2M42Ns1s2WR5ZIDc01mJ3I
-	V6vPsIINtAD3tQKaDGOAEiSfb62sAKUqBKItLpky71EE+JAATVYLkg0gzmAD2AVv6pKvezA3efg
-	zr3s8RMfjUG6B5mkswpLipBcReYqzQzVu/5sks+G/3p9ttaxDcbKtQg==
-X-Gm-Gg: ASbGnctLx7ZlMiUjWjP5C6N39kbQFI50a6NjKJrOJVrmNd5ix6bTEKVWLl6whVQqidA
-	Cg8bCj6qHx3ehCuKpSf5UaHG1nTyfF5OJzGNKWcuZ8SaKr4AzhDMcL6fC698XRiBv039tj90BqW
-	KVgUhg1T2spGuVsrGTB+O9fszELemOJuYMTrS28AnICgvRa7EUaHOymeAvc9Cjg/ZsfEzxcGk27
-	iDJ1QPYq51L//rAevMfNyoeonXJfPL532EyNHahClDVR0Y6GG874IwFOcOXhYVVFRUAqQkhghSD
-	peUPlIH0muIVokCOt68LeiNnC9gvDsgGDNb1CmfOrO6KL5dRdJXFt2ImgcU/+0AC
-X-Received: by 2002:a5d:64ce:0:b0:39c:1f02:44d8 with SMTP id ffacd0b85a97d-39cb35a15f7mr9124852f8f.4.1744013055912;
-        Mon, 07 Apr 2025 01:04:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQypbiq0xQEWAWYQHoKnyO1B74jcLwUjtWUKTnUrs/7VMKU20PoxRua8Xmc3N2Zu+6xDL37Q==
-X-Received: by 2002:a5d:64ce:0:b0:39c:1f02:44d8 with SMTP id ffacd0b85a97d-39cb35a15f7mr9124805f8f.4.1744013055379;
-        Mon, 07 Apr 2025 01:04:15 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-213.retail.telecomitalia.it. [79.53.30.213])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d75335591sm5098018f8f.1.2025.04.07.01.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 01:04:14 -0700 (PDT)
-Date: Mon, 7 Apr 2025 10:04:09 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: keyrings@vger.kernel.org, stable@vger.kernel.org, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Howells <dhowells@redhat.com>, 
-	Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, 
-	"David S. Miller" <davem@davemloft.net>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Ard Biesheuvel <ardb@kernel.org>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v3] tpm: Mask TPM RC in tpm2_start_auth_session()
-Message-ID: <2mjtwprr3dujf4wbu5licb3jtzxujimcz5iahrgqymu6znwbbq@cslxwt7ejva3>
-References: <20250407071731.78915-1-jarkko@kernel.org>
- <20250407072057.81062-1-jarkko@kernel.org>
+	s=arc-20240116; t=1744013906; c=relaxed/simple;
+	bh=RSCsB9LyBZKImdCS3CO3v6PdojzJl9JVl7oocdENeNE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=j7R4qlUEZFXX3KpdTt8gr6ULQZb5pDc0BeV/Qf4zwNt0kyORjdqGqZkvkNxeEN3leESxd/6JjF9CePlRNackkAhvS60jcVOGui4i86k4ofmk5CY+jyDJ04a99nl1gAxWRirWE4Lu6KseQLx2U0Jf+MAW1I0wKgWSywkNeZnECQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hKV9wWN3; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QLfWDAfI2AnhA5OmyBMH2GN+AZpLJ7m9IQNoTTz/1Q4=; b=hKV9wWN32qu+WchUIFvT0Y/SjM
+	2jWOqCMP8azbf0L91SpOxo+jsmyFsk7lkPVPctusn8AFPs+uDq3cXumQ8vwCDqJb37TPEiAKa9bne
+	RbbZxzRlPl0klHLLP90DXY7loMrOTto9cmul4NyOA2xrH3CUjNgiBDwKv3Yr2l9GnMefHeXwxxlQv
+	ltnzBYGSKj5GRTbbRU+qux7UPNP2AGeKxkMA9Js8C8lFn9OvtxS6X8IqDKekKor8QQdM2E0h+TWb8
+	GuzUWCPrSvf0NS6FQ9ojvlb2cFTRyFkE/izVHQN0aBdPIWJ72lnKmNNErX/pewmwHs7Pa7RwoOGht
+	Cpjw6ing==;
+Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u1h3B-00CmbI-HY; Mon, 07 Apr 2025 09:37:45 +0200
+From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] sctp: check transport existence before processing a
+ send primitive
+In-Reply-To: <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+ <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+ <87tt75efdj.fsf@igalia.com>
+ <CADvbK_c69AoVyFDX2YduebF9DG8YyZM7aP7aMrMyqJi7vMmiSA@mail.gmail.com>
+ <CADvbK_d+vr-t7D1GZJ86gG6oS+Nzy7MDVh_+7Je6hqCdez4Axw@mail.gmail.com>
+ <87r028dyye.fsf@igalia.com>
+ <CADvbK_evR93rj1ZT_bzLKFqNQLPQ2BM0mzKnriGGsO5t07GAHQ@mail.gmail.com>
+Date: Mon, 07 Apr 2025 09:37:44 +0200
+Message-ID: <87o6x8e81j.fsf@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250407072057.81062-1-jarkko@kernel.org>
+Content-Type: text/plain
 
-On Mon, Apr 07, 2025 at 10:20:57AM +0300, Jarkko Sakkinen wrote:
->tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
->
->[   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
->
->Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
->error codes.
->
->Cc: stable@vger.kernel.org # v6.10+
->Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
->Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
->Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
->Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->---
->v3:
->- rc > 0
->v2:
->- Investigate TPM rc only after destroying tpm_buf.
->---
-> drivers/char/tpm/tpm2-sessions.c | 31 +++++++++++++++++--------------
-> include/linux/tpm.h              |  1 +
-> 2 files changed, 18 insertions(+), 14 deletions(-)
->
->diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
->index 3f89635ba5e8..abd54fb0a45a 100644
->--- a/drivers/char/tpm/tpm2-sessions.c
->+++ b/drivers/char/tpm/tpm2-sessions.c
->@@ -40,11 +40,6 @@
->  *
->  * These are the usage functions:
->  *
->- * tpm2_start_auth_session() which allocates the opaque auth structure
->- *	and gets a session from the TPM.  This must be called before
->- *	any of the following functions.  The session is protected by a
->- *	session_key which is derived from a random salt value
->- *	encrypted to the NULL seed.
->  * tpm2_end_auth_session() kills the session and frees the resources.
->  *	Under normal operation this function is done by
->  *	tpm_buf_check_hmac_response(), so this is only to be used on
->@@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
-> }
->
-> /**
->- * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
->- * @chip: the TPM chip structure to create the session with
->+ * tpm2_start_auth_session() - Create an a HMAC authentication session
->+ * @chip:	A TPM chip
->  *
->- * This function loads the NULL seed from its saved context and starts
->- * an authentication session on the null seed, fills in the
->- * @chip->auth structure to contain all the session details necessary
->- * for performing the HMAC, encrypt and decrypt operations and
->- * returns.  The NULL seed is flushed before this function returns.
->+ * Loads the ephemeral key (null seed), and starts an HMAC authenticated
->+ * session. The null seed is flushed before the return.
->  *
->- * Return: zero on success or actual error encountered.
->+ * Returns zero on success, or a POSIX error code.
->  */
-> int tpm2_start_auth_session(struct tpm_chip *chip)
-> {
->@@ -1024,7 +1016,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
-> 	/* hash algorithm for session */
-> 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
->
->-	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
->+	rc = tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession");
-> 	tpm2_flush_context(chip, null_key);
->
-> 	if (rc == TPM2_RC_SUCCESS)
->@@ -1032,6 +1024,17 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
->
-> 	tpm_buf_destroy(&buf);
->
->+	if (rc > 0) {
+On Fri, Apr 04 2025 at 10:22:38, Xin Long <lucien.xin@gmail.com> wrote:
 
-To avoid the nesting blocks, can we include `TPM2_RC_SUCCESS` case in 
-the switch or move the `if (rc == TPM2_RC_SUCCESS)` before it?
+>> Something like this:
+>>
+>> @@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>         pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
+>>                  *timeo_p, msg_len);
+>>
+>> -       /* Increment the association's refcnt.  */
+>> +       /* Increment the transport and association's refcnt. */
+>> +       if (transport)
+>> +               sctp_transport_hold(transport);
+>>         sctp_association_hold(asoc);
+>>
+>>         /* Wait on the association specific sndbuf space. */
+>> @@ -9252,6 +9256,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>                 lock_sock(sk);
+>>                 if (sk != asoc->base.sk)
+>>                         goto do_error;
+>> +               if (transport && transport->dead)
+>> +                       goto do_nonblock;
+>>
+>>                 *timeo_p = current_timeo;
+>>         }
+>> @@ -9259,7 +9265,9 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+>>  out:
+>>         finish_wait(&asoc->wait, &wait);
+>>
+>> -       /* Release the association's refcnt.  */
+>> +       /* Release the transport and association's refcnt. */
+>> +       if (transport)
+>> +               sctp_transport_put(transport);
+>>         sctp_association_put(asoc);
+>>
+>>         return err;
+>>
+>>
+>> So by the time the sending thread re-claims the socket lock it can tell
+>> whether someone else removed the transport by checking transport->dead
+>> (set in sctp_transport_free()) and there's a guarantee that the
+>> transport hasn't been freed yet because we hold a reference to it.
+>>
+>> If the whole receive path through sctp_assoc_rm_peer() is protected by
+>> the same socket lock, as you said, this should be safe. The tests I ran
+>> seem to work fine. If you're ok with it I'll send another patch to
+>> supersede this one.
+>>
+> LGTM.
 
-Thanks,
-Stefano
+Good, thanks! I submitted a patch that supersedes this one:
+https://lore.kernel.org/linux-sctp/20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com
+so we can drop this.
 
->+		switch (rc) {
->+		case TPM2_RC_SESSION_MEMORY:
->+			rc = -ENOMEM;
->+			goto out;
->+		default:
->+			rc = -EFAULT;
->+			goto out;
->+		}
->+	}
->+
-> 	if (rc == TPM2_RC_SUCCESS) {
-> 		chip->auth = auth;
-> 		return 0;
->diff --git a/include/linux/tpm.h b/include/linux/tpm.h
->index 6c3125300c00..c1d3d60b416f 100644
->--- a/include/linux/tpm.h
->+++ b/include/linux/tpm.h
->@@ -257,6 +257,7 @@ enum tpm2_return_codes {
-> 	TPM2_RC_TESTING		= 0x090A, /* RC_WARN */
-> 	TPM2_RC_REFERENCE_H0	= 0x0910,
-> 	TPM2_RC_RETRY		= 0x0922,
->+	TPM2_RC_SESSION_MEMORY	= 0x0903,
-> };
->
-> enum tpm2_command_codes {
->-- 
->2.39.5
->
->
-
+Cheers,
+Ricardo
 
