@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-128732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA70A7EB27
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93144A7EB2A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E34718890FE
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12E018858F0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AEF26E178;
-	Mon,  7 Apr 2025 18:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF0B26F460;
+	Mon,  7 Apr 2025 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJsWGyQC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dx0Lq9yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C08122370A;
-	Mon,  7 Apr 2025 18:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D6C26F458;
+	Mon,  7 Apr 2025 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049817; cv=none; b=IZb6yAEj1x/3iRvHN0vp3bVhcx8RGhZjTUslxLZs0/TJx8F6Isc88N1mTBvOYBDDxen6PenLpomhqQC46XptYWKwH8LlMpestXUMxKbPH9oWnUyY4jb6W7yUkY89hol/CyeYP4scE8ZpNvIJlM6tqMJw4h6H/1aJRUHRtHIgHMk=
+	t=1744049818; cv=none; b=ZNw8d3EAIDh43j4G2bG+kVcD9i3vORIh0+GX7L6PrXgxDjysJNA7xruXYZl6eO9V31bGCInuZYfPyyTWJECDadOSuhoGstKC0LAI4QivMI0QIgH4Re0TUan4eZ8GkDth6KxH5lO5AvwP4Pj/tZRyDueCN1uzxbhf3quzojnYw5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049817; c=relaxed/simple;
-	bh=6Lf93JT3Xvu2Mb6ilt4pqZnmbF7Ya6FG/rpcM9omG3Y=;
+	s=arc-20240116; t=1744049818; c=relaxed/simple;
+	bh=VsAAArcVh6T7g0FJDwhWVlycVOgzVQQT85romacyIqA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D5IUzZu3BDS8Y4vNuPb7WOpL5WyzuzGUE6tPIiTD6ml9UIn1Ua1kEcgJrN9moCaK53MuS58UsGT+/W+FpNoGdfZ4t0RCnfTabT2J6xT22tAHfPK6Mo6tx3YrkgHK6r6T12/1oWHKPHiJ3jzgU3HOZqCu3IK4MI6NHQVZZJ7O+IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJsWGyQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E1BC4CEDD;
-	Mon,  7 Apr 2025 18:16:54 +0000 (UTC)
+	 MIME-Version; b=YZ9BxX92oxBc9sreswzgWjFwGyKkJBlc51OPqMbZsELhbLEXhPic0QYqqebOzK4akLQ/wAvp2YovvEbXPW3EcfCfoXnbjOhtnfeCy9jpbGuO5qWjcAYUsaFPvpDYLlI6vEMqqFiNacctb0cF9a1Kzxf+cg2JXY96gRg6SPrF7l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dx0Lq9yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C976C4CEE7;
+	Mon,  7 Apr 2025 18:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049816;
-	bh=6Lf93JT3Xvu2Mb6ilt4pqZnmbF7Ya6FG/rpcM9omG3Y=;
+	s=k20201202; t=1744049818;
+	bh=VsAAArcVh6T7g0FJDwhWVlycVOgzVQQT85romacyIqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJsWGyQCF4EyBFtcMUaQ0Imszai/+zIrUOvoRHRPy6h6bFPXIWK5KlvMwVSJFKfjR
-	 0OLV5WVsRv6x+uGbJJ4AjErGCNd2aG8ymLyMJq2GTk8BJDGRo9EHH//1qAFutgN/DQ
-	 8x6ZMH3YYlywzHFn+qhRuXP7vAL9wbwz5A2CvxEFs5OHcd5ZBGW4sg0F0u35tHCmlD
-	 lZ56XobXkp5+S4JjctlUgd2bvdzqUdvqmbQVuya1SvsyZzZBKOOqaeSqvA0JAndYe6
-	 m6hkbb5lRo6vsIEmwi//Zcvt4kAtslF0aRuvbXaf+GEcAh6h5gOhfTikkJlKAPClv+
-	 fcHgdud3IyUUw==
+	b=Dx0Lq9yr3DxkWZtuKoyhALkANaf2aumscJhLIQ2aQ/z9LBVtqFgsAQ7qzQy4vnbr7
+	 UJs/+lKMTZRtNRtF2lr2arb/16YLXchJB/A7RDrEPWo7/oMMFgssNcfkAGhP5NPWSl
+	 ZDpe/M7DfHHSc/bBOMcr7w5aXlwoH2+UgHJGI4qdHMrhURh8576mmXf4SXp/55t3eU
+	 DfgTUv3yekTB94teGTCW/TptAm8c3koNtUmGOH/7ZBDB6fVoHSenyQMmPVWUlds9Fr
+	 hHZjLq4YOfaanCTQs0Ma/6Rzm0kYPwzyrDms028p41iWE6EF+0RoCOzkEDqrFW9RNf
+	 Ey4KADozguAuw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+	syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	corbet@lwn.net,
-	paulmck@kernel.org,
-	thuth@redhat.com,
-	bp@alien8.de,
-	ardb@kernel.org,
-	gregkh@linuxfoundation.org,
-	jpoimboe@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 8/9] tracing: Enforce the persistent ring buffer to be page aligned
-Date: Mon,  7 Apr 2025 14:16:34 -0400
-Message-Id: <20250407181635.3184105-8-sashal@kernel.org>
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 9/9] io_uring: always do atomic put from iowq
+Date: Mon,  7 Apr 2025 14:16:35 -0400
+Message-Id: <20250407181635.3184105-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181635.3184105-1-sashal@kernel.org>
 References: <20250407181635.3184105-1-sashal@kernel.org>
@@ -81,81 +66,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.1
 Content-Transfer-Encoding: 8bit
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit c44a14f216f45d8bf1634b52854a699d7090f1e8 ]
+[ Upstream commit 390513642ee6763c7ada07f0a1470474986e6c1c ]
 
-Enforce that the address and the size of the memory used by the persistent
-ring buffer is page aligned. Also update the documentation to reflect this
-requirement.
+io_uring always switches requests to atomic refcounting for iowq
+execution before there is any parallilism by setting REQ_F_REFCOUNT,
+and the flag is not cleared until the request completes. That should be
+fine as long as the compiler doesn't make up a non existing value for
+the flags, however KCSAN still complains when the request owner changes
+oter flag bits:
 
-Link: https://lore.kernel.org/all/CAHk-=whUOfVucfJRt7E0AH+GV41ELmS4wJqxHDnui6Giddfkzw@mail.gmail.com/
+BUG: KCSAN: data-race in io_req_task_cancel / io_wq_free_work
+...
+read to 0xffff888117207448 of 8 bytes by task 3871 on cpu 0:
+ req_ref_put_and_test io_uring/refs.h:22 [inline]
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/20250402144953.412882844@goodmis.org
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Skip REQ_F_REFCOUNT checks for iowq, we know it's set.
+
+Reported-by: syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/d880bc27fb8c3209b54641be4ff6ac02b0e5789a.1743679736.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- Documentation/trace/debugging.rst               |  2 ++
- kernel/trace/trace.c                            | 10 ++++++++++
- 3 files changed, 14 insertions(+)
+ io_uring/io_uring.c | 2 +-
+ io_uring/refs.h     | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb8752b42ec85..71861643ef143 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7241,6 +7241,8 @@
- 			This is just one of many ways that can clear memory. Make sure your system
- 			keeps the content of memory across reboots before relying on this option.
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index f7acae5f7e1d0..67c79e576355a 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1774,7 +1774,7 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
+ 	struct io_kiocb *req = container_of(work, struct io_kiocb, work);
+ 	struct io_kiocb *nxt = NULL;
  
-+			NB: Both the mapped address and size must be page aligned for the architecture.
+-	if (req_ref_put_and_test(req)) {
++	if (req_ref_put_and_test_atomic(req)) {
+ 		if (req->flags & IO_REQ_LINK_FLAGS)
+ 			nxt = io_req_find_next(req);
+ 		io_free_req(req);
+diff --git a/io_uring/refs.h b/io_uring/refs.h
+index 63982ead9f7da..0d928d87c4ed1 100644
+--- a/io_uring/refs.h
++++ b/io_uring/refs.h
+@@ -17,6 +17,13 @@ static inline bool req_ref_inc_not_zero(struct io_kiocb *req)
+ 	return atomic_inc_not_zero(&req->refs);
+ }
+ 
++static inline bool req_ref_put_and_test_atomic(struct io_kiocb *req)
++{
++	WARN_ON_ONCE(!(data_race(req->flags) & REQ_F_REFCOUNT));
++	WARN_ON_ONCE(req_ref_zero_or_close_to_overflow(req));
++	return atomic_dec_and_test(&req->refs);
++}
 +
- 			See also Documentation/trace/debugging.rst
- 
- 
-diff --git a/Documentation/trace/debugging.rst b/Documentation/trace/debugging.rst
-index 54fb16239d703..d54bc500af80b 100644
---- a/Documentation/trace/debugging.rst
-+++ b/Documentation/trace/debugging.rst
-@@ -136,6 +136,8 @@ kernel, so only the same kernel is guaranteed to work if the mapping is
- preserved. Switching to a different kernel version may find a different
- layout and mark the buffer as invalid.
- 
-+NB: Both the mapped address and size must be page aligned for the architecture.
-+
- Using trace_printk() in the boot instance
- -----------------------------------------
- By default, the content of trace_printk() goes into the top level tracing
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 0e6d517e74e0f..50aa6d5908329 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -10427,6 +10427,16 @@ __init static void enable_instances(void)
- 		}
- 
- 		if (start) {
-+			/* Start and size must be page aligned */
-+			if (start & ~PAGE_MASK) {
-+				pr_warn("Tracing: mapping start addr %pa is not page aligned\n", &start);
-+				continue;
-+			}
-+			if (size & ~PAGE_MASK) {
-+				pr_warn("Tracing: mapping size %pa is not page aligned\n", &size);
-+				continue;
-+			}
-+
- 			addr = map_pages(start, size);
- 			if (addr) {
- 				pr_info("Tracing: mapped boot instance %s at physical memory %pa of size 0x%lx\n",
+ static inline bool req_ref_put_and_test(struct io_kiocb *req)
+ {
+ 	if (likely(!(req->flags & REQ_F_REFCOUNT)))
 -- 
 2.39.5
 
