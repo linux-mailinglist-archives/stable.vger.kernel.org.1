@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-128617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164CEA7E9BA
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:17:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D21BA7E9E9
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1FA37A55F8
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A998416D016
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB16B25742A;
-	Mon,  7 Apr 2025 18:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10DC257443;
+	Mon,  7 Apr 2025 18:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="id44oJdB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWTTnxjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A58D21ADC3;
-	Mon,  7 Apr 2025 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3CD257438;
+	Mon,  7 Apr 2025 18:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049503; cv=none; b=ARVO7cvTtsNWHGo3SHJMeaeo2gX/3vt8Q6WNdxKPqb5rHzIxC0NUmGL4Tvn+v6by1Tjc2JarNIL/YNuPNAIJWjbxLUUTS1fM50dpZ0mcodjPy8+JMkBEfR862O5ZYhJXNTlKcuA0PBiuHUk3Oj+a+vsM8i4vj66yRzMNPSnTEUk=
+	t=1744049504; cv=none; b=I801J3lNyLE4oaJiT6mOHk+Hrt0mxzcG0FB4nT9lTZ//F8D7kCchZfrGAxtHiJISP77hnKqBrp5K3UQmFhHZMfZ4K44ju7iuR6ecQfosSjORmRzbO0gsE99fOFWPfuR2ahQmqmEJt6lLrMmjIWx2Mpy1tPkE/LsqYHLawmyKI0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049503; c=relaxed/simple;
-	bh=QBJ+dUeJc1CSohXQzdN/Y/YCiwyNb/H1CHJQS7EhYcg=;
+	s=arc-20240116; t=1744049504; c=relaxed/simple;
+	bh=PLdpN6rz20+ajRaei7RLj6DvYTOdzktW43uHvQjTSf8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ffIt1kFKdeqAAr7NuHkEPUO/98l6iuWvQO4So1Pcx334WZT/f5b+ObpRGGcNj3HRzYzDfUKTtR79B2nor+saS8TtnTRnV68Kwj1H2zUqOqQ/avZxMiIPBSJ2Er963w/YAMc4pMT9wr/MltS5x8tkxJpCNBSK43BpHhSgfyJdBbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=id44oJdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918E1C4CEE7;
-	Mon,  7 Apr 2025 18:11:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UHdpNYHP5VlE9E4XBBx7lgBU9/V1/vSN6mqDg/g+KhU6Rcfwk1Mjxc7SITZufzFqPiCFlN4og2OkxoouKhh2iTOlgY8rNMlovKSEIYCGMkTg4oJXWFgd9HmOrdEizEm+Dw+tJPi7MOGLm4JgY0FJJk/Lbs/alxeZyZffOKIXk3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWTTnxjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC4FC4CEDD;
+	Mon,  7 Apr 2025 18:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049502;
-	bh=QBJ+dUeJc1CSohXQzdN/Y/YCiwyNb/H1CHJQS7EhYcg=;
+	s=k20201202; t=1744049504;
+	bh=PLdpN6rz20+ajRaei7RLj6DvYTOdzktW43uHvQjTSf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=id44oJdBgOQF86LPDEiCyCGFB1qCcMT3d1hZI68gUWH/YfNLqHv+eo6wDhHLqTfc1
-	 zvHjIMoK92PZK/JNSs/SRM/b/0wPyrBQP1ovbwKNi4CBUi94fU+JhueJIQ+8uadgCr
-	 sfj8l4C0IDemViYL/o2L09bMrbOPP27804tx0C1Snv8sqW2mQ3KloUQAyxl+Q0zH6R
-	 VGlMQmJBW+5z/Xv3UghlnSjf6tKJuDigc+sXv4VfNaXE4YltoZXCEDq2F4qr2WWkAy
-	 A5oOZocyMdW/fZkwqz8nYCP7y3WNd7XOJNaWDXZaRhC/N7F70Eqh/p8XeTW5CS9osc
-	 xWkrONzo44COQ==
+	b=jWTTnxjWhTmVyX9dbla7BKbF0KxZDgwiXb+3QkJo7pjNiyit7aqnCBh9ql5XPKBDy
+	 sYe+8HAwxReyW2JQE0ajgQtCapWcMusERJQB/pUV5WyF6RxC31tIF5JqO7BmKCy96k
+	 LKFgoOV0zjDhsTywtsrfOX7yB9XZEeCl9yz5Rh/MEHOaCzUe3tr+MvUNGGgF7XcNYX
+	 JriPyW7wKFY07GLPwY+7bbdstO8/gYCnhL7Um6iMYEvhd8CbQ27NePrLNSnCdQ+UsZ
+	 P5wSWPScZpTmO0CA7A43bgeETrZL2sxjTQpr2A0I4HaKSuQIyn8262wNxK3m1r65h5
+	 P8tWM8dvtcGKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+Cc: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	joel@jms.id.au,
-	andrew@codeconstruct.com.au,
-	richardcochran@gmail.com,
-	linux-usb@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 20/31] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
-Date: Mon,  7 Apr 2025 14:10:36 -0400
-Message-Id: <20250407181054.3177479-20-sashal@kernel.org>
+	mathias.nyman@intel.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 21/31] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
+Date: Mon,  7 Apr 2025 14:10:37 -0400
+Message-Id: <20250407181054.3177479-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181054.3177479-1-sashal@kernel.org>
 References: <20250407181054.3177479-1-sashal@kernel.org>
@@ -66,44 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.1
 Content-Transfer-Encoding: 8bit
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
+[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
 
-The variable d->name, returned by devm_kasprintf(), could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+Compatible "marvell,armada3700-xhci" match data uses the
+struct xhci_plat_priv::init_quirk() function pointer to add
+XHCI_RESET_ON_RESUME as quirk on XHCI.
 
-This issue is found by our static analysis tool
+Instead, use the struct xhci_plat_priv::quirks field.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci-mvebu.c | 10 ----------
+ drivers/usb/host/xhci-mvebu.h |  6 ------
+ drivers/usb/host/xhci-plat.c  |  2 +-
+ 3 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-index 573109ca5b799..a09f72772e6e9 100644
---- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-+++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
- 	d->vhub = vhub;
- 	d->index = idx;
- 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-+	if (!d->name)
-+		return -ENOMEM;
-+
- 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
+diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
+index 87f1597a0e5ab..257e4d79971fd 100644
+--- a/drivers/usb/host/xhci-mvebu.c
++++ b/drivers/usb/host/xhci-mvebu.c
+@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
  
- 	ast_vhub_init_ep0(vhub, &d->ep0, d);
+ 	return 0;
+ }
+-
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+-
+-	/* Without reset on resume, the HC won't work at all */
+-	xhci->quirks |= XHCI_RESET_ON_RESUME;
+-
+-	return 0;
+-}
+diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
+index 3be021793cc8b..9d26e22c48422 100644
+--- a/drivers/usb/host/xhci-mvebu.h
++++ b/drivers/usb/host/xhci-mvebu.h
+@@ -12,16 +12,10 @@ struct usb_hcd;
+ 
+ #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
+ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
+ #else
+ static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+ {
+ 	return 0;
+ }
+-
+-static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	return 0;
+-}
+ #endif
+ #endif /* __LINUX_XHCI_MVEBU_H */
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index d85ffa9ffaa70..ff813dca2d1d3 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
+-	.init_quirk = xhci_mvebu_a3700_init_quirk,
++	.quirks = XHCI_RESET_ON_RESUME,
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_brcm = {
 -- 
 2.39.5
 
