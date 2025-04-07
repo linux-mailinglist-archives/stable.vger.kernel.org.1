@@ -1,221 +1,109 @@
-Return-Path: <stable+bounces-128766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BEAA7EB81
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:55:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A80A7EBC6
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 21:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7740918819B4
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:53:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B5A07A4272
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C647421CA0D;
-	Mon,  7 Apr 2025 18:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96C1217F5D;
+	Mon,  7 Apr 2025 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MITHkW4d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iu8+zKYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A0521C19C;
-	Mon,  7 Apr 2025 18:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650C0219A8F;
+	Mon,  7 Apr 2025 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049962; cv=none; b=tBZ8a4SqaVEnODBWEM4EnulJ1rtUnvp0ea64H2QTm8CjJRpsnVo5jCvYh4I9sj2IbJS2KLyfCV6gNyNgWEI5/wptlebj+abP/tJdf5NwFNEnJTF3K2/0IvS0AXdX56YO1fiULMDIJgHRcyibVBKrCYPPpDLBzazcWlVrv8DwSHw=
+	t=1744050404; cv=none; b=EmRw+Hca27DbgWQOvADPts20tPR3sYVNGPvaXQ/i6pEwNxo4Km56XDImj208Fs69DaEs+HjtH33fqKfT+EouqrwNwJ1vktY5bnD4LESeW6wxx+2+TLe363u7QpOTrCx2omI41t6ZQ6IzxcB3eJVoChMIu3r28ZawC78p9rSp/VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049962; c=relaxed/simple;
-	bh=rBlHWm98sN38kK8Uh4zkts9r9GzgSlhUaJr7PKZVXV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jms6CCkRC5Jjrl9Mnt8gsxlxPuQpq32DTSJ3kC6muJfwLNijqWCAmkg4wT1Q2XN/Bol63W9g4KvgnbNZBU7v9ZCv/aFl614/8f5YXOyZQhXQyR90OHtkXKvlbeeFaTj725z96KXxAe948PavFWVkGqutUXlu7DmHof+V47UM/yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MITHkW4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A450C4CEE7;
-	Mon,  7 Apr 2025 18:19:21 +0000 (UTC)
+	s=arc-20240116; t=1744050404; c=relaxed/simple;
+	bh=dvITs+8+VfQd7ubGC+3O47LshSVcktUd+eNuWBPRrWM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QYGxR0XA7nRpgL3QfmtnnhD12AeXZDZLNTrb1xp7/QZD4W0g0CbV3P77t4dIVdNdr/2OlRbbHfBccnocqFYuyCIp7F8GKZcBIv34PN43r+r0uov9CM54IaL0/kFUT42OIixkOO21S9TkrgY54LaKpudtcOSHqriVsOJolLVOw7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iu8+zKYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA66C4CEDD;
+	Mon,  7 Apr 2025 18:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049962;
-	bh=rBlHWm98sN38kK8Uh4zkts9r9GzgSlhUaJr7PKZVXV0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MITHkW4dyLrwkcsuypypFdOQ32TLtbtSujbclvZcyJPSAB6GqaxmCzbqwDoX3vids
-	 J5PajsBFOydcnmAumciqYwQWwiu3DKGIsFBZd48QDB6HSqYzmHok1ei9teMScmMzCh
-	 JhT+9pLNeNtG1udTNHWcy/0KWguzQm+O22Ii1u1ne6mIhGNe+OeQaFpR/NbjIM98t9
-	 zIPTf/sx84CxXF0e4GSRZZhDFS9/pPGpmeo+JBMPwsSxlJ8mPoSci/roMcCMY+Vild
-	 S3CgCgY55QKRlbTEgMd798a8n5ldpejHtSISL1P0eNnpYHx1um29yXT7NHPGuLS6jX
-	 ggCYD7NhSJm7g==
-From: Mario Limonciello <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	Shyam-sundar.S-k@amd.com,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: Yijun Shen <Yijun.Shen@dell.com>,
-	stable@vger.kernel.org,
-	Yijun Shen <Yijun_Shen@Dell.com>,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH v3] platform/x86: amd: pmf: Fix STT limits
-Date: Mon,  7 Apr 2025 13:18:21 -0500
-Message-ID: <20250407181915.1482450-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1744050403;
+	bh=dvITs+8+VfQd7ubGC+3O47LshSVcktUd+eNuWBPRrWM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=iu8+zKYb7g2DRMhLLzvlY7bF2gC7UXn0+BMEr9l+6dHwR5u08aIJas7PmJY6fpR5y
+	 GnIQuhYze/CFcbRShszeUZju9QxmmSJvy97d2p01TabMlhe1/WyOosymyDFX3e+iwW
+	 4Ld2qfAgdFoL14HIGgS+i/gLBmg9VqicDnf2c7HjQJBequhcXo6aLg17IbjxWNoyBI
+	 WMf7FI6oBO2ih+NYDppJZ8YRenVTxxVjguaCy4Y+JPOo9sdtUC0E90LSUwqZL83iuH
+	 yzoh3nkRiJl/7NLcN7yklQ27KtvOM6YE8uvMzT4exs0cFi/B/J5PtX5TFp7gF6LgmU
+	 /ro5jeYnRCMiA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/2] mptcp: only inc MPJoinAckHMacFailure for HMAC
+ failures
+Date: Mon, 07 Apr 2025 20:26:31 +0200
+Message-Id: <20250407-net-mptcp-hmac-failure-mib-v1-0-3c9ecd0a3a50@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANcY9GcC/x3MQQqEMAxA0atI1gaqThW9irjo1EQDtpZWZUC8+
+ xSXb/H/DYmiUIKhuCHSJUl2n1GVBdjV+IVQ5myoVa3VR3Xo6UAXDhtwdcYiG9nOSOjki23Luu8
+ bpZkbyIMQieX3zkfIHUzP8wfMbU0ZcQAAAA==
+X-Change-ID: 20250407-net-mptcp-hmac-failure-mib-66f599305ff3
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=856; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=dvITs+8+VfQd7ubGC+3O47LshSVcktUd+eNuWBPRrWM=;
+ b=owEBbQKS/ZANAwAKAfa3gk9CaaBzAcsmYgBn9BjeC2CovJsWiX12gdjQ0yeoe/ZRLSUUwqIDo
+ tw3tFFxxKyJAjMEAAEKAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ/QY3gAKCRD2t4JPQmmg
+ c1G2EACOt8R1M5fv0ueRRFsZ1ba3L7lqCK/ir+0BKynwB+XmIj2xo33kEUabRaYdsaYaCddLUcW
+ iSAQkO7tz8nqOrJuSB61kio3GN7KSvztUmjQ3z7zMP3irTEGNTVuiecKeyFjUMI4J1ANT6DnuK9
+ vZYOmPlSlIcxdZnecufCg0ztWzl91lrpgAFsdYeJ3Z+v23faj9l1MtSw4Uqsp/MvJxX5nFHOfH+
+ 4/TnvZixQrQz1WVjEmYT+/SkmZEY9bB6pDoLWMBmgO6Nv0HExcIPmpNTa80GvwDMMw00ayAH/C3
+ ejFKzYS+Lrrxp/TZs+Jq8maU82HPbPcLCl7OB2wMz8vu88HM/+T4dia/0SzVMoTN0sObBvBH0Y5
+ 2Zeby+8iDcs52jq6FrEDqM0vlGJyLTlYmWC7i0aQvxgPO89ih6CJrYYslzN1K5hh+PTHvXVgKQx
+ LhwPpzVpq5cAkAyfNU/1RoCFHdEacEgBQq888HX1lbCY9Q386DKbQLnrrCyopZlH7fun/G3qpId
+ bJoDa1P25yzJR0gMKYvudkT046H1DeqSlIPpFY2FhChgvcIFSDY5DJsWUSMaIjzJ3oRke+XayfL
+ R915s/b0gqEiSkQlz+gkaxearbTYq1zPP51BAgKbkWnHrrVR88BuTHe9Aokl5omDifXnSMGjqYJ
+ WJKnSB2DPSwhfLw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+Recently, during a debugging session using local MPTCP connections, I
+noticed MPJoinAckHMacFailure was strangely not zero on the server side.
 
-On some platforms it has been observed that STT limits are not being
-applied properly causing poor performance as power limits are set too low.
+The first patch fixes this issue -- present since v5.9 -- and the second
+one validates it in the selftests.
 
-STT limits that are sent to the platform are supposed to be in Q8.8
-format.  Convert them before sending.
-
-Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Policy Binary")
-Cc: stable@vger.kernel.org
-Tested-by: Yijun Shen <Yijun_Shen@Dell.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-v3:
- * Add a helper with a generic name (so it can be easily be moved to library
-   code in the future)
----
- drivers/platform/x86/amd/pmf/auto-mode.c |  4 ++--
- drivers/platform/x86/amd/pmf/cnqf.c      |  8 ++++----
- drivers/platform/x86/amd/pmf/core.c      | 14 ++++++++++++++
- drivers/platform/x86/amd/pmf/pmf.h       |  1 +
- drivers/platform/x86/amd/pmf/sps.c       | 12 ++++++++----
- drivers/platform/x86/amd/pmf/tee-if.c    |  6 ++++--
- 6 files changed, 33 insertions(+), 12 deletions(-)
+Matthieu Baerts (NGI0) (2):
+      mptcp: only inc MPJoinAckHMacFailure for HMAC failures
+      selftests: mptcp: validate MPJoin HMacFailure counters
 
-diff --git a/drivers/platform/x86/amd/pmf/auto-mode.c b/drivers/platform/x86/amd/pmf/auto-mode.c
-index 02ff68be10d01..1400ac70c52d1 100644
---- a/drivers/platform/x86/amd/pmf/auto-mode.c
-+++ b/drivers/platform/x86/amd/pmf/auto-mode.c
-@@ -120,9 +120,9 @@ static void amd_pmf_set_automode(struct amd_pmf_dev *dev, int idx,
- 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pwr_ctrl->sppt_apu_only, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pwr_ctrl->stt_min, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--			 pwr_ctrl->stt_skin_temp[STT_TEMP_APU], NULL);
-+			 fixp_q88_from_integer(pwr_ctrl->stt_skin_temp[STT_TEMP_APU]), NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--			 pwr_ctrl->stt_skin_temp[STT_TEMP_HS2], NULL);
-+			 fixp_q88_from_integer(pwr_ctrl->stt_skin_temp[STT_TEMP_HS2]), NULL);
- 
- 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
- 		apmf_update_fan_idx(dev, config_store.mode_set[idx].fan_control.manual,
-diff --git a/drivers/platform/x86/amd/pmf/cnqf.c b/drivers/platform/x86/amd/pmf/cnqf.c
-index bc8899e15c914..3cde8a5de64a9 100644
---- a/drivers/platform/x86/amd/pmf/cnqf.c
-+++ b/drivers/platform/x86/amd/pmf/cnqf.c
-@@ -81,10 +81,10 @@ static int amd_pmf_set_cnqf(struct amd_pmf_dev *dev, int src, int idx,
- 	amd_pmf_send_cmd(dev, SET_SPPT, false, pc->sppt, NULL);
- 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pc->sppt_apu_only, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pc->stt_min, NULL);
--	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, pc->stt_skin_temp[STT_TEMP_APU],
--			 NULL);
--	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, pc->stt_skin_temp[STT_TEMP_HS2],
--			 NULL);
-+	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
-+			 fixp_q88_from_integer(pc->stt_skin_temp[STT_TEMP_APU]), NULL);
-+	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
-+			 fixp_q88_from_integer(pc->stt_skin_temp[STT_TEMP_HS2]), NULL);
- 
- 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
- 		apmf_update_fan_idx(dev,
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index a2cb2d5544f5b..5209996eba674 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -176,6 +176,20 @@ static void __maybe_unused amd_pmf_dump_registers(struct amd_pmf_dev *dev)
- 	dev_dbg(dev->dev, "AMD_PMF_REGISTER_MESSAGE:%x\n", value);
- }
- 
-+/**
-+ * fixp_q88_from_integer: Convert integer to Q8.8
-+ * @val: input value
-+ *
-+ * Converts an integer into binary fixed point format where 8 bits
-+ * are used for integer and 8 bits are used for the decimal.
-+ *
-+ * Return: unsigned integer converted to Q8.8 format
-+ */
-+u32 fixp_q88_from_integer(u32 val)
-+{
-+	return val << 8;
-+}
-+
- int amd_pmf_send_cmd(struct amd_pmf_dev *dev, u8 message, bool get, u32 arg, u32 *data)
- {
- 	int rc;
-diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
-index e6bdee68ccf34..2865e0a70b43d 100644
---- a/drivers/platform/x86/amd/pmf/pmf.h
-+++ b/drivers/platform/x86/amd/pmf/pmf.h
-@@ -777,6 +777,7 @@ int apmf_install_handler(struct amd_pmf_dev *pmf_dev);
- int apmf_os_power_slider_update(struct amd_pmf_dev *dev, u8 flag);
- int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer);
- int amd_pmf_notify_sbios_heartbeat_event_v2(struct amd_pmf_dev *dev, u8 flag);
-+u32 fixp_q88_from_integer(u32 val);
- 
- /* SPS Layer */
- int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf);
-diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
-index d3083383f11fb..dfc5285b681f7 100644
---- a/drivers/platform/x86/amd/pmf/sps.c
-+++ b/drivers/platform/x86/amd/pmf/sps.c
-@@ -198,9 +198,11 @@ static void amd_pmf_update_slider_v2(struct amd_pmf_dev *dev, int idx)
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
- 			 apts_config_store.val[idx].stt_min_limit, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--			 apts_config_store.val[idx].stt_skin_temp_limit_apu, NULL);
-+			 fixp_q88_from_integer(apts_config_store.val[idx].stt_skin_temp_limit_apu),
-+			 NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--			 apts_config_store.val[idx].stt_skin_temp_limit_hs2, NULL);
-+			 fixp_q88_from_integer(apts_config_store.val[idx].stt_skin_temp_limit_hs2),
-+			 NULL);
- }
- 
- void amd_pmf_update_slider(struct amd_pmf_dev *dev, bool op, int idx,
-@@ -217,9 +219,11 @@ void amd_pmf_update_slider(struct amd_pmf_dev *dev, bool op, int idx,
- 		amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
- 				 config_store.prop[src][idx].stt_min, NULL);
- 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU], NULL);
-+				 fixp_q88_from_integer(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU]),
-+				 NULL);
- 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2], NULL);
-+				 fixp_q88_from_integer(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2]),
-+				 NULL);
- 	} else if (op == SLIDER_OP_GET) {
- 		amd_pmf_send_cmd(dev, GET_SPL, true, ARG_NONE, &table->prop[src][idx].spl);
- 		amd_pmf_send_cmd(dev, GET_FPPT, true, ARG_NONE, &table->prop[src][idx].fppt);
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index a1e43873a07b0..22d48048f9d01 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -123,7 +123,8 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
- 
- 		case PMF_POLICY_STT_SKINTEMP_APU:
- 			if (dev->prev_data->stt_skintemp_apu != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
-+						 fixp_q88_from_integer(val), NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_APU: %u\n", val);
- 				dev->prev_data->stt_skintemp_apu = val;
- 			}
-@@ -131,7 +132,8 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
- 
- 		case PMF_POLICY_STT_SKINTEMP_HS2:
- 			if (dev->prev_data->stt_skintemp_hs2 != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
-+						 fixp_q88_from_integer(val), NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_HS2: %u\n", val);
- 				dev->prev_data->stt_skintemp_hs2 = val;
- 			}
+ net/mptcp/subflow.c                             |  8 ++++++--
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 18 ++++++++++++++++++
+ 2 files changed, 24 insertions(+), 2 deletions(-)
+---
+base-commit: 61f96e684edd28ca40555ec49ea1555df31ba619
+change-id: 20250407-net-mptcp-hmac-failure-mib-66f599305ff3
+
+Best regards,
 -- 
-2.43.0
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
