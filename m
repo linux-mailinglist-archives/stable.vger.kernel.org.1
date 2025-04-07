@@ -1,108 +1,275 @@
-Return-Path: <stable+bounces-128462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E41A7D674
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:44:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2FEA7D691
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CEA1884C1B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0164B421CA8
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A451221F35;
-	Mon,  7 Apr 2025 07:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED1922425C;
+	Mon,  7 Apr 2025 07:42:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533619ABC6;
-	Mon,  7 Apr 2025 07:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB1B221F35;
+	Mon,  7 Apr 2025 07:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744011716; cv=none; b=UU1TJTONlqUaKzWPXwzTCoL/C54rLKusgaupxbj3ocvqvWoNF1fvQ27scUHvBfkpVCx6FtznkN61GNWpLE9uup+DH/04NWhjPpI3XHRwk5gYsgVsFTDnDWi1wD3JvrbwbGUXtS5x8mP5tIMBw9P599mC8qwYpiCQaJYsC9uO19I=
+	t=1744011728; cv=none; b=BzBwYbSBX6Thu6QxqvQIzeTp7zDVlU+ZLBZbOcBaD4jkP7LSC44zATyPnjU4GrPpDuqokidkHp+jd44av083cE0iPFv6d1dL6kwO7jBXwpg4GDo/gJIONYT9o3tCtTIeiRJu4VvkyNHLqAOtu+NKIMC5sLTean1k+s0+ftgH17A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744011716; c=relaxed/simple;
-	bh=4sYWNtAc4YF7YZg03HO0SzkfYuVw4goAQfDHPc5y0l0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DOwcIweB6EAtzAoOH1rBiN8x48R90fZFQ+K6FpX8Ij2GtTqTGDfTL+HjWjstOArsguINCo4eZ0Zb0vbwye5I/v2Kjmf3tp42Rw5xzfEH7yDd+RIZ0AilgSCHgoQAf24IRdon+gwdqWr3v2BY1YQvWU8tZGQXAcZFcbRn/EZ9kIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowABnCzixgfNnEbXVBg--.3292S2;
-	Mon, 07 Apr 2025 15:41:40 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	make24@iscas.ac.cn,
-	sam@ravnborg.org,
-	dawei.li@shingroup.cn
-Cc: sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] sparc: fix error handling in scan_one_device()
-Date: Mon,  7 Apr 2025 15:41:27 +0800
-Message-Id: <20250407074127.2581452-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1744011728; c=relaxed/simple;
+	bh=wJwnGhorr/lQGHcTE2BKBCk8td8nfzDg28t8HbRDcDM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mxl5fliqnmwf7sd1lFhyKIgaceKUaCClPEjpbG48UEqV8iwMtsDHmKVKfUZRnVm0rE7peMDKA93j2xRzMP1UpwzDGu0v7nR70kOwfxJuBxJSHwn99Zk/N31g/VPH0LtEyyAcAmXKuSwr2KwFXPmerZea1AlRZnmvEWgesGS1+6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ZWLhm0tNnz1R7gq;
+	Mon,  7 Apr 2025 15:40:08 +0800 (CST)
+Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
+	by mail.maildlp.com (Postfix) with ESMTPS id AFD5B18005F;
+	Mon,  7 Apr 2025 15:42:00 +0800 (CST)
+Received: from [10.174.179.13] (10.174.179.13) by
+ kwepemo200002.china.huawei.com (7.202.195.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 7 Apr 2025 15:41:59 +0800
+Message-ID: <76609f9c-7c2b-a64a-5999-f359e6acc3ca@huawei.com>
+Date: Mon, 7 Apr 2025 15:41:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V4] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: David Hildenbrand <david@redhat.com>, <yangge1116@126.com>,
+	<akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, <21cnbao@gmail.com>,
+	<baolin.wang@linux.alibaba.com>, <aneesh.kumar@linux.ibm.com>,
+	<liuzixing@hygon.cn>, Kefeng Wang <wangkefeng.wang@huawei.com>
+References: <1720075944-27201-1-git-send-email-yangge1116@126.com>
+ <4119c1d0-5010-b2e7-3f1c-edd37f16f1f2@huawei.com>
+ <91ac638d-b2d6-4683-ab29-fb647f58af63@redhat.com>
+ <076babae-9fc6-13f5-36a3-95dde0115f77@huawei.com>
+ <26870d6f-8bb9-44de-9d1f-dcb1b5a93eae@redhat.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <26870d6f-8bb9-44de-9d1f-dcb1b5a93eae@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABnCzixgfNnEbXVBg--.3292S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8WF43GFg_yoWktwbEga
-	12v34UWr1fAwsagw43Ar4a9r1xtrnFyFWrK34Iyr1kJayrXrZrWrs5Gw4vvr9rWa17Cr1D
-	Za4qqrsFkr1SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfUF0eHDUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemo200002.china.huawei.com (7.202.195.209)
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+在 2025/4/1 22:33, David Hildenbrand 写道:
+> On 27.03.25 12:16, Jinjiang Tu wrote:
+>>
+>> 在 2025/3/26 20:46, David Hildenbrand 写道:
+>>> On 26.03.25 13:42, Jinjiang Tu wrote:
+>>>> Hi,
+>>>>
+>>>
+>>> Hi!
+>>>
+>>>> We notiched a 12.3% performance regression for LibMicro pwrite
+>>>> testcase due to
+>>>> commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before
+>>>> adding to LRU batch").
+>>>>
+>>>> The testcase is executed as follows, and the file is tmpfs file.
+>>>>       pwrite -E -C 200 -L -S -W -N "pwrite_t1k" -s 1k -I 500 -f $TFILE
+>>>
+>>> Do we know how much that reflects real workloads? (IOW, how much
+>>> should we care)
+>>
+>> No, it's hard to say.
+>>
+>>>
+>>>>
+>>>> this testcase writes 1KB (only one page) to the tmpfs and repeats
+>>>> this step for many times. The Flame
+>>>> graph shows the performance regression comes from
+>>>> folio_mark_accessed() and workingset_activation().
+>>>>
+>>>> folio_mark_accessed() is called for the same page for many times.
+>>>> Before this patch, each call will
+>>>> add the page to cpu_fbatches.activate. When the fbatch is full, the
+>>>> fbatch is drained and the page
+>>>> is promoted to active list. And then, folio_mark_accessed() does
+>>>> nothing in later calls.
+>>>>
+>>>> But after this patch, the folio clear lru flags after it is added to
+>>>> cpu_fbatches.activate. After then,
+>>>> folio_mark_accessed will never call folio_activate() again due to the
+>>>> page is without lru flag, and
+>>>> the fbatch will not be full and the folio will not be marked active,
+>>>> later folio_mark_accessed()
+>>>> calls will always call workingset_activation(), leading to
+>>>> performance regression.
+>>>
+>>> Would there be a good place to drain the LRU to effectively get that
+>>> processed? (we can always try draining if the LRU flag is not set)
+>>
+>> Maybe we could drain the search the cpu_fbatches.activate of the 
+>> local cpu in __lru_cache_activate_folio()? Drain other fbatches is 
+>> meaningless .
+>
+> So the current behavior is that folio_mark_accessed() will end up 
+> calling folio_activate()
+> once, and then __lru_cache_activate_folio() until the LRU was drained 
+> (which can
+> take a looong time).
+>
+> The old behavior was that folio_mark_accessed() would keep calling 
+> folio_activate() until
+> the LRU was drained simply because it was full of "all the same pages" 
+> ?. Only *after*
+> the LRU was drained, folio_mark_accessed() would actually not do 
+> anything (desired behavior).
+>
+> So the overhead comes primarily from __lru_cache_activate_folio() 
+> searching through
+> the list "more" repeatedly because the LRU does get drained less 
+> frequently; and
+> it would never find it in there in this case.
+>
+> So ... it used to be suboptimal before, now it's more suboptimal I 
+> guess?! :)
+>
+> We'd need a way to better identify "this folio is already queued for 
+> activation". Searching
+> that list as well would be one option, but the hole "search the list" 
+> is nasty.
 
-Found by code review.
+Sorry for late reply. I tried to search the activate batch with the following diff, and
+the performance regression disappears.
 
-Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- arch/sparc/kernel/of_device_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/mm/swap.c b/mm/swap.c
+index f81c8aa93e67..cfe484ff12e6 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -400,6 +400,21 @@ static void __lru_cache_activate_folio(struct folio 
+*folio)
+                 }
+         }
 
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index f98c2901f335..4272746d7166 100644
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -677,7 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
--		kfree(op);
-+		put_device(&op->dev);
- 		op = NULL;
- 	}
- 
--- 
-2.25.1
++       fbatch = this_cpu_ptr(&cpu_fbatches.activate);
++       for (i = folio_batch_count(fbatch) - 1; i >= 0; i--) {
++               struct folio *batch_folio = fbatch->folios[i];
++
++               if (batch_folio == folio) {
++                       struct lruvec *lruvec;
++                       unsigned long flags;
++
++                       lruvec = folio_lruvec_lock_irqsave(folio, &flags);
++                       folio_activate_fn(lruvec, folio);
++                       unlock_page_lruvec_irqrestore(lruvec, flags);
++                       break;
++               }
++       }
++
+         local_unlock(&cpu_fbatches.lock);
+  }
 
+>
+> Maybe we can simply set the folio as active when staging it for 
+> activation, after having
+> cleared the LRU flag? We already do that during folio_add.
+>
+> As the LRU flag was cleared, nobody should be messing with that folio 
+> until the cache was
+> drained and the move was successful.
+>
+Yes, anyone who wants to delete the folio from lru list should test LRU flag
+
+I look some folio_test_active() calls, madvise_cold_or_pageout_pte_range() will
+set workingset flag if active flag is set. It seems more reasonable if we set
+active flag after adding to activate batch, since adding to activate batch already
+means active.
+
+>
+> Pretty sure this doesn't work, but just to throw out an idea:
+
+Thanks, I will try it ASAP.
+
+>
+> From c26e1c0ceda6c818826e5b89dc7c7c9279138f80 Mon Sep 17 00:00:00 2001
+> From: David Hildenbrand <david@redhat.com>
+> Date: Tue, 1 Apr 2025 16:31:56 +0200
+> Subject: [PATCH] test
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/swap.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/swap.c b/mm/swap.c
+> index fc8281ef42415..bbf9aa76db87f 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -175,6 +175,8 @@ static void folio_batch_move_lru(struct 
+> folio_batch *fbatch, move_fn_t move_fn)
+>      folios_put(fbatch);
+>  }
+>
+> +static void lru_activate(struct lruvec *lruvec, struct folio *folio);
+> +
+>  static void __folio_batch_add_and_move(struct folio_batch __percpu 
+> *fbatch,
+>          struct folio *folio, move_fn_t move_fn,
+>          bool on_lru, bool disable_irq)
+> @@ -191,6 +193,10 @@ static void __folio_batch_add_and_move(struct 
+> folio_batch __percpu *fbatch,
+>      else
+>          local_lock(&cpu_fbatches.lock);
+>
+> +    /* We'll only perform the actual list move deferred. */
+> +    if (move_fn == lru_activate)
+> +        folio_set_active(folio);
+> +
+>      if (!folio_batch_add(this_cpu_ptr(fbatch), folio) || 
+> folio_test_large(folio) ||
+>          lru_cache_disabled())
+>          folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+> @@ -299,12 +305,14 @@ static void lru_activate(struct lruvec *lruvec, 
+> struct folio *folio)
+>  {
+>      long nr_pages = folio_nr_pages(folio);
+>
+> -    if (folio_test_active(folio) || folio_test_unevictable(folio))
+> -        return;
+> -
+> +    /*
+> +     * We set the folio active after clearing the LRU flag, and set the
+> +     * LRU flag only after moving it to the right list.
+> +     */
+> +    VM_WARN_ON_ONCE(!folio_test_active(folio));
+> +    VM_WARN_ON_ONCE(folio_test_unevictable(folio));
+>
+>      lruvec_del_folio(lruvec, folio);
+> -    folio_set_active(folio);
+>      lruvec_add_folio(lruvec, folio);
+>      trace_mm_lru_activate(folio);
+>
+> @@ -342,7 +350,10 @@ void folio_activate(struct folio *folio)
+>          return;
+>
+>      lruvec = folio_lruvec_lock_irq(folio);
+> -    lru_activate(lruvec, folio);
+> +    if (!folio_test_unevictable(folio)) {
+> +        folio_set_active(folio);
+> +        lru_activate(lruvec, folio);
+> +    }
+>      unlock_page_lruvec_irq(lruvec);
+>      folio_set_lru(folio);
+>  }
 
