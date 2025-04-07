@@ -1,43 +1,42 @@
-Return-Path: <stable+bounces-128477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC64A7D7A8
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:23:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162D5A7D7B1
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51B257A2876
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6577C1890F0B
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A503722A7EE;
-	Mon,  7 Apr 2025 08:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B4722A1E2;
+	Mon,  7 Apr 2025 08:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1yzJPfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oC+XJ+ff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3AE22A1E2;
-	Mon,  7 Apr 2025 08:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F084224B1C;
+	Mon,  7 Apr 2025 08:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744014115; cv=none; b=rZyijNXAL+N2KoYUWXLZonRxMQZ4YCEY4zzstQtEVzYjmX1ZYOyOmgyx7baYKGMJKrgwmSJgk3CARwHvMGwU0oRv4+5f0ptptpTYHKet8JNUZubEGkC+re1DZKSdow5zE7P10C0pw+qZkovZjPPoWNChMFLImnD9ZlsEbbdqxyQ=
+	t=1744014142; cv=none; b=TaBMBOGu/cYSV95D/KpB9nZ0EQQTX9PMk692IFV0AiB/qGvD04zklMHlA6jKV2ucoNs/Rw90lLZSAct/+iMNyfsCpKM7gYk2OaiIM2hsjDMg3SozHyFQ2AhOkV0mWOl7pPpuAjVzsUO4w6GmRlR6Plnk7NCKE8Ofc9Kjk3BOHCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744014115; c=relaxed/simple;
-	bh=Gy7496cwbknI6p1aiz7+xBjXfs4pwhxMt1p8/p5sNJM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snv3XisSlWyLqb410so9+8Gl0g8LNo2pzKif02PgIbnul04VFTx/N54NAxWWKw365XVPJFh1D2vK8wQIoccOlOsi/9X3h5MQbWnTnkXLutuMYWxz9Dw0srUMAA89u3u6V7rS38b5NRDYoVDpYgjug/vZ9ajm9t8JC5bJCtkA80E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1yzJPfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D1FC4CEEA;
-	Mon,  7 Apr 2025 08:21:54 +0000 (UTC)
+	s=arc-20240116; t=1744014142; c=relaxed/simple;
+	bh=+PPVsu8jZEDbX4dVnlGkq4+8Qr3tBsWjVZHP3usyl8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K7Q+uaFXumSyj8p+9CIE+TL5e0ks+QXWP+1led22FJPCb0a3RG6kiDF93PmzKLCnxvSUPhiEOgmzGDcY1JEX+jrHcdHpuHQeqWpT8HZK/D0yQcIlWwy5HsNMngHgiDduqjzM1fvtcVMEVVJh1RIHu/w0L7WPFA3564aKXzzvxms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oC+XJ+ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AF0C4CEE9;
+	Mon,  7 Apr 2025 08:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744014114;
-	bh=Gy7496cwbknI6p1aiz7+xBjXfs4pwhxMt1p8/p5sNJM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1yzJPfxxuAhpdWVgurVxGr3H3rLuBXthFZLqwjFAH1KqLweyqRx3WvJx6u0OclaE
-	 g84NXQ74vzixBWi2WGOhr5xd+EH9T0ilRHMCHKH//XzvwY3wVF0/b6vCu5mfSg0lOd
-	 A1JUBae7VS5xj1tLrH2b9hGZjzRxljEsK5/nKMmY=
+	s=korg; t=1744014141;
+	bh=+PPVsu8jZEDbX4dVnlGkq4+8Qr3tBsWjVZHP3usyl8o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oC+XJ+ffix/lldCNIQr11QkSiMilIi2mSlhK97NowDZcrWxvkwglh/aI8N3C9WrUU
+	 wsKzDL+JNJRyULR2brxyGq94TU6cXKuoRhwUIYb1fLOLL4w4phjCPCE4vpcF/ihSR0
+	 cjGQytqQ/npjvYNEpu7u+gl6x71vQpyOyqr1XnIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -46,12 +45,10 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.13.10
-Date: Mon,  7 Apr 2025 10:20:15 +0200
-Message-ID: <2025040715-subduing-portable-49d0@gregkh>
+Subject: Linux 6.14.1
+Date: Mon,  7 Apr 2025 10:20:50 +0200
+Message-ID: <2025040750-feminist-gumball-0c69@gregkh>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025040715-antiquity-retired-a642@gregkh>
-References: <2025040715-antiquity-retired-a642@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,941 +57,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-diff --git a/Makefile b/Makefile
-index 21a34e8991ac..ffed1f493b48 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 13
--SUBLEVEL = 9
-+SUBLEVEL = 10
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 2f096a5b973d..c391ac38b990 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -368,6 +368,25 @@ static int mchp_tc_probe(struct platform_device *pdev)
- 			channel);
- 	}
- 
-+	/* Disable Quadrature Decoder and position measure */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Setup the period capture mode */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
-+				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
-+				 ATMEL_TC_TCCLKS,
-+				 ATMEL_TC_CMR_MASK);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable clock and trigger counter */
-+	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-+			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+	if (ret)
-+		return ret;
-+
- 	priv->tc_cfg = tcb_config;
- 	priv->regmap = regmap;
- 	counter->name = dev_name(&pdev->dev);
-diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
-index cf73f65baf60..b249c8647639 100644
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(struct stm32_lptim_cnt *priv,
- 		return 0;
- 	}
- 
-+	ret = clk_enable(priv->clk);
-+	if (ret)
-+		goto disable_cnt;
-+
- 	/* LP timer must be enabled before writing CMP & ARR */
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
- 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
- 			   STM32_LPTIM_CMPOKCF_ARROKCF);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
--	ret = clk_enable(priv->clk);
--	if (ret) {
--		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
--		return ret;
--	}
- 	priv->enabled = true;
- 
- 	/* Start LP timer in continuous mode */
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
- 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
-+
-+disable_clk:
-+	clk_disable(priv->clk);
-+disable_cnt:
-+	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
-+
-+	return ret;
- }
- 
- static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
-diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
-index 25cfd964dc25..acb9eb18f7cc 100644
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -6,9 +6,6 @@
-  *  Copyright (c) 2015-2018 Terry Junge <terry.junge@plantronics.com>
-  */
- 
--/*
-- */
--
- #include "hid-ids.h"
- 
- #include <linux/hid.h>
-@@ -23,30 +20,28 @@
- 
- #define PLT_VOL_UP		0x00b1
- #define PLT_VOL_DOWN		0x00b2
-+#define PLT_MIC_MUTE		0x00b5
- 
- #define PLT1_VOL_UP		(PLT_HID_1_0_PAGE | PLT_VOL_UP)
- #define PLT1_VOL_DOWN		(PLT_HID_1_0_PAGE | PLT_VOL_DOWN)
-+#define PLT1_MIC_MUTE		(PLT_HID_1_0_PAGE | PLT_MIC_MUTE)
- #define PLT2_VOL_UP		(PLT_HID_2_0_PAGE | PLT_VOL_UP)
- #define PLT2_VOL_DOWN		(PLT_HID_2_0_PAGE | PLT_VOL_DOWN)
-+#define PLT2_MIC_MUTE		(PLT_HID_2_0_PAGE | PLT_MIC_MUTE)
-+#define HID_TELEPHONY_MUTE	(HID_UP_TELEPHONY | 0x2f)
-+#define HID_CONSUMER_MUTE	(HID_UP_CONSUMER | 0xe2)
- 
- #define PLT_DA60		0xda60
- #define PLT_BT300_MIN		0x0413
- #define PLT_BT300_MAX		0x0418
- 
--
--#define PLT_ALLOW_CONSUMER (field->application == HID_CP_CONSUMERCONTROL && \
--			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
--
--#define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
--#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
--
- #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
--#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
- 
- struct plt_drv_data {
- 	unsigned long device_type;
--	unsigned long last_volume_key_ts;
--	u32 quirks;
-+	unsigned long last_key_ts;
-+	unsigned long double_key_to;
-+	__u16 last_key;
- };
- 
- static int plantronics_input_mapping(struct hid_device *hdev,
-@@ -58,34 +53,43 @@ static int plantronics_input_mapping(struct hid_device *hdev,
- 	unsigned short mapped_key;
- 	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
- 	unsigned long plt_type = drv_data->device_type;
-+	int allow_mute = usage->hid == HID_TELEPHONY_MUTE;
-+	int allow_consumer = field->application == HID_CP_CONSUMERCONTROL &&
-+			(usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER &&
-+			usage->hid != HID_CONSUMER_MUTE;
- 
- 	/* special case for PTT products */
- 	if (field->application == HID_GD_JOYSTICK)
- 		goto defaulted;
- 
--	/* handle volume up/down mapping */
- 	/* non-standard types or multi-HID interfaces - plt_type is PID */
- 	if (!(plt_type & HID_USAGE_PAGE)) {
- 		switch (plt_type) {
- 		case PLT_DA60:
--			if (PLT_ALLOW_CONSUMER)
-+			if (allow_consumer)
- 				goto defaulted;
--			goto ignored;
-+			if (usage->hid == HID_CONSUMER_MUTE) {
-+				mapped_key = KEY_MICMUTE;
-+				goto mapped;
-+			}
-+			break;
- 		default:
--			if (PLT_ALLOW_CONSUMER)
-+			if (allow_consumer || allow_mute)
- 				goto defaulted;
- 		}
-+		goto ignored;
- 	}
--	/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
--	/* 'basic telephony compliant' - allow default consumer page map */
--	else if ((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
--		 (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) {
--		if (PLT_ALLOW_CONSUMER)
--			goto defaulted;
--	}
--	/* not 'basic telephony' - apply legacy mapping */
--	/* only map if the field is in the device's primary vendor page */
--	else if (!((field->application ^ plt_type) & HID_USAGE_PAGE)) {
-+
-+	/* handle standard consumer control mapping */
-+	/* and standard telephony mic mute mapping */
-+	if (allow_consumer || allow_mute)
-+		goto defaulted;
-+
-+	/* handle vendor unique types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
-+	/* if not 'basic telephony compliant' - map vendor unique controls */
-+	if (!((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
-+	      (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) &&
-+	      !((field->application ^ plt_type) & HID_USAGE_PAGE))
- 		switch (usage->hid) {
- 		case PLT1_VOL_UP:
- 		case PLT2_VOL_UP:
-@@ -95,8 +99,11 @@ static int plantronics_input_mapping(struct hid_device *hdev,
- 		case PLT2_VOL_DOWN:
- 			mapped_key = KEY_VOLUMEDOWN;
- 			goto mapped;
-+		case PLT1_MIC_MUTE:
-+		case PLT2_MIC_MUTE:
-+			mapped_key = KEY_MICMUTE;
-+			goto mapped;
- 		}
--	}
- 
- /*
-  * Future mapping of call control or other usages,
-@@ -105,6 +112,8 @@ static int plantronics_input_mapping(struct hid_device *hdev,
-  */
- 
- ignored:
-+	hid_dbg(hdev, "usage: %08x (appl: %08x) - ignored\n",
-+		usage->hid, field->application);
- 	return -1;
- 
- defaulted:
-@@ -123,38 +132,26 @@ static int plantronics_event(struct hid_device *hdev, struct hid_field *field,
- 			     struct hid_usage *usage, __s32 value)
- {
- 	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
-+	unsigned long prev_tsto, cur_ts;
-+	__u16 prev_key, cur_key;
- 
--	if (drv_data->quirks & PLT_QUIRK_DOUBLE_VOLUME_KEYS) {
--		unsigned long prev_ts, cur_ts;
-+	/* Usages are filtered in plantronics_usages. */
- 
--		/* Usages are filtered in plantronics_usages. */
-+	/* HZ too low for ms resolution - double key detection disabled */
-+	/* or it is a key release - handle key presses only. */
-+	if (!drv_data->double_key_to || !value)
-+		return 0;
- 
--		if (!value) /* Handle key presses only. */
--			return 0;
-+	prev_tsto = drv_data->last_key_ts + drv_data->double_key_to;
-+	cur_ts = drv_data->last_key_ts = jiffies;
-+	prev_key = drv_data->last_key;
-+	cur_key = drv_data->last_key = usage->code;
- 
--		prev_ts = drv_data->last_volume_key_ts;
--		cur_ts = jiffies;
--		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_DOUBLE_KEY_TIMEOUT)
--			return 1; /* Ignore the repeated key. */
--
--		drv_data->last_volume_key_ts = cur_ts;
-+	/* If the same key occurs in <= double_key_to -- ignore it */
-+	if (prev_key == cur_key && time_before_eq(cur_ts, prev_tsto)) {
-+		hid_dbg(hdev, "double key %d ignored\n", cur_key);
-+		return 1; /* Ignore the repeated key. */
- 	}
--	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
--		unsigned long prev_ts, cur_ts;
--
--		/* Usages are filtered in plantronics_usages. */
--
--		if (!value) /* Handle key presses only. */
--			return 0;
--
--		prev_ts = drv_data->last_volume_key_ts;
--		cur_ts = jiffies;
--		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
--			return 1; /* Ignore the followed opposite volume key. */
--
--		drv_data->last_volume_key_ts = cur_ts;
--	}
--
- 	return 0;
- }
- 
-@@ -196,12 +193,16 @@ static int plantronics_probe(struct hid_device *hdev,
- 	ret = hid_parse(hdev);
- 	if (ret) {
- 		hid_err(hdev, "parse failed\n");
--		goto err;
-+		return ret;
- 	}
- 
- 	drv_data->device_type = plantronics_device_type(hdev);
--	drv_data->quirks = id->driver_data;
--	drv_data->last_volume_key_ts = jiffies - msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
-+	drv_data->double_key_to = msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
-+	drv_data->last_key_ts = jiffies - drv_data->double_key_to;
-+
-+	/* if HZ does not allow ms resolution - disable double key detection */
-+	if (drv_data->double_key_to < PLT_DOUBLE_KEY_TIMEOUT)
-+		drv_data->double_key_to = 0;
- 
- 	hid_set_drvdata(hdev, drv_data);
- 
-@@ -210,29 +211,10 @@ static int plantronics_probe(struct hid_device *hdev,
- 	if (ret)
- 		hid_err(hdev, "hw start failed\n");
- 
--err:
- 	return ret;
- }
- 
- static const struct hid_device_id plantronics_devices[] = {
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3210_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
--		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
--		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
- 	{ }
- };
-@@ -241,6 +223,14 @@ MODULE_DEVICE_TABLE(hid, plantronics_devices);
- static const struct hid_usage_id plantronics_usages[] = {
- 	{ HID_CP_VOLUMEUP, EV_KEY, HID_ANY_ID },
- 	{ HID_CP_VOLUMEDOWN, EV_KEY, HID_ANY_ID },
-+	{ HID_TELEPHONY_MUTE, EV_KEY, HID_ANY_ID },
-+	{ HID_CONSUMER_MUTE, EV_KEY, HID_ANY_ID },
-+	{ PLT2_VOL_UP, EV_KEY, HID_ANY_ID },
-+	{ PLT2_VOL_DOWN, EV_KEY, HID_ANY_ID },
-+	{ PLT2_MIC_MUTE, EV_KEY, HID_ANY_ID },
-+	{ PLT1_VOL_UP, EV_KEY, HID_ANY_ID },
-+	{ PLT1_VOL_DOWN, EV_KEY, HID_ANY_ID },
-+	{ PLT1_MIC_MUTE, EV_KEY, HID_ANY_ID },
- 	{ HID_TERMINATOR, HID_TERMINATOR, HID_TERMINATOR }
- };
- 
-diff --git a/drivers/memstick/host/rtsx_usb_ms.c b/drivers/memstick/host/rtsx_usb_ms.c
-index 6eb892fd4d34..3878136227e4 100644
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
-@@ -813,6 +813,7 @@ static void rtsx_usb_ms_drv_remove(struct platform_device *pdev)
- 
- 	host->eject = true;
- 	cancel_work_sync(&host->handle_req);
-+	cancel_delayed_work_sync(&host->poll_card);
- 
- 	mutex_lock(&host->host_mutex);
- 	if (host->req) {
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index e9208a8d2bfa..a5a4252ea19f 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1365,9 +1365,11 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10b0, 0)}, /* Telit FE990B */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 44179f4e807f..aeab2308b150 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
- 
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
-+	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
-+
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1762,13 +1773,11 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		if (status < 0)
- 			goto out1;
- 
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
-diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250/8250_dma.c
-index f245a84f4a50..bdd26c9f34bd 100644
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -162,7 +162,7 @@ void serial8250_tx_dma_flush(struct uart_8250_port *p)
- 	 */
- 	dma->tx_size = 0;
- 
--	dmaengine_terminate_async(dma->rxchan);
-+	dmaengine_terminate_async(dma->txchan);
- }
- 
- int serial8250_rx_dma(struct uart_8250_port *p)
-diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index df4d0d832e54..73c200127b08 100644
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -2727,6 +2727,22 @@ static struct pci_serial_quirk pci_serial_quirks[] = {
- 		.init		= pci_oxsemi_tornado_init,
- 		.setup		= pci_oxsemi_tornado_setup,
- 	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4026,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4021,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
- 	{
- 		.vendor         = PCI_VENDOR_ID_INTEL,
- 		.device         = 0x8811,
-@@ -5253,6 +5269,14 @@ static const struct pci_device_id serial_pci_tbl[] = {
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
- 	/*
- 	 * Brainboxes UC-235/246
- 	 */
-@@ -5373,6 +5397,14 @@ static const struct pci_device_id serial_pci_tbl[] = {
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
- 	/*
- 	 * Brainboxes UC-420
- 	 */
-@@ -5599,6 +5631,20 @@ static const struct pci_device_id serial_pci_tbl[] = {
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-235
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
-+	/*
-+	 * Brainboxes XC-475
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
- 
- 	/*
- 	 * Perle PCI-RAS cards
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 57b0632a3db6..433cf2267e16 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1484,6 +1484,19 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
-+	u32 ctrl;
-+
-+	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
-+	ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+	if (ctrl & UARTCTRL_TE) {
-+		/* wait for the transmit engine to complete */
-+		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
-+		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
-+
-+		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
-+			cpu_relax();
-+	}
-+
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	if (rs485->flags & SER_RS485_ENABLED) {
-@@ -1503,6 +1516,10 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 	}
- 
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
-+
-+	if (ctrl & UARTCTRL_TE)
-+		lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 1ec5d8c3aef8..0854ad8c90cd 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -965,10 +965,8 @@ static void stm32_usart_start_tx(struct uart_port *port)
- {
- 	struct tty_port *tport = &port->state->port;
- 
--	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char) {
--		stm32_usart_rs485_rts_disable(port);
-+	if (kfifo_is_empty(&tport->xmit_fifo) && !port->x_char)
- 		return;
--	}
- 
- 	stm32_usart_rs485_rts_enable(port);
- 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index dfe1a676d487..e24109c2ab54 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2862,6 +2862,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		if (!ep_seg) {
- 
- 			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
-+				/* this event is unlikely to match any TD, don't skip them all */
-+				if (trb_comp_code == COMP_STOPPED_LENGTH_INVALID)
-+					return 0;
-+
- 				skip_isoc_td(xhci, td, ep, status);
- 				if (!list_empty(&ep_ring->td_list))
- 					continue;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index dba1db259cd3..40015c41b129 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1755,11 +1755,20 @@ static inline void xhci_write_64(struct xhci_hcd *xhci,
- }
- 
- 
--/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+/*
-+ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
-+ * Other chapters and later specs say that it should only be set if the link is inside a TD
-+ * which continues from the end of one segment to the next segment.
-+ *
-+ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
-+ *
-+ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
-+ * "resynchronizing the pipe" after a Missed Service Error.
-+ */
- static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
- {
- 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
--	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
-+	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
- }
- 
- /* xHCI debugging */
-diff --git a/fs/bcachefs/fs-ioctl.c b/fs/bcachefs/fs-ioctl.c
-index 405cf08bda34..e599d5ac6e4d 100644
---- a/fs/bcachefs/fs-ioctl.c
-+++ b/fs/bcachefs/fs-ioctl.c
-@@ -520,10 +520,12 @@ static long bch2_ioctl_subvolume_destroy(struct bch_fs *c, struct file *filp,
- 		ret = -ENOENT;
- 		goto err;
- 	}
--	ret = __bch2_unlink(dir, victim, true);
-+
-+	ret =   inode_permission(file_mnt_idmap(filp), d_inode(victim), MAY_WRITE) ?:
-+		__bch2_unlink(dir, victim, true);
- 	if (!ret) {
- 		fsnotify_rmdir(dir, victim);
--		d_delete(victim);
-+		d_invalidate(victim);
- 	}
- err:
- 	inode_unlock(dir);
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 4a765555bf84..1c8fcb04b3cd 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -2052,7 +2052,6 @@ static inline int check_for_legacy_methods(int status, struct net *net)
- 		path_put(&path);
- 		if (status)
- 			return -ENOTDIR;
--		status = nn->client_tracking_ops->init(net);
- 	}
- 	return status;
- }
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index aac91466279f..3e01781aeb7b 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -612,36 +612,33 @@ static void cgroup_force_idle_show(struct seq_file *seq, struct cgroup_base_stat
- void cgroup_base_stat_cputime_show(struct seq_file *seq)
- {
- 	struct cgroup *cgrp = seq_css(seq)->cgroup;
--	u64 usage, utime, stime, ntime;
-+	struct cgroup_base_stat bstat;
- 
- 	if (cgroup_parent(cgrp)) {
- 		cgroup_rstat_flush_hold(cgrp);
--		usage = cgrp->bstat.cputime.sum_exec_runtime;
-+		bstat = cgrp->bstat;
- 		cputime_adjust(&cgrp->bstat.cputime, &cgrp->prev_cputime,
--			       &utime, &stime);
--		ntime = cgrp->bstat.ntime;
-+			       &bstat.cputime.utime, &bstat.cputime.stime);
- 		cgroup_rstat_flush_release(cgrp);
- 	} else {
--		/* cgrp->bstat of root is not actually used, reuse it */
--		root_cgroup_cputime(&cgrp->bstat);
--		usage = cgrp->bstat.cputime.sum_exec_runtime;
--		utime = cgrp->bstat.cputime.utime;
--		stime = cgrp->bstat.cputime.stime;
--		ntime = cgrp->bstat.ntime;
-+		root_cgroup_cputime(&bstat);
- 	}
- 
--	do_div(usage, NSEC_PER_USEC);
--	do_div(utime, NSEC_PER_USEC);
--	do_div(stime, NSEC_PER_USEC);
--	do_div(ntime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.sum_exec_runtime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.utime, NSEC_PER_USEC);
-+	do_div(bstat.cputime.stime, NSEC_PER_USEC);
-+	do_div(bstat.ntime, NSEC_PER_USEC);
- 
- 	seq_printf(seq, "usage_usec %llu\n"
- 			"user_usec %llu\n"
- 			"system_usec %llu\n"
- 			"nice_usec %llu\n",
--			usage, utime, stime, ntime);
-+			bstat.cputime.sum_exec_runtime,
-+			bstat.cputime.utime,
-+			bstat.cputime.stime,
-+			bstat.ntime);
- 
--	cgroup_force_idle_show(seq, &cgrp->bstat);
-+	cgroup_force_idle_show(seq, &bstat);
- }
- 
- /* Add bpf kfuncs for cgroup_rstat_updated() and cgroup_rstat_flush() */
-diff --git a/net/atm/mpc.c b/net/atm/mpc.c
-index 324e3ab96bb3..12da0269275c 100644
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -1314,6 +1314,8 @@ static void MPOA_cache_impos_rcvd(struct k_message *msg,
- 	holding_time = msg->content.eg_info.holding_time;
- 	dprintk("(%s) entry = %p, holding_time = %u\n",
- 		mpc->dev->name, entry, holding_time);
-+	if (entry == NULL && !holding_time)
-+		return;
- 	if (entry == NULL && holding_time) {
- 		entry = mpc->eg_ops->add_entry(msg, mpc);
- 		mpc->eg_ops->put(entry);
-diff --git a/net/ipv6/netfilter/nf_socket_ipv6.c b/net/ipv6/netfilter/nf_socket_ipv6.c
-index a7690ec62325..9ea5ef56cb27 100644
---- a/net/ipv6/netfilter/nf_socket_ipv6.c
-+++ b/net/ipv6/netfilter/nf_socket_ipv6.c
-@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct net *net, const struct sk_buff *skb,
- 	struct sk_buff *data_skb = NULL;
- 	int doff = 0;
- 	int thoff = 0, tproto;
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn const *ct;
-+#endif
- 
- 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
- 	if (tproto < 0) {
-@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct net *net, const struct sk_buff *skb,
- 		return NULL;
- 	}
- 
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	/* Do the lookup with the original socket address in
-+	 * case this is a reply packet of an established
-+	 * SNAT-ted connection.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (ct &&
-+	    ((tproto != IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
-+	     (tproto == IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_RELATED_REPLY)) &&
-+	    (ct->status & IPS_SRC_NAT_DONE)) {
-+		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
-+		dport = (tproto == IPPROTO_TCP) ?
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
-+	}
-+#endif
-+
- 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
- 				     sport, dport, indev);
- }
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index f952918191ef..ee1682a2e038 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10472,6 +10472,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x881e, "HP Laptop 15s-du3xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
-@@ -10729,6 +10730,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
-+	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 23fcd680167d..9b0bf626cd02 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -4216,6 +4216,52 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
- 	}
- }
- 
-+/*
-+ * Some Plantronics headsets have control names that don't meet ALSA naming
-+ * standards. This function fixes nonstandard source names. By the time
-+ * this function is called the control name should look like one of these:
-+ * "source names Playback Volume"
-+ * "source names Playback Switch"
-+ * "source names Capture Volume"
-+ * "source names Capture Switch"
-+ * If any of the trigger words are found in the name then the name will
-+ * be changed to:
-+ * "Headset Playback Volume"
-+ * "Headset Playback Switch"
-+ * "Headset Capture Volume"
-+ * "Headset Capture Switch"
-+ * depending on the current suffix.
-+ */
-+static void snd_fix_plt_name(struct snd_usb_audio *chip,
-+			     struct snd_ctl_elem_id *id)
-+{
-+	/* no variant of "Sidetone" should be added to this list */
-+	static const char * const trigger[] = {
-+		"Earphone", "Microphone", "Receive", "Transmit"
-+	};
-+	static const char * const suffix[] = {
-+		" Playback Volume", " Playback Switch",
-+		" Capture Volume", " Capture Switch"
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(trigger); i++)
-+		if (strstr(id->name, trigger[i]))
-+			goto triggered;
-+	usb_audio_dbg(chip, "no change in %s\n", id->name);
-+	return;
-+
-+triggered:
-+	for (i = 0; i < ARRAY_SIZE(suffix); i++)
-+		if (strstr(id->name, suffix[i])) {
-+			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
-+			snprintf(id->name, sizeof(id->name), "Headset%s",
-+				 suffix[i]);
-+			return;
-+		}
-+	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
-+}
-+
- void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 				  struct usb_mixer_elem_info *cval, int unitid,
- 				  struct snd_kcontrol *kctl)
-@@ -4233,5 +4279,10 @@ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 			cval->min_mute = 1;
- 		break;
- 	}
-+
-+	/* ALSA-ify some Plantronics headset control names */
-+	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
-+	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
-+		snd_fix_plt_name(mixer->chip, &kctl->id);
- }
- 
-diff --git a/tools/perf/Documentation/intel-hybrid.txt b/tools/perf/Documentation/intel-hybrid.txt
-index e7a776ad25d7..0379903673a4 100644
---- a/tools/perf/Documentation/intel-hybrid.txt
-+++ b/tools/perf/Documentation/intel-hybrid.txt
-@@ -8,15 +8,15 @@ Part of events are available on core cpu, part of events are available
- on atom cpu and even part of events are available on both.
- 
- Kernel exports two new cpu pmus via sysfs:
--/sys/devices/cpu_core
--/sys/devices/cpu_atom
-+/sys/bus/event_source/devices/cpu_core
-+/sys/bus/event_source/devices/cpu_atom
- 
- The 'cpus' files are created under the directories. For example,
- 
--cat /sys/devices/cpu_core/cpus
-+cat /sys/bus/event_source/devices/cpu_core/cpus
- 0-15
- 
--cat /sys/devices/cpu_atom/cpus
-+cat /sys/bus/event_source/devices/cpu_atom/cpus
- 16-23
- 
- It indicates cpu0-cpu15 are core cpus and cpu16-cpu23 are atom cpus.
-@@ -60,8 +60,8 @@ can't carry pmu information. So now this type is extended to be PMU aware
- type. The PMU type ID is stored at attr.config[63:32].
- 
- PMU type ID is retrieved from sysfs.
--/sys/devices/cpu_atom/type
--/sys/devices/cpu_core/type
-+/sys/bus/event_source/devices/cpu_atom/type
-+/sys/bus/event_source/devices/cpu_core/type
- 
- The new attr.config layout for PERF_TYPE_HARDWARE:
- 
-diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
-index d0c65fad419a..c3ffd93f94d7 100644
---- a/tools/perf/Documentation/perf-list.txt
-+++ b/tools/perf/Documentation/perf-list.txt
-@@ -188,7 +188,7 @@ in the CPU vendor specific documentation.
- 
- The available PMUs and their raw parameters can be listed with
- 
--  ls /sys/devices/*/format
-+  ls /sys/bus/event_source/devices/*/format
- 
- For example the raw event "LSD.UOPS" core pmu event above could
- be specified as
-diff --git a/tools/perf/arch/x86/util/iostat.c b/tools/perf/arch/x86/util/iostat.c
-index 366b44d0bb7e..ac26ad07ccc1 100644
---- a/tools/perf/arch/x86/util/iostat.c
-+++ b/tools/perf/arch/x86/util/iostat.c
-@@ -32,7 +32,7 @@
- #define MAX_PATH 1024
- #endif
- 
--#define UNCORE_IIO_PMU_PATH	"devices/uncore_iio_%d"
-+#define UNCORE_IIO_PMU_PATH	"bus/event_source/devices/uncore_iio_%d"
- #define SYSFS_UNCORE_PMU_PATH	"%s/"UNCORE_IIO_PMU_PATH
- #define PLATFORM_MAPPING_PATH	UNCORE_IIO_PMU_PATH"/die%d"
- 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index fdf5172646a5..55745b780f28 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -97,7 +97,7 @@
- #include <internal/threadmap.h>
- 
- #define DEFAULT_SEPARATOR	" "
--#define FREEZE_ON_SMI_PATH	"devices/cpu/freeze_on_smi"
-+#define FREEZE_ON_SMI_PATH	"bus/event_source/devices/cpu/freeze_on_smi"
- 
- static void print_counters(struct timespec *ts, int argc, const char **argv);
- 
-diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
-index bf5090f5220b..9c4adfb45f62 100644
---- a/tools/perf/util/mem-events.c
-+++ b/tools/perf/util/mem-events.c
-@@ -189,7 +189,7 @@ static bool perf_pmu__mem_events_supported(const char *mnt, struct perf_pmu *pmu
- 	if (!e->event_name)
- 		return true;
- 
--	scnprintf(path, PATH_MAX, "%s/devices/%s/events/%s", mnt, pmu->name, e->event_name);
-+	scnprintf(path, PATH_MAX, "%s/bus/event_source/devices/%s/events/%s", mnt, pmu->name, e->event_name);
- 
- 	return !stat(path, &st);
- }
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 08a9d0bd9301..d217678631ff 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -35,12 +35,12 @@
- #define UNIT_MAX_LEN	31 /* max length for event unit name */
- 
- enum event_source {
--	/* An event loaded from /sys/devices/<pmu>/events. */
-+	/* An event loaded from /sys/bus/event_source/devices/<pmu>/events. */
- 	EVENT_SRC_SYSFS,
- 	/* An event loaded from a CPUID matched json file. */
- 	EVENT_SRC_CPU_JSON,
- 	/*
--	 * An event loaded from a /sys/devices/<pmu>/identifier matched json
-+	 * An event loaded from a /sys/bus/event_source/devices/<pmu>/identifier matched json
- 	 * file.
- 	 */
- 	EVENT_SRC_SYS_JSON,
+I'm announcing the release of the 6.14.1 kernel.
+
+All users of the 6.14 kernel series must upgrade.
+
+The updated 6.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                  |    2 
+ drivers/counter/microchip-tcb-capture.c   |   19 +++
+ drivers/counter/stm32-lptimer-cnt.c       |   24 +++--
+ drivers/hid/hid-plantronics.c             |  144 +++++++++++++-----------------
+ drivers/memstick/host/rtsx_usb_ms.c       |    1 
+ drivers/net/usb/qmi_wwan.c                |    2 
+ drivers/net/usb/usbnet.c                  |   21 +++-
+ drivers/tty/serial/8250/8250_dma.c        |    2 
+ drivers/tty/serial/8250/8250_pci.c        |   46 +++++++++
+ drivers/tty/serial/fsl_lpuart.c           |   17 +++
+ drivers/tty/serial/stm32-usart.c          |    4 
+ drivers/usb/host/xhci-ring.c              |    4 
+ drivers/usb/host/xhci.h                   |   13 ++
+ kernel/cgroup/rstat.c                     |   29 ++----
+ net/atm/mpc.c                             |    2 
+ net/ipv6/netfilter/nf_socket_ipv6.c       |   23 ++++
+ sound/pci/hda/patch_realtek.c             |    2 
+ sound/usb/mixer_quirks.c                  |   51 ++++++++++
+ tools/perf/Documentation/intel-hybrid.txt |   12 +-
+ tools/perf/Documentation/perf-list.txt    |    2 
+ tools/perf/arch/x86/util/iostat.c         |    2 
+ tools/perf/builtin-stat.c                 |    2 
+ tools/perf/util/mem-events.c              |    2 
+ tools/perf/util/pmu.c                     |    4 
+ 24 files changed, 303 insertions(+), 127 deletions(-)
+
+Abel Wu (1):
+      cgroup/rstat: Fix forceidle time in cpu.stat
+
+Andres Traumann (1):
+      ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
+
+Cameron Williams (2):
+      tty: serial: 8250: Add some more device IDs
+      tty: serial: 8250: Add Brainboxes XC devices
+
+Cheick Traore (1):
+      serial: stm32: do not deassert RS485 RTS GPIO prematurely
+
+Dhruv Deshpande (1):
+      ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
+
+Dominique Martinet (1):
+      net: usb: usbnet: restore usb%d name exception for local mac addresses
+
+Fabio Porcedda (2):
+      net: usb: qmi_wwan: add Telit Cinterion FN990B composition
+      net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+
+Fabrice Gasnier (1):
+      counter: stm32-lptimer-cnt: fix error handling when enabling
+
+Greg Kroah-Hartman (2):
+      perf tools: Fix up some comments and code to properly use the event_source bus
+      Linux 6.14.1
+
+John Keeping (1):
+      serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+
+Luo Qiu (1):
+      memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove
+
+Maxim Mikityanskiy (1):
+      netfilter: socket: Lookup orig tuple for IPv6 SNAT
+
+Michal Pecio (2):
+      usb: xhci: Don't skip on Stopped - Length Invalid
+      usb: xhci: Apply the link chain quirk on NEC isoc endpoints
+
+Minjoong Kim (1):
+      atm: Fix NULL pointer dereference
+
+Sherry Sun (1):
+      tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+
+Terry Junge (2):
+      ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
+      HID: hid-plantronics: Add mic mute mapping and generalize quirks
+
+William Breathitt Gray (1):
+      counter: microchip-tcb-capture: Fix undefined counter channel state on probe
+
 
