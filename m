@@ -1,129 +1,126 @@
-Return-Path: <stable+bounces-128430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34EFA7D15C
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 02:53:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A7DA7D17A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6289188A745
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 00:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4CCD3AA70E
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 01:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859A8EEB1;
-	Mon,  7 Apr 2025 00:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b="XhqPwRvR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566BB188596;
+	Mon,  7 Apr 2025 01:07:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from s1.g1.infrastructure.qtmlabs.xyz (s1.g1.infrastructure.qtmlabs.xyz [107.172.1.117])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0306B635;
-	Mon,  7 Apr 2025 00:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.172.1.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DEF16D32A;
+	Mon,  7 Apr 2025 01:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743987233; cv=none; b=q9pvwFhr4eW+1rrv9ZHdK0uHcqLCta+RWGn6loAZxnAbY3qldUd2AsZeVtqqeB6qJOBOfKbUnuun+VTMSBSqq9zwFWPmlUuS6CAPcieXXGlYeCzznUHDUDmcdTXAlUZvsFuygbgCiA45g94ANujEVBkA1/OyBPzN+8Xev26uBNo=
+	t=1743988027; cv=none; b=oi4tZu+aunfDtp42jibMuhgRezyFZIjfAEJ1L+md++IChDwqcCPgbEjVgj88KHbFIF8VNZ8ohjSwKmmL8+Ozw6FHhneg51e7RxK4JUaRPGN2OWYQfRXfLP7egD8ASccceenm9Xb7sqf2/D8OURZk3Zf0bZWwWUxWLu6hZ6Vhiog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743987233; c=relaxed/simple;
-	bh=+z+6RvwAvk13OKStinfuWh26FMpU43Q7rwCeXtF8zDc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZSnvUy7aUl+rXqdv+4YcwNXKCUZpIKdIRIn7IsC+mSSTcVeg5ZRvfcrZ0K+Ww4NbKVSthfjwnPaaOUB0q/1vKhKvATbyfTyfoRA7ODsfiIaVr8dBFbaron1Zhebv+4QHcJY0La252DSIFSrh8oV5oxzMIzf49hD18qP8MlMa3Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz; spf=pass smtp.mailfrom=qtmlabs.xyz; dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b=XhqPwRvR; arc=none smtp.client-ip=107.172.1.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qtmlabs.xyz
-Message-ID: <78346ff0-d5ee-48f0-ac4d-762a5ec18eb7@qtmlabs.xyz>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qtmlabs.xyz; s=dkim;
-	t=1743987228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qqzKPwjBEqTWc3+AHr/Ab/QHxnuhXQXBI13sdLNF00Q=;
-	b=XhqPwRvRf0YcBHYX9HDnwKhSVrrxPJSKO4ltQKkHQ4k9BaJ3nr7IYuBpZm2mZvNr6EIjsU
-	Q5whO0c435pZIawkpnEraWXxlI+vdzR/JCda5MOx42+Frzhj3Ea1fUFiMTr31ZVul/doHY
-	IxtOTJTbkAScsqs/V4av6Fpcusb3xy86Qr75BAFPcP6l+gWssJfTRZZSJWKheVztXGkrzE
-	w6C8vfsGN4lultLoMFQUaMGM4pr0lZmXeeg5To6Pxp2pxW+/ZEKBNJ1753oA9bcN9tAqWT
-	+YCx2AowlfsbMoqNrVFSAYgGzkgVTiBI+I0XFNd/fIAp1hZ2UsGMoBMDAM8d2w==
-Authentication-Results: s1.g1.infrastructure.qtmlabs.xyz;
-	auth=pass smtp.mailfrom=myrrhperiwinkle@qtmlabs.xyz
-Date: Mon, 7 Apr 2025 07:53:42 +0700
+	s=arc-20240116; t=1743988027; c=relaxed/simple;
+	bh=pGdgTRjfk996uk8Wd77oBZTpcCKanajBmfdWac0X86c=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AFELFZcyiZzeYiKOg6sIfoSnyRRpALX45YFkw9wi418287Xff+TG4EUpmrtUuWBrIGVvUnm32NUClU176EsnzBM/0eYUMaaDQjqGBYoJ9K85OJeVPnYMXvB/w7YxzJ5BA38RozslxAJkItzyoQA/A/VuYGBE9Oq6FC9ULJsmZTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5370x9jO018565;
+	Sun, 6 Apr 2025 18:06:46 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45u41m1a6n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 06 Apr 2025 18:06:46 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 6 Apr 2025 18:06:45 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 6 Apr 2025 18:06:43 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <ivan.orlov0322@gmail.com>, <davidgow@google.com>, <kees@kernel.org>,
+        <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>
+Subject: [PATCH 6.6.y] kunit/overflow: Fix UB in overflow_allocation_test
+Date: Mon, 7 Apr 2025 09:06:42 +0800
+Message-ID: <20250407010642.207838-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Subject: Re: [PATCH v3] x86/e820: Fix handling of subpage regions when
- calculating nosave ranges
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Roberto Ricci <io@r-ricci.it>
-References: <20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz>
- <Z_LGqgUhDrTmzj5r@gmail.com> <Z_LJv9gATY6nk4Yu@gmail.com>
-Content-Language: en-US
-In-Reply-To: <Z_LJv9gATY6nk4Yu@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Bar: /
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: gGNN_LOOtuIb8hlAEnv9ToUbchFjwCqf
+X-Proofpoint-ORIG-GUID: gGNN_LOOtuIb8hlAEnv9ToUbchFjwCqf
+X-Authority-Analysis: v=2.4 cv=QOZoRhLL c=1 sm=1 tr=0 ts=67f32526 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=1XWaLZrsAAAA:8 a=t7CeM3EgAAAA:8 a=sRwAWNXhmHWHE5Be58cA:9
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-06_08,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1011 lowpriorityscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504070007
 
-On 4/7/25 01:36, Ingo Molnar wrote:
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
 
-> * Ingo Molnar<mingo@kernel.org> wrote:
->
->> * Myrrh Periwinkle<myrrhperiwinkle@qtmlabs.xyz> wrote:
->>
->>> The current implementation of e820__register_nosave_regions suffers from
->>> multiple serious issues:
->>>   - The end of last region is tracked by PFN, causing it to find holes
->>>     that aren't there if two consecutive subpage regions are present
->>>   - The nosave PFN ranges derived from holes are rounded out (instead of
->>>     rounded in) which makes it inconsistent with how explicitly reserved
->>>     regions are handled
->>>
->>> Fix this by:
->>>   - Treating reserved regions as if they were holes, to ensure consistent
->>>     handling (rounding out nosave PFN ranges is more correct as the
->>>     kernel does not use partial pages)
->>>   - Tracking the end of the last RAM region by address instead of pages
->>>     to detect holes more precisely
->>>
->>> Cc:stable@vger.kernel.org
->>> Fixes: e5540f875404 ("x86/boot/e820: Consolidate 'struct e820_entry *entry' local variable names")
->> So why is this SHA1 indicated as the root cause? AFAICS that commit
->> does nothing but cleanups, so it cannot cause such regressions.
-> BTW.:
->
->   A) "It was the first random commit that seemed related, sry"
->   B) "It's a 15 years old bug, but I wanted to indicate a fresh, 8-year old bug to get this into -stable. Busted!"
+[ Upstream commit 92e9bac18124682c4b99ede9ee3bcdd68f121e92 ]
 
-You got me :) How did you know that this is a 15 years old bug? 
-(although I didn't think the age of the bug a patch fixes would affect 
-its chances of getting to -stable)
+The 'device_name' array doesn't exist out of the
+'overflow_allocation_test' function scope. However, it is being used as
+a driver name when calling 'kunit_driver_create' from
+'kunit_device_register'. It produces the kernel panic with KASAN
+enabled.
 
-This specific revision was picked since it's the latest one that this 
-patch can be straightforwardly applied to (there is a (trivial) merge 
-conflict with -stable, though).
+Since this variable is used in one place only, remove it and pass the
+device name into kunit_device_register directly as an ascii string.
 
-Later, I managed to track the buggy logic back to 1c10070a55a3 ("i386: 
-do not restore reserved memory after hibernation"), which I believe is 
-the very first occurrence of this bug. If you prefer, I can send a v4 
-with a more correct Fixes: tag (or feel free to do so yourself when 
-applying this patch).
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Link: https://lore.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ lib/overflow_kunit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> ... are perfectly fine answers in my book. :-)
->
-> I'm glad about the fixes, I'm just curious how the Fixes tag came about.
->
-> Thanks,
->
-> 	Ingo
-
-Regards,
-
-Myrrh
+diff --git a/lib/overflow_kunit.c b/lib/overflow_kunit.c
+index 34db0b3aa502..9493a1b28b9e 100644
+--- a/lib/overflow_kunit.c
++++ b/lib/overflow_kunit.c
+@@ -608,7 +608,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kfree, 1, 1, 0);
+ 
+ static void overflow_allocation_test(struct kunit *test)
+ {
+-	const char device_name[] = "overflow-test";
+ 	struct device *dev;
+ 	int count = 0;
+ 
+@@ -618,7 +617,7 @@ static void overflow_allocation_test(struct kunit *test)
+ } while (0)
+ 
+ 	/* Create dummy device for devm_kmalloc()-family tests. */
+-	dev = root_device_register(device_name);
++	dev = root_device_register("overflow-test");
+ 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
+ 			       "Cannot register test device\n");
+ 
+-- 
+2.34.1
 
 
