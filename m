@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-128664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2448A7EA3F
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:30:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEADA7EA43
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177291881409
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36203188D244
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D4225FA34;
-	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5922B261379;
+	Mon,  7 Apr 2025 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZiqTpy0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUHqCR+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A930B25F98F;
-	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151F5261368;
+	Mon,  7 Apr 2025 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049625; cv=none; b=SESs4Lyq/y3/TeeJJAJhW9LqjWVKWWZGleyntCaeRft66R8zTWjN2HLuX/SO3nCYP/IrLAjYCOW8EOuhxxZkjnctTF/5ghVUCzs9xAnoVPt+Bmres6j7HKrYvsoExH51z5+lhpjCo2+tMYoZ+LVto2/HYm3Zhz1tNlxT44evGN8=
+	t=1744049627; cv=none; b=nEPMr+KXWIJE8ABh4sOG9fkP66oFfpU/H3RVmkV63msKHyxNofgckmHHDfKS3Hv6rnGMMrqwuz4KcO+dntHyQIKk/BDOnYhk5NHHY6xnrROD+ATedUHdfIpTpftOWocUqNL25xKbg2m9ZXY1bio7vIeBSoTwB8mFfQ8upcY04kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049625; c=relaxed/simple;
-	bh=5P89sXxtBIlT0wEuM1sFJ4xm2Bx1KLp8Xd6qLhzwK7c=;
+	s=arc-20240116; t=1744049627; c=relaxed/simple;
+	bh=GTpLFu7d6p5DuW3yDBDjovkXVzLTCSGIEM38+Xg43uU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k33eMJpDLgZ15O8pv6Fq19KLV3MHk447CrHElWSzl3f+8WPksvVZvmLTUrvTsnmJ4Av1IBaOp4uKfDo/r/9AUlfOqo+dpBG0bGXROrBDJlyTv88qjJdzMa5CTkYzgIL6rn4cHJDBE41XN+Aw6YjvTtrRL/A2BTAVfkgHremC9fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZiqTpy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB78C4CEDD;
-	Mon,  7 Apr 2025 18:13:44 +0000 (UTC)
+	 MIME-Version; b=DBgEfybdjCfMOgfXzLqM+hUCjTsDog1KQTttGNvKSMwggZVFY+8U8aXpVgRE0iEalJXc/E8TbDQD5/4VCEzWb1/hypsYs2IEXuZNMEvAPVua2CXXO14ISxO/vctUL4MphCkYhCugo/pXJHa4uM33kxhkXLCghTRKUx4f+xfcWy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUHqCR+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A73C4CEDD;
+	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049625;
-	bh=5P89sXxtBIlT0wEuM1sFJ4xm2Bx1KLp8Xd6qLhzwK7c=;
+	s=k20201202; t=1744049626;
+	bh=GTpLFu7d6p5DuW3yDBDjovkXVzLTCSGIEM38+Xg43uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZiqTpy0/u1J955z+/h736NLvJ6JvKCVR+yrWEjDKDKYzrEOmINVpInx0klwtYaFS
-	 hADNJknydWGk2yyxrgh0czSak0IjNDmoGBG4Wx2AkA8oBwQQp46OhltoKh8/MiGYzW
-	 enuFCzNa6FSQn0DxmpNZFpYtYyNQij0L3A1HsiMsoWL8VegI9n5IThkuQBVdEzfWoU
-	 BgnxI4rlGCGBHBnDLZq7E40JQY34j977wmS77elTag5t2CO4JEuklxGNygd8akFMdU
-	 Uu4AEHd30oKTZ7FwQ2MG9GRE6fOSZ86ZXYRQQRsWZA9UDIzf6jJSVw7fCWkuCz4Zz9
-	 HUEo+nLJsLZhg==
+	b=JUHqCR+Dl0bndzsyb2XurI9pdDUzBmVeMi43Cdm79XUYax53f2MLINBhFOzpC6qfn
+	 BV+MhvlhEDZQC8Tovqg52tNWq/clpoBKr+4AaSkZCT0uizzFlF16dyJ/j228KTOQpw
+	 42jZ+YKlkDQt9BXkqHSCM58BXpmHFdtvw0/OhHgwBHwbdkypc4o75hjjqX3YGeD+DW
+	 WH+v2A+rGK0iw6S8ht6dFeJGIfAnjfBn48IEK0nL6jVIqppDnJJutB/E8gMRQ0DoMC
+	 yvUDKJn+60gZvzzHahMN/qsAqpr/vNS1x8WhpI36BQQhopKl35MuxIremtuDVZwOYv
+	 FeNwoWvbLwcvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: John Stultz <jstultz@google.com>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	virtualization@lists.linux.dev,
-	linux-sound@vger.kernel.org,
-	kernel-team@android.com,
-	Betty Zhou <bettyzhou@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.12 06/22] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
-Date: Mon,  7 Apr 2025 14:13:16 -0400
-Message-Id: <20250407181333.3182622-6-sashal@kernel.org>
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	mathias.nyman@intel.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 07/22] usb: xhci: Complete 'error mid TD' transfers when handling Missed Service
+Date: Mon,  7 Apr 2025 14:13:17 -0400
+Message-Id: <20250407181333.3182622-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -72,106 +67,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
-From: John Stultz <jstultz@google.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
+[ Upstream commit bfa8459942822bdcc86f0e87f237c0723ae64948 ]
 
-Betty reported hitting the following warning:
+Missed Service Error after an error mid TD means that the failed TD has
+already been passed by the xHC without acknowledgment of the final TRB,
+a known hardware bug. So don't wait any more and give back the TD.
 
-[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
-...
-[    8.713282][  T221] Call trace:
-[    8.713365][  T221]  __flush_work+0x8d0/0x914
-[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
-[    8.713570][  T221]  cancel_work_sync+0x24/0x34
-[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
-[    8.714139][  T221]  really_probe+0x1bc/0x4c8
-...
+Reproduced on NEC uPD720200 under conditions of ludicrously bad USB link
+quality, confirmed to behave as expected using dynamic debug.
 
-It seems we're hitting the error path in virtsnd_probe(), which
-triggers a virtsnd_remove() which iterates over the substreams
-calling cancel_work_sync() on the elapsed_period work_struct.
-
-Looking at the code, from earlier in:
-virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
-
-We set snd->nsubstreams, allocate the snd->substreams, and if
-we then hit an error on the info allocation or something in
-virtsnd_ctl_query_info() fails, we will exit without having
-initialized the elapsed_period work_struct.
-
-When that error path unwinds we then call virtsnd_remove()
-which as long as the substreams array is allocated, will iterate
-through calling cancel_work_sync() on the uninitialized work
-struct hitting this warning.
-
-Takashi Iwai suggested this fix, which initializes the substreams
-structure right after allocation, so that if we hit the error
-paths we avoid trying to cleanup uninitialized data.
-
-Note: I have not yet managed to reproduce the issue myself, so
-this patch has had limited testing.
-
-Feedback or thoughts would be appreciated!
-
-Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: virtualization@lists.linux.dev
-Cc: linux-sound@vger.kernel.org
-Cc: kernel-team@android.com
-Reported-by: Betty Zhou <bettyzhou@google.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: John Stultz <jstultz@google.com>
-Message-Id: <20250116194114.3375616-1-jstultz@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-5-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/usb/host/xhci-ring.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
-index 967e4c45be9bb..2f7c5e709f075 100644
---- a/sound/virtio/virtio_pcm.c
-+++ b/sound/virtio/virtio_pcm.c
-@@ -339,6 +339,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 	if (!snd->substreams)
- 		return -ENOMEM;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 4384b86ea7b66..693b3dd8130ac 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2787,7 +2787,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		xhci_dbg(xhci,
+ 			 "Miss service interval error for slot %u ep %u, set skip flag\n",
+ 			 slot_id, ep_index);
+-		return 0;
++		break;
+ 	case COMP_NO_PING_RESPONSE_ERROR:
+ 		ep->skip = true;
+ 		xhci_dbg(xhci,
+@@ -2838,6 +2838,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		xhci_td_cleanup(xhci, td, ep_ring, td->status);
+ 	}
  
-+	/*
-+	 * Initialize critical substream fields early in case we hit an
-+	 * error path and end up trying to clean up uninitialized structures
-+	 * elsewhere.
-+	 */
-+	for (i = 0; i < snd->nsubstreams; ++i) {
-+		struct virtio_pcm_substream *vss = &snd->substreams[i];
++	/* Missed TDs will be skipped on the next event */
++	if (trb_comp_code == COMP_MISSED_SERVICE_ERROR)
++		return 0;
 +
-+		vss->snd = snd;
-+		vss->sid = i;
-+		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
-+		init_waitqueue_head(&vss->msg_empty);
-+		spin_lock_init(&vss->lock);
-+	}
-+
- 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return -ENOMEM;
-@@ -352,12 +367,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 		struct virtio_pcm_substream *vss = &snd->substreams[i];
- 		struct virtio_pcm *vpcm;
- 
--		vss->snd = snd;
--		vss->sid = i;
--		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
--		init_waitqueue_head(&vss->msg_empty);
--		spin_lock_init(&vss->lock);
--
- 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
- 		if (rc)
- 			goto on_exit;
+ 	if (list_empty(&ep_ring->td_list)) {
+ 		/*
+ 		 * Don't print wanings if ring is empty due to a stopped endpoint generating an
 -- 
 2.39.5
 
