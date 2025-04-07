@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-128665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEADA7EA43
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E116A7EA76
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36203188D244
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180FE442278
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5922B261379;
-	Mon,  7 Apr 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E7725F98F;
+	Mon,  7 Apr 2025 18:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUHqCR+D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCVJnPJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151F5261368;
-	Mon,  7 Apr 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE2E26156F;
+	Mon,  7 Apr 2025 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049627; cv=none; b=nEPMr+KXWIJE8ABh4sOG9fkP66oFfpU/H3RVmkV63msKHyxNofgckmHHDfKS3Hv6rnGMMrqwuz4KcO+dntHyQIKk/BDOnYhk5NHHY6xnrROD+ATedUHdfIpTpftOWocUqNL25xKbg2m9ZXY1bio7vIeBSoTwB8mFfQ8upcY04kE=
+	t=1744049628; cv=none; b=pxgiWWpMBwdZ7v6uFYZUOGyTR1goUwECA4tVlpfFbh0S2YVG3aRVReYlwZ0qnlDMy76o/rffyKGLGq9qGGEVFLc+jqfbaCG733XLsnF4Fzfe1mJJG+/rcdhpx5fCKRR5BHuorqEMoFPKzFRdx2aFNlUrQDvitGe1XcuatAtlBwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049627; c=relaxed/simple;
-	bh=GTpLFu7d6p5DuW3yDBDjovkXVzLTCSGIEM38+Xg43uU=;
+	s=arc-20240116; t=1744049628; c=relaxed/simple;
+	bh=RWhEZ+fLT2/O/7uGHPw0G9qXCebyCFq1vyPcIaVa/o0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DBgEfybdjCfMOgfXzLqM+hUCjTsDog1KQTttGNvKSMwggZVFY+8U8aXpVgRE0iEalJXc/E8TbDQD5/4VCEzWb1/hypsYs2IEXuZNMEvAPVua2CXXO14ISxO/vctUL4MphCkYhCugo/pXJHa4uM33kxhkXLCghTRKUx4f+xfcWy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUHqCR+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A73C4CEDD;
-	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
+	 MIME-Version; b=oRYmwGSIz37/zKYdu2xb7cvFwNN9kCzx7FYD91q8bVRgaOeA6WOTRjkUr/4XQgmlO12gd7EclNEkxScny5vgNi9rUrjk20ZjbR7TQ8tzatxiFaJxANurw5gaBGEal14yu1jpRK1Chb4YEmX8lgHMt6E4yYJ2zSWUYxEQOxMDK4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCVJnPJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EC8C4AF0B;
+	Mon,  7 Apr 2025 18:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049626;
-	bh=GTpLFu7d6p5DuW3yDBDjovkXVzLTCSGIEM38+Xg43uU=;
+	s=k20201202; t=1744049628;
+	bh=RWhEZ+fLT2/O/7uGHPw0G9qXCebyCFq1vyPcIaVa/o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUHqCR+Dl0bndzsyb2XurI9pdDUzBmVeMi43Cdm79XUYax53f2MLINBhFOzpC6qfn
-	 BV+MhvlhEDZQC8Tovqg52tNWq/clpoBKr+4AaSkZCT0uizzFlF16dyJ/j228KTOQpw
-	 42jZ+YKlkDQt9BXkqHSCM58BXpmHFdtvw0/OhHgwBHwbdkypc4o75hjjqX3YGeD+DW
-	 WH+v2A+rGK0iw6S8ht6dFeJGIfAnjfBn48IEK0nL6jVIqppDnJJutB/E8gMRQ0DoMC
-	 yvUDKJn+60gZvzzHahMN/qsAqpr/vNS1x8WhpI36BQQhopKl35MuxIremtuDVZwOYv
-	 FeNwoWvbLwcvw==
+	b=TCVJnPJb9iyzKmrumxME5J71yC+OkbhV+eL+YQv0BDV6hs+omNen7o8ckkrYDk4/j
+	 ogJVL4704n6ybUMVLGxw+8x5ZeHKbaZ+bizP+dPv7MpBlq8DLF3suyWHfwRTlX1Dw8
+	 oRKZfl4gXp6RWIO9RIGkoA37HZv6AV0z2XBwoGC3PpGF4rxytT3ALKy+mOiOV0jp2S
+	 ywi5LiyhQhv60KIfK5rKw8Mk17UzoKEL6ysmSy2oTUTVto/XxyY/gVTAye4ZwBdgom
+	 +F6V2YX4Vcly+gBqSvI9eguKWg+lOQC8Y4H9vT4/KBe8Em6NgJwCgo4wC/DuUlEfLX
+	 HLwxVdHll/jEw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: Michal Pecio <michal.pecio@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	mathias.nyman@intel.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 07/22] usb: xhci: Complete 'error mid TD' transfers when handling Missed Service
-Date: Mon,  7 Apr 2025 14:13:17 -0400
-Message-Id: <20250407181333.3182622-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 08/22] usb: xhci: Fix isochronous Ring Underrun/Overrun event handling
+Date: Mon,  7 Apr 2025 14:13:18 -0400
+Message-Id: <20250407181333.3182622-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -69,48 +69,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit bfa8459942822bdcc86f0e87f237c0723ae64948 ]
+[ Upstream commit 906dec15b9b321b546fd31a3c99ffc13724c7af4 ]
 
-Missed Service Error after an error mid TD means that the failed TD has
-already been passed by the xHC without acknowledgment of the final TRB,
-a known hardware bug. So don't wait any more and give back the TD.
+The TRB pointer of these events points at enqueue at the time of error
+occurrence on xHCI 1.1+ HCs or it's NULL on older ones. By the time we
+are handling the event, a new TD may be queued at this ring position.
 
-Reproduced on NEC uPD720200 under conditions of ludicrously bad USB link
-quality, confirmed to behave as expected using dynamic debug.
+I can trigger this race by rising interrupt moderation to increase IRQ
+handling delay. Similar delay may occur naturally due to system load.
+
+If this ever happens after a Missed Service Error, missed TDs will be
+skipped and the new TD processed as if it matched the event. It could
+be given back prematurely, risking data loss or buffer UAF by the xHC.
+
+Don't complete TDs on xrun events and don't warn if queued TDs don't
+match the event's TRB pointer, which can be NULL or a link/no-op TRB.
+Don't warn if there are no queued TDs at all.
+
+Now that it's safe, also handle xrun events if the skip flag is clear.
+This ensures completion of any TD stuck in 'error mid TD' state right
+before the xrun event, which could happen if a driver submits a finite
+number of URBs to a buggy HC and then an error occurs on the last TD.
 
 Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-5-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20250306144954.3507700-6-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 4384b86ea7b66..693b3dd8130ac 100644
+index 693b3dd8130ac..289c1d92d87f1 100644
 --- a/drivers/usb/host/xhci-ring.c
 +++ b/drivers/usb/host/xhci-ring.c
-@@ -2787,7 +2787,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_dbg(xhci,
- 			 "Miss service interval error for slot %u ep %u, set skip flag\n",
- 			 slot_id, ep_index);
--		return 0;
-+		break;
- 	case COMP_NO_PING_RESPONSE_ERROR:
- 		ep->skip = true;
- 		xhci_dbg(xhci,
-@@ -2838,6 +2838,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_td_cleanup(xhci, td, ep_ring, td->status);
- 	}
+@@ -2662,6 +2662,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	int status = -EINPROGRESS;
+ 	struct xhci_ep_ctx *ep_ctx;
+ 	u32 trb_comp_code;
++	bool ring_xrun_event = false;
  
-+	/* Missed TDs will be skipped on the next event */
-+	if (trb_comp_code == COMP_MISSED_SERVICE_ERROR)
+ 	slot_id = TRB_TO_SLOT_ID(le32_to_cpu(event->flags));
+ 	ep_index = TRB_TO_EP_ID(le32_to_cpu(event->flags)) - 1;
+@@ -2768,14 +2769,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 * Underrun Event for OUT Isoch endpoint.
+ 		 */
+ 		xhci_dbg(xhci, "Underrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_RING_OVERRUN:
+ 		xhci_dbg(xhci, "Overrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_MISSED_SERVICE_ERROR:
+ 		/*
+ 		 * When encounter missed service error, one or more isoc tds
+@@ -2851,6 +2850,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 */
+ 		if (trb_comp_code != COMP_STOPPED &&
+ 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
++		    !ring_xrun_event &&
+ 		    !ep_ring->last_td_was_short) {
+ 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
+ 				  slot_id, ep_index);
+@@ -2881,6 +2881,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 				goto check_endpoint_halted;
+ 			}
+ 
++			/* TD was queued after xrun, maybe xrun was on a link, don't panic yet */
++			if (ring_xrun_event)
++				return 0;
++
+ 			/*
+ 			 * Skip the Force Stopped Event. The 'ep_trb' of FSE is not in the current
+ 			 * TD pointed by 'ep_ring->dequeue' because that the hardware dequeue
+@@ -2927,6 +2931,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	 */
+ 	} while (ep->skip);
+ 
++	/* Get out if a TD was queued at enqueue after the xrun occurred */
++	if (ring_xrun_event)
 +		return 0;
 +
- 	if (list_empty(&ep_ring->td_list)) {
- 		/*
- 		 * Don't print wanings if ring is empty due to a stopped endpoint generating an
+ 	if (trb_comp_code == COMP_SHORT_PACKET)
+ 		ep_ring->last_td_was_short = true;
+ 	else
 -- 
 2.39.5
 
