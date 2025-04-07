@@ -1,102 +1,105 @@
-Return-Path: <stable+bounces-128447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A639A7D4CE
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:00:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D93AA7D4E3
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FA4162D93
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:00:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F9F83AB90F
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC85B227BA9;
-	Mon,  7 Apr 2025 06:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AEC218ADC;
+	Mon,  7 Apr 2025 07:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxSxXE56"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="jQoTMxYl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A2225A34;
-	Mon,  7 Apr 2025 06:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1314A224B10
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 07:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744009145; cv=none; b=FL3m/gppMdWmVv3kjRnn8thlIAWRcu3LyT0qU0vvHb38vGSOVkVy2/9WMmaiRZdM3spiHRFl7HNyCuuqPePiXtK5RizWXgZMpb3yx5UzgP/ted2gfT9DpFxiWJwt3tq3fFIts4T90x4NgLLLnllbNnchQjnXTAwkLGHFDpbxogs=
+	t=1744009372; cv=none; b=VmiW3UA9EuqwP8S3wZW1CfMBLPVy9yViL7zs4UVMzVM/02nMsar1T7y3fdtOB0xwXjDi2+XP2/1LpsIaJ1XNX/i96e6G8ir5q30f4n0YmvI7TYMaXvpfaPfZrrjiguxaOL8iqYWUC3VHSGBdxxYipmx8T8+fdyDO0nc6zoyiQ/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744009145; c=relaxed/simple;
-	bh=Uk8IEJjSk6lDLTgiBkYUJt4GuvbJc5JKYcglOwe3qY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tUgW0GhFjmkomLkFwxBCePvSx0y1X4yLRime2hUIfdlDKFbymdtnWyu6Hnf03FphfFXhy/GObmkulm/+2FMtwssYAp0Z2ECJpeEbLUPg48ECC/sgT0v20blP+C3Z17Z95gCstecLlCpNHFHzuKO41AuBotKShjxG1r9ezr3gd1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxSxXE56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE64C4CEDD;
-	Mon,  7 Apr 2025 06:59:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744009144;
-	bh=Uk8IEJjSk6lDLTgiBkYUJt4GuvbJc5JKYcglOwe3qY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RxSxXE56MDJE8vtcJ0H7OR9N0MjXRsra/eRHC8S1WxM2K4Pct6HI/HRHnLK6zUNY7
-	 8KIkFavKw9ZE1HxlmGNCFi/e4Q3WVdHN/AQAK9bhpCjTCE7eVVbc7fQw0iDuMod5db
-	 xcpGN0pT1VXE3HZ++qgo1CrS39ghMCsFGF0GdxYc=
-Date: Mon, 7 Apr 2025 08:57:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: philipp.g.hortmann@gmail.com, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5] staging: rtl8723bs: Add error handling for sd_read()
-Message-ID: <2025040745-penny-graffiti-9ae7@gregkh>
-References: <20250406023513.2727-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1744009372; c=relaxed/simple;
+	bh=TipMqh+jY419M0FE6C4EHb3IMR85PPT/ksOHSlta85g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iUkO+x/8x927pKSIcT8TtLzl5y2yPjhKny15I61O0nquMwdrAJaU8zVcwfnVF8VhEpkpcqGinnUJfdXsU+TC3Uvr5TEXaAdk9a94uCSEIri1odYVHw+lkhEqyUiDwsBrf2WOfxcM9RM0dBdqac4Hgkh2N0S6R62rczk/gIuUWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=jQoTMxYl; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5376Y2we029135;
+	Mon, 7 Apr 2025 07:02:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=+adpAbdYLs38FhIOhHdHbujyLz8AT
+	wIWgf4obfGpmRM=; b=jQoTMxYlqIcteVWGaWm1r26NeCS3RKwwnBNdRH+M46bBP
+	1UBkf3dJpt8Mw9A6paGffkR77pU48DDM34rKXHWv5j4QH4AoaxuTZ9wyfB+GShzV
+	axZLyW1LTBc2o8z9x5vId3NLACJHCngnpBSshSCOMf++JxvDuOVUmzwTM0EoxupG
+	/QBBS9JvBUVL9KZ8cR+wwGxFpwdrOjhGLIdcnLESL5e5bUJkHbGPu71lJuMNe/37
+	fFhZxHKCpNA6hh08VwSiieqIZuSmmLnEXl1iUKRWZW6pXqFYk/ydcCVL6sqXmpiX
+	QH+6vrUL8q6ZAxRuqU/P989XIunIooVOwzTtdmeFw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45tu419x6r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 07 Apr 2025 07:02:37 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5376xIaw022221;
+	Mon, 7 Apr 2025 07:02:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 45tty84vca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 07 Apr 2025 07:02:36 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53772acD006938;
+	Mon, 7 Apr 2025 07:02:36 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 45tty84vc4-1;
+	Mon, 07 Apr 2025 07:02:36 +0000
+From: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+To: jgross@suse.com, sstabellini@kernel.org, boris.ostrovsky@oracle.com
+Cc: harshvardhan.j.jha@oracle.com, xen-devel@lists.xenproject.org,
+        iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
+        stable@vger.kernel.org
+Subject: [PATCH 5.15.y 0/1] Manual Backport of 099606a7b2d5 to 5.15
+Date: Mon,  7 Apr 2025 00:02:34 -0700
+Message-ID: <20250407070235.121187-1-harshvardhan.j.jha@oracle.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250406023513.2727-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-07_02,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 spamscore=0
+ adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2504070049
+X-Proofpoint-ORIG-GUID: Q2Uymo_6DJ_OZukhNcrNtCGTNFIBlZA4
+X-Proofpoint-GUID: Q2Uymo_6DJ_OZukhNcrNtCGTNFIBlZA4
 
-On Sun, Apr 06, 2025 at 10:35:13AM +0800, Wentao Liang wrote:
-> The sdio_read32() calls sd_read(), but does not handle the error if
-> sd_read() fails. This could lead to subsequent operations processing
-> invalid data. A proper implementation can be found in sdio_readN().
+The patch 099606a7b2d5 didn't cleanly apply to 5.15 due to the
+significant difference in codebases.
 
-Great, why not use that instead?
+I've tried to manually bring it back to 5.15 via some minor conflict
+resolution but also invoking the newly introduced API using inverted
+logic as the conditional statements present in 5.15 are the opposite of
+those in 6.1 xen/swiotlib.
 
-> Add error handling for the sd_read() to free tmpbuf and return error
-> code if sd_read() fails. This ensure that the memcpy() is only performed
-> when the read operation is successful.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org # v4.12+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
-> v5: Fix error code
-> v4: Add change log and fix error code
-> v3: Add Cc flag
-> v2: Change code to initialize val
-> 
->  drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> index 21e9f1858745..d79d41727042 100644
-> --- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> +++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> @@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
->  			return SDIO_ERR_VAL32;
->  
->  		ftaddr &= ~(u16)0x3;
-> -		sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		if (err) {
-> +			kfree(tmpbuf);
-> +			return SDIO_ERR_VAL32;
+Harshvardhan Jha (1):
+  xen/swiotlb: relax alignment requirements
 
-Why isn't the error that you get from the lower levels being returned
-here instead?  Throwing that away feels wrong, don't you think?
+ drivers/xen/swiotlb-xen.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-thanks,
+-- 
+2.47.1
 
-greg k-h
 
