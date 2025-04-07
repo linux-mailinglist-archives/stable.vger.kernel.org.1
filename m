@@ -1,121 +1,153 @@
-Return-Path: <stable+bounces-128629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E930BA7E9D5
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:20:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35844A7EA7D
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC9907A5B6C
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2693BD362
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBF7259CA9;
-	Mon,  7 Apr 2025 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A7725EF9B;
+	Mon,  7 Apr 2025 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFCadevX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTireBY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47220258CFD;
-	Mon,  7 Apr 2025 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DBF2222C4;
+	Mon,  7 Apr 2025 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049542; cv=none; b=A9JaVdabj6iLucAnVge/4mp/OLAFyFr7gpdAbIP/kv5cgRage+TK3YrVaYZIidCq7uO1onGMXweOtMvbLMKSAV0vCKKWTS1V9lGWfF1NIvSUN8hWpZlgR1CK7Yc7sOIzU+I110p6JXacb6btURIj432yrpl5tZY/mP8FhYnBFjY=
+	t=1744049611; cv=none; b=NrWAf9Kw9Fd5lIgziPKIWDdBgICp61SbWmWMNrsSQTbb3hC6PPgKMvDrquWGqRcNfdKUduj1b1LKsYszHrINAz1n4zFyVemPqMSI0q2+rgsvfOU0ojZZuTDVXbn01leHz5rfSvbJZYP+E5HzeyMySQcfq0kVU2bkjyWpLg8ffY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049542; c=relaxed/simple;
-	bh=ckzOI7nJaN7g69N2eDE8aCNzMRLv/2qrZ2SIJBhjrjs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lFrZMzQtRr8fwUovqwfSB9FQCyzf1WV/Y3Z2Kld1PUev1TpR4E9X3WdtCqQpjHg1VXY+wLCRd/vZhmQJAHkkeYTVdCWzuuDWdSXotrNrWOVldVOXVAmwa1O7TRBgDSZn+73PWzxpPxAOKzJ4LDvV3kyPkE+QbsYx/gf3eWkl+GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFCadevX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5966C4CEDD;
-	Mon,  7 Apr 2025 18:12:20 +0000 (UTC)
+	s=arc-20240116; t=1744049611; c=relaxed/simple;
+	bh=HUUon//Jhnm++nSXg4SODznjq7cHjuBfxI2rWh8ozpI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=akAyxS+dSX/kWlbQUtSVRwxTY4nR0QvQv2GCAylVG5SWJOMv540v53EZzXI8BSySIAETXt7SzDhJtojwjbdWGBPJjlQKyVXPwsRRynB67wo6PHf6aLzFHNTqweP+u65FZdnztzlfGrGfNdTzyhUz9cvNC5SdbAVOAW1TO4EXAhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTireBY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3A3C4CEDD;
+	Mon,  7 Apr 2025 18:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049542;
-	bh=ckzOI7nJaN7g69N2eDE8aCNzMRLv/2qrZ2SIJBhjrjs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gFCadevXmolJqSp+yC2kfDJXud/RE9YHWsnv2S49+HDvsBrRk6pPPIh9GhlUAaCKr
-	 2Z4OlqhM/rYu6Uf6ye1OHK8ClfIssRIm4t/pI/hBzWOeA52Xag4s2rIcD0S3I4l2Zk
-	 MujLsmDaRyqsEQ6Mx7DE0w14wg75juT2pEEe1bxcp7wssjSl211WRBIIZrhCiaAeZz
-	 +PlFJsKDWHfjjwe9Dh/4on3CegDNptzUzHACmi2nz1usJsIpe4fXJoeq+YVo/TDGGt
-	 GpE0bQQZ42/9d/fI7P/Xdi/nMWq12DJilcToKgV+uRVkNc+pDqOvdQ6jIBt5Ja8j39
-	 wkpMRfvVI7LHg==
-Date: Mon, 7 Apr 2025 11:12:18 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 051/198] Xen/swiotlb: mark xen_swiotlb_fixup() __init
-Message-ID: <20250407181218.GA737271@ax162>
-References: <20250325122156.633329074@linuxfoundation.org>
- <20250325122157.975417185@linuxfoundation.org>
+	s=k20201202; t=1744049611;
+	bh=HUUon//Jhnm++nSXg4SODznjq7cHjuBfxI2rWh8ozpI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LTireBY7GHTxdThW/4/fYIiRoUo/Vom3BLErvKlf/cDuIIWeOQ6+iSX1aR6+TxF/b
+	 nKtwu3xHRrRupQu7+7stZjSX0BK/JtO1I0u9L/c1/AQarxkATgel2djVfcQ6Xgubkq
+	 f9uPZ5yJae75r9l6BEeX+vkCiKqvdcwZ7SU2lPRb/aG4KfPwosPVSaeiQR8IzTM+Fj
+	 /0J0CsuQ3iSpWjoxgFT6E/JYOHIHoMIUo84OPPAhGIMX2QZ6fbf/QtF3DNsvb7PcGZ
+	 dy9kF9nQRkdfwDqTV3odoXgraqpbqbH66j+Ztcy/cqgYBMUcRsjYd2Fp8quJaSh0oG
+	 Idkidf95XP+3w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 28/28] objtool, lkdtm: Obfuscate the do_nothing() pointer
+Date: Mon,  7 Apr 2025 14:12:18 -0400
+Message-Id: <20250407181224.3180941-28-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250407181224.3180941-1-sashal@kernel.org>
+References: <20250407181224.3180941-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250325122157.975417185@linuxfoundation.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.10
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-On Tue, Mar 25, 2025 at 08:20:13AM -0400, Greg Kroah-Hartman wrote:
-> 6.1-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Jan Beulich <jbeulich@suse.com>
-> 
-> [ Upstream commit 75ad02318af2e4ae669e26a79f001bd5e1f97472 ]
-> 
-> It's sole user (pci_xen_swiotlb_init()) is __init, too.
+[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
 
-This is not true in 6.1 though... which results in:
+If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
+by the compiler, it copies one word at a time:
 
-  WARNING: modpost: vmlinux.o: section mismatch in reference: pci_xen_swiotlb_init_late (section: .text) -> xen_swiotlb_fixup (section: .init.text)
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
+    mov    %rax,0x38(%rbx)
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
+    mov    %rax,0x30(%rbx)
+    ...
 
-Perhaps commit f9a38ea5172a ("x86: always initialize xen-swiotlb when
-xen-pcifront is enabling") and its dependency 358cd9afd069 ("xen/pci:
-add flag for PCI passthrough being possible") should be added (I did not
-test if they applied cleanly though) but it seems like a revert would be
-more appropriate. I don't see this change as a dependency of another one
-and the reason it exists upstream does not apply in this tree so why
-should it be here?
+Those .text references point to the middle of the function, causing
+objtool to complain about their lack of ENDBR.
 
-Cheers,
-Nathan
+Prevent that by resolving the function pointer at runtime rather than
+build time.  This fixes the following warning:
 
-> Signed-off-by: Jan Beulich <jbeulich@suse.com>
-> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-> 
-> Message-ID: <e1198286-99ec-41c1-b5ad-e04e285836c9@suse.com>
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/xen/swiotlb-xen.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-> index 0893c1012de62..fe52c8cbf1364 100644
-> --- a/drivers/xen/swiotlb-xen.c
-> +++ b/drivers/xen/swiotlb-xen.c
-> @@ -112,7 +112,7 @@ static int is_xen_swiotlb_buffer(struct device *dev, dma_addr_t dma_addr)
->  }
->  
->  #ifdef CONFIG_X86
-> -int xen_swiotlb_fixup(void *buf, unsigned long nslabs)
-> +int __init xen_swiotlb_fixup(void *buf, unsigned long nslabs)
->  {
->  	int rc;
->  	unsigned int order = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT);
-> -- 
-> 2.39.5
-> 
-> 
-> 
+  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/misc/lkdtm/perms.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index 5b861dbff27e9..6c24426104ba6 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
+ /* This is marked __ro_after_init, so it should ultimately be .rodata. */
+ static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
+ 
++/*
++ * This is a pointer to do_nothing() which is initialized at runtime rather
++ * than build time to avoid objtool IBT validation warnings caused by an
++ * inlined unrolled memcpy() in execute_location().
++ */
++static void __ro_after_init *do_nothing_ptr;
++
+ /*
+  * This just returns to the caller. It is designed to be copied into
+  * non-executable memory regions.
+@@ -65,13 +72,12 @@ static noinline __nocfi void execute_location(void *dst, bool write)
+ {
+ 	void (*func)(void);
+ 	func_desc_t fdesc;
+-	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+ 
+-	pr_info("attempting ok execution at %px\n", do_nothing_text);
++	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
+ 	do_nothing();
+ 
+ 	if (write == CODE_WRITE) {
+-		memcpy(dst, do_nothing_text, EXEC_SIZE);
++		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
+ 		flush_icache_range((unsigned long)dst,
+ 				   (unsigned long)dst + EXEC_SIZE);
+ 	}
+@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
+ 
+ void __init lkdtm_perms_init(void)
+ {
++	do_nothing_ptr = dereference_function_descriptor(do_nothing);
++
+ 	/* Make sure we can write to __ro_after_init values during __init */
+ 	ro_after_init |= 0xAA;
+ }
+-- 
+2.39.5
+
 
