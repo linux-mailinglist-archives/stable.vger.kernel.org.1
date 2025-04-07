@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-128643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3974A7EA31
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:29:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88FAA7EA47
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45B13441D59
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:23:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E3A3BFDF1
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3D825D521;
-	Mon,  7 Apr 2025 18:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92F25D53A;
+	Mon,  7 Apr 2025 18:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7+SgSTr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E29q/BNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB0725D215;
-	Mon,  7 Apr 2025 18:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6518D25D52E;
+	Mon,  7 Apr 2025 18:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049572; cv=none; b=tIj4PgcAXg84iuDXZnZjTtZyAkRrJozzLWtnTZphytFXMJM6w/J5aL1x/Fj50KW9XeZfU/F3NOvU6UO0sNjeiOtVNRUS2JCmYHCzp82x28uCJKj+DkNNtKE9mavJY5Hd32l6o0LBGEhCRq1BSAQyfx81Be+/dq5OkytO/YgdTf8=
+	t=1744049573; cv=none; b=k5f1gyVCplJMsFzATtFnIF6KZKOQA4HVe4mZKRHcaoUQ/xyVh0ZPIoceK7FBhNdEfogPo5imGGz82sRajXEegz8TmFxAtMbvIRjRTUNJAKH+zGdumIixJY1TC+3yHVPy+V9z4SBtTeBt0fK1GYr3oUmhQkFI0abwJPM6HBPZ/IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049572; c=relaxed/simple;
-	bh=7fgsslfvBe3tzNlmDD3af8QNsw9Qtuj0fhgyeOJEPN4=;
+	s=arc-20240116; t=1744049573; c=relaxed/simple;
+	bh=ippgrXsqyDk3dUu61tN7ZaEf1whrsfy0bG9nMnm5cVI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g9kvK86a/hhsHMtZW1OUBTZdvjd6m2sWntqWz1Bb1LUaa261Z4w7l9eSQU6DDID1nxPZSMhS5zTUEKnanHglCztfa3sMlF8g7bEJpsK45cGxfPRFPxDLoRSHcpGpiILGG/mWK9ZWL5EiuHYUhYK34PMTf8ik86ejuI3wtBwUKGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7+SgSTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2484C4CEE7;
-	Mon,  7 Apr 2025 18:12:50 +0000 (UTC)
+	 MIME-Version; b=XrjS+PhJrmVwDbKvYt9h2vTBNn7Sqbuk6FEheYva3brY1FbBU/cOuZfBO1RPqp1do3/NBfidJcRZIt8YqXjGDgHmttviuNkYh7idegQlOr/HoAixa6DbhiIlXeVwbVp+6LgcQ+BE6Dr7uoQFVDZPzmPMnyRmbAjGlhF6IgMjnSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E29q/BNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE71C4CEEA;
+	Mon,  7 Apr 2025 18:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049571;
-	bh=7fgsslfvBe3tzNlmDD3af8QNsw9Qtuj0fhgyeOJEPN4=;
+	s=k20201202; t=1744049573;
+	bh=ippgrXsqyDk3dUu61tN7ZaEf1whrsfy0bG9nMnm5cVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7+SgSTrvXdSNQl0pos8E95niihgThoVAqPx1P5swC1Lb7amGYC1V/+eNrnoTHygI
-	 I6r+1VlmMycdGkc8VNmSTJDBiZ0B8PXKo6VxBHtGI/lIwPzDVmmYdrFco4xfLAFn1N
-	 4kGaqDhj7kY70OTvuXt0lXRfylylGL1oE5dkgDaAsVtVfhMwF9tdoQX3FhNe9oZ0r+
-	 vmW9VjNJI8Lk3HsMIRakRXC/UTpucD5iFcYtoRb3UxtPjOTvWNm9BeIWtuQHHFNPfq
-	 5A1UlLBDa4TycZQIEqBUDXOp3nZ9q0MT2B1EchEJ8UTaNQIyG30dGnox1vto8oYJED
-	 XcrA0EA7Mz84g==
+	b=E29q/BNdWsg4zgYoBM5h6W7yYMF3TlBmE+du5G3k9umQZS6qKf33AS58MHPcOyJHe
+	 JatC+eRuilBdR6kwL2sXP7FEn7CVahoRQ9vfFgh1Y2h2h5AsSPHZHqw7quduKe7TLd
+	 YNli9gwFJ6RlrS+n040Z1OdaH1PKm4MPDByIhH6jbCQZCln4V+vMhv0age4yidCt8H
+	 pRLrCDxyQ1G8coYKUS5dZaR6+l3/1G4ieznJqgtusk2dCwu+xnfzLz8JxljUmgZV25
+	 pSJ5BZ0I2dmfOcHobVM+RZKazBfvEbVu+ubheRcQ3fnxBx/Oa1BVJIqlicmEeCoQ67
+	 eICiqpOIg8xow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dmaengine@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 14/28] dmaengine: dmatest: Fix dmatest waiting less when interrupted
-Date: Mon,  7 Apr 2025 14:12:04 -0400
-Message-Id: <20250407181224.3180941-14-sashal@kernel.org>
+	mathias.nyman@intel.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 15/28] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
+Date: Mon,  7 Apr 2025 14:12:05 -0400
+Message-Id: <20250407181224.3180941-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181224.3180941-1-sashal@kernel.org>
 References: <20250407181224.3180941-1-sashal@kernel.org>
@@ -67,49 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.10
 Content-Transfer-Encoding: 8bit
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
+[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
 
-Change the "wait for operation finish" logic to take interrupts into
-account.
+Nothing prevents a broken HC from claiming that an endpoint is Running
+and repeatedly rejecting Stop Endpoint with Context State Error.
 
-When using dmatest with idxd DMA engine, it's possible that during
-longer tests, the interrupt notifying the finish of an operation
-happens during wait_event_freezable_timeout(), which causes dmatest to
-cleanup all the resources, some of which might still be in use.
+Avoid infinite retries and give back cancelled TDs.
 
-This fix ensures that the wait logic correctly handles interrupts,
-preventing premature cleanup of resources.
+No such cases known so far, but HCs have bugs.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-ring.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index 91b2fbc0b8647..d891dfca358e2 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index a77d8e4977223..453d755601a8b 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1197,16 +1197,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Stopped state, but it will soon change to Running.
+ 			 *
+ 			 * Assume this bug on unexpected Stop Endpoint failures.
+-			 * Keep retrying until the EP starts and stops again, on
+-			 * chips where this is known to help. Wait for 100ms.
++			 * Keep retrying until the EP starts and stops again.
+ 			 */
+-			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+-				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
+ 					GET_EP_CTX_STATE(ep_ctx));
++			/*
++			 * Don't retry forever if we guessed wrong or a defective HC never starts
++			 * the EP or says 'Running' but fails the command. We must give back TDs.
++			 */
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
  
--			wait_event_freezable_timeout(thread->done_wait,
--					done->done,
--					msecs_to_jiffies(params->timeout));
-+			wait_event_timeout(thread->done_wait,
-+					   done->done,
-+					   msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
 -- 
 2.39.5
 
