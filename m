@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-128694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11D3A7EAF0
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:43:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CC9A7EA9E
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53FD3BD756
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:35:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58ABA7A1705
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2290826770E;
-	Mon,  7 Apr 2025 18:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42412676E5;
+	Mon,  7 Apr 2025 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJuqTz6Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifWBVfZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A3F267705;
-	Mon,  7 Apr 2025 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81048267728;
+	Mon,  7 Apr 2025 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049685; cv=none; b=T0qSOvPNF+3CTlNkWsef9b8MkTNwHW9CINo0BMdPYNukPNKLIS4EjyvGxXbRZhOp9paROsoe43XijfSF52tQp7efEQ9+zCt+tdA4kENiQxzgqWNBcu862oux3Qxui2oCiZ3EI6Cpu0MqXOxszGCKVxMfB74sxPozQEA4tQ+JwyY=
+	t=1744049687; cv=none; b=e9ZKBK6ReANF7vUrTXGpNOmpUbNgslpk0ZAtDSIB34mt4wTLI9VVN51Dnb3RsPkuH/PI6ENMLJoaFznbS5hJ8XCXQADClMSLkDRUXOFNUgMcfVWGpsem138WPOWuoZ5cUCLCeJ09PslesL1MQIr+pr1Wvvx9HTfNWuweKKn0k8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049685; c=relaxed/simple;
-	bh=60auhyrboL/ZwZpJHheq4cqj9MXV+Wbk1i+Z0GHUTMo=;
+	s=arc-20240116; t=1744049687; c=relaxed/simple;
+	bh=HUUon//Jhnm++nSXg4SODznjq7cHjuBfxI2rWh8ozpI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HE49fe0v8dIZSmHFh+MWpLABPKW6jZm9LshoKwEn32aNCtCAM+C5NZMMil0K/cMHU9qiwY+3iAEGnkeYvoVRsiSkkU476H4BtNxUAqpAT5NhWwczFAMykJysQERjQWPn/c9F9P27MGwnLbDviX1fddGr2OIc1PkuqA1qpzW7Evs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJuqTz6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C0CC4CEDD;
-	Mon,  7 Apr 2025 18:14:44 +0000 (UTC)
+	 MIME-Version; b=ImDbC4NhOaxilOEIRaAAFxipxU0NTQCfEd+JTWZBwvkqnsTo8qOPTntnotpWerHYBAZORjCl3lSCJLKGENSi+LqrMKzJKqAKSKdhLgOfKzkL+DOML+Mdf+t/ojyHSiA1S79CI7YKYO/aqPj1dKOSRTlQS9EngatOTcc0boRnZc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifWBVfZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD56C4CEE7;
+	Mon,  7 Apr 2025 18:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049685;
-	bh=60auhyrboL/ZwZpJHheq4cqj9MXV+Wbk1i+Z0GHUTMo=;
+	s=k20201202; t=1744049687;
+	bh=HUUon//Jhnm++nSXg4SODznjq7cHjuBfxI2rWh8ozpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJuqTz6YMHBuw50X+DXx7JmS7hitj1TPuJtHKbMM1XK+PEepH+9O+EA9TFnDUMHqM
-	 gjPjXjY6XGk1a2i9WNPXyyV+HkTzRofn3hvZcV9lXzHanFKKbopqt9qeVgTKMEx9aQ
-	 xr0ygn9BkuO4xfOcvig6/MZDOlwS/aNsyPfz3LDrRYRaBkQVZ9dPUd2kMGAJy5CVPx
-	 hrrPzpuByhfppuT4a90gRhB0nbAqEQcRrldGYSKmV9X6lqGyeb13HEhKXkP4ex1rUh
-	 14xYlcMg4w55z9YUk/D5/gS80Mbl/4kgn41KP1lE6P2nSfxqHPvW7Q73K2NTdw2JpI
-	 QHChScnGM3dzw==
+	b=ifWBVfZao/U9jaQ9KniEXlg0GXEMLf39OVJUTK/I0aSHJAw/twZh86O+jrLGf5Pnf
+	 4sLOr1s46FMxT74T6U8p6mh51xPHt/QyIsv7b4/vE573/2rWULa8rvwH1ZOwPe4pm6
+	 QJ9VP5MQmlkUMyOFwx3z6ZdO/90bUh7d0GltDXrtG6vqKZYUDCVC5Aa4bDo23Xiwr8
+	 4H4qZKMxxP7VKpLV4ArTwsNOMTZpB7zjlz/q9GIcBhVjezRmht4Fy9xhoTNpEzKD06
+	 i55mHocTWiPjjwWPKiWyoMq1F4d04W0P9DD/nwceDm6hzZk2qFkypsgAuvUZhFaaiH
+	 z7Aiw+9KbrRDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	kernel test robot <lkp@intel.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 14/15] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
-Date: Mon,  7 Apr 2025 14:14:14 -0400
-Message-Id: <20250407181417.3183475-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 15/15] objtool, lkdtm: Obfuscate the do_nothing() pointer
+Date: Mon,  7 Apr 2025 14:14:15 -0400
+Message-Id: <20250407181417.3183475-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181417.3183475-1-sashal@kernel.org>
 References: <20250407181417.3183475-1-sashal@kernel.org>
@@ -70,51 +71,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
+[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
 
-If 'ctr_bit' is negative, the shift counts become negative, causing a
-shift of bounds and undefined behavior.
+If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
+by the compiler, it copies one word at a time:
 
-Presumably that's not possible in normal operation, but the code
-generation isn't optimal.  And undefined behavior should be avoided
-regardless.
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
+    mov    %rax,0x38(%rbx)
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
+    mov    %rax,0x30(%rbx)
+    ...
 
-Improve code generation and remove the undefined behavior by converting
-the signed variables to unsigned.
+Those .text references point to the middle of the function, causing
+objtool to complain about their lack of ENDBR.
 
-Fixes the following warning with an UBSAN kernel:
+Prevent that by resolving the function pointer at runtime rather than
+build time.  This fixes the following warning:
 
-  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
-  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
+  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
 
 Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
+Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/rk808-regulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/lkdtm/perms.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
-index 374d80dc6d17a..bec22a001a5dd 100644
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -267,8 +267,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index 5b861dbff27e9..6c24426104ba6 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
+ /* This is marked __ro_after_init, so it should ultimately be .rodata. */
+ static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
  
- static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
++/*
++ * This is a pointer to do_nothing() which is initialized at runtime rather
++ * than build time to avoid objtool IBT validation warnings caused by an
++ * inlined unrolled memcpy() in execute_location().
++ */
++static void __ro_after_init *do_nothing_ptr;
++
+ /*
+  * This just returns to the caller. It is designed to be copied into
+  * non-executable memory regions.
+@@ -65,13 +72,12 @@ static noinline __nocfi void execute_location(void *dst, bool write)
  {
--	int rid = rdev_get_id(rdev);
--	int ctr_bit, reg;
-+	unsigned int rid = rdev_get_id(rdev);
-+	unsigned int ctr_bit, reg;
+ 	void (*func)(void);
+ 	func_desc_t fdesc;
+-	void *do_nothing_text = dereference_function_descriptor(do_nothing);
  
- 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
- 	ctr_bit = rid % 8;
+-	pr_info("attempting ok execution at %px\n", do_nothing_text);
++	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
+ 	do_nothing();
+ 
+ 	if (write == CODE_WRITE) {
+-		memcpy(dst, do_nothing_text, EXEC_SIZE);
++		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
+ 		flush_icache_range((unsigned long)dst,
+ 				   (unsigned long)dst + EXEC_SIZE);
+ 	}
+@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
+ 
+ void __init lkdtm_perms_init(void)
+ {
++	do_nothing_ptr = dereference_function_descriptor(do_nothing);
++
+ 	/* Make sure we can write to __ro_after_init values during __init */
+ 	ro_after_init |= 0xAA;
+ }
 -- 
 2.39.5
 
