@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-128729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39265A7EB1E
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:46:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AC1A7EB55
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E6F9189252E
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86F7517AEB4
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966112566E9;
-	Mon,  7 Apr 2025 18:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2011826E15B;
+	Mon,  7 Apr 2025 18:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZBeucak"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mi/gTt/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC3F2561D8;
-	Mon,  7 Apr 2025 18:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA72A26E152;
+	Mon,  7 Apr 2025 18:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049809; cv=none; b=TzJfYyok+t2wiz9hcxoptT9+54HohbyAEi8jZgqC+nKbTIuyb0GmD/QxKe6K0B/liKn5P0Xg+I2Qwt9wos3lQs454htInjXNXRl0pjriZm0xYhvAFERnA5RJvquPq7+IooLdzUlRisI2olH4a5VvFokDbQhu0cAH7RKVzqT9LeU=
+	t=1744049810; cv=none; b=MpmNf19UXk2CPYIw8Rk96PjuWi9KFiLABkTYeBK3QPI4eSnEPE5p9RvGCVZ6Kfbhj9Hju8ii9cXbzdPuBUdtauv6txEVeNJ1Cv3WN9j5ESo10XLT5n/V8V8LyCdiEavq6IOvmQ3frfrugiFbKfFsNiX/9ojvZDnAiPlnFLpxZoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049809; c=relaxed/simple;
-	bh=BeW7KyRz9QXFfHF0mE0Pz/vjKgeDBXwEhubm2TUylA4=;
+	s=arc-20240116; t=1744049810; c=relaxed/simple;
+	bh=fzKtl3d3oE77n9RfVMXCK6v216JhpG64+bOr7f0w/dQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QjZAWla9m/2PGDPJHeQHXv38Tizt5QHV6mHfcGdDExlQ8QC8i2y8tJC4xW2cahnnQN3y8kh32NWzuyw9jaraPI2V+ZDGWm7xvZmRRt3uWXXBTX1YCJw+B5OxmKLyW4dXFRSKPhtVFGe07zeg2IAftDjaN5i4IrE0yFslGl0LaN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZBeucak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E6CC4CEF5;
-	Mon,  7 Apr 2025 18:16:47 +0000 (UTC)
+	 MIME-Version; b=BDXNPS5karxccTA27PPUiXpe63sR4FW06K3b3akJHlBp7aSlsPuoh+RLS9sp4ZkvMmX4MNVhbril5YphvbVWAc68SA6rGfXWZOy9xmoaRqKU7PqXwurQefpefi3yt+ZtDmjMNiVN52YkscdoSlOt5Rqm8Ij4aXkQA0NB2njnLGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mi/gTt/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9A2C4CEF3;
+	Mon,  7 Apr 2025 18:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049809;
-	bh=BeW7KyRz9QXFfHF0mE0Pz/vjKgeDBXwEhubm2TUylA4=;
+	s=k20201202; t=1744049810;
+	bh=fzKtl3d3oE77n9RfVMXCK6v216JhpG64+bOr7f0w/dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZBeucak0SSrKDLXbd47J1Seu14uR891jmftGo0EElUF0FluUdmysnGOlzvjwvJP9
-	 GAfJIDDAUubeFZcqSOc3XUMKAoMJrRizjEnmkM24V1cL+ZCmgKfmnw5A+h2EpN+iaE
-	 q5UHmW+kZyFQCk5XGHedwzmH9TGAr/OYPw7YZBj5D5u1oadJ6/a3m5o+TUb54QlikA
-	 k2WZt+6WL3ev3WGtxf2+R6KQOtS0e+k0tdSDprB95t1btcBhHbYVQvIhlZvJkdX6rI
-	 RmKwlufWg3vDEEFpLnWOZwIWROGFBlgY+mDzOYKuLXJPOV6co4mEt81Jz+5+iMqW+g
-	 WxxgmsIHLTxGg==
+	b=Mi/gTt/sn64TkItffc0k2GuVXODpMkRqmd/R0L/QehtwJ+hHkurHQ5salcgrLgrFb
+	 mAygMr9ItKuTEtXXlHaIklNblLtxQnWXS16XGlBVa3N5gYym0eQbQVWUblhYn3ORKb
+	 odmIkn555NcQbCcwYmEqgTux/h5vXohiPwxC8KdinKerr2OvsFFeGnjJwD6pdYT86C
+	 zMsDcW4qRW4+tB50ehWiUemLxqjdRpifmFK40GhWT1Bqmh5H9br6KHe20Q9UfVEAMy
+	 I4Ou3dq9tpRhNmKWdFoNutz6NMcHS8k06MXoQvQVc5hi1NG5bcPHGvzYEdYF5323Mg
+	 kB6DV72pR3Y5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dominique Martinet <asmadeus@codewreck.org>,
-	Robert Morris <rtm@mit.edu>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
+Cc: Ignacio Encinas <ignacio@iencinas.com>,
+	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
+	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>,
 	ericvh@kernel.org,
 	lucho@ionkov.net,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 5/9] 9p/net: fix improper handling of bogus negative read/write replies
-Date: Mon,  7 Apr 2025 14:16:31 -0400
-Message-Id: <20250407181635.3184105-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 6/9] 9p/trans_fd: mark concurrent read and writes to p9_conn->err
+Date: Mon,  7 Apr 2025 14:16:32 -0400
+Message-Id: <20250407181635.3184105-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181635.3184105-1-sashal@kernel.org>
 References: <20250407181635.3184105-1-sashal@kernel.org>
@@ -68,137 +69,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.1
 Content-Transfer-Encoding: 8bit
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Ignacio Encinas <ignacio@iencinas.com>
 
-[ Upstream commit d0259a856afca31d699b706ed5e2adf11086c73b ]
+[ Upstream commit fbc0283fbeae27b88448c90305e738991457fee2 ]
 
-In p9_client_write() and p9_client_read_once(), if the server
-incorrectly replies with success but a negative write/read count then we
-would consider written (negative) <= rsize (positive) because both
-variables were signed.
+Writes for the error value of a connection are spinlock-protected inside
+p9_conn_cancel, but lockless reads are present elsewhere to avoid
+performing unnecessary work after an error has been met.
 
-Make variables unsigned to avoid this problem.
+Mark the write and lockless reads to make KCSAN happy. Mark the write as
+exclusive following the recommendation in "Lock-Protected Writes with
+Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
+while we are at it.
 
-The reproducer linked below now fails with the following error instead
-of a null pointer deref:
-9pnet: bogus RWRITE count (4294967295 > 3)
+Mark p9_fd_request and p9_conn_cancel m->err reads despite the fact that
+they do not race with concurrent writes for stylistic reasons.
 
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
-Message-ID: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
+Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
+Message-ID: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
 Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ net/9p/trans_fd.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 09f8ced9f8bb7..52a5497cfca79 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1548,7 +1548,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 	struct p9_client *clnt = fid->clnt;
- 	struct p9_req_t *req;
- 	int count = iov_iter_count(to);
--	int rsize, received, non_zc = 0;
-+	u32 rsize, received;
-+	bool non_zc = false;
- 	char *dataptr;
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 196060dc6138a..791e4868f2d4e 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -191,12 +191,13 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
  
- 	*err = 0;
-@@ -1571,7 +1572,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 				       0, 11, "dqd", fid->fid,
- 				       offset, rsize);
- 	} else {
--		non_zc = 1;
-+		non_zc = true;
- 		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
- 				    rsize);
- 	}
-@@ -1592,11 +1593,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 		return 0;
- 	}
- 	if (rsize < received) {
--		pr_err("bogus RREAD count (%d > %d)\n", received, rsize);
-+		pr_err("bogus RREAD count (%u > %u)\n", received, rsize);
- 		received = rsize;
+ 	spin_lock(&m->req_lock);
+ 
+-	if (m->err) {
++	if (READ_ONCE(m->err)) {
+ 		spin_unlock(&m->req_lock);
+ 		return;
  	}
  
--	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
-+	p9_debug(P9_DEBUG_9P, "<<< RREAD count %u\n", received);
+-	m->err = err;
++	WRITE_ONCE(m->err, err);
++	ASSERT_EXCLUSIVE_WRITER(m->err);
  
- 	if (non_zc) {
- 		int n = copy_to_iter(dataptr, received, to);
-@@ -1623,9 +1624,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 	*err = 0;
+ 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
+ 		list_move(&req->req_list, &cancel_list);
+@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
  
- 	while (iov_iter_count(from)) {
--		int count = iov_iter_count(from);
--		int rsize = fid->iounit;
--		int written;
-+		size_t count = iov_iter_count(from);
-+		u32 rsize = fid->iounit;
-+		u32 written;
+ 	m = container_of(work, struct p9_conn, rq);
  
- 		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
- 			rsize = clnt->msize - P9_IOHDRSZ;
-@@ -1633,7 +1634,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 		if (count < rsize)
- 			rsize = count;
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
  
--		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
-+		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %u (/%zu)\n",
- 			 fid->fid, offset, rsize, count);
+ 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
+@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
  
- 		/* Don't bother zerocopy for small IO (< 1024) */
-@@ -1659,11 +1660,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 			break;
- 		}
- 		if (rsize < written) {
--			pr_err("bogus RWRITE count (%d > %d)\n", written, rsize);
-+			pr_err("bogus RWRITE count (%u > %u)\n", written, rsize);
- 			written = rsize;
- 		}
+ 	m = container_of(work, struct p9_conn, wq);
  
--		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
-+		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %u\n", written);
+-	if (m->err < 0) {
++	if (READ_ONCE(m->err) < 0) {
+ 		clear_bit(Wworksched, &m->wsched);
+ 		return;
+ 	}
+@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
+ 	__poll_t n;
+ 	int err = -ECONNRESET;
  
- 		p9_req_put(clnt, req);
- 		iov_iter_revert(from, count - written - iov_iter_count(from));
-@@ -2098,7 +2099,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
  
- int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 	n = p9_fd_poll(m->client, NULL, &err);
+@@ -665,6 +666,7 @@ static void p9_poll_mux(struct p9_conn *m)
+ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
  {
--	int err, rsize, non_zc = 0;
-+	int err, non_zc = 0;
-+	u32 rsize;
- 	struct p9_client *clnt;
- 	struct p9_req_t *req;
- 	char *dataptr;
-@@ -2107,7 +2109,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 	__poll_t n;
++	int err;
+ 	struct p9_trans_fd *ts = client->trans;
+ 	struct p9_conn *m = &ts->conn;
  
- 	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
+@@ -673,9 +675,10 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
  
--	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
-+	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
- 		 fid->fid, offset, count);
+ 	spin_lock(&m->req_lock);
  
- 	clnt = fid->clnt;
-@@ -2142,11 +2144,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- 		goto free_and_error;
- 	}
- 	if (rsize < count) {
--		pr_err("bogus RREADDIR count (%d > %d)\n", count, rsize);
-+		pr_err("bogus RREADDIR count (%u > %u)\n", count, rsize);
- 		count = rsize;
+-	if (m->err < 0) {
++	err = READ_ONCE(m->err);
++	if (err < 0) {
+ 		spin_unlock(&m->req_lock);
+-		return m->err;
++		return err;
  	}
  
--	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %d\n", count);
-+	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %u\n", count);
- 
- 	if (non_zc)
- 		memmove(data, dataptr, count);
+ 	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
 -- 
 2.39.5
 
