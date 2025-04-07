@@ -1,199 +1,136 @@
-Return-Path: <stable+bounces-128581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2187A7E53B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:52:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794B4A7E581
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F0D3A486A
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:47:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8800C442DB0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92482046A3;
-	Mon,  7 Apr 2025 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A8B2066F4;
+	Mon,  7 Apr 2025 15:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fInOwzLx"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="U2EGV97b"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069922040B7;
-	Mon,  7 Apr 2025 15:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5272B204694;
+	Mon,  7 Apr 2025 15:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744040835; cv=none; b=aAW0kdqHvr9VYoZ7JwFGsFvD24M0zxWaTwr+k/lnYXiNfZIkN588igF2bmSGHXy71FIo+CxvThHJb5Y8j7iQ0xeUbut0ZYW269vGX2KYSHHzAKTvn4CkPyWTehsiz5a+IDh8w5QMPPog4S/eBafrn8vN1oG9dtB4b4QuJTnkXO4=
+	t=1744041143; cv=none; b=u3CC5K5vQRDbjuo+QGmWvQzd+RER8lu+syPOmNjtXLRBKOp4xNjsaJDc99aTd0/USc5bTmN2yQkOtJhsIB9qpjwOeUeAIt+lYIH8sRNi68SulNpuNpTOqIxraj2/UYSsJrYy+BklYRc6NePDQzX+whjr22RjgccHOFjs0dif+eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744040835; c=relaxed/simple;
-	bh=UaUZsRHa5EOc2Zin6lFK+DuGV7ZjbYiHEDzEp+CB8p4=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=C6+TdGoXA1pKCf+azY9kEssaX/YekmfRWye4IVNRUyiL/hXEmSr7yP02n8m6hMx1eLSPxGHUqmiqL+KM3VbLF+oEnZEpYDEq/q8rpj7x0g3RAAO2LWnbi5/7GBStu4K09q1rnIj2CHEa9uXRfFvm71z42wEjOo/Wxy+6EQNleEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fInOwzLx; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744040834; x=1775576834;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=UaUZsRHa5EOc2Zin6lFK+DuGV7ZjbYiHEDzEp+CB8p4=;
-  b=fInOwzLxoQYX3fmjUKyMYMo3tjM36BZH4K3wKfpuZF0L8AYCCXSsKM5R
-   oWinCfNr4Rd1/qJijGDBiA6ntshjAeKf3nI8K+wcDSZhY95S/asuQq0R4
-   UlvDI+Nhw74HeGAhjRZkdZXUdF5vK5WiI/dttQAfLAMEigB2xwE3CcSt4
-   WZolNeiIJtdWAWXmVfdBKkcQVnAoJ9u+O0/aRm4UtNf5ifPYuLB9IhNUU
-   y+QvIRcd2g6pMjgEj+t4NUM4OtNUdrksCfBMaZ80b97pDZ3wH2citqj9k
-   JBBg1m8pryi/Q9TJ2vIxAOnijrWSEK+uD2OQXsp64n4PAywyCaik6ZgOk
-   w==;
-X-CSE-ConnectionGUID: A0DONvGDRTWrUX1LMcqQLA==
-X-CSE-MsgGUID: b/YqlXlfSyK6EKvM0xaogA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="62982306"
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="62982306"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:47:13 -0700
-X-CSE-ConnectionGUID: jD+96N+KS7CMEJsYM+TmMQ==
-X-CSE-MsgGUID: u+7ADUAjR8WPUu7E0qPIJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="127872061"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.229])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:47:10 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 7 Apr 2025 18:47:06 +0300 (EEST)
-To: Mario Limonciello <superm1@kernel.org>
-cc: mario.limonciello@amd.com, Shyam-sundar.S-k@amd.com, 
-    Hans de Goede <hdegoede@redhat.com>, Yijun Shen <Yijun.Shen@dell.com>, 
-    stable@vger.kernel.org, Yijun Shen <Yijun_Shen@Dell.com>, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2] platform/x86: amd: pmf: Fix STT limits
-In-Reply-To: <392938bb-24b8-4873-ba89-aacf2c404499@kernel.org>
-Message-ID: <333df1fe-b9d7-9396-240d-e586a9f4088a@linux.intel.com>
-References: <20250407133645.783434-1-superm1@kernel.org> <60e43790-bbeb-29b3-dcf1-7311439e15cc@linux.intel.com> <392938bb-24b8-4873-ba89-aacf2c404499@kernel.org>
+	s=arc-20240116; t=1744041143; c=relaxed/simple;
+	bh=RO9vA3rEiMpXY2A/myUPJ8wWD9WvtX3M47OGtLYdyvk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZmQyoscEK62h7NMukfvE7w9wbAUfe2TEmG2+U9q1ZF2xO0EAXU1fpn2ikzKj12fQ+8rIrw7kB0tTN0pgNmZnfNE+SQgWx6sAd27tUHMCU5+2XprD+dtA+t1+xClYkdFltxlyLqWrh2gPFVTGHpTKtDpYb8qnUlEwPRNdFR3A4Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=U2EGV97b; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1744041139; x=1775577139;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3kLBT+4Y+IiY2wVdsPc5x6Fuj1savLAG8Rp99+8Cz/Y=;
+  b=U2EGV97bamTA5gVvu2Km6Ei228VXQkqFFk3C9/09GOMhPxAOhYs5bFpG
+   I2bB1MAKh46DA8RJroibOJUv6fjyusCj4SzaGqcsKjPSpqkGjzYPFs0Ha
+   dovr8gxr+YkBm7lWF1FhZHNygXRjQ3oaje6+V58iSjMPdwkTaCoulLu9h
+   s=;
+X-IronPort-AV: E=Sophos;i="6.15,194,1739836800"; 
+   d="scan'208";a="188970982"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 15:52:17 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:46015]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.57:2525] with esmtp (Farcaster)
+ id f69cf136-479c-4502-a43c-d0c57a16572b; Mon, 7 Apr 2025 15:52:16 +0000 (UTC)
+X-Farcaster-Flow-ID: f69cf136-479c-4502-a43c-d0c57a16572b
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 15:52:16 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.101.45) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 7 Apr 2025 15:52:12 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <edumazet@google.com>
+CC: <davem@davemloft.net>, <ematsumiya@suse.de>, <horms@kernel.org>,
+	<kuba@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <peterz@infradead.org>,
+	<sfrench@samba.org>, <stable@vger.kernel.org>, <wangzhaolong1@huawei.com>,
+	<willemb@google.com>
+Subject: Re: [PATCH v2 net] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Mon, 7 Apr 2025 08:52:02 -0700
+Message-ID: <20250407155204.16501-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <CANn89iKc_7RNordD-YcZv9DPw8CNubnDVkhgYGma20q4cxgAdw@mail.gmail.com>
+References: <CANn89iKc_7RNordD-YcZv9DPw8CNubnDVkhgYGma20q4cxgAdw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1266864523-1744040826=:936"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 7 Apr 2025 13:21:11 +0200
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 323892066def..d426c5f8e20f 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -2130,6 +2130,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+> >   */
+> >  static inline void sock_lock_init(struct sock *sk)
+> >  {
+> > +       sk_owner_clear(sk);
+> > +
+> >         if (sk->sk_kern_sock)
+> >                 sock_lock_init_class_and_name(
+> >                         sk,
+> > @@ -2324,6 +2326,8 @@ static void __sk_destruct(struct rcu_head *head)
+> >                 __netns_tracker_free(net, &sk->ns_tracker, false);
+> >                 net_passive_dec(net);
+> >         }
+> > +
+> > +       sk_owner_put(sk);
+> 
+> I am not convinced that the socket lock can be used after this point,
+> now or in the future.
+> 
+> >         sk_prot_free(sk->sk_prot_creator, sk);
+> >  }
+> 
+> Maybe move this in sk_prot_free() instead ?
 
---8323328-1266864523-1744040826=:936
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Makes sense.
+Will move sk_owner_put() to sk_prot_free() in v3.
 
-On Mon, 7 Apr 2025, Mario Limonciello wrote:
+Thanks!
 
-> On 4/7/2025 10:19 AM, Ilpo J=C3=A4rvinen wrote:
-> > On Mon, 7 Apr 2025, Mario Limonciello wrote:
-> >=20
-> > > From: Mario Limonciello <mario.limonciello@amd.com>
-> > >=20
-> > > On some platforms it has been observed that STT limits are not being
-> > > applied
-> > > properly causing poor performance as power limits are set too low.
-> > >=20
-> > > STT limits that are sent to the platform are supposed to be in Q8.8
-> > > format.  Convert them before sending.
-> > >=20
-> > > Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-> > > Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Poli=
-cy
-> > > Binary")
-> > > Cc: stable@vger.kernel.org
-> > > Tested-By: Yijun Shen <Yijun_Shen@Dell.com>
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > ---
-> > > v2:
-> > >   * Handle cases for auto-mode, cnqf, and sps as well
-> > > ---
-> > >   drivers/platform/x86/amd/pmf/auto-mode.c | 4 ++--
-> > >   drivers/platform/x86/amd/pmf/cnqf.c      | 4 ++--
-> > >   drivers/platform/x86/amd/pmf/sps.c       | 8 ++++----
-> > >   drivers/platform/x86/amd/pmf/tee-if.c    | 4 ++--
-> > >   4 files changed, 10 insertions(+), 10 deletions(-)
-> > >=20
-> > > diff --git a/drivers/platform/x86/amd/pmf/auto-mode.c
-> > > b/drivers/platform/x86/amd/pmf/auto-mode.c
-> > > index 02ff68be10d01..df37f8a84a007 100644
-> > > --- a/drivers/platform/x86/amd/pmf/auto-mode.c
-> > > +++ b/drivers/platform/x86/amd/pmf/auto-mode.c
-> > > @@ -120,9 +120,9 @@ static void amd_pmf_set_automode(struct amd_pmf_d=
-ev
-> > > *dev, int idx,
-> > >   =09amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false,
-> > > pwr_ctrl->sppt_apu_only, NULL);
-> > >   =09amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pwr_ctrl->stt_mi=
-n,
-> > > NULL);
-> > >   =09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
-> > > -=09=09=09 pwr_ctrl->stt_skin_temp[STT_TEMP_APU], NULL);
-> > > +=09=09=09 pwr_ctrl->stt_skin_temp[STT_TEMP_APU] << 8, NULL);
-> >=20
-> > Hi Mario,
-> >=20
-> > Could we add some helper on constructing the fixed-point number from th=
-e
-> > integer part as this magic shifting makes the intent somewhat harder to
-> > follow just by reading the code itself?
-> >=20
-> > I hoped that include/linux/ would have had something for this but it se=
-ems
-> > generic fixed-point helpers are almost non-existing except for very
-> > specific use cases such as averages so maybe add a helper only for this
-> > driver for now as this will be routed through fixes branch so doing ran=
-dom
-> > things i include/linux/ might not be preferrable and would require larg=
-er
-> > review audience.
-> >=20
-> > What I mean for general helpers is that it would be nice to have someth=
-ing
-> > like DECLARE_FIXEDPOINT() similar to DECLARE_EWMA() macro (and maybe a
-> > signed variant too) which creates a few helper functions for the given
-> > name prefix. It seems there's plenty of code which would benefit from s=
-uch
-> > helpers and would avoid the need to comment the fixed-point operations
-> > (not to speak of how many of such ops likely lack the comment). So at
-> > least keep that in mind for naming the helpers so the conversion to
-> > a generic helper could be done smoothly.
-> >=20
->=20
-> Do I follow right that you mean something like this?
->=20
-> static inline u32 amd_pmf_convert_q88 (u32 val)
 
-As with the ewma example, the operation should be the last part. And we'd=
-=20
-probably want to have some common prefix for all those to make it obvious=
-=20
-it's fixed-point related, so lets say e.g.:
-
-fixp_amd_pmf_q88_from_integer()
-
-I'm not entirely sure though if we really need per driver in the prefix at=
-=20
-all as fixed-points are more general concept than a single driver/hw. So=20
-if it's only used for temperature, maybe just fixp_temp_q88_from_integer()=
-=20
-or even just fixp_q88_from_integer(), Q8.8 should really be the same for=20
-all users, shouldn't it, so the last one would seem okay too to me=20
-(although I'm not sure what people in general will think of that).
-
-I suspect ..._from_int() isn't good name for operation because "int" is a=
-=20
-type in C but it would be shorted than from_integer.
-
-> {
-> =09return val << 8;
-> }
->=20
->=20
-
---=20
- i.
-
---8323328-1266864523-1744040826=:936--
+> 
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 323892066def..9ab149d1584c 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -2226,6 +2226,9 @@ static void sk_prot_free(struct proto *prot,
+> struct sock *sk)
+>         cgroup_sk_free(&sk->sk_cgrp_data);
+>         mem_cgroup_sk_free(sk);
+>         security_sk_free(sk);
+> +
+> +       sk_owner_put(sk);
+> +
+>         if (slab != NULL)
+>                 kmem_cache_free(slab, sk);
+>         else
 
