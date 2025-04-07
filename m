@@ -1,159 +1,126 @@
-Return-Path: <stable+bounces-128518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B775A7DC4B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:30:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD30EA7DC83
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51317A389A
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 11:29:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16AC1893638
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 11:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D998A23C8A9;
-	Mon,  7 Apr 2025 11:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAF223E356;
+	Mon,  7 Apr 2025 11:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llN8+xbS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVdj2ZZn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826302376E2;
-	Mon,  7 Apr 2025 11:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346AC23C8C7;
+	Mon,  7 Apr 2025 11:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744025410; cv=none; b=PwtV84XX+YHQhVKN2YmuIzhQtf7gf/+EojBPs9EPpjAo8993Jdwh4PcN/OZyqz10BI4fWmTL6UTCkFh8jUSeagYB5cpcNU7qtgmPj4ji+Fi2FsbDk1pdsEXIkD0p9DN1dHwmxcWO6BftA1Pc9Uym9LjsksEnKtnHlroZ3fjbjO8=
+	t=1744025923; cv=none; b=PivqZ0mlVxC85jQ4OC9vnLRcTgy53q5CvHIYKupYwji0qckmEeStj2hp/kFB33oYXbxikAHT8kt48hmy+UqPiUGbndVPqPC+KrJ+GAISb/PO53ZvKI8qiC7gs0rqNymFktbL8joIPKQrbqqSJkEPAU1KMBw3UCtObRCM++9ktoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744025410; c=relaxed/simple;
-	bh=u90GVaNUUo76YLN6SKbqib+18pDw2l0zRWHHUjFm3as=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ubIYfqCmvvfKVC2HuKOqw9ft5OH0rUUZvH5tr/KYtDqAtsGvpxEhRKukUTmiDEvkPcGiHVsC9DIAGGhIBVu+cfV0HkTyqW5BcWvtYoJvE227c6+0hjkSOIDFXuqqaL/2I3T7DroDgBM8OOraH2iKR4VWbPpomQMoZnHIcPdWD78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llN8+xbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BEDC4CEDD;
-	Mon,  7 Apr 2025 11:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744025410;
-	bh=u90GVaNUUo76YLN6SKbqib+18pDw2l0zRWHHUjFm3as=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=llN8+xbS7zazGfzUGA1WFZphuPkSIBLxMdii7M0vqEbEp38Ifvz9TfkFMp1BvsZ3d
-	 xV/EvfVLdIBjh+Gi7m84ZRajTEngrnXkdwHfcxgI6s9zMOtYFRcNQX4mLhdLnF9goV
-	 6S+JUklyeoXGK36lUhD314sgiSKGmSAx5SHu8AAwJE5WEaaBxpB3k+3WG3SFcMb+vI
-	 li08zR6BSkj/XAYX/BOh0S7ClxD5q0T4scHihZBvirPJtrSM1Bj9c1OuYyGKV+90jl
-	 FgHcYjbLf7VW3kxNTGgpxeCEUR9kr0+qiABOTIvCin6/RNq5zAyHh3NHBzLC+1UZWr
-	 YJ0ApstZK5a7A==
-Date: Mon, 7 Apr 2025 14:30:05 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: keyrings@vger.kernel.org, stable@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v3] tpm: Mask TPM RC in tpm2_start_auth_session()
-Message-ID: <Z_O3PU5XDbDirlUO@kernel.org>
-References: <20250407071731.78915-1-jarkko@kernel.org>
- <20250407072057.81062-1-jarkko@kernel.org>
- <2mjtwprr3dujf4wbu5licb3jtzxujimcz5iahrgqymu6znwbbq@cslxwt7ejva3>
+	s=arc-20240116; t=1744025923; c=relaxed/simple;
+	bh=FipsQrVxRRzx0gAaWn73bIQfIwQBi/3bfri3Exj8TG8=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Z2i2gnuHsDvasKwqTgVX1HmVM9zhrQm0QWxahk0CgHwu0uOn1Eknlno6IIKTBVpE/63qfOGz1svt+9iBZlc8D/n/J2buBhmQwXZAKt1FLfnqGAitP8/iFUC23LaJxIv1C/noVCc0ZQaffQvYEbN+07I0blJfDgD97iinf/fkeKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVdj2ZZn; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744025922; x=1775561922;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=FipsQrVxRRzx0gAaWn73bIQfIwQBi/3bfri3Exj8TG8=;
+  b=MVdj2ZZnUJZnMM/impXe43KlDuiRp9WDyNreI5F2ZvmoOZ8zmWyDBGBk
+   7T6jUUoIsU7RisMPRKMO8yoLyDxwMVa/JY0Jg05KvEWryTLkcOS7wqB23
+   fngSSLWPjk0/8ju8Vg9WC5FFPKmyQKtk9AXhwi1uxbpEhXfAh/lR3AzH8
+   ACW4CqEQyUJeB+13I24fy9hMT7F3UON0tiEHI8+qcoiA+fWx4N2qnCeUX
+   tiq7lOqSBG2z4oWjWgO0e2FHWReMnUQtMp95AG8Ti/LgnSRBL85u4JfYT
+   4+HPTh0OtObDT//xFQX/nociTzp9KFafiUfx/u2vrZTOETUyE7xWScatw
+   g==;
+X-CSE-ConnectionGUID: KC86cfQ4Q9mqV1mnU1RTWA==
+X-CSE-MsgGUID: lfy9t3RlQ/+g7AoH+pW2AA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45425423"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="45425423"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 04:38:41 -0700
+X-CSE-ConnectionGUID: bnG+Jrf1Tdui82kFHrQwIQ==
+X-CSE-MsgGUID: DSVfj0YUSBuCD3/pALeA1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="127814613"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.229])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 04:38:37 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 7 Apr 2025 14:38:31 +0300 (EEST)
+To: Wentao Liang <vulab@iscas.ac.cn>
+cc: hmh@hmh.eng.br, Hans de Goede <hdegoede@redhat.com>, 
+    ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: thinkpad-acpi: Add error handling for
+ tpacpi_check_quirks
+In-Reply-To: <20250402143807.3650-1-vulab@iscas.ac.cn>
+Message-ID: <6850403a-dba8-2334-50f7-76cda9e9685f@linux.intel.com>
+References: <20250402143807.3650-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2mjtwprr3dujf4wbu5licb3jtzxujimcz5iahrgqymu6znwbbq@cslxwt7ejva3>
+Content-Type: text/plain; charset=US-ASCII
 
-On Mon, Apr 07, 2025 at 10:04:09AM +0200, Stefano Garzarella wrote:
-> On Mon, Apr 07, 2025 at 10:20:57AM +0300, Jarkko Sakkinen wrote:
-> > tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
-> > 
-> > [   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
-> > 
-> > Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
-> > error codes.
-> > 
-> > Cc: stable@vger.kernel.org # v6.10+
-> > Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-> > Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
-> > Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> > v3:
-> > - rc > 0
-> > v2:
-> > - Investigate TPM rc only after destroying tpm_buf.
-> > ---
-> > drivers/char/tpm/tpm2-sessions.c | 31 +++++++++++++++++--------------
-> > include/linux/tpm.h              |  1 +
-> > 2 files changed, 18 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> > index 3f89635ba5e8..abd54fb0a45a 100644
-> > --- a/drivers/char/tpm/tpm2-sessions.c
-> > +++ b/drivers/char/tpm/tpm2-sessions.c
-> > @@ -40,11 +40,6 @@
-> >  *
-> >  * These are the usage functions:
-> >  *
-> > - * tpm2_start_auth_session() which allocates the opaque auth structure
-> > - *	and gets a session from the TPM.  This must be called before
-> > - *	any of the following functions.  The session is protected by a
-> > - *	session_key which is derived from a random salt value
-> > - *	encrypted to the NULL seed.
-> >  * tpm2_end_auth_session() kills the session and frees the resources.
-> >  *	Under normal operation this function is done by
-> >  *	tpm_buf_check_hmac_response(), so this is only to be used on
-> > @@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
-> > }
-> > 
-> > /**
-> > - * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
-> > - * @chip: the TPM chip structure to create the session with
-> > + * tpm2_start_auth_session() - Create an a HMAC authentication session
-> > + * @chip:	A TPM chip
-> >  *
-> > - * This function loads the NULL seed from its saved context and starts
-> > - * an authentication session on the null seed, fills in the
-> > - * @chip->auth structure to contain all the session details necessary
-> > - * for performing the HMAC, encrypt and decrypt operations and
-> > - * returns.  The NULL seed is flushed before this function returns.
-> > + * Loads the ephemeral key (null seed), and starts an HMAC authenticated
-> > + * session. The null seed is flushed before the return.
-> >  *
-> > - * Return: zero on success or actual error encountered.
-> > + * Returns zero on success, or a POSIX error code.
-> >  */
-> > int tpm2_start_auth_session(struct tpm_chip *chip)
-> > {
-> > @@ -1024,7 +1016,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
-> > 	/* hash algorithm for session */
-> > 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
-> > 
-> > -	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
-> > +	rc = tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession");
-> > 	tpm2_flush_context(chip, null_key);
-> > 
-> > 	if (rc == TPM2_RC_SUCCESS)
-> > @@ -1032,6 +1024,17 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
-> > 
-> > 	tpm_buf_destroy(&buf);
-> > 
-> > +	if (rc > 0) {
+On Wed, 2 Apr 2025, Wentao Liang wrote:
+
+> In tpacpi_battery_init(), the return value of tpacpi_check_quirks() needs
+> to be checked. The battery should not be hooked if there is no matched
+> battery information in quirk table.
 > 
-> To avoid the nesting blocks, can we include `TPM2_RC_SUCCESS` case in the
-> switch or move the `if (rc == TPM2_RC_SUCCESS)` before it?
-
-What do you mean by "avoiding nesting blocks"?
-
+> Add an error check and return -ENODEV immediately if the device fail
+> the check.
 > 
-> Thanks,
-> Stefano
+> Fixes: 1a32ebb26ba9 ("platform/x86: thinkpad_acpi: Support battery quirk")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/platform/x86/thinkpad_acpi.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+> index 2cfb2ac3f465..a3227f60aa43 100644
+> --- a/drivers/platform/x86/thinkpad_acpi.c
+> +++ b/drivers/platform/x86/thinkpad_acpi.c
+> @@ -9969,11 +9969,15 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
+>  
+>  static int __init tpacpi_battery_init(struct ibm_init_struct *ibm)
+>  {
+> +	unsigned long r;
+> +
+>  	memset(&battery_info, 0, sizeof(battery_info));
+>  
+> -	tp_features.battery_force_primary = tpacpi_check_quirks(
+> +	r = tp_features.battery_force_primary = tpacpi_check_quirks(
 
-BR, Jarkko
+Please don't do a double assignment. You can assign r to 
+tp_features.battery_force_primary after the if check.
+
+>  					battery_quirk_table,
+>  					ARRAY_SIZE(battery_quirk_table));
+> +	if (!r)
+> +		return -ENODEV;
+>  
+>  	battery_hook_register(&battery_hook);
+>  	return 0;
+> 
+
+-- 
+ i.
+
 
