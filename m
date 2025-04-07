@@ -1,107 +1,70 @@
-Return-Path: <stable+bounces-128426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02DCA7D0EC
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 00:15:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4CCA7D140
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 02:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C0903A62D6
-	for <lists+stable@lfdr.de>; Sun,  6 Apr 2025 22:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D7CF16EAAA
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 00:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A2D221717;
-	Sun,  6 Apr 2025 22:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614A2139E;
+	Mon,  7 Apr 2025 00:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8CGobum"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIBRtGCN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9849B2206B5;
-	Sun,  6 Apr 2025 22:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E5B191;
+	Mon,  7 Apr 2025 00:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743977704; cv=none; b=AFd3geGxjwXxHUB0vdpjVGmEsVNDtBepDHJI3JsaIbBWnAcnfuQJANMmpb4CjqIkBDWYP8qtwMzemp4FLVoos7GmlPrJkBR63Wv7VbdwHK68qKJVcjF0pQOXdLXpaAm4i5X1NEeCcrDo+HMBdk1p6dgTTEmwYaMLvpelrFV8LtU=
+	t=1743984656; cv=none; b=kKH4XQ6BDUnhAaDalEYO5kmXP+fXMIad92GMNO+Yw/uuyfRuamH6IdArx1HU/MN9+ZrusaFfMfpV5dlJT4XFVB3QnOcxgzxxwYfPHpu94hivAgX3z5Iw3Y+LwZdMFdkzPKVGTtBfp8IVAY3ySIctoBTCRXXZ+QXWGzwxb+B/MvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743977704; c=relaxed/simple;
-	bh=N43iJ8uAfLkUfdoT0DoDo+1pyWvAHJsldz/CgAIRBGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4IWJL2bOcFIDjkcsFzAZNG3tiJ9fFz859cyd9Igxx2d8sjUKZhQatkitE8tsiZT0BVuCur37ZVy4egKjsNAQXMd3f9mc/URHQLVgBj9sNJu13ML+wVCKFoi4ebpRyrnR2Eji585CCRU0TV1Q9Ms5bVLu0G7PAmvTp6sLHbnh1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8CGobum; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so31146485e9.1;
-        Sun, 06 Apr 2025 15:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743977701; x=1744582501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fbjlynKWg/4l7XREwNXFX/8RA/bU/RRJTqy0Jin3hBE=;
-        b=Z8CGobumrQDIJ42dnVLWMZ5G4qHDhEeK59IlzKRqTmsw68MfJJT8zJ2IbxkWKNio/4
-         gIYk+mPLgJET1KOcXpf35EZDCjA+WX3wBuduxWA9rczrWF5kr9VxoJPQm1orpi61uSjO
-         40a+SNOKO+LjA+ttj4KBOh0fA2ThjFeMCMegGQN5niCye7VV535IX1ImQsAbr1+L3yVl
-         DfD01eoaH3LjIDHz6e4Fg5j8wc+A/mx5ZRsaw/JKPaEhvITeL/UfxxxKrtSDw2i2iu8U
-         GKqnrY35/DM1QxT7li3QLBxpjY2ZW26QKxvCKNh/419UCKfMQWJFYEbSQ77ItFPuOfyZ
-         z2kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743977701; x=1744582501;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fbjlynKWg/4l7XREwNXFX/8RA/bU/RRJTqy0Jin3hBE=;
-        b=TRf7ZS9Gb5LmLoSlOQEapaOPYM62q5kUEwzvSBHKLV+YObwpxYJizUJWI16tMWczWl
-         gS/gVVp2/hpdaYWXVEcT+C2Db080HeI31hig3VRHm2RIv3N6LKf/Mlz2aNyvuXAuZBEo
-         DEhiyQOC9WSQOFWPnRwxtzrdZptv0Bwm/Iy6x6vfXvR/EVyse5/0hWMmUDhWeZtscaYw
-         Z4f8XtHKmvVBleWqUTBPtCvKmXaOYh1pP6enSt9UA2ZpWYpRqRUlrMmaG3zatVe9yhyn
-         4qR2PVGnDdoJXvysIM0IocuolSY6D2SmNVVwnMvuvbf0+LUk8geF4J0YK7Wx/Fe+r/+f
-         WXog==
-X-Forwarded-Encrypted: i=1; AJvYcCUgDzR1UR2ns+w82m/fbkbTEzuQkUttK9mWmM/s5FgwGESWYvY+hn0R/L33EqFYryk42GgEes5O+lj0@vger.kernel.org, AJvYcCW6vYP6Sg8Psgx2FEYWtYPY7MZoduvJGPoK0aEq4LqWTbLCsjAfbX3MnOKJ1UcpP6+2byTQr0fPic4SpRfk@vger.kernel.org, AJvYcCWh2w4L4Y06Vf0xR+MvF4c2gLuGCTrpwaHqnb/Fp+6Wjy9GHI6scJ013fBbAamUxcnCEybC9zR1@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOI0Sqcj4HQ3mo4sXtEhS2yo6k6h/ALvf8i6dB3OG53tmegu8R
-	zjwwcfQQoc7bqvtAMg5buSCiSuxWOgnIC0k4nDgZUec1kRPy1lqD3fAVVg==
-X-Gm-Gg: ASbGncsTM0um2BjiyWPTJxSClvPDQpGNfVf4zdJZ62iWrcKcTLu8oB9xSt3Msu73N0N
-	2irMk0GxJAFALWy6WknRnqv11aG+rwK5nzkjifAzZw4YKkoTPytQPdC51YUjBuHpoA0s1huL43/
-	BgjwCNI4+F9h4Ds7XdsosMl5k7dQigHXOVV6puk25G9ha54r+IOXSbxDKCfqL/38Fvio9f3yrft
-	lTebsF/0IxKlVFRpBjclbUtOm964WdwRCrP1hNyPwEd4ZGosXgm2Cd10JjY3FMCsIZKFlM9HwyQ
-	V5Gg5Hy8S5kxyxyTrWI1F3hp75b9/pFwW0+8DPYFkLS8sqX9JC78MfhwQjOygCXohzgGrlma4xd
-	SVQ2mzZcaPiU0pQ==
-X-Google-Smtp-Source: AGHT+IEdcsmazJ3h4gV5FB1N2QFgWw4lBR8V7yh2Q970uDPmQsNJz+c+C9tAeyVOD9FOQdxcIx726Q==
-X-Received: by 2002:a05:600c:190b:b0:43d:fa5f:7d04 with SMTP id 5b1f17b1804b1-43ebf017220mr153587975e9.16.1743977700662;
-        Sun, 06 Apr 2025 15:15:00 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43ec366aa29sm111517055e9.39.2025.04.06.15.14.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Apr 2025 15:15:00 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1743984656; c=relaxed/simple;
+	bh=9un9VmFkdH9K3+ubLeKF5bvDTRpmsxY+GE0bjL8Hmpg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AJdAdqMpVy5HcTBt3CFKegq57898816CNM6ontAJGFBlAt2cq1bCDPG8mQubhMt0hvsfSyKDeo2+dzn8XiUYENP2BeSO9sh0fL5VmAkO/pnSZXi7IeWtsOxAM1g0Wjb9NmSWibgWwy/tbzWHzwkZbeet7r8h8AupCsTQCDRDw4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIBRtGCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6E4C4CEE3;
+	Mon,  7 Apr 2025 00:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743984655;
+	bh=9un9VmFkdH9K3+ubLeKF5bvDTRpmsxY+GE0bjL8Hmpg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SIBRtGCNSzbEd33ko9d2X0/uxOvR8U0MQins8rNMCDytJ9wCsp9UkzDnM/T5XQhR5
+	 WgYYtjdqKCoFlQkGx+x0Jt2ZkDki9JlwQEJWwpFkbq3p2aPZ3Qbu4wYuIGdoBHc4c7
+	 dP3zkQtVYLgml/OrOQYrvfTeOw7dj8lpzA6u+Lob2fQcrXTb23Ko9sg3KdlAr/qB3J
+	 FPmY5JGLvynnlQ178BUiwpe9DoEspq3SdXw8Ausz2LgcGq44S6064bu/QWlZlq7anQ
+	 AH60SRSXr248euDum6TKPqHanXdmGSpL6aRWAYpV/wu+wCVXv3yHhU1jG0hy1RQY0e
+	 Q6uT1w+MGXYTQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: keyrings@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	"Lei Wei (QUIC)" <quic_leiwei@quicinc.com>
-Cc: stable@vger.kernel.org
-Subject: [RFC PATCH net-next v2 01/11] net: phylink: fix possible circular locking dep with config in-band
-Date: Mon,  7 Apr 2025 00:13:54 +0200
-Message-ID: <20250406221423.9723-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250406221423.9723-1-ansuelsmth@gmail.com>
-References: <20250406221423.9723-1-ansuelsmth@gmail.com>
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH v5] KEYS: Add a list for unreferenced keys
+Date: Mon,  7 Apr 2025 03:10:45 +0300
+Message-Id: <20250407001046.19189-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,150 +73,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Debug lock detection revealed a possible circular locking dependency between
-phylink_major_config() and phylink_bringup_phy().
+From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-This was introduced by the addition of phy_config_inband(), which acquires
-the phydev lock. This made the locking order in phylink_bringup_phy()
-inconsistent, as it acquires the phydev lock before phylink's state_mutex.
+Add an isolated list of unreferenced keys to be queued for deletion, and
+try to pin the keys in the garbage collector before processing anything.
+Skip unpinnable keys.
 
-A deadlock can occur when phylink_major_config() is called from
-phylink_resolve(), where the state_mutex is taken first and then the phydev
-lock. This is the reverse of the order used in phylink_bringup_phy().
+Use this list for blocking the reaping process during the teardown:
 
-To avoid this circular dependency, change the locking order in
-phylink_bringup_phy() to match the pattern used in phylink_resolve(): take
-state_mutex first, then the phydev lock.
+1. First off, the keys added to `keys_graveyard` are snapshotted, and the
+   list is flushed. This the very last step in `key_put()`.
+2. `key_put()` reaches zero. This will mark key as busy for the garbage
+   collector.
+3. `key_garbage_collector()` will try to increase refcount, which won't go
+   above zero. Whenever this happens, the key will be skipped.
 
-A sample lockdep warning is included below for reference:
-
-[  147.749178]
-[  147.750682] ======================================================
-[  147.756850] WARNING: possible circular locking dependency detected
-[  147.763019] 6.14.0-next-20250404+ #0 Tainted: G           O
-[  147.769189] ------------------------------------------------------
-[  147.775356] kworker/u16:0/12 is trying to acquire lock:
-[  147.780571] ffffff80ce9bcf08 (&dev->lock#2){+.+.}-{4:4}, at: phy_config_inband+0x44/0x90
-[  147.788672]
-[  147.788672] but task is already holding lock:
-[  147.794492] ffffff80c0dfbda0 (&pl->state_mutex){+.+.}-{4:4}, at: phylink_resolve+0x2c/0x6a8
-[  147.802840]
-[  147.802840] which lock already depends on the new lock.
-[  147.802840]
-[  147.811002]
-[  147.811002] the existing dependency chain (in reverse order) is:
-[  147.818472]
-[  147.818472] -> #1 (&pl->state_mutex){+.+.}-{4:4}:
-[  147.824647]        __mutex_lock+0x90/0x924
-[  147.828738]        mutex_lock_nested+0x20/0x28
-[  147.833173]        phylink_bringup_phy+0x210/0x700
-[  147.837954]        phylink_fwnode_phy_connect+0xe0/0x124
-[  147.843256]        phylink_of_phy_connect+0x18/0x20
-[  147.848124]        dsa_user_create+0x210/0x414
-[  147.852561]        dsa_port_setup+0xd4/0x14c
-[  147.856823]        dsa_register_switch+0xbb0/0xe40
-[  147.861605]        mt7988_probe+0xf8/0x140
-[  147.865694]        platform_probe+0x64/0xbc
-[  147.869869]        really_probe+0xbc/0x388
-[  147.873955]        __driver_probe_device+0x78/0x154
-[  147.878823]        driver_probe_device+0x3c/0xd4
-[  147.883430]        __device_attach_driver+0xb0/0x144
-[  147.888383]        bus_for_each_drv+0x6c/0xb0
-[  147.892732]        __device_attach+0x9c/0x19c
-[  147.897078]        device_initial_probe+0x10/0x18
-[  147.901771]        bus_probe_device+0xa8/0xac
-[  147.906118]        deferred_probe_work_func+0xb8/0x118
-[  147.911245]        process_one_work+0x224/0x610
-[  147.915769]        worker_thread+0x1b8/0x35c
-[  147.920029]        kthread+0x11c/0x1e8
-[  147.923769]        ret_from_fork+0x10/0x20
-[  147.927857]
-[  147.927857] -> #0 (&dev->lock#2){+.+.}-{4:4}:
-[  147.933686]        __lock_acquire+0x12b8/0x1ff0
-[  147.938209]        lock_acquire+0xf4/0x2d8
-[  147.942295]        __mutex_lock+0x90/0x924
-[  147.946383]        mutex_lock_nested+0x20/0x28
-[  147.950817]        phy_config_inband+0x44/0x90
-[  147.955252]        phylink_major_config+0x684/0xa64
-[  147.960120]        phylink_resolve+0x24c/0x6a8
-[  147.964554]        process_one_work+0x224/0x610
-[  147.969075]        worker_thread+0x1b8/0x35c
-[  147.973335]        kthread+0x11c/0x1e8
-[  147.977075]        ret_from_fork+0x10/0x20
-[  147.981162]
-[  147.981162] other info that might help us debug this:
-[  147.981162]
-[  147.989150]  Possible unsafe locking scenario:
-[  147.989150]
-[  147.995056]        CPU0                    CPU1
-[  147.999575]        ----                    ----
-[  148.004094]   lock(&pl->state_mutex);
-[  148.007748]                                lock(&dev->lock#2);
-[  148.013572]                                lock(&pl->state_mutex);
-[  148.019742]   lock(&dev->lock#2);
-[  148.023051]
-[  148.023051]  *** DEADLOCK ***
-[  148.023051]
-[  148.028958] 3 locks held by kworker/u16:0/12:
-[  148.033304]  #0: ffffff80c0011d48 ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_one_work+0x1a8/0x610
-[  148.044082]  #1: ffffffc081ca3dd8 ((work_completion)(&pl->resolve)){+.+.}-{0:0}, at: process_one_work+0x1d0/0x610
-[  148.054338]  #2: ffffff80c0dfbda0 (&pl->state_mutex){+.+.}-{4:4}, at: phylink_resolve+0x2c/0x6a8
-[  148.063119]
-[  148.063119] stack backtrace:
-[  148.067465] CPU: 3 UID: 0 PID: 12 Comm: kworker/u16:0 Tainted: G           O        6.14.0-next-20250404+ #0 NONE
-[  148.067472] Tainted: [O]=OOT_MODULE
-[  148.067474] Hardware name: Bananapi BPI-R4 2.5GE PoE (DT)
-[  148.067476] Workqueue: events_power_efficient phylink_resolve
-[  148.067482] Call trace:
-[  148.067484]  show_stack+0x14/0x1c (C)
-[  148.067492]  dump_stack_lvl+0x84/0xc0
-[  148.067497]  dump_stack+0x14/0x1c
-[  148.067500]  print_circular_bug+0x330/0x43c
-[  148.067505]  check_noncircular+0x124/0x134
-[  148.067508]  __lock_acquire+0x12b8/0x1ff0
-[  148.067512]  lock_acquire+0xf4/0x2d8
-[  148.067516]  __mutex_lock+0x90/0x924
-[  148.067521]  mutex_lock_nested+0x20/0x28
-[  148.067527]  phy_config_inband+0x44/0x90
-[  148.067531]  phylink_major_config+0x684/0xa64
-[  148.067535]  phylink_resolve+0x24c/0x6a8
-[  148.067539]  process_one_work+0x224/0x610
-[  148.067544]  worker_thread+0x1b8/0x35c
-[  148.067548]  kthread+0x11c/0x1e8
-[  148.067552]  ret_from_fork+0x10/0x20
-
-Cc: stable@vger.kernel.org
-Fixes: 5fd0f1a02e75 ("net: phylink: add negotiation of in-band capabilities")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 ---
- drivers/net/phy/phylink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v5:
+- Rebased on top of v6.15-rc
+- Updated commit message to explain how spin lock and refcount
+  isolate the time window in key_put().
+v4:
+- Pin the key while processing key type teardown. Skip dead keys.
+- Revert key_gc_graveyard back key_gc_unused_keys.
+- Rewrote the commit message.
+- "unsigned long flags" declaration somehow did make to the previous
+  patch (sorry).
+v3:
+- Using spin_lock() fails since key_put() is executed inside IRQs.
+  Using spin_lock_irqsave() would neither work given the lock is
+  acquired for /proc/keys. Therefore, separate the lock for
+  graveyard and key_graveyard before reaping key_serial_tree.
+v2:
+- Rename key_gc_unused_keys as key_gc_graveyard, and re-document the
+  function.
+---
+ include/linux/key.h      |  7 ++-----
+ security/keys/gc.c       | 21 +++++++++++++++++++++
+ security/keys/internal.h |  2 ++
+ security/keys/key.c      | 11 ++++-------
+ 4 files changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 69ca765485db..4a1edf19dfad 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -2072,8 +2072,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
- 		     dev_name(&phy->mdio.dev), phy->drv->name, irq_str);
- 	kfree(irq_str);
+diff --git a/include/linux/key.h b/include/linux/key.h
+index ba05de8579ec..c50659184bdf 100644
+--- a/include/linux/key.h
++++ b/include/linux/key.h
+@@ -195,10 +195,8 @@ enum key_state {
+ struct key {
+ 	refcount_t		usage;		/* number of references */
+ 	key_serial_t		serial;		/* key serial number */
+-	union {
+-		struct list_head graveyard_link;
+-		struct rb_node	serial_node;
+-	};
++	struct list_head	graveyard_link; /* key->usage == 0 */
++	struct rb_node		serial_node;
+ #ifdef CONFIG_KEY_NOTIFICATIONS
+ 	struct watch_list	*watchers;	/* Entities watching this key for changes */
+ #endif
+@@ -236,7 +234,6 @@ struct key {
+ #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
+ #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
+ #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
+-#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
  
--	mutex_lock(&phy->lock);
- 	mutex_lock(&pl->state_mutex);
-+	mutex_lock(&phy->lock);
- 	pl->phydev = phy;
- 	pl->phy_state.interface = interface;
- 	pl->phy_state.pause = MLO_PAUSE_NONE;
-@@ -2115,8 +2115,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
- 		phy_disable_eee(phy);
+ 	/* the key type and key description string
+ 	 * - the desc is used to match a key against search criteria
+diff --git a/security/keys/gc.c b/security/keys/gc.c
+index 4a7f32a1208b..e32534027494 100644
+--- a/security/keys/gc.c
++++ b/security/keys/gc.c
+@@ -193,6 +193,7 @@ static void key_garbage_collector(struct work_struct *work)
+ 	struct rb_node *cursor;
+ 	struct key *key;
+ 	time64_t new_timer, limit, expiry;
++	unsigned long flags;
+ 
+ 	kenter("[%lx,%x]", key_gc_flags, gc_state);
+ 
+@@ -210,17 +211,36 @@ static void key_garbage_collector(struct work_struct *work)
+ 
+ 	new_timer = TIME64_MAX;
+ 
++	spin_lock_irqsave(&key_graveyard_lock, flags);
++	list_splice_init(&key_graveyard, &graveyard);
++	spin_unlock_irqrestore(&key_graveyard_lock, flags);
++
++	list_for_each_entry(key, &graveyard, graveyard_link) {
++		spin_lock(&key_serial_lock);
++		kdebug("unrefd key %d", key->serial);
++		rb_erase(&key->serial_node, &key_serial_tree);
++		spin_unlock(&key_serial_lock);
++	}
++
+ 	/* As only this function is permitted to remove things from the key
+ 	 * serial tree, if cursor is non-NULL then it will always point to a
+ 	 * valid node in the tree - even if lock got dropped.
+ 	 */
+ 	spin_lock(&key_serial_lock);
++	key = NULL;
+ 	cursor = rb_first(&key_serial_tree);
+ 
+ continue_scanning:
++	key_put(key);
+ 	while (cursor) {
+ 		key = rb_entry(cursor, struct key, serial_node);
+ 		cursor = rb_next(cursor);
++		/* key_get(), unless zero: */
++		if (!refcount_inc_not_zero(&key->usage)) {
++			key = NULL;
++			gc_state |= KEY_GC_REAP_AGAIN;
++			goto skip_dead_key;
++		}
+ 
+ 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
+ 			if (key->type == key_gc_dead_keytype) {
+@@ -273,6 +293,7 @@ static void key_garbage_collector(struct work_struct *work)
+ 		spin_lock(&key_serial_lock);
+ 		goto continue_scanning;
  	}
++	key_put(key);
  
--	mutex_unlock(&pl->state_mutex);
- 	mutex_unlock(&phy->lock);
-+	mutex_unlock(&pl->state_mutex);
+ 	/* We've completed the pass.  Set the timer if we need to and queue a
+ 	 * new cycle if necessary.  We keep executing cycles until we find one
+diff --git a/security/keys/internal.h b/security/keys/internal.h
+index 676d4ce8b431..4e3d9b322390 100644
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -69,6 +69,8 @@ extern spinlock_t key_graveyard_lock;
+ extern struct rb_root	key_user_tree;
+ extern spinlock_t	key_user_lock;
+ extern struct key_user	root_key_user;
++extern struct list_head	key_graveyard;
++extern spinlock_t	key_graveyard_lock;
  
- 	phylink_dbg(pl,
- 		    "phy: %s setting supported %*pb advertising %*pb\n",
+ extern struct key_user *key_user_lookup(kuid_t uid);
+ extern void key_user_put(struct key_user *user);
+diff --git a/security/keys/key.c b/security/keys/key.c
+index 23cfa62f9c7e..7511f2017b6b 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -22,6 +22,8 @@ DEFINE_SPINLOCK(key_serial_lock);
+ 
+ struct rb_root	key_user_tree; /* tree of quota records indexed by UID */
+ DEFINE_SPINLOCK(key_user_lock);
++LIST_HEAD(key_graveyard);
++DEFINE_SPINLOCK(key_graveyard_lock);
+ 
+ unsigned int key_quota_root_maxkeys = 1000000;	/* root's key count quota */
+ unsigned int key_quota_root_maxbytes = 25000000; /* root's key space quota */
+@@ -658,14 +660,9 @@ void key_put(struct key *key)
+ 				key->user->qnbytes -= key->quotalen;
+ 				spin_unlock_irqrestore(&key->user->lock, flags);
+ 			}
+-			smp_mb(); /* key->user before FINAL_PUT set. */
+-			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+-			spin_lock(&key_serial_lock);
+-			rb_erase(&key->serial_node, &key_serial_tree);
+-			spin_unlock(&key_serial_lock);
+-			spin_lock(&key_graveyard_lock);
++			spin_lock_irqsave(&key_graveyard_lock, flags);
+ 			list_add_tail(&key->graveyard_link, &key_graveyard);
+-			spin_unlock(&key_graveyard_lock);
++			spin_unlock_irqrestore(&key_graveyard_lock, flags);
+ 			schedule_work(&key_gc_work);
+ 		}
+ 	}
 -- 
-2.48.1
+2.39.5
 
 
