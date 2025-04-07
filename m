@@ -1,195 +1,223 @@
-Return-Path: <stable+bounces-128526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F932A7DDD3
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A737A7DDFC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBAB9171A25
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:38:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF8BC188FD62
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F408C253B42;
-	Mon,  7 Apr 2025 12:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E327524DFE8;
+	Mon,  7 Apr 2025 12:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXIEJ1R/"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="qhJZ6oeS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3BF24C08E;
-	Mon,  7 Apr 2025 12:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681BB248896
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 12:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744029448; cv=none; b=qE8Njv60JpBBDOg+fx2viA1x2uuAFRwzayTcIXULNcQsl+ZuVptgl2636sRMe3HIefmAsGMaVt1D/Ub0BD2g3RFnGdNxmmlUpnAuF8mOof+Xi9lJo/LV4RfvmJXOELL+nrWKGwGlDu/7vlnZKwEABI7xj5FxOOCIEzh50y3v05U=
+	t=1744029763; cv=none; b=l/8QFyMOAWiwBHOGQhsL9TTd7gklBmlT7MB9Gu0JE/ns618JdyexDsXNv68kTI/bRlZqO7TVP3pCtGOywehZzwvYhHrRu97Mr0zH3k1n4Uf1giV+Ld7aKWVhHSKoRVXP1I5poILlQjY4GdYDQf2+QQEGHNFBnI9yhoyERPxAeHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744029448; c=relaxed/simple;
-	bh=3/ZwyMCX+cxSaU7y8VHBxxA2RFxmHG/i12MeBjhvXlg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RLTjgXiJs8R+TbLcIqkka67RRA71FWuADVRpVBXJ48YTHfriw6kC3i/fmHqQ4vNrrGPFs197S3WYiPlf43SKOjE5v73RnGIbS0cToFCEHzKxXO6coaZ8t/Eic73TQFgGB8PoryH+OH4lYkdKIHQZb9ggGyfwtMMYf31RTLJAqb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXIEJ1R/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EE1C4CEE7;
-	Mon,  7 Apr 2025 12:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744029448;
-	bh=3/ZwyMCX+cxSaU7y8VHBxxA2RFxmHG/i12MeBjhvXlg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=oXIEJ1R/+bjxUD+O8AQD5wwW0yHRnQ3/zyt4WgbvBKR8zgOgGKXxpNprPbVvP1gsx
-	 CiWwZe6zSW7lNNIYpFm5udyWjuAz2dYOYWNVDB5q2ZOu1pd9pdcYiMN9s5p8jxpK0r
-	 AkefWt0taH2iBLwxhBB97dogtWmjjypPIlRDaAHl0B3Dw6O8I5tdnEBOIjtZYpnOOA
-	 CV40RVbSGEMVYZIqrLgRHG5XqkDCJJS2Hn01j52tv/0QE4jh9VUfBuGUcVK+5i3V9y
-	 aVgRvy8v69dwXCaYQC4PfJKTQtcVABn6iia3+JcPoaDloXpJLUu0QJsQx//NwkCpwd
-	 oz3ePvUoTUE7A==
-Message-ID: <e0bb774753cc5f273a77743060337f2c9971a0cc.camel@kernel.org>
-Subject: Re: [PATCH 0/9] fs: harden anon inodes
-From: Jeff Layton <jlayton@kernel.org>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Christoph Hellwig <hch@infradead.org>, Mateusz Guzik
- <mjguzik@gmail.com>,  Penglei Jiang <superman.xpt@gmail.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Josef Bacik	
- <josef@toxicpanda.com>,
- syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Date: Mon, 07 Apr 2025 08:37:26 -0400
-In-Reply-To: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
-References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1744029763; c=relaxed/simple;
+	bh=rctXt83zXIP6KxDoTjw8wSIbxXWr3qOfeUT6pkhLgpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=hGPNYmWUxpAHFgfPFh3A9dKsga0fDFeTBTQua/tnRpL1pwDvdJWAT0ZHSmY2iowlJHCnQoQZEVwBBX87moXfSZDzAdZi6Ua441zBuZuX5VJ1m2/MCZOcPB8noWFAykOGET5dTNXofLSCgbLHTg22KY7fnb3yFTKRBgseqOpZOF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=qhJZ6oeS; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250407124238euoutp011a03fc6b4153038d13e841453deb914c~0CdNBjLZx0579905799euoutp01D
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 12:42:38 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250407124238euoutp011a03fc6b4153038d13e841453deb914c~0CdNBjLZx0579905799euoutp01D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1744029758;
+	bh=S5MQ2CqKcA2NrUFZoojUG3FGbumOimUda8wAlinmrVk=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=qhJZ6oeSJCAmhKlZ7GPi8UifuoPo1XKhIGZkwZjA98mkDbKxXsxCHJmARs0J0ZEwX
+	 niwFXF74/ChQZinlhCn6OKsw9MGlb/trKSMR9bXTizAvPB2w7ZRK1c8C14ArCRkaT+
+	 MsZg4+KxsZIAQegPHxfz09zjfuUdIezIziMLRIK0=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20250407124238eucas1p2b223f89a362856532d1b7ec419ce2e55~0CdMldgaJ1835018350eucas1p2z;
+	Mon,  7 Apr 2025 12:42:38 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges3new.samsung.com (EUCPMTA) with SMTP id DE.0C.20397.E38C3F76; Mon,  7
+	Apr 2025 13:42:38 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250407124237eucas1p24a7c88ddf939379e622f261a2f13fa8f~0CdMKf4m80542505425eucas1p2T;
+	Mon,  7 Apr 2025 12:42:37 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250407124237eusmtrp19fff47f6ac6db6d47ac4a1f3795d184d~0CdMJyb_73074830748eusmtrp1k;
+	Mon,  7 Apr 2025 12:42:37 +0000 (GMT)
+X-AuditID: cbfec7f5-ed1d670000004fad-73-67f3c83eb159
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 9D.A5.19654.D38C3F76; Mon,  7
+	Apr 2025 13:42:37 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250407124235eusmtip20541764491a44fc45336d4dd36ca10e5~0CdKOqlIf0516105161eusmtip2F;
+	Mon,  7 Apr 2025 12:42:35 +0000 (GMT)
+Message-ID: <377bfc52-db94-4d76-ab47-8076933bc7e7@samsung.com>
+Date: Mon, 7 Apr 2025 14:42:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] KEYS: Add a list for unreferenced keys
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	stable@vger.kernel.org, David Howells <dhowells@redhat.com>, Lukas Wunner
+	<lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, Paul Moore
+	<paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+	<serge@hallyn.com>, James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <Z_PATvNUE-qBDEEV@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0xbVRzO6b29vRAKd4WNkwES6mTK021ozjIlLnHmmuwPM7dkInN2cFMm
+	UMgtqDMm1m4UoVWbCisUOhhLHHvIowOysQisieXR2TK2FWgZGATpUBi1Nh2rNtLeTfnvO9/j
+	fL/fySExkZrYTp6UVTCsTFIiJiLxPsu6PTN3xCt9+bGfj5rtZ3C0qgzgSL2ciMzfjPFR97ck
+	arKqANKtawFqbBgBqKPzAg/1zigJNDe7zkMjNosA3e1vJtCaZp5A7qUE5NLpcbQysC5A9nGb
+	ALV2zwNkVFiJN+JoT5OWoHsuTfPoNc8HdN/QC7Tj5nv0Wd0YQZsu1xC0tm0I0Bp/AT3xcwdB
+	//CjG9CPBu4TtNf0HN1Q3cene70u/J2YvMjXCpmSkx8zbHbuh5FF87Y2QfmVxE+nb7YIFOAM
+	rAURJKRy4O99flALIkkR1Q5gnTHIDwki6i8AO/U5nOAF0KobAM8Sk//cxjnhIoC+a7f53MED
+	oEtfRYRcQioXLto78BDGqR1Q/WUNn+O3wNHGhTC/lUqGc84GQQjHbvi7uq6HPXHUTqgK3Ahf
+	ilGDfKie84cDGBUPnQstvBAmqF2wdqU2XBZBpUFlwMbnPMnwdG8TFgpDKhgBPX+04tzcb8I7
+	06qnO8TC5eEeAYcTofU7Dc4FqgFsDczxuIMWQMWS82liH5yxPdmoIzcqXoKd/dkcvR+6TI9A
+	iIZUNJxa2cINEQ11fXqMo4XwK5WIc6dCw3DHf7W3xicwLRAbNr2LYdOahk3rGP7vbQX4ZRDP
+	VMpLpYx8j4z5JEsuKZVXyqRZBWWlJrDxX63BYd910L7syTIDHgnMAJKYOE64d+xPqUhYKDn1
+	GcOWHWcrSxi5GSSQuDhe2DZYJRVRUkkFU8ww5Qz7TOWREdsVvMLVjzLcV9W+yeojK45rlnzm
+	3XjvEUn+K8e3pWGmHVf2j1SQg2dTHPKoPM2lA6OPf7FUnz8R/FsGhcGk+uS8enHN/beKGzPL
+	cp7XHLtnDQzcXWUzis45ug3taXAtNuXBXuMdVUzlw/TmOv+QrKr/1cSUXw+3694eV6zzi13d
+	75dLXkyfUs76orHhnmLPjNN84sG+idOkMTa1EykyZmhx/e5tO2FWJqtaKlEe6ppMWDjV0PIk
+	e9nccche+HXC4j22UNn78OCe0S/SLwwsuvPr2Khzjs9fr48uSD18UD+7UOc44Lz1ffZPzjW7
+	8epWNinmN8tu17EbqVNjSUfdSb6o81FiXF4k2ZWGsXLJv7q3nJceBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRmVeSWpSXmKPExsVy+t/xe7q2Jz6nG+z+omgx53wLi8W7pt8s
+	Ft2vZCwO9Z1itdjYz2Ex+3Qbo8WknxMYLWbOOMFosW79YiaLrXea2Czu3/vJZHHi3DF2i8u7
+	5rBZfOh5xGbx4rm0xe1J01ks3u77yW5x/sI5dosFGx8xWsxtOM3mIOLxcfYENo8tK28yeXz4
+	GOex7YCqx7XdkR7TJp1i89i0qpPNY8KiA4wePd+TPS6dXcfmsXbvC0aP9/uusnl83iTnMaN9
+	G6vH1s+3WQL4o/RsivJLS1IVMvKLS2yVog0tjPQMLS30jEws9QyNzWOtjEyV9O1sUlJzMstS
+	i/TtEvQyHp1bxF6wWqbi5u757A2MLRJdjJwcEgImEtf/nmEBsYUEljJKNPwPhYjLSJyc1sAK
+	YQtL/LnWxdbFyAVU855R4s7Lu0wgCV4BO4mn59eBNbMIqEh0N3ayQsQFJU7OfAIWFxWQl7h/
+	awY7iC0MVL9hww6wGhEBdYm23ztZQYYyCxxklVg2eQM7xIa/jBKX/7xjBKliFhCXuPVkPtg2
+	NgFDia63IGdwcnAKaEk0/T7HClFjJtG1tQuqXl6ieets5gmMQrOQHDILyahZSFpmIWlZwMiy
+	ilEktbQ4Nz232EivODG3uDQvXS85P3cTIzCdbDv2c8sOxpWvPuodYmTiYDzEKMHBrCTCa3nq
+	U7oQb0piZVVqUX58UWlOavEhRlNgaExklhJNzgcmtLySeEMzA1NDEzNLA1NLM2MlcV62K+fT
+	hATSE0tSs1NTC1KLYPqYODilGpiE1wscuMF6J/bmvhnrT+5aG70k907SqRzb32z5VVL+DXda
+	J01ndDDKOfn53sZwn7kbmAUzKn7eF383b1bBwjeVdrt/cfxJu+ZnYrlcZqP69MgSjdcOUt8U
+	vC9dXJlZaMZluD1h478/Mcf+7xVZ8crpauy3kqPrLNvq1jO/3Gy6X1l69a9L3F9M5Sw+rz71
+	7P1tTrO7u0PtXgnMc6xibfk8Ncc6U8/m81WjBbetW3/cKjrJHbGqgNFl+wYTlQtPEmpDy8rO
+	lNn4py/4FX700x1Zo4o3B9vne5v7/lHmaPPVLE6PNJLtncPnnWumYHcx1rP+8WM3Hgn74rNH
+	lbaXaXBwHfw25dANn9tf57aU/T6sxFKckWioxVxUnAgAwQLgHrADAAA=
+X-CMS-MailID: 20250407124237eucas1p24a7c88ddf939379e622f261a2f13fa8f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250407102514eucas1p1b297b7b6012a5ece4ccdca8e0e2c7956
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20250407102514eucas1p1b297b7b6012a5ece4ccdca8e0e2c7956
+References: <20250407023918.29956-1-jarkko@kernel.org>
+	<CGME20250407102514eucas1p1b297b7b6012a5ece4ccdca8e0e2c7956@eucas1p1.samsung.com>
+	<32c1e996-ac34-496f-933e-a266b487da1a@samsung.com>
+	<Z_O1v8awuTeJ9qfS@kernel.org> <Z_PATvNUE-qBDEEV@kernel.org>
 
-On Mon, 2025-04-07 at 11:54 +0200, Christian Brauner wrote:
-> * Anonymous inodes currently don't come with a proper mode causing
->   issues in the kernel when we want to add useful VFS debug assert. Fix
->   that by giving them a proper mode and masking it off when we report it
->   to userspace which relies on them not having any mode.
->=20
-> * Anonymous inodes currently allow to change inode attributes because
->   the VFS falls back to simple_setattr() if i_op->setattr isn't
->   implemented. This means the ownership and mode for every single user
->   of anon_inode_inode can be changed. Block that as it's either useless
->   or actively harmful. If specific ownership is needed the respective
->   subsystem should allocate anonymous inodes from their own private
->   superblock.
->=20
-> * Port pidfs to the new anon_inode_{g,s}etattr() helpers.
->=20
-> * Add proper tests for anonymous inode behavior.
->=20
-> The anonymous inode specific fixes should ideally be backported to all
-> LTS kernels.
->=20
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> ---
-> Christian Brauner (9):
->       anon_inode: use a proper mode internally
->       pidfs: use anon_inode_getattr()
->       anon_inode: explicitly block ->setattr()
->       pidfs: use anon_inode_setattr()
->       anon_inode: raise SB_I_NODEV and SB_I_NOEXEC
->       selftests/filesystems: add first test for anonymous inodes
->       selftests/filesystems: add second test for anonymous inodes
->       selftests/filesystems: add third test for anonymous inodes
->       selftests/filesystems: add fourth test for anonymous inodes
->=20
->  fs/anon_inodes.c                                   | 45 ++++++++++++++
->  fs/internal.h                                      |  5 ++
->  fs/libfs.c                                         |  2 +-
->  fs/pidfs.c                                         | 26 +-------
->  tools/testing/selftests/filesystems/.gitignore     |  1 +
->  tools/testing/selftests/filesystems/Makefile       |  2 +-
->  .../selftests/filesystems/anon_inode_test.c        | 69 ++++++++++++++++=
-++++++
->  7 files changed, 124 insertions(+), 26 deletions(-)
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250407-work-anon_inode-e22bb1a74992
->=20
+On 07.04.2025 14:08, Jarkko Sakkinen wrote:
+> On Mon, Apr 07, 2025 at 02:23:49PM +0300, Jarkko Sakkinen wrote:
+>> On Mon, Apr 07, 2025 at 12:25:11PM +0200, Marek Szyprowski wrote:
+>>> On 07.04.2025 04:39, Jarkko Sakkinen wrote:
+>>>> From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+>>>>
+>>>> Add an isolated list of unreferenced keys to be queued for deletion, and
+>>>> try to pin the keys in the garbage collector before processing anything.
+>>>> Skip unpinnable keys.
+>>>>
+>>>> Use this list for blocking the reaping process during the teardown:
+>>>>
+>>>> 1. First off, the keys added to `keys_graveyard` are snapshotted, and the
+>>>>      list is flushed. This the very last step in `key_put()`.
+>>>> 2. `key_put()` reaches zero. This will mark key as busy for the garbage
+>>>>      collector.
+>>>> 3. `key_garbage_collector()` will try to increase refcount, which won't go
+>>>>      above zero. Whenever this happens, the key will be skipped.
+>>>>
+>>>> Cc: stable@vger.kernel.org # v6.1+ Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+>>> This patch landed in today's linux-next as commit b0d023797e3e ("keys:
+>>> Add a list for unreferenced keys"). In my tests I found that it triggers
+>>> the following lockdep issue:
+>>>
+>>> ================================
+>>> WARNING: inconsistent lock state
+>>> 6.15.0-rc1-next-20250407 #15630 Not tainted
+>>> --------------------------------
+>>> inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+>>> ksoftirqd/3/32 [HC0[0]:SC1[1]:HE1:SE0] takes:
+>>> c13fdd68 (key_serial_lock){+.?.}-{2:2}, at: key_put+0x74/0x128
+>>> {SOFTIRQ-ON-W} state was registered at:
+>>>     lock_acquire+0x134/0x384
+>>>     _raw_spin_lock+0x38/0x48
+>>>     key_alloc+0x2fc/0x4d8
+>>>     keyring_alloc+0x40/0x90
+>>>     system_trusted_keyring_init+0x50/0x7c
+>>>     do_one_initcall+0x68/0x314
+>>>     kernel_init_freeable+0x1c0/0x224
+>>>     kernel_init+0x1c/0x12c
+>>>     ret_from_fork+0x14/0x28
+>>> irq event stamp: 234
+>>> hardirqs last  enabled at (234): [<c0cb7060>]
+>>> _raw_spin_unlock_irqrestore+0x5c/0x60
+>>> hardirqs last disabled at (233): [<c0cb6dd0>]
+>>> _raw_spin_lock_irqsave+0x64/0x68
+>>> softirqs last  enabled at (42): [<c013bcd8>] handle_softirqs+0x328/0x520
+>>> softirqs last disabled at (47): [<c013bf10>] run_ksoftirqd+0x40/0x68
+>> OK what went to -next went there by accident and has been removed,
+>> sorry. I think it was like the very first version of this patch.
+>>
+>> Thanks for informing anyhow!
+>
+> Testing branch: https://web.git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=keys-graveyard
+>
+> I updated my next this morning so should be fixed soon...
 
-This all looks like good changes to make. I'm still a little curious
-about what might be dependent on not seeing a file type in st_mode, but
-if we haven't traditionally reported one, it's probably safest to
-continue without doing so.
+I've just checked that branch and it still triggers lockdep issue. The 
+following change is needed to get it fixed:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+diff --git a/security/keys/gc.c b/security/keys/gc.c
+index 0a3beb68633c..b22dc93eb4b4 100644
+--- a/security/keys/gc.c
++++ b/security/keys/gc.c
+@@ -302,9 +302,9 @@ static void key_garbage_collector(struct work_struct 
+*work)
+                 key_schedule_gc(new_timer);
+         }
+
+-       spin_lock(&key_graveyard_lock);
++       spin_lock_irqsave(&key_graveyard_lock, flags);
+         list_splice_init(&key_graveyard, &graveyard);
+-       spin_unlock(&key_graveyard_lock);
++       spin_unlock_irqrestore(&key_graveyard_lock, flags);
+
+         if (unlikely(gc_state & KEY_GC_REAPING_DEAD_2) ||
+             !list_empty(&graveyard)) {
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
