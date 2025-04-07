@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-128431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A7DA7D17A
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:08:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21333A7D1B0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4CCD3AA70E
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 01:07:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884A916B2FB
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 01:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566BB188596;
-	Mon,  7 Apr 2025 01:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB51A209F33;
+	Mon,  7 Apr 2025 01:20:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DEF16D32A;
-	Mon,  7 Apr 2025 01:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED751210F4A;
+	Mon,  7 Apr 2025 01:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743988027; cv=none; b=oi4tZu+aunfDtp42jibMuhgRezyFZIjfAEJ1L+md++IChDwqcCPgbEjVgj88KHbFIF8VNZ8ohjSwKmmL8+Ozw6FHhneg51e7RxK4JUaRPGN2OWYQfRXfLP7egD8ASccceenm9Xb7sqf2/D8OURZk3Zf0bZWwWUxWLu6hZ6Vhiog=
+	t=1743988827; cv=none; b=r8aa2QFWS3/rZgbxgB2BiGdM1Ny2DhTfWcaYO5XrRwKyoAAQjT0xFsu1C1a0enF2nEu1fp67GuRBH9RX9W/d34JeKpkTsz/j9V1m44/Q7+HN4IJEXFhjixJbeMX+CMsxpI4i+Yga88iSf1RDHIHJ0n6T2NHovgZhP0XFBJ4Fm88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743988027; c=relaxed/simple;
-	bh=pGdgTRjfk996uk8Wd77oBZTpcCKanajBmfdWac0X86c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AFELFZcyiZzeYiKOg6sIfoSnyRRpALX45YFkw9wi418287Xff+TG4EUpmrtUuWBrIGVvUnm32NUClU176EsnzBM/0eYUMaaDQjqGBYoJ9K85OJeVPnYMXvB/w7YxzJ5BA38RozslxAJkItzyoQA/A/VuYGBE9Oq6FC9ULJsmZTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+	s=arc-20240116; t=1743988827; c=relaxed/simple;
+	bh=GNC6gI20n/y7hAYduB7VM5z3XBalJpO9iCpNiHBfxo8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JEmfHT6Z6aGsVT07F8cmswBA2OqmUKuiIFOF0NTw0Mnih9XzITHs5H/jfaz3g7CsBPmmCc6WSxZqlegI7ee6xl5k944HxGNw/4z5TtbP013bU4T6K9VtQY0pNm87iNJpv3iiTJnG+RkYaYIYj6oRuja6KLQwFPpSwrNyMXDmZf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5370x9jO018565;
-	Sun, 6 Apr 2025 18:06:46 -0700
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5370T7Te021845;
+	Mon, 7 Apr 2025 01:10:04 GMT
 Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45u41m1a6n-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45tug8hqg0-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 06 Apr 2025 18:06:46 -0700 (PDT)
+	Mon, 07 Apr 2025 01:10:04 +0000 (GMT)
 Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
  ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 6 Apr 2025 18:06:45 -0700
+ 15.1.2507.43; Sun, 6 Apr 2025 18:10:03 -0700
 Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 6 Apr 2025 18:06:43 -0700
+ 15.1.2507.43 via Frontend Transport; Sun, 6 Apr 2025 18:10:01 -0700
 From: <jianqi.ren.cn@windriver.com>
 To: <stable@vger.kernel.org>
 CC: <ivan.orlov0322@gmail.com>, <davidgow@google.com>, <kees@kernel.org>,
         <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
         <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>
-Subject: [PATCH 6.6.y] kunit/overflow: Fix UB in overflow_allocation_test
-Date: Mon, 7 Apr 2025 09:06:42 +0800
-Message-ID: <20250407010642.207838-1-jianqi.ren.cn@windriver.com>
+Subject: [PATCH 6.1.y] kunit/overflow: Fix UB in overflow_allocation_test
+Date: Mon, 7 Apr 2025 09:10:00 +0800
+Message-ID: <20250407011000.207933-1-jianqi.ren.cn@windriver.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,18 +59,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: gGNN_LOOtuIb8hlAEnv9ToUbchFjwCqf
-X-Proofpoint-ORIG-GUID: gGNN_LOOtuIb8hlAEnv9ToUbchFjwCqf
-X-Authority-Analysis: v=2.4 cv=QOZoRhLL c=1 sm=1 tr=0 ts=67f32526 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=1XWaLZrsAAAA:8 a=t7CeM3EgAAAA:8 a=sRwAWNXhmHWHE5Be58cA:9
+X-Proofpoint-GUID: i32mhfwF9Nffn5scDBsC_1vS_XSRUdZo
+X-Authority-Analysis: v=2.4 cv=YJefyQGx c=1 sm=1 tr=0 ts=67f325ec cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=1XWaLZrsAAAA:8 a=t7CeM3EgAAAA:8 a=sRwAWNXhmHWHE5Be58cA:9
  a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: i32mhfwF9Nffn5scDBsC_1vS_XSRUdZo
 X-Sensitive_Customer_Information: Yes
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-06_08,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 phishscore=0 impostorscore=0
- priorityscore=1501 clxscore=1011 lowpriorityscore=0 spamscore=0 mlxscore=0
- malwarescore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ mlxscore=0 clxscore=1011 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
  definitions=main-2504070007
 
@@ -100,7 +100,7 @@ Verified the build test
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/lib/overflow_kunit.c b/lib/overflow_kunit.c
-index 34db0b3aa502..9493a1b28b9e 100644
+index b8556a2e7bb1..e499e13856fb 100644
 --- a/lib/overflow_kunit.c
 +++ b/lib/overflow_kunit.c
 @@ -608,7 +608,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kfree, 1, 1, 0);
