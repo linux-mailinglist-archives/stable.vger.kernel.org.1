@@ -1,276 +1,224 @@
-Return-Path: <stable+bounces-128529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FC2A7DE59
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:58:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A54A7DE6C
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EFC97A40D9
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265A4188A9B4
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A6D24A040;
-	Mon,  7 Apr 2025 12:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B351238148;
+	Mon,  7 Apr 2025 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxeARRUR"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vHXqawzj";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kCpajPkj";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vHXqawzj";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kCpajPkj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F5A22AE5E;
-	Mon,  7 Apr 2025 12:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573CC252919
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 13:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744030687; cv=none; b=PdcDKmGOS+O4R6mkwBaZyM+BW2E6/fAXz+yMigvSetIWymy39a1yMfKRYRhqJpmSsB2GQtjBzklBtlZgJJm6QLfJ5a+0191DlwOE9+Ck/4iMi0xifCtLYF20HJhN33H07A6L3QE9bymK29/osr7q/w1aBDP0lsgTAGhDZEcusAU=
+	t=1744030983; cv=none; b=nBw/0JCi9lcEqagxvH4RLoYlqAwtihR7cQlNujxzJ0kTprk5qURjdoGWOIJ+eqH9s9RwHWAN7UVkILAUhqaif93/JPNWrzokvosBCCeSHjAzAOWRmDlXDumGvGaMgnnsHw8IER2LNUQM85+TrqFfgzCydJkfok4mIt/sNNSFwNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744030687; c=relaxed/simple;
-	bh=FC0FHKR6MELOkR7nqut9p/4N6yz4qDad6WF/7rgS+QQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dWleeDrqFw+yGk9C+LZFPff0vIyBxV/+GbticZd/M6rZWa8rSLdN/FIcao1NqGFuBKyPdKQSnjFmS/AwryjJSf3A3e3dc3Xra81SPVcriSKhv9IZLyI+wJeqpOPefTS5cH7uW40Z1isuILzmUjZv5d3nEImf8Rm2udk4uCMIYSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxeARRUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17881C4CEDD;
-	Mon,  7 Apr 2025 12:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744030686;
-	bh=FC0FHKR6MELOkR7nqut9p/4N6yz4qDad6WF/7rgS+QQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PxeARRURo2pbwhBM8A6QUW9nt1XI8V9TEww6uWA4NgyEZPmsOnnf0J2iSjE+mlWwP
-	 X5lc3w924yBXYUtqClBwcpFJzkO6rMgWyBPUOXPlEar1wgeuhE56jWUCIrBQqbE2/d
-	 NkPrSZ/+FFyaWStiy0xaWrpi720pgjng9tC/Z03mQsjfcLSRKsbu0YCJnDGdKaMXjt
-	 Z1aeSwgx/G+UIxW9P+YaJ9WddrEE+kZQgG/p6fX6120492KPUs+Netu3SglYTBZpnY
-	 L9VcbA9XeWjJWO+k55wE3dGDnq8+1A94nBuD5J4w2MOszTjpNnr2IrZ1w+SAoVrlnd
-	 9T9dNERpD8loA==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: keyrings@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH v8] KEYS: Add a list for unreferenced keys
-Date: Mon,  7 Apr 2025 15:58:01 +0300
-Message-Id: <20250407125801.40194-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1744030983; c=relaxed/simple;
+	bh=eWQPgI8XSPxRiYYryfl8uQnSfNBvxwSJhnDq76893Fc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gcu9llL1hc2kXCtbnEVkG8i5j32og3yqUavBF2lcwsK1uFDJhJXTUuGWttEVvkSSn714/qwbgARChhkpi+e8AhvwJEEf3LXj7HTPG83AfXwdP1X3FGDNEaKQGdlZo9pUY0BS6w282NLWgZo7LZIf4j+kCU/GdISOho2xw/q6uV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vHXqawzj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kCpajPkj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vHXqawzj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kCpajPkj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5DADD1F388;
+	Mon,  7 Apr 2025 13:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744030979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ts9MnOf3nqjoKJZUrQWgTAssq3+KWbI9ih4Wh/9+zYs=;
+	b=vHXqawzjFpkWyVcPcgkHdGxWOoRHjbu+Z43399bXGkcC9/x9uGRV8wtFB2ngBkzeZN41XO
+	s0qZS22zEq5c5gDSJcrU+KAV7wiAehRs0IYEQK6WEHP3l8W9fh3nzjaWtMPgsVjTuruB8O
+	gP7261s9hQTN2h7zktDluNgRHqMtwdU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744030979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ts9MnOf3nqjoKJZUrQWgTAssq3+KWbI9ih4Wh/9+zYs=;
+	b=kCpajPkj7sgkHbQK596rrHxDh6C/7EVSq1taHyEInxIrPJl9RFbi4/49OMRzdvBaQuHI2g
+	V3Bc4djqlHooP2CA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744030979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ts9MnOf3nqjoKJZUrQWgTAssq3+KWbI9ih4Wh/9+zYs=;
+	b=vHXqawzjFpkWyVcPcgkHdGxWOoRHjbu+Z43399bXGkcC9/x9uGRV8wtFB2ngBkzeZN41XO
+	s0qZS22zEq5c5gDSJcrU+KAV7wiAehRs0IYEQK6WEHP3l8W9fh3nzjaWtMPgsVjTuruB8O
+	gP7261s9hQTN2h7zktDluNgRHqMtwdU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744030979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ts9MnOf3nqjoKJZUrQWgTAssq3+KWbI9ih4Wh/9+zYs=;
+	b=kCpajPkj7sgkHbQK596rrHxDh6C/7EVSq1taHyEInxIrPJl9RFbi4/49OMRzdvBaQuHI2g
+	V3Bc4djqlHooP2CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5115113691;
+	Mon,  7 Apr 2025 13:02:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WY3EEwPN82dlDQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 07 Apr 2025 13:02:59 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 00A91A08D2; Mon,  7 Apr 2025 15:02:58 +0200 (CEST)
+Date: Mon, 7 Apr 2025 15:02:58 +0200
+From: Jan Kara <jack@suse.cz>
+To: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Cc: linux-ext4@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Eric Sandeen <sandeen@redhat.com>, Jan Kara <jack@suse.cz>, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ext4: fix off-by-one error in do_split
+Message-ID: <odgkvml62unm4ux3sbnympgyzj22z7dwjgdvdmlbgtiybq4j7z@gnnaygdp7muw>
+References: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
+X-Spam-Score: -3.80
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+On Fri 04-04-25 08:28:05, Artem Sadovnikov wrote:
+> Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
+> caused by out-of-bounds access due to incorrect splitting in do_split.
+> 
+> BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+> Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
+> 
+> CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>  print_address_description mm/kasan/report.c:377 [inline]
+>  print_report+0x169/0x550 mm/kasan/report.c:488
+>  kasan_report+0x143/0x180 mm/kasan/report.c:601
+>  kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+>  __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+>  ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+>  add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
+>  make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
+>  ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
+>  ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
+>  ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
+>  vfs_symlink+0x137/0x2e0 fs/namei.c:4615
+>  do_symlinkat+0x222/0x3a0 fs/namei.c:4641
+>  __do_sys_symlink fs/namei.c:4662 [inline]
+>  __se_sys_symlink fs/namei.c:4660 [inline]
+>  __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
+>  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  </TASK>
+> 
+> The following loop is located right above 'if' statement.
+> 
+> for (i = count-1; i >= 0; i--) {
+> 	/* is more than half of this entry in 2nd half of the block? */
+> 	if (size + map[i].size/2 > blocksize/2)
+> 		break;
+> 	size += map[i].size;
+> 	move++;
+> }
+> 
+> 'i' in this case could go down to -1, in which case sum of active entries
+> wouldn't exceed half the block size, but previous behaviour would also do
+> split in half if sum would exceed at the very last block, which in case of
+> having too many long name files in a single block could lead to
+> out-of-bounds access and following use-after-free.
 
-Add an isolated list of unreferenced keys to be queued for deletion, and
-try to pin the keys in the garbage collector before processing anything.
-Skip unpinnable keys.
+Thanks for debugging this! The fix looks good, but I'm still failing to see
+the use-after-free / end-of-buffer issue. If we wrongly split to two parts
+count/2 each, then dx_move_dirents() and dx_pack_dirents() seem to still
+work correctly. Just they will make too small amount of space in bh but
+still at least one dir entry gets moved? Following add_dirent_to_buf() is
+more likely to fail due to ENOSPC but still I don't see the buffer overrun
+issue? Can you please tell me what I'm missing? Thanks!
 
-Use this list for blocking the reaping process during the teardown:
+Anyway, since the fix looks obviously correct feel free to add:
 
-1. First off, the keys added to `keys_graveyard` are snapshotted, and the
-   list is flushed. This the very last step in `key_put()`.
-2. `key_put()` reaches zero. This will mark key as busy for the garbage
-   collector.
-3. `key_garbage_collector()` will try to increase refcount, which won't go
-   above zero. Whenever this happens, the key will be skipped.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
----
-v8:
-- One more rebasing error (2x list_splice_init, reported by Marek Szyprowski)
-v7:
-- Fixed multiple definitions (from rebasing).
-v6:
-- Rebase went wrong in v5.
-v5:
-- Rebased on top of v6.15-rc
-- Updated commit message to explain how spin lock and refcount
-  isolate the time window in key_put().
-v4:
-- Pin the key while processing key type teardown. Skip dead keys.
-- Revert key_gc_graveyard back key_gc_unused_keys.
-- Rewrote the commit message.
-- "unsigned long flags" declaration somehow did make to the previous
-  patch (sorry).
-v3:
-- Using spin_lock() fails since key_put() is executed inside IRQs.
-  Using spin_lock_irqsave() would neither work given the lock is
-  acquired for /proc/keys. Therefore, separate the lock for
-  graveyard and key_graveyard before reaping key_serial_tree.
-v2:
-- Rename key_gc_unused_keys as key_gc_graveyard, and re-document the
-  function.
----
- include/linux/key.h      |  7 ++-----
- security/keys/gc.c       | 36 ++++++++++++++++++++----------------
- security/keys/internal.h |  5 +++++
- security/keys/key.c      |  7 +++++--
- 4 files changed, 32 insertions(+), 23 deletions(-)
 
-diff --git a/include/linux/key.h b/include/linux/key.h
-index ba05de8579ec..c50659184bdf 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -195,10 +195,8 @@ enum key_state {
- struct key {
- 	refcount_t		usage;		/* number of references */
- 	key_serial_t		serial;		/* key serial number */
--	union {
--		struct list_head graveyard_link;
--		struct rb_node	serial_node;
--	};
-+	struct list_head	graveyard_link; /* key->usage == 0 */
-+	struct rb_node		serial_node;
- #ifdef CONFIG_KEY_NOTIFICATIONS
- 	struct watch_list	*watchers;	/* Entities watching this key for changes */
- #endif
-@@ -236,7 +234,6 @@ struct key {
- #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
- #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
- #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
--#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
- 
- 	/* the key type and key description string
- 	 * - the desc is used to match a key against search criteria
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index f27223ea4578..9ccd8ee6fcdb 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -189,6 +189,7 @@ static void key_garbage_collector(struct work_struct *work)
- 	struct rb_node *cursor;
- 	struct key *key;
- 	time64_t new_timer, limit, expiry;
-+	unsigned long flags;
- 
- 	kenter("[%lx,%x]", key_gc_flags, gc_state);
- 
-@@ -206,21 +207,35 @@ static void key_garbage_collector(struct work_struct *work)
- 
- 	new_timer = TIME64_MAX;
- 
-+	spin_lock_irqsave(&key_graveyard_lock, flags);
-+	list_splice_init(&key_graveyard, &graveyard);
-+	spin_unlock_irqrestore(&key_graveyard_lock, flags);
-+
-+	list_for_each_entry(key, &graveyard, graveyard_link) {
-+		spin_lock(&key_serial_lock);
-+		kdebug("unrefd key %d", key->serial);
-+		rb_erase(&key->serial_node, &key_serial_tree);
-+		spin_unlock(&key_serial_lock);
-+	}
-+
- 	/* As only this function is permitted to remove things from the key
- 	 * serial tree, if cursor is non-NULL then it will always point to a
- 	 * valid node in the tree - even if lock got dropped.
- 	 */
- 	spin_lock(&key_serial_lock);
-+	key = NULL;
- 	cursor = rb_first(&key_serial_tree);
- 
- continue_scanning:
-+	key_put(key);
- 	while (cursor) {
- 		key = rb_entry(cursor, struct key, serial_node);
- 		cursor = rb_next(cursor);
--
--		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
--			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
--			goto found_unreferenced_key;
-+		/* key_get(), unless zero: */
-+		if (!refcount_inc_not_zero(&key->usage)) {
-+			key = NULL;
-+			gc_state |= KEY_GC_REAP_AGAIN;
-+			goto skip_dead_key;
- 		}
- 
- 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
-@@ -274,6 +289,7 @@ static void key_garbage_collector(struct work_struct *work)
- 		spin_lock(&key_serial_lock);
- 		goto continue_scanning;
- 	}
-+	key_put(key);
- 
- 	/* We've completed the pass.  Set the timer if we need to and queue a
- 	 * new cycle if necessary.  We keep executing cycles until we find one
-@@ -328,18 +344,6 @@ static void key_garbage_collector(struct work_struct *work)
- 	kleave(" [end %x]", gc_state);
- 	return;
- 
--	/* We found an unreferenced key - once we've removed it from the tree,
--	 * we can safely drop the lock.
--	 */
--found_unreferenced_key:
--	kdebug("unrefd key %d", key->serial);
--	rb_erase(&key->serial_node, &key_serial_tree);
--	spin_unlock(&key_serial_lock);
--
--	list_add_tail(&key->graveyard_link, &graveyard);
--	gc_state |= KEY_GC_REAP_AGAIN;
--	goto maybe_resched;
--
- 	/* We found a restricted keyring and need to update the restriction if
- 	 * it is associated with the dead key type.
- 	 */
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 2cffa6dc8255..4e3d9b322390 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -63,9 +63,14 @@ struct key_user {
- 	int			qnbytes;	/* number of bytes allocated to this user */
- };
- 
-+extern struct list_head key_graveyard;
-+extern spinlock_t key_graveyard_lock;
-+
- extern struct rb_root	key_user_tree;
- extern spinlock_t	key_user_lock;
- extern struct key_user	root_key_user;
-+extern struct list_head	key_graveyard;
-+extern spinlock_t	key_graveyard_lock;
- 
- extern struct key_user *key_user_lookup(kuid_t uid);
- extern void key_user_put(struct key_user *user);
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 7198cd2ac3a3..7511f2017b6b 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -22,6 +22,8 @@ DEFINE_SPINLOCK(key_serial_lock);
- 
- struct rb_root	key_user_tree; /* tree of quota records indexed by UID */
- DEFINE_SPINLOCK(key_user_lock);
-+LIST_HEAD(key_graveyard);
-+DEFINE_SPINLOCK(key_graveyard_lock);
- 
- unsigned int key_quota_root_maxkeys = 1000000;	/* root's key count quota */
- unsigned int key_quota_root_maxbytes = 25000000; /* root's key space quota */
-@@ -658,8 +660,9 @@ void key_put(struct key *key)
- 				key->user->qnbytes -= key->quotalen;
- 				spin_unlock_irqrestore(&key->user->lock, flags);
- 			}
--			smp_mb(); /* key->user before FINAL_PUT set. */
--			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-+			spin_lock_irqsave(&key_graveyard_lock, flags);
-+			list_add_tail(&key->graveyard_link, &key_graveyard);
-+			spin_unlock_irqrestore(&key_graveyard_lock, flags);
- 			schedule_work(&key_gc_work);
- 		}
- 	}
+								Honza
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
+> Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+> ---
+>  fs/ext4/namei.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+> index cb5cb33b1d91..e9712e64ec8f 100644
+> --- a/fs/ext4/namei.c
+> +++ b/fs/ext4/namei.c
+> @@ -1971,7 +1971,7 @@ static struct ext4_dir_entry_2 *do_split(handle_t *handle, struct inode *dir,
+>  	 * split it in half by count; each resulting block will have at least
+>  	 * half the space free.
+>  	 */
+> -	if (i > 0)
+> +	if (i >= 0)
+>  		split = count - move;
+>  	else
+>  		split = count/2;
+> -- 
+> 2.43.0
+> 
 -- 
-2.39.5
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
