@@ -1,85 +1,63 @@
-Return-Path: <stable+bounces-128511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF1EA7DB4A
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCED7A7DB73
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D073ADE99
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:36:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110B816BE43
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BEF236434;
-	Mon,  7 Apr 2025 10:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3182343C0;
+	Mon,  7 Apr 2025 10:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t23cdK4I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4MF6Fya"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23F2224B14
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 10:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EF121E098;
+	Mon,  7 Apr 2025 10:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744022212; cv=none; b=OydFE8/6hmPcIl69/uF03AYrOPs/VwdmEkIwVEgMV4jzE8idqBWsBvxLGRotctke7gpArBSvazG8CD3/Uh+/ShXH9tDk8/S633jCTv7mByrfQeTZiZ5emDqUuy5y63BgGfRVfXDUj4onbsgcujYslyU8ArSn6chg84wox4jfTh8=
+	t=1744022764; cv=none; b=VW955Q8B5MmlPxPX7R6Ng+53SKmK9AGDS30C4Ji1Q+WsFvpLzG9TKEk5cXEtZF0zEL6lFVTVX12sySVZexRjKWyiR1VbbiJ/neZTEYmey6MV7+Z7Uekdme7JDtoyxWk8n8NgdY5TCUlSEoWxSzkSj8q5n+mOG7Eclco9/l4eTe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744022212; c=relaxed/simple;
-	bh=ni6IR3VVH+J5lTXTfn9v5vOAIqgN8I9n39A//E0LZlI=;
+	s=arc-20240116; t=1744022764; c=relaxed/simple;
+	bh=XP0Gbv/gi6yzl2R1xAKSi1s3xE3TGUz/XRpMic9o6FM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kmB3mUOp47DVX+/qLMOz/JjaIXBZL+xpxo77M05XcGmm/3fUXzvW1IvcJa2tvES0pZrMsvpv08bdiND/6hJaqfUBGEE/9ICRApL4rQ4WYzin7zJUhZpV5yVBOxGdW1C7EHeVy/B+Q/ic8ZfGHO3Z3fRADw8ktLnggfMu/O7UcUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t23cdK4I; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so20809155e9.3
-        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 03:36:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744022208; x=1744627008; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lkz8o4FnYCwXIT3qeUpQo7ZAELQRWkaKo9c52y7S9Ec=;
-        b=t23cdK4IoI+lmheBOg2uhsSp9fa4Nzt+Y4jlHFXA59Rd1At7GqtIc4Inll4LGKGTUV
-         VrANCAVPuokBSZaS61/A404fzsxVtsa1lvpR9NDh0h7Mgqd2WnQOPf+wVlBwgwW7gYPM
-         uSZG1tY0Bk1VmzcLOyU2tr2KgrEptV1izmz9nAoOx2mBE8X/5JNbfgkN+Nu//pReq2fv
-         RskGEEa6eEKgTQfgVSES+Erq6eAcA2KTw+KZhDFZd2rW2u5V+UpamTQwgFYR7Y0tv5YT
-         /uYl3vJaTfgLu8rptWq9TQt47Vagop1AVIwhueMu+Pcre3or6FrQJggq9FePUou1Yhjj
-         Q5BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744022208; x=1744627008;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lkz8o4FnYCwXIT3qeUpQo7ZAELQRWkaKo9c52y7S9Ec=;
-        b=rA1v28USfKDQ/2nH8khmK+DGz2qZWqpzNj489W6E1ylVAatXr5vqqswRNQmjosuaHr
-         JSAHHBiAAp1qPNzcqCa6EVn1sRD/JFStUnZsn+ubQYxhCrDoguyBo2bQKn3dK4mjEAF5
-         cTuNHjE+601wUnevzSBSXpH0Qoau48yxz4KNqFfd84lixhDWiDEo41xlUvTJ5I+rneRe
-         GM5KFAKSU1nVXr0XHWJuPFk6Q8SM54OovC+1U6fPz4fH6g+VqolE2cE46ac4gU/BxZEO
-         19iWNX78/oQbVyEPQ3eRYTwLBHSrfX+rrzd/io0HxM0BXBQufqyzwXvjTNzxGrk7o/s3
-         vWCg==
-X-Forwarded-Encrypted: i=1; AJvYcCUz8h3NmBQhW0KuAQNU5z+QaoQcNIofxqcTjMSe/1c8zAUjxGChcsT04Vr55MfiMMUxaq+5AkQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT8LckDgpV75tv2fYJkfiJ40pV4+Mi6c8NuVsGOzaWBPPHnsMM
-	8fzwnhz8Go0oLjsnlWAdSCp2spcqL+5oRTJtpJyiE/1DQMcsqT9pO7vaqLXLcV0=
-X-Gm-Gg: ASbGncs23/tcBBcPd69LQFJhQ9haSo85OsIS/ekUgspDw7cAnMvzcVSkCceAMxUh9mV
-	/0qH0myQRBFLnd1xV/wN/4d7OEymF3Ga/9dVUHXGHId9y9BsBjprqe79gg1kxN1ry7RevWDcSq8
-	+V2QjdvU04VI5birDYJeJYggmlHpCUGJqs1794aArBipsE0C1l2TKn8NQbYJQ/rllPY7uAEjvgw
-	qSGDHnbG9k848s3p5Y12aKtmJnlw4yMSBs0N5p3e9YmntnwsfnHeG1JwOc0ddXrp0JvUtzaoZBj
-	MrPfcLmbPK6EW2OB4rknuaE4W5D+61dbxYnhuA7tD9fuBDXDwg==
-X-Google-Smtp-Source: AGHT+IEv8vqFS+kX0wYl+5l7B87oaGb6hLyIPnEnPHyMqegjosqervYGAJsmFyxB7uC4vui/H11Bhw==
-X-Received: by 2002:a05:600c:1c02:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-43ecf9c3318mr94184225e9.26.1744022208214;
-        Mon, 07 Apr 2025 03:36:48 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39c30226a07sm11432592f8f.84.2025.04.07.03.36.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 03:36:47 -0700 (PDT)
-Date: Mon, 7 Apr 2025 13:36:44 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: gregkh@linuxfoundation.org, philipp.g.hortmann@gmail.com,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=STCOXODfEpyDsJ9/KohzncEjElmVqyV/+XjUq2YoxdUhBRu1ajuSjC1I0VDOcDCMe/r0Dszo0Z7yJrJpPViM86kAMnyOIik6oJ+W+DtWRm/h7zUOKavJ+hb9IeF3+psmCrLdypLsKkgVrwrK2yxuqGPCzyU8rFvAFb37SgV+TaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4MF6Fya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38110C4CEDD;
+	Mon,  7 Apr 2025 10:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744022764;
+	bh=XP0Gbv/gi6yzl2R1xAKSi1s3xE3TGUz/XRpMic9o6FM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k4MF6FyaOA2AaZgbatg5C3hiecn44oypdV7P+3MZ+kzVysjMfjsQCSxtBlm/w5bQC
+	 ehnKh4dtFA3n4UtyVgM6JFPouYkmDmUERnlHyR6pQKmYRYLw7P3GgzW2rPIZbnvCd6
+	 C2p+NykDU0O08ryXe/olBj4gN8PUCWxTNyvG2cmiieIPtjDdVKX+QV6j7YjhucsRQz
+	 wj9EINiCHykCSsuiLKTOaWCztSTcUsI/xZNRLeWnHLMmN/rNc2K317N4mNft/np59V
+	 jT5yMdM6sqVtJ2CgfJtdzk7SW/+U/kX7MePpDU3IudEu0xBnG/7p2ToojzY+GtsTQJ
+	 Rm+4eBsYRR4uQ==
+Date: Mon, 7 Apr 2025 11:45:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steve French <sfrench@samba.org>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v6] staging: rtl8723bs: Add error handling for sd_read()
-Message-ID: <aa78d490-f0c7-4977-ae25-fe15d78b8d13@stanley.mountain>
-References: <20250407100318.2193-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2 net] net: Fix null-ptr-deref by
+ sock_lock_init_class_and_name() and rmmod.
+Message-ID: <20250407104559.GB395307@horms.kernel.org>
+References: <20250403203619.36648-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,69 +66,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250407100318.2193-1-vulab@iscas.ac.cn>
+In-Reply-To: <20250403203619.36648-1-kuniyu@amazon.com>
 
-On Mon, Apr 07, 2025 at 06:03:18PM +0800, Wentao Liang wrote:
-> The sdio_read32() calls sd_read(), but does not handle the error if
-> sd_read() fails. This could lead to subsequent operations processing
-> invalid data. A proper implementation can be found in sdio_readN().
+On Thu, Apr 03, 2025 at 01:34:31PM -0700, Kuniyuki Iwashima wrote:
+> When I ran the repro [0] and waited a few seconds, I observed two
+> LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 > 
-> Add error handling for the sd_read() to free tmpbuf and return error
-> code if sd_read() fails. This ensure that the memcpy() is only performed
-> when the read operation is successful.
+> Reproduction Steps:
 > 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org # v4.12+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+>   1) Mount CIFS
+>   2) Add an iptables rule to drop incoming FIN packets for CIFS
+>   3) Unmount CIFS
+>   4) Unload the CIFS module
+>   5) Remove the iptables rule
+> 
+> At step 3), the CIFS module calls sock_release() for the underlying
+> TCP socket, and it returns quickly.  However, the socket remains in
+> FIN_WAIT_1 because incoming FIN packets are dropped.
+> 
+> At this point, the module's refcnt is 0 while the socket is still
+> alive, so the following rmmod command succeeds.
+> 
+>   # ss -tan
+>   State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+>   FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
+> 
+>   # lsmod | grep cifs
+>   cifs                 1159168  0
+> 
+> This highlights a discrepancy between the lifetime of the CIFS module
+> and the underlying TCP socket.  Even after CIFS calls sock_release()
+> and it returns, the TCP socket does not die immediately in order to
+> close the connection gracefully.
+> 
+> While this is generally fine, it causes an issue with LOCKDEP because
+> CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+> using sock_lock_init_class_and_name().
+> 
+> Once an incoming packet is processed for the socket or a timer fires,
+> sk->sk_lock is acquired.
+> 
+> Then, LOCKDEP checks the lock context in check_wait_context(), where
+> hlock_class() is called to retrieve the lock class.  However, since
+> the module has already been unloaded, hlock_class() logs a warning
+> and returns NULL, triggering the null-ptr-deref.
+> 
+> If LOCKDEP is enabled, we must ensure that a module calling
+> sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+> while such a socket is still alive to prevent this issue.
+> 
+> Let's hold the module reference in sock_lock_init_class_and_name()
+> and release it when the socket is freed in __sk_destruct().
+> 
+> Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+> that calls sock_lock_init_class_and_name() for a listening socket,
+> which clones a socket by sk_clone_lock() without GFP_ZERO.
+> 
+> [0]:
+> CIFS_SERVER="10.0.0.137"
+> CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+> DEV="enp0s3"
+> CRED="/root/WindowsCredential.txt"
+> 
+> MNT=$(mktemp -d /tmp/XXXXXX)
+> mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+> 
+> iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+> 
+> for i in $(seq 10);
+> do
+>     umount ${MNT}
+>     rmmod cifs
+>     sleep 1
+> done
+> 
+> rm -r ${MNT}
+> 
+> iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+> 
+> [1]:
+> DEBUG_LOCKS_WARN_ON(1)
+> WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+> Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+> CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+> ...
+> Call Trace:
+>  <IRQ>
+>  __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+>  lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+>  _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+>  tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+> ...
+> 
+> BUG: kernel NULL pointer dereference, address: 00000000000000c4
+>  PF: supervisor read access in kernel mode
+>  PF: error_code(0x0000) - not-present page
+> PGD 0
+> Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+> Tainted: [W]=WARN
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+> Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+> RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+> RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+> RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+> RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+> R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+> R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+> FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <IRQ>
+>  lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+>  _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+>  tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+>  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+>  ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+>  ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+>  ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+>  ip_list_rcv (net/ipv4/ip_input.c:670)
+>  __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+>  netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+>  napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+>  e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+>  __napi_poll.constprop.0 (net/core/dev.c:7191)
+>  net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+>  handle_softirqs (kernel/softirq.c:561)
+>  __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+>  irq_exit_rcu (kernel/softirq.c:680)
+>  common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+>   </IRQ>
+>  <TASK>
+>  asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+> RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+> Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+> RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+> RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+> RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+> R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+>  ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+>  default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+>  do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+>  cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+>  start_secondary (arch/x86/kernel/smpboot.c:315)
+>  common_startup_64 (arch/x86/kernel/head_64.S:421)
+>  </TASK>
+> Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+> CR2: 00000000000000c4
+> 
+> Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> Cc: stable@vger.kernel.org
 > ---
-> v6: Fix improper code to propagate error code
-> v5: Fix error code
-> v4: Add change log and fix error code
-> v3: Add Cc flag
-> v2: Change code to initialize val
+> v2:
+>   * Clear sk_owner in sock_lock_init()
+>   * Define helper under the same #if guard
+>   * Remove redundant null check before module_put()
 > 
->  drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> v1: https://lore.kernel.org/netdev/20250403020837.51664-1-kuniyu@amazon.com/
+> ---
+>  include/net/sock.h | 38 ++++++++++++++++++++++++++++++++++++--
+>  net/core/sock.c    |  4 ++++
+>  2 files changed, 40 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> index 21e9f1858745..eb21c7e55949 100644
-> --- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> +++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> @@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
->  			return SDIO_ERR_VAL32;
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 8daf1b3b12c6..4216d7d86150 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -547,6 +547,10 @@ struct sock {
+>  	struct rcu_head		sk_rcu;
+>  	netns_tracker		ns_tracker;
+>  	struct xarray		sk_user_frags;
+> +
+> +#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
+> +	struct module		*sk_owner;
+> +#endif
+
+Not a proper review, but FWIIW, sk_owner should be added to the Kernel doc
+for struct sock.
+
+>  };
 >  
->  		ftaddr &= ~(u16)0x3;
-> -		sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		if (err) {
-> +			kfree(tmpbuf);
-> +			return (u32)err;
+>  struct sock_bh_locked {
 
-Heh.
-
-So the fundamental problem is that non of the callers check for errors.
-
-To be honest, I had expected you to just return zero, but I don't like to
-give out the answers to students.  I hadn't even known that SDIO_ERR_VAL32
-was an option.  It's still a garbage value but it's kind of a predictable
-garbage value and, whatever, it seemed fine to me.  It wasn't fine to Greg
-so, yeah, you have to re-write it.  But now this is again not fine to me
-(or Greg when he gets around to checking his email).
-
-The bug here is that if you pull out the hardware while doing a read
-then it returns whatever was in the kmalloc().  In other words it's an
-information leak.
-
-I think you could make an argument that returnnig zero is a good solution.
-It fixes the information leak.  It's not a a horrible random value like
-"(u32)-EINVAL".
-
-The other option would be to go through all the callers and add error
-handling.  So for this this function you would have to pass a pointer to
-u32 *val and return zero on success or negative on failure.
-
-regards,
-dan carpenter
-
-
+...
 
