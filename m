@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-128671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEDDA7EA90
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:36:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91A3A7EA58
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B09517790C
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C04188EA2F
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF2D263C8E;
-	Mon,  7 Apr 2025 18:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C90263F3B;
+	Mon,  7 Apr 2025 18:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uR/XuDW2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxU8YSAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B49263C86;
-	Mon,  7 Apr 2025 18:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EAF263F29;
+	Mon,  7 Apr 2025 18:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049636; cv=none; b=DCmCarNxJykgnJgwQN7oSLk0xC7Qb1Fa4c615nV9eZQ05MiDjUA9zpALfW1SjSDZ4baXmSiMo+bBjAeHDNlXBK3rhXiumGdZLSyF6vLyy+r/SBhv0ZNf5gMrNCoKKwYRaDShKC5MebWa3e5IUudcTnToijet2vwYig2d3KcxhTU=
+	t=1744049639; cv=none; b=eE1dDr0ohW2tXjpNZW2P5Crnl2pSs5mttiggLUZ94Q7HlcW9zoD4xgA74Oo7w9KjUUXris/zmQ96QZFOFNhZtaCbCQiWVunLPkIfv88K/gKWo4BB4ilKig2uT6qtTTKyii16IZtgYaht2MelHHPeDlrUzU4pnmPLLYqbQU3GpEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049636; c=relaxed/simple;
-	bh=N3tuyanrTtxiKtiQRftQJLpETtDOfLjsVli+Lpax9x8=;
+	s=arc-20240116; t=1744049639; c=relaxed/simple;
+	bh=QBJ+dUeJc1CSohXQzdN/Y/YCiwyNb/H1CHJQS7EhYcg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tz/J1kjbF05jseKQGqmT1dZBiH/qrOZVad7waRHAgBKSiLxUzKmOT00RWrBPyUGOWIS1NepZKa/cWUbwTGPiOhJaZ+qDjh6y1m+ZtTTvcFwu6QsSDFxJ9yFtzQsb84LWH/gDBzMDL91V96djXTs0JJWK8WIChIlwzR0VVwHhZZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uR/XuDW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953F1C4CEE7;
-	Mon,  7 Apr 2025 18:13:54 +0000 (UTC)
+	 MIME-Version; b=lwD51zxcir6GEPKG89HZhzFhyUDZ58RfA1vnUO4zshXEUJvkyTbrt+cumoM5/HRMUI7xEVA0syRpFzz0yuw/g4PGdOPQiNSnzgyDyPi/x/5LKO14hM7L9FX5a9EqeZNTrnONpfuB7qDHkd4fHU/3x1W+oMSJR+2tgNZNGV9HtWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxU8YSAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A01DC4CEE7;
+	Mon,  7 Apr 2025 18:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049635;
-	bh=N3tuyanrTtxiKtiQRftQJLpETtDOfLjsVli+Lpax9x8=;
+	s=k20201202; t=1744049638;
+	bh=QBJ+dUeJc1CSohXQzdN/Y/YCiwyNb/H1CHJQS7EhYcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uR/XuDW2PPtV5U18bb5F1SFI3r+MACZ5F76O3xpKTB8d1Q28HJO4qF+7BKhLMM0A+
-	 goouL4GGKCqmHIdQy77GqunjlypiwhhBurB2n62GkFan/GIAUVQ5f87DGmazuOVioN
-	 ET5zUFDuQeCbiXxmpV+Wvl9GCt5iY2eDewfSOiTI42gcERVtIDyReAJR0pdVqUgHc7
-	 /nuvUpqLoVTFXfLf6HFSMImWd8Hzo2eYbHUgzRSP/EWQOnG2IhCY46o7Nxy5WTFJ0F
-	 2OwVt5aOHmKrk+uYsR+Ui5DVOuqL13q54myBNjGnQqTcr5ZUZ2wzr0FZuCJIpQ0Bih
-	 L+2cE9vJhr9FA==
+	b=rxU8YSADFs8rBmLZk7+yLUEcRKBgcdQ58Fpvb1R52gAJu7qqdUpU4Phx6BwxNKtQN
+	 f1+QoyU4fuJLTs3m+qh0ZcqVJlXbSRBc9d7aMRtX52qXXAuHa3JZ7QzBs/BYmdD5Ld
+	 DtpUF9Mq+bLr/Hm5c0kBJp/ErNzuR3tHLv6FQO27+1LOSYqa093W6QXC/P63wcS77u
+	 kzI/t7jX4K1TMmpEowz7q3nRr1z2OOUTPMVxfGjMqyy0azdz53A5IKVtFU/LrVyrSa
+	 afxpi3K+MsTR+reM4EDq7y5G/uIBsG5RZ5doWGdwV+JWQB/Sw1cyR+FoKcP51Og7kR
+	 OdTZy/UF3yPSA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Yan <andy.yan@rock-chips.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kishon@kernel.org,
-	heiko@sntech.de,
-	linux-phy@lists.infradead.org,
+	joel@jms.id.au,
+	andrew@codeconstruct.com.au,
+	richardcochran@gmail.com,
+	linux-usb@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 13/22] phy: rockchip: usbdp: Avoid call hpd_event_trigger in dp_phy_init
-Date: Mon,  7 Apr 2025 14:13:23 -0400
-Message-Id: <20250407181333.3182622-13-sashal@kernel.org>
+	linux-aspeed@lists.ozlabs.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 14/22] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
+Date: Mon,  7 Apr 2025 14:13:24 -0400
+Message-Id: <20250407181333.3182622-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -69,36 +71,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 28dc672a1a877c77b000c896abd8f15afcdc1b0c ]
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-Function rk_udphy_dp_hpd_event_trigger will set vogrf let it
-trigger HPD interrupt to DP by Type-C. This configuration is only
-required when the DP work in Alternate Mode, and called by
-typec_mux_set. In standard DP mode, such settings will prevent
-the DP from receiving HPD interrupts.
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Link: https://lore.kernel.org/r/20250302115257.188774-1-andyshrk@163.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This issue is found by our static analysis tool
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-usbdp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-usbdp.c b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-index 2c51e5c62d3eb..f5c6d264d89ed 100644
---- a/drivers/phy/rockchip/phy-rockchip-usbdp.c
-+++ b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-@@ -1045,7 +1045,6 @@ static int rk_udphy_dp_phy_init(struct phy *phy)
- 	mutex_lock(&udphy->mutex);
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index 573109ca5b799..a09f72772e6e9 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
++
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
  
- 	udphy->dp_in_use = true;
--	rk_udphy_dp_hpd_event_trigger(udphy, udphy->dp_sink_hpd_cfg);
- 
- 	mutex_unlock(&udphy->mutex);
- 
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
 -- 
 2.39.5
 
