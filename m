@@ -1,113 +1,113 @@
-Return-Path: <stable+bounces-128506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975B5A7DA65
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 11:56:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A50AA7DAAC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A13783AE335
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9651C3ACE63
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4C92343C0;
-	Mon,  7 Apr 2025 09:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vy0DgunI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6FC2192FA;
+	Mon,  7 Apr 2025 10:03:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BF0233D91;
-	Mon,  7 Apr 2025 09:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22291218584;
+	Mon,  7 Apr 2025 10:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744019690; cv=none; b=oEgNCfYF4fXo0UZnA/fw4GikT0eX6cOL5RaMjeXiPZJF0yhEzVXxFmKCnT9PIgbNHNE5Cnt/HyA4WXYF2PQyzVvcXYPwegr0e385dIDkJeXqky9tDVixiBWr8OP+KyatFwUmnsqmytrzi0pOGMFgU/m0wNGnYrwg+p+wsz1LkbA=
+	t=1744020222; cv=none; b=emnUaLcawT+PGcp2DIGHWdZ9tBrS9zg+e3GzWFwA9UPaVot6LEufveG3elWqv7nP+57kGuqKD36OvzI+GsmdoiM9/utBH+ACzmzxijh5cObC20/l70GTuy5s+Zu/TtWXWhtjy1NM8vrKYbH6kBoUAB26UrlfU1Ns3wrvklVysPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744019690; c=relaxed/simple;
-	bh=IMyaaRhNbHINxvRwQWTPO6x2oZELjyNpk11Fp2LW0F0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JFHNXv5u8u+OTSuu+IeFw72DTC1SVcYSUZ7e/NybbXypbPGHXA3GHJ+2CvVZ95FPmpXoEEYndl1yYWa6HVViLwG+HMkZTBU204P3patHtmmZxpEaULL4Ra6Qm5KQU7Zz7CxmC0SWKxSU+CUraUxCsnMhKu/3ROJYq33jxuN1rws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vy0DgunI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35383C4CEED;
-	Mon,  7 Apr 2025 09:54:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744019690;
-	bh=IMyaaRhNbHINxvRwQWTPO6x2oZELjyNpk11Fp2LW0F0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Vy0DgunIxgQg/V9RNVlUSd9buorfK7Z17FoPGcnAkfxnN8fOppzB9HtEvdTf8od/a
-	 0E6AsYIxzvsiUonemaAd54PRjM0ZryLtEIBPYt3pWinq5zEs1UlQHeowY7VMkoqvyO
-	 BK0z9IUF8RR3/b6hsoWu15vhTVzfGjqHvHNi5wE5fT4KSzVNUQAw2KMGX6NLJ9AFvl
-	 /hrnig2GErGO2IZhXWSMoFNjJ8nXFVq3qflR/I46MVSQbM3/IUYDkeijE9j4TQCkXp
-	 aw0wjpmUKTASwZf2Zy+ZM85c7IeeA1Ji8xZ1vSDSMoOqzYIzrX5wJCNbvecNyVuF/F
-	 lDSwPKA1Mkgvg==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 07 Apr 2025 11:54:19 +0200
-Subject: [PATCH 5/9] anon_inode: raise SB_I_NODEV and SB_I_NOEXEC
+	s=arc-20240116; t=1744020222; c=relaxed/simple;
+	bh=bzl/B2SLdxtB7CMtvv1kT+HsF6ZxpqpxRESNrilTWBU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i5zZDBvbn23Ts1rmZk5xILWHc66ezxnPZX5CB6DSje1HeqKdoXFALiqgssB5AAJa1yRM8+VXztZM6JZszCnlVkU34yp6hC7pl5ZHBt0rzc+d/1EOouElSmN3gHHKhvrtG4x7mdw/4M5xXnSnEz88+bJ4X2ZbtZuj/RVgt094/9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowADXfwD1ovNnMYPYBg--.43428S2;
+	Mon, 07 Apr 2025 18:03:35 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: gregkh@linuxfoundation.org
+Cc: philipp.g.hortmann@gmail.com,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v6] staging: rtl8723bs: Add error handling for sd_read()
+Date: Mon,  7 Apr 2025 18:03:18 +0800
+Message-ID: <20250407100318.2193-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250407-work-anon_inode-v1-5-53a44c20d44e@kernel.org>
-References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
-In-Reply-To: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Christoph Hellwig <hch@infradead.org>, 
- Mateusz Guzik <mjguzik@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
- Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
- syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, 
- Christian Brauner <brauner@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1280; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IMyaaRhNbHINxvRwQWTPO6x2oZELjyNpk11Fp2LW0F0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaR/XnDdWJNNOeTJx7afsb1RHw3vqVx937U51rOFeX2Dw
- 5b+g35rO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbSs4+R4aVZ1cFPz+9LfO2a
- oX41vCZkye997RH3OhZ/utPXsnbTu4kM/0u3fuk3ZVDQu1o82zRoL2/iY2/3h9UhTLdFKk5rNS1
- 8ygsA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXfwD1ovNnMYPYBg--.43428S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CryUuFW8JF1kKw4fuF1fXrb_yoW8Gw1kpF
+	4kKa4DArW5Gay8uF1vgr93Aas5CayxGFy5WrWjkw4Svrn5ZwsavrWrKa4UXr4UWr17Aw4Y
+	qF1kCw45Ww1UCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCY02Avz4vE14v_Gw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
+	IFyTuYvjfU8vtCUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoFA2fzf7Wp+gAAsH
 
-It isn't possible to execute anoymous inodes because they cannot be
-opened in any way after they have been created. This includes execution:
+The sdio_read32() calls sd_read(), but does not handle the error if
+sd_read() fails. This could lead to subsequent operations processing
+invalid data. A proper implementation can be found in sdio_readN().
 
-execveat(fd_anon_inode, "", NULL, NULL, AT_EMPTY_PATH)
+Add error handling for the sd_read() to free tmpbuf and return error
+code if sd_read() fails. This ensure that the memcpy() is only performed
+when the read operation is successful.
 
-Anonymous inodes have inode->f_op set to no_open_fops which sets
-no_open() which returns ENXIO. That means any call to do_dentry_open()
-which is the endpoint of the do_open_execat() will fail. There's no
-chance to execute an anonymous inode. Unless a given subsystem overrides
-it ofc.
-
-Howerver, we should still harden this and raise SB_I_NODEV and
-SB_I_NOEXEC on the superblock itself so that no one gets any creative
-ideas.
-
-Cc: <stable@vger.kernel.org> # all LTS kernels
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org # v4.12+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- fs/anon_inodes.c | 2 ++
- 1 file changed, 2 insertions(+)
+v6: Fix improper code to propagate error code
+v5: Fix error code
+v4: Add change log and fix error code
+v3: Add Cc flag
+v2: Change code to initialize val
 
-diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
-index cb51a90bece0..e51e7d88980a 100644
---- a/fs/anon_inodes.c
-+++ b/fs/anon_inodes.c
-@@ -86,6 +86,8 @@ static int anon_inodefs_init_fs_context(struct fs_context *fc)
- 	struct pseudo_fs_context *ctx = init_pseudo(fc, ANON_INODE_FS_MAGIC);
- 	if (!ctx)
- 		return -ENOMEM;
-+	fc->s_iflags |= SB_I_NOEXEC;
-+	fc->s_iflags |= SB_I_NODEV;
- 	ctx->dops = &anon_inodefs_dentry_operations;
- 	return 0;
- }
+ drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+index 21e9f1858745..eb21c7e55949 100644
+--- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
++++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+@@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
+ 			return SDIO_ERR_VAL32;
+ 
+ 		ftaddr &= ~(u16)0x3;
+-		sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		if (err) {
++			kfree(tmpbuf);
++			return (u32)err;
++		}
++
+ 		memcpy(&le_tmp, tmpbuf + shift, 4);
+ 		val = le32_to_cpu(le_tmp);
+ 
 -- 
-2.47.2
+2.42.0.windows.2
 
 
