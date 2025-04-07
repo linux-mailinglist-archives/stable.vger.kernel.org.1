@@ -1,93 +1,136 @@
-Return-Path: <stable+bounces-128564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932D9A7E275
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:47:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E388CA7E22E
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81DB3BE054
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:36:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2B4D7A21E4
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA461EF373;
-	Mon,  7 Apr 2025 14:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8FA1FECC8;
+	Mon,  7 Apr 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yaj9Zp78";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mXNjXQl1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fVSxOBK4"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D291EF367;
-	Mon,  7 Apr 2025 14:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224C21FECC6
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744036190; cv=none; b=f0CHBFn1R+Dg4Kvd3PMy80DRJLKfMvYSXTGodB/haEhrYUtiPe7Cev/T2vadZ0a6YvWDXK1P1P3yCj9xynw5k0O2eYyUHtnliNL/0oJmkAKJRTXoLSGqg8ymtiVCae2QzK4aG3QJgoAM+2nzhGdTx3doNhq+kbNSkeqhC4acqnk=
+	t=1744036340; cv=none; b=Gh3eR9Ewv24unCRnPhMpWPbNjgffYqRHJS93Owu0OV82NAhLc0TRVu8Ao02C0GIL8GQrR3XkyI9uWhN1C8E5atUYnJcamvImvNTa7lNtYVq//8IUzXzDXlnP5GnIhtnUwINKFa5ldNYn5FOjcG0othHKwp+iYUeLhLGjU4cD/O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744036190; c=relaxed/simple;
-	bh=T+XSKUg+3cl1YZa5bHCT+bIC91GkJLiUJMRqn5YOT0s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pXswWL0bNNK1rG2KdSsnz4np2QXZcOm6Ey5Jy6u0xk+YKIgz2C8+tnBtvvZIHJglYHTAgxhuhYSKghSLAJ/60Okiyyr0lce/3iXHQTivv+3ogE1af0n3Lb7gHz8YdHwR0YmhHO47+y/13EwnIwZ7pqLzqCHf2H+zIXlYEsn7NFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Yaj9Zp78; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mXNjXQl1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744036186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vw6kxFJ/B4hFmzSYacFWEppeyubkdiRcAzeuJ6ECk2Q=;
-	b=Yaj9Zp78zxPgKkgaLBSVXSAIgEOST+m5rLC6kJSfLZ9nhM2HqEfbwijl13On5GYnGXBQMN
-	N3m6UQSumzudT1R7sK6hIy8SyPKCHys+y+kPvhUw9hy+prsl6yWrBjbeDbmHSZmqaPTub5
-	S9N/hu/qhHZ9XXs9Vv7Vgz5FIXnLZMIITEviNTSz/BCoF715BNM3WJhJlxTPOGEXdm/ivY
-	FrHd0eoTRwmybxFOqQVolnT0GO1Y1oz0LUSAYICvtZJMfi+Kq2aJbnkhQBcsBh0SoG5uQI
-	sLMXJesT8hbLKDWAbNULicantT7K3yJ1oQXcMWvhYzQXq1YRNySgimoUAXsMfA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744036186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vw6kxFJ/B4hFmzSYacFWEppeyubkdiRcAzeuJ6ECk2Q=;
-	b=mXNjXQl18o4/fMUD8bZwMocoR165eOUErwqCTaBbiVxFjKsDC/fq4HDw5oauigHkw/khRU
-	0Jwzc6zpuVvYaKAA==
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, jstultz@google.com
-Cc: Stephen Boyd <sboyd@kernel.org>
-Subject: Re: Patch "timekeeping: Fix possible inconsistencies in _COARSE
- clockids" has been added to the 6.14-stable tree
-In-Reply-To: <20250407140759.3092465-1-sashal@kernel.org>
-References: <20250407140759.3092465-1-sashal@kernel.org>
-Date: Mon, 07 Apr 2025 16:29:46 +0200
-Message-ID: <87zfgsujs5.ffs@tglx>
+	s=arc-20240116; t=1744036340; c=relaxed/simple;
+	bh=hdv1gO3t7MN17PsPaLcZlq03rMpbhAxNDhXyS2ZqfQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F184mK/EKQID1EPLLjdfvqCTclPX7P4RA9PekOPHBv55fHULHr1vDF9G1zC8cDXQWc/H6bb+PqzBtZrHRsEaoW5q5PaDW5l7JwwwSJ8jx/bbHw+bOmEINxl5RvfW3dwuAW64njUDdZkexDghnTGjXY+mLrAa2zFhKbW5pkLMaaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fVSxOBK4; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913958ebf2so3946668f8f.3
+        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 07:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744036335; x=1744641135; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sspLXphw+bUvBqQ8IAow+bkdS8OEOw0XRgjN2W/fPrY=;
+        b=fVSxOBK4k/h69H7k5TmnpoyAD66dzFKCq66z1pyk+JplNjEm+ezNhyOWIn4ZgNjVYD
+         xfMTW09q7kI2zf8PdUdXYDI6+LSJ9v7AA7pdVySUrjmBB3OhkoJ1VQpUqYvm1e+qT68e
+         hH5bxOXk+0PwMSdlIlWfZ9yNw6Vo2t+MIQJwcgm0fMzxJxrslSHNUiBfOCBimFpN+ZxB
+         atLefP9zZb6/YF0N4ayf2QA1ars4p8/lB2Puc4hTeFrwZW+zc83gLXBL587D0yqKwlw0
+         Bk1etTbvzz0yBEPY+xAFiUE2tctFY3YKnAG2AnQZsZZqycJDjBEOGN1VcDBObJIw2/+P
+         dy+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744036335; x=1744641135;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sspLXphw+bUvBqQ8IAow+bkdS8OEOw0XRgjN2W/fPrY=;
+        b=mBYKDrqefCNKxADB5jwaDJCLoiwUQUT0qpvohXpCjwwhNNanlJuqXpNWJktEuCPmug
+         7QjhUsTJLAxfNm4QBjfOQa0GX8Szl2+yaXLEnLnnZUEQT6z1cYyFuCdI7fo582CROoYH
+         hag2r0M1MtS3qXDCQkXPliG3s8uYWH20uAFhAVALb9kKqcweurCNE31iuvZ0MxUYLHUM
+         dUL+zg4ZnImmjewB61Q35ZnAXISJbrmQWYkSWx4cJ98s9dakCKHNvJxecvbc1KjNAqMJ
+         Q8ccPbJQjAqvH2gmDf3V+cCsCQUe5P/iN2RmGCfLN8oEfu/Kk6APvAydj3yNprXeISvE
+         hjZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTOLl9DlnJ8ExzdplqRyQ6L9VpAqj5fwxPKXAZplwY7Hvth41LFosts/N744P8YAxJxmlcDOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN0ESjjYdivQLkaQRSbMGHBNrANkaQTjcXyjoHy1doKby/9HeX
+	1evTjs0L7TA7cCE0jCjZeWeNT5TqKHA6K5o31qAG0o74bbMG5c0N
+X-Gm-Gg: ASbGncvePKJ3wFoXtR3F3AF9iPpOSm69A+cEQyGrqa6e6/jsGijRAecE4D31gmbyLek
+	y7U2b8eCLVVa84otn2iVKalYplhpMVMdxFs76Bhu4JYBmWuGKfOuiaKzGE7ESWX3ThvrCwMwrGr
+	5QO49ztb0a5mU39Y0Q7z7EvpIgo2f5DATRpD69in3uCt3+nBfyugdrpTCLRBr9WD78EXGKJEwlC
+	jl+NmnWJmOptCIJZKAi4YUMzT1teNbJAqjlpocLp/QT/MRAAYIIMxu4WaVfnvE9tBcyWFRalwQy
+	DjdUI+9i9li9RJiLTiB2KPX77nJIzDXm/tmyd0I667ZdPbhRAsrBTJ4P4TCE1VbujBjR8alWAw=
+	=
+X-Google-Smtp-Source: AGHT+IFNhKjcgTLgsYLPmhlqMkUCkxPWbnj6cuzFcQXQlfH/tqY63ok6fsoDG3DZxFV8dfVRLwqgTQ==
+X-Received: by 2002:a05:6000:1849:b0:38f:6287:6474 with SMTP id ffacd0b85a97d-39d6fc49319mr8067246f8f.15.1744036335147;
+        Mon, 07 Apr 2025 07:32:15 -0700 (PDT)
+Received: from [10.254.108.83] (munvpn.amd.com. [165.204.72.6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d75ac6d66sm5964473f8f.14.2025.04.07.07.32.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Apr 2025 07:32:14 -0700 (PDT)
+Message-ID: <a4b1190d-4d4f-4c66-9fb7-2be19d2ea3dc@gmail.com>
+Date: Mon, 7 Apr 2025 16:32:13 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drm/amdgpu/dma_buf: fix page_link check
+To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
+References: <20250407141823.44504-3-matthew.auld@intel.com>
+ <20250407141823.44504-4-matthew.auld@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <20250407141823.44504-4-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 07 2025 at 10:07, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
+Am 07.04.25 um 16:18 schrieb Matthew Auld:
+> The page_link lower bits of the first sg could contain something like
+> SG_END, if we are mapping a single VRAM page or contiguous blob which
+> fits into one sg entry. Rather pull out the struct page, and use that in
+> our check to know if we mapped struct pages vs VRAM.
 >
->     timekeeping: Fix possible inconsistencies in _COARSE clockids
->
-> to the 6.14-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      timekeeping-fix-possible-inconsistencies-in-_coarse-.patch
-> and it can be found in the queue-6.14 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+> Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.8+
 
-As I asked on the stable list already, please do not add that to any
-stable tree. It has been reverted in Linus tree and the problem will be
-fixed differently.
+Good point, haven't thought about that at all since we only abuse the sg table as DMA addr container.
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+
+Were is patch #1 from this series?
 
 Thanks,
+Christian.
 
-        tglx
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> index 9f627caedc3f..c9842a0e2a1c 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> @@ -184,7 +184,7 @@ static void amdgpu_dma_buf_unmap(struct dma_buf_attachment *attach,
+>  				 struct sg_table *sgt,
+>  				 enum dma_data_direction dir)
+>  {
+> -	if (sgt->sgl->page_link) {
+> +	if (sg_page(sgt->sgl)) {
+>  		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+>  		sg_free_table(sgt);
+>  		kfree(sgt);
+
 
