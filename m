@@ -1,119 +1,230 @@
-Return-Path: <stable+bounces-128554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010F6A7E0C0
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:14:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4720FA7E0AA
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5393AFAE5
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A7F175529
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BA91CD210;
-	Mon,  7 Apr 2025 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810E1C5F22;
+	Mon,  7 Apr 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="OjNRpCBv"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OrYd5NSv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZEVmoACG";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OrYd5NSv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZEVmoACG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED681CAA9E
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E871C5D5B
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744034709; cv=none; b=J82BpsB/wrbQVHJ0Ffinlx4LBsviAOisTvY8mgVGgTJM08ZZ+OrODMQ2DO41fcP+wVRckGdfkQmUgIt/CBlgN+D4Oe7g4tK7UHLtQjLlg7I/57vFac/y9fOQ1ob2FHXKWWfQIuunMLWVz3ehtn8wJxxfNitdvu/Y5G11kwQLwsE=
+	t=1744034743; cv=none; b=CZwnjHBpkNPUSfaRExb0mjXEQxecOiUZx9PPkiP9oGi7IhA5X9sfpF3Xc00+VQvPDftpphe6AnNEtlCS6fJz0PxjOF8c7Vzs1DbeSLjTcpTZCLR73eHZDDjGRB6Nx387mXAJQPqu22D3U+1XcxvrMBKcF8dgonTVA2SYsxvPLV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744034709; c=relaxed/simple;
-	bh=8rTBrjU7WEbXVPx/Yiqa2sA20+TaAZJFX/oS/EAcwzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mlSEy/NvEcVjIDj4YKkD+ynS+1Fykh0MQk4VFGVhU5y7Ag70Mw6K56oSQLcx4Y2hfX1/depGMzwLizH8Jldw0BsYb7hCUS9+omTGuitl8errPiH3Xl6reB1wHJsNlyxyxgNEvr5h5HY7a/8Bvpil4F7ZpyqdwFFFrf2DPuTqMD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=OjNRpCBv; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-85e15dc8035so110278939f.0
-        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 07:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1744034707; x=1744639507; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ckFV/anSlOVmmBa0Q7XtGoLVqAn0zuW7LC82t7EokqE=;
-        b=OjNRpCBvSGAgCZuLRBNgIF53uIq1Z6dOdah4Et5+EyJ/+9BWm3lf5HnVjs4nlrUCLn
-         HfXWfg1DFrjowmC1voz9e+Uqjekqk+Vu0nZKVUcOBVDkUsz1PtqgjiqnO35tN/jEBUYP
-         KoehPHXK4waTd87cWHD884x6VJjQaw6GNjYy4lbFLbIDyxlp7h1VgK55gEzlKnzEvV+x
-         yV0lNbbiiwbp8bFT4a9SDQpcZse6ws3luEqL1F9lOjyzqziDSSw9GeGjWa9cMk6j3bxb
-         dF0dONgNEnyyGrK3+o78jD/05gnsMNhkN26IqVRMp+Rcq1p4oHIJ3rhu2W08wS5HXp31
-         wdCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744034707; x=1744639507;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ckFV/anSlOVmmBa0Q7XtGoLVqAn0zuW7LC82t7EokqE=;
-        b=ZPpTt565xgvU566EPxWb2VZhyfxvvJCI8sjap7ZerLyfD4NFgk1je+5SSr5pVg/+BL
-         WJS6lGVWSrCp2tzrGxWwuqfWQPKpli/exZO3iYI3RxPRHqcr0Zhq41c+IuhkQhYnEAyu
-         Ra5rlYpY7X+NkAOsySpv7aTNUxSZPfWWFsTRtuVGzabUUZBdX80g2duqvBaloR993jqK
-         GbX4aaqTz8WxdMCzxwuSvWbGB3TYyTLTZvvOCrdamH5wyCteCUni0D6MxCOjThkLGw0N
-         Y40hdD/xB9F4uwpUTMqF7BVJWSulLJ9THgOvKr+Arb9AK/H4oii7AU9NJNJIRDz0is1G
-         V8RA==
-X-Gm-Message-State: AOJu0Ywb/7c5jySGrVJpOMNLTaICDxSmJjbap4pd08d6gJezhKPID2gO
-	ugSSURohfRNBOQdjDa9Sf/fGGWYCF6VUBKaQHJWpAfJr4h6LbsvmaAY/Os00GoxFMWyr3Bo6Rzb
-	m
-X-Gm-Gg: ASbGncu85EvUM44O3YJHM9b3oPynEWWQFPJcAzQPovc6kiQPUOTHuB4612a2Lgz2b1S
-	rpHKKFBK6DiWsznbkkaLHoaXGk12aLFYFemdoYgmnI2VMGLSNwPMBF6lW1bRFJyZBMn1dFyATnc
-	x96x08OpZOr1gkrxB3zgfhjNtj3KYimuHtuQHYyNM6zJbpaZVYQagH5HYB9DdSsYw0oA5lIr1Fr
-	3FlbBQkBZxQdbn8QvGu8PgJqa9cVSd2e5HWGae7E/nMxrBz/QjfEQS6ZBajiWCCSTlezLhDvp92
-	fORtw/BCocIpDdPG+InSEcW9Lh8AC4iEbwNQGHmt
-X-Google-Smtp-Source: AGHT+IEHPsz9HqIlrQ0vxK07HJWO1Md9/9KgFg3EtX5s8Hs4vA4gMbdHLqbK8PZ8gTRrk5cfjDxOLw==
-X-Received: by 2002:a05:6602:1cf:b0:861:1ba3:3e50 with SMTP id ca18e2360f4ac-8611ba33ef5mr1118221739f.0.1744034706830;
-        Mon, 07 Apr 2025 07:05:06 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f4b5d245e9sm2316917173.82.2025.04.07.07.05.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 07:05:05 -0700 (PDT)
-Message-ID: <932669de-1d62-4b02-b191-6be3869c986e@kernel.dk>
-Date: Mon, 7 Apr 2025 08:05:04 -0600
+	s=arc-20240116; t=1744034743; c=relaxed/simple;
+	bh=AWXjbQX/s/k2DW9mCRF6+9F2odbHnPFfJsg+Rc48Whc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y+nYNfYHRhll+43jwj22Y0gYmIbkrGCefR/WaRFckx2//Pr+OumknvMS85VXg/swL2nAHvzs4xkWusl1gj72Sz6aQo8WfD/rXCFdqtjj9tvZNM2OMJMAq3+WZya5Fec+erz+4kVP9nYGYMXE+GzAYj60tyXKDDrGRN+IytEL908=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OrYd5NSv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZEVmoACG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OrYd5NSv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZEVmoACG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3DA332116C;
+	Mon,  7 Apr 2025 14:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744034740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+VLhvhm//Ir4oXrZ9UlKIZS2DYdNsraFKrzlp4HN2hc=;
+	b=OrYd5NSv5bzYc7usOwr5Qk2rBmGQoyu5kJ7nbEYIxmhsbdSBl5Bp5YmfpUH7Z3d6Wss5yG
+	QRrXYzMgGnqa0pC/BNEb9JXlXojAxPJvqAqyBjSPMjgdmb30+mKCpVHiiYl84HkWv5Moel
+	hSeZiCE9KbuflnzqUtG1K/zZ2ElCz8I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744034740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+VLhvhm//Ir4oXrZ9UlKIZS2DYdNsraFKrzlp4HN2hc=;
+	b=ZEVmoACGZ5iPEzA0FdyNXgRLXQ646kxQSb+Do1gBTUKDUmGYA62gPKg5eCqcQ/TJEeCYmK
+	KXMVzy4YtwoAC8Aw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744034740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+VLhvhm//Ir4oXrZ9UlKIZS2DYdNsraFKrzlp4HN2hc=;
+	b=OrYd5NSv5bzYc7usOwr5Qk2rBmGQoyu5kJ7nbEYIxmhsbdSBl5Bp5YmfpUH7Z3d6Wss5yG
+	QRrXYzMgGnqa0pC/BNEb9JXlXojAxPJvqAqyBjSPMjgdmb30+mKCpVHiiYl84HkWv5Moel
+	hSeZiCE9KbuflnzqUtG1K/zZ2ElCz8I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744034740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+VLhvhm//Ir4oXrZ9UlKIZS2DYdNsraFKrzlp4HN2hc=;
+	b=ZEVmoACGZ5iPEzA0FdyNXgRLXQ646kxQSb+Do1gBTUKDUmGYA62gPKg5eCqcQ/TJEeCYmK
+	KXMVzy4YtwoAC8Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 32B6713A4B;
+	Mon,  7 Apr 2025 14:05:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6R9gDLTb82ddIgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 07 Apr 2025 14:05:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id DD13CA08D2; Mon,  7 Apr 2025 16:05:39 +0200 (CEST)
+Date: Mon, 7 Apr 2025 16:05:39 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 3/9] anon_inode: explicitly block ->setattr()
+Message-ID: <eqkk7mdlml3x3ceywv4wl6uwruzhm5mupggmbbx6uftfjwpj4e@fcjqcgjce3o5>
+References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
+ <20250407-work-anon_inode-v1-3-53a44c20d44e@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.1-stable fix
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>
-References: <0b556f07-d48a-4d01-84a9-1c79cb82f7dd@kernel.dk>
- <c31bd917-2166-468f-a998-da44d250b274@kernel.dk>
- <2025040725-watch-animating-4561@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025040725-watch-animating-4561@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407-work-anon_inode-v1-3-53a44c20d44e@kernel.org>
+X-Spam-Score: -2.30
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,gmail.com,zeniv.linux.org.uk,suse.cz,kernel.org,toxicpanda.com,syzkaller.appspotmail.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[5d8e79d323a13aa0b248];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,suse.cz:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On 4/7/25 8:01 AM, Greg Kroah-Hartman wrote:
-> On Mon, Apr 07, 2025 at 07:56:18AM -0600, Jens Axboe wrote:
->> On 4/3/25 10:55 AM, Jens Axboe wrote:
->>> Hi,
->>>
->>> Ran into an issue testing 6.1, which I discovered was introduced by
->>> a backport that was done. Here's the fix for it, please add it to
->>> the 6.1-stable mix. Thanks!
->>
->> Ping on this - saw a 6.1 stable release this weekend, but this fix
->> wasn't in it.
+On Mon 07-04-25 11:54:17, Christian Brauner wrote:
+> It is currently possible to change the mode and owner of the single
+> anonymous inode in the kernel:
 > 
-> That's because you sent this after I announced the -rc1 release :)
+> int main(int argc, char *argv[])
+> {
+>         int ret, sfd;
+>         sigset_t mask;
+>         struct signalfd_siginfo fdsi;
+> 
+>         sigemptyset(&mask);
+>         sigaddset(&mask, SIGINT);
+>         sigaddset(&mask, SIGQUIT);
+> 
+>         ret = sigprocmask(SIG_BLOCK, &mask, NULL);
+>         if (ret < 0)
+>                 _exit(1);
+> 
+>         sfd = signalfd(-1, &mask, 0);
+>         if (sfd < 0)
+>                 _exit(2);
+> 
+>         ret = fchown(sfd, 5555, 5555);
+>         if (ret < 0)
+>                 _exit(3);
+> 
+>         ret = fchmod(sfd, 0777);
+>         if (ret < 0)
+>                 _exit(3);
+> 
+>         _exit(4);
+> }
+> 
+> This is a bug. It's not really a meaningful one because anonymous inodes
+> don't really figure into path lookup and they cannot be reopened via
+> /proc/<pid>/fd/<nr> and can't be used for lookup itself. So they can
+> only ever serve as direct references.
+> 
+> But it is still completely bogus to allow the mode and ownership or any
+> of the properties of the anonymous inode to be changed. Block this!
+> 
+> Cc: <stable@vger.kernel.org> # all LTS kernels
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Gotcha, makes sense.
+Definitely. Feel free to add:
 
-> I'll add it to the queue now, thanks.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Thanks!
+								Honza
 
+> ---
+>  fs/anon_inodes.c | 7 +++++++
+>  fs/internal.h    | 2 ++
+>  2 files changed, 9 insertions(+)
+> 
+> diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
+> index 42e4b9c34f89..cb51a90bece0 100644
+> --- a/fs/anon_inodes.c
+> +++ b/fs/anon_inodes.c
+> @@ -57,8 +57,15 @@ int anon_inode_getattr(struct mnt_idmap *idmap, const struct path *path,
+>  	return 0;
+>  }
+>  
+> +int anon_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +		       struct iattr *attr)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static const struct inode_operations anon_inode_operations = {
+>  	.getattr = anon_inode_getattr,
+> +	.setattr = anon_inode_setattr,
+>  };
+>  
+>  /*
+> diff --git a/fs/internal.h b/fs/internal.h
+> index 717dc9eb6185..f545400ce607 100644
+> --- a/fs/internal.h
+> +++ b/fs/internal.h
+> @@ -346,3 +346,5 @@ int statmount_mnt_idmap(struct mnt_idmap *idmap, struct seq_file *seq, bool uid_
+>  int anon_inode_getattr(struct mnt_idmap *idmap, const struct path *path,
+>  		       struct kstat *stat, u32 request_mask,
+>  		       unsigned int query_flags);
+> +int anon_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +		       struct iattr *attr);
+> 
+> -- 
+> 2.47.2
+> 
 -- 
-Jens Axboe
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
