@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-128602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D212A7E9C8
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:19:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1C5A7E9C0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 686B53A2CD0
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E1A16D88A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B3025484C;
-	Mon,  7 Apr 2025 18:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87EA254878;
+	Mon,  7 Apr 2025 18:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZ5rDa+B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDCmNz1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F723253F39;
-	Mon,  7 Apr 2025 18:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21B25484E;
+	Mon,  7 Apr 2025 18:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049477; cv=none; b=Jquv3oVMB9bf45OJPB3kUEOkqMfDfMca+23vHNcYyCoNs7wOLPbsLaCLeeuOU6hP+8brrCjbFY/kQa4zQyM34Vzm7tKdqWy1OYiijQz4RTFh3nhOQjmFc6+coSb9FDXevGgcz/7F1s4JMwoiyMKLtbf+1DN8i0QJbifWcb+9TnE=
+	t=1744049479; cv=none; b=fU4u/tTPGEzGG2vvo5CiJ5IaIKdIJnisWnFsQFsb2OzJrxh+uxkiTrQ0+4StMyDZugLMyImqEUh4Ca8VC2/vKTRPJX0GX41zcuIwfUi9Q7z32aEUad9rOl6qXYzVNPaLbLWWuFEzI3Z8kkbcQuKUaw+h44JCIt7z1ukmrolD6bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049477; c=relaxed/simple;
-	bh=FISAyBR5YvzGFK2R7eKxbUgEIuJ2Z8jtRUE0UFX7vLg=;
+	s=arc-20240116; t=1744049479; c=relaxed/simple;
+	bh=mwLxrCbaarZH8WJ7vKSiLSH/p4tYZwo0tYtUaLhs/XU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tAws1pE3g6eV+xEYewVi/A2bZ71ORiAXvTJ72kfH7c9T/5gFENhviQcPTCzTlkQXSNcJkA7jW+u4bfoDOKGj8NvTma8zzi2mZgmqmXcijunBgyQYVbrO5vykYgge9un+R0vNQ5ogsuds3EQme7bE1lzrRTM1m6sUU4gJjwbpaDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZ5rDa+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F81C4CEDD;
-	Mon,  7 Apr 2025 18:11:15 +0000 (UTC)
+	 MIME-Version; b=fn7RiIloLoxNS1cTzXV+ozl8Y0Td7LXdJ1z64WeW4/cgyJZq9uhVhok3HwlV57kQmlWv6wZMguwisepXWAEn+fAQRoGhIymM1f5KuB4G/MAnb9sUAIZNwDnlYQcBIIlp2AgeAIwUI6Vz0I1x83RYc6JEhxeVvf1G+iBSG4ZJYII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDCmNz1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3BEC4CEEA;
+	Mon,  7 Apr 2025 18:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049476;
-	bh=FISAyBR5YvzGFK2R7eKxbUgEIuJ2Z8jtRUE0UFX7vLg=;
+	s=k20201202; t=1744049478;
+	bh=mwLxrCbaarZH8WJ7vKSiLSH/p4tYZwo0tYtUaLhs/XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZ5rDa+BlxdtXNXwFPddUwMkerJ9GI2QA5ujvYb2pboEOTZdmE6t91hG/VkDrNEv5
-	 YnJDfDOeTY8yKMELYxpLA8qv8LmLEbCzCIWKbJ38PM+M75ryeCWSDNyZhM0nKXhY7n
-	 oj5BZVxBvTT/zXXKQoL4+vyHRIQ0Ib3HacdYq7FA1HyBZWNFNg5PcyIFAaLCk2Zjj7
-	 14vHenmzB/fN9vr/p3WFLlrk/UZ8BS4t5voJmhY6xYRl4o2+nLtRidUE+ZMLtXmPPi
-	 twkhWPAVaBMIRCQtfqPL0YiUy9ByjBra6+bFUYyqVjkW0ptbVQs7PbJTav4grTgxoh
-	 8kfxlydtElU9A==
+	b=EDCmNz1p3LYWK4FzBBS6u7/YTZ6hdKtw4vwlFCp5nj92e4jhx9Tlpkav7y5kK8sNm
+	 2Fb+ASf/JcdN7zrSZcTXKAME5sG9f4EZ/D77MMABC8SrYkSpHIQC1ZwLldl1afp/EG
+	 LRzy15B7GE4uPEwudB7VPZLOJCvVcQ6VG016Lkay8Pg2qIGaapvHMSMRHUbz1+ZDPe
+	 cfKNmYJDesc1WWjzly6jho6fF4qty19xeOc10n5gxl0zE288BA/HXSC1CMJewxd25d
+	 VdtMvGmV3MT3JuJ0n9/eqsgbE31JK8CAnv1mI2mHeRP26QGW9XGm7vdlhggG7AeP6i
+	 EjI/UenVGSKcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trevor Gamblin <tgamblin@baylibre.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+5d0bdc98770e6c55a0fd@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	nuno.sa@analog.com,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 05/31] iio: adc: ad4695: make ad4695_exit_conversion_mode() more robust
-Date: Mon,  7 Apr 2025 14:10:21 -0400
-Message-Id: <20250407181054.3177479-5-sashal@kernel.org>
+	ntfs3@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 06/31] fs/ntfs3: Keep write operations atomic
+Date: Mon,  7 Apr 2025 14:10:22 -0400
+Message-Id: <20250407181054.3177479-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181054.3177479-1-sashal@kernel.org>
 References: <20250407181054.3177479-1-sashal@kernel.org>
@@ -70,87 +66,113 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.1
 Content-Transfer-Encoding: 8bit
 
-From: Trevor Gamblin <tgamblin@baylibre.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 998d20e4e99d909f14d96fdf0bdcf860f7efe3ef ]
+[ Upstream commit 285cec318bf5a7a6c8ba999b2b6ec96f9a20590f ]
 
-Ensure that conversion mode is successfully exited when the command is
-issued by adding an extra transfer beforehand, matching the minimum CNV
-high and low times from the AD4695 datasheet. The AD4695 has a quirk
-where the exit command only works during a conversion, so guarantee this
-happens by triggering a conversion in ad4695_exit_conversion_mode().
-Then make this even more robust by ensuring that the exit command is run
-at AD4695_REG_ACCESS_SCLK_HZ rather than the bus maximum.
+syzbot reported a NULL pointer dereference in __generic_file_write_iter. [1]
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Tested-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20241113-tgamblin-ad4695_improvements-v2-2-b6bb7c758fc4@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Before the write operation is completed, the user executes ioctl[2] to clear
+the compress flag of the file, which causes the is_compressed() judgment to
+return 0, further causing the program to enter the wrong process and call the
+wrong ops ntfs_aops_cmpr, which triggers the null pointer dereference of
+write_begin.
+
+Use inode lock to synchronize ioctl and write to avoid this case.
+
+[1]
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000086000006
+  EC = 0x21: IABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x06: level 2 translation fault
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000011896d000
+[0000000000000000] pgd=0800000118b44403, p4d=0800000118b44403, pud=0800000117517403, pmd=0000000000000000
+Internal error: Oops: 0000000086000006 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 6427 Comm: syz-executor347 Not tainted 6.13.0-rc3-syzkaller-g573067a5a685 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : 0x0
+lr : generic_perform_write+0x29c/0x868 mm/filemap.c:4055
+sp : ffff80009d4978a0
+x29: ffff80009d4979c0 x28: dfff800000000000 x27: ffff80009d497bc8
+x26: 0000000000000000 x25: ffff80009d497960 x24: ffff80008ba71c68
+x23: 0000000000000000 x22: ffff0000c655dac0 x21: 0000000000001000
+x20: 000000000000000c x19: 1ffff00013a92f2c x18: ffff0000e183aa1c
+x17: 0004060000000014 x16: ffff800083275834 x15: 0000000000000001
+x14: 0000000000000000 x13: 0000000000000001 x12: ffff0000c655dac0
+x11: 0000000000ff0100 x10: 0000000000ff0100 x9 : 0000000000000000
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff80009d497980 x4 : ffff80009d497960 x3 : 0000000000001000
+x2 : 0000000000000000 x1 : ffff0000e183a928 x0 : ffff0000d60b0fc0
+Call trace:
+ 0x0 (P)
+ __generic_file_write_iter+0xfc/0x204 mm/filemap.c:4156
+ ntfs_file_write_iter+0x54c/0x630 fs/ntfs3/file.c:1267
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0x920/0xcf4 fs/read_write.c:679
+ ksys_write+0x15c/0x26c fs/read_write.c:731
+ __do_sys_write fs/read_write.c:742 [inline]
+ __se_sys_write fs/read_write.c:739 [inline]
+ __arm64_sys_write+0x7c/0x90 fs/read_write.c:739
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+
+[2]
+ioctl$FS_IOC_SETFLAGS(r0, 0x40086602, &(0x7f00000000c0)=0x20)
+
+Reported-by: syzbot+5d0bdc98770e6c55a0fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5d0bdc98770e6c55a0fd
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad4695.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ fs/ntfs3/file.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-index b79d135a54718..22fdc454b0cea 100644
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -92,6 +92,8 @@
- #define AD4695_T_REFBUF_MS		100
- #define AD4695_T_REGCONFIG_NS		20
- #define AD4695_T_SCK_CNV_DELAY_NS	80
-+#define AD4695_T_CNVL_NS		80
-+#define AD4695_T_CNVH_NS		10
- #define AD4695_REG_ACCESS_SCLK_HZ	(10 * MEGA)
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 3f96a11804c90..d3a31bad21f9d 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1228,21 +1228,22 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	ssize_t ret;
+ 	int err;
  
- /* Max number of voltage input channels. */
-@@ -364,11 +366,31 @@ static int ad4695_enter_advanced_sequencer_mode(struct ad4695_state *st, u32 n)
-  */
- static int ad4695_exit_conversion_mode(struct ad4695_state *st)
- {
--	struct spi_transfer xfer = {
--		.tx_buf = &st->cnv_cmd2,
--		.len = 1,
--		.delay.value = AD4695_T_REGCONFIG_NS,
--		.delay.unit = SPI_DELAY_UNIT_NSECS,
-+	/*
-+	 * An extra transfer is needed to trigger a conversion here so
-+	 * that we can be 100% sure the command will be processed by the
-+	 * ADC, rather than relying on it to be in the correct state
-+	 * when this function is called (this chip has a quirk where the
-+	 * command only works when reading a conversion, and if the
-+	 * previous conversion was already read then it won't work). The
-+	 * actual conversion command is then run at the slower
-+	 * AD4695_REG_ACCESS_SCLK_HZ speed to guarantee this works.
-+	 */
-+	struct spi_transfer xfers[] = {
-+		{
-+			.delay.value = AD4695_T_CNVL_NS,
-+			.delay.unit = SPI_DELAY_UNIT_NSECS,
-+			.cs_change = 1,
-+			.cs_change_delay.value = AD4695_T_CNVH_NS,
-+			.cs_change_delay.unit = SPI_DELAY_UNIT_NSECS,
-+		},
-+		{
-+			.speed_hz = AD4695_REG_ACCESS_SCLK_HZ,
-+			.tx_buf = &st->cnv_cmd2,
-+			.len = 1,
-+			.delay.value = AD4695_T_REGCONFIG_NS,
-+			.delay.unit = SPI_DELAY_UNIT_NSECS,
-+		},
- 	};
+-	err = check_write_restriction(inode);
+-	if (err)
+-		return err;
+-
+-	if (is_compressed(ni) && (iocb->ki_flags & IOCB_DIRECT)) {
+-		ntfs_inode_warn(inode, "direct i/o + compressed not supported");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	if (!inode_trylock(inode)) {
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+ 			return -EAGAIN;
+ 		inode_lock(inode);
+ 	}
  
- 	/*
-@@ -377,7 +399,7 @@ static int ad4695_exit_conversion_mode(struct ad4695_state *st)
- 	 */
- 	st->cnv_cmd2 = AD4695_CMD_EXIT_CNV_MODE << 3;
- 
--	return spi_sync_transfer(st->spi, &xfer, 1);
-+	return spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
- }
- 
- static int ad4695_set_ref_voltage(struct ad4695_state *st, int vref_mv)
++	ret = check_write_restriction(inode);
++	if (ret)
++		goto out;
++
++	if (is_compressed(ni) && (iocb->ki_flags & IOCB_DIRECT)) {
++		ntfs_inode_warn(inode, "direct i/o + compressed not supported");
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	ret = generic_write_checks(iocb, from);
+ 	if (ret <= 0)
+ 		goto out;
 -- 
 2.39.5
 
