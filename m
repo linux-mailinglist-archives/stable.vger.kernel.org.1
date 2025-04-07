@@ -1,190 +1,150 @@
-Return-Path: <stable+bounces-128540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD0AA7DF76
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCA6A7DF7F
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F323B4F10
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:33:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E546A3B63B5
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E901474A9;
-	Mon,  7 Apr 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF95188596;
+	Mon,  7 Apr 2025 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bu18Xcur"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O/sjckEC"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631CA13E41A
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 13:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A36618132A
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 13:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744032743; cv=none; b=M/yWKyWEaWyY/VPfE6NngKer2d3xo3SlmBRRucyxUlLyc1pa3ndkC81IBjPp3a/HAeBG35KOlE/YQSE445azQPoA2Nvhb2CYxJuimS12D7pvrWmLpnOGh21VLnNlnAVr1SCuzEPOo5usR48g4qmDeNSUobo7c5FisawUAJM4Tvw=
+	t=1744032801; cv=none; b=DhE+ybIT0czD3D1D+Z0AgR7/DDbt7pdE8K4q9MsiUMPH6MWbeqD+24OxJLIDWP7uNnuKkvIlK16OIphVkJ2BDH6nTyzkMJMIG3L29Gzls8xmSHYBN0fuuo2UrswcKeuEtJuk0yFrynOAsGHXMHWKteklhvgToWQ21tBFzQK5y+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744032743; c=relaxed/simple;
-	bh=OuqnqTBRovbLLVo3HjN6qkc40vRHSouYVZwbCzzmelk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FqyEnlYd2M2z5sf6+b9P+diXSNvYqzT25kELruRVmnY55mm2FPrDzzUzywKTfXhx4rEoE1yx4khzXlrzpOmBQOPzhsSpgztezBqOs2W8MQLFf78oCRtUinOzkrAz8bCZvcvNQ1x/iC++dXFVbQX4Dm0y0pErx5Kl9hG3Yhq5/R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bu18Xcur; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1744032801; c=relaxed/simple;
+	bh=or+KEFGTrsg1nsPIdmkEwhSXILQOsSETwxadfTI6AhY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LRdYAouDpTKDhw71T0IHK9zEMocv6JFLpepKcxy4BddUUubBSMKsF2ktuM0o10S3KyOFayJnsN2+OgC7dqqbXmWpmmnIVP0Ha722vyqpjyLkipu/fc/3KLMT4PIoMiI/6kxoGWoQAe6Lvs1DuvTguU+OySZ5zxK6kp6GqiM89M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O/sjckEC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744032741;
+	s=mimecast20190719; t=1744032796;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h2t9badq02L1YqSPP4iwtiUyd5ByYzFMz5Gq8uEjc+Q=;
-	b=Bu18XcurxNver99YdXdYY05n8jhXc5dsOvnitZxQyEcTVLHXO5ZiTlDqQI1OhVyWRtIm9N
-	slLNn+MGff03KBwVI6mwsPFnQB6x+9Ed5SPK/Yx+TU9/iRjwHfk5F/uaKRvUVr9IgnEI/p
-	8x0wnm84zXReKg4bnf8fuGHCnuzQBBI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=afbb7WkLp8lyjypZ4x8CYxgmQXgkeIvIjBj+73twv/o=;
+	b=O/sjckECl3gKM7pPUtvJx2DRF3Sjg8byGLMEYaFGy6rH+lVBOZx/mRqalu/LCHr3eP//fp
+	6k9yxjO2DrgudNXjed7zi3vTwi7CDcNYQ9hw0BA2WcU18vuIgVbBJYYUne8H5kXBNHkj7z
+	dvy3/7OMnOX2QViDR3JrdWGkWjCjizI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-344-F9ZWn-QQPdWFI36TH4c0Xw-1; Mon, 07 Apr 2025 09:32:20 -0400
-X-MC-Unique: F9ZWn-QQPdWFI36TH4c0Xw-1
-X-Mimecast-MFC-AGG-ID: F9ZWn-QQPdWFI36TH4c0Xw_1744032739
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-399744f742bso1263046f8f.1
-        for <Stable@vger.kernel.org>; Mon, 07 Apr 2025 06:32:19 -0700 (PDT)
+ us-mta-9-LBi2O8sQNaKMhYxmZ_fDNQ-1; Mon, 07 Apr 2025 09:33:13 -0400
+X-MC-Unique: LBi2O8sQNaKMhYxmZ_fDNQ-1
+X-Mimecast-MFC-AGG-ID: LBi2O8sQNaKMhYxmZ_fDNQ_1744032792
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3913d8d7c3eso2369752f8f.0
+        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 06:33:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744032739; x=1744637539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h2t9badq02L1YqSPP4iwtiUyd5ByYzFMz5Gq8uEjc+Q=;
-        b=Cd75x3UsqUsgL2z5rE1kZhZh/Rx1ppw5dJ/KaawRSs7HRV/GrDYJPvnIiPD0BV3Vun
-         vcTJpd1Ov4hnOsze1A62TsUtTZQbK4KLJVe3m1YidBvey1GwaoUm3BNO8SxYFExAfp9R
-         VtMyDDJ5d1Wc5bQk5q9SnhuwzkMFkOCVZgHixCdH3tGzoYZDkCYtsSmgKPiLE7yHEvkO
-         or9rrWvQbzt/ZRKXj7yqHsLcYDlttL05aSvyBBATxNFVsRQbtsnLBm35xbk87hW0RqnN
-         KAYkC1z3Y++qK2j2TZBE4HnOwrTfqJdLjXOl/7a4Oog3J2pgNpDHlgJUXSM2HZQOXjod
-         22Kg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdLD8B/NJUMPpwC0TOZWdclfuZHvPrPYiQazT8F5lHTJy2AKHhs+R/7ufeftV+wc82dsupqXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQZMLfr83mZPrFqEbRWGQj9ivPByvWgjcQRAC67ItdsqjJgEBy
-	VvEd/FWeesFFg2g2v78eipMambMAHu8rOJquz3R+3qgpnRfUb1HGTXfL2fSwB4oFCpr6W8k4Va5
-	iwqB7WBKS744Ydbr6LTLl72F/VeU9G+HITNllCfNEOQSfar6h4w0gCw==
-X-Gm-Gg: ASbGncuQgvbv/chuGcpdvfSzMCl0l1pMIBU/7iu4mnbV5onj9Ukrwk7Bo/M9g12ca3C
-	o+W4PG2Ck28xY+a5Gb+nCLyiaC+ix6dmTIEVf9PxE27A32aZNM+ocVv3x/Oho2FDYJ3z+Aq4YVy
-	iF/WSMSLbnPl9C5QfQx6j/KxApRf/Yc0Whz2B+az8E4nRZimC0dPW2z5nc5Bc/7Kipe95gdj+Na
-	n5wBeGjdnzZcAWXTXPevABi3LSx8g5nnX9E1GJq4Y2DXG/QjuV0ExxvcEDe+ovpc893+qh/9jgk
-	ZWMO2gQVIg==
-X-Received: by 2002:a5d:64cb:0:b0:391:3f64:ed00 with SMTP id ffacd0b85a97d-39d6fc4e930mr7966128f8f.26.1744032738405;
-        Mon, 07 Apr 2025 06:32:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvXFTZnDhg+4j5062m2TfC0SmlVES+KRW+YMFO/ahaSOai2rwVuCa6Gs1wgPmSJN+hQ8wtpg==
-X-Received: by 2002:a5d:64cb:0:b0:391:3f64:ed00 with SMTP id ffacd0b85a97d-39d6fc4e930mr7966079f8f.26.1744032737999;
-        Mon, 07 Apr 2025 06:32:17 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020da49sm11908898f8f.80.2025.04.07.06.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Apr 2025 06:32:17 -0700 (PDT)
-Date: Mon, 7 Apr 2025 09:32:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	Chandra Merla <cmerla@redhat.com>, Stable@vger.kernel.org,
-	Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-Message-ID: <20250407093047-mutt-send-email-mst@kernel.org>
-References: <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
- <20250404160025.3ab56f60.pasic@linux.ibm.com>
- <6f548b8b-8c6e-4221-a5d5-8e7a9013f9c3@redhat.com>
- <20250404173910.6581706a.pasic@linux.ibm.com>
- <20250407034901-mutt-send-email-mst@kernel.org>
- <2b187710-329d-4d36-b2e7-158709ea60d6@redhat.com>
- <20250407042058-mutt-send-email-mst@kernel.org>
- <20250407151249.7fe1e418.pasic@linux.ibm.com>
- <9126bfbf-9461-4959-bd38-1d7bc36d7701@redhat.com>
- <87h6309k42.fsf@redhat.com>
+        d=1e100.net; s=20230601; t=1744032792; x=1744637592;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=afbb7WkLp8lyjypZ4x8CYxgmQXgkeIvIjBj+73twv/o=;
+        b=N54adI8AGF12nWVS7QHHVmB5ztg8MnFd0I8Sf8A+TvbwYJ/FZSnvNcZ5t9DG9H3e/h
+         Yx8wBz2BEp09edhgJnF1x2GGGk220KS0UPW/TumhEuol3kH59mJsTxEYTQtmlz3bym7N
+         c97MmDFezn7nw0BbqZ3EyZ3z3a1N1QW9AH13lnKr08OiZs12CTMlhk/xPFParrguxzhR
+         ET/hVl7+8K5Udjtr42jL5Md7mlhwH17+0EVLPWUNCz9N0LsxTuS0B1lFhL8vZ2eA61q+
+         0o1dBjCRIHAfbRenqcWH7yhdiktM6P8jn5GhZtveWg/+2wjzORtp6NJtp4d6+K3fSpLU
+         LNAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUsRM3zC2h076bTObY4Paa+AC7WAhfgxqQ20jYGodLPQcR1WdAwo0e7RklCELCl2mGuYmQcc4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqH3Gd2MI0YxDZYwNIuJcGxQVIvaRiNBhtlMNraQZpTqrCq4YG
+	78ZPvrdzeI56r/ZZ2BDSHPDMRTSsyyPEVtSRXba4HqPoqh16EY6/PJmUNwpdPlGAZRz/aeXEEhz
+	7WzCZGhHtbvW8Mv4egvSRn2mm/WaKf0mNxt6fZJ2OM28gALj+s+l/mQ==
+X-Gm-Gg: ASbGncvIznOa12254Kvf8lUrICdKzv4fvVDStFmbv1RymGWNmr/4mHeCn+sKjssX/Em
+	os1NpAQs79/dHo1LXu5SSojwcMxcoc/MaG/2VlFmjk8kIbn8/vNrg6xyJHQ6HC7C9drzI1KjRR6
+	by9lAvRZbqS9AVzdZ4bNGNv2hF2kZoqso4SPsQSyI9sTsdjMqc3TBiYB26WvjlvDF3yhxCRF1os
+	nLudzY26b3kiQfB7J2i6j3AE5AITtpg9imaDx/HsgQeUINRRAVHFmf3dCONNZad9U9+XhgYFvgs
+	xUV+wnsoYBPUWXMdeFo=
+X-Received: by 2002:a5d:5f85:0:b0:391:4559:876a with SMTP id ffacd0b85a97d-39d0de66a76mr10099031f8f.46.1744032792511;
+        Mon, 07 Apr 2025 06:33:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE21qC+qO+axlamg3PP6rk4oRrAkKrbz3ds7kuXha7eToDMkVaV6kV/fgeW4vqYEdmW3QBD9A==
+X-Received: by 2002:a5d:5f85:0:b0:391:4559:876a with SMTP id ffacd0b85a97d-39d0de66a76mr10099001f8f.46.1744032792149;
+        Mon, 07 Apr 2025 06:33:12 -0700 (PDT)
+Received: from [10.40.98.122] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c301b6a1esm12135521f8f.45.2025.04.07.06.33.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Apr 2025 06:33:11 -0700 (PDT)
+Message-ID: <a1661517-536b-49bb-95af-8cf7baf91b39@redhat.com>
+Date: Mon, 7 Apr 2025 15:33:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h6309k42.fsf@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] media: uvcvideo: Fix Fix deferred probing error
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Douglas Anderson <dianders@chromium.org>
+References: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 07, 2025 at 03:28:13PM +0200, Cornelia Huck wrote:
-> On Mon, Apr 07 2025, David Hildenbrand <david@redhat.com> wrote:
+Hi Ricardo,
+
+On 13-Mar-25 13:20, Ricardo Ribalda wrote:
+> uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
+> have not yet been probed.
 > 
-> > On 07.04.25 15:12, Halil Pasic wrote:
-> >> On Mon, 7 Apr 2025 04:34:29 -0400
-> >> "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >> 
-> >>> On Mon, Apr 07, 2025 at 10:17:10AM +0200, David Hildenbrand wrote:
-> >>>> On 07.04.25 09:52, Michael S. Tsirkin wrote:
-> >>>>> On Fri, Apr 04, 2025 at 05:39:10PM +0200, Halil Pasic wrote:
-> >>>>>>>
-> >>>>>>> Not perfect, but AFAIKS, not horrible.
-> >>>>>>
-> >>>>>> It is like it is. QEMU does queue exist if the corresponding feature
-> >>>>>> is offered by the device, and that is what we have to live with.
-> >>>>>
-> >>>>> I don't think we can live with this properly though.
-> >>>>> It means a guest that does not know about some features
-> >>>>> does not know where to find things.
-> >>>>
-> >>>> Please describe a real scenario, I'm missing the point.
-> >>>
-> >>>
-> >>> OK so.
-> >>>
-> >>> Device has VIRTIO_BALLOON_F_FREE_PAGE_HINT and VIRTIO_BALLOON_F_REPORTING
-> >>> Driver only knows about VIRTIO_BALLOON_F_REPORTING so
-> >>> it does not know what does VIRTIO_BALLOON_F_FREE_PAGE_HINT do.
-> >>> How does it know which vq to use for reporting?
-> >>> It will try to use the free page hint one.
-> >> 
-> >> First, sorry for not catching up again with the discussion earlier.
-> >> 
-> >> I think David's point is based on the assumption that by the time feature
-> >> with the feature bit N+1 is specified and allocates a queue Q, all
-> >> queues with indexes smaller than Q are allocated and possibly associated
-> >> with features that were previously specified (and probably have feature
-> >> bits smaller than N+1).
-> >> 
-> >> I.e. that we can mandate, even if you don't want to care about other
-> >> optional features, you have to, because we say so, for the matter of
-> >> virtqueue existence. And anything in the future, you don't have to care
-> >> about because the queue index associated with future features is larger
-> >> than Q, so it does not affect our position.
-> >> 
-> >> I think that argument can fall a part if:
-> >> * future features reference optional queues defined in the past
-> >> * somebody managed to introduce a limbo where a feature is reserved, and
-> >>    they can not decide if they want a queue or not, or make the existence
-> >>    of the queue depend on something else than a feature bit.
-> >
-> > Staring at the cross-vmm, including the adding+removing of features and 
-> > queues that are not in the spec, I am wondering if (in a world with 
-> > fixed virtqueues)
-> >
-> > 1) Feature bits must be reserved before used.
-> >
-> > 2) Queue indices must be reserved before used.
-> >
-> > It all smells like a problem similar to device IDs ...
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+
+Thank you for your continued work on the UVC driver,
+I've have merged this series into:
+
+https://gitlab.freedesktop.org/linux-media/users/uvc/-/commits/next/
+
+now.
+
+Regards,
+
+Hans
+
+
+
+
+> ---
+> Changes in v3:
+> - Remove duplicated error messages in uvc_probe()
+> - Link to v2: https://lore.kernel.org/r/20250303-uvc-eprobedefer-v2-0-be7c987cc3ca@chromium.org
 > 
-> Indeed, we need a rule "reserve a feature bit/queue index before using
-> it, even if you do not plan to spec it properly".
-
-
-Reserving feature bits is something I do my best to advocate for
-in all presentations I do.
-
-
--- 
-MST
+> Changes in v2:
+> - Add follow-up patch for using dev_err_probe
+> - Avoid error_retcode style
+> - Link to v1: https://lore.kernel.org/r/20250129-uvc-eprobedefer-v1-1-643b2603c0d2@chromium.org
+> 
+> ---
+> Ricardo Ribalda (2):
+>       media: uvcvideo: Fix deferred probing error
+>       media: uvcvideo: Use dev_err_probe for devm_gpiod_get_optional
+> 
+>  drivers/media/usb/uvc/uvc_driver.c | 38 ++++++++++++++++++++++++++------------
+>  1 file changed, 26 insertions(+), 12 deletions(-)
+> ---
+> base-commit: f4b211714bcc70effa60c34d9fa613d182e3ef1e
+> change-id: 20250129-uvc-eprobedefer-b5ebb4db63cc
+> 
+> Best regards,
 
 
