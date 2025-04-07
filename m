@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-128650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B250FA7EA56
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:31:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA63DA7EA22
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D183420D69
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:25:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72191889DF3
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D112528FF;
-	Mon,  7 Apr 2025 18:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5A525E44C;
+	Mon,  7 Apr 2025 18:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfIp5E2R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6qZ/5Ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B8922A4F4;
-	Mon,  7 Apr 2025 18:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6706F252903;
+	Mon,  7 Apr 2025 18:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049592; cv=none; b=N9fmUmMfo1WBxC219q0OSNCtR2XG/781wvuPkA9c9qbif8DjHEaah2awgz9JmIVHXqR1S+RiUZ8SLPEqV5cjPcvwFcoiFO5ly9PTkDWPs96BAnlH6C1Rj2mHKltpk/bk5R9OkdGk9yBYEYSRogViX3f3MtzL+yq2M6/1KAZH8p8=
+	t=1744049594; cv=none; b=jXJIkHXwSdzL4z1ZqnYeB4s8ZkolOTPDV5zJeSoL+E3XNE3XgoCzOMA9B0mOvfcEy3COxelnAWA62sr9Qa8covPU79y0P0mfRGrd1Y+KvrAMulh09xLsL4OFdj1vAbrUDm1sAwX8pGkd85xplY6XJVQ+FlI+2hc3CymTWzQolcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049592; c=relaxed/simple;
-	bh=bXaaG1N/AIxufZ9GI9/+KsnLYgzJNlInmR5Z0xcBVJ0=;
+	s=arc-20240116; t=1744049594; c=relaxed/simple;
+	bh=gU6hkKGDdvk7K7dSuye72CQjJX8W0AKAn4D7NbahrSw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n/NmDVrBQPG1RST0YjbKE4GIZS3EGR38BTVq1LtIuIqBD/lH53KgqEWVVg6/oWotyGHt+tsivWo0Moyaj2fY1+32zqoPzNOpIWS3shba84n6zY/APDCAgALjUQA4/lRB9Q+QJwMvfYL3kl/h1ji7MZ+EGLLlxz2GbE0WXCNxt/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfIp5E2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C32C4CEDD;
-	Mon,  7 Apr 2025 18:13:09 +0000 (UTC)
+	 MIME-Version; b=Vt7kM5Bob6BQesD7z+MmT2A5viIfP8mDRKJsStL/yHUn/j5jx0MeIs7WVX8UbHva+hvDlrBSVEyrhnuXDxSFyymzNNTPbMK3kG5eG+oa8WJo/2dexFmrptRhTL7dKPL2sTtz3hvWNGVGXvGVHhaNC+LFPKdjAvOwerTb+Irqm3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6qZ/5Ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA71C4CEDD;
+	Mon,  7 Apr 2025 18:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049591;
-	bh=bXaaG1N/AIxufZ9GI9/+KsnLYgzJNlInmR5Z0xcBVJ0=;
+	s=k20201202; t=1744049594;
+	bh=gU6hkKGDdvk7K7dSuye72CQjJX8W0AKAn4D7NbahrSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hfIp5E2ROssoyfNUlDMntdWU4L6zvLInV+RLBQ1imCZhP+x6ZOCgKV5Rpb7clllxk
-	 Aec9T9dnkGLvo5G6N4Gd1nQ7PCe/YRPB9owRUn3zjEJw6+DRtPD4LuoljAUCbMLX1Y
-	 RvzgZ/7Lw234QnpHtP/Dqs0C3a3d6WDpcvdNnBPuUOir+mlz7ZbtVgXISVscNDmASJ
-	 GHlzfSEudMfXHlMg6ngibAOmYTbCm3CuUFeMvbPB+/beAvB2mG0cBXAjEKsXSyl3YW
-	 wWLAh84qidOPtU6J8Z72nzXPmR+PZhemhNkC9gUTN7yQyUPxKJ1ssguQuOMqI5+/w7
-	 IiIl0FzcDpx3A==
+	b=R6qZ/5Ld/fDycCih2uw2tHkJ1sss8iltjm2MRdOqRlzA2mF/jkAr7S3O/S4uPNy4J
+	 nCgvjZueOI3lv7oPWgqAUc9z58hK0aplvfJqg3iUMRbliNqzpzi9NpvPz4g3E6S5Io
+	 cOGj2fm/r5lk91rE+vcnco0nnreVwwCf2p8CC7rupPtMCaBBhwCBJnvk71eag9T2k0
+	 DO92sC2Rqd+ju052U/WvVbpKXCoway7/XI/Q+lZAJEtb8ematgl1U+hEx+R+8bv+2b
+	 GGGOv7i7RpA860rzL/V3r5NyvC/6pkQmbFiYuhyTyz98g05GGtRyHZ8hp9LUVeaCmD
+	 MyvnxnBJuswrA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Will Deacon <will@kernel.org>,
+Cc: Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	ddutile@redhat.com,
-	nathan@kernel.org,
-	peterz@infradead.org,
-	yi.l.liu@intel.com,
-	jsnitsel@redhat.com,
-	mshavit@google.com,
-	zhangzekun11@huawei.com,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.13 21/28] iommu/arm-smmu-v3: Set MEV bit in nested STE for DoS mitigations
-Date: Mon,  7 Apr 2025 14:12:11 -0400
-Message-Id: <20250407181224.3180941-21-sashal@kernel.org>
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	linux-um@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 22/28] um: Switch to the pthread-based helper in sigio workaround
+Date: Mon,  7 Apr 2025 14:12:12 -0400
+Message-Id: <20250407181224.3180941-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181224.3180941-1-sashal@kernel.org>
 References: <20250407181224.3180941-1-sashal@kernel.org>
@@ -78,82 +68,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.10
 Content-Transfer-Encoding: 8bit
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit da0c56520e880441d0503d0cf0d6853dcfb5f1a4 ]
+[ Upstream commit d295beeed2552a987796d627ba7d0985b1e2d72f ]
 
-There is a DoS concern on the shared hardware event queue among devices
-passed through to VMs, that too many translation failures that belong to
-VMs could overflow the shared hardware event queue if those VMs or their
-VMMs don't handle/recover the devices properly.
+The write_sigio thread and UML kernel thread share the same errno,
+which can lead to conflicts when both call syscalls concurrently.
+Switch to the pthread-based helper to address this issue.
 
-The MEV bit in the STE allows to configure the SMMU HW to merge similar
-event records, though there is no guarantee. Set it in a nested STE for
-DoS mitigations.
-
-In the future, we might want to enable the MEV for non-nested cases too
-such as domain->type == IOMMU_DOMAIN_UNMANAGED or even IOMMU_DOMAIN_DMA.
-
-Link: https://patch.msgid.link/r/8ed12feef67fc65273d0f5925f401a81f56acebe.1741719725.git.nicolinc@nvidia.com
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250319135523.97050-4-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c | 2 ++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c         | 4 ++--
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h         | 1 +
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ arch/um/os-Linux/sigio.c | 44 +++++++++++++++++-----------------------
+ 1 file changed, 19 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-index c7cc613050d93..6d94c9fc08289 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-@@ -43,6 +43,8 @@ static void arm_smmu_make_nested_cd_table_ste(
- 	target->data[0] |= nested_domain->ste[0] &
- 			   ~cpu_to_le64(STRTAB_STE_0_CFG);
- 	target->data[1] |= nested_domain->ste[1];
-+	/* Merge events for DoS mitigations on eventq */
-+	target->data[1] |= cpu_to_le64(STRTAB_STE_1_MEV);
- }
+diff --git a/arch/um/os-Linux/sigio.c b/arch/um/os-Linux/sigio.c
+index 9aac8def4d635..61b348a2ea974 100644
+--- a/arch/um/os-Linux/sigio.c
++++ b/arch/um/os-Linux/sigio.c
+@@ -21,8 +21,7 @@
+  * Protected by sigio_lock(), also used by sigio_cleanup, which is an
+  * exitcall.
+  */
+-static int write_sigio_pid = -1;
+-static unsigned long write_sigio_stack;
++static struct os_helper_thread *write_sigio_td;
  
  /*
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 42a89d499cda8..b7c5971da8b94 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1031,7 +1031,7 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
- 			cpu_to_le64(STRTAB_STE_1_S1DSS | STRTAB_STE_1_S1CIR |
- 				    STRTAB_STE_1_S1COR | STRTAB_STE_1_S1CSH |
- 				    STRTAB_STE_1_S1STALLD | STRTAB_STE_1_STRW |
--				    STRTAB_STE_1_EATS);
-+				    STRTAB_STE_1_EATS | STRTAB_STE_1_MEV);
- 		used_bits[2] |= cpu_to_le64(STRTAB_STE_2_S2VMID);
+  * These arrays are initialized before the sigio thread is started, and
+@@ -48,15 +47,15 @@ static struct pollfds current_poll;
+ static struct pollfds next_poll;
+ static struct pollfds all_sigio_fds;
  
- 		/*
-@@ -1047,7 +1047,7 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
- 	if (cfg & BIT(1)) {
- 		used_bits[1] |=
- 			cpu_to_le64(STRTAB_STE_1_S2FWB | STRTAB_STE_1_EATS |
--				    STRTAB_STE_1_SHCFG);
-+				    STRTAB_STE_1_SHCFG | STRTAB_STE_1_MEV);
- 		used_bits[2] |=
- 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
- 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index 0107d3f333a1c..73cc56ff11db7 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -266,6 +266,7 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
- #define STRTAB_STE_1_S1COR		GENMASK_ULL(5, 4)
- #define STRTAB_STE_1_S1CSH		GENMASK_ULL(7, 6)
+-static int write_sigio_thread(void *unused)
++static void *write_sigio_thread(void *unused)
+ {
+ 	struct pollfds *fds, tmp;
+ 	struct pollfd *p;
+ 	int i, n, respond_fd;
+ 	char c;
  
-+#define STRTAB_STE_1_MEV		(1UL << 19)
- #define STRTAB_STE_1_S2FWB		(1UL << 25)
- #define STRTAB_STE_1_S1STALLD		(1UL << 27)
+-	os_set_pdeathsig();
+-	os_fix_helper_signals();
++	os_fix_helper_thread_signals();
++
+ 	fds = &current_poll;
+ 	while (1) {
+ 		n = poll(fds->poll, fds->used, -1);
+@@ -98,7 +97,7 @@ static int write_sigio_thread(void *unused)
+ 		}
+ 	}
  
+-	return 0;
++	return NULL;
+ }
+ 
+ static int need_poll(struct pollfds *polls, int n)
+@@ -152,11 +151,10 @@ static void update_thread(void)
+ 	return;
+  fail:
+ 	/* Critical section start */
+-	if (write_sigio_pid != -1) {
+-		os_kill_process(write_sigio_pid, 1);
+-		free_stack(write_sigio_stack, 0);
++	if (write_sigio_td) {
++		os_kill_helper_thread(write_sigio_td);
++		write_sigio_td = NULL;
+ 	}
+-	write_sigio_pid = -1;
+ 	close(sigio_private[0]);
+ 	close(sigio_private[1]);
+ 	close(write_sigio_fds[0]);
+@@ -220,7 +218,7 @@ int __ignore_sigio_fd(int fd)
+ 	 * sigio_cleanup has already run, then update_thread will hang
+ 	 * or fail because the thread is no longer running.
+ 	 */
+-	if (write_sigio_pid == -1)
++	if (!write_sigio_td)
+ 		return -EIO;
+ 
+ 	for (i = 0; i < current_poll.used; i++) {
+@@ -279,14 +277,14 @@ static void write_sigio_workaround(void)
+ 	int err;
+ 	int l_write_sigio_fds[2];
+ 	int l_sigio_private[2];
+-	int l_write_sigio_pid;
++	struct os_helper_thread *l_write_sigio_td;
+ 
+ 	/* We call this *tons* of times - and most ones we must just fail. */
+ 	sigio_lock();
+-	l_write_sigio_pid = write_sigio_pid;
++	l_write_sigio_td = write_sigio_td;
+ 	sigio_unlock();
+ 
+-	if (l_write_sigio_pid != -1)
++	if (l_write_sigio_td)
+ 		return;
+ 
+ 	err = os_pipe(l_write_sigio_fds, 1, 1);
+@@ -312,7 +310,7 @@ static void write_sigio_workaround(void)
+ 	 * Did we race? Don't try to optimize this, please, it's not so likely
+ 	 * to happen, and no more than once at the boot.
+ 	 */
+-	if (write_sigio_pid != -1)
++	if (write_sigio_td)
+ 		goto out_free;
+ 
+ 	current_poll = ((struct pollfds) { .poll 	= p,
+@@ -325,18 +323,15 @@ static void write_sigio_workaround(void)
+ 	memcpy(write_sigio_fds, l_write_sigio_fds, sizeof(l_write_sigio_fds));
+ 	memcpy(sigio_private, l_sigio_private, sizeof(l_sigio_private));
+ 
+-	write_sigio_pid = run_helper_thread(write_sigio_thread, NULL,
+-					    CLONE_FILES | CLONE_VM,
+-					    &write_sigio_stack);
+-
+-	if (write_sigio_pid < 0)
++	err = os_run_helper_thread(&write_sigio_td, write_sigio_thread, NULL);
++	if (err < 0)
+ 		goto out_clear;
+ 
+ 	sigio_unlock();
+ 	return;
+ 
+ out_clear:
+-	write_sigio_pid = -1;
++	write_sigio_td = NULL;
+ 	write_sigio_fds[0] = -1;
+ 	write_sigio_fds[1] = -1;
+ 	sigio_private[0] = -1;
+@@ -394,12 +389,11 @@ void maybe_sigio_broken(int fd)
+ 
+ static void sigio_cleanup(void)
+ {
+-	if (write_sigio_pid == -1)
++	if (!write_sigio_td)
+ 		return;
+ 
+-	os_kill_process(write_sigio_pid, 1);
+-	free_stack(write_sigio_stack, 0);
+-	write_sigio_pid = -1;
++	os_kill_helper_thread(write_sigio_td);
++	write_sigio_td = NULL;
+ }
+ 
+ __uml_exitcall(sigio_cleanup);
 -- 
 2.39.5
 
