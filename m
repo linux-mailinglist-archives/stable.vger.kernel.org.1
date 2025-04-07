@@ -1,336 +1,141 @@
-Return-Path: <stable+bounces-128571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F46A7E385
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:11:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83611A7E3C0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 17:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1F1E7A4DA1
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F23B1189C049
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63D51F5850;
-	Mon,  7 Apr 2025 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1301FBCA7;
+	Mon,  7 Apr 2025 15:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/Rzuixa"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE56D1F7089
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 15:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE411FBCB6
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 15:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744038250; cv=none; b=HALhR0xBE2m/9Yi0EANu1N9v8elG2Jv7eJsVai8M922+sHlFK3WH0gpi1p124nSxD85ZKoeEGD1MIZ5fehbaW1lnQXTUpslsNAzRHGCuXg/nKO6nwjbUCl/sJ3Pgqrc8Snv9tMN0OevM97vG25Bwhg337N3BxiyaURr7iJZf3Vs=
+	t=1744038322; cv=none; b=gnHaA6opk9LXQTqlSM1bP9TOrwlWfL5li2gzAGNdKWuHV0WLiEbR40OteA7ZRtUaNHztQzg0HFKvE3EGor/8hm2/7q3hx6zLWgTuyTD63gkLCNR5IWDJ8PO9pKcXVnNay4GPTTXCynt/oJllxqyGQYlWDpNtUgMkCaH35YNeXcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744038250; c=relaxed/simple;
-	bh=LvKk0Jxtqgf9ItwGff5IE8gGwedxdn9+ImONCKUGdfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kFrZ2Ne8qhsU3SA+FbyVJ2U3ZHAiP+/QmNpZFDeor413IbB9+Z+uVGmQ+1X6Fc1HD0yFdiaQ1iGe8wKh5DEcczlVfs2c6pkq2703gXgBbDhNjz4t5Syw79uvdYgugUFB36M+ajn031xxUiecxiu8Z9O9vSllnZOmu18SumbcGUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1u1o16-0008Oj-Es; Mon, 07 Apr 2025 17:04:04 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1u1o15-003mLP-3C;
-	Mon, 07 Apr 2025 17:04:04 +0200
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9E95C3F2147;
-	Mon, 07 Apr 2025 15:04:03 +0000 (UTC)
-Date: Mon, 7 Apr 2025 17:04:02 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Axel Forsman <axfo@kvaser.com>
-Cc: linux-can@vger.kernel.org, mailhol.vincent@wanadoo.fr, 
-	stable@vger.kernel.org, Jimmy Assarsson <extja@kvaser.com>
-Subject: Re: [PATCH 2/3] can: kvaser_pciefd: Fix echo_skb race conditions
-Message-ID: <20250407-vanilla-lyrebird-of-leadership-5d0c72-mkl@pengutronix.de>
-References: <20250331072528.137304-1-axfo@kvaser.com>
- <20250331072528.137304-3-axfo@kvaser.com>
+	s=arc-20240116; t=1744038322; c=relaxed/simple;
+	bh=i9n0P/HwDFlqdPu7BAMwDAnf/+qX5b2uHGVldRouw14=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pXwA2vLCmt96ngG7oW5DC3VX4l/q+7eRhxaijnmcZTkYVUeDhyLcegIF6a9OkVqvi68eDRSkkTGViE33Kfkjt/P2FpJE//KtRl8ZSxG/0+18aAu2JSPB8wdQzBHpUwLiwtLivhi+anMRwZfgAKaiqFKf4K5B+4b1kPysxcsJGuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/Rzuixa; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3032a9c7cfeso924675a91.1
+        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 08:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744038320; x=1744643120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ssQkPgtWHpg5qaEQQQk7L7Pz6LQv2SK5PMPPrhZLDD0=;
+        b=K/RzuixaLLlclyUsJnnnylvBcHqGBsECWUYz7qR+yKsfJCZFm27bkqQZbWD9TXSC+i
+         jrpW1FQrDLp7y3DhURS3PU51xZ2b40bSqcljH2FzGTEuf8rhE6jUdanKllwYbEYDLyQg
+         te6p02byqJb2wGlxw6TFgHACrVyKbKCFjsnUAl7evzXSv8rJec0XJYHzdcfGslA8ENJg
+         AMRnpDbMDOn69dtEiXZcJI4RRAQJLwGDk4v8sc54uWFiq6/JSZRswuqKRiOgBxKWkToc
+         hHQKz+t4LIbgd2SJNt701raEtAFz+ArPW7PWbckGgMy+8kuYqNiJHAguJAPoXQlmcitq
+         qmuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744038320; x=1744643120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ssQkPgtWHpg5qaEQQQk7L7Pz6LQv2SK5PMPPrhZLDD0=;
+        b=TtxRdbVHNlOXtJ1iLhl0B6VetT5ZSkQPsLWM8WQl5cDWAWAd0OmP9dpcmgewPaThsX
+         xg1bEfmi1+vu6JHo4KwUmIdONy93bgIDJ8anWZziXvAG1ePHivJA7vmq9UVEn6gWA/Uf
+         OdBzOxwaijmA6GPHGeHC8u1dhCHLVN7YFlz3o06YFtiLRgNIFGDM5T8kIz/cxnGHwtjf
+         M+jI6iinOYb49QG1oz1P3RZFaO2OddaVGjzd3j565JpEIlg19j2WPXwGpY4NNmVv3AJF
+         veb7JLoLAez3Y8NtxwkvSuKfaHhmugfrfiySvQfTyzRrSQbM9UwANVlUK+2a3ViFBYVK
+         qFlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVPSyXHVb4GM8yQd6nZFzzk4qqlx6A/begc3Va98l4xh2QDZder0GtrEaBuMUmm5PeFydQxpjU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOg/bXkhXNN+0fOw/2E6/ahixbOLl45qUuT1HxW46jQWuDq/AJ
+	02d1CsBO+dq9zShExDDXn1HyWS3Xfi/0HFj8DDA/PMdyKPH2KlkvRgRPWQVqRJ8JHjyQ3SLtD8u
+	om9chRBNcW/L5FpO/hOg1I2xEljg=
+X-Gm-Gg: ASbGnctBRtIrDZnrcOl6Po5rR03WaQiRTBso6nrqSt5ODuQ1/5lVI4G1f16MxzO6nKM
+	XIB8SQu+J+fc9w0aPhIc0vabb4Zn2BeX0UkJGF2rK8zmCbuznQF6OFgrsxt11RuiCNp1RTWgPev
+	0vOtAlxPMFBReDtaqRqbXmC8ZqQg==
+X-Google-Smtp-Source: AGHT+IG3CcW8PNxBithByiKIoDwQtwb4MnM6pyE6J7swZNrMySsujjXMjLGzZDeXRyeckuo1cr6kBZnjAKY9R5oxkrk=
+X-Received: by 2002:a17:90b:1c91:b0:2ff:4be6:c5bd with SMTP id
+ 98e67ed59e1d1-306a496b0c7mr7190956a91.8.1744038320305; Mon, 07 Apr 2025
+ 08:05:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="e2cqmecn4lasb2wb"
-Content-Disposition: inline
-In-Reply-To: <20250331072528.137304-3-axfo@kvaser.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-
-
---e2cqmecn4lasb2wb
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+References: <20250407141823.44504-3-matthew.auld@intel.com>
+ <20250407141823.44504-4-matthew.auld@intel.com> <a4b1190d-4d4f-4c66-9fb7-2be19d2ea3dc@gmail.com>
+In-Reply-To: <a4b1190d-4d4f-4c66-9fb7-2be19d2ea3dc@gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 7 Apr 2025 11:05:08 -0400
+X-Gm-Features: ATxdqUFzbinX2Mkhe3iiE61F6xMhv6ybqKJIZzLsDt3WD66qk-EiQvU74RAp5zs
+Message-ID: <CADnq5_NKa0seCJs7XvxUemyWPFCsuO3dX=n34OVJVn0cz2DuzA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] drm/amdgpu/dma_buf: fix page_link check
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
+Cc: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/3] can: kvaser_pciefd: Fix echo_skb race conditions
-MIME-Version: 1.0
 
-On 31.03.2025 09:25:27, Axel Forsman wrote:
-> The functions kvaser_pciefd_start_xmit() and
-> kvaser_pciefd_handle_ack_packet() raced to stop/wake TX queues and
-> get/put echo skbs, as kvaser_pciefd_can->echo_lock was only ever taken
-> when transmitting. E.g., this caused the following error:
->=20
->     can_put_echo_skb: BUG! echo_skb 5 is occupied!
->=20
-> Instead, use the synchronization helpers in netdev_queues.h. As those
-> piggyback on BQL barriers, start updating in-flight packets and bytes
-> counts as well.
+Applied.  Thanks!
 
-This looks like it does in the right direction. Using the
-netif_subqueue_completed helpers is a great idea.
-
-What usually works even better is to have 2 counters and a mask:
-- unsigned int tx_head, tx_tail
-- TXFIFO_DEPTH
-
-The tx_head is incremented in the xmit function, tail is incremented in
-the tx_done function.
-
-There's no need to check how many buffers are free in the HW.
-
-Have a look at the rockchip-canfd driver for an example.
-
-Some comments inline.
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Axel Forsman <axfo@kvaser.com>
-> Tested-by: Jimmy Assarsson <extja@kvaser.com>
-> Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
-> ---
->  drivers/net/can/kvaser_pciefd.c | 70 ++++++++++++++++++++++-----------
->  1 file changed, 48 insertions(+), 22 deletions(-)
->=20
-> diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pci=
-efd.c
-> index 0d1b895509c3..6251a1ddfa7e 100644
-> --- a/drivers/net/can/kvaser_pciefd.c
-> +++ b/drivers/net/can/kvaser_pciefd.c
-> @@ -16,6 +16,7 @@
->  #include <linux/netdevice.h>
->  #include <linux/pci.h>
->  #include <linux/timer.h>
-> +#include <net/netdev_queues.h>
-> =20
->  MODULE_LICENSE("Dual BSD/GPL");
->  MODULE_AUTHOR("Kvaser AB <support@kvaser.com>");
-> @@ -412,8 +413,9 @@ struct kvaser_pciefd_can {
->  	u8 cmd_seq;
->  	int err_rep_cnt;
->  	int echo_idx;
-> +	unsigned int completed_tx_pkts;
-> +	unsigned int completed_tx_bytes;
->  	spinlock_t lock; /* Locks sensitive registers (e.g. MODE) */
-> -	spinlock_t echo_lock; /* Locks the message echo buffer */
->  	struct timer_list bec_poll_timer;
->  	struct completion start_comp, flush_comp;
->  };
-> @@ -745,11 +747,24 @@ static int kvaser_pciefd_stop(struct net_device *ne=
-tdev)
->  		del_timer(&can->bec_poll_timer);
->  	}
->  	can->can.state =3D CAN_STATE_STOPPED;
-> +	netdev_reset_queue(netdev);
->  	close_candev(netdev);
-> =20
->  	return ret;
->  }
-> =20
-> +static unsigned int kvaser_pciefd_tx_avail(struct kvaser_pciefd_can *can)
-> +{
-> +	u8 count =3D FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_CURRENT_MASK,
-> +		ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
-> +
-> +	if (count < can->can.echo_skb_max) /* Free TX FIFO slot? */
-> +		/* Avoid reusing unacked seqno */
-> +		return !can->can.echo_skb[can->echo_idx];
-> +	else
-> +		return 0;
-> +}
-> +
->  static int kvaser_pciefd_prepare_tx_packet(struct kvaser_pciefd_tx_packe=
-t *p,
->  					   struct kvaser_pciefd_can *can,
->  					   struct sk_buff *skb)
-> @@ -797,23 +812,31 @@ static netdev_tx_t kvaser_pciefd_start_xmit(struct =
-sk_buff *skb,
->  					    struct net_device *netdev)
->  {
->  	struct kvaser_pciefd_can *can =3D netdev_priv(netdev);
-> -	unsigned long irq_flags;
->  	struct kvaser_pciefd_tx_packet packet;
-> +	unsigned int frame_len =3D 0;
->  	int nr_words;
-> -	u8 count;
-> =20
->  	if (can_dev_dropped_skb(netdev, skb))
->  		return NETDEV_TX_OK;
-> =20
-> +	/*
-> +	 * Without room for a new message, stop the queue until at least
-> +	 * one successful transmit.
-> +	 */
-> +	if (!netif_subqueue_maybe_stop(netdev, 0, kvaser_pciefd_tx_avail(can), =
-1, 1))
-> +		return NETDEV_TX_BUSY;
-
-Returning NETDEV_TX_BUSY is quite expensive, stop the queue at the end
-of this function, if the buffers are full.
-
-> +
->  	nr_words =3D kvaser_pciefd_prepare_tx_packet(&packet, can, skb);
-> =20
-> -	spin_lock_irqsave(&can->echo_lock, irq_flags);
->  	/* Prepare and save echo skb in internal slot */
-> -	can_put_echo_skb(skb, netdev, can->echo_idx, 0);
-> +	frame_len =3D can_skb_get_frame_len(skb);
-> +	can_put_echo_skb(skb, netdev, can->echo_idx, frame_len);
-> =20
->  	/* Move echo index to the next slot */
->  	can->echo_idx =3D (can->echo_idx + 1) % can->can.echo_skb_max;
-> =20
-> +	netdev_sent_queue(netdev, frame_len);
-> +
->  	/* Write header to fifo */
->  	iowrite32(packet.header[0],
->  		  can->reg_base + KVASER_PCIEFD_KCAN_FIFO_REG);
-> @@ -836,15 +859,6 @@ static netdev_tx_t kvaser_pciefd_start_xmit(struct s=
-k_buff *skb,
->  			     KVASER_PCIEFD_KCAN_FIFO_LAST_REG);
->  	}
-> =20
-> -	count =3D FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_CURRENT_MASK,
-> -			  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
-> -	/* No room for a new message, stop the queue until at least one
-> -	 * successful transmit
-> -	 */
-> -	if (count >=3D can->can.echo_skb_max || can->can.echo_skb[can->echo_idx=
-])
-> -		netif_stop_queue(netdev);
-> -	spin_unlock_irqrestore(&can->echo_lock, irq_flags);
-> -
->  	return NETDEV_TX_OK;
->  }
-> =20
-> @@ -970,6 +984,8 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvase=
-r_pciefd *pcie)
->  		can->kv_pcie =3D pcie;
->  		can->cmd_seq =3D 0;
->  		can->err_rep_cnt =3D 0;
-> +		can->completed_tx_pkts =3D 0;
-> +		can->completed_tx_bytes =3D 0;
->  		can->bec.txerr =3D 0;
->  		can->bec.rxerr =3D 0;
-> =20
-> @@ -987,7 +1003,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvas=
-er_pciefd *pcie)
->  		can->can.clock.freq =3D pcie->freq;
->  		can->can.echo_skb_max =3D min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_pa=
-ckets_max - 1);
->  		can->echo_idx =3D 0;
-> -		spin_lock_init(&can->echo_lock);
->  		spin_lock_init(&can->lock);
-> =20
->  		can->can.bittiming_const =3D &kvaser_pciefd_bittiming_const;
-> @@ -1510,19 +1525,16 @@ static int kvaser_pciefd_handle_ack_packet(struct=
- kvaser_pciefd *pcie,
->  		netdev_dbg(can->can.dev, "Packet was flushed\n");
->  	} else {
->  		int echo_idx =3D FIELD_GET(KVASER_PCIEFD_PACKET_SEQ_MASK, p->header[0]=
-);
-> -		int len;
-> -		u8 count;
-> +		unsigned int len, frame_len =3D 0;
->  		struct sk_buff *skb;
-> =20
->  		skb =3D can->can.echo_skb[echo_idx];
->  		if (skb)
->  			kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
-> -		len =3D can_get_echo_skb(can->can.dev, echo_idx, NULL);
-> -		count =3D FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_CURRENT_MASK,
-> -				  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
-> +		len =3D can_get_echo_skb(can->can.dev, echo_idx, &frame_len);
-> =20
-> -		if (count < can->can.echo_skb_max && netif_queue_stopped(can->can.dev))
-> -			netif_wake_queue(can->can.dev);
-> +		can->completed_tx_pkts++;
-> +		can->completed_tx_bytes +=3D frame_len;
-> =20
->  		if (!one_shot_fail) {
->  			can->can.dev->stats.tx_bytes +=3D len;
-> @@ -1638,11 +1650,25 @@ static int kvaser_pciefd_read_buffer(struct kvase=
-r_pciefd *pcie, int dma_buf)
->  {
->  	int pos =3D 0;
->  	int res =3D 0;
-> +	unsigned int i;
-> =20
->  	do {
->  		res =3D kvaser_pciefd_read_packet(pcie, &pos, dma_buf);
->  	} while (!res && pos > 0 && pos < KVASER_PCIEFD_DMA_SIZE);
-> =20
-> +	for (i =3D 0; i < pcie->nr_channels; ++i) {
-> +		struct kvaser_pciefd_can *can =3D pcie->can[i];
-> +
-> +		if (!can->completed_tx_pkts)
-> +			continue;
-> +		netif_subqueue_completed_wake(can->can.dev, 0,
-> +					      can->completed_tx_pkts,
-> +					      can->completed_tx_bytes,
-> +					      kvaser_pciefd_tx_avail(can), 1);
-
-You can do this as soon as as one packet is finished, if you want to
-avoid too frequent wakeups, use threshold of more than 1.
-
-Marc
-
-> +		can->completed_tx_pkts =3D 0;
-> +		can->completed_tx_bytes =3D 0;
-> +	}
-> +
->  	return res;
->  }
-> =20
-> --=20
-> 2.47.2
->=20
->=20
->=20
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---e2cqmecn4lasb2wb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfz6V8ACgkQDHRl3/mQ
-kZzAlQf/XX5PamxBM6LWFMcbLgbRPyWiHwY8yikJW7uRtFVNdGCcdQ8CHqCm1UZK
-QBzzEot4gM+s1aK3pa/SQwwBUCdn3kPwoeK5w08mUOYgJyGnPI95q66vjSERnjrI
-yiQ3sH+jB1c/GYsRrB5mh+GSK/ab7E2Ba5IjCyvhu4r3VRUp01ErHoNaklmtpnoR
-zEj1iiRCpq94TXx8MwfptH3zKQBdIPzcU9LsPasj65iooeBwk0PMKKEvVBcFe13v
-VCfl94DPfkeoVewCQY0me0GiIFk4jFTXRyRGb6oDnar3RIDccV0FU3PdG6SFYG57
-uFnjzg2cB/+6vLRH59kg4q9aDreQaw==
-=xWz3
------END PGP SIGNATURE-----
-
---e2cqmecn4lasb2wb--
+On Mon, Apr 7, 2025 at 10:42=E2=80=AFAM Christian K=C3=B6nig
+<ckoenig.leichtzumerken@gmail.com> wrote:
+>
+> Am 07.04.25 um 16:18 schrieb Matthew Auld:
+> > The page_link lower bits of the first sg could contain something like
+> > SG_END, if we are mapping a single VRAM page or contiguous blob which
+> > fits into one sg entry. Rather pull out the struct page, and use that i=
+n
+> > our check to know if we mapped struct pages vs VRAM.
+> >
+> > Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using =
+DMA-buf v3")
+> > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> > Cc: amd-gfx@lists.freedesktop.org
+> > Cc: <stable@vger.kernel.org> # v5.8+
+>
+> Good point, haven't thought about that at all since we only abuse the sg =
+table as DMA addr container.
+>
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+>
+> Were is patch #1 from this series?
+>
+> Thanks,
+> Christian.
+>
+> > ---
+> >  drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/=
+drm/amd/amdgpu/amdgpu_dma_buf.c
+> > index 9f627caedc3f..c9842a0e2a1c 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> > @@ -184,7 +184,7 @@ static void amdgpu_dma_buf_unmap(struct dma_buf_att=
+achment *attach,
+> >                                struct sg_table *sgt,
+> >                                enum dma_data_direction dir)
+> >  {
+> > -     if (sgt->sgl->page_link) {
+> > +     if (sg_page(sgt->sgl)) {
+> >               dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+> >               sg_free_table(sgt);
+> >               kfree(sgt);
+>
 
