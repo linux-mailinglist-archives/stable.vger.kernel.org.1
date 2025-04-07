@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-128760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAB5A7EB67
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:53:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8A3A7EB6B
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85645188E946
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:52:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 275097A2DFE
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BC027CB0B;
-	Mon,  7 Apr 2025 18:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939CE27CB03;
+	Mon,  7 Apr 2025 18:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qp9o+a3V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOnOtFsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6B727CB03;
-	Mon,  7 Apr 2025 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F69D27CB25;
+	Mon,  7 Apr 2025 18:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049887; cv=none; b=ojucuY0uY1mZWYkY0vQz//AIges9qjl45rRSpAjgKbfF1yCHfb/+7t/qnGi/g0ghxGJr40wd0Gwg8de6S7A/7otkylAct3IrcbcP2eVTTqLyNb7S3nYdDPRNfhO5JmGL4M0evdvZyhwBXH6Q1uhkg4SPEvzk3h6Dk/eLwBgsIss=
+	t=1744049890; cv=none; b=BtTbaMea5+F4tc050TKGT4AZzo3MHl1/5tEsBv332M37yZNRIAMnHAm2P2oq5fA8wFfdGkTiyityexIHhLQArjHyo+TQVcXmj6+nOm6WOQNIzYP2oVlMzNy/qiVoNtyNxH7DjCKLq0oF20rv8+37Pokk8Pr8Wet2EHNEsKygLxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049887; c=relaxed/simple;
-	bh=NFHCqJi8j7Nd/g6ez6yrOaWj7clDwODpTXA2tTVuLhI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S7DJ9xs9cvkY1zCmcg/JeSN1Buue1u9FSb0OCs7JnllpabTrT82sDcvr9FoudsFXzLbP608sr0wZhQAXDVzqVpvquuNEsMo4vKkONRdpC0y/LY9lTD81AcxtzBzkJ/lBL5DRgAty0RNpV9UHWN4bogHiNMxFLFlF8kbNGEQgalo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qp9o+a3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E56DC4CEE9;
-	Mon,  7 Apr 2025 18:18:05 +0000 (UTC)
+	s=arc-20240116; t=1744049890; c=relaxed/simple;
+	bh=yn4rIepodu57VeEGKcyTBHzdR+ShZUPTHrw2zmhNZuU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pkH6xoM1j7xm1CalA+c4xBia6XKmZJ8WtknIcf2WAwizDy2aE4A1qgvo2lR8oIcW2AoALxzHJxz6LV0ATbJ79F7y4lYIAcRJo7Phu9LUwHnFsO0nTWKRPSpbUo2MV55UnbWyYpg3fD9i7nXYp+x3JABpL1f0DlxwHuyMDlD8bwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOnOtFsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE91BC4CEE7;
+	Mon,  7 Apr 2025 18:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049886;
-	bh=NFHCqJi8j7Nd/g6ez6yrOaWj7clDwODpTXA2tTVuLhI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Qp9o+a3VAiTeLEw9oZPZ41NeIeOl2jCzb3a8ltcb22CRd6JNCo2x72c+LuRABZ1NO
-	 YPx+kDx5iRmG+AzKrXe54ZDWVO+tcCHPe7Y9aoQgf/gWnvTJS6UAsR+2F1PkefK8fO
-	 0FqxYqq1VmKhGhETiQUrNt2qt5+jiFK0lEfXVtcKzF32eGCRPJYdI8NFEGS5nErTfp
-	 Oxmzs1tvMnZ1darKdHkIKlX0CnClOOixM4sGrp/foEUr32ulQSnIj4q3XBHzi997e0
-	 v49G1J0Ms6ptJciQ+3EICxRxY/tk2f02SNKS0UfhsQxmHLxG4hfE+UDszlOXwxIrGk
-	 XjP9sQblWo+dA==
+	s=k20201202; t=1744049890;
+	bh=yn4rIepodu57VeEGKcyTBHzdR+ShZUPTHrw2zmhNZuU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YOnOtFsuHt/WLUp0ATQfmouxpDU07i2TOiF60u52ndeyt7FOk6tE1zxQUmtmqh/fJ
+	 ylCK2eHQ1+1Fvnl2aCbp2+xYYvOdRoyxbnw3mSjGmzdJOK9i7BwxnnLSPhWFCgHdM/
+	 +BRy+AWo9npvU9yTv2yvrptM462FDUMIvloReksSVDTqxPfFTMkQ3SjKB3XFUOQvLH
+	 I2KS3UcvFHh0izVRWZ2nksDKlPkYtUVRGsPBYB2tBM9HrWFpdLKs5JL9dnS2Aa+19u
+	 6l2a2O8jhdeBCGgaA2mmuZ9www8fcOg3hrSfmy/8JXjPkdY/caG2CE0OLydXLBBEux
+	 M0FwIotBJSJ9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	kernel test robot <lkp@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>,
-	dennis.dalessandro@cornelisnetworks.com,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 1/2] qibfs: fix _another_ leak
-Date: Mon,  7 Apr 2025 14:18:00 -0400
-Message-Id: <20250407181802.3184614-1-sashal@kernel.org>
+	allenbh@gmail.com,
+	bhelgaas@google.com,
+	fancer.lancer@gmail.com,
+	zhangjiao2@cmss.chinamobile.com,
+	pstanner@redhat.com,
+	ntb@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 2/2] ntb: reduce stack usage in idt_scan_mws
+Date: Mon,  7 Apr 2025 14:18:01 -0400
+Message-Id: <20250407181802.3184614-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250407181802.3184614-1-sashal@kernel.org>
+References: <20250407181802.3184614-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,34 +73,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-failure to allocate inode => leaked dentry...
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-this one had been there since the initial merge; to be fair,
-if we are that far OOM, the odds of failing at that particular
-allocation are low...
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index 8665e506404f9..774037ea44a92 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -56,6 +56,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
- 	struct inode *inode = new_inode(dir->i_sb);
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 72060acb9cafc..366e19dbae316 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
  
- 	if (!inode) {
-+		dput(dentry);
- 		error = -EPERM;
- 		goto bail;
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
+ 
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
  	}
+ 
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
+ 
+ /*
 -- 
 2.39.5
 
