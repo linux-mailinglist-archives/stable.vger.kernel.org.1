@@ -1,270 +1,119 @@
-Return-Path: <stable+bounces-128553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8780A7E0A6
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:12:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010F6A7E0C0
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 16:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9B8168EFF
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5393AFAE5
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 14:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7A51C5D6F;
-	Mon,  7 Apr 2025 14:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BA91CD210;
+	Mon,  7 Apr 2025 14:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OSP7h1So";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2ZCiF/uj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OSP7h1So";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2ZCiF/uj"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="OjNRpCBv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38B41C3C07
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED681CAA9E
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 14:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744034677; cv=none; b=aDJDoIBf/FbZPN5PaVdsAFG3TRrBKF5WnBjRJPNQry6squeFq+z6CY4HgP6kSyZe5jMf2J99hdYQRU7oFQfFdxlT7ua7quJQ3vdzvCaPL+fTIlnrXDfZy+388DRNmZJVis2XxEDYIBrTE2M3u72FW78W85wT+YdZH2NAzjf+jdw=
+	t=1744034709; cv=none; b=J82BpsB/wrbQVHJ0Ffinlx4LBsviAOisTvY8mgVGgTJM08ZZ+OrODMQ2DO41fcP+wVRckGdfkQmUgIt/CBlgN+D4Oe7g4tK7UHLtQjLlg7I/57vFac/y9fOQ1ob2FHXKWWfQIuunMLWVz3ehtn8wJxxfNitdvu/Y5G11kwQLwsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744034677; c=relaxed/simple;
-	bh=FWqH/TlKaEaF2RFgS1OR7yKIZYnOXDZD3FxeQBEaNzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=frA7MW1gQ+wf6d9UkecvdMYH96y8itkXt9J/sSlxW1hGD1Oi5hSoarZ7KZ4SotZPUsZgqVOT5Bom1FtIL1A/T4FBLddAIn0LcMM9z/AxaSWVlH1yEh67VMOPQS+FtJdPGxlR3GD+nOjqBxP/TMyufyOBVRPur4nI2fl2Cw8oIDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OSP7h1So; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2ZCiF/uj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OSP7h1So; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2ZCiF/uj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B38621F388;
-	Mon,  7 Apr 2025 14:04:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744034673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ou56xQQ5EV1c/5D+sqPQx38AFdd4DRPJbrguRjWWZQw=;
-	b=OSP7h1So2QsvoUzekwuG5fZVSFwKqYDG1JcesbPXR3PgS+0f1vlaUPQq+wdWq6aKPOzY9H
-	Ep4lg98fHmtPSe9zoCEZya6zD2IE8pTZRhfxlryAoWngTMH0axXcClMpck3GfJ3sNI9u4W
-	ueyDsWaXzgUNzP/+ad46fpoiemcoLW0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744034673;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ou56xQQ5EV1c/5D+sqPQx38AFdd4DRPJbrguRjWWZQw=;
-	b=2ZCiF/ujwVbl0UeycoadGdyFUiepLAJwbg8/ckA4rXPi1y9c0wvdXmR9loavBRawzm3jts
-	8h5gHMMiQpU3R/Dw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OSP7h1So;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2ZCiF/uj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744034673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ou56xQQ5EV1c/5D+sqPQx38AFdd4DRPJbrguRjWWZQw=;
-	b=OSP7h1So2QsvoUzekwuG5fZVSFwKqYDG1JcesbPXR3PgS+0f1vlaUPQq+wdWq6aKPOzY9H
-	Ep4lg98fHmtPSe9zoCEZya6zD2IE8pTZRhfxlryAoWngTMH0axXcClMpck3GfJ3sNI9u4W
-	ueyDsWaXzgUNzP/+ad46fpoiemcoLW0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744034673;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ou56xQQ5EV1c/5D+sqPQx38AFdd4DRPJbrguRjWWZQw=;
-	b=2ZCiF/ujwVbl0UeycoadGdyFUiepLAJwbg8/ckA4rXPi1y9c0wvdXmR9loavBRawzm3jts
-	8h5gHMMiQpU3R/Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E77913A4B;
-	Mon,  7 Apr 2025 14:04:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 712uJnHb82fdIQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 07 Apr 2025 14:04:33 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 40266A08D2; Mon,  7 Apr 2025 16:04:33 +0200 (CEST)
-Date: Mon, 7 Apr 2025 16:04:33 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, 
-	Mateusz Guzik <mjguzik@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/9] anon_inode: use a proper mode internally
-Message-ID: <o67hqkys5v76qwedbzn3wvln2czz4mhnhd4newph2h6rsmvsbi@rl4k2thv5zk5>
-References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
- <20250407-work-anon_inode-v1-1-53a44c20d44e@kernel.org>
+	s=arc-20240116; t=1744034709; c=relaxed/simple;
+	bh=8rTBrjU7WEbXVPx/Yiqa2sA20+TaAZJFX/oS/EAcwzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mlSEy/NvEcVjIDj4YKkD+ynS+1Fykh0MQk4VFGVhU5y7Ag70Mw6K56oSQLcx4Y2hfX1/depGMzwLizH8Jldw0BsYb7hCUS9+omTGuitl8errPiH3Xl6reB1wHJsNlyxyxgNEvr5h5HY7a/8Bvpil4F7ZpyqdwFFFrf2DPuTqMD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=OjNRpCBv; arc=none smtp.client-ip=209.85.166.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-85e15dc8035so110278939f.0
+        for <stable@vger.kernel.org>; Mon, 07 Apr 2025 07:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1744034707; x=1744639507; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ckFV/anSlOVmmBa0Q7XtGoLVqAn0zuW7LC82t7EokqE=;
+        b=OjNRpCBvSGAgCZuLRBNgIF53uIq1Z6dOdah4Et5+EyJ/+9BWm3lf5HnVjs4nlrUCLn
+         HfXWfg1DFrjowmC1voz9e+Uqjekqk+Vu0nZKVUcOBVDkUsz1PtqgjiqnO35tN/jEBUYP
+         KoehPHXK4waTd87cWHD884x6VJjQaw6GNjYy4lbFLbIDyxlp7h1VgK55gEzlKnzEvV+x
+         yV0lNbbiiwbp8bFT4a9SDQpcZse6ws3luEqL1F9lOjyzqziDSSw9GeGjWa9cMk6j3bxb
+         dF0dONgNEnyyGrK3+o78jD/05gnsMNhkN26IqVRMp+Rcq1p4oHIJ3rhu2W08wS5HXp31
+         wdCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744034707; x=1744639507;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ckFV/anSlOVmmBa0Q7XtGoLVqAn0zuW7LC82t7EokqE=;
+        b=ZPpTt565xgvU566EPxWb2VZhyfxvvJCI8sjap7ZerLyfD4NFgk1je+5SSr5pVg/+BL
+         WJS6lGVWSrCp2tzrGxWwuqfWQPKpli/exZO3iYI3RxPRHqcr0Zhq41c+IuhkQhYnEAyu
+         Ra5rlYpY7X+NkAOsySpv7aTNUxSZPfWWFsTRtuVGzabUUZBdX80g2duqvBaloR993jqK
+         GbX4aaqTz8WxdMCzxwuSvWbGB3TYyTLTZvvOCrdamH5wyCteCUni0D6MxCOjThkLGw0N
+         Y40hdD/xB9F4uwpUTMqF7BVJWSulLJ9THgOvKr+Arb9AK/H4oii7AU9NJNJIRDz0is1G
+         V8RA==
+X-Gm-Message-State: AOJu0Ywb/7c5jySGrVJpOMNLTaICDxSmJjbap4pd08d6gJezhKPID2gO
+	ugSSURohfRNBOQdjDa9Sf/fGGWYCF6VUBKaQHJWpAfJr4h6LbsvmaAY/Os00GoxFMWyr3Bo6Rzb
+	m
+X-Gm-Gg: ASbGncu85EvUM44O3YJHM9b3oPynEWWQFPJcAzQPovc6kiQPUOTHuB4612a2Lgz2b1S
+	rpHKKFBK6DiWsznbkkaLHoaXGk12aLFYFemdoYgmnI2VMGLSNwPMBF6lW1bRFJyZBMn1dFyATnc
+	x96x08OpZOr1gkrxB3zgfhjNtj3KYimuHtuQHYyNM6zJbpaZVYQagH5HYB9DdSsYw0oA5lIr1Fr
+	3FlbBQkBZxQdbn8QvGu8PgJqa9cVSd2e5HWGae7E/nMxrBz/QjfEQS6ZBajiWCCSTlezLhDvp92
+	fORtw/BCocIpDdPG+InSEcW9Lh8AC4iEbwNQGHmt
+X-Google-Smtp-Source: AGHT+IEHPsz9HqIlrQ0vxK07HJWO1Md9/9KgFg3EtX5s8Hs4vA4gMbdHLqbK8PZ8gTRrk5cfjDxOLw==
+X-Received: by 2002:a05:6602:1cf:b0:861:1ba3:3e50 with SMTP id ca18e2360f4ac-8611ba33ef5mr1118221739f.0.1744034706830;
+        Mon, 07 Apr 2025 07:05:06 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f4b5d245e9sm2316917173.82.2025.04.07.07.05.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Apr 2025 07:05:05 -0700 (PDT)
+Message-ID: <932669de-1d62-4b02-b191-6be3869c986e@kernel.dk>
+Date: Mon, 7 Apr 2025 08:05:04 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407-work-anon_inode-v1-1-53a44c20d44e@kernel.org>
-X-Rspamd-Queue-Id: B38621F388
-X-Spam-Score: -2.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,gmail.com,zeniv.linux.org.uk,suse.cz,kernel.org,toxicpanda.com,syzkaller.appspotmail.com];
-	DWL_DNSWL_BLOCKED(0.00)[suse.cz:dkim];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	TAGGED_RCPT(0.00)[5d8e79d323a13aa0b248];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,appspotmail.com:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: 6.1-stable fix
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>
+References: <0b556f07-d48a-4d01-84a9-1c79cb82f7dd@kernel.dk>
+ <c31bd917-2166-468f-a998-da44d250b274@kernel.dk>
+ <2025040725-watch-animating-4561@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2025040725-watch-animating-4561@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon 07-04-25 11:54:15, Christian Brauner wrote:
-> This allows the VFS to not trip over anonymous inodes and we can add
-> asserts based on the mode into the vfs. When we report it to userspace
-> we can simply hide the mode to avoid regressions. I've audited all
-> direct callers of alloc_anon_inode() and only secretmen overrides i_mode
-> and i_op inode operations but it already uses a regular file.
+On 4/7/25 8:01 AM, Greg Kroah-Hartman wrote:
+> On Mon, Apr 07, 2025 at 07:56:18AM -0600, Jens Axboe wrote:
+>> On 4/3/25 10:55 AM, Jens Axboe wrote:
+>>> Hi,
+>>>
+>>> Ran into an issue testing 6.1, which I discovered was introduced by
+>>> a backport that was done. Here's the fix for it, please add it to
+>>> the 6.1-stable mix. Thanks!
+>>
+>> Ping on this - saw a 6.1 stable release this weekend, but this fix
+>> wasn't in it.
 > 
-> Fixes: af153bb63a336 ("vfs: catch invalid modes in may_open()")
-> Cc: <stable@vger.kernel.org> # all LTS kernels
-> Reported-by: syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/67ed3fb3.050a0220.14623d.0009.GAE@google.com
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> That's because you sent this after I announced the -rc1 release :)
 
-Looks good. Feel free to add:
+Gotcha, makes sense.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> I'll add it to the queue now, thanks.
 
-								Honza
+Thanks!
 
-> ---
->  fs/anon_inodes.c | 36 ++++++++++++++++++++++++++++++++++++
->  fs/internal.h    |  3 +++
->  fs/libfs.c       |  2 +-
->  3 files changed, 40 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
-> index 583ac81669c2..42e4b9c34f89 100644
-> --- a/fs/anon_inodes.c
-> +++ b/fs/anon_inodes.c
-> @@ -24,9 +24,43 @@
->  
->  #include <linux/uaccess.h>
->  
-> +#include "internal.h"
-> +
->  static struct vfsmount *anon_inode_mnt __ro_after_init;
->  static struct inode *anon_inode_inode __ro_after_init;
->  
-> +/*
-> + * User space expects anonymous inodes to have no file type in st_mode.
-> + *
-> + * In particular, 'lsof' has this legacy logic:
-> + *
-> + *	type = s->st_mode & S_IFMT;
-> + *	switch (type) {
-> + *	  ...
-> + *	case 0:
-> + *		if (!strcmp(p, "anon_inode"))
-> + *			Lf->ntype = Ntype = N_ANON_INODE;
-> + *
-> + * to detect our old anon_inode logic.
-> + *
-> + * Rather than mess with our internal sane inode data, just fix it
-> + * up here in getattr() by masking off the format bits.
-> + */
-> +int anon_inode_getattr(struct mnt_idmap *idmap, const struct path *path,
-> +		       struct kstat *stat, u32 request_mask,
-> +		       unsigned int query_flags)
-> +{
-> +	struct inode *inode = d_inode(path->dentry);
-> +
-> +	generic_fillattr(&nop_mnt_idmap, request_mask, inode, stat);
-> +	stat->mode &= ~S_IFMT;
-> +	return 0;
-> +}
-> +
-> +static const struct inode_operations anon_inode_operations = {
-> +	.getattr = anon_inode_getattr,
-> +};
-> +
->  /*
->   * anon_inodefs_dname() is called from d_path().
->   */
-> @@ -66,6 +100,7 @@ static struct inode *anon_inode_make_secure_inode(
->  	if (IS_ERR(inode))
->  		return inode;
->  	inode->i_flags &= ~S_PRIVATE;
-> +	inode->i_op = &anon_inode_operations;
->  	error =	security_inode_init_security_anon(inode, &QSTR(name),
->  						  context_inode);
->  	if (error) {
-> @@ -313,6 +348,7 @@ static int __init anon_inode_init(void)
->  	anon_inode_inode = alloc_anon_inode(anon_inode_mnt->mnt_sb);
->  	if (IS_ERR(anon_inode_inode))
->  		panic("anon_inode_init() inode allocation failed (%ld)\n", PTR_ERR(anon_inode_inode));
-> +	anon_inode_inode->i_op = &anon_inode_operations;
->  
->  	return 0;
->  }
-> diff --git a/fs/internal.h b/fs/internal.h
-> index b9b3e29a73fd..717dc9eb6185 100644
-> --- a/fs/internal.h
-> +++ b/fs/internal.h
-> @@ -343,3 +343,6 @@ static inline bool path_mounted(const struct path *path)
->  void file_f_owner_release(struct file *file);
->  bool file_seek_cur_needs_f_lock(struct file *file);
->  int statmount_mnt_idmap(struct mnt_idmap *idmap, struct seq_file *seq, bool uid_map);
-> +int anon_inode_getattr(struct mnt_idmap *idmap, const struct path *path,
-> +		       struct kstat *stat, u32 request_mask,
-> +		       unsigned int query_flags);
-> diff --git a/fs/libfs.c b/fs/libfs.c
-> index 6393d7c49ee6..0ad3336f5b49 100644
-> --- a/fs/libfs.c
-> +++ b/fs/libfs.c
-> @@ -1647,7 +1647,7 @@ struct inode *alloc_anon_inode(struct super_block *s)
->  	 * that it already _is_ on the dirty list.
->  	 */
->  	inode->i_state = I_DIRTY;
-> -	inode->i_mode = S_IRUSR | S_IWUSR;
-> +	inode->i_mode = S_IFREG | S_IRUSR | S_IWUSR;
->  	inode->i_uid = current_fsuid();
->  	inode->i_gid = current_fsgid();
->  	inode->i_flags |= S_PRIVATE;
-> 
-> -- 
-> 2.47.2
-> 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Jens Axboe
+
 
