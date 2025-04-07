@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-128780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC8CA7F0B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 01:14:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAB7A7F0BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 01:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5931884C81
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 23:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B142E16C57C
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 23:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA33227B88;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F156F22A4CC;
 	Mon,  7 Apr 2025 23:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y8aUZdeO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWULf6wj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5EA21B8F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3F226CF4;
 	Mon,  7 Apr 2025 23:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744067664; cv=none; b=b+jh3/QuQbaiRT5mMTY/7P6sYbpbkQx7vsfUP3uIfgDLU2AprkgIVnM1V73m4cVok6sqbZ0jsWoYc1oYlhksWmndt32IVS+x0BaQXhFu5ORUzjP6P7A5MmipCemisW9UCHonLDxPXuHxLpBcWiTngfr6nLzsxyR4otRR4bqC7Qw=
+	t=1744067664; cv=none; b=Rvq+8r7+5/wUagWMDtEY4C+Q8WzwLetGAbR85Hp1w5LLR+eD1FqL5n+sKoDF5H/gKikdiIP4buXcGXmgTW/eXdwUiTOW7DIitHBZlkgLEcVH746xYYQAR6MsGGaibTpn3dmZHh4DEwUQpL58RZOtFOGkvYywSzIBscXd1FHC7vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744067664; c=relaxed/simple;
-	bh=JNVN48Idy8zApteJ4Tpy9VC4RKzWR7C77ffb+uIz13A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Esx+1h6n3xacwTE5EoylUBT2C1liyIOrdYsjQR7FJhixwwCJhHW+pzr9zq+fRwKQk3M8vMa8IwVv9dwgqCeo0guqMSr/K0Gfi8u+Z0iQL/p9UhF7ffD7Ylt6nMPUsTKU4Awwfojt3tOdoOMjF9OS79uk+0rPcqM70p7gzdySMSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y8aUZdeO; arc=none smtp.client-ip=209.85.208.50
+	bh=3U6BVYINcede1cjJtqc/3GZyBpvRQDUdQ5t73UI9vNA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=m05TeHCULLy4/sZOAozO7oK+5ZJT1OBP0vyVOS5RU0BZ2Taj9JPXyBdjfyhcJ4VTe2nf4tinKK7ElNxvfj0rEeh3RID/PRJ2vbLIANcZGb7nAw+ND+8aDbaKsid2Gx1v/rEC6N2sWmIcq6vxHgu1Zo3z8VEKLZvWM6oeg/MVpYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWULf6wj; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e8be1bdb7bso8209138a12.0;
-        Mon, 07 Apr 2025 16:14:21 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab78e6edb99so710741866b.2;
+        Mon, 07 Apr 2025 16:14:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744067660; x=1744672460; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744067661; x=1744672461; darn=vger.kernel.org;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/e/GdwvLDoquOr0Afl2EN0vAREZXM36EPXG5G+ON0Dg=;
-        b=Y8aUZdeOdyLfhCQEiZrJCuy7i9yYhGSQqXHW+/eIUtU6zfQLN0UIypkQFtVBMmbcWZ
-         O6JWTWhYcSt8X/ORZB6DE5RDiZCFPbDL5TZu/teMYQOpivs/I13BpUEK2LTQ8ueE2uEH
-         j2vy0LDq7kCeyeLfuvuw3vJ8xqQoAFTwIMDEZ9zcS2Qz+PHkicIbx8QPRpCqF+o6kqZW
-         4nAW4O1JuP6NkCVJr80OpbVHjnXcwY8YMXpkOQqvjGJHVBlm2Mo0ARyKk53P2PzS1Ova
-         b8TpFql/tymutFKoKq3nZmWskGPc3TEnjMAyX/TldVzLuVEMM/55mrPYvRLdHW52u2xq
-         ZJGw==
+        bh=RBLmvV7Q4wPiI+MEo68mMCleA6GCDfzaBhVQhk2842M=;
+        b=XWULf6wjq11LXsNhJRGj+nae6c2sql/FTTG5uXAeqriig5O2HsaTlAnY+AHOVuJdGi
+         7bEhLjGkW/jPBGsIoN/DUPKpvHAbUElKsYW6Lk4NjtkNGwv710+VfBwglSoySeNlNr+g
+         lrajDwQIQKqTXYzVF+nWiqq+PBOBugQ8cSUquij7VyQP1BETAPESW7I65Pl5LRShn+RE
+         1OH2eCXNioNjKb5z+JcQAlMjofzbauvqdiOCOgdDGwA4SjnYN1hJBEAU7WqKBNjAfKCR
+         KxaDBRcfnXZeQTtFWhZmfug7V7JUZzQZNI+DVT2YKkkmCii4v91PjXK2GQxV7cBLAAO3
+         WLPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744067660; x=1744672460;
+        d=1e100.net; s=20230601; t=1744067661; x=1744672461;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/e/GdwvLDoquOr0Afl2EN0vAREZXM36EPXG5G+ON0Dg=;
-        b=W/0u3eB8qJ+EFcJ5HxfO/43587XpjK7hxMxScpfgPz1wteeoPzv1NtH459OPAE9LKJ
-         4mSQRUwlDNOYJ2YZW2KsOObsCzqOrRxY/kmxbOL2wcfb84GDDQKDHl1SQJ/45U+pBEGy
-         t1hD6kNm7krpdB2yOcTrok0oIpK363/iD13eZvfuKnSF81OVuh1UHItWoEZDNhXhW7RL
-         CsYNYg/uinlGIeuGvq1gnGla+jK0CRvUm5jlptG/52Cnu7rheIWULBPNQLUZte8uAt8h
-         YcK0vzlZvpP75T+gMWtjbD+U0FLywpE4A8PPadf2nPWU2eOW/jJG6d1w0dSt9YJUjzDy
-         dw7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWqB2HfZ0LvBSc6E7XzdwmMg9GtiXl16RatyVAEGcx+lsOPxjf3OPS0h4jq/4D/98JicnMvrx0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypz6k9NkBbKH1CKmdveqVWbHbftJMwbkXACN2xaH7LNgd4Llwm
-	Rfo+Ww17PrIXXmftpbSvgpBGzt47AElPoLZhCr2Wr8kWSrtoWH1OkMJEybnY
-X-Gm-Gg: ASbGncue9hnaF3nwG/1ciHQBfzq014vhOTpoDl2YX8p4xx0b8dvFIR9C8PwoDK8DYKn
-	0TfrxlfTsZHgLtDkz+ZrwWyGQ4Ig7gBEt6VUs4JOEaNZnhaaa7Y94ZpCkegVra6vB6YcpzlRmwA
-	ZCqJXrbLKqkZbc2KYpfBH8T7RROtGMYWsXPOTH281MwIUaaQvopNbYL5iM3xU36YzvhqZ5vwo0q
-	2Q2Bh/zG/80X0H/5uIjDGC3OfWIUvMaysnwS0+xZCeDQFuo5RdhMKxf99MW1FeZdMKZtEg1euKD
-	9GMr0/T0GEko4UetISNHIZlUiGwZNSInKaQi8HJ1mHRRpu1+kZ4eQxM=
-X-Google-Smtp-Source: AGHT+IEizGkSgcvWbtRztjIhWVy9nYG+6Q1+YXuX+viOwFgo+QuD+47ezAE0MB7BT51RcdiPpVzD+w==
-X-Received: by 2002:a17:907:7206:b0:ac7:cbe2:87f5 with SMTP id a640c23a62f3a-ac7e6ef17ffmr1014917266b.0.1744067660454;
-        Mon, 07 Apr 2025 16:14:20 -0700 (PDT)
+        bh=RBLmvV7Q4wPiI+MEo68mMCleA6GCDfzaBhVQhk2842M=;
+        b=YSbPfCw0YBr5CE8pwjqID33cqPP1zGuawcaheDWP3i1QlwKWparqiM+EdY5875Ho6b
+         dNCM0OAPYD/CVSxPXSfOixlqXM7/H0huKBZBmJIgPjG/LkOQq5TTmpKzqzeKB5evx75b
+         Fk/v/+sLeUIRU6/JQUdO/OrOt/KV5CuIab1muXTiNOEb6/pVetJ8ZDDYJTOWSNBh18ux
+         9+ksYL3JTkck6fjmk5Jr2QkE6Rvz5iswyciDEKiVjE9fXBSVmmNm99oti7FZD928clId
+         ++ZCD+ZZu4h+XRg0adPRADpmX5iXL0PPK+OolGQTFILg2bTnQvN83Kt2O6w6oPHpL3jp
+         7wIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXynWnVufK/o9YUu2hpvcp2Hxg3+Os9N/onkmW/zeJ9GSxdhsGDrYyPQpH80sd1BdI15YpNXMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqoBUAyLVum6Txwsb8dX2FZQrZerjm6saHMjkaTszSqWjwp485
+	nF8TX6LNwcHDKgYXDpid2G39/Q0qrfUAvlYmHxscD5d8dUM9GLRhTBpUb0Qy
+X-Gm-Gg: ASbGncv0yF0cY+hgSmnUdZzl9k8yt1FALGd7KpPNd6XU2XNPpqJkTrLcLpXxcEFwbu4
+	vtdEwAsOZnova11t6si50ZjvD87dHxdUn7u+3tFsiqnTTmZsCrJ4cDJaP7W7FpNGw+k2F8z4Ojk
+	Dqch14yP+b1jG/aFx37o7Uf9Jk4D1SfjMBcJQshklRztLCDubOWd/cJVB8GXCNeRXVYss8zqvo2
+	MHG0kZCnk9+lD//n8c7z3SJgJ1h7vckwnmn/Eu6YPlgqgCE16BGhMBi9XV40XeL/RIb0eMWqxGp
+	EZgVOyFvFwUeDjLxH0dKYfEvz8E138IGjQ9SJ4bvHClJ
+X-Google-Smtp-Source: AGHT+IFw0VJuD/5dW/5qXBXj2E60I8Vo/rjRMNFLtTW24KhKoP0N3NY3gh2Db5uU52nsRPD05z706A==
+X-Received: by 2002:a17:907:72c3:b0:ac7:9acf:4ef with SMTP id a640c23a62f3a-ac7d6e9fe06mr1202449766b.56.1744067661141;
+        Mon, 07 Apr 2025 16:14:21 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c013f730sm831204166b.92.2025.04.07.16.14.19
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c0184d0dsm807259066b.130.2025.04.07.16.14.20
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
         Mon, 07 Apr 2025 16:14:20 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
@@ -79,9 +79,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Wei Yang <richard.weiyang@gmail.com>,
 	"Liam R . Howlett" <Liam.Howlett@Oracle.com>,
 	stable@vger.kernel.org
-Subject: [RESEND Patch v2 1/3] maple_tree: Fix mt_destroy_walk() on root leaf node
-Date: Mon,  7 Apr 2025 23:13:52 +0000
-Message-Id: <20250407231354.11771-2-richard.weiyang@gmail.com>
+Subject: [RESEND Patch v2 2/3] maple_tree: restart walk on correct status
+Date: Mon,  7 Apr 2025 23:13:53 +0000
+Message-Id: <20250407231354.11771-3-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20250407231354.11771-1-richard.weiyang@gmail.com>
 References: <20250407231354.11771-1-richard.weiyang@gmail.com>
@@ -91,39 +91,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-On destroy, we should set each node dead. But current code miss this
-when the maple tree has only the root node.
+Commit a8091f039c1e ("maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW
+states") adds more status during maple tree walk. But it introduce a
+typo on the status check during walk.
 
-The reason is mt_destroy_walk() leverage mte_destroy_descend() to set
-node dead, but this is skipped since the only root node is a leaf.
+It expects to mean neither active nor start, we would restart the walk,
+while current code means we would always restart the walk.
 
-Fixes this by setting the node dead if it is a leaf.
-
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Fixes: a8091f039c1e ("maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states")
 Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 CC: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: <stable@vger.kernel.org>
-
+CC: <stable@vger.kernel.org>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
 ---
-v2:
-  * move the operation into mt_destroy_walk()
-  * adjust the title accordingly
----
- lib/maple_tree.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/maple_tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 4bd5a5be1440..0696e8d1c4e9 100644
+index 0696e8d1c4e9..81970b3a6af7 100644
 --- a/lib/maple_tree.c
 +++ b/lib/maple_tree.c
-@@ -5284,6 +5284,7 @@ static void mt_destroy_walk(struct maple_enode *enode, struct maple_tree *mt,
- 	struct maple_enode *start;
+@@ -4895,7 +4895,7 @@ void *mas_walk(struct ma_state *mas)
+ {
+ 	void *entry;
  
- 	if (mte_is_leaf(enode)) {
-+		mte_set_node_dead(enode);
- 		node->type = mte_node_type(enode);
- 		goto free_leaf;
- 	}
+-	if (!mas_is_active(mas) || !mas_is_start(mas))
++	if (!mas_is_active(mas) && !mas_is_start(mas))
+ 		mas->status = ma_start;
+ retry:
+ 	entry = mas_state_walk(mas);
 -- 
 2.34.1
 
