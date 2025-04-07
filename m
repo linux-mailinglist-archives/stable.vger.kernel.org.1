@@ -1,107 +1,140 @@
-Return-Path: <stable+bounces-128508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD9BA7DACC
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:12:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FD8A7DAF2
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 12:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F55E1889A42
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:11:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9658E3A2330
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 10:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2769422FE07;
-	Mon,  7 Apr 2025 10:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69969230BC2;
+	Mon,  7 Apr 2025 10:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8JxFRDU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WoQJGt4t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0E7218EB8;
-	Mon,  7 Apr 2025 10:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861B0188734;
+	Mon,  7 Apr 2025 10:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744020702; cv=none; b=dixMttWhiYR3FonD83lgFzHX2+EmzikPltb0bE053EZF8wznT95XnyuFSIGpbk/UL7J6De9QPLUVIk6+w51yquZKugYaVp4oGtbkVCGdqeACK0YMZZJsLkoAXkn2Hxz/fumhOCuoa0Mi1+o57wu47DouZhM4k0j9COQdfdDwwDI=
+	t=1744021201; cv=none; b=oFt3GWzGoCkwBVzPAhRdYCqnfSq9jTZL7qzRb6kzugD3tPoNYry48HYO85r5qDH+klRYIlQZfbobUpcUnFHbPj8JMBsCj5F331rZIprVfqjJUYqDeC+zy5An3ry4NQ+E8XfqZlYT/kPSYsadqqzYjxpYEjXkgHVHnzRpYdUaOoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744020702; c=relaxed/simple;
-	bh=8DRO14GMx6fMiKN8siwjcG5962IsUDzR4/99pLBUHJo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P6WRPdzTsOJYM2tafDuelSZuFU88NoL2sxka1RlrAFaQo5VwBXTSAZWViRUL9su63w550j3I368ZpTGOla6oyz3hz65/TdJCez1UwtCq4rSP+FYLn5tRLu8kDUp/8dFHIr48Vr5F3aUMMi86pt0/zftVNFw2L+MfKR3+IG9Zzrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8JxFRDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0459C4CEDD;
-	Mon,  7 Apr 2025 10:11:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744020701;
-	bh=8DRO14GMx6fMiKN8siwjcG5962IsUDzR4/99pLBUHJo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J8JxFRDU3b/nEMNMA0Kfv4wih0wm99QvixiL+PgpbLwcfCeDBBQkc30dtPwDq7Lj/
-	 UkVErkk+RjS2rHiO2yeqUZcQjn4nzbUPqzfZ88jUFeVXh348SEJTiwFaC3r20MyeaW
-	 /7A4lBuRZk5Lw5kgY1BAe9Fh0wYjdyaM/9+oTM8U=
-Date: Mon, 7 Apr 2025 12:10:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: philipp.g.hortmann@gmail.com, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6] staging: rtl8723bs: Add error handling for sd_read()
-Message-ID: <2025040718-twine-unmindful-a1ea@gregkh>
-References: <20250407100318.2193-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1744021201; c=relaxed/simple;
+	bh=fOE7PhsEk111c/xuVjShlu3XR7z9BpbnHrZFHyI0M8I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JWsMkvqlISALcC+uLk7dG7vHga4h94EUpR0TP8/oSfPGJkRWQtyZ2esV6CUvP9Xu8MuTi82vkZJ84kVu/PTO+gkZ9KMwyy3A7I7EeEai623OLpbze4YITZgytX25kwo/eKY7PdwQZ6mDPDGjZKBNJ+66Wm2YcBXNhUDDDvJNG04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WoQJGt4t; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e5bc066283so6779165a12.0;
+        Mon, 07 Apr 2025 03:19:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744021198; x=1744625998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DJP9lSW7SQVc6yP4D0YFHSUFBbe1K7yvZx+B6mncpJs=;
+        b=WoQJGt4tKkAyrBPXfNscRTg9YbOyfHfy72Z/VRNBXXzjNnk87XQxpons0uuF//D/P3
+         4JFJQTeseGdftkJ2AS/UiJHjki8ZvccQdzozQMRQNggfIbsc2DXn7h0VoEHPShW5hAIj
+         qWkT4UcIekVPSQ175Il185U9gyN9HywJKk/xELahV+bV0F4iq4FtK/sHa+ydvAHK+gzL
+         j54aw/uKY2dGT9wKo+qnEo4+KpWHN80I3EFywkRxJJXTeeXIMrkYzZcoc/r8zjHJ37fP
+         phEyAcpNB2TvD5Y6oqEmpIYl1Xu4WYFt2ZySaHh22VkVV+mEPdugHLCaa10H4BotKFzR
+         rgww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744021198; x=1744625998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DJP9lSW7SQVc6yP4D0YFHSUFBbe1K7yvZx+B6mncpJs=;
+        b=si4aXLzWrBycNb6AGtGE00vVGMK2pD2y9uYPZbOlDNomZVPoOOxdpWAlsfnq8l1plG
+         92qCY2YvH0i6SRDGWkXFN1Iv7OAUl07shR9gzewV9uRZNwyaBut8x/5pL4jjT0wtyKRv
+         xDqX+IB3QJstPywDnJyOpZPy/zXuSK69bTnaOjLfLcd90Zv0+jENiLzJ8tuuRywG+9/y
+         Cjo+8RZZbnUDDvKsq/uIDvviWpHiRUihwfLGmOrKD9MQqWeewegssMEKc6/rK20TuQ7A
+         eZruLsE4EXOela0hLL0bdrsyoODCUe3kOenEmqYMGKUAAsIkE8M8lFFi/Lsy/cgaFHQw
+         IlUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBQEj5yQcxBiiLrwHjNuJLk3SjBib96K8um2tKMtHSBORcZTY6jE9gYhpNN7oSq0GgnuREqzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxynNVk9QMuyFGpyptZ6jm+5nVJq6JDF2ZP73swEja7NsBLKDme
+	Jbfe3LYVFMnC71MAm/ueUGwT5v7j5kIosXTXZqtPgEZl319ndT4lRBHmr4eGdcHIx+QPxgtSPYX
+	O94PMzWxAsSxGyVM22w7kIWUirx0=
+X-Gm-Gg: ASbGncvHi45eu9H3B/UPxA3Syvlh4v5hHUtGEycv1J01AxOlZYRLn7dndaMr0WsQctQ
+	5VIQM1P3TMEWZGvva8CttWoFAApAEXYeA4q08zk4aLvnALHEKoWepRMYeUUqAHMrH7KkzVsDqUM
+	JHqnMQ71nC5rWKXLCdCpRbSi6a8Q==
+X-Google-Smtp-Source: AGHT+IFhVRK3HEOQyNKeUoqS7l4PomUqn0mNgFaxOXUm0OvxdIJFzL+Fp/yI1Ya2obVNPbSiEadIwrE/gpeTdz8s4Vg=
+X-Received: by 2002:a05:6402:84d:b0:5ec:c990:b578 with SMTP id
+ 4fb4d7f45d1cf-5f0b647eff2mr9236038a12.19.1744021197643; Mon, 07 Apr 2025
+ 03:19:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407100318.2193-1-vulab@iscas.ac.cn>
+References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
+In-Reply-To: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Mon, 7 Apr 2025 12:19:45 +0200
+X-Gm-Features: ATxdqUHBT1b03vrLukpC4HfGYCF95trwdWX1b9FKGRLf5q5lTBCZFPGs_7DQx_8
+Message-ID: <CAGudoHHbkbaeqTrNJZxCnpB_4zokQobWfK_AP4nU78B58e9Tow@mail.gmail.com>
+Subject: Re: [PATCH 0/9] fs: harden anon inodes
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, 
+	Penglei Jiang <superman.xpt@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 07, 2025 at 06:03:18PM +0800, Wentao Liang wrote:
-> The sdio_read32() calls sd_read(), but does not handle the error if
-> sd_read() fails. This could lead to subsequent operations processing
-> invalid data. A proper implementation can be found in sdio_readN().
-> 
-> Add error handling for the sd_read() to free tmpbuf and return error
-> code if sd_read() fails. This ensure that the memcpy() is only performed
-> when the read operation is successful.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org # v4.12+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+On Mon, Apr 7, 2025 at 11:54=E2=80=AFAM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+>
+> * Anonymous inodes currently don't come with a proper mode causing
+>   issues in the kernel when we want to add useful VFS debug assert. Fix
+>   that by giving them a proper mode and masking it off when we report it
+>   to userspace which relies on them not having any mode.
+>
+> * Anonymous inodes currently allow to change inode attributes because
+>   the VFS falls back to simple_setattr() if i_op->setattr isn't
+>   implemented. This means the ownership and mode for every single user
+>   of anon_inode_inode can be changed. Block that as it's either useless
+>   or actively harmful. If specific ownership is needed the respective
+>   subsystem should allocate anonymous inodes from their own private
+>   superblock.
+>
+> * Port pidfs to the new anon_inode_{g,s}etattr() helpers.
+>
+> * Add proper tests for anonymous inode behavior.
+>
+> The anonymous inode specific fixes should ideally be backported to all
+> LTS kernels.
+>
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
 > ---
-> v6: Fix improper code to propagate error code
-> v5: Fix error code
-> v4: Add change log and fix error code
-> v3: Add Cc flag
-> v2: Change code to initialize val
-> 
->  drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> index 21e9f1858745..eb21c7e55949 100644
-> --- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> +++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
-> @@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
->  			return SDIO_ERR_VAL32;
->  
->  		ftaddr &= ~(u16)0x3;
-> -		sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
-> +		if (err) {
-> +			kfree(tmpbuf);
-> +			return (u32)err;
+> Christian Brauner (9):
+>       anon_inode: use a proper mode internally
+>       pidfs: use anon_inode_getattr()
+>       anon_inode: explicitly block ->setattr()
+>       pidfs: use anon_inode_setattr()
+>       anon_inode: raise SB_I_NODEV and SB_I_NOEXEC
+>       selftests/filesystems: add first test for anonymous inodes
+>       selftests/filesystems: add second test for anonymous inodes
+>       selftests/filesystems: add third test for anonymous inodes
+>       selftests/filesystems: add fourth test for anonymous inodes
+>
 
-You just casted a negative number to a positive type?
+I have two nits, past that LGTM
 
-Step back and think exactly of what you should be doing here.  Walk the
-callchain properly and think about how this all needed to be fixed up
-properly, and then take some time to do that work and test it and submit
-it properly.
+1. I would add a comment explaining why S_IFREG in alloc_anon_inode()
+2. commit messages for selftests could spell out what's being added
+instead of being counted, it's all one-liners
 
-Take your time, there's no rush here.
+for example:
+selftests/filesystems: validate that anonymous inodes cannot be chown()ed
 
-thanks,
-
-greg k-h
+--=20
+Mateusz Guzik <mjguzik gmail.com>
 
