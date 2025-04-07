@@ -1,168 +1,196 @@
-Return-Path: <stable+bounces-128445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA42A7D3FC
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:26:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D814CA7D452
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 08:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B024D169BF2
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 06:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 298453AA685
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 06:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B48D224B0E;
-	Mon,  7 Apr 2025 06:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1992253E1;
+	Mon,  7 Apr 2025 06:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLWzKvEs"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AmuKN0rt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9045224AFE;
-	Mon,  7 Apr 2025 06:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F152221DAB;
+	Mon,  7 Apr 2025 06:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744007210; cv=none; b=NVqXHmFxXfzhwdYpmDh7sHIlA13FeUJ6QTUN94xCIf3d6HnPVgLumNQRW8tgqMy5ASpFmpt/PDK8JUmBGV+oWg/iGCSqUuWURIDGSckFI+xBWH0LXjNAyGxZpTXxsnoVsyirMvxGsr3g7W1AgQmVDNW1zpKV5l/h37MwjCYBssI=
+	t=1744007982; cv=none; b=mRIDy6sw+Cjy8wa7u2cvUjUKOPuiRSiOnamVPEZ2AymNrp/L49FGUazGYAff3yfxPebIPjghviIebbAH6ihnwxkQo+aZbawjL36qPq0zSzv8fjePshtEEGJc5j6r8PGsNvclW3kqHMvL+EUy73J5BiJX5pv+3Ys3z+OFD8gtdDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744007210; c=relaxed/simple;
-	bh=JbtnUeBkY8lHjyDAeo00/LdvvPp6LVNtEhu2KGtCojc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cgcQNmH6xdBI4onTu/zbh0F2HAtKVYu13+HkGI0t/RXN8pIxjvGh7yjKSVbIeoBkocKhDyA89jj8ySPrjEv0U0YFuMLK/xXbt8AHv6HT0GDWU6CbLqBgVvtCgx802D4fweM6YgOd0OW9RMrRIjKMkLs+1PzJW0Rot+gFP9wG4Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLWzKvEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FF0C4CEDD;
-	Mon,  7 Apr 2025 06:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744007209;
-	bh=JbtnUeBkY8lHjyDAeo00/LdvvPp6LVNtEhu2KGtCojc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLWzKvEsvfO66KL3cyea5KENf77WOaDn5eHgyBuFY4k7eAcI4AMAlVS9Wf8RqC4+4
-	 ATCAWk3MbMuqgfA3Cl08+QEj0FZigBrdmxBON5I9z65ykPs+QHoDf37nc7+Tto007B
-	 jbNHrrQAzW4t8aoSbWM/pIS3IAw51b4KuVsy17IoCt12NuiMwY34arYOKoluaNe12l
-	 mXe7OTxg5qtmG4PR93stlnaYK2ipwqkiXT+HoCrT/myYTqStaTIL8HTK3aEfZjQy4p
-	 8+btH3ipSLOOw1DYrbfNBW4OO6biX1wug9VDgbNV6kJLc342RStY6zCnQT19cgIGV4
-	 rOAKFDOAbhUKg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: keyrings@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org
-Subject: [PATCH] tpm: Mask TPM RC in tpm2_start_auth_session()
-Date: Mon,  7 Apr 2025 09:26:42 +0300
-Message-Id: <20250407062642.72556-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <Z_NgdRHuTKP6JK--@gondor.apana.org.au>
-References: <Z_NgdRHuTKP6JK--@gondor.apana.org.au>
+	s=arc-20240116; t=1744007982; c=relaxed/simple;
+	bh=BowyC9nf9J2U86YpG/G87b2HyU4OcQEK07y7QJxMsSI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eI5E6B+mur0s67CGmN9GJBR72JzCSycszXIisqMAG1BGzQPSYs+2hM3x2XoEusNCw+i8k1QWhjv14Z9/pN9loRJvloVMHdr2j3RY0Nb+Nz5RUTkGeNv2+bQAdHsjuwwJ8+nGpiDnTO9zrj2DvFD8s9p4ShVOsDGjSObcSVC17WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AmuKN0rt; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 536E3IHj017563;
+	Mon, 7 Apr 2025 06:39:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=iYR6ek
+	4pfv+/kDLkKB+1ikP67IGJ/jf+qLHsZFWG9oU=; b=AmuKN0rtH3n1i4MCD8peZQ
+	sdjxPQOvQkvrfpWTZbsnzVJRlkp4SjemqhWOmyOmI+O+YXZ3OXJh8Xnz89BUQCFv
+	2hVFLq6L2C0Ndyd7JIOAIfwsZd6vfd4ViGI/XBVppEKLH8tYjf+cVgwP8OnYtUv9
+	GHw0morv8CmD5qJRq6KuxJKBUpwjF869JBtVYroPt5gR/lXj1rubYpN3XASgZyfn
+	Gp5M5fr5qlpkAWJQIKXggxEZcgcvwa1kYVrN1IhVFCwm3QXkWB1IusZkyTBCG9vz
+	SFLQM9VQ3KDeT91y7G93xmShzunJy8Bcl9arrgu5jQMGb2h/D5lvBIUVikCDWH2Q
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45uu1pjser-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 06:39:07 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5376RYab016375;
+	Mon, 7 Apr 2025 06:39:07 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45uu1pjsen-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 06:39:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5375YMC0013932;
+	Mon, 7 Apr 2025 06:39:05 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ufuncm78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 06:39:05 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5376d1E727197960
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Apr 2025 06:39:01 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF5BD20043;
+	Mon,  7 Apr 2025 06:39:01 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 448A120040;
+	Mon,  7 Apr 2025 06:38:59 +0000 (GMT)
+Received: from [9.203.115.62] (unknown [9.203.115.62])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Apr 2025 06:38:59 +0000 (GMT)
+Message-ID: <fc929d7a-76e3-45f6-a05f-e77e9cc8e1aa@linux.ibm.com>
+Date: Mon, 7 Apr 2025 12:08:57 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] powerpc64/bpf: fix JIT code size calculation of
+ bpf trampoline
+To: Naveen N Rao <naveen@kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Daniel Borkmann
+ <daniel@iogearbox.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org
+References: <20250326143422.1158383-1-hbathini@linux.ibm.com>
+ <5ufbeu7staczxfhdd3uepqnkzxozlhxus2hfpxiiqllid2l4vs@n63eyfgosatl>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <5ufbeu7staczxfhdd3uepqnkzxozlhxus2hfpxiiqllid2l4vs@n63eyfgosatl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MDipPyJFmAbbBp8P3_sLBx1fSeAEK4PJ
+X-Proofpoint-ORIG-GUID: s7VjZgcZkNfBQNywLOw8xGcDGSGor0OW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-07_02,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 mlxlogscore=976 spamscore=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504070045
 
-tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
+Hi Naveen,
 
-[   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
+Thanks for the review.
 
-Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
-error codes.
+On 03/04/25 9:15 pm, Naveen N Rao wrote:
+> On Wed, Mar 26, 2025 at 08:04:22PM +0530, Hari Bathini wrote:
+>> The JIT compile of ldimm instructions can be anywhere between 1-5
+>> instructions long depending on the value being loaded.
+>>
+>> arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
+>> before the buffer for JIT'ing it is allocated. BPF trampoline JIT
+>> code has ldimm instructions that need to load the value of pointer
+>> to struct bpf_tramp_image. But this pointer value is not same while
+>> calling arch_bpf_trampoline_size() & arch_prepare_bpf_trampoline().
+>> So, the size arrived at using arch_bpf_trampoline_size() can vary
+>> from the size needed in arch_prepare_bpf_trampoline(). When the
+>> number of ldimm instructions emitted in arch_bpf_trampoline_size()
+>> is less than the number of ldimm instructions emitted during the
+>> actual JIT compile of trampoline, the below warning is produced:
+>>
+>>    WARNING: CPU: 8 PID: 204190 at arch/powerpc/net/bpf_jit_comp.c:981 __arch_prepare_bpf_trampoline.isra.0+0xd2c/0xdcc
+>>
+>> which is:
+>>
+>>    /* Make sure the trampoline generation logic doesn't overflow */
+>>    if (image && WARN_ON_ONCE(&image[ctx->idx] >
+>> 			(u32 *)rw_image_end - BPF_INSN_SAFETY)) {
+>>
+>> Pass NULL as the first argument to __arch_prepare_bpf_trampoline()
+>> call from arch_bpf_trampoline_size() function, to differentiate it
+>> from how arch_prepare_bpf_trampoline() calls it and ensure maximum
+>> possible instructions are emitted in arch_bpf_trampoline_size() for
+>> ldimm instructions that load a different value during the actual JIT
+>> compile of BPF trampoline.
+>>
+>> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>> Closes: https://lore.kernel.org/all/6168bfc8-659f-4b5a-a6fb-90a916dde3b3@linux.ibm.com/
+>> Cc: stable@vger.kernel.org # v6.13+
+>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>> ---
+>>
+>> * Removed a redundant '/' accidently added in a comment and resending.
+>>
+>>   arch/powerpc/net/bpf_jit_comp.c | 29 +++++++++++++++++++++++------
+>>   1 file changed, 23 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+>> index 2991bb171a9b..c94717ccb2bd 100644
+>> --- a/arch/powerpc/net/bpf_jit_comp.c
+>> +++ b/arch/powerpc/net/bpf_jit_comp.c
+>> @@ -833,7 +833,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>>   	EMIT(PPC_RAW_STL(_R26, _R1, nvr_off + SZL));
+>>   
+>>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+>> -		PPC_LI_ADDR(_R3, (unsigned long)im);
+>> +		/*
+>> +		 * Emit maximum possible instructions while getting the size of
+>> +		 * bpf trampoline to ensure trampoline JIT code doesn't overflow.
+>> +		 */
+>> +		PPC_LI_ADDR(_R3, im ? (unsigned long)im :
+>> +				(unsigned long)(~(1UL << (BITS_PER_LONG - 1))));
+> 
+> We generally rely on  a NULL 'image' to detect a dummy pass. See commit
+> d3921cbb6cd6 ("powerpc/bpf: Only pad length-variable code at initial
+> pass"), for instance. Have you considered updating PPC_LI64() and
+> PPC_LI32() to simply emit a fixed number of nops if image is NULL?
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
-Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- drivers/char/tpm/tpm2-sessions.c | 34 ++++++++++++++++----------------
- include/linux/tpm.h              |  1 +
- 2 files changed, 18 insertions(+), 17 deletions(-)
+Did want to use image as NULL for the dummy pass but decided to do it
+as a clean up later with bpf_jit_emit_func_call_rel(), PPC_LI64(),
+PPC_LI32() and create_branch() needing it. But on second thoughts,
+we are probably better off by accounting for max possible instructions
+for all those cases (in the dummy pass) as part of this fix itself.
+Will send a V2 soon...
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 3f89635ba5e8..1ed23375e4cb 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -40,11 +40,6 @@
-  *
-  * These are the usage functions:
-  *
-- * tpm2_start_auth_session() which allocates the opaque auth structure
-- *	and gets a session from the TPM.  This must be called before
-- *	any of the following functions.  The session is protected by a
-- *	session_key which is derived from a random salt value
-- *	encrypted to the NULL seed.
-  * tpm2_end_auth_session() kills the session and frees the resources.
-  *	Under normal operation this function is done by
-  *	tpm_buf_check_hmac_response(), so this is only to be used on
-@@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
- }
- 
- /**
-- * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
-- * @chip: the TPM chip structure to create the session with
-+ * tpm2_start_auth_session() - Create an a HMAC authentication session
-+ * @chip:	A TPM chip
-  *
-- * This function loads the NULL seed from its saved context and starts
-- * an authentication session on the null seed, fills in the
-- * @chip->auth structure to contain all the session details necessary
-- * for performing the HMAC, encrypt and decrypt operations and
-- * returns.  The NULL seed is flushed before this function returns.
-+ * Loads the ephemeral key (null seed), and starts an HMAC authenticated
-+ * session. The null seed is flushed before the return.
-  *
-- * Return: zero on success or actual error encountered.
-+ * Returns zero on success, or a POSIX error code.
-  */
- int tpm2_start_auth_session(struct tpm_chip *chip)
- {
-@@ -1024,11 +1016,19 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	/* hash algorithm for session */
- 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
- 
--	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
-+	rc = tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession");
- 	tpm2_flush_context(chip, null_key);
--
--	if (rc == TPM2_RC_SUCCESS)
--		rc = tpm2_parse_start_auth_session(auth, &buf);
-+	switch (rc) {
-+	case TPM2_RC_SUCCESS:
-+		break;
-+	case TPM2_RC_SESSION_MEMORY:
-+		rc = -ENOMEM;
-+		goto out;
-+	default:
-+		rc = -EFAULT;
-+		goto out;
-+	}
-+	rc = tpm2_parse_start_auth_session(auth, &buf);
- 
- 	tpm_buf_destroy(&buf);
- 
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 6c3125300c00..c1d3d60b416f 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -257,6 +257,7 @@ enum tpm2_return_codes {
- 	TPM2_RC_TESTING		= 0x090A, /* RC_WARN */
- 	TPM2_RC_REFERENCE_H0	= 0x0910,
- 	TPM2_RC_RETRY		= 0x0922,
-+	TPM2_RC_SESSION_MEMORY	= 0x0903,
- };
- 
- enum tpm2_command_codes {
--- 
-2.39.5
-
+Thanks
+Hari
 
