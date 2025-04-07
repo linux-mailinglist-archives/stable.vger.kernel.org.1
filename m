@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-128613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974DCA7E9F3
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:22:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B36A7E9B1
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B2533A5096
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:16:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A9887A54CC
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CA8256C68;
-	Mon,  7 Apr 2025 18:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4438A256C7C;
+	Mon,  7 Apr 2025 18:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/f751f+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IrYfDpxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F512561C0;
-	Mon,  7 Apr 2025 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E136B256C6B;
+	Mon,  7 Apr 2025 18:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049496; cv=none; b=ceoch/5Cltqfa4RRfJD7Y4OBtM8pzCthPpMXncVjYsOVhN1DALKTPmdplBYI7iAY9Je4+kQH5QvQxFWkmgMj0M/NSDDHtRja0Qj/uIhVgAd0jdoAVppXLTykBhd8vMcLyH+wIOJ/jiJLw3rIHx5gXRCyOI6Unqam8XbbYLu7/Fc=
+	t=1744049497; cv=none; b=uWCWbIlv0W3xH6fbLZx6gyeTjZefLO+i+GLoZvL6CZmJniQET8cS5eXltE/R9WuCf6ATmy2kgqTvqUIUMcvEnM2aoZe/sehx/fUUjO4mDrUk/UiXExM6RX6t+XhN3mKO0TKeJ/ot7C0SPmZyYsa6fWNTlj9HjQ7LXvGsCbKn5hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049496; c=relaxed/simple;
-	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	s=arc-20240116; t=1744049497; c=relaxed/simple;
+	bh=7fgsslfvBe3tzNlmDD3af8QNsw9Qtuj0fhgyeOJEPN4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KryaBK67vVh49PDgkLxDStll9DpgAk18DaFhW7pJMKDKamOHVNh/B0eqgrtpP7+CwRC1bbuSf1bEZ6jEGA1NvKsejEZtRwbb3Bb0zgRGcaA/mUcERxkZpKPATLD8KtrHvrzOAbLveenjAWDJI73uUht4hKPaSLVtTQbrQDXiqH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/f751f+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF86C4CEDD;
-	Mon,  7 Apr 2025 18:11:34 +0000 (UTC)
+	 MIME-Version; b=rZ3YGSpAbpKnwYgPdyH3g+scLVwvbgjsgOdkF8hdU0S2Lb8gUWoj3AjOYrJbfLEYzEkFNyUl6JFoycoATD3pxt5//Bs1MY+OlyURvySMF2OJ/GyzzeEVtweebjCbpPRq2BvG6jMwG2eFD0JtJLCQQ6xoG+BxGCrwD59127R3TAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IrYfDpxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CDCC4CEE7;
+	Mon,  7 Apr 2025 18:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049495;
-	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	s=k20201202; t=1744049496;
+	bh=7fgsslfvBe3tzNlmDD3af8QNsw9Qtuj0fhgyeOJEPN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/f751f+6K97vUwzUAzl1v8XnRuu+Zc6H9nXT9uy4S076rItQngMo80xI5gk/UFa7
-	 m6FGmuwJuk3kl9ErVCT79dLTBZ4R2932VMW6Zo7Nd4A/aH3AfPKQ8km7Zo6bzKJ3Av
-	 WjkUMV85WS1o/D77CNzrdVSiugLS9tvRwvAlrsOfoCJS/zLyXz9DA+gO0WjeWcPcGI
-	 yGAz94RgG0MTslBNA23+4wWPfhAEN4kWxB7kFjRPG6GpAQ0KUlcxG67/Xk4OcS5VEI
-	 OMVNz24N9QGcALevUVHAIkXDn33mAdrq+fTyCk5fHCBnhsPa0cdQ8h9WNQAGbgvsJO
-	 Tppb4Xjt1GRTw==
+	b=IrYfDpxPUI3/tUG/H+z6wOiMMjTb2IrLvZv/O7GIwnW7fGeHq+td9hextV03CVQC8
+	 oeGykHaUNrlZdHTMWLZZjYYycZF4uCzj2w6zW2E4kJgBWvz8D9211ba0L99sbjvy9r
+	 dYnC8TwLyT+MC8j1MEmYUZjy313v3iZpNCwUMNVtp0mD7I8LNqh0tGTlVbiEo6BPI2
+	 KcqY8itduD03gW7a2pYL9FMRper5c84cwETiv5yMuZ/8fAQFbEQaMYlgdHgEvs3I1e
+	 r6wB5QKzDJiiBMEN7umIo7w34Ys0uIurDVXIt21pR/zvF56swjMMnOvoCsSnxcaMmF
+	 J+RLqKyVuCszQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	miquel.raynal@bootlin.com,
-	linux-i3c@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 16/31] i3c: master: svc: Add support for Nuvoton npcm845 i3c
-Date: Mon,  7 Apr 2025 14:10:32 -0400
-Message-Id: <20250407181054.3177479-16-sashal@kernel.org>
+	dmaengine@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 17/31] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+Date: Mon,  7 Apr 2025 14:10:33 -0400
+Message-Id: <20250407181054.3177479-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181054.3177479-1-sashal@kernel.org>
 References: <20250407181054.3177479-1-sashal@kernel.org>
@@ -68,84 +67,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.1
 Content-Transfer-Encoding: 8bit
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit 98d87600a04e42282797631aa6b98dd43999e274 ]
+[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
 
-Nuvoton npcm845 SoC uses an older IP version, which has specific
-hardware issues that need to be addressed with a different compatible
-string.
+Change the "wait for operation finish" logic to take interrupts into
+account.
 
-Add driver data for different compatible strings to define platform
-specific quirks.
-Add compatible string for npcm845 to define its own driver data.
+When using dmatest with idxd DMA engine, it's possible that during
+longer tests, the interrupt notifying the finish of an operation
+happens during wait_event_freezable_timeout(), which causes dmatest to
+cleanup all the resources, some of which might still be in use.
 
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250306075429.2265183-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This fix ensures that the wait logic correctly handles interrupts,
+preventing premature cleanup of resources.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/dma/dmatest.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index d6057d8c7dec4..40269b692aa87 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
- 	u32 mdynaddr;
- };
+diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+index 91b2fbc0b8647..d891dfca358e2 100644
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
-+struct svc_i3c_drvdata {
-+	u32 quirks;
-+};
-+
- /**
-  * struct svc_i3c_master - Silvaco I3C Master structure
-  * @base: I3C master controller
-@@ -183,6 +187,7 @@ struct svc_i3c_regs_save {
-  * @ibi.tbq_slot: To be queued IBI slot
-  * @ibi.lock: IBI lock
-  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
-+ * @drvdata: Driver data
-  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
-  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
-  */
-@@ -214,6 +219,7 @@ struct svc_i3c_master {
- 		spinlock_t lock;
- 	} ibi;
- 	struct mutex lock;
-+	const struct svc_i3c_drvdata *drvdata;
- 	u32 enabled_events;
- 	u32 mctrl_config;
- };
-@@ -1817,6 +1823,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
+-			wait_event_freezable_timeout(thread->done_wait,
+-					done->done,
+-					msecs_to_jiffies(params->timeout));
++			wait_event_timeout(thread->done_wait,
++					   done->done,
++					   msecs_to_jiffies(params->timeout));
  
-+	master->drvdata = of_device_get_match_data(dev);
-+	if (!master->drvdata)
-+		return -EINVAL;
-+
- 	master->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(master->regs))
- 		return PTR_ERR(master->regs);
-@@ -1958,8 +1968,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
- 			   svc_i3c_runtime_resume, NULL)
- };
- 
-+static const struct svc_i3c_drvdata npcm845_drvdata = {};
-+
-+static const struct svc_i3c_drvdata svc_default_drvdata = {};
-+
- static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
--	{ .compatible = "silvaco,i3c-master-v1"},
-+	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
-+	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 -- 
 2.39.5
 
