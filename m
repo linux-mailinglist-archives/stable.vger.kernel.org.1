@@ -1,98 +1,292 @@
-Return-Path: <stable+bounces-128455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94754A7D57D
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:22:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7575FA7D5B8
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 09:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06B1A1731A4
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:20:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 008623AE264
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 07:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C185022B8BC;
-	Mon,  7 Apr 2025 07:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53E22A7EE;
+	Mon,  7 Apr 2025 07:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="HUC/jHK8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JR+zVPCn"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2F322AE68;
-	Mon,  7 Apr 2025 07:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6DE22DFAB
+	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 07:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744010283; cv=none; b=MFtpy7b1U/E0CR0aZo51QR0VRVNo374MHk2cLyrYFF3CtZsUFM57o/TR331ztpdqat8Zemi47lHz4BKwt8tBcHNd/5qZW3tjHN7+N1OXVaLp5eITXbZkkyx5A3R9UeExL8mO6vee6JreTHJqwS1YIHtmLGzNxckkAtLMoYL6j2Y=
+	t=1744010309; cv=none; b=LMFp7Kk6kg8vkS0SZOuh7E6aAfT2/EAjWGl/pjLHXrU7WoWkQA2m2Pg/Del4RCTw1yI5+1ZKdndEXexk4HUvDF8l0GGLt+1M7pr1l6ilt7ZRu+pLtLY9jDj16aS2eeOqMB2C5pLpR/kXgbVzCCYghh4iBNJVtJLaAOLdwsasyyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744010283; c=relaxed/simple;
-	bh=ccE5e48+JeVlXnRwwYcDOPr4CJxZzvtrZbKeQV867vk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oyhu8zOsJKL89ckJm0wLbZ+hbdGdJw+Ggy4buKFae2rxToGJ6lPRHUmMCzj56juIAH3DPRR9+2VHtPPo5oUocY8X6M0bpLWb12QjTqqaw9EDj1atXS4tl2nODw/IIL3FKjYKxgMo0e/pIE+SFKJpalndKRsu7yQCAJR1q8WgEjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=HUC/jHK8; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=2HsI7Mvqhlkg1D4i/gRhR4oTLdzatJEvGabIM6WMsGo=; b=HUC/jHK8rkiyZZglx3C3N65Ku7
-	uc0G3l3HH+hpj8E658nWnEgQLfrXbpASIBJPvqD3lL7KQieTfGwGFT83Y+ugEJ/6F/Shiw/xqV/nW
-	nY9sZgww2KpuODcaWifcbE/z0S3yJwUwiMkkElBDEFlXYqllReELfIOhDNeWGchiwbZX8OJV6bmBk
-	q7FgijtxRKioiUHymz6yQjTFjfParmu7YxB9LlQnvW14rzaqzpe9YOnnkT0EstyHX/bBY/7uqMbOr
-	fDKyXASGegdgpCuzMM8antOk/DWgIg4sdu9svyFDdcWVkeIMyT/jI/l7CcPi0t1Tk1YMPaPbLg+LR
-	F4r0LLEg==;
-Received: from i53875b95.versanet.de ([83.135.91.149] helo=phil..)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1u1gjw-0000tP-3F; Mon, 07 Apr 2025 09:17:52 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: linux-rockchip@lists.infradead.org,
-	Dragan Simic <dsimic@manjaro.org>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	stable@vger.kernel.org,
-	Alexey Charkov <alchark@gmail.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Remove overdrive-mode OPPs from RK3588J SoC dtsi
-Date: Mon,  7 Apr 2025 09:17:41 +0200
-Message-ID: <174401024394.372530.11791471652987821644.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <eeec0d30d79b019d111b3f0aa2456e69896b2caa.1742813866.git.dsimic@manjaro.org>
-References: <eeec0d30d79b019d111b3f0aa2456e69896b2caa.1742813866.git.dsimic@manjaro.org>
+	s=arc-20240116; t=1744010309; c=relaxed/simple;
+	bh=mYjOcwQPXCEo3PAx43/TpsYRavbohMhCu6cggyetg2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NiPYODAu6C3FruDWXPCTZNhZKjQ7IOZNdkgYKg1Y6xJCS3+bF1qY2KaZzGbevX+V1WqaBiEj2+Xq725BTVT1buL5Y2hpxyH71Tu86zq2FQC1RjgwwhYOm/X5kY89TYAH+NbhhEywRompxWNHdGrJXLjTsTTEJmZSlQEjjaOIQsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JR+zVPCn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744010306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ksYnepkSTzEXZ8AtLLerRetDOK5boPEguFAzQ11Hx88=;
+	b=JR+zVPCnjdArxONaZ3CThTE/vbswvabCpkcFSjIV0Wh9gK5MSo+wgR32M4Vva3/1flQiTa
+	CMBLTRl6EzmC2O2ew7++Ye3zXsbnGhjubwEid3DJx6d+tXlgo9xSAsFKp9SrdCOIer7Top
+	7urgjIhp9ZAT0fDamclMCDizvn+SoVw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-V11NqnxoOxWMOjra8u1Ytg-1; Mon, 07 Apr 2025 03:18:24 -0400
+X-MC-Unique: V11NqnxoOxWMOjra8u1Ytg-1
+X-Mimecast-MFC-AGG-ID: V11NqnxoOxWMOjra8u1Ytg_1744010304
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912d9848a7so2421257f8f.0
+        for <Stable@vger.kernel.org>; Mon, 07 Apr 2025 00:18:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744010303; x=1744615103;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ksYnepkSTzEXZ8AtLLerRetDOK5boPEguFAzQ11Hx88=;
+        b=cs1pj1E0zILLdD8MZsPTE8MD+htitBqCVPfGcuyvRRUJmUqsDxPxRnfpUk3FIIyic6
+         J/83nMGcVd8gGohnJekvhS3hcMKNesEkausIRH2LCTDzNNeDq93tR7yXkgbJJQdWlh7R
+         H8yB63cYVys/KEnlzfwob6JfIYKWoHiTEQOG3NDX5GHaxNw9a9L7wM9iD0wqq6YZnMXg
+         wf1VBOBmndsKYYeSq5BAcrYUhCQD7ynNQMuYsxYyipg/iL9clL2kEAzV0RH+QnoI2MWv
+         c1dMNTnuB1L1P89bwJ7RkHPXE11h896Z3PrlomlMLAalTPq73YutsOr5MS6LVpr7FOuQ
+         AZ+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXy5Tf5dS5CUL3wAEJLD0TDZvg4U+9udRerx7I3LpbwME2VP+nnd9p1tnizMbDTosSzrXqS6Qo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhwpvoSYh2U8mnDsZPWDM0wUqhx1lkubrHxYQBX6uSNXWx/es8
+	X/pGizRBXdnoBwTwfSEbjWP41WjaOu96gMtBGckOPC5V0EQNiv761RKDZKXzY/ESI80x83v84pv
+	QmLe+WqDLDwvrMlGfgnGe2DOZRKz8GhHbWAVXpKSwfiQhdr5/grHEaQ==
+X-Gm-Gg: ASbGncugLK3PUPIv5M4S1VajVLsa6OGBdG9KqIzDFsGWvhrFtwGg8Mfb7blCvqELeYI
+	ncXDLpHDIeBJvgb/ObSid09rRMw0bBkVKYgXPyvqQ44KYTyVCcM6SCa4jjNW5zRzRHXOvpwXy9I
+	V2D+ueMugtcL3OfmGNrVx9tYhFw+Y9u2qobYrAf0WZkrTLS2PUqFPG2PlGTCP7SsJG+5s5qKxWg
+	kwnhv+EoU7AiuWcVvHeFT7anIS3nV/IoS+mibiL/ahp4CS8JbU+pMpKQqPWqO+o1BpTvF9YsJfV
+	0fC2ZS2uu5vXfQMkkbqCyM8xbOVglDuVKVW68tRBWlpy
+X-Received: by 2002:a5d:64e5:0:b0:38d:df15:2770 with SMTP id ffacd0b85a97d-39c2e4819a9mr14959497f8f.0.1744010303584;
+        Mon, 07 Apr 2025 00:18:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCewS4OYeFc4l1AEVvAmgrTnvuewlFO6ZFzx0aFkXbHOPgtLMJqitW5fI/xaiiqBRFAZWr9Q==
+X-Received: by 2002:a5d:64e5:0:b0:38d:df15:2770 with SMTP id ffacd0b85a97d-39c2e4819a9mr14959456f8f.0.1744010303214;
+        Mon, 07 Apr 2025 00:18:23 -0700 (PDT)
+Received: from [192.168.3.141] (p5b0c6a16.dip0.t-ipconnect.de. [91.12.106.22])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c30226acfsm11018796f8f.88.2025.04.07.00.18.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Apr 2025 00:18:22 -0700 (PDT)
+Message-ID: <4450ec71-8a8f-478c-a66e-b53d858beb02@redhat.com>
+Date: Mon, 7 Apr 2025 09:18:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+ Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Wei Wang <wei.w.wang@intel.com>
+References: <20250402203621.940090-1-david@redhat.com>
+ <20250403161836.7fe9fea5.pasic@linux.ibm.com>
+ <e2936e2f-022c-44ee-bb04-f07045ee2114@redhat.com>
+ <20250404063619.0fa60a41.pasic@linux.ibm.com>
+ <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
+ <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
+ <20250404153620.04d2df05.pasic@linux.ibm.com>
+ <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+ <20250406144025-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250406144025-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-On Mon, 24 Mar 2025 12:00:43 +0100, Dragan Simic wrote:
-> The differences in the vendor-approved CPU and GPU OPPs for the standard
-> Rockchip RK3588 variant [1] and the industrial Rockchip RK3588J variant [2]
-> come from the latter, presumably, supporting an extended temperature range
-> that's usually associated with industrial applications, despite the two SoC
-> variant datasheets specifying the same upper limit for the allowed ambient
-> temperature for both variants.  However, the lower temperature limit is
-> specified much lower for the RK3588J variant. [1][2]
+On 06.04.25 20:42, Michael S. Tsirkin wrote:
+> On Fri, Apr 04, 2025 at 03:48:49PM +0200, David Hildenbrand wrote:
+>> On 04.04.25 15:36, Halil Pasic wrote:
+>>> On Fri, 4 Apr 2025 12:55:09 +0200
+>>> David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>>> For virito-balloon, we should probably do the following:
+>>>>
+>>>>    From 38e340c2bb53c2a7cc7c675f5dfdd44ecf7701d9 Mon Sep 17 00:00:00 2001
+>>>> From: David Hildenbrand <david@redhat.com>
+>>>> Date: Fri, 4 Apr 2025 12:53:16 +0200
+>>>> Subject: [PATCH] virtio-balloon: Fix queue index assignment for
+>>>>     non-existing queues
+>>>>
+>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>> ---
+>>>>     device-types/balloon/description.tex | 22 ++++++++++++++++------
+>>>>     1 file changed, 16 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/device-types/balloon/description.tex b/device-types/balloon/description.tex
+>>>> index a1d9603..a7396ff 100644
+>>>> --- a/device-types/balloon/description.tex
+>>>> +++ b/device-types/balloon/description.tex
+>>>> @@ -16,6 +16,21 @@ \subsection{Device ID}\label{sec:Device Types / Memory Balloon Device / Device I
+>>>>       5
+>>>>     \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtqueues}
+>>>> +
+>>>> +\begin{description}
+>>>> +\item[inflateq] Exists unconditionally.
+>>>> +\item[deflateq] Exists unconditionally.
+>>>> +\item[statsq] Only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
+>>>> +\item[free_page_vq] Only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
+>>>> +\item[reporting_vq] Only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
+>>>
+>>> s/is set/is negotiated/?
+>>>
+>>> I think we should stick to "feature is offered" and "feature is
+>>> negotiated".
+>>>
+>>>> +\end{description}
+>>>> +
+>>>> +\begin{note}
+>>>> +Virtqueue indexes are assigned sequentially for existing queues, starting
+>>>> +with index 0; consequently, if a virtqueue does not exist, it does not get
+>>>> +an index assigned. Assuming all virtqueues exist for a device, the indexes
+>>>> +are:
+>>>> +
+>>>>     \begin{description}
+>>>>     \item[0] inflateq
+>>>>     \item[1] deflateq
+>>>> @@ -23,12 +38,7 @@ \subsection{Virtqueues}\label{sec:Device Types / Memory Balloon Device / Virtque
+>>>>     \item[3] free_page_vq
+>>>>     \item[4] reporting_vq
+>>>>     \end{description}
+>>>> -
+>>>> -  statsq only exists if VIRTIO_BALLOON_F_STATS_VQ is set.
+>>>> -
+>>>> -  free_page_vq only exists if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set.
+>>>> -
+>>>> -  reporting_vq only exists if VIRTIO_BALLOON_F_PAGE_REPORTING is set.
+>>>> +\end{note}
+>>>>     \subsection{Feature bits}\label{sec:Device Types / Memory Balloon Device / Feature bits}
+>>>>     \begin{description}
+>>>
+>>> Sounds good to me! But I'm still a little confused by the "holes". What
+>>> confuses me is that i can think of at least 2 distinct types of "holes":
+>>> 1) Holes that can be filled later. The queue conceptually exists, but
+>>>      there is no need to back it with any resources for now because it is
+>>>      dormant (it can be seen a hole in comparison to queues that need to
+>>>     materialize -- vring, notifiers, ...)
+>>> 2) Holes that can not be filled without resetting the device: i.e. if
+>>>      certain features are not negotiated, then a queue X does not exist,
+>>>      but subsequent queues retain their index.
+>>
+>> I think it is not about "negotiated", that might be the wrong terminology.
+>>
+>> E.g., in QEMU virtio_balloon_device_realize() we define the virtqueues
+>> (virtio_add_queue()) if virtio_has_feature(s->host_features).
+>>
+>> That is, it's independent of a feature negotiation (IIUC), it's static for
+>> the device --  "host_features"
 > 
-> [...]
+> 
+> No no that is a bad idea. Breaks forward compatibility.
+> 
+> Oh my. I did not realize. It is really broken hopelessly.
+> 
+> Because, note, the guest looks at the guest features :)
 
-Applied, thanks!
+Can you elaborate why?
 
-[1/1] arm64: dts: rockchip: Remove overdrive-mode OPPs from RK3588J SoC dtsi
-      commit: e0bd7ecf6b2dc71215af699dffbf14bf0bc3d978
+statsq = 2
 
-Best regards,
+free_page_vq = statsq + host_offered_feat(VIRTIO_BALLOON_F_STATS_VQ)
+
+reporting_vq = free_page_vq + 
+host_offered_feat(VIRTIO_BALLOON_F_FREE_PAGE_HINT)
+
+
+Independent of any upcoming features. And if a new feature defines a new 
+virtqueue
+
+new_vq = reporting_vq +  host_offered_feat(VIRTIO_BALLOON_F_PAGE_REPORTING)
+
+We only have to make sure in the spec that these calculations always hold.
+
+Querying of the host offered features already happens as part of 
+determining the actual guest usable feature (driver_offered & host_offered).
+
+
+> Now I am beginning to think we should leave the spec alone
+> and fix the drivers ... Ugh ....
+
+We could always say that starting with feature X, queue indexes are 
+fixed again. E.g., VIRTIO_BALLOON_F_X would have it's virtqueue fixed at 
+index 5, independent of the other (older) features where the virtqueue 
+indexes are determined like today.
+
+Won't make the implementation easier, though, I'm afraid.
+
+(I also thought about a way to query the virtqueue index for a feature, 
+but that's probably overengineering)
+
 -- 
-Heiko Stuebner <heiko@sntech.de>
+Cheers,
+
+David / dhildenb
+
 
