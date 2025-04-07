@@ -1,105 +1,64 @@
-Return-Path: <stable+bounces-128546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B656A7E032
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:58:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8412A7DFEB
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 15:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C97CC189AD1D
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:51:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D21477A443F
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 13:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15961188596;
-	Mon,  7 Apr 2025 13:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45CC1B87D1;
+	Mon,  7 Apr 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VNJMmaC/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jdaZzsAS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uGJyDKb4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jrbnxU05"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KP3UYSiM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAB11420DD
-	for <stable@vger.kernel.org>; Mon,  7 Apr 2025 13:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F571B424D;
+	Mon,  7 Apr 2025 13:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744033872; cv=none; b=HTzhmNwrkqPxV9QacWYZEEnqcXKdurTNSFtBLl1IYcpLhBS4jFmhKhbKbRVKhyYR0N++8OoTXj6lmimSJE/ORuRC4jHcsxi3iLRYVns53HtdHgs9wd1kDUfa/RWf2czqHLKZDGqn8tLeNq3jXR2L4aAifCoK+WeUs0UPWdpyoLg=
+	t=1744033707; cv=none; b=svudGh0SqOqlZi6/dnwZ+BCR3wnPPpE4U9QHH+OFp0duNj87WY5JzppW26K2cu7JfSL7ilemE1mIyeF6MIKPiED4aN7Zx1yfuYaJAfkrKeGzWm4XQChQRsr/X2d6Rqk3QVkVRnNrAUvwuoTcU2et1RwU/gh2nrtOu5m/gPy2xOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744033872; c=relaxed/simple;
-	bh=U0RqFq5xSIcc13hYMtFJVf19cXYjTp7G07vnBYS07v0=;
+	s=arc-20240116; t=1744033707; c=relaxed/simple;
+	bh=FROZRIdHapvR9KBbWNJFi61sURkGI86NKSTJeiz6PUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6U4yybWpd3xgosMCBCyJjxuWpoaXFhH1DBO+yDSKtqs0ZN6I528Q9jzdCZXbnP1v92w6hJ2Nn5+UT3FUoSuUdYRegDlz5QGiQo3GNnzzA/EXpmQGEqg013B4+Bi2PQ0/eLtG7hrkF9lttJgahxyqrRxz0iyARwxc5Xq0eIHmvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VNJMmaC/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jdaZzsAS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uGJyDKb4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jrbnxU05; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EF5771F38D;
-	Mon,  7 Apr 2025 13:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744033869; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m2Jk4TVW2yXI+o/u9MUll8DXnNZy/l+PE+gbANBI2U=;
-	b=VNJMmaC/90f9rOCKnW+CzKLtKS/xlO8OeiyWXYG969QZbDjiy2TDnD67VCwUn/vUD5p5ye
-	RtvnxkM6PnIn5Y9OJUIOuPRdRHzzzmHxFajO0hg/WI4b8hodRHDy1JHRMgmdXwadSnvw/O
-	W8f5TMEDIpDngvJTNMe6f1/8z1cH5kE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744033869;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m2Jk4TVW2yXI+o/u9MUll8DXnNZy/l+PE+gbANBI2U=;
-	b=jdaZzsAS2CPPaUUnWEIFpqWbi70/+bZqpgH5uLG9Bai9FShaXV9WxJ/Am2nuXnsNNQp4ym
-	G3LIo/r9CfRf0ICQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744033868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m2Jk4TVW2yXI+o/u9MUll8DXnNZy/l+PE+gbANBI2U=;
-	b=uGJyDKb4L9h/RTdBBkz8dZEJJkZOLuBj1WD2iYUBdz4c9mhiaWrK9ViXKbO85+nMZiKBK3
-	Yh7cYBnANSJihVuHSEA50MiGcn7LFtLN2BtzZm67LmT8aoGii2bGI+DnY90Y74Y4jkIivY
-	eJ2Gh+280/yYOBB+PRKpUPFpjV7kvcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744033868;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m2Jk4TVW2yXI+o/u9MUll8DXnNZy/l+PE+gbANBI2U=;
-	b=jrbnxU05G20M4FKbPFkCDZ00FvNIS1A6AVHRR3ijLMIFKKRoAWo78n6ig8jflvO2AO4qRi
-	tYV/ijDA33NMQvBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C717313AB8;
-	Mon,  7 Apr 2025 13:51:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sMtZL0zY82eEHQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 07 Apr 2025 13:51:08 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	jfalempe@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm/simpledrm: Do not upcast in release helpers
-Date: Mon,  7 Apr 2025 15:47:24 +0200
-Message-ID: <20250407134753.985925-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250407134753.985925-1-tzimmermann@suse.de>
-References: <20250407134753.985925-1-tzimmermann@suse.de>
+	 MIME-Version; b=M+gVo//cofUEMQ21vZm4MdEyUR4OP56yT1FXLkybk3+Ckt21sFjLLW6uCDNMow+L9ssu6Ob7zjdSfJ7rHSVVI+lf6dZO7r7n/j4p7CFkHH7BKubFaZ1Mj7A4ZmipQmgp7TdmTqbwhDE3yxizdU5jp0sE+o3ip9ooXdOPHG0c3Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KP3UYSiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D731C4CEE7;
+	Mon,  7 Apr 2025 13:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744033707;
+	bh=FROZRIdHapvR9KBbWNJFi61sURkGI86NKSTJeiz6PUs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KP3UYSiMY/nqTgxqI7fVMkcBiPs7fMe7OOXhNv1heby+WmqOdand8oi1ade56j1Ei
+	 0BvyjNdqwq7aezQzfYj8slb91wnwHUimonpJequIWnDHciKnoGAiSwoDSPcmG72HnG
+	 tGCXT8T9fbIH5WRzirdf5yXBE7H4QE92LcCoulk8yTOLavfAIyFEgruBj5btx2MfzF
+	 5UkWb+59qSr3dYE53Pv52iltfkiRPHbgSvTA4M4fEFSdOjiw9RLHjTgbvelpwScDeH
+	 DsociLCqnNkdJSktUWhEYFl2NibNMabC0n1yLZWNhAomsoMTyuecp/9W+AnguklmeG
+	 YnBpMOmOaoMNA==
+From: Mario Limonciello <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	basavaraj.natikar@amd.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	Shyam-sundar.S-k@amd.com,
+	akshata.mukundshetty@amd.com
+Cc: Yijun Shen <Yijun.Shen@dell.com>,
+	Yijun Shen <Yijun_Shen@Dell.com>,
+	stable@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH v3 1/2] HID: amd_sfh: Fix SRA sensor when it's the only sensor
+Date: Mon,  7 Apr 2025 08:47:48 -0500
+Message-ID: <20250407134818.805775-2-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250407134818.805775-1-superm1@kernel.org>
+References: <20250407134818.805775-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,66 +66,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.991];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
 
-The res pointer passed to simpledrm_device_release_clocks() and
-simpledrm_device_release_regulators() points to an instance of
-struct simpledrm_device. No need to upcast from struct drm_device.
-The upcast is harmless, as DRM device is the first field in struct
-simpledrm_device.
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
-Cc: <stable@vger.kernel.org> # v5.14+
+On systems that only have an SRA sensor connected to SFH the sensor
+doesn't get enabled due to a bad optimization condition of breaking
+the sensor walk loop.
+
+This optimization is unnecessary in the first place because if there
+is only one device then the loop only runs once. Drop the condition
+and explicitly mark sensor as enabled.
+
+Reported-by: Yijun Shen <Yijun.Shen@dell.com>
+Tested-By: Yijun Shen <Yijun_Shen@Dell.com>
+Fixes: d1c444b47100d ("HID: amd_sfh: Add support to export device operating states")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/gpu/drm/sysfb/simpledrm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v2:
+ * Add tag
+---
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/sysfb/simpledrm.c b/drivers/gpu/drm/sysfb/simpledrm.c
-index cfb1fe07704d7..78672422bcada 100644
---- a/drivers/gpu/drm/sysfb/simpledrm.c
-+++ b/drivers/gpu/drm/sysfb/simpledrm.c
-@@ -275,7 +275,7 @@ static struct simpledrm_device *simpledrm_device_of_dev(struct drm_device *dev)
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index 25f0ebfcbd5f5..c1bdf1e0d44af 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -134,9 +134,6 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		cl_data->sensor_sts[i] = SENSOR_DISABLED;
  
- static void simpledrm_device_release_clocks(void *res)
- {
--	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
-+	struct simpledrm_device *sdev = res;
- 	unsigned int i;
+-		if (cl_data->num_hid_devices == 1 && cl_data->sensor_idx[0] == SRA_IDX)
+-			break;
+-
+ 		if (cl_data->sensor_idx[i] == SRA_IDX) {
+ 			info.sensor_idx = cl_data->sensor_idx[i];
+ 			writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
+@@ -145,8 +142,10 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 				(privdata, cl_data->sensor_idx[i], ENABLE_SENSOR);
  
- 	for (i = 0; i < sdev->clk_count; ++i) {
-@@ -373,7 +373,7 @@ static int simpledrm_device_init_clocks(struct simpledrm_device *sdev)
+ 			cl_data->sensor_sts[i] = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
+-			if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
++			if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
++				cl_data->is_any_sensor_enabled = true;
+ 				privdata->dev_en.is_sra_present = true;
++			}
+ 			continue;
+ 		}
  
- static void simpledrm_device_release_regulators(void *res)
- {
--	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
-+	struct simpledrm_device *sdev = res;
- 	unsigned int i;
- 
- 	for (i = 0; i < sdev->regulator_count; ++i) {
 -- 
-2.49.0
+2.43.0
 
 
