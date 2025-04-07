@@ -1,163 +1,143 @@
-Return-Path: <stable+bounces-128770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98605A7ECF9
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 21:28:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB63A7EE00
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 21:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D40B4448AA
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 19:22:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0E718952E7
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 19:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37C7255220;
-	Mon,  7 Apr 2025 19:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXlYIfTV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8A822371C;
+	Mon,  7 Apr 2025 19:50:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AC72550D3;
-	Mon,  7 Apr 2025 19:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FBA223707;
+	Mon,  7 Apr 2025 19:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052897; cv=none; b=Kj1uJ9/Oe3ETjqh0tzVWOFIXvA16IsZbND2BLO9dXt+DQmL5QD5Dr4o442hyqNa8zZJVxAEeNf8jxlqSFos/+O6xmGtWwRaXc/QGRdfotqShv8e9+VIhaFQDYrVkFsqQufxuHc1UWRdE7cPwpp2T7Q/lWl1TFWFHDXhw4JFRQnE=
+	t=1744055441; cv=none; b=SMxv+VYXs4gyhiE0o9Ur0z39YOY5M9n/Ouw6h+TT5WD95DAA7LAivnJPMTpLMe7nhep6DXTsdORKyrcFBFKhjJNofJg8EX0mOFyWtiVbWe8XgR0BXYMYuAzQ3EpFNBv3X69pJID4ELfYhtNESki+5ioewTaxYW3TMiVgBHCkPLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052897; c=relaxed/simple;
-	bh=lJf9zIuif4BIo222tcqoPJFmlvYQSPEu41tH6umSAus=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=clo/adyqg19H3NqxmYQtIGmTd73PmOyEFFrm/oSMA0MYCg2qbmEUNmrrsVK9DN1QwCQ+iV0lGa22f1j+WK+YG8QkquoaDuQ1ve6iVLjrmZjMrgbt8bGWLs4tU1Yz9006h08FfGrcN0W7MSgBv+UYTOqf8YRbPXXBf1NwQn1zBkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXlYIfTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151FCC4CEED;
-	Mon,  7 Apr 2025 19:08:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744052897;
-	bh=lJf9zIuif4BIo222tcqoPJFmlvYQSPEu41tH6umSAus=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GXlYIfTVJKXqN2qD047swvCaFJSit8J6wOo6LunFbsCP9bp/spYa+In5fUGqLnjG9
-	 6IRJmbTSnMUfCWP2So/dGWRxmdV+cjMaOH/uO3Mibf626rTk+6KVgfuU1IzNZzbwCK
-	 cxA0ko9h1DeFn8RQ3uYcFeGeMUHO6rIW9GQoqGL1QP5dkmY/moKFKaGNmX+LcheeHD
-	 0HIGoR7CaEGMvlayPRa0M4AeiYEhh4xDrdbbr8dFnNm+vpM4NWh/Kyq11l9+33dvaF
-	 khEfonlWb4KrahuzZEbM+AsekpMCE7EMT0qiray5GNm0TNF+NFRT4ClFSdE+8/RPT7
-	 bs61KNTWmInxg==
-Date: Mon, 7 Apr 2025 12:08:14 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Cengiz Can <cengiz.can@canonical.com>,
-	Attila Szasz <szasza.contact@gmail.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lvc-patches@linuxtesting.org, dutyrok@altlinux.org,
-	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
-	stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-Message-ID: <20250407190814.GB6258@frogsfrogsfrogs>
-References: <20241019191303.24048-1-kovalev@altlinux.org>
- <Z9xsx-w4YCBuYjx5@eldamar.lan>
- <d4mpuomgxqi7xppaewlpey6thec7h2fk4sm2iktqsx6bhwu5ph@ctkjksxmkgne>
- <2025032402-jam-immovable-2d57@gregkh>
- <7qi6est65ekz4kjktvmsbmywpo5n2kla2m3whbvq4dsckdcyst@e646jwjazvqh>
- <2025032404-important-average-9346@gregkh>
- <dzmprnddbx2qaukb7ukr5ngdx6ydwxynaq6ctxakem43yrczqb@y7dg7kzxsorc>
- <20250407-biegung-furor-e7313ca9d712@brauner>
+	s=arc-20240116; t=1744055441; c=relaxed/simple;
+	bh=6FcrnhXXHBlKi66a3RVmRdWf48YBqY4hqxLqVyQGXco=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q/2vBuRfmYbdv33bzFfGbb8I4Gvl/YzSKcduKUl7GjMl2dKAzrKSJCKM1J6oMXWFo8C0NuiFD9hmh8whN4ECEljTWdrzjftfFKs9Zcx4pybDpLAdPuileMjb6egleUodV4c9Y/HzujwtMF8sjycR1jq1rvbQFXkiNkSCXUXsBDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaecf50578eso767971966b.2;
+        Mon, 07 Apr 2025 12:50:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744055437; x=1744660237;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kQ23J/xN3/vD0wjcg3ixEiCDeKsCxqPrKKKf7SvnUuY=;
+        b=jmzP8Rr6+kWX0h1nDx+jROB15Q/tOgInRqmJh0QhYAULNg2TZbjyKFhhv+6ASFoFYg
+         iU4beIapXq05XH0b0e1eJpxqQ259rwOUu/NCmOVd8Sm6v8yiMybldobjetjKooOmFB7l
+         gS8hR4N9S7aMldNXJHI9JA5VCUIe3+BIgUJHjTk+h0jlYZBv+7wC9rlebZz5mduvrqb8
+         4YODpG0HTCtWIy+N74PteS+kzS8oKmlUoulaqEPeDE57zzxW/mHO4Zy8et7t3ihCnFCs
+         xl5SrIh6gd/jnJBgJjWBuX2FjdFdt5N6j/TBsxjJPuWxOU+HpfxFZblY/bVok5198i7R
+         SY0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVaB0HS23hAOBWDG6PcvsSqdZNsupPDU1zrtmv7IAhSFIOpNZ6A4nt0fBpinlIJV6BKaIlcOIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrgGc7vfN0YBiIKr1eqZTnIpV94cG9eXCIWUzp5kfMdc3sxtTK
+	Wt1LKXveA1J5YvMYuL5jG3hR/p6R3fZ6F+PowuYh0gkxBzv+bH44
+X-Gm-Gg: ASbGncuerPsW0MTtlqKFk2nAuZ77F0wu5vLQQJYqmlUJcOtxvqpwis7F4A1siydbIp+
+	8mP5lux6cKiEfRsJ7GkMwsScAxncUXvl6eAzQ2CyQVoWaqHrdEbaJuWwC2q90M9NWDDOrlJizq+
+	sw/6Y51OSjIHseX6AFhy3bwxbV3Hho5j6qS5NH6yqotgNbN3qfVHQnMXOMhDXYhom1M1wEmgI0x
+	gBdrijRoz5sMEbOb1EsHnyVeTr+tZIGyBHhPvuX5aflcgoBywciPN6UyNYWDF4gzfPHOqdMo4QQ
+	21Wbw5pfh1jueCjVogMBcUIMarQ47dFU1Zw=
+X-Google-Smtp-Source: AGHT+IFtEc97IeYv2Hm/KIVx9zEa8qD+KATfaA8jgCTGcBexg1ny53hZgTd03AqxtkNHdtme/TCXrQ==
+X-Received: by 2002:a17:906:4bcd:b0:ac7:ec90:2ae5 with SMTP id a640c23a62f3a-ac7ec902ca6mr737131466b.25.1744055437307;
+        Mon, 07 Apr 2025 12:50:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:5::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c013f2dasm787444866b.122.2025.04.07.12.50.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 12:50:36 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 07 Apr 2025 12:50:29 -0700
+Subject: [PATCH] sched_ext: Use kvzalloc for large exit_dump allocation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407-biegung-furor-e7313ca9d712@brauner>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250407-scx-v1-1-774ba74a2c17@debian.org>
+X-B4-Tracking: v=1; b=H4sIAIQs9GcC/x3MywmAMBAFwFaWdzaQn6hpRTxoXHUvURIQQdK74
+ BQwLwpn4YJALzLfUuRMCGQaQjzmtLOSFYFgtW21150q8VHGrMs2+F676NAQrsybPP8yTrV+kmH
+ qs1UAAAA=
+X-Change-ID: 20250407-scx-11dbf94803c3
+To: Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>, 
+ Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>, 
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ stable@vger.kernel.org, Rik van Riel <riel@surriel.com>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-42535
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1407; i=leitao@debian.org;
+ h=from:subject:message-id; bh=6FcrnhXXHBlKi66a3RVmRdWf48YBqY4hqxLqVyQGXco=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn9CyLlnqwR/4bHMMzrw/eS5wUOAd4sc0q8edv6
+ dw4pkjOcDSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ/QsiwAKCRA1o5Of/Hh3
+ bQvxD/97PwEN8SScUTk9Q/4AW6ZXleQFuyaRoffNbhsJ7rWB3Zp/YvEFRmsXLquMIptYsldHTVx
+ 2CX11aW1AP8KqJpekZ+ZV+ftej7jF74URkLuuAJH7D3BM3g8oYFXnKgLPW9MQ+zUZF6oZ3pzCCV
+ QGkmHQxaziGanPOqFQV8PACBAKF5rQRqoxBllBqQIy2lTdcOWYO/+pfYkgN2xkuTZ9XI2qFUajw
+ p3LqxwKv8ELlKEKKqJa+hhdD12vDR0Cb+FMBAdBYln149uO7yDrJU4GeMioEtLOmMbGi2rWExPn
+ alfyQaPAb3P1c6K3cg0Llfdr0gu7NkQbWt5j+mduNO+XmzvU+r0reucixcRM8/yKKupHiOKVzVu
+ I4ms7E3bFswwve2DZgVnxxvVwaoQpDjIWyBA7ZEMq1waCoHIoXTMtkw3jFeRWFSmEunUK1/EmXJ
+ AiMHzcncwvEVis+xVlt/GQYePUDF1XXF8TuNoWTX8wFMFWjM1I7fnx19OiDDEXBpGTghX/XoQAZ
+ WfuMnUtpeKvNDcCoSRu5eyosg5h9eIDfYsSmTKoH4n1fzsliqG07NB0kCoYVgPT98xMydxnj/xg
+ T0Kji2EzfV44ctawXzkSY7isgyDYTvnSZZ8P/J96iFESmlQsdU8g6xwsDXEnhiKQlIIXqGTxXFz
+ t3pR0tBXS6UrD9g==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Mon, Apr 07, 2025 at 12:59:18PM +0200, Christian Brauner wrote:
-> On Sun, Apr 06, 2025 at 07:07:57PM +0300, Cengiz Can wrote:
-> > On 24-03-25 11:53:51, Greg KH wrote:
-> > > On Mon, Mar 24, 2025 at 09:43:18PM +0300, Cengiz Can wrote:
-> > > > In the meantime, can we get this fix applied?
-> > > 
-> > > Please work with the filesystem maintainers to do so.
-> > 
-> > Hello Christian, hello Alexander
-> > 
-> > Can you help us with this?
-> > 
-> > Thanks in advance!
-> 
-> Filesystem bugs due to corrupt images are not considered a CVE for any
-> filesystem that is only mountable by CAP_SYS_ADMIN in the initial user
-> namespace. That includes delegated mounting.
-> 
-> Now, quoting from [1]:
-> 
-> "So, for the record, the Linux kernel in general only allows mounts for
-> those with CAP_SYS_ADMIN, however, it is true that desktop and even
-> server environments allow regular non-privileged users to mount and
-> automount filesystems.
-> 
-> In particular, both the latest Ubuntu Desktop and Server versions come
-> with default polkit rules that allow users with an active local session
-> to create loop devices and mount a range of block filesystems commonly
-> found on USB flash drives with udisks2. Inspecting
-> /usr/share/polkit-1/actions/org.freedesktop.UDisks2.policy shows:"
-> 
-> So what this saying is:
-> 
-> A distribution is shipping tooling that allows unprivileged users to mount
-> arbitrary filesystems including hpfsplus. Or to rephrase this: A
-> distribution is allowing unprivileged users to mount orphaned
-> filesystems. Congratulations on the brave decision to play Russian
-> Roulette with a fully-loaded gun.
+Replace kzalloc with kvzalloc for the exit_dump buffer allocation, which
+can require large contiguous memory (up to order=9) depending on the
+implementation. This change prevents allocation failures by allowing the
+system to fall back to vmalloc when contiguous memory allocation fails.
 
-It's also the default policy on Debian 12 and RHEL9 that if you're
-logged into the GUI, any program can run:
+Since this buffer is only used for debugging purposes, physical memory
+contiguity is not required, making vmalloc a suitable alternative.
 
-$ truncate -s 3g /tmp/a
-$ mkfs.hfs /tmp/a
-$ <write evil stuff on /tmp/a>
-$ udisksctl loop-setup -f /tmp/a
-$ udisksctl mount -b /dev/loopX
+Cc: stable@vger.kernel.org
+Fixes: 07814a9439a3b0 ("sched_ext: Print debug dump after an error exit")
+Suggested-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-and the user never sees a prompt.  GNOME and KDE both display a
-notification when the mount finishes, but by then it could be too late.
-Someone should file a CVE against them too.
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 66bcd40a28ca1..c82725f9b0559 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4639,7 +4639,7 @@ static struct scx_exit_info *alloc_exit_info(size_t exit_dump_len)
+ 
+ 	ei->bt = kcalloc(SCX_EXIT_BT_LEN, sizeof(ei->bt[0]), GFP_KERNEL);
+ 	ei->msg = kzalloc(SCX_EXIT_MSG_LEN, GFP_KERNEL);
+-	ei->dump = kzalloc(exit_dump_len, GFP_KERNEL);
++	ei->dump = kvzalloc(exit_dump_len, GFP_KERNEL);
+ 
+ 	if (!ei->bt || !ei->msg || !ei->dump) {
+ 		free_exit_info(ei);
 
-You can tighten this up by doing this:
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250407-scx-11dbf94803c3
 
-# cat > /usr/share/polkit-1/rules.d/always-ask-mount.rules << ENDL
-// don't allow mounting, reformatting, or loopdev creation without asking
-polkit.addRule(function(action, subject) {
-        if ((action.id == "org.freedesktop.udisks2.loop-setup" ||
-             action.id == "org.freedesktop.udisks2.filesystem-mount" ||
-             action.id == "org.freedesktop.udisks2.modify-device") &&
-            subject.local == true) {
-                return polkit.Result.AUTH_ADMIN_KEEP;
-        }
-});
-ENDL
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
 
-so at least you have to authenticate with an admin account.  We do love
-our footguns, don't we?  At least it doesn't let you do that if you're
-ssh'd in...
-
---D
-
-> The VFS doesn't allow mounting arbitrary filesystems by unprivileged
-> users. Every FS_REQUIRES_DEV filesystem requires global CAP_SYS_ADMIN
-> privileged at which point you can also do sudo rm -rf --no-preserve-root /
-> or a million other destructive things.
-> 
-> The blogpost is aware that the VFS maintainers don't accept CVEs like
-> this. Yet a CVE was still filed against the upstream kernel. IOW,
-> someone abused the fact that a distro chose to allow mounting arbitrary
-> filesystems including orphaned ones by unprivileged user as an argument
-> to gain a kernel CVE.
-> 
-> Revoke that CVE against the upstream kernel. This is a CVE against a
-> distro. There's zero reason for us to hurry with any fix.
-> 
-> [1]: https://ssd-disclosure.com/ssd-advisory-linux-kernel-hfsplus-slab-out-of-bounds-write/
-> 
 
