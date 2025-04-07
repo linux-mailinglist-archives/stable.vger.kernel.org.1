@@ -1,112 +1,310 @@
-Return-Path: <stable+bounces-128441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA11A7D290
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 05:42:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE851A7D2F9
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 06:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1131188BA2D
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:42:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77CDF16C12D
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 04:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66B7217F35;
-	Mon,  7 Apr 2025 03:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3032135A6;
+	Mon,  7 Apr 2025 04:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jyVgKf0H"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC5219C56C;
-	Mon,  7 Apr 2025 03:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9013777E;
+	Mon,  7 Apr 2025 04:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743997358; cv=none; b=IkFsX4aVv0Dbitg8x3W5fp54Kk25xcuOzxBfoWewk5R+eVopSQy7myO4afQCMep9XwBDfSouVBbDZXhLR54EU4xhHrAJiLsIpT0A9V3f8WwluSvYnhTJ2NcZsmtqhgSPHccKuL2innJfKVVdsbfFYyff5BITT/VrYSed1pc5LCk=
+	t=1744000809; cv=none; b=IjPSrlkkSE4UY66zxQEeWOmanlpzXXq5f5TYthunr5AarWrQQCFrhgLKnwnfnKwazuB4CEyz0xIvJ93GVwF46rDXCwFt18VQtvXBIFggdVi7ivZMo3c2l8jMyBF3wbQT/x1EagPXXOshmMJXT2oj/nYWwn+gNQvsQYF0R1ktKLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743997358; c=relaxed/simple;
-	bh=1E4N30ToQrS4oTEuXMPktjG45U+GwxhykLqwMXbp9JU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fg9WoG52uAor/lzC2/k94R6T4BEezL3YRFTRfSmmZfQzxC0A2xzW4oD/+NNuBTNQjQhxcbfLfx/ON9pZmvURlIZh7G9dJekQQ7NALgYQiOiupVzUqcTpfSkhbDbKoFjzVd0ytjQdisEzRqEZ86LHS0BoSBEYK6BxrSI1ae9KtG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowADXff6XSfNni_PKBg--.48924S2;
-	Mon, 07 Apr 2025 11:42:21 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] e1000e: Add error handling for e1e_rphy_locked()
-Date: Mon,  7 Apr 2025 11:41:54 +0800
-Message-ID: <20250407034155.1396-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1744000809; c=relaxed/simple;
+	bh=DdI7a0+LWszecRoje8fsEfEW1Lij//y5Gojy5Y7Obds=;
+	h=Date:To:From:Subject:Message-Id; b=elUyfBsOgp0KM0pB0HopUUfkGHV8dZ/02sKzJGYxMoF+0EDiPcGqLilAfHvZWPgBFRr0r5l1rmy1y2+lSOQM8S3H+dLKVfPwUMU2t3k1SMmk7hnMBPfvqFe8M3a95NSd+QKmoJTy3WrJT42I8TpO5D15txm68nK1c6I60Ix2Qvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jyVgKf0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217DFC4CEDD;
+	Mon,  7 Apr 2025 04:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744000809;
+	bh=DdI7a0+LWszecRoje8fsEfEW1Lij//y5Gojy5Y7Obds=;
+	h=Date:To:From:Subject:From;
+	b=jyVgKf0H3LBKouimxV3ZOCNRpoEB7mpbXjmLnVnJI2jgEYdvLdHba3Z54RQlCLt1k
+	 7vl/v3hxx3SH2/AqxwNxk/p/UUGRm9crE4pin5HDPUqG6t4acT4NySKuyI6X6Pjav4
+	 iLsOhxUTNRNCrXTtXa4bP99p/+cLfRvSX2pJUmPA=
+Date: Sun, 06 Apr 2025 21:40:08 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pfalcato@suse.de,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250407044009.217DFC4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADXff6XSfNni_PKBg--.48924S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw18ZF1fKry5Jw48CFyDZFb_yoW8Xr1Dpa
-	1q9ayqkw4rJw4avayxGa18A3s0v3yYyrnxCFyxu3sa9w4xAw18Jr18K343XryqyrZ8JFW2
-	yF1UAFnxCFs8Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUe4SrUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAUFA2fzOrdCVwAAsD
 
-The e1000_suspend_workarounds_ich8lan() calls e1e_rphy_locked to disable
-the SMB release, but does not check its return value. A proper
-implementation can be found in e1000_resume_workarounds_pchlan() from
-/source/drivers/net/ethernet/intel/e1000e/ich8lan.c.
 
-Add an error check for e1e_rphy_locked(). Log the error message and jump
-to 'release' label if the e1e_rphy_locked() fails.
+The patch titled
+     Subject: mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch
 
-Fixes: 2fbe4526e5aa ("e1000e: initial support for i217")
-Cc: stable@vger.kernel.org # v3.5+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
+Date: Fri, 21 Mar 2025 10:09:37 +0000
+
+Currently, if a VMA merge fails due to an OOM condition arising on commit
+merge or a failure to duplicate anon_vma's, we report this so the caller
+can handle it.
+
+However there are cases where the caller is only ostensibly trying a
+merge, and doesn't mind if it fails due to this condition.
+
+Since we do not want to introduce an implicit assumption that we only
+actually modify VMAs after OOM conditions might arise, add a 'give up on
+oom' option and make an explicit contract that, should this flag be set, we
+absolutely will not modify any VMAs should OOM arise and just bail out.
+
+Since it'd be very unusual for a user to try to vma_modify() with this flag
+set but be specifying a range within a VMA which ends up being split (which
+can fail due to rlimit issues, not only OOM), we add a debug warning for
+this condition.
+
+The motivating reason for this is uffd release - syzkaller (and Pedro
+Falcato's VERY astute analysis) found a way in which an injected fault on
+allocation, triggering an OOM condition on commit merge, would result in
+uffd code becoming confused and treating an error value as if it were a VMA
+pointer.
+
+To avoid this, we make use of this new VMG flag to ensure that this never
+occurs, utilising the fact that, should we be clearing entire VMAs, we do
+not wish an OOM event to be reported to us.
+
+Many thanks to Pedro Falcato for his excellent analysis and Jann Horn for
+his insightful and intelligent analysis of the situation, both of whom were
+instrumental in this fix.
+
+Link: https://lkml.kernel.org/r/20250321100937.46634-1-lorenzo.stoakes@oracle.com
+Reported-by: syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001e.GAE@google.com/
+Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: Pedro Falcato <pfalcato@suse.de>
+Suggested-by: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 2f9655cf5dd9..d16e3aa50809 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -5497,7 +5497,11 @@ void e1000_suspend_workarounds_ich8lan(struct e1000_hw *hw)
- 			e1e_wphy_locked(hw, I217_SxCTRL, phy_reg);
+ mm/userfaultfd.c |   13 +++++++++--
+ mm/vma.c         |   51 +++++++++++++++++++++++++++++++++++++++++----
+ mm/vma.h         |    9 +++++++
+ 3 files changed, 66 insertions(+), 7 deletions(-)
+
+--- a/mm/userfaultfd.c~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
++++ a/mm/userfaultfd.c
+@@ -1902,6 +1902,14 @@ struct vm_area_struct *userfaultfd_clear
+ 					     unsigned long end)
+ {
+ 	struct vm_area_struct *ret;
++	bool give_up_on_oom = false;
++
++	/*
++	 * If we are modifying only and not splitting, just give up on the merge
++	 * if OOM prevents us from merging successfully.
++	 */
++	if (start == vma->vm_start && end == vma->vm_end)
++		give_up_on_oom = true;
  
- 			/* Disable the SMB release on LCD reset. */
--			e1e_rphy_locked(hw, I217_MEMPWR, &phy_reg);
-+			ret_val = e1e_rphy_locked(hw, I217_MEMPWR, &phy_reg);
-+			if (ret_val) {
-+				e_dbg("Fail to Disable the SMB release on LCD reset.");
-+				goto release;
-+			}
- 			phy_reg &= ~I217_MEMPWR_DISABLE_SMB_RELEASE;
- 			e1e_wphy_locked(hw, I217_MEMPWR, phy_reg);
- 		}
--- 
-2.42.0.windows.2
+ 	/* Reset ptes for the whole vma range if wr-protected */
+ 	if (userfaultfd_wp(vma))
+@@ -1909,7 +1917,7 @@ struct vm_area_struct *userfaultfd_clear
+ 
+ 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
+ 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
+-				    NULL_VM_UFFD_CTX);
++				    NULL_VM_UFFD_CTX, give_up_on_oom);
+ 
+ 	/*
+ 	 * In the vma_merge() successful mprotect-like case 8:
+@@ -1960,7 +1968,8 @@ int userfaultfd_register_range(struct us
+ 		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
+ 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
+ 					    new_flags,
+-					    (struct vm_userfaultfd_ctx){ctx});
++					    (struct vm_userfaultfd_ctx){ctx},
++					    /* give_up_on_oom = */false);
+ 		if (IS_ERR(vma))
+ 			return PTR_ERR(vma);
+ 
+--- a/mm/vma.c~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
++++ a/mm/vma.c
+@@ -666,6 +666,9 @@ static void vmg_adjust_set_range(struct
+ /*
+  * Actually perform the VMA merge operation.
+  *
++ * IMPORTANT: We guarantee that, should vmg->give_up_on_oom is set, to not
++ * modify any VMAs or cause inconsistent state should an OOM condition arise.
++ *
+  * Returns 0 on success, or an error value on failure.
+  */
+ static int commit_merge(struct vma_merge_struct *vmg)
+@@ -685,6 +688,12 @@ static int commit_merge(struct vma_merge
+ 
+ 	init_multi_vma_prep(&vp, vma, vmg);
+ 
++	/*
++	 * If vmg->give_up_on_oom is set, we're safe, because we don't actually
++	 * manipulate any VMAs until we succeed at preallocation.
++	 *
++	 * Past this point, we will not return an error.
++	 */
+ 	if (vma_iter_prealloc(vmg->vmi, vma))
+ 		return -ENOMEM;
+ 
+@@ -915,7 +924,13 @@ static __must_check struct vm_area_struc
+ 		if (anon_dup)
+ 			unlink_anon_vmas(anon_dup);
+ 
+-		vmg->state = VMA_MERGE_ERROR_NOMEM;
++		/*
++		 * We've cleaned up any cloned anon_vma's, no VMAs have been
++		 * modified, no harm no foul if the user requests that we not
++		 * report this and just give up, leaving the VMAs unmerged.
++		 */
++		if (!vmg->give_up_on_oom)
++			vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 		return NULL;
+ 	}
+ 
+@@ -926,7 +941,15 @@ static __must_check struct vm_area_struc
+ abort:
+ 	vma_iter_set(vmg->vmi, start);
+ 	vma_iter_load(vmg->vmi);
+-	vmg->state = VMA_MERGE_ERROR_NOMEM;
++
++	/*
++	 * This means we have failed to clone anon_vma's correctly, but no
++	 * actual changes to VMAs have occurred, so no harm no foul - if the
++	 * user doesn't want this reported and instead just wants to give up on
++	 * the merge, allow it.
++	 */
++	if (!vmg->give_up_on_oom)
++		vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	return NULL;
+ }
+ 
+@@ -1068,6 +1091,10 @@ int vma_expand(struct vma_merge_struct *
+ 		/* This should already have been checked by this point. */
+ 		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+ 		vma_start_write(next);
++		/*
++		 * In this case we don't report OOM, so vmg->give_up_on_mm is
++		 * safe.
++		 */
+ 		ret = dup_anon_vma(middle, next, &anon_dup);
+ 		if (ret)
+ 			return ret;
+@@ -1090,9 +1117,15 @@ int vma_expand(struct vma_merge_struct *
+ 	return 0;
+ 
+ nomem:
+-	vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	if (anon_dup)
+ 		unlink_anon_vmas(anon_dup);
++	/*
++	 * If the user requests that we just give upon OOM, we are safe to do so
++	 * here, as commit merge provides this contract to us. Nothing has been
++	 * changed - no harm no foul, just don't report it.
++	 */
++	if (!vmg->give_up_on_oom)
++		vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	return -ENOMEM;
+ }
+ 
+@@ -1534,6 +1567,13 @@ static struct vm_area_struct *vma_modify
+ 	if (vmg_nomem(vmg))
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * Split can fail for reasons other than OOM, so if the user requests
++	 * this it's probably a mistake.
++	 */
++	VM_WARN_ON(vmg->give_up_on_oom &&
++		   (vma->vm_start != start || vma->vm_end != end));
++
+ 	/* Split any preceding portion of the VMA. */
+ 	if (vma->vm_start < start) {
+ 		int err = split_vma(vmg->vmi, vma, start, 1);
+@@ -1602,12 +1642,15 @@ struct vm_area_struct
+ 		       struct vm_area_struct *vma,
+ 		       unsigned long start, unsigned long end,
+ 		       unsigned long new_flags,
+-		       struct vm_userfaultfd_ctx new_ctx)
++		       struct vm_userfaultfd_ctx new_ctx,
++		       bool give_up_on_oom)
+ {
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 
+ 	vmg.flags = new_flags;
+ 	vmg.uffd_ctx = new_ctx;
++	if (give_up_on_oom)
++		vmg.give_up_on_oom = true;
+ 
+ 	return vma_modify(&vmg);
+ }
+--- a/mm/vma.h~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
++++ a/mm/vma.h
+@@ -114,6 +114,12 @@ struct vma_merge_struct {
+ 	 */
+ 	bool just_expand :1;
+ 
++	/*
++	 * If a merge is possible, but an OOM error occurs, give up and don't
++	 * execute the merge, returning NULL.
++	 */
++	bool give_up_on_oom :1;
++
+ 	/* Internal flags set during merge process: */
+ 
+ 	/*
+@@ -255,7 +261,8 @@ __must_check struct vm_area_struct
+ 		       struct vm_area_struct *vma,
+ 		       unsigned long start, unsigned long end,
+ 		       unsigned long new_flags,
+-		       struct vm_userfaultfd_ctx new_ctx);
++		       struct vm_userfaultfd_ctx new_ctx,
++		       bool give_up_on_oom);
+ 
+ __must_check struct vm_area_struct
+ *vma_merge_new_range(struct vma_merge_struct *vmg);
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch
 
 
