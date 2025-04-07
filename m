@@ -1,147 +1,115 @@
-Return-Path: <stable+bounces-128432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C723A7D1A0
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:12:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44135A7D1A2
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 03:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5235188CC3A
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 01:13:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18FB3169FB3
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 01:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D2A1FBEB0;
-	Mon,  7 Apr 2025 01:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b="YCDy/MjD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E77B204683;
+	Mon,  7 Apr 2025 01:16:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from s1.g1.infrastructure.qtmlabs.xyz (s1.g1.infrastructure.qtmlabs.xyz [107.172.1.117])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35D6156CA;
-	Mon,  7 Apr 2025 01:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.172.1.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDDD2040B0;
+	Mon,  7 Apr 2025 01:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743988372; cv=none; b=jhbdUoH+pzSsKcIVqc9nJuxamQ9hEp8AIxYmFqpoRZgg7zoHcduF/5eS3xA5nH5FiRV9czJehCIuPceYNwt53LxyjiqLqVI/j7XIg4ao9ha+f8TB+C8qi0E/QExAAMjrg9/n8klRnIA/IFkFF0XXi6TmRR3RhVO1Hnm3pyk0GXw=
+	t=1743988563; cv=none; b=p6vQr2CY9yEHxhxlLBYfuHbxXIMdOQl8ZM7GC4xTDIZwHYjerQ0Jj914XiejfIIRBDkZu/4pP6u33jogyF095s1maYkJzE6yx8uYE3WaaP9TxSvYahRnXaAUVZa43Qxk7dMKJayUx9LMtFoW7rsXU68krurHFZK39ZgvI7IWHGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743988372; c=relaxed/simple;
-	bh=ZYzr+FqZYrRy/4+P/uV64hlkjjle67btzPkMq2koLmU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XvacL6UcUwNChu1fSHwaO/U3lk7CxkqUmiKMux+njmlKT+IksKEH3MaeWsok4Y0LA96WdI7TS1D4Ih2MIC/t4zoVvl3K+DDR6OwUCh67HHEDnf90vxF7qwUaSmWzhMd4uEdWvyIqijEEZTK/2o9zpd3VuVn+ui92NDcPSdCVIoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz; spf=pass smtp.mailfrom=qtmlabs.xyz; dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b=YCDy/MjD; arc=none smtp.client-ip=107.172.1.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qtmlabs.xyz
-Message-ID: <292f6f59-5657-474f-b521-ef1816a5daf2@qtmlabs.xyz>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qtmlabs.xyz; s=dkim;
-	t=1743988368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uRI0KShiU3baxIxpYDwSDBNuSOTJd8Wkm1ByxUCwEx8=;
-	b=YCDy/MjD0BScjdD2XTPYTwbdYnECHlgWoN6/Iu0jeqKtmEr6mVDj6136jwktGDFzg6fXpb
-	ZZYa7wziYnoSMU0Wl9/HOETGI7bh+omNaP7qCBFZgmRw6LC/0Dv7hJ5H6RDgbGZfmjwZ7O
-	5vgJOvkkn5Kzt8oqgfWGy45rt+u8vwUHCJEZ4yO0/jegWCPmvVHaD1/mjgi0/ujrpvIJqO
-	rqn25LwJdzgTFNL+6kHxygMMXBwXDwpvb2m+k5fgO473ZUUXjeZJ3bkInB2dVLQByQBSD0
-	3a5C/5o25m1puzWNaApALILMuRJHcmeGVmwRnCD6VaKUldTXIys+ta8qyV7TaA==
-Authentication-Results: s1.g1.infrastructure.qtmlabs.xyz;
-	auth=pass smtp.mailfrom=myrrhperiwinkle@qtmlabs.xyz
-Date: Mon, 7 Apr 2025 08:12:42 +0700
+	s=arc-20240116; t=1743988563; c=relaxed/simple;
+	bh=rx2OX4KsZ/uHxAMMOCap8j39H4/NB/TXxQmfbWkEAdc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ptpp/+eemhgl3s7F47885YsZKYGNsQ3WXbjXBQlgu7WiaP/Ms0RYAUNB6sYL6RH2dkRn5xEJgwYVEB5KNw4TCO8EHNnZ6Y47Arp7ph+HnTCrIA8JfeUxxlXgvULMhZusEjd/aM2OX8ER9aCRSdNJpLWR1dp4u33dvAgu/So0bPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53716YxM029037;
+	Sun, 6 Apr 2025 18:15:54 -0700
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45u41m1aca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 06 Apr 2025 18:15:54 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 6 Apr 2025 18:15:53 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 6 Apr 2025 18:15:51 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>,
+        <linux-btrfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
+        <jianqi.ren.cn@windriver.com>
+Subject: [PATCH 6.6.y] btrfs: handle errors from btrfs_dec_ref() properly
+Date: Mon, 7 Apr 2025 09:15:50 +0800
+Message-ID: <20250407011550.208141-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] x86/e820: Fix handling of subpage regions when
- calculating nosave ranges
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Roberto Ricci <io@r-ricci.it>
-References: <20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz>
- <Z_LGqgUhDrTmzj5r@gmail.com> <Z_LJv9gATY6nk4Yu@gmail.com>
- <78346ff0-d5ee-48f0-ac4d-762a5ec18eb7@qtmlabs.xyz>
-Content-Language: en-US
-In-Reply-To: <78346ff0-d5ee-48f0-ac4d-762a5ec18eb7@qtmlabs.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: /
+Content-Type: text/plain
+X-Proofpoint-GUID: YHMbhGDaPzoJLRsEzisxtgaza6H_2uaK
+X-Proofpoint-ORIG-GUID: YHMbhGDaPzoJLRsEzisxtgaza6H_2uaK
+X-Authority-Analysis: v=2.4 cv=QOZoRhLL c=1 sm=1 tr=0 ts=67f3274a cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=XR8D0OoHHMoA:10 a=maIFttP_AAAA:8 a=iox4zFpeAAAA:8 a=t7CeM3EgAAAA:8 a=bs7I7ufv3jHHAwegb78A:9 a=qR24C9TJY6iBuJVj_x8Y:22
+ a=WzC6qhA0u3u7Ye7llzcV:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-06_08,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=775 bulkscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 lowpriorityscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504070008
 
-On 4/7/25 07:53, Myrrh Periwinkle wrote:
+From: Josef Bacik <josef@toxicpanda.com>
 
-> On 4/7/25 01:36, Ingo Molnar wrote:
->
->> * Ingo Molnar<mingo@kernel.org> wrote:
->>
->>> * Myrrh Periwinkle<myrrhperiwinkle@qtmlabs.xyz> wrote:
->>>
->>>> The current implementation of e820__register_nosave_regions suffers 
->>>> from
->>>> multiple serious issues:
->>>>   - The end of last region is tracked by PFN, causing it to find holes
->>>>     that aren't there if two consecutive subpage regions are present
->>>>   - The nosave PFN ranges derived from holes are rounded out 
->>>> (instead of
->>>>     rounded in) which makes it inconsistent with how explicitly 
->>>> reserved
->>>>     regions are handled
->>>>
->>>> Fix this by:
->>>>   - Treating reserved regions as if they were holes, to ensure 
->>>> consistent
->>>>     handling (rounding out nosave PFN ranges is more correct as the
->>>>     kernel does not use partial pages)
->>>>   - Tracking the end of the last RAM region by address instead of 
->>>> pages
->>>>     to detect holes more precisely
->>>>
->>>> Cc:stable@vger.kernel.org
->>>> Fixes: e5540f875404 ("x86/boot/e820: Consolidate 'struct e820_entry 
->>>> *entry' local variable names")
->>> So why is this SHA1 indicated as the root cause? AFAICS that commit
->>> does nothing but cleanups, so it cannot cause such regressions.
->> BTW.:
->>
->>   A) "It was the first random commit that seemed related, sry"
->>   B) "It's a 15 years old bug, but I wanted to indicate a fresh, 
->> 8-year old bug to get this into -stable. Busted!"
->
-> You got me :) How did you know that this is a 15 years old bug? 
-> (although I didn't think the age of the bug a patch fixes would affect 
-> its chances of getting to -stable)
->
-> This specific revision was picked since it's the latest one that this 
-> patch can be straightforwardly applied to (there is a (trivial) merge 
-> conflict with -stable, though).
->
-> Later, I managed to track the buggy logic back to 1c10070a55a3 ("i386: 
-> do not restore reserved memory after hibernation"), which I believe is 
-> the very first occurrence of this bug. If you prefer, I can send a v4 
-> with a more correct Fixes: tag (or feel free to do so yourself when 
-> applying this patch).
+[ Upstream commit 5eb178f373b4f16f3b42d55ff88fc94dd95b93b1 ]
 
-I did some more digging and it seems like the buggy logic actually 
-appeared all the way back in e8eff5ac294e ("[PATCH] Make swsusp avoid 
-memory holes and reserved memory regions on x86_64") back when x86_64 
-was a separate port, which was copied later by the i386 port in the 
-commit I mentioned above, which would make this a 19 year old bug 
-instead of 15.
+In walk_up_proc() we BUG_ON(ret) from btrfs_dec_ref().  This is
+incorrect, we have proper error handling here, return the error.
 
->
->> ... are perfectly fine answers in my book. :-)
->>
->> I'm glad about the fixes, I'm just curious how the Fixes tag came about.
->>
->> Thanks,
->>
->>     Ingo
->
-> Regards,
->
-> Myrrh
->
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ fs/btrfs/extent-tree.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 021cf468274b..af03a1c6ba76 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5540,7 +5540,10 @@ static noinline int walk_up_proc(struct btrfs_trans_handle *trans,
+ 				ret = btrfs_dec_ref(trans, root, eb, 1);
+ 			else
+ 				ret = btrfs_dec_ref(trans, root, eb, 0);
+-			BUG_ON(ret); /* -ENOMEM */
++			if (ret) {
++				btrfs_abort_transaction(trans, ret);
++				return ret;
++			}
+ 			if (is_fstree(root->root_key.objectid)) {
+ 				ret = btrfs_qgroup_trace_leaf_items(trans, eb);
+ 				if (ret) {
+-- 
+2.34.1
+
 
