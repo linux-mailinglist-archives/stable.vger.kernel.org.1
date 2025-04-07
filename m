@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-128678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5720A7EAA2
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EB2A7EAC3
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A31573B9B2B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6697E3BB1DD
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0A0264A98;
-	Mon,  7 Apr 2025 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D30264F96;
+	Mon,  7 Apr 2025 18:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0qiiC8G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPDP/btP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAF0264A84;
-	Mon,  7 Apr 2025 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45E1264F8C;
+	Mon,  7 Apr 2025 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049652; cv=none; b=pOSyqAtId3l8mIl2+e5QvbJKgUrDp3uuEJF2lIFz8TT0jdf+vnyzcgep/GfIYwPuHyh8DjUQSdxr3gpPfyRSb4yqb3jr10TOfQd9O5nsL37AVApzCoj+ODOpOBt8h9OtegDaVXsr0mbOybwcwH2feGrEjEea6kNNtlejAVzKAlk=
+	t=1744049653; cv=none; b=E+Pva6bZUiHBfh02VVewSfWesr6QqdTc5BLsU9bXwSPK+6047BTBCrjjEViwCHy3KVb2Pw3/r2zfHc27G8HYqT+dpm0428uxFFeAj2r2u4ACiNAdghVFt9eqWNpZWuV/kB6y7qBtMYwwqAZwkALLSMOws0dMXxkYn1XzvV6TxLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049652; c=relaxed/simple;
-	bh=o66Zs7GApMNs4fUuUIl+NpS0WXNlG3jWsczt+JCtzj4=;
+	s=arc-20240116; t=1744049653; c=relaxed/simple;
+	bh=Yk5EVY6E2bB8THsuHW5DZrTErkIlJ64imF/RTteQeBk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AxNRzt8sf3pERwU/Pq6KrT7QW2WjJQW3X24RubG1agp/Vb6GR0Ymxl0Iq4Tt9T/7c6I4CQ6GEioljVLBh15HK8bLt+6oODNUkVcOI1siOUyH2Sdlb5GfB0HSr/DibntMRkD7/RTmW99D6oipDP/7ymOwlT1bS6FFeCDo6kcc0po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0qiiC8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D81AC4CEDD;
-	Mon,  7 Apr 2025 18:14:10 +0000 (UTC)
+	 MIME-Version; b=nIVZwKwboA9tiGIaADj9zliOJdOfvxFhMU+jNvcPXtc2NAm0SGh4aQzDimWHBTUHz8xEfWBq0BXdjCNO1hsRF1nSgFZydXV9rPVexRobr4loQm2+g9xH3FUPta9E+9lZs23BpysXeE9tgU2woL6+wqq2orytgdx3Xrk7KuheNcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPDP/btP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B09C4CEDD;
+	Mon,  7 Apr 2025 18:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049652;
-	bh=o66Zs7GApMNs4fUuUIl+NpS0WXNlG3jWsczt+JCtzj4=;
+	s=k20201202; t=1744049653;
+	bh=Yk5EVY6E2bB8THsuHW5DZrTErkIlJ64imF/RTteQeBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0qiiC8G8eKmol2d2f1QrmaqbkU2mBTvOsEA160qtRzNjf8lmicKdCScxJX97xEhc
-	 mnmogQLNSh5JqyjFAooGxKs1p9qINBJFvzq0/onVTQuffHmMfqJLk2+14U/ub8hVCn
-	 IEVvTu2TTYAIzw2Sf0o5JN7a7LCWjgpFa6ckc7ZLvTeDTSDs9EjGtsOPKcOntpzw7D
-	 l9PziL0v7lninEd72dWY7jOiq438gR+jP9yy7qEwBpiV53u311wikb1UnE+77o4t9N
-	 pU7HcmxCAjd9lhnXB1WOkr2JEZcLiuiuchsnKz/e8GKZN93TnOYVRKOGION6k0ueSI
-	 +KTh19epqCYmw==
+	b=BPDP/btPGm16FTbfo37nbN17O1JT/86bdWzIvqeoEnWhzElBmG/biFz3mxnHi7T8/
+	 g8JULbU9ZxCMTXdLAoXY3dM0LT8OINZgA6Nx8Jh1/OK0l5J4PveXRpMyUaEtqoSa9+
+	 0kZeSwlkilys5OMQMab581vDwe3qfdX51K+fWT2D7uGZBWNidu754skVe0My/4CHHb
+	 n36w0t8MUUJN9l9TMcyQ5HQH3SMa8kXcwffhR/59FSmBQhZ1H5EbxZKC2x2IyebI6D
+	 J7nnAh92xbPjrpRSufOuxuyQB9Ld8hwPHg3kjruUxB9wPfXg/kQvua8+EEMTwPf9Ax
+	 m8GAXNG5saCCg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,19 +48,12 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	kernel test robot <lkp@intel.com>,
 	Ingo Molnar <mingo@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 20/22] objtool, ASoC: codecs: wcd934x: Remove potential undefined behavior in wcd934x_slim_irq_handler()
-Date: Mon,  7 Apr 2025 14:13:30 -0400
-Message-Id: <20250407181333.3182622-20-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 21/22] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
+Date: Mon,  7 Apr 2025 14:13:31 -0400
+Message-Id: <20250407181333.3182622-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -77,53 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 060aed9c0093b341480770457093449771cf1496 ]
+[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
 
-If 'port_id' is negative, the shift counts in wcd934x_slim_irq_handler()
-also become negative, resulting in undefined behavior due to shift out
-of bounds.
+If 'ctr_bit' is negative, the shift counts become negative, causing a
+shift of bounds and undefined behavior.
 
-If I'm reading the code correctly, that appears to be not possible, but
-with KCOV enabled, Clang's range analysis isn't always able to determine
-that and generates undefined behavior.
+Presumably that's not possible in normal operation, but the code
+generation isn't optimal.  And undefined behavior should be avoided
+regardless.
 
-As a result the code generation isn't optimal, and undefined behavior
-should be avoided regardless.  Improve code generation and remove the
-undefined behavior by converting the signed variables to unsigned.
+Improve code generation and remove the undefined behavior by converting
+the signed variables to unsigned.
 
-Fixes the following warning with UBSAN:
+Fixes the following warning with an UBSAN kernel:
 
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
+  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
+  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
 
 Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/7e863839ec7301bf9c0f429a03873d44e484c31c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
+Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/rk808-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 910852eb9698c..c7f1b28f3b230 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -2273,7 +2273,7 @@ static irqreturn_t wcd934x_slim_irq_handler(int irq, void *data)
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 37476d2558fda..72df554b6375b 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -270,8 +270,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
+ 
+ static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
  {
- 	struct wcd934x_codec *wcd = data;
- 	unsigned long status = 0;
--	int i, j, port_id;
-+	unsigned int i, j, port_id;
- 	unsigned int val, int_val = 0;
- 	irqreturn_t ret = IRQ_NONE;
- 	bool tx;
+-	int rid = rdev_get_id(rdev);
+-	int ctr_bit, reg;
++	unsigned int rid = rdev_get_id(rdev);
++	unsigned int ctr_bit, reg;
+ 
+ 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
+ 	ctr_bit = rid % 8;
 -- 
 2.39.5
 
