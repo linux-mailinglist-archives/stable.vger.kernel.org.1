@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-128673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC66A7EA5B
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:32:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5E7A7EA9A
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB808188DA94
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 302F7444644
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B026D2641C2;
-	Mon,  7 Apr 2025 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCC62641E7;
+	Mon,  7 Apr 2025 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzXoD/JC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByI2t0pD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E18263F57;
-	Mon,  7 Apr 2025 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174B62641E0;
+	Mon,  7 Apr 2025 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049640; cv=none; b=OToEqYJwOEmt4KTifHnxYovqJRUUtKMgUYygzFk6iDBx0RHY3d43o2TBknBfFDQ8uRjs4lc5PkEPZMa8q0VLhirmZxPZ1ODeag5aZHnFjpcCuJAzoqEKs46HTEfBe3bBqGpPMRl96H6/MuKo+5fH2k/SrrJKGgMsMiPH3Ipzt2Q=
+	t=1744049642; cv=none; b=fNYvRaPLl/alY3vRqQr7QujRoZWi/mi0LyqwZoUMTU1IqNAT2wBhRjrG0bBWP7/o4ZSiBkZkMD4iwGm7EoRzA+57oTHjSJErd3wNvWwZBlpfUDuIfE4paiIJPLkZTgdNiZ4IsXGbA7Bw9b4nAoAoIcCynAlRX/5FOZcr69B2X+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049640; c=relaxed/simple;
-	bh=FBKHsnYMzDkgiOKaCOzoMSLUlu+PhUdWFp4F5EIOj4Y=;
+	s=arc-20240116; t=1744049642; c=relaxed/simple;
+	bh=USTUdd+X23ngKX5LHHa0s3x3VrueV8uT36p/v1J1cCk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iXqdMmag0Dpi432HxUdmtfPtOTMkSQUT8e4v1PMK6r5cbBBHGtVtzndUsNiTy8gHHV2Mamc1RX/bWd5B77mgl4omZkb7pm/d4CeeyzSapgMkEdT39J0TakQNgb8ZAWumEbCe6/V8LdY8GoWpy/YajNOpnELytwOkbWJGDBCsh9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzXoD/JC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7AAC4CEE7;
-	Mon,  7 Apr 2025 18:13:59 +0000 (UTC)
+	 MIME-Version; b=Wr8hMO1GrfOuZgpKpBcpvDZ+t6xqsKk9FpogkmAPL3epBphLdjmn3o8aahFwCqOPo9Q2S3QF4V44rPXg6ZYxXbUYUZFfzKLGZcWpkkw0A5BWyosdvOLkSpkk2pLZRnsGzsI8k3/CpOanyDUDmoAtSc0QdfwQa4Wr0Y4ZaK0UmKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByI2t0pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC6EC4CEEA;
+	Mon,  7 Apr 2025 18:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049640;
-	bh=FBKHsnYMzDkgiOKaCOzoMSLUlu+PhUdWFp4F5EIOj4Y=;
+	s=k20201202; t=1744049641;
+	bh=USTUdd+X23ngKX5LHHa0s3x3VrueV8uT36p/v1J1cCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzXoD/JC245MkYlxls8ew+PcP6t0rjyVgzgpJg1JxHs9Q4t+DjVKDYRHmozVO0WWY
-	 v+pVMrlQp/p0c5OgPjyW/tQOIs5uzfVern6UMMZbj8VbSYdBxaoUkBGce8xYOgXK1U
-	 EavEiQsqBeIXpku14962mrJl0Tfe6oIFhdEOPgjv072m7oGW6GkE7fJW5U2anQyMmE
-	 YE/oPE80ehEewtY896vD5kkE3CypdnDrpZhrLE1syQDDtU4a0DolLoef054B3pQXbo
-	 u6VcP+IQkk9QfPKLAiqzUi7acwOQGLIWd3GFdh1FT9yRFmjp5JusQxE8Jjf9s1qciw
-	 qJ0tuJu6EVstQ==
+	b=ByI2t0pD370TS7uS2ZmcN3qxtLuZkndn9vCVvPUdo6lwSJ4hoIxn4D1Q8tDjsfEVk
+	 CFGVJrpYXndzRTDoVHQgOXK/nHfgYTvqAVvwEOjDztPrIwXGlj/rPfsvqg+I8bKzRY
+	 KyNoMo4FLvSoX2GRcj6YPd25AwbcI5FPgy5uSAKWdqoHN9hilUklVwAbcvgfqdwaEf
+	 fUIqxNaFyqo8Myl89f1SuwOwyuBx1Gw1cdoWDYXEOcEZ1D4MbJmag1684jxHoMJlXW
+	 kzq4IlPrPbmt+ZtsELir4gMcntN7UoeUTOknrjVOxhnJndzkMJEoi/8vucuJxsxVLf
+	 t+IgZ0kGO9qMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Thomas Lynema <lyz27@yahoo.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mathias.nyman@intel.com,
+	andreas.noever@gmail.com,
+	michael.jamet@intel.com,
+	westeri@kernel.org,
+	YehezkelShB@gmail.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/22] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
-Date: Mon,  7 Apr 2025 14:13:25 -0400
-Message-Id: <20250407181333.3182622-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 16/22] thunderbolt: Scan retimers after device router has been enumerated
+Date: Mon,  7 Apr 2025 14:13:26 -0400
+Message-Id: <20250407181333.3182622-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -61,84 +65,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
+[ Upstream commit 75749d2c1d8cef439f8b69fa1f4f36d0fc3193e6 ]
 
-Compatible "marvell,armada3700-xhci" match data uses the
-struct xhci_plat_priv::init_quirk() function pointer to add
-XHCI_RESET_ON_RESUME as quirk on XHCI.
+Thomas reported connection issues on AMD system with Pluggable UD-4VPD
+dock. After some experiments it looks like the device has some sort of
+internal timeout that triggers reconnect. This is completely against the
+USB4 spec, as there is no requirement for the host to enumerate the
+device right away or even at all.
 
-Instead, use the struct xhci_plat_priv::quirks field.
+In Linux case the delay is caused by scanning of retimers on the link so
+we can work this around by doing the scanning after the device router
+has been enumerated.
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Thomas Lynema <lyz27@yahoo.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219748
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mvebu.c | 10 ----------
- drivers/usb/host/xhci-mvebu.h |  6 ------
- drivers/usb/host/xhci-plat.c  |  2 +-
- 3 files changed, 1 insertion(+), 17 deletions(-)
+ drivers/thunderbolt/tb.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
-index 87f1597a0e5ab..257e4d79971fd 100644
---- a/drivers/usb/host/xhci-mvebu.c
-+++ b/drivers/usb/host/xhci-mvebu.c
-@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index a7c6919fbf978..e1da433a9e7fb 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1295,11 +1295,15 @@ static void tb_scan_port(struct tb_port *port)
+ 		goto out_rpm_put;
+ 	}
  
- 	return 0;
- }
+-	tb_retimer_scan(port, true);
 -
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
--
--	/* Without reset on resume, the HC won't work at all */
--	xhci->quirks |= XHCI_RESET_ON_RESUME;
--
--	return 0;
--}
-diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
-index 3be021793cc8b..9d26e22c48422 100644
---- a/drivers/usb/host/xhci-mvebu.h
-+++ b/drivers/usb/host/xhci-mvebu.h
-@@ -12,16 +12,10 @@ struct usb_hcd;
+ 	sw = tb_switch_alloc(port->sw->tb, &port->sw->dev,
+ 			     tb_downstream_route(port));
+ 	if (IS_ERR(sw)) {
++		/*
++		 * Make the downstream retimers available even if there
++		 * is no router connected.
++		 */
++		tb_retimer_scan(port, true);
++
+ 		/*
+ 		 * If there is an error accessing the connected switch
+ 		 * it may be connected to another domain. Also we allow
+@@ -1349,6 +1353,14 @@ static void tb_scan_port(struct tb_port *port)
+ 	upstream_port = tb_upstream_port(sw);
+ 	tb_configure_link(port, upstream_port, sw);
  
- #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
- int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
- #else
- static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
- {
- 	return 0;
- }
--
--static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	return 0;
--}
- #endif
- #endif /* __LINUX_XHCI_MVEBU_H */
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index e6660472501e4..2379a67e34e12 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
- };
- 
- static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
--	.init_quirk = xhci_mvebu_a3700_init_quirk,
-+	.quirks = XHCI_RESET_ON_RESUME,
- };
- 
- static const struct xhci_plat_priv xhci_plat_brcm = {
++	/*
++	 * Scan for downstream retimers. We only scan them after the
++	 * router has been enumerated to avoid issues with certain
++	 * Pluggable devices that expect the host to enumerate them
++	 * within certain timeout.
++	 */
++	tb_retimer_scan(port, true);
++
+ 	/*
+ 	 * CL0s and CL1 are enabled and supported together.
+ 	 * Silently ignore CLx enabling in case CLx is not supported.
 -- 
 2.39.5
 
