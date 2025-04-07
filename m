@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-128663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E64BA7EA6E
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:34:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2448A7EA3F
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 20:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A96A17AB14
-	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:28:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177291881409
+	for <lists+stable@lfdr.de>; Mon,  7 Apr 2025 18:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217F225FA07;
-	Mon,  7 Apr 2025 18:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D4225FA34;
+	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mp2fYqnQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZiqTpy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC24025F997;
-	Mon,  7 Apr 2025 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A930B25F98F;
+	Mon,  7 Apr 2025 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049623; cv=none; b=HpHet4Uqx1eTHe8YuVIWtmW/sEta0HrTCy/g7i44b4hB3Pl0+vD38kfk9U5+pAenIMk7LEOV9ORoQOzG12UWZG+J7vIbLrwgKFp1cn1pTBJ7XY02cnw6hFXU5Z9BU8l8BlfdypegIHWTW89Fu3Z0NmQbMruiI0oFyQbrMvHhwNM=
+	t=1744049625; cv=none; b=SESs4Lyq/y3/TeeJJAJhW9LqjWVKWWZGleyntCaeRft66R8zTWjN2HLuX/SO3nCYP/IrLAjYCOW8EOuhxxZkjnctTF/5ghVUCzs9xAnoVPt+Bmres6j7HKrYvsoExH51z5+lhpjCo2+tMYoZ+LVto2/HYm3Zhz1tNlxT44evGN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049623; c=relaxed/simple;
-	bh=P9IARbyBPJ3Osu5SDwsFJok3oD6DIO0uGCgbsgkHuDE=;
+	s=arc-20240116; t=1744049625; c=relaxed/simple;
+	bh=5P89sXxtBIlT0wEuM1sFJ4xm2Bx1KLp8Xd6qLhzwK7c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dNEVhaF6FcIGVDLTPC3ugrvkDJy/DmACeDN5J4WcMnOj9ydVE4nApjdwDDJRC1NC6P7e1TeBqNnkSlLq4HDpgV+COZYBvqiNIQiJtY4/6t+2yTITgz8FgjeTtS30DNj8DSYL7nMRsp05EnMc/vd6l3RSbqPqzpqv63W+7nzsk3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mp2fYqnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C871BC4CEDD;
-	Mon,  7 Apr 2025 18:13:42 +0000 (UTC)
+	 MIME-Version; b=k33eMJpDLgZ15O8pv6Fq19KLV3MHk447CrHElWSzl3f+8WPksvVZvmLTUrvTsnmJ4Av1IBaOp4uKfDo/r/9AUlfOqo+dpBG0bGXROrBDJlyTv88qjJdzMa5CTkYzgIL6rn4cHJDBE41XN+Aw6YjvTtrRL/A2BTAVfkgHremC9fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZiqTpy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB78C4CEDD;
+	Mon,  7 Apr 2025 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049623;
-	bh=P9IARbyBPJ3Osu5SDwsFJok3oD6DIO0uGCgbsgkHuDE=;
+	s=k20201202; t=1744049625;
+	bh=5P89sXxtBIlT0wEuM1sFJ4xm2Bx1KLp8Xd6qLhzwK7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp2fYqnQNQC6eMMVmrLzrsVR5ZahXDyjeS1aa/4rcK7g3n9PnSn+UK/rOREtSGmvW
-	 LT/XLSZApdRlXPj6zGHuYK2jq12NNE1wrxrKLx0KI68fZyRxxYCxqtfVtrNoQ3o+yJ
-	 Uurl8VOW7U+8KHtoUeknldSZCCBJbuy3quVCbYyq151pzrwvVa6664CJ0oLCiIB5uS
-	 Js3Kx/2w2J3ebaDMfL7jT5VvSxhHR741YP5zGBSO+pngCbZm1A6vh/Iw2Zb2HdPuXM
-	 PLlmEaV19oKU0joyN74f2oBDlZ7bLTgvqVeqbvJFS/q6G23E9SlFOs46T/KiKWOcU1
-	 XRfIuzmrVwA/A==
+	b=pZiqTpy0/u1J955z+/h736NLvJ6JvKCVR+yrWEjDKDKYzrEOmINVpInx0klwtYaFS
+	 hADNJknydWGk2yyxrgh0czSak0IjNDmoGBG4Wx2AkA8oBwQQp46OhltoKh8/MiGYzW
+	 enuFCzNa6FSQn0DxmpNZFpYtYyNQij0L3A1HsiMsoWL8VegI9n5IThkuQBVdEzfWoU
+	 BgnxI4rlGCGBHBnDLZq7E40JQY34j977wmS77elTag5t2CO4JEuklxGNygd8akFMdU
+	 Uu4AEHd30oKTZ7FwQ2MG9GRE6fOSZ86ZXYRQQRsWZA9UDIzf6jJSVw7fCWkuCz4Zz9
+	 HUEo+nLJsLZhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 05/22] usb: dwc3: gadget: Avoid using reserved endpoints on Intel Merrifield
-Date: Mon,  7 Apr 2025 14:13:15 -0400
-Message-Id: <20250407181333.3182622-5-sashal@kernel.org>
+Cc: John Stultz <jstultz@google.com>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org,
+	kernel-team@android.com,
+	Betty Zhou <bettyzhou@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 06/22] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
+Date: Mon,  7 Apr 2025 14:13:16 -0400
+Message-Id: <20250407181333.3182622-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
 References: <20250407181333.3182622-1-sashal@kernel.org>
@@ -62,69 +67,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 461f24bff86808ee5fbfe74751a825f8a7ab24e0 ]
+[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
 
-Intel Merrifield SoC uses these endpoints for tracing and they cannot
-be re-allocated if being used because the side band flow control signals
-are hard wired to certain endpoints:
+Betty reported hitting the following warning:
 
-• 1 High BW Bulk IN (IN#1) (RTIT)
-• 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
+[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
+...
+[    8.713282][  T221] Call trace:
+[    8.713365][  T221]  __flush_work+0x8d0/0x914
+[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
+[    8.713570][  T221]  cancel_work_sync+0x24/0x34
+[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
+[    8.714139][  T221]  really_probe+0x1bc/0x4c8
+...
 
-In device mode, since RTIT (EP#1) and EXI/RunControl (EP#8) uses
-External Buffer Control (EBC) mode, these endpoints are to be mapped to
-EBC mode (to be done by EXI target driver). Additionally TRB for RTIT
-and EXI are maintained in STM (System Trace Module) unit and the EXI
-target driver will as well configure the TRB location for EP #1 IN
-and EP#8 (IN and OUT). Since STM/PTI and EXI hardware blocks manage
-these endpoints and interface to OTG3 controller through EBC interface,
-there is no need to enable any events (such as XferComplete etc)
-for these end points.
+It seems we're hitting the error path in virtsnd_probe(), which
+triggers a virtsnd_remove() which iterates over the substreams
+calling cancel_work_sync() on the elapsed_period work_struct.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-5-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Looking at the code, from earlier in:
+virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
+
+We set snd->nsubstreams, allocate the snd->substreams, and if
+we then hit an error on the info allocation or something in
+virtsnd_ctl_query_info() fails, we will exit without having
+initialized the elapsed_period work_struct.
+
+When that error path unwinds we then call virtsnd_remove()
+which as long as the substreams array is allocated, will iterate
+through calling cancel_work_sync() on the uninitialized work
+struct hitting this warning.
+
+Takashi Iwai suggested this fix, which initializes the substreams
+structure right after allocation, so that if we hit the error
+paths we avoid trying to cleanup uninitialized data.
+
+Note: I have not yet managed to reproduce the issue myself, so
+this patch has had limited testing.
+
+Feedback or thoughts would be appreciated!
+
+Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev
+Cc: linux-sound@vger.kernel.org
+Cc: kernel-team@android.com
+Reported-by: Betty Zhou <bettyzhou@google.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: John Stultz <jstultz@google.com>
+Message-Id: <20250116194114.3375616-1-jstultz@google.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index 052852f801467..54a4ee2b90b7f 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -148,11 +148,21 @@ static const struct property_entry dwc3_pci_intel_byt_properties[] = {
- 	{}
- };
+diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
+index 967e4c45be9bb..2f7c5e709f075 100644
+--- a/sound/virtio/virtio_pcm.c
++++ b/sound/virtio/virtio_pcm.c
+@@ -339,6 +339,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 	if (!snd->substreams)
+ 		return -ENOMEM;
  
-+/*
-+ * Intel Merrifield SoC uses these endpoints for tracing and they cannot
-+ * be re-allocated if being used because the side band flow control signals
-+ * are hard wired to certain endpoints:
-+ * - 1 High BW Bulk IN (IN#1) (RTIT)
-+ * - 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
-+ */
-+static const u8 dwc3_pci_mrfld_reserved_endpoints[] = { 3, 16, 17 };
++	/*
++	 * Initialize critical substream fields early in case we hit an
++	 * error path and end up trying to clean up uninitialized structures
++	 * elsewhere.
++	 */
++	for (i = 0; i < snd->nsubstreams; ++i) {
++		struct virtio_pcm_substream *vss = &snd->substreams[i];
 +
- static const struct property_entry dwc3_pci_mrfld_properties[] = {
- 	PROPERTY_ENTRY_STRING("dr_mode", "otg"),
- 	PROPERTY_ENTRY_STRING("linux,extcon-name", "mrfld_bcove_pwrsrc"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u3_susphy_quirk"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u2_susphy_quirk"),
-+	PROPERTY_ENTRY_U8_ARRAY("snps,reserved-endpoints", dwc3_pci_mrfld_reserved_endpoints),
- 	PROPERTY_ENTRY_BOOL("snps,usb2-gadget-lpm-disable"),
- 	PROPERTY_ENTRY_BOOL("linux,sysdev_is_parent"),
- 	{}
++		vss->snd = snd;
++		vss->sid = i;
++		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
++		init_waitqueue_head(&vss->msg_empty);
++		spin_lock_init(&vss->lock);
++	}
++
+ 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -352,12 +367,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 		struct virtio_pcm_substream *vss = &snd->substreams[i];
+ 		struct virtio_pcm *vpcm;
+ 
+-		vss->snd = snd;
+-		vss->sid = i;
+-		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
+-		init_waitqueue_head(&vss->msg_empty);
+-		spin_lock_init(&vss->lock);
+-
+ 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
+ 		if (rc)
+ 			goto on_exit;
 -- 
 2.39.5
 
