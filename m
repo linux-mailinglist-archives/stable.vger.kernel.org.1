@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55FEA80279
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06FAA7FE76
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40A70189432B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81AFC3AD971
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F37B2676DE;
-	Tue,  8 Apr 2025 11:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8321A2690C8;
+	Tue,  8 Apr 2025 11:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsrJOPE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgidmUOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB9227EBD;
-	Tue,  8 Apr 2025 11:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9E7268C72;
+	Tue,  8 Apr 2025 11:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112654; cv=none; b=UMw480QnTv1lyYJtp24uOwLZIitXu4XYjRT+lGPamy/eQkzJHj3Y+RFtOxdYoWGsujSAPyppd6pFe559HoIGI+HmDSfJboVBobCVtUjKM09DFYBUDG+vQzm0v4mMBDntCx0MN0ClCXlATWrwNWh5w8TZf0v6spmGJ3ZbPAS+wEg=
+	t=1744110060; cv=none; b=Cr+ThkJ2hUBupBgsFaRXQVeMYYzmUBl5SgrJ1wC6bha5zee3mJVP4BLXS/5yvTObFNg4jWJPbVc7/H4vSrLl/00c7NwvN1/fRNPPVpZow5QIWuY1e91RiOaA/BIUDlI8u+KcSbFc2F5jOS/PaGwy3qa22ggfPVh6/njPkWuy2cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112654; c=relaxed/simple;
-	bh=BckaIZr3igvxG0kUpyYqmT556xYMLKhGdHeiRQoYirw=;
+	s=arc-20240116; t=1744110060; c=relaxed/simple;
+	bh=/Z3+ouPUzltoawH6xZD7NDkJzImqq9HCRkCKzL8WA8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=INI8BlidqK+IpJLcMugH9FgTdQlP3iXsqvS9SODYGZhRCuAap/Up/GKWIm9QWDlRcYuh6OdS0RC0Z4D/0AkogGHPu2e6FcinB2sJfEvTxlOqLr9wFl3w75V2z4Celz+9loU3rUaSziyrgHeAZ3A+xqeYRjt8vuDPOsDM6+1LQPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsrJOPE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2980DC4CEE5;
-	Tue,  8 Apr 2025 11:44:13 +0000 (UTC)
+	 MIME-Version; b=mb0HLvdgHGBa/0Q3I6d20Ekuj9JmadZDLOYMq5De8G9UjwNLcJUrsrP786PZtc5CwpXuaSbKIYbg5emi+QDgYSoQXSQFtVnSHB3VTZGKIQ2WcK6kPZht50zcchCxJ1uKKCDWamlno3tfummh79UphXmh0GMz1EMMDzXTEQy5WfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgidmUOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28B4C4CEE5;
+	Tue,  8 Apr 2025 11:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112653;
-	bh=BckaIZr3igvxG0kUpyYqmT556xYMLKhGdHeiRQoYirw=;
+	s=korg; t=1744110060;
+	bh=/Z3+ouPUzltoawH6xZD7NDkJzImqq9HCRkCKzL8WA8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsrJOPE0tVPrC9+mMuWD23m8yqO7Phi/h0j5Km0f2JLcbCBcElpcZn1DwqjafMy5w
-	 G7uANFI/Vy1iEjrnKZLxNHGwRLMJELubzEVeXXXe0GIlLdNZLHaHCwhQz6atpsh7GN
-	 o1iKSGIiopUDFhZNF0YCpjdwLrMSETIe8cbXanao=
+	b=SgidmUOEynoH4J2euLsjkYtLM7l5BETmMfqpqbcfbXgpaOMRuTskECUCTy9xc6dG0
+	 V/B/AIrKc4kvp4ORBSWNFNzSOPEJBhY3bSAmlsAM0ymdwVpV6aNe8zOzdDiy1DNkKk
+	 n4j95s0uYk5Ysp/jb3z4ypJWpn71mPdHpp5eKBmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Harry Wentland <hwentlan@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/279] drm/dp_mst: Fix drm RAD print
+Subject: [PATCH 5.10 153/227] clk: amlogic: g12b: fix cluster A parent data
 Date: Tue,  8 Apr 2025 12:48:51 +0200
-Message-ID: <20250408104830.331735246@linuxfoundation.org>
+Message-ID: <20250408104824.906747680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +60,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 6bbce873a9c97cb12f5455c497be279ac58e707f ]
+[ Upstream commit 8995f8f108c3ac5ad52b12a6cfbbc7b3b32e9a58 ]
 
-[Why]
-The RAD of sideband message printed today is incorrect.
-For RAD stored within MST branch
-- If MST branch LCT is 1, it's RAD array is untouched and remained as 0.
-- If MST branch LCT is larger than 1, use nibble to store the up facing
-  port number in cascaded sequence as illustrated below:
+Several clocks used by both g12a and g12b use the g12a cpu A clock hw
+pointer as clock parent. This is incorrect on g12b since the parents of
+cluster A cpu clock are different. Also the hw clock provided as parent to
+these children is not even registered clock on g12b.
 
-  u8 RAD[0] = (LCT_2_UFP << 4) | LCT_3_UFP
-     RAD[1] = (LCT_4_UFP << 4) | LCT_5_UFP
-     ...
+Fix the problem by reverting to the global namespace and let CCF pick
+the appropriate, as it is already done for other clocks, such as
+cpu_clk_trace_div.
 
-In drm_dp_mst_rad_to_str(), it wrongly to use BIT_MASK(4) to fetch the port
-number of one nibble.
-
-[How]
-Adjust the code by:
-- RAD array items are valuable only for LCT >= 1.
-- Use 0xF as the mask to replace BIT_MASK(4)
-
-V2:
-- Document how RAD is constructed (Imre)
-
-V3:
-- Adjust the comment for rad[] so kdoc formats it properly (Lyude)
-
-Fixes: 2f015ec6eab6 ("drm/dp_mst: Add sideband down request tracing + selftests")
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Harry Wentland <hwentlan@amd.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113091100.3314533-2-Wayne.Lin@amd.com
+Fixes: 25e682a02d91 ("clk: meson: g12a: migrate to the new parent description method")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-cpua-parent-fix-v1-1-d8c0f41865fe@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_dp_mst_topology.c | 8 ++++----
- include/drm/drm_dp_mst_helper.h       | 7 +++++++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/clk/meson/g12a.c | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
-index 86e1a61b6b6df..70be5719e403b 100644
---- a/drivers/gpu/drm/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -178,13 +178,13 @@ static int
- drm_dp_mst_rad_to_str(const u8 rad[8], u8 lct, char *out, size_t len)
- {
- 	int i;
--	u8 unpacked_rad[16];
-+	u8 unpacked_rad[16] = {};
- 
--	for (i = 0; i < lct; i++) {
-+	for (i = 1; i < lct; i++) {
- 		if (i % 2)
--			unpacked_rad[i] = rad[i / 2] >> 4;
-+			unpacked_rad[i] = rad[(i - 1) / 2] >> 4;
- 		else
--			unpacked_rad[i] = rad[i / 2] & BIT_MASK(4);
-+			unpacked_rad[i] = rad[(i - 1) / 2] & 0xF;
- 	}
- 
- 	/* TODO: Eventually add something to printk so we can format the rad
-diff --git a/include/drm/drm_dp_mst_helper.h b/include/drm/drm_dp_mst_helper.h
-index ddb9231d03097..9911264e0b155 100644
---- a/include/drm/drm_dp_mst_helper.h
-+++ b/include/drm/drm_dp_mst_helper.h
-@@ -232,6 +232,13 @@ struct drm_dp_mst_branch {
- 	 */
- 	struct list_head destroy_next;
- 
-+	/**
-+	 * @rad: Relative Address of the MST branch.
-+	 * For &drm_dp_mst_topology_mgr.mst_primary, it's rad[8] are all 0,
-+	 * unset and unused. For MST branches connected after mst_primary,
-+	 * in each element of rad[] the nibbles are ordered by the most
-+	 * signifcant 4 bits first and the least significant 4 bits second.
-+	 */
- 	u8 rad[8];
- 	u8 lct;
- 	int num_ports;
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 2876bb83d9d0e..870cac6dd0453 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -1135,8 +1135,18 @@ static struct clk_regmap g12a_cpu_clk_div16_en = {
+ 	.hw.init = &(struct clk_init_data) {
+ 		.name = "cpu_clk_div16_en",
+ 		.ops = &clk_regmap_gate_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) {
+-			&g12a_cpu_clk.hw
++		.parent_data = &(const struct clk_parent_data) {
++			/*
++			 * Note:
++			 * G12A and G12B have different cpu clocks (with
++			 * different struct clk_hw). We fallback to the global
++			 * naming string mechanism so this clock picks
++			 * up the appropriate one. Same goes for the other
++			 * clock using cpu cluster A clock output and present
++			 * on both G12 variant.
++			 */
++			.name = "cpu_clk",
++			.index = -1,
+ 		},
+ 		.num_parents = 1,
+ 		/*
+@@ -1201,7 +1211,10 @@ static struct clk_regmap g12a_cpu_clk_apb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_apb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1235,7 +1248,10 @@ static struct clk_regmap g12a_cpu_clk_atb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_atb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1269,7 +1285,10 @@ static struct clk_regmap g12a_cpu_clk_axi_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_axi_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1304,13 +1323,6 @@ static struct clk_regmap g12a_cpu_clk_trace_div = {
+ 		.name = "cpu_clk_trace_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+ 		.parent_data = &(const struct clk_parent_data) {
+-			/*
+-			 * Note:
+-			 * G12A and G12B have different cpu_clks (with
+-			 * different struct clk_hw). We fallback to the global
+-			 * naming string mechanism so cpu_clk_trace_div picks
+-			 * up the appropriate one.
+-			 */
+ 			.name = "cpu_clk",
+ 			.index = -1,
+ 		},
 -- 
 2.39.5
 
