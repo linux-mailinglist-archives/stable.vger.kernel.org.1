@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C061A801AD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5BBA802C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F26C63B99A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96FF916D48B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D592F268C61;
-	Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C122676DE;
+	Tue,  8 Apr 2025 11:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2urAM/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV6sPUgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350E266583;
-	Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8970265602;
+	Tue,  8 Apr 2025 11:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112069; cv=none; b=bnVG2zjv/mjOt7TF23YZiSAPVZhrBUulu5085cly8wbpaAbIn6KS7plBda71PMRb8HGjrgUQ4LJtOhn0bW4RNt5Q4HxfyhbWEdsticlkc4+B/jVU4t0zuYpljMEN++ZBXfzjdmnOmt95BLcfyQkUCXa4NLnqoECm0McDaq7zUCY=
+	t=1744112667; cv=none; b=Am2sPnftSeU/JhxckXkmfjnEuQhNDZ7u+5Mh3NdY3Jo00stOmIzn4XKOQli6uWxPhxi1TrC2oXmLXKgw8UR4ZSwevvceqwFRKYLfhHDr/XWgTpgBCQQ3VNpEMgMyhb1oL6l7kyJCuY5RQEy98PikRLlJu7t1tupFRkfGufdQhxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112069; c=relaxed/simple;
-	bh=+nX8oUULv2jpDqreBMDdX2CLXrDLmhiopqze4+ETTi4=;
+	s=arc-20240116; t=1744112667; c=relaxed/simple;
+	bh=e9i9gld3iOKozArSjdlXxYJkAa9PF8zT6V06odpdias=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0G8L+J4LyuFrX+XA0kTM91RKk0axYjaGNJETDA8CC7iqAGEmeyfCL4e3qiBxgleMGnkbLF3A01qLZVvM3/WACt2NMr+Pvs/4JaQIbz/weaRV/GsSCBYf32P+cBnM7RT2rvWEUVrMmiPpQC3Pkxs7E6aR1hdB+Jf+oJVPsi6+L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2urAM/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233BAC4CEE5;
-	Tue,  8 Apr 2025 11:34:28 +0000 (UTC)
+	 MIME-Version; b=ekOo9SL4ZdsBlqVBw9jR3Hpvbi9NcBPK76oTDrPUMLA1oQ5TGn+0LSyPJXV45wOD2tFh20T20TPKbNkvh1VSo6LbcGM4NtojAliHp6t8G4r13p5gSg++S9ROgO5rvbZj5a9AZqHfosDA2Is/a2TfrhP4rrGRDBgtqxUt+1lCoF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV6sPUgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D8CC4CEE5;
+	Tue,  8 Apr 2025 11:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112069;
-	bh=+nX8oUULv2jpDqreBMDdX2CLXrDLmhiopqze4+ETTi4=;
+	s=korg; t=1744112667;
+	bh=e9i9gld3iOKozArSjdlXxYJkAa9PF8zT6V06odpdias=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2urAM/aWZIz4gjP7ecJZcIIXpSki7JeCMDX1l0Gox4+dfhnsZ1P07Bicplxe0UP/
-	 5eoNXLihK5wxAvtC1hcjglTDAHvEow2zZ+QV3OsP5FFe8Xeni0hupmpwA52QVS2C+3
-	 CedeLFon1fOqNHqoe9WOBpRJhRffoepvDANCLHsI=
+	b=cV6sPUgMbT/KXU1cvkXjXE2iJA7IwtfTIr9ypC06oKNZNVxKBteINnQlvfisQZ4Vw
+	 E28b47hn++leWGrPVM+eGJibUc34+9wF7W+8rm9gR3EixbSrmVV57sa54ZD7azcGYY
+	 e02yfPELTCUq3iSmiVLpLN+t/TZPIWwxDudR+oSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 637/731] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
-Date: Tue,  8 Apr 2025 12:48:54 +0200
-Message-ID: <20250408104929.086930745@linuxfoundation.org>
+Subject: [PATCH 5.15 152/279] drm/mediatek: mtk_hdmi: Fix typo for aud_sampe_size member
+Date: Tue,  8 Apr 2025 12:48:55 +0200
+Message-ID: <20250408104830.438692557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
+[ Upstream commit 72fcb88e7bbc053ed4fc74cebb0315b98a0f20c3 ]
 
-The mv88e6xxx has an internal PPU that polls PHY state. If we want to
-access the internal PHYs, we need to disable the PPU first. Because
-that is a slow operation, a 10ms timer is used to re-enable it,
-canceled with every access, so bulk operations effectively only
-disable it once and re-enable it some 10ms after the last access.
+Rename member aud_sampe_size of struct hdmi_audio_param to
+aud_sample_size to fix a typo and enhance readability.
 
-If a PHY is accessed and then the mv88e6xxx module is removed before
-the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+This commit brings no functional changes.
 
-This especially affects probing during bootup. The MDIO bus and PHY
-registration may succeed, but registration with the DSA framework
-may fail later on (e.g. because the CPU port depends on another,
-very slow device that isn't done probing yet, returning -EPROBE_DEFER).
-In this case, probe() fails, but the MDIO subsystem may already have
-accessed the MIDO bus or PHYs, arming the timer.
-
-This is fixed as follows:
- - If probe fails after mv88e6xxx_phy_init(), make sure we also call
-   mv88e6xxx_phy_destroy() before returning
- - In mv88e6xxx_remove(), make sure we do the teardown in the correct
-   order, calling mv88e6xxx_phy_destroy() after unregistering the
-   switch device.
- - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
-   that the timer might schedule, synchronously waiting in case one of
-   the callbacks already fired and destroying the timer first, before
-   waiting for the work item.
- - Access to the PPU is guarded by a mutex, the worker acquires it
-   with a mutex_trylock(), not proceeding with the expensive shutdown
-   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
-   sure the slow PPU shutdown is already done or won't even enter, when
-   we wait for the work item.
-
-Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-20-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
- drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 74b8bae226e4b..4a9fbfa8db41a 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7331,13 +7331,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	err = mv88e6xxx_switch_reset(chip);
- 	mv88e6xxx_reg_unlock(chip);
- 	if (err)
--		goto out;
-+		goto out_phy;
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index 047ed79dce3ff..67ab6579daf72 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -138,7 +138,7 @@ enum hdmi_aud_channel_swap_type {
  
- 	if (np) {
- 		chip->irq = of_irq_get(np, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
--			goto out;
-+			goto out_phy;
- 		}
- 	}
+ struct hdmi_audio_param {
+ 	enum hdmi_audio_coding_type aud_codec;
+-	enum hdmi_audio_sample_size aud_sampe_size;
++	enum hdmi_audio_sample_size aud_sample_size;
+ 	enum hdmi_aud_input_type aud_input_type;
+ 	enum hdmi_aud_i2s_fmt aud_i2s_fmt;
+ 	enum hdmi_aud_mclk aud_mclk;
+@@ -1076,7 +1076,7 @@ static int mtk_hdmi_output_init(struct mtk_hdmi *hdmi)
  
-@@ -7356,7 +7356,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (chip->info->g2_irqs > 0) {
- 		err = mv88e6xxx_g2_irq_setup(chip);
-@@ -7390,6 +7390,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+out_phy:
-+	mv88e6xxx_phy_destroy(chip);
- out:
- 	if (pdata)
- 		dev_put(pdata->netdev);
-@@ -7412,7 +7414,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_ptp_free(chip);
- 	}
- 
--	mv88e6xxx_phy_destroy(chip);
- 	mv88e6xxx_unregister_switch(chip);
- 
- 	mv88e6xxx_g1_vtu_prob_irq_free(chip);
-@@ -7425,6 +7426,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+
-+	mv88e6xxx_phy_destroy(chip);
- }
- 
- static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
-diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
-index 8bb88b3d900db..ee9e5d7e52770 100644
---- a/drivers/net/dsa/mv88e6xxx/phy.c
-+++ b/drivers/net/dsa/mv88e6xxx/phy.c
-@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
- 
- static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
- {
-+	mutex_lock(&chip->ppu_mutex);
- 	del_timer_sync(&chip->ppu_timer);
-+	cancel_work_sync(&chip->ppu_work);
-+	mutex_unlock(&chip->ppu_mutex);
- }
- 
- int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
+ 	hdmi->csp = HDMI_COLORSPACE_RGB;
+ 	aud_param->aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-	aud_param->aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++	aud_param->aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 	aud_param->aud_input_type = HDMI_AUD_INPUT_I2S;
+ 	aud_param->aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
+ 	aud_param->aud_mclk = HDMI_AUD_MCLK_128FS;
+@@ -1577,14 +1577,14 @@ static int mtk_hdmi_audio_hw_params(struct device *dev, void *data,
+ 	switch (daifmt->fmt) {
+ 	case HDMI_I2S:
+ 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_I2S;
+ 		hdmi_params.aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
+ 		hdmi_params.aud_mclk = HDMI_AUD_MCLK_128FS;
+ 		break;
+ 	case HDMI_SPDIF:
+ 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_SPDIF;
+ 		break;
+ 	default:
 -- 
 2.39.5
 
