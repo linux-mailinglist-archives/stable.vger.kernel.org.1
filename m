@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F58A801B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B30A7FE69
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6800882CF8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF4C19E23A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879DC268FF0;
-	Tue,  8 Apr 2025 11:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B131269801;
+	Tue,  8 Apr 2025 11:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odx0CUSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9kXWdlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C422192F2;
-	Tue,  8 Apr 2025 11:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB02690FA;
+	Tue,  8 Apr 2025 11:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112131; cv=none; b=ngwdtuywSKOErzeR9a0cP6jXL05/P47WF/aS5Ty6AD/hJSZkNM/6qOwR9nNzYHtg6bd2t/9ZwZNdswLYfjPje917uKx11FkgxuWK15NRlLVpuut4Ldpw933oibNfFyZWoSddD1xVFE5r6dZl/otBP+4o0PQxiU/oc0P+QZOc/Qw=
+	t=1744110215; cv=none; b=q0dt5G4TPH3o87sqr5UahyR+giTz+SFnAWNLG5D4HGtbfcF3P9R59J/jOOgMiEyts1yN/06SEqvnkGdyFx+VzvgZ048v4HvB/r54tHHFIon+ShFHEH53LoowXxAGxeb1VPFXvq+BetJa0BIsiUtFQIfWoP4DF9uXB31m7mzpz3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112131; c=relaxed/simple;
-	bh=cYzcgNTE4H9hYa+iHEdKEC4v2l6tunkvqoYhwhCKABk=;
+	s=arc-20240116; t=1744110215; c=relaxed/simple;
+	bh=QhMrO+7VY63DlftVMUJiWx7uMnUsdLCOxhOB0DYb704=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ck2wP3rtlwEWgGHpLAGzqj07z2ddIk0MGv5DTqzl0ORQJRmzHXcIaDIr27sy+zp9SS6X4mmKWE29I0CGAFrwtxxn6Rv+5ZEIEpT0qPo6OKq4yYRjigB/xgMUSxzZ/QICZjG1+DYYynS0gWOmVllUyuLdxrmFFQo5pkQPEyzW3o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odx0CUSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1646C4CEE5;
-	Tue,  8 Apr 2025 11:35:30 +0000 (UTC)
+	 MIME-Version; b=Kpxb5AAt8i42q9lxghb9/GBKcO2DPheVAz+/LcQ+/G8Nuvy7HzWPYKsQN5cjU2vtJ69GzZnmtc/gsKLYUUNQw6L9a+9ILLBi8gvB12cpAdDnswgXTCCjt15qeBmvpN3nWtyPKqTlmR2TCsKItBRj4v7Ip4sXTHkQ4OkGRHUmNfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9kXWdlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CC4C4CEE5;
+	Tue,  8 Apr 2025 11:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112131;
-	bh=cYzcgNTE4H9hYa+iHEdKEC4v2l6tunkvqoYhwhCKABk=;
+	s=korg; t=1744110215;
+	bh=QhMrO+7VY63DlftVMUJiWx7uMnUsdLCOxhOB0DYb704=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Odx0CUSYdKsAlnKCC7f5vuxcyBJDZF1u1ojNxOR6oB5F4WI3Hn1ospvflCx4OuC0t
-	 /+l7bnFAQBcmxCfPAv/R6M7ic3lTZaT/n7OgfrzpMGawBpRdUK2pu9lF5SQr1c3hG+
-	 y5V/zpWq9fUDjmhpIlC1b8bA7rIV/H8NdP5n6NzE=
+	b=e9kXWdlFP7AISeOfQOZLSuFtZk9wNI78mgvCEZQTdBo95l9RfNGD+eQ93klCmipzM
+	 1O0eJIVSz0CePsdyDG34ArCeg6qOysY7ktlGQwB3HhvXfejTWXYMOvtWLGiyBId2Ue
+	 tRrbrXtIc61nbx0D77pFV1H3YndPKCaIo68kwoGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Anton Shyndin <mrcold.il@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.14 688/731] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
-Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104930.271113330@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 208/227] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+Date: Tue,  8 Apr 2025 12:49:46 +0200
+Message-ID: <20250408104826.553691778@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
+[ Upstream commit f5cb528d6441eb860250a2f085773aac4f44085e ]
 
-Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
-X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
-the kernel overrides to EdgeHigh breaking the keyboard.
+According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
+register only can be changed when the transmitter is disabled.
+So disable the transmitter before changing RS485 related registers and
+re-enable it after the change is done.
 
-    $ sudo dmidecode
-    […]
-    System Information
-            Manufacturer: ASUSTeK COMPUTER INC.
-            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
-    […]
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                 IRQ (Level, ActiveLow, Exclusive, )
-                     {1}
-
-Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Anton Shyndin <mrcold.il@gmail.com>
-Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/tty/serial/fsl_lpuart.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1404VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
-+		},
-+	},
-+	{
- 		/* Asus Vivobook X1504VAP */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 5135cdc0b6644..110d98fed7260 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1352,6 +1352,19 @@ static int lpuart32_config_rs485(struct uart_port *port,
+ 
+ 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+ 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
++	u32 ctrl;
++
++	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
++	ctrl = lpuart32_read(&sport->port, UARTCTRL);
++	if (ctrl & UARTCTRL_TE) {
++		/* wait for the transmit engine to complete */
++		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
++		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
++
++		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
++			cpu_relax();
++	}
++
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ 
+ 	/* clear unsupported configurations */
+@@ -1392,6 +1405,10 @@ static int lpuart32_config_rs485(struct uart_port *port,
+ 	sport->port.rs485 = *rs485;
+ 
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
++
++	if (ctrl & UARTCTRL_TE)
++		lpuart32_write(&sport->port, ctrl, UARTCTRL);
++
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
