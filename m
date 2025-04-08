@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-131152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64004A80818
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CEEA8041A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4810A1B87A8E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6913B1E02
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3AB26B94E;
-	Tue,  8 Apr 2025 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3771F268C6B;
+	Tue,  8 Apr 2025 11:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0VgEQFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgRzlrOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB952686AA;
-	Tue,  8 Apr 2025 12:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E993D20CCD8;
+	Tue,  8 Apr 2025 11:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115629; cv=none; b=Rtdx/PhgRmBgUlugXjiziIzrce+bOV5+OvsGvch+j/HZV4BlafMwpkxvGGv20xS26oMci+jX+Um5Q44LozFB34PbrCR6K1TqUgJoqfDZO/uPb/zZ9EDiBbF5389Nq++r/iQL/eQ3zXRc6yi5MkhwcLxqTFBY7MoXtfyiVlwrav4=
+	t=1744113452; cv=none; b=BMdB/OllKtwbj3VuUkIzjmAMxJerExwEA610+NYcwlx+SSN2CFIcndVqPiABq3L9W/x2egP2qOTLKD0FVB0TCWBABn7mIni5HyKxqTrKAYyYdO6tYoG0OFOGc4ah80Ka4Eh3zR5GFOHSZsa33yxh1oRiAJz4D9G6vJxX+dW8RHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115629; c=relaxed/simple;
-	bh=dEHmK7Hr7RZ6aANNqRaSp48YeT7HlFH9DoY/K1CQG6s=;
+	s=arc-20240116; t=1744113452; c=relaxed/simple;
+	bh=47/Pe+QopSXPyoTaqzQefiDVHLStEz837C6eSgcIzQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3x7mQyPnt621LzTWaNY0mbvOjGqYbclIZEAFa+nWurjRwxS2RA034kgkxwDJLLzleJSl07YdMFeQVNjEX/sw6CMPzcBPm72PCwUwkFTZIvqe7irJHTiSG5JTLPh6o91qS9PFWIdBGKcSpJIwZqBZ+2+2jIHSjg8CqNf+KXDIcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0VgEQFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439F8C4CEE5;
-	Tue,  8 Apr 2025 12:33:49 +0000 (UTC)
+	 MIME-Version; b=Vtq38fRmkAZLJoy4/LF+zN+fwGRIG6Y9Uw5UOVpsQn5Wj5dEMKoUsStYrzC3ApnHKkKOk9xPRNBZBxGt+5edf+w1ccVk8ompel42fR1FEodhBuoLTgH/daKjsso8klnbBv1eBaA9XMOR8nWWPRaKTl6PGTCksf4ir69fEgP+rvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgRzlrOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC6FC4CEE5;
+	Tue,  8 Apr 2025 11:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115629;
-	bh=dEHmK7Hr7RZ6aANNqRaSp48YeT7HlFH9DoY/K1CQG6s=;
+	s=korg; t=1744113451;
+	bh=47/Pe+QopSXPyoTaqzQefiDVHLStEz837C6eSgcIzQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0VgEQFBv3NRQ7O/94IemOvK0IKgzNlaJNM9UHcAEykUHHixFS5D26ckJWk491BRd
-	 wGLDNucKLkinYkDx5WGysMpdz0PiCGRfCZYbgc8MQPHH9JP28mI+UOLS5ZYHBMp1rN
-	 4lMh51pywOFSXnJMt9R2+X0S7pyiFcTBO5XQ5Xx8=
+	b=xgRzlrOphA3XPOKZ8XeNOq4mrxDmtjOqeT0k1B1IX/pWejkZ2uDlZEivyheDLpswg
+	 LDNM5Vz731oq+EWWyq7wN84R4Po09JEw6gsWE48esYCDC9gpU++Y9qhuHUD3q2QVi0
+	 p3QZCLW8WEI58TpukNs7aPEf3ht6WYXrc3gj1WtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/204] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
+Subject: [PATCH 6.6 165/268] nvme-pci: clean up CMBMSC when registering CMB fails
 Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104821.697203718@linuxfoundation.org>
+Message-ID: <20250408104833.001381061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
+[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
 
-There is a type bug because the return statement:
+CMB decoding should get disabled when the CMB block isn't successfully
+registered to P2P DMA subsystem.
 
-        return ret < 0 ? ret : recv_cnt;
+Clean up the CMBMSC register in this error handling codepath to disable
+CMB decoding (and CMBLOC/CMBSZ registers).
 
-The issue is that ret is an int, recv_cnt is a u32 and the function
-returns ssize_t, which is a signed long.  The way that the type promotion
-works is that the negative error codes are first cast to u32 and then
-to signed long.  The error codes end up being positive instead of
-negative and the callers treat them as success.
-
-Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
-index d871b1dba083d..0acfda47f002f 100644
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -1015,12 +1015,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 				     const struct mipi_dsi_msg *msg)
- {
- 	struct mtk_dsi *dsi = host_to_dsi(host);
--	u32 recv_cnt, i;
-+	ssize_t recv_cnt;
- 	u8 read_data[16];
- 	void *src_addr;
- 	u8 irq_flag = CMD_DONE_INT_FLAG;
- 	u32 dsi_mode;
--	int ret;
-+	int ret, i;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a36ec6df6624b..3cc00d5a10065 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1871,6 +1871,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
++		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
+ 		return;
+ 	}
  
- 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
- 	if (dsi_mode & MODE) {
-@@ -1069,7 +1069,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 	if (recv_cnt)
- 		memcpy(msg->rx_buf, src_addr, recv_cnt);
- 
--	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
-+	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
- 		 recv_cnt, *((u8 *)(msg->tx_buf)));
- 
- restore_dsi_mode:
 -- 
 2.39.5
 
