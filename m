@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BB1A801C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49124A8025D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597CB170E38
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 278B4189568E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFCD26A0A9;
-	Tue,  8 Apr 2025 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788E7264A76;
+	Tue,  8 Apr 2025 11:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHC3ChuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB91UiAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B070263899;
-	Tue,  8 Apr 2025 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3519AD5C;
+	Tue,  8 Apr 2025 11:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111900; cv=none; b=XSR5Zu1m6dY79T5Xk/7wZZxrC0mlxReLRzFqpymaNVh7txEj2F6KvJwOkZOsFPOrcZBNxBbTQBH3dfzSlAkW7fA5YufXqNbqxZ88qCdIHoBWfxK66RfayVva57RUpKEZ2+Wf1CRXqqedsrcrC9INsDVmydZsKHIYebr/g8Q+oe8=
+	t=1744112570; cv=none; b=IURfFHITdPl1ObBCMlnY0j0cU8BfR/wMCyPJRGMcCS2D7ogDR+4L9zmWfHH8wS5YcaAeypEEj1thd2r5gBTQ86FgB0UDeYIc0y54VvR7kis2G4zsBkCQyfRnKg+6JqzIXZTzyhLZrhHu6TLZeJTAkCDiv/qYHGTyyNhRyRsBsbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111900; c=relaxed/simple;
-	bh=SRRaMrbKTAMk4oHLeV0modyMWBouAqOwXk8Xx+JCWNQ=;
+	s=arc-20240116; t=1744112570; c=relaxed/simple;
+	bh=VbuYX/V4nlhmKrGC1CDP6sTCv5QNuGy1qEGnhqOg31M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxz9/MTe0xulZi+MqDNzNc2meSLnl1GQaLYRqCZveTiwA5jWlz1KoEsiXV2j2CpyYDbCPVdMqTc3I7t8RWE932q16Wj6j7VPcd6h7tzR1ddZiQlDAcntFWXiyK1QiQ9Fxqqzn2ohHZt5iEy4i0+hlo7hqv+k3aLVWOXyxguZiqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHC3ChuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB59C4CEE5;
-	Tue,  8 Apr 2025 11:31:39 +0000 (UTC)
+	 MIME-Version; b=Lvq7LxmkpL+l1oUfqMoD8T/9Mrv2j1Wiz3PyWxdL9oK7PkuTc8glU+w8KsTdxVWx2ifhs693MRATojE0hrFvpaq26Mc6p6dgQyKNsnjEfW2625sDc3ezNJBA61TZp2ix56+8CKc0CVjxK1xflsC/eql123maUjgJcVnn2QcSYXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB91UiAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB455C4CEE5;
+	Tue,  8 Apr 2025 11:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111900;
-	bh=SRRaMrbKTAMk4oHLeV0modyMWBouAqOwXk8Xx+JCWNQ=;
+	s=korg; t=1744112570;
+	bh=VbuYX/V4nlhmKrGC1CDP6sTCv5QNuGy1qEGnhqOg31M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHC3ChuGk+C/n0vGQD1kTmOl93xcSumGoklRRciYpiwEONmlfp8pHl1kR3aJqthY4
-	 QkPJf2M+n7oVfbxDL98xm+AVnSitSj7YAz0Q51j5oioR8a8wR6Pz8aeC4SUw/+Auvo
-	 8j/Qr724Zc+1ARWFAk/qaefjFgJPszv7DYRCT02w=
+	b=VB91UiAh3iNNrc4zSeS7fivTby64iMF7YwZnBBKRwySswPG3WGUR8OtEaeQmDFZD0
+	 ungNfyfmuiGkVDJMhttah7rQxjnlfGx+9rNZDVuIEFZ4s5fuYHTni1AHgmgtpZ8MlP
+	 HUMx0ZD6qzMZyp8FIhzxgaXTxEh/F7s7q08PGRTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 602/731] riscv: Fix hugetlb retrieval of number of ptes in case of !present pte
+	Maxim Mikityanskiy <maxim@isovalent.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 116/279] netfilter: socket: Lookup orig tuple for IPv6 SNAT
 Date: Tue,  8 Apr 2025 12:48:19 +0200
-Message-ID: <20250408104928.275580133@linuxfoundation.org>
+Message-ID: <20250408104829.476978624@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,166 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 83d78ac677b9fdd8ea763507c6fe02d6bf415f3a ]
+commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
 
-Ryan sent a fix [1] for arm64 that applies to riscv too: in some hugetlb
-functions, we must not use the pte value to get the size of a mapping
-because the pte may not be present.
+nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
+restore the original 5-tuple in case of SNAT, to be able to find the
+right socket (if any). Then socket_match() can correctly check whether
+the socket was transparent.
 
-So use the already present size parameter for huge_pte_clear() and the
-newly introduced size parameter for huge_ptep_get_and_clear(). And make
-sure to gather A/D bits only on present ptes.
+However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
+conntrack lookup, making xt_socket fail to match on the socket when the
+packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
 
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Link: https://lore.kernel.org/all/20250217140419.1702389-1-ryan.roberts@arm.com/ [1]
-Link: https://lore.kernel.org/r/20250317072551.572169-1-alexghiti@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
+pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
+with the node's external address. Cilium leverages Envoy to enforce L7
+policies, and Envoy uses transparent sockets. Cilium inserts an iptables
+prerouting rule that matches on `-m socket --transparent` and redirects
+the packets to localhost, but it fails to match SNATed IPv6 packets due
+to that missing conntrack lookup.
+
+Closes: https://github.com/cilium/cilium/issues/37932
+Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
+Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/hugetlbpage.c | 76 ++++++++++++++++++++++---------------
- 1 file changed, 45 insertions(+), 31 deletions(-)
+ net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-index b4a78a4b35cff..375dd96bb4a0d 100644
---- a/arch/riscv/mm/hugetlbpage.c
-+++ b/arch/riscv/mm/hugetlbpage.c
-@@ -148,22 +148,25 @@ unsigned long hugetlb_mask_last_page(struct hstate *h)
- static pte_t get_clear_contig(struct mm_struct *mm,
- 			      unsigned long addr,
- 			      pte_t *ptep,
--			      unsigned long pte_num)
-+			      unsigned long ncontig)
- {
--	pte_t orig_pte = ptep_get(ptep);
--	unsigned long i;
--
--	for (i = 0; i < pte_num; i++, addr += PAGE_SIZE, ptep++) {
--		pte_t pte = ptep_get_and_clear(mm, addr, ptep);
--
--		if (pte_dirty(pte))
--			orig_pte = pte_mkdirty(orig_pte);
--
--		if (pte_young(pte))
--			orig_pte = pte_mkyoung(orig_pte);
-+	pte_t pte, tmp_pte;
-+	bool present;
-+
-+	pte = ptep_get_and_clear(mm, addr, ptep);
-+	present = pte_present(pte);
-+	while (--ncontig) {
-+		ptep++;
-+		addr += PAGE_SIZE;
-+		tmp_pte = ptep_get_and_clear(mm, addr, ptep);
-+		if (present) {
-+			if (pte_dirty(tmp_pte))
-+				pte = pte_mkdirty(pte);
-+			if (pte_young(tmp_pte))
-+				pte = pte_mkyoung(pte);
-+		}
- 	}
--
--	return orig_pte;
-+	return pte;
- }
+--- a/net/ipv6/netfilter/nf_socket_ipv6.c
++++ b/net/ipv6/netfilter/nf_socket_ipv6.c
+@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 	struct sk_buff *data_skb = NULL;
+ 	int doff = 0;
+ 	int thoff = 0, tproto;
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn const *ct;
++#endif
  
- static pte_t get_clear_contig_flush(struct mm_struct *mm,
-@@ -212,6 +215,26 @@ static void clear_flush(struct mm_struct *mm,
- 	flush_tlb_range(&vma, saddr, addr);
- }
- 
-+static int num_contig_ptes_from_size(unsigned long sz, size_t *pgsize)
-+{
-+	unsigned long hugepage_shift;
-+
-+	if (sz >= PGDIR_SIZE)
-+		hugepage_shift = PGDIR_SHIFT;
-+	else if (sz >= P4D_SIZE)
-+		hugepage_shift = P4D_SHIFT;
-+	else if (sz >= PUD_SIZE)
-+		hugepage_shift = PUD_SHIFT;
-+	else if (sz >= PMD_SIZE)
-+		hugepage_shift = PMD_SHIFT;
-+	else
-+		hugepage_shift = PAGE_SHIFT;
-+
-+	*pgsize = 1 << hugepage_shift;
-+
-+	return sz >> hugepage_shift;
-+}
-+
- /*
-  * When dealing with NAPOT mappings, the privileged specification indicates that
-  * "if an update needs to be made, the OS generally should first mark all of the
-@@ -226,22 +249,10 @@ void set_huge_pte_at(struct mm_struct *mm,
- 		     pte_t pte,
- 		     unsigned long sz)
- {
--	unsigned long hugepage_shift, pgsize;
-+	size_t pgsize;
- 	int i, pte_num;
- 
--	if (sz >= PGDIR_SIZE)
--		hugepage_shift = PGDIR_SHIFT;
--	else if (sz >= P4D_SIZE)
--		hugepage_shift = P4D_SHIFT;
--	else if (sz >= PUD_SIZE)
--		hugepage_shift = PUD_SHIFT;
--	else if (sz >= PMD_SIZE)
--		hugepage_shift = PMD_SHIFT;
--	else
--		hugepage_shift = PAGE_SHIFT;
--
--	pte_num = sz >> hugepage_shift;
--	pgsize = 1 << hugepage_shift;
-+	pte_num = num_contig_ptes_from_size(sz, &pgsize);
- 
- 	if (!pte_present(pte)) {
- 		for (i = 0; i < pte_num; i++, ptep++, addr += pgsize)
-@@ -295,13 +306,14 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
- 			      unsigned long addr,
- 			      pte_t *ptep, unsigned long sz)
- {
-+	size_t pgsize;
- 	pte_t orig_pte = ptep_get(ptep);
- 	int pte_num;
- 
- 	if (!pte_napot(orig_pte))
- 		return ptep_get_and_clear(mm, addr, ptep);
- 
--	pte_num = napot_pte_num(napot_cont_order(orig_pte));
-+	pte_num = num_contig_ptes_from_size(sz, &pgsize);
- 
- 	return get_clear_contig(mm, addr, ptep, pte_num);
- }
-@@ -351,6 +363,7 @@ void huge_pte_clear(struct mm_struct *mm,
- 		    pte_t *ptep,
- 		    unsigned long sz)
- {
-+	size_t pgsize;
- 	pte_t pte = ptep_get(ptep);
- 	int i, pte_num;
- 
-@@ -359,8 +372,9 @@ void huge_pte_clear(struct mm_struct *mm,
- 		return;
+ 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
+ 	if (tproto < 0) {
+@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
+ 		return NULL;
  	}
  
--	pte_num = napot_pte_num(napot_cont_order(pte));
--	for (i = 0; i < pte_num; i++, addr += PAGE_SIZE, ptep++)
-+	pte_num = num_contig_ptes_from_size(sz, &pgsize);
++#if IS_ENABLED(CONFIG_NF_CONNTRACK)
++	/* Do the lookup with the original socket address in
++	 * case this is a reply packet of an established
++	 * SNAT-ted connection.
++	 */
++	ct = nf_ct_get(skb, &ctinfo);
++	if (ct &&
++	    ((tproto != IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
++	     (tproto == IPPROTO_ICMPV6 &&
++	      ctinfo == IP_CT_RELATED_REPLY)) &&
++	    (ct->status & IPS_SRC_NAT_DONE)) {
++		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
++		dport = (tproto == IPPROTO_TCP) ?
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
++			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
++	}
++#endif
 +
-+	for (i = 0; i < pte_num; i++, addr += pgsize, ptep++)
- 		pte_clear(mm, addr, ptep);
+ 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
+ 				     sport, dport, indev);
  }
- 
--- 
-2.39.5
-
 
 
 
