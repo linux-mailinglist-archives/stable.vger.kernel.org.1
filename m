@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C91A8082F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E78A806D5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D275B4A5C6E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381B8188A917
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3904B26B08B;
-	Tue,  8 Apr 2025 12:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EB526B96D;
+	Tue,  8 Apr 2025 12:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbc3trFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlMbX/3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627126B085;
-	Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2E26B96A;
+	Tue,  8 Apr 2025 12:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115600; cv=none; b=BLCLnMr6Au0TJzKuJvHa5VOCBAMBMzjTjQvmx5JAaHAxyzdmjWzbIvjd2hsJqvg01O39qtjmTg3OLpAJuPrMvcCXQ/nGdS2GkpOu9GdLvA001HHAvNqIkMtMGMPu0KOUOS3mC3lszaQpDeo5aLMaOC7Y5iUyQ/h1ZFqrUdIE0sc=
+	t=1744115038; cv=none; b=hZfejul6uWHyJ+ntd5cBzXBBSkhHIvVBIrowIc9wlsViVv0y5O5mmuTq2ZJ24tNi+sMcbNaSximHFQH2akHvY1t7MK2EyUXqlZb+rSeU+iHTNs8Y6GQtSdkUYbpuY+khIuwdulyuB/zfNLQSoLnr9edY7KMw9p7js8oYK9KpZ1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115600; c=relaxed/simple;
-	bh=l1YPDezXzfI8SCCsIZE98u+TV6SbGEdgyhEzxK7QJ3Q=;
+	s=arc-20240116; t=1744115038; c=relaxed/simple;
+	bh=sFMHuKynNrsXGJHv8eiqpCfGYBgYGQ/MLNnMhwJNa8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrnK/WTLGE7IiSdwYEtYA7GxQelncq8jPG+o5ZvDAJKrcVteBNF+++L4rFMHOuHC+hu3KiObnLB8AYkqIw/nhKW39gIGbvbxkEK8YJj8Uh53cNaa/IgzsoWohrLDbRPW09Gsbl1KEZRapQJXqqpOy1k8SghsogeAZV0r/ig0hLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbc3trFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F04C4CEE5;
-	Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
+	 MIME-Version; b=JtW4D6mjMwZ9CLWbnt1uRFHDHxROd6B8CfpFAA8PLneKofz5VT2cwlRLLm9b2tU1t4pZATaxC3uG3XR75mTYYenc9U2S1K4djwtxYuvahNy1FuhIczo5hpQHW7rXk5T1XHswvwMfy0474qatY5KI3cTlfzDoQ831rROdrRC7MGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlMbX/3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03C2C4CEE5;
+	Tue,  8 Apr 2025 12:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115599;
-	bh=l1YPDezXzfI8SCCsIZE98u+TV6SbGEdgyhEzxK7QJ3Q=;
+	s=korg; t=1744115038;
+	bh=sFMHuKynNrsXGJHv8eiqpCfGYBgYGQ/MLNnMhwJNa8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbc3trFVokeWroBm4a6TlaWUPOwqT2ECJ9iwC2Egi5wLRfCxOzYUoZoSOpWMvQNSC
-	 HuDlqCdKjeRnpWmIgEaWFymdfxARXgypcDGx+lQW4WNF6CREMSGPG0F8sTXE7qWWxN
-	 QFpmqLRsEYyftldq48h8dMECDNycljDEwOMiwAsQ=
+	b=FlMbX/3C6DIuh7hZ8+HucgzeHcFB3moEpWzeICi6ZKq2bUwB3hVSZZADJbtV+EtSq
+	 YfCpd2WjXZc4CK84ch51JXy05IIuWEAszc2C+4zQbiU6cBzrpl67c6YZR+tAvHsZJw
+	 F2mp6uPsN4mv9k5B3xPRlHrcTa5M6wsCERscfOOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Oleg Nesterov <oleg@redhat.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/204] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
+Subject: [PATCH 6.13 325/499] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:48:57 +0200
-Message-ID: <20250408104820.509800270@linuxfoundation.org>
+Message-ID: <20250408104859.330882248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
+[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
 
-The init_task instance of struct task_struct is statically allocated and
-may not contain the full FP state for userspace. As such, limit the copy
-to the valid area of both init_task and 'dst' and ensure all memory is
-initialized.
+Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
 
-Note that the FP state is only needed for userspace, and as such it is
-entirely reasonable for init_task to not contain parts of it.
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
 
-Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
-----
-
-v2:
-- Fix code if arch_task_struct_size < sizeof(init_task) by using
-  memcpy_and_pad.
-
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index acc83738bf5b4..24c237c571980 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -87,7 +87,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
-  */
- int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
- {
--	memcpy(dst, src, arch_task_struct_size);
-+	/* init_task is not dynamically sized (incomplete FPU state) */
-+	if (unlikely(src == &init_task))
-+		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
-+	else
-+		memcpy(dst, src, arch_task_struct_size);
-+
- #ifdef CONFIG_VM86
- 	dst->thread.vm86 = NULL;
- #endif
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c4e01becdb625..1b216e8fa4046 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10651,7 +10651,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
++	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x10a4, "ASUS TP3407SA", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
 -- 
 2.39.5
 
