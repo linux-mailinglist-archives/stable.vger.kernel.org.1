@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C866A7FDF9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6510A8021B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D01B3BB66E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E70188CBEF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1EA26A1A7;
-	Tue,  8 Apr 2025 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506BD263C6D;
+	Tue,  8 Apr 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv/boYTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bkmy7FVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814D626773A;
-	Tue,  8 Apr 2025 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE4F207E14;
+	Tue,  8 Apr 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109875; cv=none; b=rC7J81+kk+OVr1IsQzknTizRlN9G2TsHge/0y22lA+UhqklbI/ZfnMSCIueNQmP+zCzOmlpIhU8Q7sqCwb1PEUeDrcWEDnAzD+O22p8YzPpZ6TUnRdEKqXTNf3UHebFVAEplGhvGeM+y10qnD4zfOJkTPlw5YJbmwoNhetkQ+qA=
+	t=1744112472; cv=none; b=Bhmi6+e4aCAyvBJJwU/v4R7BWiv4HtNQ7GyqGk/vQUpkQuoPRR+CLolBFmwrmfSiQX00t244uw7AXhinyLR7vFRi/OExL+S3z2OnRXRS6rEn7tntMF2MMwNEZjsVB7V+us7ZCXA7QWlIweVYuYa2ybXkCVJlSIIlWekTPQzhjUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109875; c=relaxed/simple;
-	bh=5sFWeDxAsa5vI1stIb5T501yDYGhf6eviZz9tGO04XA=;
+	s=arc-20240116; t=1744112472; c=relaxed/simple;
+	bh=LL/mL+z9PfeVTGi4C+sc8uuqhdos4ZgkD//439AXrY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjOe2UQpG1E0pDJgf/FJ9up5gbuvnfSH6ms/Wg3Xp5Ze8IPdpKoT3gSEXZWixpziAN9OcO2wfI/d7qgmn6NjNEEQ01i2kTD39NhSoIv3A7yT5ogd22TzmsZ+Zpf5U2K0KltSu0yFJy8fLimsfzkd0/Fkkh4UAGAGGWZq6PABMUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv/boYTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12384C4CEE5;
-	Tue,  8 Apr 2025 10:57:54 +0000 (UTC)
+	 MIME-Version; b=I5b+8BgC4k4OD9WLZsdeCDURtA5A8NVh00ulJ02h2TUs7UVMqvRcRsjyRMWq6wHQdDSM/bwIE+hf6/bY003MahkL6nEuq2F8lnmHC3gtV9QACKHTD125ohk4v+STGSOt9DWUwDgGovehPT7xBVnFXm55b59r5etJjcc7l3vWCaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bkmy7FVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BAFC4CEE5;
+	Tue,  8 Apr 2025 11:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109875;
-	bh=5sFWeDxAsa5vI1stIb5T501yDYGhf6eviZz9tGO04XA=;
+	s=korg; t=1744112471;
+	bh=LL/mL+z9PfeVTGi4C+sc8uuqhdos4ZgkD//439AXrY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iv/boYTSF2EUkVom9y22bKe3kqRI+9HMbl6iswpGn9aY7dhgyuUbmqOOe8mSxg1B1
-	 8WaoQKSQAV9cXypM2UmPl230BQ6uHeQY3tN9q+H+kKTFEa9up2jj9OEJBgvai4/x4+
-	 4tiI2/nxnGq5ruOmfzFyVIV5d8FyGzQ2ckAEKDns=
+	b=Bkmy7FVBAv103lXm2rgW2r0pFZWHqHp/cs9fWxQ1HmYsQYtdm+07wBXnwureFGJF3
+	 w1rKbS8ZULqoxE+kL/rwHo1WQ+iTHm6wHcVygBuVnkQwQc1VatnfKLPUfOEK3lexdb
+	 nq7ce80RBSuJOlOCxiFkM8lybIj8TK1EeqD7rDkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/227] block: fix kmem_cache of name bio-108 already exists
+Subject: [PATCH 5.15 041/279] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
 Date: Tue,  8 Apr 2025 12:47:04 +0200
-Message-ID: <20250408104821.783288860@linuxfoundation.org>
+Message-ID: <20250408104827.488540323@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
+[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
 
-Device mapper bioset often has big bio_slab size, which can be more than
-1000, then 8byte can't hold the slab name any more, cause the kmem_cache
-allocation warning of 'kmem_cache of name 'bio-108' already exists'.
+When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
+constantly being filled with errors related to a "sequence number glitch",
+e.g.:
 
-Fix the warning by extending bio_slab->name to 12 bytes, but fix output
-of /proc/slabinfo
+	[ 1903.284538] sequence number glitch prev=16 curr=0
+	[ 1913.812205] sequence number glitch prev=50 curr=0
+	[ 1923.698219] sequence number glitch prev=142 curr=0
+	[ 2029.248276] sequence number glitch prev=1555 curr=0
+	[ 2046.333059] sequence number glitch prev=70 curr=0
+	[ 2076.520067] sequence number glitch prev=272 curr=0
+	[ 2158.704202] sequence number glitch prev=2655 curr=0
+	[ 2218.530776] sequence number glitch prev=2349 curr=0
+	[ 2225.579092] sequence number glitch prev=6 curr=0
 
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Internet connectivity is working fine, so this error seems harmless. It
+looks like modem does not preserve the sequence number when entering low
+power state; the amount of errors depends on how actively the modem is
+being used.
+
+A similar issue has also been seen on USB-based MBIM modems [1]. However,
+in cdc_ncm.c the "sequence number glitch" message is a debug message
+instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
+silence these errors when using the modem.
+
+[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 2 +-
+ drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/bio.c b/block/bio.c
-index 6f7a1aa9ea225..88a09c31095fb 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -55,7 +55,7 @@ struct bio_slab {
- 	struct kmem_cache *slab;
- 	unsigned int slab_ref;
- 	unsigned int slab_size;
--	char name[8];
-+	char name[12];
- };
- static DEFINE_MUTEX(bio_slab_lock);
- static struct bio_slab *bio_slabs;
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index ef70bb7c88ad6..43c20deab3189 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
+ 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
+ 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
+ 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
+-		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
++		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
+ 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
+ 	}
+ 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
 -- 
 2.39.5
 
