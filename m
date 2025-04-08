@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99F5A7FE1B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB74A8019D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F039016DD0C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F4F28809C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE256267B7F;
-	Tue,  8 Apr 2025 11:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2538E268C62;
+	Tue,  8 Apr 2025 11:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfRrbgdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diZt3MMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C60D26659C;
-	Tue,  8 Apr 2025 11:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50E0268FED;
+	Tue,  8 Apr 2025 11:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110142; cv=none; b=uEXlQJmv6CsvKVv4du3V0HZB0T6PD+d5CmNmidLqL/i3lDJzORjBJe+FJSMIr2284/sfU848TkKgFKW2SRHAVDLpYAyqnTQG81i+MGLiZ8ouVFe5ujwj0xTfoUOeTo4PKG/lIV2LKEe3Kgeiwn2u5P1q2BITMlaw4ichpUrYimo=
+	t=1744112074; cv=none; b=K+McVRnX86t40Vd2/swXADUICsarP7O5ekdwQAfIJGYSRQnCv+s1FNuWyrxwRpsD+T8heAHpAveXro2y8+JVPNWly/H2/yBLL8WYf18Q4eE+NKEsTZ8Hv0vj7EmvApYJzwqmrWxWofropcqLDQx3SXsijPMPRNPBbQ7eOSzJqOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110142; c=relaxed/simple;
-	bh=0Heqv9WBCDjbFox2X+hF8w1BvsVLJghrwspv/TonC0w=;
+	s=arc-20240116; t=1744112074; c=relaxed/simple;
+	bh=LiD+vXlR8E0QrcvHxeAoW7MT6r78I43GPUEuO5VKlqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZEYmzk7xX5q2moirzICqz1drYI+QpD1lEzFZC8xt9/abd3Qde4cP1fAg/0WIlB4iH3m9fzS2FXqNmKmnvAUTv/ZppK1+sOoL31VRdHksBCGkMyE3rHIisgH99W631L2WTaS1EuaiVQ39Skcrsi1PFwADx/fWLzAM6kYkra79sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfRrbgdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E61CC4CEE5;
-	Tue,  8 Apr 2025 11:02:21 +0000 (UTC)
+	 MIME-Version; b=jjMMhLot79EhsyK9DMz28tLo0R86CqOrZHxVAJCv1Fv9vMEZ+O6CCUZTgLCdxjQvk9PmXGNjBTGtfEEgH8v+BbkKL8+g7j/RD3/pGMOQ64tfTFaj5ZCJXNiKN4Tl6UX6XE/GGuCc7T3BqRV8Mn9WZ7ZB/owS3MwtJ0iKMG9FCRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diZt3MMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63027C4CEEB;
+	Tue,  8 Apr 2025 11:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110142;
-	bh=0Heqv9WBCDjbFox2X+hF8w1BvsVLJghrwspv/TonC0w=;
+	s=korg; t=1744112074;
+	bh=LiD+vXlR8E0QrcvHxeAoW7MT6r78I43GPUEuO5VKlqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfRrbgdoz+X4eF7rRiRLHwQfqjCe6H4mrKciq+lTIZPGGrSC1QKUs87E9E9JzU9tS
-	 EKYJk0nMRVgFZLWM27ayrH53OG4d+zSniVExW7gOAk4QMZNOskLOpLVsVVAs80+5qg
-	 +g+GEpHqSJBuCFtQPLUDTmW37OFawtOHkfVuSsVI=
+	b=diZt3MMZRTttP2SZ/DBtlF85VsjNntY71Lbxhr9TDZFo6ExNKG6tuwEFFYipMUDwW
+	 6yseCahebdJnBThfQ0+dy96OnZCdelI1tZ5DmJlj/h7wj4vQJjys9SpjKMunU2hfWL
+	 WpbNSonl9PpKG3EsFzEYNLtEE5d3OU/2l5Gv9vV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/227] nvme-pci: skip CMB blocks incompatible with PCI P2P DMA
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 665/731] LoongArch: BPF: Fix off-by-one error in build_prologue()
 Date: Tue,  8 Apr 2025 12:49:22 +0200
-Message-ID: <20250408104825.828101601@linuxfoundation.org>
+Message-ID: <20250408104929.735001813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 56cf7ef0d490b28fad8f8629fc135c5ab7c9f54e ]
+commit 7e2586991e36663c9bc48c828b83eab180ad30a9 upstream.
 
-The PCI P2PDMA code will register the CMB block to the memory
-hot-plugging subsystem, which have an alignment requirement. Memory
-blocks that do not satisfy this alignment requirement (usually 2MB) will
-lead to a WARNING from memory hotplugging.
+Vincent reported that running BPF progs with tailcalls on LoongArch
+causes kernel hard lockup. Debugging the issues shows that the JITed
+image missing a jirl instruction at the end of the epilogue.
 
-Verify the CMB block's address and size against the alignment and only
-try to send CMB blocks compatible with it to prevent this warning.
+There are two passes in JIT compiling, the first pass set the flags and
+the second pass generates JIT code based on those flags. With BPF progs
+mixing bpf2bpf and tailcalls, build_prologue() generates N insns in the
+first pass and then generates N+1 insns in the second pass. This makes
+epilogue_offset off by one and we will jump to some unexpected insn and
+cause lockup. Fix this by inserting a nop insn.
 
-Tested on Intel DC D4502 SSD, which has a 512K CMB block that is too
-small for memory hotplugging (thus PCI P2PDMA).
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Tested-by: Vincent Li <vincent.mc.li@gmail.com>
+Closes: https://lore.kernel.org/loongarch/CAK3+h2w6WESdBN3UCr3WKHByD7D6Q_Ve1EDAjotVrnx6Or_c8g@mail.gmail.com/
+Closes: https://lore.kernel.org/bpf/CAK3+h2woEjG_N=-XzqEGaAeCmgu2eTCUc7p6bP4u8Q+DFHm-7g@mail.gmail.com/
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/loongarch/net/bpf_jit.c |    2 ++
+ arch/loongarch/net/bpf_jit.h |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 7993acdfd3185..a56baaafe79df 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1867,6 +1867,18 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (offset > bar_size)
- 		return;
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -142,6 +142,8 @@ static void build_prologue(struct jit_ct
+ 	 */
+ 	if (seen_tail_call(ctx) && seen_call(ctx))
+ 		move_reg(ctx, TCC_SAVED, REG_TCC);
++	else
++		emit_insn(ctx, nop);
  
-+	/*
-+	 * Controllers may support a CMB size larger than their BAR, for
-+	 * example, due to being behind a bridge. Reduce the CMB to the
-+	 * reported size of the BAR
-+	 */
-+	size = min(size, bar_size - offset);
-+
-+	if (!IS_ALIGNED(size, memremap_compat_align()) ||
-+	    !IS_ALIGNED(pci_resource_start(pdev, bar),
-+			memremap_compat_align()))
-+		return;
-+
- 	/*
- 	 * Tell the controller about the host side address mapping the CMB,
- 	 * and enable CMB decoding for the NVMe 1.4+ scheme:
-@@ -1877,14 +1889,6 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 			     dev->bar + NVME_REG_CMBMSC);
- 	}
+ 	ctx->stack_size = stack_adjust;
+ }
+--- a/arch/loongarch/net/bpf_jit.h
++++ b/arch/loongarch/net/bpf_jit.h
+@@ -27,6 +27,11 @@ struct jit_data {
+ 	struct jit_ctx ctx;
+ };
  
--	/*
--	 * Controllers may support a CMB size larger than their BAR,
--	 * for example, due to being behind a bridge. Reduce the CMB to
--	 * the reported size of the BAR
--	 */
--	if (size > bar_size - offset)
--		size = bar_size - offset;
--
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
--- 
-2.39.5
-
++static inline void emit_nop(union loongarch_instruction *insn)
++{
++	insn->word = INSN_NOP;
++}
++
+ #define emit_insn(ctx, func, ...)						\
+ do {										\
+ 	if (ctx->image != NULL) {						\
 
 
 
