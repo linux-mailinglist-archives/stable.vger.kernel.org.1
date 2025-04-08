@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-130022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1478FA8029A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1D3A80158
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3ECF16AF84
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9FFA88250F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EAF263C6D;
-	Tue,  8 Apr 2025 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08171269899;
+	Tue,  8 Apr 2025 11:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5iSfF4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLHiGIo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D0425FA13;
-	Tue,  8 Apr 2025 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70A4268FD5;
+	Tue,  8 Apr 2025 11:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112605; cv=none; b=tNSXuN6MjTeieYnfXGP1VECup4+yV74sj81UBWyqn/Fh0hQKZ6zK1Bxpag69RJYnkWGbs6/6hzBoRzW8GFHjNzz5L/98W1O7GYGqvBx6wFcG7V87/bLCaNqOHYgUHX2WgS5JYM/u9tLAhXZG7opRZZUUr11JEbAMkBdZIEGvkdk=
+	t=1744111943; cv=none; b=TdJNOnC4f8Eek/8STt94KfyFDAHKFBWOH3eNg/C10zWKnlLsTj+UlYcFvcxbK+FxABjiFm6vhpohlJTCTpXHrvY2vVU3YFZj+uIYF9aBeVgVuyahSCPT7HKH4fA82lmTPhm3l4z/LjZC49a5RTWSXW9D1OpvhLB2QElbU6RZGdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112605; c=relaxed/simple;
-	bh=EUn3Q+LcK6Q/mDg2n2gqoog/YCRav3sTYV4/THZjMrc=;
+	s=arc-20240116; t=1744111943; c=relaxed/simple;
+	bh=2rGuU3KcU8J1ipqojYrcl6wbECeDwXGgyPgAs/9eL/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAY28umsTL15zJYmDhWig6372tp+0aK/YAAaeuTbM9xlCXZxrnc+2GCbbyeOsKOHZSd+GDrEPPLLYITKb78QSlOIdrDzvZby12IPx4XKtZxYwQwmJvqHTMzdegsu2fRgz/BemBZh0r0mZxTfP9DM3G7AyqLxa5Rme35O9tdvnhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5iSfF4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99276C4CEE5;
-	Tue,  8 Apr 2025 11:43:24 +0000 (UTC)
+	 MIME-Version; b=XSwXm2J3JU61E0xWzj71/ASTgWDFJbmN2C6n8TmtRUDvK6uXSK2ygjdvKsM+17FguIWyZopth+NqylMI6f5BdzJYDP2tPv690FaGxw6rWjU76A6fGzTN7PL/ietWmCD/sRAvZnyLZ2F8xdZJsJLZvPMdrv6IFrtnTC1IJw7Adu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLHiGIo1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C964FC4CEE5;
+	Tue,  8 Apr 2025 11:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112605;
-	bh=EUn3Q+LcK6Q/mDg2n2gqoog/YCRav3sTYV4/THZjMrc=;
+	s=korg; t=1744111943;
+	bh=2rGuU3KcU8J1ipqojYrcl6wbECeDwXGgyPgAs/9eL/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5iSfF4NE5CBGgsst9VOJX+dUPa8t1Rt0pqbZOk8n5EZE3mWQVRQ+UqBm1T+QU4Pv
-	 Io/AbVMBdH0cuUXZZJdwBYavFpoO3R56bluT6D5lM6SyN4WkH9iku2WheFeDtjsQGX
-	 X78S/luXGe01OqPVBgz/A87v+QyaorZtrAHBkD0o=
+	b=MLHiGIo1vHpvnIHD0Mw7ZJ61p5af6Ha5zlDIZTiwac41zMYGarqjppoCVnuSgKx9a
+	 ++4U0Rq58IHKIIjji5rBhzf4n6ObVLnmxUgOo/OXfjuXWkNUNGPkIGZIC9mJyDffhO
+	 8XiduGHS8EXH9x76NteDJbGSQp0bqG8cpLV6jM3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yuying Ma <yuma@redhat.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/279] cpufreq: governor: Fix negative idle_time handling in dbs_update()
+Subject: [PATCH 6.14 617/731] idpf: fix adapter NULL pointer dereference on reboot
 Date: Tue,  8 Apr 2025 12:48:34 +0200
-Message-ID: <20250408104829.877316590@linuxfoundation.org>
+Message-ID: <20250408104928.622160723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhan <zhanjie9@hisilicon.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
+[ Upstream commit 4c9106f4906a85f6b13542d862e423bcdc118cc3 ]
 
-We observed an issue that the CPU frequency can't raise up with a 100% CPU
-load when NOHZ is off and the 'conservative' governor is selected.
+With SRIOV enabled, idpf ends up calling into idpf_remove() twice.
+First via idpf_shutdown() and then again when idpf_remove() calls into
+sriov_disable(), because the VF devices use the idpf driver, hence the
+same remove routine. When that happens, it is possible for the adapter
+to be NULL from the first call to idpf_remove(), leading to a NULL
+pointer dereference.
 
-'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
-when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
-("cpufreq: governor: Fix handling of special cases in dbs_update()").
+echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
+reboot
 
-However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
-logic in load calculation") introduced a comparison between 'idle_time' and
-'samling_rate' to detect a long idle interval.  While 'idle_time' is
-converted to int before comparison, it's actually promoted to unsigned
-again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
-wrong idle interval detection when it's in fact 100% busy and sets
-policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
-frequency to minimum because of the large 'idle_periods', such that the
-frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
-so it fortunately avoids the issue.
+BUG: kernel NULL pointer dereference, address: 0000000000000020
+...
+RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
+...
+? idpf_remove+0x22/0x1f0 [idpf]
+? idpf_remove+0x1e4/0x1f0 [idpf]
+pci_device_remove+0x3f/0xb0
+device_release_driver_internal+0x19f/0x200
+pci_stop_bus_device+0x6d/0x90
+pci_stop_and_remove_bus_device+0x12/0x20
+pci_iov_remove_virtfn+0xbe/0x120
+sriov_disable+0x34/0xe0
+idpf_sriov_configure+0x58/0x140 [idpf]
+idpf_remove+0x1b9/0x1f0 [idpf]
+idpf_shutdown+0x12/0x30 [idpf]
+pci_device_shutdown+0x35/0x60
+device_shutdown+0x156/0x200
+...
 
-Correct negative 'idle_time' to 0 before any use of it in dbs_update().
+Replace the direct idpf_remove() call in idpf_shutdown() with
+idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
+the bulk of the cleanup, such as stopping the init task, freeing IRQs,
+destroying the vports and freeing the mailbox. This avoids the calls to
+sriov_disable() in addition to a small netdev cleanup, and destroying
+workqueues, which don't seem to be required on shutdown.
 
-Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
-Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Yuying Ma <yuma@redhat.com>
+Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
-index 55c80319d2684..5981e3ef9ce0e 100644
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 		time_elapsed = update_time - j_cdbs->prev_update_time;
- 		j_cdbs->prev_update_time = update_time;
- 
--		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		/*
-+		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
-+		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
-+		 * off, where idle_time is calculated by the difference between
-+		 * time elapsed in jiffies and "busy time" obtained from CPU
-+		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
-+		 * time should grow with the same amount in two consecutive
-+		 * samples, but in practice there could be a tiny difference,
-+		 * making the accumulated idle time decrease sometimes.  Hence,
-+		 * in this case, idle_time should be regarded as 0 in order to
-+		 * make the further process correct.
-+		 */
-+		if (cur_idle_time > j_cdbs->prev_cpu_idle)
-+			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		else
-+			idle_time = 0;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index b6c515d14cbf0..bec4a02c53733 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
+  */
+ static void idpf_shutdown(struct pci_dev *pdev)
+ {
+-	idpf_remove(pdev);
++	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
 +
- 		j_cdbs->prev_cpu_idle = cur_idle_time;
++	cancel_delayed_work_sync(&adapter->vc_event_task);
++	idpf_vc_core_deinit(adapter);
++	idpf_deinit_dflt_mbx(adapter);
  
- 		if (ignore_nice) {
-@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			 * calls, so the previous load value can be used then.
- 			 */
- 			load = j_cdbs->prev_load;
--		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
-+		} else if (unlikely(idle_time > 2 * sampling_rate &&
- 				    j_cdbs->prev_load)) {
- 			/*
- 			 * If the CPU had gone completely idle and a task has
-@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			load = j_cdbs->prev_load;
- 			j_cdbs->prev_load = 0;
- 		} else {
--			if (time_elapsed >= idle_time) {
-+			if (time_elapsed > idle_time)
- 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
--			} else {
--				/*
--				 * That can happen if idle_time is returned by
--				 * get_cpu_idle_time_jiffy().  In that case
--				 * idle_time is roughly equal to the difference
--				 * between time_elapsed and "busy time" obtained
--				 * from CPU statistics.  Then, the "busy time"
--				 * can end up being greater than time_elapsed
--				 * (for example, if jiffies_64 and the CPU
--				 * statistics are updated by different CPUs),
--				 * so idle_time may in fact be negative.  That
--				 * means, though, that the CPU was busy all
--				 * the time (on the rough average) during the
--				 * last sampling interval and 100 can be
--				 * returned as the load.
--				 */
--				load = (int)idle_time < 0 ? 100 : 0;
--			}
-+			else
-+				load = 0;
-+
- 			j_cdbs->prev_load = load;
- 		}
- 
--		if (unlikely((int)idle_time > 2 * sampling_rate)) {
-+		if (unlikely(idle_time > 2 * sampling_rate)) {
- 			unsigned int periods = idle_time / sampling_rate;
- 
- 			if (periods < idle_periods)
+ 	if (system_state == SYSTEM_POWER_OFF)
+ 		pci_set_power_state(pdev, PCI_D3hot);
 -- 
 2.39.5
 
