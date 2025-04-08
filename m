@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC466A80144
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFAA7FD5E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4316188225A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3C1E7A2508
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDC3263899;
-	Tue,  8 Apr 2025 11:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9978426A0D4;
+	Tue,  8 Apr 2025 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FC5JzY8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBVTMA0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D9224234;
-	Tue,  8 Apr 2025 11:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89126A0C1;
+	Tue,  8 Apr 2025 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111903; cv=none; b=rbUhNfZ6NJC3iB/8CmNH0DREdns+26X2t0fvupiemoQOGLzZDqJTMTnZWNmkd9/KqU0xYnUaOexYnh9SLN79bRdmdO2RbUe9EI9qMl7rWA1nC4oa+3so5O7IOwTJmCWZiVYUtxnuc0wri+USTCJBjIJIqVtGoI/U+mxF0dI1TNQ=
+	t=1744109980; cv=none; b=ZhSnnDCU5mxjUQXdvHPQ3EcU3l0+8O5yDiMC8+UkkDnrCe9n5Jt0to365FG1zcOCOQAtJdioFxpPtkNALBzVc4VgzfdjumEe5tohmYhOHxToerZi8gfA19k3KtWruUbE4WtrTJ1NGZZdWMiDFLh7dPz7CqjwfF4l6mTNfZCPsFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111903; c=relaxed/simple;
-	bh=VDM1KSmLCbJEigALwuLXx/jrzLRNaBWGoKJe+OcERM8=;
+	s=arc-20240116; t=1744109980; c=relaxed/simple;
+	bh=D2dLK5E3z7gwUUFOnnN55L/gahHk8MDFI0Y+t5t0BpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rpia/x+0g1hy7xpUzmQ6XP47I4VHZ6FU/Vvk4civN4TlAFJOH9UIUILwFK7UQAfk4bzDBWfHdj/s6j2eY7h0IWkN+WsJSqEO59YubowiBTlP8p8YMP7pFsGjYQBKDX88jOiF4c94iY1g21lC6pY9zITdVGS4WX50XL9w4IcwwcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FC5JzY8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0F6C4CEE7;
-	Tue,  8 Apr 2025 11:31:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZGWZTCc0xbRHz+8zkxmgFWSTjaytSroUIIDM1DkOvonX8pz5egHND95Dc6jLUchTyeTndfSc014Hye4Y57G6oRXkJabsLSqpal9rPAmbfzaWbyUbiSQV7owdj5YQhRghPHIe+JqDT/+Ob6QZ/5BUsLV9gVeqaVEphVqdUeB6XLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBVTMA0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BC9C4CEE5;
+	Tue,  8 Apr 2025 10:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111903;
-	bh=VDM1KSmLCbJEigALwuLXx/jrzLRNaBWGoKJe+OcERM8=;
+	s=korg; t=1744109980;
+	bh=D2dLK5E3z7gwUUFOnnN55L/gahHk8MDFI0Y+t5t0BpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FC5JzY8TNWyOvI9iThClo5qpnQi1cCkclkj0oWA/MjyuRRAiVbTzXAwjZpjW7DpXd
-	 AWwvWHVphrnJvGd4gpzQBwYGppGU0W44jMIRGtekNzP1gXkTSzh/ah1lf4OaWqubpA
-	 Df/tUHNSMM2ky4vzklRDFuCVwSJkxhQHubzVjq4w=
+	b=iBVTMA0AMQgDH5aA1+L3FSQrz730iS4Jrg0hGb8tw8G7FXTy8ogXgKPxrAXIUfHxM
+	 lQyqcLmWxw0RF/bDydKnF/Ns3IWxy0NRlCTBr7rQtuprgV+Dzval7dQW3Se+Z1mv6A
+	 G0G6LYvocxGaztnQTdmRTYLkA/jOG7JoFkDZZcxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 603/731] riscv/kexec_file: Handle R_RISCV_64 in purgatory relocator
+Subject: [PATCH 5.10 122/227] thermal: int340x: Add NULL check for adev
 Date: Tue,  8 Apr 2025 12:48:20 +0200
-Message-ID: <20250408104928.299491275@linuxfoundation.org>
+Message-ID: <20250408104823.995908571@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 28093cfef5dd62f4cbd537f2bdf6f0bf85309c45 ]
+[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
 
-Commit 58ff537109ac ("riscv: Omit optimized string routines when
-using KASAN") introduced calls to EXPORT_SYMBOL() in assembly string
-routines, which result in R_RISCV_64 relocations against
-.export_symbol section. As these rountines are reused by RISC-V
-purgatory and our relocator doesn't recognize these relocations, this
-fails kexec-file-load with dmesg like
+Not all devices have an ACPI companion fwnode, so adev might be NULL.
+This is similar to the commit cd2fd6eab480
+("platform/x86: int3472: Check for adev == NULL").
 
-	[   11.344251] kexec_image: Unknown rela relocation: 2
-	[   11.345972] kexec_image: Error loading purgatory ret=-8
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in int3402_thermal_probe().
 
-Let's support R_RISCV_64 relocation to fix kexec on 64-bit RISC-V.
-32-bit variant isn't covered since KEXEC_FILE and KEXEC_PURGATORY isn't
-available.
+Note, under the same directory, int3400_thermal_probe() has such a
+check.
 
-Fixes: 58ff537109ac ("riscv: Omit optimized string routines when using KASAN")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250326051445.55131-2-ziyao@disroot.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
+[ rjw: Subject edit, added Fixes: ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/elf_kexec.c | 3 +++
+ drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index 3c37661801f95..e783a72d051f4 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -468,6 +468,9 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
- 		case R_RISCV_ALIGN:
- 		case R_RISCV_RELAX:
- 			break;
-+		case R_RISCV_64:
-+			*(u64 *)loc = val;
-+			break;
- 		default:
- 			pr_err("Unknown rela relocation: %d\n", r_type);
- 			return -ENOEXEC;
+diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+index 43fa351e2b9ec..b7fdf25bfd237 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
+ 	struct int3402_thermal_data *d;
+ 	int ret;
+ 
++	if (!adev)
++		return -ENODEV;
++
+ 	if (!acpi_has_method(adev->handle, "_TMP"))
+ 		return -ENODEV;
+ 
 -- 
 2.39.5
 
