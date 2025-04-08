@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D72A7FE0F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65C3A803DB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A0B189B622
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38A8B4634CB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335692690CB;
-	Tue,  8 Apr 2025 11:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D79326A1BE;
+	Tue,  8 Apr 2025 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkLgVRSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVJWrkeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41192690D5;
-	Tue,  8 Apr 2025 11:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC81269AE4;
+	Tue,  8 Apr 2025 11:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110063; cv=none; b=TDmev3P4M2FsQI5RWcw7FMOVB6hZRVmdpv5Ef41FsN+giydkhZruc1oaVJhenLLpYSst0jkbPNBD7dnb/SXPhCfPzV7YPcBWhHHPSlS5DP5dqxWaRYHPASFgkfTgI5LuHlg04ZRG7EIrc2q8bgMwNdnbMKC5hL+XZJA4MDCPCDA=
+	t=1744113263; cv=none; b=dX770g/K2TuA7vND1X2oZii+kseLKGB3thzJrUD4tPB3tXIHTy2X8HzekfxCb9MxR9VjcKeRNLge/hv5wWKxLEsXWpwwElMbBT1VgIw0O/285GVYRLMk5inN0vYUnCBAqxi3iwwV8GRDmFPz0I7edjbyGgqCMxwfU7axQZRC+FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110063; c=relaxed/simple;
-	bh=3OY/ojBEiMsJvppTiQF68EhrLk1mlp3+5iNGMiHWMVE=;
+	s=arc-20240116; t=1744113263; c=relaxed/simple;
+	bh=iA81NhWK0soqdfifwYWCrHX8jPRMbOIupEsSjx4gER4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6mFfmgb5tVPoDQHN6mVXPn53R80a1bcsg5CDKbfGJtJNDO3SODnkdsVS7goS5hvEX3+SEHwm8xPZfxhA2GY2l2uHDWdv7qgGvUnNy9Xemm12N8UMofc7xs+TNHo0LiDpcEg9ps7q/wPjbYB1oATJvDTBP/516U3BO2Fg9Hf2Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkLgVRSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED4DC4CEE5;
-	Tue,  8 Apr 2025 11:01:02 +0000 (UTC)
+	 MIME-Version; b=U5jYt0krE1YIW8bzASykaSTgt0UqsgJnMWWi8oWlwseI0qnOS8zYCG6HvuTXzZMdZdpfgDACqatNDmFQ4kPjwq2ma+gJbIc6nvgUOMpTUtzZwW2x7UvUGem0JOuNYkHqN8SynvLK38Xer7azDAnSdPqOmX0GfkaRJgQgouyshNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVJWrkeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81743C4CEE5;
+	Tue,  8 Apr 2025 11:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110062;
-	bh=3OY/ojBEiMsJvppTiQF68EhrLk1mlp3+5iNGMiHWMVE=;
+	s=korg; t=1744113262;
+	bh=iA81NhWK0soqdfifwYWCrHX8jPRMbOIupEsSjx4gER4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkLgVRSgDODWG6UHwfJmmTkXLZYyW1rbvh6yxveJ+R+h2vCzpfyg1zAPokbPEREyq
-	 N7I2wZJ1Obx2Utr1fevHnSEsidHspTfPYWmFDmTMqRhZN+XG+fIbzXDljmqpBmJlLT
-	 7rehT0tCc1LydGmTyM8UkCb/WNpKiKs+K2Pjq/8s=
+	b=SVJWrkehFsScBMQndydvlN6CFUekP8E5NarGoNz3nGLIBKSDPlR75baiKQZ7TbkLu
+	 CHcg/c1gB0l12JTf8Ki8rPF+Dn1ZNwGwuqTap2Pj/w6SmNrASHZigY0CPWCQm0W2Ox
+	 cSYFBm9fpsLAFoJTnRfpGcy3K85qUY74MloNyLOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/227] ASoC: ti: j721e-evm: Fix clock configuration for ti,j7200-cpb-audio compatible
+Subject: [PATCH 6.6 094/268] crypto: nx - Fix uninitialised hv_nxc on error
 Date: Tue,  8 Apr 2025 12:48:25 +0200
-Message-ID: <20250408104824.138674087@linuxfoundation.org>
+Message-ID: <20250408104831.031132540@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 45ff65e30deb919604e68faed156ad96ce7474d9 ]
+[ Upstream commit 9b00eb923f3e60ca76cbc8b31123716f3a87ac6a ]
 
-For 'ti,j7200-cpb-audio' compatible, there is support for only one PLL for
-48k. For 11025, 22050, 44100 and 88200 sampling rates, due to absence of
-J721E_CLK_PARENT_44100, we get EINVAL while running any audio application.
-Add support for these rates by using the 48k parent clock and adjusting
-the clock for these rates later in j721e_configure_refclk.
+The compiler correctly warns that hv_nxc may be used uninitialised
+as that will occur when NX-GZIP is unavailable.
 
-Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM (CPB and IVI)")
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Link: https://patch.msgid.link/20250318113524.57100-1-j-choudhary@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix it by rearranging the code and delay setting caps_feat until
+the final query succeeds.
+
+Fixes: b4ba22114c78 ("crypto/nx: Get NX capabilities for GZIP coprocessor type")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/j721e-evm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/nx/nx-common-pseries.c | 37 ++++++++++++---------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
-index 756cd9694cbe8..b749bcc6f0414 100644
---- a/sound/soc/ti/j721e-evm.c
-+++ b/sound/soc/ti/j721e-evm.c
-@@ -179,6 +179,8 @@ static int j721e_configure_refclk(struct j721e_priv *priv,
- 		clk_id = J721E_CLK_PARENT_48000;
- 	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_44100])
- 		clk_id = J721E_CLK_PARENT_44100;
-+	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_48000])
-+		clk_id = J721E_CLK_PARENT_48000;
- 	else
- 		return ret;
+diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
+index 35f2d0d8507ed..7e98f174f69b9 100644
+--- a/drivers/crypto/nx/nx-common-pseries.c
++++ b/drivers/crypto/nx/nx-common-pseries.c
+@@ -1144,6 +1144,7 @@ static void __init nxcop_get_capabilities(void)
+ {
+ 	struct hv_vas_all_caps *hv_caps;
+ 	struct hv_nx_cop_caps *hv_nxc;
++	u64 feat;
+ 	int rc;
  
+ 	hv_caps = kmalloc(sizeof(*hv_caps), GFP_KERNEL);
+@@ -1154,27 +1155,26 @@ static void __init nxcop_get_capabilities(void)
+ 	 */
+ 	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES, 0,
+ 					  (u64)virt_to_phys(hv_caps));
++	if (!rc)
++		feat = be64_to_cpu(hv_caps->feat_type);
++	kfree(hv_caps);
+ 	if (rc)
+-		goto out;
++		return;
++	if (!(feat & VAS_NX_GZIP_FEAT_BIT))
++		return;
+ 
+-	caps_feat = be64_to_cpu(hv_caps->feat_type);
+ 	/*
+ 	 * NX-GZIP feature available
+ 	 */
+-	if (caps_feat & VAS_NX_GZIP_FEAT_BIT) {
+-		hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
+-		if (!hv_nxc)
+-			goto out;
+-		/*
+-		 * Get capabilities for NX-GZIP feature
+-		 */
+-		rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
+-						  VAS_NX_GZIP_FEAT,
+-						  (u64)virt_to_phys(hv_nxc));
+-	} else {
+-		pr_err("NX-GZIP feature is not available\n");
+-		rc = -EINVAL;
+-	}
++	hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
++	if (!hv_nxc)
++		return;
++	/*
++	 * Get capabilities for NX-GZIP feature
++	 */
++	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
++					  VAS_NX_GZIP_FEAT,
++					  (u64)virt_to_phys(hv_nxc));
+ 
+ 	if (!rc) {
+ 		nx_cop_caps.descriptor = be64_to_cpu(hv_nxc->descriptor);
+@@ -1184,13 +1184,10 @@ static void __init nxcop_get_capabilities(void)
+ 				be64_to_cpu(hv_nxc->min_compress_len);
+ 		nx_cop_caps.min_decompress_len =
+ 				be64_to_cpu(hv_nxc->min_decompress_len);
+-	} else {
+-		caps_feat = 0;
++		caps_feat = feat;
+ 	}
+ 
+ 	kfree(hv_nxc);
+-out:
+-	kfree(hv_caps);
+ }
+ 
+ static const struct vio_device_id nx842_vio_driver_ids[] = {
 -- 
 2.39.5
 
