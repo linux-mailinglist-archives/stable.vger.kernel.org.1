@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E087A809B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C91A80B9C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72F28C595C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 898D01BA60D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1154226869D;
-	Tue,  8 Apr 2025 12:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D94283691;
+	Tue,  8 Apr 2025 12:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZKNi13d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O5FSQny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FF9267F57;
-	Tue,  8 Apr 2025 12:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1C0283688;
+	Tue,  8 Apr 2025 12:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116002; cv=none; b=XXQ8+ohFJx5C/CUb75DF/XMtp7t3d5tDkZ1QkRJQ6cq2NfwEFvUqdeOvIy0mVBvuGctGswJtnV9xHeK0g9VwV6s4WIzUJeXGxTanX+/8NEXvhXgSSt08um1KKWc+i+gkmg/Hy46Q5sNh+FaudCi8Y6OWYmBiMBcXCuL3+k06qfs=
+	t=1744117157; cv=none; b=WCZAJ5i9PC35VFH/KEs8i1SLyOaaYVoHNr9wOKvueY5DUwNqkOn0V98eLHuQcjwluJE5vOGgkPGUnN+RIpDvFjkVBKiKeP4M8Fcb0QuwOEx4/MQbJkevWBM6UM8B3/Wa4gTQ92WmCsZ8oPkyvbExXvvGObZQcXWCGNKwMot5sS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116002; c=relaxed/simple;
-	bh=NkixqNOh1oNgSNP1oIpnTV4s3KBN0xuioamD6bpdzVg=;
+	s=arc-20240116; t=1744117157; c=relaxed/simple;
+	bh=ZcS7QY9z5rvP8VNmls7UHI/w6Gv3ijAQNPcPC7ZRf7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+nEjoOXNGTcWE9Rd+IRLZhIHJs9Epg2cJOPtaZ1F0EB90tQkiPSkr3ylZ9L+O5S6vcIjae/scd344KCD0xhXlEAe2GGKDNn61FP95FacD4ayc1QIjnG75XVZwIiuEmmN8oJVO0yKJapsAAcwD8/MD64qh5q5YebbjcFbkuBj7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZKNi13d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F380C4CEE5;
-	Tue,  8 Apr 2025 12:40:02 +0000 (UTC)
+	 MIME-Version; b=qgLQTUQ8H1C1iyTQxJVC5SV/8Ih++AkZtBZzleHDfrvcYw5CweX6L2OeitxKQXEW3vDx5MbbLl3AturA51V4fhWyTX/rtNKIa5x7in8QRPoCvOnBIY+pUpg/XQ2U0C7yV+aacdfTTjwCaRF2rCC8bcr4zZyQvihhu6LP37fCiR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O5FSQny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56823C4CEE7;
+	Tue,  8 Apr 2025 12:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116002;
-	bh=NkixqNOh1oNgSNP1oIpnTV4s3KBN0xuioamD6bpdzVg=;
+	s=korg; t=1744117157;
+	bh=ZcS7QY9z5rvP8VNmls7UHI/w6Gv3ijAQNPcPC7ZRf7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZKNi13d37IpdpWPsFbik+Inz4zfPrZ6hwXTpJBDXqiUB9CrZAfEeh6p0q6i6rcwy
-	 kArbwge4i068Lm8kyw2pXLX4trVftlbPKMKnwUybdwQx3eRHYM2gQ1Iomn9Stucffu
-	 CzAojd9lnxJuNMMevFUNB8dkzdVMXVdg7nKypWmM=
+	b=1O5FSQnyWbeEH28PdCVAQaf/za+nz36enGfIRap9sj8Mx1mamb5wlAbr5pT0hCVIU
+	 i34yv5sUz4I0mPp6gRnuxsnFDDBNitUTwu0Exs9YEchA6y0gE5IYWpMXEbr15uAVYN
+	 ShsZFCh3mkbiK+RZBUJ0wKUZEITzh9EUIA2+0U94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 184/204] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
+	Robin Murphy <robin.murphy@arm.com>,
+	"Sicelo A. Mhlongo" <absicsz@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 388/423] media: omap3isp: Handle ARM dma_iommu_mapping
 Date: Tue,  8 Apr 2025 12:51:54 +0200
-Message-ID: <20250408104825.719044871@linuxfoundation.org>
+Message-ID: <20250408104854.927363138@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
+commit 6bc076eec6f85f778f33a8242b438e1bd9fcdd59 upstream.
 
-On the following path, flush_tlb_range() can be used for zapping normal
-PMD entries (PMD entries that point to page tables) together with the PTE
-entries in the pointed-to page table:
+It's no longer practical for the OMAP IOMMU driver to trick
+arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
+same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
+the arch code's dma_iommu_mapping out of the way to avoid problems.
 
-    collapse_pte_mapped_thp
-      pmdp_collapse_flush
-        flush_tlb_range
-
-The arm64 version of flush_tlb_range() has a comment describing that it can
-be used for page table removal, and does not use any last-level
-invalidation optimizations. Fix the X86 version by making it behave the
-same way.
-
-Currently, X86 only uses this information for the following two purposes,
-which I think means the issue doesn't have much impact:
-
- - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
-   IPI'd to avoid issues with speculative page table walks.
- - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
-
-The patch "x86/mm: only invalidate final translations with INVLPGB" which
-is currently under review (see
-<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
-would probably be making the impact of this a lot worse.
-
-Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Tested-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/tlbflush.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/ti/omap3isp/isp.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -228,7 +228,7 @@ void flush_tlb_multi(const struct cpumas
- 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
- 			   ((vma)->vm_flags & VM_HUGETLB)		\
- 				? huge_page_shift(hstate_vma(vma))	\
--				: PAGE_SHIFT, false)
-+				: PAGE_SHIFT, true)
+--- a/drivers/media/platform/ti/omap3isp/isp.c
++++ b/drivers/media/platform/ti/omap3isp/isp.c
+@@ -1961,6 +1961,13 @@ static int isp_attach_iommu(struct isp_d
+ 	struct dma_iommu_mapping *mapping;
+ 	int ret;
  
- extern void flush_tlb_all(void);
- extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
++	/* We always want to replace any default mapping from the arch code */
++	mapping = to_dma_iommu_mapping(isp->dev);
++	if (mapping) {
++		arm_iommu_detach_device(isp->dev);
++		arm_iommu_release_mapping(mapping);
++	}
++
+ 	/*
+ 	 * Create the ARM mapping, used by the ARM DMA mapping core to allocate
+ 	 * VAs. This will allocate a corresponding IOMMU domain.
 
 
 
