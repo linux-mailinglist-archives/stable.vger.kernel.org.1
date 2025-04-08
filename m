@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03826A80B1C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388C3A80538
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD5A14432DE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CA3F3A7230
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D0B26E166;
-	Tue,  8 Apr 2025 12:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4F52698BE;
+	Tue,  8 Apr 2025 12:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtJThFPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+SRBSPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69152268FDD;
-	Tue,  8 Apr 2025 12:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AD3268C72;
+	Tue,  8 Apr 2025 12:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116841; cv=none; b=RhHnfC623DOyg2Br0t8WEJ/IU7AScpDrXuKLQKidZDjGusXv5mvw42Ih5B0nc4y6z4bipZGtGR3RXGtef3F45+P+cy8/NXQQJwPOyEz7LmJpPmgYYmCaARODCByvkxyQJ33wZc2OxFEelokin9g0/j2WY4RBiia3G8vG5nBfwWU=
+	t=1744114038; cv=none; b=FPeUNiLhDd42/EY1dbOGy5tGMIeYqMJlcqdD8F+0ro5zW0YeChfFWXkQHWbulcmbwyS87lvCw+SQwHIT5Q1jhTxfssIUyUy3bX0WHFgHpnPUKuEFtOJ6xTE2lMOO7fCJA8lvicElaG2WYrGtCHFN2Ded1RZHdFXIz+VzRsaJxpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116841; c=relaxed/simple;
-	bh=jHogWPs+r9cycXSbNLoJBmGuEmFqnINseLqxAiIUrmE=;
+	s=arc-20240116; t=1744114038; c=relaxed/simple;
+	bh=BsvamZ0vTokLb1AaBkzR5ol3GAjhWD65i8u1pqPP32k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgX6XC79GA0uorGMNjgYpEyQB3QBx/o4nSPxFKfd1fgjt5B4uS5wx3smGLC1ta5M52HH4u8S4fkVBvBHMLC92/axQVLwg2gjwwBVXEgpjxMsN16XlRVIlQRjpzwvlnV+ySxE46ABfhK5l3IIxh9vjKza4J5lBaFGSo0elu/OKrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtJThFPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EC6C4CEE5;
-	Tue,  8 Apr 2025 12:54:00 +0000 (UTC)
+	 MIME-Version; b=CzE7RB1Euk5i9y369IdWis5o8aYeS2cRhzORKLbGlW1K5uBnreb6Ot8DNkAgOZ4gqKlo3x3VCtjzzz7ubRNutRdkUNTTH3ukDNleH1sZkGGZLJCSgFZ6VldVoz8iUd6AjYRrtVd0dLcxoystezFTKlWCpdBZPGc/e7B3x4HX4Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+SRBSPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8DCC4CEE5;
+	Tue,  8 Apr 2025 12:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116840;
-	bh=jHogWPs+r9cycXSbNLoJBmGuEmFqnINseLqxAiIUrmE=;
+	s=korg; t=1744114038;
+	bh=BsvamZ0vTokLb1AaBkzR5ol3GAjhWD65i8u1pqPP32k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtJThFPpAwc+5+NDlbTP7LtNbfo96SJrvYxYNsMW629eSDXkOz5drRo9C9zzNzV6i
-	 MC/9cvcc13o8BKWPUM0ylfWh3oZVJwGEtWgfWJNHFerD3LlfimRXO3QVTsqwsn8V6u
-	 hfBYWQUCQxO6HYe9kk31YVYEqhHdPFVGfRmqDxyk=
+	b=e+SRBSPKgY0mhujbNdnqHvSEPCWFVqk2dwLgtlzb3mpM2wX3fW5zP/TTrfaL7FNzd
+	 /IBRKpEKc8fvHijp2cmU57e5zgQdyipwG3WTiFWLQXQMQ1sHTnT78ZzuGEO/3nGsTv
+	 fSgmkC2G6N+k1IW9RD3jaW+Ig5xGp/1ftM2jinlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 288/423] wifi: mac80211: fix SA Query processing in MLO
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 5.4 073/154] counter: stm32-lptimer-cnt: fix error handling when enabling
 Date: Tue,  8 Apr 2025 12:50:14 +0200
-Message-ID: <20250408104852.488063152@linuxfoundation.org>
+Message-ID: <20250408104817.646441761@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 9a267ce4a3fca93a34a8881046f97bcf472228c8 ]
+commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
 
-When MLO is used and SA Query processing isn't done by
-userspace (e.g. wpa_supplicant w/o CONFIG_OCV), then
-the mac80211 code kicks in but uses the wrong addresses.
-Fix them.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250306123626.bab48bb49061.I9391b22f1360d20ac8c4e92604de23f27696ba8f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
+
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
+
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6f3a86040cfcd..8e1fbdd3bff10 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -6,7 +6,7 @@
-  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- 
- #include <linux/jiffies.h>
-@@ -3323,8 +3323,8 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
- 		return;
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
+ 		return 0;
  	}
  
--	if (!ether_addr_equal(mgmt->sa, sdata->deflink.u.mgd.bssid) ||
--	    !ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid)) {
-+	if (!ether_addr_equal(mgmt->sa, sdata->vif.cfg.ap_addr) ||
-+	    !ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)) {
- 		/* Not from the current AP or not associated yet. */
- 		return;
- 	}
-@@ -3340,9 +3340,9 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
++
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
- 	resp = skb_put_zero(skb, 24);
--	memcpy(resp->da, mgmt->sa, ETH_ALEN);
-+	memcpy(resp->da, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	memcpy(resp->sa, sdata->vif.addr, ETH_ALEN);
--	memcpy(resp->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
-+	memcpy(resp->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	resp->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
- 					  IEEE80211_STYPE_ACTION);
- 	skb_put(skb, 1 + sizeof(resp->u.action.u.sa_query));
--- 
-2.39.5
-
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
+ 
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
+ }
+ 
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
