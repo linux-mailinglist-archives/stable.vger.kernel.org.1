@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2786DA80A88
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16261A8097F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B72947B4732
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31BF8C3B20
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B1426B2C6;
-	Tue,  8 Apr 2025 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CC126B09F;
+	Tue,  8 Apr 2025 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgMusYhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+46J0wD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DAA279323;
-	Tue,  8 Apr 2025 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D0326B087;
+	Tue,  8 Apr 2025 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116902; cv=none; b=YxWYzJLSK/jE4PP5b+0MMVhHsTX1p9ocro0F5Z9HXMFibCemXTeoOjlQoOTXg+oFSHArQkaUMM4NeZmYpLMtqYzlmFjwJbF5x6nInbdHg0w84S/N+gstxBi/RdkAJhSYgHHEnf9tEGFoD+oP1BgfpgiEpon5n+3z7CKx8YbxpCA=
+	t=1744115800; cv=none; b=Ekm8ilG7Wwq4st5iL7QUkK5NqTB89hYnzjsXCyeM+8EO6UR3HvjfcSfKAjVoGlk995uWckiZqEXbBTG+OOQqATJp0tTlxfqjyM1biG3CypdMGHFNNvaRVltGgFcwtuicv18CQ+NlH0Qt6zOQEyj8rwXw5xrwoYJnNyuJTUqhAL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116902; c=relaxed/simple;
-	bh=ZATwbg86x0XOYw3ZJiMOKIUvAz05daeYqVFr8zHG5C4=;
+	s=arc-20240116; t=1744115800; c=relaxed/simple;
+	bh=ehsXiEZtnulUdkDrwhbpkqovKFmquMSThMQQEGjPy8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjAmzkx3MKt+Y3ruQ2RIJmglqKpQ+FZ8QIFQPRAqmEr3AfoV63acpf5eAE9i2UiUuyEQ7HRnRM7gj68Pzl2f4DKBxtcQeGS0Dv30wN5y+IMSxbrp6B2Zwy3WmNMiHLR5VOapu+P/7rYmoIV4WjZJd04uJEdqUlzduKJwy/53ttM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgMusYhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9CFC4CEEA;
-	Tue,  8 Apr 2025 12:55:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HNCxIhL6GWfMxY9hd/ERHu1kXVnCbBtMomLhenGj0G9APAXI8/3mRZIrmY1dSuAyOLA9ct6rWMqGdc9UZBcUMHXxWsD8kAaCxYnzPIWpoL/wy7HVU3ZkKttaMrUrrCh4tvmHynbkiiApDvmbdkcZPPh+j3lh0414G+IoW5Qz8l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+46J0wD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F73C4CEE5;
+	Tue,  8 Apr 2025 12:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116902;
-	bh=ZATwbg86x0XOYw3ZJiMOKIUvAz05daeYqVFr8zHG5C4=;
+	s=korg; t=1744115800;
+	bh=ehsXiEZtnulUdkDrwhbpkqovKFmquMSThMQQEGjPy8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgMusYhwJSbWHlAb1qARRuDjgMp/KlqbUtcLy/CBff2r6RClGsF7QVy00KrfXsL4B
-	 SqL89Ac9sUHXD5sLKuRpbFvRj62EuoxfQeeMV7Imfz2BgoQ8DHEn4ka7nFnPfxLQIP
-	 Cq8cQbfWBO3+qREdiT67URVO8Wc3ypWz0bWGummc=
+	b=A+46J0wDlvF4eepW2G5+9zMe/XAfmJB28IBLGN7Zqar58ow04ZfuQcKWDM+xgNHX+
+	 FhoT6IWhHHv+7JyinRo6VL75qD8CSk+cSq3C/I8ka+Vic+X1BSdhAzSEwM1o8Rh1VC
+	 I2csJ3jOGuT6hnrBu56LVo557GTBwZVe8VHijzdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/423] ublk: make sure ubq->canceling is set when queue is frozen
+Subject: [PATCH 6.1 108/204] staging: rtl8723bs: select CONFIG_CRYPTO_LIB_AES
 Date: Tue,  8 Apr 2025 12:50:38 +0200
-Message-ID: <20250408104853.070758963@linuxfoundation.org>
+Message-ID: <20250408104823.502226080@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit 8741d0737921ec1c03cf59aebf4d01400c2b461a ]
+[ Upstream commit b2a9a6a26b7e954297e51822e396572026480bad ]
 
-Now ublk driver depends on `ubq->canceling` for deciding if the request
-can be dispatched via uring_cmd & io_uring_cmd_complete_in_task().
+This fixes the following issue:
+ERROR: modpost: "aes_expandkey" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
+ERROR: modpost: "aes_encrypt" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
 
-Once ubq->canceling is set, the uring_cmd can be done via ublk_cancel_cmd()
-and io_uring_cmd_done().
-
-So set ubq->canceling when queue is frozen, this way makes sure that the
-flag can be observed from ublk_queue_rq() reliably, and avoids
-use-after-free on uring_cmd.
-
-Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250327095123.179113-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 7d40753d8820 ("staging: rtl8723bs: use in-kernel aes encryption in OMAC1 routines")
+Fixes: 3d3a170f6d80 ("staging: rtl8723bs: use in-kernel aes encryption")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/tencent_0BDDF3A721708D16A2E7C3DAFF0FEC79A105@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 39 +++++++++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ drivers/staging/rtl8723bs/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index c7d728d686e5a..79b7bd8bfd458 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1416,17 +1416,27 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
- 	}
- }
- 
-+/* Must be called when queue is frozen */
-+static bool ublk_mark_queue_canceling(struct ublk_queue *ubq)
-+{
-+	bool canceled;
-+
-+	spin_lock(&ubq->cancel_lock);
-+	canceled = ubq->canceling;
-+	if (!canceled)
-+		ubq->canceling = true;
-+	spin_unlock(&ubq->cancel_lock);
-+
-+	return canceled;
-+}
-+
- static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
- {
-+	bool was_canceled = ubq->canceling;
- 	struct gendisk *disk;
- 
--	spin_lock(&ubq->cancel_lock);
--	if (ubq->canceling) {
--		spin_unlock(&ubq->cancel_lock);
-+	if (was_canceled)
- 		return false;
--	}
--	ubq->canceling = true;
--	spin_unlock(&ubq->cancel_lock);
- 
- 	spin_lock(&ub->lock);
- 	disk = ub->ub_disk;
-@@ -1438,14 +1448,23 @@ static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
- 	if (!disk)
- 		return false;
- 
--	/* Now we are serialized with ublk_queue_rq() */
-+	/*
-+	 * Now we are serialized with ublk_queue_rq()
-+	 *
-+	 * Make sure that ubq->canceling is set when queue is frozen,
-+	 * because ublk_queue_rq() has to rely on this flag for avoiding to
-+	 * touch completed uring_cmd
-+	 */
- 	blk_mq_quiesce_queue(disk->queue);
--	/* abort queue is for making forward progress */
--	ublk_abort_queue(ub, ubq);
-+	was_canceled = ublk_mark_queue_canceling(ubq);
-+	if (!was_canceled) {
-+		/* abort queue is for making forward progress */
-+		ublk_abort_queue(ub, ubq);
-+	}
- 	blk_mq_unquiesce_queue(disk->queue);
- 	put_device(disk_to_dev(disk));
- 
--	return true;
-+	return !was_canceled;
- }
- 
- static void ublk_cancel_cmd(struct ublk_queue *ubq, struct ublk_io *io,
+diff --git a/drivers/staging/rtl8723bs/Kconfig b/drivers/staging/rtl8723bs/Kconfig
+index f23e29b679fb5..14afcbbd61045 100644
+--- a/drivers/staging/rtl8723bs/Kconfig
++++ b/drivers/staging/rtl8723bs/Kconfig
+@@ -5,6 +5,7 @@ config RTL8723BS
+ 	depends on m
+ 	select CFG80211_WEXT
+ 	select CRYPTO
++	select CRYPTO_LIB_AES
+ 	select CRYPTO_LIB_ARC4
+ 	help
+ 	This option enables support for RTL8723BS SDIO drivers, such as
 -- 
 2.39.5
 
