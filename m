@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68EFA807A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD54A80403
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9ECE883C7D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7883942616E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7B2063FD;
-	Tue,  8 Apr 2025 12:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEDD269D03;
+	Tue,  8 Apr 2025 11:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTPLEuRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJ6+8O8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B182207E14;
-	Tue,  8 Apr 2025 12:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF5C22257E;
+	Tue,  8 Apr 2025 11:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114977; cv=none; b=m3wZvlo+TQiCa1g1JhfVIGbyhfqXEQOmtl3AqcPBPzvRMuMIqDER6/ZtZnp7ojFmaIcP2VBjVjG7uo5lc7eAQmvRHWXAd8Qvft3CoDtMrv16XqoVGgvb/jUE2TeGPQMSxKfBpf9cvFIqGw9rRfIY1IeYqiBrOXHW/VT3WcPKb8s=
+	t=1744113300; cv=none; b=PB3Mm/tSDU0crMVlDt6afQuSHm4D7CVp3LpSlDQ+m9YFSLSKILYBzDAH0l6IAfq9n9Sr7zr0l8KLXsZ7IIgPSbw8aje/IR6EoZ+EDATAYomXOcCClT9mZJhWtJyVkhSKFP/qi0DKBShlh31Nnl3sGDFCU8JFSZT0YnFA5t6aD3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114977; c=relaxed/simple;
-	bh=rBPzGWPwgfe1GsnR6H9OLTKUJPvxa0R28Ro0jMOWqxY=;
+	s=arc-20240116; t=1744113300; c=relaxed/simple;
+	bh=uI9BQVqfRqvXGJY1ITOroQeF+XUyU3+oBMliopbsPuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kjl4rotmbscI090JOSos0V5LZQj7bxTBNCUyzFlxUJyWYgHMGF2jafUdSyWQfr43A8yV9aFalLIF+t5aCimhat/WmJ/E+TNe56r4Qn9Z2UOiRWP3757Ue4EH1xbV8p4WMruzj5Yb8noQPChoe626BfAZ9b1H1zV0LQhE/bOmD3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTPLEuRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B44C4CEE5;
-	Tue,  8 Apr 2025 12:22:56 +0000 (UTC)
+	 MIME-Version; b=d0/m6jusLpK7pgPJOHIES34+JaCDofQWJOq9broVrJEehjbyW/SQrqzlohiZKFxNX+upOnbUqQ6Scx++nBEQQISfphGaLvGC9P+62LEXIx411rsHqIATbK5OmS0k5n7RwAhlr7r6rVPj3Pp5oUswelyu0J/qg6yghDfjC4tBRwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJ6+8O8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3E8C4CEE5;
+	Tue,  8 Apr 2025 11:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114976;
-	bh=rBPzGWPwgfe1GsnR6H9OLTKUJPvxa0R28Ro0jMOWqxY=;
+	s=korg; t=1744113300;
+	bh=uI9BQVqfRqvXGJY1ITOroQeF+XUyU3+oBMliopbsPuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTPLEuRq+ZwmrhKs94n0eK5jrCEfylYxYUhX3b2edbmRwfIWkKtgmK7xUjteBfPTr
-	 YkyC6UlAfoMbTg2caQMHZwGLqfjVIYO5Zg43R9tlzXNapD2+/m9Z2ADn3bhPXJzJtK
-	 79DYkO3QkACBo0ti71MiukODaZX74s1ipPUk+pFo=
+	b=VJ6+8O8d5dz1UuKNeqs6gCQEOgq75zdf/NAJ0HWM9z33kXglK0QYuzLLkvybdcB3q
+	 LAe8JJjlnLBXdkTHT+gzyA5f7i0PC9JtzK+DZxIYoMFxbBvws5JzbtrCtH1bzSypgV
+	 6U751Id7UzInOyrrn0ZI3fVf2XnqjwfxyNCETxVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Guanghui <zhang.guanghui@cestc.cn>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 305/499] nvme-tcp: fix possible UAF in nvme_tcp_poll
+Subject: [PATCH 6.6 106/268] coresight: catu: Fix number of pages while using 64k pages
 Date: Tue,  8 Apr 2025 12:48:37 +0200
-Message-ID: <20250408104858.823074975@linuxfoundation.org>
+Message-ID: <20250408104831.354584099@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit 8c1624b63a7d24142a2bbc3a5ee7e95f004ea36e ]
+[ Upstream commit 0e14e062f5ff98aa15264dfa87c5f5e924028561 ]
 
-nvme_tcp_poll() may race with the send path error handler because
-it may complete the request while it is actively being polled for
-completion, resulting in a UAF panic [1]:
+Trying to record a trace on kernel with 64k pages resulted in -ENOMEM.
+This happens due to a bug in calculating the number of table pages, which
+returns zero. Fix the issue by rounding up.
 
-We should make sure to stop polling when we see an error when
-trying to read from the socket. Hence make sure to propagate the
-error so that the block layer breaks the polling cycle.
+$ perf record --kcore -e cs_etm/@tmc_etr55,cycacc,branch_broadcast/k --per-thread taskset --cpu-list 1 dd if=/dev/zero of=/dev/null
+failed to mmap with 12 (Cannot allocate memory)
 
-[1]:
---
-[35665.692310] nvme nvme2: failed to send request -13
-[35665.702265] nvme nvme2: unsupported pdu type (3)
-[35665.702272] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[35665.702542] nvme nvme2: queue 1 receive failed:  -22
-[35665.703209] #PF: supervisor write access in kernel mode
-[35665.703213] #PF: error_code(0x0002) - not-present page
-[35665.703214] PGD 8000003801cce067 P4D 8000003801cce067 PUD 37e6f79067 PMD 0
-[35665.703220] Oops: 0002 [#1] SMP PTI
-[35665.703658] nvme nvme2: starting error recovery
-[35665.705809] Hardware name: Inspur aaabbb/YZMB-00882-104, BIOS 4.1.26 09/22/2022
-[35665.705812] Workqueue: kblockd blk_mq_requeue_work
-[35665.709172] RIP: 0010:_raw_spin_lock+0xc/0x30
-[35665.715788] Call Trace:
-[35665.716201]  <TASK>
-[35665.716613]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717049]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717457]  ? blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.717950]  ? __die_body.cold+0x8/0xd
-[35665.718361]  ? page_fault_oops+0xac/0x140
-[35665.718749]  ? blk_mq_start_request+0x30/0xf0
-[35665.719144]  ? nvme_tcp_queue_rq+0xc7/0x170 [nvme_tcp]
-[35665.719547]  ? exc_page_fault+0x62/0x130
-[35665.719938]  ? asm_exc_page_fault+0x22/0x30
-[35665.720333]  ? _raw_spin_lock+0xc/0x30
-[35665.720723]  blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.721101]  blk_mq_requeue_work+0xa5/0x180
-[35665.721451]  process_one_work+0x1e8/0x390
-[35665.721809]  worker_thread+0x53/0x3d0
-[35665.722159]  ? process_one_work+0x390/0x390
-[35665.722501]  kthread+0x124/0x150
-[35665.722849]  ? set_kthread_struct+0x50/0x50
-[35665.723182]  ret_from_fork+0x1f/0x30
-
-Reported-by: Zhang Guanghui <zhang.guanghui@cestc.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 8ed536b1e283 ("coresight: catu: Add support for scatter gather tables")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250109215348.5483-1-ilkka@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 65347fed42370..327f3f2f5399c 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2725,6 +2725,7 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- {
- 	struct nvme_tcp_queue *queue = hctx->driver_data;
- 	struct sock *sk = queue->sock->sk;
-+	int ret;
- 
- 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
- 		return 0;
-@@ -2732,9 +2733,9 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- 	set_bit(NVME_TCP_Q_POLLING, &queue->flags);
- 	if (sk_can_busy_loop(sk) && skb_queue_empty_lockless(&sk->sk_receive_queue))
- 		sk_busy_loop(sk, true);
--	nvme_tcp_try_recv(queue);
-+	ret = nvme_tcp_try_recv(queue);
- 	clear_bit(NVME_TCP_Q_POLLING, &queue->flags);
--	return queue->nr_cqe;
-+	return ret < 0 ? ret : queue->nr_cqe;
- }
- 
- static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 3949ded0d4fa5..c062bcc09466a 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -267,7 +267,7 @@ catu_init_sg_table(struct device *catu_dev, int node,
+ 	 * Each table can address upto 1MB and we can have
+ 	 * CATU_PAGES_PER_SYSPAGE tables in a system page.
+ 	 */
+-	nr_tpages = DIV_ROUND_UP(size, SZ_1M) / CATU_PAGES_PER_SYSPAGE;
++	nr_tpages = DIV_ROUND_UP(size, CATU_PAGES_PER_SYSPAGE * SZ_1M);
+ 	catu_table = tmc_alloc_sg_table(catu_dev, node, nr_tpages,
+ 					size >> PAGE_SHIFT, pages);
+ 	if (IS_ERR(catu_table))
 -- 
 2.39.5
 
