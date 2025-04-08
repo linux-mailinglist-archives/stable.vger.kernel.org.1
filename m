@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-130192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F9AA80333
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:54:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F2A80178
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECF997AC55D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FBC0461E1F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AADB269AE4;
-	Tue,  8 Apr 2025 11:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA89726A1D0;
+	Tue,  8 Apr 2025 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxx42/je"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcphmkiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088BA267F5B;
-	Tue,  8 Apr 2025 11:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB5269820;
+	Tue,  8 Apr 2025 11:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113063; cv=none; b=kVaRWZ9nTNoZtRNoofDpYPiK8OFaR7DfHzZGniYc14+70KkzV+rZystBx0LWVPRceZSyD6cS10G9IcE6hRjNfPm5j+nYhNjLKNRM2a8EUjQFBfiurStiNdIa1fDuc0OTAjy5+uRX8o5jTNGQlp0Ox9l9oWGHNej4F11344CoInU=
+	t=1744111722; cv=none; b=SlSqQAcWHBxGC8uokYV1CsIdEKg0GDur89iszjiuGPN/LKQtruCfd9lZfwwocgJuaUtkpLWBk8U34NNSh8Z9i0eQpI3dr0NG8fzSiSk3ErykP3NejofK4NltBKQNJCkg37rTnznfENUcMmfbX2GTAR8AXLbdBV9M7CnXETpO5QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113063; c=relaxed/simple;
-	bh=PinI9cuK1mpKpNrUji8t0cJIDq8Vb+U8o6AUYsM+q5Q=;
+	s=arc-20240116; t=1744111722; c=relaxed/simple;
+	bh=xBXsYSzshCz1e+dKkA3wsnckDA439cz5sD7qGsCrg04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eP/Q6A+lkwGqNJFFRqTxinW2ZaIN4gjtKHL+lB/SKyqprucDX+3b+D4WfYrWby1RBQcM8Oe55Hy/FyUK/Z+Ga2+5n4GpUJGEnjieDuO1MDO5UbG1GVbYLcoDalTnBk1jxxSh4XsPKD9RtxJew9+1q2ujZ8g1lqG+MgkWoz2hsN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxx42/je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D612C4CEE5;
-	Tue,  8 Apr 2025 11:51:02 +0000 (UTC)
+	 MIME-Version; b=Ez0a7qJ4hFgcWU2LolcSFdEcNDMNcNObecHl0FN+9LFSHE2mP0La+RKXrfMR/RbbP4u7Y8qZNrxbAtFIjzBCiSW61fTqFHNAiGDwG3W7/4sZYbMxFNG/Ss0xds/ikNwZNs7g0iP8doo2RXwfpCGe5GlDf/JBjwqcbGghRUBPWQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcphmkiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E3C4CEE5;
+	Tue,  8 Apr 2025 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113062;
-	bh=PinI9cuK1mpKpNrUji8t0cJIDq8Vb+U8o6AUYsM+q5Q=;
+	s=korg; t=1744111721;
+	bh=xBXsYSzshCz1e+dKkA3wsnckDA439cz5sD7qGsCrg04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxx42/je9/XCCPXAZhr2Tsiv9kpAnwlCFpnmh2Vjq9E+2BRr7hJZrPsLvdMYq/fDf
-	 2j7C06CKiE0lk7uxCjRHVRJi3fvcsgQi/e4cCHuBQcSd5MY46fAJC//zW6ow/lGi8i
-	 +qU0ZGmnQY0qU89Ud2dk8MWEEXp3GSFLYN+dnvMc=
+	b=GcphmkiH2WAVY5Q+hwBOvm/uJjIXWU4GEgGgp0i0y2sqw7kmP9cuef4ABj9Vf6KC1
+	 hGa1yBjganQNXvuBvlWkVAqd9puqCdHhDQUM3hU/XyMz15SNQT2IyCVXAJOk8xo68/
+	 MPQUQH76ahyahxgo8JIA0sOUyoG9W4lKRLJ9sniM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/268] lockdep: Dont disable interrupts on RT in disable_irq_nosync_lockdep.*()
-Date: Tue,  8 Apr 2025 12:47:11 +0200
-Message-ID: <20250408104829.056494825@linuxfoundation.org>
+Subject: [PATCH 6.14 535/731] staging: vchiq_arm: Fix possible NPR of keep-alive thread
+Date: Tue,  8 Apr 2025 12:47:12 +0200
+Message-ID: <20250408104926.721259024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 87886b32d669abc11c7be95ef44099215e4f5788 ]
+[ Upstream commit 3db89bc6d973e2bcaa852f6409c98c228f39a926 ]
 
-disable_irq_nosync_lockdep() disables interrupts with lockdep enabled to
-avoid false positive reports by lockdep that a certain lock has not been
-acquired with disabled interrupts. The user of this macros expects that
-a lock can be acquried without disabling interrupts because the IRQ line
-triggering the interrupt is disabled.
+In case vchiq_platform_conn_state_changed() is never called or fails before
+driver removal, ka_thread won't be a valid pointer to a task_struct. So
+do the necessary checks before calling kthread_stop to avoid a crash.
 
-This triggers a warning on PREEMPT_RT because after
-disable_irq_nosync_lockdep.*() the following spinlock_t now is acquired
-with disabled interrupts.
-
-On PREEMPT_RT there is no difference between spin_lock() and
-spin_lock_irq() so avoiding disabling interrupts in this case works for
-the two remaining callers as of today.
-
-Don't disable interrupts on PREEMPT_RT in disable_irq_nosync_lockdep.*().
-
-Closes: https://lore.kernel.org/760e34f9-6034-40e0-82a5-ee9becd24438@roeck-us.net
-Fixes: e8106b941ceab ("[PATCH] lockdep: core, add enable/disable_irq_irqsave/irqrestore() APIs")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250212103619.2560503-2-bigeasy@linutronix.de
+Fixes: 863a756aaf49 ("staging: vc04_services: vchiq_core: Stop kthreads on vchiq module unload")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250309125014.37166-3-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/interrupt.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 4a1dc88ddbff9..2610a7d156da8 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -441,7 +441,7 @@ irq_calc_affinity_vectors(unsigned int minvec, unsigned int maxvec,
- static inline void disable_irq_nosync_lockdep(unsigned int irq)
- {
- 	disable_irq_nosync(irq);
--#ifdef CONFIG_LOCKDEP
-+#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
- 	local_irq_disable();
- #endif
- }
-@@ -449,7 +449,7 @@ static inline void disable_irq_nosync_lockdep(unsigned int irq)
- static inline void disable_irq_nosync_lockdep_irqsave(unsigned int irq, unsigned long *flags)
- {
- 	disable_irq_nosync(irq);
--#ifdef CONFIG_LOCKDEP
-+#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
- 	local_irq_save(*flags);
- #endif
- }
-@@ -464,7 +464,7 @@ static inline void disable_irq_lockdep(unsigned int irq)
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index e2e80e90b555b..d3b7d1227d7d6 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1422,7 +1422,8 @@ static void vchiq_remove(struct platform_device *pdev)
+ 	kthread_stop(mgmt->state.slot_handler_thread);
  
- static inline void enable_irq_lockdep(unsigned int irq)
- {
--#ifdef CONFIG_LOCKDEP
-+#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
- 	local_irq_enable();
- #endif
- 	enable_irq(irq);
-@@ -472,7 +472,7 @@ static inline void enable_irq_lockdep(unsigned int irq)
+ 	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
+-	kthread_stop(arm_state->ka_thread);
++	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
++		kthread_stop(arm_state->ka_thread);
+ }
  
- static inline void enable_irq_lockdep_irqrestore(unsigned int irq, unsigned long *flags)
- {
--#ifdef CONFIG_LOCKDEP
-+#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
- 	local_irq_restore(*flags);
- #endif
- 	enable_irq(irq);
+ static struct platform_driver vchiq_driver = {
 -- 
 2.39.5
 
