@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00197A806D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5725CA80A31
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40554467901
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6125B8C6FDA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB626B2CE;
-	Tue,  8 Apr 2025 12:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D1126F473;
+	Tue,  8 Apr 2025 12:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnBtXPTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXxjRaGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF36206F18;
-	Tue,  8 Apr 2025 12:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC51C26F462;
+	Tue,  8 Apr 2025 12:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114727; cv=none; b=TBB0PSiJ9uVppp/P+tMg8InwO5q9VECLwUoAN3HFAZuOfmQi1mPcPaizzjAXIPRW5cHjPBvD372tlnmregrlXVXynngtT6J/AG8IYvE+Txj45oKTcB+IdMG5tkUn7mpNEFfp5ez8IpKsK9lcCE4QiAC/GdEnqldcBtRrIjIZjIY=
+	t=1744116219; cv=none; b=vB4PygBS/7hQ60dSx0jm5IBktOtWp2n0RKCy0vNUdhj18nCuNpffqJEeUOAl8tBAGZG+8kDCwcggh+9uNjC9hWs2JR2GYx39iwCyWuzo0CBhLIB/Xivb9+L/6JOCs+UP+6vkNNFQOZFp8nKDrRNnid62lGtqGbTnbrAtKxgnG5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114727; c=relaxed/simple;
-	bh=ALx2zBFl2hFmTHGDneDCXIKjKV/giaXYS64TP4Hv30Q=;
+	s=arc-20240116; t=1744116219; c=relaxed/simple;
+	bh=Xuh3a3Jg8x/57jtantROY3TenMvyly/VgvliCQTwxVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSxK9cwp/lnAUrV3hslXrSRh5jn4RLJroq/+71FyQfcqQ/qla0cmSogxdvO8760lMFejoE9idBmuc6kP/nzVi7nSOVlNHf7cpoFz4QyBhXyF9uSTa6AJPyL5NpJA5Q/TMCZRqPHbPFTcvLyjBHJmsddnySlR/JYTwSOz+MNV/CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnBtXPTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBF2C4CEE5;
-	Tue,  8 Apr 2025 12:18:47 +0000 (UTC)
+	 MIME-Version; b=JCSTzF3OitrbDHodpj2A0l0aR9OOfSCfnw9YdsfldlgU2J0VhEY4KOm/tY2xVEyM3GgcQsUl+Q9i3v4OKiGVoVOvz5hZHgn3fbb6FN3JYNEqWoPhq5YHzY+pbhUckipDNd2oVlFAbng2RpWe7JiPKMWp43fjEBFDGrlNuoGUR7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXxjRaGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E83C4CEE5;
+	Tue,  8 Apr 2025 12:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114727;
-	bh=ALx2zBFl2hFmTHGDneDCXIKjKV/giaXYS64TP4Hv30Q=;
+	s=korg; t=1744116219;
+	bh=Xuh3a3Jg8x/57jtantROY3TenMvyly/VgvliCQTwxVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnBtXPTUcT2BwND5J9kI0NxFNu1LqFfwSGXae5uH8BQ7S2DB2IPD2/r3toLDjxX8g
-	 5BtxrjaXJ03lYvdoGqTRFOAIRn6zhaFBqUQyhbdPBhWvN+/xpIda7pX5J1L7pt1r+p
-	 X9K3q1fJkZEKd5e2540JIB/XhcRlUnWQhVuHQ8TM=
+	b=LXxjRaGYqxjURg1vinaypQbOGtIQ5wOVi6svPcHLGL3kGHUVCUUJExiUC5Jxs5b1q
+	 io0GUE58TaqI7UAVdcVY/28GbJX74kInSal47V5EmZAfJ89S2GpO3Fdqc0E87rX2MD
+	 Vx/9j9eEr5JV24fzxbkFMto6UPk41hDn/DercfAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 174/499] crypto: tegra - Fix format specifier in tegra_sha_prep_cmd()
+Subject: [PATCH 6.12 060/423] drm/mediatek: mtk_hdmi: Unregister audio platform device on failure
 Date: Tue,  8 Apr 2025 12:46:26 +0200
-Message-ID: <20250408104855.515309592@linuxfoundation.org>
+Message-ID: <20250408104847.146725492@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 795e5bdb0ada2c77ea28611d88f1d5d7ca9b2f4d ]
+[ Upstream commit 0be123cafc06eed0fd1227166a66e786434b0c50 ]
 
-When building for 32-bit targets, for which ssize_t is 'int' instead of
-'long', there is a warning due to an incorrect format specifier:
+The probe function of this driver may fail after registering the
+audio platform device: in that case, the state is not getting
+cleaned up, leaving this device registered.
 
-  In file included from include/linux/printk.h:610,
-                   from include/linux/kernel.h:31,
-                   from include/linux/clk.h:13,
-                   from drivers/crypto/tegra/tegra-se-hash.c:7:
-  drivers/crypto/tegra/tegra-se-hash.c: In function 'tegra_sha_prep_cmd':
-  drivers/crypto/tegra/tegra-se-hash.c:343:26: error: format '%lu' expects argument of type 'long unsigned int', but argument 6 has type 'ssize_t' {aka 'int'} [-Werror=format=]
-    343 |         dev_dbg(se->dev, "msg len %llu msg left %llu sz %lu cfg %#x",
-        |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ...
-  drivers/crypto/tegra/tegra-se-hash.c:343:59: note: format string is defined here
-    343 |         dev_dbg(se->dev, "msg len %llu msg left %llu sz %lu cfg %#x",
-        |                                                         ~~^
-        |                                                           |
-        |                                                           long unsigned int
-        |                                                         %u
-  cc1: all warnings being treated as errors
+Adding up to the mix, should the probe function of this driver
+return a probe deferral for N times, we're registering up to N
+audio platform devices and, again, never freeing them up.
 
-Use '%zd', the proper specifier for ssize_t, to resolve the warning.
+To fix this, add a pointer to the audio platform device in the
+mtk_hdmi structure, and add a devm action to unregister it upon
+driver removal or probe failure.
 
-Fixes: ff4b7df0b511 ("crypto: tegra - Fix HASH intermediate result handling")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-18-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/tegra/tegra-se-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
-index 65a50f29bd7e6..42d007b7af45d 100644
---- a/drivers/crypto/tegra/tegra-se-hash.c
-+++ b/drivers/crypto/tegra/tegra-se-hash.c
-@@ -340,7 +340,7 @@ static int tegra_sha_prep_cmd(struct tegra_sha_ctx *ctx, u32 *cpuvaddr,
- 	cpuvaddr[i++] = host1x_uclass_incr_syncpt_cond_f(1) |
- 			host1x_uclass_incr_syncpt_indx_f(se->syncpt_id);
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index 7687f673964ec..ce808ee82bafb 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -173,6 +173,7 @@ struct mtk_hdmi {
+ 	unsigned int sys_offset;
+ 	void __iomem *regs;
+ 	enum hdmi_colorspace csp;
++	struct platform_device *audio_pdev;
+ 	struct hdmi_audio_param aud_param;
+ 	bool audio_enable;
+ 	bool powered;
+@@ -1663,6 +1664,11 @@ static const struct hdmi_codec_ops mtk_hdmi_audio_codec_ops = {
+ 	.no_capture_mute = 1,
+ };
  
--	dev_dbg(se->dev, "msg len %llu msg left %llu sz %lu cfg %#x",
-+	dev_dbg(se->dev, "msg len %llu msg left %llu sz %zd cfg %#x",
- 		msg_len, msg_left, rctx->datbuf.size, rctx->config);
++static void mtk_hdmi_unregister_audio_driver(void *data)
++{
++	platform_device_unregister(data);
++}
++
+ static int mtk_hdmi_register_audio_driver(struct device *dev)
+ {
+ 	struct mtk_hdmi *hdmi = dev_get_drvdata(dev);
+@@ -1672,13 +1678,20 @@ static int mtk_hdmi_register_audio_driver(struct device *dev)
+ 		.i2s = 1,
+ 		.data = hdmi,
+ 	};
+-	struct platform_device *pdev;
++	int ret;
  
- 	return i;
+-	pdev = platform_device_register_data(dev, HDMI_CODEC_DRV_NAME,
+-					     PLATFORM_DEVID_AUTO, &codec_data,
+-					     sizeof(codec_data));
+-	if (IS_ERR(pdev))
+-		return PTR_ERR(pdev);
++	hdmi->audio_pdev = platform_device_register_data(dev,
++							 HDMI_CODEC_DRV_NAME,
++							 PLATFORM_DEVID_AUTO,
++							 &codec_data,
++							 sizeof(codec_data));
++	if (IS_ERR(hdmi->audio_pdev))
++		return PTR_ERR(hdmi->audio_pdev);
++
++	ret = devm_add_action_or_reset(dev, mtk_hdmi_unregister_audio_driver,
++				       hdmi->audio_pdev);
++	if (ret)
++		return ret;
+ 
+ 	DRM_INFO("%s driver bound to HDMI\n", HDMI_CODEC_DRV_NAME);
+ 	return 0;
 -- 
 2.39.5
 
