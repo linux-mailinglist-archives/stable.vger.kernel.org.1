@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-129976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BF9A80237
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5931FA80095
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353651887AD7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C4F37A6FA3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B08C266583;
-	Tue,  8 Apr 2025 11:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2E826980F;
+	Tue,  8 Apr 2025 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUzdo8ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJkqDk3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2C32192F2;
-	Tue,  8 Apr 2025 11:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DAB2690EC;
+	Tue,  8 Apr 2025 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112483; cv=none; b=reNRt2+CETRb+AN44UgDotodetR8W22lQYQxmyLc2vtWtECH3F8i1MBy6QIAAnoXyTs+XJTwtGQkxjGBYrH1cEkP0++03aVGM2rTmSA1hysqL3qDbGP2XhGeIczvXHb7hemvLjJehAFQt8IYhRElqMqcB/sTeQC00+4atoBFiwo=
+	t=1744111681; cv=none; b=LGTXKQD2t9yg2hL04ENH4B5nMsVlYqcj0WT6FKQo4sn/0QqDarcTg9JOFLSBdZT6N6Hf6sXvUeXJJJIfRgkE38jvSNL4yfwksOPVRgMXIxzCBYVozsTlr+U/YMu7FmKm3rcB+1oPYXnNFVMSnViVVhZYGcwwXBUgeCcC6jppH1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112483; c=relaxed/simple;
-	bh=pMMe9b2y7/yXZu2T9WO2ACP86Vbs7Bfbos+pQOpxz+E=;
+	s=arc-20240116; t=1744111681; c=relaxed/simple;
+	bh=RfNKMR4Npiq2QSRSHkgSiXNAI44J+ILJDFIsWpT2taw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heytFPEOsJnxDA2iF3eSAPp3fpiJLojVkul1B215gXLzHfX5nM+LQNefwN1LH3f6XvP1w9eegXXDtyo06hne8rM4XFBWoIgIUja0PoAjGZpiRCTyCkQEQuxg/ycwreLAUqXUOxKwk6UIUFuwBBlWWZH1ppkj1i8OC9kIrioxLqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUzdo8ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44286C4CEE5;
-	Tue,  8 Apr 2025 11:41:22 +0000 (UTC)
+	 MIME-Version; b=MByq0k4Wgu8QXhOR2CEn4JnKd7TuL/wcOkEnQGo8/Zp7VpLniI2MVeW6NmovN7O082MojvGMLLZnDpgbATyx4wF9HREXpuCs4YqMmkOFdKvJno0UwT6SsWlcut1FzhEttDUpCFeCeN/MhIRmnzNTkwrzhGzPTBEg4LCe9OzFMws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJkqDk3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D65C4CEE5;
+	Tue,  8 Apr 2025 11:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112482;
-	bh=pMMe9b2y7/yXZu2T9WO2ACP86Vbs7Bfbos+pQOpxz+E=;
+	s=korg; t=1744111681;
+	bh=RfNKMR4Npiq2QSRSHkgSiXNAI44J+ILJDFIsWpT2taw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUzdo8MEIlfk1g0ybbl9oDXr5bXJBaXEZgvKmok7FMEmLwLJvax+c9wUrGPN6OMIW
-	 ME3eIIgdiHUoHklhYf+HZXpbJSY+sKMithmewjZpVYmJexLiaM3/KKeZfwtov2wcXz
-	 UxfrVLMpcSk1D1mOMUIxRDrYjhzlvUoB857dGPQE=
+	b=uJkqDk3pW+0rk40oMix7Ok/Atwf16RQq0YCaaauc2giNaRHuDz+c+q7gf+lW5//vN
+	 P88bqUveTrYfhpDYBEaFBiD/t4Cd7WgmCpPYoD6Lmy8XQeBiYLQnvwgA+THgkVfYZt
+	 G12jCJ4XsJkW597KbJCrf68Ohz4bEEL4J7aZUITc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cyan Yang <cyan.yang@sifive.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	David Hildenbrand <david@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/279] sched: Clarify wake_up_q()s write to task->wake_q.next
+Subject: [PATCH 6.14 521/731] selftests/mm/cow: fix the incorrect error handling
 Date: Tue,  8 Apr 2025 12:46:58 +0200
-Message-ID: <20250408104827.329163293@linuxfoundation.org>
+Message-ID: <20250408104926.391648597@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +66,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Cyan Yang <cyan.yang@sifive.com>
 
-[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
+[ Upstream commit f841ad9ca5007167c02de143980c9dc703f90b3d ]
 
-Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
-which a concurrent __wake_q_add() can immediately overwrite
-task->wake_q.next again.
+Error handling doesn't check the correct return value.  This patch will
+fix it.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
+Link: https://lkml.kernel.org/r/20250312043840.71799-1-cyan.yang@sifive.com
+Fixes: f4b5fd6946e2 ("selftests/vm: anon_cow: THP tests")
+Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/cow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 70a7cf563f01e..380938831b130 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -941,9 +941,10 @@ void wake_up_q(struct wake_q_head *head)
- 		struct task_struct *task;
- 
- 		task = container_of(node, struct task_struct, wake_q);
--		/* Task can safely be re-inserted now: */
- 		node = node->next;
--		task->wake_q.next = NULL;
-+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
-+		WRITE_ONCE(task->wake_q.next, NULL);
-+		/* Task can safely be re-inserted now. */
- 
- 		/*
- 		 * wake_up_process() executes a full barrier, which pairs with
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index 9446673645eba..f0cb14ea86084 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -876,7 +876,7 @@ static void do_run_with_thp(test_fn fn, enum thp_run thp_run, size_t thpsize)
+ 		mremap_size = thpsize / 2;
+ 		mremap_mem = mmap(NULL, mremap_size, PROT_NONE,
+ 				  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+-		if (mem == MAP_FAILED) {
++		if (mremap_mem == MAP_FAILED) {
+ 			ksft_test_result_fail("mmap() failed\n");
+ 			goto munmap;
+ 		}
 -- 
 2.39.5
 
