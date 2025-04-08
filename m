@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-130315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9EEA8041B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFFFA80ABA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E326C465FB9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB201BC2FA8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F372686AD;
-	Tue,  8 Apr 2025 11:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD15726B08C;
+	Tue,  8 Apr 2025 12:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/mJ42Oz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsyw0NcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F327266EEA;
-	Tue,  8 Apr 2025 11:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CA270EBD;
+	Tue,  8 Apr 2025 12:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113391; cv=none; b=XZdxNU4PFOxQbeTfhDqdzsmWV3R5sc59tz5epgaM3qTLXZXshj4r5PJLcFSJ8Jj8t0CDsbfR8P8kUddTMiqMtNpXfHiokembQVrIYMPQRww+2khJdqpYasWUZrJ6jwPmXNjrLEr2PDNh09HKVmIEasRf6UZ/iufXjebl8eqwJ8w=
+	t=1744116673; cv=none; b=qftBhK+2ei4bW0oDzmeh3tFq9Vw163cNfXgRPdciyc+yVpBp5gk5USguTgamWPKenZNXGiBLOBA3xEnl3OgGJ70mr1Be3sEb4jbT675isEmK4Rgkw8M2bdgfJwoar44FI0PrES3gJ83P/suiA9v0t0N0L8Zc6+r6ZkJy0EtVGSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113391; c=relaxed/simple;
-	bh=RTL9jgRLpJ4emNbfFKxFN4TJm0a4rGpTi9+5v7wCHKE=;
+	s=arc-20240116; t=1744116673; c=relaxed/simple;
+	bh=O3xOzEPkXutP9o+Sb/4+wIfCsJIkW90eMUtOronfqEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVRM4TqqqmfI9JxYG9pYpqWsAuokUBfWkfpYvU4UG1e3+OZz0eYJiGHIWxXE3ceZUGtfwZ4HWiPtv460AMKHSekx2NDvlWzjursbmmHniLgsfQMQat66PqtGKITNXkgqEPPAHHzorOaHiXz0w1SukBfM+Ce7fU03S46mEpaeW+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/mJ42Oz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F24C4CEE5;
-	Tue,  8 Apr 2025 11:56:30 +0000 (UTC)
+	 MIME-Version; b=JAfjwAoEYeJXuhZ9BxXtKIiBi6xmTK8yxvppacY9nhTCmAn1y/zEIdrOidQKPloX1kEXWX23PhLMa0I/P0sXoid939X7NUjHlIV4//ARUoukqWT7ART3a/iOh7H3hX83Ioko1ZBCtsljka7rjXxKkRxgNOHr/ufqmoeFiEgBL7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsyw0NcP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96073C4CEE5;
+	Tue,  8 Apr 2025 12:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113391;
-	bh=RTL9jgRLpJ4emNbfFKxFN4TJm0a4rGpTi9+5v7wCHKE=;
+	s=korg; t=1744116672;
+	bh=O3xOzEPkXutP9o+Sb/4+wIfCsJIkW90eMUtOronfqEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/mJ42Oz2w+mRCzfR49l7wQHPQfRg7G4fNMwmHACSLdx/Yh1Pf4DlbCNVFe04jFiJ
-	 BjaOPDfV0D5AHu3R+cZapEVMfOy6oRB1B0EzHBb5y+WTNZ1ON4NWhpiqOO1nwaK02u
-	 FG0kU0PTvnuCci7xNBIXP3GD1dsYKfaQcD4vB/fY=
+	b=Qsyw0NcPXuCN3zDF9o2+vO0X1Wcyy8Lc2fkrA8m3mGN3SiiKSRUktu0mnXnTTBpnQ
+	 FT937A8mOpMNS5dSQoZ2wD5JbQzq5iBatYyUbzHHodHMgrDBE3BV8JJIoyYhx7xv9p
+	 xvT/CERz0xPAfUpthF3u8tMu4yws+YfMMx+uahxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/268] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
-Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104832.327420768@linuxfoundation.org>
+Subject: [PATCH 6.12 227/423] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Date: Tue,  8 Apr 2025 12:49:13 +0200
+Message-ID: <20250408104851.013898206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
