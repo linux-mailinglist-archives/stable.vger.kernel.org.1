@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42C3A80B06
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ED3A80708
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54C614C5DB5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE87A1B85E6B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4432D27701B;
-	Tue,  8 Apr 2025 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DAA2686A5;
+	Tue,  8 Apr 2025 12:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHpWkFHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1Cvd5sc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8526A0CF;
-	Tue,  8 Apr 2025 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E016A207E14;
+	Tue,  8 Apr 2025 12:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116753; cv=none; b=Mc+8d458BuSoqkg4X+HE3ZGfAi9Hue4G4fiZK7PQKOYKG2KYaI6bfTLHsiNjTJ9NrwO5QJyqBuFUHfCNn89Nj5xQ9dEScJwps9B/is26YzV1qUpxMekKlDn+sGsXGCH8gMke2ZlK1f8F5TH4zcWYVFvB0puGyVUyKoscUJvUumY=
+	t=1744115156; cv=none; b=LJXDj9pBOlEVtpiILLcaJ0NpJss0MnOgLqWi119HTCZPEaRCnrJk5HzL6VDLSubCVj4Z5NbJGh16CPYdtOHdUk/ezEbG6mrvsMdHJPv4dH0cG5LgJuei3xOgm6vfzrIyyBsL+lQ5ujav3qOiXw0fuJI3Ap6gNcUZ+cZ/Ubx1PBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116753; c=relaxed/simple;
-	bh=qY/bvLEp0v18NHpRh9dHqboFlHBTUfzIcXxiicKpAb8=;
+	s=arc-20240116; t=1744115156; c=relaxed/simple;
+	bh=AUN9/fhs5RXqhi1RWe4ObyK2rNLJNOnVqaS/oH3dx98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiVNrR2orKV22oo0/SAmCkyaDyxel8dBiMhNX4Rzz/TGnEMSs89cqNyk3PL4wifpwAR9RCTD8oST9CnMt72yzaKhOJMIIN0xnZuoQhO1Pk3Hu74OPtoE6CAt2YHCZAkThLh3SqCkyyb3HvtHciVIy6cLyJ6ZM+MhEokWdVUGwiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHpWkFHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E7AC4CEE5;
-	Tue,  8 Apr 2025 12:52:32 +0000 (UTC)
+	 MIME-Version; b=kfabkrYT16fnsmA7mNqJuS5oXvJdYqImn4q6Ry3DjWftF2XDCfJmnE11nsw18gMTGoScWewe1tJTjKw63+4OolZxcBpC19TPvtCPiTeJoN3mKDKNEnFOuLSfJMc12PfIsICv9gcfFDQwJeEoKd28Y+Nmkb11GzCTWQKWRTqGtaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1Cvd5sc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6402DC4CEE5;
+	Tue,  8 Apr 2025 12:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116752;
-	bh=qY/bvLEp0v18NHpRh9dHqboFlHBTUfzIcXxiicKpAb8=;
+	s=korg; t=1744115155;
+	bh=AUN9/fhs5RXqhi1RWe4ObyK2rNLJNOnVqaS/oH3dx98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHpWkFHxSGceP2cSEM7o4kQ/Zh0S9lPyrPuo40erOGmJauKaoj1+Y/3nIALQTUztG
-	 y1mOCoBwdDDAM4S2ouV8YHWUXpNNE/Mv9yuzpCJMQXlIHDq86GnpVy4u8Y8raxG6DE
-	 E98qZ2wh/dyKYpFLKsJ2QVwKlbZMJdbOb5kvpfes=
+	b=P1Cvd5scfejv3cFBryYk0DcEXnw631b9hUpVPQuw3D0J7zTdkxBNSEjdXy4Ux9jqn
+	 WIdEw4zhps6rApT0Z//GFzCdflJs5USUUlRWNvh41eSAtay/PHjuNvyy5h08MOAncw
+	 cJ80has6OFGAd69LNUb1qI6WfcefjANIEgU3ov+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ondrej Lichtner <olichtne@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Herton R. Krzesinski" <herton@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/423] wifi: iwlwifi: fw: allocate chained SG tables for dump
+Subject: [PATCH 6.13 369/499] x86/uaccess: Improve performance by aligning writes to 8 bytes in copy_user_generic(), on non-FSRM/ERMS CPUs
 Date: Tue,  8 Apr 2025 12:49:41 +0200
-Message-ID: <20250408104851.682914979@linuxfoundation.org>
+Message-ID: <20250408104900.431564888@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +64,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Herton R. Krzesinski <herton@redhat.com>
 
-[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
+[ Upstream commit b5322b6ec06a6c58650f52abcd2492000396363b ]
 
-The firmware dumps can be pretty big, and since we use single
-pages for each SG table entry, even the table itself may end
-up being an order-5 allocation. Build chained tables so that
-we need not allocate a higher-order table here.
+History of the performance regression:
+======================================
 
-This could be improved and cleaned up, e.g. by using the SG
-pool code or simply kvmalloc(), but all of that would require
-also updating the devcoredump first since that frees it all,
-so we need to be more careful. SG pool might also run against
-the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
-here.
+Since the following series of user copy updates were merged upstream
+~2 years ago via:
 
-Also use _devcd_free_sgtable() for the error paths now, much
-simpler especially since it's in two places now.
+  a5624566431d ("Merge branch 'x86-rep-insns': x86 user copy clarifications")
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+.. copy_user_generic() on x86_64 stopped doing alignment of the
+writes to the destination to a 8 byte boundary for the non FSRM case.
+
+Previously, this was done through the ALIGN_DESTINATION macro that
+was used in the now removed copy_user_generic_unrolled function.
+
+Turns out this change causes some loss of performance/throughput on
+some use cases and specific CPU/platforms without FSRM and ERMS.
+
+Lately I got two reports of performance/throughput issues after a
+RHEL 9 kernel pulled the same upstream series with updates to user
+copy functions. Both reports consisted of running specific
+networking/TCP related testing using iperf3.
+
+Partial upstream fix
+====================
+
+The first report was related to a Linux Bridge testing using VMs on a
+specific machine with an AMD CPU (EPYC 7402), and after a brief
+investigation it turned out that the later change via:
+
+  ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
+
+... helped/fixed the performance issue.
+
+However, after the later commit/fix was applied, then I got another
+regression reported in a multistream TCP test on a 100Gbit mlx5 nic, also
+running on an AMD based platform (AMD EPYC 7302 CPU), again that was using
+iperf3 to run the test. That regression was after applying the later
+fix/commit, but only this didn't help in telling the whole history.
+
+Testing performed to pinpoint residual regression
+=================================================
+
+So I narrowed down the second regression use case, but running it
+without traffic through a NIC, on localhost, in trying to narrow down
+CPU usage and not being limited by other factor like network bandwidth.
+I used another system also with an AMD CPU (AMD EPYC 7742). Basically,
+I run iperf3 in server and client mode in the same system, for example:
+
+ - Start the server binding it to CPU core/thread 19:
+   $ taskset -c 19 iperf3 -D -s -B 127.0.0.1 -p 12000
+
+ - Start the client always binding/running on CPU core/thread 17, using
+   perf to get statistics:
+   $ perf stat -o stat.txt taskset -c 17 iperf3 -c 127.0.0.1 -b 0/1000 -V \
+       -n 50G --repeating-payload -l 16384 -p 12000 --cport 12001 2>&1 \
+       > stat-19.txt
+
+For the client, always running/pinned to CPU 17. But for the iperf3 in
+server mode, I did test runs using CPUs 19, 21, 23 or not pinned to any
+specific CPU. So it basically consisted with four runs of the same
+commands, just changing the CPU which the server is pinned, or without
+pinning by removing the taskset call before the server command. The CPUs
+were chosen based on NUMA node they were on, this is the relevant output
+of lscpu on the system:
+
+  $ lscpu
+  ...
+    Model name:             AMD EPYC 7742 64-Core Processor
+  ...
+  Caches (sum of all):
+    L1d:                    2 MiB (64 instances)
+    L1i:                    2 MiB (64 instances)
+    L2:                     32 MiB (64 instances)
+    L3:                     256 MiB (16 instances)
+  NUMA:
+    NUMA node(s):           4
+    NUMA node0 CPU(s):      0,1,8,9,16,17,24,25,32,33,40,41,48,49,56,57,64,65,72,73,80,81,88,89,96,97,104,105,112,113,120,121
+    NUMA node1 CPU(s):      2,3,10,11,18,19,26,27,34,35,42,43,50,51,58,59,66,67,74,75,82,83,90,91,98,99,106,107,114,115,122,123
+    NUMA node2 CPU(s):      4,5,12,13,20,21,28,29,36,37,44,45,52,53,60,61,68,69,76,77,84,85,92,93,100,101,108,109,116,117,124,125
+    NUMA node3 CPU(s):      6,7,14,15,22,23,30,31,38,39,46,47,54,55,62,63,70,71,78,79,86,87,94,95,102,103,110,111,118,119,126,127
+  ...
+
+So for the server run, when picking a CPU, I chose CPUs to be not on the same
+node. The reason is with that I was able to get/measure relevant
+performance differences when changing the alignment of the writes to the
+destination in copy_user_generic.
+
+Testing shows up to +81% performance improvement under iperf3
+=============================================================
+
+Here's a summary of the iperf3 runs:
+
+  # Vanilla upstream alignment:
+
+		     CPU      RATE          SYS          TIME     sender-receiver
+	Server bind   19: 13.0Gbits/sec 28.371851000 33.233499566 86.9%-70.8%
+	Server bind   21: 12.9Gbits/sec 28.283381000 33.586486621 85.8%-69.9%
+	Server bind   23: 11.1Gbits/sec 33.660190000 39.012243176 87.7%-64.5%
+	Server bind none: 18.9Gbits/sec 19.215339000 22.875117865 86.0%-80.5%
+
+  # With the attached patch (aligning writes in non ERMS/FSRM case):
+
+		     CPU      RATE          SYS          TIME     sender-receiver
+	Server bind   19: 20.8Gbits/sec 14.897284000 20.811101382 75.7%-89.0%
+	Server bind   21: 20.4Gbits/sec 15.205055000 21.263165909 75.4%-89.7%
+	Server bind   23: 20.2Gbits/sec 15.433801000 21.456175000 75.5%-89.8%
+	Server bind none: 26.1Gbits/sec 12.534022000 16.632447315 79.8%-89.6%
+
+So I consistently got better results when aligning the write. The
+results above were run on 6.14.0-rc6/rc7 based kernels. The sys is sys
+time and then the total time to run/transfer 50G of data. The last
+field is the CPU usage of sender/receiver iperf3 process. It's also
+worth to note that each pair of iperf3 runs may get slightly different
+results on each run, but I always got consistent higher results with
+the write alignment for this specific test of running the processes
+on CPUs in different NUMA nodes.
+
+Linus Torvalds helped/provided this version of the patch. Initially I
+proposed a version which aligned writes for all cases in
+rep_movs_alternative, however it used two extra registers and thus
+Linus provided an enhanced version that only aligns the write on the
+large_movsq case, which is sufficient since the problem happens only
+on those AMD CPUs like ones mentioned above without ERMS/FSRM, and
+also doesn't require using extra registers. Also, I validated that
+aligning only on large_movsq case is really enough for getting the
+performance back.
+
+I also tested this patch on an old Intel based non-ERMS/FRMS system
+(with Xeon E5-2667 - Sandy Bridge based) and didn't get any problems:
+no performance enhancement but also no regression either, using the
+same iperf3 based benchmark. Also newer Intel processors after
+Sandy Bridge usually have ERMS and should not be affected by this change.
+
+[ mingo: Updated the changelog. ]
+
+Fixes: ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
+Fixes: 034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
+Reported-by: Ondrej Lichtner <olichtne@redhat.com>
+Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250320142213.2623518-1-herton@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+ arch/x86/lib/copy_user_64.S | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index fb2ea38e89aca..6594216f873c4 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -558,41 +558,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
- }
+diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
+index fc9fb5d061744..b8f74d80f35c6 100644
+--- a/arch/x86/lib/copy_user_64.S
++++ b/arch/x86/lib/copy_user_64.S
+@@ -74,6 +74,24 @@ SYM_FUNC_START(rep_movs_alternative)
+ 	_ASM_EXTABLE_UA( 0b, 1b)
  
- /*
-- * alloc_sgtable - allocates scallerlist table in the given size,
-- * fills it with pages and returns it
-+ * alloc_sgtable - allocates (chained) scatterlist in the given size,
-+ *	fills it with pages and returns it
-  * @size: the size (in bytes) of the table
--*/
--static struct scatterlist *alloc_sgtable(int size)
-+ */
-+static struct scatterlist *alloc_sgtable(ssize_t size)
- {
--	int alloc_size, nents, i;
--	struct page *new_page;
--	struct scatterlist *iter;
--	struct scatterlist *table;
-+	struct scatterlist *result = NULL, *prev;
-+	int nents, i, n_prev;
- 
- 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
--	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
--	if (!table)
--		return NULL;
--	sg_init_table(table, nents);
--	iter = table;
--	for_each_sg(table, iter, sg_nents(table), i) {
--		new_page = alloc_page(GFP_KERNEL);
--		if (!new_page) {
--			/* release all previous allocated pages in the table */
--			iter = table;
--			for_each_sg(table, iter, sg_nents(table), i) {
--				new_page = sg_page(iter);
--				if (new_page)
--					__free_page(new_page);
--			}
--			kfree(table);
+ .Llarge_movsq:
++	/* Do the first possibly unaligned word */
++0:	movq (%rsi),%rax
++1:	movq %rax,(%rdi)
 +
-+#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
-+	/*
-+	 * We need an additional entry for table chaining,
-+	 * this ensures the loop can finish i.e. we can
-+	 * fit at least two entries per page (obviously,
-+	 * many more really fit.)
-+	 */
-+	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
++	_ASM_EXTABLE_UA( 0b, .Lcopy_user_tail)
++	_ASM_EXTABLE_UA( 1b, .Lcopy_user_tail)
 +
-+	while (nents > 0) {
-+		struct scatterlist *new, *iter;
-+		int n_fill, n_alloc;
++	/* What would be the offset to the aligned destination? */
++	leaq 8(%rdi),%rax
++	andq $-8,%rax
++	subq %rdi,%rax
 +
-+		if (nents <= N_ENTRIES_PER_PAGE) {
-+			/* last needed table */
-+			n_fill = nents;
-+			n_alloc = nents;
-+			nents = 0;
-+		} else {
-+			/* fill a page with entries */
-+			n_alloc = N_ENTRIES_PER_PAGE;
-+			/* reserve one for chaining */
-+			n_fill = n_alloc - 1;
-+			nents -= n_fill;
-+		}
++	/* .. and update pointers and count to match */
++	addq %rax,%rdi
++	addq %rax,%rsi
++	subq %rax,%rcx
 +
-+		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
-+		if (!new) {
-+			if (result)
-+				_devcd_free_sgtable(result);
- 			return NULL;
- 		}
--		alloc_size = min_t(int, size, PAGE_SIZE);
--		size -= PAGE_SIZE;
--		sg_set_page(iter, new_page, alloc_size, 0);
-+		sg_init_table(new, n_alloc);
-+
-+		if (!result)
-+			result = new;
-+		else
-+			sg_chain(prev, n_prev, new);
-+		prev = new;
-+		n_prev = n_alloc;
-+
-+		for_each_sg(new, iter, n_fill, i) {
-+			struct page *new_page = alloc_page(GFP_KERNEL);
-+
-+			if (!new_page) {
-+				_devcd_free_sgtable(result);
-+				return NULL;
-+			}
-+
-+			sg_set_page(iter, new_page, PAGE_SIZE, 0);
-+		}
- 	}
--	return table;
-+
-+	return result;
- }
- 
- static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
++	/* make %rcx contain the number of words, %rax the remainder */
+ 	movq %rcx,%rax
+ 	shrq $3,%rcx
+ 	andl $7,%eax
 -- 
 2.39.5
 
