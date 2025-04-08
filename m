@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-131687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980FCA80B4B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500C1A807AE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286CA8A58FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50B2D4C00B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4127C86C;
-	Tue,  8 Apr 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23D726E170;
+	Tue,  8 Apr 2025 12:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQUUsK6e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0g4eWHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B5E27C867;
-	Tue,  8 Apr 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A279626E164;
+	Tue,  8 Apr 2025 12:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117064; cv=none; b=QUUdDgwE0iiOw84o/1bS4WCgsHAQrUPbdyMNAYH2S3c8vJOqI5AwVMuuhPP1bLGOx24VSbztMuPvX/dknrhEWgjDBDZGHw/KQYjojCBxaIBIpPdIN8g/mJ+m2IRRAr3T1p867HK8Wn+OHIK9W1vxwvODyW0lxudCzVlbd0mnWlQ=
+	t=1744115466; cv=none; b=b8LqjFsUDRc6p5BVnsvq8mMGEoA+3NNsAp/GmxWguBZa65MfJyfxRLwicla21qP/xeQeQO9+bix2ZzLoUPt9vvBgYlu2FGddoiLKcZImF8DINpCBSEMtwd7mAdbiKPsWWtY32mCni1FlgpZQcBUoJCAdqwHMNhzGn4AGtuiX/rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117064; c=relaxed/simple;
-	bh=ajZs6J1GE9RlP6qhTTPzPw0PSPGJukMrkH70y4L1FaQ=;
+	s=arc-20240116; t=1744115466; c=relaxed/simple;
+	bh=zv+PC9vVQarufBwsOho60QhAoD15vSwhc+T5YjwGt6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNfllmlV/eNDJAu/URqUOLd7DpZzC2eRbTZCqK5zgzRa4dVJcQ3F/Sf6Iajcf6RnXsTjwT/Yee3yuKaw/BXpK0KtnFOs6Gz6n4jNci/DL6jCmBAvX0copd0y4Vz/EO7fu0pAWyn/5Mw3UXEyPOpeNkeqgqx3r9qy554qLHO5E5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQUUsK6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766B1C4CEE5;
-	Tue,  8 Apr 2025 12:57:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NkYnqpVCtYd6h5Qxq9eXUeicb5+pV5tv39C23ddeNHGptFBkB6z/8sWHl7TvNViCi05NhrnOPX5SxeSeQNWbYdSLCFB1bQiSVL751tpbh7ib1a7dthQxXoS6V4epFnpIpW4DKJvX4wn9PfJIs/I6KU8Etwx81GM6DobMAoXOjcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0g4eWHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344A6C4CEE5;
+	Tue,  8 Apr 2025 12:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117064;
-	bh=ajZs6J1GE9RlP6qhTTPzPw0PSPGJukMrkH70y4L1FaQ=;
+	s=korg; t=1744115466;
+	bh=zv+PC9vVQarufBwsOho60QhAoD15vSwhc+T5YjwGt6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQUUsK6eD8a0NTxvonTehtK8O/b/HVhxj7++8vFbeC0JqihMrZcWaFtLPWDb6Lt3A
-	 ay5h36VjSNf1awy1Pim5q0HZK+Vur0ndH9ExWHxvqY2HqMcW0pZEM+cqvMEGXfr5p5
-	 cXQwCPXuu2uItzJTmNZpbu5UtnNNIFF3EFy/8Dk8=
+	b=u0g4eWHsqZ4ZvOXWHPCauSywFQPAUU1JVA3Q6bvcfeoFn+fluMwUsV4Y3JxqGdjBr
+	 8RDCbBbei5lsgdTGcJkNkDDcF5AAuCqQIozJ/rwIw/1MorUzoyIMO0bA5CJqFJ91nX
+	 D0gXxdVq0VZRPYK6yvJjb8sQ/9ORd9dseKA0Pgz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Ruidong Tian <tianruidong@linux.alibaba.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 371/423] x86/mce: use is_copy_from_user() to determine copy-from-user context
+	Wouter Bijlsma <wouter@wouterbijlsma.nl>,
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.13 485/499] PCI/bwctrl: Fix NULL pointer dereference on bus number exhaustion
 Date: Tue,  8 Apr 2025 12:51:37 +0200
-Message-ID: <20250408104854.511547595@linuxfoundation.org>
+Message-ID: <20250408104903.453687612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,220 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 1a15bb8303b6b104e78028b6c68f76a0d4562134 upstream.
+commit 667f053b05f00a007738cd7ed6fa1901de19dc7e upstream.
 
-Patch series "mm/hwpoison: Fix regressions in memory failure handling",
-v4.
+When BIOS neglects to assign bus numbers to PCI bridges, the kernel
+attempts to correct that during PCI device enumeration.  If it runs out
+of bus numbers, no pci_bus is allocated and the "subordinate" pointer in
+the bridge's pci_dev remains NULL.
 
-## 1. What am I trying to do:
+The PCIe bandwidth controller erroneously does not check for a NULL
+subordinate pointer and dereferences it on probe.
 
-This patchset resolves two critical regressions related to memory failure
-handling that have appeared in the upstream kernel since version 5.17, as
-compared to 5.10 LTS.
+Bandwidth control of unusable devices below the bridge is of questionable
+utility, so simply error out instead.  This mirrors what PCIe hotplug does
+since commit 62e4492c3063 ("PCI: Prevent NULL dereference during pciehp
+probe").
 
-    - copyin case: poison found in user page while kernel copying from user space
-    - instr case: poison found while instruction fetching in user space
+The PCI core emits a message with KERN_INFO severity if it has run out of
+bus numbers.  PCIe hotplug emits an additional message with KERN_ERR
+severity to inform the user that hotplug functionality is disabled at the
+bridge.  A similar message for bandwidth control does not seem merited,
+given that its only purpose so far is to expose an up-to-date link speed
+in sysfs and throttle the link speed on certain laptops with limited
+Thermal Design Power.  So error out silently.
 
-## 2. What is the expected outcome and why
+User-visible messages:
 
-- For copyin case:
+  pci 0000:16:02.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+  [...]
+  pci_bus 0000:45: busn_res: [bus 45-74] end is updated to 74
+  pci 0000:16:02.0: devices behind bridge are unusable because [bus 45-74] cannot be assigned for them
+  [...]
+  pcieport 0000:16:02.0: pciehp: Hotplug bridge without secondary bus, ignoring
+  [...]
+  BUG: kernel NULL pointer dereference
+  RIP: pcie_update_link_speed
+  pcie_bwnotif_enable
+  pcie_bwnotif_probe
+  pcie_port_probe_service
+  really_probe
 
-Kernel can recover from poison found where kernel is doing get_user() or
-copy_from_user() if those places get an error return and the kernel return
--EFAULT to the process instead of crashing.  More specifily, MCE handler
-checks the fixup handler type to decide whether an in kernel #MC can be
-recovered.  When EX_TYPE_UACCESS is found, the PC jumps to recovery code
-specified in _ASM_EXTABLE_FAULT() and return a -EFAULT to user space.
-
-- For instr case:
-
-If a poison found while instruction fetching in user space, full recovery
-is possible.  User process takes #PF, Linux allocates a new page and fills
-by reading from storage.
-
-
-## 3. What actually happens and why
-
-- For copyin case: kernel panic since v5.17
-
-Commit 4c132d1d844a ("x86/futex: Remove .fixup usage") introduced a new
-extable fixup type, EX_TYPE_EFAULT_REG, and later patches updated the
-extable fixup type for copy-from-user operations, changing it from
-EX_TYPE_UACCESS to EX_TYPE_EFAULT_REG.  It breaks previous EX_TYPE_UACCESS
-handling when posion found in get_user() or copy_from_user().
-
-- For instr case: user process is killed by a SIGBUS signal due to #CMCI
-  and #MCE race
-
-When an uncorrected memory error is consumed there is a race between the
-CMCI from the memory controller reporting an uncorrected error with a UCNA
-signature, and the core reporting and SRAR signature machine check when
-the data is about to be consumed.
-
-### Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
-
-Prior to Icelake memory controllers reported patrol scrub events that
-detected a previously unseen uncorrected error in memory by signaling a
-broadcast machine check with an SRAO (Software Recoverable Action
-Optional) signature in the machine check bank.  This was overkill because
-it's not an urgent problem that no core is on the verge of consuming that
-bad data.  It's also found that multi SRAO UCE may cause nested MCE
-interrupts and finally become an IERR.
-
-Hence, Intel downgrades the machine check bank signature of patrol scrub
-from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
-#CMCI.  Just to add to the confusion, Linux does take an action (in
-uc_decode_notifier()) to try to offline the page despite the UC*NA*
-signature name.
-
-### Background: why #CMCI and #MCE race when poison is consuming in
-    Intel platform [1]
-
-Having decided that CMCI/UCNA is the best action for patrol scrub errors,
-the memory controller uses it for reads too.  But the memory controller is
-executing asynchronously from the core, and can't tell the difference
-between a "real" read and a speculative read.  So it will do CMCI/UCNA if
-an error is found in any read.
-
-Thus:
-
-1) Core is clever and thinks address A is needed soon, issues a
-   speculative read.
-
-2) Core finds it is going to use address A soon after sending the read
-   request
-
-3) The CMCI from the memory controller is in a race with MCE from the
-   core that will soon try to retire the load from address A.
-
-Quite often (because speculation has got better) the CMCI from the memory
-controller is delivered before the core is committed to the instruction
-reading address A, so the interrupt is taken, and Linux offlines the page
-(marking it as poison).
-
-
-## Why user process is killed for instr case
-
-Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
-"not recovered"") tries to fix noise message "Memory error not recovered"
-and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
-that kill_accessing_process() return -EHWPOISON for instr case, as result,
-kill_me_maybe() send a SIGBUS to user process.
-
-# 4. The fix, in my opinion, should be:
-
-- For copyin case:
-
-The key point is whether the error context is in a read from user memory.
-We do not care about the ex-type if we know its a MOV reading from
-userspace.
-
-is_copy_from_user() return true when both of the following two checks are
-true:
-
-    - the current instruction is copy
-    - source address is user memory
-
-If copy_user is true, we set
-
-m->kflags |= MCE_IN_KERNEL_COPYIN | MCE_IN_KERNEL_RECOV;
-
-Then do_machine_check() will try fixup_exception() first.
-
-- For instr case: let kill_accessing_process() return 0 to prevent a SIGBUS.
-
-- For patch 3:
-
-The return value of memory_failure() is quite important while discussed
-instr case regression with Tony and Miaohe for patch 2, so add comment
-about the return value.
-
-
-This patch (of 3):
-
-Commit 4c132d1d844a ("x86/futex: Remove .fixup usage") introduced a new
-extable fixup type, EX_TYPE_EFAULT_REG, and commit 4c132d1d844a
-("x86/futex: Remove .fixup usage") updated the extable fixup type for
-copy-from-user operations, changing it from EX_TYPE_UACCESS to
-EX_TYPE_EFAULT_REG.  The error context for copy-from-user operations no
-longer functions as an in-kernel recovery context.  Consequently, the
-error context for copy-from-user operations no longer functions as an
-in-kernel recovery context, resulting in kernel panics with the message:
-"Machine check: Data load in unrecoverable area of kernel."
-
-To address this, it is crucial to identify if an error context involves a
-read operation from user memory.  The function is_copy_from_user() can be
-utilized to determine:
-
-    - the current operation is copy
-    - when reading user memory
-
-When these conditions are met, is_copy_from_user() will return true,
-confirming that it is indeed a direct copy from user memory.  This check
-is essential for correctly handling the context of errors in these
-operations without relying on the extable fixup types that previously
-allowed for in-kernel recovery.
-
-So, use is_copy_from_user() to determine if a context is copy user directly.
-
-Link: https://lkml.kernel.org/r/20250312112852.82415-1-xueshuai@linux.alibaba.com
-Link: https://lkml.kernel.org/r/20250312112852.82415-2-xueshuai@linux.alibaba.com
-Fixes: 4c132d1d844a ("x86/futex: Remove .fixup usage")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 665745f27487 ("PCI/bwctrl: Re-add BW notification portdrv as PCIe BW controller")
+Reported-by: Wouter Bijlsma <wouter@wouterbijlsma.nl>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219906
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Tested-by: Wouter Bijlsma <wouter@wouterbijlsma.nl>
+Cc: stable@vger.kernel.org # v6.13+
+Link: https://lore.kernel.org/r/3b6c8d973aedc48860640a9d75d20528336f1f3c.1742669372.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/severity.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/pci/pcie/bwctrl.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -300,13 +300,12 @@ static noinstr int error_context(struct
- 	copy_user  = is_copy_from_user(regs);
- 	instrumentation_end();
+--- a/drivers/pci/pcie/bwctrl.c
++++ b/drivers/pci/pcie/bwctrl.c
+@@ -294,6 +294,10 @@ static int pcie_bwnotif_probe(struct pci
+ 	struct pci_dev *port = srv->port;
+ 	int ret;
  
--	switch (fixup_type) {
--	case EX_TYPE_UACCESS:
--		if (!copy_user)
--			return IN_KERNEL;
--		m->kflags |= MCE_IN_KERNEL_COPYIN;
--		fallthrough;
-+	if (copy_user) {
-+		m->kflags |= MCE_IN_KERNEL_COPYIN | MCE_IN_KERNEL_RECOV;
-+		return IN_KERNEL_RECOV;
-+	}
- 
-+	switch (fixup_type) {
- 	case EX_TYPE_FAULT_MCE_SAFE:
- 	case EX_TYPE_DEFAULT_MCE_SAFE:
- 		m->kflags |= MCE_IN_KERNEL_RECOV;
++	/* Can happen if we run out of bus numbers during enumeration. */
++	if (!port->subordinate)
++		return -ENODEV;
++
+ 	struct pcie_bwctrl_data *data = devm_kzalloc(&srv->device,
+ 						     sizeof(*data), GFP_KERNEL);
+ 	if (!data)
 
 
 
