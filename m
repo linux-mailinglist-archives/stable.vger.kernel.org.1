@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4134A80750
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A0DA809B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCE0E8A2C32
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4EF1BA7A00
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B4926B960;
-	Tue,  8 Apr 2025 12:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2620627603A;
+	Tue,  8 Apr 2025 12:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKt7Q58z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NDGQFgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B98E26656B;
-	Tue,  8 Apr 2025 12:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D830B265CD3;
+	Tue,  8 Apr 2025 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114757; cv=none; b=k91X6T4IdgxJIj/B79Lb0AT0CtGe/+287PWU+OY5vlR6AK9DP0MMuOuxBblbqe0bwi8l1Dz/nZXsZe9k3ot6pyT5UbmJJHG1FI4hDv4iAhUBHXXKyiN3TyYQkzUu/Kwv6DRd+QnCYob3/wLob/lGulBd4O1B5ssqNgh6oVB/XK4=
+	t=1744116358; cv=none; b=g0DH61cHZgc1ZHeLQGjQ504fnvbINEjePRYQLMGJnntpQnknZfi3nzpiWfFLdI36fXkSxWUaQZQCTcD0TqNjwMju7v3pd5QholIpNDIUBqiMdSRo42F4Pc4+UqpNcYLsFy5grTcUAN9UxgUIK0W5fkscMohARUDFBbFCnWKs2j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114757; c=relaxed/simple;
-	bh=6fdUp93M//cC/BQ4PMNLv+zHqczR3cibRxNAwvQ4P3I=;
+	s=arc-20240116; t=1744116358; c=relaxed/simple;
+	bh=3lMr7QZc8QF9y8+Gu/teSSJxwzCLwbx+CC5L2gyJiBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RB8T4ErjIz0Ack+Yt3LE/X/2ZrfYhibHurTBlxINcr7LBaR0dXAENfEFvlEZK2vxgZwpKgaY8i9kd3vXjjAyiTSiGyOkjdJawk4VaiofjDCrgkIBHJapT0zy/MUl9yRLfzsszR232pVVnq00OrnlAYXIuLlClNdURNItHXgBB70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKt7Q58z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA37C4CEE5;
-	Tue,  8 Apr 2025 12:19:16 +0000 (UTC)
+	 MIME-Version; b=F4r3DMX4WCETUIualm5116OJ5MO+3EzOpDVxYKMd5CcTyjj0tij2INDCi2MsV+MzJ0qK806kq3784uX/G6XOBOnlJwQNCmR7GJBWzoWn4dVdQpPG/bHkQLK1Fap85YxHpuEDY38ev7GEAXeWZZem/MhFXGEXfbyyyHJuwpTWs9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NDGQFgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DD9C4CEE5;
+	Tue,  8 Apr 2025 12:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114757;
-	bh=6fdUp93M//cC/BQ4PMNLv+zHqczR3cibRxNAwvQ4P3I=;
+	s=korg; t=1744116358;
+	bh=3lMr7QZc8QF9y8+Gu/teSSJxwzCLwbx+CC5L2gyJiBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKt7Q58zBjDp0ZMfXA5eb+ZlMF9Lh0rMVL5hFDZ198T+7SJ2rDeEnx9YN5yo+yDXT
-	 8sepPo8rmLVFtMge03xLsIjDg5fiYp942gAfeiXlLWKi+twhUSlkVtCs4+Gb/e6yQn
-	 PqmLRbSbMgiQLFYS5jVCjVJLgQN6M5u2e/PxUqic=
+	b=2NDGQFgB7RtSPWWeZP0igMjfs5d2v+aVvKwUe+vZIkstSse93txFpcS0sv0eDuEYH
+	 cODbAbjjA5AG6gurgJkav+3dIQYqArHSiUxFHoCLZo4TUfdyoPGilXeT62DQIwmdaj
+	 clZEjx57D0rHV4NMjk/Ikb60CYs+ffTGGO/+BEhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 225/499] perf bench: Fix perf bench syscall loop count
+Subject: [PATCH 6.12 111/423] libbpf: Fix hypothetical STT_SECTION extern NULL deref case
 Date: Tue,  8 Apr 2025 12:47:17 +0200
-Message-ID: <20250408104856.821628958@linuxfoundation.org>
+Message-ID: <20250408104848.317583660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 957d194163bf983da98bf7ec7e4f86caff8cd0eb ]
+[ Upstream commit e0525cd72b5979d8089fe524a071ea93fd011dc9 ]
 
-Command 'perf bench syscall fork -l 100000' offers option -l to run for
-a specified number of iterations. However this option is not always
-observed. The number is silently limited to 10000 iterations as can be
-seen:
+Fix theoretical NULL dereference in linker when resolving *extern*
+STT_SECTION symbol against not-yet-existing ELF section. Not sure if
+it's possible in practice for valid ELF object files (this would require
+embedded assembly manipulations, at which point BTF will be missing),
+but fix the s/dst_sym/dst_sec/ typo guarding this condition anyways.
 
-Output before:
- # perf bench syscall fork -l 100000
- # Running 'syscall/fork' benchmark:
- # Executed 10,000 fork() calls
-     Total time: 23.388 [sec]
-
-    2338.809800 usecs/op
-            427 ops/sec
- #
-
-When explicitly specified with option -l or --loops, also observe
-higher number of iterations:
-
-Output after:
- # perf bench syscall fork -l 100000
- # Running 'syscall/fork' benchmark:
- # Executed 100,000 fork() calls
-     Total time: 716.982 [sec]
-
-    7169.829510 usecs/op
-            139 ops/sec
- #
-
-This patch fixes the issue for basic execve fork and getpgid.
-
-Fixes: ece7f7c0507c ("perf bench syscall: Add fork syscall benchmark")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Tested-by: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Link: https://lore.kernel.org/r/20250304092349.2618082-1-tmricht@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
+Fixes: a46349227cd8 ("libbpf: Add linker extern resolution support for functions and global variables")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250220002821.834400-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/bench/syscall.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ tools/lib/bpf/linker.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/bench/syscall.c b/tools/perf/bench/syscall.c
-index ea4dfc07cbd6b..e7dc216f717f5 100644
---- a/tools/perf/bench/syscall.c
-+++ b/tools/perf/bench/syscall.c
-@@ -22,8 +22,7 @@
- #define __NR_fork -1
- #endif
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 777600822d8e4..179f6b31cbd6f 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -2007,7 +2007,7 @@ static int linker_append_elf_sym(struct bpf_linker *linker, struct src_obj *obj,
  
--#define LOOPS_DEFAULT 10000000
--static	int loops = LOOPS_DEFAULT;
-+static	int loops;
+ 	obj->sym_map[src_sym_idx] = dst_sym_idx;
  
- static const struct option options[] = {
- 	OPT_INTEGER('l', "loop",	&loops,		"Specify number of loops"),
-@@ -80,6 +79,18 @@ static int bench_syscall_common(int argc, const char **argv, int syscall)
- 	const char *name = NULL;
- 	int i;
- 
-+	switch (syscall) {
-+	case __NR_fork:
-+	case __NR_execve:
-+		/* Limit default loop to 10000 times to save time */
-+		loops = 10000;
-+		break;
-+	default:
-+		loops = 10000000;
-+		break;
-+	}
-+
-+	/* Options -l and --loops override default above */
- 	argc = parse_options(argc, argv, options, bench_syscall_usage, 0);
- 
- 	gettimeofday(&start, NULL);
-@@ -94,16 +105,9 @@ static int bench_syscall_common(int argc, const char **argv, int syscall)
- 			break;
- 		case __NR_fork:
- 			test_fork();
--			/* Only loop 10000 times to save time */
--			if (i == 10000)
--				loops = 10000;
- 			break;
- 		case __NR_execve:
- 			test_execve();
--			/* Only loop 10000 times to save time */
--			if (i == 10000)
--				loops = 10000;
--			break;
- 		default:
- 			break;
- 		}
+-	if (sym_type == STT_SECTION && dst_sym) {
++	if (sym_type == STT_SECTION && dst_sec) {
+ 		dst_sec->sec_sym_idx = dst_sym_idx;
+ 		dst_sym->st_value = 0;
+ 	}
 -- 
 2.39.5
 
