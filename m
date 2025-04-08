@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B30A7FE69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E921FA80296
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF4C19E23A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F6D7AA8EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B131269801;
-	Tue,  8 Apr 2025 11:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A402268FDD;
+	Tue,  8 Apr 2025 11:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9kXWdlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTR1+3B4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB02690FA;
-	Tue,  8 Apr 2025 11:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AD2268681;
+	Tue,  8 Apr 2025 11:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110215; cv=none; b=q0dt5G4TPH3o87sqr5UahyR+giTz+SFnAWNLG5D4HGtbfcF3P9R59J/jOOgMiEyts1yN/06SEqvnkGdyFx+VzvgZ048v4HvB/r54tHHFIon+ShFHEH53LoowXxAGxeb1VPFXvq+BetJa0BIsiUtFQIfWoP4DF9uXB31m7mzpz3c=
+	t=1744112809; cv=none; b=Kvu8+I1NHJH/aTGRwkk2+1hw8Rp/l6jbW2DLHGo+NyvWeQB9baNno2HAG0pAPvL/G1ibMAt32DrTMBc+h7CHcEwoY0CoL8kDd2v822PtU0a3x0AbzLhDdgSH8bdkBOVF6vWG2/omJ1zXwBmQCY2dTFgh1sRXZg7HPC3iVyJzoD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110215; c=relaxed/simple;
-	bh=QhMrO+7VY63DlftVMUJiWx7uMnUsdLCOxhOB0DYb704=;
+	s=arc-20240116; t=1744112809; c=relaxed/simple;
+	bh=01Ru9APO9Q27/+likzb/IUOKYGP4xLND7BxDnvppXZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kpxb5AAt8i42q9lxghb9/GBKcO2DPheVAz+/LcQ+/G8Nuvy7HzWPYKsQN5cjU2vtJ69GzZnmtc/gsKLYUUNQw6L9a+9ILLBi8gvB12cpAdDnswgXTCCjt15qeBmvpN3nWtyPKqTlmR2TCsKItBRj4v7Ip4sXTHkQ4OkGRHUmNfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9kXWdlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CC4C4CEE5;
-	Tue,  8 Apr 2025 11:03:34 +0000 (UTC)
+	 MIME-Version; b=TfmkwXKZ+dnqL/0c+KLl/cAx56RLBu2Dwa0ysPTNLpvmlrlJ1en/nmxchO2ETDL47Bfhxw+BBqDnm4XuuutcGVtNaGr3ZpCPt32dYgFKmaWhjgYsNNbeQeZI7L5Mlu6t7t3K8UJxFBpgVXiXk6C3MLcXNIWUyUloJ2hlVP97F9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTR1+3B4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D6EC4CEE5;
+	Tue,  8 Apr 2025 11:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110215;
-	bh=QhMrO+7VY63DlftVMUJiWx7uMnUsdLCOxhOB0DYb704=;
+	s=korg; t=1744112809;
+	bh=01Ru9APO9Q27/+likzb/IUOKYGP4xLND7BxDnvppXZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9kXWdlFP7AISeOfQOZLSuFtZk9wNI78mgvCEZQTdBo95l9RfNGD+eQ93klCmipzM
-	 1O0eJIVSz0CePsdyDG34ArCeg6qOysY7ktlGQwB3HhvXfejTWXYMOvtWLGiyBId2Ue
-	 tRrbrXtIc61nbx0D77pFV1H3YndPKCaIo68kwoGw=
+	b=zTR1+3B4pgktWZP+f0/bW4PGYqYX/Z/KJ023pReBn/2RF08Lky8lZYqvufDU0NZBo
+	 0MpwDtod9iH38iaTPUxZabw9T4goG4a/1GJkys471BkNPHJFC3dJqleq7wlL7BeiEu
+	 69xTejCKOzXKfnBo/xUDakl3O8lpODAW+UQgIHPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 208/227] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+Subject: [PATCH 5.15 203/279] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
 Date: Tue,  8 Apr 2025 12:49:46 +0200
-Message-ID: <20250408104826.553691778@linuxfoundation.org>
+Message-ID: <20250408104831.816059560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f5cb528d6441eb860250a2f085773aac4f44085e ]
+[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
 
-According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
-register only can be changed when the transmitter is disabled.
-So disable the transmitter before changing RS485 related registers and
-re-enable it after the change is done.
+The amount of looping through the list of delegations is occasionally
+leading to soft lockups. Avoid at least some loops by not requiring the
+NFSv4 state manager to scan for delegations that are marked for
+return-on-close. Instead, either mark them for immediate return (if
+possible) or else leave it up to nfs4_inode_return_delegation_on_close()
+to return them once the file is closed by the application.
 
-Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 5135cdc0b6644..110d98fed7260 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1352,6 +1352,19 @@ static int lpuart32_config_rs485(struct uart_port *port,
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index ac79ef0d43a73..0c14ff09cfbe3 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -570,17 +570,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
  
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
-+	u32 ctrl;
-+
-+	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
-+	ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+	if (ctrl & UARTCTRL_TE) {
-+		/* wait for the transmit engine to complete */
-+		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
-+		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
-+
-+		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
-+			cpu_relax();
-+	}
-+
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	/* clear unsupported configurations */
-@@ -1392,6 +1405,10 @@ static int lpuart32_config_rs485(struct uart_port *port,
- 	sport->port.rs485 = *rs485;
- 
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
-+
-+	if (ctrl & UARTCTRL_TE)
-+		lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+
- 	return 0;
+ 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
+ 		ret = true;
+-	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
+-		struct inode *inode;
+-
+-		spin_lock(&delegation->lock);
+-		inode = delegation->inode;
+-		if (inode && list_empty(&NFS_I(inode)->open_files))
+-			ret = true;
+-		spin_unlock(&delegation->lock);
+-	}
+-	if (ret)
+-		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+ 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
+@@ -821,11 +810,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
+ 	return nfs4_inode_return_delegation(inode);
  }
  
+-static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
+-		struct nfs_delegation *delegation)
++static void
++nfs_mark_return_if_closed_delegation(struct nfs_server *server,
++				     struct nfs_delegation *delegation)
+ {
+-	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+-	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
++	struct inode *inode;
++
++	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
++	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
++		return;
++	spin_lock(&delegation->lock);
++	inode = delegation->inode;
++	if (!inode)
++		goto out;
++	if (list_empty(&NFS_I(inode)->open_files))
++		nfs_mark_return_delegation(server, delegation);
++	else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out:
++	spin_unlock(&delegation->lock);
+ }
+ 
+ static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
 -- 
 2.39.5
 
