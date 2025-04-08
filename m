@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A5BA8054D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BE0A80AA9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC12B1B80076
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4248C7AB185
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C957269B0E;
-	Tue,  8 Apr 2025 12:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3991227C145;
+	Tue,  8 Apr 2025 12:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0DZmJ9B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAVxER7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB49268C72;
-	Tue,  8 Apr 2025 12:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E805B27C142;
+	Tue,  8 Apr 2025 12:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114143; cv=none; b=SZIGXF1bCMPfX+16Cht8uaHv34QE+0GoV9c1EGolpLJnNepTfOYfEYrudRZIyGCmeUChAH7QNbWrUo9MLNNeJzsHKEaeJSQ9mDsxrqUom8kvHjvEK+JfJhe+XM/8jnbAb8Zhtja1yNi0QrPe/dKNaz5xwXCQUGu8qWCiuRldJRA=
+	t=1744116954; cv=none; b=l+R2v2cEZW/LXJonJ2yMwtovS8Y+OCueEN4QmU95Hy5WGP0jn6dpS2HUwQvD4pwAvUwKbpz2yTa+9mJOMSAbYGfNzV+2ee+arjUlUOQeqCgdyOEf8yC9WC8K5IHYN0wD9/CU4y5HdPIpX4NTgHbMhasdgHsEW0xCO8wzFa5Lzic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114143; c=relaxed/simple;
-	bh=ngx/V0lfXn+gQrWXrde4bxafh76zTlMt4tsOOjX8l5g=;
+	s=arc-20240116; t=1744116954; c=relaxed/simple;
+	bh=6fdzEuEwTK4bEXYECqFfYl/CR54dqtk39/t7ZlSTwTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSmnezd9fydoZwsAVAHiCBaT5tboCl552vBArAze3aNekG3DG92FSCW6uS1i4grHFlhLSQPTDKWSWuQUeZO55Z3+5tQQyGk0FmJ3ShYNVTRMIxGPB+5fawPURL0C3LXWLYunxMx6k585XqZAHI/0cPHogQN7Q4fd6zAovGy1EFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0DZmJ9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC2CC4CEE5;
-	Tue,  8 Apr 2025 12:09:02 +0000 (UTC)
+	 MIME-Version; b=uHmJHKHwta2+FCGEG6bsxr6YaWxBcZSD9NFGaKZMBw1uwFTbkIk7KDrr0ksvB6QI4BslVmCN8XFtwMVics410z5URci663fM6WWV8yk37bKmWsZbhBK4kFELNWENqZu6wjkXt5e03jg0JnF9E6zhakC83TQ/knmSJimdfJMWT/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAVxER7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A14BC4CEE5;
+	Tue,  8 Apr 2025 12:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114142;
-	bh=ngx/V0lfXn+gQrWXrde4bxafh76zTlMt4tsOOjX8l5g=;
+	s=korg; t=1744116953;
+	bh=6fdzEuEwTK4bEXYECqFfYl/CR54dqtk39/t7ZlSTwTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0DZmJ9Bct953zCEpxZbN4CVar1vvK5YP5AQ0GQa15SaLOXnGUo20c8PRle9CM68V
-	 DmahPKHLrWGWvDeU97FHs0JsP6/tpuh6mfRSdaZXR+CNPPxKDX0XO4Uh0idvlxbcv4
-	 RCxhVtOPkvi7qjw6IogJZTTWbLbbfzoS7iH1RK38=
+	b=QAVxER7OxP61GtVBwsVeBI9T2Q9xH9Hj56Xtm2FLoi2MYNNcdCESiKTw5CL/mLhz+
+	 BzPOs/nS3CVnu2aFCUc+wiKGWbJWvoU6hx+1aYMpiuiX23TeHp4fVQT9xdyCukz8du
+	 Bz3cBDhY5NEwdNxBUjvmzVU2ShKMAk2jdGZ9vyk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	syzbot+fae49d997eb56fa7c74d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 115/154] isofs: fix KMSAN uninit-value bug in do_isofs_readdir()
+Subject: [PATCH 6.12 330/423] sctp: add mutual exclusion in proc_sctp_do_udp_port()
 Date: Tue,  8 Apr 2025 12:50:56 +0200
-Message-ID: <20250408104819.014602415@linuxfoundation.org>
+Message-ID: <20250408104853.512063725@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 81a82e8f33880793029cd6f8a766fb13b737e6a7 ]
+[ Upstream commit 10206302af856791fbcc27a33ed3c3eb09b2793d ]
 
-In do_isofs_readdir() when assigning the variable
-"struct iso_directory_record *de" the b_data field of the buffer_head
-is accessed and an offset is added to it, the size of b_data is 2048
-and the offset size is 2047, meaning
-"de = (struct iso_directory_record *) (bh->b_data + offset);"
-yields the final byte of the 2048 sized b_data block.
+We must serialize calls to sctp_udp_sock_stop() and sctp_udp_sock_start()
+or risk a crash as syzbot reported:
 
-The first byte of the directory record (de_len) is then read and
-found to be 31, meaning the directory record size is 31 bytes long.
-The directory record is defined by the structure:
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000d: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
+CPU: 1 UID: 0 PID: 6551 Comm: syz.1.44 Not tainted 6.14.0-syzkaller-g7f2ff7b62617 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+ RIP: 0010:kernel_sock_shutdown+0x47/0x70 net/socket.c:3653
+Call Trace:
+ <TASK>
+  udp_tunnel_sock_release+0x68/0x80 net/ipv4/udp_tunnel_core.c:181
+  sctp_udp_sock_stop+0x71/0x160 net/sctp/protocol.c:930
+  proc_sctp_do_udp_port+0x264/0x450 net/sctp/sysctl.c:553
+  proc_sys_call_handler+0x3d0/0x5b0 fs/proc/proc_sysctl.c:601
+  iter_file_splice_write+0x91c/0x1150 fs/splice.c:738
+  do_splice_from fs/splice.c:935 [inline]
+  direct_splice_actor+0x18f/0x6c0 fs/splice.c:1158
+  splice_direct_to_actor+0x342/0xa30 fs/splice.c:1102
+  do_splice_direct_actor fs/splice.c:1201 [inline]
+  do_splice_direct+0x174/0x240 fs/splice.c:1227
+  do_sendfile+0xafd/0xe50 fs/read_write.c:1368
+  __do_sys_sendfile64 fs/read_write.c:1429 [inline]
+  __se_sys_sendfile64 fs/read_write.c:1415 [inline]
+  __x64_sys_sendfile64+0x1d8/0x220 fs/read_write.c:1415
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
 
-	struct iso_directory_record {
-		__u8 length;                     // 1 byte
-		__u8 ext_attr_length;            // 1 byte
-		__u8 extent[8];                  // 8 bytes
-		__u8 size[8];                    // 8 bytes
-		__u8 date[7];                    // 7 bytes
-		__u8 flags;                      // 1 byte
-		__u8 file_unit_size;             // 1 byte
-		__u8 interleave;                 // 1 byte
-		__u8 volume_sequence_number[4];  // 4 bytes
-		__u8 name_len;                   // 1 byte
-		char name[];                     // variable size
-	} __attribute__((packed));
-
-The fixed portion of this structure occupies 33 bytes. Therefore, a
-valid directory record must be at least 33 bytes long
-(even without considering the variable-length name field).
-Since de_len is only 31, it is insufficient to contain
-the complete fixed header.
-
-The code later hits the following sanity check that
-compares de_len against the sum of de->name_len and
-sizeof(struct iso_directory_record):
-
-	if (de_len < de->name_len[0] + sizeof(struct iso_directory_record)) {
-		...
-	}
-
-Since the fixed portion of the structure is
-33 bytes (up to and including name_len member),
-a valid record should have de_len of at least 33 bytes;
-here, however, de_len is too short, and the field de->name_len
-(located at offset 32) is accessed even though it lies beyond
-the available 31 bytes.
-
-This access on the corrupted isofs data triggers a KASAN uninitialized
-memory warning. The fix would be to first verify that de_len is at least
-sizeof(struct iso_directory_record) before accessing any
-fields like de->name_len.
-
-Reported-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Tested-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=812641c6c3d7586a1613
-Fixes: 2deb1acc653c ("isofs: fix access to unallocated memory when reading corrupted filesystem")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250211195900.42406-1-qasdev00@gmail.com
+Fixes: 046c052b475e ("sctp: enable udp tunneling socks")
+Reported-by: syzbot+fae49d997eb56fa7c74d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67ea5c01.050a0220.1547ec.012b.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250331091532.224982-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sctp/sysctl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
-index b9e6a7ec78be4..23c73bb56d821 100644
---- a/fs/isofs/dir.c
-+++ b/fs/isofs/dir.c
-@@ -147,7 +147,8 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
- 			de = tmpde;
- 		}
- 		/* Basic sanity check, whether name doesn't exceed dir entry */
--		if (de_len < de->name_len[0] +
-+		if (de_len < sizeof(struct iso_directory_record) ||
-+		    de_len < de->name_len[0] +
- 					sizeof(struct iso_directory_record)) {
- 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
- 			       " in block %lu of inode %lu\n", block,
+diff --git a/net/sctp/sysctl.c b/net/sctp/sysctl.c
+index 8e1e97be4df79..ee3eac338a9de 100644
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -525,6 +525,8 @@ static int proc_sctp_do_auth(const struct ctl_table *ctl, int write,
+ 	return ret;
+ }
+ 
++static DEFINE_MUTEX(sctp_sysctl_mutex);
++
+ static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+@@ -549,6 +551,7 @@ static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
+ 		if (new_value > max || new_value < min)
+ 			return -EINVAL;
+ 
++		mutex_lock(&sctp_sysctl_mutex);
+ 		net->sctp.udp_port = new_value;
+ 		sctp_udp_sock_stop(net);
+ 		if (new_value) {
+@@ -561,6 +564,7 @@ static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
+ 		lock_sock(sk);
+ 		sctp_sk(sk)->udp_port = htons(net->sctp.udp_port);
+ 		release_sock(sk);
++		mutex_unlock(&sctp_sysctl_mutex);
+ 	}
+ 
+ 	return ret;
 -- 
 2.39.5
 
