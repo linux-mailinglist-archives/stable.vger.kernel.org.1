@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-129628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6364A800CF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE85A800F3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ADB6880798
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD2D4613C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABC926B2D7;
-	Tue,  8 Apr 2025 11:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA0C268FD0;
+	Tue,  8 Apr 2025 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U99+WfhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsYAo+Gp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C126B2D0;
-	Tue,  8 Apr 2025 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07324268FCB;
+	Tue,  8 Apr 2025 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111552; cv=none; b=EIVilm9IODHUa57QaIt1/u5Ys5YcS4bVJvUrU85Ttbmr+qrIZc8UhWLVbdkaWk9OseiE9Mus5KCcCewVD0S4g4vEQhFJgIolB6X4GvvMrc0C8nfwkjTBGctGE9UXksLG+V9K3+dWFg1+IBKzwUKPUm4cY5W+cnnDoIIsFRTZYUs=
+	t=1744111583; cv=none; b=BA2AeS9UsfFBmwQlS+WQoHRnqFHbrlSSNdQHCEK/3GBydCSQoZX4TrO457li46Qy5twmP2Ped1BNKeMobvB4iudnGDm7WlLrBVED5FHKRnfmtgycyeB5svkPaDk5b6xutx35ebSCinH+rqL08aTcXWGkbN8tgeYAnDo7vovgZ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111552; c=relaxed/simple;
-	bh=JX2HlB+DgoZRShvVLV37a3O1XNWzfuumHqRiR1uHxfw=;
+	s=arc-20240116; t=1744111583; c=relaxed/simple;
+	bh=b1knjCQNePHusw4FN0KUj6XyvqJRTlR4W25IVCiL/MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+r2llty2BwYeRo9VG+QQ0LieJ+uxuKLnflqq6EKr9IDfToV8Z6A9hOY1IroxDHUdAy63CL6t0xRTJKIZ0xWQvQ7MQocoF0xTj7fYFoDD2G/E+tihAOBj3BhqHqTLisVUnnNVabQWdWZzsrSKbTZSEf/0fNtdmmmuaD5NUykrgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U99+WfhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753F6C4CEE5;
-	Tue,  8 Apr 2025 11:25:51 +0000 (UTC)
+	 MIME-Version; b=c53xuLAzGUutI/Wcb4dPqEhA0ekgynJJ3TWpcMj+r/Vz3oNEuUjdyrW+iw+9IE1oMqA5fqT7ml4/+x29LFddEnqdcGKt57SYoep+AykTB6THCou/cOjNH4mK+JDMPaJjgDHperonBt+yxhVVBavgznycFK4/jL6MwwHAQPx+bSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsYAo+Gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6346DC4CEE5;
+	Tue,  8 Apr 2025 11:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111551;
-	bh=JX2HlB+DgoZRShvVLV37a3O1XNWzfuumHqRiR1uHxfw=;
+	s=korg; t=1744111582;
+	bh=b1knjCQNePHusw4FN0KUj6XyvqJRTlR4W25IVCiL/MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U99+WfhKu6ub1oUU9FzcxEi8ST2r3OWYwC0D6q9ktgwqtqRJsi+xACKfbtuIQMzvL
-	 dgVZixerheea/mX6XgmRGUycg9hIkKR0AyF2lu/eQYgXdvE/H7QWVSGE7LetoM9MF+
-	 P9fP+oqFT9GUW68h2c52TOTD3yKL44mMKXYJBicY=
+	b=KsYAo+GpCRO1/o6MkQHLGtuSuN+zAruk3NXqOcRxGrGzN0iaO9RkeOZlhV18CIuxZ
+	 VNgi/Px9DSkJmnYEHyZ69/8YdZ0ti93tkUkFJGKnRX3AWo6xOQH8NVMrXmSRD4RbaE
+	 XyT0zjmF/f5++7V6tH4lcZlrrUSGsNOvnzF/xc1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	James Clark <james.clark@linaro.org>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 465/731] perf pmus: Restructure pmu_read_sysfs to scan fewer PMUs
-Date: Tue,  8 Apr 2025 12:46:02 +0200
-Message-ID: <20250408104925.095231358@linuxfoundation.org>
+Subject: [PATCH 6.14 466/731] perf pmu: Dynamically allocate tool PMU
+Date: Tue,  8 Apr 2025 12:46:03 +0200
+Message-ID: <20250408104925.118339732@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,300 +67,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 57e13264dcea670d5f42a067562f02aa923219e2 ]
+[ Upstream commit 72c6f57a4193f2eadceb52261315438719c4c1ad ]
 
-Rather than scanning core or all PMUs, allow pmu_read_sysfs to read
-some combination of core, other, hwmon and tool PMUs. The PMUs that
-should be read and are already read are held as bitmaps. It is known
-that a "hwmon_" prefix is necessary for a hwmon PMU's name, similarly
-with "tool", so only scan those PMUs in situations the PMU name or the
-PMU's type number make sense to.
+perf_pmus__destroy() treats all PMUs as allocated and free's them so we
+can't have any static PMUs that are added to the PMU lists. Fix it by
+allocating the tool PMU in the same way as the others. Current users of
+the tool PMU already use find_pmu() and not perf_pmus__tool_pmu(), so
+rename the function to add 'new' to avoid it being misused in the
+future.
 
-The number of openat system calls reduces from 276 to 98 for a hwmon
-event. The number of openats for regular perf events isn't changed.
+perf_pmus__fake_pmu() can remain as static as it's not added to the
+PMU lists.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20250201074320.746259-3-irogers@google.com
+Fixes the following error:
+
+  $ perf bench internals pmu-scan
+
+  # Running 'internals/pmu-scan' benchmark:
+  Computing performance of sysfs PMU event scan for 100 times
+  munmap_chunk(): invalid pointer
+  Aborted (core dumped)
+
+Fixes: 240505b2d0ad ("perf tool_pmu: Factor tool events into their own PMU")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250226104111.564443-2-james.clark@linaro.org
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.h  |   2 +
- tools/perf/util/pmus.c | 146 +++++++++++++++++++++++++++--------------
- 2 files changed, 97 insertions(+), 51 deletions(-)
+ tools/perf/util/pmus.c     |  2 +-
+ tools/perf/util/tool_pmu.c | 23 +++++++++++------------
+ tools/perf/util/tool_pmu.h |  2 +-
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index dbed6c243a5ef..edd36c20aedc2 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -37,6 +37,8 @@ struct perf_pmu_caps {
- };
- 
- enum {
-+	PERF_PMU_TYPE_PE_START    = 0,
-+	PERF_PMU_TYPE_PE_END      = 0xFFFEFFFF,
- 	PERF_PMU_TYPE_HWMON_START = 0xFFFF0000,
- 	PERF_PMU_TYPE_HWMON_END   = 0xFFFFFFFD,
- 	PERF_PMU_TYPE_TOOL = 0xFFFFFFFE,
 diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index 60d81d69503e3..8a0a919415d49 100644
+index 8a0a919415d49..6498021acef01 100644
 --- a/tools/perf/util/pmus.c
 +++ b/tools/perf/util/pmus.c
-@@ -37,10 +37,25 @@
-  */
- static LIST_HEAD(core_pmus);
- static LIST_HEAD(other_pmus);
--static bool read_sysfs_core_pmus;
--static bool read_sysfs_all_pmus;
-+enum perf_tool_pmu_type {
-+	PERF_TOOL_PMU_TYPE_PE_CORE,
-+	PERF_TOOL_PMU_TYPE_PE_OTHER,
-+	PERF_TOOL_PMU_TYPE_TOOL,
-+	PERF_TOOL_PMU_TYPE_HWMON,
-+
-+#define PERF_TOOL_PMU_TYPE_PE_CORE_MASK (1 << PERF_TOOL_PMU_TYPE_PE_CORE)
-+#define PERF_TOOL_PMU_TYPE_PE_OTHER_MASK (1 << PERF_TOOL_PMU_TYPE_PE_OTHER)
-+#define PERF_TOOL_PMU_TYPE_TOOL_MASK (1 << PERF_TOOL_PMU_TYPE_TOOL)
-+#define PERF_TOOL_PMU_TYPE_HWMON_MASK (1 << PERF_TOOL_PMU_TYPE_HWMON)
-+
-+#define PERF_TOOL_PMU_TYPE_ALL_MASK (PERF_TOOL_PMU_TYPE_PE_CORE_MASK |	\
-+					PERF_TOOL_PMU_TYPE_PE_OTHER_MASK | \
-+					PERF_TOOL_PMU_TYPE_TOOL_MASK |	\
-+					PERF_TOOL_PMU_TYPE_HWMON_MASK)
-+};
-+static unsigned int read_pmu_types;
+@@ -268,7 +268,7 @@ static void pmu_read_sysfs(unsigned int to_read_types)
  
--static void pmu_read_sysfs(bool core_only);
-+static void pmu_read_sysfs(unsigned int to_read_pmus);
- 
- size_t pmu_name_len_no_suffix(const char *str)
- {
-@@ -102,8 +117,7 @@ void perf_pmus__destroy(void)
- 
- 		perf_pmu__delete(pmu);
- 	}
--	read_sysfs_core_pmus = false;
--	read_sysfs_all_pmus = false;
-+	read_pmu_types = 0;
- }
- 
- static struct perf_pmu *pmu_find(const char *name)
-@@ -129,6 +143,7 @@ struct perf_pmu *perf_pmus__find(const char *name)
- 	struct perf_pmu *pmu;
- 	int dirfd;
- 	bool core_pmu;
-+	unsigned int to_read_pmus = 0;
- 
- 	/*
- 	 * Once PMU is loaded it stays in the list,
-@@ -139,11 +154,11 @@ struct perf_pmu *perf_pmus__find(const char *name)
- 	if (pmu)
- 		return pmu;
- 
--	if (read_sysfs_all_pmus)
-+	if (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK)
- 		return NULL;
- 
- 	core_pmu = is_pmu_core(name);
--	if (core_pmu && read_sysfs_core_pmus)
-+	if (core_pmu && (read_pmu_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK))
- 		return NULL;
- 
- 	dirfd = perf_pmu__event_source_devices_fd();
-@@ -151,15 +166,27 @@ struct perf_pmu *perf_pmus__find(const char *name)
- 			       /*eager_load=*/false);
- 	close(dirfd);
- 
--	if (!pmu) {
--		/*
--		 * Looking up an inidividual PMU failed. This may mean name is
--		 * an alias, so read the PMUs from sysfs and try to find again.
--		 */
--		pmu_read_sysfs(core_pmu);
-+	if (pmu)
-+		return pmu;
-+
-+	/* Looking up an individual perf event PMU failed, check if a tool PMU should be read. */
-+	if (!strncmp(name, "hwmon_", 6))
-+		to_read_pmus |= PERF_TOOL_PMU_TYPE_HWMON_MASK;
-+	else if (!strcmp(name, "tool"))
-+		to_read_pmus |= PERF_TOOL_PMU_TYPE_TOOL_MASK;
-+
-+	if (to_read_pmus) {
-+		pmu_read_sysfs(to_read_pmus);
- 		pmu = pmu_find(name);
-+		if (pmu)
-+			return pmu;
- 	}
--	return pmu;
-+	/* Read all necessary PMUs from sysfs and see if the PMU is found. */
-+	to_read_pmus = PERF_TOOL_PMU_TYPE_PE_CORE_MASK;
-+	if (!core_pmu)
-+		to_read_pmus |= PERF_TOOL_PMU_TYPE_PE_OTHER_MASK;
-+	pmu_read_sysfs(to_read_pmus);
-+	return pmu_find(name);
- }
- 
- static struct perf_pmu *perf_pmu__find2(int dirfd, const char *name)
-@@ -176,11 +203,11 @@ static struct perf_pmu *perf_pmu__find2(int dirfd, const char *name)
- 	if (pmu)
- 		return pmu;
- 
--	if (read_sysfs_all_pmus)
-+	if (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK)
- 		return NULL;
- 
- 	core_pmu = is_pmu_core(name);
--	if (core_pmu && read_sysfs_core_pmus)
-+	if (core_pmu && (read_pmu_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK))
- 		return NULL;
- 
- 	return perf_pmu__lookup(core_pmu ? &core_pmus : &other_pmus, dirfd, name,
-@@ -197,52 +224,60 @@ static int pmus_cmp(void *priv __maybe_unused,
- }
- 
- /* Add all pmus in sysfs to pmu list: */
--static void pmu_read_sysfs(bool core_only)
-+static void pmu_read_sysfs(unsigned int to_read_types)
- {
--	int fd;
--	DIR *dir;
--	struct dirent *dent;
- 	struct perf_pmu *tool_pmu;
- 
--	if (read_sysfs_all_pmus || (core_only && read_sysfs_core_pmus))
-+	if ((read_pmu_types & to_read_types) == to_read_types) {
-+		/* All requested PMU types have been read. */
- 		return;
-+	}
- 
--	fd = perf_pmu__event_source_devices_fd();
--	if (fd < 0)
--		return;
-+	if (to_read_types & (PERF_TOOL_PMU_TYPE_PE_CORE_MASK | PERF_TOOL_PMU_TYPE_PE_OTHER_MASK)) {
-+		int fd = perf_pmu__event_source_devices_fd();
-+		DIR *dir;
-+		struct dirent *dent;
-+		bool core_only = (to_read_types & PERF_TOOL_PMU_TYPE_PE_OTHER_MASK) == 0;
- 
--	dir = fdopendir(fd);
--	if (!dir) {
--		close(fd);
--		return;
--	}
-+		if (fd < 0)
-+			goto skip_pe_pmus;
- 
--	while ((dent = readdir(dir))) {
--		if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
--			continue;
--		if (core_only && !is_pmu_core(dent->d_name))
--			continue;
--		/* add to static LIST_HEAD(core_pmus) or LIST_HEAD(other_pmus): */
--		perf_pmu__find2(fd, dent->d_name);
--	}
-+		dir = fdopendir(fd);
-+		if (!dir) {
-+			close(fd);
-+			goto skip_pe_pmus;
-+		}
- 
--	closedir(dir);
--	if (list_empty(&core_pmus)) {
-+		while ((dent = readdir(dir))) {
-+			if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
-+				continue;
-+			if (core_only && !is_pmu_core(dent->d_name))
-+				continue;
-+			/* add to static LIST_HEAD(core_pmus) or LIST_HEAD(other_pmus): */
-+			perf_pmu__find2(fd, dent->d_name);
-+		}
-+
-+		closedir(dir);
-+	}
-+skip_pe_pmus:
-+	if ((to_read_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK) && list_empty(&core_pmus)) {
- 		if (!perf_pmu__create_placeholder_core_pmu(&core_pmus))
- 			pr_err("Failure to set up any core PMUs\n");
- 	}
- 	list_sort(NULL, &core_pmus, pmus_cmp);
--	if (!core_only) {
-+
-+	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
-+	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
- 		tool_pmu = perf_pmus__tool_pmu();
+ 	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
+ 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
+-		tool_pmu = perf_pmus__tool_pmu();
++		tool_pmu = tool_pmu__new();
  		list_add_tail(&tool_pmu->list, &other_pmus);
--		perf_pmus__read_hwmon_pmus(&other_pmus);
  	}
-+	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
-+	    (read_pmu_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) == 0)
-+		perf_pmus__read_hwmon_pmus(&other_pmus);
-+
- 	list_sort(NULL, &other_pmus, pmus_cmp);
--	if (!list_empty(&core_pmus)) {
--		read_sysfs_core_pmus = true;
--		if (!core_only)
--			read_sysfs_all_pmus = true;
--	}
-+
-+	read_pmu_types |= to_read_types;
+ 	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
+diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
+index 3a68debe71437..9156745ea180d 100644
+--- a/tools/perf/util/tool_pmu.c
++++ b/tools/perf/util/tool_pmu.c
+@@ -490,17 +490,16 @@ int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread)
+ 	return 0;
  }
  
- static struct perf_pmu *__perf_pmus__find_by_type(unsigned int type)
-@@ -263,12 +298,21 @@ static struct perf_pmu *__perf_pmus__find_by_type(unsigned int type)
- 
- struct perf_pmu *perf_pmus__find_by_type(unsigned int type)
+-struct perf_pmu *perf_pmus__tool_pmu(void)
++struct perf_pmu *tool_pmu__new(void)
  {
-+	unsigned int to_read_pmus;
- 	struct perf_pmu *pmu = __perf_pmus__find_by_type(type);
- 
--	if (pmu || read_sysfs_all_pmus)
-+	if (pmu || (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK))
- 		return pmu;
- 
--	pmu_read_sysfs(/*core_only=*/false);
-+	if (type >= PERF_PMU_TYPE_PE_START && type <= PERF_PMU_TYPE_PE_END) {
-+		to_read_pmus = PERF_TOOL_PMU_TYPE_PE_CORE_MASK |
-+			PERF_TOOL_PMU_TYPE_PE_OTHER_MASK;
-+	} else if (type >= PERF_PMU_TYPE_HWMON_START && type <= PERF_PMU_TYPE_HWMON_END) {
-+		to_read_pmus = PERF_TOOL_PMU_TYPE_HWMON_MASK;
-+	} else {
-+		to_read_pmus = PERF_TOOL_PMU_TYPE_TOOL_MASK;
-+	}
-+	pmu_read_sysfs(to_read_pmus);
- 	pmu = __perf_pmus__find_by_type(type);
- 	return pmu;
+-	static struct perf_pmu tool = {
+-		.name = "tool",
+-		.type = PERF_PMU_TYPE_TOOL,
+-		.aliases = LIST_HEAD_INIT(tool.aliases),
+-		.caps = LIST_HEAD_INIT(tool.caps),
+-		.format = LIST_HEAD_INIT(tool.format),
+-	};
+-	if (!tool.events_table)
+-		tool.events_table = find_core_events_table("common", "common");
+-
+-	return &tool;
++	struct perf_pmu *tool = zalloc(sizeof(struct perf_pmu));
++
++	tool->name = strdup("tool");
++	tool->type = PERF_PMU_TYPE_TOOL;
++	INIT_LIST_HEAD(&tool->aliases);
++	INIT_LIST_HEAD(&tool->caps);
++	INIT_LIST_HEAD(&tool->format);
++	tool->events_table = find_core_events_table("common", "common");
++
++	return tool;
  }
-@@ -282,7 +326,7 @@ struct perf_pmu *perf_pmus__scan(struct perf_pmu *pmu)
- 	bool use_core_pmus = !pmu || pmu->is_core;
+diff --git a/tools/perf/util/tool_pmu.h b/tools/perf/util/tool_pmu.h
+index a60184859080f..c6ad1dd90a56d 100644
+--- a/tools/perf/util/tool_pmu.h
++++ b/tools/perf/util/tool_pmu.h
+@@ -51,6 +51,6 @@ int evsel__tool_pmu_open(struct evsel *evsel,
+ 			 int start_cpu_map_idx, int end_cpu_map_idx);
+ int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread);
  
- 	if (!pmu) {
--		pmu_read_sysfs(/*core_only=*/false);
-+		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_ALL_MASK);
- 		pmu = list_prepare_entry(pmu, &core_pmus, list);
- 	}
- 	if (use_core_pmus) {
-@@ -300,7 +344,7 @@ struct perf_pmu *perf_pmus__scan(struct perf_pmu *pmu)
- struct perf_pmu *perf_pmus__scan_core(struct perf_pmu *pmu)
- {
- 	if (!pmu) {
--		pmu_read_sysfs(/*core_only=*/true);
-+		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_PE_CORE_MASK);
- 		return list_first_entry_or_null(&core_pmus, typeof(*pmu), list);
- 	}
- 	list_for_each_entry_continue(pmu, &core_pmus, list)
-@@ -316,7 +360,7 @@ static struct perf_pmu *perf_pmus__scan_skip_duplicates(struct perf_pmu *pmu)
- 	const char *last_pmu_name = (pmu && pmu->name) ? pmu->name : "";
+-struct perf_pmu *perf_pmus__tool_pmu(void);
++struct perf_pmu *tool_pmu__new(void);
  
- 	if (!pmu) {
--		pmu_read_sysfs(/*core_only=*/false);
-+		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_ALL_MASK);
- 		pmu = list_prepare_entry(pmu, &core_pmus, list);
- 	} else
- 		last_pmu_name_len = pmu_name_len_no_suffix(pmu->name ?: "");
+ #endif /* __TOOL_PMU_H */
 -- 
 2.39.5
 
