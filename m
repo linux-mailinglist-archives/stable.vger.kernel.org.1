@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-128938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C27EA7FD36
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639ADA80223
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF0E116846D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD37A461371
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0CC267F68;
-	Tue,  8 Apr 2025 10:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2642C227BAA;
+	Tue,  8 Apr 2025 11:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJE3HkDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmi5VGP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09009264FB6;
-	Tue,  8 Apr 2025 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86B5216E30;
+	Tue,  8 Apr 2025 11:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109681; cv=none; b=NzEZct10V/nCZ66ItHSYuVh5l8tlf1d+/sm0KsWF6XkMLAPBaTPAJPso/r+8QdKURex7zHdy5IULuDqtLrAm2kUcdE2+OQ1NvWIE7IO6djJqHVyhnp6yaVH3LKoPtytxmOzoVAhL988fB0IKytHcsPhzZnpelnwXe0aNkcPDz9k=
+	t=1744112364; cv=none; b=JvNIK7ndsN3DitZCUPBXXjldef/G6XFRZjKWo/dOZDNQnrtsJ/VSeCG65hcgWdv43tVk7uJ0NDUO0uLC2WFnAuGLxGhBb2hhtwYnNgh/oRUwsbld2cBVyUr08+y3AiQD3YS3dsg9Uojc+C4vS1+op9uyVCLeqd/XRQY33Nz+mD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109681; c=relaxed/simple;
-	bh=UbC2TeFX1uPhpFqvj5XpTryhx3i5MjFmEXEgbKPD7Tg=;
+	s=arc-20240116; t=1744112364; c=relaxed/simple;
+	bh=wQ53JbhdLuKr8sbohWq1ymb73Ift7QeG3d/Fp6dd/XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pm2/H9vQd9k/wIkugvh+6PIsdYmH+gN7E0OCgE4iM/uopD2qtLIBEegHysLuaLLg9ukjH58NGRbO+0kuF7IngAYdBnpj1RCqaAOTexAMRuEBEEEZzdb3dooo0b9LhnL03Wib1+ZS8FISKSN39z2Yhv/txcXlj3PM6UiFCar7S3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJE3HkDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AB8C4CEE5;
-	Tue,  8 Apr 2025 10:54:39 +0000 (UTC)
+	 MIME-Version; b=Xm1AW3zQx6K2kN65ProeNb3omZ8NBfS6xSbzFxY47T7tf2Ve6SgY55JpzzITyVf0FGnllQmAYlrYzGMButrtk8DHK1rDWjCEqvWTJCpNdaye296WH2bvBCAPMzQx/sLY66XlGaAQ73ltLSYXso3mpMlKW6RYy6xRobWhd7XqOOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmi5VGP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08429C4CEE5;
+	Tue,  8 Apr 2025 11:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109679;
-	bh=UbC2TeFX1uPhpFqvj5XpTryhx3i5MjFmEXEgbKPD7Tg=;
+	s=korg; t=1744112364;
+	bh=wQ53JbhdLuKr8sbohWq1ymb73Ift7QeG3d/Fp6dd/XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJE3HkDUx3rGRenCfvv2f70nB9sn/NfajYTqnOQ0/xioOccE/d/wHh3bDZDIaXj99
-	 bMHMEpFq6Eyc0RcJ3+JvJUICFz8zrHFJZk9i6+z1Je1EQr1ZqnEztZk78RPeJWuSGG
-	 4fA/DljXpBu4N6a1gVHU4KvN5VOf2WaKjRHf/E7s=
+	b=qmi5VGP74zyPnkcH4gLkTFYUr3Jh1rUZ2vZFxzECpp3x8n5KzLSvu2OvJE9KpFEvS
+	 dILSd8g3qgPEafQ55B0bQbfF2qoRph/sBRskAbahPY7IUdsqXtGZpRUEEcgn21FBl8
+	 8ymizH73NduH6qmcfvBcnpIS3vKWUAqnJ0tmlFTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/227] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Subject: [PATCH 5.15 009/279] net: dsa: mv88e6xxx: Verify after ATU Load ops
 Date: Tue,  8 Apr 2025 12:46:32 +0200
-Message-ID: <20250408104820.821599814@linuxfoundation.org>
+Message-ID: <20250408104826.622530110@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
+[ Upstream commit dc5340c3133a3ebe54853fd299116149e528cfaa ]
 
-The VMBus driver manages the MMIO space it owns via the hyperv_mmio
-resource tree. Because the synthetic video framebuffer portion of the
-MMIO space is initially setup by the Hyper-V host for each guest, the
-VMBus driver does an early reserve of that portion of MMIO space in the
-hyperv_mmio resource tree. It saves a pointer to that resource in
-fb_mmio. When a VMBus driver requests MMIO space and passes "true"
-for the "fb_overlap_ok" argument, the reserved framebuffer space is
-used if possible. In that case it's not necessary to do another request
-against the "shadow" hyperv_mmio resource tree because that resource
-was already requested in the early reserve steps.
+ATU Load operations could fail silently if there's not enough space
+on the device to hold the new entry. When this happens, the symptom
+depends on the unknown flood settings. If unknown multicast flood is
+disabled, the multicast packets are dropped when the ATU table is
+full. If unknown multicast flood is enabled, the multicast packets
+will be flooded to all ports. Either way, IGMP snooping is broken
+when the ATU Load operation fails silently.
 
-However, the vmbus_free_mmio() function currently does no special
-handling for the fb_mmio resource. When a framebuffer device is
-removed, or the driver is unbound, the current code for
-vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
-pointing to memory that has been freed. If the same or another
-driver is subsequently bound to the device, vmbus_allocate_mmio()
-checks against fb_mmio, and potentially gets garbage. Furthermore
-a second unbind operation produces this "nonexistent resource" error
-because of the unbalanced behavior between vmbus_allocate_mmio() and
-vmbus_free_mmio():
+Do a Read-After-Write verification after each fdb/mdb add operation
+to make sure that the operation was really successful, and return
+-ENOSPC otherwise.
 
-[   55.499643] resource: Trying to free nonexistent
-			resource <0x00000000f0000000-0x00000000f07fffff>
-
-Fix this by adding logic to vmbus_free_mmio() to recognize when
-MMIO space in the fb_mmio reserved area would be released, and don't
-release it. This filtering ensures the fb_mmio resource always exists,
-and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
-
-Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
+Fixes: defb05b9b9b4 ("net: dsa: mv88e6xxx: Add support for fdb_add, fdb_del, and fdb_getnext")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250306172306.3859214-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 59 ++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 39339b152b8ba..e8bea7c791691 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -2331,12 +2331,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- 	struct resource *iter;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 2a55ecceab8c6..07a3f12e02dd1 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -1775,13 +1775,11 @@ mv88e6xxx_port_vlan_prepare(struct dsa_switch *ds, int port,
+ 	return err;
+ }
  
- 	mutex_lock(&hyperv_mmio_lock);
-+
-+	/*
-+	 * If all bytes of the MMIO range to be released are within the
-+	 * special case fb_mmio shadow region, skip releasing the shadow
-+	 * region since no corresponding __request_region() was done
-+	 * in vmbus_allocate_mmio().
-+	 */
-+	if (fb_mmio && start >= fb_mmio->start &&
-+	    (start + size - 1 <= fb_mmio->end))
-+		goto skip_shadow_release;
-+
- 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
- 		if ((iter->start >= start + size) || (iter->end <= start))
- 			continue;
+-static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+-					const unsigned char *addr, u16 vid,
+-					u8 state)
++static int mv88e6xxx_port_db_get(struct mv88e6xxx_chip *chip,
++				 const unsigned char *addr, u16 vid,
++				 u16 *fid, struct mv88e6xxx_atu_entry *entry)
+ {
+-	struct mv88e6xxx_atu_entry entry;
+ 	struct mv88e6xxx_vtu_entry vlan;
+-	u16 fid;
+ 	int err;
  
- 		__release_region(iter, start, size);
+ 	/* Ports have two private address databases: one for when the port is
+@@ -1792,7 +1790,7 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+ 	 * VLAN ID into the port's database used for VLAN-unaware bridging.
+ 	 */
+ 	if (vid == 0) {
+-		fid = MV88E6XXX_FID_BRIDGED;
++		*fid = MV88E6XXX_FID_BRIDGED;
+ 	} else {
+ 		err = mv88e6xxx_vtu_get(chip, vid, &vlan);
+ 		if (err)
+@@ -1802,14 +1800,39 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+ 		if (!vlan.valid)
+ 			return -EOPNOTSUPP;
+ 
+-		fid = vlan.fid;
++		*fid = vlan.fid;
  	}
-+
-+skip_shadow_release:
- 	release_mem_region(start, size);
- 	mutex_unlock(&hyperv_mmio_lock);
  
+-	entry.state = 0;
+-	ether_addr_copy(entry.mac, addr);
+-	eth_addr_dec(entry.mac);
++	entry->state = 0;
++	ether_addr_copy(entry->mac, addr);
++	eth_addr_dec(entry->mac);
++
++	return mv88e6xxx_g1_atu_getnext(chip, *fid, entry);
++}
++
++static bool mv88e6xxx_port_db_find(struct mv88e6xxx_chip *chip,
++				   const unsigned char *addr, u16 vid)
++{
++	struct mv88e6xxx_atu_entry entry;
++	u16 fid;
++	int err;
+ 
+-	err = mv88e6xxx_g1_atu_getnext(chip, fid, &entry);
++	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
++	if (err)
++		return false;
++
++	return entry.state && ether_addr_equal(entry.mac, addr);
++}
++
++static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
++					const unsigned char *addr, u16 vid,
++					u8 state)
++{
++	struct mv88e6xxx_atu_entry entry;
++	u16 fid;
++	int err;
++
++	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
+ 	if (err)
+ 		return err;
+ 
+@@ -2324,6 +2347,13 @@ static int mv88e6xxx_port_fdb_add(struct dsa_switch *ds, int port,
+ 	mv88e6xxx_reg_lock(chip);
+ 	err = mv88e6xxx_port_db_load_purge(chip, port, addr, vid,
+ 					   MV88E6XXX_G1_ATU_DATA_STATE_UC_STATIC);
++	if (err)
++		goto out;
++
++	if (!mv88e6xxx_port_db_find(chip, addr, vid))
++		err = -ENOSPC;
++
++out:
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return err;
+@@ -5878,6 +5908,13 @@ static int mv88e6xxx_port_mdb_add(struct dsa_switch *ds, int port,
+ 	mv88e6xxx_reg_lock(chip);
+ 	err = mv88e6xxx_port_db_load_purge(chip, port, mdb->addr, mdb->vid,
+ 					   MV88E6XXX_G1_ATU_DATA_STATE_MC_STATIC);
++	if (err)
++		goto out;
++
++	if (!mv88e6xxx_port_db_find(chip, mdb->addr, mdb->vid))
++		err = -ENOSPC;
++
++out:
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return err;
 -- 
 2.39.5
 
