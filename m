@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-129729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65BBA800E9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7578DA80266
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58D10188D225
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A455188A988
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91BE268C61;
-	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0B6266EFB;
+	Tue,  8 Apr 2025 11:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKhgxGrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgKByXoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4208264A70;
-	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0503E263C6D;
+	Tue,  8 Apr 2025 11:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111823; cv=none; b=r/t+uqEESw0Ts86CLAneUaFKmRNUWBHnDF71PwjSnhYXV+vZAhK4HkF0fd3wxjzkV13kvhfxBwTDJTYXrsTN+DftcxTV9I5IEiwJoxSsnBgCxA4Azm+J4w7GKE4NzHZwtDXbc346oqDu/tyQWJiXgCYo43DqO2C3DgfoiygQj6o=
+	t=1744112597; cv=none; b=a/87bRRSvrcQmkS3fRxMF7HGI9WVEcYn7cnyerxk4h0aZSGVBoPZSWyuUZchcSTlOlVoCZl+nzKl0culpcf6wzCXxvtsY/PI9F27PSJQiBaZ2T//zls270cPCY2K3k6RLm++k5Hg72BtPNj6ysdr2cxIg6FpqITfz8t+0qHgU10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111823; c=relaxed/simple;
-	bh=l7RT9vPaUkoRCF9xi5B9bCje9orUwmrCMBZUYR8Ey+8=;
+	s=arc-20240116; t=1744112597; c=relaxed/simple;
+	bh=moJzFv9xhMnZ+Oot/Gvmczgonsc43d8FqM9ccveTgfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0xXMaVV+s7mBlLvkRZyT3xMGi7Ub6Y0GjssfxECCB8/B4uobGx5IfcwPkgcCThujYKs28h89aqqZsiXpGENhtMxcM/jjjVeb23QEDywr4mhWHGwPxKbWYf6+tTY+z34QAt0M864MaxMXbcaOoK4W15LpT5FWoNJPGSG/VT3yjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKhgxGrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B52C4CEE5;
-	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
+	 MIME-Version; b=OUedL7ZhdzzDjjKcD5w8NmT1xg1Cw/zFj+qNisGbLZ1NrYDFX912P5+pAdF3Yp0Ez20zw0Am4mviou2GHEikSpAzoF8qP/yLuZiMq/Tk7QOTfkJl+xlPNmtQhx4TdM1V07FtLzQRTs6N08cHJRcGZ2LKQ3DI64znXajieljdSa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgKByXoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EBCC4CEE5;
+	Tue,  8 Apr 2025 11:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111823;
-	bh=l7RT9vPaUkoRCF9xi5B9bCje9orUwmrCMBZUYR8Ey+8=;
+	s=korg; t=1744112596;
+	bh=moJzFv9xhMnZ+Oot/Gvmczgonsc43d8FqM9ccveTgfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKhgxGrdULJVuocog+1BYY0owqvYnTI2+XYrYgCdAs23Hr7LWDlgN31F/O/HioVpd
-	 tYh9SyaLRdgqRerynYl/8in5eH5dpwLEopAoGtQfJNkte+kAPZHFpr6NA32yarCe2l
-	 3iBNV0JGmnmuAd44oXI3SJ7v4NjqxQ5YNJ7eplwU=
+	b=VgKByXooelFRtdAxNNWKWxdnebyBpmfIj3lwmDKVO3gvB6eek0xoW+pSaXhItAp6H
+	 D641I3tn8D3sINrDBcVyoG1mWG3EDhx1ttyLXI8QPDuTTfY1msUWYa2IY3nxJAOgnJ
+	 rogsdndfs8S20NcbQsNIa4gr/VuP00MUcQTsnUm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 573/731] rcu-tasks: Always inline rcu_irq_work_resched()
+Subject: [PATCH 5.15 087/279] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
 Date: Tue,  8 Apr 2025 12:47:50 +0200
-Message-ID: <20250408104927.600971038@linuxfoundation.org>
+Message-ID: <20250408104828.694446065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
+[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
 
-Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
-generated out of line.  rcu_irq_work_resched() can be called from
-noinstr code, so make sure it's always inlined.
+Currently the condition of unmapping sdb in error path is not exactly
+the same as the condition of mapping in alloc_user_qp_db(). This may
+cause a problem of unmapping an unmapped db in some case, such as
+when the QP is XRC TGT. Unified the two conditions.
 
-Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 48e5c03df1dd8..bd69ddc102fbc 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -138,7 +138,7 @@ static inline void rcu_sysrq_end(void) { }
- #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
- void rcu_irq_work_resched(void);
- #else
--static inline void rcu_irq_work_resched(void) { }
-+static __always_inline void rcu_irq_work_resched(void) { }
- #endif
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index ff019e32c4552..d7f620eb4f21d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -842,12 +842,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 			    struct hns_roce_ib_create_qp *ucmd,
+ 			    struct hns_roce_ib_create_qp_resp *resp)
+ {
++	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
+ 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
+ 		struct hns_roce_ucontext, ibucontext);
++	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	int ret;
  
- #ifdef CONFIG_RCU_NOCB_CPU
+-	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
++	if (has_sdb) {
+ 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
+ 		if (ret) {
+ 			ibdev_err(ibdev,
+@@ -858,7 +860,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
+ 	}
+ 
+-	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
++	if (has_rdb) {
+ 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
+ 		if (ret) {
+ 			ibdev_err(ibdev,
+@@ -872,7 +874,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 	return 0;
+ 
+ err_sdb:
+-	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
++	if (has_sdb)
+ 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
+ err_out:
+ 	return ret;
 -- 
 2.39.5
 
