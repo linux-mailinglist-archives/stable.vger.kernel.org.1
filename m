@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E541A80301
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E9CA803C4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F8417F3DB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728F919E2A2C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC342268681;
-	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F724269B01;
+	Tue,  8 Apr 2025 11:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5DYVa1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4MCANWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973C92641CC;
-	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0772264FB0;
+	Tue,  8 Apr 2025 11:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112819; cv=none; b=k9mUsF7OIRXbbpPCQbQApZaeswi+6x2cQoYtyCXTHVIUSdLO37ZI9a0wHGHN0d51D0EIK0nLiaCw9SDkvHv39zerGDP9bkNihyu5nVLmK8F51qox2NmlTCTnWZKv4Xl8GP2dN30YyiLAcvIJPrtoossLtTXntynQYROtHVUgtEM=
+	t=1744113394; cv=none; b=uQ+9ECyE1ramO+4TfS+ZuZiLqDSNkoT8FrEHwIJFm5TrhNFgj6H8847pXusjwEQDcqwMCOxGV9INQ5k4Yb+QI5NSCAGwWrJAukGdXuy4n0iciDw6VWIcuFLNeNkecPm9nsTLRkmVVA43GP7qzR6m2CVpyE9FyZKxlcxRLauhOyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112819; c=relaxed/simple;
-	bh=BsX0iQBanqjAUTfvniuP1BcjviwFS8/PzDhPycvM78I=;
+	s=arc-20240116; t=1744113394; c=relaxed/simple;
+	bh=NCCxfzK+VrTNj3oF+mqpbavKsvund7X/06FtlKdzkV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYuhZ8kXFZ3gnLCZl2jp+G2JZZB9raPQ2xrLqkkYL9f3mLPZHFVnik5w049zZA83bhvRd+JsknQ8itGZ5ap2HjUEckKlzNHvu9Lb/nZ0AsR5ziCQXKdYfDC/9LHaYgfTM8NRVA9mPWymC5A20HsGvxl/7td0JIvS4aDEoaS6FZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5DYVa1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E25C4CEE5;
-	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
+	 MIME-Version; b=iTo++D910NSfHkEmox3W2onT2cTcpBGEFVTrHDo84d3XGRdXVdkOt00nbm7pcZ5AUMcvm5IUnSkFI+p5m+kWDFTUP29OPAbkS0m1V50fzf4clSLXRDiV5v29X1nn7bvNU0U3il4PKLOS/ncXv0AyMLqXsIEC7nRCFQ+s+EzMtA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4MCANWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494F3C4CEE5;
+	Tue,  8 Apr 2025 11:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112819;
-	bh=BsX0iQBanqjAUTfvniuP1BcjviwFS8/PzDhPycvM78I=;
+	s=korg; t=1744113393;
+	bh=NCCxfzK+VrTNj3oF+mqpbavKsvund7X/06FtlKdzkV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5DYVa1X0WVMomrwhKXVxNt+LDFMCJ9QpE+YZf2c/b6M1q3w2GUzLv15dsEl/AowQ
-	 3l5Gav/xFSvC4jYuBhgiaGXlgcLfMXqiat8FG2mBu5Gey+0t6p7JgotMmdNSuZrlGI
-	 nRjM1NkfpBOIMbR9jSn2h4eQJc0+M/sK0fVaX4JQ=
+	b=j4MCANWrcwQkIcgkhMMzj6Ow44s3sJNMGGxqvCvV/T42pAzBw/Mg2PaPuf1T8XQmp
+	 5Qz2RrOShkQPJOXpcCh/gGoIyLTRee9bLuMEulvoTL1NmmdIasqba1reCGC2qOHSJG
+	 Usw5c50TnlKqIy2b66ONG4m7dQmmosz6MaUt485U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/279] of: property: Increase NR_FWNODE_REFERENCE_ARGS
-Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104830.892563200@linuxfoundation.org>
+Subject: [PATCH 6.6 142/268] NFS: Shut down the nfs_client only after all the superblocks
+Date: Tue,  8 Apr 2025 12:49:13 +0200
+Message-ID: <20250408104832.356189289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
+[ Upstream commit 2d3e998a0bc7fe26a724f87a8ce217848040520e ]
 
-Currently, the following two macros have different values:
+The nfs_client manages state for all the superblocks in the
+"cl_superblocks" list, so it must not be shut down until all of them are
+gone.
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
-
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
-
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
-
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
-Will align both macros later to avoid such inconsistency.
-
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 7d3e26a054c8 ("NFS: Cancel all existing RPC tasks when shutdown")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/sysfs.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 2d68606fb725d..f0833bafe6bd4 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -67,7 +67,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
+diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
+index 7b59a40d40c06..784f7c1d003bf 100644
+--- a/fs/nfs/sysfs.c
++++ b/fs/nfs/sysfs.c
+@@ -14,6 +14,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/lockd/lockd.h>
  
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
++#include "internal.h"
+ #include "nfs4_fs.h"
+ #include "netns.h"
+ #include "sysfs.h"
+@@ -228,6 +229,25 @@ static void shutdown_client(struct rpc_clnt *clnt)
+ 	rpc_cancel_tasks(clnt, -EIO, shutdown_match_client, NULL);
+ }
  
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
++/*
++ * Shut down the nfs_client only once all the superblocks
++ * have been shut down.
++ */
++static void shutdown_nfs_client(struct nfs_client *clp)
++{
++	struct nfs_server *server;
++	rcu_read_lock();
++	list_for_each_entry_rcu(server, &clp->cl_superblocks, client_link) {
++		if (!(server->flags & NFS_MOUNT_SHUTDOWN)) {
++			rcu_read_unlock();
++			return;
++		}
++	}
++	rcu_read_unlock();
++	nfs_mark_client_ready(clp, -EIO);
++	shutdown_client(clp->cl_rpcclient);
++}
++
+ static ssize_t
+ shutdown_show(struct kobject *kobj, struct kobj_attribute *attr,
+ 				char *buf)
+@@ -259,7 +279,6 @@ shutdown_store(struct kobject *kobj, struct kobj_attribute *attr,
+ 
+ 	server->flags |= NFS_MOUNT_SHUTDOWN;
+ 	shutdown_client(server->client);
+-	shutdown_client(server->nfs_client->cl_rpcclient);
+ 
+ 	if (!IS_ERR(server->client_acl))
+ 		shutdown_client(server->client_acl);
+@@ -267,6 +286,7 @@ shutdown_store(struct kobject *kobj, struct kobj_attribute *attr,
+ 	if (server->nlm_host)
+ 		shutdown_client(server->nlm_host->h_rpcclnt);
+ out:
++	shutdown_nfs_client(server->nfs_client);
+ 	return count;
+ }
+ 
 -- 
 2.39.5
 
