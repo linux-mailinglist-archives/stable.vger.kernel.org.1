@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-128955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2E3A7FD6B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA4CA800DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F204E18928F2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57654880B37
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6191C2690C4;
-	Tue,  8 Apr 2025 10:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F76268FC9;
+	Tue,  8 Apr 2025 11:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAJBWeWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpYNzPYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D492268FF0;
-	Tue,  8 Apr 2025 10:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68EA268FD5;
+	Tue,  8 Apr 2025 11:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109728; cv=none; b=jpnOS2xyHwywjqMsh/MF4MW+191jqsRIS5gv8Mn5lT8DPtvo4uoRUQnfS+SAoi6BkOjm0f5idlfLgeDcNtW6MoI5vfeRuZfq/s8OIYJj5mGjzuGKgphfiKlzPrBZD28rFinCuZEfRfwkqM6+QMKFjpt6MRjWVHTaxSy1oVTKjWg=
+	t=1744111585; cv=none; b=ZfoSB1kLP4ZNgvtrkklUzPKGuyGsjKBy63cMBzsNWLx8+ELd1Cf7nQJv0Y+YAqcedGrQ2gX/u5Ss4/TspqaCwAoru8znLwchDODn252vwm/IbJrhDRNQ+UYL4/f2xdrPCi2ftgTlwNjnhjvad+mEeMpfun7Y51HhxMnS7xa7sjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109728; c=relaxed/simple;
-	bh=qTDlU+uUYsIQtWJ+WqUkZxLJJ4fezjv2DmSkX8yEugA=;
+	s=arc-20240116; t=1744111585; c=relaxed/simple;
+	bh=JgTWD54CwU4kOVVpT/D1H69xqEZGib9pmIjVwyGmVCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTX9VlkgTL+Jx+DAnlk4mziAlE4eyma93qY7VqIghScmX4ecXzE03s/QRmIOOEp1yH/CCuLhaSC/x+M+GzRGtHYxCoJkRaGVh2nZXhOzZqZ2TLHa/rm7pzc8t+gvehW+u9vrWMDGUTbg6y4JPHVSveK9OcOLlZKEtC7vLDSZ6zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAJBWeWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C80CC4CEE7;
-	Tue,  8 Apr 2025 10:55:27 +0000 (UTC)
+	 MIME-Version; b=pC2ynH4pkGwUVWcrRWQmBGmCUW64zHeE0RfkKn+L6K4Lb5nhZxoMmFsTfOPNk2qUeuwZb/Dl1rofBMbGNpq5bFe9IAQ0YyIk1Zy+zWdnKejvwqld0A55dDqpV35XNJTWPfXzWVQ0V7Jvhz3fPgyAfUmAK/8Od9D15ddBA6N5zOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpYNzPYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342EFC4CEEA;
+	Tue,  8 Apr 2025 11:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109727;
-	bh=qTDlU+uUYsIQtWJ+WqUkZxLJJ4fezjv2DmSkX8yEugA=;
+	s=korg; t=1744111585;
+	bh=JgTWD54CwU4kOVVpT/D1H69xqEZGib9pmIjVwyGmVCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAJBWeWQg6jaK9Qc7zY+wG9LNk/cSnaKE78usPcxxI6w36aHfXRpOfX/YhJ52viWV
-	 ctmMyKqYf1P3wkGYKvKRcKN2uaEod5P4W95L8nCWS16ZvRyE560mtshkbEfRFmjW4S
-	 ylXXX48sLW3YdVu8N26k7JrPHWmM6MBcVUqKYGl8=
+	b=kpYNzPYOSlwpH6HHwNIk1cG2W5v28wqycBq9A680mccokH7qzWvYZkzRiIpcfqEhH
+	 rT5xM41Cak0nCOD58nqjB8HONhPZoIvIKl1oqoW107zK8M7N7kuGwTBq7zB2iZJUfq
+	 tBgll1aj7LiYjoK5fF/ZplenEbdqvD9IzFdqSZ5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris von Recklinghausen <crecklin@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-Subject: [PATCH 5.10 003/227] sched/isolation: Prevent boot crash when the boot CPU is nohz_full
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 484/731] perf tests: Fix data symbol test with LTO builds
 Date: Tue,  8 Apr 2025 12:46:21 +0200
-Message-ID: <20250408104820.464646247@linuxfoundation.org>
+Message-ID: <20250408104925.534321936@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Ian Rogers <irogers@google.com>
 
-Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
-include the boot CPU, which is no longer true after:
+[ Upstream commit 36e7748d33bf6a82e558009e03448e9321465e05 ]
 
-  08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+With LTO builds, although regular builds could also see this as
+all the code is in one file, the datasym workload can realize the
+buf1.reserved data is never accessed. The compiler moves the
+variable to bss and only keeps the data1 and data2 parts as
+separate variables. This causes the symbol check to fail in the
+test. Make the variable volatile to disable the more aggressive
+optimization. Rename the variable to make which buf1 in perf is
+being referred to.
 
-However after:
+Before:
 
-  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
+  $ perf test -vv "data symbol"
+  126: Test data symbol:
+  --- start ---
+  test child forked, pid 299808
+  perf does not have symbol 'buf1'
+  perf is missing symbols - skipping test
+  ---- end(-2) ----
+  126: Test data symbol                                                : Skip
+  $ nm perf|grep buf1
+  0000000000a5fa40 b buf1.0
+  0000000000a5fa48 b buf1.1
 
-the kernel will crash at boot time in this case; housekeeping_any_cpu()
-returns an invalid CPU number until smp_init() brings the first
-housekeeping CPU up.
+After:
 
-Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
-return smp_processor_id() in this case.
+  $ nm perf|grep buf1
+  0000000000a53a00 d buf1
+  $ perf test -vv "data symbol"126: Test data symbol:
+  --- start ---
+  test child forked, pid 302166
+   a53a00-a53a39 l buf1
+  perf does have symbol 'buf1'
+  Recording workload...
+  Waiting for "perf record has started" message
+  OK
+  Cleaning up files...
+  ---- end(0) ----
+  126: Test data symbol                                                : Ok
 
-This is just the simple and backportable workaround which fixes the
-symptom, but smp_processor_id() at boot time should be safe at least for
-type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
-logic.
-
-There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
-offline tick_do_timer_cpu (the 1st online housekeeping CPU).
-
-[ Apply only documentation changes as commit which causes boot
-  crash when boot CPU is nohz_full is not backported to stable
-  kernels - Krishanth ]
-
-Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
-Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
-Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-[ strip out upstream commit and Fixes: so tools don't get confused that
-  this commit actually does anything real - gregkh]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3dfc01fe9d12 ("perf test: Add 'datasym' test workload")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250226230109.314580-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/timers/no_hz.rst |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ tools/perf/tests/shell/test_data_symbol.sh | 17 +++++++++--------
+ tools/perf/tests/workloads/datasym.c       | 11 ++++++-----
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
---- a/Documentation/timers/no_hz.rst
-+++ b/Documentation/timers/no_hz.rst
-@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-ad
- online to handle timekeeping tasks in order to ensure that system
- calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
- (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
--user processes to observe slight drifts in clock rate.)  Therefore, the
--boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
--"nohz_full=" mask that includes the boot CPU will result in a boot-time
--error message, and the boot CPU will be removed from the mask.  Note that
--this means that your system must have at least two CPUs in order for
-+user processes to observe slight drifts in clock rate.) Note that this
-+means that your system must have at least two CPUs in order for
- CONFIG_NO_HZ_FULL=y to do anything for you.
+diff --git a/tools/perf/tests/shell/test_data_symbol.sh b/tools/perf/tests/shell/test_data_symbol.sh
+index c86da02350596..7da606db97cb4 100755
+--- a/tools/perf/tests/shell/test_data_symbol.sh
++++ b/tools/perf/tests/shell/test_data_symbol.sh
+@@ -18,7 +18,7 @@ skip_if_no_mem_event() {
  
- Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
+ skip_if_no_mem_event || exit 2
+ 
+-skip_test_missing_symbol buf1
++skip_test_missing_symbol workload_datasym_buf1
+ 
+ TEST_PROGRAM="perf test -w datasym"
+ PERF_DATA=$(mktemp /tmp/__perf_test.perf.data.XXXXX)
+@@ -26,18 +26,19 @@ ERR_FILE=$(mktemp /tmp/__perf_test.stderr.XXXXX)
+ 
+ check_result() {
+ 	# The memory report format is as below:
+-	#    99.92%  ...  [.] buf1+0x38
++	#    99.92%  ...  [.] workload_datasym_buf1+0x38
+ 	result=$(perf mem report -i ${PERF_DATA} -s symbol_daddr -q 2>&1 |
+-		 awk '/buf1/ { print $4 }')
++		 awk '/workload_datasym_buf1/ { print $4 }')
+ 
+-	# Testing is failed if has no any sample for "buf1"
++	# Testing is failed if has no any sample for "workload_datasym_buf1"
+ 	[ -z "$result" ] && return 1
+ 
+ 	while IFS= read -r line; do
+-		# The "data1" and "data2" fields in structure "buf1" have
+-		# offset "0x0" and "0x38", returns failure if detect any
+-		# other offset value.
+-		if [ "$line" != "buf1+0x0" ] && [ "$line" != "buf1+0x38" ]; then
++		# The "data1" and "data2" fields in structure
++		# "workload_datasym_buf1" have offset "0x0" and "0x38", returns
++		# failure if detect any other offset value.
++		if [ "$line" != "workload_datasym_buf1+0x0" ] && \
++		   [ "$line" != "workload_datasym_buf1+0x38" ]; then
+ 			return 1
+ 		fi
+ 	done <<< "$result"
+diff --git a/tools/perf/tests/workloads/datasym.c b/tools/perf/tests/workloads/datasym.c
+index 8ddb2aa6a049e..1d0b7d64e1ba1 100644
+--- a/tools/perf/tests/workloads/datasym.c
++++ b/tools/perf/tests/workloads/datasym.c
+@@ -10,7 +10,8 @@ typedef struct _buf {
+ 	char data2;
+ } buf __attribute__((aligned(64)));
+ 
+-static buf buf1 = {
++/* volatile to try to avoid the compiler seeing reserved as unused. */
++static volatile buf workload_datasym_buf1 = {
+ 	/* to have this in the data section */
+ 	.reserved[0] = 1,
+ };
+@@ -34,8 +35,8 @@ static int datasym(int argc, const char **argv)
+ 	alarm(sec);
+ 
+ 	while (!done) {
+-		buf1.data1++;
+-		if (buf1.data1 == 123) {
++		workload_datasym_buf1.data1++;
++		if (workload_datasym_buf1.data1 == 123) {
+ 			/*
+ 			 * Add some 'noise' in the loop to work around errata
+ 			 * 1694299 on Arm N1.
+@@ -49,9 +50,9 @@ static int datasym(int argc, const char **argv)
+ 			 * longer a continuous repeating pattern that interacts
+ 			 * badly with the bias.
+ 			 */
+-			buf1.data1++;
++			workload_datasym_buf1.data1++;
+ 		}
+-		buf1.data2 += buf1.data1;
++		workload_datasym_buf1.data2 += workload_datasym_buf1.data1;
+ 	}
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
