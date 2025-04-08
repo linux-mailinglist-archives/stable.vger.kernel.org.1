@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408E9A7FF59
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EDDA7FF67
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D3A3A99DC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5343A443DE9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610AE266573;
-	Tue,  8 Apr 2025 11:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B54267F4A;
+	Tue,  8 Apr 2025 11:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5j7y2Fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnl+fc8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C10D374C4;
-	Tue,  8 Apr 2025 11:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6237265CAF;
+	Tue,  8 Apr 2025 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110879; cv=none; b=Hr1v+KqGo8Hy4bbutr8JmFIbMhMogROskQmTPFyNlskg01AH8gwJtrpakz4jc8spVffeRRhFNzNg8mCQ5ry2bExftYwir/PPe46StW+OVhdKqH42y8tgCR4UVyYXMgqix7mQm4WSJa8k/wJ/dSbOdw3fr+U8MWUbp9wJALIupsk=
+	t=1744110908; cv=none; b=AljkCEAAzXRadvnDwC+eCYGWdFGCS+hvriJ/XBm5iP6Zz3DsftAqRrJqHeLoVAtxWZaEYPDrwyBjpDXipC+V/McRRf47e7L/uv/amBaeg8rbnIxYrGHnwxHQc+dUbUFqBxMrRuMqUcNTJlNMbAnVaYWuJdCpcw9mYZIiYccH9CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110879; c=relaxed/simple;
-	bh=wk/xtwginFcXnG40EUV6/2zXeIE+dp1qMXK9ycDwmDk=;
+	s=arc-20240116; t=1744110908; c=relaxed/simple;
+	bh=nToEzHWLwVSTXJp8WfIDIjL6ii6tex7kq9hsL9YZ04Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTnPSUYYXjx1M7l4JUe5nevB9QislVMcsZW9sqR2+jjcFVciM9aV0qdJoDot0XnmB83M0eo9Vdbj3t8WwSG7rKaPaeSqDe/hK5PXq3IT5epKo/dK8/giF4w/jJK9yVxklpEArt+97C7p44ulac89SZljFxgV3K2w7b6wMWgKpps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5j7y2Fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8C8C4CEE5;
-	Tue,  8 Apr 2025 11:14:38 +0000 (UTC)
+	 MIME-Version; b=rEHT69EaVwA9Hj23Zi0/sI9iGsHujGp3x3xXsAfU0BCgEqh4GVbxZPHSKhWzXuLtzD9YCz8EOdmjNJcEFEAtcLMkXDiyhONhFXMnA/vfMtCm/hJ1BHPPi7z9fMVBa5n5rJfTHt29wK5WUr5FDMnc6dcfW+WBUCxWT5aKmigvOj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnl+fc8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42887C4CEE5;
+	Tue,  8 Apr 2025 11:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110879;
-	bh=wk/xtwginFcXnG40EUV6/2zXeIE+dp1qMXK9ycDwmDk=;
+	s=korg; t=1744110908;
+	bh=nToEzHWLwVSTXJp8WfIDIjL6ii6tex7kq9hsL9YZ04Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5j7y2FhaIxNaSh4VHtCzZQcHyP1jtzL/8wouqD5rXtn08slXUtwpvqOibZwywnKC
-	 4VH/wWeOcNYjqZki9qsvrmsoYXhh5NU4id7mfZRXXTVjoPjKC5271TwrudZGhBQFAe
-	 zqVQMuvIEPsbS0AqOO2HhC+QzjbPtkrmy7qY9v00=
+	b=lnl+fc8YZyQmNmo39x3W+qnMIt9/MGsrMLt7m98i6Qn+zcfd/YpgvlddZfAa0U0c5
+	 w4a88hwlbhYnwAyzQKUQFnTXQzExAfnsPNOTwAA9PrFUzc1+/p8dHxCrELpRt7KwC8
+	 u9AX5EfF8kT/ePu7WfqM/LVX0x0qhNq6wMbzsdcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Jan Glaza <jan.glaza@intel.com>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
 	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
 	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 211/731] ice: validate queue quanta parameters to prevent OOB access
-Date: Tue,  8 Apr 2025 12:41:48 +0200
-Message-ID: <20250408104919.190168856@linuxfoundation.org>
+Subject: [PATCH 6.14 212/731] ice: fix input validation for virtchnl BW
+Date: Tue,  8 Apr 2025 12:41:49 +0200
+Message-ID: <20250408104919.215329612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -70,69 +70,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Glaza <jan.glaza@intel.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit e2f7d3f7331b92cb820da23e8c45133305da1e63 ]
+[ Upstream commit c5be6562de5a19c44605b1c1edba8e339f2022c8 ]
 
-Add queue wraparound prevention in quanta configuration.
-Ensure end_qid does not overflow by validating start_qid and num_queues.
+Add missing validation of tc and queue id values sent by a VF in
+ice_vc_cfg_q_bw().
+Additionally fixed logged value in the warning message,
+where max_tx_rate was incorrectly referenced instead of min_tx_rate.
+Also correct error handling in this function by properly exiting
+when invalid configuration is detected.
 
 Fixes: 015307754a19 ("ice: Support VF queue rate limit and quanta size configuration")
 Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jan Glaza <jan.glaza@intel.com>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Co-developed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
 Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index 346aee373ccd4..df13f5110168d 100644
+index df13f5110168d..1af51469f070b 100644
 --- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
 +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -1900,13 +1900,21 @@ static int ice_vc_cfg_q_bw(struct ice_vf *vf, u8 *msg)
-  */
- static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
- {
-+	u16 quanta_prof_id, quanta_size, start_qid, num_queues, end_qid, i;
- 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
--	u16 quanta_prof_id, quanta_size, start_qid, end_qid, i;
- 	struct virtchnl_quanta_cfg *qquanta =
- 		(struct virtchnl_quanta_cfg *)msg;
- 	struct ice_vsi *vsi;
- 	int ret;
+@@ -1862,15 +1862,33 @@ static int ice_vc_cfg_q_bw(struct ice_vf *vf, u8 *msg)
  
-+	start_qid = qquanta->queue_select.start_queue_id;
-+	num_queues = qquanta->queue_select.num_queues;
-+
-+	if (check_add_overflow(start_qid, num_queues, &end_qid)) {
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		goto err;
-+	}
-+
- 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states)) {
- 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
- 		goto err;
-@@ -1918,8 +1926,6 @@ static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
- 		goto err;
+ 	for (i = 0; i < qbw->num_queues; i++) {
+ 		if (qbw->cfg[i].shaper.peak != 0 && vf->max_tx_rate != 0 &&
+-		    qbw->cfg[i].shaper.peak > vf->max_tx_rate)
++		    qbw->cfg[i].shaper.peak > vf->max_tx_rate) {
+ 			dev_warn(ice_pf_to_dev(vf->pf), "The maximum queue %d rate limit configuration may not take effect because the maximum TX rate for VF-%d is %d\n",
+ 				 qbw->cfg[i].queue_id, vf->vf_id,
+ 				 vf->max_tx_rate);
++			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++			goto err;
++		}
+ 		if (qbw->cfg[i].shaper.committed != 0 && vf->min_tx_rate != 0 &&
+-		    qbw->cfg[i].shaper.committed < vf->min_tx_rate)
++		    qbw->cfg[i].shaper.committed < vf->min_tx_rate) {
+ 			dev_warn(ice_pf_to_dev(vf->pf), "The minimum queue %d rate limit configuration may not take effect because the minimum TX rate for VF-%d is %d\n",
+ 				 qbw->cfg[i].queue_id, vf->vf_id,
+-				 vf->max_tx_rate);
++				 vf->min_tx_rate);
++			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++			goto err;
++		}
++		if (qbw->cfg[i].queue_id > vf->num_vf_qs) {
++			dev_warn(ice_pf_to_dev(vf->pf), "VF-%d trying to configure invalid queue_id\n",
++				 vf->vf_id);
++			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++			goto err;
++		}
++		if (qbw->cfg[i].tc >= ICE_MAX_TRAFFIC_CLASS) {
++			dev_warn(ice_pf_to_dev(vf->pf), "VF-%d trying to configure a traffic class higher than allowed\n",
++				 vf->vf_id);
++			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++			goto err;
++		}
  	}
  
--	end_qid = qquanta->queue_select.start_queue_id +
--		  qquanta->queue_select.num_queues;
- 	if (end_qid > ICE_MAX_RSS_QS_PER_VF ||
- 	    end_qid > min_t(u16, vsi->alloc_txq, vsi->alloc_rxq)) {
- 		dev_err(ice_pf_to_dev(vf->pf), "VF-%d trying to configure more than allocated number of queues: %d\n",
-@@ -1948,7 +1954,6 @@ static int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
- 		goto err;
- 	}
- 
--	start_qid = qquanta->queue_select.start_queue_id;
- 	for (i = start_qid; i < end_qid; i++)
- 		vsi->tx_rings[i]->quanta_prof_id = quanta_prof_id;
- 
+ 	for (i = 0; i < qbw->num_queues; i++) {
 -- 
 2.39.5
 
