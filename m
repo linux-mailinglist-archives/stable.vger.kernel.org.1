@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C792A801A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFCAA7FD3A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624A2462043
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1F6F7A3BF3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703F926AA93;
-	Tue,  8 Apr 2025 11:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B26B2698AE;
+	Tue,  8 Apr 2025 10:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oalRmdyp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9gaPUAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D14A26AA8A;
-	Tue,  8 Apr 2025 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED82B267B65;
+	Tue,  8 Apr 2025 10:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111733; cv=none; b=XnYsp8Ju6FSqvmmM44Isx2tK5+rgjecqSErgpHpq2FcXGQjoCysfLAwPgKWbp+Yj+yKSSPWZFFPxRKf3PjYqzm5UvLThUf+2saWt0lsNPfi1dkWtDgSbPmI6YftMa+l6PBr+X7J0g/Zdxx/sZ4aItY/2pcaqAAWyyRfE8YePxFc=
+	t=1744109798; cv=none; b=Mqqczlyd8SCt487NQoAuCcJTl8TawcYiqXdvyQVtk9isUQV6k9rd6DJSBks+b1mLyHDUw9LSBqfhIkVfXGmKGaSg8bFOVYnm6t1IxjpOdktmIWAYPAxr6Pvnbx/4WMwejGq0skxO4molYDlEpfL81/rViHqg4hBFCHcqJwybGrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111733; c=relaxed/simple;
-	bh=vn+YZVMG0Wj8zlsqLbCKXQG9cke+yP/yGzCodQYMbFM=;
+	s=arc-20240116; t=1744109798; c=relaxed/simple;
+	bh=/E2Z01D+DUWhsl5XFzEAPEsrL7cKyrbygSWiFXtprvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdxGzZpLIXom1A+5i2ysbB296VZ1xG0FnHDEmRwW/DPHJw3wxypztoEjlb4E1i+gnian52ex321fE+1/kV4rsk7HLH0ZWIbLILp8zzjLR407gwUwOjPHRLMUQZVgi/0y7SpWSL1fbSccH1sSW3iSoGNCQZP5XehVTpcJZAvug/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oalRmdyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5131FC4CEE7;
-	Tue,  8 Apr 2025 11:28:52 +0000 (UTC)
+	 MIME-Version; b=fMstfplw/B9+rNB9Vcd2VE2UyraJy1H0POj40MBN2vBCzPK+lHDaqyduijhllFaVy4Qdqq3cqZXbSINnvAc2QyllbjcM9PDkax0yXIO42KbrbV4y//aQyJJWgWv0t8CM8z7rbB2x2fLItb3nG7o/O0kAKw2so+UtlxMuOx+92sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9gaPUAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC88C4CEE5;
+	Tue,  8 Apr 2025 10:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111732;
-	bh=vn+YZVMG0Wj8zlsqLbCKXQG9cke+yP/yGzCodQYMbFM=;
+	s=korg; t=1744109797;
+	bh=/E2Z01D+DUWhsl5XFzEAPEsrL7cKyrbygSWiFXtprvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oalRmdypWldAcvsZGqD6qQFrEarW+p7XlSlf6IifN8aReVHij/bWN0vdUKtE3dqMk
-	 EZ4ne2I21nYhLcAFBmnCjnCV+CEKya0rUgiqywgismwUFmRrwpp84RQ5QsZwP7hM0n
-	 yapUEICCdbrj0EvD2LzldHhqDioJizO2WTMhb62I=
+	b=K9gaPUAvAM8JTAfF+mFohAjwkIjEGW7vlfTtb+7h1dA3J/ZMPgLOsq3+PkxoVZLwM
+	 VXhe7Nekpru87qPRiDxMmZ3pq/p82oaqYi//AJwFdLu92UjYrHiaw6pXk/kuQYQiOr
+	 0E8+Rzlq29dID5/rXJ4v1UTMLs5DehNEBUh7sCP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 538/731] perf vendor events arm64 AmpereOneX: Fix frontend_bound calculation
+Subject: [PATCH 5.10 057/227] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
 Date: Tue,  8 Apr 2025 12:47:15 +0200
-Message-ID: <20250408104926.790973462@linuxfoundation.org>
+Message-ID: <20250408104822.110993970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 182f12f3193341c3400ae719a34c00a8a1204cff ]
+[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
 
-frontend_bound metrics was miscalculated due to different scaling in
-a couple of metrics it depends on. Change the scaling to match with
-AmpereOne.
+Free some resources in the error handling path of the probe, as already
+done in the remove function.
 
-Fixes: 16438b652b46 ("perf vendor events arm64 AmpereOneX: Add core PMU events and metrics")
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250313201559.11332-3-ilkka@os.amperecomputing.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
+Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/arm64/ampere/ampereonex/metrics.json          | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/wm0010.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-index c5d1d22bd034b..5228f94a793f9 100644
---- a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-+++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-@@ -229,19 +229,19 @@
-     },
-     {
-         "MetricName": "slots_lost_misspeculation_fraction",
--        "MetricExpr": "(OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
-+        "MetricExpr": "100 * (OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
-         "BriefDescription": "Fraction of slots lost due to misspeculation",
-         "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
--        "ScaleUnit": "100percent of slots"
-+        "ScaleUnit": "1percent of slots"
-     },
-     {
-         "MetricName": "retired_fraction",
--        "MetricExpr": "OP_RETIRED / (CPU_CYCLES * #slots)",
-+        "MetricExpr": "100 * OP_RETIRED / (CPU_CYCLES * #slots)",
-         "BriefDescription": "Fraction of slots retiring, useful work",
-         "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
--        "ScaleUnit": "100percent of slots"
-+        "ScaleUnit": "1percent of slots"
-     },
-     {
-         "MetricName": "backend_core",
-@@ -266,7 +266,7 @@
-     },
-     {
-         "MetricName": "frontend_bandwidth",
--        "MetricExpr": "frontend_bound - frontend_latency",
-+        "MetricExpr": "frontend_bound - 100 * frontend_latency",
-         "BriefDescription": "Fraction of slots the CPU did not dispatch at full bandwidth - able to dispatch partial slots only (1, 2, or 3 uops)",
-         "MetricGroup": "TopdownL2",
-         "ScaleUnit": "1percent of slots"
+diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
+index 28b4656c4e149..b2f87af1bfc87 100644
+--- a/sound/soc/codecs/wm0010.c
++++ b/sound/soc/codecs/wm0010.c
+@@ -952,7 +952,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 	if (ret) {
+ 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
+ 			irq, ret);
+-		return ret;
++		goto free_irq;
+ 	}
+ 
+ 	if (spi->max_speed_hz)
+@@ -964,9 +964,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 				     &soc_component_dev_wm0010, wm0010_dai,
+ 				     ARRAY_SIZE(wm0010_dai));
+ 	if (ret < 0)
+-		return ret;
++		goto disable_irq_wake;
+ 
+ 	return 0;
++
++disable_irq_wake:
++	irq_set_irq_wake(wm0010->irq, 0);
++
++free_irq:
++	if (wm0010->irq)
++		free_irq(wm0010->irq, wm0010);
++
++	return ret;
+ }
+ 
+ static int wm0010_spi_remove(struct spi_device *spi)
 -- 
 2.39.5
 
