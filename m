@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38B2A80094
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:32:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E2DA80349
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06D957A7312
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1BF441B18
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64CF2686B1;
-	Tue,  8 Apr 2025 11:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092622690D7;
+	Tue,  8 Apr 2025 11:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcSZz3P+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9j+uZ8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A563A26A1AB;
-	Tue,  8 Apr 2025 11:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B906D269AF8;
+	Tue,  8 Apr 2025 11:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111676; cv=none; b=WmsNv6CG3uj+amcRs3I25XL/VeQojXCG24xbTC/RfsH/8BEnjxMn2MtAh4GAg74FURBLv70YRgse9jcxsvE9IkAhafGjQ/3EWaX3nWwO2pQapWqX3NbEc2fXvX3ZjuOmnn9o5l03aKrHz3ZgVzIbHBSD01OBnjoUxbV64Qn1n5U=
+	t=1744113073; cv=none; b=a2oH2PcLk821YlY6kokVaQbNSm8pAe6i/RN53MDUI1/YOfiKCo4JPkn+PSC2JAxnKx3bumLfyFiS2hfPZ3WRNJ7ikWQRNsqN0+/2ZfWUzQvgpMGjneNetuCeSqHSZpBQuwQnaBNIiWBBmMdYJDjVmmwgLE3S6rXwMutEef83AK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111676; c=relaxed/simple;
-	bh=Qk9IVuam0CMHIVpPfewxJPBnhzXfSj6u92Ifu7Jv5h4=;
+	s=arc-20240116; t=1744113073; c=relaxed/simple;
+	bh=ubjOp9UP1hV/K464MeL2X+Y5wZTllrzEAPyR9e6R0OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnuG19lWiehrhHN6WlmQRG7w8oRGDw/OyuN01HzVvBaJ9S6uGYK7Uk9J8yux5w/+xhv6Fpk4m0JKGIwiBSR67gldiIaVo7jWhXFGODnNau4VzB+7yhQJ+6sCBBhIpdonZiJpUBje0ptoW37W9B0oa+tAap84/rUfGp75EiZEy+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcSZz3P+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB226C4CEED;
-	Tue,  8 Apr 2025 11:27:55 +0000 (UTC)
+	 MIME-Version; b=noait5OIe+LHwAMV27ZxeFU2PNWggXOdUM2SjEgFOzN/Kk5/yQy4gyrjLrUjl3AgmBCYmsGpBwWfiG5nRyxBfFy9maLrQfQUmPiXlT987UwgwQZY3hU7OWcjHDZZTdAnRvopVwADuSBFuqrIdY8x07CpHjnqAj1oOqG4PMKPWNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9j+uZ8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E95C4CEE5;
+	Tue,  8 Apr 2025 11:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111676;
-	bh=Qk9IVuam0CMHIVpPfewxJPBnhzXfSj6u92Ifu7Jv5h4=;
+	s=korg; t=1744113073;
+	bh=ubjOp9UP1hV/K464MeL2X+Y5wZTllrzEAPyR9e6R0OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcSZz3P+mLvAwEqVkdiX+LAnalXC2u1DPOBWvRHlXWhH4RA4o85dOVZt3F+WAFI/i
-	 22I/byaSGnfIm6N96BBAUzv+nLydgwheP246QMViYYJRfp1cJNr3NvAS9Mw28SR5yB
-	 xPubAXvtGw8jHYflZq//YB8WZT3g/R3/MT34zFmk=
+	b=X9j+uZ8xbNKykr8pDAiHsDStwRcdlI4XCRT2AN/yfNhEcLgCmAiFKOtgPpcjjuOS5
+	 ScbOjptNi80DY8FZx8s12t1gJM15qQZz98Bxl8zf0vJmSg+qnVcUSAGp5YaSqv6l2I
+	 Shp+xI5Fa20N2T0Oq21TspbNkA6d9xYV6avWWM9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.com>,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 519/731] NFS: fix open_owner_id_maxsz and related fields.
+Subject: [PATCH 6.6 005/268] cpufreq: governor: Fix negative idle_time handling in dbs_update()
 Date: Tue,  8 Apr 2025 12:46:56 +0200
-Message-ID: <20250408104926.344587253@linuxfoundation.org>
+Message-ID: <20250408104828.648617813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Jie Zhan <zhanjie9@hisilicon.com>
 
-[ Upstream commit 43502f6e8d1e767d6736ea0676cc784025cf6eeb ]
+[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
 
-A recent change increased the size of an NFSv4 open owner, but didn't
-increase the corresponding max_sz defines.  This is not know to have
-caused failure, but should be fixed.
+We observed an issue that the CPU frequency can't raise up with a 100% CPU
+load when NOHZ is off and the 'conservative' governor is selected.
 
-This patch also fixes some relates _maxsz fields that are wrong.
+'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
+when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
+("cpufreq: governor: Fix handling of special cases in dbs_update()").
 
-Note that the XXX_owner_id_maxsz values now are only the size of the id
-and do NOT include the len field that will always preceed the id in xdr
-encoding.  I think this is clearer.
+However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
+logic in load calculation") introduced a comparison between 'idle_time' and
+'samling_rate' to detect a long idle interval.  While 'idle_time' is
+converted to int before comparison, it's actually promoted to unsigned
+again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
+wrong idle interval detection when it's in fact 100% busy and sets
+policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
+frequency to minimum because of the large 'idle_periods', such that the
+frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
+so it fortunately avoids the issue.
 
-Reported-by: David Disseldorp <ddiss@suse.com>
-Fixes: d98f72272500 ("nfs: simplify and guarantee owner uniqueness.")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Correct negative 'idle_time' to 0 before any use of it in dbs_update().
+
+Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
+Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4xdr.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
-index e8ac3f615f932..71f45cc0ca74d 100644
---- a/fs/nfs/nfs4xdr.c
-+++ b/fs/nfs/nfs4xdr.c
-@@ -82,9 +82,8 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
-  * we currently use size 2 (u64) out of (NFS4_OPAQUE_LIMIT  >> 2)
-  */
- #define pagepad_maxsz		(1)
--#define open_owner_id_maxsz	(1 + 2 + 1 + 1 + 2)
--#define lock_owner_id_maxsz	(1 + 1 + 4)
--#define decode_lockowner_maxsz	(1 + XDR_QUADLEN(IDMAP_NAMESZ))
-+#define open_owner_id_maxsz	(2 + 1 + 2 + 2)
-+#define lock_owner_id_maxsz	(2 + 1 + 2)
- #define compound_encode_hdr_maxsz	(3 + (NFS4_MAXTAGLEN >> 2))
- #define compound_decode_hdr_maxsz	(3 + (NFS4_MAXTAGLEN >> 2))
- #define op_encode_hdr_maxsz	(1)
-@@ -185,7 +184,7 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
- #define encode_claim_null_maxsz	(1 + nfs4_name_maxsz)
- #define encode_open_maxsz	(op_encode_hdr_maxsz + \
- 				2 + encode_share_access_maxsz + 2 + \
--				open_owner_id_maxsz + \
-+				1 + open_owner_id_maxsz + \
- 				encode_opentype_maxsz + \
- 				encode_claim_null_maxsz)
- #define decode_space_limit_maxsz	(3)
-@@ -255,13 +254,14 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
- #define encode_link_maxsz	(op_encode_hdr_maxsz + \
- 				nfs4_name_maxsz)
- #define decode_link_maxsz	(op_decode_hdr_maxsz + decode_change_info_maxsz)
--#define encode_lockowner_maxsz	(7)
-+#define encode_lockowner_maxsz	(2 + 1 + lock_owner_id_maxsz)
+diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+index af44ee6a64304..1a7fcaf39cc9b 100644
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 		time_elapsed = update_time - j_cdbs->prev_update_time;
+ 		j_cdbs->prev_update_time = update_time;
+ 
+-		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		/*
++		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
++		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
++		 * off, where idle_time is calculated by the difference between
++		 * time elapsed in jiffies and "busy time" obtained from CPU
++		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
++		 * time should grow with the same amount in two consecutive
++		 * samples, but in practice there could be a tiny difference,
++		 * making the accumulated idle time decrease sometimes.  Hence,
++		 * in this case, idle_time should be regarded as 0 in order to
++		 * make the further process correct.
++		 */
++		if (cur_idle_time > j_cdbs->prev_cpu_idle)
++			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		else
++			idle_time = 0;
 +
- #define encode_lock_maxsz	(op_encode_hdr_maxsz + \
- 				 7 + \
- 				 1 + encode_stateid_maxsz + 1 + \
- 				 encode_lockowner_maxsz)
- #define decode_lock_denied_maxsz \
--				(8 + decode_lockowner_maxsz)
-+				(2 + 2 + 1 + 2 + 1 + lock_owner_id_maxsz)
- #define decode_lock_maxsz	(op_decode_hdr_maxsz + \
- 				 decode_lock_denied_maxsz)
- #define encode_lockt_maxsz	(op_encode_hdr_maxsz + 5 + \
-@@ -617,7 +617,7 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
- 				 encode_lockowner_maxsz)
- #define NFS4_dec_release_lockowner_sz \
- 				(compound_decode_hdr_maxsz + \
--				 decode_lockowner_maxsz)
-+				 decode_release_lockowner_maxsz)
- #define NFS4_enc_access_sz	(compound_encode_hdr_maxsz + \
- 				encode_sequence_maxsz + \
- 				encode_putfh_maxsz + \
-@@ -1412,7 +1412,7 @@ static inline void encode_openhdr(struct xdr_stream *xdr, const struct nfs_opena
- 	__be32 *p;
-  /*
-  * opcode 4, seqid 4, share_access 4, share_deny 4, clientid 8, ownerlen 4,
-- * owner 4 = 32
-+ * owner 28
-  */
- 	encode_nfs4_seqid(xdr, arg->seqid);
- 	encode_share_access(xdr, arg->share_access);
-@@ -5077,7 +5077,7 @@ static int decode_link(struct xdr_stream *xdr, struct nfs4_change_info *cinfo)
- /*
-  * We create the owner, so we know a proper owner.id length is 4.
-  */
--static int decode_lock_denied (struct xdr_stream *xdr, struct file_lock *fl)
-+static int decode_lock_denied(struct xdr_stream *xdr, struct file_lock *fl)
- {
- 	uint64_t offset, length, clientid;
- 	__be32 *p;
+ 		j_cdbs->prev_cpu_idle = cur_idle_time;
+ 
+ 		if (ignore_nice) {
+@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			 * calls, so the previous load value can be used then.
+ 			 */
+ 			load = j_cdbs->prev_load;
+-		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
++		} else if (unlikely(idle_time > 2 * sampling_rate &&
+ 				    j_cdbs->prev_load)) {
+ 			/*
+ 			 * If the CPU had gone completely idle and a task has
+@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			load = j_cdbs->prev_load;
+ 			j_cdbs->prev_load = 0;
+ 		} else {
+-			if (time_elapsed >= idle_time) {
++			if (time_elapsed > idle_time)
+ 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
+-			} else {
+-				/*
+-				 * That can happen if idle_time is returned by
+-				 * get_cpu_idle_time_jiffy().  In that case
+-				 * idle_time is roughly equal to the difference
+-				 * between time_elapsed and "busy time" obtained
+-				 * from CPU statistics.  Then, the "busy time"
+-				 * can end up being greater than time_elapsed
+-				 * (for example, if jiffies_64 and the CPU
+-				 * statistics are updated by different CPUs),
+-				 * so idle_time may in fact be negative.  That
+-				 * means, though, that the CPU was busy all
+-				 * the time (on the rough average) during the
+-				 * last sampling interval and 100 can be
+-				 * returned as the load.
+-				 */
+-				load = (int)idle_time < 0 ? 100 : 0;
+-			}
++			else
++				load = 0;
++
+ 			j_cdbs->prev_load = load;
+ 		}
+ 
+-		if (unlikely((int)idle_time > 2 * sampling_rate)) {
++		if (unlikely(idle_time > 2 * sampling_rate)) {
+ 			unsigned int periods = idle_time / sampling_rate;
+ 
+ 			if (periods < idle_periods)
 -- 
 2.39.5
 
