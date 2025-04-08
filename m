@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454C8A8060B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267B2A809EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310A04A83BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77094C6E3D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C597269811;
-	Tue,  8 Apr 2025 12:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDE726A0CF;
+	Tue,  8 Apr 2025 12:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrfCGmRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdvPV2JQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E8126656B;
-	Tue,  8 Apr 2025 12:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFFE268C6B;
+	Tue,  8 Apr 2025 12:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114461; cv=none; b=nHSA9N7rTL2nOpO8jYoR4BGVG23gPh8jMYxbkwfq5SduEjPa/u/Qnwhrra7u3qQhTgUDzuJCIaoufvaf7axT2rlzuusSQfJC5yqg6HPyi3k19CJzmIXnLDorOkXH2kXx3fT6iapld5N2lt5oJxXFyaEF67+fUdzVxFn9cf0o2Dw=
+	t=1744116081; cv=none; b=GkfktNFjPJop3WWG5AWKmqVzmMYLcM18H/76hbxXKTu0WMaEclZlHdavZURkedE2SwKUEC8W/IxVHnGbaL9n2ELrdVcX2QxnYZ4k6uQacTKHyxxI9Hg3Gf6SzakGeZWRnxI83Md5lwv9m2FaOXLEaWIz0213IQohwX9fq/T45Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114461; c=relaxed/simple;
-	bh=7waq6Q+9NFx///giZV/5embVEn7lIFennhBIA6Rnpj4=;
+	s=arc-20240116; t=1744116081; c=relaxed/simple;
+	bh=3JL+HVw10jrAYJMZl8ygacgj4c5RdvPcq+PZdGqrFQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkNrQGx+VlQNHY5JanJ+yZloAjMKcGkgJaOcrC3flXSSfzV+1tJJf1avleYYEJlkQdHQynofZXiPQAl1g+XkgW2cglbasA7kDjKZlSsJbs+bQ7fUMsGOZIz/2+KKUhw6ypAD+1Mo2yyr2fERM6zi21ik2cdejFrQnqrtQJL9xBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrfCGmRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C821C4CEE5;
-	Tue,  8 Apr 2025 12:14:20 +0000 (UTC)
+	 MIME-Version; b=CWPFrcfZc81UhO62N+QiPaJExgpt5bx4MC+FwcuBhSg/7vRqobti7vyHVEX4ZrxdfxsgWC3m5ZZ5IOk1JaIIR9MygHDv2OiPiS7tDa9w6/lh10Ap2kYxG1ik5EUfISF0L5rIKAzVTpg3zm8CgdFE+pxwgHBQbbJCu1yEFucXTmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdvPV2JQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670D7C4CEE5;
+	Tue,  8 Apr 2025 12:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114460;
-	bh=7waq6Q+9NFx///giZV/5embVEn7lIFennhBIA6Rnpj4=;
+	s=korg; t=1744116081;
+	bh=3JL+HVw10jrAYJMZl8ygacgj4c5RdvPcq+PZdGqrFQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrfCGmRrHgwPlD+AwcZUm0GEMuye0NJ2GBqd4oSSjONpAcBcjEoT/r4/KKpj3KsPf
-	 +WnFXYnwRAO/YoiU2Rvp5m2wJZTVUyNvjOvFf4Q85lxNkwD/wFiPEuGrdqDsnfZ2ch
-	 sNRpMYNEzRDSATC1B8DdZOwmqAHrkKj6AeRoPnPE=
+	b=OdvPV2JQ5nnDSNM5elb27NI4m1cwAzYY2OhRd8H5u3S+CNQvv3TF53KO1EgJruEyE
+	 dKWFW2XOOxVEwk/bNKOOzRM9Z32SaYrG8uLXaiIZogNPfmleUeL9ciUk2epv70FqJQ
+	 304//ioUcn/aDziWa0peHgXeciWyyECtHUWZYc3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 114/499] io_uring/net: only import send_zc buffer once
-Date: Tue,  8 Apr 2025 12:45:26 +0200
-Message-ID: <20250408104854.047654159@linuxfoundation.org>
+Subject: [PATCH 6.12 001/423] watch_queue: fix pipe accounting mismatch
+Date: Tue,  8 Apr 2025 12:45:27 +0200
+Message-ID: <20250408104845.716515740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 8e3100fcc5cbba03518b8b5c059624aba5c29d50 ]
+[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
 
-io_send_zc() guards its call to io_send_zc_import() with if (!done_io)
-in an attempt to avoid calling it redundantly on the same req. However,
-if the initial non-blocking issue returns -EAGAIN, done_io will stay 0.
-This causes the subsequent issue to unnecessarily re-import the buffer.
+Currently, watch_queue_set_size() modifies the pipe buffers charged to
+user->pipe_bufs without updating the pipe->nr_accounted on the pipe
+itself, due to the if (!pipe_has_watch_queue()) test in
+pipe_resize_ring(). This means that when the pipe is ultimately freed,
+we decrement user->pipe_bufs by something other than what than we had
+charged to it, potentially leading to an underflow. This in turn can
+cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
 
-Add an explicit flag "imported" to io_sr_msg to track if its buffer has
-already been imported. Clear the flag in io_send_zc_prep(). Call
-io_send_zc_import() and set the flag in io_send_zc() if it is unset.
+To remedy this, explicitly account for the pipe usage in
+watch_queue_set_size() to match the number set via account_pipe_buffers()
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: 54cdcca05abd ("io_uring/net: switch io_send() and io_send_zc() to using io_async_msghdr")
-Link: https://lore.kernel.org/r/20250321184819.3847386-2-csander@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+(It's unclear why watch_queue_set_size() does not update nr_accounted;
+it may be due to intentional overprovisioning in watch_queue_set_size()?)
+
+Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/watch_queue.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index bfdbbf0b9e90d..706a5bc75a714 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -77,6 +77,7 @@ struct io_sr_msg {
- 	u16				buf_group;
- 	u16				buf_index;
- 	bool				retry;
-+	bool				imported; /* only for io_send_zc */
- 	void __user			*msg_control;
- 	/* used only for send zerocopy */
- 	struct io_kiocb 		*notif;
-@@ -1251,6 +1252,7 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index d36242fd49364..e55f9810b91ad 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -269,6 +269,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
+ 	if (ret < 0)
+ 		goto error;
  
- 	zc->done_io = 0;
- 	zc->retry = false;
-+	zc->imported = false;
- 	req->flags |= REQ_F_POLL_NO_LAZY;
- 
- 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
-@@ -1413,7 +1415,8 @@ int io_send_zc(struct io_kiocb *req, unsigned int issue_flags)
- 	    (zc->flags & IORING_RECVSEND_POLL_FIRST))
- 		return -EAGAIN;
- 
--	if (!zc->done_io) {
-+	if (!zc->imported) {
-+		zc->imported = true;
- 		ret = io_send_zc_import(req, issue_flags);
- 		if (unlikely(ret))
- 			return ret;
++	/*
++	 * pipe_resize_ring() does not update nr_accounted for watch_queue
++	 * pipes, because the above vastly overprovisions. Set nr_accounted on
++	 * and max_usage this pipe to the number that was actually charged to
++	 * the user above via account_pipe_buffers.
++	 */
++	pipe->max_usage = nr_pages;
++	pipe->nr_accounted = nr_pages;
++
+ 	ret = -ENOMEM;
+ 	pages = kcalloc(nr_pages, sizeof(struct page *), GFP_KERNEL);
+ 	if (!pages)
 -- 
 2.39.5
 
