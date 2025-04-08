@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67FAA8094B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214D2A8056D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC001BA4646
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBE457AE283
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878A526B094;
-	Tue,  8 Apr 2025 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60D0268FD0;
+	Tue,  8 Apr 2025 12:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7hjT9R6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wex9koSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4504C26B089;
-	Tue,  8 Apr 2025 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5A268688;
+	Tue,  8 Apr 2025 12:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116092; cv=none; b=B01LwNX7xvmwy1IaIuW6f0Vqgt48EtlMhMmqoQa/bDzCR4+JUw19UVW28PBIV+x4K+BZBiB9nNDfVX+mqlzc2Q8Jys8DR2tztYVu42kCOYy7WaQpZUK0ROzcIJUSBRlkIeHfSPskgZovyXF6DXpoOZYPbp470Ii4iaa8ndIEihQ=
+	t=1744114567; cv=none; b=EDiXOUXqeQf0QCSF3jVuGdrOANhDIkmnKorAXeom1OaL1lCKhvRKejIBU5Sf7gxPUTWzTdrsnsJcOmZnYy1yRfCnaf+5rftJW5lOUs5SjZ0FwMSWC9Q05fFDp/gZLz+/VW089sqK2zxn4fsNLr0pil6c88jTJ1j9J9UaBKViiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116092; c=relaxed/simple;
-	bh=fm0xxESJiCSNXHUAF6zMQFjZV3uF/+fe10WWcCsJMMg=;
+	s=arc-20240116; t=1744114567; c=relaxed/simple;
+	bh=Ywu+Lg/f//3fanT9dwu2QelGiUstkMotIB8jIuYVURE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBnqIP04gIo7QDcV0zGzSjXSHV42RmE/IkF+dnPLShjEW1GNnayTSKqFcZI93ZFhVSD+QhrMbsFsoHDbiTyEgGsHe+UjIdY1QOKrv+X7DKPemBDZeZaM5TeT1n3tvj0rUAAILvcQ4JDLSReoOKYffp2ADcd7vm6moIMyO8X2oO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7hjT9R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2774C4CEE5;
-	Tue,  8 Apr 2025 12:41:31 +0000 (UTC)
+	 MIME-Version; b=tUx151EKIqDX97jLKdroeJTcej7e2yPE8a0oAkQRFix7z10QVz4AAUkpEd5e5g5XdRrBwlzfnIu0czviXgxG7WiH/i66Mqb8SWmSB7E+2rPFJB2xj4KL+xcSKmOaYm8eboBUl4G/1BF9o+4o5gb7TLa0EK3gjdQMcxDrLxhHLDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wex9koSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0414EC4CEE5;
+	Tue,  8 Apr 2025 12:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116092;
-	bh=fm0xxESJiCSNXHUAF6zMQFjZV3uF/+fe10WWcCsJMMg=;
+	s=korg; t=1744114567;
+	bh=Ywu+Lg/f//3fanT9dwu2QelGiUstkMotIB8jIuYVURE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7hjT9R6tx4F3iBLVAQaW3QJsZ144dL4t0cB+dlqknPPw1ydOTjnYdPr0AWJLHyZC
-	 9Tvg8r02jIw59WDm8txALjzDovZ22qiGAGdb19u4ay5Ls7UDPtp4oJQz1bng7td2D+
-	 MELzsRj1VRMzwUNkgWf2kXHoAYxVrzILgrk68vK4=
+	b=Wex9koSFITQzyRsU5N5oPk1mGH0imqBCdr16prfJnTMv1fVRzrn1AulluUuaFoCl7
+	 03dvYdkXH52pW2gVsqF7a2vMnjzR8z+GzYV+QRbDkqW46y4pau/JW/2O04/nMLOVeD
+	 pVn0JGMjXCZ6udlB8B4hhzLWrMHptbHMMfQFywWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/423] x86/sev: Add missing RIP_REL_REF() invocations during sme_enable()
+Subject: [PATCH 6.13 127/499] crypto: bpf - Add MODULE_DESCRIPTION for skcipher
 Date: Tue,  8 Apr 2025 12:45:39 +0200
-Message-ID: <20250408104846.036165251@linuxfoundation.org>
+Message-ID: <20250408104854.364227717@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Loughlin <kevinloughlin@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 72dafb567760320f2de7447cd6e979bf9d4e5d17 ]
+[ Upstream commit f307c87ea06c64b87fcd3221a682cd713cde51e9 ]
 
-The following commit:
+All modules should have a description, building with extra warnings
+enabled prints this outfor the for bpf_crypto_skcipher module:
 
-  1c811d403afd ("x86/sev: Fix position dependent variable references in startup code")
+WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/bpf_crypto_skcipher.o
 
-introduced RIP_REL_REF() to force RIP-relative accesses to global variables,
-as needed to prevent crashes during early SEV/SME startup code.
+Add a description line.
 
-For completeness, RIP_REL_REF() should be used with additional variables during
-sme_enable():
-
-  https://lore.kernel.org/all/CAMj1kXHnA0fJu6zh634=fbJswp59kSRAbhW+ubDGj1+NYwZJ-Q@mail.gmail.com/
-
-Access these vars with RIP_REL_REF() to prevent problem reoccurence.
-
-Fixes: 1c811d403afd ("x86/sev: Fix position dependent variable references in startup code")
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241122202322.977678-1-kevinloughlin@google.com
+Fixes: fda4f71282b2 ("bpf: crypto: add skcipher to bpf crypto")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/mem_encrypt_identity.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/bpf_crypto_skcipher.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index ac33b2263a434..b922b9fea6b64 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -562,7 +562,7 @@ void __head sme_enable(struct boot_params *bp)
- 	}
- 
- 	RIP_REL_REF(sme_me_mask) = me_mask;
--	physical_mask &= ~me_mask;
--	cc_vendor = CC_VENDOR_AMD;
-+	RIP_REL_REF(physical_mask) &= ~me_mask;
-+	RIP_REL_REF(cc_vendor) = CC_VENDOR_AMD;
- 	cc_set_mask(me_mask);
- }
+diff --git a/crypto/bpf_crypto_skcipher.c b/crypto/bpf_crypto_skcipher.c
+index b5e657415770a..a88798d3e8c87 100644
+--- a/crypto/bpf_crypto_skcipher.c
++++ b/crypto/bpf_crypto_skcipher.c
+@@ -80,3 +80,4 @@ static void __exit bpf_crypto_skcipher_exit(void)
+ module_init(bpf_crypto_skcipher_init);
+ module_exit(bpf_crypto_skcipher_exit);
+ MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Symmetric key cipher support for BPF");
 -- 
 2.39.5
 
