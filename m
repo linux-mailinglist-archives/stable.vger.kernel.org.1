@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-129553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3708A8007E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:31:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FE1A7FFA4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D99C91726F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:22:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98DA77A4FAC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1362686AF;
-	Tue,  8 Apr 2025 11:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB48267F65;
+	Tue,  8 Apr 2025 11:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6EpIqcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdtMwzG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B53F263C90;
-	Tue,  8 Apr 2025 11:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694CC263C90;
+	Tue,  8 Apr 2025 11:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111342; cv=none; b=YLGJ9HzL+wvZSqA0IjFWi5Jp+L2c5j4kZh/+X4DlVsatW+jLhmHsnrOtLKtJybflcL7/7NgI/Hj1vLZxDchGkCLxansc/MW0CAbIxLhZDYDqib0JX48kejI51AZtfLsLjI+mMdnjkm7J2Pm5D3Nqf/DWG3Hoivc5k/Dq3NcVLn4=
+	t=1744111347; cv=none; b=siv99UnVbm4aKtJWSaq0/z6ilKv52HdskNDl0bO5jh4WCdFbm9XJ3V+ViF1oy/9GVW4EEQDyCkBd+NBb7DNXMIyAHG+LZIth4OALRM4B6xSoq5oIkcCiPy3A57Z+52QqSQAnVSkDzhHfZJcp/WndJgsJ02ym8qRmnCAzozlmBPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111342; c=relaxed/simple;
-	bh=s0WV1qXWf7qdgcjGVovJie8BY8ZzZZN+je0BGY06GxM=;
+	s=arc-20240116; t=1744111347; c=relaxed/simple;
+	bh=wctHp/8KllreRRT17KmEoJPvvxigj3FG97V6KufcpkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JLFJQLjLq9Pn6sSt1qVLMSTJfFMop96pM8Sav43t48/P+Eeo4ykUBdfkerZRXfEhfvX9732QRhMLdrCTf/kGXEywSmbUUjEj9angBpdHBqaLHqU9d9ImpFn6fvAfKdYB6GwPkFBSmiSyKJF+uuy939U636ydZoMNcJHvqgmlNKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6EpIqcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB1FC4CEE5;
-	Tue,  8 Apr 2025 11:22:21 +0000 (UTC)
+	 MIME-Version; b=kWwn9C0etTkLY3XCsJ+TKwXgxjAMmlJBnlxFkvmJXSaGJbei0gF72ISa5aHKwV0szJNcNyi8/HvDVAmT63rd+E/7s1qpWvz+WwzYnC/OVunw13xngCs7CKXdfU24W02CtsblKSqLmIgFLsa3eBpZaguWSfsqv8B1XAQkwJnbtJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdtMwzG9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE86DC4CEE5;
+	Tue,  8 Apr 2025 11:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111342;
-	bh=s0WV1qXWf7qdgcjGVovJie8BY8ZzZZN+je0BGY06GxM=;
+	s=korg; t=1744111347;
+	bh=wctHp/8KllreRRT17KmEoJPvvxigj3FG97V6KufcpkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6EpIqcrWPTU4N26VffM4nAvtv6p06pjafXmQQGyaY0su2UotX3ADvLV1fnuDgYi5
-	 P+9QNnCxls1rG6UnAsRpAee/fDeUEdJuJEcaB/WtF3PefE17vlJnFMhjTGHj7rcklx
-	 J9u5PV6uh4WwxfR9xamEMu5IG97LOPAurKM4Yuw4=
+	b=tdtMwzG9fSCJsWsuVRb0uLpm4355rsYKgwdm7qDF/D5kEoaLgz3UO1h8tqQQJFU5b
+	 CCOpp+IKKVhDp7btauJFes6gWzfo0OvfxEnsKwEcXt+x9xLp3TPyjjpgvKYcEQqb8M
+	 liq8XCfzvpe0vA5kwxap8usDZq2vyyy4lDFOpa/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Lee Jones <lee@kernel.org>,
+	Coiby Xu <coxu@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 398/731] leds: st1202: Check for error code from devm_mutex_init() call
-Date: Tue,  8 Apr 2025 12:44:55 +0200
-Message-ID: <20250408104923.530698644@linuxfoundation.org>
+Subject: [PATCH 6.14 399/731] crypto: api - Fix larval relookup type and mask
+Date: Tue,  8 Apr 2025 12:44:56 +0200
+Message-ID: <20250408104923.553556951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -60,46 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 8168906bbb3ba678583422de29e6349407a94bb5 ]
+[ Upstream commit 7505436e2925d89a13706a295a6734d6cabb4b43 ]
 
-Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using devm
-variant of it. Tomorrow it may even leak something. Add the missed
-check.
+When the lookup is retried after instance construction, it uses
+the type and mask from the larval, which may not match the values
+used by the caller.  For example, if the caller is requesting for
+a !NEEDS_FALLBACK algorithm, it may end up getting an algorithm
+that needs fallbacks.
 
-Fixes: 259230378c65 ("leds: Add LED1202 I2C driver")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20250204-must_check-devm_mutex_init-v2-1-7b6271c4b7e6@weissschuh.net
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fix this by making the caller supply the type/mask and using that
+for the lookup.
+
+Reported-by: Coiby Xu <coxu@redhat.com>
+Fixes: 96ad59552059 ("crypto: api - Remove instance larval fulfilment")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-st1202.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ crypto/api.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/leds/leds-st1202.c b/drivers/leds/leds-st1202.c
-index e894b3f9a0f46..4cebc0203c227 100644
---- a/drivers/leds/leds-st1202.c
-+++ b/drivers/leds/leds-st1202.c
-@@ -345,7 +345,9 @@ static int st1202_probe(struct i2c_client *client)
- 	if (!chip)
- 		return -ENOMEM;
+diff --git a/crypto/api.c b/crypto/api.c
+index bfd177a4313a0..c2c4eb14ef955 100644
+--- a/crypto/api.c
++++ b/crypto/api.c
+@@ -36,7 +36,8 @@ EXPORT_SYMBOL_GPL(crypto_chain);
+ DEFINE_STATIC_KEY_FALSE(__crypto_boot_test_finished);
+ #endif
  
--	devm_mutex_init(&client->dev, &chip->lock);
-+	ret = devm_mutex_init(&client->dev, &chip->lock);
-+	if (ret < 0)
-+		return ret;
- 	chip->client = client;
+-static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg);
++static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg,
++					     u32 type, u32 mask);
+ static struct crypto_alg *crypto_alg_lookup(const char *name, u32 type,
+ 					    u32 mask);
  
- 	ret = st1202_dt_init(chip);
+@@ -145,7 +146,7 @@ static struct crypto_alg *crypto_larval_add(const char *name, u32 type,
+ 	if (alg != &larval->alg) {
+ 		kfree(larval);
+ 		if (crypto_is_larval(alg))
+-			alg = crypto_larval_wait(alg);
++			alg = crypto_larval_wait(alg, type, mask);
+ 	}
+ 
+ 	return alg;
+@@ -197,7 +198,8 @@ static void crypto_start_test(struct crypto_larval *larval)
+ 	crypto_schedule_test(larval);
+ }
+ 
+-static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
++static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg,
++					     u32 type, u32 mask)
+ {
+ 	struct crypto_larval *larval;
+ 	long time_left;
+@@ -219,12 +221,7 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
+ 			crypto_larval_kill(larval);
+ 		alg = ERR_PTR(-ETIMEDOUT);
+ 	} else if (!alg) {
+-		u32 type;
+-		u32 mask;
+-
+ 		alg = &larval->alg;
+-		type = alg->cra_flags & ~(CRYPTO_ALG_LARVAL | CRYPTO_ALG_DEAD);
+-		mask = larval->mask;
+ 		alg = crypto_alg_lookup(alg->cra_name, type, mask) ?:
+ 		      ERR_PTR(-EAGAIN);
+ 	} else if (IS_ERR(alg))
+@@ -304,7 +301,7 @@ static struct crypto_alg *crypto_larval_lookup(const char *name, u32 type,
+ 	}
+ 
+ 	if (!IS_ERR_OR_NULL(alg) && crypto_is_larval(alg))
+-		alg = crypto_larval_wait(alg);
++		alg = crypto_larval_wait(alg, type, mask);
+ 	else if (alg)
+ 		;
+ 	else if (!(mask & CRYPTO_ALG_TESTED))
+@@ -352,7 +349,7 @@ struct crypto_alg *crypto_alg_mod_lookup(const char *name, u32 type, u32 mask)
+ 	ok = crypto_probing_notify(CRYPTO_MSG_ALG_REQUEST, larval);
+ 
+ 	if (ok == NOTIFY_STOP)
+-		alg = crypto_larval_wait(larval);
++		alg = crypto_larval_wait(larval, type, mask);
+ 	else {
+ 		crypto_mod_put(larval);
+ 		alg = ERR_PTR(-ENOENT);
 -- 
 2.39.5
 
