@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-130965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194BCA807D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA35A8040A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB028881D0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C310427468
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E2526B2CA;
-	Tue,  8 Apr 2025 12:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B5E269820;
+	Tue,  8 Apr 2025 11:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2XzoRen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/yF9jDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFE26B2C0;
-	Tue,  8 Apr 2025 12:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED2820CCD8;
+	Tue,  8 Apr 2025 11:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115129; cv=none; b=V+SgPScuDuzYZWD6jMKDKLiHlw4g1qwp18HuSLY0T7TVmQuqqTGVVV0xrHml8oCyOMvfl2IE7yuKSqc6zzb1D+9vpebGB/lxAMOGAETsOa+VdESoRuKEa8SaVrq4zsLDjApvSrcQgEcxME+V3DE84pNwF1DnGVBBSPu2JCjivV8=
+	t=1744113442; cv=none; b=ZIYBFO5DNkpxvc7vsFgD+I3w2BD7fDJRqamiYkW3TQpUVhTfSsPL+HQUcE8s9BmrQ9NjNxt+Ue8BAHWe770fvg5YO1mMFFDXUuNEhkFj08le61A+rL6k3fG1t45hfUeKq6/HYI1m4ISJV2hLXLOjmuf3ZrArcR61bud1kiiDdvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115129; c=relaxed/simple;
-	bh=Zt7uoJT+nbN2uZjGw077LTzNasot30OQlExSW3OvbHc=;
+	s=arc-20240116; t=1744113442; c=relaxed/simple;
+	bh=6k8BLI5CgFS3o4UBCTMgboXADAiar8WyggyzenaYyQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sqdc9CaWCiyN9Z/UnyuA7QR3ntlbYSez850Fh+2QJ+Ff1t+a/wIfqG5agiF26XkskSsQoH7nDfaGOPDvJRW+nfp/5wsXKu8LGzg04zE9zF2KzRIbtXC3VNw5svbUSDfbzvvWRoar1xWgQo7o/7yVFM/FA5LCplC3fYtCV3VueX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2XzoRen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD01C4CEE5;
-	Tue,  8 Apr 2025 12:25:28 +0000 (UTC)
+	 MIME-Version; b=EsD33muZpBLj0qzQufz2x5iBw1n1Rrjtc1iGjj+0je8Msl4+EEQjuZqGwwfiIimFhuGBu4aWxgvnGGAW/Z8zsQbK60Xvml/CKMYysn45dPdv+qI3s6KfVNbu6RTZ7xQ9SLIItn8O8fTEAGAgHQsKqg2DzSKj7XrcPXfYDbd5+TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/yF9jDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBC8C4CEE5;
+	Tue,  8 Apr 2025 11:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115129;
-	bh=Zt7uoJT+nbN2uZjGw077LTzNasot30OQlExSW3OvbHc=;
+	s=korg; t=1744113441;
+	bh=6k8BLI5CgFS3o4UBCTMgboXADAiar8WyggyzenaYyQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2XzoRenaFnObiwBPqoq0rPbEgr2vD3FMAwt6fJPZw5U/5oyoXEnQ2pBSSBEcrcks
-	 FaOLCENgZ9HamljhYTIfbWDgmXhDs3NUc7uf6jvMJmRnvMEMkwqvTz/V24GnAMqcFS
-	 jrtxo1TJ9KxfE9j8y04YPiX+Jxs768SkOjglVf/w=
+	b=Z/yF9jDBz1jqocskAaR4lEkHuHB95QsklITtdJ0JbPcMLWFtOjwOfIW0+MrNKRRR5
+	 qteYd1wH60NEkeJZWuaAEaUJgqDr2vQ8mLgZOGjl4chfCWB1QFKPQ1ZPAoG6Ds2WEl
+	 YlCOVKakbN9e1HQn1bbJoWpTR8V4rAjbWMaQ+/0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 360/499] riscv: Fix missing __free_pages() in check_vector_unaligned_access()
+Subject: [PATCH 6.6 161/268] rcu-tasks: Always inline rcu_irq_work_resched()
 Date: Tue,  8 Apr 2025 12:49:32 +0200
-Message-ID: <20250408104900.210061317@linuxfoundation.org>
+Message-ID: <20250408104832.890615390@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 33981b1c4e499021421686dcfa7b3d23a430d00e ]
+[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
 
-The locally allocated pages are never freed up, so add the corresponding
-__free_pages().
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  rcu_irq_work_resched() can be called from
+noinstr code, so make sure it's always inlined.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Link: https://lore.kernel.org/r/20250228090613.345309-1-alexghiti@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/rcupdate.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 91f189cf16113..074ac4abd023e 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -349,7 +349,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 		pr_warn("cpu%d: rdtime lacks granularity needed to measure unaligned vector access speed\n",
- 			cpu);
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 7602d1f8a9ecb..72da69cc5764f 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -142,7 +142,7 @@ static inline void rcu_sysrq_end(void) { }
+ #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
+ void rcu_irq_work_resched(void);
+ #else
+-static inline void rcu_irq_work_resched(void) { }
++static __always_inline void rcu_irq_work_resched(void) { }
+ #endif
  
--		return;
-+		goto free;
- 	}
- 
- 	if (word_cycles < byte_cycles)
-@@ -363,6 +363,9 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 		(speed ==  RISCV_HWPROBE_MISALIGNED_VECTOR_FAST) ? "fast" : "slow");
- 
- 	per_cpu(vector_misaligned_access, cpu) = speed;
-+
-+free:
-+	__free_pages(page, MISALIGNED_BUFFER_ORDER);
- }
- 
- static int riscv_online_cpu_vec(unsigned int cpu)
+ #ifdef CONFIG_RCU_NOCB_CPU
 -- 
 2.39.5
 
