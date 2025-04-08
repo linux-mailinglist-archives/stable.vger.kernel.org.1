@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66774A8066C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23465A80A4E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6EE17975A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B378B4E728E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C01326B2BB;
-	Tue,  8 Apr 2025 12:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AB927602F;
+	Tue,  8 Apr 2025 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iwwAg9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSkcvy4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F7826B0B8;
-	Tue,  8 Apr 2025 12:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7401268FE7;
+	Tue,  8 Apr 2025 12:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114706; cv=none; b=f4FdcY4PZCqILqwH5Ah/v028vzcieFxaYlxHU13XEFAaixDuzT2MrIUAEtGKRJq2Y9UmXAH7nLzZnBU+ltk9DdObxWM0fbmslQsn8oesXjb1iHIJPUv6wGdyTDYJi/05KvEosOchA1z4yUMx3AGWEn4NzUNkiBtT9nMoYvldOn0=
+	t=1744116351; cv=none; b=JlXFpcGjKeetAdJjIKMoIavEAcb99RL/KyzFXtqt5d3vTOB7zhNL9IhgzCSF5KpGpOPlRgypmWVlfKj8RaANnP9umD/eqqlUKhgA1V1LTw9AX91hmWyfNSqURb0eV2n0DgHPIhOtUhPvkSPu0XJTdq/oTvKTOQpLsOF6SkHYSZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114706; c=relaxed/simple;
-	bh=ywcvsD2+0WooL+9bP7Rok2JMuASB+8HmyE2nIXahR1Q=;
+	s=arc-20240116; t=1744116351; c=relaxed/simple;
+	bh=l6vfa9ZDGnjo9DHEgeszZRWCT7s+FvsmVBchf8z2C4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5D2MsGY2SxjuLHKY0dlYT9jKrRv4BSpi94wgzXvULbXo3AN1REJe4eF42Cez8W9rMWigpCV+cy5ox+YZqJmr7zkhmS0uGCAuHronb5UskkX0mKIagtpTL4tA9xvD4Ye9YrVkek9IG/Jq1lK9iaWtccxY+BodtcDmqxMM7g6Lz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iwwAg9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A223C4CEE5;
-	Tue,  8 Apr 2025 12:18:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rq1KC1Fk3MGpdMdFI4m7Ju/fX4zeOCzHjz2NtB5kmpmW0ovUqoBiM16GcQKTmiACExwOH3yQidXGcYf6V1AT9AvqcT60MecEeqBC3TYm+28uphQ7KKD6kSe6Cfxw4IVi+Gp8GiLEJezOZsjdy5RCk5e2USjwzsYm0cXkm0Bs3Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSkcvy4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C94C4CEE5;
+	Tue,  8 Apr 2025 12:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114706;
-	bh=ywcvsD2+0WooL+9bP7Rok2JMuASB+8HmyE2nIXahR1Q=;
+	s=korg; t=1744116350;
+	bh=l6vfa9ZDGnjo9DHEgeszZRWCT7s+FvsmVBchf8z2C4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iwwAg9KTuA4+j8VxKxNiWRiFaadGaFpN/eyo5SGhNmVK+hlV4xgdh7XojFCnAoBw
-	 D9hWlip2wDsSNPQEwMf8F8+gf5Hb1BTLrAulbXcjgLhKFZDpVXlQq3nnD9wkaskWSe
-	 PTQ1p7XRUY1vQjpubaktS8TFNLmXgmodNKHace1I=
+	b=ZSkcvy4hncZeezLVtcnSFH1A7fqWKnRNeDVul9Mjy3fOKkD2yL852GQM4fha1/59j
+	 zaE1bS4qoqmbWwQKeuzem8NNjzZuB/g0b3hwWxdG8KuW4ABWEffuROTTuSzQMtzH6Q
+	 Z61LUaKeDCiNvu5CAUZzURSqPLazdZlulVUpVyNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 204/499] perf stat: Dont merge counters purely on name
-Date: Tue,  8 Apr 2025 12:46:56 +0200
-Message-ID: <20250408104856.287411376@linuxfoundation.org>
+Subject: [PATCH 6.12 091/423] PCI: Fix BAR resizing when VF BARs are assigned
+Date: Tue,  8 Apr 2025 12:46:57 +0200
+Message-ID: <20250408104847.861058561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 2d9961c690d299893735783a2077e866f2d46a56 ]
+[ Upstream commit 9ec19bfa78bd788945e2445b09de7b4482dee432 ]
 
-Counter merging was added in commit 942c5593393d ("perf stat: Add
-perf_stat_merge_counters()"), however, it merges events with the same
-name on different PMUs regardless of whether the different PMUs are
-actually of the same type (ie they differ only in the suffix on the
-PMU). For hwmon events there may be a temp1 event on every PMU, but
-the PMU names are all unique and don't differ just by a suffix. The
-merging is over eager and will merge all the hwmon counters together
-meaning an aggregated and very large temp1 value is shown. The same
-would be true for say cache events and memory controller events where
-the PMUs differ but the event names are the same.
+__resource_resize_store() attempts to release all resources of the device
+before attempting the resize. The loop, however, only covers standard BARs
+(< PCI_STD_NUM_BARS). If a device has VF BARs that are assigned,
+pci_reassign_bridge_resources() finds the bridge window still has some
+assigned child resources and returns -NOENT which makes
+pci_resize_resource() to detect an error and abort the resize.
 
-Fix the problem by correctly saying two PMUs alias when they differ
-only by suffix.
+Change the release loop to cover all resources up to VF BARs which allows
+the resize operation to release the bridge windows and attempt to assigned
+them again with the different size.
 
-Note, there is an overlap with evsel's merged_stat with aggregation
-and the evsel's metric_leader where aggregation happens for metrics.
+If SR-IOV is enabled, disallow resize as it requires releasing also IOV
+resources.
 
-Fixes: 942c5593393d ("perf stat: Add perf_stat_merge_counters()")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20250201074320.746259-5-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250320142837.8027-1-ilpo.jarvinen@linux.intel.com
+Fixes: 91fa127794ac ("PCI: Expose PCIe Resizable BAR support via sysfs")
+Reported-by: Michał Winiarski <michal.winiarski@intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/pci/pci-sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/stat.c b/tools/perf/util/stat.c
-index 7c2ccdcc3fdba..1f7abd8754c75 100644
---- a/tools/perf/util/stat.c
-+++ b/tools/perf/util/stat.c
-@@ -535,7 +535,10 @@ static int evsel__merge_aggr_counters(struct evsel *evsel, struct evsel *alias)
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 3e5a117f5b5d6..5af4a804a4f89 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -1444,7 +1444,7 @@ static ssize_t __resource_resize_store(struct device *dev, int n,
+ 		return -EINVAL;
  
- 	return 0;
- }
--/* events should have the same name, scale, unit, cgroup but on different PMUs */
-+/*
-+ * Events should have the same name, scale, unit, cgroup but on different core
-+ * PMUs or on different but matching uncore PMUs.
-+ */
- static bool evsel__is_alias(struct evsel *evsel_a, struct evsel *evsel_b)
- {
- 	if (strcmp(evsel__name(evsel_a), evsel__name(evsel_b)))
-@@ -553,7 +556,13 @@ static bool evsel__is_alias(struct evsel *evsel_a, struct evsel *evsel_b)
- 	if (evsel__is_clock(evsel_a) != evsel__is_clock(evsel_b))
- 		return false;
+ 	device_lock(dev);
+-	if (dev->driver) {
++	if (dev->driver || pci_num_vf(pdev)) {
+ 		ret = -EBUSY;
+ 		goto unlock;
+ 	}
+@@ -1466,7 +1466,7 @@ static ssize_t __resource_resize_store(struct device *dev, int n,
  
--	return evsel_a->pmu != evsel_b->pmu;
-+	if (evsel_a->pmu == evsel_b->pmu || evsel_a->pmu == NULL || evsel_b->pmu == NULL)
-+		return false;
-+
-+	if (evsel_a->pmu->is_core)
-+		return evsel_b->pmu->is_core;
-+
-+	return perf_pmu__name_no_suffix_match(evsel_a->pmu, evsel_b->pmu->name);
- }
+ 	pci_remove_resource_files(pdev);
  
- static void evsel__merge_aliases(struct evsel *evsel)
+-	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
++	for (i = 0; i < PCI_BRIDGE_RESOURCES; i++) {
+ 		if (pci_resource_len(pdev, i) &&
+ 		    pci_resource_flags(pdev, i) == flags)
+ 			pci_release_resource(pdev, i);
 -- 
 2.39.5
 
