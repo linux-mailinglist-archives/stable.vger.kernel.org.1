@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-130596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC80A8054B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED36A80BBE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D13521B67ECA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F018D50059C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED326A0F4;
-	Tue,  8 Apr 2025 12:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943DC26B2D2;
+	Tue,  8 Apr 2025 12:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRjnAmY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtIobWoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D2526A0E0;
-	Tue,  8 Apr 2025 12:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5150826F472;
+	Tue,  8 Apr 2025 12:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114135; cv=none; b=lsBrexgNvxDs0iOxtl52AQHhLSa111ntY0kzss83MJImoH1UdT4Q7kbd/aTO9WczBhTLCwaGtA6m9fg8JLZ74uWdfPgOi8hbZg24GJvWLOVcq+TBrmC4QLdrS5//nwZVI9G5qlGmgrEfRQWQpIvbTTn6o1HzSbgzBjcXzd2tLOk=
+	t=1744117040; cv=none; b=hqgtUV0gjM1fUxcqjWV75Dqzn6cBNzOBCMkR6zacoHgwFcIh6kov5Fpndd3gSz1jASiHSgHbcO0Re/gPc1cEVsf5b9FIWK2nfme/NdA8W2mQ914Zy+qlSy2DjiS+h15BYh2LDzG6g0TCeZhMmQt6OcnPJiSkZw0jH17vQveerxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114135; c=relaxed/simple;
-	bh=fD5BxW6jgNmV+5NsRPNH6JbZyN8Zf1gmrI7rJb8T5jE=;
+	s=arc-20240116; t=1744117040; c=relaxed/simple;
+	bh=kDDmZLDCwn9YI++ns5kQJsSMLSaBPdtrPh/BsYP7W5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcNOC67kC9pEcfkrunqlWUm9AMoyc5fdbLlHhb+Y2VY+z1J3wFzBOTNu0vBzAK0OU6sUn713Iy5S/jdKGIrEpLbuRD5IHf42gFdqtoR32Etnr2WxBqII2wRJ6xbKZB2gq9rZI7JRRGz2QvTyQ+TIHkZCevEt3PtjG8G1NQgRa20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRjnAmY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9902FC4CEE5;
-	Tue,  8 Apr 2025 12:08:54 +0000 (UTC)
+	 MIME-Version; b=JecDNupzC2VZjZX2600N3AM91IRZO6lqWsrxqfLhVMalMgQkON8JHUJhDBLF0QuWraQtVtt3hu/+NrgbVrzpzD/NxMFTPcHVt0WlfPqPFT0r/LEfbJG7uGB8Uq8NzFiBO+m6BF63Lg5fSvVVr0rH0pe/ZIQX2Igr+iSNvROoEX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtIobWoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D77C4CEE5;
+	Tue,  8 Apr 2025 12:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114135;
-	bh=fD5BxW6jgNmV+5NsRPNH6JbZyN8Zf1gmrI7rJb8T5jE=;
+	s=korg; t=1744117039;
+	bh=kDDmZLDCwn9YI++ns5kQJsSMLSaBPdtrPh/BsYP7W5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRjnAmY4lz0ohJ+6es9hkqn5wto+9IF4Zflj0Pz5ib1+ZJ0LckIg0W3KlDOUr3nUY
-	 028biXOVrH4jEJnHO3XjCvcileRYdAIPFROm1cfEUNf/d2GfybktGw0jW2Y/bpgw5N
-	 2WZtVtbkFNcPyLxhOD3pJVd5knNHxmAk0Lm+k72Q=
+	b=VtIobWozu2Br8GfUMUWNa16GTFmNTCr217yaxnzskITg1sWStI7S42+vh2+ADeXPW
+	 DT0v6qgRuf78oPBOnF4yu3tL3EgSEItdNy0IIVdX4QXnBDe52YyE0VzwE6E+g+kBjD
+	 2NCUCBaFb62V/VIw6/hTqekT8jkSmrP9PvNd0ZA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.4 148/154] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 363/423] LoongArch: Increase ARCH_DMA_MINALIGN up to 16
 Date: Tue,  8 Apr 2025 12:51:29 +0200
-Message-ID: <20250408104820.043863039@linuxfoundation.org>
+Message-ID: <20250408104854.318988093@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
+commit 4103cfe9dcb88010ae4911d3ff417457d1b6a720 upstream.
 
-TSC could be reset in deep ACPI sleep states, even with invariant TSC.
+ARCH_DMA_MINALIGN is 1 by default, but some LoongArch-specific devices
+(such as APBDMA) require 16 bytes alignment. When the data buffer length
+is too small, the hardware may make an error writing cacheline. Thus, it
+is dangerous to allocate a small memory buffer for DMA. It's always safe
+to define ARCH_DMA_MINALIGN as L1_CACHE_BYTES but unnecessary (kmalloc()
+need small memory objects). Therefore, just increase it to 16.
 
-That's the reason we have sched_clock() save/restore functions, to deal
-with this situation. But what happens is that such functions are guarded
-with a check for the stability of sched_clock - if not considered stable,
-the save/restore routines aren't executed.
-
-On top of that, we have a clear comment in native_sched_clock() saying
-that *even* with TSC unstable, we continue using TSC for sched_clock due
-to its speed.
-
-In other words, if we have a situation of TSC getting detected as unstable,
-it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
-could bring bogus sched_clock values due to the lack of the save/restore
-mechanism, causing warnings like this:
-
-  [22.954918] ------------[ cut here ]------------
-  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
-  [22.954923] If you just came from a suspend/resume,
-  [22.954923] please switch to the trace global clock:
-  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
-  [22.954923] or add trace_clock=global to the kernel command line
-  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
-
-Notice that the above was reproduced even with "trace_clock=global".
-
-The fix for that is to _always_ save/restore the sched_clock on suspend
-cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
-the sched_clock_stable() check becomes relevant to save/restore the
-sched_clock.
-
-Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/tsc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/cache.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -912,7 +912,7 @@ static unsigned long long cyc2ns_suspend
+--- a/arch/loongarch/include/asm/cache.h
++++ b/arch/loongarch/include/asm/cache.h
+@@ -8,6 +8,8 @@
+ #define L1_CACHE_SHIFT		CONFIG_L1_CACHE_SHIFT
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
  
- void tsc_save_sched_clock_state(void)
- {
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
++#define ARCH_DMA_MINALIGN	(16)
++
+ #define __read_mostly __section(".data..read_mostly")
  
- 	cyc2ns_suspend = sched_clock();
-@@ -932,7 +932,7 @@ void tsc_restore_sched_clock_state(void)
- 	unsigned long flags;
- 	int cpu;
- 
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
- 
- 	local_irq_save(flags);
+ #endif /* _ASM_CACHE_H */
 
 
 
