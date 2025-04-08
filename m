@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-130786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6593BA80642
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E48EA80985
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005F84C1846
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701364E61C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F6D26A1A9;
-	Tue,  8 Apr 2025 12:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B14126FA53;
+	Tue,  8 Apr 2025 12:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZgqthI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdDHaJrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93726268FE4;
-	Tue,  8 Apr 2025 12:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0727926F45A;
+	Tue,  8 Apr 2025 12:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114646; cv=none; b=qIpNgfMEnaDosaDjael79N4yjDmoa67v5LYy8D2WbuDCc26LVYzyXEtQQ1gk2ZuBTec8Li+iSN7VwoAfwEHIqY8ANoG2pM+kStqMqgCXMsv7ZDROYZ1bBgqrmPfwqGOg3JCerZmTZxcIlGzOVUrHreZancWC+CPtd30Wx2NoCV4=
+	t=1744116249; cv=none; b=MLra68g3fZeSOpmH+xhazUdjTTL2YL5rY8DJZthKp9eSfN2sBMkxlmQHGjAB3q9MtKNGCxoe0SaYpnR8YfRy4Rm5jhtpohv1UitjY76qzeKXmEfqh5TNuITOhjYsUYELVQ8ZpFUAh+0nAfoDX8IZ1jGnU484kZMDjBYPb6xkrLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114646; c=relaxed/simple;
-	bh=43Zo7fhescKBTFCP5n22IMcEeKe27N0FIdFgvc1ruM4=;
+	s=arc-20240116; t=1744116249; c=relaxed/simple;
+	bh=Ks+IOmWo9QKqtSbDE7cf+1J1MasrG8yu9MsnEkm455A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTR3xhCwOAVFHhaHUk10C+HpNOE99Mm+OVONHEUggPGO1z3v9H3kT+7Aoq74ZppPnwmM7RknNzlP70M8Q+TE0upACZX7/tnv+26MJzJQ7MmNsRLg6eH0H+Myo/wy1+hkLgiqmdf/L+7AfAJ7N3l+qJmloeww/c2sbkarRIrZwrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZgqthI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226DEC4CEE7;
-	Tue,  8 Apr 2025 12:17:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ivAg2IUR80AVY29v6vBjo4SvwD2nalmA8zoncbzJkEl2NkAl/dZ6RsPXGOmrWgn+cXBDESB703jtYeE9tiH4mzn55BEvupA1DWTO67OiyhFj/j1Vhi7X2qlhvCL+rZjlsr2s9wKcSJdUyLvLa1TYc5AXUtMTRn8De7sLlXWqk50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdDHaJrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6340EC4CEE5;
+	Tue,  8 Apr 2025 12:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114646;
-	bh=43Zo7fhescKBTFCP5n22IMcEeKe27N0FIdFgvc1ruM4=;
+	s=korg; t=1744116248;
+	bh=Ks+IOmWo9QKqtSbDE7cf+1J1MasrG8yu9MsnEkm455A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZgqthI8cPNNFVyC9N/A69yBr/5d8ZAesjdKR02pxK6tgKu1HOc3BT0nn1Pj8gx5a
-	 TMqCcf4PUxdI8UpNxLiUQ7NCxqTcCKRiRiGWW1I/jEk+DHBeV+4Dar6KcCRg17tQDX
-	 5DTfqhZynxTOdYWsqbzWcSpkv2AS/h28HF6zdXN8=
+	b=OdDHaJrz0sFM/MzDKt4f9aqcgic2pE5YQ/+cD0MXTJcwVXEQwNHIdENDO3k2srBWM
+	 iizAzIbKfjy59esZMAmmsuRoBUdjq5VKgersZp/CML2RHh/X2p2D8dfl2FKNFT1QcO
+	 Qz8YNm01fZx0rsLwd8mtXspRTngBu0UcKrcHiraI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Sierra <alex.sierra@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 184/499] crypto: nx - Fix uninitialised hv_nxc on error
+Subject: [PATCH 6.12 070/423] drm/amdkfd: Fix Circular Locking Dependency in svm_range_cpu_invalidate_pagetables
 Date: Tue,  8 Apr 2025 12:46:36 +0200
-Message-ID: <20250408104855.764882187@linuxfoundation.org>
+Message-ID: <20250408104847.379465560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +67,280 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 9b00eb923f3e60ca76cbc8b31123716f3a87ac6a ]
+[ Upstream commit fddc45026311c05a5355fd34b9dc0a1d7eaef4a2 ]
 
-The compiler correctly warns that hv_nxc may be used uninitialised
-as that will occur when NX-GZIP is unavailable.
+This commit addresses a circular locking dependency in the
+svm_range_cpu_invalidate_pagetables function. The function previously
+held a lock while determining whether to perform an unmap or eviction
+operation, which could lead to deadlocks.
 
-Fix it by rearranging the code and delay setting caps_feat until
-the final query succeeds.
+Fixes the below:
 
-Fixes: b4ba22114c78 ("crypto/nx: Get NX capabilities for GZIP coprocessor type")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[  223.418794] ======================================================
+[  223.418820] WARNING: possible circular locking dependency detected
+[  223.418845] 6.12.0-amdstaging-drm-next-lol-050225 #14 Tainted: G     U     OE
+[  223.418869] ------------------------------------------------------
+[  223.418889] kfdtest/3939 is trying to acquire lock:
+[  223.418906] ffff8957552eae38 (&dqm->lock_hidden){+.+.}-{3:3}, at: evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.419302]
+               but task is already holding lock:
+[  223.419303] ffff8957556b83b0 (&prange->lock){+.+.}-{3:3}, at: svm_range_cpu_invalidate_pagetables+0x9d/0x850 [amdgpu]
+[  223.419447] Console: switching to colour dummy device 80x25
+[  223.419477] [IGT] amd_basic: executing
+[  223.419599]
+               which lock already depends on the new lock.
+
+[  223.419611]
+               the existing dependency chain (in reverse order) is:
+[  223.419621]
+               -> #2 (&prange->lock){+.+.}-{3:3}:
+[  223.419636]        __mutex_lock+0x85/0xe20
+[  223.419647]        mutex_lock_nested+0x1b/0x30
+[  223.419656]        svm_range_validate_and_map+0x2f1/0x15b0 [amdgpu]
+[  223.419954]        svm_range_set_attr+0xe8c/0x1710 [amdgpu]
+[  223.420236]        svm_ioctl+0x46/0x50 [amdgpu]
+[  223.420503]        kfd_ioctl_svm+0x50/0x90 [amdgpu]
+[  223.420763]        kfd_ioctl+0x409/0x6d0 [amdgpu]
+[  223.421024]        __x64_sys_ioctl+0x95/0xd0
+[  223.421036]        x64_sys_call+0x1205/0x20d0
+[  223.421047]        do_syscall_64+0x87/0x140
+[  223.421056]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  223.421068]
+               -> #1 (reservation_ww_class_mutex){+.+.}-{3:3}:
+[  223.421084]        __ww_mutex_lock.constprop.0+0xab/0x1560
+[  223.421095]        ww_mutex_lock+0x2b/0x90
+[  223.421103]        amdgpu_amdkfd_alloc_gtt_mem+0xcc/0x2b0 [amdgpu]
+[  223.421361]        add_queue_mes+0x3bc/0x440 [amdgpu]
+[  223.421623]        unhalt_cpsch+0x1ae/0x240 [amdgpu]
+[  223.421888]        kgd2kfd_start_sched+0x5e/0xd0 [amdgpu]
+[  223.422148]        amdgpu_amdkfd_start_sched+0x3d/0x50 [amdgpu]
+[  223.422414]        amdgpu_gfx_enforce_isolation_handler+0x132/0x270 [amdgpu]
+[  223.422662]        process_one_work+0x21e/0x680
+[  223.422673]        worker_thread+0x190/0x330
+[  223.422682]        kthread+0xe7/0x120
+[  223.422690]        ret_from_fork+0x3c/0x60
+[  223.422699]        ret_from_fork_asm+0x1a/0x30
+[  223.422708]
+               -> #0 (&dqm->lock_hidden){+.+.}-{3:3}:
+[  223.422723]        __lock_acquire+0x16f4/0x2810
+[  223.422734]        lock_acquire+0xd1/0x300
+[  223.422742]        __mutex_lock+0x85/0xe20
+[  223.422751]        mutex_lock_nested+0x1b/0x30
+[  223.422760]        evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.423025]        kfd_process_evict_queues+0x8a/0x1d0 [amdgpu]
+[  223.423285]        kgd2kfd_quiesce_mm+0x43/0x90 [amdgpu]
+[  223.423540]        svm_range_cpu_invalidate_pagetables+0x4a7/0x850 [amdgpu]
+[  223.423807]        __mmu_notifier_invalidate_range_start+0x1f5/0x250
+[  223.423819]        copy_page_range+0x1e94/0x1ea0
+[  223.423829]        copy_process+0x172f/0x2ad0
+[  223.423839]        kernel_clone+0x9c/0x3f0
+[  223.423847]        __do_sys_clone+0x66/0x90
+[  223.423856]        __x64_sys_clone+0x25/0x30
+[  223.423864]        x64_sys_call+0x1d7c/0x20d0
+[  223.423872]        do_syscall_64+0x87/0x140
+[  223.423880]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  223.423891]
+               other info that might help us debug this:
+
+[  223.423903] Chain exists of:
+                 &dqm->lock_hidden --> reservation_ww_class_mutex --> &prange->lock
+
+[  223.423926]  Possible unsafe locking scenario:
+
+[  223.423935]        CPU0                    CPU1
+[  223.423942]        ----                    ----
+[  223.423949]   lock(&prange->lock);
+[  223.423958]                                lock(reservation_ww_class_mutex);
+[  223.423970]                                lock(&prange->lock);
+[  223.423981]   lock(&dqm->lock_hidden);
+[  223.423990]
+                *** DEADLOCK ***
+
+[  223.423999] 5 locks held by kfdtest/3939:
+[  223.424006]  #0: ffffffffb82b4fc0 (dup_mmap_sem){.+.+}-{0:0}, at: copy_process+0x1387/0x2ad0
+[  223.424026]  #1: ffff89575eda81b0 (&mm->mmap_lock){++++}-{3:3}, at: copy_process+0x13a8/0x2ad0
+[  223.424046]  #2: ffff89575edaf3b0 (&mm->mmap_lock/1){+.+.}-{3:3}, at: copy_process+0x13e4/0x2ad0
+[  223.424066]  #3: ffffffffb82e76e0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: copy_page_range+0x1cea/0x1ea0
+[  223.424088]  #4: ffff8957556b83b0 (&prange->lock){+.+.}-{3:3}, at: svm_range_cpu_invalidate_pagetables+0x9d/0x850 [amdgpu]
+[  223.424365]
+               stack backtrace:
+[  223.424374] CPU: 0 UID: 0 PID: 3939 Comm: kfdtest Tainted: G     U     OE      6.12.0-amdstaging-drm-next-lol-050225 #14
+[  223.424392] Tainted: [U]=USER, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  223.424401] Hardware name: Gigabyte Technology Co., Ltd. X570 AORUS PRO WIFI/X570 AORUS PRO WIFI, BIOS F36a 02/16/2022
+[  223.424416] Call Trace:
+[  223.424423]  <TASK>
+[  223.424430]  dump_stack_lvl+0x9b/0xf0
+[  223.424441]  dump_stack+0x10/0x20
+[  223.424449]  print_circular_bug+0x275/0x350
+[  223.424460]  check_noncircular+0x157/0x170
+[  223.424469]  ? __bfs+0xfd/0x2c0
+[  223.424481]  __lock_acquire+0x16f4/0x2810
+[  223.424490]  ? srso_return_thunk+0x5/0x5f
+[  223.424505]  lock_acquire+0xd1/0x300
+[  223.424514]  ? evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.424783]  __mutex_lock+0x85/0xe20
+[  223.424792]  ? evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.425058]  ? srso_return_thunk+0x5/0x5f
+[  223.425067]  ? mark_held_locks+0x54/0x90
+[  223.425076]  ? evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.425339]  ? srso_return_thunk+0x5/0x5f
+[  223.425350]  mutex_lock_nested+0x1b/0x30
+[  223.425358]  ? mutex_lock_nested+0x1b/0x30
+[  223.425367]  evict_process_queues_cpsch+0x43/0x210 [amdgpu]
+[  223.425631]  kfd_process_evict_queues+0x8a/0x1d0 [amdgpu]
+[  223.425893]  kgd2kfd_quiesce_mm+0x43/0x90 [amdgpu]
+[  223.426156]  svm_range_cpu_invalidate_pagetables+0x4a7/0x850 [amdgpu]
+[  223.426423]  ? srso_return_thunk+0x5/0x5f
+[  223.426436]  __mmu_notifier_invalidate_range_start+0x1f5/0x250
+[  223.426450]  copy_page_range+0x1e94/0x1ea0
+[  223.426461]  ? srso_return_thunk+0x5/0x5f
+[  223.426474]  ? srso_return_thunk+0x5/0x5f
+[  223.426484]  ? lock_acquire+0xd1/0x300
+[  223.426494]  ? copy_process+0x1718/0x2ad0
+[  223.426502]  ? srso_return_thunk+0x5/0x5f
+[  223.426510]  ? sched_clock_noinstr+0x9/0x10
+[  223.426519]  ? local_clock_noinstr+0xe/0xc0
+[  223.426528]  ? copy_process+0x1718/0x2ad0
+[  223.426537]  ? srso_return_thunk+0x5/0x5f
+[  223.426550]  copy_process+0x172f/0x2ad0
+[  223.426569]  kernel_clone+0x9c/0x3f0
+[  223.426577]  ? __schedule+0x4c9/0x1b00
+[  223.426586]  ? srso_return_thunk+0x5/0x5f
+[  223.426594]  ? sched_clock_noinstr+0x9/0x10
+[  223.426602]  ? srso_return_thunk+0x5/0x5f
+[  223.426610]  ? local_clock_noinstr+0xe/0xc0
+[  223.426619]  ? schedule+0x107/0x1a0
+[  223.426629]  __do_sys_clone+0x66/0x90
+[  223.426643]  __x64_sys_clone+0x25/0x30
+[  223.426652]  x64_sys_call+0x1d7c/0x20d0
+[  223.426661]  do_syscall_64+0x87/0x140
+[  223.426671]  ? srso_return_thunk+0x5/0x5f
+[  223.426679]  ? common_nsleep+0x44/0x50
+[  223.426690]  ? srso_return_thunk+0x5/0x5f
+[  223.426698]  ? trace_hardirqs_off+0x52/0xd0
+[  223.426709]  ? srso_return_thunk+0x5/0x5f
+[  223.426717]  ? syscall_exit_to_user_mode+0xcc/0x200
+[  223.426727]  ? srso_return_thunk+0x5/0x5f
+[  223.426736]  ? do_syscall_64+0x93/0x140
+[  223.426748]  ? srso_return_thunk+0x5/0x5f
+[  223.426756]  ? up_write+0x1c/0x1e0
+[  223.426765]  ? srso_return_thunk+0x5/0x5f
+[  223.426775]  ? srso_return_thunk+0x5/0x5f
+[  223.426783]  ? trace_hardirqs_off+0x52/0xd0
+[  223.426792]  ? srso_return_thunk+0x5/0x5f
+[  223.426800]  ? syscall_exit_to_user_mode+0xcc/0x200
+[  223.426810]  ? srso_return_thunk+0x5/0x5f
+[  223.426818]  ? do_syscall_64+0x93/0x140
+[  223.426826]  ? syscall_exit_to_user_mode+0xcc/0x200
+[  223.426836]  ? srso_return_thunk+0x5/0x5f
+[  223.426844]  ? do_syscall_64+0x93/0x140
+[  223.426853]  ? srso_return_thunk+0x5/0x5f
+[  223.426861]  ? irqentry_exit+0x6b/0x90
+[  223.426869]  ? srso_return_thunk+0x5/0x5f
+[  223.426877]  ? exc_page_fault+0xa7/0x2c0
+[  223.426888]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  223.426898] RIP: 0033:0x7f46758eab57
+[  223.426906] Code: ba 04 00 f3 0f 1e fa 64 48 8b 04 25 10 00 00 00 45 31 c0 31 d2 31 f6 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 41 41 89 c0 85 c0 75 2c 64 48 8b 04 25 10 00
+[  223.426930] RSP: 002b:00007fff5c3e5188 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+[  223.426943] RAX: ffffffffffffffda RBX: 00007f4675f8c040 RCX: 00007f46758eab57
+[  223.426954] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+[  223.426965] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+[  223.426975] R10: 00007f4675e81a50 R11: 0000000000000246 R12: 0000000000000001
+[  223.426986] R13: 00007fff5c3e5470 R14: 00007fff5c3e53e0 R15: 00007fff5c3e5410
+[  223.427004]  </TASK>
+
+v2: To resolve this issue, the allocation of the process context buffer
+(`proc_ctx_bo`) has been moved from the `add_queue_mes` function to the
+`pqm_create_queue` function. This change ensures that the buffer is
+allocated only when the first queue for a process is created and only if
+the Micro Engine Scheduler (MES) is enabled. (Felix)
+
+v3: Fix typo s/Memory Execution Scheduler (MES)/Micro Engine Scheduler
+in commit message. (Lijo)
+
+Fixes: 438b39ac74e2 ("drm/amdkfd: pause autosuspend when creating pdd")
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Cc: Yunxiang Li <Yunxiang.Li@amd.com>
+Cc: Philip Yang <Philip.Yang@amd.com>
+Cc: Alex Sierra <alex.sierra@amd.com>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/nx/nx-common-pseries.c | 37 ++++++++++++---------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ .../drm/amd/amdkfd/kfd_device_queue_manager.c    | 15 ---------------
+ .../drm/amd/amdkfd/kfd_process_queue_manager.c   | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
-index 1660c5cf3641c..56129bdf53ab0 100644
---- a/drivers/crypto/nx/nx-common-pseries.c
-+++ b/drivers/crypto/nx/nx-common-pseries.c
-@@ -1145,6 +1145,7 @@ static void __init nxcop_get_capabilities(void)
- {
- 	struct hv_vas_all_caps *hv_caps;
- 	struct hv_nx_cop_caps *hv_nxc;
-+	u64 feat;
- 	int rc;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index dffe2a86f383e..951b87e7e3f68 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -205,21 +205,6 @@ static int add_queue_mes(struct device_queue_manager *dqm, struct queue *q,
+ 	if (!down_read_trylock(&adev->reset_domain->sem))
+ 		return -EIO;
  
- 	hv_caps = kmalloc(sizeof(*hv_caps), GFP_KERNEL);
-@@ -1155,27 +1156,26 @@ static void __init nxcop_get_capabilities(void)
- 	 */
- 	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES, 0,
- 					  (u64)virt_to_phys(hv_caps));
-+	if (!rc)
-+		feat = be64_to_cpu(hv_caps->feat_type);
-+	kfree(hv_caps);
- 	if (rc)
--		goto out;
-+		return;
-+	if (!(feat & VAS_NX_GZIP_FEAT_BIT))
-+		return;
- 
--	caps_feat = be64_to_cpu(hv_caps->feat_type);
- 	/*
- 	 * NX-GZIP feature available
- 	 */
--	if (caps_feat & VAS_NX_GZIP_FEAT_BIT) {
--		hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
--		if (!hv_nxc)
--			goto out;
--		/*
--		 * Get capabilities for NX-GZIP feature
--		 */
--		rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
--						  VAS_NX_GZIP_FEAT,
--						  (u64)virt_to_phys(hv_nxc));
--	} else {
--		pr_err("NX-GZIP feature is not available\n");
--		rc = -EINVAL;
+-	if (!pdd->proc_ctx_cpu_ptr) {
+-		r = amdgpu_amdkfd_alloc_gtt_mem(adev,
+-				AMDGPU_MES_PROC_CTX_SIZE,
+-				&pdd->proc_ctx_bo,
+-				&pdd->proc_ctx_gpu_addr,
+-				&pdd->proc_ctx_cpu_ptr,
+-				false);
+-		if (r) {
+-			dev_err(adev->dev,
+-				"failed to allocate process context bo\n");
+-			return r;
+-		}
+-		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
 -	}
-+	hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
-+	if (!hv_nxc)
-+		return;
-+	/*
-+	 * Get capabilities for NX-GZIP feature
-+	 */
-+	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
-+					  VAS_NX_GZIP_FEAT,
-+					  (u64)virt_to_phys(hv_nxc));
+-
+ 	memset(&queue_input, 0x0, sizeof(struct mes_add_queue_input));
+ 	queue_input.process_id = qpd->pqm->process->pasid;
+ 	queue_input.page_table_base_addr =  qpd->page_table_base;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 42fd7669ac7d3..ac777244ee0a1 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -361,10 +361,26 @@ int pqm_create_queue(struct process_queue_manager *pqm,
+ 	if (retval != 0)
+ 		return retval;
  
- 	if (!rc) {
- 		nx_cop_caps.descriptor = be64_to_cpu(hv_nxc->descriptor);
-@@ -1185,13 +1185,10 @@ static void __init nxcop_get_capabilities(void)
- 				be64_to_cpu(hv_nxc->min_compress_len);
- 		nx_cop_caps.min_decompress_len =
- 				be64_to_cpu(hv_nxc->min_decompress_len);
--	} else {
--		caps_feat = 0;
-+		caps_feat = feat;
- 	}
++	/* Register process if this is the first queue */
+ 	if (list_empty(&pdd->qpd.queues_list) &&
+ 	    list_empty(&pdd->qpd.priv_queue_list))
+ 		dev->dqm->ops.register_process(dev->dqm, &pdd->qpd);
  
- 	kfree(hv_nxc);
--out:
--	kfree(hv_caps);
- }
- 
- static const struct vio_device_id nx842_vio_driver_ids[] = {
++	/* Allocate proc_ctx_bo only if MES is enabled and this is the first queue */
++	if (!pdd->proc_ctx_cpu_ptr && dev->kfd->shared_resources.enable_mes) {
++		retval = amdgpu_amdkfd_alloc_gtt_mem(dev->adev,
++						     AMDGPU_MES_PROC_CTX_SIZE,
++						     &pdd->proc_ctx_bo,
++						     &pdd->proc_ctx_gpu_addr,
++						     &pdd->proc_ctx_cpu_ptr,
++						     false);
++		if (retval) {
++			dev_err(dev->adev->dev, "failed to allocate process context bo\n");
++			return retval;
++		}
++		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
++	}
++
+ 	pqn = kzalloc(sizeof(*pqn), GFP_KERNEL);
+ 	if (!pqn) {
+ 		retval = -ENOMEM;
 -- 
 2.39.5
 
