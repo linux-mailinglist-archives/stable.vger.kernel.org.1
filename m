@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-129163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C368BA7FE66
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753F7A7FE8B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8EFA171A42
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 475C43BA327
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AF026A0BA;
-	Tue,  8 Apr 2025 11:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8B2224F6;
+	Tue,  8 Apr 2025 11:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghN8jNwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj/i4ddX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B4B263C6D;
-	Tue,  8 Apr 2025 11:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0931FBCB2;
+	Tue,  8 Apr 2025 11:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110286; cv=none; b=gkZHc9/kR+5IjDPPbplkfiHRmYiACytHKrfwJtGWfuJbNC3ZxvUbauCdb2R/QpMdqlBhd2E9lQawvvo+cRPgYlCBgibmFeDFem2b3xwrWHrNKie2cq4kWuOMXGtX56cTjPnNOZTOouIqPUEfSEgJ+QtLKWP7sUFwr4YBL00kmrQ=
+	t=1744110316; cv=none; b=PSIEtschjg0xxbB3euEus5pSs7XJdsQN8W7udezozNYZyW8SoPIMaZo5c9CehkS6KRw1184PSp7CPEEQ2XP61Pm41v0ciYFHC+Pa2JJiKEgqRhv0rflalb6FYKeypBVF+aePTf3VnMJ8UMzoAcB/hWjZ5UMlqIAEmfIx8P0imEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110286; c=relaxed/simple;
-	bh=6ATjT0yLeKdvZIXThykkegjWNiUyQxonx1DHc4p8NW4=;
+	s=arc-20240116; t=1744110316; c=relaxed/simple;
+	bh=WDJDbuNbVdw2dUMSWog+TdB4QJMFd76hgPRIOe1lj4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIDQQ1S/j6o5nvI9wPHdFTAbSA5snYFb5AfS6cAtJIZLfVDHWcwUE5b9kj9FdnaKleLZZTrjuGxm60aHxS+V3tw6ktUYZwgbFNQgevIk2AthfyYcZWwN4/mWU2ZZ7XqPp8ibV7fXInzGTZjVyoEeDJZUlJGxKpKU07F/gurgtMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghN8jNwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FB7C4CEE5;
-	Tue,  8 Apr 2025 11:04:45 +0000 (UTC)
+	 MIME-Version; b=ovMfE7dv0gDUX8Wzh9JXmoCOFbQwtR0sFGct8hF29kf0cYbVQOvG036NexIAkZmiUdVGrKV7ZxF2bBrGyGts5dZtcFFQdiyykozaS22EzXTM0fs6QBJrUKzTktye7kwucLkXIJtr/GtoZtjU5eQ4ZNdc8V6UQI9FdkvlA0k+azY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj/i4ddX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E74C4CEE5;
+	Tue,  8 Apr 2025 11:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110286;
-	bh=6ATjT0yLeKdvZIXThykkegjWNiUyQxonx1DHc4p8NW4=;
+	s=korg; t=1744110316;
+	bh=WDJDbuNbVdw2dUMSWog+TdB4QJMFd76hgPRIOe1lj4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghN8jNwjyeL5X5UvVDOBFI1Ro8tKwbI6bnqNSnHwfQoq/XTrDcTxhT/25Svqhq27E
-	 W5M/HrflSGFFH4nt3BnQpn1hUDgG78s0HUOZiyUxM+VvSNyVbIk0kVvlkcFUH3naNS
-	 MyU4Hev0WYNiEIfvCFUIBotGwEqSmssgTyZFU1hQ=
+	b=uj/i4ddXs/KhgKaBYPvsjmEnR7pCxq1nEMlp3K3guflvV0GGVpgQk2c2H9jAjB6Y6
+	 zF8R+dzr7t8i+CLnGJgpOQ+63j6kEloycWcyM6vQYBcAmpHgZnffpgpq6KiHR7RNpo
+	 NoDjYysWyCPExWKCGRQ+kDSvl1cwP5nafl7d0ZVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
+	Eric Sandeen <sandeen@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 001/731] fs: support O_PATH fds with FSCONFIG_SET_FD
-Date: Tue,  8 Apr 2025 12:38:18 +0200
-Message-ID: <20250408104914.292623372@linuxfoundation.org>
+Subject: [PATCH 6.14 002/731] watch_queue: fix pipe accounting mismatch
+Date: Tue,  8 Apr 2025 12:38:19 +0200
+Message-ID: <20250408104914.315087844@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,52 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 0ff053b98a0f039e52c2bd8d0cb38f2831edfaf5 ]
+[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
 
-Let FSCONFIG_SET_FD handle O_PATH file descriptors. This is particularly
-useful in the context of overlayfs where layers can be specified via
-file descriptors instead of paths. But userspace must currently use
-non-O_PATH file desriptors which is often pointless especially if
-the file descriptors have been created via open_tree(OPEN_TREE_CLONE).
+Currently, watch_queue_set_size() modifies the pipe buffers charged to
+user->pipe_bufs without updating the pipe->nr_accounted on the pipe
+itself, due to the if (!pipe_has_watch_queue()) test in
+pipe_resize_ring(). This means that when the pipe is ultimately freed,
+we decrement user->pipe_bufs by something other than what than we had
+charged to it, potentially leading to an underflow. This in turn can
+cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
 
-Link: https://lore.kernel.org/r/20250210-work-overlayfs-v2-1-ed2a949b674b@kernel.org
-Fixes: a08557d19ef41 ("ovl: specify layers via file descriptors")
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+To remedy this, explicitly account for the pipe usage in
+watch_queue_set_size() to match the number set via account_pipe_buffers()
+
+(It's unclear why watch_queue_set_size() does not update nr_accounted;
+it may be due to intentional overprovisioning in watch_queue_set_size()?)
+
+Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/autofs/autofs_i.h | 2 ++
- fs/fsopen.c          | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ kernel/watch_queue.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/autofs/autofs_i.h b/fs/autofs/autofs_i.h
-index 77c7991d89aac..23cea74f9933b 100644
---- a/fs/autofs/autofs_i.h
-+++ b/fs/autofs/autofs_i.h
-@@ -218,6 +218,8 @@ void autofs_clean_ino(struct autofs_info *);
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index 5267adeaa4034..41e4e8070923a 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -269,6 +269,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
+ 	if (ret < 0)
+ 		goto error;
  
- static inline int autofs_check_pipe(struct file *pipe)
- {
-+	if (pipe->f_mode & FMODE_PATH)
-+		return -EINVAL;
- 	if (!(pipe->f_mode & FMODE_CAN_WRITE))
- 		return -EINVAL;
- 	if (!S_ISFIFO(file_inode(pipe)->i_mode))
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index 094a7f510edfe..1aaf4cb2afb29 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -453,7 +453,7 @@ SYSCALL_DEFINE5(fsconfig,
- 	case FSCONFIG_SET_FD:
- 		param.type = fs_value_is_file;
- 		ret = -EBADF;
--		param.file = fget(aux);
-+		param.file = fget_raw(aux);
- 		if (!param.file)
- 			goto out_key;
- 		param.dirfd = aux;
++	/*
++	 * pipe_resize_ring() does not update nr_accounted for watch_queue
++	 * pipes, because the above vastly overprovisions. Set nr_accounted on
++	 * and max_usage this pipe to the number that was actually charged to
++	 * the user above via account_pipe_buffers.
++	 */
++	pipe->max_usage = nr_pages;
++	pipe->nr_accounted = nr_pages;
++
+ 	ret = -ENOMEM;
+ 	pages = kcalloc(nr_pages, sizeof(struct page *), GFP_KERNEL);
+ 	if (!pages)
 -- 
 2.39.5
 
