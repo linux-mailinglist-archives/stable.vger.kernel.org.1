@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-130447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BA7A80505
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277D8A808DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9907888286E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58361BA4E1F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03582686BC;
-	Tue,  8 Apr 2025 12:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9E426FDB5;
+	Tue,  8 Apr 2025 12:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcBhKHvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf0qhEN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC2321B185;
-	Tue,  8 Apr 2025 12:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56B26B2BF;
+	Tue,  8 Apr 2025 12:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113734; cv=none; b=fGzvT5LslWz/fehs5/Q9L0L6bLSdaWU+yvDvvpLbSYx5NzjIsWxFe9xZCvaCCWOms7k0jf9cBbWxjzyZ2+37zvH3UpU5C6dtFwIINwJEyFnbchStUC71aMH0BHAo86sIwTE3VQIKAxR8jfN+auazr826r+wyhJ/NcAtEsZLanQ4=
+	t=1744115911; cv=none; b=q+UBF35mm/X7AzmEYYZPlTW/MX8RVo6NIWrkAd1FA0d7w5dkRcC2EITaR0ebGRLjNCFkNccY++QHTEnucMaHDpKoeVPc8LEd7lLtmzA5pVV23uRWp0QoS/hsnGqlljjq6FGgWSX7PclgwhjnkE4cuU/VaQj8u9NMp84ED8TqUu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113734; c=relaxed/simple;
-	bh=DBIlvVzExCy734IYzJfsJLzipmIDPVPqnk/89Y1BZSY=;
+	s=arc-20240116; t=1744115911; c=relaxed/simple;
+	bh=z+YetIoz3JnCfnBQ8J36fY3J0R+PvCgYBwxKLff7jOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P38tmZsuaXUv8aZmtLAVDkSRbuaQ+LlvW4j2CDWgcu0y5b7w0ckHOCBxigYb7nepC5pvsu6k0io6s5csY1gUdUrBKeHk/hDWvMs3/X6GvRsc3TG1u2LYle7Dyl4dJw5wCyLVGAM5QxWyw68PU4GvfhNdchDOEBn/bd05jNAhUEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcBhKHvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB4BC4CEE5;
-	Tue,  8 Apr 2025 12:02:13 +0000 (UTC)
+	 MIME-Version; b=hjqo1w6jPj1tmnqjWgjYDrIARZ9ebyltQ2zObuq4vnSHGD1cF9/LyTHkxPNSyQdDzTIf2yq3PvgysrZk+lbdnb4A2l0diLMz9UBMJLm2R/YVUN1yXocLh93Ca1dztTlizi0xH4tBy4LxaNGD20hBHnj7xhi0NPaVlCxKOtsceQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf0qhEN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B208C4CEE5;
+	Tue,  8 Apr 2025 12:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113734;
-	bh=DBIlvVzExCy734IYzJfsJLzipmIDPVPqnk/89Y1BZSY=;
+	s=korg; t=1744115911;
+	bh=z+YetIoz3JnCfnBQ8J36fY3J0R+PvCgYBwxKLff7jOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcBhKHvRprKz+UhMt4OY7FgW7mmzXTsFwYnkECm/gS05JeLj1dhmncYgWrRhtFwit
-	 K2FIhPPoSz68yj6fSHF/uJoaZWzaVFcoiwQSjoNtEbgctuVBjrw//7p+RkeN6mb6CB
-	 zMzoM31sA8QnTReHzTD3EKO6+TbUToHAqTo0ww+k=
+	b=Gf0qhEN39TpMSfwfiELlRoQDfA79oc2AJVSl5JsZOnllG1AmUJK123+phz+jWqDpf
+	 vbrK5KA9BXEWHEVgCoBEdGL5lTHYFuGa/O5l1t3E9WKVyijf4lFffm0M3myRufvShQ
+	 1jqiPdkPila3jGLFEkJ0nZUFRrY8bpV4xv9JjuUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 268/268] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 149/204] spufs: fix gang directory lifetimes
 Date: Tue,  8 Apr 2025 12:51:19 +0200
-Message-ID: <20250408104835.803306153@linuxfoundation.org>
+Message-ID: <20250408104824.670022070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
+[ Upstream commit c134deabf4784e155d360744d4a6a835b9de4dd4 ]
 
-NFSD sends CB_RECALL_ANY to clients when the server is low on
-memory or that client has a large number of delegations outstanding.
+prior to "[POWERPC] spufs: Fix gang destroy leaks" we used to have
+a problem with gang lifetimes - creation of a gang returns opened
+gang directory, which normally gets removed when that gets closed,
+but if somebody has created a context belonging to that gang and
+kept it alive until the gang got closed, removal failed and we
+ended up with a leak.
 
-We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
-to disconnected clients, and gets confused. These calls never go
-anywhere if a backchannel transport to the target client isn't
-available. Before the server can send any backchannel operation, the
-client has to connect first and then do a BIND_CONN_TO_SESSION.
+Unfortunately, it had been fixed the wrong way.  Dentry of gang
+directory was no longer pinned, and rmdir on close was gone.
+One problem was that failure of open kept calling simple_rmdir()
+as cleanup, which meant an unbalanced dput().  Another bug was
+in the success case - gang creation incremented link count on
+root directory, but that was no longer undone when gang got
+destroyed.
 
-This patch doesn't address the root cause of the confusion, but
-there's no need to queue up these optional operations if they can't
-go anywhere.
+Fix consists of
+	* reverting the commit in question
+	* adding a counter to gang, protected by ->i_rwsem
+of gang directory inode.
+	* having it set to 1 at creation time, dropped
+in both spufs_dir_close() and spufs_gang_close() and bumped
+in spufs_create_context(), provided that it's not 0.
+	* using simple_recursive_removal() to take the gang
+directory out when counter reaches zero.
 
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 877907d37da9 "[POWERPC] spufs: Fix gang destroy leaks"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/cell/spufs/gang.c  |  1 +
+ arch/powerpc/platforms/cell/spufs/inode.c | 54 +++++++++++++++++++----
+ arch/powerpc/platforms/cell/spufs/spufs.h |  2 +
+ 3 files changed, 49 insertions(+), 8 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6289,14 +6289,19 @@ deleg_reaper(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_state != NFSD4_ACTIVE ||
--			list_empty(&clp->cl_delegations) ||
--			atomic_read(&clp->cl_delegs_in_recall) ||
--			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
--			(ktime_get_boottime_seconds() -
--				clp->cl_ra_time < 5)) {
-+
-+		if (clp->cl_state != NFSD4_ACTIVE)
-+			continue;
-+		if (list_empty(&clp->cl_delegations))
-+			continue;
-+		if (atomic_read(&clp->cl_delegs_in_recall))
-+			continue;
-+		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
-+			continue;
-+		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
-+			continue;
-+		if (clp->cl_cb_state != NFSD4_CB_UP)
- 			continue;
--		}
- 		list_add(&clp->cl_ra_cblist, &cblist);
+diff --git a/arch/powerpc/platforms/cell/spufs/gang.c b/arch/powerpc/platforms/cell/spufs/gang.c
+index 827d338deaf4c..2c2999de6bfa2 100644
+--- a/arch/powerpc/platforms/cell/spufs/gang.c
++++ b/arch/powerpc/platforms/cell/spufs/gang.c
+@@ -25,6 +25,7 @@ struct spu_gang *alloc_spu_gang(void)
+ 	mutex_init(&gang->aff_mutex);
+ 	INIT_LIST_HEAD(&gang->list);
+ 	INIT_LIST_HEAD(&gang->aff_list_head);
++	gang->alive = 1;
  
- 		/* release in nfsd4_cb_recall_any_release */
+ out:
+ 	return gang;
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index ac10339ea4172..79d45fa599002 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -200,6 +200,23 @@ static int spufs_fill_dir(struct dentry *dir,
+ 	return 0;
+ }
+ 
++static void unuse_gang(struct dentry *dir)
++{
++	struct inode *inode = dir->d_inode;
++	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
++
++	if (gang) {
++		bool dead;
++
++		inode_lock(inode); // exclusion with spufs_create_context()
++		dead = !--gang->alive;
++		inode_unlock(inode);
++
++		if (dead)
++			simple_recursive_removal(dir, NULL);
++	}
++}
++
+ static int spufs_dir_close(struct inode *inode, struct file *file)
+ {
+ 	struct inode *parent;
+@@ -214,6 +231,7 @@ static int spufs_dir_close(struct inode *inode, struct file *file)
+ 	inode_unlock(parent);
+ 	WARN_ON(ret);
+ 
++	unuse_gang(dir->d_parent);
+ 	return dcache_dir_close(inode, file);
+ }
+ 
+@@ -406,7 +424,7 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ {
+ 	int ret;
+ 	int affinity;
+-	struct spu_gang *gang;
++	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
+ 	struct spu_context *neighbor;
+ 	struct path path = {.mnt = mnt, .dentry = dentry};
+ 
+@@ -421,11 +439,15 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ 	if ((flags & SPU_CREATE_ISOLATE) && !isolated_loader)
+ 		return -ENODEV;
+ 
+-	gang = NULL;
++	if (gang) {
++		if (!gang->alive)
++			return -ENOENT;
++		gang->alive++;
++	}
++
+ 	neighbor = NULL;
+ 	affinity = flags & (SPU_CREATE_AFFINITY_MEM | SPU_CREATE_AFFINITY_SPU);
+ 	if (affinity) {
+-		gang = SPUFS_I(inode)->i_gang;
+ 		if (!gang)
+ 			return -EINVAL;
+ 		mutex_lock(&gang->aff_mutex);
+@@ -454,6 +476,8 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ out_aff_unlock:
+ 	if (affinity)
+ 		mutex_unlock(&gang->aff_mutex);
++	if (ret && gang)
++		gang->alive--; // can't reach 0
+ 	return ret;
+ }
+ 
+@@ -483,6 +507,7 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	inode->i_fop = &simple_dir_operations;
+ 
+ 	d_instantiate(dentry, inode);
++	dget(dentry);
+ 	inc_nlink(dir);
+ 	inc_nlink(d_inode(dentry));
+ 	return ret;
+@@ -493,6 +518,21 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	return ret;
+ }
+ 
++static int spufs_gang_close(struct inode *inode, struct file *file)
++{
++	unuse_gang(file->f_path.dentry);
++	return dcache_dir_close(inode, file);
++}
++
++static const struct file_operations spufs_gang_fops = {
++	.open		= dcache_dir_open,
++	.release	= spufs_gang_close,
++	.llseek		= dcache_dir_lseek,
++	.read		= generic_read_dir,
++	.iterate_shared	= dcache_readdir,
++	.fsync		= noop_fsync,
++};
++
+ static int spufs_gang_open(const struct path *path)
+ {
+ 	int ret;
+@@ -512,7 +552,7 @@ static int spufs_gang_open(const struct path *path)
+ 		return PTR_ERR(filp);
+ 	}
+ 
+-	filp->f_op = &simple_dir_operations;
++	filp->f_op = &spufs_gang_fops;
+ 	fd_install(ret, filp);
+ 	return ret;
+ }
+@@ -527,10 +567,8 @@ static int spufs_create_gang(struct inode *inode,
+ 	ret = spufs_mkgang(inode, dentry, mode & 0777);
+ 	if (!ret) {
+ 		ret = spufs_gang_open(&path);
+-		if (ret < 0) {
+-			int err = simple_rmdir(inode, dentry);
+-			WARN_ON(err);
+-		}
++		if (ret < 0)
++			unuse_gang(dentry);
+ 	}
+ 	return ret;
+ }
+diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
+index 84958487f696a..d33787c57c39a 100644
+--- a/arch/powerpc/platforms/cell/spufs/spufs.h
++++ b/arch/powerpc/platforms/cell/spufs/spufs.h
+@@ -151,6 +151,8 @@ struct spu_gang {
+ 	int aff_flags;
+ 	struct spu *aff_ref_spu;
+ 	atomic_t aff_sched_count;
++
++	int alive;
+ };
+ 
+ /* Flag bits for spu_gang aff_flags */
+-- 
+2.39.5
+
 
 
 
