@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-131177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA795A8086E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677B1A80779
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70451BA10DA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D31014C6CBE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2515626E16D;
-	Tue,  8 Apr 2025 12:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB40226B2DB;
+	Tue,  8 Apr 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPEUu8HX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfEIFP3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5023267393;
-	Tue,  8 Apr 2025 12:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888E0268FF0;
+	Tue,  8 Apr 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115696; cv=none; b=e8Bbr7/BCJlloAEVVcs1rOwVCDmHJ6qcdPP/JZAH8zzySC2PAgUPsSS4MsQUCNs51DPL6i2m6QlSE4FqD2SJpVtjuOLQd4ZZm8HKoQL1PXy70gDl6UBo4bbSWMnJHDvdk34LB0sH+9XcFc3flhlMaEsukSoZqEnIVow8wpZn8zY=
+	t=1744115308; cv=none; b=sAPBXoADvMqYwmZkolbJ/PEeyqYsW4eAeqwnEjXOfnXrk1MrrBix1G9Oat1aSQ0i5aIzL0XKFHSpApfz28FS824s3ZS0o8V2y501dUTPGLoKerZ3CeP3pjmOyf3QtHzfO6hGIZC2yryLZKE2M9JS3sHcJSX00gz8lMAV0UuB+Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115696; c=relaxed/simple;
-	bh=n9AD8FUjkZSbZqR1308AzRwpQW8BzGlCph0o1amuHUc=;
+	s=arc-20240116; t=1744115308; c=relaxed/simple;
+	bh=LuJE7POaSfn21Ry+OMeszzEDsgy4p8sTJwq0owslzc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W63vYXOZ8CVYiFRsHGdc7+wTPt+cI1sxVnMjjmSEmP+Coz8GzLOvPfcG0MqBUyHMhXvll5p9SPocAxC12+8SAoIH2233xGpm5GZqc2BoYWmJdZk9HVUHRQ30wuWcqo8PUSg1lCKvLrn1baoh0oJT93cJnWIvCiyUQ3Z35f2CZzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPEUu8HX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F4EC4CEE5;
-	Tue,  8 Apr 2025 12:34:55 +0000 (UTC)
+	 MIME-Version; b=bkPFrk6WfoWdDtI43r4xmUG14i1ugv7YQxkFYr7+H7RNfOgSZYtHn4/BCZTVI0mjBJbrZlFVYEzQbE4YF0YXJYCyx9gfftEvGgRRRr4Cjbg2OmTNJq9A+U64FKrVRRiwVcOiCxbtot2RNuGU99vr1bFOkwo6NoWXs38zVfj5YyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfEIFP3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A95C4CEE7;
+	Tue,  8 Apr 2025 12:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115696;
-	bh=n9AD8FUjkZSbZqR1308AzRwpQW8BzGlCph0o1amuHUc=;
+	s=korg; t=1744115308;
+	bh=LuJE7POaSfn21Ry+OMeszzEDsgy4p8sTJwq0owslzc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPEUu8HXMzptPwaowR068kpWawkK4CtUk3j1eGpm3al7R0OdQ49c5DyQMxX3jpQIk
-	 1PfIiP4Ylz7AGtzr6BZjacWNzCtTzhnMkv0fUkbaspKTKUzIRqtZzFkugvLjMRW85c
-	 n7Q5Mlr8HUVSgIXgKLsODM8BX5bprMJYt530Timk=
+	b=wfEIFP3QwfLe5P8N74RxO6NCfZTSI9oVBRL0Ayfp5tdmbtXeaBCWAdASg2FyrBihx
+	 ha+0Y0ntb16yvRLEIuSZizV+rQO9PWRJrfZFeEtXMGemwts85/6iKPRPrI0o9QNdWu
+	 XDFYgcPLy0y06x+ZTxedUg9Kh+hHHt9h/MJC6FO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Debin Zhu <mowenroot@163.com>,
+	Bitao Ouyang <1985755126@qq.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/204] remoteproc: qcom_q6v5_mss: Handle platforms with one power domain
+Subject: [PATCH 6.13 387/499] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
 Date: Tue,  8 Apr 2025 12:49:59 +0200
-Message-ID: <20250408104822.387029372@linuxfoundation.org>
+Message-ID: <20250408104900.881247741@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Debin Zhu <mowenroot@163.com>
 
-[ Upstream commit 4641840341f37dc8231e0840ec1514b4061b4322 ]
+[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
 
-For example MSM8974 has mx voltage rail exposed as regulator and only cx
-voltage rail is exposed as power domain. This power domain (cx) is
-attached internally in power domain and cannot be attached in this driver.
+When calling netlbl_conn_setattr(), addr->sa_family is used
+to determine the function behavior. If sk is an IPv4 socket,
+but the connect function is called with an IPv6 address,
+the function calipso_sock_setattr() is triggered.
+Inside this function, the following code is executed:
 
-Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
-Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Link: https://lore.kernel.org/r/20250217-msm8226-modem-v5-4-2bc74b80e0ae@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
+
+Since sk is an IPv4 socket, pinet6 is NULL, leading to a
+null pointer dereference.
+
+This patch fixes the issue by checking if inet6_sk(sk)
+returns a NULL pointer before accessing pinet6.
+
+Signed-off-by: Debin Zhu <mowenroot@163.com>
+Signed-off-by: Bitao Ouyang <1985755126@qq.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ net/ipv6/calipso.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index e4ef8e6ed8aaa..5c9acc55b08ad 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1786,6 +1786,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- 	while (pd_names[num_pds])
- 		num_pds++;
- 
-+	/* Handle single power domain */
-+	if (num_pds == 1 && dev->pm_domain) {
-+		devs[0] = dev;
-+		pm_runtime_enable(dev);
-+		return 1;
-+	}
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index dbcea9fee6262..62618a058b8fa 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1072,8 +1072,13 @@ static int calipso_sock_getattr(struct sock *sk,
+ 	struct ipv6_opt_hdr *hop;
+ 	int opt_len, len, ret_val = -ENOMSG, offset;
+ 	unsigned char *opt;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
 +
- 	for (i = 0; i < num_pds; i++) {
- 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
- 		if (IS_ERR_OR_NULL(devs[i])) {
-@@ -1806,8 +1813,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
- 			    size_t pd_count)
++	if (!pinfo)
++		return -EAFNOSUPPORT;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
+@@ -1125,8 +1130,13 @@ static int calipso_sock_setattr(struct sock *sk,
  {
-+	struct device *dev = qproc->dev;
- 	int i;
- 
-+	/* Handle single power domain */
-+	if (pd_count == 1 && dev->pm_domain) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
+ 	int ret_val;
+ 	struct ipv6_opt_hdr *old, *new;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
 +
- 	for (i = 0; i < pd_count; i++)
- 		dev_pm_domain_detach(pds[i], false);
- }
-@@ -2313,13 +2327,13 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 			.supply = "pll",
- 			.uA = 100000,
- 		},
--		{}
--	},
--	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "mx",
- 			.uV = 1050000,
- 		},
-+		{}
-+	},
-+	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "cx",
- 			.uA = 100000,
-@@ -2345,7 +2359,6 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 		NULL
- 	},
- 	.proxy_pd_names = (char*[]){
--		"mx",
- 		"cx",
- 		NULL
- 	},
++	if (!pinfo)
++		return -EAFNOSUPPORT;
+ 
++	txopts = txopt_get(pinfo);
+ 	old = NULL;
+ 	if (txopts)
+ 		old = txopts->hopopt;
+@@ -1153,8 +1163,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ static void calipso_sock_delattr(struct sock *sk)
+ {
+ 	struct ipv6_opt_hdr *new_hop;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
 -- 
 2.39.5
 
