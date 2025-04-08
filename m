@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-130605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA3BA8057B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F10A808A9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 697664A204A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4551B86FA3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8FD26A1C3;
-	Tue,  8 Apr 2025 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32AF26B94B;
+	Tue,  8 Apr 2025 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT5jvzRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcHDV+iR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3765126156E;
-	Tue,  8 Apr 2025 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9892686AA;
+	Tue,  8 Apr 2025 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114159; cv=none; b=AUUvGrz7RLa3Li3p5hcdDG5btYKPDtdoYZX3VaxBr/CefufKKrKjlZzHzuQUD19lvoHM9YzuTDnzXcPpWwDWcXE+ZI800laQx+6SOyRwpphHgUYU7MA3QAK1/F/+9gtX0tHQz7yO2+idmc7abmm58w/GmPdW5vvfMo4iaBwqr4o=
+	t=1744115853; cv=none; b=ZfxVcEnoGEbw3GX9xGENKGmNI9LWMu740GHow2wluGVGfErdQvCHoPyADAsKBbbKrEPfXjVxIxX6k41WWAv1j78lX1hU2WyOuqViAiBHLgX+qcBeirPuG4ccl4ZS0/2wBNxQA2HmEn6HUm4nnl6nec84ZSSr9JdY0/0W6pp6YJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114159; c=relaxed/simple;
-	bh=2cMFTLNDP534+pLYVb1DltfWzGc8NxJdhvHUdlSRtYw=;
+	s=arc-20240116; t=1744115853; c=relaxed/simple;
+	bh=7W1FRoWhAA6/MbB+mFA4ZXyHsvMFrvJFTMYVZXVcYyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbGfUa4S19BegVbHL8Wgh75eY65/n1sJUbe2LbWm8hOwwVCRmUedY9v7Kt1j0LN0Cq1m2USb+ujDJCmSrLYzjdRbWyamnaSsGSbnRkc5pzOYHG0Wxg+OLzK7E+y62N/EhjpAlq3zo2zIgqxmsbmM2K7tLPpchqkdWSWiUfekY34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT5jvzRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEAAC4CEE5;
-	Tue,  8 Apr 2025 12:09:18 +0000 (UTC)
+	 MIME-Version; b=DXA++tPKZuqUXPUKX2n32NByiZikw+49iIXn8BI8V0YeErd45lIs/zHyVWV1O36pVwifXokqexmtNFSEY1MU5QRkvJKnUFYhRqPq7uyo3m9gDFfoTqCwca29xk+4rhXJNJARVUx2K0r2GklF6t+ShtF50KtPx7FTidMyztcTpLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcHDV+iR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FBBC4CEE5;
+	Tue,  8 Apr 2025 12:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114159;
-	bh=2cMFTLNDP534+pLYVb1DltfWzGc8NxJdhvHUdlSRtYw=;
+	s=korg; t=1744115853;
+	bh=7W1FRoWhAA6/MbB+mFA4ZXyHsvMFrvJFTMYVZXVcYyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AT5jvzRDtGi+iNKsF2xVsgEkciFZh8iNWtQ9ST/HIcv8Z6X3qynVdo1lGVoSQtqMi
-	 hzHvcEWIhSTr2KmwvLEB44X4tSPiasv79MZ3ApbwOdS2lh3J3bg894DI7WR79PWHAc
-	 lBqJ3Qz7QqLdTDPhXLm/FTMC/JEdOp0Ie7NaVwbo=
+	b=UcHDV+iRGVt7Wp43DWLwccXPXPTw911nfdRs4qB1uGDfnetVNtYG1DG5C6RuiLWIC
+	 2EJtsGrFG4AG6PeRaURKg6CigdTbfKKzssYTZkrzD21Rqu0NNlgRBho5vWTpr0dKEu
+	 R8UBpwmYjGWj9KdDMFlhqnLqdmYUeTpVzTPon1rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Baoquan He <bhe@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 119/154] kexec: initialize ELF lowest address to ULONG_MAX
+Subject: [PATCH 6.1 130/204] nvme-pci: skip CMB blocks incompatible with PCI P2P DMA
 Date: Tue,  8 Apr 2025 12:51:00 +0200
-Message-ID: <20250408104819.133788988@linuxfoundation.org>
+Message-ID: <20250408104824.116474841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit 9986fb5164c8b21f6439cfd45ba36d8cc80c9710 ]
+[ Upstream commit 56cf7ef0d490b28fad8f8629fc135c5ab7c9f54e ]
 
-Patch series "powerpc/crash: use generic crashkernel reservation", v3.
+The PCI P2PDMA code will register the CMB block to the memory
+hot-plugging subsystem, which have an alignment requirement. Memory
+blocks that do not satisfy this alignment requirement (usually 2MB) will
+lead to a WARNING from memory hotplugging.
 
-Commit 0ab97169aa05 ("crash_core: add generic function to do reservation")
-added a generic function to reserve crashkernel memory.  So let's use the
-same function on powerpc and remove the architecture-specific code that
-essentially does the same thing.
+Verify the CMB block's address and size against the alignment and only
+try to send CMB blocks compatible with it to prevent this warning.
 
-The generic crashkernel reservation also provides a way to split the
-crashkernel reservation into high and low memory reservations, which can
-be enabled for powerpc in the future.
+Tested on Intel DC D4502 SSD, which has a 512K CMB block that is too
+small for memory hotplugging (thus PCI P2PDMA).
 
-Additionally move powerpc to use generic APIs to locate memory hole for
-kexec segments while loading kdump kernel.
-
-This patch (of 7):
-
-kexec_elf_load() loads an ELF executable and sets the address of the
-lowest PT_LOAD section to the address held by the lowest_load_addr
-function argument.
-
-To determine the lowest PT_LOAD address, a local variable lowest_addr
-(type unsigned long) is initialized to UINT_MAX.  After loading each
-PT_LOAD, its address is compared to lowest_addr.  If a loaded PT_LOAD
-address is lower, lowest_addr is updated.  However, setting lowest_addr to
-UINT_MAX won't work when the kernel image is loaded above 4G, as the
-returned lowest PT_LOAD address would be invalid.  This is resolved by
-initializing lowest_addr to ULONG_MAX instead.
-
-This issue was discovered while implementing crashkernel high/low
-reservation on the PowerPC architecture.
-
-Link: https://lkml.kernel.org/r/20250131113830.925179-1-sourabhjain@linux.ibm.com
-Link: https://lkml.kernel.org/r/20250131113830.925179-2-sourabhjain@linux.ibm.com
-Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kexec_elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-index d3689632e8b90..3a5c25b2adc94 100644
---- a/kernel/kexec_elf.c
-+++ b/kernel/kexec_elf.c
-@@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
- 			 struct kexec_buf *kbuf,
- 			 unsigned long *lowest_load_addr)
- {
--	unsigned long lowest_addr = UINT_MAX;
-+	unsigned long lowest_addr = ULONG_MAX;
- 	int ret;
- 	size_t i;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index bfca71f958a06..da858463b2557 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1928,6 +1928,18 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (offset > bar_size)
+ 		return;
  
++	/*
++	 * Controllers may support a CMB size larger than their BAR, for
++	 * example, due to being behind a bridge. Reduce the CMB to the
++	 * reported size of the BAR
++	 */
++	size = min(size, bar_size - offset);
++
++	if (!IS_ALIGNED(size, memremap_compat_align()) ||
++	    !IS_ALIGNED(pci_resource_start(pdev, bar),
++			memremap_compat_align()))
++		return;
++
+ 	/*
+ 	 * Tell the controller about the host side address mapping the CMB,
+ 	 * and enable CMB decoding for the NVMe 1.4+ scheme:
+@@ -1938,14 +1950,6 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 			     dev->bar + NVME_REG_CMBMSC);
+ 	}
+ 
+-	/*
+-	 * Controllers may support a CMB size larger than their BAR,
+-	 * for example, due to being behind a bridge. Reduce the CMB to
+-	 * the reported size of the BAR
+-	 */
+-	if (size > bar_size - offset)
+-		size = bar_size - offset;
+-
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
 -- 
 2.39.5
 
