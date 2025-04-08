@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12AA6A7FDDA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFD1A803B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0786421C4C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0543421DCD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A4268FE5;
-	Tue,  8 Apr 2025 10:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BF2267F68;
+	Tue,  8 Apr 2025 11:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5O6Qrt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiqEzfUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5F6268FD5;
-	Tue,  8 Apr 2025 10:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9122676E1;
+	Tue,  8 Apr 2025 11:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109943; cv=none; b=Cbe4S5jzlZzXyFy/XJGQoRAb8eIm1cxuulOGega/ALTC1E2fUaBxsp2M2cOLALZBf6h190ToyhdpF7NC7yCheN0QRytANVSUw9imZqrrgYcX7tjK6Ui9r4T8nUy5RVq4xtx7oAN/PuA6Pk9f7fn7hl0Y8R47qQvs7gV3mr/S7z4=
+	t=1744113215; cv=none; b=jseTw6e+W+MwW369ooln/wSyIvGaUReWXw/jfmWpxCiLZOLU17+EKdCaIfNCX1OBhUfGEeRTg1CN65QDQiQnmBHzRwqTRYeEJaaoUBmB7vN2tnCogivpFtE7mFmHXDIsevUgFqHBOk5cKbDHT6FBBWZ39P73O2GEsD6nf/Qobj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109943; c=relaxed/simple;
-	bh=stpgVO5/sv2Dsx1iEVVs0sgKEH7l7+AAD+8p6ptXy1E=;
+	s=arc-20240116; t=1744113215; c=relaxed/simple;
+	bh=GQbbKPfu1Mck0RNg2OujGt9wF9zzqLi75Do5Jygeh3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNDN278GqbSqVS0lf47yrOleZq6YnKRB0nye6u+4QxUGEzMQlLm2Byy+V+aRyI3TIopQcAVh5m83ViJu5hlux6jaiwHLAvBBN2NmwX3iLmlXhTrdoozRdgd+Th5THK2cbwZH7sU0LlyudehgOunWmeVBWAf7AKj/W4566JToD68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5O6Qrt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51ED1C4CEE5;
-	Tue,  8 Apr 2025 10:59:02 +0000 (UTC)
+	 MIME-Version; b=cPYPNAIYIErF8xWQIvP0rN9oxWUahMVEQ9k6swNKoaPm87aZMwtHOOgVRA/fO77PW92T1PwmU0Za8v5YRIFQ/ib8kSLMaLxSI/7ZYYp6iWYezbJAo5LduOc3tbQW3phi+njpRJpF5lO8uEXgyoBkBQYpD+DjK9vynHs+oypQetw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiqEzfUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D95C4CEE5;
+	Tue,  8 Apr 2025 11:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109942;
-	bh=stpgVO5/sv2Dsx1iEVVs0sgKEH7l7+AAD+8p6ptXy1E=;
+	s=korg; t=1744113215;
+	bh=GQbbKPfu1Mck0RNg2OujGt9wF9zzqLi75Do5Jygeh3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5O6Qrt9Kc2T57cTHsLMCZdjORx4a/sBGaNNGGAfm9e6J6izxSBlTkcOuWYLRpznq
-	 X6QKcui91BITxOPx1vb4y+gq6kObwIxcejAuzAm0yqx9DGnXC/hJCesHFqyAfvHTtK
-	 jSXjSi6dnwcAaMPmd/g9gzsKAkZ6eW/He3SpdmsI=
+	b=OiqEzfUoGxkDttrsBPXOApW0qThYG9rIx6RONwuokF7dRWS7Hav1YzjM7ziVn+iiU
+	 9pcwH8BL+TzkCRxkgvYIk0Gcpz8sqntBo+SGxNjS/tbfXDJfRoyRPelTuRLWZ/7s3n
+	 f3PMWN5hcbgrHIfJUR7z/oaK3jLA3BELZySKKOTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Feng Liu <Feng.Liu3@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.10 110/227] i2c: dev: check return value when calling dev_set_name()
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 077/268] pinctrl: renesas: rza2: Fix missing of_node_put() call
 Date: Tue,  8 Apr 2025 12:48:08 +0200
-Message-ID: <20250408104823.652057367@linuxfoundation.org>
+Message-ID: <20250408104830.573557622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-commit 993eb48fa199b5f476df8204e652eff63dd19361 upstream.
+[ Upstream commit abcdeb4e299a11ecb5a3ea0cce00e68e8f540375 ]
 
-If dev_set_name() fails, the dev_name() is null, check the return
-value of dev_set_name() to avoid the null-ptr-deref.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-Fixes: 1413ef638aba ("i2c: dev: Fix the race between the release of i2c_dev and cdev")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Call into of_node_put() to rectify that.
+
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-5-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-dev.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -669,17 +669,22 @@ static int i2cdev_attach_adapter(struct
- 	i2c_dev->dev.class = i2c_dev_class;
- 	i2c_dev->dev.parent = &adap->dev;
- 	i2c_dev->dev.release = i2cdev_dev_release;
--	dev_set_name(&i2c_dev->dev, "i2c-%d", adap->nr);
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index 990b96d459671..c5d733216508e 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -253,6 +253,8 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 		return ret;
+ 	}
+ 
++	of_node_put(of_args.np);
 +
-+	res = dev_set_name(&i2c_dev->dev, "i2c-%d", adap->nr);
-+	if (res)
-+		goto err_put_i2c_dev;
- 
- 	res = cdev_device_add(&i2c_dev->cdev, &i2c_dev->dev);
--	if (res) {
--		put_i2c_dev(i2c_dev, false);
--		return res;
--	}
-+	if (res)
-+		goto err_put_i2c_dev;
- 
- 	pr_debug("i2c-dev: adapter [%s] registered as minor %d\n",
- 		 adap->name, adap->nr);
- 	return 0;
-+
-+err_put_i2c_dev:
-+	put_i2c_dev(i2c_dev, false);
-+	return res;
- }
- 
- static int i2cdev_detach_adapter(struct device *dev, void *dummy)
+ 	if ((of_args.args[0] != 0) ||
+ 	    (of_args.args[1] != 0) ||
+ 	    (of_args.args[2] != priv->npins)) {
+-- 
+2.39.5
+
 
 
 
