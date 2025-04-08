@@ -1,142 +1,147 @@
-Return-Path: <stable+bounces-128907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392D9A7FB96
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A12A7FB80
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BD4A1895BFA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:17:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 683E87A8ACC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6088A267AE8;
-	Tue,  8 Apr 2025 10:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A52620459F;
+	Tue,  8 Apr 2025 10:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gMoltob2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdpv9hkE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163F7FBD6;
-	Tue,  8 Apr 2025 10:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06186263C8A
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744107111; cv=none; b=qje83R6Vedwub53pTdPlb/sYxGGPWfN6Sc574qkY02d5bukFAqYWDOqtDGPwMjP4rcNb+820rYIEKC1m6gGsxTPFlnMlBH/MaO/0fGS2/oOM3wfyMw36+kTHdcv6ImIX/j8hl7ubA3KNsEk5oLrJajasQxi9gEMVpmjx7g2aYTU=
+	t=1744107275; cv=none; b=tV3hvNGS2V7aYzrwvi37117h7lgHRgPfZ8aUQ8GMc2O/m2j9nRNuMoQzqjDShI4lJJeBv58fc3FoD+bATz/h5wNEh3y+c++tFvpWMH9utucNodV2gs7k45DOaTQsv/eb6hwLxh844K+iTPZAXsv1BnX0zIGl1KvP3udZTcv4i0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744107111; c=relaxed/simple;
-	bh=rEOk4CBly4AlRVttK5V5QQUlaR69H0x+24xY/q+krdg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p+cYqmrJY4l+WtgYNPZ6NNt7AcluE49kzvdjC5kngxdXK2hUkZgQPsMgZSvviOt0efWqYA+oM716D7gQXYPWOBp6J3pHVZFRuGFjLVIQ9i5OMg2Pty4hvjQgpiTGbb8T8ErBhkjnkfNETG70y1HHbe62gtymzjwIoJUQmHioY9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gMoltob2; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so4549849b3a.0;
-        Tue, 08 Apr 2025 03:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744107109; x=1744711909; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LTVPSXCmMLq6EC4r2uIbhTrhstuJngMRN9cKMT6ddPE=;
-        b=gMoltob2ydWJ7IxtVcYbmMWbu3bdZ+ZcLQV+irFkbPPJFS3YX9JmFWIBgiEdGPm7vp
-         fwiK7SeEPnrgwk7iizIG9XFAiqFWyB4Av1lqLNTb69CJ7aITXtxE/M9fgLza4VnrmBOL
-         8R1+jw/CRnrXmIHVXCJopk3IPgRhQhuhhzkYyVwz4gBqxGfBfchOk9e8Wj1aaRMpP2Az
-         IFjHOGsOANS+CN8ruM35vEFDI/RGAQQshubjxt8H7AZtgI9gD/GyMlqVXKhi00Ebih1Z
-         Q5ktPUQWU5cqOSnVOyKTYQVTd8JEScPN69bRsosKJJU6yHgn3JBIEGWbyA0lnayyZa/Y
-         SdvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744107109; x=1744711909;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LTVPSXCmMLq6EC4r2uIbhTrhstuJngMRN9cKMT6ddPE=;
-        b=OAnj1BDPbpeY4TGMzm2iAFhoP0MgQPRa19EtEkhQehp/+s7UinfBOLooxXX2GTUxYo
-         XKQACKWaa05zQr1CoC3xPoA+mj3s9eFyB+wvCmikw1/RA7pdYznLcZ4XQ4K0OGb+sIJQ
-         W4k6elmc3ynHvpkiU7M56bTY+Y+AdiocV2Ct6ynIc49d+syl8tGZPD55b3WjytP1jbQb
-         EyfoQorFp1UpCx2EVcywkYWe7b5/6ebv9F1EeOgG83jwFTJ2dZQs0Fw4fWTu/Szwhh05
-         yLIRYb+ZCWMKSNGh1EQ49dJba4t5BoGH/UU5vxjToMNH2b9kcde4ZD26ztzxnClkAHKw
-         W5Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjfSrZYvyC0oXPO4hKqW5xZsP1XNf9n0YPigt5qy0rnME+8hG52pN7TuhA7CKzsz+kWKb8BSG/WqfC0sj6@vger.kernel.org, AJvYcCWg9F9gtKo+VuAawO7glmNhiA7pfPKcpQrM6vBlpGvdxTxJw0tPZFFMdkWk4jBoEl1ax6FHsOQXwjW03MfI@vger.kernel.org, AJvYcCXgNQm+TzemmgJsBPryUSZMbfGIyUx89yR9zFOmdUGu9HpsKg8QEKvncS9K7iYWpDYmDNC78461@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIUw6kkk1GyzSzosfE/+GYYrEtU+I2zdkMKwBlR5bJnVwEhmr/
-	jl5tNnHT3PxiI3FlgKCjiGwpivnc7qymSbYfUOd3z7nhSYAmv+LUe4MJNTqUL3N1z4YeAr21UHT
-	OskJQ5HONilwM2wki+ZJB/EkCrM0=
-X-Gm-Gg: ASbGncsdMt7gZ/L2z7tb8oxy8e2+HTswUsQmNgWN7Pqf0DkHdtjDqgah/KqUPXCX8eA
-	bgJ4ItB8sVOPR0OSaejMugAYyom1aJ3ophpSdTrEnc1c1asqquqTuuMFC1C/Dz5+c91cYXIGl19
-	3APsHGP0Oz58FlOucir3V2QXA5
-X-Google-Smtp-Source: AGHT+IFhEirAccPm6diooe5A56ckmlLwkK2C0zEsLm8HntfBxz5BRD+WrLEptloFT/6kAAaD8cz1blHSA7D0fDgTFCY=
-X-Received: by 2002:a17:90b:2711:b0:2ee:d433:7c50 with SMTP id
- 98e67ed59e1d1-306af788dbbmr12565246a91.23.1744107108986; Tue, 08 Apr 2025
- 03:11:48 -0700 (PDT)
+	s=arc-20240116; t=1744107275; c=relaxed/simple;
+	bh=rC81MeolOMnC/4hNItSoZakP6crWI463Riji0yZholQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CGjgM8KPQoeYz2NAmNbBU/PV9OU0ZBIHopYyGyGrBeVXjtF360hyEyBTaTgfA/EH8tQdhfUws9atUrFwXuocm27t/f/0IX7LSehE9H6Kk+SSnOXEPWg5ENzKDORdLfWwVAIIGghEpRq2z9ELK5PpVeUT2CDsrKowF7Ac9qIPJrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdpv9hkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE05C4CEEA;
+	Tue,  8 Apr 2025 10:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744107274;
+	bh=rC81MeolOMnC/4hNItSoZakP6crWI463Riji0yZholQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=qdpv9hkEQN6pcC6f38L4dJKD45lSBi0xdl0g5QuT/TFXCLPaTYWeveCgFKOsHjCZg
+	 sOmwqL9FFR2xMy3AKR1aeKs2i1VAcNSJDbBLZOaufy0+XrxqYOtXzkfyzo0+vDSmsi
+	 ggg3BeKScyG5mfBSBdmJYphz6AUuNEt6HGsjSipA=
+Subject: FAILED: patch "[PATCH] media: vimc: skip .s_stream() for stopped entities" failed to apply to 5.15-stable tree
+To: n.zhandarovich@fintech.ru,hverkuil@xs4all.nl
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 08 Apr 2025 12:13:01 +0200
+Message-ID: <2025040801-surging-justify-20fe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241019191303.24048-1-kovalev@altlinux.org> <Z9xsx-w4YCBuYjx5@eldamar.lan>
- <d4mpuomgxqi7xppaewlpey6thec7h2fk4sm2iktqsx6bhwu5ph@ctkjksxmkgne>
- <2025032402-jam-immovable-2d57@gregkh> <7qi6est65ekz4kjktvmsbmywpo5n2kla2m3whbvq4dsckdcyst@e646jwjazvqh>
- <2025032404-important-average-9346@gregkh> <dzmprnddbx2qaukb7ukr5ngdx6ydwxynaq6ctxakem43yrczqb@y7dg7kzxsorc>
- <20250407-biegung-furor-e7313ca9d712@brauner> <20250407190814.GB6258@frogsfrogsfrogs>
-In-Reply-To: <20250407190814.GB6258@frogsfrogsfrogs>
-From: Richard Weinberger <richard.weinberger@gmail.com>
-Date: Tue, 8 Apr 2025 12:11:36 +0200
-X-Gm-Features: ATxdqUGUflWhsc7_t9EwiCgdbFbM8FViOml_3iPU3I88ZbHoy2WAA1j9TB8rW0o
-Message-ID: <CAFLxGvxH=4rHWu-44LSuWaGA_OB0FU0Eq4fedVTj3tf2D3NgYQ@mail.gmail.com>
-Subject: Re: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Cengiz Can <cengiz.can@canonical.com>, 
-	Attila Szasz <szasza.contact@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, 
-	Salvatore Bonaccorso <carnil@debian.org>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-patches@linuxtesting.org, 
-	dutyrok@altlinux.org, syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 7, 2025 at 9:08=E2=80=AFPM Darrick J. Wong <djwong@kernel.org> =
-wrote:
-> It's also the default policy on Debian 12 and RHEL9 that if you're
-> logged into the GUI, any program can run:
->
-> $ truncate -s 3g /tmp/a
-> $ mkfs.hfs /tmp/a
-> $ <write evil stuff on /tmp/a>
-> $ udisksctl loop-setup -f /tmp/a
-> $ udisksctl mount -b /dev/loopX
->
-> and the user never sees a prompt.  GNOME and KDE both display a
-> notification when the mount finishes, but by then it could be too late.
-> Someone should file a CVE against them too.
 
-At least on SUSE orphaned and other problematic filesystem kernel modules
-are blacklisted. I wonder why other distros didn't follow this approach.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> You can tighten this up by doing this:
->
-> # cat > /usr/share/polkit-1/rules.d/always-ask-mount.rules << ENDL
-> // don't allow mounting, reformatting, or loopdev creation without asking
-> polkit.addRule(function(action, subject) {
->         if ((action.id =3D=3D "org.freedesktop.udisks2.loop-setup" ||
->              action.id =3D=3D "org.freedesktop.udisks2.filesystem-mount" =
-||
->              action.id =3D=3D "org.freedesktop.udisks2.modify-device") &&
->             subject.local =3D=3D true) {
->                 return polkit.Result.AUTH_ADMIN_KEEP;
->         }
-> });
-> ENDL
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thanks for sharing this!
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 36cef585e2a31e4ddf33a004b0584a7a572246de
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040801-surging-justify-20fe@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-> so at least you have to authenticate with an admin account.  We do love
-> our footguns, don't we?  At least it doesn't let you do that if you're
-> ssh'd in...
+Possible dependencies:
 
-IMHO guestmount and other userspace filesystem implementations should
-be the default
-for such mounts.
 
-//richard
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 36cef585e2a31e4ddf33a004b0584a7a572246de Mon Sep 17 00:00:00 2001
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Date: Sun, 2 Mar 2025 17:58:25 +0300
+Subject: [PATCH] media: vimc: skip .s_stream() for stopped entities
+
+Syzbot reported [1] a warning prompted by a check in call_s_stream()
+that checks whether .s_stream() operation is warranted for unstarted
+or stopped subdevs.
+
+Add a simple fix in vimc_streamer_pipeline_terminate() ensuring that
+entities skip a call to .s_stream() unless they have been previously
+properly started.
+
+[1] Syzbot report:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5933 at drivers/media/v4l2-core/v4l2-subdev.c:460 call_s_stream+0x2df/0x350 drivers/media/v4l2-core/v4l2-subdev.c:460
+Modules linked in:
+CPU: 0 UID: 0 PID: 5933 Comm: syz-executor330 Not tainted 6.13.0-rc2-syzkaller-00362-g2d8308bf5b67 #0
+...
+Call Trace:
+ <TASK>
+ vimc_streamer_pipeline_terminate+0x218/0x320 drivers/media/test-drivers/vimc/vimc-streamer.c:62
+ vimc_streamer_pipeline_init drivers/media/test-drivers/vimc/vimc-streamer.c:101 [inline]
+ vimc_streamer_s_stream+0x650/0x9a0 drivers/media/test-drivers/vimc/vimc-streamer.c:203
+ vimc_capture_start_streaming+0xa1/0x130 drivers/media/test-drivers/vimc/vimc-capture.c:256
+ vb2_start_streaming+0x15f/0x5a0 drivers/media/common/videobuf2/videobuf2-core.c:1789
+ vb2_core_streamon+0x2a7/0x450 drivers/media/common/videobuf2/videobuf2-core.c:2348
+ vb2_streamon drivers/media/common/videobuf2/videobuf2-v4l2.c:875 [inline]
+ vb2_ioctl_streamon+0xf4/0x170 drivers/media/common/videobuf2/videobuf2-v4l2.c:1118
+ __video_do_ioctl+0xaf0/0xf00 drivers/media/v4l2-core/v4l2-ioctl.c:3122
+ video_usercopy+0x4d2/0x1620 drivers/media/v4l2-core/v4l2-ioctl.c:3463
+ v4l2_ioctl+0x1ba/0x250 drivers/media/v4l2-core/v4l2-dev.c:366
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2b85c01b19
+...
+
+Reported-by: syzbot+5bcd7c809d365e14c4df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5bcd7c809d365e14c4df
+Fixes: adc589d2a208 ("media: vimc: Add vimc-streamer for stream control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+
+diff --git a/drivers/media/test-drivers/vimc/vimc-streamer.c b/drivers/media/test-drivers/vimc/vimc-streamer.c
+index 807551a5143b..15d863f97cbf 100644
+--- a/drivers/media/test-drivers/vimc/vimc-streamer.c
++++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
+@@ -59,6 +59,12 @@ static void vimc_streamer_pipeline_terminate(struct vimc_stream *stream)
+ 			continue;
+ 
+ 		sd = media_entity_to_v4l2_subdev(ved->ent);
++		/*
++		 * Do not call .s_stream() to stop an already
++		 * stopped/unstarted subdev.
++		 */
++		if (!v4l2_subdev_is_streaming(sd))
++			continue;
+ 		v4l2_subdev_call(sd, video, s_stream, 0);
+ 	}
+ }
+
 
