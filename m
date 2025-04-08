@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771A4A80AB2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3B4A806E1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A9418C2660
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13931420DBE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C433276032;
-	Tue,  8 Apr 2025 12:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD0726B968;
+	Tue,  8 Apr 2025 12:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FONP2Mkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP/SKyUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3EB26B97E;
-	Tue,  8 Apr 2025 12:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9F426B961;
+	Tue,  8 Apr 2025 12:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116348; cv=none; b=AIO2hhQtxv4x5R3UK56KMDNw6YqlOcmoTWjgKV/zU9QjfIZ3gikHIlG8pgpUW9VPog8AsMb2ii6OhWEZHM7hKAJx+rjyBQ8XFK98ehRAMjHX/oCOvTqm9u1vu6OBACb8KGALJ7JaHkZMEhlt+mXCTMCYL/pkcRKv86pGMPYqtM4=
+	t=1744114749; cv=none; b=AZJLX9ep2EhwZtmhJArq6TX0CJAGzzlZK4HRSO4ir0BC26GRAwOIzQzDDU2eJwuQi4E4S2Fsb/ZjKAFBuU3e4Vfo4dsCMOmmR4Kf+i3ebUQCfqeFdnRLRqZhlVaHtNhmmCpBFmA6ky+HxipxmqeVrmJWXlNF6NIKRt5waKhTit0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116348; c=relaxed/simple;
-	bh=6iRhCcKRLFXfNk9jKVpC9DZvgRe84JRUNVTN5ymbzSY=;
+	s=arc-20240116; t=1744114749; c=relaxed/simple;
+	bh=f5/xJGWW6g9ulhkXDGbCuqOBFMqgeofNAf1vV9Ox1Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAb2QlWgLcG2bQs3bmyLCV66wc7RYRRXeQi89ZD1Qxrw+Hrg6hKxD1DUy2/2npF0CYvXHZZujBIHm+KHFld0sHmfR7pvAUHfakbDs1/+WpqQKed7TeUfeXGTm3LdXrjtCl7epUj1yLneeT8/kUqgimURUL4L//g+HvveefzbNTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FONP2Mkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB0EC4CEE5;
-	Tue,  8 Apr 2025 12:45:47 +0000 (UTC)
+	 MIME-Version; b=Ncm4Sb0nbHUKquu+3Khb0HdFbeE9GY9vG/ffmco5q8J+98oHj+9zzONFi4a9msk1MsaRY8nCfQUoFL3fzqLHnyW8aOTgiIkBLv160LcKnLQ6/9SvRPprRruRW4ArHSRiecyk2Bn1XIC088r7XQwftaGhSxDSzaLMlvTJo2qeYSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP/SKyUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E358C4CEE5;
+	Tue,  8 Apr 2025 12:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116348;
-	bh=6iRhCcKRLFXfNk9jKVpC9DZvgRe84JRUNVTN5ymbzSY=;
+	s=korg; t=1744114749;
+	bh=f5/xJGWW6g9ulhkXDGbCuqOBFMqgeofNAf1vV9Ox1Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FONP2MkbdxhYtnhHKmSmVngVmEqhZR2E41RH7MelwqCFQ2KXzfPxeeD/4azLL/161
-	 Nke9BqoKVjd+5tBSKv1bOf5gcvlsmWxHXbG957/HgjS01bD9f6HUkiBnBG+EWQXdUm
-	 uHzGgT6maujw+/AhpXuJ53J1IcslM5ctkWcquFf4=
+	b=oP/SKyUQ/svQ43NqWeMfIXnkkFRhy0FT/B1mYH/jDY3LdyAttcF2c+V3mfG5k2Bzo
+	 mKfCGWRACyJ/UbkxlrhsU/iw17/P2t2lPNBEzwY4DJ0HZwkFepdJVUy45Hcmf4O0bw
+	 pQocfZE6wKMmNN81rL2QuNv4cUsQ0bi4ObQCsP1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/423] of: property: Increase NR_FWNODE_REFERENCE_ARGS
+Subject: [PATCH 6.13 222/499] iio: accel: msa311: Fix failure to release runtime pm if direct mode claim fails.
 Date: Tue,  8 Apr 2025 12:47:14 +0200
-Message-ID: <20250408104848.248817592@linuxfoundation.org>
+Message-ID: <20250408104856.746945934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
+[ Upstream commit 60a0cf2ebab92011055ab7db6553c0fc3c546938 ]
 
-Currently, the following two macros have different values:
+Reorder the claiming of direct mode and runtime pm calls to simplify
+handling a little.  For correct error handling, after the reorder
+iio_device_release_direct_mode() must be claimed in an error occurs
+in pm_runtime_resume_and_get()
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
-
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
-
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
-
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
-Will align both macros later to avoid such inconsistency.
-
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 1ca2cfbc0c33 ("iio: add MEMSensing MSA311 3-axis accelerometer driver")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250217140135.896574-7-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/msa311.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70f..487d4bd9b0c99 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -91,7 +91,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
+diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+index e7fb860f32337..c2b05d1f7239a 100644
+--- a/drivers/iio/accel/msa311.c
++++ b/drivers/iio/accel/msa311.c
+@@ -594,23 +594,25 @@ static int msa311_read_raw_data(struct iio_dev *indio_dev,
+ 	__le16 axis;
+ 	int err;
  
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
+-	err = pm_runtime_resume_and_get(dev);
++	err = iio_device_claim_direct_mode(indio_dev);
+ 	if (err)
+ 		return err;
  
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
+-	err = iio_device_claim_direct_mode(indio_dev);
+-	if (err)
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
+ 		return err;
++	}
+ 
+ 	mutex_lock(&msa311->lock);
+ 	err = msa311_get_axis(msa311, chan, &axis);
+ 	mutex_unlock(&msa311->lock);
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err) {
+ 		dev_err(dev, "can't get axis %s (%pe)\n",
+ 			chan->datasheet_name, ERR_PTR(err));
+@@ -756,10 +758,6 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	unsigned int odr;
+ 	int err;
+ 
+-	err = pm_runtime_resume_and_get(dev);
+-	if (err)
+-		return err;
+-
+ 	/*
+ 	 * Sampling frequency changing is prohibited when buffer mode is
+ 	 * enabled, because sometimes MSA311 chip returns outliers during
+@@ -769,6 +767,12 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	if (err)
+ 		return err;
+ 
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
++		return err;
++	}
++
+ 	err = -EINVAL;
+ 	for (odr = 0; odr < ARRAY_SIZE(msa311_odr_table); odr++)
+ 		if (val == msa311_odr_table[odr].integral &&
+@@ -779,11 +783,11 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 			break;
+ 		}
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err)
+ 		dev_err(dev, "can't update frequency (%pe)\n", ERR_PTR(err));
+ 
 -- 
 2.39.5
 
