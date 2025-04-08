@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58DDA80AEE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6A5A80760
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 726811BA7CE4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F3C04C5D73
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83BF26B954;
-	Tue,  8 Apr 2025 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA88F26A1B6;
+	Tue,  8 Apr 2025 12:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0iICWtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER4qU9h8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726CA26A0FD;
-	Tue,  8 Apr 2025 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8843D26A1B1;
+	Tue,  8 Apr 2025 12:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116814; cv=none; b=FCP56nnk9unDFmgAmcmrPFImcXOsoYv4B3osI7lihfMb9NSJkfznstTLu5x6MBYgIe4SRIuaN1q2JV/tMdegDOh7KSWX0gzTqyP5JwQvf5Ssne4tD3xSTQTAx6HhK04+Ru/fQTDVKTM52CU0WpGza2LHYLzXVHucWW3Y+CUmK0c=
+	t=1744115177; cv=none; b=YcunbWLWbWFcbvmoW1rPl6SMKV2JQrkFtSZ9icdKBNEir2q7Xox0OXftn69uN4jIJd1FwkyPNW4hrdKRD/+T+J8xs/2YAqJkHdzC2jZq5v39EuVrW6wETDJlkJqA8G2MMPQ4DHykUmy38z9xPc/iiPWsMR4nLTwE8Vlx8yGD4lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116814; c=relaxed/simple;
-	bh=f7wskdm+n99mqEq5DliwmV7Rnw4q0rnyPWoXEaIwY5A=;
+	s=arc-20240116; t=1744115177; c=relaxed/simple;
+	bh=2gmhhuACRX1szOUT4+RpLbNPHYHl3PYWwT66Y63JCW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FACr5Mk0DvMRBeC6apZeiLqm2cQTsDT+P2XqOIn+TftW68xCuBdIcoKy8KhPpb2I7CFvcirrRYH7ZzSHCL+E2X9fXJ+uO3bTOKx6nh6akXtRSvIihW/LQWcouhNTlfywEuZ/29csiruCWeWI6+NfEQVapo0DwQPLQGr1s0U4R7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0iICWtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4BAC4CEE5;
-	Tue,  8 Apr 2025 12:53:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rYASXktDJ/qzG5gR1zWIlCHsgRjFqgjle83UNCUUINOdRPRPJNMqwkl11wOhK8cmF9QW/vkoBPWrzQFifTha/RI4/wd734jWInQUgDhLwPPxgHOpadHUKsITRQGmaWYD3HgF+sLn8JETr8ZjuF3JMwHCD66POC6YgTbJ3xbdtuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER4qU9h8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E85C4CEE5;
+	Tue,  8 Apr 2025 12:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116814;
-	bh=f7wskdm+n99mqEq5DliwmV7Rnw4q0rnyPWoXEaIwY5A=;
+	s=korg; t=1744115177;
+	bh=2gmhhuACRX1szOUT4+RpLbNPHYHl3PYWwT66Y63JCW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0iICWtchEfFMu4mxvP3cW0mRp3+eERlbtsZk+WiXGZGnqy8Zoboo2Ws55sVM8u6C
-	 OSeUOoBRLlhKtIeVlLCynO7BRC8XbMuPTlA7Prcf8lR3ku87t5gWy+F/3YKLGdkDNV
-	 uKdmoxa9uq0wchH3GkieNbsYxF9EWVHUCjeQR6vg=
+	b=ER4qU9h8R3ha2FtK4iRPl9DfcuHqYZzLM24+92uQcPBzRTwV3D2LZb1Dv9Uq+OT5z
+	 fIFTlSCKJN7Qtq5TanhpmgpOK7+WT20eE+zDdeP7Zm6M6ULVV1HauSf9l0MIgFcAl5
+	 ORhVXA5epsPShxdrAlsFo7PWKn5FnmG6BBIANrNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Proske <email@matthias-proske.de>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/423] wifi: brcmfmac: keep power during suspend if board requires it
-Date: Tue,  8 Apr 2025 12:49:47 +0200
-Message-ID: <20250408104851.825654315@linuxfoundation.org>
+Subject: [PATCH 6.13 376/499] riscv/purgatory: 4B align purgatory_start
+Date: Tue,  8 Apr 2025 12:49:48 +0200
+Message-ID: <20250408104900.607716625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Proske <email@matthias-proske.de>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 8c3170628a9ce24a59647bd24f897e666af919b8 ]
+[ Upstream commit 3f7023171df43641a8a8a1c9a12124501e589010 ]
 
-After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
-unless WOWL is used"), the wifi adapter by default is turned off on
-suspend and then re-probed on resume.
+When a crashkernel is launched on RISC-V, the entry to purgatory is
+done by trapping via the stvec CSR. From riscv_kexec_norelocate():
 
-This conflicts with some embedded boards that require to remain powered.
-They will fail on resume with:
+  |  ...
+  |  /*
+  |   * Switch to physical addressing
+  |   * This will also trigger a jump to CSR_STVEC
+  |   * which in this case is the address of the new
+  |   * kernel.
+  |   */
+  |  csrw    CSR_STVEC, a2
+  |  csrw    CSR_SATP, zero
 
-brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
-ieee80211 phy1: brcmf_bus_started: failed: -110
-ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
-brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
+stvec requires that the address is 4B aligned, which was not the case,
+e.g.:
 
-This commit checks for the Device Tree property 'cap-power-off-cards'.
-If this property is not set, it means that we do not have the capability
-to power off and should therefore remain powered.
+  | Loaded purgatory at 0xffffc000
+  | kexec_file: kexec_file_load: type:1, start:0xffffd232 head:0x4 flags:0x6
 
-Signed-off-by: Matthias Proske <email@matthias-proske.de>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250212185941.146958-2-email@matthias-proske.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The address 0xffffd232 not 4B aligned.
+
+Correct by adding proper function alignment.
+
+With this change, crashkernels loaded with kexec-file will be able to
+properly enter the purgatory.
+
+Fixes: 736e30af583fb ("RISC-V: Add purgatory")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250328085313.1193815-1-bjorn@kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 20 ++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ arch/riscv/purgatory/entry.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 8a1e337642448..cfdd92564060a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -1167,6 +1167,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	struct brcmf_bus *bus_if;
- 	struct brcmf_sdio_dev *sdiodev;
- 	mmc_pm_flag_t sdio_flags;
-+	bool cap_power_off;
- 	int ret = 0;
+diff --git a/arch/riscv/purgatory/entry.S b/arch/riscv/purgatory/entry.S
+index 0e6ca6d5ae4b4..c5db2f072c341 100644
+--- a/arch/riscv/purgatory/entry.S
++++ b/arch/riscv/purgatory/entry.S
+@@ -12,6 +12,7 @@
  
- 	func = container_of(dev, struct sdio_func, dev);
-@@ -1174,19 +1175,23 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	if (func->num != 1)
- 		return 0;
+ .text
  
-+	cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
++.align	2
+ SYM_CODE_START(purgatory_start)
  
- 	bus_if = dev_get_drvdata(dev);
- 	sdiodev = bus_if->bus_priv.sdio;
- 
--	if (sdiodev->wowl_enabled) {
-+	if (sdiodev->wowl_enabled || !cap_power_off) {
- 		brcmf_sdiod_freezer_on(sdiodev);
- 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
- 
- 		sdio_flags = MMC_PM_KEEP_POWER;
--		if (sdiodev->settings->bus.sdio.oob_irq_supported)
--			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
--		else
--			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
-+
-+		if (sdiodev->wowl_enabled) {
-+			if (sdiodev->settings->bus.sdio.oob_irq_supported)
-+				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
-+			else
-+				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
-+		}
- 
- 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
- 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
-@@ -1208,18 +1213,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
- 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
- 	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
- 	int ret = 0;
-+	bool cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
- 
- 	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
- 	if (func->num != 2)
- 		return 0;
- 
--	if (!sdiodev->wowl_enabled) {
-+	if (!sdiodev->wowl_enabled && cap_power_off) {
- 		/* bus was powered off and device removed, probe again */
- 		ret = brcmf_sdiod_probe(sdiodev);
- 		if (ret)
- 			brcmf_err("Failed to probe device on resume\n");
- 	} else {
--		if (sdiodev->settings->bus.sdio.oob_irq_supported)
-+		if (sdiodev->wowl_enabled && sdiodev->settings->bus.sdio.oob_irq_supported)
- 			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
- 
- 		brcmf_sdiod_freezer_off(sdiodev);
+ 	lla	sp, .Lstack
 -- 
 2.39.5
 
