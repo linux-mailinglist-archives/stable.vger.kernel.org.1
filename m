@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2E2A80341
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C288A7FD8D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 527DC7ACB2A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE44189BB01
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02280269D06;
-	Tue,  8 Apr 2025 11:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508D9265630;
+	Tue,  8 Apr 2025 10:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAYRqh47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p76zuEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BE2269880;
-	Tue,  8 Apr 2025 11:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E633E2686A8;
+	Tue,  8 Apr 2025 10:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113092; cv=none; b=q2sj9/uLFbuM2NYOkCMjrXQl4X0KI5p9m/Rc3woJ9dkcnTTT1jei8qkPxArczGX1zekML0LmwLlKumP+Y7JM9uQZ6yDcBI/wz+rtnRgLEivE1CT3RNCD+1VkIKwYg2ad2SBn9NoS0KCUkyYDzTdw6sLjCIiLbCoIdzczBl4rWno=
+	t=1744109822; cv=none; b=PxxGV5PH1IvoIyNpyA4h6QTSzl1/mnBMKh1+huL1QDD1Y3RT9SzJn4rNkTLce6f7XeGYapqHR5Ny4y7fAZIPD5BBkFKUgIhHnL7p0DL87vkUdDgrXt4AgI1q6Tr0SfshIlti21hKn4kNrUEPI89iQy70LtvHAItX+8IBemtMLgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113092; c=relaxed/simple;
-	bh=Tgz9eCjZ25UhDDDtQ3igJF6Y3l0QEJo14UkJeynpSus=;
+	s=arc-20240116; t=1744109822; c=relaxed/simple;
+	bh=11SHFLekTI9xdkkdhPHzs7FvZSRNkX/slmVO+098FPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkxWlRSQghzKMMJrHuKTejfjIPeKgSHk8d0/olii+nnfpnSlY5UGfHWpq73/25wt7z0rJNcStpyEHLJ8DGwgAwKbkQ2EMyeLoH+GOXasCSFMFa47nppRtIBgNpbrV1H/sPh9sYKPlaKTIcNgQqTgJKCwfUegTmpnrhfI6dWj9cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAYRqh47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422C9C4CEE5;
-	Tue,  8 Apr 2025 11:51:32 +0000 (UTC)
+	 MIME-Version; b=KdVc2S3g59q3cLE0NDZC9+wHrEl+c+/eaHmRE7Y6mNzxVy/l47iI7za5jprGD7E+SBIRDu5w6sTG0Bb1fANj0Y6ZvtZYrG6EH0aXwd0IUmcG1MSkgv8lZoG8CxSHMLvBO8qG6QFlTh99kjvy5iOE7dvYuvB49QiGuAiJ+iQoLfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p76zuEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B4C4CEE5;
+	Tue,  8 Apr 2025 10:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113092;
-	bh=Tgz9eCjZ25UhDDDtQ3igJF6Y3l0QEJo14UkJeynpSus=;
+	s=korg; t=1744109821;
+	bh=11SHFLekTI9xdkkdhPHzs7FvZSRNkX/slmVO+098FPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAYRqh47ygF2pdqQm/Bl/XF95hsVuNXBtzWw4SzHQbfQThBlO/Y+eah4vaNCD8DJo
-	 d+cKzsnpQar4itu7OF0eGikuvlnrbgOScNxEoz3zz/zj8fmygRg4BlYbGdd8J9JUGr
-	 JHbfP2s0JXI1+L0xbZ9hQQBLIrrbfbBGyZbFbZAE=
+	b=2p76zuEHfEEAxAFsBhABUiyUpQNSnNhLT7VPRLcm3/yyNNs2+xLOZD+k2DtdGxAq+
+	 eVJNZJV3nhYFYA6cypyEA4x6P7X8nBp0vt0vulx1daZ6jYbmJARv3Y407evS77Y3jU
+	 EXtMfrwtXNEm1EZ5lV7NDN/08gEnjPQoMIxEw1nU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Douglas Anderson <dianders@chromium.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/268] drm/bridge: ti-sn65dsi86: Fix multiple instances
+Subject: [PATCH 5.10 065/227] drm/amd/display: Check for invalid input params when building scaling params
 Date: Tue,  8 Apr 2025 12:47:23 +0200
-Message-ID: <20250408104829.368086932@linuxfoundation.org>
+Message-ID: <20250408104822.359024727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit 574f5ee2c85a00a579549d50e9fc9c6c072ee4c4 ]
+[ Upstream commit 73b1da69f5314d96e1f963468863eaa884ee1030 ]
 
-Each bridge instance creates up to four auxiliary devices with different
-names.  However, their IDs are always zero, causing duplicate filename
-errors when a system has multiple bridges:
+[WHY]
+Function to calculate scaling ratios can be called with invalid plane
+src/dest, causing a divide by zero.
 
-    sysfs: cannot create duplicate filename '/bus/auxiliary/devices/ti_sn65dsi86.gpio.0'
+[HOW]
+Fail building scaling params if plane state src/dest rects are
+unpopulated
 
-Fix this by using a unique instance ID per bridge instance.  The
-instance ID is derived from the I2C adapter number and the bridge's I2C
-address, to support multiple instances on the same bus.
-
-Fixes: bf73537f411b ("drm/bridge: ti-sn65dsi86: Break GPIO and MIPI-to-eDP bridge into sub-drivers")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/7a68a0e3f927e26edca6040067fb653eb06efb79.1733840089.git.geert+renesas@glider.be
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 374c9faac5a7 ("drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 3309c01fa7153..bfbd3fee12567 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -480,6 +480,7 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
- 				       const char *name)
- {
- 	struct device *dev = pdata->dev;
-+	const struct i2c_client *client = to_i2c_client(dev);
- 	struct auxiliary_device *aux;
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 0a2b3703be537..9564905c2c797 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -951,6 +951,15 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
+ 	bool res = false;
+ 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
  
-@@ -488,6 +489,7 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
- 		return -ENOMEM;
++	/* Invalid input */
++	if (!plane_state->dst_rect.width ||
++			!plane_state->dst_rect.height ||
++			!plane_state->src_rect.width ||
++			!plane_state->src_rect.height) {
++		ASSERT(0);
++		return false;
++	}
++
+ 	pipe_ctx->plane_res.scl_data.format = convert_pixel_format_to_dalsurface(
+ 			pipe_ctx->plane_state->format);
  
- 	aux->name = name;
-+	aux->id = (client->adapter->nr << 10) | client->addr;
- 	aux->dev.parent = dev;
- 	aux->dev.release = ti_sn65dsi86_aux_device_release;
- 	device_set_of_node_from_dev(&aux->dev, dev);
 -- 
 2.39.5
 
