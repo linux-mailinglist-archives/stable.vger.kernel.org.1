@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB84A80958
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA32A8062C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9641B6314E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58B441B821E5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0924426B948;
-	Tue,  8 Apr 2025 12:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3945268685;
+	Tue,  8 Apr 2025 12:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evxX9r0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBj2JZ8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE881AAA32;
-	Tue,  8 Apr 2025 12:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70138269801;
+	Tue,  8 Apr 2025 12:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116108; cv=none; b=VAcfMZ/VyaZbwcOf/eJ5fBUarld46iL5pIhTwC2gHSlmwIUwex0uXlpFig4xuZe+A+3GZYjsWz7UOh4wBreAweeGuRNj3azD4dMX883Ms/dsanhoaICa/vQBjAk+kjqKXnJ5Zso9LgDyPB2sDeiuPS1RU6NZgcrlNLACNoClisg=
+	t=1744114615; cv=none; b=ST6z7dZdlensji50V7fB4utO9YA6E7c14apIH8oEWMzvDDwZi6bL2Lt5Q9RZNFMDVQqh9mGKqZ7eh/XJTik1iX+FDntyNTX5E8QQ1nlUC6GTpJIyM79wklcGcXcrajaqhXHd+QeallyZ417vwT6CvovD3U6fmjrbwEWfyVhsq68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116108; c=relaxed/simple;
-	bh=5h/KcGhEMl7tCIQQjI8W9w214Ryjxb6ZZn0eim4BPv4=;
+	s=arc-20240116; t=1744114615; c=relaxed/simple;
+	bh=8pwQXGlvY3CcLkHBhOzhGZhD816CXq0wX2k/z1Emwuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhxFCiIlTakIMPpyNr3oQbEMi7E5q6G7Shpu0z6LSu8AFP8tVaswfa9bWgdvVn2mHpwL5U9+Aknt79W5gcLybG1zK7ieAu/3PEcFhKY6REj6zJSX1+mQxle8S0JoQpRuUeahBOhVPiX9/S/72e6sdg2xOHZnBLCSOipSioMTpz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evxX9r0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DFFC4CEE5;
-	Tue,  8 Apr 2025 12:41:47 +0000 (UTC)
+	 MIME-Version; b=GjJQVsZMYVETKGgEso3I3ERBVG7zZEsbcCqw5136DSXOw5G187zVqHa8FBX6z8GXjXRrMjEShQBMZIalPlG0x8fJXz4s/6p+qIJ9c4E2GHzD2T7I2jW3tu8EjDx0d2G4DXaNc73cXvywd/YSC1CRiL9hrVCWr0k67xqBzDxGP4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBj2JZ8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02232C4CEE5;
+	Tue,  8 Apr 2025 12:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116108;
-	bh=5h/KcGhEMl7tCIQQjI8W9w214Ryjxb6ZZn0eim4BPv4=;
+	s=korg; t=1744114615;
+	bh=8pwQXGlvY3CcLkHBhOzhGZhD816CXq0wX2k/z1Emwuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evxX9r0PTZiFfstHXusPTSl9vAQ5PY8PR2l4g4DeMj9Am/5p9ZY7qJ6fVWgVzfO4g
-	 YHYjjPmHouOXff2Ui3rbQdqib0Mf1OREEIqfwdMJYbozqT2M6NEHxz1WBNehDNZDGP
-	 xAV22/TNZ3mfHvZAgh9fylF1GnWK4tLLGnQcXOdE=
+	b=RBj2JZ8UWo38My1ZaZ3QarUywcuEMvrDbancegeHaj/zntRSjheKVxC+AAtWdZyiQ
+	 evT9m/oqswFqicHElXWgK9DM/N53oMVLKOMkNYTEGUi7KpyHpJ+UxN8K3bjN0cZ+Zo
+	 t4fSgzyewJ7wJod7QtccCTAE+Gt0VcdBEviJT8Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Huafei <lihuafei1@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/423] watchdog/hardlockup/perf: Fix perf_event memory leak
+Subject: [PATCH 6.13 133/499] remoteproc: core: Clear table_sz when rproc_shutdown
 Date: Tue,  8 Apr 2025 12:45:45 +0200
-Message-ID: <20250408104846.188095296@linuxfoundation.org>
+Message-ID: <20250408104854.510745237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,290 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit d6834d9c990333bfa433bc1816e2417f268eebbe ]
+[ Upstream commit efdde3d73ab25cef4ff2d06783b0aad8b093c0e4 ]
 
-During stress-testing, we found a kmemleak report for perf_event:
+There is case as below could trigger kernel dump:
+Use U-Boot to start remote processor(rproc) with resource table
+published to a fixed address by rproc. After Kernel boots up,
+stop the rproc, load a new firmware which doesn't have resource table
+,and start rproc.
 
-  unreferenced object 0xff110001410a33e0 (size 1328):
-    comm "kworker/4:11", pid 288, jiffies 4294916004
-    hex dump (first 32 bytes):
-      b8 be c2 3b 02 00 11 ff 22 01 00 00 00 00 ad de  ...;....".......
-      f0 33 0a 41 01 00 11 ff f0 33 0a 41 01 00 11 ff  .3.A.....3.A....
-    backtrace (crc 24eb7b3a):
-      [<00000000e211b653>] kmem_cache_alloc_node_noprof+0x269/0x2e0
-      [<000000009d0985fa>] perf_event_alloc+0x5f/0xcf0
-      [<00000000084ad4a2>] perf_event_create_kernel_counter+0x38/0x1b0
-      [<00000000fde96401>] hardlockup_detector_event_create+0x50/0xe0
-      [<0000000051183158>] watchdog_hardlockup_enable+0x17/0x70
-      [<00000000ac89727f>] softlockup_start_fn+0x15/0x40
-      ...
+When starting rproc with a firmware not have resource table,
+`memcpy(loaded_table, rproc->cached_table, rproc->table_sz)` will
+trigger dump, because rproc->cache_table is set to NULL during the last
+stop operation, but rproc->table_sz is still valid.
 
-Our stress test includes CPU online and offline cycles, and updating the
-watchdog configuration.
+This issue is found on i.MX8MP and i.MX9.
 
-After reading the code, I found that there may be a race between cleaning up
-perf_event after updating watchdog and disabling event when the CPU goes offline:
+Dump as below:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010af63000
+[0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 2 UID: 0 PID: 1060 Comm: sh Not tainted 6.14.0-rc7-next-20250317-dirty #38
+Hardware name: NXP i.MX8MPlus EVK board (DT)
+pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __pi_memcpy_generic+0x110/0x22c
+lr : rproc_start+0x88/0x1e0
+Call trace:
+ __pi_memcpy_generic+0x110/0x22c (P)
+ rproc_boot+0x198/0x57c
+ state_store+0x40/0x104
+ dev_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x120/0x1cc
+ vfs_write+0x240/0x378
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x30/0xcc
+ el0t_64_sync_handler+0x10c/0x138
+ el0t_64_sync+0x198/0x19c
 
-  CPU0                          CPU1                           CPU2
-  (update watchdog)                                            (hotplug offline CPU1)
+Clear rproc->table_sz to address the issue.
 
-  ...                                                          _cpu_down(CPU1)
-  cpus_read_lock()                                             // waiting for cpu lock
-    softlockup_start_all
-      smp_call_on_cpu(CPU1)
-                                softlockup_start_fn
-                                ...
-                                  watchdog_hardlockup_enable(CPU1)
-                                    perf create E1
-                                    watchdog_ev[CPU1] = E1
-  cpus_read_unlock()
-                                                               cpus_write_lock()
-                                                               cpuhp_kick_ap_work(CPU1)
-                                cpuhp_thread_fun
-                                ...
-                                  watchdog_hardlockup_disable(CPU1)
-                                    watchdog_ev[CPU1] = NULL
-                                    dead_event[CPU1] = E1
-  __lockup_detector_cleanup
-    for each dead_events_mask
-      release each dead_event
-      /*
-       * CPU1 has not been added to
-       * dead_events_mask, then E1
-       * will not be released
-       */
-                                    CPU1 -> dead_events_mask
-    cpumask_clear(&dead_events_mask)
-    // dead_events_mask is cleared, E1 is leaked
-
-In this case, the leaked perf_event E1 matches the perf_event leak
-reported by kmemleak. Due to the low probability of problem recurrence
-(only reported once), I added some hack delays in the code:
-
-  static void __lockup_detector_reconfigure(void)
-  {
-    ...
-          watchdog_hardlockup_start();
-          cpus_read_unlock();
-  +       mdelay(100);
-          /*
-           * Must be called outside the cpus locked section to prevent
-           * recursive locking in the perf code.
-    ...
-  }
-
-  void watchdog_hardlockup_disable(unsigned int cpu)
-  {
-    ...
-                  perf_event_disable(event);
-                  this_cpu_write(watchdog_ev, NULL);
-                  this_cpu_write(dead_event, event);
-  +               mdelay(100);
-                  cpumask_set_cpu(smp_processor_id(), &dead_events_mask);
-                  atomic_dec(&watchdog_cpus);
-    ...
-  }
-
-  void hardlockup_detector_perf_cleanup(void)
-  {
-    ...
-                          perf_event_release_kernel(event);
-                  per_cpu(dead_event, cpu) = NULL;
-          }
-  +       mdelay(100);
-          cpumask_clear(&dead_events_mask);
-  }
-
-Then, simultaneously performing CPU on/off and switching watchdog, it is
-almost certain to reproduce this leak.
-
-The problem here is that releasing perf_event is not within the CPU
-hotplug read-write lock. Commit:
-
-  941154bd6937 ("watchdog/hardlockup/perf: Prevent CPU hotplug deadlock")
-
-introduced deferred release to solve the deadlock caused by calling
-get_online_cpus() when releasing perf_event. Later, commit:
-
-  efe951d3de91 ("perf/x86: Fix perf,x86,cpuhp deadlock")
-
-removed the get_online_cpus() call on the perf_event release path to solve
-another deadlock problem.
-
-Therefore, it is now possible to move the release of perf_event back
-into the CPU hotplug read-write lock, and release the event immediately
-after disabling it.
-
-Fixes: 941154bd6937 ("watchdog/hardlockup/perf: Prevent CPU hotplug deadlock")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241021193004.308303-1-lihuafei1@huawei.com
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250319100106.3622619-1-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/nmi.h    |  4 ----
- kernel/cpu.c           |  5 -----
- kernel/watchdog.c      | 25 -------------------------
- kernel/watchdog_perf.c | 28 +---------------------------
- 4 files changed, 1 insertion(+), 61 deletions(-)
+ drivers/remoteproc/remoteproc_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index a8dfb38c9bb6f..e78fa535f61dd 100644
---- a/include/linux/nmi.h
-+++ b/include/linux/nmi.h
-@@ -17,7 +17,6 @@
- void lockup_detector_init(void);
- void lockup_detector_retry_init(void);
- void lockup_detector_soft_poweroff(void);
--void lockup_detector_cleanup(void);
- 
- extern int watchdog_user_enabled;
- extern int watchdog_thresh;
-@@ -37,7 +36,6 @@ extern int sysctl_hardlockup_all_cpu_backtrace;
- static inline void lockup_detector_init(void) { }
- static inline void lockup_detector_retry_init(void) { }
- static inline void lockup_detector_soft_poweroff(void) { }
--static inline void lockup_detector_cleanup(void) { }
- #endif /* !CONFIG_LOCKUP_DETECTOR */
- 
- #ifdef CONFIG_SOFTLOCKUP_DETECTOR
-@@ -104,12 +102,10 @@ void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs);
- #if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
- extern void hardlockup_detector_perf_stop(void);
- extern void hardlockup_detector_perf_restart(void);
--extern void hardlockup_detector_perf_cleanup(void);
- extern void hardlockup_config_perf_event(const char *str);
- #else
- static inline void hardlockup_detector_perf_stop(void) { }
- static inline void hardlockup_detector_perf_restart(void) { }
--static inline void hardlockup_detector_perf_cleanup(void) { }
- static inline void hardlockup_config_perf_event(const char *str) { }
- #endif
- 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 9ee6c9145b1df..cf02a629f9902 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1452,11 +1452,6 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
- 
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index c2cf0d2777296..b21eedefff877 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2025,6 +2025,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	kfree(rproc->cached_table);
+ 	rproc->cached_table = NULL;
+ 	rproc->table_ptr = NULL;
++	rproc->table_sz = 0;
  out:
- 	cpus_write_unlock();
--	/*
--	 * Do post unplug cleanup. This is still protected against
--	 * concurrent CPU hotplug via cpu_add_remove_lock.
--	 */
--	lockup_detector_cleanup();
- 	arch_smt_update();
+ 	mutex_unlock(&rproc->lock);
  	return ret;
- }
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 262691ba62b7a..4dc72540c3b0f 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -347,8 +347,6 @@ static int __init watchdog_thresh_setup(char *str)
- }
- __setup("watchdog_thresh=", watchdog_thresh_setup);
- 
--static void __lockup_detector_cleanup(void);
--
- #ifdef CONFIG_SOFTLOCKUP_DETECTOR_INTR_STORM
- enum stats_per_group {
- 	STATS_SYSTEM,
-@@ -878,11 +876,6 @@ static void __lockup_detector_reconfigure(void)
- 
- 	watchdog_hardlockup_start();
- 	cpus_read_unlock();
--	/*
--	 * Must be called outside the cpus locked section to prevent
--	 * recursive locking in the perf code.
--	 */
--	__lockup_detector_cleanup();
- }
- 
- void lockup_detector_reconfigure(void)
-@@ -932,24 +925,6 @@ static inline void lockup_detector_setup(void)
- }
- #endif /* !CONFIG_SOFTLOCKUP_DETECTOR */
- 
--static void __lockup_detector_cleanup(void)
--{
--	lockdep_assert_held(&watchdog_mutex);
--	hardlockup_detector_perf_cleanup();
--}
--
--/**
-- * lockup_detector_cleanup - Cleanup after cpu hotplug or sysctl changes
-- *
-- * Caller must not hold the cpu hotplug rwsem.
-- */
--void lockup_detector_cleanup(void)
--{
--	mutex_lock(&watchdog_mutex);
--	__lockup_detector_cleanup();
--	mutex_unlock(&watchdog_mutex);
--}
--
- /**
-  * lockup_detector_soft_poweroff - Interface to stop lockup detector(s)
-  *
-diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
-index 59c1d86a73a24..2fdb96eaf4933 100644
---- a/kernel/watchdog_perf.c
-+++ b/kernel/watchdog_perf.c
-@@ -21,8 +21,6 @@
- #include <linux/perf_event.h>
- 
- static DEFINE_PER_CPU(struct perf_event *, watchdog_ev);
--static DEFINE_PER_CPU(struct perf_event *, dead_event);
--static struct cpumask dead_events_mask;
- 
- static atomic_t watchdog_cpus = ATOMIC_INIT(0);
- 
-@@ -181,36 +179,12 @@ void watchdog_hardlockup_disable(unsigned int cpu)
- 
- 	if (event) {
- 		perf_event_disable(event);
-+		perf_event_release_kernel(event);
- 		this_cpu_write(watchdog_ev, NULL);
--		this_cpu_write(dead_event, event);
--		cpumask_set_cpu(smp_processor_id(), &dead_events_mask);
- 		atomic_dec(&watchdog_cpus);
- 	}
- }
- 
--/**
-- * hardlockup_detector_perf_cleanup - Cleanup disabled events and destroy them
-- *
-- * Called from lockup_detector_cleanup(). Serialized by the caller.
-- */
--void hardlockup_detector_perf_cleanup(void)
--{
--	int cpu;
--
--	for_each_cpu(cpu, &dead_events_mask) {
--		struct perf_event *event = per_cpu(dead_event, cpu);
--
--		/*
--		 * Required because for_each_cpu() reports  unconditionally
--		 * CPU0 as set on UP kernels. Sigh.
--		 */
--		if (event)
--			perf_event_release_kernel(event);
--		per_cpu(dead_event, cpu) = NULL;
--	}
--	cpumask_clear(&dead_events_mask);
--}
--
- /**
-  * hardlockup_detector_perf_stop - Globally stop watchdog events
-  *
 -- 
 2.39.5
 
