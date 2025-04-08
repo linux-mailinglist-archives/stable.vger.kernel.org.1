@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB20DA80291
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A71CA8013D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B20441C27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32A571717D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7216E266EFE;
-	Tue,  8 Apr 2025 11:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F33269D1B;
+	Tue,  8 Apr 2025 11:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGoetMpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rw6Q+5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E58F224AEB;
-	Tue,  8 Apr 2025 11:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D328269D18;
+	Tue,  8 Apr 2025 11:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112351; cv=none; b=WGpjQzYATH66YYM7XDXrJN/oaw5S9b5cwnNgWP2gNeiwCa1T02qJaVSIHS7Fn4zAlZP51QCWMM+9WXuE2MwU73gzpYoZRmyU1uDbN2G2ZzuKMw4IQsz/NZoFIXVVaLsMyarFQ32M4zR8ZY4KeUNCszBzZz6asl61L4aeVLJcCU0=
+	t=1744111604; cv=none; b=GVyhalw4wrx1to0SV5q8yReR0AE1qnrLZDmXaOHGCGQ7HEYaDTOUvKWIIBjls6gXzL3Xmx/GM7Kmg+SVr+8PceNDdoNPNGfzRIOr4cEwkjUmxqmb/904DABM7rjgfGCzPGTa2mSBlfU9nCHR+FooP5ixe2oJ1NuELk6j/lPrQwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112351; c=relaxed/simple;
-	bh=IQqnnMYeh3H9jUCLS7IDJyqOY5FUrsCHKuuG1gGKQ5w=;
+	s=arc-20240116; t=1744111604; c=relaxed/simple;
+	bh=/D9D2MQqdTeTRdPXDe5x3k0OsmHaGshHWxVoL6jLs/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xhg5bX3Xmw6kHCoP6UWe2vkrMPeABIErTPkiG/ooAGt3s0Xtt++yGW0+cDDDtyLhorNrMk0G6CgGCkpLL3EEINmsnPhyh20GcxXHcwyF329cHw4pNgFWUQc2Jd4dUjUr/EQMFHTaknndpIcOHNmRfRAAoo2HhpIVw5JJsBDNMCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGoetMpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1E8C4CEE5;
-	Tue,  8 Apr 2025 11:39:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rTAv/W3FkXGgOsFuJw/5JGgmErdpeEGEOwo41jWJ3F2LfPnZJK4dPJ5a306xEmK1P2TP+JlfLj3FRqRd0mPJm4ModHrbDkI/QtTIPAqJTUlJ7/M1iAxu8Ej780EdyY4Hq3+MvETgO5lDZsJfCjQweqg4QvbWsoXbwwpLgtnA9pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rw6Q+5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C744AC4CEF3;
+	Tue,  8 Apr 2025 11:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112351;
-	bh=IQqnnMYeh3H9jUCLS7IDJyqOY5FUrsCHKuuG1gGKQ5w=;
+	s=korg; t=1744111604;
+	bh=/D9D2MQqdTeTRdPXDe5x3k0OsmHaGshHWxVoL6jLs/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGoetMpdiMpfrf0Pm8ssmWsVajFPMoUT3DoEfQstA9Z18ecZN1YpugCuJY8F46pOH
-	 5AEDYnJqDDSoEBMFMCUC7c+XOqfCiLkxA3BpDMziYMUPa+rbz2H2a42s21QNYp0UNs
-	 Qz9xClrk8s7J5LuDYXayXl3YdzEzoTO4jSpoAuqs=
+	b=1rw6Q+5bdsPpM0b5t+97cDaAtmFxv9vhYOdSiWvjbDCxqukyo3BvRebwVMknmNWcf
+	 FcZhWV4+qjYiIhug1b7JroMKK8zkuXQTK+LmPk/Py7JnvabbbtZDjKhwVsZIzd4i2e
+	 KWCI1AiYVR3OtO0x2/vk4udL5DEfbaQYc7wkI1C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Wang Yufen <wangyufen@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Subject: [PATCH 5.15 004/279] ipv6: Fix signed integer overflow in __ip6_append_data
-Date: Tue,  8 Apr 2025 12:46:27 +0200
-Message-ID: <20250408104826.465504160@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 491/731] iio: adc: ad_sigma_delta: Disable channel after calibration
+Date: Tue,  8 Apr 2025 12:46:28 +0200
+Message-ID: <20250408104925.696754760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Yufen <wangyufen@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit f93431c86b631bbca5614c66f966bf3ddb3c2803 upstream.
+[ Upstream commit fb3a0811a7bc12d51cba4b75d6b123ab62e2fe4d ]
 
-Resurrect ubsan overflow checks and ubsan report this warning,
-fix it by change the variable [length] type to size_t.
+The function ad_sd_calibrate() enables the channel to calibrate at
+function entry but doesn't disable it on exit. This is problematic
+because if two (or more) channels are calibrated in a row, the second
+calibration isn't executed as intended as the first (still enabled)
+channel is recalibrated and after the first irq (i.e. when the
+calibration of the first channel completed) the calibration is aborted.
 
-UBSAN: signed-integer-overflow in net/ipv6/ip6_output.c:1489:19
-2147479552 + 8567 cannot be represented in type 'int'
-CPU: 0 PID: 253 Comm: err Not tainted 5.16.0+ #1
-Hardware name: linux,dummy-virt (DT)
-Call trace:
-  dump_backtrace+0x214/0x230
-  show_stack+0x30/0x78
-  dump_stack_lvl+0xf8/0x118
-  dump_stack+0x18/0x30
-  ubsan_epilogue+0x18/0x60
-  handle_overflow+0xd0/0xf0
-  __ubsan_handle_add_overflow+0x34/0x44
-  __ip6_append_data.isra.48+0x1598/0x1688
-  ip6_append_data+0x128/0x260
-  udpv6_sendmsg+0x680/0xdd0
-  inet6_sendmsg+0x54/0x90
-  sock_sendmsg+0x70/0x88
-  ____sys_sendmsg+0xe8/0x368
-  ___sys_sendmsg+0x98/0xe0
-  __sys_sendmmsg+0xf4/0x3b8
-  __arm64_sys_sendmmsg+0x34/0x48
-  invoke_syscall+0x64/0x160
-  el0_svc_common.constprop.4+0x124/0x300
-  do_el0_svc+0x44/0xc8
-  el0_svc+0x3c/0x1e8
-  el0t_64_sync_handler+0x88/0xb0
-  el0t_64_sync+0x16c/0x170
+This currently affects ad7173 only, as the other drivers using
+ad_sd_calibrate() never have more than one channel enabled at a time.
 
-Changes since v1:
--Change the variable [length] type to unsigned, as Eric Dumazet suggested.
-Changes since v2:
--Don't change exthdrlen type in ip6_make_skb, as Paolo Abeni suggested.
-Changes since v3:
--Don't change ulen type in udpv6_sendmsg and l2tp_ip6_sendmsg, as
-Jakub Kicinski suggested.
+To fix this, disable the calibrated channel after calibration.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-Link: https://lore.kernel.org/r/20220607120028.845916-1-wangyufen@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250303114659.1672695-11-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Conflict due to f37a4cc6bb0b ("udp6: pass flow in ip6_make_skb
-  together with cork") not in the tree ]
-Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ipv6.h    |    4 ++--
- net/ipv6/ip6_output.c |    6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -1000,7 +1000,7 @@ int ip6_find_1stfragopt(struct sk_buff *
- int ip6_append_data(struct sock *sk,
- 		    int getfrag(void *from, char *to, int offset, int len,
- 				int odd, struct sk_buff *skb),
--		    void *from, int length, int transhdrlen,
-+		    void *from, size_t length, int transhdrlen,
- 		    struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
- 		    struct rt6_info *rt, unsigned int flags);
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index d5d81581ab340..77b4e8bc47485 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -339,6 +339,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
+ out:
+ 	sigma_delta->keep_cs_asserted = false;
+ 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
++	ad_sigma_delta_disable_one(sigma_delta, channel);
+ 	sigma_delta->bus_locked = false;
+ 	spi_bus_unlock(sigma_delta->spi->controller);
  
-@@ -1016,7 +1016,7 @@ struct sk_buff *__ip6_make_skb(struct so
- struct sk_buff *ip6_make_skb(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
--			     void *from, int length, int transhdrlen,
-+			     void *from, size_t length, int transhdrlen,
- 			     struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
- 			     struct rt6_info *rt, unsigned int flags,
- 			     struct inet_cork_full *cork);
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1461,7 +1461,7 @@ static int __ip6_append_data(struct sock
- 			     struct page_frag *pfrag,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
--			     void *from, int length, int transhdrlen,
-+			     void *from, size_t length, int transhdrlen,
- 			     unsigned int flags, struct ipcm6_cookie *ipc6)
- {
- 	struct sk_buff *skb, *skb_prev = NULL;
-@@ -1806,7 +1806,7 @@ error:
- int ip6_append_data(struct sock *sk,
- 		    int getfrag(void *from, char *to, int offset, int len,
- 				int odd, struct sk_buff *skb),
--		    void *from, int length, int transhdrlen,
-+		    void *from, size_t length, int transhdrlen,
- 		    struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
- 		    struct rt6_info *rt, unsigned int flags)
- {
-@@ -2000,7 +2000,7 @@ EXPORT_SYMBOL_GPL(ip6_flush_pending_fram
- struct sk_buff *ip6_make_skb(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
--			     void *from, int length, int transhdrlen,
-+			     void *from, size_t length, int transhdrlen,
- 			     struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
- 			     struct rt6_info *rt, unsigned int flags,
- 			     struct inet_cork_full *cork)
+-- 
+2.39.5
+
 
 
 
