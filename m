@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5954AA80A71
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F0BA8073F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217074E4E73
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFDD4C4846
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BED126A0E8;
-	Tue,  8 Apr 2025 12:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60312686BC;
+	Tue,  8 Apr 2025 12:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrVyFDwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mg9EptXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6B62676CF;
-	Tue,  8 Apr 2025 12:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926BE26A1A0;
+	Tue,  8 Apr 2025 12:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116448; cv=none; b=LdRTKQnYUNU5mf966hytS+tb2x9yeqfSvoFV6BBT9c+6vncm8rX2xVKc3faazIfFt9bP5fWLXaIJGzAcIXq8CHztzCec4LKbhan8ycjDKts7aSn3rzgfqp7BzHlj0acpOugApug1BFZsrEHTi1CdbPldQFYdOqtavs8/qCr6etM=
+	t=1744114961; cv=none; b=PpI4suxQwpxQdEw+8GAH233zIPgzNRM8a1N0GcAyvrdBFRdwmWFdrA67MtSlb9hZP1zDGvOMXuRbb1wflLv7lBCPm8u2+MGsYvsJKqZnS96n3ly5jvDqMHntNJK3bE670/SxCtUN2WCSdXxk27hTAh7pbDSysta5kOITmcEXVLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116448; c=relaxed/simple;
-	bh=Qk/JU/+a/TLzm5e/pnT+TeyV1rY5IgW4V5LPVZo7GzU=;
+	s=arc-20240116; t=1744114961; c=relaxed/simple;
+	bh=8XMZReQYNx8dATsrY7EqnIsl199ixr2LKMf/eMdbFR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRxRmI9yK/+TMTdkvoJU/dN3PDB8V1p8EwnQ3ngSu/lIZE7LXZFGvAAjW3YD5hNDB8X6Qqs3gI258sLDLJcdNcOlpl6WtgoHtpQI0Mov92sRWqsDCNR0ysrv/11FBbBNAA4LPdS6nE8VWDGBcowoN+b7MpptDvuEUoC7Ak9+gXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrVyFDwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBC0C4CEE5;
-	Tue,  8 Apr 2025 12:47:27 +0000 (UTC)
+	 MIME-Version; b=qA1cNW9TC+s3xUvnknh8Q0hs0XeYd8mNO5F9XfrgtgnuYnwG3HUDI6UM3KdJ/0JjWFFX2Ee7QgGR91qajkTqrNdKMt+9LWuGclyoahUnJawUACVaoQiiD1i+G8UlWqpMFdWYrxktqEImPydPsfhdEp9hyX6gxEf4OxYdOgkRkwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mg9EptXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89285C4CEE5;
+	Tue,  8 Apr 2025 12:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116447;
-	bh=Qk/JU/+a/TLzm5e/pnT+TeyV1rY5IgW4V5LPVZo7GzU=;
+	s=korg; t=1744114961;
+	bh=8XMZReQYNx8dATsrY7EqnIsl199ixr2LKMf/eMdbFR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrVyFDwun9fUoluSsO11eST4qVSFCTe5xM5gQLbZWJ5FTimJEREcBxwTZeY9Cr4MA
-	 kGK9uFiVovOrzGNNuNT3ICiZyWEjxoutjW5QrcZVCUro22+BbwvU3wypDXVhNmRSeq
-	 wBKRjw5wDKwV8ns/+zMwEPoE4Rvu8h1pBcYSm/8U=
+	b=mg9EptXDYlEEAM5u8xZLx6sMA3GJnxNv5IaEPjtBzhpw7Mo2MpeDbWm55S1wnEFks
+	 4CGvC0T5+EeFqEuVkWjh9LhnBFdiO2VHlJj+fi/SEQitblbipGfC0J7X0h0vpAlu1y
+	 KNFvMghbdT+HU0UM8IHXwr9LVm0P0FfI8ekad8zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bairavi Alagappan <bairavix.alagappan@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/423] crypto: qat - remove access to parity register for QAT GEN4
+Subject: [PATCH 6.13 259/499] perf python: Check if there is space to copy all the event
 Date: Tue,  8 Apr 2025 12:47:51 +0200
-Message-ID: <20250408104849.109058504@linuxfoundation.org>
+Message-ID: <20250408104857.672055085@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bairavi Alagappan <bairavix.alagappan@intel.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 92c6a707d82f0629debf1c21dd87717776d96af2 ]
+[ Upstream commit 89aaeaf84231157288035b366cb6300c1c6cac64 ]
 
-The firmware already handles parity errors reported by the accelerators
-by clearing them through the corresponding SSMSOFTERRORPARITY register.
-To ensure consistent behavior and prevent race conditions between the
-driver and firmware, remove the logic that checks the SSMSOFTERRORPARITY
-registers.
+The pyrf_event__new() method copies the event obtained from the perf
+ring buffer to a structure that will then be turned into a python object
+for further consumption, so it copies perf_event.header.size bytes to
+its 'event' member:
 
-Additionally, change the return type of the function
-adf_handle_rf_parr_err() to void, as it consistently returns false.
-Parity errors are recoverable and do not necessitate a device reset.
+  $ pahole -C pyrf_event /tmp/build/perf-tools-next/python/perf.cpython-312-x86_64-linux-gnu.so
+  struct pyrf_event {
+  	PyObject                   ob_base;              /*     0    16 */
+  	struct evsel *             evsel;                /*    16     8 */
+  	struct perf_sample         sample;               /*    24   312 */
 
-Fixes: 895f7d532c84 ("crypto: qat - add handling of errors from ERRSOU2 for QAT GEN4")
-Signed-off-by: Bairavi Alagappan <bairavix.alagappan@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  	/* XXX last struct has 7 bytes of padding, 2 holes */
+
+  	/* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
+  	union perf_event           event;                /*   336  4168 */
+
+  	/* size: 4504, cachelines: 71, members: 4 */
+  	/* member types with holes: 1, total: 2 */
+  	/* paddings: 1, sum paddings: 7 */
+  	/* last cacheline: 24 bytes */
+  };
+
+  $
+
+It was doing so without checking if the event just obtained has more
+than that space, fix it.
+
+This isn't a proper, final solution, as we need to support larger
+events, but for the time being we at least bounds check and document it.
+
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-7-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_common/adf_gen4_ras.c       | 57 ++-----------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+ tools/perf/util/python.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-index bf0ea09faa650..0f7f00a19e7dc 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-@@ -1043,63 +1043,16 @@ static bool adf_handle_ssmcpppar_err(struct adf_accel_dev *accel_dev,
- 	return reset_required;
- }
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 3453d150fd237..56b174d8ed9c0 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -512,6 +512,11 @@ static PyObject *pyrf_event__new(union perf_event *event)
+ 	      event->header.type == PERF_RECORD_SWITCH_CPU_WIDE))
+ 		return NULL;
  
--static bool adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
-+static void adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
- 				   void __iomem *csr, u32 iastatssm)
- {
--	struct adf_dev_err_mask *err_mask = GET_ERR_MASK(accel_dev);
--	u32 reg;
--
- 	if (!(iastatssm & ADF_GEN4_IAINTSTATSSM_SSMSOFTERRORPARITY_BIT))
--		return false;
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC);
--	reg &= ADF_GEN4_SSMSOFTERRORPARITY_SRC_BIT;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH);
--	reg &= err_mask->parerr_ath_cph_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT);
--	reg &= err_mask->parerr_cpr_xlt_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS);
--	reg &= err_mask->parerr_dcpr_ucs_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE);
--	reg &= err_mask->parerr_pke_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE, reg);
--	}
--
--	if (err_mask->parerr_wat_wcp_mask) {
--		reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP);
--		reg &= err_mask->parerr_wat_wcp_mask;
--		if (reg) {
--			ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--			ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP,
--				   reg);
--		}
--	}
-+		return;
- 
-+	ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
- 	dev_err(&GET_DEV(accel_dev), "Slice ssm soft parity error reported");
- 
--	return false;
-+	return;
- }
- 
- static bool adf_handle_ser_err_ssmsh(struct adf_accel_dev *accel_dev,
-@@ -1171,8 +1124,8 @@ static bool adf_handle_iaintstatssm(struct adf_accel_dev *accel_dev,
- 	reset_required |= adf_handle_slice_hang_error(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_spppar_err(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_ssmcpppar_err(accel_dev, csr, iastatssm);
--	reset_required |= adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_ser_err_ssmsh(accel_dev, csr, iastatssm);
-+	adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
- 
- 	ADF_CSR_WR(csr, ADF_GEN4_IAINTSTATSSM, iastatssm);
- 
++	// FIXME this better be dynamic or we need to parse everything
++	// before calling perf_mmap__consume(), including tracepoint fields.
++	if (sizeof(pevent->event) < event->header.size)
++		return NULL;
++
+ 	ptype = pyrf_event__type[event->header.type];
+ 	pevent = PyObject_New(struct pyrf_event, ptype);
+ 	if (pevent != NULL)
 -- 
 2.39.5
 
