@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAC7A8059A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB517A80793
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF29A4A5E76
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EDDF1BA06B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E90D26A0E2;
-	Tue,  8 Apr 2025 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF2826AABC;
+	Tue,  8 Apr 2025 12:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rABjxn/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxO+R8b4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0D269825;
-	Tue,  8 Apr 2025 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19442690D7;
+	Tue,  8 Apr 2025 12:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114129; cv=none; b=ThGSU+REsKVUXTpSgmRebpqTz33tV6sgw46kMeXMQKI+k8GsJONXhCwVCnYUEVRLuuajIof6eSHEEyz3hxCQ9T1uRK6q6rUvodRxLreZa2sg0mBC9z3rFNNMtX/q34+LHroYGh5Sacc0v+O+MlQbBSoxB9LT4PFC3qKKmZzBn14=
+	t=1744115437; cv=none; b=a5804iM12qcfHdTaJtVP5g7pX2ZvKMV6TmR0JXYTFRLUaGpYf+X3JXOkwTXfJ4OLwxqy/+QHONGpmLhQfHlSCkTPVJRmIcXmut4LxBWaiIU2eVCGKMiIXglxUagreYHK4r1/47CX5BxcIQV1oHjDSSJBjGNIVlHU841syeYOJGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114129; c=relaxed/simple;
-	bh=tGkxa3+NQj/ry5jqjVPXvKaJPzd429rcgR8Yk42sJzw=;
+	s=arc-20240116; t=1744115437; c=relaxed/simple;
+	bh=Bgo3ZOhyWPI/p7KdVflzVIOXjCe9K9GpOEEeT5Drc4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2f7dJic5IftYtll8GmxMVGy/tauSwm+NZs6aVf7sFFjJT+Fz1mfRm3si7W9Ia9gh/xTUUXTmiyaesoKEyo6Va6W2FD8AvrHvkpU4aVstWipbk6OGt9AO/TJknN6DaOoDyY/lK5OGhwv/h1MNkD37bVfkEtsUin5AiZQY+eGQHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rABjxn/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28969C4CEE5;
-	Tue,  8 Apr 2025 12:08:48 +0000 (UTC)
+	 MIME-Version; b=Ig02Sj7bUlU7R3N123Q8FbVb2qE7raG52KboB91Uyhn6nYqHXfc2edgmZ5erUmsg0MgwNw8Qo5yF7cw4/n78TpDU5/jRlpKKIKTQbk3FjLy0kyAQpw96u2Xvqgd+AX8R5kjvRRsaWgocUCSNgiiWmCOERNtiaWjgKf4T5IigoGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxO+R8b4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DDEC4CEE5;
+	Tue,  8 Apr 2025 12:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114129;
-	bh=tGkxa3+NQj/ry5jqjVPXvKaJPzd429rcgR8Yk42sJzw=;
+	s=korg; t=1744115437;
+	bh=Bgo3ZOhyWPI/p7KdVflzVIOXjCe9K9GpOEEeT5Drc4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rABjxn/FQFasHuL6A1nd2I/TbWmCIo7YxuyKo23Wpj+1cK8UarFQLWzoKRqCvaeTi
-	 9q4pwj7Dy3y3x3m27RxHeQNmhVpxQOqz/TZIJyoOYCXyRvlpNZ3dsX0wD7oYN8kvS4
-	 8pUJWkqMSbEDe9AGbtPQQ/yiJiyRROdqcvIvxllg=
+	b=sxO+R8b42oGl5Y1PgCyFPy8lnQr8xEL0j7a8QMtW/CKhO7WOfH5RSBiNkYpn+qgsk
+	 ykIu2YuhtmqW+c3oNXkfaTDI28IRJHVkXBBN2IWJfOaIS+mi2Nfc0u2yffdW32yMUz
+	 sT2u299/hvIj+y0wGpos7iG216s1IZRu/hTPigyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 146/154] can: flexcan: only change CAN state when link up in system PM
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Kairui Song <kasong@tencent.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 475/499] tracing: Fix use-after-free in print_graph_function_flags during tracer switching
 Date: Tue,  8 Apr 2025 12:51:27 +0200
-Message-ID: <20250408104819.982947308@linuxfoundation.org>
+Message-ID: <20250408104903.200667019@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit fd99d6ed20234b83d65b9c5417794343577cf3e5 ]
+commit 7f81f27b1093e4895e87b74143c59c055c3b1906 upstream.
 
-After a suspend/resume cycle on a down interface, it will come up as
-ERROR-ACTIVE.
+Kairui reported a UAF issue in print_graph_function_flags() during
+ftrace stress testing [1]. This issue can be reproduced if puting a
+'mdelay(10)' after 'mutex_unlock(&trace_types_lock)' in s_start(),
+and executing the following script:
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
+  $ echo function_graph > current_tracer
+  $ cat trace > /dev/null &
+  $ sleep 5  # Ensure the 'cat' reaches the 'mdelay(10)' point
+  $ echo timerlat > current_tracer
 
-$ sudo systemctl suspend
+The root cause lies in the two calls to print_graph_function_flags
+within print_trace_line during each s_show():
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+  * One through 'iter->trace->print_line()';
+  * Another through 'event->funcs->trace()', which is hidden in
+    print_trace_fmt() before print_trace_line returns.
 
-And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+Tracer switching only updates the former, while the latter continues
+to use the print_line function of the old tracer, which in the script
+above is print_graph_function_flags.
 
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Moreover, when switching from the 'function_graph' tracer to the
+'timerlat' tracer, s_start only calls graph_trace_close of the
+'function_graph' tracer to free 'iter->private', but does not set
+it to NULL. This provides an opportunity for 'event->funcs->trace()'
+to use an invalid 'iter->private'.
+
+To fix this issue, set 'iter->private' to NULL immediately after
+freeing it in graph_trace_close(), ensuring that an invalid pointer
+is not passed to other tracers. Additionally, clean up the unnecessary
+'iter->private = NULL' during each 'cat trace' when using wakeup and
+irqsoff tracers.
+
+ [1] https://lore.kernel.org/all/20231112150030.84609-1-ryncsn@gmail.com/
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Link: https://lore.kernel.org/20250320122137.23635-1-wutengda@huaweicloud.com
+Fixes: eecb91b9f98d ("tracing: Fix memleak due to race between current_tracer and trace")
+Closes: https://lore.kernel.org/all/CAMgjq7BW79KDSCyp+tZHjShSzHsScSiJxn5ffskp-QzVM06fxw@mail.gmail.com/
+Reported-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/flexcan.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/trace_functions_graph.c |    1 +
+ kernel/trace/trace_irqsoff.c         |    2 --
+ kernel/trace/trace_sched_wakeup.c    |    2 --
+ 3 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/flexcan.c b/drivers/net/can/flexcan.c
-index 7ec15cb356c01..69b4318b1a77e 100644
---- a/drivers/net/can/flexcan.c
-+++ b/drivers/net/can/flexcan.c
-@@ -1723,8 +1723,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
- 		}
- 		netif_stop_queue(dev);
- 		netif_device_detach(dev);
-+
-+		priv->can.state = CAN_STATE_SLEEPING;
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -1511,6 +1511,7 @@ void graph_trace_close(struct trace_iter
+ 	if (data) {
+ 		free_percpu(data->cpu_data);
+ 		kfree(data);
++		iter->private = NULL;
  	}
--	priv->can.state = CAN_STATE_SLEEPING;
- 
- 	return err;
  }
-@@ -1735,7 +1736,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	int err = 0;
  
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	if (netif_running(dev)) {
- 		netif_device_attach(dev);
- 		netif_start_queue(dev);
-@@ -1747,6 +1747,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 		} else {
- 			err = flexcan_chip_enable(priv);
- 		}
-+
-+		priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	}
+--- a/kernel/trace/trace_irqsoff.c
++++ b/kernel/trace/trace_irqsoff.c
+@@ -247,8 +247,6 @@ static void irqsoff_trace_open(struct tr
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
  
- 	return err;
--- 
-2.39.5
-
+ static void irqsoff_trace_close(struct trace_iterator *iter)
+--- a/kernel/trace/trace_sched_wakeup.c
++++ b/kernel/trace/trace_sched_wakeup.c
+@@ -184,8 +184,6 @@ static void wakeup_trace_open(struct tra
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
+ 
+ static void wakeup_trace_close(struct trace_iterator *iter)
 
 
 
