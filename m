@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AF3A8034E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C902FA7FEDE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B678F3A7534
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599C03BED52
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8BE22257E;
-	Tue,  8 Apr 2025 11:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041DE26988A;
+	Tue,  8 Apr 2025 11:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoGPllOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkHj9M9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D00A94A;
-	Tue,  8 Apr 2025 11:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55B2269816;
+	Tue,  8 Apr 2025 11:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112942; cv=none; b=MR5xNyGd9ao2kmHwTVb78FiUXrUXEoequKSx6znkJF5UgagkGW7noxtsrVt4U3rXU6Za3DnXs1HAyQLdiDgHMoF/6YdeSSLsSacPGMewH7S6kFh+f31ieKQrXQtjsrvSZBnrRMDkaXdKI1Zc3TJNl04DNcmat/H2fLj4xAp7hLc=
+	t=1744110236; cv=none; b=t8wxWV25dbYR+ezlaEpljua/mLtUcvlh/HPZ8m1pT5RVh/H6DExSFZyP1G2aJf+rdhDNpg7V964WGswrTE8Q3Cl/5YfxCmC1K4rOubAvN3Fo7KTUncdBBDf60OHgfa5Pe+Ey36aP/L8mqBupyWnklLQfRZ783lsCD+VKOcAhh9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112942; c=relaxed/simple;
-	bh=QjIy4301mv9leJz6ftYfTPBZ45308ZQgR+/acAVyPPA=;
+	s=arc-20240116; t=1744110236; c=relaxed/simple;
+	bh=yvpzMc2Yztrm8jbvNbPEyY+F6gG7f7QslcUcopKx1B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvQIFWKsCT7ZD1iAdStvyekTeBn8JXIeu//hQB1liivyE4klvdzIkeTI0jDzdZf65mjGYlUG+LyDf8IhgqkC0ZyliR2xEQN6O1qBPcJxIDXCfCtK+U8yfQpdaUPghdIFhMBEL5CsNMmKwH3mjHHFYRYmKVx1CDrJTHQ7W7wGH0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoGPllOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D4CC4CEE5;
-	Tue,  8 Apr 2025 11:49:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FOEoz97ZnHP2hJvJ7fr3Zd3NU0gx91RlcRXQfNtfc0GCZQGdHDXa//KKtCf3v7rKP78MYMDCaKKZzwVb3fq6+kh2x7gCmudJ764wAN9fHMVnEtZM6quHykOxQzVDxaMK0+ml7npJdPty0bnbt+MHjpMeTOvyRz6tvNG4u0QdQew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkHj9M9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF74C4CEEA;
+	Tue,  8 Apr 2025 11:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112942;
-	bh=QjIy4301mv9leJz6ftYfTPBZ45308ZQgR+/acAVyPPA=;
+	s=korg; t=1744110236;
+	bh=yvpzMc2Yztrm8jbvNbPEyY+F6gG7f7QslcUcopKx1B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoGPllOjxkkia4DA2I9doCjuhu6/mhWVLiRmeV7oLHQx7bXMZPzzeg/tdTL4s1hwc
-	 44kELNCdi4wdEpPx7aHg/o5cMg22RyoWGnSgRzvh+xbUvdSzriTwVCWWkHgeRUQHgP
-	 A/Nxdzss0AtKxcbmieuzXGERQQ+A7nh9vKqKR/Ow=
+	b=MkHj9M9AGwTB93XEvWP6WN/tY73Hz+EmGlUb4FmIpMegMeO3Ub6g6dSjbTHym78ze
+	 Vmx1A3tTFbDZPCRAAJqbJz2OxyNL/JciE05UUImv7IXKtBYxF8b4N+KPvvY6FN8ggD
+	 Axyfe2jBbQors/zfTnjWSZNR2+zZXksgY74lFlM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 206/279] perf python: Fixup description of sample.id event member
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 5.10 211/227] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
 Date: Tue,  8 Apr 2025 12:49:49 +0200
-Message-ID: <20250408104831.902806718@linuxfoundation.org>
+Message-ID: <20250408104826.643034692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
+commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
 
-Some old cut'n'paste error, its "ip", so the description should be
-"event ip", not "event type".
+The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
+The same call was immediately triggered by a subsequent goto statement.
+Thus avoid such a call repetition.
 
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was detected by using the Coccinelle software.
+
+Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/python.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ntb/test/ntb_perf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 8feef3a05af7b..13d65a3cc6d7d 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -158,7 +158,7 @@ struct pyrf_event {
- };
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
+ 	dma_set_unmap(tx, unmap);
  
- #define sample_members \
--	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
-+	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
- 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
- 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
- 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
--- 
-2.39.5
-
+ 	ret = dma_submit_error(dmaengine_submit(tx));
+-	if (ret) {
+-		dmaengine_unmap_put(unmap);
++	if (ret)
+ 		goto err_free_resource;
+-	}
+ 
+ 	dmaengine_unmap_put(unmap);
+ 
 
 
 
