@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-131537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56883A80AB7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCEEA80667
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033041BA3058
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26B347AFA9B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7FF26A1BB;
-	Tue,  8 Apr 2025 12:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAE2267B65;
+	Tue,  8 Apr 2025 12:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY6dxJZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDfjA4M/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC761EA65;
-	Tue,  8 Apr 2025 12:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19280206F18;
+	Tue,  8 Apr 2025 12:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116663; cv=none; b=D5WLRQrpPPaBzcCyp4kRx7Rlp70hHSfMuiBvn2y7M3Knd/B8j8PPbrk9Zz44N3ElmhnGdb6WErrEUuLI7oGcRd9mIOHlx+NtgzOkDygrvXNgqGuaJkCVKmGGxq1eI2ic7WX69HdPJmeC5RofFTP9A3tSoTO8WktL09aB3dX8HM4=
+	t=1744114937; cv=none; b=Qqlb2MwmLYGDcgchGvAtMY52OD+/Il2bOLshCGfUFsdgOnpYGT95ag37KLZi3a0jcf1s7AfWxapghytRjwAy9T5sQWxNCqO8FvqMMFMxxyQbd9x1XzL+OzY4I7E7z/xsbVmtkxcSmSp32mJF0aXxijG4rv6zg+dym0Sj+Vujqvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116663; c=relaxed/simple;
-	bh=mztKNyjnxyMvzmaAe4yTv+4c0bcl7yYthU8h43AgbXw=;
+	s=arc-20240116; t=1744114937; c=relaxed/simple;
+	bh=K9inVwYrVV9IF533pB4r85Q270iX2LjwzaUXgrrZ5OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBLeRcVW4CVtPM510ANnlz9/tFMOrmG6xiceqRzulVdHOqLIL8EdyqzkNAJ51ya+aMBw2+Dx9N0NIpOGayPXDkE7jhDrFwJfyhg6oJUfwDTXwrQQtS6q293WIbo+H7zvFo8z4G5bAaTydkRsHMc4T6Uz0Idx3wgL18TzNz1xo5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY6dxJZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D50FC4CEE5;
-	Tue,  8 Apr 2025 12:51:03 +0000 (UTC)
+	 MIME-Version; b=XBRrQJc1vu+CrVcHhnhMKYSAeSrQFvPtrOoL0jwVCPWWPLilEqCrM7ppPkZF3509OPcdXE96QIJU/2HHshH8TaQAt8CRQxAz8IluyFkjZ3prrpzDUbgYEMo0nHSgjQFY3OZVR46Cj5c4S9NiXAYKaiz8L3CtjyLMqKDzhrGG0xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDfjA4M/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1674C4CEE5;
+	Tue,  8 Apr 2025 12:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116663;
-	bh=mztKNyjnxyMvzmaAe4yTv+4c0bcl7yYthU8h43AgbXw=;
+	s=korg; t=1744114937;
+	bh=K9inVwYrVV9IF533pB4r85Q270iX2LjwzaUXgrrZ5OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zY6dxJZW7rEoqtFDgSIBbtLz8sqbduEzB1sPaIZY+5OCFtMgsoxWTJurIZUQvnonn
-	 uwRkExihoR5tbSTD/2TX8JzFDOnQ6onYOjL16ofkghbAVEiErVc1ft43HujoUFfW84
-	 1rvqf+kf3HQUThBYmti/f/n9hecD20bUgIs2oPCI=
+	b=SDfjA4M/naDV5BnSGIRgPOJP1koCSOitZjv7MVDdU/6RKujDQUsnhZxkHuTZHxt2f
+	 xqM/IuX4xzTuQAQJWV1KlI4pLDcWD+3pA976zQYM+wF9BeHxaYYyHPGu1nzjPAavgr
+	 dyC9714N65hOPDuyxKKdhZEU74OPfh7g9cnsesGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Winston Wen <wentao@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/423] perf pmu: Dont double count common sysfs and json events
-Date: Tue,  8 Apr 2025 12:48:20 +0200
-Message-ID: <20250408104849.798385076@linuxfoundation.org>
+Subject: [PATCH 6.13 289/499] LoongArch: Rework the arch_kgdb_breakpoint() implementation
+Date: Tue,  8 Apr 2025 12:48:21 +0200
+Message-ID: <20250408104858.424055380@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-[ Upstream commit c9d699e10fa6c0cdabcddcf991e7ff42af6b2503 ]
+[ Upstream commit 29c92a41c6d2879c1f62220fe4758dce191bb38f ]
 
-After pmu_add_cpu_aliases() is called, perf_pmu__num_events() returns an
-incorrect value that double counts common events and doesn't match the
-actual count of events in the alias list. This is because after
-'cpu_aliases_added == true', the number of events returned is
-'sysfs_aliases + cpu_json_aliases'. But when adding 'case
-EVENT_SRC_SYSFS' events, 'sysfs_aliases' and 'cpu_json_aliases' are both
-incremented together, failing to account that these ones overlap and
-only add a single item to the list. Fix it by adding another counter for
-overlapping events which doesn't influence 'cpu_json_aliases'.
+The arch_kgdb_breakpoint() function defines the kgdb_breakinst symbol
+using inline assembly.
 
-There doesn't seem to be a current issue because it's used in perf list
-before pmu_add_cpu_aliases() so the correct value is returned. Other
-uses in tests may also miss it for other reasons like only looking at
-uncore events. However it's marked as a fixes commit in case any new fix
-with new uses of perf_pmu__num_events() is backported.
+1. There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_breakinst
+symbol multiple times, leading to a linker error.
 
-Fixes: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250226104111.564443-3-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+To prevent this, declare arch_kgdb_breakpoint() as noinline.
+
+Fix follow error with LLVM-19 *only* when LTO_CLANG_FULL:
+    LD      vmlinux.o
+  ld.lld-19: error: ld-temp.o <inline asm>:3:1: symbol 'kgdb_breakinst' is already defined
+  kgdb_breakinst: break 2
+  ^
+
+2. Remove "nop" in the inline assembly because it's meaningless for
+LoongArch here.
+
+3. Add "STACK_FRAME_NON_STANDARD" for arch_kgdb_breakpoint() to avoid
+the objtool warning.
+
+Fixes: e14dd076964e ("LoongArch: Add basic KGDB & KDB support")
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 7 ++++---
- tools/perf/util/pmu.h | 5 +++++
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/loongarch/kernel/kgdb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index ed893c3c6ad93..8b4e346808b4c 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -593,7 +593,7 @@ static int perf_pmu__new_alias(struct perf_pmu *pmu, const char *name,
- 			};
- 			if (pmu_events_table__find_event(pmu->events_table, pmu, name,
- 							 update_alias, &data) == 0)
--				pmu->cpu_json_aliases++;
-+				pmu->cpu_common_json_aliases++;
- 		}
- 		pmu->sysfs_aliases++;
- 		break;
-@@ -1807,9 +1807,10 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
- 	if (pmu->cpu_aliases_added)
- 		 nr += pmu->cpu_json_aliases;
- 	else if (pmu->events_table)
--		nr += pmu_events_table__num_events(pmu->events_table, pmu) - pmu->cpu_json_aliases;
-+		nr += pmu_events_table__num_events(pmu->events_table, pmu) -
-+			pmu->cpu_common_json_aliases;
- 	else
--		assert(pmu->cpu_json_aliases == 0);
-+		assert(pmu->cpu_json_aliases == 0 && pmu->cpu_common_json_aliases == 0);
- 
- 	return pmu->selectable ? nr + 1 : nr;
+diff --git a/arch/loongarch/kernel/kgdb.c b/arch/loongarch/kernel/kgdb.c
+index 445c452d72a79..7be5b4c0c9002 100644
+--- a/arch/loongarch/kernel/kgdb.c
++++ b/arch/loongarch/kernel/kgdb.c
+@@ -8,6 +8,7 @@
+ #include <linux/hw_breakpoint.h>
+ #include <linux/kdebug.h>
+ #include <linux/kgdb.h>
++#include <linux/objtool.h>
+ #include <linux/processor.h>
+ #include <linux/ptrace.h>
+ #include <linux/sched.h>
+@@ -224,13 +225,13 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->csr_era = pc;
  }
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index 4397c48ad569a..bcd278b9b546f 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -131,6 +131,11 @@ struct perf_pmu {
- 	uint32_t cpu_json_aliases;
- 	/** @sys_json_aliases: Number of json event aliases loaded matching the PMU's identifier. */
- 	uint32_t sys_json_aliases;
-+	/**
-+	 * @cpu_common_json_aliases: Number of json events that overlapped with sysfs when
-+	 * loading all sysfs events.
-+	 */
-+	uint32_t cpu_common_json_aliases;
- 	/** @sysfs_aliases_loaded: Are sysfs aliases loaded from disk? */
- 	bool sysfs_aliases_loaded;
- 	/**
+ 
+-void arch_kgdb_breakpoint(void)
++noinline void arch_kgdb_breakpoint(void)
+ {
+ 	__asm__ __volatile__ (			\
+ 		".globl kgdb_breakinst\n\t"	\
+-		"nop\n"				\
+ 		"kgdb_breakinst:\tbreak 2\n\t"); /* BRK_KDB = 2 */
+ }
++STACK_FRAME_NON_STANDARD(arch_kgdb_breakpoint);
+ 
+ /*
+  * Calls linux_debug_hook before the kernel dies. If KGDB is enabled,
 -- 
 2.39.5
 
