@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B0CA80488
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F88EA806B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC2F3BDB0A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 567347AA3F3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D8269AE4;
-	Tue,  8 Apr 2025 11:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A78626B2AC;
+	Tue,  8 Apr 2025 12:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgCENoVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnqA3BN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A746426869D;
-	Tue,  8 Apr 2025 11:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA91D26B2A3;
+	Tue,  8 Apr 2025 12:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113532; cv=none; b=AUOm06NFj6KZedFrcTECT/B76ncDCggvc21FzU8X1FalW5vm0BzzhUpFYY7jGq+YZAxhkoJvJmcf1VDT4W55EU1Mi4FVVFyLjD1TEtpvIu0n+NT0uI3bioao6Wl9u75KYQZbq0izAwuZkWeKCQ++GvpnALzhqY4O612YuemARzI=
+	t=1744115107; cv=none; b=ZX4U/mjWhYq+RT2MnvBiDNNlVb2Wjqy6J4mqRdE6xKDat7+W9GLEz/w5gxU5+uZlotTqspkMB7+y3w1OBzRCnQ7b++gdUxFU6yV02KZ1ZshPFyML+1F7pvF4B5Dk213oQcefJzU7Y/aNj5uNDweHgtAteGCkNpQN1j7oDOCoSU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113532; c=relaxed/simple;
-	bh=tC0U0yFGfX11gMaWihfxP+yfhaFTy3Ur7u1rc3L2ah0=;
+	s=arc-20240116; t=1744115107; c=relaxed/simple;
+	bh=OX6hgk58lEqsi4MlrwInEWktx+hKSh83bpyVIypg1dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sswkJGuF5+v86gO0xVImQ2uA9GP8jfsYQdbzuzvtYOoN96iUMDIV7GnoTQzB6/SvGTSkpct8ZmKUpwKXWeVDesHNY+7S1OrAFKzu+sAxeG75BhubOT+O9x92YQhR6uTygO/uKEJcll0gK18fiH2dH0SC1YW5n8gLKx0aSUnwkP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgCENoVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEE5C4CEE5;
-	Tue,  8 Apr 2025 11:58:51 +0000 (UTC)
+	 MIME-Version; b=ULMUr9SvxIUyX4x39ErfczdBhfAzVdf5JPQHP/y4x6IsIy3W9DxLO8zF7dWGI1126N+U9gxjynYXKiAdgwx45B7Yj4R5FqPKduo9rHo57kjoYWzOomOXIvVSo6zRBmbEsvdG/OUNPgl2xRxQxpVgUB2E8KRFnivu6x48RoeTm1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnqA3BN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB5DC4CEE5;
+	Tue,  8 Apr 2025 12:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113532;
-	bh=tC0U0yFGfX11gMaWihfxP+yfhaFTy3Ur7u1rc3L2ah0=;
+	s=korg; t=1744115107;
+	bh=OX6hgk58lEqsi4MlrwInEWktx+hKSh83bpyVIypg1dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgCENoVjOAL1+it28wgUeengWFOrg1g9Fj4Xiv4EhoVzPJ/dl7zmHxQI8/fVH0jCZ
-	 DobsLrIS4+ilJN/5U0THq+9IdaV75ZWFBjhW4DJ9DtCuYy2jOneFCUJ3Y8fq7kL/kC
-	 61F4HFOr4AqYY/vxeQzFOVllBlamiDHa0O3IosnE=
+	b=wnqA3BN0L0VDGEx9zi0ezPCyH3JgZ9DUAl1jzRWIGZhJ2+iMAD8R9C6ebujblzsdN
+	 Uu3sYNfGxCm4qbn8BX/lZcw9DXbtaNwyYbKwbZmBThBPXwr4uq7xEMK5P4MNF0V315
+	 njtzuV72mG/21u+LJYmc77JArtZ/kHGuvdi5qeZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Winston Wen <wentao@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/268] LoongArch: Rework the arch_kgdb_breakpoint() implementation
+Subject: [PATCH 6.13 353/499] rtc: renesas-rtca3: Disable interrupts only if the RTC is enabled
 Date: Tue,  8 Apr 2025 12:49:25 +0200
-Message-ID: <20250408104832.693098894@linuxfoundation.org>
+Message-ID: <20250408104900.033826995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 29c92a41c6d2879c1f62220fe4758dce191bb38f ]
+[ Upstream commit 27b2fcbd6b98204b0dce62e9aa9540ca0a2b70f1 ]
 
-The arch_kgdb_breakpoint() function defines the kgdb_breakinst symbol
-using inline assembly.
+If the RTC is not enabled and the code attempts to disable the interrupt,
+the readb_poll_timeout_atomic() function in the
+rtca3_alarm_irq_set_helper() may timeout, leading to probe failures.
+This issue is reproducible on some devices because the initial values of
+the PIE and AIE bits in the RCR1 register are undefined.
 
-1. There's a potential issue where the compiler might inline
-arch_kgdb_breakpoint(), which would then define the kgdb_breakinst
-symbol multiple times, leading to a linker error.
+To prevent probe failures in this scenario, disable RTC interrupts only
+when the RTC is actually enabled.
 
-To prevent this, declare arch_kgdb_breakpoint() as noinline.
-
-Fix follow error with LLVM-19 *only* when LTO_CLANG_FULL:
-    LD      vmlinux.o
-  ld.lld-19: error: ld-temp.o <inline asm>:3:1: symbol 'kgdb_breakinst' is already defined
-  kgdb_breakinst: break 2
-  ^
-
-2. Remove "nop" in the inline assembly because it's meaningless for
-LoongArch here.
-
-3. Add "STACK_FRAME_NON_STANDARD" for arch_kgdb_breakpoint() to avoid
-the objtool warning.
-
-Fixes: e14dd076964e ("LoongArch: Add basic KGDB & KDB support")
-Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Co-developed-by: Winston Wen <wentao@uniontech.com>
-Signed-off-by: Winston Wen <wentao@uniontech.com>
-Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: d4488377609e ("rtc: renesas-rtca3: Add driver for RTCA-3 available on Renesas RZ/G3S SoC")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250205095519.2031742-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/kgdb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-renesas-rtca3.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/arch/loongarch/kernel/kgdb.c b/arch/loongarch/kernel/kgdb.c
-index 445c452d72a79..7be5b4c0c9002 100644
---- a/arch/loongarch/kernel/kgdb.c
-+++ b/arch/loongarch/kernel/kgdb.c
-@@ -8,6 +8,7 @@
- #include <linux/hw_breakpoint.h>
- #include <linux/kdebug.h>
- #include <linux/kgdb.h>
-+#include <linux/objtool.h>
- #include <linux/processor.h>
- #include <linux/ptrace.h>
- #include <linux/sched.h>
-@@ -224,13 +225,13 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- 	regs->csr_era = pc;
- }
+diff --git a/drivers/rtc/rtc-renesas-rtca3.c b/drivers/rtc/rtc-renesas-rtca3.c
+index d127933bfc8ad..598bf943cc5b6 100644
+--- a/drivers/rtc/rtc-renesas-rtca3.c
++++ b/drivers/rtc/rtc-renesas-rtca3.c
+@@ -586,17 +586,14 @@ static int rtca3_initial_setup(struct clk *clk, struct rtca3_priv *priv)
+ 	 */
+ 	usleep_range(sleep_us, sleep_us + 10);
  
--void arch_kgdb_breakpoint(void)
-+noinline void arch_kgdb_breakpoint(void)
- {
- 	__asm__ __volatile__ (			\
- 		".globl kgdb_breakinst\n\t"	\
--		"nop\n"				\
- 		"kgdb_breakinst:\tbreak 2\n\t"); /* BRK_KDB = 2 */
- }
-+STACK_FRAME_NON_STANDARD(arch_kgdb_breakpoint);
+-	/* Disable all interrupts. */
+-	mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
+-	ret = rtca3_alarm_irq_set_helper(priv, mask, 0);
+-	if (ret)
+-		return ret;
+-
+ 	mask = RTCA3_RCR2_START | RTCA3_RCR2_HR24;
+ 	val = readb(priv->base + RTCA3_RCR2);
+-	/* Nothing to do if already started in 24 hours and calendar count mode. */
+-	if ((val & mask) == mask)
+-		return 0;
++	/* Only disable the interrupts if already started in 24 hours and calendar count mode. */
++	if ((val & mask) == mask) {
++		/* Disable all interrupts. */
++		mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
++		return rtca3_alarm_irq_set_helper(priv, mask, 0);
++	}
  
- /*
-  * Calls linux_debug_hook before the kernel dies. If KGDB is enabled,
+ 	/* Reconfigure the RTC in 24 hours and calendar count mode. */
+ 	mask = RTCA3_RCR2_START | RTCA3_RCR2_CNTMD;
 -- 
 2.39.5
 
