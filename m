@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-129875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61805A80163
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842CDA803CC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE59A7A7FBA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFB8E19E5360
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8356224AEB;
-	Tue,  8 Apr 2025 11:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9389F269B0E;
+	Tue,  8 Apr 2025 11:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGrnsQYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4gAaJuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AC0227EBD;
-	Tue,  8 Apr 2025 11:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA892698BE;
+	Tue,  8 Apr 2025 11:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112213; cv=none; b=d08hgyuBI1MIL4hpvtivk6WBuOgsx2eCsfeABmSrDWqrhi+BuTdfyP8psZJRehNRXle+8R0umXyNt+9l95V7WIXzO9ccD+HA6ZQT77mnpOzVUzbQbpD8PRnzPsX1H7PleW0eqm45A7U9kRNfxYsF8vMBAuRGu3v9Off4ViIXYNU=
+	t=1744113457; cv=none; b=Y+rRLsfQlnh0/PdiN+Ccz//7YQI7khziU7/jP1gdaEYFYSV7jztQdSU+IQuwevaMqbmFKGK46DgFh32nsJmTqav8ned/v0W+gVoapi+A/RLan4VUomZNiyGS/817lvm5nXUR1JOphgOXJiuDw4iarJu+ebvE37k+MeLel2XN/Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112213; c=relaxed/simple;
-	bh=a4nIaeQ8Kep0mS7vPnZwwVXXqEzQAGQd1UMxO9adHJ8=;
+	s=arc-20240116; t=1744113457; c=relaxed/simple;
+	bh=2kK3MX/Nlq9S4dzIVGGkiWHToNFButd7TZHxjBI8JNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czDz+TYa5rR1R/fAxUqeK4B5xbtOD17AnmIJIoWAs58r51NptHrKEOUP38wQSgIndFk/UQPgqkhVQ/O4K5aVaM3K2NWvXnwwvHODM6kwc8t32+3smBl7ufdvPmMgGOaBQ3PfkUJDFQ8v7gPvoY7/ehLPd6fQYOURGQVkSZEjOIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGrnsQYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C416C4CEE5;
-	Tue,  8 Apr 2025 11:36:52 +0000 (UTC)
+	 MIME-Version; b=nSwR+Dh3K0FL+GwduRVCQCjxtvKbH5KjtMiF90kIYEpnxUF0bqDbSxaIvPPORizVlWBeX6TD9rCOBabf4fzHcPnjcAsXF4/GXWwl+t0Kj9KZ547a6IsMdUcM46fPc9k4NV5c6nhAfP1+ptKKf/bk8N5QIrU8HjHN2J6rcGXl5d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4gAaJuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1958C4CEEA;
+	Tue,  8 Apr 2025 11:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112213;
-	bh=a4nIaeQ8Kep0mS7vPnZwwVXXqEzQAGQd1UMxO9adHJ8=;
+	s=korg; t=1744113457;
+	bh=2kK3MX/Nlq9S4dzIVGGkiWHToNFButd7TZHxjBI8JNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGrnsQYf5ogwz1GujJsQJxdaTEvUArtWhfWSiHy6U0a/vCrZx77d0giFxuR81SaQC
-	 Aj7FnpmwXgCgPnYaoudbtliGCyqxcGSaNHwu8yfatd+Cv3ewGBfYhoUxfWYHFc17Du
-	 uhEDKXzty9iSjfTMv8w/6VgxSeWAjcKAdn5cr9+4=
+	b=M4gAaJuEIawrKrd7Tr1Fofyc6GvUt3GLRiVqQE9pqAkgSS/+tfscp0s0uk3+imQHI
+	 euuoM0P3aF0WRR2TCK6kNPCLh6cU6iSpnChmTmuk9OZ10tUEDgHQMEUuVtUmkEfv3f
+	 UHxd2xiILPe1z7YNKraaejGSjocc01bOZXuDdBlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: [PATCH 6.14 680/731] uprobes/x86: Harden uretprobe syscall trampoline check
-Date: Tue,  8 Apr 2025 12:49:37 +0200
-Message-ID: <20250408104930.084971030@linuxfoundation.org>
+	Matthias Proske <email@matthias-proske.de>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/268] wifi: brcmfmac: keep power during suspend if board requires it
+Date: Tue,  8 Apr 2025 12:49:38 +0200
+Message-ID: <20250408104833.053021454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Matthias Proske <email@matthias-proske.de>
 
-commit fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0 upstream.
+[ Upstream commit 8c3170628a9ce24a59647bd24f897e666af919b8 ]
 
-Jann reported a possible issue when trampoline_check_ip returns
-address near the bottom of the address space that is allowed to
-call into the syscall if uretprobes are not set up:
+After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
+unless WOWL is used"), the wifi adapter by default is turned off on
+suspend and then re-probed on resume.
 
-   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+This conflicts with some embedded boards that require to remain powered.
+They will fail on resume with:
 
-Though the mmap minimum address restrictions will typically prevent
-creating mappings there, let's make sure uretprobe syscall checks
-for that.
+brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
+ieee80211 phy1: brcmf_bus_started: failed: -110
+ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
+brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
 
-Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit checks for the Device Tree property 'cap-power-off-cards'.
+If this property is not set, it means that we do not have the capability
+to power off and should therefore remain powered.
+
+Signed-off-by: Matthias Proske <email@matthias-proske.de>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250212185941.146958-2-email@matthias-proske.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/uprobes.c |   14 +++++++++-----
- include/linux/uprobes.h   |    2 ++
- kernel/events/uprobes.c   |    2 +-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned lo
- 	return &insn;
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 7710367c319ec..14f3c4900f56c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -1167,6 +1167,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	struct brcmf_bus *bus_if;
+ 	struct brcmf_sdio_dev *sdiodev;
+ 	mmc_pm_flag_t sdio_flags;
++	bool cap_power_off;
+ 	int ret = 0;
  
--static unsigned long trampoline_check_ip(void)
-+static unsigned long trampoline_check_ip(unsigned long tramp)
- {
--	unsigned long tramp = uprobe_get_trampoline_vaddr();
--
- 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
- }
+ 	func = container_of(dev, struct sdio_func, dev);
+@@ -1174,19 +1175,23 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	if (func->num != 1)
+ 		return 0;
  
- SYSCALL_DEFINE0(uretprobe)
- {
- 	struct pt_regs *regs = task_pt_regs(current);
--	unsigned long err, ip, sp, r11_cx_ax[3];
-+	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++	cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 
+ 	bus_if = dev_get_drvdata(dev);
+ 	sdiodev = bus_if->bus_priv.sdio;
+ 
+-	if (sdiodev->wowl_enabled) {
++	if (sdiodev->wowl_enabled || !cap_power_off) {
+ 		brcmf_sdiod_freezer_on(sdiodev);
+ 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+ 
+ 		sdio_flags = MMC_PM_KEEP_POWER;
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
+-			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+-		else
+-			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
 +
-+	/* If there's no trampoline, we are called from wrong place. */
-+	tramp = uprobe_get_trampoline_vaddr();
-+	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
-+		goto sigill;
++		if (sdiodev->wowl_enabled) {
++			if (sdiodev->settings->bus.sdio.oob_irq_supported)
++				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
++			else
++				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++		}
  
--	if (regs->ip != trampoline_check_ip())
-+	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
-+	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
- 		goto sigill;
+ 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
+ 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+@@ -1208,18 +1213,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
+ 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+ 	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
+ 	int ret = 0;
++	bool cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
  
- 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -39,6 +39,8 @@ struct page;
+ 	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
+ 	if (func->num != 2)
+ 		return 0;
  
- #define MAX_URETPROBE_DEPTH		64
+-	if (!sdiodev->wowl_enabled) {
++	if (!sdiodev->wowl_enabled && cap_power_off) {
+ 		/* bus was powered off and device removed, probe again */
+ 		ret = brcmf_sdiod_probe(sdiodev);
+ 		if (ret)
+ 			brcmf_err("Failed to probe device on resume\n");
+ 	} else {
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
++		if (sdiodev->wowl_enabled && sdiodev->settings->bus.sdio.oob_irq_supported)
+ 			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
  
-+#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
-+
- struct uprobe_consumer {
- 	/*
- 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2180,8 +2180,8 @@ void uprobe_copy_process(struct task_str
-  */
- unsigned long uprobe_get_trampoline_vaddr(void)
- {
-+	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
- 	struct xol_area *area;
--	unsigned long trampoline_vaddr = -1;
- 
- 	/* Pairs with xol_add_vma() smp_store_release() */
- 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+ 		brcmf_sdiod_freezer_off(sdiodev);
+-- 
+2.39.5
+
 
 
 
