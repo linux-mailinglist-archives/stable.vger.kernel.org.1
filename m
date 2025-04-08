@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92736A80787
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4A9A80587
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5118A340D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B19E8849A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731D426FA44;
-	Tue,  8 Apr 2025 12:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23D426A0CF;
+	Tue,  8 Apr 2025 12:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dndoLMFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI5wULa/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A8F269D08;
-	Tue,  8 Apr 2025 12:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6325AA94A;
+	Tue,  8 Apr 2025 12:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115322; cv=none; b=kEESVJCppb8KqoFs6hmTgaXK0qBzBeFkEFi3eqD7CdhYrNxy/mHz1hGunzRLsRc3thkcNXnNVLaDa/oSLUx7P8/YpgO1cSs6dcZGufYCa63+tjzFYtf9WYTFbikes+l1S1IPPAiF7KO/Z3RtMTkFUZhBIrxgvQMQlUrxyu35+EQ=
+	t=1744114015; cv=none; b=MLpJ+1XaPNAIWjbo1YLAHlwGvJ1m7zq+NOv25DuLNbNa2KCeoFKg8KwubqcPzzYJj74iirm/DH/PzMWGBHgbjBxhHOIlwQSvzzuyGM9l0Ojo5b4w2IaBTGOnHymuHCfdeBcagGwV5jpqM7yogRVNwfOTRLfR6s8am69lWzdxWio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115322; c=relaxed/simple;
-	bh=UUya+A2CucvhjxRjAXawOWOfBdq5WpMoptCjRp+6Gbw=;
+	s=arc-20240116; t=1744114015; c=relaxed/simple;
+	bh=IzX4CLeOskOh3qWUQa3yZQbaEhixITC/TJKlJTtcIfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXuXY9C3SDTuYWyf3GGBYC6Nr60bXOb4K57EYtvTLtIKI0rL9rzq1PdznpxaCm1kXhhfgrIZUmRnxsLl/9aJspyFa2xe3roa49B8nxJ42+TIXDHKRVdpY21Kybgx0xUO8sG98GyX3g+FDS+pIxg2LMQy0BwRVccGRFJ1CUahYe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dndoLMFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB31C4CEE7;
-	Tue,  8 Apr 2025 12:28:41 +0000 (UTC)
+	 MIME-Version; b=qIs7ZqWDpFGjH3tHowSP+2OLMXfsJ6WNc9y9E1LiBgUr2jQNzAfgc1akStGSFlR4KVKERZhoshWShXLm2B+xc/irRJBP6wjk4g6f/ffCCOk2bhueD8XKaefHzVAQflqWLzGbh/4ROm3oJrS22tUndSZsvBQA5mvErexmMrpyQ9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI5wULa/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9C7C4CEE5;
+	Tue,  8 Apr 2025 12:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115322;
-	bh=UUya+A2CucvhjxRjAXawOWOfBdq5WpMoptCjRp+6Gbw=;
+	s=korg; t=1744114015;
+	bh=IzX4CLeOskOh3qWUQa3yZQbaEhixITC/TJKlJTtcIfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dndoLMFxWflWDoL76fZdQndma+SzRxcUq4e8QnwachaZaNa1zWSeGWF7kgzpIbs1k
-	 RR2NOCHpU92XT1XB/ISydGZZbDwHqturSDw0H3NLfdY+gmLlTO8mttTxRV8SRnzuNq
-	 utFxihugtmG0PHe2/D9eqoUUTOyi+uQomsDqTM98=
+	b=LI5wULa/PXZZlGV5htEri5vDhhw+JNpswh89Og3nMA8YxsLcUIqzBrWnAaWGJcM79
+	 KbSCOkv5lr+u1PCSabDKAhbTygsOmE+ZSJ3HJyQvmWbp7YR82k8jWPQOHY3QpDLSDo
+	 YHDVbmwW597AnLsqyL6tp9c8AjFByvAp3Qxq5lnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	kernel test robot <lkp@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.13 432/499] wifi: mac80211: Fix sparse warning for monitor_sdata
-Date: Tue,  8 Apr 2025 12:50:44 +0200
-Message-ID: <20250408104902.001606256@linuxfoundation.org>
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 104/154] pinctrl: renesas: rza2: Fix missing of_node_put() call
+Date: Tue,  8 Apr 2025 12:50:45 +0200
+Message-ID: <20250408104818.666772252@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-commit 861d0445e72e9e33797f2ceef882c74decb16a87 upstream.
+[ Upstream commit abcdeb4e299a11ecb5a3ea0cce00e68e8f540375 ]
 
-Use rcu_access_pointer() to avoid sparse warning in
-drv_remove_interface().
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502130534.bVrZZBK0-lkp@intel.com/
-Fixes: 646262c71aca ("wifi: mac80211: remove debugfs dir for virtual monitor")
-Link: https://patch.msgid.link/20250213214330.6113-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Call into of_node_put() to rectify that.
+
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-5-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-rza2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -121,7 +121,7 @@ void drv_remove_interface(struct ieee802
- 	 * The virtual monitor interface doesn't get a debugfs
- 	 * entry, so it's exempt here.
- 	 */
--	if (sdata != local->monitor_sdata)
-+	if (sdata != rcu_access_pointer(local->monitor_sdata))
- 		ieee80211_debugfs_recreate_netdev(sdata,
- 						  sdata->vif.valid_links);
+diff --git a/drivers/pinctrl/pinctrl-rza2.c b/drivers/pinctrl/pinctrl-rza2.c
+index 8c3174d007507..fb6dccc5c304f 100644
+--- a/drivers/pinctrl/pinctrl-rza2.c
++++ b/drivers/pinctrl/pinctrl-rza2.c
+@@ -253,6 +253,8 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 		return ret;
+ 	}
  
++	of_node_put(of_args.np);
++
+ 	if ((of_args.args[0] != 0) ||
+ 	    (of_args.args[1] != 0) ||
+ 	    (of_args.args[2] != priv->npins)) {
+-- 
+2.39.5
+
 
 
 
