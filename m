@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891BAA800AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA22BA7FD28
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A31418925E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D20A07A4E3D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF09C264A76;
-	Tue,  8 Apr 2025 11:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AFC2686BB;
+	Tue,  8 Apr 2025 10:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJZLCRjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJBdHJZM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF57267F4F;
-	Tue,  8 Apr 2025 11:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6632676DF;
+	Tue,  8 Apr 2025 10:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111620; cv=none; b=P7KvBAPvNCJGdQhi0obKzz7J4LnJGv0cPmfvUCEKHcaxlN5fGZSzdp1C3/i9hXi5+k42GsnoLTE72Z7aDId2M/O/+PGrZ5ISkkcp8kcvXZfp5Vkj2UbanGyJnl1r2rfbKIXAPQZ2/EL7XQt/rSEJPuJVwPrR2191CSR8h/8ssKE=
+	t=1744109682; cv=none; b=e48kW3NLTFx7wmOeiWCJIIk4Bx55zOIBlD3946bE2cXBnUURiTT+IM3xYHf4Rcws+tCEhabYo9rO1n2PzZh6HJGGCNTYXlMOpHBHOZ/7dux45DABFpJJYBoyXcatofahBJZKbpy9LTKGdHRO3PZlYPHukBDF3qsj0Mct9OiqWhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111620; c=relaxed/simple;
-	bh=JJu4dKFnPaL30mcNKTUOZB62tdwuxZQuY6gccnPyuaA=;
+	s=arc-20240116; t=1744109682; c=relaxed/simple;
+	bh=GDpZLy7cOU4nwl2gl0sAuLIV4B8ePV3fsyiz4V9nFOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2zKLjmlqJ81ZjZulfZ3VLxZhwe/S/euthTMdCbLjZQgdN79PSu4lWMVwJ7jE6QPcvqj3mHxVmox+4W+SiMia6Sqq/yuiFRGQu/jzSdOKjMlZpTaXPJfnkaTMhqd+svxDXUJ55OVIpkTxo9d/kPUKQFyrZb9J86WcXmwhyKh/f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJZLCRjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98B8C4CEE5;
-	Tue,  8 Apr 2025 11:26:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S8XScPoQ/jbGdM4Y56IEE+aIAtvldbSPsNJEWythbDOjndQotXTYsBwf+yk7yQlzvXu0rLbq1NSYGDL/VgSUJBoEXQJDg3ggH+AgAgKAlblQ9CgkCnXekqFBZ9lBergjwdOz4jPFTI9hok4sTVekv9qvd6g8MBqaVMmZwNuIFFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJBdHJZM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18027C4CEE5;
+	Tue,  8 Apr 2025 10:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111620;
-	bh=JJu4dKFnPaL30mcNKTUOZB62tdwuxZQuY6gccnPyuaA=;
+	s=korg; t=1744109682;
+	bh=GDpZLy7cOU4nwl2gl0sAuLIV4B8ePV3fsyiz4V9nFOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJZLCRjAwZR7RZDcSB6Zt4LCoJqw7zbby41PsCR7+xDhFHgBLObv0uNo5jpueIgyF
-	 /xU0QZWWaiVIFVd8vBQEja55QYsp0nwMyZXG+14xbuV8ZTUAVSo8MBBfJeOXYBgPwk
-	 I+FE8c/oy4RnywqrGXoQbgcRY+72+jCggNCMRi3w=
+	b=qJBdHJZMK2JdXlYi7Xxtq9g3X0WOm3qpmQJhwyaHOvaMoXHe/1ulQgx/F8fAIHQ95
+	 +SR41sLVGv2a7m5KJJL6WYPwrOJ6GkYkC9UUZmY5uPZzrQwbTNzSzEazzgs9L/J+7u
+	 SgIR0NL7GR4nsHHezTa0YONSCdRIuXjfleRlA7w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karan Sanghavi <karansanghvi98@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 496/731] iio: light: Add check for array bounds in veml6075_read_int_time_ms
+Subject: [PATCH 5.10 015/227] net/mlx5: handle errors in mlx5_chains_create_table()
 Date: Tue,  8 Apr 2025 12:46:33 +0200
-Message-ID: <20250408104925.811988213@linuxfoundation.org>
+Message-ID: <20250408104820.854337766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karan Sanghavi <karansanghvi98@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit ee735aa33db16c1fb5ebccbaf84ad38f5583f3cc ]
+[ Upstream commit eab0396353be1c778eba1c0b5180176f04dd21ce ]
 
-The array contains only 5 elements, but the index calculated by
-veml6075_read_int_time_index can range from 0 to 7,
-which could lead to out-of-bounds access. The check prevents this issue.
+In mlx5_chains_create_table(), the return value of mlx5_get_fdb_sub_ns()
+and mlx5_get_flow_namespace() must be checked to prevent NULL pointer
+dereferences. If either function fails, the function should log error
+message with mlx5_core_warn() and return error pointer.
 
-Coverity Issue
-CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
-overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
-elements at element index 7 (byte offset 31) using
-index int_index (which evaluates to 7)
-
-This is hardening against potentially broken hardware. Good to have
-but not necessary to backport.
-
-Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor driver")
-Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/Z7dnrEpKQdRZ2qFU@Emma
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 39ac237ce009 ("net/mlx5: E-Switch, Refactor chains and priorities")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250307021820.2646-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/veml6075.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
-index 05d4c0e9015d6..859891e8f1152 100644
---- a/drivers/iio/light/veml6075.c
-+++ b/drivers/iio/light/veml6075.c
-@@ -195,13 +195,17 @@ static int veml6075_read_uv_direct(struct veml6075_data *data, int chan,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+index 77c6287c90d55..0e255ff95a50d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+@@ -267,6 +267,11 @@ mlx5_chains_create_table(struct mlx5_fs_chains *chains,
+ 		ns = mlx5_get_flow_namespace(chains->dev, chains->ns);
+ 	}
  
- static int veml6075_read_int_time_index(struct veml6075_data *data)
- {
--	int ret, conf;
-+	int ret, conf, int_index;
- 
- 	ret = regmap_read(data->regmap, VEML6075_CMD_CONF, &conf);
- 	if (ret < 0)
- 		return ret;
- 
--	return FIELD_GET(VEML6075_CONF_IT, conf);
-+	int_index = FIELD_GET(VEML6075_CONF_IT, conf);
-+	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
-+		return -EINVAL;
++	if (!ns) {
++		mlx5_core_warn(chains->dev, "Failed to get flow namespace\n");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
 +
-+	return int_index;
- }
- 
- static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)
+ 	ft_attr.autogroup.num_reserved_entries = 2;
+ 	ft_attr.autogroup.max_num_groups = chains->group_num;
+ 	ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
 -- 
 2.39.5
 
