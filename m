@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB9EA80B6D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01708A8040E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75C338C5B6F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E6847AC284
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751582777E4;
-	Tue,  8 Apr 2025 12:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAB2224239;
+	Tue,  8 Apr 2025 12:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuAezHEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM74s5Da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309CA26B091;
-	Tue,  8 Apr 2025 12:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC3826A085;
+	Tue,  8 Apr 2025 12:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116769; cv=none; b=EPYcwNL6F3fxmKOEldiUaXUC+Qtgwyf4IbkNvzExM59mGAgXAFyGRaHZyiV9KlExQrL99yz7SW8z8y1UC/KuJbmX0zIjxPWZLKuT03k5JU6dFEMGHGOZ3JOKkDQ+UNtojM4tewwJSwMwe5FudbR8yN2BabwYFHVqP99DNooS75w=
+	t=1744113815; cv=none; b=LhzasiDsVLv+d5I0LAjVqTpHhhQkl+qOudZYc1hmNz5QHF93I2kD89yQ/zcrvg4+1S90C0AUQ3wKwUJnvr0hk+XZUTKtNWfG2U+Dw4l4KrX0EQ3wfaFVnG/CpxIpQlFPEkr2OeAOynJeo2y7+lIxv6/DySCJqoDAQ9qm8mRXsS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116769; c=relaxed/simple;
-	bh=pXRiarFSBNhTXUoRRpS6qx3qJWxEtLLARWl5fZEKNm0=;
+	s=arc-20240116; t=1744113815; c=relaxed/simple;
+	bh=Ivn6WBmWt9L1skMe1F+WdOb1+12Q2vj54MKgxmo6tjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ighjMne87PgH7P+9KRnnacXs4U2OEtvBLvK+KP9OGObNhwz+v+5srWvCAXJug0WL/ZiTaZjiFNrK3i4jalZYOCJD64Zs6UyIjxDbOw1/UU0tBNsoR9phzb8DlipM7lV+9aZ30YlUCYiY1zpKUX58DAg+XJZoBqfNbiyCdszxTyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuAezHEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870C1C4CEE5;
-	Tue,  8 Apr 2025 12:52:48 +0000 (UTC)
+	 MIME-Version; b=YkJjfwpKuHPqp17XTMfJ+Xz4526fZmTEU48MRAkMvFnU2SgbZ8evuV28LIwjuJt9orDm+6EJTlZcp8NNV1cjAAsGuZBy/4LO857V7A2fsrwXgWmhkDaPCnEyon6IrHrWT77aSakK75L3qUM0bHorI7PEEeKGinyoAOOgKXvB3PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM74s5Da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FB9C4CEE5;
+	Tue,  8 Apr 2025 12:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116769;
-	bh=pXRiarFSBNhTXUoRRpS6qx3qJWxEtLLARWl5fZEKNm0=;
+	s=korg; t=1744113814;
+	bh=Ivn6WBmWt9L1skMe1F+WdOb1+12Q2vj54MKgxmo6tjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SuAezHEOsaoOs/2zY+faZJg2vR7FviYlHT6n7rZzY3PCLf6P7HApPUDbYSpaQXwV+
-	 0Sk4lQ4bn2MzXfhfdTgE0m9I1RbZkVujf7O4EuKYtL7JdtZLc/kTbJHVquB9KWC7Hl
-	 KQmP/bMZSkmu1lRap1kromoio5nRBBgzPhsinHgc=
+	b=uM74s5DaAMtwqJUY6zsdL+dh9PQLZdrAAaCROK+vVYFnJpBlUzduaQKdxY5wWNJIY
+	 EoO6QVabIyruFS4EQhoQjn8f8XMAKHJ2eO6i0spndjtWUAcuT+NlsQornMoJDfLP0j
+	 Gl/BW/p2c8J64zkLkN+VqUqxw3wAYzgFLeGcZynA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/423] fs/procfs: fix the comment above proc_pid_wchan()
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Magali Lemes <magali.lemes@canonical.com>
+Subject: [PATCH 5.4 007/154] sctp: sysctl: auth_enable: avoid using current->nsproxy
 Date: Tue,  8 Apr 2025 12:49:08 +0200
-Message-ID: <20250408104850.898465822@linuxfoundation.org>
+Message-ID: <20250408104815.526745509@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
+commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
 
-proc_pid_wchan() used to report kernel addresses to user space but that is
-no longer the case today.  Bring the comment above proc_pid_wchan() in
-sync with the implementation.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
-Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
+
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, but that would
+increase the size of this fix, while 'sctp.ctl_sock' still needs to be
+retrieved from 'net' structure.
+
+Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/base.c | 2 +-
+ net/sctp/sysctl.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index b31283d81c52e..a2541f5204af0 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -417,7 +417,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
- #ifdef CONFIG_KALLSYMS
- /*
-  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
-- * Returns the resolved symbol.  If that fails, simply return the address.
-+ * Returns the resolved symbol to user space.
-  */
- static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
- 			  struct pid *pid, struct task_struct *task)
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -442,7 +442,7 @@ static int proc_sctp_do_auth(struct ctl_
+ 			     void __user *buffer, size_t *lenp,
+ 			     loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
+ 	struct ctl_table tbl;
+ 	int new_value, ret;
+ 
 
 
 
