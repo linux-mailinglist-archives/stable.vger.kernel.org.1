@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFAA7FD5E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B537BA80388
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3C1E7A2508
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5747618919FD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9978426A0D4;
-	Tue,  8 Apr 2025 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F70269820;
+	Tue,  8 Apr 2025 11:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBVTMA0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebGcQxw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89126A0C1;
-	Tue,  8 Apr 2025 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF42268688;
+	Tue,  8 Apr 2025 11:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109980; cv=none; b=ZhSnnDCU5mxjUQXdvHPQ3EcU3l0+8O5yDiMC8+UkkDnrCe9n5Jt0to365FG1zcOCOQAtJdioFxpPtkNALBzVc4VgzfdjumEe5tohmYhOHxToerZi8gfA19k3KtWruUbE4WtrTJ1NGZZdWMiDFLh7dPz7CqjwfF4l6mTNfZCPsFk=
+	t=1744113249; cv=none; b=YCL+tQ8O+azlOFbuMwneXj24wRSPDso1FbIqqVdiX1lVfKRyMOzjN2QI7yzzSfiwRyXmh16mkosuecYtAES074yZ/vFoK4Kyo8p7IKwkKPx/Tq9IsEljjDvzTwx0MMN58bGjjpjXn6eZi56fIwDjHQsQecykAq1B7WVpNodDyU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109980; c=relaxed/simple;
-	bh=D2dLK5E3z7gwUUFOnnN55L/gahHk8MDFI0Y+t5t0BpA=;
+	s=arc-20240116; t=1744113249; c=relaxed/simple;
+	bh=ybfdQ1ujdbX7dz1xZRwTPBtQwjfDuomu1G+gyFsumuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZGWZTCc0xbRHz+8zkxmgFWSTjaytSroUIIDM1DkOvonX8pz5egHND95Dc6jLUchTyeTndfSc014Hye4Y57G6oRXkJabsLSqpal9rPAmbfzaWbyUbiSQV7owdj5YQhRghPHIe+JqDT/+Ob6QZ/5BUsLV9gVeqaVEphVqdUeB6XLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBVTMA0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BC9C4CEE5;
-	Tue,  8 Apr 2025 10:59:39 +0000 (UTC)
+	 MIME-Version; b=sBNlNkbtRqK1M6ze+Yrxh+brzgyd4FNFYcY7m6p0J5W4zMRxASzqRIQs82Ab0WRdgz40yRr9MMeV9M5Ov+RETE0bNl9YdzvJhf4W18A59uieLgxgEW72DpjrXiU79LpyCLFedARd+f53ZSPXkCcP3p1THAEJbuPVrLpKISQOaFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebGcQxw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD12C4CEE5;
+	Tue,  8 Apr 2025 11:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109980;
-	bh=D2dLK5E3z7gwUUFOnnN55L/gahHk8MDFI0Y+t5t0BpA=;
+	s=korg; t=1744113249;
+	bh=ybfdQ1ujdbX7dz1xZRwTPBtQwjfDuomu1G+gyFsumuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBVTMA0AMQgDH5aA1+L3FSQrz730iS4Jrg0hGb8tw8G7FXTy8ogXgKPxrAXIUfHxM
-	 lQyqcLmWxw0RF/bDydKnF/Ns3IWxy0NRlCTBr7rQtuprgV+Dzval7dQW3Se+Z1mv6A
-	 G0G6LYvocxGaztnQTdmRTYLkA/jOG7JoFkDZZcxY=
+	b=ebGcQxw60zNaXo3RzXHiMCfXSyz1VWyf7qllbsa57Dha7zT3WsOOM5McqY29mKpuV
+	 68pZkr+c8M0F2tK7e3Hh6+hXUzNlAZPvsMWkEnk+Nf9rpAePk2qsAp2L5icQBJwl6Q
+	 CwdwCz3FqKo4nPGDNf2IfG7NYLUlHRyz7the4da0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/227] thermal: int340x: Add NULL check for adev
+Subject: [PATCH 6.6 089/268] rust: fix signature of rust_fmt_argument
 Date: Tue,  8 Apr 2025 12:48:20 +0200
-Message-ID: <20250408104823.995908571@linuxfoundation.org>
+Message-ID: <20250408104830.890872754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
+[ Upstream commit 901b3290bd4dc35e613d13abd03c129e754dd3dd ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL.
-This is similar to the commit cd2fd6eab480
-("platform/x86: int3472: Check for adev == NULL").
+Without this change, the rest of this series will emit the following
+error message:
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in int3402_thermal_probe().
+error[E0308]: `if` and `else` have incompatible types
+  --> <linux>/rust/kernel/print.rs:22:22
+   |
+21 | #[export]
+   | --------- expected because of this
+22 | unsafe extern "C" fn rust_fmt_argument(
+   |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
+   |
+   = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
+              found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
 
-Note, under the same directory, int3400_thermal_probe() has such a
-check.
+The error may be different depending on the architecture.
 
-Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
-[ rjw: Subject edit, added Fixes: ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+To fix this, change the void pointer argument to use a const pointer,
+and change the imports to use crate::ffi instead of core::ffi for
+integer types.
+
+Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20250303-export-macro-v3-1-41fbad85a27f@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/vsprintf.c       | 2 +-
+ rust/kernel/print.rs | 7 +++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-index 43fa351e2b9ec..b7fdf25bfd237 100644
---- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
- 	struct int3402_thermal_data *d;
- 	int ret;
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 2aa408441cd3e..14b27db236cc8 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2275,7 +2275,7 @@ int __init no_hash_pointers_enable(char *str)
+ early_param("no_hash_pointers", no_hash_pointers_enable);
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(adev->handle, "_TMP"))
- 		return -ENODEV;
+ /* Used for Rust formatting ('%pA'). */
+-char *rust_fmt_argument(char *buf, char *end, void *ptr);
++char *rust_fmt_argument(char *buf, char *end, const void *ptr);
  
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index f48926e3e9fe3..34788218ea5d2 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -6,12 +6,11 @@
+ //!
+ //! Reference: <https://www.kernel.org/doc/html/latest/core-api/printk-basics.html>
+ 
+-use core::{
++use crate::{
+     ffi::{c_char, c_void},
+-    fmt,
++    str::RawFormatter,
+ };
+-
+-use crate::str::RawFormatter;
++use core::fmt;
+ 
+ #[cfg(CONFIG_PRINTK)]
+ use crate::bindings;
 -- 
 2.39.5
 
