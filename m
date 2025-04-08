@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4324DA80443
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E2CA80ADA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ABE1447DF2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F3C1B85575
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC0B269CF0;
-	Tue,  8 Apr 2025 11:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113EF277028;
+	Tue,  8 Apr 2025 12:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMq6PfmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wP0wOp5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDBB269885;
-	Tue,  8 Apr 2025 11:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C388227701F;
+	Tue,  8 Apr 2025 12:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113465; cv=none; b=TAyU+8lckwmNGG3bOaLfTy/l7CmehhUO8kGcDHRWRPEZizCJA0q0xSO/7TwhcqBj6RZhS7wx/OCT/CcT50n2cSaw3j7m2sbYeO71cE9DEKBdubnnyTVtyi141coj/Ue1SlBUXA/SgzrCMLz3Siil3qLcxnHmYpIPs8lLClAJf2g=
+	t=1744116750; cv=none; b=SVQ45Awnhk9RheoYZCB0rL42iW31epWYlJI6Nt192ASzmihg0vQyCAoIWA9f1HC0gMK1/oJxZDGrPZrMjEeWqw/oYdDiHBdm5Y8ELbt2w4Glo1TefjRw9xOCUqgQwgFz5/vMrjoGU8su9J2fwVd36XAFCVOEQ6At/5vhXFPHr8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113465; c=relaxed/simple;
-	bh=L1Dyfz1Qm2UDpH5avrfAe/6WxUzmp3Yg7Mjgc/+bhTo=;
+	s=arc-20240116; t=1744116750; c=relaxed/simple;
+	bh=0t5YZHyGq3JgjjJQLzWxZuaJTpVp2sTC4oU9g32lt5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ij7KGOkc7HIZqWOdxCwcKe+k8GSQUhoW/+nZfiHyn9JcAvWfN+JZDP0k4nNAlVjhaTC6D6dhuFSopqRhcriKOBR69IoS6q7MXVKbjrWBQP48GvsmKcMrgpfxcEHlkdnE7UkdRGTp7COeGiSjCOKUWvYhOC+uu6fIyclhWmGNbV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMq6PfmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF16BC4CEE5;
-	Tue,  8 Apr 2025 11:57:44 +0000 (UTC)
+	 MIME-Version; b=q/v7frljNxkzKAELCqsFydKgNqtEJtWx/CMQTZ/ihTe54GcbxSjDs/u0q1Ab8bMX96aJS06DJNv4wst0WAGQBRe2Vk191Vk8O+h7cz5vPThDHXZeSlSoXuIpN61Oy/O6LRwaMYD2THZUkFZtNOc9HoWqhvv6P/BREHZTZJfhmiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wP0wOp5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE1FC4CEFA;
+	Tue,  8 Apr 2025 12:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113465;
-	bh=L1Dyfz1Qm2UDpH5avrfAe/6WxUzmp3Yg7Mjgc/+bhTo=;
+	s=korg; t=1744116750;
+	bh=0t5YZHyGq3JgjjJQLzWxZuaJTpVp2sTC4oU9g32lt5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMq6PfmY4ZHhJZngOL3B6OZyTHZkRIZ1KOHySfNXohiDRzWE7zn+vmgRu2AIAOe4k
-	 XQtdm9MG8TJYSHNtp3HuvJkPs4tqoIdqsQF/BoakydP79HA0bdVQ7kaoCOkC0d9v4q
-	 ifqD/4jXtRCqONoRA86ckHymNDn2aS6Z22rMizJI=
+	b=wP0wOp5RkgCP1IRpyLc7nI62my94Ozod96AQY6kYS5iZQMpZ9cOXLNk1KD3cHdHDz
+	 i9/Q2GAD5xOb07Zgc6L4vKHHKjoViKK3Y66ZUmL+Dhqw7KPbaHKNqK4SpmniA3URrF
+	 gUe4aZVjb+1IXaKJTy76V8oGHids+ToUDCXbbKQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/268] affs: dont write overlarge OFS data block size fields
+Subject: [PATCH 6.12 254/423] wifi: mac80211: remove debugfs dir for virtual monitor
 Date: Tue,  8 Apr 2025 12:49:40 +0200
-Message-ID: <20250408104833.107555670@linuxfoundation.org>
+Message-ID: <20250408104851.657845734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
+[ Upstream commit 646262c71aca87bb66945933abe4e620796d6c5a ]
 
-If a data sector on an OFS floppy contains a value > 0x1e8 (the
-largest amount of data that fits in the sector after its header), then
-an Amiga reading the file can return corrupt data, by taking the
-overlarge size at its word and reading past the end of the buffer it
-read the disk sector into!
+Don't call ieee80211_debugfs_recreate_netdev() for virtual monitor
+interface when deleting it.
 
-The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
-the new size field for a data block was computed by adding the amount
-of data currently being written (into the block) to the existing value
-of the size field. This is correct if you're extending the file at the
-end, but if you seek backwards in the file and overwrite _existing_
-data, it can lead to the size field being larger than the maximum
-legal value.
+The virtual monitor interface shouldn't have debugfs entries and trying
+to update them will *create* them on deletion.
 
-This commit changes the calculation so that it sets the size field to
-the max of its previous size and the position within the block that we
-just wrote up to.
+And when the virtual monitor interface is created/destroyed multiple
+times we'll get warnings about debugfs name conflicts.
 
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://patch.msgid.link/20250204164240.370153-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/affs/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/driver-ops.c | 10 ++++++++--
+ net/mac80211/iface.c      | 11 ++++++-----
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 8fd1a7c5958a8..93b319917c9a9 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -726,7 +726,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		tmp = min(bsize - boff, to - from);
- 		BUG_ON(boff + tmp > bsize || tmp > bsize);
- 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
--		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
-+		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
-+			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
- 		affs_fix_checksum(sb, bh);
- 		mark_buffer_dirty_inode(bh, inode);
- 		written += tmp;
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index fe868b5216220..9b7d099948207 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -115,8 +115,14 @@ void drv_remove_interface(struct ieee80211_local *local,
+ 
+ 	sdata->flags &= ~IEEE80211_SDATA_IN_DRIVER;
+ 
+-	/* Remove driver debugfs entries */
+-	ieee80211_debugfs_recreate_netdev(sdata, sdata->vif.valid_links);
++	/*
++	 * Remove driver debugfs entries.
++	 * The virtual monitor interface doesn't get a debugfs
++	 * entry, so it's exempt here.
++	 */
++	if (sdata != local->monitor_sdata)
++		ieee80211_debugfs_recreate_netdev(sdata,
++						  sdata->vif.valid_links);
+ 
+ 	trace_drv_remove_interface(local, sdata);
+ 	local->ops->remove_interface(&local->hw, &sdata->vif);
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index af9055252e6df..8bbfa45e1796d 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1205,16 +1205,17 @@ void ieee80211_del_virtual_monitor(struct ieee80211_local *local)
+ 		return;
+ 	}
+ 
+-	RCU_INIT_POINTER(local->monitor_sdata, NULL);
+-	mutex_unlock(&local->iflist_mtx);
+-
+-	synchronize_net();
+-
++	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+ 	ieee80211_link_release_channel(&sdata->deflink);
+ 
+ 	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+ 		drv_remove_interface(local, sdata);
+ 
++	RCU_INIT_POINTER(local->monitor_sdata, NULL);
++	mutex_unlock(&local->iflist_mtx);
++
++	synchronize_net();
++
+ 	kfree(sdata);
+ }
+ 
 -- 
 2.39.5
 
