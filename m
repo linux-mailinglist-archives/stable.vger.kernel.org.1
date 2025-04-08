@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06726A80A33
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A147CA80422
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DDCF7A86C8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 446AB3B60A2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224F4270EDD;
-	Tue,  8 Apr 2025 12:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3163F268FED;
+	Tue,  8 Apr 2025 11:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZHx1YRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHhYy/zZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E6B270ECF;
-	Tue,  8 Apr 2025 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE5E20CCD8;
+	Tue,  8 Apr 2025 11:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116688; cv=none; b=Fh/g4Py/v4YYtEJ5bzu2vYV5C2qpc7q1a0oxkBDCBDAcgw03sQDjhTqnzPB9uPG1fAZ0OK2D6LEOQN5f4z2OyZIlVsdUuzbVTj/umDA7OAX77zRUMejRSITXi3VXqinJeucRMDEsyLyPJILQG3NlKOhvEM7QY3BrK0KDQ0gHn/Y=
+	t=1744113415; cv=none; b=m8huiXWILeXA3KkNxfvixVqIe/ZhNuPxuDnaiYcBLIoPWfoJpRXS4Xa3KC78mnOuiF9dHb6N9M3l/1qCjWvr9DRZ9FqAQpBHIXJP499l12UKMKpnE+dR3yGApqrGUTHa/qB0kfa/Nm4c7QHlHzgt+hrj5lLkTDJ0JlVZnAqEUX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116688; c=relaxed/simple;
-	bh=XiRd1T0EbBty2WqK71Brvg0+gaVRmb4hBcRkRPfgJEc=;
+	s=arc-20240116; t=1744113415; c=relaxed/simple;
+	bh=2waRrnuq9mHTv6TPu/2Rt1lA0XR/I7OfoFp1817HpdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbZbHYRNCWJRQG4sha4GXe8cu429Kyw4mwlpBNraERov+S9dCJwCqx0bNUXbug+m3lIP+FIjX99J6SCXOec7RKpE0QSLn0kmkYrNbuTbKXWMIqKvNGxOMKbpkx5yQ/kis89aPI1lTXcPE3kteGHXbybLbsYqp5fkKv5WH6W1OgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZHx1YRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F734C4CEE5;
-	Tue,  8 Apr 2025 12:51:28 +0000 (UTC)
+	 MIME-Version; b=vABu/v/vrbfGfIn62QRCLhiGOP37tFF+jrP18YDEjaPzStkJ1/xGCGp9nACn9f+IdCQW0dtaW6Iy/8LBxL/6aTdV1AKDPTAUxymEsJrXzpPDoGCtQVIMhhMLmRZbur7hU3xCf/R7BdnUKehsauwNxi9ob1VTQHQU2OlVAifg9K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHhYy/zZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8702C4CEE5;
+	Tue,  8 Apr 2025 11:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116688;
-	bh=XiRd1T0EbBty2WqK71Brvg0+gaVRmb4hBcRkRPfgJEc=;
+	s=korg; t=1744113414;
+	bh=2waRrnuq9mHTv6TPu/2Rt1lA0XR/I7OfoFp1817HpdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZHx1YRKdg8kdSOh+ool6pozIK6VXoHNEqQ+QVl8bDJP3CJyXFycfUzJUyS/39gqD
-	 gEZ2sThG/VWZMMiHMM4bLsz6ZA9qS1jVt/8nFPxab5TXqYTNrxosYttnQ6gowHGcwp
-	 TjAqHe6Qls8TaT9kt3JyokQk1/fV85R/VPo/my9M=
+	b=JHhYy/zZidS3BebPD9zVKK6KJN9hXyQj81IipUcprjDDG6FlWuBIUaUoiHwvBTibw
+	 lNckkzNurlIQ8HIjRyPiHpf6/ds+1p7LFvVyNCIrfcG/XeaofiyBfPaAQLUXQ6gYk+
+	 wEtlQ3fPJZQ17P7WSotxxU5v2eljaWK/RxicXfcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/423] rndis_host: Flag RNDIS modems as WWAN devices
+Subject: [PATCH 6.6 148/268] ksmbd: fix multichannel connection failure
 Date: Tue,  8 Apr 2025 12:49:19 +0200
-Message-ID: <20250408104851.155096996@linuxfoundation.org>
+Message-ID: <20250408104832.525505144@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lubomir Rintel <lkundrak@v3.sk>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8 ]
+[ Upstream commit c1883049aa9b2b7dffd3a68c5fc67fa92c174bd9 ]
 
-Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
-Broadband Modems, as opposed to regular Ethernet adapters.
+ksmbd check that the session of second channel is in the session list of
+first connection. If it is in session list, multichannel connection
+should not be allowed.
 
-Otherwise NetworkManager gets confused, misjudges the device type,
-and wouldn't know it should connect a modem to get the device to work.
-What would be the result depends on ModemManager version -- older
-ModemManager would end up disconnecting a device after an unsuccessful
-probe attempt (if it connected without needing to unlock a SIM), while
-a newer one might spawn a separate PPP connection over a tty interface
-instead, resulting in a general confusion and no end of chaos.
-
-The only way to get this work reliably is to fix the device type
-and have good enough version ModemManager (or equivalent).
-
-Fixes: 63ba395cd7a5 ("rndis_host: support Novatel Verizon USB730L")
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Link: https://patch.msgid.link/20250325095842.1567999-1-lkundrak@v3.sk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b95629435b84 ("ksmbd: fix racy issue from session lookup and expire")
+Reported-by: Sean Heelan <seanheelan@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/smb/server/mgmt/user_session.c | 16 ++++++++++++++++
+ fs/smb/server/mgmt/user_session.h |  2 ++
+ fs/smb/server/smb2pdu.c           | 12 ++++--------
+ 3 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-index 7b3739b29c8f7..bb0bf14158727 100644
---- a/drivers/net/usb/rndis_host.c
-+++ b/drivers/net/usb/rndis_host.c
-@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info = {
- 	.tx_fixup =	rndis_tx_fixup,
- };
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 9a134181df61f..1ea219cbb4a18 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -255,6 +255,22 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
+ 	up_write(&sessions_table_lock);
+ }
  
-+static const struct driver_info	wwan_rndis_info = {
-+	.description =	"Mobile Broadband RNDIS device",
-+	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
-+	.bind =		rndis_bind,
-+	.unbind =	rndis_unbind,
-+	.status =	rndis_status,
-+	.rx_fixup =	rndis_rx_fixup,
-+	.tx_fixup =	rndis_tx_fixup,
-+};
++bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
++				   unsigned long long id)
++{
++	struct ksmbd_session *sess;
 +
- /*-------------------------------------------------------------------------*/
++	down_read(&conn->session_lock);
++	sess = xa_load(&conn->sessions, id);
++	if (sess) {
++		up_read(&conn->session_lock);
++		return true;
++	}
++	up_read(&conn->session_lock);
++
++	return false;
++}
++
+ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+ 					   unsigned long long id)
+ {
+diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
+index c1c4b20bd5c6c..f21348381d598 100644
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -87,6 +87,8 @@ void ksmbd_session_destroy(struct ksmbd_session *sess);
+ struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id);
+ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+ 					   unsigned long long id);
++bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
++				     unsigned long long id);
+ int ksmbd_session_register(struct ksmbd_conn *conn,
+ 			   struct ksmbd_session *sess);
+ void ksmbd_sessions_deregister(struct ksmbd_conn *conn);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 58e5cc2b1f3e1..2030052421881 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1707,44 +1707,38 @@ int smb2_sess_setup(struct ksmbd_work *work)
  
- static const struct usb_device_id	products [] = {
-@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] = {
- 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
- 	.driver_info = (unsigned long) &rndis_info,
- }, {
--	/* Novatel Verizon USB730L */
-+	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
-+	 * Telit FN990A (RNDIS)
-+	 */
- 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
--	.driver_info = (unsigned long) &rndis_info,
-+	.driver_info = (unsigned long)&wwan_rndis_info,
- },
- 	{ },		// END
- };
+ 		if (conn->dialect != sess->dialect) {
+ 			rc = -EINVAL;
+-			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (!(req->hdr.Flags & SMB2_FLAGS_SIGNED)) {
+ 			rc = -EINVAL;
+-			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (strncmp(conn->ClientGUID, sess->ClientGUID,
+ 			    SMB2_CLIENT_GUID_SIZE)) {
+ 			rc = -ENOENT;
+-			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (sess->state == SMB2_SESSION_IN_PROGRESS) {
+ 			rc = -EACCES;
+-			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (sess->state == SMB2_SESSION_EXPIRED) {
+ 			rc = -EFAULT;
+-			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+-		ksmbd_user_session_put(sess);
+ 
+ 		if (ksmbd_conn_need_reconnect(conn)) {
+ 			rc = -EFAULT;
++			ksmbd_user_session_put(sess);
+ 			sess = NULL;
+ 			goto out_err;
+ 		}
+ 
+-		sess = ksmbd_session_lookup(conn, sess_id);
+-		if (!sess) {
++		if (is_ksmbd_session_in_connection(conn, sess_id)) {
+ 			rc = -EACCES;
+ 			goto out_err;
+ 		}
+@@ -1910,6 +1904,8 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 
+ 			sess->last_active = jiffies;
+ 			sess->state = SMB2_SESSION_EXPIRED;
++			ksmbd_user_session_put(sess);
++			work->sess = NULL;
+ 			if (try_delay) {
+ 				ksmbd_conn_set_need_reconnect(conn);
+ 				ssleep(5);
 -- 
 2.39.5
 
