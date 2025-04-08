@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6C5A800FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7AAA80281
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A6D1888216
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF0F4470DB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B192686A5;
-	Tue,  8 Apr 2025 11:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C4C25FA13;
+	Tue,  8 Apr 2025 11:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqncQGKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgH+GgnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D7263899;
-	Tue,  8 Apr 2025 11:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8922192F2;
+	Tue,  8 Apr 2025 11:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111889; cv=none; b=VTLamwPVu4yR/Nx6rFK+KhSckhmDDM2XbJTB5USt++OxABPXidovJnmgwQ+H4rIILwwgeW+ti5LWhK1BVlPZHzcXC/5z9B4XegP91+HvS+jUd0KAwULkQukhvWuDOoi8Dd6jSeMb/qQVDPZzp2OmEssvbxJoPXHheYguZVHR/ys=
+	t=1744112450; cv=none; b=bY5bJqYAv+B5fR3ExvQ/cQ60d7BKFQlUFzaZE94wOs4kaAv5v3+bghrc/P6wWJIT7GVzFbK0ierTn7o5nOzkWE95Oi5XhoMd5cGQxR5TaVNgkYX6d4M1OqfgV/J+Q4w4DVMUyYvXIHsg+UR0PNLlt9pFxYFBAmv/RyODSGzy8X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111889; c=relaxed/simple;
-	bh=J9z8d1eu7g55tSgYHNRT2/me1e/fjVM7UDhTgwvTFqk=;
+	s=arc-20240116; t=1744112450; c=relaxed/simple;
+	bh=hSrJxNeDD9Hf25xSPQ6r8ZayGtr4H5eiUIPE0vXZGPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDt5QMSoOgCEZJT1saX8S4TNrJvIlTznbizEgKRsZlwATy3hQ0klR7RStAepTBEI+dLr2ckH9Nk6ai31/UAYOqsW/Ut7HHhGM+l+LL/iK/zccQgtspPBqv+aadgFgQV0pRQ5JllM/EKV1zq9+g5hssZFHhvbYONfWQxv+ceTGG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqncQGKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FC9C4CEE7;
-	Tue,  8 Apr 2025 11:31:28 +0000 (UTC)
+	 MIME-Version; b=TPp3z9Dg8h4u7SMGt1d/qpiN9gOgKaXgeMyfaw3Jnxs1CRfuSWwARHUuQpjpiLBBQK5+URgG5X3CzwqEwH3WQ/4XTc+YEIu3x3RLiNlRqaOjoYVhencXyAG/Fe1QwIqGpn5kKDueXqKN6f5HtN/wMR48XyH7TiXFUYaJTY/TWEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgH+GgnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95354C4CEE5;
+	Tue,  8 Apr 2025 11:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111889;
-	bh=J9z8d1eu7g55tSgYHNRT2/me1e/fjVM7UDhTgwvTFqk=;
+	s=korg; t=1744112450;
+	bh=hSrJxNeDD9Hf25xSPQ6r8ZayGtr4H5eiUIPE0vXZGPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqncQGKL6E+5+dxteyPEaKDceLRroc4EJqwj8/OvQsKcSrlhGRvixRfyk0ZH0d/Fr
-	 g4iWsqjhpd/q8mlAeJkTRf9QifdA5sjtVv2wbSOTgmq2+e1iwnd96e+rE/H0leL/NA
-	 PRtSZYH/G+6ZlizRF2sZJGkhRio1tOwRdq3w6y7o=
+	b=DgH+GgnDRpMPxFsuFzJZR2ufaaOsNYBBUMenp1EQdZ0/0iz19+ZrfvZv5hJc++bIZ
+	 +zBJD0YLJH2p4IcKlYlosaHC8FMLFmNip/0xK6viw+e0P7LY3tf9VfHxIIZPOB4jkR
+	 W4W12uk5wCjAg4wuqXIpmN3xRcYy+4DMShO5H7z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 557/731] ksmbd: use aead_request_free to match aead_request_alloc
-Date: Tue,  8 Apr 2025 12:47:34 +0200
-Message-ID: <20250408104927.232232649@linuxfoundation.org>
+Subject: [PATCH 5.15 072/279] i2c: ali1535: Fix an error handling path in ali1535_probe()
+Date: Tue,  8 Apr 2025 12:47:35 +0200
+Message-ID: <20250408104828.285168358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
+[ Upstream commit 9b5463f349d019a261f1e80803447efca3126151 ]
 
-Use aead_request_free() instead of kfree() to properly free memory
-allocated by aead_request_alloc(). This ensures sensitive crypto data
-is zeroed before being freed.
+If i2c_add_adapter() fails, the request_region() call in ali1535_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/0daf63d7a2ce74c02e2664ba805bbfadab7d25e5.1741031571.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-ali1535.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 2a5b4a96bf993..00b31cf864627 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1218,7 +1218,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- free_sg:
- 	kfree(sg);
- free_req:
--	kfree(req);
-+	aead_request_free(req);
- free_ctx:
- 	ksmbd_release_crypto_ctx(ctx);
- 	return rc;
+diff --git a/drivers/i2c/busses/i2c-ali1535.c b/drivers/i2c/busses/i2c-ali1535.c
+index ee83c4581bce0..cd2c8afebe798 100644
+--- a/drivers/i2c/busses/i2c-ali1535.c
++++ b/drivers/i2c/busses/i2c-ali1535.c
+@@ -490,6 +490,8 @@ MODULE_DEVICE_TABLE(pci, ali1535_ids);
+ 
+ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali1535_setup(dev)) {
+ 		dev_warn(&dev->dev,
+ 			"ALI1535 not detected, module not inserted.\n");
+@@ -501,7 +503,15 @@ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	snprintf(ali1535_adapter.name, sizeof(ali1535_adapter.name),
+ 		"SMBus ALI1535 adapter at %04x", ali1535_offset);
+-	return i2c_add_adapter(&ali1535_adapter);
++	ret = i2c_add_adapter(&ali1535_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali1535_smba, ALI1535_SMB_IOSIZE);
++	return ret;
+ }
+ 
+ static void ali1535_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
