@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC6EA80219
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4F7A80107
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43CFA188B514
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC2578812E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD4B227EBD;
-	Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566DD26A1BE;
+	Tue,  8 Apr 2025 11:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0oSdAX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnC4OcCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF2719AD5C;
-	Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119FE269808;
+	Tue,  8 Apr 2025 11:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112469; cv=none; b=o/CtVoDKYBXdh8hBkAoiEaKLR+Z5E4+ScgLiZV66t0KJan3pof8fI0xXFeG3ENlF5LIBSb0CSZKsjnmjriSfdrtuY0Rk6YdFROJ4IBmwnb05l5kUArikdteZ3C4RBmgRc2/VkH+9AFVO7FUCobvPehbpbWfqECWvawTH77IhpfE=
+	t=1744111695; cv=none; b=HW3DIcd+IojcgQFxVm/S0uhlwoA8Q5QAR/SX4hpDMPvEeXAcVFdRcByXbdonx6cRwiqp0yrb+1uUPB7eE+HoElS4p3A8a+xi/USARGYGi+Gdp1vorAttGv4mn2xM5GygTEWqAZ9MtVeKvnxPJatnnyryEtZvI6uUrjDL2jGTeUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112469; c=relaxed/simple;
-	bh=OflOBp/R/2DumMj+MHzbcZMpi4UEx96MXmb+wKM2UNs=;
+	s=arc-20240116; t=1744111695; c=relaxed/simple;
+	bh=z3VwmTuq0TZE+mbqH2ERc33x1+w+2H0Zx4If/houmAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NXLBk7PrTDtmCyV66jXUCegx0pQ0nqnA4ZvcNrhhTp7quoFAYnslEVn9bMYkNMIha1N0glAXA7O3gKIKAK+grXvMQUis7kYsOhirX+dHNVAmwRya8FKrn9QizDNqf0HcsabMEy3B+P76hyJU69b+JV69J2IB1QBKHE76XlIpM2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0oSdAX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992DC4CEEA;
-	Tue,  8 Apr 2025 11:41:08 +0000 (UTC)
+	 MIME-Version; b=om+KBV+NTZ8rRZYxBwac9/00Cdioa8zf7HHP90m1ZG1UNraPwl0QsyqvywkkMNiMFQ73A+Z6xwViqssyr17Zas9X8nVlWHGFD0r5MzTIqeWHgoCoytsTHJUmUdKcBSCLeo/NBbh7JboNKuWbDYkDdvghxMrK6fu9I6IkRFr9mP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnC4OcCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939B9C4CEE5;
+	Tue,  8 Apr 2025 11:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112469;
-	bh=OflOBp/R/2DumMj+MHzbcZMpi4UEx96MXmb+wKM2UNs=;
+	s=korg; t=1744111694;
+	bh=z3VwmTuq0TZE+mbqH2ERc33x1+w+2H0Zx4If/houmAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0oSdAX4ICLP/nnjXPdTreQKusELnUPNkuaxbgdMGcf84RVhMsYOjdKA9w42Qh0p+
-	 iK8C/9d4jUoXoWRKFJhITzhpxc9Jarm+mppTJ0qrIsAmUQWV16cc+EUQ1TA4TU0cX2
-	 YTk0y5FPpxjxmIj7CbOY2frsX7E2uzRyuVVa3vzA=
+	b=VnC4OcCxtDXxF/urzbc40pm47qTfStLUaeuGHi0B+CgtHVaS6AX8WaLKbdZV1Hp6K
+	 gWQD8Er+lgqA+I4FHWXsuAYMij4bYO4YJAPdzsgAQTF44pVaQh+UUo0sX45enJJaCD
+	 Pp242RU2vtCvutmSTZSIfRbzRgkYKADt1QkLSlf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Cheong <htcheong@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Johny Lin <lpg76627@gmail.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/279] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
+Subject: [PATCH 6.14 526/731] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:47:03 +0200
-Message-ID: <20250408104827.462895734@linuxfoundation.org>
+Message-ID: <20250408104926.506871590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Cheong <htcheong@chromium.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-In enviornment without KMOD requesting module may fail to load
-snd-hda-codec-hdmi, resulting in HDMI audio not usable.
-Add softdep to loading HDMI codec module first to ensure we can load it
-correctly.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-Signed-off-by: Terry Cheong <htcheong@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Johny Lin <lpg76627@gmail.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-codec.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
-index 6744318de612e..0449e7a2669ff 100644
---- a/sound/soc/sof/intel/hda-codec.c
-+++ b/sound/soc/sof/intel/hda-codec.c
-@@ -258,6 +258,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
- }
- EXPORT_SYMBOL_NS(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index b4bc57859f730..ae6bcd39a2001 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -47,7 +47,7 @@ struct pyrf_event {
+ };
  
-+MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
- #endif
- 
- MODULE_LICENSE("Dual BSD/GPL");
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
 -- 
 2.39.5
 
