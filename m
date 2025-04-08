@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B125A80963
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E895AA80762
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51127B3B2D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22F08A3439
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D80E26A0D4;
-	Tue,  8 Apr 2025 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D661269D17;
+	Tue,  8 Apr 2025 12:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCKiV6m7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxjcHPVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B84C267B6B;
-	Tue,  8 Apr 2025 12:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CDA269D18;
+	Tue,  8 Apr 2025 12:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116397; cv=none; b=kuVWTVXEzQno8iUmnmBltJf0ucy1yIx9Cz5+s40V6g7QYPsvZ3qu1TY8a7Gf/1ZJHXiJjXN27eLayG99+0dxgDrsc9YVgU9ys6eTH/Lvjrm65UqcSVbrwldC9Em9Oks+h2jYRa/uBDc/2i6NFoXqLsKQ+GrqEWizrU33TPKXaKE=
+	t=1744114800; cv=none; b=IY80ciR0oV2WjKAcbMggkAgrtp6DFESih0MEWiaQBva/VpQRQHpP45csDogPLnbdzteRM1q1ZnZaKlvB9FE72w9zchsha4iVQAAXn2LI/OfcjP9b+yIHbBeOX0z2Irp8Aw0pD+LLQqWEUjtnEo1Q4en8WJiK4q/UDmwGSDqVnAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116397; c=relaxed/simple;
-	bh=WWnt54jmdMyu8r0e90TcdfTWEV8K+4CFXZWU10q4/GQ=;
+	s=arc-20240116; t=1744114800; c=relaxed/simple;
+	bh=SaGVF8vscy9L28hULLkCK0XXQpDNE/XoBEkaTGhE67Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ehz9zD8QM0R6t28qbW5JyBninkhviC6tTJEdyB4p+7vibaQqL9Q2IGDnVef/FtmBvbOVSyHggNetaJeX1eNVycm6jTSBvr9HXNLznonVpwLgFBQsX0N+nO3+13I7kz9nR3NXA/SZYtSzZnkw0nhpFt8el7WzUJx3KPVA9jV3QXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCKiV6m7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B18C4CEE5;
-	Tue,  8 Apr 2025 12:46:36 +0000 (UTC)
+	 MIME-Version; b=BsxOZiS5L33UK4m6sHjG94FT+u97ccbuRa5GtJXhmcW8itWVMimuoDEwjJ50r2GGZir91gRbX5a7/xJ+I/vWRPucFL4doDpVJQFiLpEPE/kNKysyPDYe8z14kOeROfW9d1NkOZVPV2JTwBm4suO4Mi2tySVbIZzR9KX0w6KrwDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxjcHPVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B28C4CEEB;
+	Tue,  8 Apr 2025 12:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116396;
-	bh=WWnt54jmdMyu8r0e90TcdfTWEV8K+4CFXZWU10q4/GQ=;
+	s=korg; t=1744114799;
+	bh=SaGVF8vscy9L28hULLkCK0XXQpDNE/XoBEkaTGhE67Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCKiV6m7ux+5ok51j9h7X1j5PpRdXbuPPAMNJ4XZfGTRRNhKumv47S79htk9CKFmb
-	 iFclOlijD8b/rJs3lxhWgPbayrYQ4PJKOVVxISHilN4oXNNTrlASh6zEeV0QXtOHu8
-	 +FspwOYZp/gLS6vxHxeML/wadf/lOo0xzPygkp/U=
+	b=kxjcHPVGa+GnEaG9sesdBoFHs7l0EaoAti9ABhLHljr3cywvOe4/GZmxEEgRj9pBX
+	 bLKQBboIPfaMbiyuJNmQ8J6/st7PBLnPj94p733TYffc4kxt9jz5Fq+q5mxK6ROrfs
+	 juVUBY5e6psGqHDqxRh2vjEuSzKSyYhtzVWVQnho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Thomas Falcon <thomas.falcon@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/423] clk: qcom: gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK
+Subject: [PATCH 6.13 238/499] perf x86/topdown: Fix topdown leader sampling test error on hybrid
 Date: Tue,  8 Apr 2025 12:47:30 +0200
-Message-ID: <20250408104848.614989621@linuxfoundation.org>
+Message-ID: <20250408104857.152304173@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit b60521eff227ef459e03879cbea2b2bd85a8d7af ]
+[ Upstream commit b74683b3bb224eccb644cf260753dfc82e802d92 ]
 
-The GPU clock is required for CPU access to GPUSS registers. It was
-previously decided (on this and many more platforms) that the added
-overhead/hassle introduced by keeping track of it would not bring much
-measurable improvement in the power department.
+When running topdown leader smapling test on Intel hybrid platforms,
+such as LNL/ARL, we see the below error.
 
-The display clock is basically the same story over again.
+Topdown leader sampling test
+Topdown leader sampling [Failed topdown events not reordered correctly]
 
-Now, we're past that discussion and this commit is not trying to change
-that. Instead, the clocks are both force-enabled in .probe *and*
-registered with the common clock framework, resulting in them being
-toggled off after ignore_unused.
+It indciates the below command fails.
 
-Unregister said clocks to fix breakage when clk_ignore_unused is absent
-(as it should be).
+perf record -o "${perfdata}" -e "{instructions,slots,topdown-retiring}:S" true
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250111-topic-x1e_fixups-v1-1-77dc39237c12@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The root cause is that perf tool creats a perf event for each PMU type
+if it can create.
+
+As for this command, there would be 5 perf events created,
+cpu_atom/instructions/,cpu_atom/topdown_retiring/,
+cpu_core/slots/,cpu_core/instructions/,cpu_core/topdown-retiring/
+
+For these 5 events, the 2 cpu_atom events are in a group and the other 3
+cpu_core events are in another group.
+
+When arch_topdown_sample_read() traverses all these 5 events, events
+cpu_atom/instructions/ and cpu_core/slots/ don't have a same group
+leade, and then return false directly and lead to cpu_core/slots/ event
+is used to sample and this is not allowed by PMU driver.
+
+It's a overkill to return false directly if "evsel->core.leader !=
+ leader->core.leader" since there could be multiple groups in the event
+list.
+
+Just "continue" instead of "return false" to fix this issue.
+
+Fixes: 1e53e9d1787b ("perf x86/topdown: Correct leader selection with sample_read enabled")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Tested-by: Thomas Falcon <thomas.falcon@intel.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250307023906.1135613-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 30 ------------------------------
- 1 file changed, 30 deletions(-)
+ tools/perf/arch/x86/util/topdown.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 7288af845434d..009f39139b644 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -2564,19 +2564,6 @@ static struct clk_branch gcc_disp_hf_axi_clk = {
- 	},
- };
- 
--static struct clk_branch gcc_disp_xo_clk = {
--	.halt_reg = 0x27018,
--	.halt_check = BRANCH_HALT,
--	.clkr = {
--		.enable_reg = 0x27018,
--		.enable_mask = BIT(0),
--		.hw.init = &(const struct clk_init_data) {
--			.name = "gcc_disp_xo_clk",
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_gp1_clk = {
- 	.halt_reg = 0x64000,
- 	.halt_check = BRANCH_HALT,
-@@ -2631,21 +2618,6 @@ static struct clk_branch gcc_gp3_clk = {
- 	},
- };
- 
--static struct clk_branch gcc_gpu_cfg_ahb_clk = {
--	.halt_reg = 0x71004,
--	.halt_check = BRANCH_HALT_VOTED,
--	.hwcg_reg = 0x71004,
--	.hwcg_bit = 1,
--	.clkr = {
--		.enable_reg = 0x71004,
--		.enable_mask = BIT(0),
--		.hw.init = &(const struct clk_init_data) {
--			.name = "gcc_gpu_cfg_ahb_clk",
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_gpu_gpll0_cph_clk_src = {
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
-@@ -6268,7 +6240,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
- 	[GCC_CNOC_PCIE_TUNNEL_CLK] = &gcc_cnoc_pcie_tunnel_clk.clkr,
- 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
- 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
--	[GCC_DISP_XO_CLK] = &gcc_disp_xo_clk.clkr,
- 	[GCC_GP1_CLK] = &gcc_gp1_clk.clkr,
- 	[GCC_GP1_CLK_SRC] = &gcc_gp1_clk_src.clkr,
- 	[GCC_GP2_CLK] = &gcc_gp2_clk.clkr,
-@@ -6281,7 +6252,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
- 	[GCC_GPLL7] = &gcc_gpll7.clkr,
- 	[GCC_GPLL8] = &gcc_gpll8.clkr,
- 	[GCC_GPLL9] = &gcc_gpll9.clkr,
--	[GCC_GPU_CFG_AHB_CLK] = &gcc_gpu_cfg_ahb_clk.clkr,
- 	[GCC_GPU_GPLL0_CPH_CLK_SRC] = &gcc_gpu_gpll0_cph_clk_src.clkr,
- 	[GCC_GPU_GPLL0_DIV_CPH_CLK_SRC] = &gcc_gpu_gpll0_div_cph_clk_src.clkr,
- 	[GCC_GPU_MEMNOC_GFX_CLK] = &gcc_gpu_memnoc_gfx_clk.clkr,
+diff --git a/tools/perf/arch/x86/util/topdown.c b/tools/perf/arch/x86/util/topdown.c
+index f63747d0abdf9..d1c6548390496 100644
+--- a/tools/perf/arch/x86/util/topdown.c
++++ b/tools/perf/arch/x86/util/topdown.c
+@@ -81,7 +81,7 @@ bool arch_topdown_sample_read(struct evsel *leader)
+ 	 */
+ 	evlist__for_each_entry(leader->evlist, evsel) {
+ 		if (evsel->core.leader != leader->core.leader)
+-			return false;
++			continue;
+ 		if (evsel != leader && arch_is_topdown_metrics(evsel))
+ 			return true;
+ 	}
 -- 
 2.39.5
 
