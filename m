@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4715CA801F6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23754A803DD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD29C7A7DA4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE0F3A142C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC1125FA13;
-	Tue,  8 Apr 2025 11:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCCD264FA0;
+	Tue,  8 Apr 2025 11:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4UtO8ZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtpGzd+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A08D19AD5C;
-	Tue,  8 Apr 2025 11:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C68F268C79;
+	Tue,  8 Apr 2025 11:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112527; cv=none; b=i/MWu9efm0D0fDKyWkzWhWhvPK/izW3ee9rJ+GHxF92X5kNZriTUA7DnH61stQaBRTpYDb1/qEJeoAtoVr9UO6SV621ZoTyxbn/xrO0eJBR85xVX1A9nwsdKNEzgT9vsQzpF632yYdlIvNWAPPa3Av/Jt1Gy5qQV/NVlGT8YFsA=
+	t=1744113314; cv=none; b=sosxcj9p+cv92mSTgda4zkkXodbHnbehwQ92QBchXEPEdy7ix78bOkyU/5JLC7YPu3dD0fh5qA3ChW8Xj9HXLsliJL0wiOXfxzF20PGl/loIWBrqxhjC2kawZa9k80i14MCnDucFF8dhdSGoCtIC40qD2Idce3Xo8d+TsEBByfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112527; c=relaxed/simple;
-	bh=ytqZ6y1/hgJSQLxSRS2h/zCg/ocrzvfKZEoVkTskg34=;
+	s=arc-20240116; t=1744113314; c=relaxed/simple;
+	bh=9gnSr4d04lXl5Ap0GdEs/eSUjG2jkCBbaZjlgvWkWtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dP5uppf9iydg5pGSQUfZD3OvC/GDVbOQOuci6K5AXskVhLL5b9XRxCY/zh2BvjzshuK/ihCeFBF70PfirrX2eRqwSnwx0dNJK2JMpPTjY+SWQGtuY5/nudV82DpMcbunlRofZrB04pKiEyAi5njWGV6NVbdbe/DaGVJqrswlWBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4UtO8ZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04415C4CEE5;
-	Tue,  8 Apr 2025 11:42:06 +0000 (UTC)
+	 MIME-Version; b=ON66qFvFHkneCUdTShJhYO73AjIXBnnraTmtUSRxLL2AShSovmbcNzWFqyBe+DBqpYtZsB4KezC0jBTZASteTSs0NfbZ3VtoL1tpyX5c/QNq6CZHXpkKjcBD+yaiPeUgX9ZB4k1g//BgxFqG6NnD7/JqKiwzEcw6t9k1BXK/UHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtpGzd+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2F3C4CEE5;
+	Tue,  8 Apr 2025 11:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112527;
-	bh=ytqZ6y1/hgJSQLxSRS2h/zCg/ocrzvfKZEoVkTskg34=;
+	s=korg; t=1744113313;
+	bh=9gnSr4d04lXl5Ap0GdEs/eSUjG2jkCBbaZjlgvWkWtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4UtO8ZL3SN8D7fg67uiGwYM4Jvu0wh/s5MYC9VqsauyPml8J9DtQv1vgeo5fDACf
-	 sxuQFRRQR3hYh3RxvB0Vp+fXDmzMl9ea1SG8IGjnJrL9uOzks0y2xpA5njwr1zTtPv
-	 GBKbDRdSx3HeZQnRJIj+zGlvTq4BFCHyHQy5i/tA=
+	b=DtpGzd+QpTZROhMeCu1C4WL4sk5KMef8oldR55JMYp3at8hymm4IlZZ9tX03NEYwM
+	 o0lOO8+PdKW8sCByy4KnDzNR2AvVFUbJxOpz9eGyOGw29kWFDq1jEu7LR72DyKujpX
+	 OEUCkesurn0t+0EuSLEwjw6Vz6Du67pmsTk8UBjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 5.15 101/279] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
-Date: Tue,  8 Apr 2025 12:48:04 +0200
-Message-ID: <20250408104829.074739789@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 074/268] remoteproc: qcom_q6v5_pas: Use resource with CX PD for MSM8226
+Date: Tue,  8 Apr 2025 12:48:05 +0200
+Message-ID: <20250408104830.494810470@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Luca Weiss <luca@lucaweiss.eu>
 
-commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
+[ Upstream commit ba785ff4162a65f18ed501019637a998b752b5ad ]
 
-When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
-shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
-bring-up fails:
+MSM8226 requires the CX power domain, so use the msm8996_adsp_resource
+which has cx under proxy_pd_names and is otherwise equivalent.
 
-    smp: Bringing up secondary CPUs ...
-    CPU1: failed to come online
-    CPU2: failed to come online
-    CPU3: failed to come online
-    smp: Brought up 1 node, 1 CPU
-
-Fix this by adding the missing alignment directive.
-
-Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
-Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Fixes: fb4f07cc9399 ("remoteproc: qcom: pas: Add MSM8226 ADSP support")
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250128-pas-singlepd-v1-1-85d9ae4b0093@lucaweiss.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-shmobile/headsmp.S |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/qcom_q6v5_pas.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/mach-shmobile/headsmp.S
-+++ b/arch/arm/mach-shmobile/headsmp.S
-@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
- 	.long	shmobile_smp_arg - 1b
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 181f05506864e..f6336bf4a38b9 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -1240,7 +1240,7 @@ static const struct adsp_data sm8550_mpss_resource = {
+ };
  
- 	.bss
-+	.align	2
- 	.globl	shmobile_smp_mpidr
- shmobile_smp_mpidr:
- 	.space	NR_CPUS * 4
+ static const struct of_device_id adsp_of_match[] = {
+-	{ .compatible = "qcom,msm8226-adsp-pil", .data = &adsp_resource_init},
++	{ .compatible = "qcom,msm8226-adsp-pil", .data = &msm8996_adsp_resource},
+ 	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8996_adsp_resource},
+ 	{ .compatible = "qcom,msm8974-adsp-pil", .data = &adsp_resource_init},
+ 	{ .compatible = "qcom,msm8996-adsp-pil", .data = &msm8996_adsp_resource},
+-- 
+2.39.5
+
 
 
 
