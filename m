@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D227A801B3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB482A7FDFA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBC874625B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21DF44502C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A42269801;
-	Tue,  8 Apr 2025 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E751268FE4;
+	Tue,  8 Apr 2025 11:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URagHLid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfwMSf07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3DC2288CB;
-	Tue,  8 Apr 2025 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED68268FDB;
+	Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111989; cv=none; b=AWDHbWQTu0ZyekTnGbCLSnsiz/IvfFP4gi/iQH4pufRXD46azbM9+tgRev6Yodk2TG5pYtapYbobd++NCIgjo/IYbCRbu1ZRaoRf8cUKL5FTxclHVzhYNgjNCeoFP2o/srFQgzGn9GA93V8qcbDMfBbQHa8NU2Dw4JlTUQwicWE=
+	t=1744110055; cv=none; b=R2wYNTgf5DBdPJNIKLrizeB5mvyM3kiF+7NrG3UwyNpiXeN1NgmBFqJAgtjSg6ofuB2wmus1yfiotOf/Wencxg99QyMJbTEhFrqw88ZCngcOrAw32q6BKuCOvHVbO+1ouHQoxFVQ7KJTbSXri0AfGCxrEruFUThaL193UWHbBsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111989; c=relaxed/simple;
-	bh=XNycCctnRWzJN822FYI8t9TO5AcouvVxr5JRjh4YW2A=;
+	s=arc-20240116; t=1744110055; c=relaxed/simple;
+	bh=P/tpRw2tIUTjXfpVrf3kZPMIIbo2N4+yDjGU1u4H3qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xi5byslV6V7MZbiPIsaOrPF8s59h18pTBqzvE1F5AkrkFmC2DpZ5s/c43K5UtjTc93qdKKJQo73Uhhn+PmsUnf5L5+wjkH2y/IpGpVcpcsgOkk1/l8Hs2CpQTEg6Sbysa97AfOzAsvPdVetA5DmwasRUPdGjIbKaPAYQPewV1q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URagHLid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E17C4CEE5;
-	Tue,  8 Apr 2025 11:33:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ytg5T/03Hvl8kHbNAydIPxT3tgE6T3bANjvJtroPQKp+YZNakYgusHSHX1DRmzoq+F0ccxEUO+WnItWE+FBJjAoleBeM4fdbOZU+NHhlNWF0C5Qa3atPZbXbo6UN37Ab0rk2rJ9pH/mEpsYHffFpPOQ206S1X2jxrUjUCQ70KRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfwMSf07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CF3C4CEE5;
+	Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111989;
-	bh=XNycCctnRWzJN822FYI8t9TO5AcouvVxr5JRjh4YW2A=;
+	s=korg; t=1744110054;
+	bh=P/tpRw2tIUTjXfpVrf3kZPMIIbo2N4+yDjGU1u4H3qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URagHLidnnPeCUWZ1k0gs8sYfXOMcfO4RQiYVnit+Om9/V8UiDNyVNKggXmlXoQPS
-	 n/QTxCxqpoZ9yiup3B0zslEfUeZlo8OiL29Ty4MN8h9i6JF9L14YEFSDhdk/FdeZ7A
-	 kA+rFhFBaEN7od0VrG3VFn06BbgN7n4wsLa95FcM=
+	b=GfwMSf07GkQY7yrdUi2wmleMahYols1GxpfjFc874KItoHzeSgu1wbLcz7F6HncVy
+	 pmZeXbJB9ZZ0XGH7ca2p3BncQ/HGbrqXCH/AWp+EO5TPD6ECxux8KLpd63b6L3VAr8
+	 R5t7quufv44w9pFqFxbec6Ty/bciW11UyHfMItB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 632/731] net: decrease cached dst counters in dst_release
+Subject: [PATCH 5.10 151/227] IB/mad: Check available slots before posting receive WRs
 Date: Tue,  8 Apr 2025 12:48:49 +0200
-Message-ID: <20250408104928.972759075@linuxfoundation.org>
+Message-ID: <20250408104824.843956228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 3a0a3ff6593d670af2451ec363ccb7b18aec0c0a ]
+[ Upstream commit 37826f0a8c2f6b6add5179003b8597e32a445362 ]
 
-Upstream fix ac888d58869b ("net: do not delay dst_entries_add() in
-dst_release()") moved decrementing the dst count from dst_destroy to
-dst_release to avoid accessing already freed data in case of netns
-dismantle. However in case CONFIG_DST_CACHE is enabled and OvS+tunnels
-are used, this fix is incomplete as the same issue will be seen for
-cached dsts:
+The ib_post_receive_mads() function handles posting receive work
+requests (WRs) to MAD QPs and is called in two cases:
+1) When a MAD port is opened.
+2) When a receive WQE is consumed upon receiving a new MAD.
 
-  Unable to handle kernel paging request at virtual address ffff5aabf6b5c000
-  Call trace:
-   percpu_counter_add_batch+0x3c/0x160 (P)
-   dst_release+0xec/0x108
-   dst_cache_destroy+0x68/0xd8
-   dst_destroy+0x13c/0x168
-   dst_destroy_rcu+0x1c/0xb0
-   rcu_do_batch+0x18c/0x7d0
-   rcu_core+0x174/0x378
-   rcu_core_si+0x18/0x30
+Whereas, if MADs arrive during the port open phase, a race condition
+might cause an extra WR to be posted, exceeding the QP’s capacity.
+This leads to failures such as:
+infiniband mlx5_0: ib_post_recv failed: -12
+infiniband mlx5_0: Couldn't post receive WRs
+infiniband mlx5_0: Couldn't start port
+infiniband mlx5_0: Couldn't open port 1
 
-Fix this by invalidating the cache, and thus decrementing cached dst
-counters, in dst_release too.
+Fix this by checking the current receive count before posting a new WR.
+If the QP’s receive queue is full, do not post additional WRs.
 
-Fixes: d71785ffc7e7 ("net: add dst_cache to ovs vxlan lwtunnel")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250326173634.31096-1-atenart@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Link: https://patch.msgid.link/c4984ba3c3a98a5711a558bccefcad789587ecf1.1741875592.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dst.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/infiniband/core/mad.c | 38 ++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 9552a90d4772d..6d76b799ce645 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -165,6 +165,14 @@ static void dst_count_dec(struct dst_entry *dst)
- void dst_release(struct dst_entry *dst)
+diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
+index 521c3d050be2d..19540a13cb84d 100644
+--- a/drivers/infiniband/core/mad.c
++++ b/drivers/infiniband/core/mad.c
+@@ -2686,11 +2686,11 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 				    struct ib_mad_private *mad)
  {
- 	if (dst && rcuref_put(&dst->__rcuref)) {
-+#ifdef CONFIG_DST_CACHE
-+		if (dst->flags & DST_METADATA) {
-+			struct metadata_dst *md_dst = (struct metadata_dst *)dst;
-+
-+			if (md_dst->type == METADATA_IP_TUNNEL)
-+				dst_cache_reset_now(&md_dst->u.tun_info.dst_cache);
+ 	unsigned long flags;
+-	int post, ret;
+ 	struct ib_mad_private *mad_priv;
+ 	struct ib_sge sg_list;
+ 	struct ib_recv_wr recv_wr;
+ 	struct ib_mad_queue *recv_queue = &qp_info->recv_queue;
++	int ret = 0;
+ 
+ 	/* Initialize common scatter list fields */
+ 	sg_list.lkey = qp_info->port_priv->pd->local_dma_lkey;
+@@ -2700,7 +2700,7 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 	recv_wr.sg_list = &sg_list;
+ 	recv_wr.num_sge = 1;
+ 
+-	do {
++	while (true) {
+ 		/* Allocate and map receive buffer */
+ 		if (mad) {
+ 			mad_priv = mad;
+@@ -2708,10 +2708,8 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 		} else {
+ 			mad_priv = alloc_mad_private(port_mad_size(qp_info->port_priv),
+ 						     GFP_ATOMIC);
+-			if (!mad_priv) {
+-				ret = -ENOMEM;
+-				break;
+-			}
++			if (!mad_priv)
++				return -ENOMEM;
+ 		}
+ 		sg_list.length = mad_priv_dma_size(mad_priv);
+ 		sg_list.addr = ib_dma_map_single(qp_info->port_priv->device,
+@@ -2720,37 +2718,41 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 						 DMA_FROM_DEVICE);
+ 		if (unlikely(ib_dma_mapping_error(qp_info->port_priv->device,
+ 						  sg_list.addr))) {
+-			kfree(mad_priv);
+ 			ret = -ENOMEM;
+-			break;
++			goto free_mad_priv;
+ 		}
+ 		mad_priv->header.mapping = sg_list.addr;
+ 		mad_priv->header.mad_list.mad_queue = recv_queue;
+ 		mad_priv->header.mad_list.cqe.done = ib_mad_recv_done;
+ 		recv_wr.wr_cqe = &mad_priv->header.mad_list.cqe;
+-
+-		/* Post receive WR */
+ 		spin_lock_irqsave(&recv_queue->lock, flags);
+-		post = (++recv_queue->count < recv_queue->max_active);
+-		list_add_tail(&mad_priv->header.mad_list.list, &recv_queue->list);
++		if (recv_queue->count >= recv_queue->max_active) {
++			/* Fully populated the receive queue */
++			spin_unlock_irqrestore(&recv_queue->lock, flags);
++			break;
 +		}
-+#endif
- 		dst_count_dec(dst);
- 		call_rcu_hurry(&dst->rcu_head, dst_destroy_rcu);
- 	}
++		recv_queue->count++;
++		list_add_tail(&mad_priv->header.mad_list.list,
++			      &recv_queue->list);
+ 		spin_unlock_irqrestore(&recv_queue->lock, flags);
++
+ 		ret = ib_post_recv(qp_info->qp, &recv_wr, NULL);
+ 		if (ret) {
+ 			spin_lock_irqsave(&recv_queue->lock, flags);
+ 			list_del(&mad_priv->header.mad_list.list);
+ 			recv_queue->count--;
+ 			spin_unlock_irqrestore(&recv_queue->lock, flags);
+-			ib_dma_unmap_single(qp_info->port_priv->device,
+-					    mad_priv->header.mapping,
+-					    mad_priv_dma_size(mad_priv),
+-					    DMA_FROM_DEVICE);
+-			kfree(mad_priv);
+ 			dev_err(&qp_info->port_priv->device->dev,
+ 				"ib_post_recv failed: %d\n", ret);
+ 			break;
+ 		}
+-	} while (post);
++	}
+ 
++	ib_dma_unmap_single(qp_info->port_priv->device,
++			    mad_priv->header.mapping,
++			    mad_priv_dma_size(mad_priv), DMA_FROM_DEVICE);
++free_mad_priv:
++	kfree(mad_priv);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
