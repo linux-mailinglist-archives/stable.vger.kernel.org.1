@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CCEA807D5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D774A806DD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C67F1B86626
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B7434C4E18
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC021268FE4;
-	Tue,  8 Apr 2025 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF6826980C;
+	Tue,  8 Apr 2025 12:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6SZH573"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6n4TSDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79049224AEB;
-	Tue,  8 Apr 2025 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D87B263F4D;
+	Tue,  8 Apr 2025 12:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115559; cv=none; b=gh4P/uZNkaJWpx2MgWWKnNWvI+u/aAQ4aVBJG3TDQ3V5UpjrV+6kdZrelsWmeTF+ZiHrf5z+FT1Fn9pfauvRVnROlaJM2f3kbd/W8pNUtyYIz8e+iSW+uwrWNWNibMzZc4sb+7P8Z76Kk0fJ7AUGz/7AS3Ef5iQ3tvILQmis38M=
+	t=1744115021; cv=none; b=nTIqR2ncS3s79WBJzjaDnk832lu0n9X3sRNrSJNzS3X6GDJnLTwg0RKdoRtA4g/GwPp5TH5Jp6lv/gycvVzKpJejwyarkj/NzYPjmO1Z+SRv3JLcLBNKsYLWRKrFJuNhcHwqrnsOrNh2+cwYvGdPmWjiDD12aOHRTyzyW3zOFSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115559; c=relaxed/simple;
-	bh=5glWdCR8L9PQ5l3I90v20uA3htfyZxsSF8xA3Atu05c=;
+	s=arc-20240116; t=1744115021; c=relaxed/simple;
+	bh=hf3SVSvZlafF33Kl5bmgkiz4imZ2k0NMsdTGh1bhSKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ay8zAuafTldzBUbX2lhYOmHbRJIEHmvyKMb7wIYkitSbVjBa6OC1OLFKaTyqrB/EzOELW/2ZsM3/k6B0mk6ojcLwbhPbhAIfANyqBfwR/UBhiMrCmvbV3BIFY6wNADTDQFD2xZ12ta3EwprXLRBZvlwf9wuYh7owiI7wfj7gI+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6SZH573; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99E6C4CEE5;
-	Tue,  8 Apr 2025 12:32:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CAJ1wUMIbQNYuB+wPA64Bohwr9KIdgyw2XK19QlNQRFTtP0mET8qCI7rQ94fC8UPaMOJhUgOgW35o7aZaSmkYeA9PY81BL/2SVkISFpbUZIkvZdERXKC/DyN5Wrdu/MSq3stKbkMV48jj+3KaahZpLyR7zA4ZY4mnjtK/NoSDrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6n4TSDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F82FC4CEE5;
+	Tue,  8 Apr 2025 12:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115559;
-	bh=5glWdCR8L9PQ5l3I90v20uA3htfyZxsSF8xA3Atu05c=;
+	s=korg; t=1744115021;
+	bh=hf3SVSvZlafF33Kl5bmgkiz4imZ2k0NMsdTGh1bhSKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6SZH573uAJyjILmBAZav+t/dXOjUXggCe9Cvm4WpDpAVE7YkoFQM/LSd/7cxmAB2
-	 1B4aaOAuE1iLC3BZteACItA20L6djnnZNIL+eQMBv5cBx5Xokftljz8iesAfxo9GAN
-	 100DE4cqL2F5V9V6n+PWFysRulRXJWOSBwsvdX0c=
+	b=l6n4TSDgps40FOhL/Y9mUWzEMfPk/blGmEOrVXr3esUPvJYX4CBJxh6Aa/1xeY+i7
+	 JvrenwQkHHqAoKv1pLA+wwTHY+yQBxGLozNRLOpY34M6IL/15HRfpSnz7NwYDkAXxl
+	 5l7etuxmkX8isNKvWXjTdP0jjje6Ix1DHKh2zgVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/204] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
+Subject: [PATCH 6.13 320/499] platform/x86/amd/pmf: Propagate PMF-TA return codes
 Date: Tue,  8 Apr 2025 12:48:52 +0200
-Message-ID: <20250408104820.348797736@linuxfoundation.org>
+Message-ID: <20250408104859.206076184@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
+[ Upstream commit 9ba93cb8212d62bccd8b41b8adb6656abf37280a ]
 
-The CPA_ARRAY test always uses len[1] as numpages argument to
-change_page_attr_set() although the addresses array is different each
-iteration of the test loop.
+In the amd_pmf_invoke_cmd_init() function within the PMF driver ensure
+that the actual result from the PMF-TA is returned rather than a generic
+EIO. This change allows for proper handling of errors originating from the
+PMF-TA.
 
-Replace len[1] with len[i] to have numpages matching the addresses array.
-
-Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
-Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20250305045842.4117767-1-Shyam-sundar.S-k@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/cpa-test.c | 2 +-
+ drivers/platform/x86/amd/pmf/tee-if.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
-index 423b21e80929a..55ce39b6b1b09 100644
---- a/arch/x86/mm/pat/cpa-test.c
-+++ b/arch/x86/mm/pat/cpa-test.c
-@@ -183,7 +183,7 @@ static int pageattr_test(void)
- 			break;
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index 8c88769ea1d87..b404764550c4c 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -323,7 +323,7 @@ static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
+ 	} else {
+ 		dev_err(dev->dev, "ta invoke cmd init failed err: %x\n", res);
+ 		dev->smart_pc_enabled = false;
+-		return -EIO;
++		return res;
+ 	}
  
- 		case 1:
--			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
-+			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
- 			break;
- 
- 		case 2:
+ 	return 0;
 -- 
 2.39.5
 
