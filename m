@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FA4A80256
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D22A7FD98
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 622D98827C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B797D16E3D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B14319AD5C;
-	Tue,  8 Apr 2025 11:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2549B26A0F2;
+	Tue,  8 Apr 2025 10:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Edp7Jcyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hExb22Eh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077A9219301;
-	Tue,  8 Apr 2025 11:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29BF26A0D1;
+	Tue,  8 Apr 2025 10:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112437; cv=none; b=uvUu2LSZuqjMuN0a/p9mZo3gp4wU0f6QSbOfyWl+zAcipZ8IoY+S056BUWw6tgYg/Qtc83/G2OgRuwTVfP3UiwGBy7Zq1pSr0gKmg1SBmgIoDFDYySrpHQlFK6IrkLgRVRIzeQmCnKkA+Y1fO0Ej2YSl/MOLloe5BMQqV5yEuYM=
+	t=1744109842; cv=none; b=ZFuivFM+em+1VxICPvstANTvowocghgSThRLrMg4k5TPGI7YL4XHA8nfHShudXV8Jhr/AzjSLLmwAlIgYolgoTHUgyQzSuP0IZWDK50KfOEG5kG4Wf2tS/I7MnJetwXBSaIyNxEWK0CgA+svoZloKZg5aPE1v2/TEb8vV8Fflqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112437; c=relaxed/simple;
-	bh=pGt2rYwrzbJ/z1+UH8lFCylk+rUo8i02vZcsgYQzj0I=;
+	s=arc-20240116; t=1744109842; c=relaxed/simple;
+	bh=XGWuD9ap45mJQj37NzZnDi46duHUn1etuL3nPxS+Q4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFBC7T6rJca3gqszt5aeVCezPn+VJfl2/BARhnCyO71a3l25VPeQSloBwZCfjjqIR6S0SbMX194uAM0tEZr8mOcEIjYpVqWGEGYm1d5F0aKaZUtk0bQv7rOQGUF3n0V6EcC5OfI7sdZcOqEK+jelVUKI9XErAeIUsjofsoy13wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Edp7Jcyf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BE1C4CEE5;
-	Tue,  8 Apr 2025 11:40:35 +0000 (UTC)
+	 MIME-Version; b=jpyi5kVn6KAV7xhDZQlSFtIFB/XjDXKBo2Xa5ugnxu3gDrKHy7PkrJ+KexYLKj++GM8A2w5aiIk5cbkrjgbyd/IpWvLtFYBU6Ba2qQ0C1Y76h0CaVmyzR5wYWXXWZHl3TrwqPSvVIGhM6cSO2ZJX88rqkijlAV+/ej43edYGaSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hExb22Eh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EC9C4CEE5;
+	Tue,  8 Apr 2025 10:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112436;
-	bh=pGt2rYwrzbJ/z1+UH8lFCylk+rUo8i02vZcsgYQzj0I=;
+	s=korg; t=1744109842;
+	bh=XGWuD9ap45mJQj37NzZnDi46duHUn1etuL3nPxS+Q4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Edp7JcyfsICfqWxBrR+UUNwoIJWvPerLuw8vH1QSMRIFzXQlbsIGtjvRZLiFY5mVv
-	 CI9hBwv10tn/NoJmi5M2qlseQJIVQITD4XR4Jl6g2TCGmx+aUaErIuqkYWZWHTmYZ/
-	 UiZi2wftimhpqWdTdIIyv51cB0pwdqnPqNzfE3BE=
+	b=hExb22EhfxypapkPqaAIDgsOFDtLt8fh4g5p7y5GPwy3zVIXoilGutkE+Aga7Ok6w
+	 YrBgy6OLHzudF6J5u1tEF4XyJRUuGeTMJEMViwodw4u8Q5xDAEeYLG3uSuHt5HOchj
+	 DoRRIlMYswETebJpkHGO7emv4yoawTaRyyG7vK6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/279] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
+Subject: [PATCH 5.10 072/227] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
 Date: Tue,  8 Apr 2025 12:47:30 +0200
-Message-ID: <20250408104828.152329275@linuxfoundation.org>
+Message-ID: <20250408104822.557675962@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
+[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
 
-Free some resources in the error handling path of the probe, as already
-done in the remove function.
+Driver is always clearing the mask that sets the VLAN ID/Service Level
+in the adapter. Recent change for supporting multiple traffic class
+exposed this issue.
 
-Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
-Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm0010.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
-index 28b4656c4e149..b2f87af1bfc87 100644
---- a/sound/soc/codecs/wm0010.c
-+++ b/sound/soc/codecs/wm0010.c
-@@ -952,7 +952,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 	if (ret) {
- 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
- 			irq, ret);
--		return ret;
-+		goto free_irq;
- 	}
- 
- 	if (spi->max_speed_hz)
-@@ -964,9 +964,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 				     &soc_component_dev_wm0010, wm0010_dai,
- 				     ARRAY_SIZE(wm0010_dai));
- 	if (ret < 0)
--		return ret;
-+		goto disable_irq_wake;
- 
- 	return 0;
-+
-+disable_irq_wake:
-+	irq_set_irq_wake(wm0010->irq, 0);
-+
-+free_irq:
-+	if (wm0010->irq)
-+		free_irq(wm0010->irq, wm0010);
-+
-+	return ret;
- }
- 
- static int wm0010_spi_remove(struct spi_device *spi)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 4ed78d25b6e9a..d5bb8017a468e 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1163,8 +1163,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
+ 			qp->path_mtu =
+ 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
+ 		}
+-		qp->modify_flags &=
+-			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
+ 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
+ 		if (qp->max_dest_rd_atomic < 1)
+ 			qp->max_dest_rd_atomic = 1;
 -- 
 2.39.5
 
