@@ -1,188 +1,204 @@
-Return-Path: <stable+bounces-131765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6557DA80D30
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:02:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39652A80D7F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061EF4414FF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97FA01BC3F30
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D30E1AB52D;
-	Tue,  8 Apr 2025 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F74C1E1A3F;
+	Tue,  8 Apr 2025 14:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="wIYyiVQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FP+SRwJ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3F28836
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 13:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2991C5485;
+	Tue,  8 Apr 2025 14:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744120749; cv=none; b=awBTz6cXG5k3D6e9M1dVZoDtyk7mevyraxAdVaTvxsl7LXrkqK5Dqe14ZQ9AyiunG17fk2Z6vp5UF+haqE79ZV+7uMurZXKtX/o3a/VRxflV+BOuBzx0auczqUDyYagNurZ9WjbcspHR2lYvYI1kJdSe2DCtb7t0zLEZfwRYido=
+	t=1744121044; cv=none; b=JvLKsWyAOgvMUrcaS7OgtNEkbDsmzXqIDZZPwp/rfKPlWu1+pKGIlJ9okP6O68+zAfUm48eEREuwJKtf5wCkQ27zzvIDwigu18aXimCI4TG93S3SSkgtz2elPa/EBG2BRJzyEq49BOPuP7rC4i9Dz6+PAa+lvFHQhtjvgI1rz5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744120749; c=relaxed/simple;
-	bh=scShRbWyfHKWHmj/XdexUnBEPQr/1x9JIlHvHiBnILE=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=TafCUD723LPIzywboFMB5kS8agrNJDCxtQWDO6i1GmOjEQ3EAj13sSmPM9P6Z7wgS7KlK3ZLBRG6j12i3u1fdhhzzcdDDJs6aCPAwIoswbf1knm1YlhH3Q/kV0oMTlvIXrI9BQHrOEgh2RrinKc588ixhAWvZHTDfUgXdBvp5hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=wIYyiVQT; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ff07872097so51405907b3.3
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 06:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1744120745; x=1744725545; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xz7I42jtt2TRM/qwZCv+GmdAdIknXYgLeni37j6G3IE=;
-        b=wIYyiVQTsM7lDTr4brsXu4X9pl2Iy7s2HL5isDI3I33zPjS5iofpiNkv0DeePlsjd2
-         DwSyP0OIsJZqvdnNdpIPmLbthErBqIE8PCD4+WuI2hv1Nbbjp9EB87dtgmvwUYHLH8VH
-         EKWlWEOgf9KOlwMJJLnWR1LdrWxtxrR1iCVVYsgwvBu2DyCn4wt8dZiKPf4e+QG8c3ej
-         u25qcnD+6HSyzy4Pixn2nJiJBUKfDudAFzE4tT5gnfoYicn0Z3074CUNeR98rBCU1mlF
-         D6Jt/Cu8pxPSluaccuIrPPuqaVxtE4GrT9pPhtZn9VMbsx4Uh0PDhDIzccGclOmZCZOj
-         ReFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744120745; x=1744725545;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xz7I42jtt2TRM/qwZCv+GmdAdIknXYgLeni37j6G3IE=;
-        b=X9y4C+ZnYusMvd9r2WUpVZzCiiMNNxIUNG9SBmSgi/3fvA3/J9HOaIQmizRekWgJRe
-         MM6TfM/K/F4i6cYOaGv0192d79XC/j7V9s5za4pH9PbUiI1m35myNxV//1E/gxQsDlWZ
-         pL9r9Yj8XBqYtjV+WBTXTPnHphWBnuPgduMV4gdbxmun+2brzbN7PuR/GFb6yNOvUSWa
-         NoRRDfd+mFsqy0sq95WWYQ7MstJVT52sGU64bIwDlvXQ6X5A/lcJWEZCyEXxpSgJJ+0d
-         AYdVVl13nfpLf79OmXaqxV9lV48tOp47tyi29sl8hIg5eV133SJtxomfDt/IJd427+qJ
-         1x/w==
-X-Forwarded-Encrypted: i=1; AJvYcCW1nPVGXGDQxGsbTV8tmN5VB2Z6ohbQMRkK8Y14ZXiIOl1MqxIb96VN8PkzwzhzjRmi0gZ108A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiJq5XiFXMnzTDtj6H609EMAHwU53XTCnYwRonwcw7Q7q6U8M8
-	Jkl4teu6r6+2OHTGnHHQ+FT2JuXBmw24+NBCxaMlmg4/Ncyvcp4c7IPhjCFibqoreqUNwwSZy4j
-	WKuQQQtZNMHlBA4q693+QVpicoGouZBK+6Ks2DA==
-X-Gm-Gg: ASbGncsFaoo5tTiqkimAQcxUnGYCs/mI09PBcwabIAVb4Bu0FrEA6JGXGIUPR40cvTr
-	W4IF9pJqXikV+2kw/EiTVctpkQYkhEYtwfmOAkCHvTvuk6O/UsB+z3H2nbuBEBMm+wagcv/B2N5
-	ktf2TLalzzuGfF2hHgVvI96Loi0kgfjejXLZA=
-X-Google-Smtp-Source: AGHT+IHxHc7NGV9tS8sdqlPEo4L1oIfqsdyAYpNmO/P6UuL5QJIyhvRW6uGouHRlCCNXhUtqVvndcqcX5lCmORlq8SQ=
-X-Received: by 2002:a05:690c:9a86:b0:6f9:a75f:f220 with SMTP id
- 00721157ae682-703e15fc484mr283622807b3.25.1744120745211; Tue, 08 Apr 2025
- 06:59:05 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Apr 2025 06:59:04 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Apr 2025 06:59:04 -0700
+	s=arc-20240116; t=1744121044; c=relaxed/simple;
+	bh=BzFbZA1m9dFOlKsy5ES02lDgkZDWoW80YEBIeHHNu+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L0Eftc2i6zA+krKBHqIExK63Ip9uf3FTF+6SgliWc2yr/AXFeDiZnEj+ChkvZRio6UDb/D9boNf90vxPZYNhWgr3mDf5XLbTsOkrb/KzICf/9jm3CwoyBasK9EyMl6R3yvSnNnTxbF1slrObY86TsAs0n7WfPOavO+kxUo+ZNZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FP+SRwJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66C9C4CEE5;
+	Tue,  8 Apr 2025 14:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744121043;
+	bh=BzFbZA1m9dFOlKsy5ES02lDgkZDWoW80YEBIeHHNu+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FP+SRwJ8NwtZ6RWvC+sp2R+vSOyb/SVNnj+502MfqxHqobE254c3WPy05xy9friP4
+	 gVDbaV14c31Exg+Ww8M0fHQxK7a1M8AcvIKXwrN78CKmfq9fJseo9trjqpDKcXfhsh
+	 wpQ3bxziDcAZVqD11IkMZdI+YDcQyaKiZCLBZFmQ=
+Date: Tue, 8 Apr 2025 16:02:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Justin Forbes <jforbes@fedoraproject.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Subject: Re: [PATCH 6.14 000/731] 6.14.2-rc1 review
+Message-ID: <2025040857-disdain-reprocess-0891@gregkh>
+References: <20250408104914.247897328@linuxfoundation.org>
+ <c06b17f2-fc80-47a9-b108-8e53be3d4a76@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 8 Apr 2025 06:59:04 -0700
-X-Gm-Features: ATxdqUHdaH418-qkjMvntJAIMBXffmCz1BuAYC3y0og3_6SgCB_rbNSgBW3BUGE
-Message-ID: <CACo-S-297JUFPCNaeSoA0WHSP=sC+QquSZaX=rQto=JZzi1PUA@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) variable 'base_clk' is
- used uninitialized whenever 'if' condition ...
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c06b17f2-fc80-47a9-b108-8e53be3d4a76@leemhuis.info>
 
-Hello,
+On Tue, Apr 08, 2025 at 03:16:31PM +0200, Thorsten Leemhuis wrote:
+> On 08.04.25 12:38, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.14.2 release.
+> > There are 731 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> Compiling for Fedora failed for me:
+> 
+> 
+> """
+> error[E0412]: cannot find type `Core` in module `device`
+>   --> rust/kernel/pci.rs:69:58
+>    |
+> 69 |         let pdev = unsafe { &*pdev.cast::<Device<device::Core>>() };
+>    |                                                          ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/pci.rs:240:35
+>     |
+> 240 |     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
+>     |                                   ^^^^ not found in `device`
+> 
+> error[E0405]: cannot find trait `DeviceContext` in module `device`
+>    --> rust/kernel/pci.rs:253:32ich of
+>     |
+> 253 | pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+>     |                                ^^^^^^^^^^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Normal` in module `device`
+>    --> rust/kernel/pci.rs:253:56
+>     |
+> 253 | pub struct Device<Ctx: device::DeviceCchangeontext = device::Normal>(
+>     |                                                        ^^^^^^ not found in `device`
+>     |
+> help: there is an enum variant `core::intrinsics::mir::BasicBlock::Normal` and 1 other; try using the variant's enum
+>     |
+> 253 | pub struct Device<Ctx: device::DeviceContext = core::intrinsics::mir::BasicBlock>(
+>     |                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 253 | pub struct Device<Ctx: device::DeviceContext = core::num::FpCategory>(
+>     |                                                ~~~~~~~~~~~~~~~~~~~~~
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/pci.rs:411:21
+>     |
+> 411 | impl Device<device::Core> {
+>     |                     ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/pci.rs:425:31
+>     |
+> 425 | impl Deref for Device<device::Core> {
+>     |                               ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/pci.rs:439:27
+>     |
+> 439 | impl From<&Device<device::Core>> for ARef<Device> {
+>     |                           ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/pci.rs:440:34
+>     |
+> 440 |     fn from(dev: &Device<device::Core>) -> Self {
+>     |                                  ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>   --> rust/kernel/platform.rs:65:58
+>    |
+> 65 |         let pdev = unsafe { &*pdev.cast::<Device<device::Core>>() };
+>    |                                                          ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/platform.rs:167:35
+>     |
+> 167 |     fn probe(dev: &Device<device::Core>, id_info: Option<&Self::IdInfo>)
+>     |                                   ^^^^ not found in `device`
+> 
+> error[E0405]: cannot find trait `DeviceContext` in module `device`
+>    --> rust/kernel/platform.rs:182:32
+>     |
+> 182 | pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+>     |                                ^^^^^^^^^^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Normal` in module `device`
+>    --> rust/kernel/platform.rs:182:56
+>     |
+> 182 | pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+>     |                                                        ^^^^^^ not found in `device`
+>     |
+> help: there is an enum variant `core::intrinsics::mir::BasicBlock::Normal` and 1 other; try using the variant's enum
+>     |
+> 182 | pub struct Device<Ctx: device::DeviceContext = core::intrinsics::mir::BasicBlock>(
+>     |                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 182 | pub struct Device<Ctx: device::DeviceContext = core::num::FpCategory>(
+>     |                                                ~~~~~~~~~~~~~~~~~~~~~
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/platform.rs:193:31
+>     |
+> 193 | impl Deref for Device<device::Core> {
+>     |                               ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/platform.rs:207:27
+>     |
+> 207 | impl From<&Device<device::Core>> for ARef<Device> {
+>     |                           ^^^^ not found in `device`
+> 
+> error[E0412]: cannot find type `Core` in module `device`
+>    --> rust/kernel/platform.rs:208:34
+>     |
+> 208 |     fn from(dev: &Device<device::Core>) -> Self {
+>     |                                  ^^^^ not found in `device`
+> 
+> error: aborting due to 15 previous errors
+> 
+> Some errors have detailed explanations: E0405, E0412.
+> For more information about an error, try `rustc --explain E0405`.
+> make[2]: *** [rust/Makefile:482: rust/kernel.o] Error 1
+> make[1]: *** [/builddir/build/BUILD/kernel-6.14.2-build/kernel-6.14.2-rc1/linux-6.14.2-0.rc1.300.vanilla.fc42.x86_64/Makefile:1283: prepare] Error 2
+> make: *** [Makefile:259: __sub-make] Error 2
+> """
+> 
+> 
+> >From a quick look there seem to be three changes in this set that touch
+> rust/kernel/pci.rs; if needed, I can take a closer look later or tomorrow
+> what exactly is causing trouble (I just hope it's no new build requirement
+> missing on my side or something like that).
 
-New build issue found on stable-rc/linux-5.15.y:
+Hm,  odd, I thought I was testing Rust builds on my build system but
+obviously not.  I'll go work on this later tonight...
 
----
- variable 'base_clk' is used uninitialized whenever 'if' condition is
-true [-Werror,-Wsometimes-uninitialized] in
-drivers/mmc/host/sdhci-brcmstb.o (drivers/mmc/host/sdhci-brcmstb.c)
-[logspec:kbuild,kbuild.compiler.error]
----
+thanks,
 
-- dashboard: https://d.kernelci.org/i/maestro:eb9b0da83cc077e6176b9903d98f0f78704ac17f
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  0b4857306c618d2052f6455b90747ef1df364ecd
-
-
-Log excerpt:
-=====================================================
-drivers/mmc/host/sdhci-brcmstb.c:303:6: error: variable 'base_clk' is
-used uninitialized whenever 'if' condition is true
-[-Werror,-Wsometimes-uninitialized]
-  303 |         if (res)
-      |             ^~~
-drivers/mmc/host/sdhci-brcmstb.c:377:24: note: uninitialized use occurs here
-  377 |         clk_disable_unprepare(base_clk);
-      |                               ^~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:303:2: note: remove the 'if' if its
-condition is always false
-  303 |         if (res)
-      |         ^~~~~~~~
-  304 |                 goto err;
-      |                 ~~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:296:6: error: variable 'base_clk' is
-used uninitialized whenever 'if' condition is true
-[-Werror,-Wsometimes-uninitialized]
-  296 |         if (IS_ERR(priv->cfg_regs)) {
-      |             ^~~~~~~~~~~~~~~~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:377:24: note: uninitialized use occurs here
-  377 |         clk_disable_unprepare(base_clk);
-      |                               ^~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:296:2: note: remove the 'if' if its
-condition is always false
-  296 |         if (IS_ERR(priv->cfg_regs)) {
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  297 |                 res = PTR_ERR(priv->cfg_regs);
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  298 |                 goto err;
-      |                 ~~~~~~~~~
-  299 |         }
-      |         ~
-drivers/mmc/host/sdhci-brcmstb.c:281:6: error: variable 'base_clk' is
-used uninitialized whenever 'if' condition is true
-[-Werror,-Wsometimes-uninitialized]
-  281 |         if (IS_ERR(host)) {
-      |             ^~~~~~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:377:24: note: uninitialized use occurs here
-  377 |         clk_disable_unprepare(base_clk);
-      |                               ^~~~~~~~
-drivers/mmc/host/sdhci-brcmstb.c:281:2: note: remove the 'if' if its
-condition is always false
-  281 |         if (IS_ERR(host)) {
-      |         ^~~~~~~~~~~~~~~~~~~
-  282 |                 res = PTR_ERR(host);
-      |                 ~~~~~~~~~~~~~~~~~~~~
-  283 |                 goto err_clk;
-      |                 ~~~~~~~~~~~~~
-  284 |         }
-      |         ~
-drivers/mmc/host/sdhci-brcmstb.c:260:22: note: initialize the variable
-'base_clk' to silence this warning
-  260 |         struct clk *base_clk;
-      |                             ^
-      |                              = NULL
-3 errors generated.
-  CC [M]  drivers/gpu/drm/drm_gem.o
-  CC [M]  drivers/staging/rtl8723bs/hal/odm_EdcaTurboCheck.o
-  CC [M]  drivers/net/ethernet/rocker/rocker_tlv.o
-  CC [M]  drivers/staging/nvec/nvec.o
-  CC [M]  drivers/staging/media/zoran/zoran_card.o
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:67f509a66fa43d168f278a2b
-
-
-#kernelci issue maestro:eb9b0da83cc077e6176b9903d98f0f78704ac17f
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+greg k-h
 
