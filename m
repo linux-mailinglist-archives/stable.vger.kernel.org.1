@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195FAA80B85
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902FCA80881
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E9A504543
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A07757B1A65
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9424E27CCEE;
-	Tue,  8 Apr 2025 12:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C0D224887;
+	Tue,  8 Apr 2025 12:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQFb92Jm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BED4lQmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514FA27CCE0;
-	Tue,  8 Apr 2025 12:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420C32777F4;
+	Tue,  8 Apr 2025 12:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117144; cv=none; b=BW7JUQuCAsXyb7T+Lhia+qtPJsTRmaImdzrwQgdkCXUqj97pPBxb7dgPQcXX9oH4Wd6SBwiPCHqRy87Skl7447QcE6uBQQClD182/fZNZNatfXZ3xvpBWjuWJGascp9XPGTCJTUayGbtPAgecCkmVn1VYP5GHfQRuQ/qfo62LTQ=
+	t=1744116045; cv=none; b=Vi9VzKuXtAkQ/Y6y8rGIngTAKfqNRA82gMKNdDDo3ZTKLSnnKqc6dQfPsOPV4byCipkTsrmqj/Juex7iEjYhUKPL2NalmFbUNJMudGIJsW5nLMJ1f5DbQzq00uYid5JPhtO/WkHm8fXO1Na9VvojRykhdWuk1yrRNqoL3/WSuco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117144; c=relaxed/simple;
-	bh=wnT0a1+RquqUpMV1sBetizVt3/2fwrAF/+7IKr3MkqI=;
+	s=arc-20240116; t=1744116045; c=relaxed/simple;
+	bh=ekRQYDXWM92Voam5KBnytkJAIpuWorJbYladsyOdf0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUrOzmmHIZQd/HTrU58Cu85qv/21feEkCE2VQo0jt4fopqR08fNRDR0b0FADLysikztYYptOUhXcCgTEilD5xIgjiutoHdWFzt2FTwBtEk4usu9mYhUeWlzEvOa5Qa2VhoRSlShsehIIFe5pReRI+kxSLyI8Pz+ZURJ2eg6w5Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQFb92Jm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1EFC4CEE5;
-	Tue,  8 Apr 2025 12:59:03 +0000 (UTC)
+	 MIME-Version; b=Q6Sya1dbp6Um0eTnXkITBupR13Anz8k9I2/4lvIPSp6lYv1UThA6AXL/iyo6ycFZlzoY7YUyiRqxWbc2hphBvwGKt+/foQlJ311UFaLxO+LaLdwUi6fXUTKcjqpiS9Dt5eqLVrGuZBIlEcYglCptY03mv8BTgw6G6rj5Pv3CYuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BED4lQmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C370CC4CEE5;
+	Tue,  8 Apr 2025 12:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117144;
-	bh=wnT0a1+RquqUpMV1sBetizVt3/2fwrAF/+7IKr3MkqI=;
+	s=korg; t=1744116045;
+	bh=ekRQYDXWM92Voam5KBnytkJAIpuWorJbYladsyOdf0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQFb92JmevSUaiPQSqhLIOFm43eu6+zPJkvvd/YiS+5wyLQq3tJaKLErJUIDgZEl/
-	 UbsYHaUL1Gj3448O6KYc9quuH5/UKVRUo6WbL8vFmRiVIsqUpUTY//LojENneYsfGG
-	 JdLCAfL5bpiZwcbK6O+ja/e2ZDqsot2jnojHbReU=
+	b=BED4lQmXJ5XbIxwtfDt1nesJNu3L7VagIWqLUNoREg/jP+vF/kC9+ok8k8JBn5HiI
+	 kYiuD2tMghOZb7KQeJ9Lba/UOX20o/JOcNHInmKizAiYb2LcD6siK1bGM5nxfgwCSO
+	 SmtOobhYE4wl6f53NUrogHDNeP82T4Q6OQ2aCP20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.12 401/423] exfat: fix random stack corruption after get_block
-Date: Tue,  8 Apr 2025 12:52:07 +0200
-Message-ID: <20250408104855.246797326@linuxfoundation.org>
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.1 198/204] ext4: dont over-report free space or inodes in statvfs
+Date: Tue,  8 Apr 2025 12:52:08 +0200
+Message-ID: <20250408104826.125002769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 1bb7ff4204b6d4927e982cd256286c09ed4fd8ca upstream.
+commit f87d3af7419307ae26e705a2b2db36140db367a2 upstream.
 
-When get_block is called with a buffer_head allocated on the stack, such
-as do_mpage_readpage, stack corruption due to buffer_head UAF may occur in
-the following race condition situation.
+This fixes an analogus bug that was fixed in xfs in commit
+4b8d867ca6e2 ("xfs: don't over-report free space or inodes in
+statvfs") where statfs can report misleading / incorrect information
+where project quota is enabled, and the free space is less than the
+remaining quota.
 
-     <CPU 0>                      <CPU 1>
-mpage_read_folio
-  <<bh on stack>>
-  do_mpage_readpage
-    exfat_get_block
-      bh_read
-        __bh_read
-	  get_bh(bh)
-          submit_bh
-          wait_on_buffer
-                              ...
-                              end_buffer_read_sync
-                                __end_buffer_read_notouch
-                                   unlock_buffer
-          <<keep going>>
-        ...
-      ...
-    ...
-  ...
-<<bh is not valid out of mpage_read_folio>>
-   .
-   .
-another_function
-  <<variable A on stack>>
-                                   put_bh(bh)
-                                     atomic_dec(bh->b_count)
-  * stack corruption here *
+This commit will resolve a test failure in generic/762 which tests for
+this bug.
 
-This patch returns -EAGAIN if a folio does not have buffers when bh_read
-needs to be called. By doing this, the caller can fallback to functions
-like block_read_full_folio(), create a buffer_head in the folio, and then
-call get_block again.
-
-Let's do not call bh_read() with on-stack buffer_head.
-
-Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
-Cc: stable@vger.kernel.org
-Tested-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@kernel.org
+Fixes: 689c958cbe6b ("ext4: add project quota support")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/inode.c |   39 +++++++++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 6 deletions(-)
+ fs/ext4/super.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/fs/exfat/inode.c
-+++ b/fs/exfat/inode.c
-@@ -344,7 +344,8 @@ static int exfat_get_block(struct inode
- 			 * The block has been partially written,
- 			 * zero the unwritten part and map the block.
- 			 */
--			loff_t size, off, pos;
-+			loff_t size, pos;
-+			void *addr;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6685,22 +6685,29 @@ static int ext4_statfs_project(struct su
+ 			     dquot->dq_dqb.dqb_bhardlimit);
+ 	limit >>= sb->s_blocksize_bits;
  
- 			max_blocks = 1;
- 
-@@ -355,17 +356,41 @@ static int exfat_get_block(struct inode
- 			if (!bh_result->b_folio)
- 				goto done;
- 
-+			/*
-+			 * No buffer_head is allocated.
-+			 * (1) bmap: It's enough to fill bh_result without I/O.
-+			 * (2) read: The unwritten part should be filled with 0
-+			 *           If a folio does not have any buffers,
-+			 *           let's returns -EAGAIN to fallback to
-+			 *           per-bh IO like block_read_full_folio().
-+			 */
-+			if (!folio_buffers(bh_result->b_folio)) {
-+				err = -EAGAIN;
-+				goto done;
-+			}
+-	if (limit && buf->f_blocks > limit) {
++	if (limit) {
++		uint64_t	remaining = 0;
 +
- 			pos = EXFAT_BLK_TO_B(iblock, sb);
- 			size = ei->valid_size - pos;
--			off = pos & (PAGE_SIZE - 1);
-+			addr = folio_address(bh_result->b_folio) +
-+			       offset_in_folio(bh_result->b_folio, pos);
- 
--			folio_set_bh(bh_result, bh_result->b_folio, off);
-+			/* Check if bh->b_data points to proper addr in folio */
-+			if (bh_result->b_data != addr) {
-+				exfat_fs_error_ratelimit(sb,
-+					"b_data(%p) != folio_addr(%p)",
-+					bh_result->b_data, addr);
-+				err = -EINVAL;
-+				goto done;
-+			}
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
 +
-+			/* Read a block */
- 			err = bh_read(bh_result, 0);
- 			if (err < 0)
--				goto unlock_ret;
-+				goto done;
- 
--			folio_zero_segment(bh_result->b_folio, off + size,
--					off + sb->s_blocksize);
-+			/* Zero unwritten part of a block */
-+			memset(bh_result->b_data + size, 0,
-+			       bh_result->b_size - size);
- 		} else {
- 			/*
- 			 * The range has not been written, clear the mapped flag
-@@ -376,6 +401,8 @@ static int exfat_get_block(struct inode
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
  	}
- done:
- 	bh_result->b_size = EXFAT_BLK_TO_B(max_blocks, sb);
-+	if (err < 0)
-+		clear_buffer_mapped(bh_result);
- unlock_ret:
- 	mutex_unlock(&sbi->s_lock);
- 	return err;
+ 
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 			     dquot->dq_dqb.dqb_ihardlimit);
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
 
 
 
