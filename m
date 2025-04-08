@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EBEA802AF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698CAA801F1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB6017A9F85
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2423B3BEE13
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BD1266EEA;
-	Tue,  8 Apr 2025 11:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898CE224239;
+	Tue,  8 Apr 2025 11:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf1IYbF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1p9ZOTmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DCE22424C;
-	Tue,  8 Apr 2025 11:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456B435973;
+	Tue,  8 Apr 2025 11:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112870; cv=none; b=m8mZ56ZbKaJgORlwq2Bw/Vr+HdqpVibVw4dsMvSLylkfY6aKjLt6op2Q4ow+rmNiR3kynGvEVewDjLJHgI3mkdF2Tl1mRu6abrnc9dIM0ErKuhWAEWyfjkLmQreT7oNIg/OBjU8VIo9S0s9WaRqPvzNs+Nik4rUTF/KgWlMwf5U=
+	t=1744112211; cv=none; b=JaXMwhFGAWYcDSQVOoriXqx9DYLZrKRNQJgJ2m6rRYLUsCUw5Dp9pxfRqGEXXx+WtGHZgkOQ0u5Sj0wfgfGoAl64FlHoRMcEjLOUNc+fsv17uODHy4Ic65B2/sr4MVGsRpRus6Kx9b4wOuwN+g32RWpW3cpwWUzhQQHl/qOrbJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112870; c=relaxed/simple;
-	bh=fBic988iQBNB8M15aAG6C9ToaZ2noUoLpGPqHhCH+VQ=;
+	s=arc-20240116; t=1744112211; c=relaxed/simple;
+	bh=c+Zrp0rd4MhXPotdmKULmQaEoYQCGGSosIzFEYYung4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K77FmixaAPeRUI0crXjfE6HOXPpvMl/tRjGiq4DnO/EXH1U4ErH7y/OEdBVj/r2Qcwwn3h50Jdk5LnbgXW5YYzD0ZC7ei10prHK/OSP4kFE9QjOMyCY0mEfJQYIXhgxLNDR2hT/pciJOUJOuK0mA+P8IfTIV30A8+kALjrP+U3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf1IYbF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA906C4CEE5;
-	Tue,  8 Apr 2025 11:47:49 +0000 (UTC)
+	 MIME-Version; b=puzF7tZhm0IBs2kVfwJMUN3zfBCypXO4d0jObtrUVPjZ/kCVHA7gG437zBJVop01D6xXGIBfIfr3Sgi5/q0FEVbksV95MsUpvbx8Q29iKjsgwarTvT2P8HF9SVA6mP2718Vnb2VP+j8OiiFcXsJaRJGU4IOjVwaA8sUUDgJZwxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1p9ZOTmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DE8C4CEE5;
+	Tue,  8 Apr 2025 11:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112870;
-	bh=fBic988iQBNB8M15aAG6C9ToaZ2noUoLpGPqHhCH+VQ=;
+	s=korg; t=1744112210;
+	bh=c+Zrp0rd4MhXPotdmKULmQaEoYQCGGSosIzFEYYung4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cf1IYbF4HW5hvtw/K+jz64Ue4h92yDlrT7FHWfCeqiIP2+sNSna8O/MeRr/prmzcH
-	 dN7NaH6DV4FGbkWk+dShLz3Lrp9wpafziETZpq3tadiwuymqkhbC0yhcLxiwFlfQas
-	 Dk5v/gUBgEpWzv9Nz2Mg8tVSCzFy9S6KIS/ScKYc=
+	b=1p9ZOTmOr625PZ/Mz2H3mW/zXtBtGCl+1Aqp0K1mIoN23Uk7tU4ylfDXW7nM7Gu8r
+	 Xtqe272XTgKCbpIfNpzb+qDgqPdGl4CFChe5ns+STexv9pvbE9QAdHOJnLpvkoIE00
+	 fkgJo7jcxisp9iqQRM/87Dx7R6KzSglAKf59FNB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 228/279] sched/deadline: Use online cpus for validating runtime
-Date: Tue,  8 Apr 2025 12:50:11 +0200
-Message-ID: <20250408104832.526885872@linuxfoundation.org>
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.14 715/731] ext4: dont over-report free space or inodes in statvfs
+Date: Tue,  8 Apr 2025 12:50:12 +0200
+Message-ID: <20250408104930.905831488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 14672f059d83f591afb2ee1fff56858efe055e5a ]
+commit f87d3af7419307ae26e705a2b2db36140db367a2 upstream.
 
-The ftrace selftest reported a failure because writing -1 to
-sched_rt_runtime_us returns -EBUSY. This happens when the possible
-CPUs are different from active CPUs.
+This fixes an analogus bug that was fixed in xfs in commit
+4b8d867ca6e2 ("xfs: don't over-report free space or inodes in
+statvfs") where statfs can report misleading / incorrect information
+where project quota is enabled, and the free space is less than the
+remaining quota.
 
-Active CPUs are part of one root domain, while remaining CPUs are part
-of def_root_domain. Since active cpumask is being used, this results in
-cpus=0 when a non active CPUs is used in the loop.
+This commit will resolve a test failure in generic/762 which tests for
+this bug.
 
-Fix it by looping over the online CPUs instead for validating the
-bandwidth calculations.
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20250306052954.452005-2-sshegde@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 689c958cbe6b ("ext4: add project quota support")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/super.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 0a6d6899be5bd..66eb68c59f0bb 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2610,7 +2610,7 @@ int sched_dl_global_validate(void)
- 	 * value smaller than the currently allocated bandwidth in
- 	 * any of the root_domains.
- 	 */
--	for_each_possible_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		rcu_read_lock_sched();
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6813,22 +6813,29 @@ static int ext4_statfs_project(struct su
+ 			     dquot->dq_dqb.dqb_bhardlimit);
+ 	limit >>= sb->s_blocksize_bits;
  
- 		if (dl_bw_visited(cpu, gen))
--- 
-2.39.5
-
+-	if (limit && buf->f_blocks > limit) {
++	if (limit) {
++		uint64_t	remaining = 0;
++
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
+ 	}
+ 
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 			     dquot->dq_dqb.dqb_ihardlimit);
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
 
 
 
