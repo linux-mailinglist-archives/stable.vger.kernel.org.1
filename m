@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-131271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D2AA808EE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D8FA80526
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0B51BA28AA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FB21B674DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E19270EAA;
-	Tue,  8 Apr 2025 12:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3726A09F;
+	Tue,  8 Apr 2025 12:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIbIVu5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCJiaFWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35B726656B;
-	Tue,  8 Apr 2025 12:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FD2269AFB;
+	Tue,  8 Apr 2025 12:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115946; cv=none; b=SKa3CmymMvqlxpzFCNT7rAFNdP8wLA+9hYbCEITXVhTaqHfVjcYvjo3yKUZzurKEcsKxP3NOL5ZSsZK7cQVgUwziqA8McRYFxApGP8zWVDqT6RnY1xHxjD/UENKrhiZH3Vu9wKmSLHwOwbF5tZarwOYNKg0ce1D31G7wJwRoUV8=
+	t=1744114084; cv=none; b=l2kA/zGPVHvtjjxtbV9VkjsKkrAw14BlfPKWX/1wC6UECfPByNNVrxjWImZw+1YvVZDxrhyNz9Ip4RpnUPXtGF8Hesu83T0SwxpJxjQlqvdH7K9O/k1ljN0bTV6nwBOUPBsRdajBk8hwnOJv/7hOuf//dU0sF+XgTmkWuOXbYiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115946; c=relaxed/simple;
-	bh=RJgEsPz09RqPmewBWq56XAKo5riW5txdGQgS6z2T5Mc=;
+	s=arc-20240116; t=1744114084; c=relaxed/simple;
+	bh=9fhnO/tC1tZ3EWFmI/BSlTnpkbS/gTzWKKufwjrZOfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O218vfKGvwtsVwvbvupeOBcgUOSvMbtqIoSlsuXRHDEoKQ1r5kI5svsF2KHXZ74SfmWyVSPHbX/M/AczGqo0SH1+U3JA/r25bHJCn6O7fs57s2oXzeGdIshFiFLwkJVVPVD5jnpXZ78MqW7IJWlSZOZAc7FrXZAsjnI10ulIEcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIbIVu5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443D0C4CEE5;
-	Tue,  8 Apr 2025 12:39:06 +0000 (UTC)
+	 MIME-Version; b=OWQL0+3Z/+vEUpwYpU20mL7aw9cwQ1YvNPhxxg9exEtT2pRA/AJBPgHZhs2F30kLFTFIB2S6Ek7q9gjGp6Km6/53wyc6vzGjd5EZMG7rcHMuD/W46N7VH9wY7f2/PfYlCeecpB9nvCa68tWmECA0tU3YKjVb+fnodnUZ5NYZhrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCJiaFWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D90C4CEE5;
+	Tue,  8 Apr 2025 12:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115946;
-	bh=RJgEsPz09RqPmewBWq56XAKo5riW5txdGQgS6z2T5Mc=;
+	s=korg; t=1744114084;
+	bh=9fhnO/tC1tZ3EWFmI/BSlTnpkbS/gTzWKKufwjrZOfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIbIVu5/M76K+t9+7T/eHf5xOdNt/i3MQfkfemz5aZw99uo/MQ8Xh9mAH8tKnImxv
-	 SxXLCBKpA8qC+7SDn9j0n5SIqOrJVzGc7BmoZZ5eMp2i7ne9WzdvugmNRY9VE3KPFT
-	 f/hb/OF9esDytRubW2FPFJZj+kKdjFlB24lh0NrU=
+	b=CCJiaFWZyXLmRqY9o+b84RpEXDfNqKtqnmA0vYdTEx3PuVo5kcB/g/1Jvw6L3ukto
+	 drMz5ULoEfyXXzQCCfDHDHJzLl3L+FiaCuJQxcbhBTcXj0k+aUUzvXBlC8M9dr3Kvc
+	 ZW1tlogJMcbZXLheD/k0bnYULfRHQdf48GGjoLVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/204] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
+Subject: [PATCH 5.4 113/154] mfd: sm501: Switch to BIT() to mitigate integer overflows
 Date: Tue,  8 Apr 2025 12:50:54 +0200
-Message-ID: <20250408104823.947997892@linuxfoundation.org>
+Message-ID: <20250408104818.953763829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
+[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
 
-Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
-generated out of line.  These can be called from noinstr code, so make
-sure they're always inlined.
+If offset end up being high enough, right hand expression in functions
+like sm501_gpio_set() shifted left for that number of bits, may
+not fit in int type.
 
-Fixes the following warnings:
+Just in case, fix that by using BIT() both as an option safe from
+overflow issues and to make this step look similar to other gpio
+drivers.
 
-  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Fixes: f61be273d369 ("sm501: add gpiolib support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/context_tracking_irq.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/sm501.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
-index c50b5670c4a52..197916ee91a4b 100644
---- a/include/linux/context_tracking_irq.h
-+++ b/include/linux/context_tracking_irq.h
-@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
- void ct_nmi_enter(void);
- void ct_nmi_exit(void);
- #else
--static inline void ct_irq_enter(void) { }
--static inline void ct_irq_exit(void) { }
-+static __always_inline void ct_irq_enter(void) { }
-+static __always_inline void ct_irq_exit(void) { }
- static inline void ct_irq_enter_irqson(void) { }
- static inline void ct_irq_exit_irqson(void) { }
--static inline void ct_nmi_enter(void) { }
--static inline void ct_nmi_exit(void) { }
-+static __always_inline void ct_nmi_enter(void) { }
-+static __always_inline void ct_nmi_exit(void) { }
- #endif
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index aab8d8910319d..96616f8267530 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
+@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+ 	void __iomem *regs = smchip->regbase;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	unsigned long save;
+ 	unsigned long ddr;
  
- #endif
+@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
 -- 
 2.39.5
 
