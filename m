@@ -1,190 +1,119 @@
-Return-Path: <stable+bounces-131815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064FCA811EC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:18:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DACA81218
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CF5E189B639
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5A5420A5B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F50323E321;
-	Tue,  8 Apr 2025 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A1322D4F1;
+	Tue,  8 Apr 2025 16:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rNlkWZXj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mw1SuTOl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2EF238148;
-	Tue,  8 Apr 2025 16:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDD01FBCB5;
+	Tue,  8 Apr 2025 16:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744128497; cv=none; b=rQuyHGAIbHjTt2maybLx9RvSMsfHTUrJrIhC5/RV3f3e9Ht2I9iJ5N8XrYzl/pAweHMFbYmK+YMElVouzDW9uu5RDB6do+zUleOC+HOMZ3k+9L2a31pFaQOJo1PnQWwPaSIZwKsM1HmMtMzV8EZ0Of+pYJbjNAWYkHZEarp5Juo=
+	t=1744128995; cv=none; b=cmCPEuWC7h8QIeN2QA/5zlSknWtdXCXx83OgHyGwzFVLV/nkdKtJrXfBDaXY5x9P/AVvfQasTQ6bfraTJtfGOqnbKLmJ+44uoYSTyE3Rf/9IXJbEux1j4NOvLdoqeD0LKpQvCFlcPAqOExBnZvSi2Z0ctJNuBBCQb7U92rqn/cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744128497; c=relaxed/simple;
-	bh=lNvR9KLyydDCCuKSADWrMHdkdsfJVjvm7XyRbV58kdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ID9u3MTnDpX8McqZNnZwrNrTHg1s5WSVALiZo1IRcNswTRXiYiaLxlVYAGo+vk3E/fZCkhmwbHfZNTfDjdMJfusKqX7ldKl2Dh5GH5PARZ9o4JvTU9LYJn3l9UMfRBMro0+nb8PUO8HSY877UOjFL7TtbsYAEpOEPNGP59S+e5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rNlkWZXj; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538E3xau029563;
-	Tue, 8 Apr 2025 16:07:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ow6t3aZjTh8zUSYva
-	0I+1eccwoSgmKvfkvuHek+W7BI=; b=rNlkWZXjqNmrVA9DfqJ9qTqgEL8tDwB8v
-	uW+rRoK5iANBpubG1GKB6moL8Y4rxf1/ciAdNCg7DM56snFXeq6UI27BGzCdiXoL
-	Hr2JPBnmHtPqLjuZGH88qIcxX6n6fTG8p4+QuOCg9WyUsQapClXHAaBAz4VCbhjJ
-	ChFNmfH4CzkNCe02vZlhygEXR9J7hifdORr/28Gcllu/FuSoK+QDhFbPQ7HoT2l3
-	g8Y/Cdw/tx32Fgkpts/Q5SasZwSNURS/WI0A4R0LnPV7CD9LTIe6eJvqHGND+b6c
-	aEm6js3u/gkF2v4JxOC8NjZ+BFWMYfs0Eu9JU8hP/snzGwujEHEow==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45vv6a3cmf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Apr 2025 16:07:35 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 538FxwH6004506;
-	Tue, 8 Apr 2025 16:07:35 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45vv6a3cmc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Apr 2025 16:07:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 538E2Kef018870;
-	Tue, 8 Apr 2025 16:07:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uhj2b31s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Apr 2025 16:07:34 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 538G7WkZ17170806
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 8 Apr 2025 16:07:32 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B38A12004D;
-	Tue,  8 Apr 2025 16:07:32 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DDE720043;
-	Tue,  8 Apr 2025 16:07:32 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  8 Apr 2025 16:07:32 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 50F3DE171F; Tue, 08 Apr 2025 18:07:32 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Hugh Dickins <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
-        Jeremy Fitzhardinge <jeremy@goop.org>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, kasan-dev@googlegroups.com,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2 3/3] mm: Protect kernel pgtables in apply_to_pte_range()
-Date: Tue,  8 Apr 2025 18:07:32 +0200
-Message-ID: <ef8f6538b83b7fc3372602f90375348f9b4f3596.1744128123.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1744128123.git.agordeev@linux.ibm.com>
-References: <cover.1744128123.git.agordeev@linux.ibm.com>
+	s=arc-20240116; t=1744128995; c=relaxed/simple;
+	bh=orKI4QzESD9wMZ9qw0qgUjTGnwjhL4kJhX0jIVv3AW8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p9KDkcftvKywS3hnZDKRmR+3SHCGP+6bi/TqGMlr8xghTK4n09HB4OUKmUCJ3q9t2k8EZNMDcEwD4ZBIav2BI6OQtDEEbmV5q9ngjMmZu9xarT9gordexZTbvbx0/MT/d3mLv8n5EOX3lZTlHb3qkpRz4VuHtCfmho97wm6DuOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mw1SuTOl; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff5544af03so1573272a91.1;
+        Tue, 08 Apr 2025 09:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744128993; x=1744733793; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=orKI4QzESD9wMZ9qw0qgUjTGnwjhL4kJhX0jIVv3AW8=;
+        b=Mw1SuTOlgejt3eDlJwDL3m/6Il3xdvGlby1JvDq06TPUyr8UnKZRuM6BRcFhGAk3z6
+         Q+DbJXx0uNiJVUa2x4K5hZZ0LvZROkokQZgro+hr44gH90tQPitwtoe6KIQPeiQrTztk
+         3jNrBJDD6uSkbaw/EQVhXGQUy4v5DlurUiyBpUcUKNerPHU6BEw4mko+Gu+G2rscfSj2
+         q3Xy/VdZahk5YHBFjyoWz2JdegwdJRfHYBIqCYGQ0QL5w2glsQ+RUgmHyWz9hQBW5+9F
+         9xAaArUg7KxAr9ZxqsXJw+uN1fr3U3BTK9iABoyK3+pYkvAZS0i9P8HkpND27S20Vbt/
+         65LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744128994; x=1744733794;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=orKI4QzESD9wMZ9qw0qgUjTGnwjhL4kJhX0jIVv3AW8=;
+        b=q85CQwnEXxvezbKxDy626CIs4VxTPlH0QGCN/H+cUQg9nX9TDbGx4kxOfs1rILQjFy
+         oRUTEGv0YrmmITl+cieT/XdC98aFIBQU9S7ig7mxEi92Xy6r2NeWETE5Bm0Rwz5J0IWg
+         DMg224tWnc/PzNqf/a3kZWwESWLPGDTYOfdG9slkTVYeFMyJiqe6q7gUB63GdlGMDFoJ
+         ErR1tOBwFGSeo+oQ7HPsydBzmhBfAnGD0ZRxC8uaBUR0IBw6TaVqO63EKxMtbPw/Wm9J
+         HdrOmE656TGetZAiGPk1gkmVlgh8ZBCqh6nZPi+rSyLun+fzBjg8Sdtdkc2VoHMJnU7A
+         EhJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdYCn2iPXMVVfgANA2oh2O+2yXhifXR9xscUi+FjxInPhN2/SfQYPUQAZ2uKc82K5FpCJ1Rrzm@vger.kernel.org, AJvYcCW/912Vdy2TMzVSpo8w8MdDxPAhZLLipmNhBhQBf3d/rmY0XkhnoxV0SFJk38U0THDKn3QyBZo7ufK7ZtE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM1mQz942vv/WL3UGfQvmqQWqc9P1986/mtctx9xD826P8XLm7
+	T1mo+jsm2ihW/F5qwh5l/mDeguMB+dcPwlXvLP609+JqZjA6ygPnDJaIIGcF7UrkF+NqfEx0vRJ
+	air1cltsni4mvL55d9py4zev5HBRZuZauWGY=
+X-Gm-Gg: ASbGncsVFhIfWUrFNpifEk9WOxa1W61Y3EskX/MrLqsIKlc+Wy3eJOTnnRbbqS7lIh2
+	s86gG/Z+gD9IHF7xskYcS/t3UtGO2osNDIrWsKe0ie/TUV+jQQX/jKQbzeoSpKPRoKgV5TQ/3t4
+	+UV+rdFTtU9ieeoFR1UWJO+sIIuQ==
+X-Google-Smtp-Source: AGHT+IG7GKgG8uZgOht0grHnJjUWE279jQAy3IeEDlgXFafHgHd+Rpu55uKmDwcd9TusFiye4aB0C1+lD4wymKWfH/A=
+X-Received: by 2002:a17:90b:1648:b0:2ff:7b41:c3cf with SMTP id
+ 98e67ed59e1d1-306a4975f51mr8705504a91.4.1744128993599; Tue, 08 Apr 2025
+ 09:16:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6gWNv_Bw0XevSqtBIthyoWHVrcn2MvLC
-X-Proofpoint-GUID: -fZrXKHJloGCIvDX7whqAyynxCC3jswc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-08_06,2025-04-08_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 suspectscore=0 bulkscore=0 mlxlogscore=779 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504080110
+References: <20250408104914.247897328@linuxfoundation.org> <c06b17f2-fc80-47a9-b108-8e53be3d4a76@leemhuis.info>
+ <2025040857-disdain-reprocess-0891@gregkh> <5924f2d5-1004-4f7c-ac20-3cc7752e5452@heusel.eu>
+In-Reply-To: <5924f2d5-1004-4f7c-ac20-3cc7752e5452@heusel.eu>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Apr 2025 18:16:19 +0200
+X-Gm-Features: ATxdqUEySsXlfEC3HRl1p0nHWAUIvYJVAkFIwh7FAcER7rJJwEaHGvlhX1UeRgQ
+Message-ID: <CANiq72nYw+XkHfRZDvS0GceTunxZXqiec2GXeLbPXvPK9OiB8w@mail.gmail.com>
+Subject: Re: [PATCH 6.14 000/731] 6.14.2-rc1 review
+To: Christian Heusel <christian@heusel.eu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Thorsten Leemhuis <linux@leemhuis.info>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Justin Forbes <jforbes@fedoraproject.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The lazy MMU mode can only be entered and left under the protection
-of the page table locks for all page tables which may be modified.
-Yet, when it comes to kernel mappings apply_to_pte_range() does not
-take any locks. That does not conform arch_enter|leave_lazy_mmu_mode()
-semantics and could potentially lead to re-schedulling a process while
-in lazy MMU mode or racing on a kernel page table updates.
+On Tue, Apr 8, 2025 at 4:53=E2=80=AFPM Christian Heusel <christian@heusel.e=
+u> wrote:
+>
+> Thanks for pointing this out, I was also missing the relevant
+> dependencies in my build system for the rust parts in the kernel to
+> actually be built .. IMO it could also hard-error when you specify
+> "CONFIG_HAVE_RUST=3Dy" and the tools are missing =F0=9F=A4=94
 
-Cc: stable@vger.kernel.org
-Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/kasan/shadow.c | 7 ++-----
- mm/memory.c       | 5 ++++-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+I assume you mean `CONFIG_RUST=3Dy`, i.e. to remove
+`CONFIG_RUST_IS_AVAILABLE` and simply request to build with Rust.
 
-diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-index edfa77959474..6531a7aa8562 100644
---- a/mm/kasan/shadow.c
-+++ b/mm/kasan/shadow.c
-@@ -308,14 +308,14 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 	__memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
- 	pte = pfn_pte(PFN_DOWN(__pa(page)), PAGE_KERNEL);
- 
--	spin_lock(&init_mm.page_table_lock);
- 	if (likely(pte_none(ptep_get(ptep)))) {
- 		set_pte_at(&init_mm, addr, ptep, pte);
- 		page = 0;
- 	}
--	spin_unlock(&init_mm.page_table_lock);
-+
- 	if (page)
- 		free_page(page);
-+
- 	return 0;
- }
- 
-@@ -401,13 +401,10 @@ static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 
- 	page = (unsigned long)__va(pte_pfn(ptep_get(ptep)) << PAGE_SHIFT);
- 
--	spin_lock(&init_mm.page_table_lock);
--
- 	if (likely(!pte_none(ptep_get(ptep)))) {
- 		pte_clear(&init_mm, addr, ptep);
- 		free_page(page);
- 	}
--	spin_unlock(&init_mm.page_table_lock);
- 
- 	return 0;
- }
-diff --git a/mm/memory.c b/mm/memory.c
-index f0201c8ec1ce..1f3727104e99 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2926,6 +2926,7 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 			pte = pte_offset_kernel(pmd, addr);
- 		if (!pte)
- 			return err;
-+		spin_lock(&init_mm.page_table_lock);
- 	} else {
- 		if (create)
- 			pte = pte_alloc_map_lock(mm, pmd, addr, &ptl);
-@@ -2951,7 +2952,9 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 
- 	arch_leave_lazy_mmu_mode();
- 
--	if (mm != &init_mm)
-+	if (mm == &init_mm)
-+		spin_unlock(&init_mm.page_table_lock);
-+	else
- 		pte_unmap_unlock(mapped_pte, ptl);
- 
- 	*mask |= PGTBL_PTE_MODIFIED;
--- 
-2.45.2
+And, yeah, it would be simpler and it would prevent the issue of
+Kconfig deciding to automatically disable it due to unmet
+dependencies. We were asked to do it this way back then, but perhaps
+the sentiment has changed now.
 
+What you can do meanwhile is e.g. explicitly check that `CONFIG_RUST`
+is `y` after the kernel configuration is saved.
+
+Cheers,
+Miguel
 
