@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F861A80901
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A20A806C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56AF07B27D5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578AE4C25EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0342926B2BE;
-	Tue,  8 Apr 2025 12:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257826B0B8;
+	Tue,  8 Apr 2025 12:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJXEXtmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GBa7jYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EA6269839;
-	Tue,  8 Apr 2025 12:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE48268FDE;
+	Tue,  8 Apr 2025 12:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116211; cv=none; b=scp/MbCcVkdd7yPxwBpgeFRZWNDH8CdPTp4UkmAME7PG8i/Ftd/IHjzSs/8jnrAiPizHugHapL9bDj9cB/MXQgQCrY51aVsSqojsiaZpaiIj5hY+cQp9tmQT8ACgnB6hr7sJf26sfaInpoLkj5HOp7kLvVzHmUCP7uyMusr70cc=
+	t=1744114719; cv=none; b=t/NqC78ixK5bb8fOr9UemU/IxT3rMh+Tzk6Q627lPpyi1IddnLv7oaVf6wvNKLeeooDmBKK7phSo7YAfzxi33yt780pIn0U8q9XD94zi4c2CszXAAjlVWlLoe+qWJd5i+ZsK3ka/XVsgnrM9GYTXUWrJg0pqYpidar1uaBcG2ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116211; c=relaxed/simple;
-	bh=tRvWhDehmHDb+k8pOLRx0GYLVn5jPwTV+yM0rw6k3wU=;
+	s=arc-20240116; t=1744114719; c=relaxed/simple;
+	bh=URWJhpdbCl4FWa74wW0SIMDVpRuJ/ikpXdGN44G3Kg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBDBfuCMQHQO4gGEwQ2N0SoaCOkro+2FquC69fw6l0vPStKu9t00zPhmAIhGpi+sG5T5KUONMykaC3QW89cEqb7XayxZPhzspALz5bqe8kVBvUwQs3FzjhSrXmBXo+bojc+Ikv/BiCdreNYotuF+ftAmVb+y0NWX47wnbEmKzKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJXEXtmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4571DC4CEE5;
-	Tue,  8 Apr 2025 12:43:31 +0000 (UTC)
+	 MIME-Version; b=jCPbrZU/vVi4eZquAWK2K0giUQEiY4IrPMALxxD5uv5iro32g48fBbJsVNN8hrPOxm3Wzfppy3/++X+fYLlq1Q/uEyUBSdY2tzNy+hQBR43rceSQ15i07ewG9K3t+cK37uSNSBOk2YKSEjQgNA1s6MSgtJmBvu+xxeuxv69K10w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GBa7jYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF1FC4CEE5;
+	Tue,  8 Apr 2025 12:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116211;
-	bh=tRvWhDehmHDb+k8pOLRx0GYLVn5jPwTV+yM0rw6k3wU=;
+	s=korg; t=1744114719;
+	bh=URWJhpdbCl4FWa74wW0SIMDVpRuJ/ikpXdGN44G3Kg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJXEXtmpYzal3jkHei2n7ki9LaP1bgaBovxBzAR9eCj8rILfdTeMXLcxO2O6hOqPt
-	 tDASUHQH89yl23aa6mCOsuFRLvnJA8g0MRkfdL7F5MXEz1t6MzIjMTr3xt3Hdx0ZwN
-	 oK0QEKIMm+nNDmQhtcRBTn/zHYWmsZfPgyCdtoBE=
+	b=1GBa7jYp3kGwYSQVJIz3JQ9/t4SNdsNPQI7HFLOz8tJ5la1jPScbjZYLwWt6dqain
+	 ZvkZ+Wf4nOdZz+oHCMWQEPeaU1V9fOUkX4YVsAtPvkvlVAAlfrfWHz9notd/jJ55XD
+	 JVjEFxjPlqXmGxIzx5pzokbMf5r1BO3irBD8Qt3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Lang Yu <Lang.Yu@amd.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/423] drm/amdgpu/umsch: fix ucode check
+Subject: [PATCH 6.13 171/499] clk: amlogic: gxbb: drop non existing 32k clock parent
 Date: Tue,  8 Apr 2025 12:46:23 +0200
-Message-ID: <20250408104847.077130737@linuxfoundation.org>
+Message-ID: <20250408104855.440801965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit c917e39cbdcd9fff421184db6cc461cc58d52c17 ]
+[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
 
-Return an error if the IP version doesn't match otherwise
-we end up passing a NULL string to amdgpu_ucode_request.
-We should never hit this in practice today since we only
-enable the umsch code on the supported IP versions, but
-add a check to be safe.
+The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
+that this clock should be provided by AO controller.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502130406.iWQ0eBug-lkp@intel.com/
-Fixes: 020620424b27 ("drm/amd: Use a constant format string for amdgpu_ucode_request")
-Reviewed-by: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Lang Yu <Lang.Yu@amd.com>
+The HW probably has this clock but it does not exist at the moment in
+any controller implementation. Furthermore, referencing clock by the global
+name should be avoided whenever possible.
+
+There is no reason to keep this hack around, at least for now.
+
+Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/meson/gxbb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
-index 6162582d0aa27..d5125523bfa7b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
-@@ -584,7 +584,7 @@ int amdgpu_umsch_mm_init_microcode(struct amdgpu_umsch_mm *umsch)
- 		fw_name = "amdgpu/umsch_mm_4_0_0.bin";
- 		break;
- 	default:
--		break;
-+		return -EINVAL;
- 	}
+diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
+index df9250de51dc8..3abb44a2532b9 100644
+--- a/drivers/clk/meson/gxbb.c
++++ b/drivers/clk/meson/gxbb.c
+@@ -1266,14 +1266,13 @@ static struct clk_regmap gxbb_cts_i958 = {
+ 	},
+ };
  
- 	r = amdgpu_ucode_request(adev, &adev->umsch_mm.fw, "%s", fw_name);
++/*
++ * This table skips a clock named 'cts_slow_oscin' in the documentation
++ * This clock does not exist yet in this controller or the AO one
++ */
++static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
+ static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
+ 	{ .fw_name = "xtal", },
+-	/*
+-	 * FIXME: This clock is provided by the ao clock controller but the
+-	 * clock is not yet part of the binding of this controller, so string
+-	 * name must be use to set this parent.
+-	 */
+-	{ .name = "cts_slow_oscin", .index = -1 },
+ 	{ .hw = &gxbb_fclk_div3.hw },
+ 	{ .hw = &gxbb_fclk_div5.hw },
+ };
+@@ -1283,6 +1282,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
+ 		.offset = HHI_32K_CLK_CNTL,
+ 		.mask = 0x3,
+ 		.shift = 16,
++		.table = gxbb_32k_clk_parents_val_table,
+ 		},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "32k_clk_sel",
 -- 
 2.39.5
 
