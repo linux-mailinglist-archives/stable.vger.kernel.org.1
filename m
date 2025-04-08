@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DCEA801FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AA6A7FDDA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A024A7A7F05
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0786421C4C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A666266EFB;
-	Tue,  8 Apr 2025 11:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A4268FE5;
+	Tue,  8 Apr 2025 10:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb8/dVHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5O6Qrt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579D8266583;
-	Tue,  8 Apr 2025 11:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5F6268FD5;
+	Tue,  8 Apr 2025 10:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112535; cv=none; b=MWD9T0p3dvCdtYDtnWhkSJgD3fiuao1o8JQYluowGaMfxvDKi6Rmh7ymvqy4qVdEAi36g93ZF7rksBCZny/8AIXMULKQxTfCComgn4jrqlqVSbj6vKW23/C/xb7NgFknxKCBU8zuMqj9jPGhYocSbNQoUBv6Qt6xsasYwpGYlHg=
+	t=1744109943; cv=none; b=Cbe4S5jzlZzXyFy/XJGQoRAb8eIm1cxuulOGega/ALTC1E2fUaBxsp2M2cOLALZBf6h190ToyhdpF7NC7yCheN0QRytANVSUw9imZqrrgYcX7tjK6Ui9r4T8nUy5RVq4xtx7oAN/PuA6Pk9f7fn7hl0Y8R47qQvs7gV3mr/S7z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112535; c=relaxed/simple;
-	bh=sU+fP2c8GTxWk4N+43+RigMqkNo5qO8uoGlc2P8qTig=;
+	s=arc-20240116; t=1744109943; c=relaxed/simple;
+	bh=stpgVO5/sv2Dsx1iEVVs0sgKEH7l7+AAD+8p6ptXy1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCmW/kePHGKyP2YKgdk4rMD7gAgfy/hVzlUoioDZuUtxgLwFIPuRxCLDKcvkR6Hq2V1myuS3+x3pw0uJEf5u+X1j8p2K83neE7m73MsPy2OoEjCkKC1tYSgQVhz8Ps2UGNhsoojAsomhwyNdQZu+nMijvb/kFQYn+dqOYLu5iHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb8/dVHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59ADC4CEE5;
-	Tue,  8 Apr 2025 11:42:14 +0000 (UTC)
+	 MIME-Version; b=DNDN278GqbSqVS0lf47yrOleZq6YnKRB0nye6u+4QxUGEzMQlLm2Byy+V+aRyI3TIopQcAVh5m83ViJu5hlux6jaiwHLAvBBN2NmwX3iLmlXhTrdoozRdgd+Th5THK2cbwZH7sU0LlyudehgOunWmeVBWAf7AKj/W4566JToD68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5O6Qrt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51ED1C4CEE5;
+	Tue,  8 Apr 2025 10:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112535;
-	bh=sU+fP2c8GTxWk4N+43+RigMqkNo5qO8uoGlc2P8qTig=;
+	s=korg; t=1744109942;
+	bh=stpgVO5/sv2Dsx1iEVVs0sgKEH7l7+AAD+8p6ptXy1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sb8/dVHs8W4YzszuhC6EeZL/qtDC+S0PxLGDXWBzKyme5I3fUNSIij22aNo9SpSVd
-	 OUY5Np9GdH3wZO3L8uMT44Y95H8WzvlQ5T0BeiPZ8pcM991CYo0svReeT1lsdOJYBk
-	 wK/zi/6hqUn9IroxnoWWbTXqf3d509Na/edotexM=
+	b=J5O6Qrt9Kc2T57cTHsLMCZdjORx4a/sBGaNNGGAfm9e6J6izxSBlTkcOuWYLRpznq
+	 X6QKcui91BITxOPx1vb4y+gq6kObwIxcejAuzAm0yqx9DGnXC/hJCesHFqyAfvHTtK
+	 jSXjSi6dnwcAaMPmd/g9gzsKAkZ6eW/He3SpdmsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 104/279] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
-Date: Tue,  8 Apr 2025 12:48:07 +0200
-Message-ID: <20250408104829.153921482@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Feng Liu <Feng.Liu3@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.10 110/227] i2c: dev: check return value when calling dev_set_name()
+Date: Tue,  8 Apr 2025 12:48:08 +0200
+Message-ID: <20250408104823.652057367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
+commit 993eb48fa199b5f476df8204e652eff63dd19361 upstream.
 
-On the off chance that command stream passed from userspace via
-ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
-first command to execute is to encode (case 0x03000001), the function
-in question will attempt to call radeon_vce_cs_reloc() with size
-argument that has not been properly initialized. Specifically, 'size'
-will point to 'tmp' variable before the latter had a chance to be
-assigned any value.
+If dev_set_name() fails, the dev_name() is null, check the return
+value of dev_set_name() to avoid the null-ptr-deref.
 
-Play it safe and init 'tmp' with 0, thus ensuring that
-radeon_vce_cs_reloc() will catch an early error in cases like these.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
-Cc: stable@vger.kernel.org
+Fixes: 1413ef638aba ("i2c: dev: Fix the race between the release of i2c_dev and cdev")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-dev.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_vce.c
-+++ b/drivers/gpu/drm/radeon/radeon_vce.c
-@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
- {
- 	int session_idx = -1;
- 	bool destroyed = false, created = false, allocated = false;
--	uint32_t tmp, handle = 0;
-+	uint32_t tmp = 0, handle = 0;
- 	uint32_t *size = &tmp;
- 	int i, r = 0;
+--- a/drivers/i2c/i2c-dev.c
++++ b/drivers/i2c/i2c-dev.c
+@@ -669,17 +669,22 @@ static int i2cdev_attach_adapter(struct
+ 	i2c_dev->dev.class = i2c_dev_class;
+ 	i2c_dev->dev.parent = &adap->dev;
+ 	i2c_dev->dev.release = i2cdev_dev_release;
+-	dev_set_name(&i2c_dev->dev, "i2c-%d", adap->nr);
++
++	res = dev_set_name(&i2c_dev->dev, "i2c-%d", adap->nr);
++	if (res)
++		goto err_put_i2c_dev;
  
+ 	res = cdev_device_add(&i2c_dev->cdev, &i2c_dev->dev);
+-	if (res) {
+-		put_i2c_dev(i2c_dev, false);
+-		return res;
+-	}
++	if (res)
++		goto err_put_i2c_dev;
+ 
+ 	pr_debug("i2c-dev: adapter [%s] registered as minor %d\n",
+ 		 adap->name, adap->nr);
+ 	return 0;
++
++err_put_i2c_dev:
++	put_i2c_dev(i2c_dev, false);
++	return res;
+ }
+ 
+ static int i2cdev_detach_adapter(struct device *dev, void *dummy)
 
 
 
