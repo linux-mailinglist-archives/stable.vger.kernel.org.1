@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AA2A80337
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:55:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A3BA80105
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925AA188D518
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C18B88176E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C38269839;
-	Tue,  8 Apr 2025 11:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EF0269833;
+	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Esc6U9mV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI1nJ/9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B246722257E;
-	Tue,  8 Apr 2025 11:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D20268C5D;
+	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113030; cv=none; b=G0MH9vhAx0kRZ8ARgw0eamo4xS1f//kMMPBaNQs1MK/yvxebxBzOERPNydbTnd1VeciqsQAbmmDSk4Yo7a2ltd+RM18UBRv87/e8tFFmc8+/4Vzato/7JxvqLlBpN3hbwBHk9Mh+KxyrgoyK6/fy4dOMlZqOHDwAKmSvjmHEl9Q=
+	t=1744111772; cv=none; b=bbS6XdnwHD/TG7ojCf2esdxVuBG3zCmUaVujXhSW0FnSbTVKpx+//bQG15+HKrJJUVW+rS9nrc61YOYXSciLWuXvEglq8kmtt0CYgjEVeVQX8wiF10m6ftDroXTNJ97lgQ8R/KBilRPDdKsDE2XbBINO1RoQAT0clpUPSsO0ook=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113030; c=relaxed/simple;
-	bh=qFxQk2CENdizXND+4TUHV2iKE18cWyFuTa/QyjDDkbg=;
+	s=arc-20240116; t=1744111772; c=relaxed/simple;
+	bh=m86NnHeyUYP0lQLbNx2aC4p+WhURhEGQvsAPhX0s/uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMtpFuLhlALP1U2kCLa5L/vQwk61PbYSkh3Sh66nopVZOz/AoGNjAe1O2i0f7HF9JNsAFRz0unY8zCvK+ncAEXLhYyg+QzkfW4fFXy6BLIAgRAXHvSUAgeKbulBRPnmxUVqixvGpkblPx6XP5CgZy5rL5iqUQhXmlXXFPsdW06k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Esc6U9mV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42302C4CEE5;
-	Tue,  8 Apr 2025 11:50:30 +0000 (UTC)
+	 MIME-Version; b=UNBnR8cE6fjO/M05KxjvNYtsz2GqMeLOQsrHbzBUMjNtwtYIzvMwxSyAFKE90dNmtbuQQEuQib/t/Hb73O5eP9QuPrKgHGDw7pYFWjaIeZ492dXPudmmAZSBin5GRrWcfRXI8s4NwBpfCijJg3mzLkm+WWYEd3YmKHzt73e/IJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI1nJ/9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA74C4CEE5;
+	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113030;
-	bh=qFxQk2CENdizXND+4TUHV2iKE18cWyFuTa/QyjDDkbg=;
+	s=korg; t=1744111772;
+	bh=m86NnHeyUYP0lQLbNx2aC4p+WhURhEGQvsAPhX0s/uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Esc6U9mVSOMjJCAaRfEzmd1o4cAyHFNALg3LRxQS0vAZcpQBSZo79FFnGwIVDwb1d
-	 kkAYav9pbUgb38Qv5JgHUD9yXMapYVlG4zSo1cZl3SMTJ07S/zZbjamp7bfAKmtkS7
-	 QoX5JTgoiDC6yyV2DuY7O6SvqPhgyni9B0daH+6s=
+	b=FI1nJ/9DNRtZL2QVPDKdhAskQXPxv3y6eUswfcxrAano717DRbKf7or/cl6pwNk3+
+	 7Rb5uWe/mWvPVLdjYEib2JoAvNS1IAGb9HTzNPNmyRqcHrGvpGFIlpYzqC+NK3ZQ+K
+	 6hOkHrbSeqwSq7tfouPedG5ttyYefENPrOAs/bx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/268] watch_queue: fix pipe accounting mismatch
+Subject: [PATCH 6.14 515/731] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
 Date: Tue,  8 Apr 2025 12:46:52 +0200
-Message-ID: <20250408104828.541965412@linuxfoundation.org>
+Message-ID: <20250408104926.253382482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
+[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
 
-Currently, watch_queue_set_size() modifies the pipe buffers charged to
-user->pipe_bufs without updating the pipe->nr_accounted on the pipe
-itself, due to the if (!pipe_has_watch_queue()) test in
-pipe_resize_ring(). This means that when the pipe is ultimately freed,
-we decrement user->pipe_bufs by something other than what than we had
-charged to it, potentially leading to an underflow. This in turn can
-cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
+The amount of looping through the list of delegations is occasionally
+leading to soft lockups. Avoid at least some loops by not requiring the
+NFSv4 state manager to scan for delegations that are marked for
+return-on-close. Instead, either mark them for immediate return (if
+possible) or else leave it up to nfs4_inode_return_delegation_on_close()
+to return them once the file is closed by the application.
 
-To remedy this, explicitly account for the pipe usage in
-watch_queue_set_size() to match the number set via account_pipe_buffers()
-
-(It's unclear why watch_queue_set_size() does not update nr_accounted;
-it may be due to intentional overprovisioning in watch_queue_set_size()?)
-
-Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watch_queue.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index 778b4056700ff..17254597accd4 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -269,6 +269,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
- 	if (ret < 0)
- 		goto error;
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 4db912f562305..df77d68d9ff99 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -590,17 +590,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
  
-+	/*
-+	 * pipe_resize_ring() does not update nr_accounted for watch_queue
-+	 * pipes, because the above vastly overprovisions. Set nr_accounted on
-+	 * and max_usage this pipe to the number that was actually charged to
-+	 * the user above via account_pipe_buffers.
-+	 */
-+	pipe->max_usage = nr_pages;
-+	pipe->nr_accounted = nr_pages;
+ 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
+ 		ret = true;
+-	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
+-		struct inode *inode;
+-
+-		spin_lock(&delegation->lock);
+-		inode = delegation->inode;
+-		if (inode && list_empty(&NFS_I(inode)->open_files))
+-			ret = true;
+-		spin_unlock(&delegation->lock);
+-	}
+-	if (ret)
+-		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+ 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
+@@ -878,11 +867,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
+ 	return nfs4_inode_return_delegation(inode);
+ }
+ 
+-static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
+-		struct nfs_delegation *delegation)
++static void
++nfs_mark_return_if_closed_delegation(struct nfs_server *server,
++				     struct nfs_delegation *delegation)
+ {
+-	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+-	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
++	struct inode *inode;
 +
- 	ret = -ENOMEM;
- 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
- 	if (!pages)
++	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
++	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
++		return;
++	spin_lock(&delegation->lock);
++	inode = delegation->inode;
++	if (!inode)
++		goto out;
++	if (list_empty(&NFS_I(inode)->open_files))
++		nfs_mark_return_delegation(server, delegation);
++	else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out:
++	spin_unlock(&delegation->lock);
+ }
+ 
+ static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
 -- 
 2.39.5
 
