@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF13A80B65
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD576A8095A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9572B1B87D4C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4EE4E5308
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B5C27C860;
-	Tue,  8 Apr 2025 12:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A7265633;
+	Tue,  8 Apr 2025 12:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt6wjMK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqRVY/T1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DA26F47D;
-	Tue,  8 Apr 2025 12:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476E426A0C5;
+	Tue,  8 Apr 2025 12:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117056; cv=none; b=ahrF73Q3qEj5NQjqskO8/cs1+a0sYEYFo7+IUm5I+aM6oKief+H+UhXeTazEWNJxjl9aLneYkope9lZ7yryvGB7OVuoLbEVyQD4yyhjVINZ5HHUEepxQPywIEYf2bZ5cj/ZdDr0aP10jdFLNTQBdbfeREdEGjOdugBt+Mi9JqjE=
+	t=1744116056; cv=none; b=Sve/ZV42pPM2YNKNsdZuQhopWWfLCph4ItU+TzrIQP0tMhpZMAL1VIJAOnNE32zq3cxmR63yYpYqwH9j83Cp+4et37B7HntsYLwRZoseLZqfIQWTrd3yG2gTjEJuH69p8uHWNjDTpViOABOPrVzOya5ho8Zq7z5bSuCtlyb75qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117056; c=relaxed/simple;
-	bh=+iGTOSh7mAlrjbCzPhXZxDvnAEXa2j+8MEb3o7BGXC0=;
+	s=arc-20240116; t=1744116056; c=relaxed/simple;
+	bh=UHsaAW78Reuq/KECGLYgISmF5/v5itDG2UdM9+T1OF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvflcDmDD67ORMvWkoinTAHYOf+9zQh9+Gj9UDxHtY/7iCIvj09XoDcj9VXlFAPSTkssvpAqJvqLnCLzXE9msR67CwHj2yCJv/zA0wXMrzOrOgBPCVbo8RvzWEv4u1H2viN0zT5AT7xHGsjxBLwEIQu4BAOqCtNLk/OpvNiKaV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt6wjMK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAFDC4CEE5;
-	Tue,  8 Apr 2025 12:57:35 +0000 (UTC)
+	 MIME-Version; b=m4M+6lqaiWa4ybPWTHfobFRNO8FLorQlfo0XMYbifnPx4h1mVkXnOo/rLtRRH6TUNM1+5vrlW8Kdqe4mkdW/Egd7BhZI+K2xFX1+VG+Z9V/vfIiU9TQ/82OU+d74bO2JvkGVOwrzBmHK5xIvZtGoOUdaNJhd9gns1Ix9a5vHrKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqRVY/T1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB834C4CEE5;
+	Tue,  8 Apr 2025 12:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117056;
-	bh=+iGTOSh7mAlrjbCzPhXZxDvnAEXa2j+8MEb3o7BGXC0=;
+	s=korg; t=1744116056;
+	bh=UHsaAW78Reuq/KECGLYgISmF5/v5itDG2UdM9+T1OF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt6wjMK7xZMiLgmuP6n4aNMUy7raTskV7iKb18WzRoyyfh4RDQyQlCUGTNY5FgVgi
-	 v7prruMJ56KqZJeTAkG6Ttqf5oD9shaXWr9FYHT3m32XdZdKqbG88pZxuDCWzEu0dJ
-	 QqlrExkiAyEuw8JNkKJwjxME9lKKAgwEUzlzimHI=
+	b=sqRVY/T1geuSEN2zAeeT/8wT06ylpJ6cm3d0NTFWJPh5YX/nw/vFprQ2jsSLMofDT
+	 PBZLtZO3gmVv+glKMVI7xqUdO8IsWtU67yXRLZkbS8hEHlzgAMMDLRRbNnliXeUODQ
+	 A5xkGUHy/z4m7syt42feCJs8hq5eZjqUL1uQiYoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyu Lan <tiala@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.12 368/423] x86/hyperv: Fix check of return value from snp_set_vmsa()
+	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 164/204] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
 Date: Tue,  8 Apr 2025 12:51:34 +0200
-Message-ID: <20250408104854.436851626@linuxfoundation.org>
+Message-ID: <20250408104825.129336237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyu Lan <tiala@microsoft.com>
+From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 
-commit e792d843aa3c9d039074cdce728d5803262e57a7 upstream.
+[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
 
-snp_set_vmsa() returns 0 as success result and so fix it.
+The mv88e6xxx has an internal PPU that polls PHY state. If we want to
+access the internal PHYs, we need to disable the PPU first. Because
+that is a slow operation, a 10ms timer is used to re-enable it,
+canceled with every access, so bulk operations effectively only
+disable it once and re-enable it some 10ms after the last access.
 
-Cc: stable@vger.kernel.org
-Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
-Signed-off-by: Tianyu Lan <tiala@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20250313085217.45483-1-ltykernel@gmail.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250313085217.45483-1-ltykernel@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If a PHY is accessed and then the mv88e6xxx module is removed before
+the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+
+This especially affects probing during bootup. The MDIO bus and PHY
+registration may succeed, but registration with the DSA framework
+may fail later on (e.g. because the CPU port depends on another,
+very slow device that isn't done probing yet, returning -EPROBE_DEFER).
+In this case, probe() fails, but the MDIO subsystem may already have
+accessed the MIDO bus or PHYs, arming the timer.
+
+This is fixed as follows:
+ - If probe fails after mv88e6xxx_phy_init(), make sure we also call
+   mv88e6xxx_phy_destroy() before returning
+ - In mv88e6xxx_remove(), make sure we do the teardown in the correct
+   order, calling mv88e6xxx_phy_destroy() after unregistering the
+   switch device.
+ - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
+   that the timer might schedule, synchronously waiting in case one of
+   the callbacks already fired and destroying the timer first, before
+   waiting for the work item.
+ - Access to the PPU is guarded by a mutex, the worker acquires it
+   with a mutex_trylock(), not proceeding with the expensive shutdown
+   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
+   sure the slow PPU shutdown is already done or won't even enter, when
+   we wait for the work item.
+
+Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
+Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/ivm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
+ drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -339,7 +339,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned lon
- 	vmsa->sev_features = sev_status >> 2;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index af0565c3a364c..b485176e53cd1 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7199,13 +7199,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	err = mv88e6xxx_switch_reset(chip);
+ 	mv88e6xxx_reg_unlock(chip);
+ 	if (err)
+-		goto out;
++		goto out_phy;
  
- 	ret = snp_set_vmsa(vmsa, true);
--	if (!ret) {
-+	if (ret) {
- 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
- 		free_page((u64)vmsa);
- 		return ret;
+ 	if (np) {
+ 		chip->irq = of_irq_get(np, 0);
+ 		if (chip->irq == -EPROBE_DEFER) {
+ 			err = chip->irq;
+-			goto out;
++			goto out_phy;
+ 		}
+ 	}
+ 
+@@ -7224,7 +7224,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	if (err)
+-		goto out;
++		goto out_phy;
+ 
+ 	if (chip->info->g2_irqs > 0) {
+ 		err = mv88e6xxx_g2_irq_setup(chip);
+@@ -7264,6 +7264,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++out_phy:
++	mv88e6xxx_phy_destroy(chip);
+ out:
+ 	if (pdata)
+ 		dev_put(pdata->netdev);
+@@ -7286,7 +7288,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_ptp_free(chip);
+ 	}
+ 
+-	mv88e6xxx_phy_destroy(chip);
+ 	mv88e6xxx_unregister_switch(chip);
+ 	mv88e6xxx_mdios_unregister(chip);
+ 
+@@ -7300,6 +7301,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++
++	mv88e6xxx_phy_destroy(chip);
+ }
+ 
+ static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
+diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
+index 252b5b3a3efef..d2104bd346ea2 100644
+--- a/drivers/net/dsa/mv88e6xxx/phy.c
++++ b/drivers/net/dsa/mv88e6xxx/phy.c
+@@ -197,7 +197,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
+ 
+ static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
+ {
++	mutex_lock(&chip->ppu_mutex);
+ 	del_timer_sync(&chip->ppu_timer);
++	cancel_work_sync(&chip->ppu_work);
++	mutex_unlock(&chip->ppu_mutex);
+ }
+ 
+ int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
+-- 
+2.39.5
+
 
 
 
