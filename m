@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-131642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E27FA80B96
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FCAA80965
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CBF04E65FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106878A456E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9B027BF94;
-	Tue,  8 Apr 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE31426B2D5;
+	Tue,  8 Apr 2025 12:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG5PeUYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSYVn57O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4822A27BF8B;
-	Tue,  8 Apr 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3F72686AA;
+	Tue,  8 Apr 2025 12:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116948; cv=none; b=mATnfP8luM4U6G5crUcUOrP0vsI1t7YpyjYTeX5gOizNaNn/uxYoUlvEWduJuX+rxsSWD9GUiOU30mYFIwjkoRQzJDjqFmH08y7CKervTICsO2xCKR5Gikdk6C+uIPI1i1QQ12ZwZGsIEP/rfaGFrLsdcsU/Wd30vxa6Gx39Oes=
+	t=1744115840; cv=none; b=oFEtFvHMQMev8WcITTfN2M6d566jMKqUyGQcDy00PLAoUQTTSUnW4BFtSJA/K90dnRMusn/INaMhqNsQ56t13oCB1WuLEXFd7Wp+1o/JUWxFRMyX1WG8hi6APsk95d9BQC7WJJbLEVWhAjDWL7WX/3MoVxif/6oVOqpo3dR4MFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116948; c=relaxed/simple;
-	bh=9PKPeQothz6xNHEc8nDyUaCxpJW79Cb7I5+AczsHONk=;
+	s=arc-20240116; t=1744115840; c=relaxed/simple;
+	bh=u/lphPFJjDCbu25pUrIJlD/cjgjq0HHNOpbjKySDg2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQmlp9FRNwsqR0Hxe53NFCmvcMiW3xbX3KnZFI+lmwFs96TZgs/mo3lhKiBfGoOBdBt1gCCvLNuLcmebTx48RYTjoU8quV/wHOCUYsfQK/1TwsMXlarjJNgngtZMkGI+Z6Cljr5Ly92FPuzG5WGtR3JXARAXbEowVf+c/SJoKRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG5PeUYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30C2C4CEE5;
-	Tue,  8 Apr 2025 12:55:47 +0000 (UTC)
+	 MIME-Version; b=luPGluYExHfP0flpW/YbGTkm1KKMD1u+xlFGZHm5ubNrqnh8y4KE7wHfhZbb81+b6qdZkcLXK/4P+vNDWPt3U+MZXk/5x+QPGqDSrTlBX3tdSwKzJWB1BIMZiviGJ8ylLUC/ZXMCJqYnnFjY87/VCGtNgjbyjc8UrV2St6Dg8kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSYVn57O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2643C4CEE5;
+	Tue,  8 Apr 2025 12:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116948;
-	bh=9PKPeQothz6xNHEc8nDyUaCxpJW79Cb7I5+AczsHONk=;
+	s=korg; t=1744115840;
+	bh=u/lphPFJjDCbu25pUrIJlD/cjgjq0HHNOpbjKySDg2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bG5PeUYG4X35KIibsIEL5oqWnrCPkW0kDbC2Mz3tCP/GotRmEznTGpYpW/gZqAih2
-	 zBV04Wcn8AQ5kYAkbq90nOARn3N1J7d+F/pt+jXOAq0fyduWTglpMYAOXl4aVm0IAY
-	 xZSlTDd46OOoglvjVUfgto4fBbnmGgCsZC2HoPYo=
+	b=DSYVn57OHWSlon5M80Bg8BoPBxUT0va1MxDeMz61YNL0KlmO0pStU08Wmb4UpxjAt
+	 H4y4AiF69mD/DfzN6k8P1KVLCbVyNSS6QMskruwmLzEslIqtCok49GKU8ow9CUjLH7
+	 35/j6R9DEZluUc1orDgaJ3OUreneVHRMpdN6Wjbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debin Zhu <mowenroot@163.com>,
-	Bitao Ouyang <1985755126@qq.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 328/423] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
-Date: Tue,  8 Apr 2025 12:50:54 +0200
-Message-ID: <20250408104853.462043386@linuxfoundation.org>
+Subject: [PATCH 6.1 125/204] rcu-tasks: Always inline rcu_irq_work_resched()
+Date: Tue,  8 Apr 2025 12:50:55 +0200
+Message-ID: <20250408104823.976545941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debin Zhu <mowenroot@163.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
+[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
 
-When calling netlbl_conn_setattr(), addr->sa_family is used
-to determine the function behavior. If sk is an IPv4 socket,
-but the connect function is called with an IPv6 address,
-the function calipso_sock_setattr() is triggered.
-Inside this function, the following code is executed:
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  rcu_irq_work_resched() can be called from
+noinstr code, so make sure it's always inlined.
 
-sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
-
-Since sk is an IPv4 socket, pinet6 is NULL, leading to a
-null pointer dereference.
-
-This patch fixes the issue by checking if inet6_sk(sk)
-returns a NULL pointer before accessing pinet6.
-
-Signed-off-by: Debin Zhu <mowenroot@163.com>
-Signed-off-by: Bitao Ouyang <1985755126@qq.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
-Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/calipso.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ include/linux/rcupdate.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index dbcea9fee6262..62618a058b8fa 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1072,8 +1072,13 @@ static int calipso_sock_getattr(struct sock *sk,
- 	struct ipv6_opt_hdr *hop;
- 	int opt_len, len, ret_val = -ENOMSG, offset;
- 	unsigned char *opt;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return -EAFNOSUPPORT;
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 6858cae98da9e..d001a69fcb7d4 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -133,7 +133,7 @@ static inline void rcu_sysrq_end(void) { }
+ #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
+ void rcu_irq_work_resched(void);
+ #else
+-static inline void rcu_irq_work_resched(void) { }
++static __always_inline void rcu_irq_work_resched(void) { }
+ #endif
  
-+	txopts = txopt_get(pinfo);
- 	if (!txopts || !txopts->hopopt)
- 		goto done;
- 
-@@ -1125,8 +1130,13 @@ static int calipso_sock_setattr(struct sock *sk,
- {
- 	int ret_val;
- 	struct ipv6_opt_hdr *old, *new;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return -EAFNOSUPPORT;
- 
-+	txopts = txopt_get(pinfo);
- 	old = NULL;
- 	if (txopts)
- 		old = txopts->hopopt;
-@@ -1153,8 +1163,13 @@ static int calipso_sock_setattr(struct sock *sk,
- static void calipso_sock_delattr(struct sock *sk)
- {
- 	struct ipv6_opt_hdr *new_hop;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return;
- 
-+	txopts = txopt_get(pinfo);
- 	if (!txopts || !txopts->hopopt)
- 		goto done;
- 
+ #ifdef CONFIG_RCU_NOCB_CPU
 -- 
 2.39.5
 
