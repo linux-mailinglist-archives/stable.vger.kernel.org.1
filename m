@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-130263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2422A803D9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B766AA802CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1288B42561A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E07B4434D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992AC269839;
-	Tue,  8 Apr 2025 11:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3971263C6D;
+	Tue,  8 Apr 2025 11:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKmEbxtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlqo4FX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5711726982D;
-	Tue,  8 Apr 2025 11:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39F919AD5C;
+	Tue,  8 Apr 2025 11:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113252; cv=none; b=eRWGxcu4/S3bQfXSRiz8eKLQ9u5Z4HeOHmqNZfsq5c1prMyQ3VtMNGEHUJZJYIAODjyfjAVjyDzUSbhyWuLW/tLmakRcQdpT0cSJfzNr738IHHsCa5StGdXkv9X+vcluNZVCgFS2eYGZBUbbZNh635KmwP0+jU5RI06vgw07uJM=
+	t=1744112578; cv=none; b=Cj8gZ8jJv2el7/QBkqCJcWmCEidxEFZK/u7l/+7i6CMZMePA78GaHtf5HxECQpUa8WZk0Tbnm5kTT4KYetN0H0zTkN3q2fkZ1r2okXStYhKvJHJJ6Uo58KFFFIOix5sVlX0J49Bszb3Gss4/ZItgNtj8OHG4/CRzVNhFKH17jss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113252; c=relaxed/simple;
-	bh=GpBdwmjpk1SepHpJ8Zcb4JGif0Lu+k7x4AXNn8zmCvQ=;
+	s=arc-20240116; t=1744112578; c=relaxed/simple;
+	bh=SquNFUQWYyhN6IygNiPg2Q78TNcKNAolSCQv/2PIlGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFemj+3uIi8CJGvYRbQLUrC6GA9fmV9jsGyatdNitCM2PPlaXV58hAmEuD7scjkbqW9IJWDADmojgGJifjirlGAbVXFAguWv9VbDiw+0TRpesFHsHkIWVUF71NlqCeHizvNYcrEUofQNchY9CXVbXdN1fR2XdJuHKVsrt9BZnV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKmEbxtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E48C4CEEA;
-	Tue,  8 Apr 2025 11:54:11 +0000 (UTC)
+	 MIME-Version; b=u0SiwrGVJCiNjddF1Qsq5DAoont6/eL7ZoIUfWP8US67W2xQeoUqN/gRAzv+jp3q/dPXc9HZ4/l2EN+Hiv8nxtHmr5tpBLq2TZHTWqnI9IFBaAo2vQudcakwoUoAWqQbNTdW0DXJnKi9AW1plvZqsbPBEbnC+Jp5SoNink6AAg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlqo4FX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F76C4CEE7;
+	Tue,  8 Apr 2025 11:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113252;
-	bh=GpBdwmjpk1SepHpJ8Zcb4JGif0Lu+k7x4AXNn8zmCvQ=;
+	s=korg; t=1744112578;
+	bh=SquNFUQWYyhN6IygNiPg2Q78TNcKNAolSCQv/2PIlGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKmEbxtfP7DdqsJv0oH7UlhmpMH9pE7oYJZzw7HI4cJiyiYX0jkA2KHkOSBmO5uGt
-	 8wtl9E9dc7SBWhj8HELrpyG+r6EiiMYjJIdFHm8NCZU47qO5j8HksseEZbBMp+jmeK
-	 WOgPgCwmbNcI6/BaTix3j4zbk6wwNmSX2AKrtbY8=
+	b=hlqo4FX/LtDCn31kunt4FYkzEyucr9XHW+iwNUI6RBD/DmtKVkofPJkOBh1TcMsKb
+	 e5F/9iN/dF2cTre8npvf2XwixmU9Bu9mYoCdtHfBSQ53xhEAy5GVr810icX/A/oYKH
+	 /h0rIpI5oWxdWQsOCPpMO1ftE5XS+zkXnuJZJtNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/268] clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 5.15 118/279] counter: stm32-lptimer-cnt: fix error handling when enabling
 Date: Tue,  8 Apr 2025 12:48:21 +0200
-Message-ID: <20250408104830.915402831@linuxfoundation.org>
+Message-ID: <20250408104829.530318340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 91be7d27099dedf813b80702e4ca117d1fb38ce6 ]
+commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
 
-The DSP and OCRAM_A modules from AUDIOMIX are clocked by
-AUDIO_AXI_CLK_ROOT, not AUDIO_AHB_CLK_ROOT. Update the clock data
-accordingly.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250226164513.33822-3-laurentiumihalcea111@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
+
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
+
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index ab2a028b3027d..f802e54d7b709 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -170,14 +170,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
- 	CLK_GATE("asrc", ASRC_IPG),
- 	CLK_GATE("pdm", PDM_IPG),
- 	CLK_GATE("earc", EARC_IPG),
--	CLK_GATE("ocrama", OCRAMA_IPG),
-+	CLK_GATE_PARENT("ocrama", OCRAMA_IPG, "axi"),
- 	CLK_GATE("aud2htx", AUD2HTX_IPG),
- 	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
- 	CLK_GATE("sdma2", SDMA2_ROOT),
- 	CLK_GATE("sdma3", SDMA3_ROOT),
- 	CLK_GATE("spba2", SPBA2_ROOT),
--	CLK_GATE("dsp", DSP_ROOT),
--	CLK_GATE("dspdbg", DSPDBG_ROOT),
-+	CLK_GATE_PARENT("dsp", DSP_ROOT, "axi"),
-+	CLK_GATE_PARENT("dspdbg", DSPDBG_ROOT, "axi"),
- 	CLK_GATE("edma", EDMA_ROOT),
- 	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
- 	CLK_GATE("mu2", MU2_ROOT),
--- 
-2.39.5
-
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -59,37 +59,43 @@ static int stm32_lptim_set_enable_state(
+ 		return 0;
+ 	}
+ 
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
++
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
+ 
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
+ }
+ 
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
