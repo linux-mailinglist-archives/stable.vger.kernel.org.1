@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382D7A8076E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99716A80B62
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC511B6683A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BA84E7C61
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F5526A0E9;
-	Tue,  8 Apr 2025 12:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E2F27BF67;
+	Tue,  8 Apr 2025 12:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z39Cv/pL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmZ68Tuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F2B269CEB;
-	Tue,  8 Apr 2025 12:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C4826A0CF;
+	Tue,  8 Apr 2025 12:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115327; cv=none; b=hSkv3ikscnP+iN5d2zNoVRfhbFPK2epFFKQ6XHWsGvwJoBayx9VeM7PHYKTiwR2GD+OZhtBrXLPO/hnOzuR4NMxF06fNVvoYoZZVtYLKWiKiiLLkd1TsJG89yKHYOMy/d/SnG4VbEHYOsToLBZmr678dGwXOvOK3E+LDJr9iiLw=
+	t=1744116924; cv=none; b=FQvI/MMacp9M4i9uNW1Z7pzH1wDzqd3PLBJWfE0P7cHFaOYgjfMDWjA1N0t9umqH18ygXFtQAT7RonuB42wPnSlvEZ1T4DhHJ8pIJzaZT3HUOx0rRe61KaImeuzh7SAdlzloOn8nrs6hfeqJ+3a2aBb+l4XSOf53bvFFgaioqRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115327; c=relaxed/simple;
-	bh=UcjN6t3JW0fR+Uer2x7xJbPmBQszJiHiCnPszPK9EYI=;
+	s=arc-20240116; t=1744116924; c=relaxed/simple;
+	bh=u8HnEp3o0zgGxRV1mKO/3ECqOVeA6/zZhXoO0cCtQtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzhwIVQbxoMdogkvd4tohIEcbRlgd2SkRIj+cRl2+o13A8MDtiijfpM6jRlh3bKj2+9N8W7wusXCAdltqx7R5rqTqoiAtTNlY4Rapb4H2ycN+SVib9YcLomU2ToNGukAwufgn2niWk9ZGYbEKS2ktSrSo3uZ7jjB+pNFks8kdfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z39Cv/pL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF21C4CEE7;
-	Tue,  8 Apr 2025 12:28:46 +0000 (UTC)
+	 MIME-Version; b=NEST4GvwYKDz5Bh9u3HWmXIJAU6xvB/gzjWos6mZP097W2MoWGBHTRWZ4gL9iWZMCMzIxn+CmyOcVMNlerlsjwNEXwG7xnjcPVHsk1u9ZvvjmxNHJs2NaB/5HXJErhRFrsW/2tq1/NUxGFjzvI7ou2ojvJN/IRagn35dJD/dFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmZ68Tuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7624C4CEE7;
+	Tue,  8 Apr 2025 12:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115327;
-	bh=UcjN6t3JW0fR+Uer2x7xJbPmBQszJiHiCnPszPK9EYI=;
+	s=korg; t=1744116924;
+	bh=u8HnEp3o0zgGxRV1mKO/3ECqOVeA6/zZhXoO0cCtQtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z39Cv/pLCHf3aABbsdx8dQaSYqaVQsIMt+4fY6PpzNqEYsSFzDGE4jyH1wPtd8BHx
-	 0AqoLJ16iLS/5o+m8eQI3sT9JtlwQb2JtoLQ38EGRyKcn+OIi1mPmZt6zjJoATPr2d
-	 BywD8izinUPr/Jn8PL7dIBxGgo2Elr1ruA4ZO7n4=
+	b=dmZ68Tuc+epgnXEdADhP1GPdyGNweNqmAI9wfDtiYrxzzL8vdIO3MPzg+54bLpKFK
+	 nVbtz0YD/GXHimcX8D4mXt5EtbeKuq9IpM03hWjq7KjB1FxeVwgRLduDrO91sg+0yP
+	 OZ9TpeBgknaSaaIHTdsUJFu1Lubjtt/ud4hsVoFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 434/499] rust: Fix enabling Rust and building with GCC for LoongArch
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 320/423] ASoC: imx-card: Add NULL check in imx_card_probe()
 Date: Tue,  8 Apr 2025 12:50:46 +0200
-Message-ID: <20250408104902.053928232@linuxfoundation.org>
+Message-ID: <20250408104853.267812985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WANG Rui <wangrui@loongson.cn>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 13c23cb4ed09466d73f1beae8956810b95add6ef upstream.
+[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
 
-This patch fixes a build issue on LoongArch when Rust is enabled and
-compiled with GCC by explicitly setting the bindgen target and skipping
-C flags that Clang doesn't support.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+imx_card_probe() does not check for this case, which results in a NULL
+pointer dereference.
 
-Cc: stable@vger.kernel.org
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add NULL check after devm_kasprintf() to prevent this issue.
+
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -230,7 +230,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
- 	-mfunction-return=thunk-extern -mrecord-mcount -mabi=lp64 \
- 	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=no \
- 	-mno-pointers-to-nested-functions -mno-string \
--	-mno-strict-align -mstrict-align \
-+	-mno-strict-align -mstrict-align -mdirect-extern-access \
-+	-mexplicit-relocs -mno-check-zero-division \
- 	-fconserve-stack -falign-jumps=% -falign-loops=% \
- 	-femit-struct-debug-baseonly -fno-ipa-cp-clone -fno-ipa-sra \
- 	-fno-partial-inlining -fplugin-arg-arm_ssp_per_task_plugin-% \
-@@ -244,6 +245,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
-+BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
- # All warnings are inhibited since GCC builds are very experimental,
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index a7215bad64845..93dbe40008c00 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -738,6 +738,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].sink =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Playback");
++				if (!data->dapm_routes[i].sink)
++					return -ENOMEM;
+ 				data->dapm_routes[i].source = "CPU-Playback";
+ 			}
+ 		}
+@@ -755,6 +757,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].source =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Capture");
++				if (!data->dapm_routes[i].source)
++					return -ENOMEM;
+ 				data->dapm_routes[i].sink = "CPU-Capture";
+ 			}
+ 		}
+-- 
+2.39.5
+
 
 
 
