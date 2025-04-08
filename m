@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF932A80AE4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2CBA807CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97A21B88508
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949031BA130B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9005269B0E;
-	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B2E2676C9;
+	Tue,  8 Apr 2025 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsEdPRHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/4zHhKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53261EB3D;
-	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC4F265CD3;
+	Tue,  8 Apr 2025 12:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116755; cv=none; b=O22LQ3f5k6UwgHAb3mmkk+XxRptHpJjihKt6UytFBBAviKBHt1s5Cw0mIdS6s3fwLzSA3ttut4OpiRuzcydCNT1eTNegnvSYxGBYIvSCNLjze4DTnkOA6ojoU0rhGb6TsB9vxLCnB5BCGpaADDZGywXfxPYrREAv9STQ1+Gpa2k=
+	t=1744115549; cv=none; b=I24cBR2lIOJsYt20KKzP9Kt+WdXY7UbEytcDS1EO/ktCKitA6gRzaMN8OKRf0+t+YIUsGjiUarqLKDhQOv09DeVVsi0qXPhKB3NXsN32A/WQY3/8FbH+KHdZTz/lmbdUTNMuuhyZJ11s27/6HLg1j6K3Y2RLByc3YTQbWXtS1u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116755; c=relaxed/simple;
-	bh=R7LB4mjrh0+MbCnWNMZZpl5Qpj4aebh1wUVPvQmBSRE=;
+	s=arc-20240116; t=1744115549; c=relaxed/simple;
+	bh=iXm7BEZh8CD49K50tx+erJpOSzdkwgnSwWB/kPnKcKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJ6Mpeh5K4zQq2xBEN7QYdtLjEACLbZ21HS32jzEAKxzIhHcUSTqzfSAYAzKePz8Q/thF/cObsXpZtaNtAgpi8QMlqAj6TEkXmJ3JN9SaEEQ1S/0lE7KGkPTwH1Go765/2z9LcUaaQQjBCGJdRVZE3rlFDvCLF76RGxd3QeW+1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsEdPRHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3495DC4CEE5;
-	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
+	 MIME-Version; b=rl/2jlHzl01gNpw9A9bSwmtMtesXKmvcfjZSTlqY6fpnTJ6qxy8azc091dbScN8NYAoT4bf3aUzSHGIOHcqkrvF/XiHQ2B6oYdBj5vLfNw2XrRw+YN/5VTJVJEgQdWKqbvqk9UO4x5f4wQe+/leMthihnJUel7SoC96Q3I9kMSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/4zHhKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA20C4CEE5;
+	Tue,  8 Apr 2025 12:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116755;
-	bh=R7LB4mjrh0+MbCnWNMZZpl5Qpj4aebh1wUVPvQmBSRE=;
+	s=korg; t=1744115549;
+	bh=iXm7BEZh8CD49K50tx+erJpOSzdkwgnSwWB/kPnKcKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsEdPRHCupqV8+FeSfSvAfV2hJMAdB/dc5IB2CWtogR+6wjyT3fICtRGCmJrC/bAP
-	 L0m+VAbExJP+fb6iRMrTlzTBysEAFekELSlF6kOD9RP2hVx1IgM6wEDwuuli71RL4N
-	 aszTwuO3u2Tn0ZMgsCO3tXXseeEMxYnRoTJTUSaM=
+	b=c/4zHhKGGT8Eiu0opQjfl6ivoXt4/FeNd7q2dxE3BxWBJaciOKAkgdQWyzM5GjHlJ
+	 bQZ0cC5CzXwhKG7Qt/xzI+WQiThAMmGlvOGLY1R1oMr8TY3T33KPDpNMXFVHaRhcxm
+	 qMXVdejvqaF8Xfr5Fr09bB4TU0e8hnvuBdnpkvKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 220/423] tty: n_tty: use uint for space returned by tty_write_room()
-Date: Tue,  8 Apr 2025 12:49:06 +0200
-Message-ID: <20250408104850.854426860@linuxfoundation.org>
+Subject: [PATCH 6.1 017/204] PM: sleep: Fix handling devices with direct_complete set on errors
+Date: Tue,  8 Apr 2025 12:49:07 +0200
+Message-ID: <20250408104820.823694985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit d97aa066678bd1e2951ee93db9690835dfe57ab6 ]
+[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
 
-tty_write_room() returns an "unsigned int". So in case some insane
-driver (like my tty test driver) returns (legitimate) UINT_MAX from its
-tty_operations::write_room(), n_tty is confused on several places.
+When dpm_suspend() fails, some devices with power.direct_complete set
+may not have been handled by device_suspend() yet, so runtime PM has
+not been disabled for them yet even though power.direct_complete is set.
 
-For example, in process_output_block(), the result of tty_write_room()
-is stored into (signed) "int". So this UINT_MAX suddenly becomes -1. And
-that is extended to ssize_t and returned from process_output_block().
-This causes a write() to such a node to receive -EPERM (which is -1).
+Since device_resume() expects that runtime PM has been disabled for all
+devices with power.direct_complete set, it will attempt to reenable
+runtime PM for the devices that have not been processed by device_suspend()
+which does not make sense.  Had those devices had runtime PM disabled
+before device_suspend() had run, device_resume() would have inadvertently
+enable runtime PM for them, but this is not expected to happen because
+it would require ->prepare() callbacks to return positive values for
+devices with runtime PM disabled, which would be invalid.
 
-Fix that by using proper "unsigned int" and proper "== 0" test. And
-return 0 constant directly in that "if", so that it is immediately clear
-what is returned ("space" equals to 0 at that point).
+In practice, this issue is most likely benign because pm_runtime_enable()
+will not allow the "disable depth" counter to underflow, but it causes a
+warning message to be printed for each affected device.
 
-Similarly for process_output() and __process_echoes().
+To allow device_resume() to distinguish the "direct complete" devices
+that have been processed by device_suspend() from those which have not
+been handled by it, make device_suspend() set power.is_suspended for
+"direct complete" devices.
 
-Note this does not fix any in-tree driver as of now.
+Next, move the power.is_suspended check in device_resume() before the
+power.direct_complete check in it to make it skip the "direct complete"
+devices that have not been handled by device_suspend().
 
-If you want "Fixes: something", it would be commit 03b3b1a2405c ("tty:
-make tty_operations::write_room return uint"). I intentionally do not
-mark this patch by a real tag below.
+This change is based on a preliminary patch from Saravana Kannan.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250317070046.24386-6-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
+Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
+Reported-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_tty.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/base/power/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-index 5e9ca4376d686..94fa981081fdb 100644
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -486,7 +486,8 @@ static int do_output_char(u8 c, struct tty_struct *tty, int space)
- static int process_output(u8 c, struct tty_struct *tty)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space, retval;
-+	unsigned int space;
-+	int retval;
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 49728cb628c19..343d3c966e7a7 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -894,6 +894,9 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (dev->power.syscore)
+ 		goto Complete;
  
- 	mutex_lock(&ldata->output_lock);
++	if (!dev->power.is_suspended)
++		goto Complete;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -912,9 +915,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	 */
+ 	dev->power.is_prepared = false;
  
-@@ -522,16 +523,16 @@ static ssize_t process_output_block(struct tty_struct *tty,
- 				    const u8 *buf, unsigned int nr)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space;
--	int	i;
-+	unsigned int space;
-+	int i;
- 	const u8 *cp;
+-	if (!dev->power.is_suspended)
+-		goto Unlock;
+-
+ 	if (dev->pm_domain) {
+ 		info = "power domain ";
+ 		callback = pm_op(&dev->pm_domain->ops, state);
+@@ -954,7 +954,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 	dev->power.is_suspended = false;
  
- 	mutex_lock(&ldata->output_lock);
+- Unlock:
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
  
- 	space = tty_write_room(tty);
--	if (space <= 0) {
-+	if (space == 0) {
- 		mutex_unlock(&ldata->output_lock);
--		return space;
-+		return 0;
- 	}
- 	if (nr > space)
- 		nr = space;
-@@ -696,7 +697,7 @@ static int n_tty_process_echo_ops(struct tty_struct *tty, size_t *tail,
- static size_t __process_echoes(struct tty_struct *tty)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space, old_space;
-+	unsigned int space, old_space;
- 	size_t tail;
- 	u8 c;
+@@ -1638,6 +1637,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+ 			pm_runtime_disable(dev);
+ 			if (pm_runtime_status_suspended(dev)) {
+ 				pm_dev_dbg(dev, state, "direct-complete ");
++				dev->power.is_suspended = true;
+ 				goto Complete;
+ 			}
  
 -- 
 2.39.5
