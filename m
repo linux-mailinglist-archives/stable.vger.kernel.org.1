@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CAAA8064C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 176D4A80A03
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CABE46810C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8EA4C7B8C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67F726A0A2;
-	Tue,  8 Apr 2025 12:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23825269AF5;
+	Tue,  8 Apr 2025 12:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtJgVNt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qp3ddKfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A7F269AE4;
-	Tue,  8 Apr 2025 12:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6327268FDE;
+	Tue,  8 Apr 2025 12:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114557; cv=none; b=VIgKMRwR86/tgjmVoeRfFtl8/Y0m7esiRDyWa6RNY0kOBcIXP5v6nLe0x5lgqhT0/f6RftDclYIbCP83JYqF3izPNx+MYVPMQlLhGdbK8dscvOYDNfqIw0kLDnrhZd5Trd/hF8QjVtaoqzuc8XWfBCdr+BEdYTx7vGomk/9QyAU=
+	t=1744116161; cv=none; b=amXv03twaIlVPLIiFPrF0r1VgAGUURaPg0UZ5433X/tzCnkt0cgsLJvfvwZJw6IPc1N0U0+uoU8P6UhUHcTiFAbU8Pzi+iun0Kzyt78TDRgymoSB4pUTJ6qEbQizsB+0P3ksKJiaI3JaCZMYe+AcnVen3q10HHq1+GEJy5NzuYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114557; c=relaxed/simple;
-	bh=JPJlauGlKZz78mG4VGo6+WsONurXvAmmt8tjTvsRHiY=;
+	s=arc-20240116; t=1744116161; c=relaxed/simple;
+	bh=A5ll7hZbNn6IytcjyAkLZCSBvzHfq6WX5sIKQoG0Tic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txD28wpU/h1xRFhVBEIh0Qx/4c9/GTVuppF51/Xl5DjQeneJWam87QmthQu431Nb6TM4WFsjc4NJkzfXRUZ97GTrwyQxLA7enMKhezGXMdogs/KHNQRrw2YAo5NeuaQ6xAFKs61QCO5OaCOfnhwh6/1d5IvoIAJc3bj6jZC45qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtJgVNt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03312C4CEE5;
-	Tue,  8 Apr 2025 12:15:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oH0n7NmkVNtFF6ihJFFqMksAw5IboqfcqPJ0CykONhCHTWHo7Pwj0+AM/CxrlR/XdaMAukB90dGRWp2rvzqSxgZcIwhOI/H8EjVopnj3Kl7uOKwh+CQqhrENg/h9a6ixtjBYC0Dc2DRn+PM6WFKoESgg1V3cdw3PkpDybEaW6pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp3ddKfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6840DC4CEE7;
+	Tue,  8 Apr 2025 12:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114557;
-	bh=JPJlauGlKZz78mG4VGo6+WsONurXvAmmt8tjTvsRHiY=;
+	s=korg; t=1744116161;
+	bh=A5ll7hZbNn6IytcjyAkLZCSBvzHfq6WX5sIKQoG0Tic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtJgVNt0QlqjxQVy72baut4kFmxNr18cD7BGdkjLjWF/Tbhurqgqzfz6+B2z6A61q
-	 Y8cB6BVMunTL+KCEisZqd4v/49LxSboTQQIsmfupDZv8LJ8WC3KXe2NvAzKXU+8Ebq
-	 HDNPMTITn7vopGpGXAHSpCEzZHQ2wNF1Yus4QRJ4=
+	b=qp3ddKfgz8GNrOocs335T9iqZ57E7LGGM76Wg4eJW1XsPtT9vNnFfF+XKTLoC1D7I
+	 NfkHZj3kyTo0m7sXKCI3u6MWfrcGO8M2pum5zzJegQB4EGY4g0CVahjyHjfV1Y/RiX
+	 dplyv0lZoWcGb03pz5b17Co8wIbkc0c2igNRuIvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 151/499] remoteproc: qcom_q6v5_pas: Use resource with CX PD for MSM8226
+Subject: [PATCH 6.12 037/423] platform/x86: lenovo-yoga-tab2-pro-1380-fastcharger: Make symbol static
 Date: Tue,  8 Apr 2025 12:46:03 +0200
-Message-ID: <20250408104854.952793617@linuxfoundation.org>
+Message-ID: <20250408104846.614089874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit ba785ff4162a65f18ed501019637a998b752b5ad ]
+[ Upstream commit 886ca11a0c70efe5627a18557062e8a44370d78f ]
 
-MSM8226 requires the CX power domain, so use the msm8996_adsp_resource
-which has cx under proxy_pd_names and is otherwise equivalent.
+Sparse reports:
 
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Fixes: fb4f07cc9399 ("remoteproc: qcom: pas: Add MSM8226 ADSP support")
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250128-pas-singlepd-v1-1-85d9ae4b0093@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+lenovo-yoga-tab2-pro-1380-fastcharger.c:222:29: warning: symbol
+'yt2_1380_fc_serdev_driver' was not declared. Should it be static?
+
+Fix that by making the symbol static.
+
+Fixes: b2ed33e8d486a ("platform/x86: Add  lenovo-yoga-tab2-pro-1380-fastcharger driver")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250304160639.4295-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 2 +-
+ drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 9f2d9b4be2790..60923ed129049 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -1411,7 +1411,7 @@ static const struct adsp_data sm8650_mpss_resource = {
- };
+diff --git a/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c b/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
+index 32d9b6009c422..21de7c3a1ee3d 100644
+--- a/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
++++ b/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
+@@ -219,7 +219,7 @@ static int yt2_1380_fc_serdev_probe(struct serdev_device *serdev)
+ 	return 0;
+ }
  
- static const struct of_device_id adsp_of_match[] = {
--	{ .compatible = "qcom,msm8226-adsp-pil", .data = &adsp_resource_init},
-+	{ .compatible = "qcom,msm8226-adsp-pil", .data = &msm8996_adsp_resource},
- 	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8996_adsp_resource},
- 	{ .compatible = "qcom,msm8974-adsp-pil", .data = &adsp_resource_init},
- 	{ .compatible = "qcom,msm8996-adsp-pil", .data = &msm8996_adsp_resource},
+-struct serdev_device_driver yt2_1380_fc_serdev_driver = {
++static struct serdev_device_driver yt2_1380_fc_serdev_driver = {
+ 	.probe = yt2_1380_fc_serdev_probe,
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
 -- 
 2.39.5
 
