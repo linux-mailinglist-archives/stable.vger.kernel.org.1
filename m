@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B280A800E3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45354A80364
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10DDD1890EFC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCA997A4EBB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB46269CE4;
-	Tue,  8 Apr 2025 11:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C726126982A;
+	Tue,  8 Apr 2025 11:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY2Ab2hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebhk/CI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABA0269B0D;
-	Tue,  8 Apr 2025 11:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831D3266F17;
+	Tue,  8 Apr 2025 11:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111807; cv=none; b=UxAwetfKFh4tngBJBDXPofA1ZtK/zEpO6p5Y5c5X7c3DFQMuWe8xoylyvIK9W5+NJu1X0prDaYPKSpTe42oP57hqyzOTk1avtGqdRIGRpC1f97WQaAOGI4cjsk0uwrj+fz9eGpdmpy0iZvUWx5d3i+FgAl1Cet/oLW7cgyW9nk8=
+	t=1744113159; cv=none; b=OTNKZRmhu2xkeVMWjbkQFtdw+258zlziaVdKlZWX3mmkEOpE/tKW0K7OWn0qgiwauJ+CvxlCK/yzBzN0ETGQRfLAP8JjTpEPM2lk1zd7PQJ8JVBHJiozN8MFLHRiek8I9I8fc0jR0fVgQRZIhR4g+tB9qQJpebRZ+ier5s/CQlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111807; c=relaxed/simple;
-	bh=67gN6CwQTifmq8dNIpuqCcQF+YDlDO9daiQQzdkmFPo=;
+	s=arc-20240116; t=1744113159; c=relaxed/simple;
+	bh=+67/diASUDLM+eJq08PV2mIQkkr1mAkmGXloTy6wJAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS7U8lJhoWF/sYqjodxRrANJPJB9oUImZguhmaFmKp7lzkvI90dR3jgMUUJo0z2B2avR7t/sfoooEi8PCfHl07koAoe5xApzw8h0hWMWY+Z9gM9NJ1iCVzzf2Yx3+HWJWTRRnJgN5nhoZoEsZl7sBHx3UXUkSOXdg32rCNQleQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY2Ab2hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF29DC4CEE7;
-	Tue,  8 Apr 2025 11:30:06 +0000 (UTC)
+	 MIME-Version; b=Lp8PO6DuO7EShZo5JQplMtA9dFoFjRksRwNeLTJV7Ktcz6ycnTV3h4+vXQVP8TI/6RLKM5d0VOPldgHaZ8AfXgmFa4gN8Lfjakx8593M5S0xZ99c9JDN8TcuKlNFGKUwQc40PfyvOt4TLN6Tu2HlW4ZjvlCMISmNVReMWAlWZm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebhk/CI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F117C4CEE5;
+	Tue,  8 Apr 2025 11:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111807;
-	bh=67gN6CwQTifmq8dNIpuqCcQF+YDlDO9daiQQzdkmFPo=;
+	s=korg; t=1744113158;
+	bh=+67/diASUDLM+eJq08PV2mIQkkr1mAkmGXloTy6wJAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZY2Ab2hd5uL7CAS6ry7TnaU5mFl7MU3cvNfOmZ/73RB4K0fimPInls8AU7QRDj4iP
-	 WTsClq62SM3njzm9CqiDlbRDjrdYyecEQsewjOVxWfhw2ES65+DwSQyzeNzLTjz6UT
-	 5Q95U/6nwevIryyyNcDK8oy5Lzu89vD2cWr2ayOY=
+	b=Ebhk/CI5bO2CJ5uKInZRXj0Cwad3IRmGSuCx4RgFSSw6CBHB9NHqohrB+e3K4S9zz
+	 p6PoKIVbjGPcS39vx8pbABZvXgiI99KYi3QhiBhF0VsJt/QaxkoOA1CkG0WCGyVOsD
+	 O1PCLd7q2LYRRvpNKvmEZOOB/D0+4rrB7xIiVzc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 568/731] octeontx2-af: Fix mbox INTR handler when num VFs > 64
+Subject: [PATCH 6.6 054/268] drm/mediatek: dp: drm_err => dev_err in HPD path to avoid NULL ptr
 Date: Tue,  8 Apr 2025 12:47:45 +0200
-Message-ID: <20250408104927.486052484@linuxfoundation.org>
+Message-ID: <20250408104829.957778744@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
+[ Upstream commit 106a6de46cf4887d535018185ec528ce822d6d84 ]
 
-When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
-function is incorrect. Due to which mbox workqueue entries for
-VFs 0 to 63 never gets added to workqueue.
+The function mtk_dp_wait_hpd_asserted() may be called before the
+`mtk_dp->drm_dev` pointer is assigned in mtk_dp_bridge_attach().
+Specifically it can be called via this callpath:
+ - mtk_edp_wait_hpd_asserted
+ - [panel probe]
+ - dp_aux_ep_probe
 
-Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Using "drm" level prints anywhere in this callpath causes a NULL
+pointer dereference. Change the error message directly in
+mtk_dp_wait_hpd_asserted() to dev_err() to avoid this. Also change the
+error messages in mtk_dp_parse_capabilities(), which is called by
+mtk_dp_wait_hpd_asserted().
+
+While touching these prints, also add the error code to them to make
+future debugging easier.
+
+Fixes: 7eacba9a083b ("drm/mediatek: dp: Add .wait_hpd_asserted() for AUX bus")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250116094249.1.I29b0b621abb613ddc70ab4996426a3909e1aa75f@changeid/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index cd0d7b7774f1a..6575c422635b7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -2634,7 +2634,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
- 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index be4de26c77f91..199527643093a 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -1648,7 +1648,7 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
  
- 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
--		vfs -= 64;
-+		vfs = 64;
+ 	ret = drm_dp_dpcd_readb(&mtk_dp->aux, DP_MSTM_CAP, &val);
+ 	if (ret < 1) {
+-		drm_err(mtk_dp->drm_dev, "Read mstm cap failed\n");
++		dev_err(mtk_dp->dev, "Read mstm cap failed: %zd\n", ret);
+ 		return ret == 0 ? -EIO : ret;
  	}
  
- 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
+@@ -1658,7 +1658,7 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
+ 					DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
+ 					&val);
+ 		if (ret < 1) {
+-			drm_err(mtk_dp->drm_dev, "Read irq vector failed\n");
++			dev_err(mtk_dp->dev, "Read irq vector failed: %zd\n", ret);
+ 			return ret == 0 ? -EIO : ret;
+ 		}
+ 
+@@ -1941,7 +1941,7 @@ static int mtk_dp_wait_hpd_asserted(struct drm_dp_aux *mtk_aux, unsigned long wa
+ 
+ 	ret = mtk_dp_parse_capabilities(mtk_dp);
+ 	if (ret) {
+-		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
++		dev_err(mtk_dp->dev, "Can't parse capabilities: %d\n", ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.39.5
 
