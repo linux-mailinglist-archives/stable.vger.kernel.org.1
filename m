@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EC3A805D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB5BA80AA1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1360422B5C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6154C7B46CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB726A1CA;
-	Tue,  8 Apr 2025 12:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1401927BF77;
+	Tue,  8 Apr 2025 12:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8MBOxSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJoT5KEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879BB26156E;
-	Tue,  8 Apr 2025 12:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6160267B89;
+	Tue,  8 Apr 2025 12:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114164; cv=none; b=JcxFY3zrvFYmgkqGjPNh0suHO/ntsUzOeejYLn0+eaaNn7HCJg2gBLybeBHbIUXJDKpXP98vm6uy8xn8FPgHkm0oC0RDyhgaGcTvc3KXEiRVaHl2uPB/09zHWObphZ+pBAhFQnhv6yzMAuaAcL9l8SEWkqHa5UXTvRa7A1+JfRw=
+	t=1744116942; cv=none; b=mBQtihQfQXKmLMFK1WqA7U3O1gHQjrCK04nBebMMr6HX3IyMuhQdvXg1it+xte8ApqOyIBIe/0ejGE1yNwsnXWhT+MRi6aAkKIC0Cc5mFO9VwnCcVo1yuKYWOCwNrquGB3d0sn4dj28GkCHaLmVm3+cN5n1YlhYzAy3f9k7wJHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114164; c=relaxed/simple;
-	bh=Mw2067EXxvP/+uGm6yCh0ARztEfmTFzPCaYM4APtbaE=;
+	s=arc-20240116; t=1744116942; c=relaxed/simple;
+	bh=ltOOKadGMm4poFg97z+LhRwm+UMb/2/GutZprlFHlvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEXOh1kioKcAj1xqfZlTKXqjKcTbCI8NDxRf+FRRFTgtLtQ8k4afCIms3hQg534C6UeIfHyBUTQCzf7YqKlQjM/v898kVMK9pz6YxJQhpytniOVTSeSHyB0b3fK4l6JUWDd3HtM5x06BZD2jB9D1z4i2rnCt8naC6W8G5Xf7N/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8MBOxSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE6C4CEE5;
-	Tue,  8 Apr 2025 12:09:23 +0000 (UTC)
+	 MIME-Version; b=CFkSbS0pyd5gUhyk0pQtb1GhNuwmDYlzGB/lu5vgro0QOkK+jBD/OIx8Nc8zuJalRtAn5cpnHZNvfzcFJkgqLX9Lgwe316XJ3eVzsxZqFI6svdqSIvbWD7Ni9Fe4ld743wfD1wM2xFXrkAUgFDhj8FGFaOyRJs0c7EG+JCEvgG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJoT5KEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498DC4CEE5;
+	Tue,  8 Apr 2025 12:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114164;
-	bh=Mw2067EXxvP/+uGm6yCh0ARztEfmTFzPCaYM4APtbaE=;
+	s=korg; t=1744116942;
+	bh=ltOOKadGMm4poFg97z+LhRwm+UMb/2/GutZprlFHlvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8MBOxSHmsbjEaZCUH15JO2TJtfpobt4tZZxhtk6yfmCueGumk9+ny5tLGzHLA56g
-	 pjCvVZcmy2W/zHpRu1NQB51JQGQjrzJckT8zIQAt1ZYDaU+pjgkOnLPxkrcmi3FiAM
-	 YvuyMO6X5eVakyvebP0ab9V4bzX7USJ4QnmlCQuk=
+	b=UJoT5KEVaMhuP/tzzUhySgcuDaFeQGG2CAsHa9Wlt8NYvOwxkovm0j49wYQ36uwl2
+	 HqlhOIm4OZMhDXivZMJAoGhhzyD7oL+X8q+PetjcDjGhbXR5csxnCvRR04pAbE/6oS
+	 peRUcqlGsa7GamYn6mh/I/tXh4z6OhyMXgMUwfKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/154] power: supply: max77693: Fix wrong conversion of charge input threshold value
+Subject: [PATCH 6.12 326/423] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
 Date: Tue,  8 Apr 2025 12:50:52 +0200
-Message-ID: <20250408104818.893265358@linuxfoundation.org>
+Message-ID: <20250408104853.410132618@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
+[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
 
-The charge input threshold voltage register on the MAX77693 PMIC accepts
-four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
-Due to an oversight, the driver calculated the values for 4.7v and above
-starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
-gives 0).
+conncount has its own GC handler which determines when to reap stale
+elements, this is convenient for dynamic sets. However, this also reaps
+non-dynamic sets with static configurations coming from control plane.
+Always run connlimit gc handler but honor feedback to reap element if
+this set is dynamic.
 
-Add 1 to the calculation to ensure that 4.7v is converted to a register
-value of 0x1 and that the other two voltages are converted correctly as
-well.
-
-Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77693_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_hash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
-index a2c5c9858639f..ef3482fa4023e 100644
---- a/drivers/power/supply/max77693_charger.c
-+++ b/drivers/power/supply/max77693_charger.c
-@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
- 	case 4700000:
- 	case 4800000:
- 	case 4900000:
--		data = (uvolt - 4700000) / 100000;
-+		data = ((uvolt - 4700000) / 100000) + 1;
- 		break;
- 	default:
- 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index b93f046ac7d1e..4b3452dff2ec0 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -309,7 +309,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
+ 
+ 	nft_setelem_expr_foreach(expr, elem_expr, size) {
+ 		if (expr->ops->gc &&
+-		    expr->ops->gc(read_pnet(&set->net), expr))
++		    expr->ops->gc(read_pnet(&set->net), expr) &&
++		    set->flags & NFT_SET_EVAL)
+ 			return true;
+ 	}
+ 
 -- 
 2.39.5
 
