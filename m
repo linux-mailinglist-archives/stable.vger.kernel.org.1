@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C36A80B93
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F242EA807AC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C24444E5754
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF784A6E86
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2477926F473;
-	Tue,  8 Apr 2025 12:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78933267B6B;
+	Tue,  8 Apr 2025 12:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3hIwAD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8tW34um"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59FF26A1AF;
-	Tue,  8 Apr 2025 12:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957C26AAB7;
+	Tue,  8 Apr 2025 12:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117031; cv=none; b=inlw6y1LM/Dd/cK9DQ+VpanOBRp6PulegsHQc+LkFhbPnI4drz+dvRl0Iryv8ywMiDfhgFpvV5NkepTnJhjjIVUnsxZdyqDlgzsCFvjAmEHrop0lqZhNL/7Qf9kZ0W0MOYLXzpyN3p+CsErVA4ltyagoRVpaFOWJ3yu9/ZrRhV0=
+	t=1744115435; cv=none; b=rfp7MIfX73yvVmIFyU5tEmt5rhsxOORHxiX05DDi7gRdXATkiNezVUxkCeyzE2/NOkMLuW6eTUUQovVaHHuOQCzBlC7e4gnE7jYv3COC9VkOg3V+thBSlVFdpj7vt8objv/rd/N9uq4wNeQZbDyrIYYc3tiBjBZ5Iir7WZuk6j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117031; c=relaxed/simple;
-	bh=gyme9mgD2y2h1ml0ic2BjrH9toqUKkGYPbqXp3KqOgk=;
+	s=arc-20240116; t=1744115435; c=relaxed/simple;
+	bh=qih1ZxGfki5FTHGOMacTF6QVbQQWxiw7UwIpj1EfboY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVzcgQTgQEqSqz1POEKGB6gXz+vdegUFAiDrNNwiBG+w1X/LHPilNTWlq1DqQte28/Wy1t/GWU+Gl1qF0nuOAEttB+ZdiMyviwZ5J/ilblgnaAgWv3KxYmwX9RU5ZW1klnNg6gbeqE5GG1wPN+1Ox9sMhaJO6fOypnk2IwtsWMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3hIwAD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E62C4CEE5;
-	Tue,  8 Apr 2025 12:57:11 +0000 (UTC)
+	 MIME-Version; b=Lal7OEmz2FhB4yXNslcwzmvccq57IoyLfmLu+BpydnwY+MhmPmM+RrekJbW+Q0USVD+N+zmLY1ZbYNdYVnnfG5HH4H+CnG8542f8z3S2sc0Fap+SXlqm9q0iQe4uMqh34Fzhb0QySOlytHhFlsU2cI2aBl/xRbbXK+VZSRMEGeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8tW34um; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E751C4CEE5;
+	Tue,  8 Apr 2025 12:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117031;
-	bh=gyme9mgD2y2h1ml0ic2BjrH9toqUKkGYPbqXp3KqOgk=;
+	s=korg; t=1744115434;
+	bh=qih1ZxGfki5FTHGOMacTF6QVbQQWxiw7UwIpj1EfboY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3hIwAD9OlZR0gdgQ+FYonNH8NEUpoZ6s1bdA+3rLVLEyAyboPTFHHQEFOYzpZ/wE
-	 +ViQzFmTOE87x1SjAzoYrTVn75zR807AM9Q9mwiSd8nh762KQQ8hC37ffCSeRFY9hB
-	 KuwHPSfvAjrGjWXWPPAqxLN4GZGbAyskoKmdIvAk=
+	b=h8tW34umCVDddqXpMPUXbNDaTz7Ta803QHFPGmsPTzAz0s9AQGjXuDEth+heIw+BO
+	 g+I6nRtiFXsVSSFSXLoOchLnr3qoM40g6ERajnVNAcTfFZgbl7TiHXYqmFuSIskEFL
+	 NcR/z80ENZaJI/pnU8hlp8FgZ+rM7VyljSwCt0OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	kernel test robot <lkp@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 360/423] wifi: mac80211: Fix sparse warning for monitor_sdata
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.13 474/499] exfat: fix potential wrong error return from get_block
 Date: Tue,  8 Apr 2025 12:51:26 +0200
-Message-ID: <20250408104854.242823904@linuxfoundation.org>
+Message-ID: <20250408104903.176417705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-commit 861d0445e72e9e33797f2ceef882c74decb16a87 upstream.
+commit 59c30e31425833385e6644ad33151420e37eabe1 upstream.
 
-Use rcu_access_pointer() to avoid sparse warning in
-drv_remove_interface().
+If there is no error, get_block() should return 0. However, when bh_read()
+returns 1, get_block() also returns 1 in the same manner.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502130534.bVrZZBK0-lkp@intel.com/
-Fixes: 646262c71aca ("wifi: mac80211: remove debugfs dir for virtual monitor")
-Link: https://patch.msgid.link/20250213214330.6113-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Let's set err to 0, if there is no error from bh_read()
+
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/driver-ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/inode.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -120,7 +120,7 @@ void drv_remove_interface(struct ieee802
- 	 * The virtual monitor interface doesn't get a debugfs
- 	 * entry, so it's exempt here.
- 	 */
--	if (sdata != local->monitor_sdata)
-+	if (sdata != rcu_access_pointer(local->monitor_sdata))
- 		ieee80211_debugfs_recreate_netdev(sdata,
- 						  sdata->vif.valid_links);
- 
+--- a/fs/exfat/inode.c
++++ b/fs/exfat/inode.c
+@@ -391,6 +391,8 @@ static int exfat_get_block(struct inode
+ 			/* Zero unwritten part of a block */
+ 			memset(bh_result->b_data + size, 0,
+ 			       bh_result->b_size - size);
++
++			err = 0;
+ 		} else {
+ 			/*
+ 			 * The range has not been written, clear the mapped flag
 
 
 
