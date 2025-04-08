@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB665A803A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BD8A80265
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31E413B2478
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5395E1882A38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBB6268C6B;
-	Tue,  8 Apr 2025 11:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F912288CB;
+	Tue,  8 Apr 2025 11:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I27JShjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA3J14V7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2CC266F17;
-	Tue,  8 Apr 2025 11:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DC325FA13;
+	Tue,  8 Apr 2025 11:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113170; cv=none; b=XgCgcxwwkN58UaLEVvSQP0zURTAnzPoVt+C5hAk8LT5zzXG5ldMwR2q+qAo261M5ozQr2MfnMbzeUqndHvzinLqpo9Ldl2f7YPQ1zQwaWCMBtvS1WRc6qCYhyZFFndX4OD9w5eb1wtDtDIGRn8ZAziKUYQ70i9A7xKdGvADdxWg=
+	t=1744112594; cv=none; b=UP5hHs1DLCiyDr1lWaNqOOl0f7f6mkClZWTX+MESQWbFx/VKIKQgdtmJUoaWipKiu8QopP7gwCBHlwYyGpzmr+GotMJluKwhncsWJWIEy3bkbGSBWe4IjnrJxjcaizu0enimNTXowciL6+aY+N9Q68y8UlfkvCC6OKFRSegt+9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113170; c=relaxed/simple;
-	bh=clvDgqd4CIBLdMLA+MK5yUhT0Dm03brLHPQTvO7BZ6s=;
+	s=arc-20240116; t=1744112594; c=relaxed/simple;
+	bh=yRVrjZqPLiHQIVTmHqczJjGjySyTWR3Up0NtvTI0yGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HHmHafPyBF2DHtuaznzwfAp9RCrfvJfWlryvO2d/nBlZRjzIX3mc15iT2gaQtiJsJ6xzHR7QJEq06auuMZ87xPKvn2AGFhfC+nS6XkbPjpqD+m/w2//QZloN7bHoV6VzbMqJUl04FoJZSkk94gEsZsytnGe0Sgwf1MFXnU0KjAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I27JShjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEA4C4CEE5;
-	Tue,  8 Apr 2025 11:52:49 +0000 (UTC)
+	 MIME-Version; b=JK6RVuw/1Dvzz5miDkUQpMl+jKB8SCeuTTamqKBJjwX04u5WB54RAgM6U8kmKO84X/5zILQ9Zsa96kesiPD+b1e+xqd+Rmb4wyeL/mlStzTeEyfQyeJ1GytTIae46HgnyhROquyk+eQhKeUdkGYT5FSEl13Gsc0kjQNVm0CIuTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA3J14V7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F4CC4CEE5;
+	Tue,  8 Apr 2025 11:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113169;
-	bh=clvDgqd4CIBLdMLA+MK5yUhT0Dm03brLHPQTvO7BZ6s=;
+	s=korg; t=1744112594;
+	bh=yRVrjZqPLiHQIVTmHqczJjGjySyTWR3Up0NtvTI0yGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I27JShjtypa5m0QQNFcytAaSMaPKc4wdPUzXsjNTjkUofPi/jIE+H0MCqsLSdpQfZ
-	 RboCq7OxLFCTS73nWZyaV50ry7/44m6JhnVj60Prf4wIqlmGdz7bLwCBF8Y4Bszpp2
-	 29W6nBz3MmXT7ieSbBZ9oI9ty73wfX21vPKBGHyI=
+	b=wA3J14V725Gdb+7iWZDtnzt585MJLBzkYcf/jAjsebWC/TqhUk/KGmAjrKdEjlZfM
+	 S4H023pADTufAjnBJ0FGhVue1HCqxdxnWnRRnebq7YrVV3Opze3zLZkCnwdUbvxQAl
+	 30uvhrbW6wUDk810dTQQCJmNVEkSbYDbQqEBw/S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/268] PCI: pciehp: Dont enable HPIE when resuming in poll mode
+Subject: [PATCH 5.15 086/279] RDMA/hns: Fix soft lockup during bt pages loop
 Date: Tue,  8 Apr 2025 12:47:49 +0200
-Message-ID: <20250408104830.066394030@linuxfoundation.org>
+Message-ID: <20250408104828.666510559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
+[ Upstream commit 25655580136de59ec89f09089dd28008ea440fc9 ]
 
-PCIe hotplug can operate in poll mode without interrupt handlers using a
-polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
-interrupt during suspend") failed to consider that and enables HPIE
-(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
+Driver runs a for-loop when allocating bt pages and mapping them with
+buffer pages. When a large buffer (e.g. MR over 100GB) is being allocated,
+it may require a considerable loop count. This will lead to soft lockup:
 
-Only set HPIE if non-poll mode is in use. This makes
-pcie_enable_interrupt() match how pcie_enable_notification() already
-handles HPIE.
+        watchdog: BUG: soft lockup - CPU#27 stuck for 22s!
+        ...
+        Call trace:
+         hem_list_alloc_mid_bt+0x124/0x394 [hns_roce_hw_v2]
+         hns_roce_hem_list_request+0xf8/0x160 [hns_roce_hw_v2]
+         hns_roce_mtr_create+0x2e4/0x360 [hns_roce_hw_v2]
+         alloc_mr_pbl+0xd4/0x17c [hns_roce_hw_v2]
+         hns_roce_reg_user_mr+0xf8/0x190 [hns_roce_hw_v2]
+         ib_uverbs_reg_mr+0x118/0x290
 
-Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
-Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+        watchdog: BUG: soft lockup - CPU#35 stuck for 23s!
+        ...
+        Call trace:
+         hns_roce_hem_list_find_mtt+0x7c/0xb0 [hns_roce_hw_v2]
+         mtr_map_bufs+0xc4/0x204 [hns_roce_hw_v2]
+         hns_roce_mtr_create+0x31c/0x3c4 [hns_roce_hw_v2]
+         alloc_mr_pbl+0xb0/0x160 [hns_roce_hw_v2]
+         hns_roce_reg_user_mr+0x108/0x1c0 [hns_roce_hw_v2]
+         ib_uverbs_reg_mr+0x120/0x2bc
+
+Add a cond_resched() to fix soft lockup during these loops. In order not
+to affect the allocation performance of normal-size buffer, set the loop
+count of a 100GB MR as the threshold to call cond_resched().
+
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index fd713abdfb9f9..b0bccc4d0da28 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -839,7 +839,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
- {
- 	u16 mask;
- 
--	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
-+	mask = PCI_EXP_SLTCTL_DLLSCE;
-+	if (!pciehp_poll_mode)
-+		mask |= PCI_EXP_SLTCTL_HPIE;
- 	pcie_write_cmd(ctrl, mask, mask);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 57b84f5dc0f16..64ee875cc6d1c 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1410,6 +1410,11 @@ static int hem_list_alloc_root_bt(struct hns_roce_dev *hr_dev,
+ 	return ret;
  }
  
++/* This is the bottom bt pages number of a 100G MR on 4K OS, assuming
++ * the bt page size is not expanded by cal_best_bt_pg_sz()
++ */
++#define RESCHED_LOOP_CNT_THRESHOLD_ON_4K 12800
++
+ /* construct the base address table and link them by address hop config */
+ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ 			      struct hns_roce_hem_list *hem_list,
+@@ -1418,6 +1423,7 @@ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ {
+ 	const struct hns_roce_buf_region *r;
+ 	int ofs, end;
++	int loop;
+ 	int unit;
+ 	int ret;
+ 	int i;
+@@ -1435,7 +1441,10 @@ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ 			continue;
+ 
+ 		end = r->offset + r->count;
+-		for (ofs = r->offset; ofs < end; ofs += unit) {
++		for (ofs = r->offset, loop = 1; ofs < end; ofs += unit, loop++) {
++			if (!(loop % RESCHED_LOOP_CNT_THRESHOLD_ON_4K))
++				cond_resched();
++
+ 			ret = hem_list_alloc_mid_bt(hr_dev, r, unit, ofs,
+ 						    hem_list->mid_bt[i],
+ 						    &hem_list->btm_bt);
+@@ -1492,9 +1501,14 @@ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
+ 	struct list_head *head = &hem_list->btm_bt;
+ 	struct hns_roce_hem_item *hem, *temp_hem;
+ 	void *cpu_base = NULL;
++	int loop = 1;
+ 	int nr = 0;
+ 
+ 	list_for_each_entry_safe(hem, temp_hem, head, sibling) {
++		if (!(loop % RESCHED_LOOP_CNT_THRESHOLD_ON_4K))
++			cond_resched();
++		loop++;
++
+ 		if (hem_list_page_is_in_range(hem, offset)) {
+ 			nr = offset - hem->start;
+ 			cpu_base = hem->addr + nr * BA_BYTE_LEN;
 -- 
 2.39.5
 
