@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEFAA80756
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1952EA80B6E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4911F466E1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2EB0903C93
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F93726A0D6;
-	Tue,  8 Apr 2025 12:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DAD26A1D7;
+	Tue,  8 Apr 2025 12:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGjK5UYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrBN9b1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D9268C6B;
-	Tue,  8 Apr 2025 12:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B19C148;
+	Tue,  8 Apr 2025 12:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115100; cv=none; b=F5JsAIUqazWq9bb5083PYtaxo2JREJzFZAGUrVWpYWTwwv935lTgRQM11gZQ2Pc9PcgJW2UXuP+h4SP0rBTvyw527oSsczVqekSkx3HQWt43GfmjIC6Lyx74ItGroOcQuEH/fKxQ+/T8YYu7M+Labpg6oBWjIv90ibzzxZ+lPpM=
+	t=1744116699; cv=none; b=VBFxHsoOBCHKMrSg3oRXcf4aVLxhfOGZ3KIlnsLzOSq1mAQXgAP2hwl9pI1RYbzkVgS4qeqIcv8KMwNM8g58u4X9Diqt47/RQmqh6NOwS/gPPVi541DSyW5JnkQHMzJZN/0MkKU3WgBoFR9roQe9V2VeGdDCl7iHXdsTYlK3b/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115100; c=relaxed/simple;
-	bh=dmYhj/3oIgeotgbQyyFD8Q9Yeg5h7XEyIavb33Hk0ag=;
+	s=arc-20240116; t=1744116699; c=relaxed/simple;
+	bh=eXhJsiKzKEc2jh4zRDaQ41CMpcvHeZ4UonI6O/sranA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqPPUqrb62nVmhktN6znjJss+P2otFHrwRbBVLtUAiC4gVQIc3O6Ro3qtR9Q3+ezjPKR4onVvN53gblLVK71cSaV2u9IiVT1CgSc0WXA8PWJSsJMuC5tD2FobQ/yqumCQkEs+QBOKedzBXTz7QuGrRn7uju56lY4Dnnfy1jlFl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGjK5UYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C19FC4CEE5;
-	Tue,  8 Apr 2025 12:24:59 +0000 (UTC)
+	 MIME-Version; b=DmX72N5S8uEP9PYma5Zp7931olB8rPmna6c5wxQSJ8dzmacKMoz6RP21o2ca07dBVVtRiTIDztwr3hPHGvVXGSvK2MaOh1Soag+Joq+TYus1IZAT/F3msMnMg6LDwLVq7ddLuffRCLMRiQpOeqp/+0sU2WcYEViCQqyFHI+BffA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrBN9b1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE67AC4CEE5;
+	Tue,  8 Apr 2025 12:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115099;
-	bh=dmYhj/3oIgeotgbQyyFD8Q9Yeg5h7XEyIavb33Hk0ag=;
+	s=korg; t=1744116699;
+	bh=eXhJsiKzKEc2jh4zRDaQ41CMpcvHeZ4UonI6O/sranA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGjK5UYyrC3RPG92+jG3KtxC8/nYySi1fc64L3QqzPdhPA10J3JmUjdxdjXHn6IuG
-	 n2FfKgZuy9Qy8501WeaGyaN8dhFMIGXMH8cueHDeUpWQKXnjELYNoXzwsVN6UknHPo
-	 9/LsL4BFD1zvpKOQgYdafmjFuT++ftQoFFY0UrpI=
+	b=xrBN9b1q2kTQoRI3GEE071P54tdQB9kcHz8iKVb/wos/WPglQN8xJ50BF4VdOJ7Kb
+	 aX30s6mjwNXMxwQ1kOZvYxU1Su+Hc0oq4jIe4ICJ5iaINQqpEmhjdokIuagDUi9udP
+	 AjJMmqg/wq3xCyYs7KmZzYf8WZl6iOIT2+oOnP9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 350/499] smb: client: dont retry IO on failed negprotos with soft mounts
+Subject: [PATCH 6.12 236/423] ksmbd: fix r_count dec/increment mismatch
 Date: Tue,  8 Apr 2025 12:49:22 +0200
-Message-ID: <20250408104859.954977522@linuxfoundation.org>
+Message-ID: <20250408104851.222257806@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,231 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 7643dbd9db09fffebb4a62cd27599f17f4148b17 ]
+[ Upstream commit ddb7ea36ba7129c2ed107e2186591128618864e1 ]
 
-If @server->tcpStatus is set to CifsNeedReconnect after acquiring
-@ses->session_mutex in smb2_reconnect() or cifs_reconnect_tcon(), it
-means that a concurrent thread failed to negotiate, in which case the
-server is no longer responding to any SMB requests, so there is no
-point making the caller retry the IO by returning -EAGAIN.
+r_count is only increased when there is an oplock break wait,
+so r_count inc/decrement are not paired. This can cause r_count
+to become negative, which can lead to a problem where the ksmbd
+thread does not terminate.
 
-Fix this by returning -EHOSTDOWN to the callers on soft mounts.
-
-Cc: David Howells <dhowells@redhat.com>
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Fixes: 3aa660c05924 ("ksmbd: prevent connection release during oplock break notification")
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 46 ++++++++++++--------
- fs/smb/client/smb2pdu.c | 96 ++++++++++++++++++-----------------------
- 2 files changed, 69 insertions(+), 73 deletions(-)
+ fs/smb/server/oplock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index a993d4ac58411..dd5211d268f48 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -114,19 +114,23 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 592fe665973a8..304aefecaaaf5 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -724,8 +724,8 @@ static int smb2_oplock_break_noti(struct oplock_info *opinfo)
+ 	work->conn = conn;
+ 	work->sess = opinfo->sess;
  
- 	mutex_lock(&ses->session_mutex);
- 	/*
--	 * Recheck after acquire mutex. If another thread is negotiating
--	 * and the server never sends an answer the socket will be closed
--	 * and tcpStatus set to reconnect.
-+	 * Handle the case where a concurrent thread failed to negotiate or
-+	 * killed a channel.
- 	 */
- 	spin_lock(&server->srv_lock);
--	if (server->tcpStatus == CifsNeedReconnect) {
-+	switch (server->tcpStatus) {
-+	case CifsExiting:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--
--		if (tcon->retry)
--			goto again;
--		rc = -EHOSTDOWN;
--		goto out;
-+		return -EHOSTDOWN;
-+	case CifsNeedReconnect:
-+		spin_unlock(&server->srv_lock);
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	default:
-+		break;
- 	}
- 	spin_unlock(&server->srv_lock);
++	ksmbd_conn_r_count_inc(conn);
+ 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
+-		ksmbd_conn_r_count_inc(conn);
+ 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
+ 		ksmbd_queue_work(work);
  
-@@ -152,16 +156,20 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
- 	spin_unlock(&ses->ses_lock);
+@@ -833,8 +833,8 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ 	work->conn = conn;
+ 	work->sess = opinfo->sess;
  
- 	rc = cifs_negotiate_protocol(0, ses, server);
--	if (!rc) {
--		rc = cifs_setup_session(0, ses, server, ses->local_nls);
--		if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
--			/*
--			 * Try alternate password for next reconnect if an alternate
--			 * password is available.
--			 */
--			if (ses->password2)
--				swap(ses->password2, ses->password);
--		}
-+	if (rc) {
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	}
-+	rc = cifs_setup_session(0, ses, server, ses->local_nls);
-+	if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
-+		/*
-+		 * Try alternate password for next reconnect if an alternate
-+		 * password is available.
-+		 */
-+		if (ses->password2)
-+			swap(ses->password2, ses->password);
- 	}
- 
- 	/* do we need to reconnect tcon? */
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 7ece98c742bdb..23ae73c9c5e97 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -300,32 +300,23 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 
- 	mutex_lock(&ses->session_mutex);
- 	/*
--	 * if this is called by delayed work, and the channel has been disabled
--	 * in parallel, the delayed work can continue to execute in parallel
--	 * there's a chance that this channel may not exist anymore
-+	 * Handle the case where a concurrent thread failed to negotiate or
-+	 * killed a channel.
- 	 */
- 	spin_lock(&server->srv_lock);
--	if (server->tcpStatus == CifsExiting) {
-+	switch (server->tcpStatus) {
-+	case CifsExiting:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--		rc = -EHOSTDOWN;
--		goto out;
--	}
--
--	/*
--	 * Recheck after acquire mutex. If another thread is negotiating
--	 * and the server never sends an answer the socket will be closed
--	 * and tcpStatus set to reconnect.
--	 */
--	if (server->tcpStatus == CifsNeedReconnect) {
-+		return -EHOSTDOWN;
-+	case CifsNeedReconnect:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--
--		if (tcon->retry)
--			goto again;
--
--		rc = -EHOSTDOWN;
--		goto out;
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	default:
-+		break;
- 	}
- 	spin_unlock(&server->srv_lock);
- 
-@@ -350,43 +341,41 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	spin_unlock(&ses->ses_lock);
- 
- 	rc = cifs_negotiate_protocol(0, ses, server);
--	if (!rc) {
--		/*
--		 * if server stopped supporting multichannel
--		 * and the first channel reconnected, disable all the others.
--		 */
--		if (ses->chan_count > 1 &&
--		    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
--			rc = cifs_chan_skip_or_disable(ses, server,
--						       from_reconnect);
--			if (rc) {
--				mutex_unlock(&ses->session_mutex);
--				goto out;
--			}
--		}
--
--		rc = cifs_setup_session(0, ses, server, ses->local_nls);
--		if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
--			/*
--			 * Try alternate password for next reconnect (key rotation
--			 * could be enabled on the server e.g.) if an alternate
--			 * password is available and the current password is expired,
--			 * but do not swap on non pwd related errors like host down
--			 */
--			if (ses->password2)
--				swap(ses->password2, ses->password);
--		}
--
--		if ((rc == -EACCES) && !tcon->retry) {
--			mutex_unlock(&ses->session_mutex);
--			rc = -EHOSTDOWN;
--			goto failed;
--		} else if (rc) {
-+	if (rc) {
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	}
-+	/*
-+	 * if server stopped supporting multichannel
-+	 * and the first channel reconnected, disable all the others.
-+	 */
-+	if (ses->chan_count > 1 &&
-+	    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+		rc = cifs_chan_skip_or_disable(ses, server,
-+					       from_reconnect);
-+		if (rc) {
- 			mutex_unlock(&ses->session_mutex);
- 			goto out;
- 		}
--	} else {
-+	}
-+
-+	rc = cifs_setup_session(0, ses, server, ses->local_nls);
-+	if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
-+		/*
-+		 * Try alternate password for next reconnect (key rotation
-+		 * could be enabled on the server e.g.) if an alternate
-+		 * password is available and the current password is expired,
-+		 * but do not swap on non pwd related errors like host down
-+		 */
-+		if (ses->password2)
-+			swap(ses->password2, ses->password);
-+	}
-+	if (rc) {
- 		mutex_unlock(&ses->session_mutex);
-+		if (rc == -EACCES && !tcon->retry)
-+			return -EHOSTDOWN;
- 		goto out;
- 	}
- 
-@@ -490,7 +479,6 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	case SMB2_IOCTL:
- 		rc = -EAGAIN;
- 	}
--failed:
- 	return rc;
- }
- 
++	ksmbd_conn_r_count_inc(conn);
+ 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
+-		ksmbd_conn_r_count_inc(conn);
+ 		INIT_WORK(&work->work, __smb2_lease_break_noti);
+ 		ksmbd_queue_work(work);
+ 		wait_for_break_ack(opinfo);
 -- 
 2.39.5
 
