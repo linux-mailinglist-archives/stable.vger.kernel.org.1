@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECECA80899
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FC0A804EE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35FC61BA3E41
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD8546732A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685DF267B8C;
-	Tue,  8 Apr 2025 12:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10185267B9C;
+	Tue,  8 Apr 2025 12:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4x43b3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoX06d13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2767A25F97B;
-	Tue,  8 Apr 2025 12:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C262E264627;
+	Tue,  8 Apr 2025 12:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115758; cv=none; b=gAI/nAPaveLE3mDc8cDuTeRO7Z6g9xlODfoJscJ3RNBq5l8YNXj+6RvsJEjK/eFAECshlHONf6RBv0A66mvmKOYpn8+spjmvN9mWy1U+I7uHmZZHWvM2aFD+mjeiNUomOcocnpfFK/wH0fR9X3g5tCzsOI/QcPnrPxizkrMLaTg=
+	t=1744113953; cv=none; b=aN3+XOfQuyGZhTgYcHwq810RFZ9C0qw4ED+dxNN0Wxtph3k0kEcmeWnrXtol+mkfIaqhNloI0g7g+wwV+gAM+2eX+DeBnb+Vf5KqYbp+ftEuuzNFuQXye9B7k3e85FLpRDJtPys4qyDytA9Zq1+QqhapN4QhUt7icYXqNxQozK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115758; c=relaxed/simple;
-	bh=QjDzZMRfnfKATs+4vKZZdb0tbk34RM2BT7FG1uVAkhs=;
+	s=arc-20240116; t=1744113953; c=relaxed/simple;
+	bh=PpvQ9L3YuGGJZkru14qZDNS417BkbKwdKIW0IjpSEeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzaY2DOR+Ngiu4wz8fT/8kmbvC0wRgQmcrIwFfqZOcg0XEgp6zpgZQHwUHGedAp8Jk9Diu9xnE4q3f/RtjUM950lL+foJ/pN6uuZQK1+FSr0y/E5gcyzhQzq+agluzHKXye7N57BXWxm5mEnRTDLQVN1mUT/YmWvbmKcz9Aw/fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4x43b3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE49C4CEE5;
-	Tue,  8 Apr 2025 12:35:57 +0000 (UTC)
+	 MIME-Version; b=nN/SQ+suIQ2v6qm63Ckf3pCrxvQO7ptslXGyswVnyzYsLURqGK26tjMoZ4qbKJgb/ZZzhFJJVir5KtRk5bzyL2mcq04rbE4DRhXS50OyNVPxV7eOTR7EeybNIDzanKfQtVgv40uloDk2Y7wve9N0DyPcG6I/9D6JfopXW8rpVaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoX06d13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E3EC4CEE5;
+	Tue,  8 Apr 2025 12:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115758;
-	bh=QjDzZMRfnfKATs+4vKZZdb0tbk34RM2BT7FG1uVAkhs=;
+	s=korg; t=1744113953;
+	bh=PpvQ9L3YuGGJZkru14qZDNS417BkbKwdKIW0IjpSEeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4x43b3yIfZd2nlNvUvti9PgaavyY0B+Q+uv0Kamhbngg7UQ2n0sx+o/lhBoOx47/
-	 M/pnsxnIQCaeweMQpJBTbZomVMWSg2JRuJgzjYBznXKkTGpMXaeBJSsPgqM4XxBcY3
-	 frQpEXy9qhlLwOeTSmQHpd0OjP72vfTrIXtoO+bY=
+	b=CoX06d13sFzUQG4NZPnVTTHfBQcfVCLCfvsbyZh114/ctYa3cgD+cZ+CEWOlE4r5L
+	 eIF8yvn6unWfwlGfM6PBIkPA21G9v2NAFW3zb1rofFeIpdRppfgqTkpkxEMKvv4/0d
+	 TLRNXISAxzkFMlSQS5cI96p9yzrTYkSjRNQvlnZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/204] fs/ntfs3: Fix a couple integer overflows on 32bit systems
-Date: Tue,  8 Apr 2025 12:50:23 +0200
-Message-ID: <20250408104823.073219749@linuxfoundation.org>
+Subject: [PATCH 5.4 083/154] x86/platform: Only allow CONFIG_EISA for 32-bit
+Date: Tue,  8 Apr 2025 12:50:24 +0200
+Message-ID: <20250408104817.974501212@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5ad414f4df2294b28836b5b7b69787659d6aa708 ]
+[ Upstream commit 976ba8da2f3c2f1e997f4f620da83ae65c0e3728 ]
 
-On 32bit systems the "off + sizeof(struct NTFS_DE)" addition can
-have an integer wrapping issue.  Fix it by using size_add().
+The CONFIG_EISA menu was cleaned up in 2018, but this inadvertently
+brought the option back on 64-bit machines: ISA remains guarded by
+a CONFIG_X86_32 check, but EISA no longer depends on ISA.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+The last Intel machines ith EISA support used a 82375EB PCI/EISA bridge
+from 1993 that could be paired with the 440FX chipset on early Pentium-II
+CPUs, long before the first x86-64 products.
+
+Fixes: 6630a8e50105 ("eisa: consolidate EISA Kconfig entry in drivers/eisa")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250226213714.4040853-11-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 2dfe74a3de755..139bdaececd72 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -617,7 +617,7 @@ static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
- 	u32 off = le32_to_cpu(hdr->de_off);
- 
- 	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
--	    off + sizeof(struct NTFS_DE) > end) {
-+	    size_add(off, sizeof(struct NTFS_DE)) > end) {
- 		/* incorrect index buffer. */
- 		return false;
- 	}
-@@ -736,7 +736,7 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
- 	if (end > total)
- 		return NULL;
- 
--	if (off + sizeof(struct NTFS_DE) > end)
-+	if (size_add(off, sizeof(struct NTFS_DE)) > end)
- 		return NULL;
- 
- 	e = Add2Ptr(hdr, off);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index df0a3a1b08ae0..e92b5eb57acd7 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -160,7 +160,7 @@ config X86
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
+ 	select HAVE_EBPF_JIT
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+-	select HAVE_EISA
++	select HAVE_EISA			if X86_32
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_FAST_GUP
+ 	select HAVE_FENTRY			if X86_64 || DYNAMIC_FTRACE
 -- 
 2.39.5
 
