@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DBDA80278
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E349A803EE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A5A17223B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614931894448
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF63D264A76;
-	Tue,  8 Apr 2025 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5AC268FD8;
+	Tue,  8 Apr 2025 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSQ5GGcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXodYlDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9C1207E14;
-	Tue,  8 Apr 2025 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10143AC1C;
+	Tue,  8 Apr 2025 11:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112272; cv=none; b=B7O/EOiAtJn99lnJHDUyw2NFH5NGbAijhjT/DrE8hnBVotm1qldDiTZ7Oe9JC3gPNhXdZUAalF2i+hDFl5wb9/uKd0cN497ScN+Z1UF77N/J4wO5AALKRiT23tEfpJE6a9HWqXvWOww42hv5Yh6/Df3/SBb5NGy52nLlvgyUb6U=
+	t=1744113559; cv=none; b=bAJARp3lPVDY04cm/M1IcUgP2F2RVgJWqW2YCX2jnzu2TF8ctL4RrCtCuU9atztCeJVNAFVlCiBMNeH3nfGDAvHDZ/bRZjg3OjDw3zrFXwy0iHLClw+0xv7XfUVQECzROBYkn1JjukCCZpYOVnUXzB4nNVHjxyZmz/aTRIWoeV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112272; c=relaxed/simple;
-	bh=8yBQNA7Dpb0lkQa5kofBQcNqfQ2UYzH0IsK6wwJHuXQ=;
+	s=arc-20240116; t=1744113559; c=relaxed/simple;
+	bh=CZ4WLpQoPJsp2RC4uVzGwH4ZSUiP2VWF6KCcRTnONA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jX6omv5Z2bsQEAU63WxSmPeJS9bT6DoRnOafZQyBcjRzfRuegVQyjiGAeOLdZ4PXjmp382HYVsW3JRwSxPBgx99SNZsQyiQhIqNdhIDfB6BwpfHgq3pf/IPtgJuO+JTfDzAjLBhBDqltR5nkSHelnlfC00Mi+qFBV+vSJFOojnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSQ5GGcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F26C4CEEA;
-	Tue,  8 Apr 2025 11:37:51 +0000 (UTC)
+	 MIME-Version; b=Gc+YEMgBIL1sgL8mlx3t7GvUhXSu/KO6s3tm1jduH32uM6NKeu1PQpPDf/bfaJvRs8YUUpk4Ql/4cRc/iPzwDYoyLOsjczvguzixRghCTPaJq1vljQ2fJ4RidJyxiMRUECG3AJjCakL7gHi88RlCPJ7VN++2CH2arhyFQa1YSu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXodYlDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E34C4CEE5;
+	Tue,  8 Apr 2025 11:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112272;
-	bh=8yBQNA7Dpb0lkQa5kofBQcNqfQ2UYzH0IsK6wwJHuXQ=;
+	s=korg; t=1744113558;
+	bh=CZ4WLpQoPJsp2RC4uVzGwH4ZSUiP2VWF6KCcRTnONA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSQ5GGcP2eu2ZUpa9C8TPUyBdX2uTieu3UdLZ8fmMU8KYuoosdaqfZ7r4exS3++V8
-	 7fVRFtmGkffEmK3EuTVlmhykJqLgFHjYQYsI7TJ81jvT1HHIRX/xvvQqhgMnYYIiR3
-	 NNqIOke2VrgvGe6wax35IA1Q++UIYvJmlZPIaFu8=
+	b=MXodYlDt1VgjJxth5/z7eJBQm1nou/FsG8ZB2eho3n6C8P6heP5vBDe8CtKkHWE9Y
+	 FhwtPi7ShXbxnZTn5E7uCS/AO32un9lfu2lE4a4Nd3eDcDW88lilmeHxhhB40Rh9Ee
+	 N7yPqNMF56CnEhOCHizfsrnmSlGijflyHxoxwHX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.14 719/731] jfs: add index corruption check to DT_GETPAGE()
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 205/268] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
 Date: Tue,  8 Apr 2025 12:50:16 +0200
-Message-ID: <20250408104930.999606788@linuxfoundation.org>
+Message-ID: <20250408104834.097449696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
+[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
 
-If the file system is corrupted, the header.stblindex variable
-may become greater than 127. Because of this, an array access out
-of bounds may occur:
+conncount has its own GC handler which determines when to reap stale
+elements, this is convenient for dynamic sets. However, this also reaps
+non-dynamic sets with static configurations coming from control plane.
+Always run connlimit gc handler but honor feedback to reap element if
+this set is dynamic.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
-index 237 is out of range for type 'struct dtslot[128]'
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
- dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
- jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
- wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
- iterate_dir+0x571/0x800 fs/readdir.c:108
- __do_sys_getdents64 fs/readdir.c:403 [inline]
- __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace ]---
-
-Add a stblindex check for corruption.
-
-Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c |    3 ++-
+ net/netfilter/nft_set_hash.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -117,7 +117,8 @@ do {									\
- 	if (!(RC)) {							\
- 		if (((P)->header.nextindex >				\
- 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
--		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
-+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
-+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
- 			BT_PUTPAGE(MP);					\
- 			jfs_error((IP)->i_sb,				\
- 				  "DT_GETPAGE: dtree page corrupt\n");	\
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 0370f69dce86d..2f1012bde1f34 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -308,7 +308,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
+ 
+ 	nft_setelem_expr_foreach(expr, elem_expr, size) {
+ 		if (expr->ops->gc &&
+-		    expr->ops->gc(read_pnet(&set->net), expr))
++		    expr->ops->gc(read_pnet(&set->net), expr) &&
++		    set->flags & NFT_SET_EVAL)
+ 			return true;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
