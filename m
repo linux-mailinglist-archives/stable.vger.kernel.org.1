@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B304FA800C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0246A8023A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C18E87A94FE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04CB188A75A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF23C268FEB;
-	Tue,  8 Apr 2025 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E65266EEA;
+	Tue,  8 Apr 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWVZIMyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pw6IFehk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FA8263C90;
-	Tue,  8 Apr 2025 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E33F263C6D;
+	Tue,  8 Apr 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111831; cv=none; b=UXbFUxBYoQDA2kvoaKLun+uTV9hJU9hcAB0UnkoUDMyzvmqdaQ0laWoy6AeTOWHYWN8UkYyMgzRfQ7FMk/xz0boWrvORsA87E1vD99XJa5yqQ+cAo4ftNtMBxq7EcXXjWje03UXKSrgpZD/dAZTXRRZlpq0uDk6N7ssWrkskWvY=
+	t=1744112495; cv=none; b=KkB32MCo12UhQAIQi4V7CzdPcs9krF27K4I845ilHeoqnjO0Ildn1f6M6qQrGZv+z/a37Ap7Gg/eiyUzM4trFAyRr0wswPtrY3fWoqUqicrH6oXcedkGf6dg0foGl6Fl2bEDC+109LeHksoeoe4c+uLzyDWfIGsk/i7ItXq7Zjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111831; c=relaxed/simple;
-	bh=pUaFfS5kGNLcISyTbT72MQvSbGm2xhYJSs8ripTlkIM=;
+	s=arc-20240116; t=1744112495; c=relaxed/simple;
+	bh=iybF2sVI2TfIEFHE/ZG5nVO4CZh9MUV9+VVnGEsqFF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VD7TjWAVkfcFoxva5XGf8GVTjpj5xbXz/ePA0n8cruCkkJBeA7/kYK9CEJVhtjAmiYWJGWUGsU4VzNsuQ37HJSxX3ga2WQeSW6MSoKVKiUpjgw+O2r2KiOz02UjtIJUqH5iSCHjoPscMaAOXdwhsg/kFaOSayuPJhc3xEzV0EiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWVZIMyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CABCC4CEE5;
-	Tue,  8 Apr 2025 11:30:30 +0000 (UTC)
+	 MIME-Version; b=TFYXjVmu1BLj16nW5CS4IUVbQPoy2YfxkFEF30u9l8BKcmri9ZzDJg+cepMtWpocKAZTvSnh7YlMG3eJz7SpM1NJi1biTLfxefridPiemL31fvup3WY2V/PfpWjnElAVwKTqy2MVPm2THdm+uUfVXNfVhRCUfGSZcjt0ADgMwE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw6IFehk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922BCC4CEE5;
+	Tue,  8 Apr 2025 11:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111831;
-	bh=pUaFfS5kGNLcISyTbT72MQvSbGm2xhYJSs8ripTlkIM=;
+	s=korg; t=1744112494;
+	bh=iybF2sVI2TfIEFHE/ZG5nVO4CZh9MUV9+VVnGEsqFF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWVZIMyJBH1SFnKYQiXTtKiu7PsfKo0UesEPNb7r5kK1OpELOWdMG+CVjyD/XwcMH
-	 1JCfWc9PioQrKBmJxXWv8vRXNc0x0/GxoTSj8UVhC8qVtyTzyBcHg3c+7J25YUDz9s
-	 rlyU2t3o6URspsPZx6BXEox0g4yhP8dvfabs6Zuw=
+	b=pw6IFehkIk0wQAcwje5qnLf6DqwtvbbUYu08cD8JOARvGzgMSsl++hNt65iiowfNf
+	 dmpV9XtqNNMmzZHKBd+jZOzq/HjxNUEF0rpnSzA6iJL0j5fWzJTa8SOPE2NrgwDsDo
+	 bcjDToExbmvoY76pcsmlrQndcLDbsxSE4dcUHT0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 576/731] rtc: renesas-rtca3: Disable interrupts only if the RTC is enabled
+Subject: [PATCH 5.15 090/279] Bluetooth: Fix error code in chan_alloc_skb_cb()
 Date: Tue,  8 Apr 2025 12:47:53 +0200
-Message-ID: <20250408104927.673177278@linuxfoundation.org>
+Message-ID: <20250408104828.780343687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 27b2fcbd6b98204b0dce62e9aa9540ca0a2b70f1 ]
+[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
 
-If the RTC is not enabled and the code attempts to disable the interrupt,
-the readb_poll_timeout_atomic() function in the
-rtca3_alarm_irq_set_helper() may timeout, leading to probe failures.
-This issue is reproducible on some devices because the initial values of
-the PIE and AIE bits in the RCR1 register are undefined.
+The chan_alloc_skb_cb() function is supposed to return error pointers on
+error.  Returning NULL will lead to a NULL dereference.
 
-To prevent probe failures in this scenario, disable RTC interrupts only
-when the RTC is actually enabled.
-
-Fixes: d4488377609e ("rtc: renesas-rtca3: Add driver for RTCA-3 available on Renesas RZ/G3S SoC")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250205095519.2031742-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-renesas-rtca3.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ net/bluetooth/6lowpan.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-renesas-rtca3.c b/drivers/rtc/rtc-renesas-rtca3.c
-index a056291d38876..ab816bdf0d776 100644
---- a/drivers/rtc/rtc-renesas-rtca3.c
-+++ b/drivers/rtc/rtc-renesas-rtca3.c
-@@ -586,17 +586,14 @@ static int rtca3_initial_setup(struct clk *clk, struct rtca3_priv *priv)
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 580b0940f067a..c4a1b478cf3e9 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -824,11 +824,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
+ 					 unsigned long hdr_len,
+ 					 unsigned long len, int nb)
+ {
++	struct sk_buff *skb;
++
+ 	/* Note that we must allocate using GFP_ATOMIC here as
+ 	 * this function is called originally from netdev hard xmit
+ 	 * function in atomic context.
  	 */
- 	usleep_range(sleep_us, sleep_us + 10);
+-	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	if (!skb)
++		return ERR_PTR(-ENOMEM);
++	return skb;
+ }
  
--	/* Disable all interrupts. */
--	mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
--	ret = rtca3_alarm_irq_set_helper(priv, mask, 0);
--	if (ret)
--		return ret;
--
- 	mask = RTCA3_RCR2_START | RTCA3_RCR2_HR24;
- 	val = readb(priv->base + RTCA3_RCR2);
--	/* Nothing to do if already started in 24 hours and calendar count mode. */
--	if ((val & mask) == mask)
--		return 0;
-+	/* Only disable the interrupts if already started in 24 hours and calendar count mode. */
-+	if ((val & mask) == mask) {
-+		/* Disable all interrupts. */
-+		mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
-+		return rtca3_alarm_irq_set_helper(priv, mask, 0);
-+	}
- 
- 	/* Reconfigure the RTC in 24 hours and calendar count mode. */
- 	mask = RTCA3_RCR2_START | RTCA3_RCR2_CNTMD;
+ static void chan_suspend_cb(struct l2cap_chan *chan)
 -- 
 2.39.5
 
