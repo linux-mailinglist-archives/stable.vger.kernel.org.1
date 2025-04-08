@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-129028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833C8A7FDAB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F02BA80288
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3253019E28D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B51B6421C18
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8959C268C44;
-	Tue,  8 Apr 2025 10:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A7725FA13;
+	Tue,  8 Apr 2025 11:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIuwG+kv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7t4n/Mh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA07268C65;
-	Tue,  8 Apr 2025 10:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DD219AD5C;
+	Tue,  8 Apr 2025 11:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109921; cv=none; b=Z1gDN/ZZnzU2qD6vjtkS7bwSCJv9j6I1oCa2238Iypk8CLFti0jgNydcKFnR08TcMb4z/nnsIVpcag3usKAZEkLemTw48oH59cDsWooSHuKEJnWTOtNcrbL2S6QLKcR5TxN/7M4NYTc4evFUFuhtgfuAj0LcQmD2FhzXW3QtKM8=
+	t=1744112519; cv=none; b=MXPn1Ns9P9fl8GRAj7P/dz7p/OOqjcOMUsbrFrgn00K/krlZAZm9ud3upAFT8rSSqrEz6KTdUfNytwZaGyAIEvBOmVVpB2aNaJu3y8B/Qe0RuYMQJp4fCeDUtibWtgMltDT+dAZeqvozFWmNnMWv24/1yPPXhh5jb19JojdR788=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109921; c=relaxed/simple;
-	bh=+AoJiFncLAZLwWYk8LqU4zCWWNX2p989PNx6Terqrxw=;
+	s=arc-20240116; t=1744112519; c=relaxed/simple;
+	bh=kX7eBGhg1xNNZJj1Ryl4hB8e0mhx3rc/tWUU7SWGytU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdF1im++QRRoFl1cTU7keioG1ooUs6jpUByuc2HoRuD5qRQhXRSoCVExMWYq7uds702zVLSTc/XFiBjwqj8Pj7eqtXQbleei4tkOpxYtB9zDxrQuDlnlWEtFvtAeC3B2S1t/NSTbZQ+Y76Rs+ytVH7n7qhxeS/iaX1cTltN5V1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIuwG+kv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF927C4CEE5;
-	Tue,  8 Apr 2025 10:58:40 +0000 (UTC)
+	 MIME-Version; b=IwhWpnyrVXCwwseEiXd7BMtAnEhUN5XSeab8DurwNiwHLio2pCvlDVVshj/pE2y+7ofcvEaC9lQ2YHPG3Ja0DDNa8ef3e5hRbn6Z5g0dLPs/UrJUy72pCusLK3wnIYDOuPpeJaSbpb3Sos6DgtIqzvoocDzqLKRaUHLF3zDHsdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7t4n/Mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC609C4CEE5;
+	Tue,  8 Apr 2025 11:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109921;
-	bh=+AoJiFncLAZLwWYk8LqU4zCWWNX2p989PNx6Terqrxw=;
+	s=korg; t=1744112519;
+	bh=kX7eBGhg1xNNZJj1Ryl4hB8e0mhx3rc/tWUU7SWGytU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kIuwG+kvUgawuzoHHqHj0+BP1ElpAL91DcFBzMuUgtl5MNhVgr4WKNbPAc3OqVmM5
-	 xdH3vaKYeO0sLxaQoYDoaosUl8PJzhd4mcyoKk8u8Lxwd9WnqJb3CcS4alYNizs5w+
-	 wxilBvLosQtKCFLwX4qKho48CYw48x/BudE1pSvM=
+	b=G7t4n/MhjL5oCoxCTfA1V5NB6u84XgSSYkOvGCqd8mHg94NWeXIVRVqtt0nATeBEu
+	 eLdupmymgOuqU9sF4DuGqXmNo0XypobGNxN7SWtEEcUuUA4ZmAeAjqAIkfnnCP4W7R
+	 4ry9i+v3iXMEW09S9t7DfPOHXe+uVy8s2Toh/AP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 5.10 102/227] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-Date: Tue,  8 Apr 2025 12:48:00 +0200
-Message-ID: <20250408104823.422550615@linuxfoundation.org>
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 098/279] regulator: check that dummy regulator has been probed before using it
+Date: Tue,  8 Apr 2025 12:48:01 +0200
+Message-ID: <20250408104828.996816164@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Christian Eggers <ceggers@arri.de>
 
-commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
+commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
 
-Hardware initialize of the timer counter channel does not occur on probe
-thus leaving the Count in an undefined state until the first
-function_write() callback is executed. Fix this by performing the proper
-hardware initialization during probe.
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Reported-by: Csókás Bence <csokas.bence@prolan.hu>
-Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
-Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/regulator/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -377,6 +377,25 @@ static int mchp_tc_probe(struct platform
- 			channel);
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2047,6 +2047,10 @@ static int regulator_resolve_supply(stru
+ 
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -2064,6 +2068,10 @@ static int regulator_resolve_supply(stru
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
  	}
  
-+	/* Disable Quadrature Decoder and position measure */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Setup the period capture mode */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
-+				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
-+				 ATMEL_TC_TCCLKS,
-+				 ATMEL_TC_CMR_MASK);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable clock and trigger counter */
-+	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-+			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+	if (ret)
-+		return ret;
-+
- 	priv->tc_cfg = tcb_config;
- 	priv->regmap = regmap;
- 	priv->counter.name = dev_name(&pdev->dev);
+@@ -2172,8 +2180,10 @@ struct regulator *_regulator_get(struct
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
+ 
 
 
 
