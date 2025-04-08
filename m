@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DCEA804E7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A130BA80450
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119634A442E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED85E42779A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8396268688;
-	Tue,  8 Apr 2025 12:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FFB269AF5;
+	Tue,  8 Apr 2025 11:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlYKhsT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImwiMlhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B872676C9;
-	Tue,  8 Apr 2025 12:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276920CCD8;
+	Tue,  8 Apr 2025 11:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113847; cv=none; b=dLBDWHzHLBK3LpApx8mRrslrRwbC99cUARQ67+KhGi91qfRzSlgnr9oMI4tYXse4doNaqqnPwc0hp5DjDzcHKvftcSgHvbciZHlTiyz2KMEHzRfX5gId/ZHjF1Rl3HhGtIsrdi7qGXfJgxuzeCHKMza65rbDWkrzGJ+Xa9GwBIk=
+	t=1744113478; cv=none; b=PFAgG/4SdbW3iPZn064MdkrQ4PcA/vV9cD62oZAZRgMa1W3rzguAuNs7vdNRc+mSPhzb7yK5yMurgpUZlXyPNSujnhbf6ddTUDv+MKnZ5Q7xJimnpPw/tfcSSe+R718IrFTQjSoQQVPq5ls0GCfQzOr9NZRIkadp8G+yISatEQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113847; c=relaxed/simple;
-	bh=DZaayEnv2WORFHFYmcSScR7HcmJaZxJFierseHOZ0oE=;
+	s=arc-20240116; t=1744113478; c=relaxed/simple;
+	bh=bVdaACvswvl79y3Fucc6F2te0r6zki4uMzeQ3s3HtfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Djtgc+SP3FnklqSvdVHWxX99p/1Y+8oye+wTAnOuBeSKMpVL7zaEXiIx0pt4rsxTlkmfbuanY6irBTiyYId2KoJ2GtrQa3kHiZTvIKiG588jgb/Odc9UrZpnT+0JGbNqfmwTZemO2wXycg3vSWWT65KGJfXvlxBfk3g+gVeQtwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlYKhsT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23923C4CEE5;
-	Tue,  8 Apr 2025 12:04:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JxcLBEu2vxiDu9rmyZAYyevo7+MrAKZAYUvhaY70yOgdt5PdKnjdI8/qXm0ClHzd3IDBsx77J62HZERi4jadpB3Jd2m1JNa5vNJucoHtupBe56pIP4dgEAwRbp+SkZnB4HssxCh2GCpADOgStSrGiK8CKjr55bKdHpRzu3jCUvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImwiMlhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C60C4CEEB;
+	Tue,  8 Apr 2025 11:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113847;
-	bh=DZaayEnv2WORFHFYmcSScR7HcmJaZxJFierseHOZ0oE=;
+	s=korg; t=1744113478;
+	bh=bVdaACvswvl79y3Fucc6F2te0r6zki4uMzeQ3s3HtfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dlYKhsT/BidkvFdZ8dv9JT7Y1Qz3YzhI2h3KYxL/xGaUvsohhvrfdBcX4w/DRfOf5
-	 oVQvkVgBod7bs/22Fj2VM/Uz1jEjlx1U7gjj5Q1LNJR0iK8kUmrpFUDk7Uy4PNfYNu
-	 qNkwt+oOXeegrYH7jkU7reT20ZSwAJo77h3jPHh4=
+	b=ImwiMlhN36d16Lmcbq8glvMbN1pk1XBkLqmSe9znemRLlFr/FYFE25M5lqBgVOl0v
+	 KbdyjZZi/84IVjpvqmnXI44iRn3TluQBBcUyG48bGp1jaYpAvyaXcSAZ7TSSTuH1hs
+	 4K/bys01PIiOvRMHUVftuoiHNLdRH+gXKs9ICQYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 5.4 043/154] drm/atomic: Filter out redundant DPMS calls
-Date: Tue,  8 Apr 2025 12:49:44 +0200
-Message-ID: <20250408104816.650270375@linuxfoundation.org>
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/268] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
+Date: Tue,  8 Apr 2025 12:49:45 +0200
+Message-ID: <20250408104833.236542591@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
+[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
 
-Video players (eg. mpv) do periodic XResetScreenSaver() calls to
-keep the screen on while the video playing. The modesetting ddx
-plumbs these straight through into the kernel as DPMS setproperty
-ioctls, without any filtering whatsoever. When implemented via
-atomic these end up as empty commits on the crtc (which will
-nonetheless take one full frame), which leads to a dropped
-frame every time XResetScreenSaver() is called.
+Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
+Add Surface Go 4 DMI match to button_array_table to fix this.
 
-Let's just filter out redundant DPMS property changes in the
-kernel to avoid this issue.
-
-v2: Explain the resulting commits a bit better (Sima)
-    Document the behaviour in uapi docs (Sima)
-
-Cc: stable@vger.kernel.org
-Testcase: igt/kms_flip/flip-vs-dpms-on-nop
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
- drivers/gpu/drm/drm_connector.c   |    4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/platform/x86/intel/hid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -929,6 +929,10 @@ int drm_atomic_connector_commit_dpms(str
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 7457ca2b27a60..36209997ba988 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -128,6 +128,13 @@ static const struct dmi_system_id button_array_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
+ 		},
+ 	},
++	{
++		.ident = "Microsoft Surface Go 4",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
++		},
++	},
+ 	{ }
+ };
  
- 	if (mode != DRM_MODE_DPMS_ON)
- 		mode = DRM_MODE_DPMS_OFF;
-+
-+	if (connector->dpms == mode)
-+		goto out;
-+
- 	connector->dpms = mode;
- 
- 	crtc = connector->state->crtc;
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -912,6 +912,10 @@ static const struct drm_prop_enum_list h
-  * 	implemented in the DRM core.  This is the only standard connector
-  * 	property that userspace can change.
-  *
-+ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
-+ * 	change is completely skipped, otherwise a full atomic commit will occur.
-+ * 	On legacy drivers the exact behavior is driver specific.
-+ *
-  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
-  * 	userspace must use "ACTIVE" on the CRTC instead.
-  *
+-- 
+2.39.5
+
 
 
 
