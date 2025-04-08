@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9279EA80710
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F5AA80852
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FBAB466416
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE1EB4C30CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E3B26A1C9;
-	Tue,  8 Apr 2025 12:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E269626B950;
+	Tue,  8 Apr 2025 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCvXc4mw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sa2oCuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FC3266F17;
-	Tue,  8 Apr 2025 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06FA26B94D;
+	Tue,  8 Apr 2025 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115040; cv=none; b=BSWbuHtGtNx0yvpkAEmWR3ohS3w3SJAt4r0BxmHHYoyVdIEygnhr8nI4zdG0UD1B4Tn13+wfnttlwB3Ii4KhhIicI9u7oEaNpBKiM+V5t0lUP8ng8oTW8buwBB+xt0Vk6JWmslfES0KLorKfOOzQNTo4r5GNvf3O+jE53X1xUpA=
+	t=1744115602; cv=none; b=ANRQYEk+fXigd499VeWMy/aogfN5Buj17Iz0k+naQtmBO+Xy46YfTJ0Qz6EOrtPXU+sn9/69T+2f94hKbT/6a91froKKn+SRmv1SaAiCbssJiOB693drSMo2hTalUqjD0BjfGM+TkuCu8GyoKGdq0sKo2P7V95vFhROVdoTgyG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115040; c=relaxed/simple;
-	bh=TFNV5kwxHfB30u59t13tN9/KyghATDZQDDWpCRKKlgs=;
+	s=arc-20240116; t=1744115602; c=relaxed/simple;
+	bh=6+r0v09x5qCaxhf4dS7uavIVvTBlCutBqx/wPmb4DYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7BuOt9RkXn+yaJGLjuqGtrbgfhDa37Cy6bfRvUPUgqjsE3fpetvURMN6Hs2BgEqvN9fokkqTegYsIggFsgFUQyEDUvfcmkO2JaXLROWnOhUxIDSAeYeVa3yGuPkkxDKjwlQiYDxY7KaQuMUtr3ThXmf2UhSZNdI/CQwnvxOkuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCvXc4mw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62315C4CEE5;
-	Tue,  8 Apr 2025 12:24:00 +0000 (UTC)
+	 MIME-Version; b=qKX7J+71+E2v9x+YxBUujFxO10fYijyLawePsflVE8uzUcWuOLNC0cUm0ezNUunm4sfZBSKtN6lZg8SZz+N+jRmJ4g8y2w6LDaMBf9e0Y7twg39ygRvh/ZOd2ORaoQ37UVYTTcsF/RCLcHjGE8b7Y/YkqULwYX+jVmE2k1F0T04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sa2oCuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFE2C4CEE5;
+	Tue,  8 Apr 2025 12:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115040;
-	bh=TFNV5kwxHfB30u59t13tN9/KyghATDZQDDWpCRKKlgs=;
+	s=korg; t=1744115602;
+	bh=6+r0v09x5qCaxhf4dS7uavIVvTBlCutBqx/wPmb4DYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCvXc4mwMsR/swHh5Hc+ogX3yA/7d/QlHPY7EOLWCbOnVDV7OAWD9u6uItTecU4CD
-	 qYATtZMgURyHP8jRGBFv2hv04+uQMynBofwUt36md12ZV0n3o5Snhk1bxwCairVLRU
-	 lDNZe2/sqxx79r40N/NZZX0VoB3De3xz+Oxfm50A=
+	b=2Sa2oCuZkyF3AEWNHrkHR0sB9eRtLMZupe3i9nYB7DePNmAiALQrK0Ox1h6pPxnrw
+	 ZiwncUTb+Dos4YL6HtsAapyVUhIPFBrxlCHTC9nfLWCKfDM3v0iAdebu4NKMO7EcKh
+	 WHSNYqofBWB5J1PJkLLVBToK3Mv8SeVUxC6d/dbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 326/499] ALSA: hda/realtek: Add support for various ASUS Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 008/204] x86/platform: Only allow CONFIG_EISA for 32-bit
 Date: Tue,  8 Apr 2025 12:48:58 +0200
-Message-ID: <20250408104859.356135807@linuxfoundation.org>
+Message-ID: <20250408104820.540809154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 859a11917001424776e1cca02b762efcabb4044e ]
+[ Upstream commit 976ba8da2f3c2f1e997f4f620da83ae65c0e3728 ]
 
-Add support for ASUS B3405CVA, B5405CVA, B5605CVA, B3605CVA.
+The CONFIG_EISA menu was cleaned up in 2018, but this inadvertently
+brought the option back on 64-bit machines: ISA remains guarded by
+a CONFIG_X86_32 check, but EISA no longer depends on ISA.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
+The last Intel machines ith EISA support used a 82375EB PCI/EISA bridge
+from 1993 that could be paired with the 440FX chipset on early Pentium-II
+CPUs, long before the first x86-64 products.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-5-sbinding@opensource.cirrus.com
+Fixes: 6630a8e50105 ("eisa: consolidate EISA Kconfig entry in drivers/eisa")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250226213714.4040853-11-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 1b216e8fa4046..b7c6f714e7690 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10667,6 +10667,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1290, "ASUS X441SA", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x1294, "ASUS B3405CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
- 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
-@@ -10755,6 +10756,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
-@@ -10773,6 +10775,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3f10, "ASUS Strix G835LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3f20, "ASUS Strix G615LR_LW", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3f30, "ASUS Strix G815LR_LW", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x1043, 0x3fd0, "ASUS B3605CVA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3ff0, "ASUS B5405CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index ca8dd7e5585f0..48ab6e8f2d1d4 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -208,7 +208,7 @@ config X86
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if X86_64
+ 	select HAVE_EBPF_JIT
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+-	select HAVE_EISA
++	select HAVE_EISA			if X86_32
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_FAST_GUP
+ 	select HAVE_FENTRY			if X86_64 || DYNAMIC_FTRACE
 -- 
 2.39.5
 
