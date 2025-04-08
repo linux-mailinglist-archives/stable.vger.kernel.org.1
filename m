@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBBBA80AC4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE32A804CC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A12750484A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 722F942753A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D35F26A0E2;
-	Tue,  8 Apr 2025 12:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA467269D09;
+	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR05np+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6W38t6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF2E1A2860;
-	Tue,  8 Apr 2025 12:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84D72676CA;
+	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116710; cv=none; b=AY3MOEi/1eBNsWsRn4GLtm9Z+91RW9OGzQvrCZ1w5fLY33DkYCpcuCOhr61P8BOHr/Nu44EUWUAnLY2aqDOdOsSVHdh07/AHmCCjzXUB2FYVWblf3/10Inw4txZYbklSp6xcMUG+qzdFikZEJOl3aP/zDq+4zOZEF//QPiz0VOs=
+	t=1744113801; cv=none; b=KCp+xg6vJhYrKK4pkAoEuGeWyW/i0xmYSlvsJJMRnQA+fNtY/EKcGlaDoxtvmU9XCLv/+GpxB6VHWOOXx+F6Q1qgM2bz7CQkv0pvpR/4HSPUkrKwlRpfXLaYzDauOVfg0RD0vqT2LWWcRtZ/XATNgQtmNTGm8XbLjIfMC8ZkA/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116710; c=relaxed/simple;
-	bh=hq6uLfz0ovdwU4oead3+YI7+Zcn93FPSwXsW1uPAiUM=;
+	s=arc-20240116; t=1744113801; c=relaxed/simple;
+	bh=wJx1/DBSmjo6dyO1q+y9gIatSn8K96OMRGBtgbzXxiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZT8pqKNqmbEVp5KDYLZyetRYFSLNI2RUQWXyq/vNC0vUHmX1c2nQ0BzfmuGlNsdpsmsJF54ZlWZMvxlUQTCaAkfmfoimkLRlx2nLk0UGg7YW/uaZxKhHdHtNVXc/xudqX+nVojjgwxnF12ZPKh/6pxLuejr7z06zRVO3Y//MypM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR05np+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806D7C4CEE5;
-	Tue,  8 Apr 2025 12:51:49 +0000 (UTC)
+	 MIME-Version; b=jnyXDm6wQ3UWJ/3jLiZR05YDSTOJadWVBTCqOIhH++uzuFTyi1p3g9/mqAlq6OLpeoEaXSm6RSXGRovZrmnu3Bd7sWLsYXlgGAbsPLU3e+6Zo0GwiC4gvXrt75+AtlFBw/BiMSBmMJF8Fuo54658mi+8wNq+KwMKWEwkUzQbukc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6W38t6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFC2C4CEE5;
+	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116709;
-	bh=hq6uLfz0ovdwU4oead3+YI7+Zcn93FPSwXsW1uPAiUM=;
+	s=korg; t=1744113801;
+	bh=wJx1/DBSmjo6dyO1q+y9gIatSn8K96OMRGBtgbzXxiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OR05np+ygrzcT2e/HVR27O+Zedm7Oqnm/Mys4GhQj3IH58JtTr1FqC4DyVh0ngpWn
-	 AEQPzlEyuaCMe+4IOnf8cjVYY/xyic2ipkn6zrLfBaI6Z1p2pYx3zp5TFJ+GiOPxLx
-	 fHaRlVfCPN5paRQiB6NLcy+VY8BCCUczySmk363Q=
+	b=y6W38t6muvAapsuFjzEWKlweurP4Dzxdco9Xu6KGB+yxKH6SdE5Mrohs6em55znic
+	 41PN3d+xSGCqWqylbznRX0aeUWYB0+W5uTAe/+KnW412aq4d8itulMXm+fnu1PUJy2
+	 sp8OToOGwY6GL5hU7awTqF4aVpWv/6jQjoz/juuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/423] LoongArch: Fix help text of CMDLINE_EXTEND in Kconfig
+Subject: [PATCH 5.4 025/154] scsi: qla1280: Fix kernel oops when debug level > 2
 Date: Tue,  8 Apr 2025 12:49:26 +0200
-Message-ID: <20250408104851.319589215@linuxfoundation.org>
+Message-ID: <20250408104816.076875469@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+From: Magnus Lindholm <linmag7@gmail.com>
 
-[ Upstream commit be216cbc1ddf99a51915414ce147311c0dfd50a2 ]
+[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
 
-It is the built-in command line appended to the bootloader command line,
-not the bootloader command line appended to the built-in command line.
+A null dereference or oops exception will eventually occur when qla1280.c
+driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
+think its clear from the code that the intention here is sg_dma_len(s) not
+length of sg_next(s) when printing the debug info.
 
-Fixes: fa96b57c1490 ("LoongArch: Add build infrastructure")
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla1280.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index d9fce0fd475a0..fe9f895138dba 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -375,8 +375,8 @@ config CMDLINE_BOOTLOADER
- config CMDLINE_EXTEND
- 	bool "Use built-in to extend bootloader kernel arguments"
- 	help
--	  The command-line arguments provided during boot will be
--	  appended to the built-in command line. This is useful in
-+	  The built-in command line will be appended to the command-
-+	  line arguments provided during boot. This is useful in
- 	  cases where the provided arguments are insufficient and
- 	  you don't want to or cannot modify them.
- 
+diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
+index 832af42130467..a13db27b04ede 100644
+--- a/drivers/scsi/qla1280.c
++++ b/drivers/scsi/qla1280.c
+@@ -2871,7 +2871,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
+ 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
+ 				cpu_to_le32(upper_32_bits(dma_handle)),
+ 				cpu_to_le32(lower_32_bits(dma_handle)),
+-				cpu_to_le32(sg_dma_len(sg_next(s))));
++				cpu_to_le32(sg_dma_len(s)));
+ 			remseg--;
+ 		}
+ 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
 -- 
 2.39.5
 
