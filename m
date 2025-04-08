@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-129957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73BEA8020C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F129EA8035C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6540619E36AC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4814746130D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8E7263C78;
-	Tue,  8 Apr 2025 11:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A97268FED;
+	Tue,  8 Apr 2025 11:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgaF/tMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJN4NoJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E9822424C;
-	Tue,  8 Apr 2025 11:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F50267F68;
+	Tue,  8 Apr 2025 11:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112431; cv=none; b=JAguEh4AdyuHi0qZr1Tz9LnvspDJAkKGjv9EV5sjPy5j5/CKziKH9ttsLyZ1LsUGffG5RYuPi4uL04ZPEvBPtwE/NuO+F9sWNztyWhwZEbiU7ZkuRPqi+TrBxp/r3LzmArHWFYp6TxCcbnq/RaUt97zZKQeS5T4bCuEc1N6snaY=
+	t=1744113107; cv=none; b=bTzZt7XmB+/qaR8rhJJLZx/o9Oqmoo0jw6+YlgGJq1pTdCvKotz+rP3EAvm5s36z88kAianUYtoDNPpZ9K7dmZDrW3NmsbLaN1smfypIYVgmij55FTW8qkAer9HhAbdhx6pvSYm7gOcRS+sZFLTUnog3RF5z/kkaec4PSK94o7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112431; c=relaxed/simple;
-	bh=D5JcXAeVNiQDMNUYSbsxecR+4riL/ByVXYwyYOFzkGc=;
+	s=arc-20240116; t=1744113107; c=relaxed/simple;
+	bh=x8PLsyDKKdvh4C96jBIiztgcnXER8dcmKgjNkfA93s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd8rHLi25yfM4ojfeH4n6YAlFelNXz5DEohahucE194UoYjpx8NRXikt4YOuEnEVWswVEd98Bc6z6hugChKE0LqtupigX0fgb4f1i98FNa8d3gBp71kJHqWT4IAHFMHy/9X1z3AACUvxEeKeB2F87CXdjsHr9QBnT/1QVZngJIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgaF/tMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CFBC4CEE5;
-	Tue,  8 Apr 2025 11:40:30 +0000 (UTC)
+	 MIME-Version; b=RSOO7+BGn3caJgHuFFDmhnyE85qPsgAUE8ZSrB+1yV2JSKofTSd/2fpjD5y4/40WBJ0bBj7twaOm/ge70wxPbba5Il0BMvHFOV60eUQumzUdbqkYvB8qdeqcxFZBtjm/3qf4n6aBf2/sOOadYz882NqoMzQoK7N32EQxD4Qv0KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJN4NoJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022D1C4CEE5;
+	Tue,  8 Apr 2025 11:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112431;
-	bh=D5JcXAeVNiQDMNUYSbsxecR+4riL/ByVXYwyYOFzkGc=;
+	s=korg; t=1744113107;
+	bh=x8PLsyDKKdvh4C96jBIiztgcnXER8dcmKgjNkfA93s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgaF/tMlcnGYaBK06RIp8ocFdBZ9lG5deTiTIBCG0GCGOqdUyKQegUPQFDuEk0DSS
-	 Yu6GFoIOnEFTXvlGwwXPRZWkfRb1JVlCcbCrCmC4rtuaSmrcp0D8BHRKnOlKxTcAtH
-	 v11UeJs2kyXfktqxLyqdr3TnfRJ5r/I/7i/E12DI=
+	b=ZJN4NoJDQZOPMYTdH25su3oijllk2mtjARghExkiCoqWdSYTXc/Y8QLV5L5SvJ+s1
+	 0u64S+44ZKsgRm/SdHbDwPQLLCuUyy47CJNnpbWQ7L9ZXiuW5VN3SEppPBjWEH+1Oi
+	 bj5HATxgAVEiOF9ArIsnlM+wu6HJO2U1OoCohSoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Carol Soto <csoto@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/279] ASoC: ops: Consistently treat platform_max as control value
+Subject: [PATCH 6.6 037/268] PCI: Use downstream bridges for distributing resources
 Date: Tue,  8 Apr 2025 12:47:28 +0200
-Message-ID: <20250408104828.098063450@linuxfoundation.org>
+Message-ID: <20250408104829.500587482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Kai-Heng Feng <kaihengf@nvidia.com>
 
-[ Upstream commit 0eba2a7e858907a746ba69cd002eb9eb4dbd7bf3 ]
+[ Upstream commit 1a596ad00ffe9b37fc60a93cbdd4daead3bf95f3 ]
 
-This reverts commit 9bdd10d57a88 ("ASoC: ops: Shift tested values in
-snd_soc_put_volsw() by +min"), and makes some additional related
-updates.
+7180c1d08639 ("PCI: Distribute available resources for root buses, too")
+breaks BAR assignment on some devices:
 
-There are two ways the platform_max could be interpreted; the maximum
-register value, or the maximum value the control can be set to. The
-patch moved from treating the value as a control value to a register
-one. When the patch was applied it was technically correct as
-snd_soc_limit_volume() also used the register interpretation. However,
-even then most of the other usages treated platform_max as a
-control value, and snd_soc_limit_volume() has since been updated to
-also do so in commit fb9ad24485087 ("ASoC: ops: add correct range
-check for limiting volume"). That patch however, missed updating
-snd_soc_put_volsw() back to the control interpretation, and fixing
-snd_soc_info_volsw_range(). The control interpretation makes more
-sense as limiting is typically done from the machine driver, so it is
-appropriate to use the customer facing representation rather than the
-internal codec representation. Update all the code to consistently use
-this interpretation of platform_max.
+  pci 0006:03:00.0: BAR 0 [mem 0x6300c0000000-0x6300c1ffffff 64bit pref]: assigned
+  pci 0006:03:00.1: BAR 0 [mem 0x6300c2000000-0x6300c3ffffff 64bit pref]: assigned
+  pci 0006:03:00.2: BAR 0 [mem size 0x00800000 64bit pref]: can't assign; no space
+  pci 0006:03:00.0: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
+  pci 0006:03:00.1: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
 
-Finally, also add some comments to the soc_mixer_control struct to
-hopefully avoid further patches switching between the two approaches.
+The apertures of domain 0006 before 7180c1d08639:
 
-Fixes: fb9ad24485087 ("ASoC: ops: add correct range check for limiting volume")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250228151456.3703342-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  6300c0000000-63ffffffffff : PCI Bus 0006:00
+    6300c0000000-6300c9ffffff : PCI Bus 0006:01
+      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
+        6300c0000000-6300c8ffffff : PCI Bus 0006:03      #   144MB
+          6300c0000000-6300c1ffffff : 0006:03:00.0       #     32MB
+          6300c2000000-6300c3ffffff : 0006:03:00.1       #     32MB
+          6300c4000000-6300c47fffff : 0006:03:00.2       #      8MB
+          6300c4800000-6300c67fffff : 0006:03:00.0       #     32MB
+          6300c6800000-6300c87fffff : 0006:03:00.1       #     32MB
+        6300c9000000-6300c9bfffff : PCI Bus 0006:04      #    12MB
+          6300c9000000-6300c9bfffff : PCI Bus 0006:05    #    12MB
+            6300c9000000-6300c91fffff : PCI Bus 0006:06  #      2MB
+            6300c9200000-6300c93fffff : PCI Bus 0006:07  #      2MB
+            6300c9400000-6300c95fffff : PCI Bus 0006:08  #      2MB
+            6300c9600000-6300c97fffff : PCI Bus 0006:09  #      2MB
+
+After 7180c1d08639:
+
+  6300c0000000-63ffffffffff : PCI Bus 0006:00
+    6300c0000000-6300c9ffffff : PCI Bus 0006:01
+      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
+        6300c0000000-6300c43fffff : PCI Bus 0006:03      #    68MB
+          6300c0000000-6300c1ffffff : 0006:03:00.0       #      32MB
+          6300c2000000-6300c3ffffff : 0006:03:00.1       #      32MB
+              --- no space ---      : 0006:03:00.2       #       8MB
+              --- no space ---      : 0006:03:00.0       #      32MB
+              --- no space ---      : 0006:03:00.1       #      32MB
+        6300c4400000-6300c4dfffff : PCI Bus 0006:04      #    10MB
+          6300c4400000-6300c4dfffff : PCI Bus 0006:05    #      10MB
+            6300c4400000-6300c45fffff : PCI Bus 0006:06  #        2MB
+            6300c4600000-6300c47fffff : PCI Bus 0006:07  #        2MB
+            6300c4800000-6300c49fffff : PCI Bus 0006:08  #        2MB
+            6300c4a00000-6300c4bfffff : PCI Bus 0006:09  #        2MB
+
+We can see that the window to 0006:03 gets shrunken too much and 0006:04
+eats away the window for 0006:03:00.2.
+
+The offending commit distributes the upstream bridge's resources multiple
+times to every downstream bridge, hence makes the aperture smaller than
+desired because calculation of io_per_b, mmio_per_b and mmio_pref_per_b
+becomes incorrect.
+
+Instead, distribute downstream bridges' own resources to resolve the issue.
+
+Link: https://lore.kernel.org/r/20241204022457.51322-1-kaihengf@nvidia.com
+Fixes: 7180c1d08639 ("PCI: Distribute available resources for root buses, too")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219540
+Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Carol Soto <csoto@nvidia.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Chris Chiu <chris.chiu@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h |  5 ++++-
- sound/soc/soc-ops.c | 15 +++++++--------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/pci/setup-bus.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index 3f0369aae2faf..42358dbc19b8c 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1113,7 +1113,10 @@ void snd_soc_close_delayed_work(struct snd_soc_pcm_runtime *rtd);
- 
- /* mixer control */
- struct soc_mixer_control {
--	int min, max, platform_max;
-+	/* Minimum and maximum specified as written to the hardware */
-+	int min, max;
-+	/* Limited maximum value specified as presented through the control */
-+	int platform_max;
- 	int reg, rreg;
- 	unsigned int shift, rshift;
- 	unsigned int sign_bit;
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 57caa91a4376e..d8d0a26a554de 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -317,7 +317,7 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
- 		mask = BIT(sign_bit + 1) - 1;
- 
- 	val = ucontrol->value.integer.value[0];
--	if (mc->platform_max && ((int)val + min) > mc->platform_max)
-+	if (mc->platform_max && val > mc->platform_max)
- 		return -EINVAL;
- 	if (val > max - min)
- 		return -EINVAL;
-@@ -330,7 +330,7 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
- 	val = val << shift;
- 	if (snd_soc_volsw_is_stereo(mc)) {
- 		val2 = ucontrol->value.integer.value[1];
--		if (mc->platform_max && ((int)val2 + min) > mc->platform_max)
-+		if (mc->platform_max && val2 > mc->platform_max)
- 			return -EINVAL;
- 		if (val2 > max - min)
- 			return -EINVAL;
-@@ -485,17 +485,16 @@ int snd_soc_info_volsw_range(struct snd_kcontrol *kcontrol,
- {
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
--	int platform_max;
--	int min = mc->min;
-+	int max;
- 
--	if (!mc->platform_max)
--		mc->platform_max = mc->max;
--	platform_max = mc->platform_max;
-+	max = mc->max - mc->min;
-+	if (mc->platform_max && mc->platform_max < max)
-+		max = mc->platform_max;
- 
- 	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
- 	uinfo->count = snd_soc_volsw_is_stereo(mc) ? 2 : 1;
- 	uinfo->value.integer.min = 0;
--	uinfo->value.integer.max = platform_max - min;
-+	uinfo->value.integer.max = max;
- 
- 	return 0;
- }
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 5a143ad5fca24..fba402f4f6330 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -2018,8 +2018,7 @@ pci_root_bus_distribute_available_resources(struct pci_bus *bus,
+ 		 * in case of root bus.
+ 		 */
+ 		if (bridge && pci_bridge_resources_not_assigned(dev))
+-			pci_bridge_distribute_available_resources(bridge,
+-								  add_list);
++			pci_bridge_distribute_available_resources(dev, add_list);
+ 		else
+ 			pci_root_bus_distribute_available_resources(b, add_list);
+ 	}
 -- 
 2.39.5
 
