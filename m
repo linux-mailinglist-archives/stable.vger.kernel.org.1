@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CC4A805EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC28A809B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EC51B837B6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48414E2568
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA51826A1C5;
-	Tue,  8 Apr 2025 12:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D372326B972;
+	Tue,  8 Apr 2025 12:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt1i3C0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcY+GHx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B726A08F;
-	Tue,  8 Apr 2025 12:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123F26B94D;
+	Tue,  8 Apr 2025 12:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114533; cv=none; b=EE7wKO6tgBWg7MBe/Ze4p0pNk3i/VGY7vS3DxH3cVVrhXQI1YlIY47u8uWyIx5l+iJwP78DzuYJdblq2VYxZllwgfLsFiRHapm6/GpqLaj6thvUiYQ3yaeBgVG9GR4rDPL9WdV7GHvqkJBS+/0lm6roMSl6I13GoKNKxdCEPpmU=
+	t=1744116137; cv=none; b=m297DOiIq1QZFBvgUx9AYMy5TiOHcwNkw+tlI3GfiGoWlaDe8QlNogXIc2uSsntQgi5dtg71rnMhjh3FyZBia52iIWb+Px+HvuG/1kjrPI5pzL8xvmIkunmCbRqUq4Sf3RJ2UlonYqcfxzJsvRQfWCTa08KitzPDPammLtfKxjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114533; c=relaxed/simple;
-	bh=fzqdE+PYgISeJqq5FKWji1uAj24op+ahM6TTudPBfwU=;
+	s=arc-20240116; t=1744116137; c=relaxed/simple;
+	bh=FvWvNLxLgLE4qQBdOYwvK+km0XGn937UOgmKIROYeU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ichrPSaIexxcY5l2ym3MI3Nf4NIZOx35a3nsMgzAqPce9ZgwDxuVEVERWU/1F35F1CM3nocXmRl8XXl7z/FojApctDv/5KOhukCzLm3VWm47nPXnp/G8+kEiwYD7E/kTMPFFmZCSQkptRLneShBnVReIiO+Ykoijal1Uv2jjcqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt1i3C0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F092CC4CEE5;
-	Tue,  8 Apr 2025 12:15:32 +0000 (UTC)
+	 MIME-Version; b=qLq0ZW3MEzQoxlAGM3g+sNDL5+8MSBr67PAfGUA2Z3APa6VUC1m6rguYQ1R9OphmGw6gSvWt5IPLoH5vg0hpSRiHgXrEv9XOPC5td5gRExWjtoQfcseCOZb10j8fN3XLY0VLKjVOiJyV/8U43r0xfafN3DhTT9aEIpAcnHi2wfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcY+GHx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245B6C4CEE5;
+	Tue,  8 Apr 2025 12:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114533;
-	bh=fzqdE+PYgISeJqq5FKWji1uAj24op+ahM6TTudPBfwU=;
+	s=korg; t=1744116137;
+	bh=FvWvNLxLgLE4qQBdOYwvK+km0XGn937UOgmKIROYeU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vt1i3C0QgwLgCmTvtl1qhUPzj6gZTrtssLOZh7IheNFcEoJHiQFzWMcrNwBY2g7g3
-	 bC7FbR8LxWtlNA+vd+k042G2Tn4wFgPwt94BW+UvdvQQ4Y5JOD11XhU5fD1QmBKMxd
-	 DEi1TeAjHL1lsK/qDxoMIvs/TnuncE2UIkRACr+w=
+	b=lcY+GHx0kRL6Qrx2S/TMB7t/g7MwVjGkQSFlHjZb/kgrbiOp5V7yj+oQkPSB02r7g
+	 Ur58I0LRB86NqAzn+djNcaOYPg0uW6ioq04fBHBlVp+jUobNxPhO5UKZx3mE9H6bnk
+	 I2cQfELd1Za5qcd1WJ9xVY9SYcc1pWexQpT15PsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will McVicker <willmcvicker@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Brendan Jackman <jackmanb@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 143/499] clk: samsung: Fix UBSAN panic in samsung_clk_init()
+Subject: [PATCH 6.12 029/423] x86/traps: Make exc_double_fault() consistently noreturn
 Date: Tue,  8 Apr 2025 12:45:55 +0200
-Message-ID: <20250408104854.755291598@linuxfoundation.org>
+Message-ID: <20250408104846.427783768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will McVicker <willmcvicker@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit d19d7345a7bcdb083b65568a11b11adffe0687af ]
+[ Upstream commit 8085fcd78c1a3dbdf2278732579009d41ce0bc4e ]
 
-With UBSAN_ARRAY_BOUNDS=y, I'm hitting the below panic due to
-dereferencing `ctx->clk_data.hws` before setting
-`ctx->clk_data.num = nr_clks`. Move that up to fix the crash.
+The CONFIG_X86_ESPFIX64 version of exc_double_fault() can return to its
+caller, but the !CONFIG_X86_ESPFIX64 version never does.  In the latter
+case the compiler and/or objtool may consider it to be implicitly
+noreturn.
 
-  UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
-  <snip>
-  Call trace:
-   samsung_clk_init+0x110/0x124 (P)
-   samsung_clk_init+0x48/0x124 (L)
-   samsung_cmu_register_one+0x3c/0xa0
-   exynos_arm64_register_cmu+0x54/0x64
-   __gs101_cmu_top_of_clk_init_declare+0x28/0x60
-   ...
+However, due to the currently inflexible way objtool detects noreturns,
+a function's noreturn status needs to be consistent across configs.
 
-Fixes: e620a1e061c4 ("drivers/clk: convert VL struct to struct_size")
-Signed-off-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20250212183253.509771-1-willmcvicker@google.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+The current workaround for this issue is to suppress unreachable
+warnings for exc_double_fault()'s callers.  Unfortunately that can
+result in ORC coverage gaps and potentially worse issues like inert
+static calls and silently disabled CPU mitigations.
+
+Instead, prevent exc_double_fault() from ever being implicitly marked
+noreturn by forcing a return behind a never-taken conditional.
+
+Until a more integrated noreturn detection method exists, this is likely
+the least objectionable workaround.
+
+Fixes: 55eeab2a8a11 ("objtool: Ignore exc_double_fault() __noreturn warnings")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Brendan Jackman <jackmanb@google.com>
+Link: https://lore.kernel.org/r/d1f4026f8dc35d0de6cc61f2684e0cb6484009d1.1741975349.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/traps.c | 18 +++++++++++++++++-
+ tools/objtool/check.c   | 31 +------------------------------
+ 2 files changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk.c b/drivers/clk/samsung/clk.c
-index 283c523763e6b..8d440cf56bd45 100644
---- a/drivers/clk/samsung/clk.c
-+++ b/drivers/clk/samsung/clk.c
-@@ -74,12 +74,12 @@ struct samsung_clk_provider * __init samsung_clk_init(struct device *dev,
- 	if (!ctx)
- 		panic("could not allocate clock provider context.\n");
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 2dbadf347b5f4..5e3e036e6e537 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -379,6 +379,21 @@ __visible void __noreturn handle_stack_overflow(struct pt_regs *regs,
+ }
+ #endif
  
-+	ctx->clk_data.num = nr_clks;
- 	for (i = 0; i < nr_clks; ++i)
- 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
++/*
++ * Prevent the compiler and/or objtool from marking the !CONFIG_X86_ESPFIX64
++ * version of exc_double_fault() as noreturn.  Otherwise the noreturn mismatch
++ * between configs triggers objtool warnings.
++ *
++ * This is a temporary hack until we have compiler or plugin support for
++ * annotating noreturns.
++ */
++#ifdef CONFIG_X86_ESPFIX64
++#define always_true() true
++#else
++bool always_true(void);
++bool __weak always_true(void) { return true; }
++#endif
++
+ /*
+  * Runs on an IST stack for x86_64 and on a special task stack for x86_32.
+  *
+@@ -514,7 +529,8 @@ DEFINE_IDTENTRY_DF(exc_double_fault)
  
- 	ctx->dev = dev;
- 	ctx->reg_base = base;
--	ctx->clk_data.num = nr_clks;
- 	spin_lock_init(&ctx->lock);
+ 	pr_emerg("PANIC: double fault, error_code: 0x%lx\n", error_code);
+ 	die("double fault", regs, error_code);
+-	panic("Machine halted.");
++	if (always_true())
++		panic("Machine halted.");
+ 	instrumentation_end();
+ }
  
- 	return ctx;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 3c3e5760e81b8..24a1adca30dbc 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4575,35 +4575,6 @@ static int validate_sls(struct objtool_file *file)
+ 	return warnings;
+ }
+ 
+-static bool ignore_noreturn_call(struct instruction *insn)
+-{
+-	struct symbol *call_dest = insn_call_dest(insn);
+-
+-	/*
+-	 * FIXME: hack, we need a real noreturn solution
+-	 *
+-	 * Problem is, exc_double_fault() may or may not return, depending on
+-	 * whether CONFIG_X86_ESPFIX64 is set.  But objtool has no visibility
+-	 * to the kernel config.
+-	 *
+-	 * Other potential ways to fix it:
+-	 *
+-	 *   - have compiler communicate __noreturn functions somehow
+-	 *   - remove CONFIG_X86_ESPFIX64
+-	 *   - read the .config file
+-	 *   - add a cmdline option
+-	 *   - create a generic objtool annotation format (vs a bunch of custom
+-	 *     formats) and annotate it
+-	 */
+-	if (!strcmp(call_dest->name, "exc_double_fault")) {
+-		/* prevent further unreachable warnings for the caller */
+-		insn->sym->warned = 1;
+-		return true;
+-	}
+-
+-	return false;
+-}
+-
+ static int validate_reachable_instructions(struct objtool_file *file)
+ {
+ 	struct instruction *insn, *prev_insn;
+@@ -4620,7 +4591,7 @@ static int validate_reachable_instructions(struct objtool_file *file)
+ 		prev_insn = prev_insn_same_sec(file, insn);
+ 		if (prev_insn && prev_insn->dead_end) {
+ 			call_dest = insn_call_dest(prev_insn);
+-			if (call_dest && !ignore_noreturn_call(prev_insn)) {
++			if (call_dest) {
+ 				WARN_INSN(insn, "%s() is missing a __noreturn annotation",
+ 					  call_dest->name);
+ 				warnings++;
 -- 
 2.39.5
 
