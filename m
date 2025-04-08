@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0698A801FD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AB0A7FED9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0CA460CD2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9191425935
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AD52192F2;
-	Tue,  8 Apr 2025 11:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE9621ADAE;
+	Tue,  8 Apr 2025 11:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYXVZn12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMLZNPbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDC19AD5C;
-	Tue,  8 Apr 2025 11:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E9D268690;
+	Tue,  8 Apr 2025 11:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112183; cv=none; b=ggpUdg0WVrUIwIP18dWC8tLE5aSI2LN9Rle1Vajw4PYYI7IjKi6T7b/S1anCpYvOwIO71iEt77tmVGThimQ47n2PcIrlys37osKCeFJDkM1Klbxe9g/S/yjJiRQSxdwebUqddY8rqPC7JIu1Hj2BAT3CsFpg2FPK8slqnlsVuM8=
+	t=1744110185; cv=none; b=q8cY833qFz5ljqoj6SQmRJb9a/abvFACCvEYFQZ5jHOJV9JMTNd2/ZE2dQloG2o9RGsrylYRO61186lr2aHSjSP/4IpFlR50bTN0KGMh4IvPi5mKdLzvHlBn715aeGN9Buag6w6laWr+7XiNssZlWwrxehfVSbCKWiUh6/okV7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112183; c=relaxed/simple;
-	bh=1LOJfeZjmOwlhg469fbkHKlIEsD3AEHaK8d9GkjSu/Q=;
+	s=arc-20240116; t=1744110185; c=relaxed/simple;
+	bh=hZ2FCuzFt0tVUl27ltdsyBffhz46PNva3s2xrSZPqIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/h23QacuS8qcAB8zCtJysPme/aVMmkDbDqP2hscoF3x88oADWP3ZYiEjN7zjaoGZdMFfiGpL4KfpwvM4HCUtvUjRLBOBdqzxPqgmfMqXkTY9qHXpoAim+O7abkvEBMJhHpmHy6nY3baMuIQfgG2oA/NEfNDJCwk1CzxB/zNsQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYXVZn12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B6CC4CEE5;
-	Tue,  8 Apr 2025 11:36:23 +0000 (UTC)
+	 MIME-Version; b=a9EHYdJ41Kq3p6TMku0CcTW+jaH/W3RDD0kFqzkjymYaWcA020vC+kQsHRl8KQy4R4KZeGobvnb5eNt5u9ofv9t1L6yCM8jHR5iAtpvu35u80npnLUn6DwzMn7+ExYX1Yt69DsFsixykWnFWLm131SwtIhVoBDz5NP/nt9daF/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMLZNPbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FFC4CEE5;
+	Tue,  8 Apr 2025 11:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112183;
-	bh=1LOJfeZjmOwlhg469fbkHKlIEsD3AEHaK8d9GkjSu/Q=;
+	s=korg; t=1744110185;
+	bh=hZ2FCuzFt0tVUl27ltdsyBffhz46PNva3s2xrSZPqIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYXVZn12ktUYLSyhtyrju4CoPB/UHQJovT4gYdik7IHFvCJQedyweA6BDV7dGq30q
-	 tM/j9g6S2IAqVMGFbEunA+JzVXx0byR9cLl3mdaNptNcVtwcj8jpfiUZuj0yuxk+uR
-	 +RVo6rPWPmh3O6HqVC/uwBgMjith/Q5pByEG8sgQ=
+	b=pMLZNPbbsnZHd5M+b0qswrDeXkkbvJKzCKH1JXLgEAsMRXjubeaYfvXgHXk9D2Rvy
+	 +T6vTMM/0icWR5XnEURgK2Lk26gy/mhdtz+tX8J3bCsztXHxzvBsKC7n5o6zcnDXPr
+	 HF5FWWwTxc1OFua3MlN5Fgk8tOxFBKG6dQX/Xupk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.14 679/731] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
+	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
+	Nishanth Devarajan <ndev2021@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 198/227] net_sched: skbprio: Remove overly strict queue assertions
 Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104930.061334450@linuxfoundation.org>
+Message-ID: <20250408104826.240028684@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
+[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+In the current implementation, skbprio enqueue/dequeue contains an assertion
+that fails under certain conditions when SKBPRIO is used as a child qdisc under
+TBF with specific parameters. The failure occurs because TBF sometimes peeks at
+packets in the child qdisc without actually dequeuing them when tokens are
+unavailable.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
+This peek operation creates a discrepancy between the parent and child qdisc
+queue length counters. When TBF later receives a high-priority packet,
+SKBPRIO's queue length may show a different value than what's reflected in its
+internal priority queue tracking, triggering the assertion.
 
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
+The fix removes this overly strict assertions in SKBPRIO, they are not
+necessary at all.
 
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
+Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
+Cc: Nishanth Devarajan <ndev2021@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   |   11 +----------
- arch/x86/events/perf_event.h |    2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+ net/sched/sch_skbprio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2779,28 +2779,33 @@ static u64 icl_update_topdown_event(stru
- 
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
-+
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
-+
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
-+
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
- 
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
- 		return;
-+	}
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
--
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -953,7 +953,7 @@ unlock:
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -2094,15 +2094,6 @@ get_next_pebs_record_by_bit(void *base,
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1648,7 +1648,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
+index df72fb83d9c7d..c9e422e466159 100644
+--- a/net/sched/sch_skbprio.c
++++ b/net/sched/sch_skbprio.c
+@@ -121,8 +121,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	/* Check to update highest and lowest priorities. */
+ 	if (skb_queue_empty(lp_qdisc)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			/* The incoming packet is the only packet in queue. */
+-			BUG_ON(sch->q.qlen != 1);
+ 			q->lowest_prio = prio;
+ 			q->highest_prio = prio;
+ 		} else {
+@@ -154,7 +152,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
+ 	/* Update highest priority field. */
+ 	if (skb_queue_empty(hpq)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			BUG_ON(sch->q.qlen);
+ 			q->highest_prio = 0;
+ 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
+ 		} else {
+-- 
+2.39.5
+
 
 
 
