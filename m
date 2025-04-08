@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-128937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA3BA7FD94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE31A800EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 546BC424FE8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:57:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EEBE880CBB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852F6267B6F;
-	Tue,  8 Apr 2025 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDEF267B7F;
+	Tue,  8 Apr 2025 11:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PFgyUXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGqaYtsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40324267393;
-	Tue,  8 Apr 2025 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36858267F4F;
+	Tue,  8 Apr 2025 11:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109677; cv=none; b=JciJVleoJ6alIEMcq3EScxHPXQMUshhPLQOak37eSX7BPN4QEQ+frPrxaYhDenFIof4kQWgq54DWSherbI3jcn6hdxrnslOjYGj4LKHPUAHI7NBS1bNyIxzrUHMyKcZZhELOooB0mWo4yZSuiLr4IKy/lVugUGTTHtjkhNe09vE=
+	t=1744111615; cv=none; b=Jq2v0Bax7otWm1Ut/D2GsmS08UFmcZy6qRgU4GTQO9yy+D7EY/HSI18PgErFq7DxqwpIxHJJrVtdGTIKg2QyhPwZbevjvKZt9xyAcmhH7HWKXbFG9KOpoPTVQizPHNOMB0KUyleqFP8mZ9oYnECE8c4V4cHi5/AQWGeV/QeCeco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109677; c=relaxed/simple;
-	bh=Y2gXBrc2Ifw5mAmzL0eO7NlDQfIkKhxxyoA4J56/cRg=;
+	s=arc-20240116; t=1744111615; c=relaxed/simple;
+	bh=MqVNFkfQDCi3Ew2Dy+P1n6bGUqxs5fy7tT+8zGKnFwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCZUcXjC36LuXEPSMXrOt3nAvNqqwLUO/aQVhcrW7NVeyFCyvOoMOULF+438Hwoe0/VJ22Z9bpNJlVbqt+q0+ABBTM2or2ZksBg3SkrjSg5hU3SGuoVJ1QATfKCTAnEODdYRWdbgGNk7g244x2iOYDgHoRA8JX5WnB0J8pex1lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PFgyUXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FA6C4CEE5;
-	Tue,  8 Apr 2025 10:54:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hYivPBckJEF4lrZ3uI5OtNqBhXU7oTx0rNOProzdCZjFUpxa00e6QwDcdFNkq2I1s1ctWysgqY2E4KIvb8S1QkNUyowGrYqp1k0yRsejDq0t2aHW00knUCxUdDO5hmPvqMsZ9oIT/AJqfDulPbw6veHGxhFc9rslWptqul+cuUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGqaYtsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F4BC4CEE5;
+	Tue,  8 Apr 2025 11:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109677;
-	bh=Y2gXBrc2Ifw5mAmzL0eO7NlDQfIkKhxxyoA4J56/cRg=;
+	s=korg; t=1744111614;
+	bh=MqVNFkfQDCi3Ew2Dy+P1n6bGUqxs5fy7tT+8zGKnFwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PFgyUXtcrOwx4TkLrhpef7gMdAJuVUb/r8fQYY9+LPxZs7XutkOzbOZptMTJA3dZ
-	 ZWTN7T/lKpNY0YeQtz02sVKK1F2TC1fl6GnqnpUKdMYeGQ+/aKVc2nYLnGD1BKgkwS
-	 Qx2jPGEbV66dpXDWfGsOteLXFuHMPqq4qFDyZQWU=
+	b=VGqaYtsUAcqKBIQEsEks9wsFkS44lStcdvXTkr9xYPpD0FEfAzwf13NuB9o8OVhPG
+	 ljw7xmQwmbR1tZgxcUdJ0vk/LAMTsk5s9J7skueHYToqc8FUd40Fj7mRGWUZHFk2rE
+	 Nn/Lt9icqxvrCMpLwARg9579kQSKp+wiejBBh58A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/227] netpoll: hold rcu read lock in __netpoll_send_skb()
+Subject: [PATCH 6.14 494/731] iio: adc: ad7173: Fix comparison of channel configs
 Date: Tue,  8 Apr 2025 12:46:31 +0200
-Message-ID: <20250408104820.792564996@linuxfoundation.org>
+Message-ID: <20250408104925.765294085@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 505ead7ab77f289f12d8a68ac83da068e4d4408b ]
+[ Upstream commit 7b6033ed5a9e1a369a9cf58018388ae4c5f17e41 ]
 
-The function __netpoll_send_skb() is being invoked without holding the
-RCU read lock. This oversight triggers a warning message when
-CONFIG_PROVE_RCU_LIST is enabled:
+Checking the binary representation of two structs (of the same type)
+for equality doesn't have the same semantic as comparing all members for
+equality. The former might find a difference where the latter doesn't in
+the presence of padding or when ambiguous types like float or bool are
+involved. (Floats typically have different representations for single
+values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
+at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
+true, but memcmp finds a difference.)
 
-	net/core/netpoll.c:330 suspicious rcu_dereference_check() usage!
+When searching for a channel that already has the configuration we need,
+the comparison by member is the one that is needed.
 
-	 netpoll_send_skb
-	 netpoll_send_udp
-	 write_ext_msg
-	 console_flush_all
-	 console_unlock
-	 vprintk_emit
+Convert the comparison accordingly to compare the members one after
+another. Also add a static_assert guard to (somewhat) ensure that when
+struct ad7173_channel_config::config_props is expanded, the comparison
+is adapted, too.
 
-To prevent npinfo from disappearing unexpectedly, ensure that
-__netpoll_send_skb() is protected with the RCU read lock.
+This issue is somewhat theoretic, but using memcmp() on a struct is a
+bad pattern that is worth fixing.
 
-Fixes: 2899656b494dcd1 ("netpoll: take rcu_read_lock_bh() in netpoll_send_skb_on_dev()")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306-netpoll_rcu_v2-v2-1-bc4f5c51742a@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250303114659.1672695-14-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7173.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 4475b2174bcc4..66a6f62412393 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -326,6 +326,7 @@ static int netpoll_owner_active(struct net_device *dev)
- static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 6645a811764fd..4f8810e35a8d1 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -189,7 +189,11 @@ struct ad7173_channel_config {
+ 	u8 cfg_slot;
+ 	bool live;
+ 
+-	/* Following fields are used to compare equality. */
++	/*
++	 * Following fields are used to compare equality. If you
++	 * make adaptations in it, you most likely also have to adapt
++	 * ad7173_find_live_config(), too.
++	 */
+ 	struct_group(config_props,
+ 		bool bipolar;
+ 		bool input_buf;
+@@ -717,15 +721,28 @@ static struct ad7173_channel_config *
+ ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
  {
- 	netdev_tx_t status = NETDEV_TX_BUSY;
-+	netdev_tx_t ret = NET_XMIT_DROP;
- 	struct net_device *dev;
- 	unsigned long tries;
- 	/* It is up to the caller to keep npinfo alive. */
-@@ -334,11 +335,12 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 	lockdep_assert_irqs_disabled();
+ 	struct ad7173_channel_config *cfg_aux;
+-	ptrdiff_t cmp_size;
+ 	int i;
  
- 	dev = np->dev;
-+	rcu_read_lock();
- 	npinfo = rcu_dereference_bh(dev->npinfo);
+-	cmp_size = sizeof_field(struct ad7173_channel_config, config_props);
++	/*
++	 * This is just to make sure that the comparison is adapted after
++	 * struct ad7173_channel_config was changed.
++	 */
++	static_assert(sizeof_field(struct ad7173_channel_config, config_props) ==
++		      sizeof(struct {
++				     bool bipolar;
++				     bool input_buf;
++				     u8 odr;
++				     u8 ref_sel;
++			     }));
++
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
  
- 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
- 		dev_kfree_skb_irq(skb);
--		return NET_XMIT_DROP;
-+		goto out;
+ 		if (cfg_aux->live &&
+-		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
++		    cfg->bipolar == cfg_aux->bipolar &&
++		    cfg->input_buf == cfg_aux->input_buf &&
++		    cfg->odr == cfg_aux->odr &&
++		    cfg->ref_sel == cfg_aux->ref_sel)
+ 			return cfg_aux;
  	}
- 
- 	/* don't get messages out of order, and no recursion */
-@@ -377,7 +379,10 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 		skb_queue_tail(&npinfo->txq, skb);
- 		schedule_delayed_work(&npinfo->tx_work,0);
- 	}
--	return NETDEV_TX_OK;
-+	ret = NETDEV_TX_OK;
-+out:
-+	rcu_read_unlock();
-+	return ret;
- }
- 
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 	return NULL;
 -- 
 2.39.5
 
