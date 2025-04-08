@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E62A804CE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD396A80AE5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E6E71898069
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A491BC1C05
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0404626A1D4;
-	Tue,  8 Apr 2025 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AED726B966;
+	Tue,  8 Apr 2025 12:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnFXyIq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0j9UnGye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6D26A1CD;
-	Tue,  8 Apr 2025 12:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711926B95B;
+	Tue,  8 Apr 2025 12:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113892; cv=none; b=WFrHDBrrO3k/IDMg482VHRIeL/dU/Oq9EalwsBbeGMrT8ccnjLgUFsuqmhxFFL49RgOnJUQAijWhk/StA4tX4SgCqNf/38uXBjV2WRL4wTukt0IeOP+Uo27jDBNupDkngO0Vqe8lO1SL/erz527SLXoZNVA+tW4yH7gLzEYsHUk=
+	t=1744116798; cv=none; b=UxTHfhi5EET9NnuhF3yGMMDr8UUUJTCPBmSq8mjztFqcy8Iwxmgxox1UJrjDbr7iqT5g5b88nh/++fDBvX681lsQun3Olsz7r1wTFLSDemz45EJMg9rZGKrDYFCB4Yx1dE+30J7Jya9LaRMBMlA6HNRnfEx+eBuDI9SvlLzHUBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113892; c=relaxed/simple;
-	bh=wKyaDaNa3z3FRxxCLX2rmSeBlYEu4innudLuhV6bqN4=;
+	s=arc-20240116; t=1744116798; c=relaxed/simple;
+	bh=UeqixdDP+GaxEHJfPhKSAdYTVXzRJLK4/OpXJIzA4qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4BmUzTDhU2pdVrRLGaRIDVnftnZY+eucahEsY3ij6cYy2dHWZbQMaByqeNFePy0Ts/owbhMehM+lvMPb+KGe4aldslIWbBQH+B02rGYXz1eJ2ifK8/wvl2ZeLZeR0SDuKmr1ogFfkzhWAoLdcHnlN+2Ibc8tP9Z948mzcxok6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnFXyIq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AE1C4CEE5;
-	Tue,  8 Apr 2025 12:04:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r/0qCrALXVhY8hIPrM3mThmPlDuB9Ds6b9fUDc8C2VENVhoGvuq/2P5JPR++qYAHOqJcYvrZjrQYsy9uMONieU/mCfsjl5z34WECaVa28kNytTHwy8/S6jr3YYPSEWk/D1+MnQ6LqK+Q5lZvPfRM7PSfJ+gS3ocsiWXeRDVLD9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0j9UnGye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A05C4CEE5;
+	Tue,  8 Apr 2025 12:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113892;
-	bh=wKyaDaNa3z3FRxxCLX2rmSeBlYEu4innudLuhV6bqN4=;
+	s=korg; t=1744116797;
+	bh=UeqixdDP+GaxEHJfPhKSAdYTVXzRJLK4/OpXJIzA4qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnFXyIq7ntS8NjRc9WiojnYmF1I3gCnjUJgI+zJWLSdL27WG9jhLbzSw4ktJ9fFBK
-	 pKQ7hXRpZfeWNANy5BWbifqkEicoej8MLZGUlk2VNZ8rRxwDURxXYKJolIyjCf5HSf
-	 C7ZYwTEcyKEcscaW32LeiaP/Y2UH9KOwOxKO44R8=
+	b=0j9UnGyen3hI9Vu6D6Z0wH5xfiYynFZIhgB/UjDIHtlCxWXVPW8VCaYpUvR0M35j2
+	 CROo4527ErKivkYSET+aY/Sz2KtB+aMBR937RFBaOe6ozQxwSHPBJO5tX1rOmNBfpe
+	 GgCeOtOBACBd7pbCYLEzC+8WXIl9Dx4IzwHAX63Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/154] net: atm: fix use after free in lec_send()
+Subject: [PATCH 6.12 273/423] platform/x86/amd/pmf: Propagate PMF-TA return codes
 Date: Tue,  8 Apr 2025 12:49:59 +0200
-Message-ID: <20250408104817.145896075@linuxfoundation.org>
+Message-ID: <20250408104852.118616850@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
+[ Upstream commit 9ba93cb8212d62bccd8b41b8adb6656abf37280a ]
 
-The ->send() operation frees skb so save the length before calling
-->send() to avoid a use after free.
+In the amd_pmf_invoke_cmd_init() function within the PMF driver ensure
+that the actual result from the PMF-TA is returned rather than a generic
+EIO. This change allows for proper handling of errors originating from the
+PMF-TA.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20250305045842.4117767-1-Shyam-sundar.S-k@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/tee-if.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 3625a04a6c701..07d4f256c38c1 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -181,6 +181,7 @@ static void
- lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
- {
- 	struct net_device *dev = skb->dev;
-+	unsigned int len = skb->len;
- 
- 	ATM_SKB(skb)->vcc = vcc;
- 	atm_account_tx(vcc, skb);
-@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index 19c27b6e46663..0ad571783d126 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -323,7 +323,7 @@ static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
+ 	} else {
+ 		dev_err(dev->dev, "ta invoke cmd init failed err: %x\n", res);
+ 		dev->smart_pc_enabled = false;
+-		return -EIO;
++		return res;
  	}
  
- 	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	dev->stats.tx_bytes += len;
- }
- 
- static void lec_tx_timeout(struct net_device *dev)
+ 	return 0;
 -- 
 2.39.5
 
