@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F75BA80A27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:01:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04838A80AF8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 462AF8C0696
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9353A7B59DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E8426A08F;
-	Tue,  8 Apr 2025 12:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD42027CCEB;
+	Tue,  8 Apr 2025 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvFir6xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feDUQLH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EDFB663;
-	Tue,  8 Apr 2025 12:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A12627CCDF;
+	Tue,  8 Apr 2025 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116037; cv=none; b=SieTRBvXvMOjhjWR4PlcZEIvhtE5UULylcHHrGYPwYffihg+FFaoFN1VXxSxn6x6Y35OO1T35ripuzJMXpB6SZ0zHHKezO60QUlLNCG7d3bW0vYfc3RunxN7POcVMyTm2oy/kgNcXLKH0oZmy3JwR/drWgeSkB0aihBtRY71HEI=
+	t=1744117141; cv=none; b=g4kgDkDbPy7IRjC+upj2q7jRRWEBFAKSOGdRjXbiptUTxLHoeQNXc+jDsw0dSWzpqgLw0xj1VRtezCi7PK35MVIfMvHItXLFVthMZCJnQakwu9lnS2QOuL+ab5/qBVTNOPXZRA4oD7I4/Qx/9tWOYVufyCWXCWHJZJvBaFyHeXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116037; c=relaxed/simple;
-	bh=4gSArOv19wn60FLztMWONSzXrWTwLKn+Eq/rKMjcW1g=;
+	s=arc-20240116; t=1744117141; c=relaxed/simple;
+	bh=Z38ltkbMYi57KTOaIdo3PCxB8HLjyCZtG210zgNf/G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzoGr1dNTcimKuhf87ysmJuyf4mKsIFMjKWIv21s6IxtRd0DdX4WqsjAXSGghhG+WdSw1Xf2bCMk4LYAvzCw8BCa7crUkIBsNFmdbkbRZJ7ce9RsFhCbhv7FgHXKWczux3YjXhjv7RslGptLtBPAKArocgMEJzXHDV+jCvJdvhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvFir6xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABBBC4CEE7;
-	Tue,  8 Apr 2025 12:40:36 +0000 (UTC)
+	 MIME-Version; b=HBLEQp3UYwRFR3wxE/kkkW7ETYgbOMoVphz6UYjPbDxzcntcAWRGkb/g/q/vQuOmwNtGNlS9l21GzSIC90jBynx+BqcE3BSoRRcbGg+DRX1YP9VgTisMn9eyluQqBFOtG/UJ0CuJprGfGqLrfz/q/Whn5IoifxxTOBSlfUwPBGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feDUQLH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B20DC4CEE5;
+	Tue,  8 Apr 2025 12:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116037;
-	bh=4gSArOv19wn60FLztMWONSzXrWTwLKn+Eq/rKMjcW1g=;
+	s=korg; t=1744117141;
+	bh=Z38ltkbMYi57KTOaIdo3PCxB8HLjyCZtG210zgNf/G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvFir6xsfKCreYFD8hsc27HyTg+D8xw7oPunJ0EPL2coZDR8FSpfzq/bWWgDQPPhg
-	 tMJ9tc2We8wpSzoMe7KG0rIKSTx/PhpcloruAtSb3q7RoNaIASdcf/aV7gJNmWCmj5
-	 qDtqo1Loh6ijC79iFsOWcxbETK3TW9CwT/ANeztA=
+	b=feDUQLH0S+Zd48pv+rN0pIbhv/F4BPK4sDdqkk01QutmMbmyMYXQsDXDzLAxglY7O
+	 9ogT6aRSlCMXWzszloztpnKEK2xq/Vm0t7q2aOdln2uLGJJwO3iYg3hphuYmEQRvui
+	 22rQEXoP/wtz8XNM0o4agR6um8jCOEIDzEb9L/MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 196/204] tracing/osnoise: Fix possible recursive locking for cpus_read_lock()
+	Steve French <stfrench@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.12 400/423] ksmbd: fix null pointer dereference in alloc_preauth_hash()
 Date: Tue,  8 Apr 2025 12:52:06 +0200
-Message-ID: <20250408104826.064288244@linuxfoundation.org>
+Message-ID: <20250408104855.221674972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 7e6b3fcc9c5294aeafed0dbe1a09a1bc899bd0f2 upstream.
+commit c8b5b7c5da7d0c31c9b7190b4a7bba5281fc4780 upstream.
 
-Lockdep reports this deadlock log:
-
-osnoise: could not start sampling thread
-============================================
-WARNING: possible recursive locking detected
---------------------------------------------
-       CPU0
-       ----
-  lock(cpu_hotplug_lock);
-  lock(cpu_hotplug_lock);
-
- Call Trace:
-  <TASK>
-  print_deadlock_bug+0x282/0x3c0
-  __lock_acquire+0x1610/0x29a0
-  lock_acquire+0xcb/0x2d0
-  cpus_read_lock+0x49/0x120
-  stop_per_cpu_kthreads+0x7/0x60
-  start_kthread+0x103/0x120
-  osnoise_hotplug_workfn+0x5e/0x90
-  process_one_work+0x44f/0xb30
-  worker_thread+0x33e/0x5e0
-  kthread+0x206/0x3b0
-  ret_from_fork+0x31/0x50
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
-
-This is the deadlock scenario:
-osnoise_hotplug_workfn()
-  guard(cpus_read_lock)();      // first lock call
-  start_kthread(cpu)
-    if (IS_ERR(kthread)) {
-      stop_per_cpu_kthreads(); {
-        cpus_read_lock();      // second lock call. Cause the AA deadlock
-      }
-    }
-
-It is not necessary to call stop_per_cpu_kthreads() which stops osnoise
-kthread for every other CPUs in the system if a failure occurs during
-hotplug of a certain CPU.
-For start_per_cpu_kthreads(), if the start_kthread() call fails,
-this function calls stop_per_cpu_kthreads() to handle the error.
-Therefore, similarly, there is no need to call stop_per_cpu_kthreads()
-again within start_kthread().
-So just remove stop_per_cpu_kthreads() from start_kthread to solve this issue.
+The Client send malformed smb2 negotiate request. ksmbd return error
+response. Subsequently, the client can send smb2 session setup even
+thought conn->preauth_info is not allocated.
+This patch add KSMBD_SESS_NEED_SETUP status of connection to ignore
+session setup request if smb2 negotiate phase is not complete.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250321095249.2739397-1-ranxiaokai627@163.com
-Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Tested-by: Steve French <stfrench@microsoft.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-26505
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/server/connection.h        |   11 +++++++++++
+ fs/smb/server/mgmt/user_session.c |    4 ++--
+ fs/smb/server/smb2pdu.c           |   14 +++++++++++---
+ 3 files changed, 24 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1756,7 +1756,6 @@ static int start_kthread(unsigned int cp
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -27,6 +27,7 @@ enum {
+ 	KSMBD_SESS_EXITING,
+ 	KSMBD_SESS_NEED_RECONNECT,
+ 	KSMBD_SESS_NEED_NEGOTIATE,
++	KSMBD_SESS_NEED_SETUP,
+ 	KSMBD_SESS_RELEASING
+ };
  
- 	if (IS_ERR(kthread)) {
- 		pr_err(BANNER "could not start sampling thread\n");
--		stop_per_cpu_kthreads();
- 		return -ENOMEM;
+@@ -187,6 +188,11 @@ static inline bool ksmbd_conn_need_negot
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_NEGOTIATE;
+ }
+ 
++static inline bool ksmbd_conn_need_setup(struct ksmbd_conn *conn)
++{
++	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_SETUP;
++}
++
+ static inline bool ksmbd_conn_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_RECONNECT;
+@@ -217,6 +223,11 @@ static inline void ksmbd_conn_set_need_n
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_NEGOTIATE);
+ }
+ 
++static inline void ksmbd_conn_set_need_setup(struct ksmbd_conn *conn)
++{
++	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_SETUP);
++}
++
+ static inline void ksmbd_conn_set_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_RECONNECT);
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -374,13 +374,13 @@ void destroy_previous_session(struct ksm
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_RECONNECT);
+ 	err = ksmbd_conn_wait_idle_sess_id(conn, id);
+ 	if (err) {
+-		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 		goto out;
  	}
  
+ 	ksmbd_destroy_file_table(&prev_sess->file_table);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+-	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+ out:
+ 	up_write(&conn->session_lock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1247,7 +1247,7 @@ int smb2_handle_negotiate(struct ksmbd_w
+ 	}
+ 
+ 	conn->srv_sec_mode = le16_to_cpu(rsp->SecurityMode);
+-	ksmbd_conn_set_need_negotiate(conn);
++	ksmbd_conn_set_need_setup(conn);
+ 
+ err_out:
+ 	if (rc)
+@@ -1268,6 +1268,9 @@ static int alloc_preauth_hash(struct ksm
+ 	if (sess->Preauth_HashValue)
+ 		return 0;
+ 
++	if (!conn->preauth_info)
++		return -ENOMEM;
++
+ 	sess->Preauth_HashValue = kmemdup(conn->preauth_info->Preauth_HashValue,
+ 					  PREAUTH_HASHVALUE_SIZE, GFP_KERNEL);
+ 	if (!sess->Preauth_HashValue)
+@@ -1671,6 +1674,11 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 	ksmbd_debug(SMB, "Received request for session setup\n");
+ 
++	if (!ksmbd_conn_need_setup(conn) && !ksmbd_conn_good(conn)) {
++		work->send_no_response = 1;
++		return rc;
++	}
++
+ 	WORK_BUFFERS(work, req, rsp);
+ 
+ 	rsp->StructureSize = cpu_to_le16(9);
+@@ -1906,7 +1914,7 @@ out_err:
+ 			if (try_delay) {
+ 				ksmbd_conn_set_need_reconnect(conn);
+ 				ssleep(5);
+-				ksmbd_conn_set_need_negotiate(conn);
++				ksmbd_conn_set_need_setup(conn);
+ 			}
+ 		}
+ 		smb2_set_err_rsp(work);
+@@ -2238,7 +2246,7 @@ int smb2_session_logoff(struct ksmbd_wor
+ 		ksmbd_free_user(sess->user);
+ 		sess->user = NULL;
+ 	}
+-	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_SETUP);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
+ 	err = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_logoff_rsp));
 
 
 
