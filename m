@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-129066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD2EA7FDEA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA303A80159
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E320444004
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B188825A4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E21F1FBCB2;
-	Tue,  8 Apr 2025 11:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BDF266B54;
+	Tue,  8 Apr 2025 11:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb8LVwPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/dBmRzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A6D21ADAE;
-	Tue,  8 Apr 2025 11:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3788219301;
+	Tue,  8 Apr 2025 11:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110021; cv=none; b=m+RZhTAoxfarS7/k5cy3IVQwSGnnOQcxeNtWFpDyPi2Ms8FrGspEhM5Gvp5p+GKb9p53ORCwCpcXS+lt+p9x5z5GtXfUwVcUotewnmRCOq5i9+mSOYW1JTHqVoRvsUYfc5wkW0R6xXpXTP13yA9jCFrBCy/3slq4ucFBLLhQT3g=
+	t=1744111953; cv=none; b=pUJEHV1UMdbATzEeUxF+ZmxEYx+fLS9ly9zj+wWtZgyKMptzOL8CHaegZcTECoBQAjLYmDYjNHaAqs6l1zy6NFSunxnvuUR4vtdIx20hcRbkL4y6j5RaKlmKnSlpPw+PMuiRgOElqkBrSjSF49UREUn5+o5w8AgcVf56E61luME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110021; c=relaxed/simple;
-	bh=OtlRD8F2KQJEoz4ydFPCFbGMqunMHAtpTIy+IOO8XuE=;
+	s=arc-20240116; t=1744111953; c=relaxed/simple;
+	bh=3btJzbsnsanMjp5kVPZXojXOLwTVvH16T7ZIrW1qSkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D4gFWvI0x3qCFwp/FtWtqJxNLnL7zY4M0o3A8FM5+dnBjhUHoLXtvrrlBq8Q1hpNpNAslHw5005l/vxsQekA1rT75qHBFV440A/Nar6RCaRyQbHMxdkC4bJwpOSyEnqyqKx+nGkxGvgj+bpw/ZEaTTVwwbOtzgJhYDlE4zaQ73s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb8LVwPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACDEC4CEE5;
-	Tue,  8 Apr 2025 11:00:20 +0000 (UTC)
+	 MIME-Version; b=lTitTkMBi2qCqF1osxSjVbpTpEOUrWqNXlXK/QlKZ1xUPYc0g6fBjq0K8Jg5w2uqkkgsRt7gE2WlCR3hj0hi6cM2lfwOOUF1uTFttgyoOCMtpzwDfWb1gIs5XQsvNL7cUt/NzDJ8keGwDdquaDtHw2nnwf5aYyVUYPzNLviJM8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/dBmRzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EC8C4CEE5;
+	Tue,  8 Apr 2025 11:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110020;
-	bh=OtlRD8F2KQJEoz4ydFPCFbGMqunMHAtpTIy+IOO8XuE=;
+	s=korg; t=1744111953;
+	bh=3btJzbsnsanMjp5kVPZXojXOLwTVvH16T7ZIrW1qSkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb8LVwPnje3ZfGXdSnvjBqXGgfTy4ZUgY9n6kE0mFpxgwQlNaVebrnqRux761YUnc
-	 923NQHHJiEwMylkBL0N9NNIvRDVZhfXJmvNNuw2pPaJd5JIGxFDmea7wjo0Qh6URJA
-	 xFraP2kDprWWIkcQwT3f2tdJww50SW3YIADBW9Aw=
+	b=X/dBmRzwKTtJ+xgRjK3Ic5oE/uOkzOsWKMVb5rKfLagkWcc2YYIyaZrb0ShUZmpuX
+	 tcR7B6Br3CB/BZksfr4JM3jkXntnjplBdc77dNaUvebrS13dlBpNNk2NJT4PmyJlCd
+	 15s/tmO91eU4M+SyzJrvc0f35bLgr9lzQcQQ/430=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
+	Nishanth Devarajan <ndev2021@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/227] PCI: pciehp: Dont enable HPIE when resuming in poll mode
+Subject: [PATCH 6.14 621/731] net_sched: skbprio: Remove overly strict queue assertions
 Date: Tue,  8 Apr 2025 12:48:38 +0200
-Message-ID: <20250408104824.507826790@linuxfoundation.org>
+Message-ID: <20250408104928.717813138@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
+[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
 
-PCIe hotplug can operate in poll mode without interrupt handlers using a
-polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
-interrupt during suspend") failed to consider that and enables HPIE
-(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
+In the current implementation, skbprio enqueue/dequeue contains an assertion
+that fails under certain conditions when SKBPRIO is used as a child qdisc under
+TBF with specific parameters. The failure occurs because TBF sometimes peeks at
+packets in the child qdisc without actually dequeuing them when tokens are
+unavailable.
 
-Only set HPIE if non-poll mode is in use. This makes
-pcie_enable_interrupt() match how pcie_enable_notification() already
-handles HPIE.
+This peek operation creates a discrepancy between the parent and child qdisc
+queue length counters. When TBF later receives a high-priority packet,
+SKBPRIO's queue length may show a different value than what's reflected in its
+internal priority queue tracking, triggering the assertion.
 
-Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
-Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+The fix removes this overly strict assertions in SKBPRIO, they are not
+necessary at all.
+
+Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
+Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
+Cc: Nishanth Devarajan <ndev2021@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_skbprio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index 75c6c72ec32ac..d1e524078793c 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -840,7 +840,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
- {
- 	u16 mask;
- 
--	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
-+	mask = PCI_EXP_SLTCTL_DLLSCE;
-+	if (!pciehp_poll_mode)
-+		mask |= PCI_EXP_SLTCTL_HPIE;
- 	pcie_write_cmd(ctrl, mask, mask);
- }
- 
+diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
+index 20ff7386b74bd..f485f62ab721a 100644
+--- a/net/sched/sch_skbprio.c
++++ b/net/sched/sch_skbprio.c
+@@ -123,8 +123,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	/* Check to update highest and lowest priorities. */
+ 	if (skb_queue_empty(lp_qdisc)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			/* The incoming packet is the only packet in queue. */
+-			BUG_ON(sch->q.qlen != 1);
+ 			q->lowest_prio = prio;
+ 			q->highest_prio = prio;
+ 		} else {
+@@ -156,7 +154,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
+ 	/* Update highest priority field. */
+ 	if (skb_queue_empty(hpq)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			BUG_ON(sch->q.qlen);
+ 			q->highest_prio = 0;
+ 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
+ 		} else {
 -- 
 2.39.5
 
