@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A098A8086C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36DFA80788
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0147B1BA32A4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3714C6BFC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70726F46C;
-	Tue,  8 Apr 2025 12:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E6F26B2DA;
+	Tue,  8 Apr 2025 12:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ/h6ufW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0KYCHid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA0E268FED;
-	Tue,  8 Apr 2025 12:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4070F26B2D6;
+	Tue,  8 Apr 2025 12:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115691; cv=none; b=PCp6jN3uNSxaCX4YcQdNoH6IqYZF9tV9U6X98FcxdDgRloDT0Gxh661OG+pEe5vuoWAE3P6yzkatCy1jRZ9xiSj4v5z+I5rYGiGAbXGu4U5/PQmSnZzco5Q1qts8dCcQrsq2xACLRUjonoYMV8xx8gKykmLjskcpmFP9GcQQt1s=
+	t=1744115303; cv=none; b=CwUmbaa9QpRTFp15wdglK86L6j+5XIZ2ioA39eWwJJvrTlJvvOZuRUeXcq3ND2l/BZXeNv8OjyauljXVNjgbNz7YxBiem4oGOzNrhlXx4IFDYBAcByM3PgQsUrEmyYfz2v26KePePdgEuB8fAgMl4QHvJwKsG94h0JXYjEwnW3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115691; c=relaxed/simple;
-	bh=exINIggIh+T/u0yM/FvwqOIa8NxVewEToXpNnxDuyWE=;
+	s=arc-20240116; t=1744115303; c=relaxed/simple;
+	bh=rI4Q1dqJ4zJYQpEMPiPlE6mODvFf8PYf5AmiRu7BTeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RC1hQl7yF9pXv7uW0oOB/pjDDc+Npe1DukX+FpUiOYhIKYFkgW9loX3TyQhsnGNTz948+ldYkXLBqTI/MoW8JKQ+rUwXgjdPoa1TgcVcf1cBqp74UkisB4tQH9FgwhMEcuax4eRHphHwdyXTU+j4EHJWlv37bdLiQcQeDpBs04M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ/h6ufW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCBFC4CEE5;
-	Tue,  8 Apr 2025 12:34:50 +0000 (UTC)
+	 MIME-Version; b=tDv9+TAGBOeZjED0iRds0bJd39joRQsvaVXbGQhilT/oPZFO9gNlNPTJMyYTGK+0aAw/T563Q1UYkSJKdLijNAhE3iVSIB0OQFj+Wt6u7ID/qotsqK/P3lbKLvFMYmAbY/Dkpc2k8W+jEaTFg0GG9ExhDaY9al2tckTPLBDOGRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0KYCHid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D35C4CEE5;
+	Tue,  8 Apr 2025 12:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115691;
-	bh=exINIggIh+T/u0yM/FvwqOIa8NxVewEToXpNnxDuyWE=;
+	s=korg; t=1744115303;
+	bh=rI4Q1dqJ4zJYQpEMPiPlE6mODvFf8PYf5AmiRu7BTeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ/h6ufWWsJwKhOHOW7rDKn4QPg0BW+HL3GhIVQWuwutBYMVZgtZHTb35+08IxOXC
-	 aoEYKlNDJCcTE88YTDFpSLsRID9XdCNSInDOZsNP/oPyK5jn5UxdnJt3sMGSe03km5
-	 cprtzb+BTC4pac4CzBrp2z3vRtaDItjOL2HAOIx8=
+	b=E0KYCHidDWIpRp2G9jJg82Jq7mvlw0r3LsN659LJpgnrZVnVwWlf73kodVRF8+FCI
+	 kBucEY1r14vBldz/9bxxCxI1scD9VtuOApDfgVimLy9x2HVgmj1WXldSt8M6hWP1KP
+	 VgN/5zqYaRqO3JTZ8nShlfHt/PmjfwwcTIri8R+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/204] RDMA/mlx5: Fix calculation of total invalidated pages
+Subject: [PATCH 6.13 385/499] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
 Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104822.328884926@linuxfoundation.org>
+Message-ID: <20250408104900.832359987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 79195147644653ebffadece31a42181e4c48c07d ]
+[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
 
-When invalidating an address range in mlx5, there is an optimization to
-do UMR operations in chunks.
-Previously, the invalidation counter was incorrectly updated for the
-same indexes within a chunk. Now, the invalidation counter is updated
-only when a chunk is complete and mlx5r_umr_update_xlt() is called.
-This ensures that the counter accurately represents the number of pages
-invalidated using UMR.
+conncount has its own GC handler which determines when to reap stale
+elements, this is convenient for dynamic sets. However, this also reaps
+non-dynamic sets with static configurations coming from control plane.
+Always run connlimit gc handler but honor feedback to reap element if
+this set is dynamic.
 
-Fixes: a3de94e3d61e ("IB/mlx5: Introduce ODP diagnostic counters")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/560deb2433318e5947282b070c915f3c81fef77f.1741875692.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_hash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 87fbee8061003..89682fe0747ff 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -275,9 +275,6 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
- 				blk_start_idx = idx;
- 				in_block = 1;
- 			}
--
--			/* Count page invalidations */
--			invalidations += idx - blk_start_idx + 1;
- 		} else {
- 			u64 umr_offset = idx & umr_block_mask;
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 8bfac4185ac79..abb0c8ec63719 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -309,7 +309,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
  
-@@ -287,14 +284,19 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
- 						     MLX5_IB_UPD_XLT_ZAP |
- 						     MLX5_IB_UPD_XLT_ATOMIC);
- 				in_block = 0;
-+				/* Count page invalidations */
-+				invalidations += idx - blk_start_idx + 1;
- 			}
- 		}
+ 	nft_setelem_expr_foreach(expr, elem_expr, size) {
+ 		if (expr->ops->gc &&
+-		    expr->ops->gc(read_pnet(&set->net), expr))
++		    expr->ops->gc(read_pnet(&set->net), expr) &&
++		    set->flags & NFT_SET_EVAL)
+ 			return true;
  	}
--	if (in_block)
-+	if (in_block) {
- 		mlx5r_umr_update_xlt(mr, blk_start_idx,
- 				     idx - blk_start_idx + 1, 0,
- 				     MLX5_IB_UPD_XLT_ZAP |
- 				     MLX5_IB_UPD_XLT_ATOMIC);
-+		/* Count page invalidations */
-+		invalidations += idx - blk_start_idx + 1;
-+	}
- 
- 	mlx5_update_odp_stats(mr, invalidations, invalidations);
  
 -- 
 2.39.5
