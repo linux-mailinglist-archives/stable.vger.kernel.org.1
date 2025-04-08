@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604A5A804D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE9DA80780
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDDFC1B65478
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FDF44C5777
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922DD26156E;
-	Tue,  8 Apr 2025 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD919269B02;
+	Tue,  8 Apr 2025 12:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRhFKMFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXNkkw9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F287265626;
-	Tue,  8 Apr 2025 12:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894DC267731;
+	Tue,  8 Apr 2025 12:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113914; cv=none; b=Ov2BXjRvVCY04gIajoiNOCIF8no9oX9I9ER+0MutWEQUwxucXxM6hfZeMv8Av1LgZytXLDq5cmxQ/l+Ll+uwuXIiW/WsKpf705wiIoDZhJ+xtBNnEns9IwUqMLjcsVQhuk8dg6qhdIlfZAF/+m6tljUCkay3n4ouiBKyM6PBrBQ=
+	t=1744115126; cv=none; b=to3h4KBnJyQsvGntGd9h6fqgJblkOYA7p4pPCTVHvGArqjW33Au5WlAw0axYBumb97O3R0ShsuRxw5ydBoWX+osVsRyDnzNOOJBShL3bKr49ay+E8QDOU1dCwihB+iCpHtxa3cMnP+Zgon3YoMUSdgY4iBNrcCVWAOXICTlOtpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113914; c=relaxed/simple;
-	bh=ew9FCrOgIrk1M3mBV78IIplXNfg9nGh0xRyN7cmEafU=;
+	s=arc-20240116; t=1744115126; c=relaxed/simple;
+	bh=YpX+WWvsYl53yThz0wkm5HY/moRCDx7hPIZGaDkwnYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV23OZi02Ru92N8kUdF+zuZJdgmbjZWGZPeuogBlg/QrqxElmyvPU7dG8iBtogh3gQKa0Rkl5uFSxmTNy2cO1xNEE3G3Is6EmMdMo9ITSt+ajTaJ7c/Mdq9X/CtYa1mA5Re3iMbyp5qwpY0Q18JSHGnnq9lIdSf8Lr1COG/zJlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRhFKMFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD68C4CEE5;
-	Tue,  8 Apr 2025 12:05:13 +0000 (UTC)
+	 MIME-Version; b=susu+Y2qh1n0UVxy+k7PX4AY4ex9bIZK1cgIB9BkR+fQUMIhlZlJcG/F/KMT5OP/VDRdVzf16tceKHxmWn/+Yu3xgNmVkbesKgV3tJeB+eUJ4PFk87GNw9sQKZ/Ls9+7MFazqCOqTvlDcznFFBERqQtWFxD/zigaCsKhSEjxnoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXNkkw9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18745C4CEE7;
+	Tue,  8 Apr 2025 12:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113913;
-	bh=ew9FCrOgIrk1M3mBV78IIplXNfg9nGh0xRyN7cmEafU=;
+	s=korg; t=1744115126;
+	bh=YpX+WWvsYl53yThz0wkm5HY/moRCDx7hPIZGaDkwnYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRhFKMFbxD2UrAejrpXUQPIzlv6LRt9q99UBB1IhMsSi1v8ZzI1nxnY8ouZsttfrp
-	 BAPsOHVqWabL9gXijK3rW4W1hvSLG36JpQ7mNu+ThMLFuCtkAaoSTZbMSAAsByAFA0
-	 eWE7Rk5aMQHuf0RE3EaZOI+jtouBXtlbn716HNws=
+	b=kXNkkw9HO10rU6znpIgtSWd42JFpvx+axDP/TY4WZDr4QNLi3gqKxl4BHZT+ri+qh
+	 h6RXd7p0mQ/3HmpDgz+c+M8S8BCRtq1Q8DsjLGLvrDRpTKBagP9WqEfpeunV06KVQK
+	 RMCSbV64gHC3GjZULTJIuk0cUsKYPEiXKYVtuawM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Tingbo Liao <tingbo.liao@starfivetech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/154] ASoC: rsnd: dont indicate warning on rsnd_kctrl_accept_runtime()
+Subject: [PATCH 6.13 359/499] riscv: Fix the __riscv_copy_vec_words_unaligned implementation
 Date: Tue,  8 Apr 2025 12:49:31 +0200
-Message-ID: <20250408104816.225694286@linuxfoundation.org>
+Message-ID: <20250408104900.185354670@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Tingbo Liao <tingbo.liao@starfivetech.com>
 
-[ Upstream commit c3fc002b206c6c83d1e3702b979733002ba6fb2c ]
+[ Upstream commit 475afa39b123699e910c61ad9a51cedce4a0d310 ]
 
-rsnd_kctrl_accept_runtime() (1) is used for runtime convert rate
-(= Synchronous SRC Mode). Now, rsnd driver has 2 kctrls for it
+Correct the VEC_S macro definition to fix the implementation
+of vector words copy in the case of unalignment in RISC-V.
 
-(A):	"SRC Out Rate Switch"
-(B):	"SRC Out Rate"		// it calls (1)
-
-(A): can be called anytime
-(B): can be called only runtime, and will indicate warning if it was used
-   at non-runtime.
-
-To use runtime convert rate (= Synchronous SRC Mode), user might uses
-command in below order.
-
-(X):	> amixer set "SRC Out Rate" on
-	> aplay xxx.wav &
-(Y):	> amixer set "SRC Out Rate" 48010 // convert rate to 48010Hz
-
-(Y): calls B
-(X): calls both A and B.
-
-In this case, when user calls (X), it calls both (A) and (B), but it is not
-yet start running. So, (B) will indicate warning.
-
-This warning was added by commit b5c088689847 ("ASoC: rsnd: add warning
-message to rsnd_kctrl_accept_runtime()"), but the message sounds like the
-operation was not correct. Let's update warning message.
-
-The message is very SRC specific, implement it in src.c
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/8734gt2qed.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Tingbo Liao <tingbo.liao@starfivetech.com>
+Link: https://lore.kernel.org/r/20250228090801.8334-1-tingbo.liao@starfivetech.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rcar/core.c | 14 --------------
- sound/soc/sh/rcar/rsnd.h |  1 -
- sound/soc/sh/rcar/src.c  | 18 +++++++++++++++++-
- 3 files changed, 17 insertions(+), 16 deletions(-)
+ arch/riscv/kernel/vec-copy-unaligned.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index df8d7b53b7600..1564809dff3c9 100644
---- a/sound/soc/sh/rcar/core.c
-+++ b/sound/soc/sh/rcar/core.c
-@@ -1612,20 +1612,6 @@ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io)
- 	return 1;
- }
+diff --git a/arch/riscv/kernel/vec-copy-unaligned.S b/arch/riscv/kernel/vec-copy-unaligned.S
+index d16f19f1b3b65..7ce4de6f6e694 100644
+--- a/arch/riscv/kernel/vec-copy-unaligned.S
++++ b/arch/riscv/kernel/vec-copy-unaligned.S
+@@ -11,7 +11,7 @@
  
--int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io)
--{
--	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
--	struct rsnd_priv *priv = rsnd_io_to_priv(io);
--	struct device *dev = rsnd_priv_to_dev(priv);
--
--	if (!runtime) {
--		dev_warn(dev, "Can't update kctrl when idle\n");
--		return 0;
--	}
--
--	return 1;
--}
--
- struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg)
- {
- 	cfg->cfg.val = cfg->val;
-diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
-index d47608ff5facc..ea7a9939981b5 100644
---- a/sound/soc/sh/rcar/rsnd.h
-+++ b/sound/soc/sh/rcar/rsnd.h
-@@ -737,7 +737,6 @@ struct rsnd_kctrl_cfg_s {
- #define rsnd_kctrl_vals(x)	((x).val)	/* = (x).cfg.val[0] */
+ #define WORD_SEW CONCATENATE(e, WORD_EEW)
+ #define VEC_L CONCATENATE(vle, WORD_EEW).v
+-#define VEC_S CONCATENATE(vle, WORD_EEW).v
++#define VEC_S CONCATENATE(vse, WORD_EEW).v
  
- int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io);
--int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io);
- struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg);
- struct rsnd_kctrl_cfg *rsnd_kctrl_init_s(struct rsnd_kctrl_cfg_s *cfg);
- int rsnd_kctrl_new(struct rsnd_mod *mod,
-diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
-index fd52e26a3808b..577d50e2cf8c6 100644
---- a/sound/soc/sh/rcar/src.c
-+++ b/sound/soc/sh/rcar/src.c
-@@ -521,6 +521,22 @@ static irqreturn_t rsnd_src_interrupt(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
-+static int rsnd_src_kctrl_accept_runtime(struct rsnd_dai_stream *io)
-+{
-+	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
-+
-+	if (!runtime) {
-+		struct rsnd_priv *priv = rsnd_io_to_priv(io);
-+		struct device *dev = rsnd_priv_to_dev(priv);
-+
-+		dev_warn(dev, "\"SRC Out Rate\" can use during running\n");
-+
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
- static int rsnd_src_probe_(struct rsnd_mod *mod,
- 			   struct rsnd_dai_stream *io,
- 			   struct rsnd_priv *priv)
-@@ -584,7 +600,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
- 			       rsnd_io_is_play(io) ?
- 			       "SRC Out Rate" :
- 			       "SRC In Rate",
--			       rsnd_kctrl_accept_runtime,
-+			       rsnd_src_kctrl_accept_runtime,
- 			       rsnd_src_set_convert_rate,
- 			       &src->sync, 192000);
- 
+ /* void __riscv_copy_vec_words_unaligned(void *, const void *, size_t) */
+ /* Performs a memcpy without aligning buffers, using word loads and stores. */
 -- 
 2.39.5
 
