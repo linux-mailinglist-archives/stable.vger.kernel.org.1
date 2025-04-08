@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-130566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CA1A8052C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D2AA808EE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ED131B66D0C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0B51BA28AA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECB7268C4F;
-	Tue,  8 Apr 2025 12:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E19270EAA;
+	Tue,  8 Apr 2025 12:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8Rsiv2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIbIVu5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9D6267B89;
-	Tue,  8 Apr 2025 12:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35B726656B;
+	Tue,  8 Apr 2025 12:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114054; cv=none; b=BRFQforuduQtI3PPsARA22iijTIRlUygVdgC/5zJXXQtBMM6iTB5PKHlm1Db+mZtiZCasKhvuL6VDBh8N5SBdpcbYtSlfiSabjW+gYF50c21ZMeU5RX2HeqD42LcFdWt5BCkswSzA4tyrHenBrwXpKQ0JS4zUeRQxOUqvHz82BM=
+	t=1744115946; cv=none; b=SKa3CmymMvqlxpzFCNT7rAFNdP8wLA+9hYbCEITXVhTaqHfVjcYvjo3yKUZzurKEcsKxP3NOL5ZSsZK7cQVgUwziqA8McRYFxApGP8zWVDqT6RnY1xHxjD/UENKrhiZH3Vu9wKmSLHwOwbF5tZarwOYNKg0ce1D31G7wJwRoUV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114054; c=relaxed/simple;
-	bh=nX6KZ9gfDGodsg2xCgO9c7DvuI2bCfZUYqeUi3BYBME=;
+	s=arc-20240116; t=1744115946; c=relaxed/simple;
+	bh=RJgEsPz09RqPmewBWq56XAKo5riW5txdGQgS6z2T5Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSLuEcOAgR+xLyMgLgufLyaifpV4UnHLHcKyjmWIIgwFsYV4uLrTIhZK0P9wniJeJ3T1LhoI2pH94WOG+hVlXvsJmptyZ7UMd1Lm9UuEUfvdsXZLKtcFgNrsnnApfdCQEyNK+Or6yySUhDDJ7GyGw/+prQgLZfdvyGlG9GX/JBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8Rsiv2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F3EC4CEE5;
-	Tue,  8 Apr 2025 12:07:33 +0000 (UTC)
+	 MIME-Version; b=O218vfKGvwtsVwvbvupeOBcgUOSvMbtqIoSlsuXRHDEoKQ1r5kI5svsF2KHXZ74SfmWyVSPHbX/M/AczGqo0SH1+U3JA/r25bHJCn6O7fs57s2oXzeGdIshFiFLwkJVVPVD5jnpXZ78MqW7IJWlSZOZAc7FrXZAsjnI10ulIEcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIbIVu5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443D0C4CEE5;
+	Tue,  8 Apr 2025 12:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114054;
-	bh=nX6KZ9gfDGodsg2xCgO9c7DvuI2bCfZUYqeUi3BYBME=;
+	s=korg; t=1744115946;
+	bh=RJgEsPz09RqPmewBWq56XAKo5riW5txdGQgS6z2T5Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8Rsiv2cqtJ5aRFcLo/fZ4i8CDd5IoU8KYGEEgECB13JN6HXsI/rHq+ni+Z3+fvEw
-	 accVOkFSKZpjQ98RlYiC9aNR2bFJ/kqNCATVH/Gwt7LQ1ygWZJ8PreOqe4fOMAhAMg
-	 Vm1g/Hd8uhEre9KXOIh2tsu3m4gFRa9FRclykPyM=
+	b=gIbIVu5/M76K+t9+7T/eHf5xOdNt/i3MQfkfemz5aZw99uo/MQ8Xh9mAH8tKnImxv
+	 SxXLCBKpA8qC+7SDn9j0n5SIqOrJVzGc7BmoZZ5eMp2i7ne9WzdvugmNRY9VE3KPFT
+	 f/hb/OF9esDytRubW2FPFJZj+kKdjFlB24lh0NrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/154] RDMA/mlx5: Fix mlx5_poll_one() cur_qp update flow
-Date: Tue,  8 Apr 2025 12:50:53 +0200
-Message-ID: <20250408104818.924855797@linuxfoundation.org>
+Subject: [PATCH 6.1 124/204] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
+Date: Tue,  8 Apr 2025 12:50:54 +0200
+Message-ID: <20250408104823.947997892@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 5ed3b0cb3f827072e93b4c5b6e2b8106fd7cccbd ]
+[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
 
-When cur_qp isn't NULL, in order to avoid fetching the QP from
-the radix tree again we check if the next cqe QP is identical to
-the one we already have.
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  These can be called from noinstr code, so make
+sure they're always inlined.
 
-The bug however is that we are checking if the QP is identical by
-checking the QP number inside the CQE against the QP number inside the
-mlx5_ib_qp, but that's wrong since the QP number from the CQE is from
-FW so it should be matched against mlx5_core_qp which is our FW QP
-number.
+Fixes the following warnings:
 
-Otherwise we could use the wrong QP when handling a CQE which could
-cause the kernel trace below.
+  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
 
-This issue is mainly noticeable over QPs 0 & 1, since for now they are
-the only QPs in our driver whereas the QP number inside mlx5_ib_qp
-doesn't match the QP number inside mlx5_core_qp.
-
-BUG: kernel NULL pointer dereference, address: 0000000000000012
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP
- CPU: 0 UID: 0 PID: 7927 Comm: kworker/u62:1 Not tainted 6.14.0-rc3+ #189
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
- Workqueue: ib-comp-unb-wq ib_cq_poll_work [ib_core]
- RIP: 0010:mlx5_ib_poll_cq+0x4c7/0xd90 [mlx5_ib]
- Code: 03 00 00 8d 58 ff 21 cb 66 39 d3 74 39 48 c7 c7 3c 89 6e a0 0f b7 db e8 b7 d2 b3 e0 49 8b 86 60 03 00 00 48 c7 c7 4a 89 6e a0 <0f> b7 5c 98 02 e8 9f d2 b3 e0 41 0f b7 86 78 03 00 00 83 e8 01 21
- RSP: 0018:ffff88810511bd60 EFLAGS: 00010046
- RAX: 0000000000000010 RBX: 0000000000000000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffff88885fa1b3c0 RDI: ffffffffa06e894a
- RBP: 00000000000000b0 R08: 0000000000000000 R09: ffff88810511bc10
- R10: 0000000000000001 R11: 0000000000000001 R12: ffff88810d593000
- R13: ffff88810e579108 R14: ffff888105146000 R15: 00000000000000b0
- FS:  0000000000000000(0000) GS:ffff88885fa00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000012 CR3: 00000001077e6001 CR4: 0000000000370eb0
- Call Trace:
-  <TASK>
-  ? __die+0x20/0x60
-  ? page_fault_oops+0x150/0x3e0
-  ? exc_page_fault+0x74/0x130
-  ? asm_exc_page_fault+0x22/0x30
-  ? mlx5_ib_poll_cq+0x4c7/0xd90 [mlx5_ib]
-  __ib_process_cq+0x5a/0x150 [ib_core]
-  ib_cq_poll_work+0x31/0x90 [ib_core]
-  process_one_work+0x169/0x320
-  worker_thread+0x288/0x3a0
-  ? work_busy+0xb0/0xb0
-  kthread+0xd7/0x1f0
-  ? kthreads_online_cpu+0x130/0x130
-  ? kthreads_online_cpu+0x130/0x130
-  ret_from_fork+0x2d/0x50
-  ? kthreads_online_cpu+0x130/0x130
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
-
-Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/4ada09d41f1e36db62c44a9b25c209ea5f054316.1741875692.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/cq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/context_tracking_irq.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
-index 7f659c240c99c..eb20f8fa2bd31 100644
---- a/drivers/infiniband/hw/mlx5/cq.c
-+++ b/drivers/infiniband/hw/mlx5/cq.c
-@@ -483,7 +483,7 @@ static int mlx5_poll_one(struct mlx5_ib_cq *cq,
- 	}
+diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
+index c50b5670c4a52..197916ee91a4b 100644
+--- a/include/linux/context_tracking_irq.h
++++ b/include/linux/context_tracking_irq.h
+@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
+ void ct_nmi_enter(void);
+ void ct_nmi_exit(void);
+ #else
+-static inline void ct_irq_enter(void) { }
+-static inline void ct_irq_exit(void) { }
++static __always_inline void ct_irq_enter(void) { }
++static __always_inline void ct_irq_exit(void) { }
+ static inline void ct_irq_enter_irqson(void) { }
+ static inline void ct_irq_exit_irqson(void) { }
+-static inline void ct_nmi_enter(void) { }
+-static inline void ct_nmi_exit(void) { }
++static __always_inline void ct_nmi_enter(void) { }
++static __always_inline void ct_nmi_exit(void) { }
+ #endif
  
- 	qpn = ntohl(cqe64->sop_drop_qpn) & 0xffffff;
--	if (!*cur_qp || (qpn != (*cur_qp)->ibqp.qp_num)) {
-+	if (!*cur_qp || (qpn != (*cur_qp)->trans_qp.base.mqp.qpn)) {
- 		/* We do not have to take the QP table lock here,
- 		 * because CQs will be locked while QPs are removed
- 		 * from the table.
+ #endif
 -- 
 2.39.5
 
