@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D23A801AE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB561A80309
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467EB1894410
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1401316DD70
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5D5267F5F;
-	Tue,  8 Apr 2025 11:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBE1266EEA;
+	Tue,  8 Apr 2025 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQuWpDYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMKS0ud+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE55B22257E;
-	Tue,  8 Apr 2025 11:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA2C2686AD;
+	Tue,  8 Apr 2025 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112235; cv=none; b=LwSBxPvEu7YsjaOW0jkwPO1k1V4Bqe4IIiSYMyh5EJGNZZNJfE5Q0ecb3uh90w9n05Mfyz7PJX0x6ZpVGSmgzQhOr+ptLbb9IkM2Fr3uMivtkJx+Yx2estLZCkkKSyubHpWFpymwCKQcRWlhYRMijcvVhoLx+Q+LxO5XV5UzxWM=
+	t=1744112795; cv=none; b=SwOaOj6hGiaYRmCCUwxo9irmTcIkATiyqfOd3iZnL7X4RHTxwK8XMAoCj2xtwMKsMA3vL+Fkmwhp26J2gApV0Z5QMneUkm+RG1QxmNGVH2qDC+ogdRnH+EgLP4C1KxA95x3z2BjXvrbgi+rZAhctwY8QUkTpncBwDWIpLOcbEMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112235; c=relaxed/simple;
-	bh=3/f5IFbLsfAuru5awDjZW/Q43UfVSUJRstyFOOTvO1I=;
+	s=arc-20240116; t=1744112795; c=relaxed/simple;
+	bh=MXKvIqYnWsQ50otuML+SzXkzc2SUAC/ExNchrzt6UG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpfYlqa9hzSOHpVCJDgpyncRRzD+T6zato61hAt4izinQ3GnPoEfyNS5KoqjG9RoAClINjJiJhpUUeRIJsEpbjPHA+5pRxGMoTL0X88XZZseWiuO1GM6OrfZhdna+63MrBj//IGJ1r5CrVeFEMEJikxmBGAnQARe601iI1VuAuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQuWpDYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E350C4CEE5;
-	Tue,  8 Apr 2025 11:37:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kQUxLzbdIwxcHIWm8aY0+ov+q68gcAhyiO5YNFdqY/X07Ahe+uZD47BWu9zCRzwZhw3RODa+Gxhz7DYcwrjUAb5sReWFtzNItCyMPaPBL9DvYHBHcsQ1nFzl0XwI5HjZjCr5x3fB8PMW8sXrhJOK0oQQXOfYZHC54OQoXVZ7aZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMKS0ud+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B1FC4CEE5;
+	Tue,  8 Apr 2025 11:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112234;
-	bh=3/f5IFbLsfAuru5awDjZW/Q43UfVSUJRstyFOOTvO1I=;
+	s=korg; t=1744112795;
+	bh=MXKvIqYnWsQ50otuML+SzXkzc2SUAC/ExNchrzt6UG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQuWpDYhAsDYQUycj8gzNUmt/RZgM34YM+jnai1Hkx5K61kXnHAowWFRqBg9AwO1P
-	 5ncRuGetR86D1NwphFiljgl83oDDXEpZQA6y33SxyMF+wLZ+jy58YOJ9gvF5obw8Yl
-	 O/m/dNlEpM4kNaYn8RG+DrVdU6cvqU9H5905Iwiw=
+	b=OMKS0ud+YTbibF4Ta79DKkO9JSMZUvVFrILsT8fPemG0Ud+02oTyLQlEqt+QRKdTn
+	 wE3KdJsTXuU0yq68YxT3tvXD8sT2yrtb2GPr2wH0ons6I2CfZ+rnyQ+oFXwgpLAfn7
+	 fz9EqZfMMiZUyxcDv6Qg0yhubyl7A30nntWbT+PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Rowley <lkml@johnrowley.me>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.14 685/731] ACPI: platform-profile: Fix CFI violation when accessing sysfs files
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 199/279] iio: adc: ad7124: Fix comparison of channel configs
 Date: Tue,  8 Apr 2025 12:49:42 +0200
-Message-ID: <20250408104930.200590453@linuxfoundation.org>
+Message-ID: <20250408104831.710977811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
+[ Upstream commit 05a5d874f7327b75e9bc4359618017e047cc129c ]
 
-When an attribute group is created with sysfs_create_group(), the
-->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
-and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
-respectively. These functions use container_of() to get the respective
-callback from the passed attribute, meaning that these callbacks need to
-be of the same type as the callbacks in 'struct kobj_attribute'.
+Checking the binary representation of two structs (of the same type)
+for equality doesn't have the same semantic as comparing all members for
+equality. The former might find a difference where the latter doesn't in
+the presence of padding or when ambiguous types like float or bool are
+involved. (Floats typically have different representations for single
+values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
+at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
+true, but memcmp finds a difference.)
 
-However, ->show() and ->store() in the platform_profile driver are
-defined for struct device_attribute with the help of DEVICE_ATTR_RO()
-and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
-platform_profile or platform_profile_choices under /sys/firmware/acpi
-because the types do not match:
+When searching for a channel that already has the configuration we need,
+the comparison by member is the one that is needed.
 
-  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+Convert the comparison accordingly to compare the members one after
+another. Also add a static_assert guard to (somewhat) ensure that when
+struct ad7124_channel_config::config_props is expanded, the comparison
+is adapted, too.
 
-There is no functional issue from the type mismatch because the layout
-of 'struct kobj_attribute' and 'struct device_attribute' are the same,
-so the container_of() cast does not break anything aside from CFI.
+This issue is somewhat theoretic, but using memcmp() on a struct is a
+bad pattern that is worth fixing.
 
-Change the type of platform_profile_choices_show() and
-platform_profile_{show,store}() to match the callbacks in
-'struct kobj_attribute' and update the attribute variables to
-match, which resolves the CFI violation.
-
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
-Reported-by: John Rowley <lkml@johnrowley.me>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
-Tested-by: John Rowley <lkml@johnrowley.me>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250303114659.1672695-13-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/platform_profile.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/iio/adc/ad7124.c | 35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -289,14 +289,14 @@ static int _remove_hidden_choices(struct
- 
- /**
-  * platform_profile_choices_show - Show the available profile choices for legacy sysfs interface
-- * @dev: The device
-+ * @kobj: The kobject
-  * @attr: The attribute
-  * @buf: The buffer to write to
-  *
-  * Return: The number of bytes written
-  */
--static ssize_t platform_profile_choices_show(struct device *dev,
--					     struct device_attribute *attr,
-+static ssize_t platform_profile_choices_show(struct kobject *kobj,
-+					     struct kobj_attribute *attr,
- 					     char *buf)
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 93f32bba73f62..31c8cb3bf811b 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -144,7 +144,11 @@ struct ad7124_chip_info {
+ struct ad7124_channel_config {
+ 	bool live;
+ 	unsigned int cfg_slot;
+-	/* Following fields are used to compare equality. */
++	/*
++	 * Following fields are used to compare for equality. If you
++	 * make adaptations in it, you most likely also have to adapt
++	 * ad7124_find_similar_live_cfg(), too.
++	 */
+ 	struct_group(config_props,
+ 		enum ad7124_ref_sel refsel;
+ 		bool bipolar;
+@@ -331,15 +335,38 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
+ 								  struct ad7124_channel_config *cfg)
  {
- 	struct aggregate_choices_data data = {
-@@ -371,14 +371,14 @@ static int _store_and_notify(struct devi
+ 	struct ad7124_channel_config *cfg_aux;
+-	ptrdiff_t cmp_size;
+ 	int i;
  
- /**
-  * platform_profile_show - Show the current profile for legacy sysfs interface
-- * @dev: The device
-+ * @kobj: The kobject
-  * @attr: The attribute
-  * @buf: The buffer to write to
-  *
-  * Return: The number of bytes written
-  */
--static ssize_t platform_profile_show(struct device *dev,
--				     struct device_attribute *attr,
-+static ssize_t platform_profile_show(struct kobject *kobj,
-+				     struct kobj_attribute *attr,
- 				     char *buf)
- {
- 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
-@@ -400,15 +400,15 @@ static ssize_t platform_profile_show(str
+-	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
++	/*
++	 * This is just to make sure that the comparison is adapted after
++	 * struct ad7124_channel_config was changed.
++	 */
++	static_assert(sizeof_field(struct ad7124_channel_config, config_props) ==
++		      sizeof(struct {
++				     enum ad7124_ref_sel refsel;
++				     bool bipolar;
++				     bool buf_positive;
++				     bool buf_negative;
++				     unsigned int vref_mv;
++				     unsigned int pga_bits;
++				     unsigned int odr;
++				     unsigned int odr_sel_bits;
++				     unsigned int filter_type;
++			     }));
++
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
  
- /**
-  * platform_profile_store - Set the profile for legacy sysfs interface
-- * @dev: The device
-+ * @kobj: The kobject
-  * @attr: The attribute
-  * @buf: The buffer to read from
-  * @count: The number of bytes to read
-  *
-  * Return: The number of bytes read
-  */
--static ssize_t platform_profile_store(struct device *dev,
--				      struct device_attribute *attr,
-+static ssize_t platform_profile_store(struct kobject *kobj,
-+				      struct kobj_attribute *attr,
- 				      const char *buf, size_t count)
- {
- 	struct aggregate_choices_data data = {
-@@ -442,12 +442,12 @@ static ssize_t platform_profile_store(st
- 	return count;
- }
+ 		if (cfg_aux->live &&
+-		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
++		    cfg->refsel == cfg_aux->refsel &&
++		    cfg->bipolar == cfg_aux->bipolar &&
++		    cfg->buf_positive == cfg_aux->buf_positive &&
++		    cfg->buf_negative == cfg_aux->buf_negative &&
++		    cfg->vref_mv == cfg_aux->vref_mv &&
++		    cfg->pga_bits == cfg_aux->pga_bits &&
++		    cfg->odr == cfg_aux->odr &&
++		    cfg->odr_sel_bits == cfg_aux->odr_sel_bits &&
++		    cfg->filter_type == cfg_aux->filter_type)
+ 			return cfg_aux;
+ 	}
  
--static DEVICE_ATTR_RO(platform_profile_choices);
--static DEVICE_ATTR_RW(platform_profile);
-+static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
-+static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
- 
- static struct attribute *platform_profile_attrs[] = {
--	&dev_attr_platform_profile_choices.attr,
--	&dev_attr_platform_profile.attr,
-+	&attr_platform_profile_choices.attr,
-+	&attr_platform_profile.attr,
- 	NULL
- };
- 
+-- 
+2.39.5
+
 
 
 
