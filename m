@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9171BA800A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E48A803AA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6481C7A9061
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB2F42097F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322D7269831;
-	Tue,  8 Apr 2025 11:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152A0268688;
+	Tue,  8 Apr 2025 11:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1dtObTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19HdcZBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B3268C62;
-	Tue,  8 Apr 2025 11:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FEE2676E1;
+	Tue,  8 Apr 2025 11:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111744; cv=none; b=tuT9lIqhzWbWR3RKdszJoT8TSrhEVAXaI36Lc6vSSMG4RGFUYznjedyhK4l0hnH1KQe958PsR5owK0YsX1Xm6yhSCFcq4FdvODb3y/O4hJo55xM3ZWHsb/WJ6OvBjRJ7xX9uie8dQxR3TUayuvbqwYedwB75bTRv+uZl4EA0J3s=
+	t=1744113193; cv=none; b=Gt25eCpgtB32LFQHy9LsBuV/uplyvs25BDwS28XL6aN7xUfsbr9DfpH8HeM6N4c231qGGF5wH9bzCbP+cgK6vquQqrPGNxz+XFsOrl/ZXSrxs+Ij4+ATlZyfoYC1S2vGbJuo8H2T0/f9JSSnPwTyt3vZzFEN1L5TST5ah32Qgxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111744; c=relaxed/simple;
-	bh=Lc9k+QutxRdxuuBluqSM7eHYgtcfZ2xl4A31W+QayKc=;
+	s=arc-20240116; t=1744113193; c=relaxed/simple;
+	bh=IeK5gYWFqAEcPg38qTAeJ23u7Z7bb0c/IQFyF4KXbY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRcm/wl8ad4AoBEKiMqMNyrrSBjhh2ds6wZ5wk/Wg0vtsCCckhjnVlokqLawiotALQ7W997Wif5Du7ASowX6aQIhsGq0p9M6CsFnWvJozZeEj7cYeA+rcaAF8ZI0srRLttXdn9c/VOsxdpjpJMFH5bzKD57EuzvcozJdMsHrPWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1dtObTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C1C4CEE5;
-	Tue,  8 Apr 2025 11:29:02 +0000 (UTC)
+	 MIME-Version; b=BF/rrqPgytHHv5GqCOYvpnXUFjLAmvXffX3lPaop8oT6RaeZ3baLc2xOldLP7zNCmG38yrbYreSbEqWtv2CLXkV/eqnFD9Gr1jNYpVAeUw5/eXvKGILsskNw+vI9bKyrfnobghHTYaNFO4tEeucewg2yfO2sALCuVZqJFuOuayc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19HdcZBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B8DC4CEE5;
+	Tue,  8 Apr 2025 11:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111743;
-	bh=Lc9k+QutxRdxuuBluqSM7eHYgtcfZ2xl4A31W+QayKc=;
+	s=korg; t=1744113193;
+	bh=IeK5gYWFqAEcPg38qTAeJ23u7Z7bb0c/IQFyF4KXbY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1dtObTteMTqCuguw134Lq1ZtK4e9bhryPD4lMnzMiOyZYlMmRbCURjObo5pQtm1u
-	 QGm9K8Di3XcNmBsBkgtSq74/Fq4tEBOoDUaLmXyUnw3VLFgZYZ58C0JJKdH8rEETdX
-	 vCctAUm0T0jzKbe1yNm9kCwT59mkGLQXHAG5Q8jg=
+	b=19HdcZBn3XRA8Auz7iSRRDqqM6NWxOjDzs+HfX7BPXWH/eXfcaNjvXaVWzpWv+Abj
+	 HKLKRc/iXhQVYV2ny8baedyu5dXwsw8BinEDerqe3eT11Zm/3Srir+1K9KvNS4gMC0
+	 4fFQY3Bn6SSxqAaLkB68BSJK8QJzAdA3SyKFyQk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sally Shi <sshii@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 542/731] perf bpf-filter: Fix a parsing error with comma
+Subject: [PATCH 6.6 028/268] HID: remove superfluous (and wrong) Makefile entry for CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
 Date: Tue,  8 Apr 2025 12:47:19 +0200
-Message-ID: <20250408104926.883674767@linuxfoundation.org>
+Message-ID: <20250408104829.263018027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit 35d13f841a3d8159ef20d5e32a9ed3faa27875bc ]
+[ Upstream commit fe0fb58325e519008e2606a5aa2cff7ad23e212d ]
 
-The previous change to support cgroup filters introduced a bug that
-pathname can include commas.  It confused the lexer to treat an item and
-the trailing comma as a single token.  And it resulted in a parse error:
+The line
 
-  $ sudo perf record -e cycles:P --filter 'period > 0, ip > 64' -- true
-  perf_bpf_filter: Error: Unexpected item: 0,
-  perf_bpf_filter: syntax error, unexpected BFT_ERROR, expecting BFT_NUM
+	obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)   += intel-ish-hid/
 
-   Usage: perf record [<options>] [<command>]
-      or: perf record [<options>] -- <command> [<options>]
+in top-level HID Makefile is both superfluous (as CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
+depends on CONFIG_INTEL_ISH_HID, which contains intel-ish-hid/ already) and wrong (as it's
+missing the CONFIG_ prefix).
 
-          --filter <filter>
-                            event filter
+Just remove it.
 
-It should get "0" and "," separately.
-
-An easiest fix would be to remove "," from the possible pathname
-characters.  As it's for cgroup names, probably ok to assume it won't
-have commas in the pathname.
-
-I found that the existing BPF filtering test didn't have any complex
-filter condition with commas.  Let's update the group filter test which
-is supposed to test filter combinations like this.
-
-Link: https://lore.kernel.org/r/20250307220922.434319-1-namhyung@kernel.org
-Fixes: 91e88437d5156b20 ("perf bpf-filter: Support filtering on cgroups")
-Reported-by: Sally Shi <sshii@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 91b228107da3e ("HID: intel-ish-hid: ISH firmware loader client driver")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/record_bpf_filter.sh | 4 ++--
- tools/perf/util/bpf-filter.l                | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/perf/tests/shell/record_bpf_filter.sh b/tools/perf/tests/shell/record_bpf_filter.sh
-index 1b58ccc1fd882..4d6c3c1b7fb92 100755
---- a/tools/perf/tests/shell/record_bpf_filter.sh
-+++ b/tools/perf/tests/shell/record_bpf_filter.sh
-@@ -89,7 +89,7 @@ test_bpf_filter_fail() {
- test_bpf_filter_group() {
-   echo "Group bpf-filter test"
+diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
+index 082a728eac600..f5a06b62b385d 100644
+--- a/drivers/hid/Makefile
++++ b/drivers/hid/Makefile
+@@ -165,7 +165,6 @@ obj-$(CONFIG_USB_KBD)		+= usbhid/
+ obj-$(CONFIG_I2C_HID_CORE)	+= i2c-hid/
  
--  if ! perf record -e task-clock --filter 'period > 1000 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000, ip > 0' \
- 	  -o /dev/null true 2>/dev/null
-   then
-     echo "Group bpf-filter test [Failed should succeed]"
-@@ -97,7 +97,7 @@ test_bpf_filter_group() {
-     return
-   fi
+ obj-$(CONFIG_INTEL_ISH_HID)	+= intel-ish-hid/
+-obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)	+= intel-ish-hid/
  
--  if ! perf record -e task-clock --filter 'cpu > 0 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000 , cpu > 0 || ip > 0' \
- 	  -o /dev/null true 2>&1 | grep -q PERF_SAMPLE_CPU
-   then
-     echo "Group bpf-filter test [Failed forbidden CPU]"
-diff --git a/tools/perf/util/bpf-filter.l b/tools/perf/util/bpf-filter.l
-index f313404f95a90..6aa65ade33851 100644
---- a/tools/perf/util/bpf-filter.l
-+++ b/tools/perf/util/bpf-filter.l
-@@ -76,7 +76,7 @@ static int path_or_error(void)
- num_dec		[0-9]+
- num_hex		0[Xx][0-9a-fA-F]+
- space		[ \t]+
--path		[^ \t\n]+
-+path		[^ \t\n,]+
- ident		[_a-zA-Z][_a-zA-Z0-9]+
+ obj-$(CONFIG_AMD_SFH_HID)       += amd-sfh-hid/
  
- %%
 -- 
 2.39.5
 
