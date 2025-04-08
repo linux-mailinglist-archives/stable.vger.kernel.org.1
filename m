@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91FBA80877
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E708A8047A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E441C1BA3B7F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB5BF467D2A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBBD277028;
-	Tue,  8 Apr 2025 12:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDCC269B1E;
+	Tue,  8 Apr 2025 11:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIw6GNNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqc8b4+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F022D2690FB;
-	Tue,  8 Apr 2025 12:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D919269B12;
+	Tue,  8 Apr 2025 11:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115739; cv=none; b=D/MOD6LzyncSzn7R5C0QvfsRxT85SQbM4wOJsTeYOdYFNN1zC1lO/PpzJwuJtqd9Aq2KjaolC103g479nKCakm+OgB1vw8K4gSXPpVKVgdTj1SHTPAChf9EBWYioeYuizBSuY8DAwVLdcvTRa+UVvM+HGULKU6LVD2t1M4/4Dno=
+	t=1744113564; cv=none; b=hqySDaANQkYValK1Sn7ia0kcrtcNZ3u7ebt78aDe68zgc6pCUHKC9PbnkGIOdQEaeBO6izghxPkumic2h1ij3bN1D+L9+frKS6m6cdX88uNdtbiuNxeMg7r8sgJQtyyhaxBsxlGGt67jLAjPG2xwQPTcFmL1Wkarbs63Txwe+M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115739; c=relaxed/simple;
-	bh=TlbvO2k3UpVXutnygaPHYW5d2mu5CnyVqpcsQ3yVq3o=;
+	s=arc-20240116; t=1744113564; c=relaxed/simple;
+	bh=RKLQno/BppnbH1Wnd51i+1PwLRe06YBjU92L8B5BQ7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uu9CEbihZ2knP2iW+sDkwv09bBifBuCMdGwk5Obh9v22dd9qxUHAz8chZcJeIepNYON1ORdXyWHPw5035beWfe3iBnM3MRroWP+Arr6+cI17ILR6aQiw8zWGU5AbcYVu6yjXgh6V5Ep9CykpeecQSKGF67h5SSbu4ehCaDkzRsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIw6GNNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835D5C4CEE5;
-	Tue,  8 Apr 2025 12:35:38 +0000 (UTC)
+	 MIME-Version; b=n8ZZccR5cJuTs4aTHvsCZ1D0EQwGdOHySTieOKsoIRca9ddXie8R0z/teoV0xHBQIi8HCtQ2h31J/JWABSsDv4kUoQXdsQC90YHUDQtd9vP6X1SgYzpLB+/XDi0ckmly29Vpguo4vgEsHuXZup3t8qp1NCFsIJjRCiZDoXfFw6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqc8b4+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10BDC4CEE5;
+	Tue,  8 Apr 2025 11:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115738;
-	bh=TlbvO2k3UpVXutnygaPHYW5d2mu5CnyVqpcsQ3yVq3o=;
+	s=korg; t=1744113564;
+	bh=RKLQno/BppnbH1Wnd51i+1PwLRe06YBjU92L8B5BQ7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hIw6GNNSpsUA6TUwoCHntSFrJ3FYx5DU66YYopiMuRn1TfAVlOvVjbt3q5I2SjHgu
-	 9uXA87wESbP2tSKFRr0jJrfUCqCZCh/0pMa14uZdD/frXLuCEv/vLubSCygp8CDVLO
-	 5mBbXG8KKUJm2aPOYwgcO0WsalkCmoZti54Fnoiw=
+	b=eqc8b4+QaWHFuaLoslfzHYaR6ZWILFp2VKJZlj/KK/xwJ1hbY3KXPExGa7sboadAn
+	 3WeRmQw+ztuc/K/JWWpd/fSXyomb+zhT2UkWFNuswN9mPPm86r1xBZtsZiN/7iw0+V
+	 9zgVO2jaqGoOKDVaiEPiREgSqOk3G0kenLxIJSwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Debin Zhu <mowenroot@163.com>,
+	Bitao Ouyang <1985755126@qq.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/204] soundwire: slave: fix an OF node reference leak in soundwire slave device
-Date: Tue,  8 Apr 2025 12:50:17 +0200
-Message-ID: <20250408104822.908221204@linuxfoundation.org>
+Subject: [PATCH 6.6 207/268] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
+Date: Tue,  8 Apr 2025 12:50:18 +0200
+Message-ID: <20250408104834.155499646@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Debin Zhu <mowenroot@163.com>
 
-[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
+[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
 
-When initializing a soundwire slave device, an OF node is stored to the
-device with refcount incremented. However, the refcount is not
-decremented in .release(), thus call of_node_put() in
-sdw_slave_release().
+When calling netlbl_conn_setattr(), addr->sa_family is used
+to determine the function behavior. If sk is an IPv4 socket,
+but the connect function is called with an IPv6 address,
+the function calipso_sock_setattr() is triggered.
+Inside this function, the following code is executed:
 
-Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
+
+Since sk is an IPv4 socket, pinet6 is NULL, leading to a
+null pointer dereference.
+
+This patch fixes the issue by checking if inet6_sk(sk)
+returns a NULL pointer before accessing pinet6.
+
+Signed-off-by: Debin Zhu <mowenroot@163.com>
+Signed-off-by: Bitao Ouyang <1985755126@qq.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/slave.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/calipso.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index c1c1a2ac293af..28b0d7b6d780c 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -12,6 +12,7 @@ static void sdw_slave_release(struct device *dev)
- {
- 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 1578ed9e97d89..c07e3da08d2a8 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1075,8 +1075,13 @@ static int calipso_sock_getattr(struct sock *sk,
+ 	struct ipv6_opt_hdr *hop;
+ 	int opt_len, len, ret_val = -ENOMSG, offset;
+ 	unsigned char *opt;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
-+	of_node_put(slave->dev.of_node);
- 	mutex_destroy(&slave->sdw_dev_lock);
- 	kfree(slave);
- }
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
+@@ -1128,8 +1133,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ {
+ 	int ret_val;
+ 	struct ipv6_opt_hdr *old, *new;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
+ 
++	txopts = txopt_get(pinfo);
+ 	old = NULL;
+ 	if (txopts)
+ 		old = txopts->hopopt;
+@@ -1156,8 +1166,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ static void calipso_sock_delattr(struct sock *sk)
+ {
+ 	struct ipv6_opt_hdr *new_hop;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
 -- 
 2.39.5
 
