@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7764EA803E3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915ECA802C4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15A4A42681F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790EF3A5633
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E0B2690D5;
-	Tue,  8 Apr 2025 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A27264A76;
+	Tue,  8 Apr 2025 11:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWVJKdA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Djn0bOPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2597B2686B9;
-	Tue,  8 Apr 2025 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E99B263C6D;
+	Tue,  8 Apr 2025 11:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113335; cv=none; b=N9N2RYTABDCj973EsGYDZ1XJyDhk6emH6z/ahPsA1lLoH/ZAJ5giXXMHmXoMHg19pFexKzkzY9MEE5AgwTAMbseTRZ2hqAPtsrr00nVYv0hbRhGl1kUW/QkC2J9KijEG7vTNGR60L4npGM7rhovN8t5IH49Iiu5yRgYa0Jps9RY=
+	t=1744112659; cv=none; b=di4N6wZnfhSdpr2Sn8ewMM3BFypher0hcKdi3SDqNWgHYrgeWD69mPhjNRR1XJXx5gLQsix4k7Z/hYKtTUot1Chs43NA+cirdVBEQ2eT0EzsiOu72Zc4SimQMjXk77wpLPuQp7iuhZDJre6l9+aPlim2uCiWq2ZVFtaUcOf+ZCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113335; c=relaxed/simple;
-	bh=Nq+a6ozyNXG0C1juDcIasXze3cF1giTw3V+ljzE/nXM=;
+	s=arc-20240116; t=1744112659; c=relaxed/simple;
+	bh=qDl+LyqvBo3MQ3tq9fYNXHJYNpXB7Tjf0M6Ftvk5lNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COHooLvFMSgLJkxeJxfIIxVK+lIgjY6E57k+QgNpcuPYHIXcjsWBCUzaNbLNSuRkZ8LkF5FXAVGi7gpRN5SKjMrn3DiauO69vhNWMAXWJAOuDj3PshPlrC+HQmuGVwFQaw1LOPNgrOAOc+LvzODycf7MjiO/OmlXkYPDN4ySADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWVJKdA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A863DC4CEE5;
-	Tue,  8 Apr 2025 11:55:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uTLKuxR+hsOvvduXNq/5pyaQGbfODVBs22bVkIO64n0Os4arUjg/UbwBOb8ek2SWPUueAlqmVkbXO5DtdZaQ7ga+mu7miReLDNwwXpvFpb0qlDoDlKI9FHM/WK/j7eVtoF8XIi+PMOkP7s0xo3MYs6zUJhbUSHZNZSgWFJ1oghc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Djn0bOPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B97C4CEE5;
+	Tue,  8 Apr 2025 11:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113335;
-	bh=Nq+a6ozyNXG0C1juDcIasXze3cF1giTw3V+ljzE/nXM=;
+	s=korg; t=1744112659;
+	bh=qDl+LyqvBo3MQ3tq9fYNXHJYNpXB7Tjf0M6Ftvk5lNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWVJKdA8anBJEv7M8zlmwB39Hh0g0ZfoqnmdR9L2SciY/JdWrCeWMVl26DONUPM4s
-	 +RY2GcEV5vvH0k5eIM5b/NhUWXOsAM1O9lObxTqISHoxhZ5MvERuHmMv9gCkJCEiWO
-	 9jCghtX3JBDWv503oNN/+ZUJH7gdgBFI7pTv1tcE=
+	b=Djn0bOPG9ZSH0ClfT3j5f7K3I+z+vmxIUWMtr0xRrHwKmECMaeSTrYx4DumCQ3X/B
+	 5QLn9bY9fSLwuiCscRpLaz3vB/W/MsAfYwA0voJ9O9aB3z6/2CBr1GjjXOjkkwya+R
+	 ebto6GpMDrFuzSF2Lu07fV0pAyTt5vvlIibag4BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmremann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/268] perf units: Fix insufficient array space
+Subject: [PATCH 5.15 150/279] drm/vkms: Fix use after free and double free on init error
 Date: Tue,  8 Apr 2025 12:48:53 +0200
-Message-ID: <20250408104831.786685518@linuxfoundation.org>
+Message-ID: <20250408104830.383858801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit cf67629f7f637fb988228abdb3aae46d0c1748fe ]
+[ Upstream commit ed15511a773df86205bda66c37193569575ae828 ]
 
-No need to specify the array size, let the compiler figure that out.
+If the driver initialization fails, the vkms_exit() function might
+access an uninitialized or freed default_config pointer and it might
+double free it.
 
-This addresses this compiler warning that was noticed while build
-testing on fedora rawhide:
+Fix both possible errors by initializing default_config only when the
+driver initialization succeeded.
 
-  31    15.81 fedora:rawhide                : FAIL gcc version 15.0.1 20250225 (Red Hat 15.0.1-0) (GCC)
-    util/units.c: In function 'unit_number__scnprintf':
-    util/units.c:67:24: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-initialization]
-       67 |         char unit[4] = "BKMG";
-          |                        ^~~~~~
-    cc1: all warnings being treated as errors
-
-Fixes: 9808143ba2e54818 ("perf tools: Add unit_number__scnprintf function")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250310194534.265487-3-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Closes: https://lore.kernel.org/all/Z5uDHcCmAwiTsGte@louis-chauvet-laptop/
+Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmremann@suse.de>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212084912.3196-1-jose.exposito89@gmail.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/units.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vkms/vkms_drv.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/units.c b/tools/perf/util/units.c
-index 32c39cfe209b3..4c6a86e1cb54b 100644
---- a/tools/perf/util/units.c
-+++ b/tools/perf/util/units.c
-@@ -64,7 +64,7 @@ unsigned long convert_unit(unsigned long value, char *unit)
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index f716c5796f5fc..09025ff3b1961 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -226,17 +226,19 @@ static int __init vkms_init(void)
+ 	if (!config)
+ 		return -ENOMEM;
  
- int unit_number__scnprintf(char *buf, size_t size, u64 n)
+-	default_config = config;
+-
+ 	config->cursor = enable_cursor;
+ 	config->writeback = enable_writeback;
+ 	config->overlay = enable_overlay;
+ 
+ 	ret = vkms_create(config);
+-	if (ret)
++	if (ret) {
+ 		kfree(config);
++		return ret;
++	}
+ 
+-	return ret;
++	default_config = config;
++
++	return 0;
+ }
+ 
+ static void vkms_destroy(struct vkms_config *config)
+@@ -260,9 +262,10 @@ static void vkms_destroy(struct vkms_config *config)
+ 
+ static void __exit vkms_exit(void)
  {
--	char unit[4] = "BKMG";
-+	char unit[] = "BKMG";
- 	int i = 0;
+-	if (default_config->dev)
+-		vkms_destroy(default_config);
++	if (!default_config)
++		return;
  
- 	while (((n / 1024) > 1) && (i < 3)) {
++	vkms_destroy(default_config);
+ 	kfree(default_config);
+ }
+ 
 -- 
 2.39.5
 
