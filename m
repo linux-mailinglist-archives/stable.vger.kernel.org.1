@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5339A800B4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7D8A801C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F4707A88C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9E27A8D35
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC7126B0B8;
-	Tue,  8 Apr 2025 11:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFF227EBD;
+	Tue,  8 Apr 2025 11:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDT6ttN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZsOZbyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC99626B2A4;
-	Tue,  8 Apr 2025 11:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E153119AD5C;
+	Tue,  8 Apr 2025 11:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111760; cv=none; b=YIrF55nnQO4myMzUdS17AiaPgjkB8OKhhos9YQLf6FhCRmJmHhp+NbarVQ9MW+E/wRiv/FCeTLPBhULUFhjBPEqSFJHxtnkFCciq3jznPBCpaj2M2Wj7kmsYACLRdkV2lA+lEKp9/YYA5AyVWw1HergxL/9y7JXo1rdhfzI76jI=
+	t=1744112418; cv=none; b=bl0O4PigYPb4Hmbw1AgRV2zsY7p+GeaYvCUDkbxyToer0OBRJBdB+OE9qpy+PdYn1EaRhx7Fpj9joCOSwRwuX/ePjNRnfg3pDsjFCfD5sPhXoEdifQBeoPm+wFXJYFV7JQi7CjozZ4LlqDYL5EI/TLvGypqOo8vDwQQMAqaE4w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111760; c=relaxed/simple;
-	bh=SpR5KjNIQpFm1wAwhCXsWAEkZi/3lYJJPeYOCBU2OXo=;
+	s=arc-20240116; t=1744112418; c=relaxed/simple;
+	bh=Jy0VYueuJrzbE41CDE3E16x2lrIaJ1G09NLqjNI1JhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dk/Uv0eMEYT2Rl9aZ8kEYR6G3zlPI1eQ6K8mIORDQMjr689qiJnF68fQYNBqoy8RNwx/pO3SNqvRx4E11qoLpPMzlpug6Dp+F91M0yRRMk6pFias22eUn6/NtpdKvziUhw/IW/L592xipQhp4ru3J4ZqdkBVqHjzrQQcxzgMW9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDT6ttN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0762EC4CEE5;
-	Tue,  8 Apr 2025 11:29:18 +0000 (UTC)
+	 MIME-Version; b=jcDewg8pyJR0EUYeyfYT83Czc8ywGlJ/hLSjkQFmvoi6hojiqKJfTm6FwqmaftDnwY1grVWIMqkTIh3hfLbUWEICLd9ga/P62dzkTeqNxDnA99qscFY3TIfEGFED9Cho8onDEqkUytmPBxpi6JZdlEvbo3AvlscmX7vbo1HH7J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZsOZbyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7395FC4CEE5;
+	Tue,  8 Apr 2025 11:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111759;
-	bh=SpR5KjNIQpFm1wAwhCXsWAEkZi/3lYJJPeYOCBU2OXo=;
+	s=korg; t=1744112417;
+	bh=Jy0VYueuJrzbE41CDE3E16x2lrIaJ1G09NLqjNI1JhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDT6ttN5WS8flrOfYEQgKlqOFTGbEb69/3h0uKDlfs6cZNu11L9d4627dFageYEfS
-	 CEQB6r23bBn67L92V6LDCasVi1czXbCZJ+mVA9dVcLvsYujw5rUWAaqHAWVPNKVhj8
-	 OsBWygcArSD6QwcKx89Gi/QXbSZx3MVjdsbJmQQQ=
+	b=HZsOZbydZ8zV5r4DvTorjislnY490MPWXOKweShrsbMazWrHha+dz76sSwzGe46uy
+	 h+P02/wC38fDizaRFGmKEegKvedi/b/a8+4VqIQND0ZlXv7b528P70eOy50cp1xNf5
+	 2d/0NvkM1qqHO0EjRIV4P+dWeYvCp4a3Qimv2doE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 547/731] thermal: core: Remove duplicate struct declaration
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 5.15 061/279] drm/amd/display: Fix slab-use-after-free on hdcp_work
 Date: Tue,  8 Apr 2025 12:47:24 +0200
-Message-ID: <20250408104926.999961566@linuxfoundation.org>
+Message-ID: <20250408104827.996242790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9e6ec8cf64e2973f0ec74f09023988cabd218426 ]
+commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
 
-The struct thermal_zone_device is already declared on line 32, so the
-duplicate declaration has been removed.
+[Why]
+A slab-use-after-free is reported when HDCP is destroyed but the
+property_validate_dwork queue is still running.
 
-Fixes: b1ae92dcfa8e ("thermal: core: Make struct thermal_zone_device definition internal")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://lore.kernel.org/r/20250206081436.51785-1-luoxueqin@kylinos.cn
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Cancel the delayed work when destroying workqueue.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
+Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/thermal.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index 69f9bedd0ee88..0b5ed68210807 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -86,8 +86,6 @@ struct thermal_trip {
- #define THERMAL_TRIP_PRIV_TO_INT(_val_)	(uintptr_t)(_val_)
- #define THERMAL_INT_TO_TRIP_PRIV(_val_)	(void *)(uintptr_t)(_val_)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -396,6 +396,7 @@ void hdcp_destroy(struct kobject *kobj,
+ 	for (i = 0; i < hdcp_work->max_link; i++) {
+ 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
+ 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
++		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
+ 	}
  
--struct thermal_zone_device;
--
- struct cooling_spec {
- 	unsigned long upper;	/* Highest cooling state  */
- 	unsigned long lower;	/* Lowest cooling state  */
--- 
-2.39.5
-
+ 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
 
 
 
