@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF34A800EC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC18A801D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA8B6881063
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8734219E0B7C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D6526A0E2;
-	Tue,  8 Apr 2025 11:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EBA22257E;
+	Tue,  8 Apr 2025 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxitQkVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrbLA1bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052E526A0D6;
-	Tue,  8 Apr 2025 11:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42EF264A70;
+	Tue,  8 Apr 2025 11:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111671; cv=none; b=DiMIx4N98ONf5QKx9m4st7Q8NhDCcsxAxPkNqbY6QAxex1EfvcSlqY7HFpWsKOjbQ2VQKAoVyJ563c2fe4nhjIqt5f0V6/5PUT3EgzV8HgoTy5nq4mLhEUEeumcwdPq9rDf1K2jFI/Lz3R+Y7T39ntvTl0XeGtgTurRjsH8rfro=
+	t=1744112340; cv=none; b=Url9qDr4/+FeVnpM+TS3LzqrF9H1qmDo4n1eeE40Js5gOAfjJYWyRFHaT5Kn3zd/kTMXRCx+HakP8s4QaoSGKGfyTyVPY/XOBCu623UIxv+lfh9BL5UaFA8c3zLDWFWGqq6y2ov0GXjPNMhl7gkA1hxJy61vymWRtoU3/aiykvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111671; c=relaxed/simple;
-	bh=szcIKhIeTaBX9F/9RLP7ctHLFc3U1m5N0YgfylPKN6s=;
+	s=arc-20240116; t=1744112340; c=relaxed/simple;
+	bh=uYO3TBS2u3VUwSdOakaYQsbKQGuOgiJKdCyCymhph7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPDbrzgR77c/Swzlau5NhGF4jV4B9v5qZgeRXpXBO2Vyl3JLdTS/hwwWFOH5WAPtYXcnzV8tYJbTJ7mk5+iA8VdD2QjjcG3SZyb8byu2ZBlP9wM/whZQYaWHZCxMX77cGANn3wVdLtsLBtcVnDv+CmDoyuqKl3I0G5sNiFLIwkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxitQkVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883E7C4CEE5;
-	Tue,  8 Apr 2025 11:27:50 +0000 (UTC)
+	 MIME-Version; b=B7X7oQPKzPDNDCCBbnVnyOYe3+sBfD58MDDzM+iT37C158GDGFLMh1h4H4RzhQRHrqPaZguwy5rkF7pVUC+Vkx6vw3PBcRah8n1d6OnNzOLhitcJIMjjuHOvnQvojSJfHX5RsiergAzt6zNjdO/3hYBiWVg+Sku1JOLP9ZS1EsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrbLA1bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73025C4CEE7;
+	Tue,  8 Apr 2025 11:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111670;
-	bh=szcIKhIeTaBX9F/9RLP7ctHLFc3U1m5N0YgfylPKN6s=;
+	s=korg; t=1744112339;
+	bh=uYO3TBS2u3VUwSdOakaYQsbKQGuOgiJKdCyCymhph7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxitQkVX9Y3DVlv1VW3YQ5zRXXCf8FeahIGR0pjQsh1yFKTazcDijbIjxhJODMIDb
-	 7RuGUAKlWvng4jQICj7txNapFYPJSWKtYIreM7GRCf4RT8UUg/MrErtDmQ0w+w5Chy
-	 q7dhFb/4cSYPjHltGNG7K+Uc6IB/3qx3PnOKAtpI=
+	b=IrbLA1btjJUOywK2yqerwzDiF0GiXcM0xKFqxIUl+O0UKFttqIIbvxtUz131p+1w6
+	 NfkFT7rlzwK8kYqmPjj0L5CGHfLcr1Qwb4hH0IKj+pVeOjc9xKQy2X4ZyDAe1DN0Az
+	 GIc6gIyqCRwhn+W5FMsALTxjmzT/va1aOrpovEcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 517/731] NFSv4: Avoid unnecessary scans of filesystems for expired delegations
+Subject: [PATCH 5.15 031/279] alpha/elf: Fix misc/setarch test of util-linux by removing 32bit support
 Date: Tue,  8 Apr 2025 12:46:54 +0200
-Message-ID: <20250408104926.298756296@linuxfoundation.org>
+Message-ID: <20250408104827.223187325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +65,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Eric W. Biederman <ebiederm@xmission.com>
 
-[ Upstream commit f163aa81a799e2d46d7f8f0b42a0e7770eaa0d06 ]
+[ Upstream commit b029628be267cba3c7684ec684749fe3e4372398 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups.  If the state manager was asked to reap the
-expired delegations, it should scan only those filesystems that hold
-delegations that need to be reaped.
+Richard Henderson <richard.henderson@linaro.org> writes[1]:
 
-Fixes: 7f156ef0bf45 ("NFSv4: Clean up nfs_delegation_reap_expired()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+> There was a Spec benchmark (I forget which) which was memory bound and ran
+> twice as fast with 32-bit pointers.
+>
+> I copied the idea from DEC to the ELF abi, but never did all the other work
+> to allow the toolchain to take advantage.
+>
+> Amusingly, a later Spec changed the benchmark data sets to not fit into a
+> 32-bit address space, specifically because of this.
+>
+> I expect one could delete the ELF bit and personality and no one would
+> notice. Not even the 10 remaining Alpha users.
+
+In [2] it was pointed out that parts of setarch weren't working
+properly on alpha because it has it's own SET_PERSONALITY
+implementation.  In the discussion that followed Richard Henderson
+pointed out that the 32bit pointer support for alpha was never
+completed.
+
+Fix this by removing alpha's 32bit pointer support.
+
+As a bit of paranoia refuse to execute any alpha binaries that have
+the EF_ALPHA_32BIT flag set.  Just in case someone somewhere has
+binaries that try to use alpha's 32bit pointer support.
+
+Link: https://lkml.kernel.org/r/CAFXwXrkgu=4Qn-v1PjnOR4SG0oUb9LSa0g6QXpBq4ttm52pJOQ@mail.gmail.com [1]
+Link: https://lkml.kernel.org/r/20250103140148.370368-1-glaubitz@physik.fu-berlin.de [2]
+Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/87y0zfs26i.fsf_-_@email.froward.int.ebiederm.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 7 +++++++
- include/linux/nfs_fs_sb.h | 1 +
- 2 files changed, 8 insertions(+)
+ arch/alpha/include/asm/elf.h       |  6 +-----
+ arch/alpha/include/asm/pgtable.h   |  2 +-
+ arch/alpha/include/asm/processor.h |  8 ++------
+ arch/alpha/kernel/osf_sys.c        | 11 ++---------
+ 4 files changed, 6 insertions(+), 21 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index d1f5e497729c3..abd952cc47e4b 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -1284,6 +1284,7 @@ static void nfs_mark_test_expired_delegation(struct nfs_server *server,
- 		return;
- 	clear_bit(NFS_DELEGATION_NEED_RECLAIM, &delegation->flags);
- 	set_bit(NFS_DELEGATION_TEST_EXPIRED, &delegation->flags);
-+	set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
- 	set_bit(NFS4CLNT_DELEGATION_EXPIRED, &server->nfs_client->cl_state);
+diff --git a/arch/alpha/include/asm/elf.h b/arch/alpha/include/asm/elf.h
+index 8049997fa372a..2039a8c8d5473 100644
+--- a/arch/alpha/include/asm/elf.h
++++ b/arch/alpha/include/asm/elf.h
+@@ -74,7 +74,7 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
+ /*
+  * This is used to ensure we don't load something for the wrong architecture.
+  */
+-#define elf_check_arch(x) ((x)->e_machine == EM_ALPHA)
++#define elf_check_arch(x) (((x)->e_machine == EM_ALPHA) && !((x)->e_flags & EF_ALPHA_32BIT))
+ 
+ /*
+  * These are used to set parameters in the core dumps.
+@@ -145,10 +145,6 @@ extern int dump_elf_task_fp(elf_fpreg_t *dest, struct task_struct *task);
+ 	: amask (AMASK_CIX) ? "ev6" : "ev67");	\
+ })
+ 
+-#define SET_PERSONALITY(EX)					\
+-	set_personality(((EX).e_flags & EF_ALPHA_32BIT)		\
+-	   ? PER_LINUX_32BIT : PER_LINUX)
+-
+ extern int alpha_l1i_cacheshape;
+ extern int alpha_l1d_cacheshape;
+ extern int alpha_l2_cacheshape;
+diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
+index 02f0429f1068a..8e3cf3c9f913d 100644
+--- a/arch/alpha/include/asm/pgtable.h
++++ b/arch/alpha/include/asm/pgtable.h
+@@ -340,7 +340,7 @@ extern inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
+ 
+ extern void paging_init(void);
+ 
+-/* We have our own get_unmapped_area to cope with ADDR_LIMIT_32BIT.  */
++/* We have our own get_unmapped_area */
+ #define HAVE_ARCH_UNMAPPED_AREA
+ 
+ #endif /* _ALPHA_PGTABLE_H */
+diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
+index 6100431da07a3..d27db62c3247d 100644
+--- a/arch/alpha/include/asm/processor.h
++++ b/arch/alpha/include/asm/processor.h
+@@ -8,23 +8,19 @@
+ #ifndef __ASM_ALPHA_PROCESSOR_H
+ #define __ASM_ALPHA_PROCESSOR_H
+ 
+-#include <linux/personality.h>	/* for ADDR_LIMIT_32BIT */
+-
+ /*
+  * We have a 42-bit user address space: 4TB user VM...
+  */
+ #define TASK_SIZE (0x40000000000UL)
+ 
+-#define STACK_TOP \
+-  (current->personality & ADDR_LIMIT_32BIT ? 0x80000000 : 0x00120000000UL)
++#define STACK_TOP (0x00120000000UL)
+ 
+ #define STACK_TOP_MAX	0x00120000000UL
+ 
+ /* This decides where the kernel will search for a free chunk of vm
+  * space during mmap's.
+  */
+-#define TASK_UNMAPPED_BASE \
+-  ((current->personality & ADDR_LIMIT_32BIT) ? 0x40000000 : TASK_SIZE / 2)
++#define TASK_UNMAPPED_BASE (TASK_SIZE / 2)
+ 
+ typedef struct {
+ 	unsigned long seg;
+diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+index 8bbeebb73cf03..2dfb69a2ae43a 100644
+--- a/arch/alpha/kernel/osf_sys.c
++++ b/arch/alpha/kernel/osf_sys.c
+@@ -1212,8 +1212,7 @@ SYSCALL_DEFINE1(old_adjtimex, struct timex32 __user *, txc_p)
+ 	return ret;
  }
  
-@@ -1362,6 +1363,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 	nfs4_stateid stateid;
- 	unsigned long gen = ++server->delegation_gen;
+-/* Get an address range which is currently unmapped.  Similar to the
+-   generic version except that we know how to honor ADDR_LIMIT_32BIT.  */
++/* Get an address range which is currently unmapped. */
  
-+	if (!test_and_clear_bit(NFS4SERV_DELEGATION_EXPIRED,
-+				&server->delegation_flags))
-+		return 0;
- restart:
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
-@@ -1391,6 +1395,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 			goto restart;
- 		}
- 		nfs_inode_mark_test_expired_delegation(server,inode);
-+		set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
-+		set_bit(NFS4CLNT_DELEGATION_EXPIRED,
-+			&server->nfs_client->cl_state);
- 		iput(inode);
- 		return -EAGAIN;
- 	}
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 4e9ad6f6e9073..7d6f164036fac 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -252,6 +252,7 @@ struct nfs_server {
+ static unsigned long
+ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+@@ -1235,13 +1234,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		       unsigned long len, unsigned long pgoff,
+ 		       unsigned long flags)
+ {
+-	unsigned long limit;
+-
+-	/* "32 bit" actually means 31 bit, since pointers sign extend.  */
+-	if (current->personality & ADDR_LIMIT_32BIT)
+-		limit = 0x80000000;
+-	else
+-		limit = TASK_SIZE;
++	unsigned long limit = TASK_SIZE;
  
- 	unsigned long		delegation_flags;
- #define NFS4SERV_DELEGRETURN		(1)
-+#define NFS4SERV_DELEGATION_EXPIRED	(2)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
+ 	if (len > limit)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
