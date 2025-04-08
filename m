@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73270A7FE5E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FBDA801BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5699B446A30
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 965FB3A5EB1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3E72135CD;
-	Tue,  8 Apr 2025 11:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E022192F2;
+	Tue,  8 Apr 2025 11:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpxYGUaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja1AeBkp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83400374C4;
-	Tue,  8 Apr 2025 11:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671A26561C;
+	Tue,  8 Apr 2025 11:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110275; cv=none; b=EEV0rcqqlzH7bspqOcVCXnwgHvwpqYskOLA5QwnF6mpDgeh4q89YILtdJcbh7SY0s8yutuM6XO5ctWjOHfmnf6u7Q2W1Kc0AJJJX9BOvYW4MnOd+nL8fDwRiw149Eo3AnrjzX4mqQlymwI9CXyCcR0Q1fSSbAvfAmtDIjxlDhss=
+	t=1744112160; cv=none; b=J4+UkqC2SlkxNgT3BHDlzMZQ08N2zRnTKWrN/f7qzbVhVkRKzrCNtv8S0RErCZjgBwwoiVo0fnzFyelSxT1YxtZidj6tOxzocNd2b4sclxgXAS0y4e69/55Ao7SnO48UHNVM6eR0LipATGKwExdMOj3F0vrY4fIT3UgcEsGedXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110275; c=relaxed/simple;
-	bh=ifj8bTnv15hLf4ePdCNOsb8GZgzyqRt/hqVd8HD0q0g=;
+	s=arc-20240116; t=1744112160; c=relaxed/simple;
+	bh=gSm8hnzAmMWnrvBzQZeZs60khRSYt6GNyS5GrDubMt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjwREEKtOkTCioo6KrtTMoGVBsM6sturu5ZRgD0fMUaDIxaYPpkL82ldmJ+F81V0psfzCx4H3Z+tDrNU2n6h1K9fdck6kTwyVfPQe1cZzS7Uwc2bHrtVpebOwnEx8UCl0m+QKtgng/xKZjlm1CYPjuZzAWEvnzN+iSEbz3hRs6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpxYGUaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1256DC4CEE5;
-	Tue,  8 Apr 2025 11:04:34 +0000 (UTC)
+	 MIME-Version; b=rddA9CeZ6BUk8gjyvbH9rctJgrWSlU6oEtAavrUYGUeho6UCp/jL1mcW0yRgZh7JZgq6GSWQbyYpsryaM5eEd6ySiujE0xJjYUkIi05UcO3VTDxWa8WFN3NrINr7MRZVfhJI6z0xf7cWLdWmnN49nDpJtu4Sk7ziX8QyUZNadrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja1AeBkp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43824C4CEE5;
+	Tue,  8 Apr 2025 11:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110275;
-	bh=ifj8bTnv15hLf4ePdCNOsb8GZgzyqRt/hqVd8HD0q0g=;
+	s=korg; t=1744112160;
+	bh=gSm8hnzAmMWnrvBzQZeZs60khRSYt6GNyS5GrDubMt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpxYGUaRTWFipvBjWyOqfavEBT20nzSIqjXDNhcPqjU+CXHyelSndpL87uv5ixSEU
-	 UVwWYJ0k6gfHKUebLl0eyJGyfqzIWMhtNl/ArfMjTGNRxNfS7V9qNBTAi9DbI7aS4Z
-	 dMRdqxDdAlGFTjspM7LW5enqQPcL3a90QUm9l0wQ=
+	b=Ja1AeBkp4RCp6poMHINPJYq6r6P/5/ODJISEgui/UYwSpYqiaEEssYrY2Iip1654Q
+	 b0toxphbJnbzWapjZIhnmOdXzvJ1x7B+tjj2xPGSj6Iab0FjRpfBuiDGxqSsonfIpZ
+	 TFATieli0316zGuICkFMgjm6/Emkjb57XMLY2Rd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 217/227] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 698/731] ksmbd: add bounds check for durable handle context
 Date: Tue,  8 Apr 2025 12:49:55 +0200
-Message-ID: <20250408104826.816063880@linuxfoundation.org>
+Message-ID: <20250408104930.504219853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karel Balej <balejk@matfyz.cz>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a41fcca4b342811b473bbaa4b44f1d34d87fcce6 upstream.
+commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
 
-Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
-prevent conversion of R1B responses to R1. Without this, the eMMC card
-in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
-with this mmc host doesn't probe with the ETIMEDOUT error originating in
-__mmc_poll_for_busy.
+Add missing bounds check for durable handle context.
 
-Note that the other issues reported for this phone and host, namely
-floods of "Tuning failed, falling back to fixed sampling clock" dmesg
-messages for the eMMC and unstable SDIO are not mitigated by this
-change.
-
-Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
-Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
-Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
 Cc: stable@vger.kernel.org
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Link: https://lore.kernel.org/r/20250310140707.23459-1-balejk@matfyz.cz
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pxav3.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pxav3.c
-+++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -401,6 +401,7 @@ static int sdhci_pxav3_probe(struct plat
- 	if (!IS_ERR(pxa->clk_core))
- 		clk_prepare_enable(pxa->clk_core);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2704,6 +2704,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
  
-+	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
- 	/* enable 1/8V DDR capable */
- 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_v2_req)) {
++				err = -EINVAL;
++				goto out;
++			}
++
+ 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
+ 			persistent_id = recon_v2->Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2737,6 +2744,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
  
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_req)) {
++				err = -EINVAL;
++				goto out;
++			}
++
+ 			recon = (struct create_durable_reconn_req *)context;
+ 			persistent_id = recon->Data.Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2761,6 +2775,13 @@ static int parse_durable_handle_context(
+ 				err = -EINVAL;
+ 				goto out;
+ 			}
++
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_req_v2)) {
++				err = -EINVAL;
++				goto out;
++			}
+ 
+ 			durable_v2_blob =
+ 				(struct create_durable_req_v2 *)context;
 
 
 
