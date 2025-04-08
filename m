@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340FAA802D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4086FA80168
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9D041887D1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A763F1889E55
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7B0268FF0;
-	Tue,  8 Apr 2025 11:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51C9267391;
+	Tue,  8 Apr 2025 11:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IG3iIOcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4dm9UQs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0742267B89;
-	Tue,  8 Apr 2025 11:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7311022257E;
+	Tue,  8 Apr 2025 11:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112761; cv=none; b=IhmRKc1MEq/WqasxzjCWWowjPs7Vi9r3YBifadUIAYEO2VIcru9tPjp2IUKKceWsgefrziqs8DoBG433c4PVMz3k+Cq2bQ55/vxS8noMbYPsI1QpjGtqOVEhpOvlRiq5BrHQ0T82S+KaktYaQ2rhSRgrKjcy7Ob049LSKeP7Zkw=
+	t=1744112101; cv=none; b=r6f1Gd+QDdjG1LAJBLg2TIfRpSeq8g+Ht42a5CyH7Ub/YKZx8ztGKo1StobFlDo0rQbfPATOm8Ny1g3WJmwtv2myX3D4DwPl34Q0EwNzDEhouQSHQImAbLA42bQ1MqzCdWlMukOSksQkdUZh+CiJ5RvMFd3lSWFKc7MSDIMBXk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112761; c=relaxed/simple;
-	bh=9eW+PseYrrAIOsphhNocPD6IGQxtDBwRDMuRlPaOAhA=;
+	s=arc-20240116; t=1744112101; c=relaxed/simple;
+	bh=xnqZ8Na1MvIe310mvKsFtAXfEuLXGI9Blo89Rh6t3vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpT/DZXbsCHxWR0LyIIuhR+FcdalxQxV0RWyUoynn2wm/Qv7L66U0RQP3jM+mTU0ViE85CAo/kmxm3aPTSbx+fzhzda32pOI4jFSaOUXqsXTbLak2Z+egIlJj/fCqm+PRIpJPwbXEFXjAopLaV7DJR8KFdDwApoRFqp4NuwsN50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IG3iIOcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ACDC4CEE5;
-	Tue,  8 Apr 2025 11:46:01 +0000 (UTC)
+	 MIME-Version; b=EcmA+BZGrpb6PFhEds9o+/LyW4DA//oeFS0ZisCHslqQvRB/I8UhlRqoywBTzNeiJN+2ojiwKv8gIPxnYW+ZnHvQBOO71PWFdf/E9StiFUXqbUPrj5wdIFyDrzkxOw1kRW0j9wCpW6U6LbG6dG+8r9fl47aiHOIlB8oP3EW7cn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4dm9UQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A8DC4CEE5;
+	Tue,  8 Apr 2025 11:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112761;
-	bh=9eW+PseYrrAIOsphhNocPD6IGQxtDBwRDMuRlPaOAhA=;
+	s=korg; t=1744112101;
+	bh=xnqZ8Na1MvIe310mvKsFtAXfEuLXGI9Blo89Rh6t3vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IG3iIOcn8hOfg8uiq6Hv6tMopMuYyewN0goH5DaZaYuO208OIlHUBu16II8VAfL49
-	 3FGIJudfm7GkUBvrQkRyKn1zX9w22qrzIMpwaA0ghaqRFq+3YHxIojxkM6APZ+mHa+
-	 MMkW1XaOE/hDikepz0bXPA8LapYrhHaOkc8N9KNs=
+	b=V4dm9UQsVb5RbmbqEas7sotvIKf2DNHqtXpGw8gMGHu/EQLmPgCHiGmWAiVI2J4hm
+	 ZkqxLMc2YbQLSv43245mOvOKe90SH63B2q1RzqqF6sImIQPIH1/r4kVnMS7MmFHx28
+	 s5+EYMjSqUjougxXS2yklLx4THNtElVdOD3xIXPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/279] crypto: nx - Fix uninitialised hv_nxc on error
+	Agoston Lorincz <pipacsba@gmail.com>,
+	All applicable <stable@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.14 674/731] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
 Date: Tue,  8 Apr 2025 12:49:31 +0200
-Message-ID: <20250408104831.414194753@linuxfoundation.org>
+Message-ID: <20250408104929.945756575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9b00eb923f3e60ca76cbc8b31123716f3a87ac6a ]
+commit 2fa87c71d2adb4b82c105f9191e6120340feff00 upstream.
 
-The compiler correctly warns that hv_nxc may be used uninitialised
-as that will occur when NX-GZIP is unavailable.
+Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
+Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
+1 (Windows) and 4 (Android(GMIN)).
 
-Fix it by rearranging the code and delay setting caps_feat until
-the final query succeeds.
+In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
+causing Linux' x86-android-tables code which deals with the general
+brokenness of this device's ACPI tables to fail to probe with:
 
-Fixes: b4ba22114c78 ("crypto/nx: Get NX capabilities for GZIP coprocessor type")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
+[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
+
+which renders sound, the touchscreen, charging-management,
+battery-monitoring and more non functional.
+
+Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
+device to fix this.
+
+Reported-by: Agoston Lorincz <pipacsba@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
+Cc: All applicable <stable@kernel.org>
+Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250325210450.358506-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-common-pseries.c | 37 ++++++++++++---------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ drivers/acpi/x86/utils.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
-index 4e304f6081e47..f24d58b6eb1e5 100644
---- a/drivers/crypto/nx/nx-common-pseries.c
-+++ b/drivers/crypto/nx/nx-common-pseries.c
-@@ -1142,6 +1142,7 @@ static void __init nxcop_get_capabilities(void)
- {
- 	struct hv_vas_all_caps *hv_caps;
- 	struct hv_nx_cop_caps *hv_nxc;
-+	u64 feat;
- 	int rc;
- 
- 	hv_caps = kmalloc(sizeof(*hv_caps), GFP_KERNEL);
-@@ -1152,27 +1153,26 @@ static void __init nxcop_get_capabilities(void)
- 	 */
- 	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES, 0,
- 					  (u64)virt_to_phys(hv_caps));
-+	if (!rc)
-+		feat = be64_to_cpu(hv_caps->feat_type);
-+	kfree(hv_caps);
- 	if (rc)
--		goto out;
-+		return;
-+	if (!(feat & VAS_NX_GZIP_FEAT_BIT))
-+		return;
- 
--	caps_feat = be64_to_cpu(hv_caps->feat_type);
- 	/*
- 	 * NX-GZIP feature available
- 	 */
--	if (caps_feat & VAS_NX_GZIP_FEAT_BIT) {
--		hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
--		if (!hv_nxc)
--			goto out;
--		/*
--		 * Get capabilities for NX-GZIP feature
--		 */
--		rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
--						  VAS_NX_GZIP_FEAT,
--						  (u64)virt_to_phys(hv_nxc));
--	} else {
--		pr_err("NX-GZIP feature is not available\n");
--		rc = -EINVAL;
--	}
-+	hv_nxc = kmalloc(sizeof(*hv_nxc), GFP_KERNEL);
-+	if (!hv_nxc)
-+		return;
-+	/*
-+	 * Get capabilities for NX-GZIP feature
-+	 */
-+	rc = h_query_vas_capabilities(H_QUERY_NX_CAPABILITIES,
-+					  VAS_NX_GZIP_FEAT,
-+					  (u64)virt_to_phys(hv_nxc));
- 
- 	if (!rc) {
- 		nx_cop_caps.descriptor = be64_to_cpu(hv_nxc->descriptor);
-@@ -1182,13 +1182,10 @@ static void __init nxcop_get_capabilities(void)
- 				be64_to_cpu(hv_nxc->min_compress_len);
- 		nx_cop_caps.min_decompress_len =
- 				be64_to_cpu(hv_nxc->min_decompress_len);
--	} else {
--		caps_feat = 0;
-+		caps_feat = feat;
- 	}
- 
- 	kfree(hv_nxc);
--out:
--	kfree(hv_caps);
- }
- 
- static const struct vio_device_id nx842_vio_driver_ids[] = {
--- 
-2.39.5
-
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -374,7 +374,8 @@ static const struct dmi_system_id acpi_q
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+-					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
+ 		/* Medion Lifetab S10346 */
 
 
 
