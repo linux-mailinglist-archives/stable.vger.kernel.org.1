@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1652A8099F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352CAA80ADF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89FDB3A8743
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112191BC1C65
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF39269801;
-	Tue,  8 Apr 2025 12:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DAE26B953;
+	Tue,  8 Apr 2025 12:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMUa81ao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiOpFdu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC113276026;
-	Tue,  8 Apr 2025 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3259126B2DD;
+	Tue,  8 Apr 2025 12:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115685; cv=none; b=ammjXxzVx2oyGWcNisupqKW0rV+D+U1bX5WgBuLZn2HbWwhEYu8skiypPBeJQ99AnNRrCXaNY58CyHHkM0bEajQvx2alIXwlnp46D7pywgJYrpUUig3/FwKwHO3PnIomdbljqB7MvNLW/ZkiqK4hR7Nh4ydPQXvPtAfnTPfUKkM=
+	t=1744116787; cv=none; b=Ks8PRcbu/S1KKkD9Ikw/AJlwWY5rSTOJG1vU2t6Qql6HPNwQ9/XZy3wSr0N+BTn2HSmdPHyoVNv0qm84RDdAOvx72Q1mZgpRE+Tnj3BdQ2pmwOYkWOppTCr+A5GkfuYY5Vdvckq2CQoJ0c6xpIzehypg2M0M4kHlCw7CLaNXuAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115685; c=relaxed/simple;
-	bh=M8T0pW4NGmBE/5LVCKIrGEylN4UkNIvu4f9QnAXNyXU=;
+	s=arc-20240116; t=1744116787; c=relaxed/simple;
+	bh=MjY1D7qmlGr3C/LvD42C81VynArqGBJlIAcPSiSip1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxo3XvJqj32nRdKpl9Ig24JwovwoUgY83JneBvGQVr0pMEkmIDvYdeapedM8QGK6Kl+DukGyxwzrKjEWHCP8T7E5CmT+xeSQwT30MQrj7znQYJfALWGQcSrcu1F2ypy5FH99oxEAU1+44u4vs9dS9U6f6pZNy42xDxaS5+uAg7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMUa81ao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D79BC4CEE5;
-	Tue,  8 Apr 2025 12:34:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C0QVJZt2++LKe7cHo8s6hsM2iGmXw6TtlvfaTnYuAR6apmQ47TFtSoW1KvatTWbalagOQWDNFLJUS1M7BxK5hG9V9pNZajmHCXh76l5GEG/GnOFPHUeESeXyWVR4WNThryMboGkt1Y4slvt7hymQWW5DkhOTZYFq5Hridwharvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiOpFdu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566EBC4CEE5;
+	Tue,  8 Apr 2025 12:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115685;
-	bh=M8T0pW4NGmBE/5LVCKIrGEylN4UkNIvu4f9QnAXNyXU=;
+	s=korg; t=1744116787;
+	bh=MjY1D7qmlGr3C/LvD42C81VynArqGBJlIAcPSiSip1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMUa81ao1lBnkn+mcDZ1CfHgk3GcY+Y4do/bw+mNYeUi4MMnWGtVvtBK9sXhhRYk9
-	 mPhNGgL6imrYqS8cA+4NG6t4kWv3tLpQzelDlxkx7PgJ90A0oy75RPmewPd9R9amEi
-	 zP8+8iUkAOMFLa1nh/a8Amhpslw2OP+I0NTwSiCA=
+	b=JiOpFdu8N4juFisZADZCQgiEXhj15PDAQi4IdP09KjaarL7EN9mqc2AMXdMEDaRVZ
+	 w9TebsPrGDSXTo4w3Br9sDVne2YgtEwSBSMSyBv5S4ZYztZS4UmB8JFlCDR90XJ0v5
+	 fSytTaSsBJ1Kgr8du+xqMeNupAgqd3DRfvlToKqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Geis <pgwipeout@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/204] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
+Subject: [PATCH 6.12 269/423] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
 Date: Tue,  8 Apr 2025 12:49:55 +0200
-Message-ID: <20250408104822.271336131@linuxfoundation.org>
+Message-ID: <20250408104852.021105575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Geis <pgwipeout@gmail.com>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
+[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
 
-Correct the clk_ref_usb3otg parent to fix clock control for the usb3
-controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
-and the rk3328 usb3 phy clock map.
+Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
+Add Surface Go 4 DMI match to button_array_table to fix this.
 
-Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
-Signed-off-by: Peter Geis <pgwipeout@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3328.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
-index 267ab54937d3d..a3587c500de28 100644
---- a/drivers/clk/rockchip/clk-rk3328.c
-+++ b/drivers/clk/rockchip/clk-rk3328.c
-@@ -201,7 +201,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
- 				    "gpll_peri",
- 				    "hdmiphy_peri" };
- PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
--				    "clk_usb3otg_ref" };
-+				    "clk_ref_usb3otg_src" };
- PNAME(mux_xin24m_32k_p)		= { "xin24m",
- 				    "clk_rtc32k" };
- PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 445e7a59beb41..9a609358956f3 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -132,6 +132,13 @@ static const struct dmi_system_id button_array_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
+ 		},
+ 	},
++	{
++		.ident = "Microsoft Surface Go 4",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
 2.39.5
 
