@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06177A809FB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB69A80517
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95A498C413A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0361B6385D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251426E14C;
-	Tue,  8 Apr 2025 12:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438DE20CCD8;
+	Tue,  8 Apr 2025 12:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3JLsZwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0GTxpj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B26926E145;
-	Tue,  8 Apr 2025 12:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0141126773A;
+	Tue,  8 Apr 2025 12:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115862; cv=none; b=fuLEO8t9YQ8JC6LxDpcnBK1q1T0c9sQhQpagiRfC2q2nIUhz+3CnWeD32H5Vewkwj3iTWQXmMoTt4TDf+t9mnoQezdJhsxnc6dbH1APyrp6nX2LAWS/cd8lKPuraiP6xtjmDVnR0hO/wC2qIq/QeJgtZQtqeU3p+uLKYM0Ex/9M=
+	t=1744114060; cv=none; b=nRZGxOc5BaM0xEwW4Go86ubrPSA0+cVl4BEj1sy30JRQ18G2BA5+fCwDMtaGrkbOlFkDJi50cNI9UO9qAPlR2i1UB3UFjYGkC6HAoH40qhrGr58O8rqJEzr10uYWW42EYZ4wH6fRi8lYMHM5c+ZyCd3w4NWCeyBlkqdw2mZ/nf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115862; c=relaxed/simple;
-	bh=zzXCVHfEtTfbe7oex4QxNJJ3ZAbAxXHGjvO78mnxU8Y=;
+	s=arc-20240116; t=1744114060; c=relaxed/simple;
+	bh=4LteofqB+JgJKiivTjwTYGvzwOaJoI++3v94qR7Dc0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LupjxiGNtPrcjULJpPy1cukKP8x1yoeVX00iim/wJRL228uRMkMotCw+gHyv6NEpbgjZHnTY4gmnFl9jGSSaG6g3ganIOlbl+ScHZANAtBGj1tXSbfPMTa2navDu8JrtOjNmjiiXJSozWVsUDpYXvUdlAcIZJYiK0IuYLg7hTbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3JLsZwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D029C4CEE5;
-	Tue,  8 Apr 2025 12:37:41 +0000 (UTC)
+	 MIME-Version; b=CY8Xc54mPwix5bcPyHdS65GWVXQUAEwV0QPlh8UL04etnZIiKevh536l9FSttBu7qMSszSX8tN8k4gSNYU2wfLXSTU3iK/gBKGHzCCv44mYSyy33qa22NcYBQLJbBpDKwQf1SczIrXF/3OYqPlQb4Zn/885TnTb4sZhFU/Kd2ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0GTxpj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4CBC4CEE5;
+	Tue,  8 Apr 2025 12:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115862;
-	bh=zzXCVHfEtTfbe7oex4QxNJJ3ZAbAxXHGjvO78mnxU8Y=;
+	s=korg; t=1744114059;
+	bh=4LteofqB+JgJKiivTjwTYGvzwOaJoI++3v94qR7Dc0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3JLsZwr1F5eDAI9Ekns02IpDc3BzHuMdQy1bTo6g3vmB1FZEUhb2JlTW4+MAa5cC
-	 ylaLkjVOSsCiNzWHMpwmAKyQ4Fj/6RxQLsj0nk3xGDV2Ls5maRJnuMiNRBb04+BAGl
-	 4Ub7a2GA3nWLrX5sNdxXv5nSKQ0h0ZZWiW31RHbs=
+	b=T0GTxpj/lY5Ysp80Q6ckp8J/w8K2BtBZUn3HgWsWIIAusGl/QyJYIEk+yxammeO3K
+	 y46knB7QjW+g6VqLpUo10Ah/TJ+detfup+6E86kQ/e6UDsaeIBGTQLbYScNh5QGHQO
+	 rfPlBl5NTbSxwxuE1GP+YLbF65P+XsdKX/o4VkPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/204] affs: dont write overlarge OFS data block size fields
+Subject: [PATCH 5.4 122/154] perf python: Decrement the refcount of just created event on failure
 Date: Tue,  8 Apr 2025 12:51:03 +0200
-Message-ID: <20250408104824.202833423@linuxfoundation.org>
+Message-ID: <20250408104819.225863132@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
+[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
 
-If a data sector on an OFS floppy contains a value > 0x1e8 (the
-largest amount of data that fits in the sector after its header), then
-an Amiga reading the file can return corrupt data, by taking the
-overlarge size at its word and reading past the end of the buffer it
-read the disk sector into!
+To avoid a leak if we have the python object but then something happens
+and we need to return the operation, decrement the offset of the newly
+created object.
 
-The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
-the new size field for a data block was computed by adding the amount
-of data currently being written (into the block) to the existing value
-of the size field. This is correct if you're extending the file at the
-end, but if you seek backwards in the file and overwrite _existing_
-data, it can lead to the size field being larger than the maximum
-legal value.
-
-This commit changes the calculation so that it sets the size field to
-the max of its previous size and the position within the block that we
-just wrote up to.
-
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/affs/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/util/python.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index a7c9538214878..52d11931025cf 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -724,7 +724,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		tmp = min(bsize - boff, to - from);
- 		BUG_ON(boff + tmp > bsize || tmp > bsize);
- 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
--		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
-+		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
-+			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
- 		affs_fix_checksum(sb, bh);
- 		mark_buffer_dirty_inode(bh, inode);
- 		written += tmp;
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 2ff87ad8d7e88..594c738e4930f 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1036,6 +1036,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 
+ 		evsel = perf_evlist__event2evsel(evlist, event);
+ 		if (!evsel) {
++			Py_DECREF(pyevent);
+ 			Py_INCREF(Py_None);
+ 			return Py_None;
+ 		}
+@@ -1047,9 +1048,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(md);
+ 
+-		if (err)
++		if (err) {
++			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
+ 					    "perf: can't parse sample, err=%d", err);
++		}
++
+ 		return pyevent;
+ 	}
+ end:
 -- 
 2.39.5
 
