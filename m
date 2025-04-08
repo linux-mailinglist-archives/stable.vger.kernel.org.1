@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-130559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3AAA8050F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EC3A805D6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9531F1B63073
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1360422B5C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B3A26A1CC;
-	Tue,  8 Apr 2025 12:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB726A1CA;
+	Tue,  8 Apr 2025 12:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7Zs240m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8MBOxSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9EC26A0E4;
-	Tue,  8 Apr 2025 12:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879BB26156E;
+	Tue,  8 Apr 2025 12:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114035; cv=none; b=FiAqPalSu7s+i4AKyZVnG269KW+j8nvZpK5nIoOYM7kPwDq0uHVHbbQacQrptk2ssXuZzquJrDevQrJH65QkeVN6ImjgbP58ocl5tz+I7Az6EtDlh/gAlahRW3S0McJXzD68GJnlZpEL/CuBl4c0IRH83+r1NYhzS4TvHCwlb70=
+	t=1744114164; cv=none; b=JcxFY3zrvFYmgkqGjPNh0suHO/ntsUzOeejYLn0+eaaNn7HCJg2gBLybeBHbIUXJDKpXP98vm6uy8xn8FPgHkm0oC0RDyhgaGcTvc3KXEiRVaHl2uPB/09zHWObphZ+pBAhFQnhv6yzMAuaAcL9l8SEWkqHa5UXTvRa7A1+JfRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114035; c=relaxed/simple;
-	bh=rDQcyc6XXgsm1+2vj4zCVHibLcE5ytVb/qYLyFs8KOo=;
+	s=arc-20240116; t=1744114164; c=relaxed/simple;
+	bh=Mw2067EXxvP/+uGm6yCh0ARztEfmTFzPCaYM4APtbaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrrbnetO0FB4if9/0PnIhJBzpaBfgjZ1UO10A9wLrKzIUsbQT7Sko8SGiGwz9NHzjQIAqD+PeJB4Hvrh/CnE09ZLEcmgNDwXp/PYTeWduX9fA0L7Xj6R5B3V86QbrIS2n/IET3zVuYVeO7CCts6dZ/ysukl8B2z5flreaAt1pGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7Zs240m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B86C4CEE5;
-	Tue,  8 Apr 2025 12:07:15 +0000 (UTC)
+	 MIME-Version; b=tEXOh1kioKcAj1xqfZlTKXqjKcTbCI8NDxRf+FRRFTgtLtQ8k4afCIms3hQg534C6UeIfHyBUTQCzf7YqKlQjM/v898kVMK9pz6YxJQhpytniOVTSeSHyB0b3fK4l6JUWDd3HtM5x06BZD2jB9D1z4i2rnCt8naC6W8G5Xf7N/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8MBOxSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE6C4CEE5;
+	Tue,  8 Apr 2025 12:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114035;
-	bh=rDQcyc6XXgsm1+2vj4zCVHibLcE5ytVb/qYLyFs8KOo=;
+	s=korg; t=1744114164;
+	bh=Mw2067EXxvP/+uGm6yCh0ARztEfmTFzPCaYM4APtbaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7Zs240mLiiU+XxQhk/B2y4dtnXYin7yQPNXC2uVc7Bzy1asKz/qEveZHNnealWF0
-	 kugUI3QjvaRXXrtNuHeoSmDCl9cI2X1o5J7e1aKNTbi0n0GjDyco/jZ5s97b74aAfv
-	 KvMtxnvwwZZfhNqNP/FUn0GKh1tFRAraCRTx07ao=
+	b=F8MBOxSHmsbjEaZCUH15JO2TJtfpobt4tZZxhtk6yfmCueGumk9+ny5tLGzHLA56g
+	 pjCvVZcmy2W/zHpRu1NQB51JQGQjrzJckT8zIQAt1ZYDaU+pjgkOnLPxkrcmi3FiAM
+	 YvuyMO6X5eVakyvebP0ab9V4bzX7USJ4QnmlCQuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 110/154] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
-Date: Tue,  8 Apr 2025 12:50:51 +0200
-Message-ID: <20250408104818.863374120@linuxfoundation.org>
+Subject: [PATCH 5.4 111/154] power: supply: max77693: Fix wrong conversion of charge input threshold value
+Date: Tue,  8 Apr 2025 12:50:52 +0200
+Message-ID: <20250408104818.893265358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
 References: <20250408104815.295196624@linuxfoundation.org>
@@ -74,53 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
+[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
 
-PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
-initially start with a UNWIND_HINT_FUNC ORC state.
+The charge input threshold voltage register on the MAX77693 PMIC accepts
+four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
+Due to an oversight, the driver calculated the values for 4.7v and above
+starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
+gives 0).
 
-However, save_ret=1 means that we clobber the helper function's return
-address (and then later restore the return address further down on the
-stack); after that point, the only thing on the stack we can unwind through
-is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
-pt_regs frame.
+Add 1 to the calculation to ensure that 4.7v is converted to a register
+value of 0x1 and that the other two voltages are converted correctly as
+well.
 
-( An alternate approach would be to move the pt_regs->di overwrite down
-  such that it is the final step of pt_regs setup; but I don't want to
-  rearrange entry code just to make unwinding a tiny bit more elegant. )
-
-Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
+Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/calling.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/max77693_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 29e5675c6d4f2..6819ace46d8d2 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -104,6 +104,8 @@ For 32-bit we have the following conventions - kernel is built with
- 	pushq	%rsi		/* pt_regs->si */
- 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
- 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
-+	/* We just clobbered the return address - use the IRET frame for unwinding: */
-+	UNWIND_HINT_IRET_REGS offset=3*8
- 	.else
- 	pushq   %rdi		/* pt_regs->di */
- 	pushq   %rsi		/* pt_regs->si */
+diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
+index a2c5c9858639f..ef3482fa4023e 100644
+--- a/drivers/power/supply/max77693_charger.c
++++ b/drivers/power/supply/max77693_charger.c
+@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
+ 	case 4700000:
+ 	case 4800000:
+ 	case 4900000:
+-		data = (uvolt - 4700000) / 100000;
++		data = ((uvolt - 4700000) / 100000) + 1;
+ 		break;
+ 	default:
+ 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
 -- 
 2.39.5
 
