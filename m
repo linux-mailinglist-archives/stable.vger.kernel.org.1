@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70319A80600
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5CDA80A05
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60314A83E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A46A8C0174
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2E4269825;
-	Tue,  8 Apr 2025 12:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8AB26981C;
+	Tue,  8 Apr 2025 12:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHZw+B/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URFrSC92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE26426156E;
-	Tue,  8 Apr 2025 12:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDCF269839;
+	Tue,  8 Apr 2025 12:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114466; cv=none; b=JYVkMsd53WwWEXQ3AlVAoRCopc3o0PeONj50haryLqgc+lQ9FGjpDKWs9bcn3Dofrest1kRiloYcignFf9UT20uAnz2FI7QPQzroage2lzg3g0/J3ZJ5ZA5E/VzQCJmBuxugjcAYsj8l8NhLkBXUfV3V+qAA1X+fn57txqrrl7Y=
+	t=1744116203; cv=none; b=MG+tFxr10vBJrVYJKhu1FsMANI3QlLXxFUNRCSKcIPlP0mz5BpkeGpsD8UZAFid6Fg6ZMGd2iUfotSIJB+RuYJYy4lcidc91xd1iUBHspycesgBAH35Hgl8x+NcRDl8paDBixhaV1lk2NysM4tFwZNOozIVdiw7NW+D3Ui9rnVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114466; c=relaxed/simple;
-	bh=y3deuOFwzRk75dmGvOicONp2rydOm0mygxP+McEYCpY=;
+	s=arc-20240116; t=1744116203; c=relaxed/simple;
+	bh=TbMD1O2bNwuA0GuAdVKTOM4zy9X+GYomprMBwXglD2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBQv4UcSHTZcHyHoYdMVYY5N319hxy/YSd9Nd/PKHcKqvsTBZfyeNXiZ/8PH+Hc18kEANbMva6jVDuc+yHrGd5TS0AnSjR5FRbEqpMrud0uLUmmdeymRgoDx3Zy30tgbU1UOZm660aWaaA1R/gcKGllyTYukex4RN0n6LVFjQSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHZw+B/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0840C4CEE5;
-	Tue,  8 Apr 2025 12:14:25 +0000 (UTC)
+	 MIME-Version; b=WfaQxQ3HcSWPWjSSeabMT4t7qa3x13LIp8ov2OPEF34hrHMApHP4AB52+kkepElwB56bKr+TYpRy1QEPXqvyGJV3AkuNAGITZdFJUv1fPEI+wkocUlNPPfokw4j8x09dXBmV6hCaNjNDYybkK3UwY1bPXephQNyQFupE7Zb6O78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URFrSC92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3D3C4CEE5;
+	Tue,  8 Apr 2025 12:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114466;
-	bh=y3deuOFwzRk75dmGvOicONp2rydOm0mygxP+McEYCpY=;
+	s=korg; t=1744116203;
+	bh=TbMD1O2bNwuA0GuAdVKTOM4zy9X+GYomprMBwXglD2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHZw+B/RPzwxkVCAXmLnC0Ls43C9HI3DOLzkOC0YyAdr9/SO0T3jSgaB1Jomtt8lY
-	 U1sOeYlPpIFl8O5NLHOHJCpYT7LOqYJUhHZmrTU9hpayZkHXWBwxgpCRx4bG/Rv6vm
-	 1wqq2Z/83lzhlCbHtbr8reV5+Wpu0IZZadb/xZ70=
+	b=URFrSC92ZMa6YKY4y4xNTg0g2sLz5dSg56t7pFnxVFMfOvRD31FJt0dHjzaAN8mL8
+	 ox9nLQuQIhQzUooaza2VXlAzkBuKfTILrrnkAYBS7A+2FeDiFB5RJlXI1fBDRIKwGX
+	 A6mGYhLnh5ayfsp3dDZnckIZioXeiNXO+DFFy15o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Helge Deller <deller@gmx.de>,
+	zuoqian <zuoqian113@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 116/499] fbdev: au1100fb: Move a variable assignment behind a null pointer check
-Date: Tue,  8 Apr 2025 12:45:28 +0200
-Message-ID: <20250408104854.096704687@linuxfoundation.org>
+Subject: [PATCH 6.12 003/423] cpufreq: scpi: compare kHz instead of Hz
+Date: Tue,  8 Apr 2025 12:45:29 +0200
+Message-ID: <20250408104845.769701489@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: zuoqian <zuoqian113@gmail.com>
 
-[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
+[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function “au1100fb_setmode”.
+The CPU rate from clk_get_rate() may not be divisible by 1000
+(e.g., 133333333). But the rate calculated from frequency(kHz) is
+always divisible by 1000 (e.g., 133333000).
+Comparing the rate causes a warning during CPU scaling:
+"cpufreq: __target_index: Failed to change cpu frequency: -5".
+When we choose to compare kHz here, the issue does not occur.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: zuoqian <zuoqian113@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1100fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/cpufreq/scpi-cpufreq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 840f221607635..6251a6b07b3a1 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
- 	 */
- int au1100fb_setmode(struct au1100fb_device *fbdev)
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index 8d73e6e8be2a5..f2d913a91be9e 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -39,8 +39,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ static int
+ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
  {
--	struct fb_info *info = &fbdev->info;
-+	struct fb_info *info;
- 	u32 words;
- 	int index;
+-	u64 rate = policy->freq_table[index].frequency * 1000;
++	unsigned long freq_khz = policy->freq_table[index].frequency;
+ 	struct scpi_data *priv = policy->driver_data;
++	unsigned long rate = freq_khz * 1000;
+ 	int ret;
  
- 	if (!fbdev)
- 		return -EINVAL;
+ 	ret = clk_set_rate(priv->clk, rate);
+@@ -48,7 +49,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ 	if (ret)
+ 		return ret;
  
-+	info = &fbdev->info;
-+
- 	/* Update var-dependent FB info */
- 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
- 		if (info->var.bits_per_pixel <= 8) {
+-	if (clk_get_rate(priv->clk) != rate)
++	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
+ 		return -EIO;
+ 
+ 	return 0;
 -- 
 2.39.5
 
