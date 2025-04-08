@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29567A80BBB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDE8A804C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827744C5E88
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD031B64EFD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEAB278165;
-	Tue,  8 Apr 2025 12:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F2D26A0BA;
+	Tue,  8 Apr 2025 12:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHNAk/9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df3Nimrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC1C26A1A7;
-	Tue,  8 Apr 2025 12:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC79263F3B;
+	Tue,  8 Apr 2025 12:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116894; cv=none; b=EBj1FSqV1NYVgEKOEuH4MVTQZpRqIDFE2Ms470yDwUPW2tprPr+Coq5hgfKaoQRZKAV1enVTZANGNZIQvMf86pWWafDVYMgj3Hv1LGvJRP2Fcn2NR3i287VbYbd/VVw67Xwc03sWlccY29iklLf1585904Awh9cCBCiyl9kNhCc=
+	t=1744113850; cv=none; b=gQmPwj35d/WAG/Fk9bx3YoXgtGjqDW00vXhce5TjQzQrFsdmrEWf2TUxPQM8rulcaeVAXyfzLmTLkUSe2HWy/+NxyMN4X59dHul3jkdis4xzeAlTuIsY289jfTRvyHMyyYky1gYc0zIlebQnexNZHL+4YZR1JSPibgTQ+tZ8tPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116894; c=relaxed/simple;
-	bh=3UHvLcCWImW5DOlQU1lql1gTwZKTxVQoxS4UtahUO/U=;
+	s=arc-20240116; t=1744113850; c=relaxed/simple;
+	bh=GZRHOZDaFVLphiZ2wKmkZlX4OvR3TCFH2T16vIs36Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz0qHp4PW6wKNt2230Sb7CM74KXNOIwDPrfyrm9OfCeToa20+gu13oAT6aanP5RT6I5uzD/g93dX9kLLqhvjKTpQUPMV8T4I6tcfLjFB/ci9KuO0SA4fiRdBZ7Wc5a0ac78IB+lNau/8K4YcgfANtnziJemb2iCXQkQZ8h4X/LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHNAk/9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F30C4CEE5;
-	Tue,  8 Apr 2025 12:54:53 +0000 (UTC)
+	 MIME-Version; b=gM7PuWb4MzWqaRAdGR9Rsz4T30oI8droAsBStyf3hx+Kum9rD8wo8D6V8rxBcJjm4YOUWIUNSVQN0DyVRyOsUax33KMpdrrfNarGZnTKu84yBF9r7IcOP9WwRBMNt+FcO2mHvxg4BK0qK5Ht4294KhQJd/FztsbVV3qjk50wbHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df3Nimrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68D9C4CEE5;
+	Tue,  8 Apr 2025 12:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116894;
-	bh=3UHvLcCWImW5DOlQU1lql1gTwZKTxVQoxS4UtahUO/U=;
+	s=korg; t=1744113850;
+	bh=GZRHOZDaFVLphiZ2wKmkZlX4OvR3TCFH2T16vIs36Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHNAk/9mskz7QmNrrpt6vpzBiqd5DaR/yI7ecBUzDZG71f6Bs+uyw0ORKs2f0U02Q
-	 E4ZDcDqxdkj0zOSDPx6LSpVeINkszSWg2H/YHjS5fGSUIeiuTyZLpYdYCUN8QS86VW
-	 A0ZNthQ8rRkrytT6+U7a3igLnF84YfNErRYMFenU=
+	b=Df3NimrtbE6sQmGoX3paOFKPyMuwqagSFTFKRIrQmrHlELEEaETKXXZFNhLaWYoNk
+	 dHjxqizYArtFPonDjbOzTui00y/oKYs9pp2mObR2bb0qtmVkWdeUKbxV0J7jObgcJa
+	 51OXsCuL2eRfmAH9usVkGUR9//M0irYB8CEUFRqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 259/423] nvme-pci: clean up CMBMSC when registering CMB fails
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 044/154] drm/amd/display: Assign normalized_pix_clk when color depth = 14
 Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104851.777688883@linuxfoundation.org>
+Message-ID: <20250408104816.685352163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
+commit 79e31396fdd7037c503e6add15af7cb00633ea92 upstream.
 
-CMB decoding should get disabled when the CMB block isn't successfully
-registered to P2P DMA subsystem.
+[WHY & HOW]
+A warning message "WARNING: CPU: 4 PID: 459 at ... /dc_resource.c:3397
+calculate_phy_pix_clks+0xef/0x100 [amdgpu]" occurs because the
+display_color_depth == COLOR_DEPTH_141414 is not handled. This is
+observed in Radeon RX 6600 XT.
 
-Clean up the CMBMSC register in this error handling codepath to disable
-CMB decoding (and CMBLOC/CMBSZ registers).
+It is fixed by assigning pix_clk * (14 * 3) / 24 - same as the rests.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also fixes the indentation in get_norm_pix_clk.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 274a87eb389f58eddcbc5659ab0b180b37e92775)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 1d3205f08af84..84c0611697a9b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2005,6 +2005,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
-+		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
- 		return;
- 	}
- 
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1834,10 +1834,13 @@ static int get_norm_pix_clk(const struct
+ 			break;
+ 		case COLOR_DEPTH_121212:
+ 			normalized_pix_clk = (pix_clk * 36) / 24;
+-		break;
++			break;
++		case COLOR_DEPTH_141414:
++			normalized_pix_clk = (pix_clk * 42) / 24;
++			break;
+ 		case COLOR_DEPTH_161616:
+ 			normalized_pix_clk = (pix_clk * 48) / 24;
+-		break;
++			break;
+ 		default:
+ 			ASSERT(0);
+ 		break;
 
 
 
