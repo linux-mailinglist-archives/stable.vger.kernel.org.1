@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE266A80B39
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 801EAA8077B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B281BA7251
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60D134A5D76
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837E227BF64;
-	Tue,  8 Apr 2025 12:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BD5269D15;
+	Tue,  8 Apr 2025 12:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYuFZ8pr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqLe5ZkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42535267B89;
-	Tue,  8 Apr 2025 12:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17332063FD;
+	Tue,  8 Apr 2025 12:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116935; cv=none; b=BA07GjXDlgjOM2RX/L5DR5h/I4/9Lx+hPitEPXB3qyaEwt6MmI1nIvOB7iVhroRitCB5aj1VZXWBTIUC9uwyEcfBdu7C3XTeAega05e3l4r+VT4gzXHQyDgi4//8Ot8QxVmLxXH59sNpi7aDMfqp1rrQV85oRbvRLop1NBUWg4Y=
+	t=1744115335; cv=none; b=k3LXvgED/QGuMp/HnH75Kc64c4lq58r5isQefSXsEvPXCB6umJlyUjZ6P+vxOiR1bUTHDPC3D7clIJnJfh7Hx+XFedjLuGGt1AF0tWYQ/8mSswSMOJSclq8iF/Co+/rjPe76R59i0vDkrrLi7aPGeU5xMfJlLrFmsPkVgDjMqis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116935; c=relaxed/simple;
-	bh=x2EPWrgiYuGZXRQfnsSHW+0x+4P6DFlBuaM/QmRqe7o=;
+	s=arc-20240116; t=1744115335; c=relaxed/simple;
+	bh=ovLb0FbzqAD5ottyPckptA+PgG6iYYK5jwH/jFeaGJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwaDftpmRUSsu0D4rRPB2qCa7zdmxAsqfedutWFjhMDwQzOpLc8r+ZL6TAaVMimF2oBXSAcdauqcmaPx/WmQE0i5oBY1dRhUHAVLx4fTv21AN8+BtonBos8k6fik/6MAM5GkxEdcmI41AFHbmn9kAXhDRhU3Br9mhVRaez1cu7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYuFZ8pr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627F4C4CEE5;
-	Tue,  8 Apr 2025 12:55:34 +0000 (UTC)
+	 MIME-Version; b=JuPoRu6lKyL7Ri97mKg2hHCs+DVuC7EOwxrsoXEDkzV+u3JcqzS/b8XqkS9H6K8kV/0UPHn94Pu5fsWjkt8G9hquLXz0hDLhO+vBaMADry3kHD/NEkW+t5EvcOulHIvMZSqaguf8gtj+P37UBECIje7dasPpSFrQDOQlbBO962Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqLe5ZkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A0EC4CEE5;
+	Tue,  8 Apr 2025 12:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116934;
-	bh=x2EPWrgiYuGZXRQfnsSHW+0x+4P6DFlBuaM/QmRqe7o=;
+	s=korg; t=1744115335;
+	bh=ovLb0FbzqAD5ottyPckptA+PgG6iYYK5jwH/jFeaGJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYuFZ8prY9IoOrvY2HtpfU2fS0Z61VTnKE/neUl1u4/4LKRXuvvHe6HgoJYJB7knT
-	 4xVRlwBn+EHD+TVVEgstZhMA5mazxC0Rjsli3/YGvpjcyHEyp604vzIUOjZRt4ujMc
-	 /rjObDG3WALuYrBteayRXfgZqUyIsg5Veh1oIW/k=
+	b=VqLe5ZkQnlQaXzqgggjn4PD0eTIzHaOBC+c5iElTglqLsA2GjnXjbhXD9NMO2NckL
+	 z8iynXNZkcfeR8b1n3RVo6b2kjmhjnyKI8PGTtV0s5TtIF4u2pw4Vlf/ggV7QIWrSA
+	 iIb2uVialFVCCStTfvrXyD+bmNfKEWO+pFOEEnWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 323/423] spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.13 437/499] LoongArch: BPF: Fix off-by-one error in build_prologue()
 Date: Tue,  8 Apr 2025 12:50:49 +0200
-Message-ID: <20250408104853.338391196@linuxfoundation.org>
+Message-ID: <20250408104902.128686717@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit e19c1272c80a5ecce387c1b0c3b995f4edf9c525 ]
+commit 7e2586991e36663c9bc48c828b83eab180ad30a9 upstream.
 
-The lookup table forces the use of the "pinctrl-bcm2835" GPIO chip
-provider and essentially assumes that there is going to be such a
-provider, and if not, we will fail to set-up the SPI device.
+Vincent reported that running BPF progs with tailcalls on LoongArch
+causes kernel hard lockup. Debugging the issues shows that the JITed
+image missing a jirl instruction at the end of the epilogue.
 
-While this is true on Raspberry Pi based systems (2835/36/37, 2711,
-2712), this is not true on 7712/77122 Broadcom STB systems which use the
-SPI driver, but not the GPIO driver.
+There are two passes in JIT compiling, the first pass set the flags and
+the second pass generates JIT code based on those flags. With BPF progs
+mixing bpf2bpf and tailcalls, build_prologue() generates N insns in the
+first pass and then generates N+1 insns in the second pass. This makes
+epilogue_offset off by one and we will jump to some unexpected insn and
+cause lockup. Fix this by inserting a nop insn.
 
-There used to be an early check:
-
-       chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
-       if (!chip)
-               return 0;
-
-which would accomplish that nicely, bring something similar back by
-checking for the compatible strings matched by the pinctrl-bcm2835.c
-driver, if there is no Device Tree node matching those compatible
-strings, then we won't find any GPIO provider registered by the
-"pinctrl-bcm2835" driver.
-
-Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250401233603.2938955-1-florian.fainelli@broadcom.com
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Tested-by: Vincent Li <vincent.mc.li@gmail.com>
+Closes: https://lore.kernel.org/loongarch/CAK3+h2w6WESdBN3UCr3WKHByD7D6Q_Ve1EDAjotVrnx6Or_c8g@mail.gmail.com/
+Closes: https://lore.kernel.org/bpf/CAK3+h2woEjG_N=-XzqEGaAeCmgu2eTCUc7p6bP4u8Q+DFHm-7g@mail.gmail.com/
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm2835.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c |    2 ++
+ arch/loongarch/net/bpf_jit.h |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index a5d621b94d5e3..5926e004d9a65 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1226,7 +1226,12 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
- 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
- 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
--	int ret;
-+	const char *pinctrl_compats[] = {
-+		"brcm,bcm2835-gpio",
-+		"brcm,bcm2711-gpio",
-+		"brcm,bcm7211-gpio",
-+	};
-+	int ret, i;
- 	u32 cs;
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -142,6 +142,8 @@ static void build_prologue(struct jit_ct
+ 	 */
+ 	if (seen_tail_call(ctx) && seen_call(ctx))
+ 		move_reg(ctx, TCC_SAVED, REG_TCC);
++	else
++		emit_insn(ctx, nop);
  
- 	if (!target) {
-@@ -1291,6 +1296,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 		goto err_cleanup;
- 	}
+ 	ctx->stack_size = stack_adjust;
+ }
+--- a/arch/loongarch/net/bpf_jit.h
++++ b/arch/loongarch/net/bpf_jit.h
+@@ -27,6 +27,11 @@ struct jit_data {
+ 	struct jit_ctx ctx;
+ };
  
-+	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
-+		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
-+			break;
-+	}
++static inline void emit_nop(union loongarch_instruction *insn)
++{
++	insn->word = INSN_NOP;
++}
 +
-+	if (i == ARRAY_SIZE(pinctrl_compats))
-+		return 0;
-+
- 	/*
- 	 * TODO: The code below is a slightly better alternative to the utter
- 	 * abuse of the GPIO API that I found here before. It creates a
--- 
-2.39.5
-
+ #define emit_insn(ctx, func, ...)						\
+ do {										\
+ 	if (ctx->image != NULL) {						\
 
 
 
