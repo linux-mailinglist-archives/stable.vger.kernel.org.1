@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153ADA7FDC1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5647AA80245
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FC373BDC24
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ABC61890C41
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B59267F77;
-	Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4719F2686B8;
+	Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0mK0d6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeBgDGf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D48E22171A;
-	Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0294925FA13;
+	Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109905; cv=none; b=mDM7kIvOnTGAHsK5Ckxsc/fO2YoB+zIN3bs1j9BqhhFzlDkbdtPHlyeXsTkBTTAd3fpxQjxK/uHWHhYXeHjv+6A3HNcHH53/KGbyuriz+X8Gnw+J3qyZM7JtRlRC2Jj/3z3CuZsQEE3FDn2Wj7XGclRREOFwMz+sTLNYUreZPMs=
+	t=1744112503; cv=none; b=oXVXm6WDoU+r7OqOPRvNwgr9ZbbqB5L2ivt3fGcii965d4gNmPuOvkwEsOBgASOh2v1MKFCx3EBAEV0vJ4as46E8WAYv3fSnRoodEAILRNY05HF/1T//9TzQX+NiaPPiGZ3peXQTwIhIRt7nNCNRQUfXgSL8tME1Vu6J7jTduUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109905; c=relaxed/simple;
-	bh=2dXaRaSVF3MOXMor/ZA49nW7VYYnM8YxTKw2RmdENSw=;
+	s=arc-20240116; t=1744112503; c=relaxed/simple;
+	bh=86OBg5Lk28xeBNar22JHP706luZoebYF2ZIcXjk5SDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fC1EB5o7Tu1aM7cTF+6mDdWt5GJvLYXU4VEjd+EBvLpsCJAgvTID9qhras/RTTcXL85R6/Q3RX2Mg3J0PWos7WWnh+EmOgGTfZ/FI5OMaZAc1S9WBHeAoqWf0ir1HI8IVt1h6eK8C+oGs1O3/mSenUleknPOp57qtxQCQ9t/8OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0mK0d6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD16C4CEE5;
-	Tue,  8 Apr 2025 10:58:24 +0000 (UTC)
+	 MIME-Version; b=S8fOzdSdS51d63cwtwobq5mWeqcMW2iYDM4t7OLTOAISzTfzEMUVAqJdJ7D6zS+wB10nm/fnivQxfA9M+pFFTBT7G/Rc+ij1yfjWZMK3EqcFpu7aiU9sVxOqw9FeCjt97FYpdQunw8+YquaTE+9PMnJGtueMt2a8J1NSha6gLqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeBgDGf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8819DC4CEE5;
+	Tue,  8 Apr 2025 11:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109905;
-	bh=2dXaRaSVF3MOXMor/ZA49nW7VYYnM8YxTKw2RmdENSw=;
+	s=korg; t=1744112502;
+	bh=86OBg5Lk28xeBNar22JHP706luZoebYF2ZIcXjk5SDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0mK0d6GlFUYA6LkyIZ867AzatLTZLlaq0L2b8PaVsDe1yFFxN+/d5Krr4mKsn/w6
-	 gad4kVc+BG8JEncQHMJn4d+oqW2TzA2pTvTr61sGu7pS4xYYaHJTPr0DOTDbIPdAL+
-	 lGYP2oZCo0H47Pa5sbA4wGuEtI6nWVBEQ+NOLXdg=
+	b=zeBgDGf9+ntGVKYYLj1aswqBrfG811Eq1uxwJTeYMBfqpOPhIXwDO3Mi0dsTbjBNM
+	 AKMV/A8EFr7R+B8/IBIi/paVEcl9awrM93emF/r1P0oJpOmX+rhAIUHjrv/0tpRv7G
+	 9Le6K4iP8+EwgtuIOw93/mOJl2gbFYC1Hz66jncQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.10 097/227] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
-Date: Tue,  8 Apr 2025 12:47:55 +0200
-Message-ID: <20250408104823.273574164@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 093/279] net: atm: fix use after free in lec_send()
+Date: Tue,  8 Apr 2025 12:47:56 +0200
+Message-ID: <20250408104828.865794424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,38 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
+[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
 
-The common pattern in arm is to emit a "8<--- cut here ---" line for
-faults, but it was missing for do_PrefetchAbort(). Add it.
+The ->send() operation frees skb so save the length before calling
+->send() to avoid a use after free.
 
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/atm/lec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -559,6 +559,7 @@ do_PrefetchAbort(unsigned long addr, uns
- 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
- 		return;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 7226c784dbe0c..ca9952c52fb5c 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -181,6 +181,7 @@ static void
+ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ {
+ 	struct net_device *dev = skb->dev;
++	unsigned int len = skb->len;
  
-+	pr_alert("8<--- cut here ---\n");
- 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
- 		inf->name, ifsr, addr);
+ 	ATM_SKB(skb)->vcc = vcc;
+ 	atm_account_tx(vcc, skb);
+@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ 	}
  
+ 	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	dev->stats.tx_bytes += len;
+ }
+ 
+ static void lec_tx_timeout(struct net_device *dev, unsigned int txqueue)
+-- 
+2.39.5
+
 
 
 
