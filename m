@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C3DA808CF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CD9A8053F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2FA41BA4CB0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B52A4A5D25
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94972690D6;
-	Tue,  8 Apr 2025 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C4426A0C2;
+	Tue,  8 Apr 2025 12:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TX5/8Inn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2I2WLkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9726FD89;
-	Tue,  8 Apr 2025 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DE326A0AA;
+	Tue,  8 Apr 2025 12:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115892; cv=none; b=slujB8asfc3vU6daflreLyD2lItC5FaORIy9kRRoA17gOyK4V6X46s0SnazKwWgmr3cnIe4mL5krxEBKoMpguacSWL7/zC+A+biPB7BCxYvrOYu2ESJ2dsT32w+hLxYJ0hjNBpIbGWzoCJaIG5TQJPGfTupNSy+oGKSWI6z2XTs=
+	t=1744114089; cv=none; b=Rdkh6nuvOEcfj64CGKzfMjKD7r8NenhTfO0RmvpWSGNzvv4G+KNcW6Dr3m/lQkn5aZmC2GhVTKxUSM6r+4mrrukzyxq1aqPbdw27LHzyersyKIar2Kru6wQbXrj52vXX927P6dtzJUxymJ2KyOPK1diec9myusJYGOlFPE3oIzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115892; c=relaxed/simple;
-	bh=bQuGi26xgIfjcbUoCPNqs79flZDlBx9AOufiKGTg+yQ=;
+	s=arc-20240116; t=1744114089; c=relaxed/simple;
+	bh=ESV4J9EUcV12vSkjQUPfCZ0Nb3wdkhzc8Zy+wAZJ1wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGX5KplUt1XvKSLu1Zyc4gsvSnFvlKN69JaQ2jL7fTSVN8hNABOtCS89kA9jr4SFJJJ31e5kqVF/PhWX2ASR9kLAw0+HThRadIfWH0+qecokWyxUEBh5uXoGvdiWnsrqO8G6tNYEC6H+wXqf6PGQHXj36uCJUiwx40u8xOyKV3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TX5/8Inn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342FEC4CEE5;
-	Tue,  8 Apr 2025 12:38:12 +0000 (UTC)
+	 MIME-Version; b=tSadTPICVy0g9jU7T1bHD7HOy3oElB870isJeQ8g60P2YTPtinIpH2qkeGK4g5ZD2slq/hycioXwMc9GX2HML5iH3pjjF4RFTuKS/BZkOdhzZFgIoET4rvsOBRrx/TWYFfw9TLg2tLndcO+ytpXqa6vug3x4wFJJpTwO+o0YTSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2I2WLkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC28C4CEE5;
+	Tue,  8 Apr 2025 12:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115892;
-	bh=bQuGi26xgIfjcbUoCPNqs79flZDlBx9AOufiKGTg+yQ=;
+	s=korg; t=1744114089;
+	bh=ESV4J9EUcV12vSkjQUPfCZ0Nb3wdkhzc8Zy+wAZJ1wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TX5/8Innnpa8v7oWDXd1dvvvIuLA/vjlQEeaHB4AgmhGPHkUhzZ0WmuZoCKvNJtCJ
-	 JMdTWaUbtL1LjDCtWpsONiS4glT0l1nWzq0pjXTdUa4kolOANj+BalfYVA4gbR3fU2
-	 YcBlGIAMqf903Z7zkG42KOruwQv6oEW9upSG/Xwg=
+	b=U2I2WLkmtso9PziNCfe+nWq0YspObZwvWpw9x3iZAKOLWQ+Ghcltxgs7jnMbaDZVz
+	 40z5NnGnWWcIqf3mPNMoMLhxmd/YOVCOcsKJMz5egKsLexNK80qQLYAb7HX1WhsXEI
+	 MmTreT+FGOzHZ30dhIPSh9bVY3V4HpioDKU7WmW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/204] drm/amd: Keep display off while going into S4
+Subject: [PATCH 5.4 132/154] sched/deadline: Use online cpus for validating runtime
 Date: Tue,  8 Apr 2025 12:51:13 +0200
-Message-ID: <20250408104824.493357706@linuxfoundation.org>
+Message-ID: <20250408104819.544130752@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 4afacc9948e1f8fdbca401d259ae65ad93d298c0 ]
+[ Upstream commit 14672f059d83f591afb2ee1fff56858efe055e5a ]
 
-When userspace invokes S4 the flow is:
+The ftrace selftest reported a failure because writing -1 to
+sched_rt_runtime_us returns -EBUSY. This happens when the possible
+CPUs are different from active CPUs.
 
-1) amdgpu_pmops_prepare()
-2) amdgpu_pmops_freeze()
-3) Create hibernation image
-4) amdgpu_pmops_thaw()
-5) Write out image to disk
-6) Turn off system
+Active CPUs are part of one root domain, while remaining CPUs are part
+of def_root_domain. Since active cpumask is being used, this results in
+cpus=0 when a non active CPUs is used in the loop.
 
-Then on resume amdgpu_pmops_restore() is called.
+Fix it by looping over the online CPUs instead for validating the
+bandwidth calculations.
 
-This flow has a problem that because amdgpu_pmops_thaw() is called
-it will call amdgpu_device_resume() which will resume all of the GPU.
-
-This includes turning the display hardware back on and discovering
-connectors again.
-
-This is an unexpected experience for the display to turn back on.
-Adjust the flow so that during the S4 sequence display hardware is
-not turned back on.
-
-Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2038
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Harry Wentland <harry.wentland@amd.com>
-Link: https://lore.kernel.org/r/20250306185124.44780-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 68bfdc8dc0a1a7fdd9ab61e69907ae71a6fd3d91)
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20250306052954.452005-2-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 11 +++++++++--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  5 +++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 238c15c0c7e1e..48076cf8ba803 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2466,7 +2466,6 @@ static int amdgpu_pmops_freeze(struct device *dev)
- 
- 	adev->in_s4 = true;
- 	r = amdgpu_device_suspend(drm_dev, true);
--	adev->in_s4 = false;
- 	if (r)
- 		return r;
- 
-@@ -2478,8 +2477,13 @@ static int amdgpu_pmops_freeze(struct device *dev)
- static int amdgpu_pmops_thaw(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
-+	struct amdgpu_device *adev = drm_to_adev(drm_dev);
-+	int r;
- 
--	return amdgpu_device_resume(drm_dev, true);
-+	r = amdgpu_device_resume(drm_dev, true);
-+	adev->in_s4 = false;
-+
-+	return r;
- }
- 
- static int amdgpu_pmops_poweroff(struct device *dev)
-@@ -2492,6 +2496,9 @@ static int amdgpu_pmops_poweroff(struct device *dev)
- static int amdgpu_pmops_restore(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
-+	struct amdgpu_device *adev = drm_to_adev(drm_dev);
-+
-+	adev->in_s4 = false;
- 
- 	return amdgpu_device_resume(drm_dev, true);
- }
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9b3f5f76d52d9..5a837e3df7f38 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2897,6 +2897,11 @@ static int dm_resume(void *handle)
- 
- 		return 0;
- 	}
-+
-+	/* leave display off for S4 sequence */
-+	if (adev->in_s4)
-+		return 0;
-+
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
- 	dc_release_state(dm_state->context);
- 	dm_state->context = dc_create_state(dm->dc);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index ba3d7c223999e..023d52d2a0f10 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2513,7 +2513,7 @@ int sched_dl_global_validate(void)
+ 	 * cycling on root_domains... Discussion on different/better
+ 	 * solutions is welcome!
+ 	 */
+-	for_each_possible_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		rcu_read_lock_sched();
+ 		dl_b = dl_bw_of(cpu);
+ 		cpus = dl_bw_cpus(cpu);
 -- 
 2.39.5
 
