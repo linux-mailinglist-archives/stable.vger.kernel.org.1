@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81819A801EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72822A80307
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC2901723D9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CF819E0F1E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B4B266EFB;
-	Tue,  8 Apr 2025 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F3E22257E;
+	Tue,  8 Apr 2025 11:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7zJQPfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRDMnLlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61052267B10;
-	Tue,  8 Apr 2025 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF38E1CAA82;
+	Tue,  8 Apr 2025 11:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112248; cv=none; b=F/QTbqa6lXZ7XTXqkVHMnN8XBCwjRFWmsBv4L8WG26HDhH6aqCgv2MagNytVNkCwucxwUC2QcUpcQr1QBxmRZx7Ssx3LPawSVAAHWVPaltARHcL3O94H3covQMlImLG9iQYibGxoge9Vn/xDBKuA2oAjWOSvpMmlfMooQZNByXM=
+	t=1744112918; cv=none; b=jXKy3crgTruUWaaacawlU116tET9Yc+k987ijvaSvKJHRgaHuYlVL5dANZ98qvKrVU0vNPP17Mu33UWKCBoD18w5BVjYQkGiSvmAeRpnOth6Hs2ddWm5YUUlhuo2UUZeYhtiSWF/3qESMSikbAn5JC9X0GMW5TpnqVv/+gV9aXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112248; c=relaxed/simple;
-	bh=RJKC2nLbCjTuoVjvlsxy686+8Rw0gdAvfoNuuKCa0kU=;
+	s=arc-20240116; t=1744112918; c=relaxed/simple;
+	bh=Br3RBKUbm8gylV8Uy0g/XgvTG8yciKvDQbGgzBHiLso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pE7+yE1rJvRIW2Y7LQmSU+SwE4iAJIM41t86vnXZ5TATgRc9tVtGKu7gCNe7/Cr9j53Fth5THUGzNgGNXea6znn0joJ7btnutE/lQRt/c0yvLJTyzlaRcGsPmgvZVZoXcsXWU7Gj1lEgcpanQhwMkWgfPPjUPBUtA2U/tC7F9LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7zJQPfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61E3C4CEE5;
-	Tue,  8 Apr 2025 11:37:27 +0000 (UTC)
+	 MIME-Version; b=kBKB8XxdcjLcPGzMTCJvR5+reQtr7gqPh7Xm4o4Bk3rLcQxbcvHoZYbuFnFtR9H0YqfH00vBHyxwErQ64EkZra5z4+2+pXgPb7W5QSJn0axmkmoVsTTfwDrrzTvl6XwudLxBbzFy+1+WR+Ink9I5BzP/NnKakUtnh5rt+0OIcVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRDMnLlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41377C4CEE5;
+	Tue,  8 Apr 2025 11:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112248;
-	bh=RJKC2nLbCjTuoVjvlsxy686+8Rw0gdAvfoNuuKCa0kU=;
+	s=korg; t=1744112918;
+	bh=Br3RBKUbm8gylV8Uy0g/XgvTG8yciKvDQbGgzBHiLso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7zJQPfv/CdTsrvyNNmQMN7+1qQJTZT7wuVm3AwxLPdSo3B9xGLoOpWgepbLYzn6c
-	 8Jrn2gr20cX6I3xKZLzaRoUMlyUAQdZGx9MUrT+//4CSB+JJrg9dXuitRdvthQA2Q/
-	 IzYdBxwRzKmyU1AMIoKkPAlpyd7L+9CpkkdPs6M4=
+	b=pRDMnLlzwDRUh9aePS9dKSZHDcFVPdBybbxwuxV4gjufTsZ2sHUrY3T2Aix2EN/0f
+	 TCQhyYHrInC2XccO95mA5/Qvxj4FTUBKi4ffOr47Tonxhnfqggx5iX+NLjaXE3Eu4I
+	 /l0V7LORlUYTXmYdScNL5GHpeZD0oL8/TKFb7TTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.14 731/731] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 245/279] vsock: avoid timeout during connect() if the socket is closing
 Date: Tue,  8 Apr 2025 12:50:28 +0200
-Message-ID: <20250408104931.276848972@linuxfoundation.org>
+Message-ID: <20250408104833.000902949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
+[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
 
-NFSD sends CB_RECALL_ANY to clients when the server is low on
-memory or that client has a large number of delegations outstanding.
+When a peer attempts to establish a connection, vsock_connect() contains
+a loop that waits for the state to be TCP_ESTABLISHED. However, the
+other peer can be fast enough to accept the connection and close it
+immediately, thus moving the state to TCP_CLOSING.
 
-We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
-to disconnected clients, and gets confused. These calls never go
-anywhere if a backchannel transport to the target client isn't
-available. Before the server can send any backchannel operation, the
-client has to connect first and then do a BIND_CONN_TO_SESSION.
+When this happens, the peer in the vsock_connect() is properly woken up,
+but since the state is not TCP_ESTABLISHED, it goes back to sleep
+until the timeout expires, returning -ETIMEDOUT.
 
-This patch doesn't address the root cause of the confusion, but
-there's no need to queue up these optional operations if they can't
-go anywhere.
+If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
+vsock_connect() can return immediately without errors or delay since the
+connection actually happened. The socket will be in a closing state,
+but this is not an issue, and subsequent calls will fail as expected.
 
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We discovered this issue while developing a test that accepts and
+immediately closes connections to stress the transport switch between
+two connect() calls, where the first one was interrupted by a signal
+(see Closes link).
+
+Reported-by: Luigi Leonardi <leonardi@redhat.com>
+Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/vmw_vsock/af_vsock.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6882,14 +6882,19 @@ deleg_reaper(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_state != NFSD4_ACTIVE ||
--			list_empty(&clp->cl_delegations) ||
--			atomic_read(&clp->cl_delegs_in_recall) ||
--			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
--			(ktime_get_boottime_seconds() -
--				clp->cl_ra_time < 5)) {
-+
-+		if (clp->cl_state != NFSD4_ACTIVE)
-+			continue;
-+		if (list_empty(&clp->cl_delegations))
-+			continue;
-+		if (atomic_read(&clp->cl_delegs_in_recall))
-+			continue;
-+		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
-+			continue;
-+		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
-+			continue;
-+		if (clp->cl_cb_state != NFSD4_CB_UP)
- 			continue;
--		}
- 		list_add(&clp->cl_ra_cblist, &cblist);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 29ce6cc7b4011..036bdcc9d5c51 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1428,7 +1428,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 	timeout = vsk->connect_timeout;
+ 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
  
- 		/* release in nfsd4_cb_recall_any_release */
+-	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
++	/* If the socket is already closing or it is in an error state, there
++	 * is no point in waiting.
++	 */
++	while (sk->sk_state != TCP_ESTABLISHED &&
++	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
+ 		if (flags & O_NONBLOCK) {
+ 			/* If we're not going to block, we schedule a timeout
+ 			 * function to generate a timeout on the connection
+-- 
+2.39.5
+
 
 
 
