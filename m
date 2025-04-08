@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-129059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF21AA7FDDE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3750A802D2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5139E442942
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E0E447B94
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDDF26A1B0;
-	Tue,  8 Apr 2025 11:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8E6265CDF;
+	Tue,  8 Apr 2025 11:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiWnvbDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPasEAWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6748126A1A3;
-	Tue,  8 Apr 2025 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA419AD5C;
+	Tue,  8 Apr 2025 11:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110002; cv=none; b=Sd+A7XOdWjeZjZY20+9ucsBtySRgjNGQcID+UiM5ljE5aPbGUWUshrqV/QCci1YQwnyz9d6dS41rmpLvEhffrz8zjcBHpT/mTjx2dpNVfSasM/LnuJXcEw2IMIoJoCIzo+IQWsNSyJF0bYnrsYzTVW7HHDwzzSo7bUrCcVyyTRw=
+	t=1744112583; cv=none; b=k1aqaxIUewfeChE8VqNdjAZPngeyuDkE5a1UqZ/x464msPQ8yqLlbDE/ba5dkYpE8OkQPEQbAnZ9voRNtlRvuCnTOilQxzTbx4jovH5iYREDfcm+7zT2aSVVr4lA48DacdpPRMEmSRkrJCjUJmgnW0UTIbaSZSzVYwGU95Uw5tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110002; c=relaxed/simple;
-	bh=Gqk+Mm6Y7YXcZF0Vh0PIqmfzQqnQMRjFCDkCJBUIdW0=;
+	s=arc-20240116; t=1744112583; c=relaxed/simple;
+	bh=F4rllwDZ9ygs8SU7fszoLh9rjItAf5EMXXjveh570CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWPdzaqr20VgYuR5jE2qIh7lAYi+zmCE5L5w1WXQNe8D/6IzhUB0I4Nctwq1i/k+TaxH8RqIdwH6QhZTTsXwKuUZiCR98P9nRT3n8Bc+NTYH1JNuj+ZovOJ9uUsAa+58vNJR/D/HKlYFolenFU7DTWWT4jENJsZtY6Uqt5895g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiWnvbDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428C6C4CEEC;
-	Tue,  8 Apr 2025 11:00:01 +0000 (UTC)
+	 MIME-Version; b=StjXUOhUkYNN/p4D2sQ8+3WR0OlEN6Zdcxv1scmK2b4D35qQKR9uCy1dLGtBiROpWyDQJ86wBFlzToPUoW82TJIkLz+U7t6cCcqW4M68pkBITJTiG3AILG4xSAFqk/ChdcaG+Z8kT35x3B9aWrybu8BooPQjyOyVC46EocefTXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPasEAWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC52C4CEE5;
+	Tue,  8 Apr 2025 11:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110001;
-	bh=Gqk+Mm6Y7YXcZF0Vh0PIqmfzQqnQMRjFCDkCJBUIdW0=;
+	s=korg; t=1744112583;
+	bh=F4rllwDZ9ygs8SU7fszoLh9rjItAf5EMXXjveh570CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiWnvbDbn2kPkhVuUe99NkDDynv3Sj5Zgs498i2Dr01H0r8YtCGD54F2J+rezBYbB
-	 zS+4pNKvTdls3R9kP1b+/lDvsebMZ+Ti5oQN/73xUYwaJOkTc5udAOP7mGJz4sCNow
-	 EoBrVxnQMJPRAjNSNTENdxRY4NoyRKeLg9Jrmi/o=
+	b=WPasEAWHr3jvaiuEtAYil54P3jF/IOC+KbwoZfxvdU7UMVqjQUCR1laZPGfPXMqX7
+	 SLwzkV6ZOxhI/56eSSUJemqmSooo0/GSV0mKLpHWikryTi44Mqh9uhvpa1AMUNKO9b
+	 lzR7VTZmR7gICR+pYeaE8qirsEcgB3Y9fGxOoHi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/227] perf/ring_buffer: Allow the EPOLLRDNORM flag for poll
+	stable <stable@kernel.org>,
+	Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.15 120/279] tty: serial: 8250: Add some more device IDs
 Date: Tue,  8 Apr 2025 12:48:23 +0200
-Message-ID: <20250408104824.082279898@linuxfoundation.org>
+Message-ID: <20250408104829.587928369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit c96fff391c095c11dc87dab35be72dee7d217cde ]
+commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
 
-The poll man page says POLLRDNORM is equivalent to POLLIN. For poll(),
-it seems that if user sets pollfd with POLLRDNORM in userspace, perf_poll
-will not return until timeout even if perf_output_wakeup called,
-whereas POLLIN returns.
+These card IDs got missed the first time around.
 
-Fixes: 76369139ceb9 ("perf: Split up buffer handling from core code")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250314030036.2543180-1-chen.dylane@linux.dev
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/ring_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index ffca72b8c4c6d..74802ec5ab148 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -19,7 +19,7 @@
- 
- static void perf_output_wakeup(struct perf_output_handle *handle)
- {
--	atomic_set(&handle->rb->poll, EPOLLIN);
-+	atomic_set(&handle->rb->poll, EPOLLIN | EPOLLRDNORM);
- 
- 	handle->event->pending_wakeup = 1;
- 	irq_work_queue(&handle->event->pending);
--- 
-2.39.5
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5536,6 +5536,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
+ 	/*
+ 	 * Brainboxes UC-235/246
+ 	 */
+@@ -5656,6 +5664,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
+ 	/*
+ 	 * Brainboxes UC-420
+ 	 */
 
 
 
