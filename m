@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F364DA80418
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5508FA80857
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7C5427A4C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7B08A6A67
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F80B2676E1;
-	Tue,  8 Apr 2025 11:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35362269AE4;
+	Tue,  8 Apr 2025 12:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1zvHb5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9TtFQfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C6E263C83;
-	Tue,  8 Apr 2025 11:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43FF2690D6;
+	Tue,  8 Apr 2025 12:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113506; cv=none; b=OnI3aZo1rUltgS6cdQXgTEMLH+lJ8BjJrmXNMuY35EkXCCQTduK/0TMv4cD9FuKQfIXqEN1x+smrAcYSqW3kxk4LJ2awxn4GkB/wKqtZ+XHVFHuFDY/LNjGKcNVbl8G9hvqP7q9fySKBM4gMnwGocowjFb5vRqr/OgiR64IhZXo=
+	t=1744115290; cv=none; b=Jjyzp4CuOcsxF/v6texvVjemuXopv/9h88AbF7u0pWFg9UlZ/wVpTgBMftoYPAE7FAoEnm1GScZB6C9DVegWjnT6r2Yug5rTChW1X7GNvOshXz/IwVQD8ADuSRnDTQuCCU5Im+oPgONDsFs2MDv9pJ5i8cTxGVVjPyEZ0OaSb/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113506; c=relaxed/simple;
-	bh=YGvTEsWhJuEn7+EvGy1pvcRQ2WwweZcdJUAA6wz885k=;
+	s=arc-20240116; t=1744115290; c=relaxed/simple;
+	bh=ZcPwbmzwhV7GcuNvJEjxesAkCVcvz5JA8c+L2h5SfHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azgeokbIZ2/NLLk6rD8iopEyZNIM2ISquMW9ieh9Zvv/LIkzrcT8IBvK+tFb9Cr3ciqlu1EdZ6WV8S3ESJqpKN/9vIIeg+Dc72M2UApQQnvYd0ql4H0cd8TF+RwB436zGki9Z6eY+blGO/mg/AujDhR9Xku/Ydh84C1bfikiSaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1zvHb5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004EBC4CEE5;
-	Tue,  8 Apr 2025 11:58:24 +0000 (UTC)
+	 MIME-Version; b=QV4UocUxlZzV3CPRUw5qNBIAnUVxwz8louRoU42njRWOZ3GJayNPgOiVI/fJ+zfLlu1kOqoe1WQQfhEWrDGy3QR4liMh4fq7MeMFIuB6arGNN2XRLhddn0gXsQ8C1G+bgC3LJyrOMnnDCzig/2cB5qGKM4ntGD6okq1N6jHqwm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9TtFQfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766B7C4CEE5;
+	Tue,  8 Apr 2025 12:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113505;
-	bh=YGvTEsWhJuEn7+EvGy1pvcRQ2WwweZcdJUAA6wz885k=;
+	s=korg; t=1744115289;
+	bh=ZcPwbmzwhV7GcuNvJEjxesAkCVcvz5JA8c+L2h5SfHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1zvHb5jVj0dAhcmboKraSaJQXXLF1jZ2uYEk7osr0OT6J8q31orWCrnPCISwBnhA
-	 +ZKudz+8DanDkm4lCRlzk5L1ytd1BTgTava45aEsmGqGKFeKbzJMdaqNwZ5mlN3n4x
-	 SG1F1PbsLgg4x1c2QaUqTE73VraZlIurMudBcVIM=
+	b=h9TtFQfeKVySEKjKd8NbYojya39py+RJArKRx/8aKTeG6jSOgF14qKLZqh4F/lCoV
+	 ECXW+j8frXnmVl2HDZV+XdymXIHVK79PHReTydy292hOVMKw8wlj2YHKT9y0FQZ0f4
+	 HffMpf0WV+eVjz9hs6pVD1C/YAKvTMyto6luJ/9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/268] x86/hyperv: Fix output argument to hypercall that changes page visibility
+Subject: [PATCH 6.13 382/499] spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent
 Date: Tue,  8 Apr 2025 12:49:54 +0200
-Message-ID: <20250408104833.486799654@linuxfoundation.org>
+Message-ID: <20250408104900.759510206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 09beefefb57bbc3a06d98f319d85db4d719d7bcb ]
+[ Upstream commit e19c1272c80a5ecce387c1b0c3b995f4edf9c525 ]
 
-The hypercall in hv_mark_gpa_visibility() is invoked with an input
-argument and an output argument. The output argument ostensibly returns
-the number of pages that were processed. But in fact, the hypercall does
-not provide any output, so the output argument is spurious.
+The lookup table forces the use of the "pinctrl-bcm2835" GPIO chip
+provider and essentially assumes that there is going to be such a
+provider, and if not, we will fail to set-up the SPI device.
 
-The spurious argument is harmless because Hyper-V ignores it, but in the
-interest of correctness and to avoid the potential for future problems,
-remove it.
+While this is true on Raspberry Pi based systems (2835/36/37, 2711,
+2712), this is not true on 7712/77122 Broadcom STB systems which use the
+SPI driver, but not the GPIO driver.
 
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250226200612.2062-2-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250226200612.2062-2-mhklinux@outlook.com>
+There used to be an early check:
+
+       chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
+       if (!chip)
+               return 0;
+
+which would accomplish that nicely, bring something similar back by
+checking for the compatible strings matched by the pinctrl-bcm2835.c
+driver, if there is no Device Tree node matching those compatible
+strings, then we won't find any GPIO provider registered by the
+"pinctrl-bcm2835" driver.
+
+Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250401233603.2938955-1-florian.fainelli@broadcom.com
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/ivm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-bcm2835.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 8c6bf07f7d2b8..e50e43d1d4c87 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -464,7 +464,6 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
- 			   enum hv_mem_host_visibility visibility)
- {
- 	struct hv_gpa_range_for_visibility *input;
--	u16 pages_processed;
- 	u64 hv_status;
- 	unsigned long flags;
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 06a81727d74dd..77de5a07639af 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1226,7 +1226,12 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+ 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
+ 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
+-	int ret;
++	const char *pinctrl_compats[] = {
++		"brcm,bcm2835-gpio",
++		"brcm,bcm2711-gpio",
++		"brcm,bcm7211-gpio",
++	};
++	int ret, i;
+ 	u32 cs;
  
-@@ -493,7 +492,7 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
- 	memcpy((void *)input->gpa_page_list, pfn, count * sizeof(*pfn));
- 	hv_status = hv_do_rep_hypercall(
- 			HVCALL_MODIFY_SPARSE_GPA_PAGE_HOST_VISIBILITY, count,
--			0, input, &pages_processed);
-+			0, input, NULL);
- 	local_irq_restore(flags);
+ 	if (!target) {
+@@ -1291,6 +1296,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		goto err_cleanup;
+ 	}
  
- 	if (hv_result_success(hv_status))
++	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
++		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
++			break;
++	}
++
++	if (i == ARRAY_SIZE(pinctrl_compats))
++		return 0;
++
+ 	/*
+ 	 * TODO: The code below is a slightly better alternative to the utter
+ 	 * abuse of the GPIO API that I found here before. It creates a
 -- 
 2.39.5
 
