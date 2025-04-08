@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-128895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C538A7FB3B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15052A7FB3E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3883A6614
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB103A6A58
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D1A227EBD;
-	Tue,  8 Apr 2025 10:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED0D2641D7;
+	Tue,  8 Apr 2025 10:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFjGeYK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICy2d6FW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F80215066
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D588215066
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106867; cv=none; b=VCrqs/6px6TTwYHrmDuJcwmvGUqyMgAordKCJuVoMIiKLWmi2VxbKtx44vg4/nSO+b6hsVuRE56Kx8UCKfyE77+KkrHeZ7XGkLXm8McAUNGvW58XFfhqi0wNPa87NxLOXBIAPacoqwoUzx4lsYpceIhyh2nx3ZIC7t4/H2SHP9M=
+	t=1744106888; cv=none; b=u+FgcuT+U3iYzEy/blogiDDoLi+Eo+qr5qx4cGjM2isQzRzMRnynVS6IKVuKlGJ/QMXU0uLQuE2A+yg8ztCah+div0Oq3S3nVzsaj87oKYGiwj6kyhRObECcRTAVwQTjtRk956/xRnxAg8+hAt92kzBWRie0NFQnZe3EC5s4/Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106867; c=relaxed/simple;
-	bh=IwMVA+T9Am/LpA2VGdRj2jid3Oz38BMhdQZLc2isa+c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m7GA5inDLzbtem6V4ZSQ0S7pD6yPz/ewqAr/n0pAECRDvBnY+6xM4dAZ+1uwxRQazYp6AD6eZ4vy07+MCZlnm2ZvzHtcxLnbsMrFeasEGgbkFyVHHfklGWT4nDxfI4JAiZ2GhD7yzZ1RPva7E37x7x2QdtLoxp33AvR5w24mJtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFjGeYK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5176EC4CEE5;
-	Tue,  8 Apr 2025 10:07:44 +0000 (UTC)
+	s=arc-20240116; t=1744106888; c=relaxed/simple;
+	bh=YOItWLnMCjUBf0VnJ3vEwIW83ib1zxQrZDaCyc7biLI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jHu1/q1SO4Sn847M7eWAu83mX39wc1Th0PU8Bmq0q6ITGyKQwvOT4c6kmls2yDEq6yMn3X0tvhgxfeMbddGhMou+Br5VHfDGA2MS++AhjJDlXKUMmFVYmMbwj7M1Pdx+OkUz8Shz8thQzAY+ws4jrxSOD+qbxxPyTpJoMgkZGok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICy2d6FW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D357C4CEE8;
+	Tue,  8 Apr 2025 10:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744106864;
-	bh=IwMVA+T9Am/LpA2VGdRj2jid3Oz38BMhdQZLc2isa+c=;
+	s=korg; t=1744106886;
+	bh=YOItWLnMCjUBf0VnJ3vEwIW83ib1zxQrZDaCyc7biLI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PFjGeYK34Cd0hSAh/1ZvoDBIEfGWfZ6Plh9rV3JDle5lsCG7KxwnvvHy2Ii4ygwxb
-	 BMb/v9xLkduFvJiNQt2FKmanERBIO7zjwt+zp4XaZK7k2Cj91ftm7K+9dHZCkSueVJ
-	 kv4KofjbwkdjqgDWB+lAbpCwBs+AiJ8rq9Pkmmjg=
-Subject: FAILED: patch "[PATCH] media: vimc: skip .s_stream() for stopped entities" failed to apply to 5.4-stable tree
-To: n.zhandarovich@fintech.ru,hverkuil@xs4all.nl
+	b=ICy2d6FWaWujrF3GrFJVeY+kbChEdwwXEubf/rozBfxJvhtUPhfr86MAwED3hf75R
+	 YVFcJTP+NrVlJ/jXJRJWHRHJOfhiIGgqKYK7jPZUpljEWYh2abCvCvhOmIncvtzfpu
+	 BkI9dbEkRi7bJGEnx5vnC5z+tdiCUEY6DnGL+DSg=
+Subject: FAILED: patch "[PATCH] media: streamzap: fix race between device disconnection and" failed to apply to 5.10-stable tree
+To: m.masimov@mt-integration.ru,hverkuil@xs4all.nl,sean@mess.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Apr 2025 12:06:11 +0200
-Message-ID: <2025040811-juniper-devoutly-0800@gregkh>
+Date: Tue, 08 Apr 2025 12:06:25 +0200
+Message-ID: <2025040825-lankiness-posh-a49b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 36cef585e2a31e4ddf33a004b0584a7a572246de
+git cherry-pick -x f656cfbc7a293a039d6a0c7100e1c846845148c1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040811-juniper-devoutly-0800@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040825-lankiness-posh-a49b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,71 +77,48 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 36cef585e2a31e4ddf33a004b0584a7a572246de Mon Sep 17 00:00:00 2001
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Date: Sun, 2 Mar 2025 17:58:25 +0300
-Subject: [PATCH] media: vimc: skip .s_stream() for stopped entities
+From f656cfbc7a293a039d6a0c7100e1c846845148c1 Mon Sep 17 00:00:00 2001
+From: Murad Masimov <m.masimov@mt-integration.ru>
+Date: Mon, 13 Jan 2025 13:51:30 +0300
+Subject: [PATCH] media: streamzap: fix race between device disconnection and
+ urb callback
 
-Syzbot reported [1] a warning prompted by a check in call_s_stream()
-that checks whether .s_stream() operation is warranted for unstarted
-or stopped subdevs.
+Syzkaller has reported a general protection fault at function
+ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
+dereference of dev->raw pointer, even though it is checked for NULL in
+the same function, which means there is a race condition. It occurs due
+to the incorrect order of actions in the streamzap_disconnect() function:
+rc_unregister_device() is called before usb_kill_urb(). The dev->raw
+pointer is freed and set to NULL in rc_unregister_device(), and only
+after that usb_kill_urb() waits for in-progress requests to finish.
 
-Add a simple fix in vimc_streamer_pipeline_terminate() ensuring that
-entities skip a call to .s_stream() unless they have been previously
-properly started.
+If rc_unregister_device() is called while streamzap_callback() handler is
+not finished, this can lead to accessing freed resources. Thus
+rc_unregister_device() should be called after usb_kill_urb().
 
-[1] Syzbot report:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5933 at drivers/media/v4l2-core/v4l2-subdev.c:460 call_s_stream+0x2df/0x350 drivers/media/v4l2-core/v4l2-subdev.c:460
-Modules linked in:
-CPU: 0 UID: 0 PID: 5933 Comm: syz-executor330 Not tainted 6.13.0-rc2-syzkaller-00362-g2d8308bf5b67 #0
-...
-Call Trace:
- <TASK>
- vimc_streamer_pipeline_terminate+0x218/0x320 drivers/media/test-drivers/vimc/vimc-streamer.c:62
- vimc_streamer_pipeline_init drivers/media/test-drivers/vimc/vimc-streamer.c:101 [inline]
- vimc_streamer_s_stream+0x650/0x9a0 drivers/media/test-drivers/vimc/vimc-streamer.c:203
- vimc_capture_start_streaming+0xa1/0x130 drivers/media/test-drivers/vimc/vimc-capture.c:256
- vb2_start_streaming+0x15f/0x5a0 drivers/media/common/videobuf2/videobuf2-core.c:1789
- vb2_core_streamon+0x2a7/0x450 drivers/media/common/videobuf2/videobuf2-core.c:2348
- vb2_streamon drivers/media/common/videobuf2/videobuf2-v4l2.c:875 [inline]
- vb2_ioctl_streamon+0xf4/0x170 drivers/media/common/videobuf2/videobuf2-v4l2.c:1118
- __video_do_ioctl+0xaf0/0xf00 drivers/media/v4l2-core/v4l2-ioctl.c:3122
- video_usercopy+0x4d2/0x1620 drivers/media/v4l2-core/v4l2-ioctl.c:3463
- v4l2_ioctl+0x1ba/0x250 drivers/media/v4l2-core/v4l2-dev.c:366
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2b85c01b19
-...
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Reported-by: syzbot+5bcd7c809d365e14c4df@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5bcd7c809d365e14c4df
-Fixes: adc589d2a208 ("media: vimc: Add vimc-streamer for stream control")
+Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-diff --git a/drivers/media/test-drivers/vimc/vimc-streamer.c b/drivers/media/test-drivers/vimc/vimc-streamer.c
-index 807551a5143b..15d863f97cbf 100644
---- a/drivers/media/test-drivers/vimc/vimc-streamer.c
-+++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
-@@ -59,6 +59,12 @@ static void vimc_streamer_pipeline_terminate(struct vimc_stream *stream)
- 			continue;
+diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
+index 9b209e687f25..2ce62fe5d60f 100644
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct usb_interface *interface)
+ 	if (!sz)
+ 		return;
  
- 		sd = media_entity_to_v4l2_subdev(ved->ent);
-+		/*
-+		 * Do not call .s_stream() to stop an already
-+		 * stopped/unstarted subdev.
-+		 */
-+		if (!v4l2_subdev_is_streaming(sd))
-+			continue;
- 		v4l2_subdev_call(sd, video, s_stream, 0);
- 	}
- }
+-	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
++	rc_unregister_device(sz->rdev);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+ 
 
 
