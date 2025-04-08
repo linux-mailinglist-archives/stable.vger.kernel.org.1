@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD9EA800D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68987A803ED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A46DC7A416B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E2671759D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABF926A08E;
-	Tue,  8 Apr 2025 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60D1267F6E;
+	Tue,  8 Apr 2025 11:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLUtGbpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7GV3x+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10323269CFD;
-	Tue,  8 Apr 2025 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D8522257E;
+	Tue,  8 Apr 2025 11:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111861; cv=none; b=nsSe3m7Ab1zpdLT3rck/v2cgGY4U0XCgUcW2Y4KHAIDvGtOpIh+g6NeKf5A33DBl5StHgU36a8eYuUI1Wwm7ExdU0F+8926suoDtdPp9wg70liiUqg1z7FRGzs8vwPetGtMZBceeXUqLDfUAaOpzCozIWPwkrBbEhZa0sKaHS+w=
+	t=1744113308; cv=none; b=gJ8JygbLiWOUEvzEkn0Iuw4bfji2/EM7RfWQoHD/np5GM1rEfnWQlN3J/62TGTIrPzy6klF6Rn7iQy/vaAvI+lHUN1JIx3d1YnwJjws+o6kt6w7B+0NqoW3sqR77rcVSBW1kRDkd2Y9/nyiffB1xd6UU7mxnvMe6SD+ub4x15F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111861; c=relaxed/simple;
-	bh=5A9OoX4Ar2Osbds6pjI/E+1Kd5/Zrik09bzBCYSkoZs=;
+	s=arc-20240116; t=1744113308; c=relaxed/simple;
+	bh=2kmcn7k6s1tmuV3byD2x26tssrGQI/BbQvVyOK81QN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6n9rEm2KUP3EgjG9fPfF3hCJ+J7U3g9yZel84x0lDO/L9li7N2Huq19B1PX1/RmfsPYmrPEPXoO44WG2TTt5xX1HcANg25eu8GyTpoBfrAu13LXR9uNDkdJ9drp6ZFyIt+7kANClGCfX4IekMR+9rSrYH2xVAbCRtgzkAV6sb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLUtGbpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B85C4CEE5;
-	Tue,  8 Apr 2025 11:31:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jorrhzvNeZAGwhxmmtIe7DEc676GUQovm69pXps++ndQceNpX4ZBsi/oKyzpESpBWT/Vh8HxlbBe2Ey4seg759XEt4u5TjhbXN3+Dz4XSlOklOFXSSYVkPxZHDdBwypyn9FAYW8f0uT1CxMRubkkgCrw63sMDglStzp5MoHdUzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7GV3x+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E703CC4CEE5;
+	Tue,  8 Apr 2025 11:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111860;
-	bh=5A9OoX4Ar2Osbds6pjI/E+1Kd5/Zrik09bzBCYSkoZs=;
+	s=korg; t=1744113308;
+	bh=2kmcn7k6s1tmuV3byD2x26tssrGQI/BbQvVyOK81QN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLUtGbpRQwF/Lrv+ZhjAgA25mUwps9kT95cMQzIH8fb2wV2lslIoB7nz6rOUed6t3
-	 gka24uB0oqbD54XT8s2wvzNM0c9iak7WbeUFY3v1Hbn6QQjabwBYppLytVjuhOqqfE
-	 jsBQllcg8ZnDRAXEFUdMSIjVR3X5lk1WkYDAOqsM=
+	b=x7GV3x+msnALh9Qc7qQ2P5utC1jzdrSE4BE3+pwGNH67GIu2oWUVYHvU6S8SFt5JP
+	 scalnQdrckdOZ+R8XmsDqhZH9si+JM5HZJe+qFIHBNHxjGtJVl9VG7Xk8wTwRFS0AG
+	 myTqa9+lPOZvgZDPsGsByc28o8V2RhyRIV4VqoSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 586/731] ntb: intel: Fix using link status DBs
+Subject: [PATCH 6.6 072/268] clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock
 Date: Tue,  8 Apr 2025 12:48:03 +0200
-Message-ID: <20250408104927.903536542@linuxfoundation.org>
+Message-ID: <20250408104830.439517747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
+[ Upstream commit cdc59600bccf2cb4c483645438a97d4ec55f326b ]
 
-Make sure we are not using DB's which were remapped for link status.
+This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
+GDSC is under HW control so it can be turned off at any moment.
+Instead of checking the dependent clock we can just vote for it to
+enable later when GDSC gets turned on.
 
-Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: 9bb6cfc3c77e6 ("clk: qcom: Add Global Clock Controller driver for MSM8953")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20250315-clock-fix-v1-2-2efdc4920dda@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/gcc-msm8953.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-index ffcfc3e02c353..a5aa96a31f4a6 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
- 	}
+diff --git a/drivers/clk/qcom/gcc-msm8953.c b/drivers/clk/qcom/gcc-msm8953.c
+index 3e5a8cb14d4df..e6e2ab1380f20 100644
+--- a/drivers/clk/qcom/gcc-msm8953.c
++++ b/drivers/clk/qcom/gcc-msm8953.c
+@@ -3770,7 +3770,7 @@ static struct clk_branch gcc_venus0_axi_clk = {
  
- 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
-+	/* Make sure we are not using DB's used for link status */
-+	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
-+		ndev->db_valid_mask &= ~ndev->db_link_mask;
- 
- 	ndev->reg->db_iowrite(ndev->db_valid_mask,
- 			      ndev->self_mmio +
+ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
+ 	.halt_reg = 0x4c02c,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x4c02c,
+ 		.enable_mask = BIT(0),
 -- 
 2.39.5
 
