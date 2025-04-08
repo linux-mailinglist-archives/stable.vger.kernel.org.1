@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-130479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7340A8050C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67185A807BE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F944A4043
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9579D1BA1433
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A1126A08C;
-	Tue,  8 Apr 2025 12:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C40269B08;
+	Tue,  8 Apr 2025 12:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jpQJdqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCDwOvA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774BB26A086;
-	Tue,  8 Apr 2025 12:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C2D224239;
+	Tue,  8 Apr 2025 12:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113820; cv=none; b=poE+PNtd4PMTa/Ou9FQedXkdFScUsSQuaWS3aziMAfgxmoVVa1J0kz39wpJNkaS+6IFu5nnfqqkizCIvbntfOt+aT5bjB1EnqrpxeYfPimm+d5NXWgmxHit6W6PQrc2Qp7y7sMErTgxMNIuWrcCfkqXQ8pWktCfA0D+Ecg7sJck=
+	t=1744115562; cv=none; b=ZrHDYI+04geqDUXM38mWvEwMLbd8ghKooBQH4DNsYZEMYApGH1a3FY86aNrdK28k9UShSJyipqxT+dt4FUhvyByi7mc4DeivSVhTmUBDsrfLj5VO31fKC8GgkTsrnf31Pk9jjWKFv1Y875ubvmdbMqEFtL3GX6tVcTy5SyJ/iZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113820; c=relaxed/simple;
-	bh=2aqrZb+nCV0TODisUdHR1DrSeVHobo2VUg0np2ZsuJw=;
+	s=arc-20240116; t=1744115562; c=relaxed/simple;
+	bh=0gOeyb2rDc0SXrj01hpESQ4vwTMxv9nRpR40SF3pvJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epkrr7uZ/14LjAP30oa/i8/h6FVyD7fpmYhg41axoIN9MXM0Qs1TUZHbySWHQEk2PBsD1tAyexuyWS1nQIJwzbvj8vMlUzspif9tjSesIW1F4nIAiAkNbebgc1RMq4tT/LZ6aZn7+ConUe9ulYEKtxKiOT/4DS5jU8Fa+/OAE6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jpQJdqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060E8C4CEE5;
-	Tue,  8 Apr 2025 12:03:39 +0000 (UTC)
+	 MIME-Version; b=srRN9wRppHnVFVUdUMTdRHT5RuxUdPPqGXjNnATQPZ78M/8+h174F/GQEbzsElmL7JlNnZAMfL31b25m+fnEXWZtZyc6qOzxumNkbvjYI5Qsre6fxnzp2v6TOEZnJB53S4onH2vIylsCyk9pb6TR1g1ebU7wrdAZ9WAXLfCiNdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCDwOvA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5B5C4CEEA;
+	Tue,  8 Apr 2025 12:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113820;
-	bh=2aqrZb+nCV0TODisUdHR1DrSeVHobo2VUg0np2ZsuJw=;
+	s=korg; t=1744115562;
+	bh=0gOeyb2rDc0SXrj01hpESQ4vwTMxv9nRpR40SF3pvJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jpQJdqeltpy90oVyXz21oJRQu6RP8GPheaQ3M4WaQZU7seDUFI26e7LXCbVCVSVj
-	 2fNQQ2uNnSfMuvmjj9g9KSk23jF9+ZOdSW5TM3R1vlJi1wbQO1xHlxVYyuHNMJmtVC
-	 j97sJv1vwPqJKkRkMK3NiSQg9asGShi8iBfiJhd4=
+	b=iCDwOvA/fHwSPY4PomevkrxUTX8vJbdFOZsqtyXbxXj8NLxp5nwhgrmnNZIgMkm3D
+	 PsyDk/Yn3cAsm+CAJLju4InFafK2G7P8lIPLUMrspFRhVnHW4QGpU180IgZFkafsQD
+	 /EArJZamjhFk64yj4X6JytyDoB4DdJwUDWAZsbUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/154] netpoll: Fix use correct return type for ndo_start_xmit()
+Subject: [PATCH 6.1 020/204] x86/fpu/xstate: Fix inconsistencies in guest FPU xfeatures
 Date: Tue,  8 Apr 2025 12:49:10 +0200
-Message-ID: <20250408104815.587519835@linuxfoundation.org>
+Message-ID: <20250408104820.913837994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +74,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit a54776f2c4939bdee084c9ecd00a4a5a25b7c429 ]
+[ Upstream commit dda366083e5ff307a4a728757db874bbfe7550be ]
 
-The method ndo_start_xmit() returns a value of type netdev_tx_t. Fix
-the ndo function to use the correct type.
+Guest FPUs manage vCPU FPU states. They are allocated via
+fpu_alloc_guest_fpstate() and are resized in fpstate_realloc() when XFD
+features are enabled.
 
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
+Since the introduction of guest FPUs, there have been inconsistencies in
+the kernel buffer size and xfeatures:
+
+ 1. fpu_alloc_guest_fpstate() uses fpu_user_cfg since its introduction. See:
+
+    69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
+    36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
+
+ 2. __fpstate_reset() references fpu_kernel_cfg to set storage attributes.
+
+ 3. fpu->guest_perm uses fpu_kernel_cfg, affecting fpstate_realloc().
+
+A recent commit in the tip:x86/fpu tree partially addressed the inconsistency
+between (1) and (3) by using fpu_kernel_cfg for size calculation in (1),
+but left fpu_guest->xfeatures and fpu_guest->perm still referencing
+fpu_user_cfg:
+
+  https://lore.kernel.org/all/20250218141045.85201-1-stanspas@amazon.de/
+
+  1937e18cc3cf ("x86/fpu: Fix guest FPU state buffer allocation size")
+
+The inconsistencies within fpu_alloc_guest_fpstate() and across the
+mentioned functions cause confusion.
+
+Fix them by using fpu_kernel_cfg consistently in fpu_alloc_guest_fpstate(),
+except for fields related to the UABI buffer. Referencing fpu_kernel_cfg
+won't impact functionalities, as:
+
+ 1. fpu_guest->perm is overwritten shortly in fpu_init_guest_permissions()
+    with fpstate->guest_perm, which already uses fpu_kernel_cfg.
+
+ 2. fpu_guest->xfeatures is solely used to check if XFD features are enabled.
+    Including supervisor xfeatures doesn't affect the check.
+
+Fixes: 36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
+Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Link: https://lore.kernel.org/r/20250317140613.1761633-1-chao.gao@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/fpu/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 9a67aa989d606..35a3277ee3567 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -70,10 +70,11 @@ module_param(carrier_timeout, uint, 0644);
- #define np_notice(np, fmt, ...)				\
- 	pr_notice("%s: " fmt, np->name, ##__VA_ARGS__)
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index cbaa3afdd223f..80ba0f81a44a6 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -232,8 +232,8 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	fpstate->is_guest	= true;
  
--static int netpoll_start_xmit(struct sk_buff *skb, struct net_device *dev,
--			      struct netdev_queue *txq)
-+static netdev_tx_t netpoll_start_xmit(struct sk_buff *skb,
-+				      struct net_device *dev,
-+				      struct netdev_queue *txq)
- {
--	int status = NETDEV_TX_OK;
-+	netdev_tx_t status = NETDEV_TX_OK;
- 	netdev_features_t features;
+ 	gfpu->fpstate		= fpstate;
+-	gfpu->xfeatures		= fpu_user_cfg.default_features;
+-	gfpu->perm		= fpu_user_cfg.default_features;
++	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
++	gfpu->perm		= fpu_kernel_cfg.default_features;
  
- 	features = netif_skb_features(skb);
-@@ -325,7 +326,7 @@ static int netpoll_owner_active(struct net_device *dev)
- void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
- 			     struct net_device *dev)
- {
--	int status = NETDEV_TX_BUSY;
-+	netdev_tx_t status = NETDEV_TX_BUSY;
- 	unsigned long tries;
- 	/* It is up to the caller to keep npinfo alive. */
- 	struct netpoll_info *npinfo;
+ 	/*
+ 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
 -- 
 2.39.5
 
