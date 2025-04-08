@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-129980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0246A8023A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6996A7FE07
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04CB188A75A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9976D423917
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E65266EEA;
-	Tue,  8 Apr 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EB926561C;
+	Tue,  8 Apr 2025 10:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pw6IFehk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMNkUFMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E33F263C6D;
-	Tue,  8 Apr 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FA41FBCB2;
+	Tue,  8 Apr 2025 10:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112495; cv=none; b=KkB32MCo12UhQAIQi4V7CzdPcs9krF27K4I845ilHeoqnjO0Ildn1f6M6qQrGZv+z/a37Ap7Gg/eiyUzM4trFAyRr0wswPtrY3fWoqUqicrH6oXcedkGf6dg0foGl6Fl2bEDC+109LeHksoeoe4c+uLzyDWfIGsk/i7ItXq7Zjs=
+	t=1744109902; cv=none; b=BKMTGGNeThk/uGH+vVf+KrZZbj5Go+OIxaR2Ec+vBnvllHzplS7L9IHbh6/zIK1ReL6DvjowosH8equOBoMJfQaHnW9qKulio3AojSJaPWGZNLFPgV/e3rfe+35ttVLaJEKTDFM5vb6yVu/23OXYOp2DtD8MdRAynqRmvgESVek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112495; c=relaxed/simple;
-	bh=iybF2sVI2TfIEFHE/ZG5nVO4CZh9MUV9+VVnGEsqFF4=;
+	s=arc-20240116; t=1744109902; c=relaxed/simple;
+	bh=Y5VEI/UG5r532eHoiAqv0zvrNjcPUnXEZbNrf1uZIWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFYXjVmu1BLj16nW5CS4IUVbQPoy2YfxkFEF30u9l8BKcmri9ZzDJg+cepMtWpocKAZTvSnh7YlMG3eJz7SpM1NJi1biTLfxefridPiemL31fvup3WY2V/PfpWjnElAVwKTqy2MVPm2THdm+uUfVXNfVhRCUfGSZcjt0ADgMwE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw6IFehk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922BCC4CEE5;
-	Tue,  8 Apr 2025 11:41:34 +0000 (UTC)
+	 MIME-Version; b=gUEG/o8A8Bq85B2uwCcWfmMfW2I38MmevYdnNmlyyATS4Xl6W3UwNP3sPFIRPNzNFcGkn4FHhhxUbdkZVHrm0zJnwUH8VFw2CD8CkljjD8PQ1FdKAQuUjKqnvn/8FF7mnR6q9j0XQViQu0WkAcssY+yb73h+sH2mvLEe+IfPyEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMNkUFMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B9DC4CEE5;
+	Tue,  8 Apr 2025 10:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112494;
-	bh=iybF2sVI2TfIEFHE/ZG5nVO4CZh9MUV9+VVnGEsqFF4=;
+	s=korg; t=1744109902;
+	bh=Y5VEI/UG5r532eHoiAqv0zvrNjcPUnXEZbNrf1uZIWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pw6IFehkIk0wQAcwje5qnLf6DqwtvbbUYu08cD8JOARvGzgMSsl++hNt65iiowfNf
-	 dmpV9XtqNNMmzZHKBd+jZOzq/HjxNUEF0rpnSzA6iJL0j5fWzJTa8SOPE2NrgwDsDo
-	 bcjDToExbmvoY76pcsmlrQndcLDbsxSE4dcUHT0U=
+	b=VMNkUFMAjSaIhmSIwCR3R8y1jj8wJcnPQqOkNKGIp0aTlEVlfORJdqBztV2/N/yRM
+	 79SI27nOurhiEz7zuKneVrqvYzbYTGK2AYg8v3u84zAuPBowZAKmUEKDd1hK7UzqWV
+	 rpdQF70IHgG2fJEy+0wrX3KmoA4L3hmpXJRSqWEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/279] Bluetooth: Fix error code in chan_alloc_skb_cb()
-Date: Tue,  8 Apr 2025 12:47:53 +0200
-Message-ID: <20250408104828.780343687@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Wang Kefeng <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.10 096/227] ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
+Date: Tue,  8 Apr 2025 12:47:54 +0200
+Message-ID: <20250408104823.246309861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +67,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
+commit 169f9102f9198b04afffa6164372a4ba4070f412 upstream.
 
-The chan_alloc_skb_cb() function is supposed to return error pointers on
-error.  Returning NULL will lead to a NULL dereference.
+Under PAN emulation when dumping backtraces from things like the
+LKDTM EXEC_USERSPACE test[1], a double fault (which would hang a CPU)
+would happen because of dump_instr() attempting to read a userspace
+address. Make sure copy_from_kernel_nofault() does not attempt this
+any more.
 
-Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lava.sirena.org.uk/scheduler/job/497571
+Link: https://lore.kernel.org/all/202401181125.D48DCB4C@keescook/ [1]
+
+Reported-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/6lowpan.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/mm/fault.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 580b0940f067a..c4a1b478cf3e9 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -824,11 +824,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
- 					 unsigned long hdr_len,
- 					 unsigned long len, int nb)
- {
-+	struct sk_buff *skb;
-+
- 	/* Note that we must allocate using GFP_ATOMIC here as
- 	 * this function is called originally from netdev hard xmit
- 	 * function in atomic context.
- 	 */
--	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+	return skb;
- }
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -24,6 +24,13 @@
  
- static void chan_suspend_cb(struct l2cap_chan *chan)
--- 
-2.39.5
-
+ #include "fault.h"
+ 
++bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
++{
++	unsigned long addr = (unsigned long)unsafe_src;
++
++	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
++}
++
+ #ifdef CONFIG_MMU
+ 
+ /*
 
 
 
