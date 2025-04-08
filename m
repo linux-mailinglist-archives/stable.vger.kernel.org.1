@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C6A80B28
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B222A80537
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 929A24E79A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A111F4A515E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A07278144;
-	Tue,  8 Apr 2025 12:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A2269B18;
+	Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbGjWnIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWVkFOhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C443F26981C;
-	Tue,  8 Apr 2025 12:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AC1264627;
+	Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116875; cv=none; b=jlPuJurs4XD3py+uEgvz783bMHHGT8Xci56rx4a7Al63bk/sf/GCUr527QZhknxmGCLsuyCJp0Aa0ks9MI02X8MppsLcHJr/VLS86b122u0+F7cPfrn0KDNYSC70pTYybR6Q7Jd9qDJ4pg4NZnner7AKENL8M4NhGJXeuyirtTc=
+	t=1744113956; cv=none; b=P1V/FE4PdT+E2HWVcBZ8hAZh2TH1EnBO4QFSXpUYLPLbmNm6uMu51VULYtN2VNLoj+724Bgr/AEfXO4zGqc4NUaNxmv6lIbsmUVMf/ZVQ0MJL0JmreomBHC08UkQlI2E1JLWfO+K6b42LhymxT+VqPbAurrUk/b8pCJeV8o0iiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116875; c=relaxed/simple;
-	bh=rpPU3dg7pWgFc2lrGoF3GHLYfJYUICF8AF9k9c+MruA=;
+	s=arc-20240116; t=1744113956; c=relaxed/simple;
+	bh=KjyDL+Ssa6GlbKbUbzdY+VEMCES3AmHrnGXEi4S03so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJbv14xLOgKNi7RqTUrJcgemwc7lUwK2Q7h4rP90XlU2upCpIl8MyZ88xlsHkEIQaCTRX8GiBNatTrOGnFBLT1o8j59F1Pm/iuYNlWE9XS46UqCd1TQy6I9BcuQEl8CUs2HbMQXPZcNRM7tP3t5wjomKwbSmYhmoU2E61mMuTdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbGjWnIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568E9C4CEE5;
-	Tue,  8 Apr 2025 12:54:35 +0000 (UTC)
+	 MIME-Version; b=OXhzpReEwcHj8R1Gnu7n/H8aRu8gIXcJGBdbmu1owja/rzxLTsVNO1HB3l7lXAf2RZGJdiKTIowvnyXEgZzICfZMBPuv5l0aRNnHBJz7l8k8O/IsuikthP1I+v72a2UlBAaJGtATSa8NPj6CrV7lycSOxqoTaWrLlVn5Hv940Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWVkFOhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD66C4CEE5;
+	Tue,  8 Apr 2025 12:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116875;
-	bh=rpPU3dg7pWgFc2lrGoF3GHLYfJYUICF8AF9k9c+MruA=;
+	s=korg; t=1744113956;
+	bh=KjyDL+Ssa6GlbKbUbzdY+VEMCES3AmHrnGXEi4S03so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbGjWnIjsymOziNJtcjAsG9tsO4rysrbpoMH04NJ1foTfhnDtuQxu4iL+nx9Mw0Fl
-	 /JQu+5cq8Pq8PUtsCIaIvKUcUVzm+yPq1ISzUzUIPoZnm5PqnN/XyNseF2o2B7RcQ7
-	 vXjCEdVD3T4I1JbBr++wPgCkhaqQCkpdG031fXVc=
+	b=PWVkFOhLTHhfpj8Am47UA4dKuCiJJpHRmwwXBaVEhZHlR8iftG1V4XJKRAqNr83+1
+	 lMxECIQc9raNbhIU2ljuWNNrKHhhlvkcvbpQK+VTkmHgi+nWA9+Z+PWGPSN8h863oY
+	 /0ACuClZzJYUkSx4lNH5yadqO6XWr6H7nVWlNGI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Tim Schumacher <tim.schumacher1@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/423] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+Subject: [PATCH 5.4 084/154] selinux: Chain up tool resolving errors in install_policy.sh
 Date: Tue,  8 Apr 2025 12:50:25 +0200
-Message-ID: <20250408104852.755790182@linuxfoundation.org>
+Message-ID: <20250408104818.006081403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Tim Schumacher <tim.schumacher1@huawei.com>
 
-[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
+[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
 
-pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
-NCT6776_PWM_MODE_MASK only contain 6 values.
+Subshell evaluations are not exempt from errexit, so if a command is
+not available, `which` will fail and exit the script as a whole.
+This causes the helpful error messages to not be printed if they are
+tacked on using a `$?` comparison.
 
-Fix this by adding another 0 to the end of each array.
+Resolve the issue by using chains of logical operators, which are not
+subject to the effects of errexit.
 
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
+Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/selinux/install_policy.sh | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index fa3351351825b..79bc67ffb9986 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -273,8 +273,8 @@ static const s8 NCT6776_BEEP_BITS[NUM_BEEP_BITS] = {
- static const u16 NCT6776_REG_TOLERANCE_H[] = {
- 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
+diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
+index 20af56ce245c5..c68f0e045fb00 100755
+--- a/scripts/selinux/install_policy.sh
++++ b/scripts/selinux/install_policy.sh
+@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
+ 	exit 1
+ fi
  
--static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
--static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
+-SF=`which setfiles`
+-if [ $? -eq 1 ]; then
++SF=`which setfiles` || {
+ 	echo "Could not find setfiles"
+ 	echo "Do you have policycoreutils installed?"
+ 	exit 1
+-fi
++}
  
- static const u16 NCT6776_REG_FAN_MIN[] = {
- 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
+-CP=`which checkpolicy`
+-if [ $? -eq 1 ]; then
++CP=`which checkpolicy` || {
+ 	echo "Could not find checkpolicy"
+ 	echo "Do you have checkpolicy installed?"
+ 	exit 1
+-fi
++}
+ VERS=`$CP -V | awk '{print $1}'`
+ 
+-ENABLED=`which selinuxenabled`
+-if [ $? -eq 1 ]; then
++ENABLED=`which selinuxenabled` || {
+ 	echo "Could not find selinuxenabled"
+ 	echo "Do you have libselinux-utils installed?"
+ 	exit 1
+-fi
++}
+ 
+ if selinuxenabled; then
+     echo "SELinux is already enabled"
 -- 
 2.39.5
 
