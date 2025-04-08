@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BA2A8037F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABBBA801F2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E863AB7AE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4771119E1821
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095202698AE;
-	Tue,  8 Apr 2025 11:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40253264A70;
+	Tue,  8 Apr 2025 11:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeiz0Cfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK7bKtXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA480267B89;
-	Tue,  8 Apr 2025 11:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0306219301;
+	Tue,  8 Apr 2025 11:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113057; cv=none; b=PLwvTm76FWJ1fhH2uBTiruqteYCJ0ADaMyfMBf9iNmDMZeIebM5ID7tmD34d347hYuVf4gmUs4AGsEwmZDw7Mg1LM//xmO5bKdTgOHYxoNC7b12E7bEE5PAJZV3ITew1EKs15ZBoG3Sxg8AL7X4F96PeXkGNqCdJ9Ye96aG96g4=
+	t=1744112378; cv=none; b=uWVHBxKt7qDwfULpOZKvacwE1nPpPdAqFJZtlrVt+6ix17vkfzyCpUf2PlxHRJRck06NfPHOvcNxdpouNbA2P1mad8g9VlR1mRLu90gL6wvnC9kS6h44pONbiCUMTa5a6kzJgGq+1Zn3dmQUx6uwaFLIwXAeEw3iZ5LCWyZS5QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113057; c=relaxed/simple;
-	bh=3YHc8IVkKfJcoaAQcJMjFyiZ8O9WTjcdREUriTxineA=;
+	s=arc-20240116; t=1744112378; c=relaxed/simple;
+	bh=wlc1bjd8pgKqrcEUpHR42BFJvZN3R3WdxN3O/ntboBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z97YH3HL8S2G4g0IAxB2DGBVUd1PqwwlI7z6ob7VerehwWu9KiXWizzdciIJdZb7vHoNI++6doZzYxgaBds0nX3yXznUU9P5ET0HMimOVdTZUVe95TEzacS60a0AH3LYmg3fyeP6IX3fGiQk3dcgV3D/5Tipkl43HTACVwqI7J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeiz0Cfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF6C4CEE5;
-	Tue,  8 Apr 2025 11:50:57 +0000 (UTC)
+	 MIME-Version; b=O4tWZzlmLEBNIAYXfifL+OcGaCT5G2vGbyeTjp9dDt+/UObppcGyF12Z68XJanSANk74eMT6He1S5MbX3ULbOBHcvdb0k/XI0Ld6kzOVqBLCHyN+x3hrY06fgZf6BGwdOET1B6d+NkatPVRwS4HyDREERRSpLBYCu84OctfYqCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK7bKtXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81758C4CEE5;
+	Tue,  8 Apr 2025 11:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113057;
-	bh=3YHc8IVkKfJcoaAQcJMjFyiZ8O9WTjcdREUriTxineA=;
+	s=korg; t=1744112377;
+	bh=wlc1bjd8pgKqrcEUpHR42BFJvZN3R3WdxN3O/ntboBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeiz0CfzM6ktNzc5oH72nnwdDQDzYh4Y1z6gxmtjHxhaHLsoVjOCxJjqLGiAh6PUi
-	 xLciL7fadIx1wJZnwRMLvq8K+aCUHFB9NcrpR1QzVzYj652MNJPx1zuV+EilCkXg/w
-	 KylEZpRc/LPBXcaqrH0yX/Mdht/D2w/jGjk/zJcY=
+	b=aK7bKtXr0f55YoRh2b6Y+SWHgUd/whU5XbubDv0yr8Bv7kzZDlORgl+kge2SKgz5m
+	 YDYfpx98UXlI+GSKkAAKbxHtQ0j0K0QSFGselU68cbONkp5DSAGfmlOkofieFyBd6x
+	 bRc3rh6rKe87tNoKJNU+TDg/vXWarYK+BoEFXKl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/268] PM: sleep: Fix handling devices with direct_complete set on errors
+Subject: [PATCH 5.15 047/279] ASoC: tas2764: Set the SDOUT polarity correctly
 Date: Tue,  8 Apr 2025 12:47:10 +0200
-Message-ID: <20250408104829.028267835@linuxfoundation.org>
+Message-ID: <20250408104827.644013583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
+[ Upstream commit f5468beeab1b1adfc63c2717b1f29ef3f49a5fab ]
 
-When dpm_suspend() fails, some devices with power.direct_complete set
-may not have been handled by device_suspend() yet, so runtime PM has
-not been disabled for them yet even though power.direct_complete is set.
+TX launch polarity needs to be the opposite of RX capture polarity, to
+generate the right bit slot alignment.
 
-Since device_resume() expects that runtime PM has been disabled for all
-devices with power.direct_complete set, it will attempt to reenable
-runtime PM for the devices that have not been processed by device_suspend()
-which does not make sense.  Had those devices had runtime PM disabled
-before device_suspend() had run, device_resume() would have inadvertently
-enable runtime PM for them, but this is not expected to happen because
-it would require ->prepare() callbacks to return positive values for
-devices with runtime PM disabled, which would be invalid.
-
-In practice, this issue is most likely benign because pm_runtime_enable()
-will not allow the "disable depth" counter to underflow, but it causes a
-warning message to be printed for each affected device.
-
-To allow device_resume() to distinguish the "direct complete" devices
-that have been processed by device_suspend() from those which have not
-been handled by it, make device_suspend() set power.is_suspended for
-"direct complete" devices.
-
-Next, move the power.is_suspended check in device_resume() before the
-power.direct_complete check in it to make it skip the "direct complete"
-devices that have not been handled by device_suspend().
-
-This change is based on a preliminary patch from Saravana Kannan.
-
-Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
-Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
-Reported-by: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-28-932760fd7e07@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/tas2764.c | 10 +++++++++-
+ sound/soc/codecs/tas2764.h |  6 ++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 49728cb628c19..343d3c966e7a7 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -894,6 +894,9 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (dev->power.syscore)
- 		goto Complete;
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 1951bae95b315..273bf4027a6e5 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -315,7 +315,7 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ {
+ 	struct snd_soc_component *component = dai->component;
+ 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0;
++	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0, asi_cfg_4 = 0;
+ 	int ret;
  
-+	if (!dev->power.is_suspended)
-+		goto Complete;
+ 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
+@@ -324,12 +324,14 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_NB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_RISING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_FALLING;
+ 		break;
+ 	case SND_SOC_DAIFMT_IB_IF:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_IB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_FALLING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_RISING;
+ 		break;
+ 	}
+ 
+@@ -339,6 +341,12 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = snd_soc_component_update_bits(component, TAS2764_TDM_CFG4,
++					    TAS2764_TDM_CFG4_TX_MASK,
++					    asi_cfg_4);
++	if (ret < 0)
++		return ret;
 +
- 	if (dev->power.direct_complete) {
- 		/* Match the pm_runtime_disable() in __device_suspend(). */
- 		pm_runtime_enable(dev);
-@@ -912,9 +915,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
- 	 */
- 	dev->power.is_prepared = false;
+ 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
+ 	case SND_SOC_DAIFMT_I2S:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
+index b18a637bd9fa3..337bc611bee96 100644
+--- a/sound/soc/codecs/tas2764.h
++++ b/sound/soc/codecs/tas2764.h
+@@ -75,6 +75,12 @@
+ #define TAS2764_TDM_CFG3_RXS_SHIFT	0x4
+ #define TAS2764_TDM_CFG3_MASK		GENMASK(3, 0)
  
--	if (!dev->power.is_suspended)
--		goto Unlock;
--
- 	if (dev->pm_domain) {
- 		info = "power domain ";
- 		callback = pm_op(&dev->pm_domain->ops, state);
-@@ -954,7 +954,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
- 	error = dpm_run_callback(callback, dev, state, info);
- 	dev->power.is_suspended = false;
- 
-- Unlock:
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
- 
-@@ -1638,6 +1637,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
- 			pm_runtime_disable(dev);
- 			if (pm_runtime_status_suspended(dev)) {
- 				pm_dev_dbg(dev, state, "direct-complete ");
-+				dev->power.is_suspended = true;
- 				goto Complete;
- 			}
- 
++/* TDM Configuration Reg4 */
++#define TAS2764_TDM_CFG4		TAS2764_REG(0X0, 0x0d)
++#define TAS2764_TDM_CFG4_TX_MASK	BIT(0)
++#define TAS2764_TDM_CFG4_TX_RISING	0x0
++#define TAS2764_TDM_CFG4_TX_FALLING	BIT(0)
++
+ /* TDM Configuration Reg5 */
+ #define TAS2764_TDM_CFG5		TAS2764_REG(0X0, 0x0e)
+ #define TAS2764_TDM_CFG5_VSNS_MASK	BIT(6)
 -- 
 2.39.5
 
