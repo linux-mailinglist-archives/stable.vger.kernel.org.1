@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B98A8034B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60065A7FD90
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2981D1898832
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B484189C3CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C717C269827;
-	Tue,  8 Apr 2025 11:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F32026A0A2;
+	Tue,  8 Apr 2025 10:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yTCbwC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVv/QJlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82721268681;
-	Tue,  8 Apr 2025 11:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84E42698A0;
+	Tue,  8 Apr 2025 10:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113084; cv=none; b=jhL7DYp197eUVVbUsaFDgRQ4ATMSrus5J0rZmsRM4Vpn4o4eUWwu3POY2w64lJNo4/KttyXbXolnw3kNgU8ytAqnSuE6hv0bTpOf2NBIgecuW1z02T03OsTWMMiUY1XjHT3i6ChgcdTD2ruCrHgb0AO/pBWIB5XFoLItgbANjiE=
+	t=1744109835; cv=none; b=H5WeojWY/gXFEnrsYBpROTgu1vg8yoEsgA8eNW2cDvqlaJHRnLMvL3JXSKGfvFfyH4Fu/YYpr4DZfr3CvCktSckGWmF/AmS4K/Co/1RF0JpMAWyXKgwg7TCltu2qVz20EBIWQv8TgkCp0VTql/ZMoDpibbRAIXGxnkzulP1LCqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113084; c=relaxed/simple;
-	bh=1/pt2vwevI5XRu6SReKioSHBpwv15hQZDxIOqMHshEM=;
+	s=arc-20240116; t=1744109835; c=relaxed/simple;
+	bh=ucU16qtlImsc3qRSgC3Q/5SEQmL5oprVmGuDae8M3nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUBbO7lqyNu3UHcgOkyPuG++KXJbcrQGhXbv1DDWDmPho3kvv/HFH3rZGaN7pXR5XwC5JJraFSf1zL61wiUcVEuHh0gmuceqjaJa/GVdma2RoP5qKt17UxujNpU2C+aDYBQARJXS/QAp3T4MIxZE1cGOuG9XNRQmpxSXrOQElKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yTCbwC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06354C4CEE5;
-	Tue,  8 Apr 2025 11:51:23 +0000 (UTC)
+	 MIME-Version; b=VQ7lKNQe+GcaddSPVgVomo2j4iW5NrcGk653YVt7S9SlQUHIEUxJvuIEHr7FfA2tH1+2l+WStvVOnEnkFuyEXz3pJprBsMZ9ujRLHUKAHduNosqj/62JZBqPaovI2K5Nef6iDQMtVA007Ninare2k+wtb7yoOINEr4fsWDE2zNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVv/QJlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70333C4CEEA;
+	Tue,  8 Apr 2025 10:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113084;
-	bh=1/pt2vwevI5XRu6SReKioSHBpwv15hQZDxIOqMHshEM=;
+	s=korg; t=1744109834;
+	bh=ucU16qtlImsc3qRSgC3Q/5SEQmL5oprVmGuDae8M3nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yTCbwC+p21eSEoZHztZVkdVeYFChau+yWCCmYA7VfUiumHKAFlPfGB5RodfcXKjx
-	 8aiNSmr0WeeaBHzeG4av3QGZUJ4tsKnXCYP8Yc3uPXbl8YjMb0TG6dxBXZ/SmLNhm8
-	 +7Pv/vKxq7twTLXyauvhRbrTW3A43TyQIFtUmDDg=
+	b=FVv/QJlt+NaswMp/xstPL0Kyo9eea3mBTb1w7LY9yX2On6S8z3VY+81PNsGKaejhe
+	 Q9d3CT6LAtDAtV/Zrj/pYVuAUHofO5V/NXPXfkYJ1P6s6g7PJXLW7QuPQzHDiW6NS9
+	 CgPKOmTHnJH71YbtW9rYxRyikEygz80P5UkQvwXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
 	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/268] x86/platform: Only allow CONFIG_EISA for 32-bit
-Date: Tue,  8 Apr 2025 12:47:00 +0200
-Message-ID: <20250408104828.759112508@linuxfoundation.org>
+Subject: [PATCH 5.10 043/227] x86/irq: Define trace events conditionally
+Date: Tue,  8 Apr 2025 12:47:01 +0200
+Message-ID: <20250408104821.695786883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 976ba8da2f3c2f1e997f4f620da83ae65c0e3728 ]
+[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
 
-The CONFIG_EISA menu was cleaned up in 2018, but this inadvertently
-brought the option back on 64-bit machines: ISA remains guarded by
-a CONFIG_X86_32 check, but EISA no longer depends on ISA.
+When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
+the irq tracing produces a W=1 build warning for the tracing
+definitions:
 
-The last Intel machines ith EISA support used a 82375EB PCI/EISA bridge
-from 1993 that could be paired with the 440FX chipset on early Pentium-II
-CPUs, long before the first x86-64 products.
+  In file included from include/trace/trace_events.h:27,
+                 from include/trace/define_trace.h:113,
+                 from arch/x86/include/asm/trace/irq_vectors.h:383,
+                 from arch/x86/kernel/irq.c:29:
+  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
 
-Fixes: 6630a8e50105 ("eisa: consolidate EISA Kconfig entry in drivers/eisa")
+Make the tracepoints conditional on the same symbosl that guard
+their usage.
+
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250226213714.4040853-11-arnd@kernel.org
+Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index a06fab5016fdf..a0af6e8d584b0 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -215,7 +215,7 @@ config X86
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if X86_64
- 	select HAVE_EBPF_JIT
- 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
--	select HAVE_EISA
-+	select HAVE_EISA			if X86_32
- 	select HAVE_EXIT_THREAD
- 	select HAVE_FAST_GUP
- 	select HAVE_FENTRY			if X86_64 || DYNAMIC_FTRACE
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index ce904c89c6c70..3e01b80864031 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -22,8 +22,10 @@
+ #include <asm/desc.h>
+ #include <asm/traps.h>
+ 
++#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
++#endif
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ EXPORT_PER_CPU_SYMBOL(irq_stat);
 -- 
 2.39.5
 
