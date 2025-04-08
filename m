@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-131224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6779A8089E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DFAA80522
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156E21B86A84
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B32883F72
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA7C26B0B3;
-	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAD6268FF0;
+	Tue,  8 Apr 2025 12:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CrZ65Zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJjOmE1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99522686AA;
-	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD98265626;
+	Tue,  8 Apr 2025 12:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115821; cv=none; b=sK+snPD9XWGzMvyzZg1RKik9Zce9veJ/vEFj7f1aFtNlk7DIlZtA77Qg4oTPPiNiA+GcDWqeuiMmAVTmuSOyiSIdjFajlKubLLVHCvmeAEu1iFb6CDHhVeYqGBSD0XgEhWG/kbNNb6Dt2XYPxqprhy75Eoc0vRiQa6H+VxF9AdM=
+	t=1744113917; cv=none; b=pNlhu7roSWlKh5VRrPPUjNMMNGiJftfpfJWeBYlJyS33LUaNP8uOMWXpqMZFsJ2NO6qIWZxzHhup8LRjllWXLvYu/KwkQrXeFGu32KNNYkRCtxJ9SddQq8qV5opt7QBUPsF0Yj99jIo7GGrAXXvavfXIGtHETozpOEqDQqvfxfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115821; c=relaxed/simple;
-	bh=cP7WNSRK7LbILkQSB4VTIe/P0Wl2xy+8/X5UE3IPtzk=;
+	s=arc-20240116; t=1744113917; c=relaxed/simple;
+	bh=NLWUNH7jFTHbAjnbehFVIik2FxEQkf0aVnxoPWySAVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScWjVNr+Qrsd7DoNO3dEIBZYJ5ya+ZfGCt6o58Cxyf7z1/yvLEjS5Q9rYzNJWZhiVnoqGxOYYt3Lj/i36f8x+Jc1/XLP7eHuwvu8WwGbgi366KI+q4Grt79aEpn0SckDU9ouzSmswm+ziYrtvXmeKAAoOcI/q05j+YaEF9zG2a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CrZ65Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10381C4CEE5;
-	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
+	 MIME-Version; b=F15XdJTXYKs5GfEfNvT5VrIJg5cY3vJxI9ijmmUUUDKr5P2cqjVFNDfDIVQc/+VOS/r0I+ApjIRCKwXe0D8r103vfcLzwhXTRWfi+IveFAGvecs4Ze4h+07s1zyk823773EQ3XBD+LslttXYjRsdREpYHqdlfCJhnG2uNUr9jN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJjOmE1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202BDC4CEE5;
+	Tue,  8 Apr 2025 12:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115821;
-	bh=cP7WNSRK7LbILkQSB4VTIe/P0Wl2xy+8/X5UE3IPtzk=;
+	s=korg; t=1744113916;
+	bh=NLWUNH7jFTHbAjnbehFVIik2FxEQkf0aVnxoPWySAVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CrZ65ZbvputyXWogK6cMyS5wkGh7LWIwVHPXxKD/4u+iYzvJbR7xaJ1MlL4BGkFt
-	 uCgxL8+X3jlzSfEI8uWoGDuTwZEu+X5GeFkHedonfKLxTNT0wgdyBZ+9kfYN4AkdXL
-	 HQnFSmMjkuW/s8k9mnzEk1jtMlYwGtke7pXlfKeM=
+	b=vJjOmE1hxmXGj5aAxLVzAlmDqMqpJwiGFWsju3f3yibPEY9AUiP3nJu+V4nrfyKRV
+	 uLHo/csV/wVDEa3sqT6/dGXwnrlQ+syKpdntHma0YxCDvdim/uy+MqCp6UZjr0Mtd9
+	 CDGGNuv/fAS2vQTkYJwObCE4UfghMtbkhnD+Chvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/204] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.4 066/154] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
 Date: Tue,  8 Apr 2025 12:50:07 +0200
-Message-ID: <20250408104822.620167614@linuxfoundation.org>
+Message-ID: <20250408104817.410986382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,60 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
+commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
 
-PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
-initially start with a UNWIND_HINT_FUNC ORC state.
+Many Poly/Plantronics headset families name the feature, input,
+and/or output units in a such a way to produce control names
+that are not recognized by user space. As such, the volume and
+mute events do not get routed to the headset's audio controls.
 
-However, save_ret=1 means that we clobber the helper function's return
-address (and then later restore the return address further down on the
-stack); after that point, the only thing on the stack we can unwind through
-is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
-pt_regs frame.
+As an example from a product family:
 
-( An alternate approach would be to move the pt_regs->di overwrite down
-  such that it is the final step of pt_regs setup; but I don't want to
-  rearrange entry code just to make unwinding a tiny bit more elegant. )
+The microphone mute control is named
+Headset Microphone Capture Switch
+and the headset volume control is named
+Headset Earphone Playback Volume
 
-Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The quirk fixes these to become
+Headset Capture Switch
+Headset Playback Volume
+
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/calling.h | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index f6907627172ba..01e9593e2bd95 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
- 	pushq	%rsi		/* pt_regs->si */
- 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
- 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
-+	/* We just clobbered the return address - use the IRET frame for unwinding: */
-+	UNWIND_HINT_IRET_REGS offset=3*8
- 	.else
- 	pushq   %rdi		/* pt_regs->di */
- 	pushq   %rsi		/* pt_regs->si */
--- 
-2.39.5
-
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2531,6 +2531,52 @@ static void snd_dragonfly_quirk_db_scale
+ 	}
+ }
+ 
++/*
++ * Some Plantronics headsets have control names that don't meet ALSA naming
++ * standards. This function fixes nonstandard source names. By the time
++ * this function is called the control name should look like one of these:
++ * "source names Playback Volume"
++ * "source names Playback Switch"
++ * "source names Capture Volume"
++ * "source names Capture Switch"
++ * If any of the trigger words are found in the name then the name will
++ * be changed to:
++ * "Headset Playback Volume"
++ * "Headset Playback Switch"
++ * "Headset Capture Volume"
++ * "Headset Capture Switch"
++ * depending on the current suffix.
++ */
++static void snd_fix_plt_name(struct snd_usb_audio *chip,
++			     struct snd_ctl_elem_id *id)
++{
++	/* no variant of "Sidetone" should be added to this list */
++	static const char * const trigger[] = {
++		"Earphone", "Microphone", "Receive", "Transmit"
++	};
++	static const char * const suffix[] = {
++		" Playback Volume", " Playback Switch",
++		" Capture Volume", " Capture Switch"
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(trigger); i++)
++		if (strstr(id->name, trigger[i]))
++			goto triggered;
++	usb_audio_dbg(chip, "no change in %s\n", id->name);
++	return;
++
++triggered:
++	for (i = 0; i < ARRAY_SIZE(suffix); i++)
++		if (strstr(id->name, suffix[i])) {
++			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
++			snprintf(id->name, sizeof(id->name), "Headset%s",
++				 suffix[i]);
++			return;
++		}
++	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
++}
++
+ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
+ 				  struct usb_mixer_elem_info *cval, int unitid,
+ 				  struct snd_kcontrol *kctl)
+@@ -2548,5 +2594,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
+ 			cval->min_mute = 1;
+ 		break;
+ 	}
++
++	/* ALSA-ify some Plantronics headset control names */
++	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
++	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
++		snd_fix_plt_name(mixer->chip, &kctl->id);
+ }
+ 
 
 
 
