@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DF8A806E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA3AA80420
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CB41B82654
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9133A341A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09DB26A0A7;
-	Tue,  8 Apr 2025 12:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB8A2698BE;
+	Tue,  8 Apr 2025 11:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQg2PhBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ig5AVuGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD603224239;
-	Tue,  8 Apr 2025 12:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5937D266EEA;
+	Tue,  8 Apr 2025 11:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115067; cv=none; b=Hsv4Nv1pmC82z67Gtx7A+j15IkPFP8MZ0ZwCJHQmzM3eJaehyG2f/84dH3aj7idmZKeyyT1odYumiKp0mvamjzeki3t5hfnyxRGb+yODUxflucWaCuAEPe3ww87J8XPevyLjmPz9bZMTwhM34DUKVKlnREbrY+ryptu5ytvy/j4=
+	t=1744113375; cv=none; b=IQrheTzN9dNY4caNdpzakbVRclytIwEFJJzIrk5wtU5TbHiqh28JSm6JaOaypBB6XrFTXlDStYzVx9zlRe8k0cen3rfzXJtkTrI7XU3eOQWYCtBCfP0sW2AL9Hx0y/8OtBwM/ebato5007x862q8mX4n8Qlbfjd8AbXrQMzZi4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115067; c=relaxed/simple;
-	bh=H5vnoLqwpbRu85936aJKBDZBrkxxKACqRisU8/2yIF8=;
+	s=arc-20240116; t=1744113375; c=relaxed/simple;
+	bh=mRGNGM4zKCRsOIMbKKOhGLTJ5cMQI+0N/OOCzZmhuyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJjz5jlTYxMXwwGS0UNse4nxx45RchoVZbwytgMjYTti0ko/KMAGVg29ZY9w/gD+SpQqgVGjuU2rtNHYBPxvQtC3UMBxND7Z5QHNrZEWDPh2tM8v2Qo1RADVoWDgxJbt0Fj1IIlNTn7LQkEV4YjTFZh9r5Mz7SO3JZqnZsPEVIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQg2PhBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3590FC4CEEA;
-	Tue,  8 Apr 2025 12:24:27 +0000 (UTC)
+	 MIME-Version; b=U9aMzPBJMTHkonjx20MksuqLwI+d3J3kj2/aDF4qw+I3qje2X76YIxdUNw/1EsXW4/sz+8skGLV2clxs+oVy5yQuhXtz7uFpbkO/i/AtYvAOts9fXwlVVzrgOI2K73a+BRMrqZ5MEENoROKI9si7xK9O2Y3p1lV9zpW/Z6YSRBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ig5AVuGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA22C4CEE5;
+	Tue,  8 Apr 2025 11:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115067;
-	bh=H5vnoLqwpbRu85936aJKBDZBrkxxKACqRisU8/2yIF8=;
+	s=korg; t=1744113375;
+	bh=mRGNGM4zKCRsOIMbKKOhGLTJ5cMQI+0N/OOCzZmhuyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQg2PhByzUJezqRGBjRpQ+zNtHKo9oEHxTQGncEGtxyqs7g1vFAuysPnpBGXQpJl1
-	 sb4Ql6TrqAUhLgHxqBQktIC4nGqv2DHvEj47Yo6GzvGrBsxGgmKZargRz1dyPAFlrN
-	 2gBbQ46sx8CPgYBlIDV6/zihOyZFgYg0zU3BlfG0=
+	b=ig5AVuGhcW9oLGXU0b4wuT606Nyk7nReVWk1sNtyjz4B1bO4NYKDEPfeJKJQ1hRoY
+	 Kdeg5Ozq6zTkP8pYMuPzAEkBfcYQXDycA8K4Wnrh8iHlHQEQntDL4sZUWrSLkeKmK2
+	 rRobjZ1cS7DKyQKnx/gerPAbWcrf59RBPM8WvPY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 335/499] wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
+Subject: [PATCH 6.6 136/268] perf python: Check if there is space to copy all the event
 Date: Tue,  8 Apr 2025 12:49:07 +0200
-Message-ID: <20250408104859.579474193@linuxfoundation.org>
+Message-ID: <20250408104832.189239071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 43e04077170799d0e6289f3e928f727e401b3d79 ]
+[ Upstream commit 89aaeaf84231157288035b366cb6300c1c6cac64 ]
 
-We first want to flush the station to make sure we no longer have any
-frames being Tx by the station before the station is moved to
-un-authorized state. Failing to do that will lead to races: a frame may
-be sent after the station's state has been changed.
+The pyrf_event__new() method copies the event obtained from the perf
+ring buffer to a structure that will then be turned into a python object
+for further consumption, so it copies perf_event.header.size bytes to
+its 'event' member:
 
-Since the API clearly states that the driver can't fail the sta_state()
-transition down the list of state, we can easily flush the station
-first, and only then call the driver's sta_state().
+  $ pahole -C pyrf_event /tmp/build/perf-tools-next/python/perf.cpython-312-x86_64-linux-gnu.so
+  struct pyrf_event {
+  	PyObject                   ob_base;              /*     0    16 */
+  	struct evsel *             evsel;                /*    16     8 */
+  	struct perf_sample         sample;               /*    24   312 */
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250306123626.450bc40e8b04.I636ba96843c77f13309c15c9fd6eb0c5a52a7976@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  	/* XXX last struct has 7 bytes of padding, 2 holes */
+
+  	/* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
+  	union perf_event           event;                /*   336  4168 */
+
+  	/* size: 4504, cachelines: 71, members: 4 */
+  	/* member types with holes: 1, total: 2 */
+  	/* paddings: 1, sum paddings: 7 */
+  	/* last cacheline: 24 bytes */
+  };
+
+  $
+
+It was doing so without checking if the event just obtained has more
+than that space, fix it.
+
+This isn't a proper, final solution, as we need to support larger
+events, but for the time being we at least bounds check and document it.
+
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-7-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ tools/perf/util/python.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index aa22f09e6d145..49095f19a0f22 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -4,7 +4,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 4697bbb17c39a..06a1e09d7349c 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -671,6 +671,11 @@ static PyObject *pyrf_event__new(union perf_event *event)
+ 	      event->header.type == PERF_RECORD_SWITCH_CPU_WIDE))
+ 		return NULL;
  
- #include <linux/module.h>
-@@ -1317,9 +1317,13 @@ static int _sta_info_move_state(struct sta_info *sta,
- 		sta->sta.addr, new_state);
- 
- 	/* notify the driver before the actual changes so it can
--	 * fail the transition
-+	 * fail the transition if the state is increasing.
-+	 * The driver is required not to fail when the transition
-+	 * is decreasing the state, so first, do all the preparation
-+	 * work and only then, notify the driver.
- 	 */
--	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
-+	if (new_state > sta->sta_state &&
-+	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
- 		int err = drv_sta_state(sta->local, sta->sdata, sta,
- 					sta->sta_state, new_state);
- 		if (err)
-@@ -1395,6 +1399,16 @@ static int _sta_info_move_state(struct sta_info *sta,
- 		break;
- 	}
- 
-+	if (new_state < sta->sta_state &&
-+	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
-+		int err = drv_sta_state(sta->local, sta->sdata, sta,
-+					sta->sta_state, new_state);
++	// FIXME this better be dynamic or we need to parse everything
++	// before calling perf_mmap__consume(), including tracepoint fields.
++	if (sizeof(pevent->event) < event->header.size)
++		return NULL;
 +
-+		WARN_ONCE(err,
-+			  "Driver is not allowed to fail if the sta_state is transitioning down the list: %d\n",
-+			  err);
-+	}
-+
- 	sta->sta_state = new_state;
- 
- 	return 0;
+ 	ptype = pyrf_event__type[event->header.type];
+ 	pevent = PyObject_New(struct pyrf_event, ptype);
+ 	if (pevent != NULL)
 -- 
 2.39.5
 
