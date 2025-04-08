@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02F9A8084D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B564A80502
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12AC44E0325
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 807D8426B43
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FB5268FD0;
-	Tue,  8 Apr 2025 12:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E45269D1B;
+	Tue,  8 Apr 2025 12:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrPbgGm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSB+702l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2551E263F4D;
-	Tue,  8 Apr 2025 12:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95DE268685;
+	Tue,  8 Apr 2025 12:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115547; cv=none; b=H42VSE3vaXKMrwF0KBVm6DO/6Mj90Gmp0rS12f8TqobVAeyeHcIGPvgG5diQ/2eJflzqMzP0DY4z8tgv4enELeBXYfTDugISeJy0hDIoiZNY+VOfsgtLTmff39FGB3wKX2mHrAMzDEOmSHqB1uvUqPcFz2oPz4EB13ynbhTx+mM=
+	t=1744113809; cv=none; b=g4alshDohb61+OlLiJHT735DE5+o3Hqk6LuJKLZJqcyvcwRbQgs5skhznHPglYP4B3kgwCY/RHYPkTQ50owF1ejs+8HiYF4xW2MVIjAB517cEacKV/v+wvkZeOeoG/ukBzVwLHyxcnva/KDWi8fHF+X7OWsI/5aQpkcqHXAxpug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115547; c=relaxed/simple;
-	bh=eGac2m3GPWMn5DCcpmy1E1GPq4Mvm6kM4ZhrEjaJwiU=;
+	s=arc-20240116; t=1744113809; c=relaxed/simple;
+	bh=Kd1zjVAC2lE+6G+MAu0qIvU08toGIHpuRLkdG4qZrWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qhORrxjcjDjgzk9I0xvWb6vOMEqVEka53ffdEPjlf8Sk8UwnG7DnczJRG4Wx3QbmXFUAtRoOgRYAWg1rSCJoPjLzajwGEDqfeB7hz+0dwjOUv9Ds3wPq3mKRFucFOrIIKkg8p1w/yTrvMLinld+5sBpCrkXI5ukLAGKpOga1BhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrPbgGm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9A4C4CEE5;
-	Tue,  8 Apr 2025 12:32:26 +0000 (UTC)
+	 MIME-Version; b=WQMb1Y7vT1t33ecZ6x74ix5rtqR9bOvjKkSvbza3v2X/qt47nnmt6pHNDtgmfKxNEbGg09ie6eEHo1VmCwpYio9W+mnbpBrBRdbBXD1orMKP6ueJgZbbkwolN/TObNvmXLPVPIwi0qkjXcheh+sW6xmz8EhA4s+lodx8HV/AQos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSB+702l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A10C4CEE5;
+	Tue,  8 Apr 2025 12:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115547;
-	bh=eGac2m3GPWMn5DCcpmy1E1GPq4Mvm6kM4ZhrEjaJwiU=;
+	s=korg; t=1744113809;
+	bh=Kd1zjVAC2lE+6G+MAu0qIvU08toGIHpuRLkdG4qZrWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrPbgGm/uRiwtNmT19ngy5WEhDp048U8x2mQCcROQESgVfebg8G3zcio+FQI/JRhn
-	 fUKkQBFfyMGwO7BhIW29puuJPUsfhvn/nGacccbQV84m+CbqGuYEWwmQ5ZjdYKOmNh
-	 NkFWfjUuSiQMYJp1EApCmErnLd1rebNJVAra8Y0k=
+	b=BSB+702lIEmZGGIqNVTWfo+ENCWc/LYuX2SxmPCb8YDOmVrTHgqYSEIeSgJUrxTFl
+	 mLPdMSJJS1/ok7nuOGh3xdgxzN66x/NTV2lB9nNt21kp4IRTloVonltkjKcL+GEq8F
+	 ZDlK1gAmx9n321ef+K7//QvX8TE7xNsbsNcztlDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/204] thermal: int340x: Add NULL check for adev
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Magali Lemes <magali.lemes@canonical.com>
+Subject: [PATCH 5.4 005/154] Revert "sctp: sysctl: auth_enable: avoid using current->nsproxy"
 Date: Tue,  8 Apr 2025 12:49:06 +0200
-Message-ID: <20250408104820.793459456@linuxfoundation.org>
+Message-ID: <20250408104815.466292312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +59,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Magali Lemes <magali.lemes@canonical.com>
 
-[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
+This reverts commit 10c869a52f266e40f548cc3c565d14930a5edafc as it
+was backported incorrectly.
+A subsequent commit will re-backport the original patch.
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL.
-This is similar to the commit cd2fd6eab480
-("platform/x86: int3472: Check for adev == NULL").
-
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in int3402_thermal_probe().
-
-Note, under the same directory, int3400_thermal_probe() has such a
-check.
-
-Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
-[ rjw: Subject edit, added Fixes: ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sctp/sysctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-index 43fa351e2b9ec..b7fdf25bfd237 100644
---- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
- 	struct int3402_thermal_data *d;
- 	int ret;
- 
-+	if (!adev)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(adev->handle, "_TMP"))
- 		return -ENODEV;
- 
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -326,7 +326,7 @@ static int proc_sctp_do_hmac_alg(struct
+ 				void __user *buffer, size_t *lenp,
+ 				loff_t *ppos)
+ {
+-	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
++	struct net *net = current->nsproxy->net_ns;
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
