@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192A1A8074B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C61BDA804BD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C88A4A83EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832FB4652C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABB826A0EB;
-	Tue,  8 Apr 2025 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C432269CE8;
+	Tue,  8 Apr 2025 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caW7N9Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4z5k9Ym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B5C26A0D6;
-	Tue,  8 Apr 2025 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB07D26869D;
+	Tue,  8 Apr 2025 12:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115097; cv=none; b=p7sb8yL4jnZ+0OfVrvvBO92iF6l1JZcSC3R4X2rXv7HHqD4NH03rqenRwb7BQQjhwP1KB4wi1X5TlR+Yp77ir2zax4eXWEhZpHcLF81i+8FjoLH4XRlgGkJ19vuGFe6tSB9AugHWVQnWJ8dOmB00VxQr+ncRQ0ou6sGY1sksY30=
+	t=1744113789; cv=none; b=nfIcdOMNMo09ECoywxsTv1BKWEX0BlD/N9bdSOL88puPZjIUFfKXa8JRfcg84M0hpozvUsN/uzZwg325WRbfRME+A3YTdKtR2WLI9/QDu6Bd5FJMzwEMR4RvMoSbzb+csIAmWvbTjFvLQlI/3pZ6Eg9V/HFPe4JnTiTzVU+voyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115097; c=relaxed/simple;
-	bh=hX3p/6jefavijanwfs1QM0gYhqbQBNzAMce/ull4gbg=;
+	s=arc-20240116; t=1744113789; c=relaxed/simple;
+	bh=osjh9dP5KOwweiy4LbM0uqsDQ2BUwHCk9RD8oD6toVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PPYxJzTIo1cT7z5yxFEn5zAhyBzhdF94Wt2R5n8IUATBiwS0y5BAcz2YB7q48LC2kl9zH8KqXKE+OEgJ6p6JSPMGLI8/K28KCt0+SnmZwrvxhlRIRwwrUwNJ1z4/fYA9imwh+h7RDqTUv5Fwnd21Y4qgnYaU7JAetnyA2j9N4UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caW7N9Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8EAC4CEEA;
-	Tue,  8 Apr 2025 12:24:56 +0000 (UTC)
+	 MIME-Version; b=Qmd3ByM7Pf4zkbfzzfLPAlqaTtmIBGvBFhtDlY7TsoqBhhwsLb3CVERT5QeZzYmWtbofASmBKNDuqVyJp4E5goU9Lw3vGM/pdfVlHNUwhk99zpPFvayBNLpTEb292WNHkSMMF4oWH8yX7ihGaDZ95+6dCsib+rNE76CCmDydhOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4z5k9Ym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF55C4CEE5;
+	Tue,  8 Apr 2025 12:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115097;
-	bh=hX3p/6jefavijanwfs1QM0gYhqbQBNzAMce/ull4gbg=;
+	s=korg; t=1744113788;
+	bh=osjh9dP5KOwweiy4LbM0uqsDQ2BUwHCk9RD8oD6toVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caW7N9TdzVOCKQZZ+1WxMrefTqteg8lD4Zgl9uCy2GO16PiGfyO2GaE0SBB+mUfzZ
-	 VbFFPHBoTFPSdYJBG4O1Dcs+qJkEWIPB38GFwNssW+qm2gUeVsdtfIvk8/Dx8VTAJx
-	 FRIjQoH8pSbG9NfAHcMeVGXCNVy1KgK3J7wNaDVk=
+	b=w4z5k9YmdpKSBMJjhNufI/cTe/RTPlAByty4gXmz1f0qO581IYtShsogax5LCMPQU
+	 jEfTwnz4E14nkoHBnoiG+FzY2nyypYAr7l1k0MXHdbV7fSK+2TcQLp47KvFi8e/K9G
+	 uDb0K7Psq5pMcI2afb8h54kIn5WnipaUxEfIg7jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 349/499] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+Subject: [PATCH 5.4 020/154] net/mlx5e: Prevent bridge link show failure for non-eswitch-allowed devices
 Date: Tue,  8 Apr 2025 12:49:21 +0200
-Message-ID: <20250408104859.929524772@linuxfoundation.org>
+Message-ID: <20250408104815.927878850@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
+[ Upstream commit e92df790d07a8eea873efcb84776e7b71f81c7d5 ]
 
-pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
-NCT6776_PWM_MODE_MASK only contain 6 values.
+mlx5_eswitch_get_vepa returns -EPERM if the device lacks
+eswitch_manager capability, blocking mlx5e_bridge_getlink from
+retrieving VEPA mode. Since mlx5e_bridge_getlink implements
+ndo_bridge_getlink, returning -EPERM causes bridge link show to fail
+instead of skipping devices without this capability.
 
-Fix this by adding another 0 to the end of each array.
+To avoid this, return -EOPNOTSUPP from mlx5e_bridge_getlink when
+mlx5_eswitch_get_vepa fails, ensuring the command continues processing
+other devices while ignoring those without the necessary capability.
 
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-7-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index fa3351351825b..79bc67ffb9986 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -273,8 +273,8 @@ static const s8 NCT6776_BEEP_BITS[NUM_BEEP_BITS] = {
- static const u16 NCT6776_REG_TOLERANCE_H[] = {
- 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 363c4ab059909..b3ba996004f1d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4684,11 +4684,9 @@ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 mode, setting;
+-	int err;
  
--static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
--static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
- 
- static const u16 NCT6776_REG_FAN_MIN[] = {
- 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
+-	err = mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting);
+-	if (err)
+-		return err;
++	if (mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting))
++		return -EOPNOTSUPP;
+ 	mode = setting ? BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode,
 -- 
 2.39.5
 
