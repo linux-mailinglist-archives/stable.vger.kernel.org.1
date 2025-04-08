@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC617A803F6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7401A806C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D9244274D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3E301B66398
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8B1268FEB;
-	Tue,  8 Apr 2025 11:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D171269CE8;
+	Tue,  8 Apr 2025 12:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRTryQ0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfjPjafT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6124022257E;
-	Tue,  8 Apr 2025 11:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE572266580;
+	Tue,  8 Apr 2025 12:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113324; cv=none; b=o4vIg4HnMZN+vJNduQADAyBj2dhkqiXK7BaoN9/dVTqSglIRjGhB0wAi4JEH+DMw3N9ExVB4ZL6CvDJhKap1jDS2noLX4eM69elPhSbKjUXN0HnXsPD3IAVcaD6TD5HbRFWVI/LGNw/LBqEV9LhTXCYMOzAUcfr924gvBkDldas=
+	t=1744115016; cv=none; b=Ihh1abS1QxMZ198CHaHzY+wgmlpcOhs2S1MC0IVxpyAd7GOPuT9MYWOCEBDNIqSljb1SVS3/1k0HmmLAVAs2tiA7fTZ7a8QK+S/XmJr0rtdW9njGtzImX5KVQgCz4SGqP18tno3jdg2JCJoqNSprEGwA1MljHAmVR2CoF6ChDMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113324; c=relaxed/simple;
-	bh=zKiaUj/8HfElq06piJwtHm5mJKj96N8jp9Mt8pm80OI=;
+	s=arc-20240116; t=1744115016; c=relaxed/simple;
+	bh=lNeYKws1MaqxdNVr4e529zjhsdTqVxTEUWl/SAYwcjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/Tfjz2g/u48EFZNoXLnhKaVsUbcYmUHulfMcz95ejciGwgBMbQ9pL6WRsnKyzig2Tiouf4KfJz7gATB7n/S5kShQjsnQelhv7NzYmBukmGZIj7BHcMxjNJRxT/GERGw1h5E1SJteXTzYvkBEABvLoEIzyyLuEHoojx11VmJtDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRTryQ0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA467C4CEE5;
-	Tue,  8 Apr 2025 11:55:23 +0000 (UTC)
+	 MIME-Version; b=Hd59355LEZ+LRJ571eNrh2UI4FVPT/TMU3ofbi6d7M8E50Yu9cFXHpK2DRJwh1p7JawFuwirUqFBTCN2VJU8wKkSMgoa/g6+YA68PYH7+sAq4riDBEBpqBgYMkNfpnFIFhYzXK7GoQDXPbfOBE2QyiC66wHkH2+Rdh1vtIzxj5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfjPjafT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E247C4CEE7;
+	Tue,  8 Apr 2025 12:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113324;
-	bh=zKiaUj/8HfElq06piJwtHm5mJKj96N8jp9Mt8pm80OI=;
+	s=korg; t=1744115015;
+	bh=lNeYKws1MaqxdNVr4e529zjhsdTqVxTEUWl/SAYwcjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRTryQ0bxuDyhWbJ1nCg6PZnTq0WLcRrk5tl75muOysElBtjOdkM5F6LJ3rRKuH+6
-	 ffVjxU4Y4BtpiaAhzfpEBFVIokHOh9Vym5L+QOB7pYr6xJKqkHalaDrVpG7HXYb4zQ
-	 er2PvKWG+j8aOo9WRD5CHdiLn4cHNp+TKsv3P5GQ=
+	b=UfjPjafTnafLngczYmTJkJwA2FWCCn5k13psPXcOlh5EofZ2T0vQdeQpLdxa6ld14
+	 Xgsh8IHKVcLRC6cSBevSQRgabGC60sriU8bOR+rXhqUzBachfrpL9M5RBiNNor/6Ix
+	 K+kSGQdh6ZWG+8lxJ1SK8JPohSaq/aqDOP4XmPlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/268] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
-Date: Tue,  8 Apr 2025 12:48:49 +0200
-Message-ID: <20250408104831.679434829@linuxfoundation.org>
+Subject: [PATCH 6.13 318/499] net: dsa: rtl8366rb: dont prompt users for LED control
+Date: Tue,  8 Apr 2025 12:48:50 +0200
+Message-ID: <20250408104859.152931291@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c9c59da76ce9cb3f215b66eb3708cda1134a5206 ]
+[ Upstream commit c34424eb3be4c01db831428c0d7d483701ae820f ]
 
-There is kernel dump when do module test:
-sysfs: cannot create duplicate filename
-/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
- __dma_async_device_channel_register+0x128/0x19c
- dma_async_device_register+0x150/0x454
- fsl_edma_probe+0x6cc/0x8a0
- platform_probe+0x68/0xc8
+Make NET_DSA_REALTEK_RTL8366RB_LEDS a hidden symbol.
+It seems very unlikely user would want to intentionally
+disable it.
 
-fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
-dma_async_device_unregister  needs the link to do
-__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
-after dma_async_device_unregister to make sure channel could be freed.
-
-So clean up chan after dma_async_device_unregister to address this.
-
-Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250228071720.3780479-1-peng.fan@oss.nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250228004534.3428681-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 2 +-
+ drivers/net/dsa/realtek/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index cd394eae47d17..cc9923ab686dc 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -675,9 +675,9 @@ static int fsl_edma_remove(struct platform_device *pdev)
- 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
+diff --git a/drivers/net/dsa/realtek/Kconfig b/drivers/net/dsa/realtek/Kconfig
+index 10687722d14c0..d6eb6713e5f6b 100644
+--- a/drivers/net/dsa/realtek/Kconfig
++++ b/drivers/net/dsa/realtek/Kconfig
+@@ -44,7 +44,7 @@ config NET_DSA_REALTEK_RTL8366RB
+ 	  Select to enable support for Realtek RTL8366RB.
  
- 	fsl_edma_irq_exit(pdev, fsl_edma);
--	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
- 	of_dma_controller_free(np);
- 	dma_async_device_unregister(&fsl_edma->dma_dev);
-+	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
- 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
- 
- 	return 0;
+ config NET_DSA_REALTEK_RTL8366RB_LEDS
+-	bool "Support RTL8366RB LED control"
++	bool
+ 	depends on (LEDS_CLASS=y || LEDS_CLASS=NET_DSA_REALTEK_RTL8366RB)
+ 	depends on NET_DSA_REALTEK_RTL8366RB
+ 	default NET_DSA_REALTEK_RTL8366RB
 -- 
 2.39.5
 
