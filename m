@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-131148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1480BA8086D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B9FA80BAB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23574E0CEB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B5590410A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4386626B099;
-	Tue,  8 Apr 2025 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B8227604B;
+	Tue,  8 Apr 2025 12:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ur8t34Zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWqqS9by"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0077E26B0A2;
-	Tue,  8 Apr 2025 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634E826AAA3;
+	Tue,  8 Apr 2025 12:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115619; cv=none; b=Ub38bEzaMXD9PfRPcm/LD4rrARq2vi4J4WDDCjU40IONiAJutWnPmPpKHmgjKi+AOQe1WBh5LSnnYHggYf6aj57GwxF45eWkYWrSiaxQB9WoQd4vH+Zzr+9jEjKo6YszaHFTwp8eRaVUpAviecPc1pAdGXsWBp2XdW0E0TAo4n0=
+	t=1744116731; cv=none; b=Zw4qW7164GGRIYJqZBnm//S36w1s3TGyx2vRRgNhZKNBJWZ4lyyqOGZBgp1no+r1FtnjlqEiJXhL0baDl8PFXWhU5ZakbscdZOHGELoZ+0YkVMbSTZ2J2/YTyt3OqPDjAF9ZWHvb3wyIrFw6yq+qmb9HqKenu+yWhVMvM1xvpts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115619; c=relaxed/simple;
-	bh=E9DG16rGjxhVdUjqa2Nrvaspzl1sSlcOeF1oHh1gHsE=;
+	s=arc-20240116; t=1744116731; c=relaxed/simple;
+	bh=0vnY0Ty6YJW1l3eL3Vb3Yxzt0TuXrSq9rDOZ8teYMRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/rAgDg4zLiNLXLWYRGqOw0ftOhi7KUGyF+tfm4F9nbS1BV4mojBeTWBm4UDDylzEd++FWY2TIxAtcRO7uUMAl8PesgD/pJw1dvAUJDj2PjFQfneGXjWbHm+5mTpQeWjxBlXYl8jfmIj1Loo40VuM8ZVfFI04NcPSUDr6ahWpNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ur8t34Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55791C4CEE5;
-	Tue,  8 Apr 2025 12:33:38 +0000 (UTC)
+	 MIME-Version; b=bkoiU/531gCnwlVjmYk41toiFuw0n5ML/L4QnpWM5JzXaEYRld3S8d4i1XOrbpEzB6js6vC/TaDRpURYV01w1ojFXLcTUA5sEWVbI/0uQGAmuArzLAoYWeSSj3CE0z+aIN5EnNrHksIDcDpujnqrryIAGc11RDKw094ArPesdxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWqqS9by; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A49C4CEE5;
+	Tue,  8 Apr 2025 12:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115618;
-	bh=E9DG16rGjxhVdUjqa2Nrvaspzl1sSlcOeF1oHh1gHsE=;
+	s=korg; t=1744116731;
+	bh=0vnY0Ty6YJW1l3eL3Vb3Yxzt0TuXrSq9rDOZ8teYMRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ur8t34ZbW292UoeIWW4ToPGvN3xr0KXN0nEyII5ce8VUq+vs+V5EPM2P6lXrqX3pQ
-	 iGZFnirKoSCE7Od1Wr2iVyzVde7/1JFPoFyDHMyvwZipS/FxUTIZ4xaMl2M5vFJdb2
-	 X06IRwWyZPjbHNkm0KSKuJJ3LvS7+RMa+r/O3pNM=
+	b=nWqqS9byY7CFknj+0uvzltFmNc71O4cYZD/mGceLODyhziVfUO8pgRklas/6b7BQ4
+	 NqD5YkCIfyfCKxwUiGq2OCmtoshuIB3YBWg9MIqtupq02J9KUTtY0K+orRp73tYDte
+	 S+iNd/CmmW6hG7BVEKclCElfV8kC94mo/J80roos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Aravamudan <naravamudan@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Raphael Norwitz <raphael.norwitz@nutanix.com>,
-	Amey Narkhede <ameynarkhede03@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/204] PCI: Avoid reset when disabled via sysfs
-Date: Tue,  8 Apr 2025 12:49:32 +0200
-Message-ID: <20250408104821.581067871@linuxfoundation.org>
+Subject: [PATCH 6.12 247/423] objtool: Fix verbose disassembly if CROSS_COMPILE isnt set
+Date: Tue,  8 Apr 2025 12:49:33 +0200
+Message-ID: <20250408104851.486561384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Aravamudan <naravamudan@nvidia.com>
+From: David Laight <david.laight.linux@gmail.com>
 
-[ Upstream commit 479380efe1625e251008d24b2810283db60d6fcd ]
+[ Upstream commit e77956e4e5c11218e60a1fe8cdbccd02476f2e56 ]
 
-After d88f521da3ef ("PCI: Allow userspace to query and set device reset
-mechanism"), userspace can disable reset of specific PCI devices by writing
-an empty string to the sysfs reset_method file.
+In verbose mode, when printing the disassembly of affected functions, if
+CROSS_COMPILE isn't set, the objdump command string gets prefixed with
+"(null)".
 
-However, pci_slot_resettable() does not check pci_reset_supported(), which
-means that pci_reset_function() will still reset the device even if
-userspace has disabled all the reset methods.
+Somehow this worked before.  Maybe some versions of glibc return an
+empty string instead of NULL.  Fix it regardless.
 
-I was able to reproduce this issue with a vfio device passed to a qemu
-guest, where I had disabled PCI reset via sysfs.
+[ jpoimboe: Rewrite commit log. ]
 
-Add an explicit check of pci_reset_supported() in both
-pci_slot_resettable() and pci_bus_resettable() to ensure both the reset
-status and reset execution are bypassed if an administrator disables it for
-a device.
-
-Link: https://lore.kernel.org/r/20250207205600.1846178-1-naravamudan@nvidia.com
-Fixes: d88f521da3ef ("PCI: Allow userspace to query and set device reset mechanism")
-Signed-off-by: Nishanth Aravamudan <naravamudan@nvidia.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Cc: Amey Narkhede <ameynarkhede03@gmail.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Yishai Hadas <yishaih@nvidia.com>
-Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: Kevin Tian <kevin.tian@intel.com>
+Fixes: ca653464dd097 ("objtool: Add verbose option for disassembling affected functions")
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215142321.14081-1-david.laight.linux@gmail.com
+Link: https://lore.kernel.org/r/b931a4786bc0127aa4c94e8b35ed617dcbd3d3da.1743481539.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/objtool/check.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 8a35a9887302d..f411cef0186e1 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5578,6 +5578,8 @@ static bool pci_bus_resetable(struct pci_bus *bus)
- 		return false;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 4030412637ad0..286a2c0af02aa 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4614,6 +4614,8 @@ static int disas_funcs(const char *funcs)
+ 	char *cmd;
  
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		if (!pci_reset_supported(dev))
-+			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
-@@ -5654,6 +5656,8 @@ static bool pci_slot_resetable(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
-+		if (!pci_reset_supported(dev))
-+			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
+ 	cross_compile = getenv("CROSS_COMPILE");
++	if (!cross_compile)
++		cross_compile = "";
+ 
+ 	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
+ 			"BEGIN { split(_funcs, funcs); }"
 -- 
 2.39.5
 
