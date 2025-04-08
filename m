@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-129136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB5AA7FE52
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BF8A80292
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 946663BD378
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1472D7A36B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04622690D5;
-	Tue,  8 Apr 2025 11:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19563268FD2;
+	Tue,  8 Apr 2025 11:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovsSBkPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9MgGvsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEFD268C72;
-	Tue,  8 Apr 2025 11:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F9A265602;
+	Tue,  8 Apr 2025 11:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110212; cv=none; b=QgcPW9gdQaDVdsaTXHbBGYQxjBCUz9KbnFkd/dpGUQZnAzirj3pFHspv7xs7hGAXcRUSafdLR2sapSZsmNyLva7NAfgea5rxh37auNcjOxdv5nl6fddTPoj7ETcvMZi5aDW+0DKadq4tsgOc/sYm9K/VYaF0J6A/UOx4QQG/kGo=
+	t=1744112803; cv=none; b=pO4OdiwHUTrC3XYY6mJoYJ2MY+VgO5bC9ZiYD427B8lX8qAwR1U5HEn03Tk3kdeP+QxQTk75D205QJyZIgtTM454YqFkPukDrhK1vTJJ+qFSD1B2tqJNUD32ExnUagL3qWzN0gfSNTy6AZyuN0QRtXo+3W3MEPa0IYYKkI7P18M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110212; c=relaxed/simple;
-	bh=eEfLdzG+5LDA3GvoCmQcnL8GEBuFJ2lYa+UrKFwOBrs=;
+	s=arc-20240116; t=1744112803; c=relaxed/simple;
+	bh=Zt3ERZMZG6RElnLqeXjbmIuQ7VtGuqyGcVSgvj0Qq3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=blkrABEvvl6YQSMF6zrtWf56FhtEHh7vZBUj964jeXuwR7GPimd4k4M5WDwvKK8ZV3SLPMiqgeQCpMCkYfjuNPEIcGAeBJuNlnQ3MpXCAcyLGjHyPYXifocK4PG58CZAQKBAhfH7u3Fzab4TYUCraB7Y3iew5YqBCor94S8qNAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovsSBkPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEDCC4CEE5;
-	Tue,  8 Apr 2025 11:03:31 +0000 (UTC)
+	 MIME-Version; b=eYux+cDmJ9las1d9pae4QWwgGg6BvHsIrTGY+CwLwrRxK645dU2oCDM9jzz/RYlv8fFBOnJos3/6s53xntMp5h2JxOAEIcs9mgBQwZ2XMGDkMAPkDM5+goDps6V6uLj3VglKKSiJyg/hDGuCngwZ52k9lsvq71h/LW9JaabL3mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9MgGvsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206A1C4CEE5;
+	Tue,  8 Apr 2025 11:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110212;
-	bh=eEfLdzG+5LDA3GvoCmQcnL8GEBuFJ2lYa+UrKFwOBrs=;
+	s=korg; t=1744112803;
+	bh=Zt3ERZMZG6RElnLqeXjbmIuQ7VtGuqyGcVSgvj0Qq3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovsSBkPHutdx4pyyHp8JVyEiT0YXjPGbZNWEjJcKHiEkj9ZXcnvmcouioY8G2HAox
-	 G2E5ZQpBogLmcEqKda3Z/Azg/FvI1/vCkgm9EUvbDaOU3WA1g4IlwyKOWg77nSPuIy
-	 ZlMEdRwzTfscUqrlxERn/YLufQwDHiX38MaDzcOo=
+	b=K9MgGvsb4TQZntmwKR8wCAYnXNxMakt0BtpViARV8Dx4scwGS+ExgAwwKL6RtzJRw
+	 AT/kZlnb65vrLJV8kxH6AjXxLXeejEq0sBxfl0tAznYXVl5fkOnBHT1WmjjvQzvVpJ
+	 cfooC+BZ00AHGG0kyb7dXG8I1zY96DI9YG76PBnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sherry Sun <sherry.sun@nxp.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Kurt Hackel <kurt.hackel@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/227] tty: serial: fsl_lpuart: use UARTMODIR register bits for lpuart32 platform
+Subject: [PATCH 5.15 202/279] ocfs2: validate l_tree_depth to avoid out-of-bounds access
 Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104826.523472417@linuxfoundation.org>
+Message-ID: <20250408104831.788483455@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +68,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit d57d56e4dddfb5c92cd81abf8922055bf0fb85a4 ]
+[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
 
-For lpuart32 platforms, UARTMODIR register is used instead of UARTMODEM.
-So here should configure the corresponding UARTMODIR register bits to
-avoid confusion.
+The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
+limited to OCFS2_MAX_PATH_DEPTH.
 
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20230414022111.20896-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f5cb528d6441 ("tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers")
+Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
+value, which may occur when reading from a corrupted mounted disk [1].
+
+Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ocfs2/alloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index b16ad6db1ef8e..5135cdc0b6644 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1351,7 +1351,7 @@ static int lpuart32_config_rs485(struct uart_port *port,
- 			struct lpuart_port, port);
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 5d9ae17bd443f..9c95d911a14b1 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -1796,6 +1796,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
  
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
--				& ~(UARTMODEM_TXRTSPOL | UARTMODEM_TXRTSE);
-+				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	/* clear unsupported configurations */
-@@ -1361,7 +1361,7 @@ static int lpuart32_config_rs485(struct uart_port *port,
- 
- 	if (rs485->flags & SER_RS485_ENABLED) {
- 		/* Enable auto RS-485 RTS mode */
--		modem |= UARTMODEM_TXRTSE;
-+		modem |= UARTMODIR_TXRTSE;
- 
- 		/*
- 		 * RTS needs to be logic HIGH either during transfer _or_ after
-@@ -1383,9 +1383,9 @@ static int lpuart32_config_rs485(struct uart_port *port,
- 		 * Note: UART is assumed to be active high.
- 		 */
- 		if (rs485->flags & SER_RS485_RTS_ON_SEND)
--			modem |= UARTMODEM_TXRTSPOL;
-+			modem |= UARTMODIR_TXRTSPOL;
- 		else if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
--			modem &= ~UARTMODEM_TXRTSPOL;
-+			modem &= ~UARTMODIR_TXRTSPOL;
- 	}
- 
- 	/* Store the new configuration */
+ 	el = root_el;
+ 	while (el->l_tree_depth) {
++		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
++			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
++				    "Owner %llu has invalid tree depth %u in extent list\n",
++				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
++				    le16_to_cpu(el->l_tree_depth));
++			ret = -EROFS;
++			goto out;
++		}
+ 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
+ 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+ 				    "Owner %llu has empty extent list at depth %u\n",
 -- 
 2.39.5
 
