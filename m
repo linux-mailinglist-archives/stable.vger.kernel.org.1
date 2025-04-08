@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-131549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6F5A80AC7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D40A8071E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344DC1BC3096
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B052E427015
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF3B26AA82;
-	Tue,  8 Apr 2025 12:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6350A26AA8C;
+	Tue,  8 Apr 2025 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixkVKTHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F60518lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF84C148;
-	Tue,  8 Apr 2025 12:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF63224AEB;
+	Tue,  8 Apr 2025 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116696; cv=none; b=LPii0tSi1BkxQtCtC+BdpKSrW1SHI988+4jw2Np5VzQnKPZ6HrnD1id8UD+K1gNXXDGSV0M6KWruf+YFeF1NcZwhpmfZtx2fnO8AfYLda9fYHfRwu4QJIDEU73FoXkqr31pimBopQPb0HqoAI2jMY/o8Q1BtGrINm7K3+kXpD4g=
+	t=1744115057; cv=none; b=nADqXiV6Slc5kjLqw9bQuheogcTgaKQl+PcqQoIZyo7UqGUQkvB6VN80DD0nki1qHp/Qi3RYQC1zcw1dwLudqA11/ySFpaotFFIAG6R6w1z62briZc9O1r6n1yPK4ytk+RlDXVtFhZ7LDx0G+OmbTdUlRxjAJDXm+VLLtKHFzl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116696; c=relaxed/simple;
-	bh=kZ2+oqgFesKc5p5NI7I9XaRRvZFXOLGfAVY8HFvE/BA=;
+	s=arc-20240116; t=1744115057; c=relaxed/simple;
+	bh=A06r6HIQgYAn7B20NmV6gmW30NAcGpw5hjfDw9kguGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ/JuC9TYWSU7YjqnON1jrbKFRCuCqZkZa7tyW2rZupETVipwvnZmIlpUwtVcE+zMyJBqkMmzNC1W7i81sV5MeBo9kH1srRXm7ydX88ia4sP7vLdatLoE63IbnEnADEkmJpez/B3W1RMLGbNJvLwDJZmlARwkNT8fhBb5SQ0MkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixkVKTHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5B4C4CEE5;
-	Tue,  8 Apr 2025 12:51:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J4glcrd/+XddiONGrfYfmWp0Gj1fyY1ctevIviKGs9YCR+Y27l2uxQFxYv6Kew+eEBQiAx5IIlP5j57ftaYj05iAubUrEnEOrbW5WC1UHoHRR0T6CW3VY6ceUdSjcxyqg9xgBnYrT+nMh1BisebckcnYSQGJQMZ8p4z/OXxkmXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F60518lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C03C4CEE5;
+	Tue,  8 Apr 2025 12:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116696;
-	bh=kZ2+oqgFesKc5p5NI7I9XaRRvZFXOLGfAVY8HFvE/BA=;
+	s=korg; t=1744115057;
+	bh=A06r6HIQgYAn7B20NmV6gmW30NAcGpw5hjfDw9kguGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixkVKTHFrB//cgr59SK3J85RtjJfc1L5U2ixizrZFHXZ8q4gLKJJeXhlg68mjb7Dt
-	 Rzsuf7OaKNujuXxVkwodjwk2nruZ5LhrIFzL/2qiT6luNGGpge8iDQSPRAwH4da5Pm
-	 hQVUbdsNcjiks1fvISRLvU2HgD1mdqvrvHs1meE0=
+	b=F60518lbqS6pm1XFpUHXxP71QlIM5pby+zAk3rxJKAoNnyY412TPAWRhGKko0CHcb
+	 qhjjkpDE0BtFyQHZ4DAkibz7ndmvmUuFCjLLEfXV24Tcc+m8o7cupIlHTgB+b9L7e0
+	 czDWdr9vePV+Mv1zVFTfIIt4K/Ed1ScelUcBY6Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/423] staging: vchiq_arm: Register debugfs after cdev
+Subject: [PATCH 6.13 332/499] ASoC: codecs: wsa884x: report temps to hwmon in millidegree of Celsius
 Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104850.806613963@linuxfoundation.org>
+Message-ID: <20250408104859.506851565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 63f4dbb196db60a8536ba3d1b835d597a83f6cbb ]
+[ Upstream commit d776f016d24816f15033169dcd081f077b6c10f4 ]
 
-The commit 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
-moved the debugfs directory creation before vchiq character device
-registration. In case the latter fails, the debugfs directory won't
-be cleaned up.
+Temperatures are reported in units of Celsius however hwmon expects
+values to be in millidegree of Celsius. Userspace tools observe values
+close to zero and report it as "Not available" or incorrect values like
+0C or 1C. Add a simple conversion to fix that.
 
-Fixes: 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250309125014.37166-2-wahrenst@gmx.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before the change:
+
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:         +0.0°C
+--
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:         +0.0°C
+
+Also reported as N/A before first amplifier power on.
+
+After this change and initial wsa884x power on:
+
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:        +39.0°C
+--
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:        +37.0°C
+
+Tested on sm8550 only.
+
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250221044024.1207921-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 ++--
+ sound/soc/codecs/wsa884x.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index 5fab33adf58ed..ecf6e9635a10b 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -1745,8 +1745,6 @@ static int vchiq_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto failed_platform_init;
- 
--	vchiq_debugfs_init(&mgmt->state);
--
- 	dev_dbg(&pdev->dev, "arm: platform initialised - version %d (min %d)\n",
- 		VCHIQ_VERSION, VCHIQ_VERSION_MIN);
- 
-@@ -1760,6 +1758,8 @@ static int vchiq_probe(struct platform_device *pdev)
- 		goto error_exit;
+diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
+index 86df5152c547b..560a2c04b6955 100644
+--- a/sound/soc/codecs/wsa884x.c
++++ b/sound/soc/codecs/wsa884x.c
+@@ -1875,7 +1875,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
+ 		 * Reading temperature is possible only when Power Amplifier is
+ 		 * off. Report last cached data.
+ 		 */
+-		*temp = wsa884x->temperature;
++		*temp = wsa884x->temperature * 1000;
+ 		return 0;
  	}
  
-+	vchiq_debugfs_init(&mgmt->state);
-+
- 	bcm2835_audio = vchiq_device_register(&pdev->dev, "bcm2835-audio");
- 	bcm2835_camera = vchiq_device_register(&pdev->dev, "bcm2835-camera");
- 
+@@ -1934,7 +1934,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
+ 	if ((val > WSA884X_LOW_TEMP_THRESHOLD) &&
+ 	    (val < WSA884X_HIGH_TEMP_THRESHOLD)) {
+ 		wsa884x->temperature = val;
+-		*temp = val;
++		*temp = val * 1000;
+ 		ret = 0;
+ 	} else {
+ 		ret = -EAGAIN;
 -- 
 2.39.5
 
