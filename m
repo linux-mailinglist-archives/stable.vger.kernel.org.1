@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CCAA80AD3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7E6A807B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D286504CD6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C385D8A556A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8661526B08B;
-	Tue,  8 Apr 2025 12:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9DC26980F;
+	Tue,  8 Apr 2025 12:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNR1zehX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWcj+Cc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4433B269D03;
-	Tue,  8 Apr 2025 12:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECED22690FA;
+	Tue,  8 Apr 2025 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116742; cv=none; b=PYf3aCB3EzU+IUzz6A9W5NWiPnmtvrrXqmmgFGZX2sgC4CkoT2XL2CMQJye4lpBgVZvGgehfh8Fh5BVpCE5f0BUgYPFF68REJVjuzf7ayfNkfptXgA/OHu4tNS+4XyAQlJuk8ItxZwKZN2kXMxAy2SBCPaIn0MHVMANRkW0Zaqk=
+	t=1744115143; cv=none; b=uWoHcqhyu4gy7D11ITvHZqvU+pBdXs6c3gyphJXpPHzYflxw5xJ6R4UwUMhi5cghWTNplceQAYNXYnzwF0+NlSvbLZivzZRpieKEPZpkH46F6hpMvCWjFWr7nf1nKoIHmRjBXGtYT1Yf5PVm/kBfSrfwvOp+Kn6L7ndcHKqAGGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116742; c=relaxed/simple;
-	bh=5Ovo2ivKI0MVqwdXB0rqK1mXRhcOUO2Yf9BBh5xCjAY=;
+	s=arc-20240116; t=1744115143; c=relaxed/simple;
+	bh=cE71sAvVkYL3JCzcKYZx0WCvptJnY3Z528QyeEE4TEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqwcG3FnyL02+qzLMWHFI6RXFUqTTeLyUhaf7JJg5jv4UBAF1L3dBtNIm+riQqTvyiNt+yJ5hj7QvuREWWdcZ0weOAF2cHVox4bHw00zAY9bg1ARcnOSacekyjUR7lbqgq8RYQtGIkf8fPCh7MEk4WUTNyR8QdfhIIdk4zUB1qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNR1zehX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9E1C4CEE5;
-	Tue,  8 Apr 2025 12:52:21 +0000 (UTC)
+	 MIME-Version; b=KfEQI3fc1b7UauEffO/epwOSoi45SYUOhWWw+SqwBux/3QXXSKVxgutv6+IyXt8d1tR3MxiDR8iHNEo+zu4Uw7Q4rwHwZuPggA8A5HiU5DPiGkEUKg/KXbaCavwTdphQCwE5VjN3LntrReLueWqizO2vo8K6DKWiaJMWBW+czAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWcj+Cc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A22C4CEE5;
+	Tue,  8 Apr 2025 12:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116742;
-	bh=5Ovo2ivKI0MVqwdXB0rqK1mXRhcOUO2Yf9BBh5xCjAY=;
+	s=korg; t=1744115142;
+	bh=cE71sAvVkYL3JCzcKYZx0WCvptJnY3Z528QyeEE4TEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNR1zehXLYJUrprNbbX8iywVLxY3qNHYC8Ev0GZXAiB46ERWXfowm89XYJ7Gw+G2z
-	 WT3kAr6vbOhPXXwb7wf7iJ0a0ri+D8VpGHkw8AwUEDlZo3c+YjwwZA4rci4+p76W0T
-	 a+wB1r1R9iXO/IaivA5ftFo50XdgiRgqJFAjltKE=
+	b=QWcj+Cc9UulOJH/iNOsQ8gZwvf2U6avS0iEGgV4rln56q4UqzvpDkh4mXAEdNuPLX
+	 3cbbU+sOTBfmgNDObIK9U6cO5Xf/tYSqp0RVlRoPNH1Jvg24PMeoPI4N9FGJHpGSv0
+	 mdojqMpVOAG3AwcqjgDvXc8ScVf/5wjQMWvh8nOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/423] objtool/loongarch: Add unwind hints in prepare_frametrace()
+Subject: [PATCH 6.13 365/499] riscv: Fix check_unaligned_access_all_cpus
 Date: Tue,  8 Apr 2025 12:49:37 +0200
-Message-ID: <20250408104851.584258286@linuxfoundation.org>
+Message-ID: <20250408104900.331860798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 7c977393b8277ed319e92e4b598b26598c9d30c0 ]
+[ Upstream commit e6d0adf2eb5bb3244cb21a7a15899aa058bd384f ]
 
-If 'regs' points to a local stack variable, prepare_frametrace() stores
-all registers to the stack.  This confuses objtool as it expects them to
-be restored from the stack later.
+check_vector_unaligned_access_emulated_all_cpus(), like its name
+suggests, will return true when all cpus emulate unaligned vector
+accesses. If the function returned false it may have been because
+vector isn't supported at all (!has_vector()) or because at least
+one cpu doesn't emulate unaligned vector accesses. Since false may
+be returned for two cases, checking for it isn't sufficient when
+attempting to determine if we should proceed with the vector speed
+check. Move the !has_vector() functionality to
+check_unaligned_access_all_cpus() in order for
+check_vector_unaligned_access_emulated_all_cpus() to return false
+for a single case.
 
-The stores don't affect stack tracing, so use unwind hints to hide them
-from objtool.
-
-Fixes the following warnings:
-
-  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[22]=-1+0 reg2[22]=-2-160
-  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[23]=-1+0 reg2[23]=-2-152
-
-Fixes: cb8a2ef0848c ("LoongArch: Add ORC stack unwinder support")
-Reported-by: kernel test robot <lkp@intel.com>
-Tested-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/270cadd8040dda74db2307f23497bb68e65db98d.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503280703.OARM8SrY-lkp@intel.com/
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-13-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/stacktrace.h   |  3 +++
- arch/loongarch/include/asm/unwind_hints.h | 10 +++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/traps_misaligned.c       |  6 ------
+ arch/riscv/kernel/unaligned_access_speed.c | 11 +++++++----
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/stacktrace.h b/arch/loongarch/include/asm/stacktrace.h
-index f23adb15f418f..fc8b64773794a 100644
---- a/arch/loongarch/include/asm/stacktrace.h
-+++ b/arch/loongarch/include/asm/stacktrace.h
-@@ -8,6 +8,7 @@
- #include <asm/asm.h>
- #include <asm/ptrace.h>
- #include <asm/loongarch.h>
-+#include <asm/unwind_hints.h>
- #include <linux/stringify.h>
- 
- enum stack_type {
-@@ -43,6 +44,7 @@ int get_stack_info(unsigned long stack, struct task_struct *task, struct stack_i
- static __always_inline void prepare_frametrace(struct pt_regs *regs)
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index aacbd9d7196e7..4354c87c0376f 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -609,12 +609,6 @@ bool __init check_vector_unaligned_access_emulated_all_cpus(void)
  {
- 	__asm__ __volatile__(
-+		UNWIND_HINT_SAVE
- 		/* Save $ra */
- 		STORE_ONE_REG(1)
- 		/* Use $ra to save PC */
-@@ -80,6 +82,7 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
- 		STORE_ONE_REG(29)
- 		STORE_ONE_REG(30)
- 		STORE_ONE_REG(31)
-+		UNWIND_HINT_RESTORE
- 		: "=m" (regs->csr_era)
- 		: "r" (regs->regs)
- 		: "memory");
-diff --git a/arch/loongarch/include/asm/unwind_hints.h b/arch/loongarch/include/asm/unwind_hints.h
-index a01086ad9ddea..2c68bc72736c9 100644
---- a/arch/loongarch/include/asm/unwind_hints.h
-+++ b/arch/loongarch/include/asm/unwind_hints.h
-@@ -23,6 +23,14 @@
- 	UNWIND_HINT sp_reg=ORC_REG_SP type=UNWIND_HINT_TYPE_CALL
- .endm
+ 	int cpu;
  
--#endif /* __ASSEMBLY__ */
-+#else /* !__ASSEMBLY__ */
-+
-+#define UNWIND_HINT_SAVE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
-+
-+#define UNWIND_HINT_RESTORE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
-+
-+#endif /* !__ASSEMBLY__ */
+-	if (!has_vector()) {
+-		for_each_online_cpu(cpu)
+-			per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
+-		return false;
+-	}
+-
+ 	schedule_on_each_cpu(check_vector_unaligned_access_emulated);
  
- #endif /* _ASM_LOONGARCH_UNWIND_HINTS_H */
+ 	for_each_online_cpu(cpu)
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 2e41b42498c76..78ab4cb2ab050 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -406,13 +406,16 @@ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __alway
+ 
+ static int __init check_unaligned_access_all_cpus(void)
+ {
+-	bool all_cpus_emulated, all_cpus_vec_unsupported;
++	bool all_cpus_emulated;
++	int cpu;
+ 
+ 	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
+-	all_cpus_vec_unsupported = check_vector_unaligned_access_emulated_all_cpus();
+ 
+-	if (!all_cpus_vec_unsupported &&
+-	    IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
++	if (!has_vector()) {
++		for_each_online_cpu(cpu)
++			per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
++	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
++		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
+ 		kthread_run(vec_check_unaligned_access_speed_all_cpus,
+ 			    NULL, "vec_check_unaligned_access_speed_all_cpus");
+ 	}
 -- 
 2.39.5
 
