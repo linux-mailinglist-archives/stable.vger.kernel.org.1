@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8B6A804A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A11AAA80559
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8E44A2959
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3798D4A5DB8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153C5263F3B;
-	Tue,  8 Apr 2025 12:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48B72686B9;
+	Tue,  8 Apr 2025 12:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIX0PTUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3MxHWAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41B526B94F;
-	Tue,  8 Apr 2025 12:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD5207E14;
+	Tue,  8 Apr 2025 12:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113663; cv=none; b=tp43dSSIiD5+83mH8HN0GalE9hlYaN9HWbrD6ds5l81idjn6gMES3W9mIuGBHenSZKGyxCBd1y0+MdBX/fEOV1ylge9Ffbs3Vv5/YWCXIhXzZnj1mB3YQrb0/4k6+L2i4pcIfCWDJ5VcaYh78aGLE/KDdm8s9s56ZgC1xJ2VZaE=
+	t=1744114113; cv=none; b=sRfpjldoXPBsHJ0lZmncZfwixVORQi5gl475+37C+dYSE9JMEeqMK/of3Ogz8AnCtRTysX7pZmY3EaaSS7Bt28JfQByQFyYtK+6FOyYuZyII+nrEi+R9jQ6CB3AeUfo+rCYWWXYtPa+G5+8dil4fDM/m55nKc9h3y8nGHxvpvwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113663; c=relaxed/simple;
-	bh=mwkUAiOsN1y+wN75zexzs8IfghpS6S//VcorZYQLaZU=;
+	s=arc-20240116; t=1744114113; c=relaxed/simple;
+	bh=+L9+1ggGQKHCkIsdt8pmr5qIgcSxq7aCgfk5JQ+rvSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gr3UoWvV/n6AYCrHOmVG1CtGwfIhzIKN3HNS+dvRVow74Ky6omZv7Sb3Wl/SSWgVzBX2b+rYtPG9VJrPdg26hTmpVAzPd7qelXttmAqte8rXLBoQfi0tsoUsueu3qd1kn0i7Fdg0SmukTyZCzkNxY6sfDAdAt4IL+/W5aLjidNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIX0PTUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D085C4CEEA;
-	Tue,  8 Apr 2025 12:01:03 +0000 (UTC)
+	 MIME-Version; b=YMjLEspO/SwLh3w6P31C8LPiabkyyUZ51osDPIZtLtaFxTa8Gr4tTrAEbGF3bWfHaKeYYA8xfU2EDrIIJ1/8dxfF/ejKMBkG0Ssdx353i9z4WjFKOwRnqP6qyvsYZPH4tz4bIXyLKoaMYrcuMuCqnqKCmC/qyigxeiBAuQYq5zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3MxHWAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD960C4CEE5;
+	Tue,  8 Apr 2025 12:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113663;
-	bh=mwkUAiOsN1y+wN75zexzs8IfghpS6S//VcorZYQLaZU=;
+	s=korg; t=1744114113;
+	bh=+L9+1ggGQKHCkIsdt8pmr5qIgcSxq7aCgfk5JQ+rvSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIX0PTUKOtoze7OlJwHirVPPKjDTYaT8ZFFg8VJhQyhMwVqr1MaZz3eCiVzs69D+/
-	 jJTexqYB0sU/7s+ufjA7h9l2zIR7htlK5CRzB9NHwV7ARgwwdGozSPB3DoKo46znqU
-	 9C3/h++bMQ+TMCWEzqs+MolxfZ8TIUBJS2LH70P4=
+	b=X3MxHWAd7Y6kP+pPbLk/cl4S/dIgUKs4YtaTB8QhNZoPYViQDajZmVyGyK1g2jUrN
+	 FZrm3MWN8EIoOqvr1So2O/+k7sWUYBv88URfgBkPLNsq9xDzMda95A73o+O8X5hhqq
+	 tyHDRccfjFoCCVsXr6FFvoilYRz4fveCsT11qK54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Jann Horn <jannh@google.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.6 244/268] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 114/154] x86/dumpstack: Fix inaccurate unwinding from exception stacks due to misplaced assignment
 Date: Tue,  8 Apr 2025 12:50:55 +0200
-Message-ID: <20250408104835.166368873@linuxfoundation.org>
+Message-ID: <20250408104818.984657908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Jann Horn <jannh@google.com>
 
-commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
+[ Upstream commit 2c118f50d7fd4d9aefc4533a26f83338b2906b7a ]
 
-TSC could be reset in deep ACPI sleep states, even with invariant TSC.
+Commit:
 
-That's the reason we have sched_clock() save/restore functions, to deal
-with this situation. But what happens is that such functions are guarded
-with a check for the stability of sched_clock - if not considered stable,
-the save/restore routines aren't executed.
+  2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
 
-On top of that, we have a clear comment in native_sched_clock() saying
-that *even* with TSC unstable, we continue using TSC for sched_clock due
-to its speed.
+was intended to ensure alignment of the stack pointer; but it also moved
+the initialization of the "stack" variable down into the loop header.
 
-In other words, if we have a situation of TSC getting detected as unstable,
-it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
-could bring bogus sched_clock values due to the lack of the save/restore
-mechanism, causing warnings like this:
+This was likely intended as a no-op cleanup, since the commit
+message does not mention it; however, this caused a behavioral change
+because the value of "regs" is different between the two places.
 
-  [22.954918] ------------[ cut here ]------------
-  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
-  [22.954923] If you just came from a suspend/resume,
-  [22.954923] please switch to the trace global clock:
-  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
-  [22.954923] or add trace_clock=global to the kernel command line
-  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
+Originally, get_stack_pointer() used the regs provided by the caller; after
+that commit, get_stack_pointer() instead uses the regs at the top of the
+stack frame the unwinder is looking at. Often, there are no such regs at
+all, and "regs" is NULL, causing get_stack_pointer() to fall back to the
+task's current stack pointer, which is not what we want here, but probably
+happens to mostly work. Other times, the original regs will point to
+another regs frame - in that case, the linear guess unwind logic in
+show_trace_log_lvl() will start unwinding too far up the stack, causing the
+first frame found by the proper unwinder to never be visited, resulting in
+a stack trace consisting purely of guess lines.
 
-Notice that the above was reproduced even with "trace_clock=global".
+Fix it by moving the "stack = " assignment back where it belongs.
 
-The fix for that is to _always_ save/restore the sched_clock on suspend
-cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
-the sched_clock_stable() check becomes relevant to save/restore the
-sched_clock.
-
-Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Fixes: 2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-2-acd774364768@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/tsc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/dumpstack.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -955,7 +955,7 @@ static unsigned long long cyc2ns_suspend
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 9b2bbb66d0c87..caf14c49539ba 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -171,6 +171,7 @@ void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	printk("%sCall Trace:\n", log_lvl);
  
- void tsc_save_sched_clock_state(void)
- {
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
+ 	unwind_start(&state, task, regs, stack);
++	stack = stack ?: get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
  
- 	cyc2ns_suspend = sched_clock();
-@@ -975,7 +975,7 @@ void tsc_restore_sched_clock_state(void)
- 	unsigned long flags;
- 	int cpu;
+ 	/*
+@@ -189,9 +190,7 @@ void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	 * - hardirq stack
+ 	 * - entry stack
+ 	 */
+-	for (stack = stack ?: get_stack_pointer(task, regs);
+-	     stack;
+-	     stack = stack_info.next_sp) {
++	for (; stack; stack = stack_info.next_sp) {
+ 		const char *stack_name;
  
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
- 
- 	local_irq_save(flags);
+ 		stack = PTR_ALIGN(stack, sizeof(long));
+-- 
+2.39.5
+
 
 
 
