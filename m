@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5BFA805F6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238BFA8095D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95864A4773
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C735C1BA4433
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E80626A090;
-	Tue,  8 Apr 2025 12:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DA326B94E;
+	Tue,  8 Apr 2025 12:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPTS8hxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkOOK8m9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E05269AE4;
-	Tue,  8 Apr 2025 12:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD6126B0BE;
+	Tue,  8 Apr 2025 12:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114509; cv=none; b=T7BvhO5Bbza1CRh3AgkJNj2fH7gyn7KO7IOQ9HuZs2g9pqbPoapBvPhjTu+3C/A7rQ0Hwx5AAwGPsl3wqDYqEbcOu0r8cVIsRb8F6/1dKfDJ48opCDZ2ujoJXAbLSQQ+xnY72fCD4n/hc7KjuYW437gQNqXCENPA4IJifnaSDQQ=
+	t=1744116114; cv=none; b=fE4RLD9y4CeYJAhOVQiWb2lvrfnngkCY/OivNHe5Mlx+6A24elPEzRFo5h5T3tAZ3k/48P5yweDv4YT3ikiHPU/TqsPe36JC5Ov1fRh4G13xauLfLCG3JCF8HOzuP4wM1OoAjRlsgugR7+p46qz6r3lsAWRIpxnK9OWFqdUK88g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114509; c=relaxed/simple;
-	bh=2Tl0gLiz9g+oxvoNuWWpj6gp2unbJCH9kSx1uJ4UJFk=;
+	s=arc-20240116; t=1744116114; c=relaxed/simple;
+	bh=92fl+h5ZwjM65tT+QHG5razljnoMSvAlhUyTV/qqRGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATZw+qfrDf7k6EFTWQetm+U2Z+cv/RNYBEQodm45ZtzDpx9pyNNDlntxvkQHrtHvuLViakXN/kykBAIn81OKgjXGgyeBW3F9yR2KTSI5PNdl1NF0MrR42K5IQ9P6rR9JBabndeGA6n3ysoOAevciMv/xfudMdr20/1yB7eKeUcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPTS8hxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAAEC4CEE5;
-	Tue,  8 Apr 2025 12:15:08 +0000 (UTC)
+	 MIME-Version; b=nseO3VjTppUuHkFfcmznuM0kYV4Y3PoarbOARvLfGZi/kBUyCE7GzcRje2yWmVxWzadGE9fXTvpSQO8VEpjOAjOh08juaJTTNicYtANvTFSwviSQxIFjdspK17Zgu96ikszjKGx8TO3eoBiytRA45Qk0cvlxmzI/MYeBifGtXSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkOOK8m9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F30CC4CEE5;
+	Tue,  8 Apr 2025 12:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114509;
-	bh=2Tl0gLiz9g+oxvoNuWWpj6gp2unbJCH9kSx1uJ4UJFk=;
+	s=korg; t=1744116113;
+	bh=92fl+h5ZwjM65tT+QHG5razljnoMSvAlhUyTV/qqRGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPTS8hxt1szyz3vPAhKNpfoSZhE8Dx8XzayPsbVd9qDdIyT7b0AGuvOlnOBqT1LHo
-	 mmoZIDl2jzmj0wI00d61w5vaX2sJyR/t5MuKyjPXSfnbkCufXayQ1yBFHRkClOHjDG
-	 5WNqxmwPSBAD0DLQKAGeoYMHBlvFjAvnlIm6H4Fc=
+	b=KkOOK8m95i5hJJneWvmtqVlEWdtWnS5+nnhxsGpFURYe9x3HHyljQngh2YMTsMSUc
+	 KowYl0uvxE5BEFcEf/+3OiegyBUT1J6wjl/ccAsmf15471rxWWAs79g2EyymKZRN75
+	 hDFrkOTBOTzfp7Jqjkc8ryiX5J0w1kI6vZsXSbM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 134/499] of: property: Increase NR_FWNODE_REFERENCE_ARGS
-Date: Tue,  8 Apr 2025 12:45:46 +0200
-Message-ID: <20250408104854.533403821@linuxfoundation.org>
+Subject: [PATCH 6.12 021/423] EDAC/ie31200: Fix the size of EDAC_MC_LAYER_CHIP_SELECT layer
+Date: Tue,  8 Apr 2025 12:45:47 +0200
+Message-ID: <20250408104846.237564065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
+[ Upstream commit d59d844e319d97682c8de29b88d2d60922a683b3 ]
 
-Currently, the following two macros have different values:
+The EDAC_MC_LAYER_CHIP_SELECT layer pertains to the rank, not the DIMM.
+Fix its size to reflect the number of ranks instead of the number of DIMMs.
+Also delete the unused macros IE31200_{DIMMS,RANKS}.
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
-
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
-
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
-
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
-Will align both macros later to avoid such inconsistency.
-
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 7ee40b897d18 ("ie31200_edac: Introduce the driver")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-2-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70f..487d4bd9b0c99 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -91,7 +91,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 9ef13570f2e54..98d74c604d726 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -91,8 +91,6 @@
+ 	 (((did) & PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK) ==                 \
+ 	  PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK))
  
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
+-#define IE31200_DIMMS			4
+-#define IE31200_RANKS			8
+ #define IE31200_RANKS_PER_CHANNEL	4
+ #define IE31200_DIMMS_PER_CHANNEL	2
+ #define IE31200_CHANNELS		2
+@@ -426,7 +424,7 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
  
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
+ 	nr_channels = how_many_channels(pdev);
+ 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+-	layers[0].size = IE31200_DIMMS;
++	layers[0].size = IE31200_RANKS_PER_CHANNEL;
+ 	layers[0].is_virt_csrow = true;
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = nr_channels;
 -- 
 2.39.5
 
