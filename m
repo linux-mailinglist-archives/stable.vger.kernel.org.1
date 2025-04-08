@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF9A80784
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455C5A80814
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEB28860D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68E978C0493
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A8A269B08;
-	Tue,  8 Apr 2025 12:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF58A206F18;
+	Tue,  8 Apr 2025 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v08GDe0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCrDo225"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0114B265CD3;
-	Tue,  8 Apr 2025 12:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD65126989E;
+	Tue,  8 Apr 2025 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115049; cv=none; b=juK9AFkfnidiyO6dqsjsyxQk8+HCSKfWzsTXWGCYjT0Eg7HXg05JXF5tCokAU0oK54hfETNXECEHXx4lvuJL6XlWkU9612rqoikPbZoVMd0OUhZNoWbXYHs4ClFfQUTUIEVuFJDM+t5b8jbp+7MAuAJBh06Ei0TPrakwhNi2bfc=
+	t=1744115533; cv=none; b=QHPKZTLO1KzlBnSXfiTKLifj+qIDXR6i8iG/ijZuuilhwxJkbcDJiUDnxwUJ7bB+d2yyf3e4/Bjd1Gpk1iAPNxFQdcp4ErZsa6EvIbeXMoz8A3Z72Vwu/7W1QiMlAoekoVX39U2Zuv+Jp0KOkUZD30mC3E28AXJa4dVOJYy3Vho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115049; c=relaxed/simple;
-	bh=vR+qOKqzwlm8Yj/tKSwf2FjP17i7RjdtaPOvJTV64dw=;
+	s=arc-20240116; t=1744115533; c=relaxed/simple;
+	bh=jYEFZo32rm8uQe7sObVFKDehXAVS2+eV4/ht7D/eutc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOhk4a2iuXqpZHw5JXki/9ZFJiVxBLiWgBQRcqA91q8f1JV+g9HeS3BUndmtUi483DV2SQpmY4zZW4PTPFWpn+gqPBbLgEPSAcSlRO4HkiBIEGfaWlFgBRJfAblm8bow5fpTGMgmZQz/Z30G2G9m5hfGxQBUmMixse21DhTkOe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v08GDe0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85729C4CEE5;
-	Tue,  8 Apr 2025 12:24:08 +0000 (UTC)
+	 MIME-Version; b=svnhFmzgXttmrsc5VkVnZ3A17tw64pf+hkQmZAercgpiuMOwo5MIHvaCpflWV1bKJCJa+0G1F/XOsTaRkQgZJsGh5wFzco5OBcWEk+SFV0dG0/+C1zSX7P5KCar81fAGhrIhCITcCJCozLsJHMfb6CwtlpmIPg3jdB1u3BVPcOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCrDo225; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F989C4CEE5;
+	Tue,  8 Apr 2025 12:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115048;
-	bh=vR+qOKqzwlm8Yj/tKSwf2FjP17i7RjdtaPOvJTV64dw=;
+	s=korg; t=1744115533;
+	bh=jYEFZo32rm8uQe7sObVFKDehXAVS2+eV4/ht7D/eutc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v08GDe0jSEve0AGMVk6aMf7ViEWnf/XSpQwQ5KJUTdIB/avOnL4Cw89kd4it7CLvg
-	 zu/YEXeXRHgXBM9AIf5LmVVwOLdRgcs3tCI2y96lKs6u6GwCEiBA1oGGuFvOT0n8Rl
-	 ULJHZj/rIqBC5Oy5w1EzTpzRwlClwmiPCUenyGa0=
+	b=zCrDo22509mF/0fGYYrLJivvJPK+TsvE6fab+CCEZSIkUNE/GC9ZDJ38AuV2PI5gg
+	 Yv5tQz/vS0ZUYbFHvS47La3hGxPImBqZbfQ93bCHcGkguxILrCB95YIPPapDZk5oC2
+	 EuQs0C/G8l5NjoQ7eLLpSIPwtL6eP24u6NJPzzwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 329/499] ALSA: hda/realtek: Add support for ASUS Zenbook UM3406KA Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 011/204] PM: sleep: Adjust check before setting power.must_resume
 Date: Tue,  8 Apr 2025 12:49:01 +0200
-Message-ID: <20250408104859.430631000@linuxfoundation.org>
+Message-ID: <20250408104820.638276066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8463d2adbe1901247937fcdfe4b525130f6db10b ]
+[ Upstream commit eeb87d17aceab7803a5a5bcb6cf2817b745157cf ]
 
-Laptop uses 2 CS35L41 Amps with HDA, using External boost with I2C
+The check before setting power.must_resume in device_suspend_noirq()
+does not take power.child_count into account, but it should do that, so
+use pm_runtime_need_not_resume() in it for this purpose and adjust the
+comment next to it accordingly.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-8-sbinding@opensource.cirrus.com
+Fixes: 107d47b2b95e ("PM: sleep: core: Simplify the SMART_SUSPEND flag handling")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/3353728.44csPzL39Z@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/power/main.c    | 13 ++++++-------
+ drivers/base/power/runtime.c |  2 +-
+ include/linux/pm_runtime.h   |  2 ++
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 248e30c3a22d0..503fb6654289b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10661,6 +10661,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1154, "ASUS TP3607SH", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 9c5a5f4dba5a6..49728cb628c19 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -1236,14 +1236,13 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
+ 	dev->power.is_noirq_suspended = true;
+ 
+ 	/*
+-	 * Skipping the resume of devices that were in use right before the
+-	 * system suspend (as indicated by their PM-runtime usage counters)
+-	 * would be suboptimal.  Also resume them if doing that is not allowed
+-	 * to be skipped.
++	 * Devices must be resumed unless they are explicitly allowed to be left
++	 * in suspend, but even in that case skipping the resume of devices that
++	 * were in use right before the system suspend (as indicated by their
++	 * runtime PM usage counters and child counters) would be suboptimal.
+ 	 */
+-	if (atomic_read(&dev->power.usage_count) > 1 ||
+-	    !(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
+-	      dev->power.may_skip_resume))
++	if (!(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
++	      dev->power.may_skip_resume) || !pm_runtime_need_not_resume(dev))
+ 		dev->power.must_resume = true;
+ 
+ 	if (dev->power.must_resume)
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 14088b5adb556..bb68cba4d85a9 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1840,7 +1840,7 @@ void pm_runtime_drop_link(struct device_link *link)
+ 	pm_request_idle(link->supplier);
+ }
+ 
+-static bool pm_runtime_need_not_resume(struct device *dev)
++bool pm_runtime_need_not_resume(struct device *dev)
+ {
+ 	return atomic_read(&dev->power.usage_count) <= 1 &&
+ 		(atomic_read(&dev->power.child_count) == 0 ||
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 9a8151a2bdea6..b79a1a20d0d9c 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -66,6 +66,7 @@ static inline bool queue_pm_work(struct work_struct *work)
+ 
+ extern int pm_generic_runtime_suspend(struct device *dev);
+ extern int pm_generic_runtime_resume(struct device *dev);
++extern bool pm_runtime_need_not_resume(struct device *dev);
+ extern int pm_runtime_force_suspend(struct device *dev);
+ extern int pm_runtime_force_resume(struct device *dev);
+ 
+@@ -254,6 +255,7 @@ static inline bool queue_pm_work(struct work_struct *work) { return false; }
+ 
+ static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
+ static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
++static inline bool pm_runtime_need_not_resume(struct device *dev) {return true; }
+ static inline int pm_runtime_force_suspend(struct device *dev) { return 0; }
+ static inline int pm_runtime_force_resume(struct device *dev) { return 0; }
+ 
 -- 
 2.39.5
 
