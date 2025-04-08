@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF97A80A69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DC2A80475
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D497B0A5C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303663AD077
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1B026B96B;
-	Tue,  8 Apr 2025 12:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA2B264FA0;
+	Tue,  8 Apr 2025 11:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snVXP+qP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta+Dyx/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3615C26B96A;
-	Tue,  8 Apr 2025 12:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFA42698A0;
+	Tue,  8 Apr 2025 11:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116803; cv=none; b=dHPMJ6kIxnT8inVA4uD+lzwxksV93oLwJHPA42/y/aQ7+b7clumOtNEHtDi3QUSkB2Ct6q8T3pkHGlhe2NNvKCUTA3aDwiPSFsbrtaVvO5rbLpG2xZxsp/25qUZwSbpgpeWZkYotyofTnDW1SG6XM+85hvqIpVJDGn8gOH5eGo8=
+	t=1744113527; cv=none; b=eSOm7OtaUMuvQo2CkBXQAf3hTp4/x3Dlvjr7GOzyA83nRMCYeDLeZC13wzeA0VFCrxdfN7pW/F6sN5a6qQ/dONVTxFTsJQReK1jXCtiFKFQPZN1DdE3PzTO9WXU0aYOV5N5jxPvrJH5uNE1A3OWbbeq9HVcEFs9NvjzGxXaxkqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116803; c=relaxed/simple;
-	bh=WfG8DOzYKaJP2AfAzq/QBYoburwMIIrGB53ki5avYJs=;
+	s=arc-20240116; t=1744113527; c=relaxed/simple;
+	bh=WZZUCc8gWV7etO9TZZp6BJlC+Jvl4dxznHag4WGWaPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRxTjFMQrNWUGy40vgBMh1wM6MP7/MOaooTWOV5ITYx0wAuRpDAktG7rDAPEsVedJsQhZYba0Zlzzt6BRzkw0ddByOtyagmbXf9HAJw3EBH28Ngp9lJgor9Ej8I6CtTwaXp7Jo4C/aBl633+MJWBrl4zcdhRy4IboLJgIW8ZHx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snVXP+qP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A40C4CEE5;
-	Tue,  8 Apr 2025 12:53:22 +0000 (UTC)
+	 MIME-Version; b=uIsNJ4Ug2rmc4qgfkuTSNAAVsfc8gn1mVXC9f3rNtJND/oZoJ2z7Fc00VSNASq3B2BL4rWPyGoejU4pQxEL/8NfHSx61ftYRPpz5IJDB4tPNQGVOENdb+630CHHxEIs74qlnVlodC+WkWgvhwKEJ2Ajrqv/Gum5kWZR5zj3T9t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta+Dyx/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B222C4CEE5;
+	Tue,  8 Apr 2025 11:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116803;
-	bh=WfG8DOzYKaJP2AfAzq/QBYoburwMIIrGB53ki5avYJs=;
+	s=korg; t=1744113526;
+	bh=WZZUCc8gWV7etO9TZZp6BJlC+Jvl4dxznHag4WGWaPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snVXP+qPDWY+mgIWoFONgg3gYxed4Uzcrr0z7KUM00LMeQvD3jQcv4gkWwJfgVL2B
-	 EwrHBLhDWhcCRdfFkcTpGyBmnu9mM3dsMpyqL+3tLTzxLcO+BJcFdwWiRD4OZSDPu0
-	 VhYn4/A6OJdCQyZ74xjEmWRap4fAKEXXbV6TQiAo=
+	b=Ta+Dyx/hK9rjvyB5vctC+hbmbffav8g8kjqqx88XOiPrV+Dl/ToUo/jOdVN2i+270
+	 ZBa5R+qiKxbQXdzjLKEu//06bkeiCsYYnPMWz4wrsPYPS46EvQCCCzeKen/E7FSH5o
+	 2/3/ZTcjrMlveH1aNC1dvjpYOIntAdnLscHo86rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 275/423] exfat: add a check for invalid data size
+Subject: [PATCH 6.6 190/268] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
 Date: Tue,  8 Apr 2025 12:50:01 +0200
-Message-ID: <20250408104852.171427168@linuxfoundation.org>
+Message-ID: <20250408104833.680491860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-[ Upstream commit 13940cef95491472760ca261b6713692ece9b946 ]
+[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
 
-Add a check for invalid data size to avoid corrupted filesystem
-from being further corrupted.
+pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
+NCT6776_PWM_MODE_MASK only contain 6 values.
 
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Fix this by adding another 0 to the end of each array.
+
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/namei.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hwmon/nct6775-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
-index e47a5ddfc79b3..7b3951951f8af 100644
---- a/fs/exfat/namei.c
-+++ b/fs/exfat/namei.c
-@@ -639,6 +639,11 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
- 	info->valid_size = le64_to_cpu(ep2->dentry.stream.valid_size);
- 	info->size = le64_to_cpu(ep2->dentry.stream.size);
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index 16f6b7ba2a5de..da4c3425d2d1d 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -273,8 +273,8 @@ static const s8 NCT6776_BEEP_BITS[NUM_BEEP_BITS] = {
+ static const u16 NCT6776_REG_TOLERANCE_H[] = {
+ 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
  
-+	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
-+		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
-+		return -EIO;
-+	}
-+
- 	info->start_clu = le32_to_cpu(ep2->dentry.stream.start_clu);
- 	if (!is_valid_cluster(sbi, info->start_clu) && info->size) {
- 		exfat_warn(sb, "start_clu is invalid cluster(0x%x)",
+-static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
+-static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
+ 
+ static const u16 NCT6776_REG_FAN_MIN[] = {
+ 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
 -- 
 2.39.5
 
