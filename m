@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3E5A7FF85
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FCEA7FFCE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56D2E4445AF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199183A6828
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9205D268685;
-	Tue,  8 Apr 2025 11:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44A0267F65;
+	Tue,  8 Apr 2025 11:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQXTUVgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kddhce6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB3D266EFC;
-	Tue,  8 Apr 2025 11:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BBB20897E;
+	Tue,  8 Apr 2025 11:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110938; cv=none; b=dwg/ia5BTAnOHxucZzY0BKPxosadIRA4SBOJkH31wN+LV4ucNM5E5UtrWfpzgfUzH55APwRx21X7WnQ6583rKox9hsE3G4GAKORhON42ImttEHL59U2r117mXjtrurF58PAXXOstvsIJ2PRpXrpraUDb4nNOVj+DTEFvT/66i2s=
+	t=1744110950; cv=none; b=DCf/p74XQg/GU2MpkZLEPQB2QZ1Wr8Gf4igzdqeNINNvpNvRubh+3vV848LtYZEKm92M0MAEA1R0DB9H8k9kfwiS1NGrRbr7osZEMErtxAa5czP5r+FrIWmfsAS4Cf61Pbw5gYGtSG+UCcLq4uu28jvqQsXlyMWBwR4rH4VZLzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110938; c=relaxed/simple;
-	bh=J59TDicmt2bWHVmVUu+9bCR36l9Vi9V1P4uU/4mRmz0=;
+	s=arc-20240116; t=1744110950; c=relaxed/simple;
+	bh=1Ga/1XcHc6A5h/ZyD3wHLc9nVvvtzFLnfHLkcHxY5nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPD3S7FFCBLCvZFtzdgWEuklxIyLpxZa/N8yB9ypGDk0A0AsQeDK74TXzu8R59/ci2ex3wfMZV/Wl4IvOEjsIAxQdigUVkYbBEkWoZRtqULtKON8FDSgwzkiBmV/u3KhNiXpedt8qRHriaPIjDiDsh4rCoJg0sFpPKcCm2jHyqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQXTUVgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E66C4CEE5;
-	Tue,  8 Apr 2025 11:15:37 +0000 (UTC)
+	 MIME-Version; b=mDsZkQYK7qEEznnyW5mdDjnUZSCFQPiIVIl8JjTzNsBgBFMlqLm6jrhZiC4JgaOFyYRcFak7CqIIDGe8EhAinKtAn9FmUXGNSF0Ju4U1iez0ihr7MIxo3OSX68wfit0k9HSkDiZdsuaJuilasXpFzFLLHO1O03bGr05MUHccDQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kddhce6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF80C4CEE5;
+	Tue,  8 Apr 2025 11:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110938;
-	bh=J59TDicmt2bWHVmVUu+9bCR36l9Vi9V1P4uU/4mRmz0=;
+	s=korg; t=1744110950;
+	bh=1Ga/1XcHc6A5h/ZyD3wHLc9nVvvtzFLnfHLkcHxY5nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQXTUVgrDwz+xOV1nzuKrFAB2WAqK/vMuUG4s36LBypkqONutiRYFSNCT4PgPtcWR
-	 2deesp+eL1BwYzc6pZ0BpTUu7xUuJ9CffSeeVxE/ZM6f6WhMG4sxh86AgLJC4Ax5w3
-	 6Shp1aOvNchaUopTc3bU+GbjfUE8GhVFIL4ZRQ/4=
+	b=Kddhce6G3trWcZOIJ3IwNNUIoEYEqTAemhtTaaCYgDFsSY/OmkNDVgUC3RVx2hxTK
+	 YyVJ7fZ8yNN4ZAs2LLSdka7fMAzlaTRJLnDgYNOyEbjVdz4N6m8hzpgy6x0BoXf6XY
+	 fK6jJX77tfCYtYFHL1gZCNKlMcHgoWkuXmVE8//4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 213/731] ice: fix using untrusted value of pkt_len in ice_vc_fdir_parse_raw()
-Date: Tue,  8 Apr 2025 12:41:50 +0200
-Message-ID: <20250408104919.238137494@linuxfoundation.org>
+Subject: [PATCH 6.14 214/731] idpf: check error for register_netdev() on init
+Date: Tue,  8 Apr 2025 12:41:51 +0200
+Message-ID: <20250408104919.260773256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -69,90 +68,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 1388dd564183a5a18ec4a966748037736b5653c5 ]
+[ Upstream commit 680811c67906191b237bbafe7dabbbad64649b39 ]
 
-Fix using the untrusted value of proto->raw.pkt_len in function
-ice_vc_fdir_parse_raw() by verifying if it does not exceed the
-VIRTCHNL_MAX_SIZE_RAW_PACKET value.
+Current init logic ignores the error code from register_netdev(),
+which will cause WARN_ON() on attempt to unregister it, if there was one,
+and there is no info for the user that the creation of the netdev failed.
 
-Fixes: 99f419df8a5c ("ice: enable FDIR filters from raw binary patterns for VFs")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+WARNING: CPU: 89 PID: 6902 at net/core/dev.c:11512 unregister_netdevice_many_notify+0x211/0x1a10
+...
+[ 3707.563641]  unregister_netdev+0x1c/0x30
+[ 3707.563656]  idpf_vport_dealloc+0x5cf/0xce0 [idpf]
+[ 3707.563684]  idpf_deinit_task+0xef/0x160 [idpf]
+[ 3707.563712]  idpf_vc_core_deinit+0x84/0x320 [idpf]
+[ 3707.563739]  idpf_remove+0xbf/0x780 [idpf]
+[ 3707.563769]  pci_device_remove+0xab/0x1e0
+[ 3707.563786]  device_release_driver_internal+0x371/0x530
+[ 3707.563803]  driver_detach+0xbf/0x180
+[ 3707.563816]  bus_remove_driver+0x11b/0x2a0
+[ 3707.563829]  pci_unregister_driver+0x2a/0x250
+
+Introduce an error check and log the vport number and error code.
+On removal make sure to check VPORT_REG_NETDEV flag prior to calling
+unregister and free on the netdev.
+
+Add local variables for idx, vport_config and netdev for readability.
+
+Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
+Suggested-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/intel/ice/ice_virtchnl_fdir.c    | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 31 +++++++++++++++-------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-index 14e3f0f89c78d..9be4bd717512d 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -832,21 +832,27 @@ ice_vc_fdir_parse_raw(struct ice_vf *vf,
- 		      struct virtchnl_proto_hdrs *proto,
- 		      struct virtchnl_fdir_fltr_conf *conf)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index a3d6b8f198a86..a055a47449f12 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -927,15 +927,19 @@ static int idpf_stop(struct net_device *netdev)
+ static void idpf_decfg_netdev(struct idpf_vport *vport)
  {
--	u8 *pkt_buf, *msk_buf __free(kfree);
-+	u8 *pkt_buf, *msk_buf __free(kfree) = NULL;
- 	struct ice_parser_result rslt;
- 	struct ice_pf *pf = vf->pf;
-+	u16 pkt_len, udp_port = 0;
- 	struct ice_parser *psr;
- 	int status = -ENOMEM;
- 	struct ice_hw *hw;
--	u16 udp_port = 0;
+ 	struct idpf_adapter *adapter = vport->adapter;
++	u16 idx = vport->idx;
  
--	pkt_buf = kzalloc(proto->raw.pkt_len, GFP_KERNEL);
--	msk_buf = kzalloc(proto->raw.pkt_len, GFP_KERNEL);
-+	pkt_len = proto->raw.pkt_len;
-+
-+	if (!pkt_len || pkt_len > VIRTCHNL_MAX_SIZE_RAW_PACKET)
-+		return -EINVAL;
-+
-+	pkt_buf = kzalloc(pkt_len, GFP_KERNEL);
-+	msk_buf = kzalloc(pkt_len, GFP_KERNEL);
-+
- 	if (!pkt_buf || !msk_buf)
- 		goto err_mem_alloc;
+ 	kfree(vport->rx_ptype_lkup);
+ 	vport->rx_ptype_lkup = NULL;
  
--	memcpy(pkt_buf, proto->raw.spec, proto->raw.pkt_len);
--	memcpy(msk_buf, proto->raw.mask, proto->raw.pkt_len);
-+	memcpy(pkt_buf, proto->raw.spec, pkt_len);
-+	memcpy(msk_buf, proto->raw.mask, pkt_len);
+-	unregister_netdev(vport->netdev);
+-	free_netdev(vport->netdev);
++	if (test_and_clear_bit(IDPF_VPORT_REG_NETDEV,
++			       adapter->vport_config[idx]->flags)) {
++		unregister_netdev(vport->netdev);
++		free_netdev(vport->netdev);
++	}
+ 	vport->netdev = NULL;
  
- 	hw = &pf->hw;
+-	adapter->netdevs[vport->idx] = NULL;
++	adapter->netdevs[idx] = NULL;
+ }
  
-@@ -862,7 +868,7 @@ ice_vc_fdir_parse_raw(struct ice_vf *vf,
- 	if (ice_get_open_tunnel_port(hw, &udp_port, TNL_VXLAN))
- 		ice_parser_vxlan_tunnel_set(psr, udp_port, true);
- 
--	status = ice_parser_run(psr, pkt_buf, proto->raw.pkt_len, &rslt);
-+	status = ice_parser_run(psr, pkt_buf, pkt_len, &rslt);
- 	if (status)
- 		goto err_parser_destroy;
- 
-@@ -876,7 +882,7 @@ ice_vc_fdir_parse_raw(struct ice_vf *vf,
+ /**
+@@ -1536,13 +1540,22 @@ void idpf_init_task(struct work_struct *work)
  	}
  
- 	status = ice_parser_profile_init(&rslt, pkt_buf, msk_buf,
--					 proto->raw.pkt_len, ICE_BLK_FD,
-+					 pkt_len, ICE_BLK_FD,
- 					 conf->prof);
- 	if (status)
- 		goto err_parser_profile_init;
-@@ -885,7 +891,7 @@ ice_vc_fdir_parse_raw(struct ice_vf *vf,
- 		ice_parser_profile_dump(hw, conf->prof);
+ 	for (index = 0; index < adapter->max_vports; index++) {
+-		if (adapter->netdevs[index] &&
+-		    !test_bit(IDPF_VPORT_REG_NETDEV,
+-			      adapter->vport_config[index]->flags)) {
+-			register_netdev(adapter->netdevs[index]);
+-			set_bit(IDPF_VPORT_REG_NETDEV,
+-				adapter->vport_config[index]->flags);
++		struct net_device *netdev = adapter->netdevs[index];
++		struct idpf_vport_config *vport_config;
++
++		vport_config = adapter->vport_config[index];
++
++		if (!netdev ||
++		    test_bit(IDPF_VPORT_REG_NETDEV, vport_config->flags))
++			continue;
++
++		err = register_netdev(netdev);
++		if (err) {
++			dev_err(&pdev->dev, "failed to register netdev for vport %d: %pe\n",
++				index, ERR_PTR(err));
++			continue;
+ 		}
++		set_bit(IDPF_VPORT_REG_NETDEV, vport_config->flags);
+ 	}
  
- 	/* Store raw flow info into @conf */
--	conf->pkt_len = proto->raw.pkt_len;
-+	conf->pkt_len = pkt_len;
- 	conf->pkt_buf = pkt_buf;
- 	conf->parser_ena = true;
- 
+ 	/* As all the required vports are created, clear the reset flag
 -- 
 2.39.5
 
