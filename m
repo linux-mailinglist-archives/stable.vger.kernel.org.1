@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEC1A7FE8F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FA4A80180
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 688BD19E3F12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1101188C2A1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6412673B7;
-	Tue,  8 Apr 2025 11:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A592676CF;
+	Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Me4hLJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzpDoLpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC609267B7F;
-	Tue,  8 Apr 2025 11:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEC19AD5C;
+	Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110280; cv=none; b=oeQM5uPxd0g6cjDrvp+gXl77aQ3l/K6KoD3ZZ2DzzMqUwatN7+QZRtOfyNcODfQO4ZFgXps4JFDQn21pIv/UQ8FJHfkOocjqUjkAf0n62LBZBGZz3f87WUz9U8X1R7W7aSNYVHkscpWxbGSVrVY9vVaKsQ1hw9KZLG9c4qtXQIs=
+	t=1744112166; cv=none; b=ayuOdV1d8b5qw3DrVSYCuksZFOSNVpLVI0PJ+iZTHTF1fk9LWARt848FsMFWy7cRudda/uoF72qAwcXf2SH2CjLO7jCZ6PzF+SM5VDsQTtv+rmiYEfgtFBxzR/zuCPD6QycR6iRL65VSINVlVULAucMs0QXX+orkTeThtEOTImE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110280; c=relaxed/simple;
-	bh=panMyxHouC+Va93FRTRxP4/QrN5jISSVD4NZIZSV7AI=;
+	s=arc-20240116; t=1744112166; c=relaxed/simple;
+	bh=AMrZ2NS+erbzvc3i50a9Iyo+lELJzryjDnzp5Dn02QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byAhIPaR8KcG2KaRTTWZc5PRX/w878uN6EsUtxCnAwgm9dG9hkkGkIqBoA0eoAZ56Xd5lVk7thfnkTsleKBLMXRPcPSF+wdInGhddKa/FvRuFfQTg5e6W/pXhOLw+6/fyJlJQuYY4fA0DcbAujB0Hu5Sqz+PFkBVt5wfOQcpZUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Me4hLJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAA4C4CEE5;
-	Tue,  8 Apr 2025 11:04:40 +0000 (UTC)
+	 MIME-Version; b=MHMTKti6RBUvzeZDieVszQMhoBCDYPsAotctty5HufS6ZFzfxH0fOzWV/+w1johwDiJ9EIIRVSDf6aYN/k2daZ+oMpJ4WPsRYah1xz8dRqr/era5m3/YG1pndRQW8hK0d0OXOui6yLRPdZ1Ktu9XAok62c/noaU4gz/MtoGv1nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzpDoLpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9425BC4CEE7;
+	Tue,  8 Apr 2025 11:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110280;
-	bh=panMyxHouC+Va93FRTRxP4/QrN5jISSVD4NZIZSV7AI=;
+	s=korg; t=1744112165;
+	bh=AMrZ2NS+erbzvc3i50a9Iyo+lELJzryjDnzp5Dn02QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Me4hLJ/+ponplEkyzl4qDriszHtL0h3ODpddAwyvt+mXUPpD0dn6svOxxK2XLkdw
-	 /fv3oBhuPjEnRXau052J+QKba/H1+1/81vIQITDbaXor/jnhBNA+fqUtNwAfget2m1
-	 Cg9xTup67pyUQsyvrCwH4OlhrKNSGU5BzUbwIM+8=
+	b=fzpDoLpxN0kNA7NUVwXE6L+Lm8VSaosWm+U/S5Rd9DPj1x46FLo+AlrKPOgDVEv+B
+	 C7YyVQC1kdf5rIF4KICyWlqBi/QkQrKVbeOdoP1pW+8JGrDLIx4u7b+uoWYX0Ron1I
+	 ok0dtBRIPKqKf/S0/UCu2ONaJMUdmHWTj/yltqcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 219/227] tracing: Ensure module defining synth event cannot be unloaded while tracing
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 700/731] ksmbd: fix use-after-free in ksmbd_sessions_deregister()
 Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104826.871780173@linuxfoundation.org>
+Message-ID: <20250408104930.550813284@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Raillard <douglas.raillard@arm.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 21581dd4e7ff6c07d0ab577e3c32b13a74b31522 upstream.
+commit 15a9605f8d69dc85005b1a00c31a050b8625e1aa upstream.
 
-Currently, using synth_event_delete() will fail if the event is being
-used (tracing in progress), but that is normally done in the module exit
-function. At that stage, failing is problematic as returning a non-zero
-status means the module will become locked (impossible to unload or
-reload again).
-
-Instead, ensure the module exit function does not get called in the
-first place by increasing the module refcnt when the event is enabled.
+In multichannel mode, UAF issue can occur in session_deregister
+when the second channel sets up a session through the connection of
+the first channel. session that is freed through the global session
+table can be accessed again through ->sessions of connection.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 35ca5207c2d11 ("tracing: Add synthetic event command generation functions")
-Link: https://lore.kernel.org/20250318180906.226841-1-douglas.raillard@arm.com
-Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_synth.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -749,6 +749,34 @@ static struct trace_event_fields synth_e
- 	{}
- };
- 
-+static int synth_event_reg(struct trace_event_call *call,
-+		    enum trace_reg type, void *data)
-+{
-+	struct synth_event *event = container_of(call, struct synth_event, call);
-+
-+	switch (type) {
-+	case TRACE_REG_REGISTER:
-+	case TRACE_REG_PERF_REGISTER:
-+		if (!try_module_get(event->mod))
-+			return -EBUSY;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	int ret = trace_event_reg(call, type, data);
-+
-+	switch (type) {
-+	case TRACE_REG_UNREGISTER:
-+	case TRACE_REG_PERF_UNREGISTER:
-+		module_put(event->mod);
-+		break;
-+	default:
-+		break;
-+	}
-+	return ret;
-+}
-+
- static int register_synth_event(struct synth_event *event)
- {
- 	struct trace_event_call *call = &event->call;
-@@ -778,7 +806,7 @@ static int register_synth_event(struct s
- 		goto out;
- 	}
- 	call->flags = TRACE_EVENT_FL_TRACEPOINT;
--	call->class->reg = trace_event_reg;
-+	call->class->reg = synth_event_reg;
- 	call->class->probe = trace_event_raw_event_synth;
- 	call->data = event;
- 	call->tp = event->tp;
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -230,6 +230,9 @@ void ksmbd_sessions_deregister(struct ks
+ 			if (!ksmbd_chann_del(conn, sess) &&
+ 			    xa_empty(&sess->ksmbd_chann_list)) {
+ 				hash_del(&sess->hlist);
++				down_write(&conn->session_lock);
++				xa_erase(&conn->sessions, sess->id);
++				up_write(&conn->session_lock);
+ 				ksmbd_session_destroy(sess);
+ 			}
+ 		}
 
 
 
