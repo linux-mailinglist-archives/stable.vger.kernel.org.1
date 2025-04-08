@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9605DA7FDE6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC466A80144
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2166189084F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4316188225A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3C426A1CC;
-	Tue,  8 Apr 2025 10:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDC3263899;
+	Tue,  8 Apr 2025 11:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il2AdxmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FC5JzY8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABD1265630;
-	Tue,  8 Apr 2025 10:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D9224234;
+	Tue,  8 Apr 2025 11:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109975; cv=none; b=ZMQ1W+6TkPdnVaTH20hUelB13qWyDvvc31+GgVVYpUYg4f+qOQSvYt/vky5CibvpLWInURjKuQ8uCbTcAK7c3QtZbiclpLtr58iSOL0pKrHAVtBb1sy+Y5vVcpL/rgykRrqi0h29zOigsaW6MpZZGLMSLtbK7IL4tTpiuoXf6vQ=
+	t=1744111903; cv=none; b=rbUhNfZ6NJC3iB/8CmNH0DREdns+26X2t0fvupiemoQOGLzZDqJTMTnZWNmkd9/KqU0xYnUaOexYnh9SLN79bRdmdO2RbUe9EI9qMl7rWA1nC4oa+3so5O7IOwTJmCWZiVYUtxnuc0wri+USTCJBjIJIqVtGoI/U+mxF0dI1TNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109975; c=relaxed/simple;
-	bh=zw29dlTDaeQfFZnJjlYohWVfk1jAe09H+0O21vEEfsw=;
+	s=arc-20240116; t=1744111903; c=relaxed/simple;
+	bh=VDM1KSmLCbJEigALwuLXx/jrzLRNaBWGoKJe+OcERM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qjaqo6rpTisHzjmBocjpwLBPL4D+SJdVpemBJVECpP4qtU/Q1eRvAVmZ7ujOp18UaNg06yAtokhAWZ5/rnJOPxryo6HjH2sM6cXvpslj2DcDLu2UZZr9UTnyQVsgXJ4qJgxEa9k9cQ7+3KLPIkKwXVGzF1GSSMkT5QMjG54gU+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il2AdxmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E783C4CEE5;
-	Tue,  8 Apr 2025 10:59:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rpia/x+0g1hy7xpUzmQ6XP47I4VHZ6FU/Vvk4civN4TlAFJOH9UIUILwFK7UQAfk4bzDBWfHdj/s6j2eY7h0IWkN+WsJSqEO59YubowiBTlP8p8YMP7pFsGjYQBKDX88jOiF4c94iY1g21lC6pY9zITdVGS4WX50XL9w4IcwwcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FC5JzY8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0F6C4CEE7;
+	Tue,  8 Apr 2025 11:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109974;
-	bh=zw29dlTDaeQfFZnJjlYohWVfk1jAe09H+0O21vEEfsw=;
+	s=korg; t=1744111903;
+	bh=VDM1KSmLCbJEigALwuLXx/jrzLRNaBWGoKJe+OcERM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=il2AdxmLEqWtXQBkVyyhiZafjblzTuIrF9u0CqT2CuAqiXDAgl2BJxAlU/Fhs9msA
-	 bNJt/xIFPeeB0pedVbHA143nGXUm0ybC67LnF4yPK7vIkxABBNYXyH9wXtZmEuPBLq
-	 irDMNCQ1C/uDGeXMcwG/m6MFNwoyryc2LwN46CN0=
+	b=FC5JzY8TNWyOvI9iThClo5qpnQi1cCkclkj0oWA/MjyuRRAiVbTzXAwjZpjW7DpXd
+	 AWwvWHVphrnJvGd4gpzQBwYGppGU0W44jMIRGtekNzP1gXkTSzh/ah1lf4OaWqubpA
+	 Df/tUHNSMM2ky4vzklRDFuCVwSJkxhQHubzVjq4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Yao Zi <ziyao@disroot.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/227] EDAC/ie31200: Fix the error path order of ie31200_init()
-Date: Tue,  8 Apr 2025 12:48:19 +0200
-Message-ID: <20250408104823.968293434@linuxfoundation.org>
+Subject: [PATCH 6.14 603/731] riscv/kexec_file: Handle R_RISCV_64 in purgatory relocator
+Date: Tue,  8 Apr 2025 12:48:20 +0200
+Message-ID: <20250408104928.299491275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
+[ Upstream commit 28093cfef5dd62f4cbd537f2bdf6f0bf85309c45 ]
 
-The error path order of ie31200_init() is incorrect, fix it.
+Commit 58ff537109ac ("riscv: Omit optimized string routines when
+using KASAN") introduced calls to EXPORT_SYMBOL() in assembly string
+routines, which result in R_RISCV_64 relocations against
+.export_symbol section. As these rountines are reused by RISC-V
+purgatory and our relocator doesn't recognize these relocations, this
+fails kexec-file-load with dmesg like
 
-Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
+	[   11.344251] kexec_image: Unknown rela relocation: 2
+	[   11.345972] kexec_image: Error loading purgatory ret=-8
+
+Let's support R_RISCV_64 relocation to fix kexec on 64-bit RISC-V.
+32-bit variant isn't covered since KEXEC_FILE and KEXEC_PURGATORY isn't
+available.
+
+Fixes: 58ff537109ac ("riscv: Omit optimized string routines when using KASAN")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250326051445.55131-2-ziyao@disroot.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/elf_kexec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 0c894b4890678..cad20e87783b5 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -608,7 +608,7 @@ static int __init ie31200_init(void)
- 
- 	pci_rc = pci_register_driver(&ie31200_driver);
- 	if (pci_rc < 0)
--		goto fail0;
-+		return pci_rc;
- 
- 	if (!mci_pdev) {
- 		ie31200_registered = 0;
-@@ -619,11 +619,13 @@ static int __init ie31200_init(void)
- 			if (mci_pdev)
- 				break;
- 		}
-+
- 		if (!mci_pdev) {
- 			edac_dbg(0, "ie31200 pci_get_device fail\n");
- 			pci_rc = -ENODEV;
--			goto fail1;
-+			goto fail0;
- 		}
-+
- 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
- 		if (pci_rc < 0) {
- 			edac_dbg(0, "ie31200 init fail\n");
-@@ -631,12 +633,12 @@ static int __init ie31200_init(void)
- 			goto fail1;
- 		}
- 	}
--	return 0;
- 
-+	return 0;
- fail1:
--	pci_unregister_driver(&ie31200_driver);
--fail0:
- 	pci_dev_put(mci_pdev);
-+fail0:
-+	pci_unregister_driver(&ie31200_driver);
- 
- 	return pci_rc;
- }
+diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
+index 3c37661801f95..e783a72d051f4 100644
+--- a/arch/riscv/kernel/elf_kexec.c
++++ b/arch/riscv/kernel/elf_kexec.c
+@@ -468,6 +468,9 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+ 		case R_RISCV_ALIGN:
+ 		case R_RISCV_RELAX:
+ 			break;
++		case R_RISCV_64:
++			*(u64 *)loc = val;
++			break;
+ 		default:
+ 			pr_err("Unknown rela relocation: %d\n", r_type);
+ 			return -ENOEXEC;
 -- 
 2.39.5
 
