@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7996CA7FE55
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E541A80301
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B0B19E3AF0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F8417F3DB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AB1269827;
-	Tue,  8 Apr 2025 11:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC342268681;
+	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuWagN4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5DYVa1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B62268691;
-	Tue,  8 Apr 2025 11:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973C92641CC;
+	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110227; cv=none; b=k1UWhtW1gKv3O6Q4sZ5yy4aZEcrn35WFqV/flwnq7tjIc678g3mSP7CIn+bYHFmPAm+DYdt8HAXrb7iwAraTChjYHhoLzqtcEtQfrtaGJtsmcOeQmYF9XNOoQ8+ZvNPtXrxK0SWx5eNKQ4Gv9YndqtY4A09HLwY53A7WrvQj4rU=
+	t=1744112819; cv=none; b=k9mUsF7OIRXbbpPCQbQApZaeswi+6x2cQoYtyCXTHVIUSdLO37ZI9a0wHGHN0d51D0EIK0nLiaCw9SDkvHv39zerGDP9bkNihyu5nVLmK8F51qox2NmlTCTnWZKv4Xl8GP2dN30YyiLAcvIJPrtoossLtTXntynQYROtHVUgtEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110227; c=relaxed/simple;
-	bh=ufChVWYQ2nothh9FDw7HBoM8xaVTymRDszDalUJlNY8=;
+	s=arc-20240116; t=1744112819; c=relaxed/simple;
+	bh=BsX0iQBanqjAUTfvniuP1BcjviwFS8/PzDhPycvM78I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbsLPWF6pzShumAXHO/TPjR0YogZA80nu3b0Mtcg45o8O5zbjkbcmI7cSEYkgHxJBB7VQrixoS5Wsr393nJCrAsFH40LjHEpe8Z43m+O3pOjUcTHwH2zLmrwF2cwDAri7ZPtOkbV14um4jf8kfGjxkoZHFszrNsYG1tQgrlcsOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuWagN4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8202FC4CEE7;
-	Tue,  8 Apr 2025 11:03:45 +0000 (UTC)
+	 MIME-Version; b=ZYuhZ8kXFZ3gnLCZl2jp+G2JZZB9raPQ2xrLqkkYL9f3mLPZHFVnik5w049zZA83bhvRd+JsknQ8itGZ5ap2HjUEckKlzNHvu9Lb/nZ0AsR5ziCQXKdYfDC/9LHaYgfTM8NRVA9mPWymC5A20HsGvxl/7td0JIvS4aDEoaS6FZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5DYVa1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E25C4CEE5;
+	Tue,  8 Apr 2025 11:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110226;
-	bh=ufChVWYQ2nothh9FDw7HBoM8xaVTymRDszDalUJlNY8=;
+	s=korg; t=1744112819;
+	bh=BsX0iQBanqjAUTfvniuP1BcjviwFS8/PzDhPycvM78I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZuWagN4HhS6ypqfAXv7Nde7PTuH6EST0xWNzagRhVzdN58E/U7qn4LaDR0iiJXyzj
-	 quWynhMspiE3QpjE9gUhvxIfCROBGW/8ZCXoPJAfZwEH8qJQyTCeq3te5to5RODXnz
-	 juFlM7mOgFbxrmFu3HGKuXI2uhYqdsboqIwd+Qks=
+	b=u5DYVa1X0WVMomrwhKXVxNt+LDFMCJ9QpE+YZf2c/b6M1q3w2GUzLv15dsEl/AowQ
+	 3l5Gav/xFSvC4jYuBhgiaGXlgcLfMXqiat8FG2mBu5Gey+0t6p7JgotMmdNSuZrlGI
+	 nRjM1NkfpBOIMbR9jSn2h4eQJc0+M/sK0fVaX4JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/227] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Subject: [PATCH 5.15 169/279] of: property: Increase NR_FWNODE_REFERENCE_ARGS
 Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104825.534417238@linuxfoundation.org>
+Message-ID: <20250408104830.892563200@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
+[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
 
-If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
-is a divide-by-zero.  Prevent that from happening.
+Currently, the following two macros have different values:
 
-Fixes the following warning with an UBSAN kernel:
+// The maximal argument count for firmware node reference
+ #define NR_FWNODE_REFERENCE_ARGS	8
+// The maximal argument count for DT node reference
+ #define MAX_PHANDLE_ARGS 16
 
-  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
+It may cause firmware node reference's argument count out of range if
+directly assign DT node reference's argument count to firmware's.
 
-Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
+drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
+assignment, so may cause firmware's argument count @args->nargs got out
+of range, namely, in [9, 16].
+
+Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
+Will align both macros later to avoid such inconsistency.
+
+Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib8000.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/fwnode.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
-index 02cb48223dc67..a28cbbd9e475c 100644
---- a/drivers/media/dvb-frontends/dib8000.c
-+++ b/drivers/media/dvb-frontends/dib8000.c
-@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
- 	u8 ratio;
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 2d68606fb725d..f0833bafe6bd4 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -67,7 +67,7 @@ struct fwnode_endpoint {
+ #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
+ #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
  
- 	if (state->revision == 0x8090) {
-+		u32 internal = dib8000_read32(state, 23) / 1000;
-+
- 		ratio = 4;
--		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
-+
-+		unit_khz_dds_val = (1<<26) / (internal ?: 1);
- 		if (offset_khz < 0)
- 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
- 		else
+-#define NR_FWNODE_REFERENCE_ARGS	8
++#define NR_FWNODE_REFERENCE_ARGS	16
+ 
+ /**
+  * struct fwnode_reference_args - Fwnode reference with additional arguments
 -- 
 2.39.5
 
