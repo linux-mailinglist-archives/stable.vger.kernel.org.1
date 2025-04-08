@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70419A80A54
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B268A806DC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229EA4A539C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1DAD4C29CC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75560224887;
-	Tue,  8 Apr 2025 12:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67F92690D6;
+	Tue,  8 Apr 2025 12:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCODtaZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5uPsk++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FACA276033;
-	Tue,  8 Apr 2025 12:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40FC26B957;
+	Tue,  8 Apr 2025 12:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116356; cv=none; b=t9SIkH3xktyHPMursUGsdQ6lwwWFZpOOUUl//fBDbFHM4TzoNg8TnySBeMHLCS2iFE5eOy+jd0VkYIXIQBI8XLDcWbGwlwVRWAv/TzurOVfn2NIMvjnBHyN0am/N1Clv0rVQ7r3fjulCSvzPY84/4ATTD+SJB5FVVvMOpDG2GqM=
+	t=1744114754; cv=none; b=kzjMT/Qvp98h9lRaVDbuhPFkuAGiY/ZahRpcDNYiC95yth5t0MOTaFmtOCXILtKzHaTNITd7VLDaf1htVkJHO/1bdbp/mlBQe3XuotD21Qws2wPmF76nokXg4y7bkpFCJ04GqWFsNavs2N3LGAuGmaN6xSSNCSIDzfvDsuljjic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116356; c=relaxed/simple;
-	bh=+BJgHJmGRTiK0ZUptKrYGk/AA3Qg4knz/D1Krj9qMuQ=;
+	s=arc-20240116; t=1744114754; c=relaxed/simple;
+	bh=ag20USvnRthSAJlBon1sdTCNEBS9ovt8WjNKVMszi0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVpJGhMs0fbrlMDR/0ctgiFkquL1tEicLhLA3QZw//WahNmpB63CWjKkbVAObRZTK+X80bImFlHOyTmUW+aikLEGvLVwHrfTSvI3d82lhnKZPDOAoJtiq2lmlWbjr3w9Bax1n1YR/3KL/TetWJqKy6VssDsW1cN8Xww843AfsZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCODtaZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C82C4CEE5;
-	Tue,  8 Apr 2025 12:45:55 +0000 (UTC)
+	 MIME-Version; b=BMcUjJB15rnUoaX1g69I8/w/GOZ6mI2rHdPqMCA3Ox8gdW/MdoEKHAjmLkv+OENmzTCtn12s8FS54Bb/ZZE2NhqVl2QoBdp8YghNfaHInOnVOBwebfBcRL0sEV8gdsH3EGZYodldfdpCVSSGwvw6zvgqk2HmAj49yeJHt2F2DS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5uPsk++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276AFC4CEE5;
+	Tue,  8 Apr 2025 12:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116356;
-	bh=+BJgHJmGRTiK0ZUptKrYGk/AA3Qg4knz/D1Krj9qMuQ=;
+	s=korg; t=1744114754;
+	bh=ag20USvnRthSAJlBon1sdTCNEBS9ovt8WjNKVMszi0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCODtaZcdFptQlTlk4qCUD4nS9eGIvYOtzmggLyl/iGCXcGG/B91uX0E8Y8xEqBnx
-	 bn0xLFY15MfDK6JAQUQWomed6xg9bvG/j8Pm84Ddv0MxwOTpHsMWymw02lkh82epMx
-	 yTI+ENFp4gBdj8x+Shh7p5BpR1WXhDh8sQLIaGLI=
+	b=s5uPsk++6XDZI0hYS/gY87AMiOQvAHSrvrL48Fe6kMt1lJlLBOnWj/AehnmIR2Fn8
+	 F5WtoXxC8M0SKkMWP+RiPe8kKqk+4QYbmGuzxiU8FXdlAkrSsKTfrE0QhooiM8khre
+	 1kVc159hxrIZFDmUWe67WWb24NHRHvomLTzcgTIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/423] remoteproc: qcom_q6v5_pas: Make single-PD handling more robust
+Subject: [PATCH 6.13 224/499] perf arm-spe: Fix load-store operation checking
 Date: Tue,  8 Apr 2025 12:47:16 +0200
-Message-ID: <20250408104848.294496005@linuxfoundation.org>
+Message-ID: <20250408104856.796959550@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit e917b73234b02aa4966325e7380d2559bf127ba9 ]
+[ Upstream commit e1d47850bbf79a541c9b3bacdd562f5e0112274d ]
 
-Only go into the if condition for single-PD handling when there's
-actually just one power domain specified there. Otherwise it'll be an
-issue in the dts and we should fail in the regular code path.
+The ARM_SPE_OP_LD and ARM_SPE_OP_ST operations are secondary operation
+type, they are overlapping with other second level's operation types
+belonging to SVE and branch operations.  As a result, a non load-store
+operation can be parsed for data source and memory sample.
 
-This also mirrors the latest changes in the qcom_q6v5_mss driver.
+To fix the issue, this commit introduces a is_ldst_op() macro for
+checking LDST operation, and apply the checking when synthesize data
+source and memory samples.
 
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250128-pas-singlepd-v1-2-85d9ae4b0093@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a89dbc9b988f ("perf arm-spe: Set sample's data source field")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250304111240.3378214-7-leo.yan@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/perf/util/arm-spe.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 1a2d08ec9de9e..179a0afd5fe6f 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -509,16 +509,16 @@ static int adsp_pds_attach(struct device *dev, struct device **devs,
- 	if (!pd_names)
- 		return 0;
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index dbf13f47879c0..e1f7b01cd5221 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -37,6 +37,8 @@
+ #include "../../arch/arm64/include/asm/cputype.h"
+ #define MAX_TIMESTAMP (~0ULL)
  
-+	while (pd_names[num_pds])
-+		num_pds++;
++#define is_ldst_op(op)		(!!((op) & ARM_SPE_OP_LDST))
 +
- 	/* Handle single power domain */
--	if (dev->pm_domain) {
-+	if (num_pds == 1 && dev->pm_domain) {
- 		devs[0] = dev;
- 		pm_runtime_enable(dev);
- 		return 1;
- 	}
+ struct arm_spe {
+ 	struct auxtrace			auxtrace;
+ 	struct auxtrace_queues		queues;
+@@ -605,6 +607,10 @@ static u64 arm_spe__synth_data_source(struct arm_spe_queue *speq,
+ 	union perf_mem_data_src	data_src = { .mem_op = PERF_MEM_OP_NA };
+ 	bool is_common = arm_spe__is_common_ds_encoding(speq);
  
--	while (pd_names[num_pds])
--		num_pds++;
--
- 	for (i = 0; i < num_pds; i++) {
- 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
- 		if (IS_ERR_OR_NULL(devs[i])) {
-@@ -543,7 +543,7 @@ static void adsp_pds_detach(struct qcom_adsp *adsp, struct device **pds,
- 	int i;
- 
- 	/* Handle single power domain */
--	if (dev->pm_domain && pd_count) {
-+	if (pd_count == 1 && dev->pm_domain) {
- 		pm_runtime_disable(dev);
- 		return;
- 	}
++	/* Only synthesize data source for LDST operations */
++	if (!is_ldst_op(record->op))
++		return 0;
++
+ 	if (record->op & ARM_SPE_OP_LD)
+ 		data_src.mem_op = PERF_MEM_OP_LOAD;
+ 	else if (record->op & ARM_SPE_OP_ST)
+@@ -705,7 +711,7 @@ static int arm_spe_sample(struct arm_spe_queue *speq)
+ 	 * When data_src is zero it means the record is not a memory operation,
+ 	 * skip to synthesize memory sample for this case.
+ 	 */
+-	if (spe->sample_memory && data_src) {
++	if (spe->sample_memory && is_ldst_op(record->op)) {
+ 		err = arm_spe__synth_mem_sample(speq, spe->memory_id, data_src);
+ 		if (err)
+ 			return err;
 -- 
 2.39.5
 
