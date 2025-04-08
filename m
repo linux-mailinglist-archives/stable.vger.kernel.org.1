@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834FCA802F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B75BA80147
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F505463334
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C8819E0A4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C172641CC;
-	Tue,  8 Apr 2025 11:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E03267F5F;
+	Tue,  8 Apr 2025 11:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeZYORpv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGTujW6o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318232676E1;
-	Tue,  8 Apr 2025 11:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A831935973;
+	Tue,  8 Apr 2025 11:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112724; cv=none; b=p5QaYfdYBZjM3XQ70/nzlsDVOsYWgzCXNqxptNwksxIrjQ5njmsPIvYHWGdn7uJ8z1psmiu3KxaOr8rJcaeHKm4t3ImNT/j+wIkTV8TfR+J2oIVNuxBURm3SOsh/jD6iO467eF0Lcvhp2rkbkc/SGdJshog7TThLutnZA4rOVTE=
+	t=1744112061; cv=none; b=KAhdhuYQb2Oj9moigLdlDF8MpI/Rascb7vcx9+HXAnxYV956ANkj5UvfJHkCQVoV0nOtHZl/9w8TU4TVxj4W+/cv4WKIZWVk/0Mqc/1sWPURl+N5We4dJltohWlgeaJNWarCETzr9zHGf98Nn/4hP0C87ZRlU+opnO/s01zZlZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112724; c=relaxed/simple;
-	bh=1n15NZyuteYo6ZHQjjZoHqT+JZbbvVeM9zBlUomVJV0=;
+	s=arc-20240116; t=1744112061; c=relaxed/simple;
+	bh=mKLK74pZxLN8qKhgCGqDjZY2aXAlcNuDhOV3orHXlnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehHwGocsx4KXmTG9SLlgmveZpcXHpsESJ72taiS3rxhKCmFWjUbQ4rI8uRITQU4SxeEnITcyD1SJjr095Qbq/54dkaBc6qxDK9Mozf/cDSZ595XyEo4TLn4gVhrNEytfCNowE444qbwrzrYNFRIWPPB75SKui7WdFjRhKHQ/Vjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeZYORpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8486C4CEE5;
-	Tue,  8 Apr 2025 11:45:23 +0000 (UTC)
+	 MIME-Version; b=SWANwF4GQiDgNmdjJIGsFH9SxXoQdI+VsREUXX4ADQ/aKXpbN0qj2G9YUUGXPtOvk5szaW+gPZ5ZU9kbpfh6lK/xuqGgmYn3fFqhhUG4PNwFhTjrBnwsrFcJbKFGvf0kSmi9MkRB2De+Mve6byogx5XUeg9Rtzh3StdhJcnTsd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGTujW6o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EBEC4CEE5;
+	Tue,  8 Apr 2025 11:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112724;
-	bh=1n15NZyuteYo6ZHQjjZoHqT+JZbbvVeM9zBlUomVJV0=;
+	s=korg; t=1744112061;
+	bh=mKLK74pZxLN8qKhgCGqDjZY2aXAlcNuDhOV3orHXlnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeZYORpveksChB3ShD0TNO0nF3hVlFoiZXczhM4y2qPoGgUR/nKGWBT6euepRKBFM
-	 w4bhqbjVF1PO4OhVmhL1zLWgXqSIjdDzn+TAlyZeq/glyL2Gupz/cxQlOnoqlA7KCX
-	 uFDMt/sdWu8ki+0wcHbZe49yhi2nxBh4tSKw6eeU=
+	b=RGTujW6oPWq5xWVCkB1pBAODpLmNAvlQ3dv4RGBWDgvHbT7E6pqfyfK+FoFXaqS2D
+	 VfS/xLVGX1ay5RN6JwJe/mgdSsiv76+U9rIOTx8nKijfKzQ9HCXnpGI0w0g4YRLAuj
+	 2jrvTnPOgLdXVsjHkb3nhIRM9w/FT5jDYNCNtq2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/279] lib: 842: Improve error handling in sw842_compress()
+	stable <stable@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>
+Subject: [PATCH 6.14 661/731] rust: platform: require Send for Driver trait implementers
 Date: Tue,  8 Apr 2025 12:49:18 +0200
-Message-ID: <20250408104831.055631460@linuxfoundation.org>
+Message-ID: <20250408104929.642107758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
+commit 51d0de7596a458096756c895cfed6bc4a7ecac10 upstream.
 
-The static code analysis tool "Coverity Scan" pointed the following
-implementation details out for further development considerations:
-CID 1309755: Unused value
-In sw842_compress: A value assigned to a variable is never used. (CWE-563)
-returned_value: Assigning value from add_repeat_template(p, repeat_count)
-to ret here, but that stored value is overwritten before it can be used.
+The instance of Self, returned and created by Driver::probe() is
+dropped in the bus' remove() callback.
 
-Conclusion:
-Add error handling for the return value from an add_repeat_template()
-call.
+Request implementers of the Driver trait to implement Send, since the
+remove() callback is not guaranteed to run from the same thread as
+probe().
 
-Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 683a63befc73 ("rust: platform: add basic platform device / driver abstractions")
+Cc: stable <stable@kernel.org>
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/lkml/Z9rDxOJ2V2bPjj5i@google.com/
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/r/20250319145350.69543-2-dakr@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/842/842_compress.c | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/kernel/platform.rs |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
-index c02baa4168e16..055356508d97c 100644
---- a/lib/842/842_compress.c
-+++ b/lib/842/842_compress.c
-@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
- 		}
- 		if (repeat_count) {
- 			ret = add_repeat_template(p, repeat_count);
-+			if (ret)
-+				return ret;
- 			repeat_count = 0;
- 			if (next == last) /* reached max repeat bits */
- 				goto repeat;
--- 
-2.39.5
-
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -149,7 +149,7 @@ macro_rules! module_platform_driver {
+ ///     }
+ /// }
+ ///```
+-pub trait Driver {
++pub trait Driver: Send {
+     /// The type holding driver private data about each device id supported by the driver.
+     ///
+     /// TODO: Use associated_type_defaults once stabilized:
 
 
 
