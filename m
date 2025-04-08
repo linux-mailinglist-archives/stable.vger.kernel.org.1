@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AFAA806B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31379A80A17
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99B74C4132
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0926B4E4986
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB5226A0AF;
-	Tue,  8 Apr 2025 12:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E3C2777FD;
+	Tue,  8 Apr 2025 12:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zx8iXCMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRkFDbHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A762676CF;
-	Tue,  8 Apr 2025 12:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFAC2777F2;
+	Tue,  8 Apr 2025 12:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114886; cv=none; b=Xjyl149rdIAjx8+Y4AwwK4g5OBUn3lxbus7pz+DI0J4RAWdXdIGBLk/ooqCBJEeCeWjNnNI9o3/QXiR3i1wSGJWErTRbT1Gymet0KO4DhLeiOcenyEnFlhZd+q7hUi7UD73YI1DbR2STLjk2UOw8yQqjUwg2Q8a1rNAKx1m9UqY=
+	t=1744116489; cv=none; b=e/kQvpOu1B/IG6hePSakenFzWc1l6o909VoeVM1e5G+9/5QN3Rz7zW26mWF+4JLADwybe1YQCvVHD5rVif9gUZgXVljb0K/gEHP/VJnbHuvYaBsb3wOp6gwkQmdMNKfR4xqMM6ltcy3sVx5pqHHtzQoS9KxGyT7tAtWd/oIZGiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114886; c=relaxed/simple;
-	bh=1k9Xv78H64hK3UpH/I4P6/GbnoKbqt71llvVTbTERiw=;
+	s=arc-20240116; t=1744116489; c=relaxed/simple;
+	bh=7nIVFnJZNdyYHT3zNxs1fmgFb5m5KlX00NlpsOPhosQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNJ3Pey78X+p7YSmip3H+ghnrc1T/hmhGnhaiy7yt5vKdRQvRINuJ9nIbmwd6L++/d0jX1E4MK8yFVrz5YzH8cs970wtpfX0qICgHhXcsLCxVAQ4GWuKP2jK22oUoN4lmbFG5AkiaM5x4KWbSAE2uHrU0yEKtR91YDhshpqGR0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx8iXCMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F94DC4CEE5;
-	Tue,  8 Apr 2025 12:21:25 +0000 (UTC)
+	 MIME-Version; b=ZDz29ZMptTM3Fg723v4asoeqvlIDyoLVSYwz0RIvyup4eHIilI+ld8DcOs5YIujZr2kwhTeCpqH6E51HNBezrQrPowr39X4P7NE+SplK+ND1awYbJb+Wpde01/pgIkZOaYE5yl7xmBdBExNtF45hnxmbvC39cI3LvBj3mF2K3c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRkFDbHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FE6C4CEE7;
+	Tue,  8 Apr 2025 12:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114885;
-	bh=1k9Xv78H64hK3UpH/I4P6/GbnoKbqt71llvVTbTERiw=;
+	s=korg; t=1744116489;
+	bh=7nIVFnJZNdyYHT3zNxs1fmgFb5m5KlX00NlpsOPhosQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zx8iXCMu4bUTCFY+eXeWNa5Wz5VNcFVDS9nzFFClBcMwbzrnUYHg60nRoMA7Vlns1
-	 t4ScIaIeJu4mO3E+mSKGADKrpKTYBz10Io5tsBe9Id5JvOc/XKe0KPYQwBAd6TO9dq
-	 FuSw+/cyBjuemuCQuKHmPlxU8TjIGRdy1ZR9KtjY=
+	b=wRkFDbHHJu34Zd2ofCDDvnwBNsd5WLGOocI+JeCLumIZol7E0qUNIhdc7tT7rFoXq
+	 4HNwqiq2jAHtW7fmJlYHMJPQI/Q9h7s3hTKfXTIFHXFUPIK+IFHPMGQtBNX8x51njf
+	 7yuNvOs+M2BoursaevYB8TSjRbKbVfi22/ZuDevg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sally Shi <sshii@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	syzbot+f60349ba1f9f08df349f@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 271/499] perf bpf-filter: Fix a parsing error with comma
-Date: Tue,  8 Apr 2025 12:48:03 +0200
-Message-ID: <20250408104857.976200799@linuxfoundation.org>
+Subject: [PATCH 6.12 158/423] RDMA/core: Fix use-after-free when rename device name
+Date: Tue,  8 Apr 2025 12:48:04 +0200
+Message-ID: <20250408104849.420831038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 35d13f841a3d8159ef20d5e32a9ed3faa27875bc ]
+[ Upstream commit 1d6a9e7449e2a0c1e2934eee7880ba8bd1e464cd ]
 
-The previous change to support cgroup filters introduced a bug that
-pathname can include commas.  It confused the lexer to treat an item and
-the trailing comma as a single token.  And it resulted in a parse error:
+Syzbot reported a slab-use-after-free with the following call trace:
 
-  $ sudo perf record -e cycles:P --filter 'period > 0, ip > 64' -- true
-  perf_bpf_filter: Error: Unexpected item: 0,
-  perf_bpf_filter: syntax error, unexpected BFT_ERROR, expecting BFT_NUM
+==================================================================
+BUG: KASAN: slab-use-after-free in nla_put+0xd3/0x150 lib/nlattr.c:1099
+Read of size 5 at addr ffff888140ea1c60 by task syz.0.988/10025
 
-   Usage: perf record [<options>] [<command>]
-      or: perf record [<options>] -- <command> [<options>]
+CPU: 0 UID: 0 PID: 10025 Comm: syz.0.988
+Not tainted 6.14.0-rc4-syzkaller-00859-gf77f12010f67 #0
+Hardware name: Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0x16e/0x5b0 mm/kasan/report.c:521
+ kasan_report+0x143/0x180 mm/kasan/report.c:634
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+ nla_put+0xd3/0x150 lib/nlattr.c:1099
+ nla_put_string include/net/netlink.h:1621 [inline]
+ fill_nldev_handle+0x16e/0x200 drivers/infiniband/core/nldev.c:265
+ rdma_nl_notify_event+0x561/0xef0 drivers/infiniband/core/nldev.c:2857
+ ib_device_notify_register+0x22/0x230 drivers/infiniband/core/device.c:1344
+ ib_register_device+0x1292/0x1460 drivers/infiniband/core/device.c:1460
+ rxe_register_device+0x233/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1540
+ rxe_net_add+0x74/0xf0 drivers/infiniband/sw/rxe/rxe_net.c:550
+ rxe_newlink+0xde/0x1a0 drivers/infiniband/sw/rxe/rxe.c:212
+ nldev_newlink+0x5ea/0x680 drivers/infiniband/core/nldev.c:1795
+ rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ rdma_nl_rcv+0x6dd/0x9e0 drivers/infiniband/core/netlink.c:259
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:709 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:724
+ ____sys_sendmsg+0x53a/0x860 net/socket.c:2564
+ ___sys_sendmsg net/socket.c:2618 [inline]
+ __sys_sendmsg+0x269/0x350 net/socket.c:2650
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f42d1b8d169
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 ...
+RSP: 002b:00007f42d2960038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f42d1da6320 RCX: 00007f42d1b8d169
+RDX: 0000000000000000 RSI: 00004000000002c0 RDI: 000000000000000c
+RBP: 00007f42d1c0e2a0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f42d1da6320 R15: 00007ffe399344a8
+ </TASK>
 
-          --filter <filter>
-                            event filter
+Allocated by task 10025:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4294 [inline]
+ __kmalloc_node_track_caller_noprof+0x28b/0x4c0 mm/slub.c:4313
+ __kmemdup_nul mm/util.c:61 [inline]
+ kstrdup+0x42/0x100 mm/util.c:81
+ kobject_set_name_vargs+0x61/0x120 lib/kobject.c:274
+ dev_set_name+0xd5/0x120 drivers/base/core.c:3468
+ assign_name drivers/infiniband/core/device.c:1202 [inline]
+ ib_register_device+0x178/0x1460 drivers/infiniband/core/device.c:1384
+ rxe_register_device+0x233/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1540
+ rxe_net_add+0x74/0xf0 drivers/infiniband/sw/rxe/rxe_net.c:550
+ rxe_newlink+0xde/0x1a0 drivers/infiniband/sw/rxe/rxe.c:212
+ nldev_newlink+0x5ea/0x680 drivers/infiniband/core/nldev.c:1795
+ rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ rdma_nl_rcv+0x6dd/0x9e0 drivers/infiniband/core/netlink.c:259
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:709 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:724
+ ____sys_sendmsg+0x53a/0x860 net/socket.c:2564
+ ___sys_sendmsg net/socket.c:2618 [inline]
+ __sys_sendmsg+0x269/0x350 net/socket.c:2650
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-It should get "0" and "," separately.
+Freed by task 10035:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4609 [inline]
+ kfree+0x196/0x430 mm/slub.c:4757
+ kobject_rename+0x38f/0x410 lib/kobject.c:524
+ device_rename+0x16a/0x200 drivers/base/core.c:4525
+ ib_device_rename+0x270/0x710 drivers/infiniband/core/device.c:402
+ nldev_set_doit+0x30e/0x4c0 drivers/infiniband/core/nldev.c:1146
+ rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ rdma_nl_rcv+0x6dd/0x9e0 drivers/infiniband/core/netlink.c:259
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:709 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:724
+ ____sys_sendmsg+0x53a/0x860 net/socket.c:2564
+ ___sys_sendmsg net/socket.c:2618 [inline]
+ __sys_sendmsg+0x269/0x350 net/socket.c:2650
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-An easiest fix would be to remove "," from the possible pathname
-characters.  As it's for cgroup names, probably ok to assume it won't
-have commas in the pathname.
+This is because if rename device happens, the old name is freed in
+ib_device_rename() with lock, but ib_device_notify_register() may visit
+the dev name locklessly by event RDMA_REGISTER_EVENT or
+RDMA_NETDEV_ATTACH_EVENT.
 
-I found that the existing BPF filtering test didn't have any complex
-filter condition with commas.  Let's update the group filter test which
-is supposed to test filter combinations like this.
+Fix this by hold devices_rwsem in ib_device_notify_register().
 
-Link: https://lore.kernel.org/r/20250307220922.434319-1-namhyung@kernel.org
-Fixes: 91e88437d5156b20 ("perf bpf-filter: Support filtering on cgroups")
-Reported-by: Sally Shi <sshii@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: syzbot+f60349ba1f9f08df349f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=25bc6f0ed2b88b9eb9b8
+Fixes: 9cbed5aab5ae ("RDMA/nldev: Add support for RDMA monitoring")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20250313092421.944658-1-wangliang74@huawei.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/record_bpf_filter.sh | 4 ++--
- tools/perf/util/bpf-filter.l                | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/core/device.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/shell/record_bpf_filter.sh b/tools/perf/tests/shell/record_bpf_filter.sh
-index 1b58ccc1fd882..4d6c3c1b7fb92 100755
---- a/tools/perf/tests/shell/record_bpf_filter.sh
-+++ b/tools/perf/tests/shell/record_bpf_filter.sh
-@@ -89,7 +89,7 @@ test_bpf_filter_fail() {
- test_bpf_filter_group() {
-   echo "Group bpf-filter test"
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index 9de3236873429..46102f179955b 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -1366,9 +1366,11 @@ static void ib_device_notify_register(struct ib_device *device)
+ 	u32 port;
+ 	int ret;
  
--  if ! perf record -e task-clock --filter 'period > 1000 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000, ip > 0' \
- 	  -o /dev/null true 2>/dev/null
-   then
-     echo "Group bpf-filter test [Failed should succeed]"
-@@ -97,7 +97,7 @@ test_bpf_filter_group() {
-     return
-   fi
++	down_read(&devices_rwsem);
++
+ 	ret = rdma_nl_notify_event(device, 0, RDMA_REGISTER_EVENT);
+ 	if (ret)
+-		return;
++		goto out;
  
--  if ! perf record -e task-clock --filter 'cpu > 0 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000 , cpu > 0 || ip > 0' \
- 	  -o /dev/null true 2>&1 | grep -q PERF_SAMPLE_CPU
-   then
-     echo "Group bpf-filter test [Failed forbidden CPU]"
-diff --git a/tools/perf/util/bpf-filter.l b/tools/perf/util/bpf-filter.l
-index f313404f95a90..6aa65ade33851 100644
---- a/tools/perf/util/bpf-filter.l
-+++ b/tools/perf/util/bpf-filter.l
-@@ -76,7 +76,7 @@ static int path_or_error(void)
- num_dec		[0-9]+
- num_hex		0[Xx][0-9a-fA-F]+
- space		[ \t]+
--path		[^ \t\n]+
-+path		[^ \t\n,]+
- ident		[_a-zA-Z][_a-zA-Z0-9]+
+ 	rdma_for_each_port(device, port) {
+ 		netdev = ib_device_get_netdev(device, port);
+@@ -1379,8 +1381,11 @@ static void ib_device_notify_register(struct ib_device *device)
+ 					   RDMA_NETDEV_ATTACH_EVENT);
+ 		dev_put(netdev);
+ 		if (ret)
+-			return;
++			goto out;
+ 	}
++
++out:
++	up_read(&devices_rwsem);
+ }
  
- %%
+ /**
 -- 
 2.39.5
 
