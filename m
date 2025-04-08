@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B37A8066D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D16A80BB9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8847AFC9D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023468A529F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F65D26B2CD;
-	Tue,  8 Apr 2025 12:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF29C26A1B2;
+	Tue,  8 Apr 2025 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiKMuaeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzWUTsJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE6C269802;
-	Tue,  8 Apr 2025 12:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B25D26A09F;
+	Tue,  8 Apr 2025 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114950; cv=none; b=Q5yy7iGO+I+Qeu8fxxiiLPUnuNr+g6+Uwn1KwkHgw1GNLxJ8XAWhiCKyoDBTNaRvtTV/Xg6rmNgFMEVZSQDtZhvdeGMwTF2+rQmauowygAA8/VV8X4qTAQpPQXH5JCFYyKwIvcBbEz/RENUAy5nUPPBijlrR16ajbR5EbMWSqks=
+	t=1744116650; cv=none; b=cULYrnz4jzERmIo2k4KLfgwWZZnOjZcTZHwFHkipSKAYMLth2lyDT/CJ+VKZ23hY/fHtq1zsNuQ+UL+8wP0wfFBgUoEDj8ehirQ1/Ekf935QgLUxVbcIZA04A5xlilfs/pVUGi0y5FE8lgk52k13LqYhno+ny3M03j8BVAmqTpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114950; c=relaxed/simple;
-	bh=OzVxyE8VOGZTM9yx9rOpXpb1NdymBT9ZFuw3DUp+SD0=;
+	s=arc-20240116; t=1744116650; c=relaxed/simple;
+	bh=tTzGgPfkedKB5Uv5AsmNkaIV4PqwKKAQS9UaHgAHuik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9F1InXNRJGFqp622c4q0gyss1OtKssR5RJ5gxeYJUmnVzneIGIO5UpMmkmL0gtcZDvGTRFh09seTyYBWWFgMuc9pDBEP9aNNMFvYCnliJ8s7EsDzc6GBkRlcfGjLnXJICSTz+/qmtQ4f/GCSgxrp9NkOkWbuQSNyTxRWw9tg48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiKMuaeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5780C4CEE5;
-	Tue,  8 Apr 2025 12:22:29 +0000 (UTC)
+	 MIME-Version; b=UxKHRuG7oD84mcMLTzsPs/wagxFvOLf83nrablfN07XO9V29RiRng91iyTgads4xA5i/CyrN49r71AjHHnqgjqiQr5baE595xVGcv4WpoepXVuYI+c+HYUqBEe9SrecMCkLrabsrUtDZGMn0ciCkNnoG/05/xxH/ZOBikqRBwBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzWUTsJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DF4C4CEE5;
+	Tue,  8 Apr 2025 12:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114950;
-	bh=OzVxyE8VOGZTM9yx9rOpXpb1NdymBT9ZFuw3DUp+SD0=;
+	s=korg; t=1744116650;
+	bh=tTzGgPfkedKB5Uv5AsmNkaIV4PqwKKAQS9UaHgAHuik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiKMuaeXVDhYqzjqDiIXXEWEyAyuEPq2w/JiOF/KO4vVSfbFJ6jJoOmo6wGfshbfz
-	 njMj4OkpxSGOQCLan68xYziMknPEZPO+YQC0u7LVHxKoX7EaqTnPHnywCxPjMaRi0Z
-	 63e+BYr/RTDwbdhDeP+CGBWrRdbhNZNPFQWu3u54=
+	b=RzWUTsJfOMLZTsLHHM2OsSs6G37qVVX0PAB1qDd5rlRd6FcRRa1qhBCE+IikwM2tc
+	 zLAUPYx9Khbea/1QEd3HFMl8OtLgwjK4xeMqtbttaYwmvOxU30GAcXJxmCIvWxDHa1
+	 WqpF/agKZBM7BT4Pgei4RhT+gq9G0j6j8LSTS5VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 292/499] octeontx2-af: Fix mbox INTR handler when num VFs > 64
-Date: Tue,  8 Apr 2025 12:48:24 +0200
-Message-ID: <20250408104858.497365371@linuxfoundation.org>
+Subject: [PATCH 6.12 179/423] iio: accel: msa311: Fix failure to release runtime pm if direct mode claim fails.
+Date: Tue,  8 Apr 2025 12:48:25 +0200
+Message-ID: <20250408104849.911796697@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
+[ Upstream commit 60a0cf2ebab92011055ab7db6553c0fc3c546938 ]
 
-When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
-function is incorrect. Due to which mbox workqueue entries for
-VFs 0 to 63 never gets added to workqueue.
+Reorder the claiming of direct mode and runtime pm calls to simplify
+handling a little.  For correct error handling, after the reorder
+iio_device_release_direct_mode() must be claimed in an error occurs
+in pm_runtime_resume_and_get()
 
-Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1ca2cfbc0c33 ("iio: add MEMSensing MSA311 3-axis accelerometer driver")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250217140135.896574-7-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/msa311.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index cd0d7b7774f1a..6575c422635b7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -2634,7 +2634,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
- 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
+diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+index 57025354c7cd5..f484be27058d9 100644
+--- a/drivers/iio/accel/msa311.c
++++ b/drivers/iio/accel/msa311.c
+@@ -593,23 +593,25 @@ static int msa311_read_raw_data(struct iio_dev *indio_dev,
+ 	__le16 axis;
+ 	int err;
  
- 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
--		vfs -= 64;
-+		vfs = 64;
- 	}
+-	err = pm_runtime_resume_and_get(dev);
++	err = iio_device_claim_direct_mode(indio_dev);
+ 	if (err)
+ 		return err;
  
- 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
+-	err = iio_device_claim_direct_mode(indio_dev);
+-	if (err)
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
+ 		return err;
++	}
+ 
+ 	mutex_lock(&msa311->lock);
+ 	err = msa311_get_axis(msa311, chan, &axis);
+ 	mutex_unlock(&msa311->lock);
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err) {
+ 		dev_err(dev, "can't get axis %s (%pe)\n",
+ 			chan->datasheet_name, ERR_PTR(err));
+@@ -755,10 +757,6 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	unsigned int odr;
+ 	int err;
+ 
+-	err = pm_runtime_resume_and_get(dev);
+-	if (err)
+-		return err;
+-
+ 	/*
+ 	 * Sampling frequency changing is prohibited when buffer mode is
+ 	 * enabled, because sometimes MSA311 chip returns outliers during
+@@ -768,6 +766,12 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	if (err)
+ 		return err;
+ 
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
++		return err;
++	}
++
+ 	err = -EINVAL;
+ 	for (odr = 0; odr < ARRAY_SIZE(msa311_odr_table); odr++)
+ 		if (val == msa311_odr_table[odr].integral &&
+@@ -778,11 +782,11 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 			break;
+ 		}
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err)
+ 		dev_err(dev, "can't update frequency (%pe)\n", ERR_PTR(err));
+ 
 -- 
 2.39.5
 
