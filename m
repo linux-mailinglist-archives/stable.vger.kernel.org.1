@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22274A808E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749F4A80A6A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8E14C81E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06DF27B10AA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339A026B0B6;
-	Tue,  8 Apr 2025 12:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F010E26B962;
+	Tue,  8 Apr 2025 12:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxSddaEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVI00tvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E645B268C72;
-	Tue,  8 Apr 2025 12:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1126A0FD;
+	Tue,  8 Apr 2025 12:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115835; cv=none; b=ltIvZYupO19U5y2B2231eyzIS18CMcJbnqcJWYNxD601lo7EgI5yEY4AZNcohwGh2LAma1vGvCn8ZmGH+Gpe8VLBscYrSVPnu66urFk+thYPrO230c9ZgImuWWyuLPemy518YlLVp9z/p8tHwajfdl9AaQfJpbK2ItAVqSN7yHw=
+	t=1744116808; cv=none; b=phUUwyk5wuZMOX9Y7/VLGYAVtML6teKnR1WS6WBo0AEOq5VuK6PH2KXyS/oqrC+0pyxw1wreqowaUP2dYM1f2ySYRPbLV5bNPvGc/n6/Z0QKZfs/jx962JruopFQ+MaxwkH+bAXBAlhbRIpGDg4H1RlYT3EKBwIEnIeTlhV3E4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115835; c=relaxed/simple;
-	bh=gwhAvjJp6XU9iamaxYv/7TktliwpO0C8ohwimQ6fbTc=;
+	s=arc-20240116; t=1744116808; c=relaxed/simple;
+	bh=e3VJT/a1IGGO1h1g2NE0pMyyi36cvWjWDlfi0ss9g10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQKKlajbnFLJHkWx/T3yrW4BwzpxlfYcSUIyww35OUCs+Mwr+mJhmSLTjFF7mc73JpwaO4M7q6pggFuEN7VNi6wI1kH5wJrkc2i5Iv9gJalzE0mcbSZCVnp+ckkRAzbPmILmFqyhghMkNUGDLVmVXDwd6cLOGXHKrK6kCmlplAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxSddaEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79ABEC4CEE5;
-	Tue,  8 Apr 2025 12:37:14 +0000 (UTC)
+	 MIME-Version; b=eizcF0GcAf2EvgCqlJx4KHbEJbHyh3dbjCBiht/9AUrbPPIlt4q2HiMcT6Mxk/WCo0jgjVVUM9ddjqPg7WPDQvleLXza3nQVKwBJSmw3Quv8tflzeFjA5hUMluq5phOa2B2N4fNtt6ikd4BJRYwS5sM8lXxUsTFRAgu/rT9b7eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVI00tvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6E0C4CEE5;
+	Tue,  8 Apr 2025 12:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115834;
-	bh=gwhAvjJp6XU9iamaxYv/7TktliwpO0C8ohwimQ6fbTc=;
+	s=korg; t=1744116808;
+	bh=e3VJT/a1IGGO1h1g2NE0pMyyi36cvWjWDlfi0ss9g10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxSddaEhPdiSBHkgjv8OLa/fHfF6yjP2A8aVGtqqyoQIVjPF5Et1vW64lLR2I+zI8
-	 HxpAamp5cWbXCw1JC/wZc2W6cGATXPTU0kJQGF9ew6mv9g6/vY17yQhdeQC3mpAGSl
-	 lvZUmGyfklQM3RCEY/heGSdPLazU+2sDkCpJ7pKM=
+	b=JVI00tvU8MDPB47Kq6I9bnygRLoz+vRfFGiKyJK887njJmU8Q7p11ENZHPurAAcQa
+	 SxAlSikp3SWI40STu43t0noYOZ/SGFqd2iUS4IBF8mlYD/UcAmEiZ8IgJO3J5+CN/A
+	 QlzmDsOrNM2EfRPaVineU3Jw/g3VQwGKoMJQNRqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/204] clk: amlogic: g12b: fix cluster A parent data
-Date: Tue,  8 Apr 2025 12:50:02 +0200
-Message-ID: <20250408104822.472367891@linuxfoundation.org>
+Subject: [PATCH 6.12 277/423] ALSA: hda/realtek: Add support for ASUS ROG Strix GA603 Laptops using CS35L41 HDA
+Date: Tue,  8 Apr 2025 12:50:03 +0200
+Message-ID: <20250408104852.222196876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 8995f8f108c3ac5ad52b12a6cfbbc7b3b32e9a58 ]
+[ Upstream commit 16dc157346dd4404b02b42e73b88604be3652039 ]
 
-Several clocks used by both g12a and g12b use the g12a cpu A clock hw
-pointer as clock parent. This is incorrect on g12b since the parents of
-cluster A cpu clock are different. Also the hw clock provided as parent to
-these children is not even registered clock on g12b.
+Add support for ASUS GA603KP, GA603KM and GA603KH.
 
-Fix the problem by reverting to the global namespace and let CCF pick
-the appropriate, as it is already done for other clocks, such as
-cpu_clk_trace_div.
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
 
-Fixes: 25e682a02d91 ("clk: meson: g12a: migrate to the new parent description method")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-cpua-parent-fix-v1-1-d8c0f41865fe@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-3-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 310accf94830b..a623596c1e490 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -1136,8 +1136,18 @@ static struct clk_regmap g12a_cpu_clk_div16_en = {
- 	.hw.init = &(struct clk_init_data) {
- 		.name = "cpu_clk_div16_en",
- 		.ops = &clk_regmap_gate_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) {
--			&g12a_cpu_clk.hw
-+		.parent_data = &(const struct clk_parent_data) {
-+			/*
-+			 * Note:
-+			 * G12A and G12B have different cpu clocks (with
-+			 * different struct clk_hw). We fallback to the global
-+			 * naming string mechanism so this clock picks
-+			 * up the appropriate one. Same goes for the other
-+			 * clock using cpu cluster A clock output and present
-+			 * on both G12 variant.
-+			 */
-+			.name = "cpu_clk",
-+			.index = -1,
- 		},
- 		.num_parents = 1,
- 		/*
-@@ -1202,7 +1212,10 @@ static struct clk_regmap g12a_cpu_clk_apb_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_apb_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1236,7 +1249,10 @@ static struct clk_regmap g12a_cpu_clk_atb_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_atb_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1270,7 +1286,10 @@ static struct clk_regmap g12a_cpu_clk_axi_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_axi_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1305,13 +1324,6 @@ static struct clk_regmap g12a_cpu_clk_trace_div = {
- 		.name = "cpu_clk_trace_div",
- 		.ops = &clk_regmap_divider_ro_ops,
- 		.parent_data = &(const struct clk_parent_data) {
--			/*
--			 * Note:
--			 * G12A and G12B have different cpu_clks (with
--			 * different struct clk_hw). We fallback to the global
--			 * naming string mechanism so cpu_clk_trace_div picks
--			 * up the appropriate one.
--			 */
- 			.name = "cpu_clk",
- 			.index = -1,
- 		},
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 93986c0482f07..a960ef29a7036 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10727,6 +10727,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
++	SND_PCI_QUIRK(0x1043, 0x3d78, "ASUS GA603KH", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x3d88, "ASUS GA603KM", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3e00, "ASUS G814FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3e20, "ASUS G814PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3e30, "ASUS TP3607SA", ALC287_FIXUP_TAS2781_I2C),
 -- 
 2.39.5
 
