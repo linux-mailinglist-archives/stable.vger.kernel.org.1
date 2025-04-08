@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88831A806C1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B28A80A01
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A70B8A0C09
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1EB4C1F42
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B533269801;
-	Tue,  8 Apr 2025 12:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B1226E16C;
+	Tue,  8 Apr 2025 12:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywbvrPFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SprhRixN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585AD26156E;
-	Tue,  8 Apr 2025 12:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837B226A1A3;
+	Tue,  8 Apr 2025 12:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114485; cv=none; b=gyJnNHHBu3MIaoKN9dOiq/Fv65prg8TwZqEJE/s4T/LtLrlJVdfeJSb4WnZcuaN+SWMJ7a3v/YOiRNhnuScabbGgCxXUvSD6JqMU54MbMtu93+d/aIECRhz7l1x+7QEcTv+l1OYFQN434/KEiUOaNFCylRKXWdD2wSZKY6zzVmc=
+	t=1744116190; cv=none; b=Gl0fLrAcVCi8iMQ7P+idPi+SVomdZKCc58DSV/ByPpwjhRFIqxkS3BuR+WHjO9dvzAb65MtzqjnszEiCAvVwulVyn8+TzJtCBD6VfvxP/mP8LYiTPGnifjwW6jJfADAQi7PaUB7MXVXzKmfP99UgWuZugIk1snccbn2yb/pbYnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114485; c=relaxed/simple;
-	bh=SEopFO0z25fkxi/+trBXOgigwPwqJoMErZ8rYh+ZVIs=;
+	s=arc-20240116; t=1744116190; c=relaxed/simple;
+	bh=JJbxtf3u44Rp5fPF2YbnhjPZjPyQqckiXhNfigu0Z0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIzdlnr7kcUZY2QIA2kHMk9TrCORJEge6CbXGy7M7bQQ/CYDlTLuoq48+tC6f3iCC4uXO7SNQQzxN9zYrNdgbhtvb7mpyZGtBjHAGGG+d058ucLvfCxDyiAGsad7uq9CLpSd8r1mEs8onTwZQyM4YD9FO5MxQZMwZQknHdtTsWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywbvrPFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5B5C4CEE5;
-	Tue,  8 Apr 2025 12:14:44 +0000 (UTC)
+	 MIME-Version; b=RfPCUKKwe/rK6KAnl8QlNYOQYCMMYlFDihdX3fR/k168w9dly8APvuw93ixgHWD3ffZaFUeZQZ5EPnTGYmfz6+2lC7h+ScDENTRVOd0Q/etgLXqmJx9up8tXmmy2uASQHCETE1m33rm97E5zFvwCw3p2g54I3YFQpV8t6LnaUvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SprhRixN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078D6C4CEE5;
+	Tue,  8 Apr 2025 12:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114485;
-	bh=SEopFO0z25fkxi/+trBXOgigwPwqJoMErZ8rYh+ZVIs=;
+	s=korg; t=1744116190;
+	bh=JJbxtf3u44Rp5fPF2YbnhjPZjPyQqckiXhNfigu0Z0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywbvrPFRjD4lkHnkLyhdbK0tVmHJyB255A9mrfVOinnCz67I6FcWn61WS5bn3e8ME
-	 BnsfrJgJzLNcoPdTkiWvTVfa0i8LYldjlHbT5m9J3AKyIrUHAU1fT3Eup5StmujhYO
-	 2CqZeuHAk0U3k5zgbzedcE17GbH1gGJYgqLcvKus=
+	b=SprhRixN0YW34ji2tx5QLSJl3PYJcsJuhxEli7jQZfSx3a9uRn0DueLTHWL7vxVLP
+	 JEAyQd0Rg9QVPkUovQ1Qf8zkySABawwLttYuwFyCk7db4kC5lTqpbASXtCQS2jvcSy
+	 CplkwXdlgh7D/3/277UM0hb8UlLNPAudZBVDlTLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 122/499] crypto: tegra - Use separate buffer for setkey
+Subject: [PATCH 6.12 008/423] cpufreq: governor: Fix negative idle_time handling in dbs_update()
 Date: Tue,  8 Apr 2025 12:45:34 +0200
-Message-ID: <20250408104854.243247094@linuxfoundation.org>
+Message-ID: <20250408104845.903705647@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,252 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Jie Zhan <zhanjie9@hisilicon.com>
 
-[ Upstream commit bcfc8fc53f3acb3213fb9d28675244aa4ce208e0 ]
+[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
 
-The buffer which sends the commands to host1x was shared for all tasks
-in the engine. This causes a problem with the setkey() function as it
-gets called asynchronous to the crypto engine queue. Modifying the same
-cmdbuf in setkey() will corrupt the ongoing host1x task and in turn
-break the encryption/decryption operation. Hence use a separate cmdbuf
-for setkey().
+We observed an issue that the CPU frequency can't raise up with a 100% CPU
+load when NOHZ is off and the 'conservative' governor is selected.
 
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
+when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
+("cpufreq: governor: Fix handling of special cases in dbs_update()").
+
+However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
+logic in load calculation") introduced a comparison between 'idle_time' and
+'samling_rate' to detect a long idle interval.  While 'idle_time' is
+converted to int before comparison, it's actually promoted to unsigned
+again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
+wrong idle interval detection when it's in fact 100% busy and sets
+policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
+frequency to minimum because of the large 'idle_periods', such that the
+frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
+so it fortunately avoids the issue.
+
+Correct negative 'idle_time' to 0 before any use of it in dbs_update().
+
+Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
+Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c  | 16 ++++++++--------
- drivers/crypto/tegra/tegra-se-hash.c | 13 +++++++------
- drivers/crypto/tegra/tegra-se-key.c  | 10 ++++++++--
- drivers/crypto/tegra/tegra-se-main.c | 16 ++++++++++++----
- drivers/crypto/tegra/tegra-se.h      |  3 ++-
- 5 files changed, 37 insertions(+), 21 deletions(-)
+ drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index d734c9a567868..7da7e169a314b 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -282,7 +282,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+index af44ee6a64304..1a7fcaf39cc9b 100644
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 		time_elapsed = update_time - j_cdbs->prev_update_time;
+ 		j_cdbs->prev_update_time = update_time;
  
- 	/* Prepare the command and submit for execution */
- 	cmdlen = tegra_aes_prep_cmd(ctx, rctx);
--	ret = tegra_se_host1x_submit(se, cmdlen);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 
- 	/* Copy the result */
- 	tegra_aes_update_iv(req, ctx);
-@@ -719,7 +719,7 @@ static int tegra_gcm_do_gmac(struct tegra_aead_ctx *ctx, struct tegra_aead_reqct
- 
- 	cmdlen = tegra_gmac_prep_cmd(ctx, rctx);
- 
--	return tegra_se_host1x_submit(se, cmdlen);
-+	return tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- }
- 
- static int tegra_gcm_do_crypt(struct tegra_aead_ctx *ctx, struct tegra_aead_reqctx *rctx)
-@@ -736,7 +736,7 @@ static int tegra_gcm_do_crypt(struct tegra_aead_ctx *ctx, struct tegra_aead_reqc
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_gcm_crypt_prep_cmd(ctx, rctx);
--	ret = tegra_se_host1x_submit(se, cmdlen);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 	if (ret)
- 		return ret;
- 
-@@ -759,7 +759,7 @@ static int tegra_gcm_do_final(struct tegra_aead_ctx *ctx, struct tegra_aead_reqc
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_gcm_prep_final_cmd(se, cpuvaddr, rctx);
--	ret = tegra_se_host1x_submit(se, cmdlen);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 	if (ret)
- 		return ret;
- 
-@@ -891,7 +891,7 @@ static int tegra_ccm_do_cbcmac(struct tegra_aead_ctx *ctx, struct tegra_aead_req
- 	/* Prepare command and submit */
- 	cmdlen = tegra_cbcmac_prep_cmd(ctx, rctx);
- 
--	return tegra_se_host1x_submit(se, cmdlen);
-+	return tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- }
- 
- static int tegra_ccm_set_msg_len(u8 *block, unsigned int msglen, int csize)
-@@ -1098,7 +1098,7 @@ static int tegra_ccm_do_ctr(struct tegra_aead_ctx *ctx, struct tegra_aead_reqctx
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_ctr_prep_cmd(ctx, rctx);
--	ret = tegra_se_host1x_submit(se, cmdlen);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 	if (ret)
- 		return ret;
- 
-@@ -1519,8 +1519,8 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 		tegra_cmac_paste_result(ctx->se, rctx);
- 
- 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 
--	ret = tegra_se_host1x_submit(se, cmdlen);
- 	/*
- 	 * If this is not the final update, copy the intermediate results
- 	 * from the registers so that it can be used in the next 'update'
-@@ -1553,7 +1553,7 @@ static int tegra_cmac_do_final(struct ahash_request *req)
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
--	ret = tegra_se_host1x_submit(se, cmdlen);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
-index 0b5cdd5676b17..c7b2a062a03c0 100644
---- a/drivers/crypto/tegra/tegra-se-hash.c
-+++ b/drivers/crypto/tegra/tegra-se-hash.c
-@@ -300,8 +300,9 @@ static int tegra_sha_do_update(struct ahash_request *req)
- {
- 	struct tegra_sha_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(req));
- 	struct tegra_sha_reqctx *rctx = ahash_request_ctx(req);
-+	struct tegra_se *se = ctx->se;
- 	unsigned int nblks, nresidue, size, ret;
--	u32 *cpuvaddr = ctx->se->cmdbuf->addr;
-+	u32 *cpuvaddr = se->cmdbuf->addr;
- 
- 	nresidue = (req->nbytes + rctx->residue.size) % rctx->blk_size;
- 	nblks = (req->nbytes + rctx->residue.size) / rctx->blk_size;
-@@ -353,11 +354,11 @@ static int tegra_sha_do_update(struct ahash_request *req)
- 	 * This is to support the import/export functionality.
- 	 */
- 	if (!(rctx->task & SHA_FIRST))
--		tegra_sha_paste_hash_result(ctx->se, rctx);
-+		tegra_sha_paste_hash_result(se, rctx);
- 
--	size = tegra_sha_prep_cmd(ctx->se, cpuvaddr, rctx);
-+	size = tegra_sha_prep_cmd(se, cpuvaddr, rctx);
- 
--	ret = tegra_se_host1x_submit(ctx->se, size);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, size);
- 
- 	/*
- 	 * If this is not the final update, copy the intermediate results
-@@ -365,7 +366,7 @@ static int tegra_sha_do_update(struct ahash_request *req)
- 	 * call. This is to support the import/export functionality.
- 	 */
- 	if (!(rctx->task & SHA_FINAL))
--		tegra_sha_copy_hash_result(ctx->se, rctx);
-+		tegra_sha_copy_hash_result(se, rctx);
- 
- 	return ret;
- }
-@@ -388,7 +389,7 @@ static int tegra_sha_do_final(struct ahash_request *req)
- 
- 	size = tegra_sha_prep_cmd(se, cpuvaddr, rctx);
- 
--	ret = tegra_se_host1x_submit(se, size);
-+	ret = tegra_se_host1x_submit(se, se->cmdbuf, size);
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/crypto/tegra/tegra-se-key.c b/drivers/crypto/tegra/tegra-se-key.c
-index ac14678dbd30d..276b261fb6df1 100644
---- a/drivers/crypto/tegra/tegra-se-key.c
-+++ b/drivers/crypto/tegra/tegra-se-key.c
-@@ -115,11 +115,17 @@ static int tegra_key_insert(struct tegra_se *se, const u8 *key,
- 			    u32 keylen, u16 slot, u32 alg)
- {
- 	const u32 *keyval = (u32 *)key;
--	u32 *addr = se->cmdbuf->addr, size;
-+	u32 *addr = se->keybuf->addr, size;
-+	int ret;
+-		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		/*
++		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
++		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
++		 * off, where idle_time is calculated by the difference between
++		 * time elapsed in jiffies and "busy time" obtained from CPU
++		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
++		 * time should grow with the same amount in two consecutive
++		 * samples, but in practice there could be a tiny difference,
++		 * making the accumulated idle time decrease sometimes.  Hence,
++		 * in this case, idle_time should be regarded as 0 in order to
++		 * make the further process correct.
++		 */
++		if (cur_idle_time > j_cdbs->prev_cpu_idle)
++			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		else
++			idle_time = 0;
 +
-+	mutex_lock(&kslt_lock);
+ 		j_cdbs->prev_cpu_idle = cur_idle_time;
  
- 	size = tegra_key_prep_ins_cmd(se, addr, keyval, keylen, slot, alg);
-+	ret = tegra_se_host1x_submit(se, se->keybuf, size);
- 
--	return tegra_se_host1x_submit(se, size);
-+	mutex_unlock(&kslt_lock);
+ 		if (ignore_nice) {
+@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			 * calls, so the previous load value can be used then.
+ 			 */
+ 			load = j_cdbs->prev_load;
+-		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
++		} else if (unlikely(idle_time > 2 * sampling_rate &&
+ 				    j_cdbs->prev_load)) {
+ 			/*
+ 			 * If the CPU had gone completely idle and a task has
+@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			load = j_cdbs->prev_load;
+ 			j_cdbs->prev_load = 0;
+ 		} else {
+-			if (time_elapsed >= idle_time) {
++			if (time_elapsed > idle_time)
+ 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
+-			} else {
+-				/*
+-				 * That can happen if idle_time is returned by
+-				 * get_cpu_idle_time_jiffy().  In that case
+-				 * idle_time is roughly equal to the difference
+-				 * between time_elapsed and "busy time" obtained
+-				 * from CPU statistics.  Then, the "busy time"
+-				 * can end up being greater than time_elapsed
+-				 * (for example, if jiffies_64 and the CPU
+-				 * statistics are updated by different CPUs),
+-				 * so idle_time may in fact be negative.  That
+-				 * means, though, that the CPU was busy all
+-				 * the time (on the rough average) during the
+-				 * last sampling interval and 100 can be
+-				 * returned as the load.
+-				 */
+-				load = (int)idle_time < 0 ? 100 : 0;
+-			}
++			else
++				load = 0;
 +
-+	return ret;
- }
+ 			j_cdbs->prev_load = load;
+ 		}
  
- void tegra_key_invalidate(struct tegra_se *se, u32 keyid, u32 alg)
-diff --git a/drivers/crypto/tegra/tegra-se-main.c b/drivers/crypto/tegra/tegra-se-main.c
-index 918c0b10614d4..1c94f1de05467 100644
---- a/drivers/crypto/tegra/tegra-se-main.c
-+++ b/drivers/crypto/tegra/tegra-se-main.c
-@@ -141,7 +141,7 @@ static struct tegra_se_cmdbuf *tegra_se_host1x_bo_alloc(struct tegra_se *se, ssi
- 	return cmdbuf;
- }
+-		if (unlikely((int)idle_time > 2 * sampling_rate)) {
++		if (unlikely(idle_time > 2 * sampling_rate)) {
+ 			unsigned int periods = idle_time / sampling_rate;
  
--int tegra_se_host1x_submit(struct tegra_se *se, u32 size)
-+int tegra_se_host1x_submit(struct tegra_se *se, struct tegra_se_cmdbuf *cmdbuf, u32 size)
- {
- 	struct host1x_job *job;
- 	int ret;
-@@ -160,9 +160,9 @@ int tegra_se_host1x_submit(struct tegra_se *se, u32 size)
- 	job->engine_fallback_streamid = se->stream_id;
- 	job->engine_streamid_offset = SE_STREAM_ID;
- 
--	se->cmdbuf->words = size;
-+	cmdbuf->words = size;
- 
--	host1x_job_add_gather(job, &se->cmdbuf->bo, size, 0);
-+	host1x_job_add_gather(job, &cmdbuf->bo, size, 0);
- 
- 	ret = host1x_job_pin(job, se->dev);
- 	if (ret) {
-@@ -220,14 +220,22 @@ static int tegra_se_client_init(struct host1x_client *client)
- 		goto syncpt_put;
- 	}
- 
-+	se->keybuf = tegra_se_host1x_bo_alloc(se, SZ_4K);
-+	if (!se->keybuf) {
-+		ret = -ENOMEM;
-+		goto cmdbuf_put;
-+	}
-+
- 	ret = se->hw->init_alg(se);
- 	if (ret) {
- 		dev_err(se->dev, "failed to register algorithms\n");
--		goto cmdbuf_put;
-+		goto keybuf_put;
- 	}
- 
- 	return 0;
- 
-+keybuf_put:
-+	tegra_se_cmdbuf_put(&se->keybuf->bo);
- cmdbuf_put:
- 	tegra_se_cmdbuf_put(&se->cmdbuf->bo);
- syncpt_put:
-diff --git a/drivers/crypto/tegra/tegra-se.h b/drivers/crypto/tegra/tegra-se.h
-index b9dd7ceb8783c..b54aefe717a17 100644
---- a/drivers/crypto/tegra/tegra-se.h
-+++ b/drivers/crypto/tegra/tegra-se.h
-@@ -420,6 +420,7 @@ struct tegra_se {
- 	struct host1x_client client;
- 	struct host1x_channel *channel;
- 	struct tegra_se_cmdbuf *cmdbuf;
-+	struct tegra_se_cmdbuf *keybuf;
- 	struct crypto_engine *engine;
- 	struct host1x_syncpt *syncpt;
- 	struct device *dev;
-@@ -502,7 +503,7 @@ void tegra_deinit_hash(struct tegra_se *se);
- int tegra_key_submit(struct tegra_se *se, const u8 *key,
- 		     u32 keylen, u32 alg, u32 *keyid);
- void tegra_key_invalidate(struct tegra_se *se, u32 keyid, u32 alg);
--int tegra_se_host1x_submit(struct tegra_se *se, u32 size);
-+int tegra_se_host1x_submit(struct tegra_se *se, struct tegra_se_cmdbuf *cmdbuf, u32 size);
- 
- /* HOST1x OPCODES */
- static inline u32 host1x_opcode_setpayload(unsigned int payload)
+ 			if (periods < idle_periods)
 -- 
 2.39.5
 
