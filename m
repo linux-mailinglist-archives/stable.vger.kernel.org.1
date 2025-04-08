@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FFDA804D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D09A80A81
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617F1426FA1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45CA27B3C56
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2998026A0FA;
-	Tue,  8 Apr 2025 12:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB6C278162;
+	Tue,  8 Apr 2025 12:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOK+yjan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7vFRLys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8AD1AAA0F;
-	Tue,  8 Apr 2025 12:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7DA26A1A7;
+	Tue,  8 Apr 2025 12:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113876; cv=none; b=VS4McwfUhY7/iTML9g7/5Df9JtNaKOeyJAKyOvZ/87hoQHyhFj0WeMIoMDJCVOZu+Wg8LG8nPWwOIg6Mto6ptmyLfgzG6jY8uTrHMqt2epJPrrv+QkPlyZ0UW1KVyvXJr3UOm2i/D56yH0/m4Dq47Fx0iMv6Z9I695xi17pGUcI=
+	t=1744116891; cv=none; b=M/DiAZJv6crbX+4l9ZKzh6BYWzdBK0j8HD5XEFIbl4xp/Dwfu415zmgZKpQU5ecYQbcVGeTC31U8mXFNq55XIocdomb/jDYFkuwIKFE6WAS+d39LbI4kg0wK1c7fx0RF3y3nc29PjOnfdBIQibb+2mjsV00LboxF3ebKg8pjh1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113876; c=relaxed/simple;
-	bh=K82nsEYfUJqe+CMTYE009Lqz6h3wYxlYGjCicgpHle0=;
+	s=arc-20240116; t=1744116891; c=relaxed/simple;
+	bh=atHY5jlwUd64cVBrkA4z5dUbAL3LqtIoa8cYEuBeKk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXFZtjafqMuUetoj4aD2q75KVGl2h56Tu7587d6cgx9Itbl22THvSXZ8zUEqVZgvQHTQhkYBXp21SCdPmEWZhl1HxgndJFNS+b9fSiUkZ+YXhiMo5q9y/NHfQ6OjAW+fl+aB9JK3gDOKgrGrhtOv3lRASEfNcsO6AEDC/O4nEAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOK+yjan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5BCC4CEE5;
-	Tue,  8 Apr 2025 12:04:36 +0000 (UTC)
+	 MIME-Version; b=rVdpjUWoxa1EIGWKH8oht3yN1vvv9ueOysQYL8gTE5eLTJbBbLkEcC136wkU2cyMYCVjC0iN6pXAFE7/O/Ni9VSjGPwhUTq60Wd200uVJ55gvfU45K2TXIlHyxcnzbaCa+BVMwHhya/FiN8ybeKhhlVlchoPH/cvTR9cLPYd5Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7vFRLys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5232FC4CEE5;
+	Tue,  8 Apr 2025 12:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113876;
-	bh=K82nsEYfUJqe+CMTYE009Lqz6h3wYxlYGjCicgpHle0=;
+	s=korg; t=1744116891;
+	bh=atHY5jlwUd64cVBrkA4z5dUbAL3LqtIoa8cYEuBeKk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOK+yjanAMRcjDSYM1CSU8+T+ksmkslLqzMcQN4339O9CE/d5uU5bj5+LAlgiteiy
-	 j58SPafpNGnPxGnuzVGdoNzOT2hy0yvcpnIwbKi5oS0Bl66U5ZsAdnXec8cpwWHzms
-	 rdNOwZv5bjnB7Ten2F1yAkHs+4Q5cj/kieQP5rk8=
+	b=i7vFRLysVlcmi1B6yzh7m6NB4EY7WPzZ7Dh2eYhALvEtIhBlBdFdV5dbnmeQ4KYD7
+	 Tt/J14th2svDrtVLgc6L5hk6CU8xciRyaYBb0i38GLqN3/ttp+JHjxqX/s45GyceQd
+	 pl+EmBhUS20jMov8MW2RjJ4k/Iab2cIU6jyKTqC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/154] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
+Subject: [PATCH 6.12 268/423] cifs: fix incorrect validation for num_aces field of smb_acl
 Date: Tue,  8 Apr 2025 12:49:54 +0200
-Message-ID: <20250408104816.980590968@linuxfoundation.org>
+Message-ID: <20250408104851.997702782@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
+[ Upstream commit aa2a739a75ab6f24ef72fb3fdb9192c081eacf06 ]
 
-Driver is always clearing the mask that sets the VLAN ID/Service Level
-in the adapter. Recent change for supporting multiple traffic class
-exposed this issue.
+parse_dcal() validate num_aces to allocate ace array.
 
-Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+f (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+It is an incorrect validation that we can create an array of size ULONG_MAX.
+smb_acl has ->size field to calculate actual number of aces in response buffer
+size. Use this to check invalid num_aces.
+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/client/cifsacl.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 18b579c8a8c55..e14c9f83cf62b 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1105,8 +1105,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
- 			qp->path_mtu =
- 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
- 		}
--		qp->modify_flags &=
--			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
- 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
- 		if (qp->max_dest_rd_atomic < 1)
- 			qp->max_dest_rd_atomic = 1;
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index 1f036169fb582..e36f0e2d7d21e 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -778,7 +778,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 	}
+ 
+ 	/* validate that we do not go past end of acl */
+-	if (end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
++	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
++	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
+ 		cifs_dbg(VFS, "ACL too small to parse DACL\n");
+ 		return;
+ 	}
+@@ -799,8 +800,11 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 	if (num_aces > 0) {
+ 		umode_t denied_mode = 0;
+ 
+-		if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
++		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
++				(offsetof(struct smb_ace, sid) +
++				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
+ 			return;
++
+ 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
+ 				      GFP_KERNEL);
+ 		if (!ppace)
 -- 
 2.39.5
 
