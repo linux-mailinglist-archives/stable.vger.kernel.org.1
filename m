@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-130332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F9DA80460
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66088A80B8A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 466D3466626
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30394500D38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D022690D7;
-	Tue,  8 Apr 2025 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973EC276049;
+	Tue,  8 Apr 2025 12:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9j71SuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mv9/ah7m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858DF20CCD8;
-	Tue,  8 Apr 2025 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5056326AAAB;
+	Tue,  8 Apr 2025 12:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113438; cv=none; b=ksidVv4LNAhKWEG+Aqxhe/ACI5qx6PYpVJ1EjVB32S2Otai4xUXvpmd0vyYXwYVK3k0kDDPym9GjgJa+TUo4SAFcKyATfFK45hd2bwsmSQzUCDpBsk5Nyrlq8a5ncG8QiHaaa2AGOAiWimqocwkdiUrqxAM6NV5horn0wW0LTZE=
+	t=1744116723; cv=none; b=YuXw4GJ5wliR41mI3SCsFnQyK3bAXdX2IY7BrmMpd8H+aQiwEov8bP1KPYAb3cLXXW2U+VZFx+bsJSi/6VgsAIs58yAHDT8GMHDCmBgd18Iam75zbgwMWjdPLk9aWYj9ZvaJINcDY3e6uxR700JvVkhPuV3DgIML/Wz0XNlfO0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113438; c=relaxed/simple;
-	bh=sGtcokGOsSYDrzxRCZaPSwFIDkz+K52pcZSweLeMwW8=;
+	s=arc-20240116; t=1744116723; c=relaxed/simple;
+	bh=Zf7g02Bevr2bxaXgmdEKuYIj8oIgLPmTGzvJ3lf51p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgzuEl2k2r9/qUp9ki/1yyaI3/BswSpeQH8kD/pdXkmpJWdWhADbdw+UNATa7IsxqbiicAMLDiOH8fQoCFlZizJg1Vk+VfNJIkeU/KaMq9RZ+Y1iV0mwtNIa9ZGbOY81McWGlIC2dwDvfG9BiWQCLQr39Y7sbkKEDwI3GKwch7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9j71SuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176B2C4CEE7;
-	Tue,  8 Apr 2025 11:57:17 +0000 (UTC)
+	 MIME-Version; b=lR/V/QV6D70Od5S/bPdoGAeLQt4FhF1Yb+Pgyi6R+oyt0NBWq4Yvx1rxI0fvaivLNL6GWDz2WvkXjeouilHTwobUv2l3yToTfBliJ0uKp2J+KYYJwbes26LrkxfnJRmwjtHcArPC6rCW72gbztkRtkhx4DLzCU7Avf9DmxymZMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mv9/ah7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C17C4CEE5;
+	Tue,  8 Apr 2025 12:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113438;
-	bh=sGtcokGOsSYDrzxRCZaPSwFIDkz+K52pcZSweLeMwW8=;
+	s=korg; t=1744116723;
+	bh=Zf7g02Bevr2bxaXgmdEKuYIj8oIgLPmTGzvJ3lf51p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9j71SuSd1wN7I3V2Jrk+aj8BnMSCcfMFZ+h/ww55EeSEJp4vmSzrW93vkD4hkmay
-	 d+a5wmqNiKIlYxOOL7QVF6lflvKG8Cg00XPXi4A7kEeu3RPy4mYw21XWEc6KNTkVPn
-	 hlIi3OFE4vuyQQL0RfAjzvTfP8ltiUIMhovUseIw=
+	b=Mv9/ah7mYiHPVB2t3g/lymgl2QhHNiQ7ra/p3OIKTXvnEaqFzN6Z4n3vf7AuWcuKB
+	 9WcTJr4Dh2bEoGS59oL8XejwqoLzE65jS3bm4eLUQkulUs9DVaRbRGZsj69fCfebSM
+	 m+S40hPn3slcdaN9k8bngQhMzPXrZN53eZLyQRD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/268] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
+Subject: [PATCH 6.12 245/423] octeontx2-af: Fix mbox INTR handler when num VFs > 64
 Date: Tue,  8 Apr 2025 12:49:31 +0200
-Message-ID: <20250408104832.862985034@linuxfoundation.org>
+Message-ID: <20250408104851.438375761@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
+[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
 
-Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
-generated out of line.  These can be called from noinstr code, so make
-sure they're always inlined.
+When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
+function is incorrect. Due to which mbox workqueue entries for
+VFs 0 to 63 never gets added to workqueue.
 
-Fixes the following warnings:
-
-  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
-
-Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/context_tracking_irq.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
-index c50b5670c4a52..197916ee91a4b 100644
---- a/include/linux/context_tracking_irq.h
-+++ b/include/linux/context_tracking_irq.h
-@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
- void ct_nmi_enter(void);
- void ct_nmi_exit(void);
- #else
--static inline void ct_irq_enter(void) { }
--static inline void ct_irq_exit(void) { }
-+static __always_inline void ct_irq_enter(void) { }
-+static __always_inline void ct_irq_exit(void) { }
- static inline void ct_irq_enter_irqson(void) { }
- static inline void ct_irq_exit_irqson(void) { }
--static inline void ct_nmi_enter(void) { }
--static inline void ct_nmi_exit(void) { }
-+static __always_inline void ct_nmi_enter(void) { }
-+static __always_inline void ct_nmi_exit(void) { }
- #endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index cd0d7b7774f1a..6575c422635b7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2634,7 +2634,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
+ 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
  
- #endif
+ 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
+-		vfs -= 64;
++		vfs = 64;
+ 	}
+ 
+ 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
 -- 
 2.39.5
 
