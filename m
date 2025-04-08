@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE83A804DF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247A9A8073C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34AF0425E52
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF7C4C6063
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C62A26B2DA;
-	Tue,  8 Apr 2025 12:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4610265CD3;
+	Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7OmPZP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZHkhbaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5026A08E;
-	Tue,  8 Apr 2025 12:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BDC224AEB;
+	Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113659; cv=none; b=S+v9fQObfCf3RlI9JWJpq7NpO14VQBL6T4V2XpiaseL+t4dsAvOG+u/dGfqkMaIvKy9ivxdpQDAHnTWD2X62WKGl/BViBL8k2k4O3ueJjXL+jqb0t54oVbMu1vaKnWQlBN69uPpWBb/fuQq7cPxyPhU4sfjE20Wtvaipex9lk1M=
+	t=1744115209; cv=none; b=N2XPnrgLPzrVsbU3T10OE9DEgGBoyhnuolnIefQ4eK8FBbGpD1SKyMKkzkicebwEFFKMadafxP2N6MmoPrqTNfM2MM5PE52ql47gvJYshZuT36hnv/5LtsNW8VqTocalX5TdLGGUAVkDtK2dl6CK5BLj16m1FxW/h6z/MdffYjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113659; c=relaxed/simple;
-	bh=jaBH7vBqY3h1rIei0G4zBFVmuQmEWymXW6xki+yZfHw=;
+	s=arc-20240116; t=1744115209; c=relaxed/simple;
+	bh=cY8dfX2R136xV9P8erkA2dxmYvS8hviMkfl1G7CggB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZ7G+TGF0JQu2jGllsqJsuK4INVkWAKIAkyJApPubk4e0iouMalNpp+zKrz2/dDasM6CR5B7BFwYOPM7l9+7UbsQR0qfKQn08XKHkE45nLApaqcndH4gONkpJxF4OgOL2e/xcIbP5UpOCTLf/oyzIiNPl2935/4EQO9kUJi73VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7OmPZP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC2FC4CEE7;
-	Tue,  8 Apr 2025 12:00:57 +0000 (UTC)
+	 MIME-Version; b=gD84izRP5Q+4fLaF/mVemSvUWpsba8N1duf5BUHBfsfCbnOQ/Xaje7zCTjd+G71/lNFBr5lkIiyowW4KERkBKbBY+12kFR3cSUfMtj4+sFqQuODkFkm1VAdlIf3nGsaZCdhnxhDz4mx/NsD2PhMErDh0Fhw14S+udWaw7BHKGUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZHkhbaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8690C4CEE5;
+	Tue,  8 Apr 2025 12:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113658;
-	bh=jaBH7vBqY3h1rIei0G4zBFVmuQmEWymXW6xki+yZfHw=;
+	s=korg; t=1744115209;
+	bh=cY8dfX2R136xV9P8erkA2dxmYvS8hviMkfl1G7CggB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7OmPZP9rN4VFl77saXCySW/DYYw4Jx3FTeq8GAKYvuhlFTDI3ZIyjah9XpAwNFky
-	 ZoVZ2JWSoxIixzhzsLFY1jjvGciMMtg83wBXDnsC0gBH3xTMSG0jFC+ge0oENsXe+B
-	 L8kzkdFLFFIBRthxYfS92o1qvargwPwwBRtMhAXg=
+	b=pZHkhbaCQtR+Qn/6M0/ZQ1MOrSDijapqNd3u1YodGAhZZFo/OgzosxBxt6vErxRMd
+	 GiJO6KtNEbu5JwIagVu7mf5UjjEyKJslPliinsjsokJY1lDZ6EmHoK1h5I8UmdN3I+
+	 QwtRi+BDkTuDIJvdmaLGoJJJ/1m7MIpGNNRxHwGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/268] spufs: fix gang directory lifetimes
+Subject: [PATCH 6.13 391/499] rtnetlink: Use register_pernet_subsys() in rtnl_net_debug_init().
 Date: Tue,  8 Apr 2025 12:50:03 +0200
-Message-ID: <20250408104833.735901711@linuxfoundation.org>
+Message-ID: <20250408104900.980483015@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,197 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit c134deabf4784e155d360744d4a6a835b9de4dd4 ]
+[ Upstream commit 1b7fdc702c031134c619b74c4f311c590e50ca3d ]
 
-prior to "[POWERPC] spufs: Fix gang destroy leaks" we used to have
-a problem with gang lifetimes - creation of a gang returns opened
-gang directory, which normally gets removed when that gets closed,
-but if somebody has created a context belonging to that gang and
-kept it alive until the gang got closed, removal failed and we
-ended up with a leak.
+rtnl_net_debug_init() registers rtnl_net_debug_net_ops by
+register_pernet_device() but calls unregister_pernet_subsys()
+in case register_netdevice_notifier() fails.
 
-Unfortunately, it had been fixed the wrong way.  Dentry of gang
-directory was no longer pinned, and rmdir on close was gone.
-One problem was that failure of open kept calling simple_rmdir()
-as cleanup, which meant an unbalanced dput().  Another bug was
-in the success case - gang creation incremented link count on
-root directory, but that was no longer undone when gang got
-destroyed.
+It corrupts pernet_list because first_device is updated in
+register_pernet_device() but not unregister_pernet_subsys().
 
-Fix consists of
-	* reverting the commit in question
-	* adding a counter to gang, protected by ->i_rwsem
-of gang directory inode.
-	* having it set to 1 at creation time, dropped
-in both spufs_dir_close() and spufs_gang_close() and bumped
-in spufs_create_context(), provided that it's not 0.
-	* using simple_recursive_removal() to take the gang
-directory out when counter reaches zero.
+Let's fix it by calling register_pernet_subsys() instead.
 
-Fixes: 877907d37da9 "[POWERPC] spufs: Fix gang destroy leaks"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+The _subsys() one fits better for the use case because it keeps
+the notifier alive until default_device_exit_net(), giving it
+more chance to test NETDEV_UNREGISTER.
+
+Fixes: 03fa53485659 ("rtnetlink: Add ASSERT_RTNL_NET() placeholder for netdev notifier.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250401190716.70437-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/cell/spufs/gang.c  |  1 +
- arch/powerpc/platforms/cell/spufs/inode.c | 54 +++++++++++++++++++----
- arch/powerpc/platforms/cell/spufs/spufs.h |  2 +
- 3 files changed, 49 insertions(+), 8 deletions(-)
+ net/core/rtnl_net_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/gang.c b/arch/powerpc/platforms/cell/spufs/gang.c
-index 827d338deaf4c..2c2999de6bfa2 100644
---- a/arch/powerpc/platforms/cell/spufs/gang.c
-+++ b/arch/powerpc/platforms/cell/spufs/gang.c
-@@ -25,6 +25,7 @@ struct spu_gang *alloc_spu_gang(void)
- 	mutex_init(&gang->aff_mutex);
- 	INIT_LIST_HEAD(&gang->list);
- 	INIT_LIST_HEAD(&gang->aff_list_head);
-+	gang->alive = 1;
- 
- out:
- 	return gang;
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 8acefe5f654c9..a0f297581a66c 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -200,6 +200,23 @@ static int spufs_fill_dir(struct dentry *dir,
- 	return 0;
- }
- 
-+static void unuse_gang(struct dentry *dir)
-+{
-+	struct inode *inode = dir->d_inode;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
-+
-+	if (gang) {
-+		bool dead;
-+
-+		inode_lock(inode); // exclusion with spufs_create_context()
-+		dead = !--gang->alive;
-+		inode_unlock(inode);
-+
-+		if (dead)
-+			simple_recursive_removal(dir, NULL);
-+	}
-+}
-+
- static int spufs_dir_close(struct inode *inode, struct file *file)
- {
- 	struct inode *parent;
-@@ -214,6 +231,7 @@ static int spufs_dir_close(struct inode *inode, struct file *file)
- 	inode_unlock(parent);
- 	WARN_ON(ret);
- 
-+	unuse_gang(dir->d_parent);
- 	return dcache_dir_close(inode, file);
- }
- 
-@@ -406,7 +424,7 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+diff --git a/net/core/rtnl_net_debug.c b/net/core/rtnl_net_debug.c
+index f406045cbd0e6..b348c14b1d395 100644
+--- a/net/core/rtnl_net_debug.c
++++ b/net/core/rtnl_net_debug.c
+@@ -111,7 +111,7 @@ static int __init rtnl_net_debug_init(void)
  {
  	int ret;
- 	int affinity;
--	struct spu_gang *gang;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
- 	struct spu_context *neighbor;
- 	struct path path = {.mnt = mnt, .dentry = dentry};
  
-@@ -421,11 +439,15 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	if ((flags & SPU_CREATE_ISOLATE) && !isolated_loader)
- 		return -ENODEV;
+-	ret = register_pernet_device(&rtnl_net_debug_net_ops);
++	ret = register_pernet_subsys(&rtnl_net_debug_net_ops);
+ 	if (ret)
+ 		return ret;
  
--	gang = NULL;
-+	if (gang) {
-+		if (!gang->alive)
-+			return -ENOENT;
-+		gang->alive++;
-+	}
-+
- 	neighbor = NULL;
- 	affinity = flags & (SPU_CREATE_AFFINITY_MEM | SPU_CREATE_AFFINITY_SPU);
- 	if (affinity) {
--		gang = SPUFS_I(inode)->i_gang;
- 		if (!gang)
- 			return -EINVAL;
- 		mutex_lock(&gang->aff_mutex);
-@@ -454,6 +476,8 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- out_aff_unlock:
- 	if (affinity)
- 		mutex_unlock(&gang->aff_mutex);
-+	if (ret && gang)
-+		gang->alive--; // can't reach 0
- 	return ret;
- }
- 
-@@ -483,6 +507,7 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode->i_fop = &simple_dir_operations;
- 
- 	d_instantiate(dentry, inode);
-+	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(d_inode(dentry));
- 	return ret;
-@@ -493,6 +518,21 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	return ret;
- }
- 
-+static int spufs_gang_close(struct inode *inode, struct file *file)
-+{
-+	unuse_gang(file->f_path.dentry);
-+	return dcache_dir_close(inode, file);
-+}
-+
-+static const struct file_operations spufs_gang_fops = {
-+	.open		= dcache_dir_open,
-+	.release	= spufs_gang_close,
-+	.llseek		= dcache_dir_lseek,
-+	.read		= generic_read_dir,
-+	.iterate_shared	= dcache_readdir,
-+	.fsync		= noop_fsync,
-+};
-+
- static int spufs_gang_open(const struct path *path)
- {
- 	int ret;
-@@ -512,7 +552,7 @@ static int spufs_gang_open(const struct path *path)
- 		return PTR_ERR(filp);
- 	}
- 
--	filp->f_op = &simple_dir_operations;
-+	filp->f_op = &spufs_gang_fops;
- 	fd_install(ret, filp);
- 	return ret;
- }
-@@ -527,10 +567,8 @@ static int spufs_create_gang(struct inode *inode,
- 	ret = spufs_mkgang(inode, dentry, mode & 0777);
- 	if (!ret) {
- 		ret = spufs_gang_open(&path);
--		if (ret < 0) {
--			int err = simple_rmdir(inode, dentry);
--			WARN_ON(err);
--		}
-+		if (ret < 0)
-+			unuse_gang(dentry);
- 	}
- 	return ret;
- }
-diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
-index 84958487f696a..d33787c57c39a 100644
---- a/arch/powerpc/platforms/cell/spufs/spufs.h
-+++ b/arch/powerpc/platforms/cell/spufs/spufs.h
-@@ -151,6 +151,8 @@ struct spu_gang {
- 	int aff_flags;
- 	struct spu *aff_ref_spu;
- 	atomic_t aff_sched_count;
-+
-+	int alive;
- };
- 
- /* Flag bits for spu_gang aff_flags */
 -- 
 2.39.5
 
