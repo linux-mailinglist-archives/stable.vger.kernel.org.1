@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B729A8011C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C35A803C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51731898DC7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7AF19E43E2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2892698B9;
-	Tue,  8 Apr 2025 11:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F0F2690CC;
+	Tue,  8 Apr 2025 11:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dL3zo4L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKh9zY6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE29F22424C;
-	Tue,  8 Apr 2025 11:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEDF268FF1;
+	Tue,  8 Apr 2025 11:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111970; cv=none; b=poLZfG6pkqhUCL3HUVRAk8tkKTQbLZdC8SDV6drGJl1QbscYSXs/BAF2spZLa/cWbfHg8gu6zvwV1Cr9HVPzZmoG8POO5SznY87Yi3beZf/Z8r9unNpRGwFXY+USMNz9X8rpPgQmeQEj0lRfr4gNteixqIT58dsBx0P2NAHsIlc=
+	t=1744113417; cv=none; b=hrS8620+DbWCNEtvvQI+8gDx13HtOJ+JIqXi/HNdxrWREPoFENXiRlp6mEdMrPMjWa2CIPXvqLA8wP0hm3R+x4HJ4S9ru3FPbULlq4IqYThqLtcUYeV5BEQepPikKGbxbWk4FSzIIn52zRCDFFwHvvjlhTvf/VY5pDpweHeS6v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111970; c=relaxed/simple;
-	bh=Fahz+PAOdAXiJBJE4SfWhZ9SVbcniyMZBhB3TKqSwec=;
+	s=arc-20240116; t=1744113417; c=relaxed/simple;
+	bh=dG3mLK6r/aPABl8+ArgVBmV7zLlkblInUXcqRutkk/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdi8IuH3FNCJNKGOre3hdBDz2TcE/zQCnAKcwiZlvTC+8xaaS+PWgoJyY/6sqsFP+qIKo8Kggpl8+/iWlVbIrRWXCmBdx4KwfpLAjwB40DA5gzfoe5SeK9EgNkE7TdIuGabw8Hl+eII8SYftPyHAXCbbjitIqDE47WLrRey9ioU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dL3zo4L7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB9AC4CEE5;
-	Tue,  8 Apr 2025 11:32:49 +0000 (UTC)
+	 MIME-Version; b=EYArJmIYR8lEFVjzisqCjVoPz6+mIb/DQ4d73a5mSAne3DmqSpgpOVonOjhBt1GNogZd4MqukOi1TRNkJySzOVe627bT3LHOicN86np8iHFKqqCtDIj9D1hQBh9mB8yvjkHqff8SB82HWaLB8wG1SAso5fKiTnKt8LtZDCnO8LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKh9zY6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A830AC4CEE5;
+	Tue,  8 Apr 2025 11:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111969;
-	bh=Fahz+PAOdAXiJBJE4SfWhZ9SVbcniyMZBhB3TKqSwec=;
+	s=korg; t=1744113417;
+	bh=dG3mLK6r/aPABl8+ArgVBmV7zLlkblInUXcqRutkk/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dL3zo4L7LRtQB6Kp9FGrztyc9IPjochJr5WLv+J0LHjRdFsGw7WlEfnzDJ98b7iBQ
-	 nJIEgOJrhhtuVvUkpWuulWk395XX8z47QVyy7yk76SxmS6T6yPcKmN3k6DKGq1WhwI
-	 dH6No81RlHT77jELfUBzKZ0FZ6lMqWCJx1cnma6o=
+	b=zKh9zY6jeslU/iOkp00+2mpSzeuadkY5UEj1HdoT3N6UXAH27DQQVryE5laZwQHNn
+	 fFllIRBszls5ucl1SnGS+z2GwfWcRCAgAsBMc4hphHZDNIlpsLNGOAswCTL7TUz9pM
+	 TroBdL3dkb2+RLf4NJt7zwGkRWIsBpiSQESXFQqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 626/731] rtnetlink: Use register_pernet_subsys() in rtnl_net_debug_init().
+Subject: [PATCH 6.6 112/268] iio: accel: msa311: Fix failure to release runtime pm if direct mode claim fails.
 Date: Tue,  8 Apr 2025 12:48:43 +0200
-Message-ID: <20250408104928.833975765@linuxfoundation.org>
+Message-ID: <20250408104831.521586595@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 1b7fdc702c031134c619b74c4f311c590e50ca3d ]
+[ Upstream commit 60a0cf2ebab92011055ab7db6553c0fc3c546938 ]
 
-rtnl_net_debug_init() registers rtnl_net_debug_net_ops by
-register_pernet_device() but calls unregister_pernet_subsys()
-in case register_netdevice_notifier() fails.
+Reorder the claiming of direct mode and runtime pm calls to simplify
+handling a little.  For correct error handling, after the reorder
+iio_device_release_direct_mode() must be claimed in an error occurs
+in pm_runtime_resume_and_get()
 
-It corrupts pernet_list because first_device is updated in
-register_pernet_device() but not unregister_pernet_subsys().
-
-Let's fix it by calling register_pernet_subsys() instead.
-
-The _subsys() one fits better for the use case because it keeps
-the notifier alive until default_device_exit_net(), giving it
-more chance to test NETDEV_UNREGISTER.
-
-Fixes: 03fa53485659 ("rtnetlink: Add ASSERT_RTNL_NET() placeholder for netdev notifier.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250401190716.70437-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1ca2cfbc0c33 ("iio: add MEMSensing MSA311 3-axis accelerometer driver")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250217140135.896574-7-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnl_net_debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/msa311.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/net/core/rtnl_net_debug.c b/net/core/rtnl_net_debug.c
-index 7ecd28cc1c225..f3272b09c2556 100644
---- a/net/core/rtnl_net_debug.c
-+++ b/net/core/rtnl_net_debug.c
-@@ -102,7 +102,7 @@ static int __init rtnl_net_debug_init(void)
- {
- 	int ret;
+diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+index 6ddcc3c2f8409..5927df633e1f9 100644
+--- a/drivers/iio/accel/msa311.c
++++ b/drivers/iio/accel/msa311.c
+@@ -593,23 +593,25 @@ static int msa311_read_raw_data(struct iio_dev *indio_dev,
+ 	__le16 axis;
+ 	int err;
  
--	ret = register_pernet_device(&rtnl_net_debug_net_ops);
-+	ret = register_pernet_subsys(&rtnl_net_debug_net_ops);
- 	if (ret)
- 		return ret;
+-	err = pm_runtime_resume_and_get(dev);
++	err = iio_device_claim_direct_mode(indio_dev);
+ 	if (err)
+ 		return err;
+ 
+-	err = iio_device_claim_direct_mode(indio_dev);
+-	if (err)
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
+ 		return err;
++	}
+ 
+ 	mutex_lock(&msa311->lock);
+ 	err = msa311_get_axis(msa311, chan, &axis);
+ 	mutex_unlock(&msa311->lock);
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err) {
+ 		dev_err(dev, "can't get axis %s (%pe)\n",
+ 			chan->datasheet_name, ERR_PTR(err));
+@@ -755,10 +757,6 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	unsigned int odr;
+ 	int err;
+ 
+-	err = pm_runtime_resume_and_get(dev);
+-	if (err)
+-		return err;
+-
+ 	/*
+ 	 * Sampling frequency changing is prohibited when buffer mode is
+ 	 * enabled, because sometimes MSA311 chip returns outliers during
+@@ -768,6 +766,12 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 	if (err)
+ 		return err;
+ 
++	err = pm_runtime_resume_and_get(dev);
++	if (err) {
++		iio_device_release_direct_mode(indio_dev);
++		return err;
++	}
++
+ 	err = -EINVAL;
+ 	for (odr = 0; odr < ARRAY_SIZE(msa311_odr_table); odr++)
+ 		if (val == msa311_odr_table[odr].integral &&
+@@ -778,11 +782,11 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 			break;
+ 		}
+ 
+-	iio_device_release_direct_mode(indio_dev);
+-
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
++	iio_device_release_direct_mode(indio_dev);
++
+ 	if (err)
+ 		dev_err(dev, "can't update frequency (%pe)\n", ERR_PTR(err));
  
 -- 
 2.39.5
