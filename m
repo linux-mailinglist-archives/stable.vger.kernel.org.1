@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F77A80112
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E4AA80396
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3540B1893ED5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A063C7AC86D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4489A267F65;
-	Tue,  8 Apr 2025 11:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FEA268FFA;
+	Tue,  8 Apr 2025 11:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A++o0VxH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8Exj7hJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0000F264A76;
-	Tue,  8 Apr 2025 11:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77EB22257E;
+	Tue,  8 Apr 2025 11:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111962; cv=none; b=kS24V074Q3wxYzT4PMWR6si2LbKZkp0xb5tU6zMFZ4tiBW/f/jY/lIs1kC0wTC07IEphC+Ne7X3MsA4ovhDlU0edOUe8YUmKfOqU74JuS6y5xWiIOG1719fsGPeyoa0x4rq4cYANfpktli1PkQ3AtiDJHh5CAWFLKed98HraFt4=
+	t=1744113348; cv=none; b=fwr+eUMl19YGnIHfwu7TRjK1B76US0ufSRT0CvrMMr6mZ/cR8nHRfu+ESlV8QtBfMNnyrvTAWty7LNHnvv75KyJ2MalKXdekOtm07/y/2xHtkBUZZujLes7ATflAQJ320cCmKKArkxjHSM9bpTq8/ubFnmWsnGlifsG+rPhmMSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111962; c=relaxed/simple;
-	bh=lwi8Z8fomoGD7Hbkw0YSSrYb2XfNStP/9wUoU5kkCns=;
+	s=arc-20240116; t=1744113348; c=relaxed/simple;
+	bh=LPvGWfY93q9LbEgMKO5QXleBSmTgVcgk6pnGeFZun8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTAsGWQIjvQqvuo6tNq/Cl5eBgnWovKSszT+5OHwxNqzpOWbQNE+kM958qL6RqvHKWv1cZYHpb6Dkp+Iwj6lYW9aH1SyYyIErNaR8SwqjteSS33qevWmiFhFa0vE75PO/97Z6c0uwbavVaFa+3GiwY4hDdwABA6IoEAKr10ckgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A++o0VxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF99C4CEE5;
-	Tue,  8 Apr 2025 11:32:41 +0000 (UTC)
+	 MIME-Version; b=uvL7gD1cvEMxBYkBwdF6SpvueSjHKfJ3XxPOHyzs0Dwuz4a1oBczCYD5BWRh9wW1aGBEy7WnmcPJ82jlAQn9SwJ9DapXtXfZUZoOXR+kkH0gmYkY6mNmBUa9MgABOMpAfqUc5EJbvVzTY34FI0/wlGZsbkJtOEGysFViNyNCVsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8Exj7hJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F554C4CEE5;
+	Tue,  8 Apr 2025 11:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111961;
-	bh=lwi8Z8fomoGD7Hbkw0YSSrYb2XfNStP/9wUoU5kkCns=;
+	s=korg; t=1744113348;
+	bh=LPvGWfY93q9LbEgMKO5QXleBSmTgVcgk6pnGeFZun8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A++o0VxHMHwAkXg5o5Cm/iAVVDiEIh0iLi7O+YjhB4MnvEt5JHKDJohS+gJW7Tt9l
-	 hTN6MYrV+UiWBdA4YK7K5ksf3BiBh7ACl91g1g3UjBZ4duh7+23QId2Js/56dIZXmj
-	 iZR4WLoz6tWlreyfD01YGRx74fWF8htEKHLPu4lU=
+	b=W8Exj7hJfUOtgF5PLz7Lfn8074qntehQavCOCc5ADtJR1BVCwVag9v3MFBZbvGIzc
+	 5LHeQMDYMO419NbXyVQbxyyHog+lFLfZtF2EFQIdOry8zzAsFZCZjF3lngWD/Hdoww
+	 XRw48gRBTUwwibsFq0HYZs5TyO5MjtAlzr5e19qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 623/731] net: airoha: Fix qid report in airoha_tc_get_htb_get_leaf_queue()
+Subject: [PATCH 6.6 109/268] perf pmu: Dont double count common sysfs and json events
 Date: Tue,  8 Apr 2025 12:48:40 +0200
-Message-ID: <20250408104928.765263278@linuxfoundation.org>
+Message-ID: <20250408104831.440296395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 57b290d97c6150774bf929117ca737a26d8fc33d ]
+[ Upstream commit c9d699e10fa6c0cdabcddcf991e7ff42af6b2503 ]
 
-Fix the following kernel warning deleting HTB offloaded leafs and/or root
-HTB qdisc in airoha_eth driver properly reporting qid in
-airoha_tc_get_htb_get_leaf_queue routine.
+After pmu_add_cpu_aliases() is called, perf_pmu__num_events() returns an
+incorrect value that double counts common events and doesn't match the
+actual count of events in the alias list. This is because after
+'cpu_aliases_added == true', the number of events returned is
+'sysfs_aliases + cpu_json_aliases'. But when adding 'case
+EVENT_SRC_SYSFS' events, 'sysfs_aliases' and 'cpu_json_aliases' are both
+incremented together, failing to account that these ones overlap and
+only add a single item to the list. Fix it by adding another counter for
+overlapping events which doesn't influence 'cpu_json_aliases'.
 
-$tc qdisc replace dev eth1 root handle 10: htb offload
-$tc class add dev eth1 arent 10: classid 10:4 htb rate 100mbit ceil 100mbit
-$tc qdisc replace dev eth1 parent 10:4 handle 4: ets bands 8 \
- quanta 1514 3028 4542 6056 7570 9084 10598 12112
-$tc qdisc del dev eth1 root
+There doesn't seem to be a current issue because it's used in perf list
+before pmu_add_cpu_aliases() so the correct value is returned. Other
+uses in tests may also miss it for other reasons like only looking at
+uncore events. However it's marked as a fixes commit in case any new fix
+with new uses of perf_pmu__num_events() is backported.
 
-[   55.827864] ------------[ cut here ]------------
-[   55.832493] WARNING: CPU: 3 PID: 2678 at 0xffffffc0798695a4
-[   55.956510] CPU: 3 PID: 2678 Comm: tc Tainted: G           O 6.6.71 #0
-[   55.963557] Hardware name: Airoha AN7581 Evaluation Board (DT)
-[   55.969383] pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   55.976344] pc : 0xffffffc0798695a4
-[   55.979851] lr : 0xffffffc079869a20
-[   55.983358] sp : ffffffc0850536a0
-[   55.986665] x29: ffffffc0850536a0 x28: 0000000000000024 x27: 0000000000000001
-[   55.993800] x26: 0000000000000000 x25: ffffff8008b19000 x24: ffffff800222e800
-[   56.000935] x23: 0000000000000001 x22: 0000000000000000 x21: ffffff8008b19000
-[   56.008071] x20: ffffff8002225800 x19: ffffff800379d000 x18: 0000000000000000
-[   56.015206] x17: ffffffbf9ea59000 x16: ffffffc080018000 x15: 0000000000000000
-[   56.022342] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000001
-[   56.029478] x11: ffffffc081471008 x10: ffffffc081575a98 x9 : 0000000000000000
-[   56.036614] x8 : ffffffc08167fd40 x7 : ffffffc08069e104 x6 : ffffff8007f86000
-[   56.043748] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000001
-[   56.050884] x2 : 0000000000000000 x1 : 0000000000000250 x0 : ffffff800222c000
-[   56.058020] Call trace:
-[   56.060459]  0xffffffc0798695a4
-[   56.063618]  0xffffffc079869a20
-[   56.066777]  __qdisc_destroy+0x40/0xa0
-[   56.070528]  qdisc_put+0x54/0x6c
-[   56.073748]  qdisc_graft+0x41c/0x648
-[   56.077324]  tc_get_qdisc+0x168/0x2f8
-[   56.080978]  rtnetlink_rcv_msg+0x230/0x330
-[   56.085076]  netlink_rcv_skb+0x5c/0x128
-[   56.088913]  rtnetlink_rcv+0x14/0x1c
-[   56.092490]  netlink_unicast+0x1e0/0x2c8
-[   56.096413]  netlink_sendmsg+0x198/0x3c8
-[   56.100337]  ____sys_sendmsg+0x1c4/0x274
-[   56.104261]  ___sys_sendmsg+0x7c/0xc0
-[   56.107924]  __sys_sendmsg+0x44/0x98
-[   56.111492]  __arm64_sys_sendmsg+0x20/0x28
-[   56.115580]  invoke_syscall.constprop.0+0x58/0xfc
-[   56.120285]  do_el0_svc+0x3c/0xbc
-[   56.123592]  el0_svc+0x18/0x4c
-[   56.126647]  el0t_64_sync_handler+0x118/0x124
-[   56.131005]  el0t_64_sync+0x150/0x154
-[   56.134660] ---[ end trace 0000000000000000 ]---
-
-Fixes: ef1ca9271313b ("net: airoha: Add sched HTB offload support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250331-airoha-htb-qdisc-offload-del-fix-v1-1-4ea429c2c968@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250226104111.564443-3-james.clark@linaro.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/pmu.c | 7 ++++---
+ tools/perf/util/pmu.h | 5 +++++
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index c1c2ab82a08d8..71975c490822b 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -3082,7 +3082,7 @@ static int airoha_tc_get_htb_get_leaf_queue(struct airoha_gdm_port *port,
- 		return -EINVAL;
- 	}
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 27393e4327922..2587c4b463fa8 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -597,7 +597,7 @@ static int perf_pmu__new_alias(struct perf_pmu *pmu, const char *name,
+ 			};
+ 			if (pmu_events_table__find_event(pmu->events_table, pmu, name,
+ 							 update_alias, &data) == 0)
+-				pmu->cpu_json_aliases++;
++				pmu->cpu_common_json_aliases++;
+ 		}
+ 		pmu->sysfs_aliases++;
+ 		break;
+@@ -1680,9 +1680,10 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
+ 	if (pmu->cpu_aliases_added)
+ 		 nr += pmu->cpu_json_aliases;
+ 	else if (pmu->events_table)
+-		nr += pmu_events_table__num_events(pmu->events_table, pmu) - pmu->cpu_json_aliases;
++		nr += pmu_events_table__num_events(pmu->events_table, pmu) -
++			pmu->cpu_common_json_aliases;
+ 	else
+-		assert(pmu->cpu_json_aliases == 0);
++		assert(pmu->cpu_json_aliases == 0 && pmu->cpu_common_json_aliases == 0);
  
--	opt->qid = channel;
-+	opt->qid = AIROHA_NUM_TX_RING + channel;
- 
- 	return 0;
+ 	return pmu->selectable ? nr + 1 : nr;
  }
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index aca4238f06a65..5a03c361cb04c 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -124,6 +124,11 @@ struct perf_pmu {
+ 	uint32_t cpu_json_aliases;
+ 	/** @sys_json_aliases: Number of json event aliases loaded matching the PMU's identifier. */
+ 	uint32_t sys_json_aliases;
++	/**
++	 * @cpu_common_json_aliases: Number of json events that overlapped with sysfs when
++	 * loading all sysfs events.
++	 */
++	uint32_t cpu_common_json_aliases;
+ 	/** @sysfs_aliases_loaded: Are sysfs aliases loaded from disk? */
+ 	bool sysfs_aliases_loaded;
+ 	/**
 -- 
 2.39.5
 
