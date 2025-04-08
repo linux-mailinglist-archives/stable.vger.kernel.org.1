@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B300EA8071C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E112A8051D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48CF87AEE82
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5B91B667D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC9B26B97C;
-	Tue,  8 Apr 2025 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270F326AA91;
+	Tue,  8 Apr 2025 12:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoSQehfF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFpwFYHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696B5267F5B;
-	Tue,  8 Apr 2025 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65A8269820;
+	Tue,  8 Apr 2025 12:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115249; cv=none; b=lQUkfn87Tgjm6arQlDBcsvhc46g1Nn5zjoVj6bG1Td5LhQBal9754kgPZRm6qntMkBcYn//6tldo/5uHXX4RJHYHGqN+/54oJPS101VlwTWXLF6gIHAAlA2QrakZHGIxC4uqF9GJl/ea36e9j1iVBC/59/HKSW5lm3q2LGlSTKw=
+	t=1744114043; cv=none; b=cQdT6P//thumMiufnMZ/VrZw/IbzkIDstL8/rI6wTtTX9Rs2n+AbB4bTCr+BSCPU/J4g4jaT7OVRloiaGemQxtijjymJMnMh7WV6QHMdoRI4uNo1ESttfRmDU6uUkKQjt7iW5OwRle9NscnatPGRXTMFZwhn0UOze62NPGdBKdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115249; c=relaxed/simple;
-	bh=23okDx2Ha/cTSI+VyaNAvQBgREase9pndrjK8g4S844=;
+	s=arc-20240116; t=1744114043; c=relaxed/simple;
+	bh=DNxpnN2k+Uu/KH1FZq5vXf2Pz28Es/UACNxFTmBCxfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ba1KUvSLrPijqV3ud88cg7pZob5lhcbjjqP445jwImxcj/UrR2Iy3fQTISMKrcWHdJyETHoFw3/C6F7weCqcNVqikZ6Wjo1pP286137rQ1n82pHK24C8T6wlXYMhQbtLiUJPJOI3h+iIQd4PyTq+fKpBQPpiv5kiBJMw48n5QkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoSQehfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B65C4CEE5;
-	Tue,  8 Apr 2025 12:27:28 +0000 (UTC)
+	 MIME-Version; b=YtTM+WeKLFKjBS1get30++ZqcQ4kLfXiaHiDf/1Z9uyj+IqKEjxe2GDTxLZK5jceRAHF5O7Lux/32PTpyiLZGiszHJGbfLWMLHgI7VgxzmfqO3/jb+jdHuNdI+yi9WXvF8fA1NIInyLu8z1K7tN1oVlNXX8h7RaveCXsAquaAZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFpwFYHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D41C4CEEA;
+	Tue,  8 Apr 2025 12:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115248;
-	bh=23okDx2Ha/cTSI+VyaNAvQBgREase9pndrjK8g4S844=;
+	s=korg; t=1744114043;
+	bh=DNxpnN2k+Uu/KH1FZq5vXf2Pz28Es/UACNxFTmBCxfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoSQehfFcSu2bSiW1WffOSg9n/bfoMy8UpigxSCYMsHNF0zNds7s/VNa+51brLtF4
-	 //O7TDLJbkn56XDuCIZNT6UH+Z0R7Cf/g63w3Okxoo5VHdQMplqD7xRXad9eREDGG7
-	 fXYxmTuQOLE/wIDo3tvWEcdXrEFcfjTrV8AIM79I=
+	b=GFpwFYHxVT4G0hxREcjWDRVVl48Tv0ykjvadWGMwBm2GEWKaoowtKVcubAI3vekzv
+	 OWO1pYnKJR1BsVau1rUo47AMDLMI6tM7lV8EoiUoKRDg1QGja33s1CZVXw5qubABev
+	 TnIOkUh+C9a0iByB8E0VGebF1+piKZw9WY7ir7w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 404/499] arcnet: Add NULL check in com20020pci_probe()
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 075/154] net: usb: qmi_wwan: add Telit Cinterion FN990B composition
 Date: Tue,  8 Apr 2025 12:50:16 +0200
-Message-ID: <20250408104901.301466155@linuxfoundation.org>
+Message-ID: <20250408104817.712027610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
+commit 9dba9a45f8ca64a7df32aada14c20a3153af1ac8 upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-com20020pci_probe() does not check for this case, which results in a
-NULL pointer dereference.
+Add the following Telit Cinterion FN990B composition:
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensure
-no resources are left allocated.
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250205171649.618162-3-fabio.porcedda@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index c5e571ec94c99..0472bcdff1307 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -251,18 +251,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-tx",
- 							dev->dev_id, i);
-+			if (!card->tx_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:green:tx:%d-%d",
- 							dev->dev_id, i);
--
-+			if (!card->tx_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.dev = &dev->dev;
- 			card->recon_led.brightness_set = led_recon_set;
- 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-recon",
- 							dev->dev_id, i);
-+			if (!card->recon_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:red:recon:%d-%d",
- 							dev->dev_id, i);
-+			if (!card->recon_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.dev = &dev->dev;
- 
- 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
--- 
-2.39.5
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1331,6 +1331,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 
 
 
