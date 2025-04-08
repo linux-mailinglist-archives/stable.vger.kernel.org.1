@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105CAA80104
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D72A7FE0F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946831883C7D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A0B189B622
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EA526A0AE;
-	Tue,  8 Apr 2025 11:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335692690CB;
+	Tue,  8 Apr 2025 11:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6p9/F8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkLgVRSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E05269831;
-	Tue,  8 Apr 2025 11:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41192690D5;
+	Tue,  8 Apr 2025 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111913; cv=none; b=gTlWqo7D460V5IZcvOtfkmcL6uyYEyuNAEtGPHaPdee5KcvdvE3/xS8Fs2mNOdwgZT+YecHBsz0fqoGdhtkwmeX5Lzsnfwd0ZSXr2pr86U3qOFyxhxB4KPCkM7kfp9g0bs8GAeiTfrKiTDt2eK/5VkbtI2bCsVTcbduS82saIzo=
+	t=1744110063; cv=none; b=TDmev3P4M2FsQI5RWcw7FMOVB6hZRVmdpv5Ef41FsN+giydkhZruc1oaVJhenLLpYSst0jkbPNBD7dnb/SXPhCfPzV7YPcBWhHHPSlS5DP5dqxWaRYHPASFgkfTgI5LuHlg04ZRG7EIrc2q8bgMwNdnbMKC5hL+XZJA4MDCPCDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111913; c=relaxed/simple;
-	bh=eInXYwlS6qHl0eCHCKR/UPD80ssoQmDaCLnXDed4lhE=;
+	s=arc-20240116; t=1744110063; c=relaxed/simple;
+	bh=3OY/ojBEiMsJvppTiQF68EhrLk1mlp3+5iNGMiHWMVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVm/5xGt3j9R7XwK2qdIDyB3rhOlzPeuGAICnBkHcUAzrfbniOFkEAbpuCLtAQW+iCySTH/K7g8vyS8zFCYBM4tbmztx49ChOx24ESfkPJ0INCUIsVmTaIjQV83y/v47cEyEm8RkJIrxy+8I0krMqkXiSEY7yjpAz7Cc7JkDJyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6p9/F8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A13C4CEE5;
-	Tue,  8 Apr 2025 11:31:53 +0000 (UTC)
+	 MIME-Version; b=O6mFfmgb5tVPoDQHN6mVXPn53R80a1bcsg5CDKbfGJtJNDO3SODnkdsVS7goS5hvEX3+SEHwm8xPZfxhA2GY2l2uHDWdv7qgGvUnNy9Xemm12N8UMofc7xs+TNHo0LiDpcEg9ps7q/wPjbYB1oATJvDTBP/516U3BO2Fg9Hf2Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkLgVRSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED4DC4CEE5;
+	Tue,  8 Apr 2025 11:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111913;
-	bh=eInXYwlS6qHl0eCHCKR/UPD80ssoQmDaCLnXDed4lhE=;
+	s=korg; t=1744110062;
+	bh=3OY/ojBEiMsJvppTiQF68EhrLk1mlp3+5iNGMiHWMVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6p9/F8+371YeLHKXGPFtGKGfOYZB79C5RQ42ZwRdbyiSPZwjHYjPxBmAgElLzPow
-	 IIT/1n5VzAvJqwn9FUOAZSvI7BxWOk1zt3Jj4sdH3RQJhLTxSeKf39m2qer8AEzTT7
-	 PSNEzJnPT+FTEu9sYF7FXRRAcp7bW0tlGe+9hOs4=
+	b=FkLgVRSgDODWG6UHwfJmmTkXLZYyW1rbvh6yxveJ+R+h2vCzpfyg1zAPokbPEREyq
+	 N7I2wZJ1Obx2Utr1fevHnSEsidHspTfPYWmFDmTMqRhZN+XG+fIbzXDljmqpBmJlLT
+	 7rehT0tCc1LydGmTyM8UkCb/WNpKiKs+K2Pjq/8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 607/731] ASoC: imx-card: Add NULL check in imx_card_probe()
-Date: Tue,  8 Apr 2025 12:48:24 +0200
-Message-ID: <20250408104928.390526479@linuxfoundation.org>
+Subject: [PATCH 5.10 127/227] ASoC: ti: j721e-evm: Fix clock configuration for ti,j7200-cpb-audio compatible
+Date: Tue,  8 Apr 2025 12:48:25 +0200
+Message-ID: <20250408104824.138674087@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
+[ Upstream commit 45ff65e30deb919604e68faed156ad96ce7474d9 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-imx_card_probe() does not check for this case, which results in a NULL
-pointer dereference.
+For 'ti,j7200-cpb-audio' compatible, there is support for only one PLL for
+48k. For 11025, 22050, 44100 and 88200 sampling rates, due to absence of
+J721E_CLK_PARENT_44100, we get EINVAL while running any audio application.
+Add support for these rates by using the 48k parent clock and adjusting
+the clock for these rates later in j721e_configure_refclk.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
+Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM (CPB and IVI)")
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://patch.msgid.link/20250318113524.57100-1-j-choudhary@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-card.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/ti/j721e-evm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index ac043ad367ace..21f617f6f9fa8 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -767,6 +767,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].sink =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Playback");
-+				if (!data->dapm_routes[i].sink)
-+					return -ENOMEM;
- 				data->dapm_routes[i].source = "CPU-Playback";
- 			}
- 		}
-@@ -784,6 +786,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].source =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Capture");
-+				if (!data->dapm_routes[i].source)
-+					return -ENOMEM;
- 				data->dapm_routes[i].sink = "CPU-Capture";
- 			}
- 		}
+diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
+index 756cd9694cbe8..b749bcc6f0414 100644
+--- a/sound/soc/ti/j721e-evm.c
++++ b/sound/soc/ti/j721e-evm.c
+@@ -179,6 +179,8 @@ static int j721e_configure_refclk(struct j721e_priv *priv,
+ 		clk_id = J721E_CLK_PARENT_48000;
+ 	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_44100])
+ 		clk_id = J721E_CLK_PARENT_44100;
++	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_48000])
++		clk_id = J721E_CLK_PARENT_48000;
+ 	else
+ 		return ret;
+ 
 -- 
 2.39.5
 
