@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-131049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1D6A8080B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E27FA80B96
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557358A70AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CBF04E65FC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374B26B945;
-	Tue,  8 Apr 2025 12:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9B027BF94;
+	Tue,  8 Apr 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+svyk6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG5PeUYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA8C26A087;
-	Tue,  8 Apr 2025 12:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4822A27BF8B;
+	Tue,  8 Apr 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115351; cv=none; b=Pm1E7W7Un4Otw2vYZbbB68EEdWZIhRZbVCJiHiYgC1WzcNuF9edda41Jufzqsj7UmTDsbplmhtRRy3bh/inb1xp9VxfyUZSa5sbQ8j7lvhYPIk7yNSZqLujMS/C3KGGQreosEO942OQYYR2N/oe/kdXp+YbXhvfE+3SqMP2bcck=
+	t=1744116948; cv=none; b=mATnfP8luM4U6G5crUcUOrP0vsI1t7YpyjYTeX5gOizNaNn/uxYoUlvEWduJuX+rxsSWD9GUiOU30mYFIwjkoRQzJDjqFmH08y7CKervTICsO2xCKR5Gikdk6C+uIPI1i1QQ12ZwZGsIEP/rfaGFrLsdcsU/Wd30vxa6Gx39Oes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115351; c=relaxed/simple;
-	bh=2XOkP3TyCvlb16Q4S0xo76rtwLv1cIJWIwHrCKgO24E=;
+	s=arc-20240116; t=1744116948; c=relaxed/simple;
+	bh=9PKPeQothz6xNHEc8nDyUaCxpJW79Cb7I5+AczsHONk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJMY/DKBpv4SmWBpY+osBn8Sz0+KZyfKag6jRQGez2fnsNcjH8xNA8oYEQ8kAVek78ksFv14bK85M6JAoormgz5ekRIj6Jeqi2Hp3cpgtcPd4aCCYwW+Lemb3yO3pjkHLuBpGX4+Wa8XC1cbWDE1LYmo8cnbtTbQ3mbXyNoAjZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+svyk6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346B8C4CEEA;
-	Tue,  8 Apr 2025 12:29:11 +0000 (UTC)
+	 MIME-Version; b=NQmlp9FRNwsqR0Hxe53NFCmvcMiW3xbX3KnZFI+lmwFs96TZgs/mo3lhKiBfGoOBdBt1gCCvLNuLcmebTx48RYTjoU8quV/wHOCUYsfQK/1TwsMXlarjJNgngtZMkGI+Z6Cljr5Ly92FPuzG5WGtR3JXARAXbEowVf+c/SJoKRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG5PeUYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30C2C4CEE5;
+	Tue,  8 Apr 2025 12:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115351;
-	bh=2XOkP3TyCvlb16Q4S0xo76rtwLv1cIJWIwHrCKgO24E=;
+	s=korg; t=1744116948;
+	bh=9PKPeQothz6xNHEc8nDyUaCxpJW79Cb7I5+AczsHONk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+svyk6rP9WtjHzq9/EzQyJgHutfdi6R716DofLIZ+UrHFFrFOfQkpqxlUvcsMF2z
-	 NP0EOXLgu5pSYonytzNlmZXukFjL5d/L0vrly8OegMfhwF0JCbAd3Wc+b+TluL508H
-	 2i/t11vffHHSgUtPpQfLT3qnDB0SIBWAVLwMyQqA=
+	b=bG5PeUYG4X35KIibsIEL5oqWnrCPkW0kDbC2Mz3tCP/GotRmEznTGpYpW/gZqAih2
+	 zBV04Wcn8AQ5kYAkbq90nOARn3N1J7d+F/pt+jXOAq0fyduWTglpMYAOXl4aVm0IAY
+	 xZSlTDd46OOoglvjVUfgto4fBbnmGgCsZC2HoPYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.13 442/499] x86/microcode/AMD: Fix __apply_microcode_amd()s return value
+	Debin Zhu <mowenroot@163.com>,
+	Bitao Ouyang <1985755126@qq.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 328/423] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
 Date: Tue,  8 Apr 2025 12:50:54 +0200
-Message-ID: <20250408104902.250140563@linuxfoundation.org>
+Message-ID: <20250408104853.462043386@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+From: Debin Zhu <mowenroot@163.com>
 
-commit 31ab12df723543047c3fc19cb8f8c4498ec6267f upstream.
+[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
 
-When verify_sha256_digest() fails, __apply_microcode_amd() should propagate
-the failure by returning false (and not -1 which is promoted to true).
+When calling netlbl_conn_setattr(), addr->sa_family is used
+to determine the function behavior. If sk is an IPv4 socket,
+but the connect function is called with an IPv6 address,
+the function calipso_sock_setattr() is triggered.
+Inside this function, the following code is executed:
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250327230503.1850368-2-boris.ostrovsky@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
+
+Since sk is an IPv4 socket, pinet6 is NULL, leading to a
+null pointer dereference.
+
+This patch fixes the issue by checking if inet6_sk(sk)
+returns a NULL pointer before accessing pinet6.
+
+Signed-off-by: Debin Zhu <mowenroot@163.com>
+Signed-off-by: Bitao Ouyang <1985755126@qq.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/calipso.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -600,7 +600,7 @@ static bool __apply_microcode_amd(struct
- 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index dbcea9fee6262..62618a058b8fa 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1072,8 +1072,13 @@ static int calipso_sock_getattr(struct sock *sk,
+ 	struct ipv6_opt_hdr *hop;
+ 	int opt_len, len, ret_val = -ENOMSG, offset;
+ 	unsigned char *opt;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
- 	if (!verify_sha256_digest(mc->hdr.patch_id, *cur_rev, (const u8 *)p_addr, psize))
--		return -1;
-+		return false;
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
  
- 	native_wrmsrl(MSR_AMD64_PATCH_LOADER, p_addr);
+@@ -1125,8 +1130,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ {
+ 	int ret_val;
+ 	struct ipv6_opt_hdr *old, *new;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
++	txopts = txopt_get(pinfo);
+ 	old = NULL;
+ 	if (txopts)
+ 		old = txopts->hopopt;
+@@ -1153,8 +1163,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ static void calipso_sock_delattr(struct sock *sk)
+ {
+ 	struct ipv6_opt_hdr *new_hop;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
+-- 
+2.39.5
+
 
 
 
