@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D1EA8093A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C5FA80743
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43DA88C0ABB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57934C4F88
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072220A5C3;
-	Tue,  8 Apr 2025 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258DE268FE4;
+	Tue,  8 Apr 2025 12:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHRYEdGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIQwYGGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7321AAA32;
-	Tue,  8 Apr 2025 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F7F263F4D;
+	Tue,  8 Apr 2025 12:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115594; cv=none; b=AJ1DThpqbDV+CmpKu+CUWIc750thRHWW5hvhA5Dh9KuTKWx0PeG3/ZUv2MzoN4Lt110oCedy4xo2W68XAV733JFeu2nykSsG2a20k6rgDPm1uJChbandthACwGbz6n2eHk+4Xp3reTJgnXd/zmDhcHt8FXWdNqyIU3ipqcJqNl0=
+	t=1744115032; cv=none; b=FoD3PaJ9MV3nSjzu90h5tGErqV+D1Q5m5m72xzG0fVz5X+vSesKJgTHRtFaCN5RZ1SrYhwOjydPVcoZOYZiZWwmsDngTR5f2ucTtYSL3oQslAMQH3u1vydSOb3dWGgQP5ew/0mWqUOwhJlv7PRV1xPvrAzUpfdNbimWgmUcludU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115594; c=relaxed/simple;
-	bh=s0590kiVG+4lfEne1eYRXexyI4f+LbfWp1d2QFiHkwE=;
+	s=arc-20240116; t=1744115032; c=relaxed/simple;
+	bh=vEp7bncDe+FEqPDsgHB5ZbkjoEuj5vdsnqoGixXZndQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C23IDaAv5oPbOn/zon3RYnpGYF0grvihJuqnSiuCu5MSPNclLjWZ8OKNv+9L1+Ty7aD44OpBw4e6ywzAgiengyHWhtTBhyMDdyWkyuZekJS3B3sop9KOezVDf0RkMRajkm3FfHXD34xrolTp4cnlYv32wf2MOP4bZzodXcRB9NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHRYEdGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D610C4CEE5;
-	Tue,  8 Apr 2025 12:33:14 +0000 (UTC)
+	 MIME-Version; b=facm8xilX9cbZqJ9dpyEEiSYQ2u1+dfr8uYvefq6Gc1ZE70vIcW4NTgWFyq4+xW9oyOKOtxB9+Yec0g0bQfiY1MxthPL99itfl4QjD7m0f3/C8Z5QrBLbpY+2v1Y+BEKHDnnCbVPZ6VEcm8JR3jpxhIEHvojk7ZtJ943ETjOf/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIQwYGGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CFAC4CEE5;
+	Tue,  8 Apr 2025 12:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115594;
-	bh=s0590kiVG+4lfEne1eYRXexyI4f+LbfWp1d2QFiHkwE=;
+	s=korg; t=1744115032;
+	bh=vEp7bncDe+FEqPDsgHB5ZbkjoEuj5vdsnqoGixXZndQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHRYEdGz8gd4Fs2fiIsc97EZ8YPhbzs0e5v2qeb0JDqr8HV1y4/2LRSr6ujR93SGQ
-	 bTYwr3Iu5/triz8WXN1Fv67JuADlSzv9k5T08M8KfuCbbz7Sh0K0fsUQvu4pL1+Q4T
-	 M8ZhdEI5s5s2nEzKQsNRIObh00WsP9JXMCaRYGBs=
+	b=lIQwYGGYBZAtmkfHnOJLu66uaRpfD6JLzYfZ9HoyEFAY9NPrNTlblrTvp9l1oKuQL
+	 u/c0i60aTiLD1i+EB4Y9WwPVmIyFjBjHsIQ4tQNxLZ3JAkXdxtOMPNPh/f+qKfN7t9
+	 fka1V+tAHymdqWU51YrH0/5F/Gko9H14KVabZoSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/204] cpufreq: governor: Fix negative idle_time handling in dbs_update()
+Subject: [PATCH 6.13 323/499] ALSA: hda/realtek: Add support for ASUS ROG Strix G814 Laptop using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:48:55 +0200
-Message-ID: <20250408104820.442182346@linuxfoundation.org>
+Message-ID: <20250408104859.280726477@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhan <zhanjie9@hisilicon.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
+[ Upstream commit f2c11231b57b5163bf16cdfd65271d53d61dd996 ]
 
-We observed an issue that the CPU frequency can't raise up with a 100% CPU
-load when NOHZ is off and the 'conservative' governor is selected.
+Add support for ASUS G814PH/PM/PP and G814FH/FM/FP.
 
-'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
-when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
-("cpufreq: governor: Fix handling of special cases in dbs_update()").
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C.
 
-However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
-logic in load calculation") introduced a comparison between 'idle_time' and
-'samling_rate' to detect a long idle interval.  While 'idle_time' is
-converted to int before comparison, it's actually promoted to unsigned
-again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
-wrong idle interval detection when it's in fact 100% busy and sets
-policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
-frequency to minimum because of the large 'idle_periods', such that the
-frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
-so it fortunately avoids the issue.
-
-Correct negative 'idle_time' to 0 before any use of it in dbs_update().
-
-Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
-Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-2-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
-index 85da677c43d6b..c8bca3e77bcea 100644
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 		time_elapsed = update_time - j_cdbs->prev_update_time;
- 		j_cdbs->prev_update_time = update_time;
- 
--		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		/*
-+		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
-+		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
-+		 * off, where idle_time is calculated by the difference between
-+		 * time elapsed in jiffies and "busy time" obtained from CPU
-+		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
-+		 * time should grow with the same amount in two consecutive
-+		 * samples, but in practice there could be a tiny difference,
-+		 * making the accumulated idle time decrease sometimes.  Hence,
-+		 * in this case, idle_time should be regarded as 0 in order to
-+		 * make the further process correct.
-+		 */
-+		if (cur_idle_time > j_cdbs->prev_cpu_idle)
-+			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		else
-+			idle_time = 0;
-+
- 		j_cdbs->prev_cpu_idle = cur_idle_time;
- 
- 		if (ignore_nice) {
-@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			 * calls, so the previous load value can be used then.
- 			 */
- 			load = j_cdbs->prev_load;
--		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
-+		} else if (unlikely(idle_time > 2 * sampling_rate &&
- 				    j_cdbs->prev_load)) {
- 			/*
- 			 * If the CPU had gone completely idle and a task has
-@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			load = j_cdbs->prev_load;
- 			j_cdbs->prev_load = 0;
- 		} else {
--			if (time_elapsed >= idle_time) {
-+			if (time_elapsed > idle_time)
- 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
--			} else {
--				/*
--				 * That can happen if idle_time is returned by
--				 * get_cpu_idle_time_jiffy().  In that case
--				 * idle_time is roughly equal to the difference
--				 * between time_elapsed and "busy time" obtained
--				 * from CPU statistics.  Then, the "busy time"
--				 * can end up being greater than time_elapsed
--				 * (for example, if jiffies_64 and the CPU
--				 * statistics are updated by different CPUs),
--				 * so idle_time may in fact be negative.  That
--				 * means, though, that the CPU was busy all
--				 * the time (on the rough average) during the
--				 * last sampling interval and 100 can be
--				 * returned as the load.
--				 */
--				load = (int)idle_time < 0 ? 100 : 0;
--			}
-+			else
-+				load = 0;
-+
- 			j_cdbs->prev_load = load;
- 		}
- 
--		if (unlikely((int)idle_time > 2 * sampling_rate)) {
-+		if (unlikely(idle_time > 2 * sampling_rate)) {
- 			unsigned int periods = idle_time / sampling_rate;
- 
- 			if (periods < idle_periods)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index dc7e732a7691f..ebacbd996bceb 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10760,6 +10760,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
++	SND_PCI_QUIRK(0x1043, 0x3e00, "ASUS G814FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x3e20, "ASUS G814PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3e30, "ASUS TP3607SA", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3ee0, "ASUS Strix G815_JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3ef0, "ASUS Strix G635LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
 -- 
 2.39.5
 
