@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28ACDA804FD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42997A8046A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5B2883738
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14385427723
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DB526A0D6;
-	Tue,  8 Apr 2025 12:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC780269D03;
+	Tue,  8 Apr 2025 11:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgFa3tFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXciJjZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B0326A0C6;
-	Tue,  8 Apr 2025 12:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5BA269885;
+	Tue,  8 Apr 2025 11:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113845; cv=none; b=X6eIiLy/cAWyFN06ep3Lg3sXBjrU+z5a3ASez/oLeMAflz8GrsvqR82rkgmqAKVZDAy8/Wfcu0WGMO/i8Jduc/jq9NZuW4pKgLN22nZ7y5xV8bCmUR2a+6bpdGyLzYYN+eCZJlA/YtgiEYAEEOgRftNfgWyRzoGU6a+XAns5tig=
+	t=1744113473; cv=none; b=YrSeSbQ4x6C1jB3uRHmzSZveGzhVlW1j5qXvKqBb31UMggpNLSbbSu5/fhBV0R6gp4GUqMx+I7VsZRwyTileLluN2W/r1J4RpVoTHG0MPcjDl1VQ5dc7gIvPBD5J1arU+knxiB0n+HbykqabirdcsxYnoAhEccJez+IX7wHb4w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113845; c=relaxed/simple;
-	bh=+Ui7/qIzHfbX2vg6Hd0cSEC90f7u2DIzuxzp0tfqpSg=;
+	s=arc-20240116; t=1744113473; c=relaxed/simple;
+	bh=fnKfMzZWQk4jRxKHk/6e5RgwhSOmLIvh1nNG1schVsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsL9U9oXKyrEQltMgogfjE7NSQOuUgrSDpI8clGpXOgVlIvcWeriYLSMEyKdsMfCsHAyRrCpXMLKYdbrDd57zOAfXxYVLZLeYdg/F9Ny5xVSPOsvM7MMJIzIzbeYQQsXHjK/BTdnRL/w6bDM6ikcSfxSOLGbHVZcSOhg03BNrd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgFa3tFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E44C4CEEA;
-	Tue,  8 Apr 2025 12:04:04 +0000 (UTC)
+	 MIME-Version; b=SZ2lX1ojRxj3PAJ1fs2GYjdfz+SiwiCtJkg4zbJlXW+3fLHlfk3AJalnIj78iStbxMfw6Wq63U4Uq13UusK18tKtqD7eVhf51vp2sdc3Y4u8qsv4YT2go4uLuXz/wu0ATfn8zyQdd/wOYUx445IZ+f+/+pKee2IQi3wL0VwwYlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXciJjZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB647C4CEEA;
+	Tue,  8 Apr 2025 11:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113844;
-	bh=+Ui7/qIzHfbX2vg6Hd0cSEC90f7u2DIzuxzp0tfqpSg=;
+	s=korg; t=1744113473;
+	bh=fnKfMzZWQk4jRxKHk/6e5RgwhSOmLIvh1nNG1schVsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgFa3tFv4Ftm0ge15c9erC0fxufVx3QkZWoR51LXI/vfbsVgZbwruo1tR07JLUbep
-	 levAj70BT9RTo9u9N/UBSFL8HYjQqZ/JhjgPqNQTo4eysMC8apblWRgdolkfJ5lGEP
-	 7wyD6SK5xC1Vzq4KmbIx4ulNuYx+FsqG80uf7diA=
+	b=hXciJjZq4njt5Oqe06FV0CYaQbUyuYD1Cox3t4lLvtV19UBGgaSzi81ClV05IbM6L
+	 7Qc5jCL1FtKGpeG1ri8DKobjwmK+mZ2fzLVpU7mFI4Y8hkBY9GACxV1eJl8z3ea7HU
+	 YPkJN/OEQhbFRX8Sc7LTURamP49vddYNIxUGZt7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florent Revest <revest@chromium.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.4 042/154] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 172/268] perf/core: Fix perf_pmu_register() vs. perf_init_event()
 Date: Tue,  8 Apr 2025 12:49:43 +0200
-Message-ID: <20250408104816.620441254@linuxfoundation.org>
+Message-ID: <20250408104833.182601192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
+[ Upstream commit 003659fec9f6d8c04738cb74b5384398ae8a7e88 ]
 
-Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
-CPU masks and unconditionally accesses per-CPU data for the first CPU of each
-mask.
+There is a fairly obvious race between perf_init_event() doing
+idr_find() and perf_pmu_register() doing idr_alloc() with an
+incompletely initialized PMU pointer.
 
-According to Documentation/admin-guide/mm/numaperf.rst:
+Avoid by doing idr_alloc() on a NULL pointer to register the id, and
+swizzling the real struct pmu pointer at the end using idr_replace().
 
-  "Some memory may share the same node as a CPU, and others are provided as
-  memory only nodes."
+Also making sure to not set struct pmu members after publishing
+the struct pmu, duh.
 
-Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
+[ introduce idr_cmpxchg() in order to better handle the idr_replace()
+  error case -- if it were to return an unexpected pointer, it will
+  already have replaced the value and there is no going back. ]
 
-On a machine with far memory (and therefore CPU-less NUMA nodes):
-- cpumask_of_node(nid) is 0
-- cpumask_first(0) is CONFIG_NR_CPUS
-- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
-  index that is 1 out of bounds
-
-This does not have any security implications since flashing microcode is
-a privileged operation but I believe this has reliability implications by
-potentially corrupting memory while flashing a microcode update.
-
-When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
-a microcode update. I get the following splat:
-
-  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
-  index 512 is out of range for type 'unsigned long[512]'
-  [...]
-  Call Trace:
-   dump_stack
-   __ubsan_handle_out_of_bounds
-   load_microcode_amd
-   request_microcode_amd
-   reload_store
-   kernfs_fop_write_iter
-   vfs_write
-   ksys_write
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
-
-Change the loop to go over only NUMA nodes which have CPUs before determining
-whether the first CPU on the respective node needs microcode update.
-
-  [ bp: Massage commit message, fix typo. ]
-
-Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20241104135517.858805880@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -862,7 +862,7 @@ static enum ucode_state load_microcode_a
- 		return ret;
- 	}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4dd8936b5aa09..a524329149a71 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11556,6 +11556,21 @@ static int pmu_dev_alloc(struct pmu *pmu)
+ static struct lock_class_key cpuctx_mutex;
+ static struct lock_class_key cpuctx_lock;
  
--	for_each_node(nid) {
-+	for_each_node_with_cpus(nid) {
- 		cpu = cpumask_first(cpumask_of_node(nid));
- 		c = &cpu_data(cpu);
++static bool idr_cmpxchg(struct idr *idr, unsigned long id, void *old, void *new)
++{
++	void *tmp, *val = idr_find(idr, id);
++
++	if (val != old)
++		return false;
++
++	tmp = idr_replace(idr, new, id);
++	if (IS_ERR(tmp))
++		return false;
++
++	WARN_ON_ONCE(tmp != val);
++	return true;
++}
++
+ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
+ {
+ 	int cpu, ret, max = PERF_TYPE_MAX;
+@@ -11577,7 +11592,7 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
+ 	if (type >= 0)
+ 		max = type;
  
+-	ret = idr_alloc(&pmu_idr, pmu, max, 0, GFP_KERNEL);
++	ret = idr_alloc(&pmu_idr, NULL, max, 0, GFP_KERNEL);
+ 	if (ret < 0)
+ 		goto free_pdc;
+ 
+@@ -11585,6 +11600,7 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
+ 
+ 	type = ret;
+ 	pmu->type = type;
++	atomic_set(&pmu->exclusive_cnt, 0);
+ 
+ 	if (pmu_bus_running && !pmu->dev) {
+ 		ret = pmu_dev_alloc(pmu);
+@@ -11633,14 +11649,22 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
+ 	if (!pmu->event_idx)
+ 		pmu->event_idx = perf_event_idx_default;
+ 
++	/*
++	 * Now that the PMU is complete, make it visible to perf_try_init_event().
++	 */
++	if (!idr_cmpxchg(&pmu_idr, pmu->type, NULL, pmu))
++		goto free_context;
+ 	list_add_rcu(&pmu->entry, &pmus);
+-	atomic_set(&pmu->exclusive_cnt, 0);
++
+ 	ret = 0;
+ unlock:
+ 	mutex_unlock(&pmus_lock);
+ 
+ 	return ret;
+ 
++free_context:
++	free_percpu(pmu->cpu_pmu_context);
++
+ free_dev:
+ 	if (pmu->dev && pmu->dev != PMU_NULL_DEV) {
+ 		device_del(pmu->dev);
+-- 
+2.39.5
+
 
 
 
