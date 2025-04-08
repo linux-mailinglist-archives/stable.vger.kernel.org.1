@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-128954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D5CA7FD6A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3FBA801CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1641892859
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09641188392D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A026F268FE9;
-	Tue,  8 Apr 2025 10:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C775219301;
+	Tue,  8 Apr 2025 11:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnnnaxcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfFgUam2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAEB268FD2;
-	Tue,  8 Apr 2025 10:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1111DF27F;
+	Tue,  8 Apr 2025 11:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109725; cv=none; b=qekaj0S+eWCm0IYGMn8JUUk86LUqNizzedvr11FP32r1btNtMwN/n7gFiGkFDFI1RvYY65AHlhEhOLeimriyJxXuVoWH8K/v1AD+vwXErr0aKMXKl6Kff73UrBu044VVnbWKXNXcsxmn7I/E2IEEpyQXNcc86SGZzrT1aUXLXGA=
+	t=1744112318; cv=none; b=gHzO41EvSg7f1FMjYqWV3PkEKrWLdVQ+jPg/vCv5u2JTn2U+IJy5/3pl46y1J/imqIHLAH9CvJFKlmfWij9kvJU0icnNTR5GZrc1i7duDwOzB9o5v5JuJXnxkAvmHy6tRftiKVaMOumTUa8nm08sBU/MdL4iQrvdFnb0VjBEYV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109725; c=relaxed/simple;
-	bh=HCwVwpkG/bt7jURjJdqzByeCHT8/3fJwq8TRsABBhVw=;
+	s=arc-20240116; t=1744112318; c=relaxed/simple;
+	bh=BMUL5tDa1XoSLiWfA0CnTE/QA94csEdZVjrzmm0GFf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDq3PHgEQ/p+eKwCMPY6cQtujcGjJI/7lR64/l4rlvtxBKWl5YWU+oBpXeTmAo2Xazr5Z+nAZ3Hpgj+SXwwlVsMSViH1RRi0/m/LUQtBGB6VMGWKP2qpZ3p6DuWTkagE5FToo2oXovqzvzceOnc11fOlEC0my05gOTTYd68MdsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnnnaxcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86866C4CEE5;
-	Tue,  8 Apr 2025 10:55:24 +0000 (UTC)
+	 MIME-Version; b=jtL7gyxjns/TNtxAJtTReODqwgiCSUp0HQhQ9NtkaCXlE+ZHkv+AdNPONFhgPQy+Y7f4mZcz6Kg1yxmy0SarV0tPDjRIunOlbwQ+LsORab5y0L8krDNU+mFoJF7lTRwCpTOLPpHxEg1PmeSqGm6BXLvbH11w/if11K/PPH2a3aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfFgUam2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB2AC4CEE5;
+	Tue,  8 Apr 2025 11:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109724;
-	bh=HCwVwpkG/bt7jURjJdqzByeCHT8/3fJwq8TRsABBhVw=;
+	s=korg; t=1744112318;
+	bh=BMUL5tDa1XoSLiWfA0CnTE/QA94csEdZVjrzmm0GFf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnnnaxcE9sm5MKkT8vNMOIkBRxZqpQN+r1TkqCGrlH7D9qnF38snLVlXl7E96w3Dp
-	 aeM4lXy1QEZ4LkhpOqXWY4+jpy9ZY8YO3j1FD152l4/3bD9Z5yAtJNiBvh7pzb0H14
-	 0Oe0EUFE1NlBIEFzahoI+PEGeHkIBpH31ztJuR2w=
+	b=KfFgUam2WI4P9ZYywQLurdvtvvpqnFi3GpiqiiEyEk2r2FkAxKQBgv+qoQIRkEuUH
+	 l8JMfOsAOWnGMNmEtUoIceSy1cpKLDsj2ojew4R1ngwuP8c6ZI0wxW9MsIVosWj6HX
+	 OPpwsdpaxtEU17k0oOF5LMds1juKZVG7nfOvfXBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/227] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
+Subject: [PATCH 5.15 024/279] nvme-fc: go straight to connecting state when initializing
 Date: Tue,  8 Apr 2025 12:46:47 +0200
-Message-ID: <20250408104821.275302984@linuxfoundation.org>
+Message-ID: <20250408104827.036394180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-The timestamps in the Firmware log and HID sensor samples are incorrect.
-They show 1970-01-01 because the current IPC driver only uses the first
-8 bytes of bootup time when synchronizing time with the firmware. The
-firmware converts the bootup time to UTC time, which results in the
-display of 1970-01-01.
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
-the clock is updated according to the definition of ipc_time_update_msg.
-However, in _ish_sync_fw_clock(), the message length is specified as the
-size of uint64_t when building the doorbell. As a result, the firmware
-only receives the first 8 bytes of struct ipc_time_update_msg.
-This patch corrects the length in the doorbell to ensure the entire
-ipc_time_update_msg is sent, fixing the timestamp issue.
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index a45ac7fa417b9..da896f5c74424 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -549,14 +549,14 @@ static void fw_reset_work_fn(struct work_struct *unused)
- static void _ish_sync_fw_clock(struct ishtp_device *dev)
- {
- 	static unsigned long	prev_sync;
--	uint64_t	usec;
-+	struct ipc_time_update_msg time = {};
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 8dfd317509aa6..ebe8c2f147a33 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3547,8 +3547,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
- 	if (prev_sync && jiffies - prev_sync < 20 * HZ)
- 		return;
- 
- 	prev_sync = jiffies;
--	usec = ktime_to_us(ktime_get_boottime());
--	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
-+	/* The fields of time would be updated while sending message */
-+	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
- }
- 
- /**
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
