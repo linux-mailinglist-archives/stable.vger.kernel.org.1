@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26112A80972
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90A2A805FC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC06E4E59F5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C97E1B836A5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAB626B953;
-	Tue,  8 Apr 2025 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15927268C4F;
+	Tue,  8 Apr 2025 12:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHsodikV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIy1eN6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F926982F;
-	Tue,  8 Apr 2025 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F38263F4D;
+	Tue,  8 Apr 2025 12:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116116; cv=none; b=QXwnM2ZfcD6e/HDL9vCfWKs744S+y9iFTi3J3oSVWmZMNRx6bDwOCz0FqhFO4wDa37ToysPm0Zg83DyFS8GBC1ZEJv+ekGFiKWRX0qpZ+zOLQMQ82eQpY611ORh2OP/FhHgld7OwM16lGqWD5yI5ZSfXsYL5Lw+Imk6okMQKNf0=
+	t=1744114514; cv=none; b=W1vhQdOsVxFNKEo5AKLGYNCoyA0XKHt8jttxB7N2DTy9DDDwfqb7U7K5KTl8SCl4qNfKpQE+OswwrYVRqMts71LMjiMWEpSgjSSADdnFdqna2MLk8TL4RKA7pi5QaB+9ot4pHa/WExsrMqM0m51GcziexXgK8HRa2+AQV5Az0aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116116; c=relaxed/simple;
-	bh=H2cRW+Fr3AdRWMyrbInn9FA1wiAxqdx+E8C6PuWfvVc=;
+	s=arc-20240116; t=1744114514; c=relaxed/simple;
+	bh=dYygCOZP2n+8zfU2ua88UxqLxVFXzAry8A0zAibysFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t29lR6E2vC1sy55CR+HdmwkMJemJ1Ha2asr+DVJjTzy9O8ETRpYb4vuEW1rcq+yGCOmpWC2oCFVPqAEF+EPzgSU+Xnkhy2DXmTILwkW+bbrAc5mb1vIxA4zOFDfRznOCwtlpiehhQ5I74hK00UZ2VV8gsjkfHi2BOeAAAR5uhIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHsodikV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9C3C4CEE5;
-	Tue,  8 Apr 2025 12:41:55 +0000 (UTC)
+	 MIME-Version; b=a4+ni+K+aiJs8pQzKewukrP0sZ3QEvusHHLFdYQ9oFA5L5ZDd6y7obZbnjGD6t70n+6zJ6K4VED/fOpoklMgt6BlgdFpP5XO0JdfCqAUNJplTwE0hR7cVZxPS8lHAhd1NoH4Nyl2plXVSd0agSlYrtYybDVCiDyLvZ2/9oDOTEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIy1eN6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF7BC4CEE7;
+	Tue,  8 Apr 2025 12:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116116;
-	bh=H2cRW+Fr3AdRWMyrbInn9FA1wiAxqdx+E8C6PuWfvVc=;
+	s=korg; t=1744114514;
+	bh=dYygCOZP2n+8zfU2ua88UxqLxVFXzAry8A0zAibysFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHsodikVFjCbzx7ib6Abuv8H/IljO+vM7kTMR9b2kkNeTAf+AYZIJMxB4yJ3gKK0y
-	 +5fMv5mNJkHeP1rhr80Jxj1tY6uu/kfBKys2V+zJf1caQEtbA5Vsb+jeqeIv4m+oS0
-	 FXb1jDIOM9/HVEXKKeiG8mYlH6PgOOVr9TvPVwRo=
+	b=wIy1eN6pCrxvYGBVISA9qrL9MTj4kNNw/tcLpsxa4GcHGMqlazvHe5xXiMGHhaW5o
+	 0oek3Jn+zUCwEmrtHacFLDFl3zwa1HKTymTJkjR7MwnL8Vi8/2Jz47JXUyiho4tAR7
+	 70UaxadH907biBGlOWUqd3VQJHlpKTYJtnWr03rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/423] EDAC/ie31200: Fix the DIMM size mask for several SoCs
+Subject: [PATCH 6.13 136/499] remoteproc: qcom_q6v5_pas: Make single-PD handling more robust
 Date: Tue,  8 Apr 2025 12:45:48 +0200
-Message-ID: <20250408104846.261128800@linuxfoundation.org>
+Message-ID: <20250408104854.582571357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Luca Weiss <luca@lucaweiss.eu>
 
-[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
+[ Upstream commit e917b73234b02aa4966325e7380d2559bf127ba9 ]
 
-The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
-but bits{5:0}. Fix it.
+Only go into the if condition for single-PD handling when there's
+actually just one power domain specified there. Otherwise it'll be an
+issue in the dts and we should fail in the regular code path.
 
-Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
+This also mirrors the latest changes in the qcom_q6v5_mss driver.
+
+Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250128-pas-singlepd-v1-2-85d9ae4b0093@lucaweiss.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 98d74c604d726..92714dd88b3f6 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -162,6 +162,7 @@
- #define IE31200_MAD_DIMM_0_OFFSET		0x5004
- #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
- #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
-+#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
- #define IE31200_MAD_DIMM_A_RANK			BIT(17)
- #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
- #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
-@@ -375,7 +376,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
- static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
- 				     int chan)
- {
--	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
-+	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
- 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
- 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
- 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 97c4bdd9222a8..78484ed9b6c85 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -501,16 +501,16 @@ static int adsp_pds_attach(struct device *dev, struct device **devs,
+ 	if (!pd_names)
+ 		return 0;
+ 
++	while (pd_names[num_pds])
++		num_pds++;
++
+ 	/* Handle single power domain */
+-	if (dev->pm_domain) {
++	if (num_pds == 1 && dev->pm_domain) {
+ 		devs[0] = dev;
+ 		pm_runtime_enable(dev);
+ 		return 1;
+ 	}
+ 
+-	while (pd_names[num_pds])
+-		num_pds++;
+-
+ 	for (i = 0; i < num_pds; i++) {
+ 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
+ 		if (IS_ERR_OR_NULL(devs[i])) {
+@@ -535,7 +535,7 @@ static void adsp_pds_detach(struct qcom_adsp *adsp, struct device **pds,
+ 	int i;
+ 
+ 	/* Handle single power domain */
+-	if (dev->pm_domain && pd_count) {
++	if (pd_count == 1 && dev->pm_domain) {
+ 		pm_runtime_disable(dev);
+ 		return;
+ 	}
 -- 
 2.39.5
 
