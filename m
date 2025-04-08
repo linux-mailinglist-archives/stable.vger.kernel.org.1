@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B9FA80BAB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CC6A80736
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B5590410A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982AF8A549B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B8227604B;
-	Tue,  8 Apr 2025 12:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AD326A1A3;
+	Tue,  8 Apr 2025 12:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWqqS9by"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jy3JZRak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634E826AAA3;
-	Tue,  8 Apr 2025 12:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0546A2676FA;
+	Tue,  8 Apr 2025 12:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116731; cv=none; b=Zw4qW7164GGRIYJqZBnm//S36w1s3TGyx2vRRgNhZKNBJWZ4lyyqOGZBgp1no+r1FtnjlqEiJXhL0baDl8PFXWhU5ZakbscdZOHGELoZ+0YkVMbSTZ2J2/YTyt3OqPDjAF9ZWHvb3wyIrFw6yq+qmb9HqKenu+yWhVMvM1xvpts=
+	t=1744115132; cv=none; b=C4vcSt8mhiMQxHWe1wGJYJP3G/q14YZ11pceU+KNJnwP5xCWFs3VVh4p/A76bLFlRIrNDxg6KYNrTlC3CcUR9u6tB9Qv6ooXrQ8UYqnLlERZld0BCC3j5FBqgE7iGaRgJ2/Oip1puqD5o/zZD/lOhhkw49bNWBvcPxdAe8fQPHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116731; c=relaxed/simple;
-	bh=0vnY0Ty6YJW1l3eL3Vb3Yxzt0TuXrSq9rDOZ8teYMRk=;
+	s=arc-20240116; t=1744115132; c=relaxed/simple;
+	bh=n4qXtnZjSxtWdqoZ/XYejQVCKheR5OtmoOmED3gOnKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkoiU/531gCnwlVjmYk41toiFuw0n5ML/L4QnpWM5JzXaEYRld3S8d4i1XOrbpEzB6js6vC/TaDRpURYV01w1ojFXLcTUA5sEWVbI/0uQGAmuArzLAoYWeSSj3CE0z+aIN5EnNrHksIDcDpujnqrryIAGc11RDKw094ArPesdxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWqqS9by; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A49C4CEE5;
-	Tue,  8 Apr 2025 12:52:10 +0000 (UTC)
+	 MIME-Version; b=BKHMGz7V/XjWBlJO7UXg7/mOYWTPBby/3Wb3+vdGbRX4mcYrg67f1Z4dkrDowuor/Hcl0Zz1fCvK6rQwDcw/Te8m10+4v9poExXV7uGbX641222+WjQrFg3b+16YM4LWQANooNLOWJA7mSpvR/0QddQOeRPEdsEhgRsNuajJ6nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jy3JZRak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845F8C4CEE5;
+	Tue,  8 Apr 2025 12:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116731;
-	bh=0vnY0Ty6YJW1l3eL3Vb3Yxzt0TuXrSq9rDOZ8teYMRk=;
+	s=korg; t=1744115131;
+	bh=n4qXtnZjSxtWdqoZ/XYejQVCKheR5OtmoOmED3gOnKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWqqS9byY7CFknj+0uvzltFmNc71O4cYZD/mGceLODyhziVfUO8pgRklas/6b7BQ4
-	 NqD5YkCIfyfCKxwUiGq2OCmtoshuIB3YBWg9MIqtupq02J9KUTtY0K+orRp73tYDte
-	 S+iNd/CmmW6hG7BVEKclCElfV8kC94mo/J80roos=
+	b=jy3JZRakjaYY4vktQbbw/TxBkyQ23yrJ7vSPczNQb2JNWUzlhiKljPWwGVnbsyil/
+	 aRE8QrO2C5TAphUu+wjMJSVZ534ddz3py0X18FXgux4F/3wILy9PV9/T1b1nUpFNdc
+	 zijXnQ4JQbrbWzqlVOgZ3ORLp7wst3fBTEO7MZKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight.linux@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/423] objtool: Fix verbose disassembly if CROSS_COMPILE isnt set
+Subject: [PATCH 6.13 361/499] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
 Date: Tue,  8 Apr 2025 12:49:33 +0200
-Message-ID: <20250408104851.486561384@linuxfoundation.org>
+Message-ID: <20250408104900.234592417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <david.laight.linux@gmail.com>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-[ Upstream commit e77956e4e5c11218e60a1fe8cdbccd02476f2e56 ]
+[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
 
-In verbose mode, when printing the disassembly of affected functions, if
-CROSS_COMPILE isn't set, the objdump command string gets prefixed with
-"(null)".
+There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
+size. This would make xlate_pos negative.
 
-Somehow this worked before.  Maybe some versions of glibc return an
-empty string instead of NULL.  Fix it regardless.
+[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
+[   23.734158] ================================================================================
+[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
+[   23.734418] shift exponent -1 is negative
 
-[ jpoimboe: Rewrite commit log. ]
+Ensuring xlate_pos is a positive or zero before BIT.
 
-Fixes: ca653464dd097 ("objtool: Add verbose option for disassembling affected functions")
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215142321.14081-1-david.laight.linux@gmail.com
-Link: https://lore.kernel.org/r/b931a4786bc0127aa4c94e8b35ed617dcbd3d3da.1743481539.git.jpoimboe@kernel.org
+Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4030412637ad0..286a2c0af02aa 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4614,6 +4614,8 @@ static int disas_funcs(const char *funcs)
- 	char *cmd;
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index ad1786be2554b..f851397b65d6e 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
+ 	if (size != 0 && xlate_pos < 12)
+ 		return -EINVAL;
  
- 	cross_compile = getenv("CROSS_COMPILE");
-+	if (!cross_compile)
-+		cross_compile = "";
- 
- 	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
- 			"BEGIN { split(_funcs, funcs); }"
+-	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
++	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
+ 		/*
+ 		 * In certain circumstances we can get a buffer that is
+ 		 * not aligned to its size. (Most of the time
 -- 
 2.39.5
 
