@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B90A80529
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E38A8081A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E914A3640
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFCC68A6F98
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE36626B959;
-	Tue,  8 Apr 2025 12:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379C326A0C2;
+	Tue,  8 Apr 2025 12:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzLRy6GW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eu21UAQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBFF26AA9E;
-	Tue,  8 Apr 2025 12:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DCF26A0A6;
+	Tue,  8 Apr 2025 12:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113721; cv=none; b=Z4UK4I6Xrvsz4fmOmKSMrM115xwH9omYt5SwdoqCUi5QoA/hdfziGdPD9V3GsXQkhfyvgnswhxvhCVQZ3LJXrXp1yWCmGw4Xfmbti9GzMpP86f9bZP8u/GRYOECxLYiUiohKxj0kAzNiTwfP4n+Lmx+1c1gxUTNIWPXxYq46JL4=
+	t=1744115333; cv=none; b=lisz5HMEpsMAGEqyE5+07hmxmkL9iiF/s1S2dVzLeFLZyIzFn7mfkAX8CRRFicvktu5KhKJbtOZhj58s0s7b8p8HZ1hsDhBI1sEq13+DVLh4cE242IqwAXIKQh+xiZhCcSEvIVJYIa2xks5koVDhrjVPxpUlUO9owkE1agBGrFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113721; c=relaxed/simple;
-	bh=gsGivlZ8ToAElQDYtD1fUXR2NrofFh3UITId27dSyLI=;
+	s=arc-20240116; t=1744115333; c=relaxed/simple;
+	bh=kBq547XsgDXIbVoD5nzuF9VTprRKC6NBfdHUtSb7JkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTsgMaYcoe8KuwHVUmwhKs6e7A7Hl7u91fMwjN8fxH5FD3kPKvPGJIwc7GR5aC+z7t+7FAAkwP0kfHOz8bgkPIAR/dWeKkj95fmJH/K4/oQbMgrpZZSQr2X87e7CU4UUOUi2SmQroI9e/nDXVCtpu27/at8dNpghI1hIyPxTpPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzLRy6GW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC30C4CEE5;
-	Tue,  8 Apr 2025 12:02:00 +0000 (UTC)
+	 MIME-Version; b=OaNzZmgMDB3cj9DU3D2sTiybiJC2InYDIsFs7LnmeSG+kvQlt99G4hN0x5vDiQt4fx9XJhC+jYbbBSh/Yx8J8jgMZ8WHK/IzxMcw/j2fcxYUlzKxk42xUy4R9QrhD1bD0c83lVqGpz4l0lQ/PB/ClDPbIn4GmmfwTSroOSSRo+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eu21UAQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D513C4CEE5;
+	Tue,  8 Apr 2025 12:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113721;
-	bh=gsGivlZ8ToAElQDYtD1fUXR2NrofFh3UITId27dSyLI=;
+	s=korg; t=1744115332;
+	bh=kBq547XsgDXIbVoD5nzuF9VTprRKC6NBfdHUtSb7JkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzLRy6GWEdJx3PclEEH3L9Qt/YM/tAfQlTPDgJTNSVl1QUWZZIlEfeDbaYsfXbu1x
-	 xB+AMI5U+V3610w+Pok7nepLdV9WwEFxATKmtdIGmrmeSX12BarSoL1jpfMmbIyS+4
-	 P+YnFULF4hp4nI63ip4fpLndCwwGJ0EHlBBekr28=
+	b=eu21UAQIPxvj0EhoaV06tF9HKgmIwRSf2vwz2Q61lnkEERsWL15X+eVaKMmbQkUj6
+	 Glsq8XYlr8g8uPrI6GG3htnWxyzfmQgP+9uJoxheKrhXtbpaAyYETC+wTN5g36iau+
+	 V/QEJWk/kCoGMl+WzcZdUHRJ0HnQT/psqBzK/r2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agoston Lorincz <pipacsba@gmail.com>,
-	All applicable <stable@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 237/268] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
+	Mingcong Bai <baimingcong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.13 436/499] LoongArch: Increase MAX_IO_PICS up to 8
 Date: Tue,  8 Apr 2025 12:50:48 +0200
-Message-ID: <20250408104834.980380370@linuxfoundation.org>
+Message-ID: <20250408104902.103650384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 2fa87c71d2adb4b82c105f9191e6120340feff00 upstream.
+commit ec105cadff5d8c0a029a3dc1084cae46cf3f799d upstream.
 
-Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
-Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
-1 (Windows) and 4 (Android(GMIN)).
+Begin with Loongson-3C6000, the number of PCI host can be as many as
+8 for multi-chip machines, and this number should be the same for I/O
+interrupt controllers. To support these machines we also increase the
+MAX_IO_PICS up to 8.
 
-In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
-causing Linux' x86-android-tables code which deals with the general
-brokenness of this device's ACPI tables to fail to probe with:
-
-[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
-[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
-
-which renders sound, the touchscreen, charging-management,
-battery-monitoring and more non functional.
-
-Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
-device to fix this.
-
-Reported-by: Agoston Lorincz <pipacsba@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
-Cc: All applicable <stable@kernel.org>
-Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250325210450.358506-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Tested-by: Mingcong Bai <baimingcong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/include/asm/irq.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -367,7 +367,8 @@ static const struct dmi_system_id acpi_q
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
- 		/* Medion Lifetab S10346 */
+--- a/arch/loongarch/include/asm/irq.h
++++ b/arch/loongarch/include/asm/irq.h
+@@ -53,7 +53,7 @@ void spurious_interrupt(void);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ void arch_trigger_cpumask_backtrace(const struct cpumask *mask, int exclude_cpu);
+ 
+-#define MAX_IO_PICS 2
++#define MAX_IO_PICS 8
+ #define NR_IRQS	(64 + NR_VECTORS * (NR_CPUS + MAX_IO_PICS))
+ 
+ struct acpi_vector_group {
 
 
 
