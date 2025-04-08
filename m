@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E5EA80525
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D51A80AB1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B602117EB44
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EB6A1BA7808
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ADC2698A2;
-	Tue,  8 Apr 2025 12:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAF91EA65;
+	Tue,  8 Apr 2025 12:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3dF55Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaNWUj3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE4C26983B;
-	Tue,  8 Apr 2025 12:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBCD268FE7;
+	Tue,  8 Apr 2025 12:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113772; cv=none; b=Ow9MiHpzm0mWiC+kbl5++ZC/euJqZ5nJe2WW7xmM3FkeGX1eRVQSgnonFYHKcmRsZmK9X3e6ju/ZaJ3nLGjDozlXTWiQXVe+jWyJLvE0ZAljk7mXRFqtaBAr+0z+gliW0NwC7Xg9kvF0YTCF89SeRYadFrlYE4m5spHVwfj0ltE=
+	t=1744116681; cv=none; b=tY9u9iUzrXV4vTd0YAwF0QxvEv80z/syR2qjdZykvJBc8Q+zA0OxFOhocDIpb3q7zz1f4n206BjD0TLJv4vXHqmth/Ho1949z4Y/Iz9/Hw2z1rlvKBbEH75xg7t57JdhRuuKaCl98kcS8xEh4EUKChboej5Jz+ja9RVd7evre+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113772; c=relaxed/simple;
-	bh=GSaLo227wWTwUgzlnkxg1hGURfHYWckV0ZODqoK5dCY=;
+	s=arc-20240116; t=1744116681; c=relaxed/simple;
+	bh=3wAJ2MQhWBkMKloCHSB/5hHCVRkdfNmBJMFMimg6qjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cx75FQjrR5PBHAnrtZnVmGkJJvAFqoblRb+lc/AY42YA7ZyZ7WjssEGeNCGS4xJItaPMEJ+lvumBcw95l/6IL0wymP+DdjmcpzAQItva07ojERQ1dljTcc6iRf1xLKKn5tWOErZvY3LSD1JDU5Qr3pt/3CIxWsUjYuac3y1cdLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3dF55Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF45EC4CEE5;
-	Tue,  8 Apr 2025 12:02:51 +0000 (UTC)
+	 MIME-Version; b=WBzq0hU+255cJTAHPrs/dGLpiReGNgOsW4tl8BoHFaq9KSQkdEalmTUU8FJMrMz1iyPaqhRQIBuxEvJRLmVptvBGY1Hryvb9ljreMZeD1cMTEXcnHQucwvJFNrGcJltzRyfjyVemUqcLMWI/SvkVw/KW+CX8YafeNoA+76Kd7wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaNWUj3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F63C4CEE5;
+	Tue,  8 Apr 2025 12:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113772;
-	bh=GSaLo227wWTwUgzlnkxg1hGURfHYWckV0ZODqoK5dCY=;
+	s=korg; t=1744116680;
+	bh=3wAJ2MQhWBkMKloCHSB/5hHCVRkdfNmBJMFMimg6qjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3dF55Yl7CveZzzl7BFCK/y8UFeU27FEwO82wKNjEGsZb8Pjg5OgO0shwWNX7E6GJ
-	 U6mAoDT2vJtnoE87d6tUiw1qbVb6yIPY41RJb+0lYurEl2Z0iqGIwvaK95N5L7eJ+C
-	 ehgZ231AUv2T9eWFV5VOy6+EF8khsz3xmAMuxddQ=
+	b=IaNWUj3fpecucKMjTrp4lCFGyZg252SZW24wJVYJNkEfV/FkUaP+fcE+TTshmZFpg
+	 3HWcSdLc4v3R0Aa/Eo0nmxz8l8er1YVUP4s5s0AT3lu8JSN9U/t8FXbQXfFddI9hvT
+	 u393eKMLi+j1UOe3gvO76cmZvACMvq45xVdXhFco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/154] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Subject: [PATCH 6.12 230/423] exfat: fix the infinite loop in exfat_find_last_cluster()
 Date: Tue,  8 Apr 2025 12:49:16 +0200
-Message-ID: <20250408104815.774086658@linuxfoundation.org>
+Message-ID: <20250408104851.084154385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
+[ Upstream commit b0522303f67255926b946aa66885a0104d1b2980 ]
 
-The VMBus driver manages the MMIO space it owns via the hyperv_mmio
-resource tree. Because the synthetic video framebuffer portion of the
-MMIO space is initially setup by the Hyper-V host for each guest, the
-VMBus driver does an early reserve of that portion of MMIO space in the
-hyperv_mmio resource tree. It saves a pointer to that resource in
-fb_mmio. When a VMBus driver requests MMIO space and passes "true"
-for the "fb_overlap_ok" argument, the reserved framebuffer space is
-used if possible. In that case it's not necessary to do another request
-against the "shadow" hyperv_mmio resource tree because that resource
-was already requested in the early reserve steps.
+In exfat_find_last_cluster(), the cluster chain is traversed until
+the EOF cluster. If the cluster chain includes a loop due to file
+system corruption, the EOF cluster cannot be traversed, resulting
+in an infinite loop.
 
-However, the vmbus_free_mmio() function currently does no special
-handling for the fb_mmio resource. When a framebuffer device is
-removed, or the driver is unbound, the current code for
-vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
-pointing to memory that has been freed. If the same or another
-driver is subsequently bound to the device, vmbus_allocate_mmio()
-checks against fb_mmio, and potentially gets garbage. Furthermore
-a second unbind operation produces this "nonexistent resource" error
-because of the unbalanced behavior between vmbus_allocate_mmio() and
-vmbus_free_mmio():
+If the number of clusters indicated by the file size is inconsistent
+with the cluster chain length, exfat_find_last_cluster() will return
+an error, so if this inconsistency is found, the traversal can be
+aborted without traversing to the EOF cluster.
 
-[   55.499643] resource: Trying to free nonexistent
-			resource <0x00000000f0000000-0x00000000f07fffff>
-
-Fix this by adding logic to vmbus_free_mmio() to recognize when
-MMIO space in the fb_mmio reserved area would be released, and don't
-release it. This filtering ensures the fb_mmio resource always exists,
-and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
-
-Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
+Reported-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f7d147e6db52b1e09dba
+Tested-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Fixes: 31023864e67a ("exfat: add fat entry operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/exfat/fatent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 488ea7810ad99..ecf79f3126b58 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -2155,12 +2155,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- 	struct resource *iter;
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 6f3651c6ca91e..8df5ad6ebb10c 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -265,7 +265,7 @@ int exfat_find_last_cluster(struct super_block *sb, struct exfat_chain *p_chain,
+ 		clu = next;
+ 		if (exfat_ent_get(sb, clu, &next))
+ 			return -EIO;
+-	} while (next != EXFAT_EOF_CLUSTER);
++	} while (next != EXFAT_EOF_CLUSTER && count <= p_chain->size);
  
- 	mutex_lock(&hyperv_mmio_lock);
-+
-+	/*
-+	 * If all bytes of the MMIO range to be released are within the
-+	 * special case fb_mmio shadow region, skip releasing the shadow
-+	 * region since no corresponding __request_region() was done
-+	 * in vmbus_allocate_mmio().
-+	 */
-+	if (fb_mmio && start >= fb_mmio->start &&
-+	    (start + size - 1 <= fb_mmio->end))
-+		goto skip_shadow_release;
-+
- 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
- 		if ((iter->start >= start + size) || (iter->end <= start))
- 			continue;
- 
- 		__release_region(iter, start, size);
- 	}
-+
-+skip_shadow_release:
- 	release_mem_region(start, size);
- 	mutex_unlock(&hyperv_mmio_lock);
- 
+ 	if (p_chain->size != count) {
+ 		exfat_fs_error(sb,
 -- 
 2.39.5
 
