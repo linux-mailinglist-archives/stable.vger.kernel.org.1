@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD111A8037B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01847A80267
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF55B3BBEA7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0920880236
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5229126988C;
-	Tue,  8 Apr 2025 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C76268681;
+	Tue,  8 Apr 2025 11:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teT7REkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtgaIGSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E836267B89;
-	Tue,  8 Apr 2025 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B1267F55;
+	Tue,  8 Apr 2025 11:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113047; cv=none; b=aFYL/SYiebj71uhTWrg9I5fWh+TpvLDfb60bJGeaqj42SqwhhAhf+05aK2uw0lpLXCx93eCmZhVrRmGWzw60mCov2/ORB4tJvm2u3uHrFIUcgxGGovk0/ISGlWXqP6wZQ99+GPZV5Q6JXhR95Z3Ml3JghyPYkJImQn0UxgVMakU=
+	t=1744112477; cv=none; b=a30goNw/9eUe/JDuOkRF5i0G7Uqx6xycTX4lt8Fl7TYG13eIUd3z7pm04ndlQqVICMGogU8dyHVnVagMVp+dYn3ROS6OOpjeV2n/fq+vtOSVQ9mkUNOGMRuZQmU/TtQLblwQufb+B4hD61RY7ZH7ltqVyJ3uQVMjV21P49F3v1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113047; c=relaxed/simple;
-	bh=sZ4PSkjopCe/ZHvi5CMg+ZWNhDjldJ36qzJ057vTI0I=;
+	s=arc-20240116; t=1744112477; c=relaxed/simple;
+	bh=rnOqrvysp7JUzWgGS5VYRw6rtUKvkutfZzPmMM32SMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEi6RM09WLVIN4f/TiuIsMJ5swdMZFfhAmb17NbU4XV2Eck67JLQ0JqaywxUyMrQ4VIEcurUf5ackTBpp4jUshvBFfiQ8o/DMPp5YnJUHl8c/qmXNp54QtujaJ2nm2GdRRiBXXQlv6wvAn8RQhTWhWYLGSDTa1lAfj41Oo91yWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teT7REkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9220EC4CEE5;
-	Tue,  8 Apr 2025 11:50:46 +0000 (UTC)
+	 MIME-Version; b=XYbKBR4NomCig8sen1t37pYFB+xk+Hv8kfnDWw2do03/ZBsWaBsU7RnwLGNi4wkIDHJXNhcihpaVBGPuF87E20K+VPwLzv+goiOhhUNcJzTnWY42kGVm4l1g7eFAPIk4xXkxc2XjVfYiHtLqaI57BB1ZgsZWYcP5HlLVSxqRxbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtgaIGSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6E4C4CEEC;
+	Tue,  8 Apr 2025 11:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113046;
-	bh=sZ4PSkjopCe/ZHvi5CMg+ZWNhDjldJ36qzJ057vTI0I=;
+	s=korg; t=1744112477;
+	bh=rnOqrvysp7JUzWgGS5VYRw6rtUKvkutfZzPmMM32SMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=teT7REkqJtM9b2IzRDlR2LiWzizWfei3cc2TuLhABu/Z/c/oWtFkHeVd8yMXFnsmG
-	 iEeCdh+urLWrR2uyJ5suBmxk8jy+H1Y8Zxl0CHUGXHag7JehheaFDVaEfS7rNWWxRj
-	 Ink2Ywpt/r8a8Jq2Jfj1GhkgzWgW6Kg1AJUe5+4w=
+	b=TtgaIGSXdfq5YarCxHzks3QI2GAI0P3kHe/8eqq/lCDcS9VtpB1NSGX0Z+3oBvImC
+	 wG33+qpxe4fCIGSM38y/morBAjoaoDtl1a8lzQwHHOn0TznAVFh1MG6fTBWmc46gIa
+	 QLsImzDWd2yqaor50N96UNClCeA1TBfLNLe8xz0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/268] EDAC/ie31200: Fix the size of EDAC_MC_LAYER_CHIP_SELECT layer
+Subject: [PATCH 5.15 043/279] sctp: Fix undefined behavior in left shift operation
 Date: Tue,  8 Apr 2025 12:47:06 +0200
-Message-ID: <20250408104828.923192918@linuxfoundation.org>
+Message-ID: <20250408104827.541701645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit d59d844e319d97682c8de29b88d2d60922a683b3 ]
+[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
 
-The EDAC_MC_LAYER_CHIP_SELECT layer pertains to the rank, not the DIMM.
-Fix its size to reflect the number of ranks instead of the number of DIMMs.
-Also delete the unused macros IE31200_{DIMMS,RANKS}.
+According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
+"If E1 has a signed type and E1 x 2^E2 is not representable in the result
+type, the behavior is undefined."
 
-Fixes: 7ee40b897d18 ("ie31200_edac: Introduce the driver")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-2-qiuxu.zhuo@intel.com
+Shifting 1 << 31 causes signed integer overflow, which leads to undefined
+behavior.
+
+Fix this by explicitly using '1U << 31' to ensure the shift operates on
+an unsigned type, avoiding undefined behavior.
+
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 9ef13570f2e54..98d74c604d726 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -91,8 +91,6 @@
- 	 (((did) & PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK) ==                 \
- 	  PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK))
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index ee6514af830f7..0527728aee986 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
+ 	 *     value SHOULD be the smallest TSN not acknowledged by the
+ 	 *     receiver of the request plus 2^31.
+ 	 */
+-	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
++	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
+ 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
+ 			 init_tsn, GFP_ATOMIC);
  
--#define IE31200_DIMMS			4
--#define IE31200_RANKS			8
- #define IE31200_RANKS_PER_CHANNEL	4
- #define IE31200_DIMMS_PER_CHANNEL	2
- #define IE31200_CHANNELS		2
-@@ -426,7 +424,7 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 
- 	nr_channels = how_many_channels(pdev);
- 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
--	layers[0].size = IE31200_DIMMS;
-+	layers[0].size = IE31200_RANKS_PER_CHANNEL;
- 	layers[0].is_virt_csrow = true;
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = nr_channels;
 -- 
 2.39.5
 
