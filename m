@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72713A804B4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E11CA80565
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53914425EE7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD7642486F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7F026A1A1;
-	Tue,  8 Apr 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64962676CA;
+	Tue,  8 Apr 2025 12:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBhzxDCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO5KA2gY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADE92676E1;
-	Tue,  8 Apr 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7271626A08E;
+	Tue,  8 Apr 2025 12:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113709; cv=none; b=Zjl5YiKT7g5sL58A9WhaDafqBZ8OhZyz9mhqffmiKCPqNoTsqcm2CgV71+v5pl90J44ReNP9kmgCxCscybmLQA86qUdbTjhscDhOe2bh5mfgWFa1pzTJpDJZF8TzMbmLXrfaeD9pzK2n7WeJesbHrhLcAe20C/KKoAiAbay8PGQ=
+	t=1744114081; cv=none; b=aqYuDym0o93Di7SRs8MYp1FDFqTudscv/245002VkDqXWTJokzkggixkvIAB7wHZ+UWytWuLVDTQoZRNyZlP/ujSm91AvFN+l2TUj9jlhenqn1lQTbwwKwq34JFVd6cdF1qS6aIdMAuvN5AezUBtNibpX5LoQvs/xIZGKCx6aDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113709; c=relaxed/simple;
-	bh=GI2V6e1L0JwQKl2Q+5GqnsBSufJD1M7oAPvUlX0D5kA=;
+	s=arc-20240116; t=1744114081; c=relaxed/simple;
+	bh=eHqw4k0GrRlpPmRnKX5S8X6k62K0/g/2JAgKK07DFQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk8M+tiqk5i6SDkWQjQF/+PGUezNWzYulYy0sdbB+vWeMJ3fpWwebMdid7DqQsyPaL39uOfzBXedbMhOEl+Z51Ip17yfBB01ev+HdzR1jthDdZRrm8/rpr+jn59+wenyWWmc+LfMrGNUAfVkzLp9J0N38o+/yLwMFgTJGIZ1QOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBhzxDCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7B9C4CEE5;
-	Tue,  8 Apr 2025 12:01:48 +0000 (UTC)
+	 MIME-Version; b=CRdR1VYcsIwlrxs81svHNHXf9iwVVJeOEdb/lJROMTqVARt4xlU2kxVpevzP9R9Zad2NkID671UmX7nsPn5zu86IEi8CcwU+QNo6eDU/h6pTfciC4q2oZPmkNXibnSr+CsAfg5eUC9gyLZmZwuWRI9wnhiVvnLPJGWTOMbWpsEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO5KA2gY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0000BC4CEE5;
+	Tue,  8 Apr 2025 12:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113708;
-	bh=GI2V6e1L0JwQKl2Q+5GqnsBSufJD1M7oAPvUlX0D5kA=;
+	s=korg; t=1744114081;
+	bh=eHqw4k0GrRlpPmRnKX5S8X6k62K0/g/2JAgKK07DFQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBhzxDCTxoZJCsYDZd6D2oocle1UVn1so3XLJGaWblrn+IwWbyE2gqihN6bdavDUP
-	 RTJ2plLEFnH3WdoSzJR9L5JQSUMrg03YHztEWr5QaxgGVuhwljQCtepnUqadKV0OCT
-	 en48+dj++wB5tGYHG95crpfy0VUGWwV/PXbbIFjw=
+	b=BO5KA2gYtDmZEvxO5l4DUlPRT1JT55V7adnG+5lmSuSkuZ6BL4a0/t/X33fouZ01b
+	 GNVrIie+AtxCBBqiniiuJPVXzudq6IRmG7pogG4WYYpZLfnPoGlTL1CcHwR5pw8FtX
+	 yD5WoRFCIaDUEM1orX5HjZS2eIseyTe97bM7PE/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelos Oikonomopoulos <angelos@igalia.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 260/268] arm64: Dont call NULL in do_compat_alignment_fixup()
+	Simon Tatham <anakin@pobox.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 130/154] affs: generate OFS sequence numbers starting at 1
 Date: Tue,  8 Apr 2025 12:51:11 +0200
-Message-ID: <20250408104835.590522934@linuxfoundation.org>
+Message-ID: <20250408104819.478105893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelos Oikonomopoulos <angelos@igalia.com>
+From: Simon Tatham <anakin@pobox.com>
 
-commit c28f31deeacda307acfee2f18c0ad904e5123aac upstream.
+[ Upstream commit e4cf8ec4de4e13f156c1d61977d282d90c221085 ]
 
-do_alignment_t32_to_handler() only fixes up alignment faults for
-specific instructions; it returns NULL otherwise (e.g. LDREX). When
-that's the case, signal to the caller that it needs to proceed with the
-regular alignment fault handling (i.e. SIGBUS). Without this patch, the
-kernel panics:
+If I write a file to an OFS floppy image, and try to read it back on
+an emulated Amiga running Workbench 1.3, the Amiga reports a disk
+error trying to read the file. (That is, it's unable to read it _at
+all_, even to copy it to the NIL: device. It isn't a matter of getting
+the wrong data and being unable to parse the file format.)
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000086000006
-    EC = 0x21: IABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x06: level 2 translation fault
-  user pgtable: 4k pages, 48-bit VAs, pgdp=00000800164aa000
-  [0000000000000000] pgd=0800081fdbd22003, p4d=0800081fdbd22003, pud=08000815d51c6003, pmd=0000000000000000
-  Internal error: Oops: 0000000086000006 [#1] SMP
-  Modules linked in: cfg80211 rfkill xt_nat xt_tcpudp xt_conntrack nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user xfrm_algo xt_addrtype nft_compat br_netfilter veth nvme_fa>
-   libcrc32c crc32c_generic raid0 multipath linear dm_mod dax raid1 md_mod xhci_pci nvme xhci_hcd nvme_core t10_pi usbcore igb crc64_rocksoft crc64 crc_t10dif crct10dif_generic crct10dif_ce crct10dif_common usb_common i2c_algo_bit i2c>
-  CPU: 2 PID: 3932954 Comm: WPEWebProcess Not tainted 6.1.0-31-arm64 #1  Debian 6.1.128-1
-  Hardware name: GIGABYTE MP32-AR1-00/MP32-AR1-00, BIOS F18v (SCP: 1.08.20211002) 12/01/2021
-  pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : 0x0
-  lr : do_compat_alignment_fixup+0xd8/0x3dc
-  sp : ffff80000f973dd0
-  x29: ffff80000f973dd0 x28: ffff081b42526180 x27: 0000000000000000
-  x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
-  x23: 0000000000000004 x22: 0000000000000000 x21: 0000000000000001
-  x20: 00000000e8551f00 x19: ffff80000f973eb0 x18: 0000000000000000
-  x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-  x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-  x11: 0000000000000000 x10: 0000000000000000 x9 : ffffaebc949bc488
-  x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-  x5 : 0000000000400000 x4 : 0000fffffffffffe x3 : 0000000000000000
-  x2 : ffff80000f973eb0 x1 : 00000000e8551f00 x0 : 0000000000000001
-  Call trace:
-   0x0
-   do_alignment_fault+0x40/0x50
-   do_mem_abort+0x4c/0xa0
-   el0_da+0x48/0xf0
-   el0t_32_sync_handler+0x110/0x140
-   el0t_32_sync+0x190/0x194
-  Code: bad PC value
-  ---[ end trace 0000000000000000 ]---
+This is because the 'sequence number' field in the OFS data block
+header is supposed to be based at 1, but affs writes it based at 0.
+All three locations changed by this patch were setting the sequence
+number to a variable 'bidx' which was previously obtained by dividing
+a file position by bsize, so bidx will naturally use 0 for the first
+block. Therefore all three should add 1 to that value before writing
+it into the sequence number field.
 
-Signed-off-by: Angelos Oikonomopoulos <angelos@igalia.com>
-Fixes: 3fc24ef32d3b ("arm64: compat: Implement misalignment fixups for multiword loads")
-Cc: <stable@vger.kernel.org> # 6.1.x
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250401085150.148313-1-angelos@igalia.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this change, the Amiga successfully reads the file.
+
+For data block reference: https://wiki.osdev.org/FFS_(Amiga)
+
+Signed-off-by: Simon Tatham <anakin@pobox.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/compat_alignment.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/affs/file.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/compat_alignment.c
-+++ b/arch/arm64/kernel/compat_alignment.c
-@@ -368,6 +368,8 @@ int do_compat_alignment_fixup(unsigned l
- 		return 1;
- 	}
- 
-+	if (!handler)
-+		return 1;
- 	type = handler(addr, instr, regs);
- 
- 	if (type == TYPE_ERROR || type == TYPE_FAULT)
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index 82bb38370aa9a..6dae4ca09be5f 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -596,7 +596,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 		BUG_ON(tmp > bsize);
+ 		AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 		AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 		affs_fix_checksum(sb, bh);
+ 		bh->b_state &= ~(1UL << BH_New);
+@@ -746,7 +746,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		if (buffer_new(bh)) {
+ 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(bsize);
+ 			AFFS_DATA_HEAD(bh)->next = 0;
+ 			bh->b_state &= ~(1UL << BH_New);
+@@ -780,7 +780,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		if (buffer_new(bh)) {
+ 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 			AFFS_DATA_HEAD(bh)->next = 0;
+ 			bh->b_state &= ~(1UL << BH_New);
+-- 
+2.39.5
+
 
 
 
