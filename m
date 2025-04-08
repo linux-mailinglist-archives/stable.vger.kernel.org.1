@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267B2A809EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19327A8061F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77094C6E3D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F7116864D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDE726A0CF;
-	Tue,  8 Apr 2025 12:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8FC268681;
+	Tue,  8 Apr 2025 12:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdvPV2JQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1ft8dC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFFE268C6B;
-	Tue,  8 Apr 2025 12:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D99625F97B;
+	Tue,  8 Apr 2025 12:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116081; cv=none; b=GkfktNFjPJop3WWG5AWKmqVzmMYLcM18H/76hbxXKTu0WMaEclZlHdavZURkedE2SwKUEC8W/IxVHnGbaL9n2ELrdVcX2QxnYZ4k6uQacTKHyxxI9Hg3Gf6SzakGeZWRnxI83Md5lwv9m2FaOXLEaWIz0213IQohwX9fq/T45Lo=
+	t=1744114464; cv=none; b=CfCQvHsGLZGrggD3/5ZlWKi4m99AaIqkkZmPKyQzcSdKBGIuOEqXQoODG2X23jf1EUNOhuj80ZL0eNI4ltKekaFMS0k+EPHKpmKLpf+U0bjKJFN0CQkBzVpZtvwd3iRNPdrYbAnLKP8SvrOmnVRGaXsh4Xgb8TwxkUjUNoeJkxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116081; c=relaxed/simple;
-	bh=3JL+HVw10jrAYJMZl8ygacgj4c5RdvPcq+PZdGqrFQ0=;
+	s=arc-20240116; t=1744114464; c=relaxed/simple;
+	bh=0TXgf5XUY/Mb/SR6J6fg6CUYLyKF4p3BO5J/47fO5cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWPFrcfZc81UhO62N+QiPaJExgpt5bx4MC+FwcuBhSg/7vRqobti7vyHVEX4ZrxdfxsgWC3m5ZZ5IOk1JaIIR9MygHDv2OiPiS7tDa9w6/lh10Ap2kYxG1ik5EUfISF0L5rIKAzVTpg3zm8CgdFE+pxwgHBQbbJCu1yEFucXTmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdvPV2JQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670D7C4CEE5;
-	Tue,  8 Apr 2025 12:41:20 +0000 (UTC)
+	 MIME-Version; b=bgyFnhi2dN4pGrI3fJduwgGSDNQks1gwfJto9WAZBA9Atb+LwVlKfiVc5GPWTd8Yz7mPpMpHL0Win94CVARzz39TaLwOvuL2igZUVH/6bp6lN+JP/3BhfBQp4MzNikU8uBHciN0y0iH0Ez6OFi9/FczeYxXr87jz78YDPlTyeLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1ft8dC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FADC4CEE5;
+	Tue,  8 Apr 2025 12:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116081;
-	bh=3JL+HVw10jrAYJMZl8ygacgj4c5RdvPcq+PZdGqrFQ0=;
+	s=korg; t=1744114463;
+	bh=0TXgf5XUY/Mb/SR6J6fg6CUYLyKF4p3BO5J/47fO5cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdvPV2JQ5nnDSNM5elb27NI4m1cwAzYY2OhRd8H5u3S+CNQvv3TF53KO1EgJruEyE
-	 dKWFW2XOOxVEwk/bNKOOzRM9Z32SaYrG8uLXaiIZogNPfmleUeL9ciUk2epv70FqJQ
-	 304//ioUcn/aDziWa0peHgXeciWyyECtHUWZYc3I=
+	b=V1ft8dC/ef+XDL5Tif1ptTIb3WJ7h89n40jtNeM+RDx3sUzb7QI5Bhk39RsSnw4hy
+	 rniAImgOdcDhdLNn2HdyJV5KkkBuBnazxLbnLXjzCg00HEv55gbpOiHkcEWxT8StlF
+	 i81bZyRYNWjZ65YzFIIsKC4o1ArBZN0sJ/Vdj+gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/423] watch_queue: fix pipe accounting mismatch
+Subject: [PATCH 6.13 115/499] PCI: Fix NULL dereference in SR-IOV VF creation error path
 Date: Tue,  8 Apr 2025 12:45:27 +0200
-Message-ID: <20250408104845.716515740@linuxfoundation.org>
+Message-ID: <20250408104854.072919600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
+[ Upstream commit 04d50d953ab46d96b0b32d5ad955fceaa28622db ]
 
-Currently, watch_queue_set_size() modifies the pipe buffers charged to
-user->pipe_bufs without updating the pipe->nr_accounted on the pipe
-itself, due to the if (!pipe_has_watch_queue()) test in
-pipe_resize_ring(). This means that when the pipe is ultimately freed,
-we decrement user->pipe_bufs by something other than what than we had
-charged to it, potentially leading to an underflow. This in turn can
-cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
+Clean up when virtfn setup fails to prevent NULL pointer dereference
+during device removal. The kernel oops below occurred due to incorrect
+error handling flow when pci_setup_device() fails.
 
-To remedy this, explicitly account for the pipe usage in
-watch_queue_set_size() to match the number set via account_pipe_buffers()
+Add pci_iov_scan_device(), which handles virtfn allocation and setup and
+cleans up if pci_setup_device() fails, so pci_iov_add_virtfn() doesn't need
+to call pci_stop_and_remove_bus_device().  This prevents accessing
+partially initialized virtfn devices during removal.
 
-(It's unclear why watch_queue_set_size() does not update nr_accounted;
-it may be due to intentional overprovisioning in watch_queue_set_size()?)
+  BUG: kernel NULL pointer dereference, address: 00000000000000d0
+  RIP: 0010:device_del+0x3d/0x3d0
+  Call Trace:
+   pci_remove_bus_device+0x7c/0x100
+   pci_iov_add_virtfn+0xfa/0x200
+   sriov_enable+0x208/0x420
+   mlx5_core_sriov_configure+0x6a/0x160 [mlx5_core]
+   sriov_numvfs_store+0xae/0x1a0
 
-Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20250310084524.599225-1-shayd@nvidia.com
+Fixes: e3f30d563a38 ("PCI: Make pci_destroy_dev() concurrent safe")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+[bhelgaas: commit log, return ERR_PTR(-ENOMEM) directly]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watch_queue.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pci/iov.c | 48 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index d36242fd49364..e55f9810b91ad 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -269,6 +269,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
- 	if (ret < 0)
- 		goto error;
+diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
+index 4be402fe9ab94..fd491d3d2cc61 100644
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -285,23 +285,16 @@ const struct attribute_group sriov_vf_dev_attr_group = {
+ 	.is_visible = sriov_vf_attrs_are_visible,
+ };
  
-+	/*
-+	 * pipe_resize_ring() does not update nr_accounted for watch_queue
-+	 * pipes, because the above vastly overprovisions. Set nr_accounted on
-+	 * and max_usage this pipe to the number that was actually charged to
-+	 * the user above via account_pipe_buffers.
-+	 */
-+	pipe->max_usage = nr_pages;
-+	pipe->nr_accounted = nr_pages;
+-int pci_iov_add_virtfn(struct pci_dev *dev, int id)
++static struct pci_dev *pci_iov_scan_device(struct pci_dev *dev, int id,
++					   struct pci_bus *bus)
+ {
+-	int i;
+-	int rc = -ENOMEM;
+-	u64 size;
+-	struct pci_dev *virtfn;
+-	struct resource *res;
+ 	struct pci_sriov *iov = dev->sriov;
+-	struct pci_bus *bus;
+-
+-	bus = virtfn_add_bus(dev->bus, pci_iov_virtfn_bus(dev, id));
+-	if (!bus)
+-		goto failed;
++	struct pci_dev *virtfn;
++	int rc;
+ 
+ 	virtfn = pci_alloc_dev(bus);
+ 	if (!virtfn)
+-		goto failed0;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	virtfn->devfn = pci_iov_virtfn_devfn(dev, id);
+ 	virtfn->vendor = dev->vendor;
+@@ -314,8 +307,35 @@ int pci_iov_add_virtfn(struct pci_dev *dev, int id)
+ 		pci_read_vf_config_common(virtfn);
+ 
+ 	rc = pci_setup_device(virtfn);
+-	if (rc)
+-		goto failed1;
++	if (rc) {
++		pci_dev_put(dev);
++		pci_bus_put(virtfn->bus);
++		kfree(virtfn);
++		return ERR_PTR(rc);
++	}
 +
- 	ret = -ENOMEM;
- 	pages = kcalloc(nr_pages, sizeof(struct page *), GFP_KERNEL);
- 	if (!pages)
++	return virtfn;
++}
++
++int pci_iov_add_virtfn(struct pci_dev *dev, int id)
++{
++	struct pci_bus *bus;
++	struct pci_dev *virtfn;
++	struct resource *res;
++	int rc, i;
++	u64 size;
++
++	bus = virtfn_add_bus(dev->bus, pci_iov_virtfn_bus(dev, id));
++	if (!bus) {
++		rc = -ENOMEM;
++		goto failed;
++	}
++
++	virtfn = pci_iov_scan_device(dev, id, bus);
++	if (IS_ERR(virtfn)) {
++		rc = PTR_ERR(virtfn);
++		goto failed0;
++	}
+ 
+ 	virtfn->dev.parent = dev->dev.parent;
+ 	virtfn->multifunction = 0;
 -- 
 2.39.5
 
