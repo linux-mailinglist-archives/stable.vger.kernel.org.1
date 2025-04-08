@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-129952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7D8A801C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EE4A800B5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9E27A8D35
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 533A67A80B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFF227EBD;
-	Tue,  8 Apr 2025 11:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A6926B0BC;
+	Tue,  8 Apr 2025 11:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZsOZbyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNqWEX4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E153119AD5C;
-	Tue,  8 Apr 2025 11:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E1126B0A7;
+	Tue,  8 Apr 2025 11:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112418; cv=none; b=bl0O4PigYPb4Hmbw1AgRV2zsY7p+GeaYvCUDkbxyToer0OBRJBdB+OE9qpy+PdYn1EaRhx7Fpj9joCOSwRwuX/ePjNRnfg3pDsjFCfD5sPhXoEdifQBeoPm+wFXJYFV7JQi7CjozZ4LlqDYL5EI/TLvGypqOo8vDwQQMAqaE4w4=
+	t=1744111762; cv=none; b=ptHjaFYSAsHGm6qPJDgdyd55wy7WtDG06g284dtALPzE41+y8TPB8cqorlePvHUgFQzmy28u0wwlU1aOJNisbPvXktcUnXL50p1MAuf13o2EkwodoXYP6eIg3gD3dgVZxmnk+2JMRbCRNV1xCr47vjn7C36s1fC8TwCuCWyu/4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112418; c=relaxed/simple;
-	bh=Jy0VYueuJrzbE41CDE3E16x2lrIaJ1G09NLqjNI1JhY=;
+	s=arc-20240116; t=1744111762; c=relaxed/simple;
+	bh=H3CA9wYjvwNBslnOEC0ne7WgV7bVJNlZMEms/n8ptqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcDewg8pyJR0EUYeyfYT83Czc8ywGlJ/hLSjkQFmvoi6hojiqKJfTm6FwqmaftDnwY1grVWIMqkTIh3hfLbUWEICLd9ga/P62dzkTeqNxDnA99qscFY3TIfEGFED9Cho8onDEqkUytmPBxpi6JZdlEvbo3AvlscmX7vbo1HH7J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZsOZbyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7395FC4CEE5;
-	Tue,  8 Apr 2025 11:40:17 +0000 (UTC)
+	 MIME-Version; b=A603ZjmB4G1CqmfmeRrH9fnto8fJbSd/iXg946ymYL33si5Mtb3kmIklKVJ+FM2j+K2YQXS3ny/UsQaeJkMKzU4ilJ40DDJ1/1ak8f2SELhcnoNroDz3yO2rzR0caH7KMEwbLanxdm8vVHw9s/e5yFYIdPwExSC28OpRXjBQrGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNqWEX4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C8FC4CEE5;
+	Tue,  8 Apr 2025 11:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112417;
-	bh=Jy0VYueuJrzbE41CDE3E16x2lrIaJ1G09NLqjNI1JhY=;
+	s=korg; t=1744111762;
+	bh=H3CA9wYjvwNBslnOEC0ne7WgV7bVJNlZMEms/n8ptqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZsOZbydZ8zV5r4DvTorjislnY490MPWXOKweShrsbMazWrHha+dz76sSwzGe46uy
-	 h+P02/wC38fDizaRFGmKEegKvedi/b/a8+4VqIQND0ZlXv7b528P70eOy50cp1xNf5
-	 2d/0NvkM1qqHO0EjRIV4P+dWeYvCp4a3Qimv2doE=
+	b=UNqWEX4q8bvBK5+FVCG2paOx0lV/qHHRkH5/dm3r2MqcPBdVcob9i37HghZFHGWaj
+	 kpN9n3mfqyRuxwrLuhm6Fzeq5U9pFBYzRsgB115363tTzCyI9lwBNIF5ODJQA03a0P
+	 vYJRcWmyPUjDmcKdc5Ss6/WWGgfc7IUZGH72WH/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.15 061/279] drm/amd/display: Fix slab-use-after-free on hdcp_work
-Date: Tue,  8 Apr 2025 12:47:24 +0200
-Message-ID: <20250408104827.996242790@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 548/731] objtool, spi: amd: Fix out-of-bounds stack access in amd_set_spi_freq()
+Date: Tue,  8 Apr 2025 12:47:25 +0200
+Message-ID: <20250408104927.023504130@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
+[ Upstream commit 76e51db43fe4aaaebcc5ddda67b0807f7c9bdecc ]
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+If speed_hz < AMD_SPI_MIN_HZ, amd_set_spi_freq() iterates over the
+entire amd_spi_freq array without breaking out early, causing 'i' to go
+beyond the array bounds.
 
-[How]
-Cancel the delayed work when destroying workqueue.
+Fix that by stopping the loop when it gets to the last entry, so the low
+speed_hz value gets clamped up to AMD_SPI_MIN_HZ.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes the following warning with an UBSAN kernel:
+
+  drivers/spi/spi-amd.o: error: objtool: amd_set_spi_freq() falls through to next function amd_spi_set_opcode()
+
+Fixes: 3fe26121dc3a ("spi: amd: Configure device speed")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Mark Brown <broonie@kernel.org>
+Cc: Raju Rangoju <Raju.Rangoju@amd.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/78fef0f2434f35be9095bcc9ffa23dd8cab667b9.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503161828.RUk9EhWx-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -396,6 +396,7 @@ void hdcp_destroy(struct kobject *kobj,
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index c85997478b819..17fc0b17e756d 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -302,7 +302,7 @@ static void amd_set_spi_freq(struct amd_spi *amd_spi, u32 speed_hz)
+ {
+ 	unsigned int i, spd7_val, alt_spd;
  
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
+-	for (i = 0; i < ARRAY_SIZE(amd_spi_freq); i++)
++	for (i = 0; i < ARRAY_SIZE(amd_spi_freq)-1; i++)
+ 		if (speed_hz >= amd_spi_freq[i].speed_hz)
+ 			break;
+ 
+-- 
+2.39.5
+
 
 
 
