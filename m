@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-129937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABBBA801F2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1879DA7FD7D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4771119E1821
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0FF1693F1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40253264A70;
-	Tue,  8 Apr 2025 11:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842F0269D1D;
+	Tue,  8 Apr 2025 10:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK7bKtXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqEwODWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0306219301;
-	Tue,  8 Apr 2025 11:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DAA269836;
+	Tue,  8 Apr 2025 10:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112378; cv=none; b=uWVHBxKt7qDwfULpOZKvacwE1nPpPdAqFJZtlrVt+6ix17vkfzyCpUf2PlxHRJRck06NfPHOvcNxdpouNbA2P1mad8g9VlR1mRLu90gL6wvnC9kS6h44pONbiCUMTa5a6kzJgGq+1Zn3dmQUx6uwaFLIwXAeEw3iZ5LCWyZS5QQ=
+	t=1744109784; cv=none; b=KBJ/VSACGHuFZIl23OsiZnWOTmhEpcxtRvVemqQLx5/XtPcQkMBTKAlSnjxBiHNMHyh/sv+DMyVh7iq+apBbXTV3R7Mgzw2iPKWBMCqC73sz1JrvYhGz+mBfB9rJqNM2GJ/psbXcfG/yyQFhYS4WgTi2GSGdG2wafw3tJ79/AWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112378; c=relaxed/simple;
-	bh=wlc1bjd8pgKqrcEUpHR42BFJvZN3R3WdxN3O/ntboBQ=;
+	s=arc-20240116; t=1744109784; c=relaxed/simple;
+	bh=8UDLuR4F2MMCKbJUSssgEgrWPbw9XLMISONPv2lswL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4tWZzlmLEBNIAYXfifL+OcGaCT5G2vGbyeTjp9dDt+/UObppcGyF12Z68XJanSANk74eMT6He1S5MbX3ULbOBHcvdb0k/XI0Ld6kzOVqBLCHyN+x3hrY06fgZf6BGwdOET1B6d+NkatPVRwS4HyDREERRSpLBYCu84OctfYqCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK7bKtXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81758C4CEE5;
-	Tue,  8 Apr 2025 11:39:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VV4Pv5V6bdmITg+FTysuCX0CjgkrFZbqj/ZrT8jPds2q+sNid4xnBbZRj9HqDL91wg0A0lyqNijm90l45IlOPXxV080oN/MuzJm1bJRrYOgGAlt/XqwCPBnQIx6ZmsXwrwQPdYKJr5YS1pEThywluspohcpt/SYonwf0Ek0Yn+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqEwODWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A8BC4CEE7;
+	Tue,  8 Apr 2025 10:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112377;
-	bh=wlc1bjd8pgKqrcEUpHR42BFJvZN3R3WdxN3O/ntboBQ=;
+	s=korg; t=1744109784;
+	bh=8UDLuR4F2MMCKbJUSssgEgrWPbw9XLMISONPv2lswL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aK7bKtXr0f55YoRh2b6Y+SWHgUd/whU5XbubDv0yr8Bv7kzZDlORgl+kge2SKgz5m
-	 YDYfpx98UXlI+GSKkAAKbxHtQ0j0K0QSFGselU68cbONkp5DSAGfmlOkofieFyBd6x
-	 bRc3rh6rKe87tNoKJNU+TDg/vXWarYK+BoEFXKl4=
+	b=sqEwODWFkpYifP34RMAcuGfwfwhddOCIpgQbyAwLINEkivTbTKBTcPirNOl0DFXNs
+	 +HajjQ+NLjtd7hXLVuIHlvBnI6pAAxyvUJgI05SHdQodj4PoesW9zA+FxEK/kOdll/
+	 uaf4YXGHFb4K2EplXjKEp4MkSQewJ0OZoPVbAa+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/279] ASoC: tas2764: Set the SDOUT polarity correctly
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 5.10 052/227] drm/atomic: Filter out redundant DPMS calls
 Date: Tue,  8 Apr 2025 12:47:10 +0200
-Message-ID: <20250408104827.644013583@linuxfoundation.org>
+Message-ID: <20250408104821.960623166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit f5468beeab1b1adfc63c2717b1f29ef3f49a5fab ]
+commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
 
-TX launch polarity needs to be the opposite of RX capture polarity, to
-generate the right bit slot alignment.
+Video players (eg. mpv) do periodic XResetScreenSaver() calls to
+keep the screen on while the video playing. The modesetting ddx
+plumbs these straight through into the kernel as DPMS setproperty
+ioctls, without any filtering whatsoever. When implemented via
+atomic these end up as empty commits on the crtc (which will
+nonetheless take one full frame), which leads to a dropped
+frame every time XResetScreenSaver() is called.
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-28-932760fd7e07@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's just filter out redundant DPMS property changes in the
+kernel to avoid this issue.
+
+v2: Explain the resulting commits a bit better (Sima)
+    Document the behaviour in uapi docs (Sima)
+
+Cc: stable@vger.kernel.org
+Testcase: igt/kms_flip/flip-vs-dpms-on-nop
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2764.c | 10 +++++++++-
- sound/soc/codecs/tas2764.h |  6 ++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
+ drivers/gpu/drm/drm_connector.c   |    4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 1951bae95b315..273bf4027a6e5 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -315,7 +315,7 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- {
- 	struct snd_soc_component *component = dai->component;
- 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0;
-+	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0, asi_cfg_4 = 0;
- 	int ret;
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -936,6 +936,10 @@ int drm_atomic_connector_commit_dpms(str
  
- 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-@@ -324,12 +324,14 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 		fallthrough;
- 	case SND_SOC_DAIFMT_NB_NF:
- 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_RISING;
-+		asi_cfg_4 = TAS2764_TDM_CFG4_TX_FALLING;
- 		break;
- 	case SND_SOC_DAIFMT_IB_IF:
- 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
- 		fallthrough;
- 	case SND_SOC_DAIFMT_IB_NF:
- 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_FALLING;
-+		asi_cfg_4 = TAS2764_TDM_CFG4_TX_RISING;
- 		break;
- 	}
- 
-@@ -339,6 +341,12 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = snd_soc_component_update_bits(component, TAS2764_TDM_CFG4,
-+					    TAS2764_TDM_CFG4_TX_MASK,
-+					    asi_cfg_4);
-+	if (ret < 0)
-+		return ret;
+ 	if (mode != DRM_MODE_DPMS_ON)
+ 		mode = DRM_MODE_DPMS_OFF;
 +
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_I2S:
- 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
-diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
-index b18a637bd9fa3..337bc611bee96 100644
---- a/sound/soc/codecs/tas2764.h
-+++ b/sound/soc/codecs/tas2764.h
-@@ -75,6 +75,12 @@
- #define TAS2764_TDM_CFG3_RXS_SHIFT	0x4
- #define TAS2764_TDM_CFG3_MASK		GENMASK(3, 0)
- 
-+/* TDM Configuration Reg4 */
-+#define TAS2764_TDM_CFG4		TAS2764_REG(0X0, 0x0d)
-+#define TAS2764_TDM_CFG4_TX_MASK	BIT(0)
-+#define TAS2764_TDM_CFG4_TX_RISING	0x0
-+#define TAS2764_TDM_CFG4_TX_FALLING	BIT(0)
++	if (connector->dpms == mode)
++		goto out;
 +
- /* TDM Configuration Reg5 */
- #define TAS2764_TDM_CFG5		TAS2764_REG(0X0, 0x0e)
- #define TAS2764_TDM_CFG5_VSNS_MASK	BIT(6)
--- 
-2.39.5
-
+ 	connector->dpms = mode;
+ 
+ 	crtc = connector->state->crtc;
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -990,6 +990,10 @@ static const struct drm_prop_enum_list d
+  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
+  * 	implemented in the DRM core.
+  *
++ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
++ * 	change is completely skipped, otherwise a full atomic commit will occur.
++ * 	On legacy drivers the exact behavior is driver specific.
++ *
+  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
+  * 	userspace must use "ACTIVE" on the CRTC instead.
+  *
 
 
 
