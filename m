@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-129061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAAEA7FDE7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57FDA8010D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFDE4443C1D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3663218943E3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07B626B084;
-	Tue,  8 Apr 2025 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5852E268C5D;
+	Tue,  8 Apr 2025 11:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irvMBMwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAeu5Tme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9593526982F;
-	Tue,  8 Apr 2025 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15668263C78;
+	Tue,  8 Apr 2025 11:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110007; cv=none; b=r913U4vHzRu2IE73jrcXpUuUAjP38KuazocRoYuP9v95btha8lUgIGsh0XdRGrYE6wWX8WJgJvemDvD4WCSpOqiTqCbkakWClwHYPp/ZhTPnik7kJLR0FVuLOjYNM5o7HOQJbjmYecJGFxR7HbVzXtROHiG7Qps0Xc3KH7nSSiU=
+	t=1744111941; cv=none; b=UTRe3ULNmocUnUyL3v4vRE+j6uzUdUHQVi59F5w1cDfA3gB2YKy4f/sSXpypvjDdugEWYzGrMC9sMPOtMyB5u2yryGZsspQLPOdmh5SA0HWqMUxPjUkXrtB38L2WrVUzYohum/Cfjn4bbhF164jCk5b4zyPkuUFfgrZKZWbgKG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110007; c=relaxed/simple;
-	bh=yzfi8a2zykdWLTj3gkX2rs0n7Bla1uNtURGITVpxPNo=;
+	s=arc-20240116; t=1744111941; c=relaxed/simple;
+	bh=XNTUzK/n3suvwTI2yZE18LYd4Rk9K4j4Zsklff404sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APTDHkE6zvtYz2/AHjblBF+m0gezz3RhfgwbVDUS6FulnfGMDAuhP+ScChT6KRoX2cQ6/Mv5R7VMC8zFjavr70XMNXDBATKkeY7Cn66NgyyzJMFIgCLS9nSY7tAL0YkIG5xlwzFvZnwyLsKGBapiS+dPYnWva7tcBlLqMRRqDl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irvMBMwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE972C4CEE5;
-	Tue,  8 Apr 2025 11:00:06 +0000 (UTC)
+	 MIME-Version; b=h7E2Exa2iqpzYWouoNUDffwQ84vBW1nZ0yaxLTaJvMRsMnXcIupna5JOlRDoqorHCs+6o5ysih8JoK2DE8+8okTQyLJ8TSo7DEX7pZUZoXPiPMLrXDWQnHHENxaJv4YbRXODmefwJWLGZQAh6s2wdthKEym5rB0vIFyo5o7bEYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAeu5Tme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF3AC4CEE5;
+	Tue,  8 Apr 2025 11:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110007;
-	bh=yzfi8a2zykdWLTj3gkX2rs0n7Bla1uNtURGITVpxPNo=;
+	s=korg; t=1744111940;
+	bh=XNTUzK/n3suvwTI2yZE18LYd4Rk9K4j4Zsklff404sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irvMBMwCfkHg9DBNNPvZ2GM+FqQ1usietAezA+pEk9BRgJtwYUk+nDRon4cfd+q50
-	 pp2Sv94CUi12EXkvc0TJrQeUJAt3cywPf5u41aS9DqL8xqYw75ThgUjuyYRZE8XQkJ
-	 I0/Tn+ofvwsrXg1U/9qxMyCG7nivtPBCXDQiKp94=
+	b=dAeu5TmeFXG/FEto5YxtH1DBdqCkxSMN9FmGt0HUJ5ZR0E7/VRf+Yocy4kyPV+ctO
+	 Rt777pxfW0SEwz2rE/s5sk8byi0yaKBtZbeNFpzvZ0UxIjO+yqLoVGXRtNX2Kmbjig
+	 2iyHkiCA8alaDYpSgaKCbf/cVC0HbL9dDLVFiRhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Bharath R <bharath.r@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/227] PCI/portdrv: Only disable pciehp interrupts early when needed
+Subject: [PATCH 6.14 616/731] ixgbe: fix media type detection for E610 device
 Date: Tue,  8 Apr 2025 12:48:33 +0200
-Message-ID: <20250408104824.366564511@linuxfoundation.org>
+Message-ID: <20250408104928.599651428@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Tang <feng.tang@linux.alibaba.com>
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 
-[ Upstream commit 9d7db4db19827380e225914618c0c1bf435ed2f5 ]
+[ Upstream commit 40206599beec98cfeb01913ee417f015e3f6190c ]
 
-Firmware developers reported that Linux issues two PCIe hotplug commands in
-very short intervals on an ARM server, which doesn't comply with the PCIe
-spec.  According to PCIe r6.1, sec 6.7.3.2, if the Command Completed event
-is supported, software must wait for a command to complete or wait at
-least 1 second before sending a new command.
+The commit 23c0e5a16bcc ("ixgbe: Add link management support for E610
+device") introduced incorrect media type detection for E610 device. It
+reproduces when advertised speed is modified after driver reload. Clear
+the previous outdated PHY type high value.
 
-In the failure case, the first PCIe hotplug command is from
-get_port_device_capability(), which sends a command to disable PCIe hotplug
-interrupts without waiting for its completion, and the second command comes
-from pcie_enable_notification() of pciehp driver, which enables hotplug
-interrupts again.
+Reproduction steps:
+modprobe ixgbe
+ethtool -s eth0 advertise 0x1000000000000
+modprobe -r ixgbe
+modprobe ixgbe
+ethtool -s eth0 advertise 0x1000000000000
+Result before the fix:
+netlink error: link settings update failed
+netlink error: Invalid argument
+Result after the fix:
+No output error
 
-Fix this by only disabling the hotplug interrupts when the pciehp driver is
-not enabled.
-
-Link: https://lore.kernel.org/r/20250303023630.78397-1-feng.tang@linux.alibaba.com
-Fixes: 2bd50dd800b5 ("PCI: PCIe: Disable PCIe port services during port initialization")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Fixes: 23c0e5a16bcc ("ixgbe: Add link management support for E610 device")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Bharath R <bharath.r@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/portdrv_core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
-index 3779b264dbec3..e3d998173433f 100644
---- a/drivers/pci/pcie/portdrv_core.c
-+++ b/drivers/pci/pcie/portdrv_core.c
-@@ -214,10 +214,12 @@ static int get_port_device_capability(struct pci_dev *dev)
- 
- 		/*
- 		 * Disable hot-plug interrupts in case they have been enabled
--		 * by the BIOS and the hot-plug service driver is not loaded.
-+		 * by the BIOS and the hot-plug service driver won't be loaded
-+		 * to handle them.
- 		 */
--		pcie_capability_clear_word(dev, PCI_EXP_SLTCTL,
--			  PCI_EXP_SLTCTL_CCIE | PCI_EXP_SLTCTL_HPIE);
-+		if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
-+			pcie_capability_clear_word(dev, PCI_EXP_SLTCTL,
-+				PCI_EXP_SLTCTL_CCIE | PCI_EXP_SLTCTL_HPIE);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index cb07ecd8937d3..00935747c8c55 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -1453,9 +1453,11 @@ enum ixgbe_media_type ixgbe_get_media_type_e610(struct ixgbe_hw *hw)
+ 			hw->link.link_info.phy_type_low = 0;
+ 		} else {
+ 			highest_bit = fls64(le64_to_cpu(pcaps.phy_type_low));
+-			if (highest_bit)
++			if (highest_bit) {
+ 				hw->link.link_info.phy_type_low =
+ 					BIT_ULL(highest_bit - 1);
++				hw->link.link_info.phy_type_high = 0;
++			}
+ 		}
  	}
  
- #ifdef CONFIG_PCIEAER
 -- 
 2.39.5
 
