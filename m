@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-129158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60891A7FDC6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DADA803D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 006FC7A1D99
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975D01889E78
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C79A26A08B;
-	Tue,  8 Apr 2025 11:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FAF268FED;
+	Tue,  8 Apr 2025 11:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHcrWUCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpvtLxC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC17374C4;
-	Tue,  8 Apr 2025 11:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06A2267F4F;
+	Tue,  8 Apr 2025 11:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110272; cv=none; b=UV27qcH19xDacX97qmmVXSjF9LlWCayucHP8888H2dAheVHIjBcJjNPf7c/vEZ/wXYx+wxBLJnlRyDTM+Qy4GxCMZxKWS24TG9DmO7rZIof7T+//xAWWfRMIr3x8f7IhVdo8Gy/sfiT70ZcwMD/3JMtNpVTwDJENrDnsk3kUfHU=
+	t=1744113508; cv=none; b=DU6pZ+UHbilPEa5qa315j6Pp7l5fAvc599nY9zfGIeYIQtgRFPsaRS5u8+syPgjcm6XKvNPUP/OhToITOW9v1f6G0tLfw4dOxD7DKAjNcPnhCjTPtOu4YbjxDK+s7EpaG1kZ1SmjEVqLKSbhAZIDDKneqDJFkciQ3fNg4NBmmPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110272; c=relaxed/simple;
-	bh=aTmKWIL2XqxtIllMLgQr6VTkFuMJRBON0ihuhZrrCXw=;
+	s=arc-20240116; t=1744113508; c=relaxed/simple;
+	bh=3rABR4KOYZaOKYROdZkObOIcJfX9uuwhCj+Togf2y7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m6aIqd077TfgD3jCdcvxSeH8OX6EchPfyfgYpqZapUoURW7focB2t5rbJTT7HN8Wc4XH50RKWEhM8N78h77+v7EPtCdv982KZtp1xiTnxpvueJp0L6f0WAhirLSI8jUJXCve4IS7CecdTgOUZL53FUvxkhBPvS1UKUub9dXUUVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHcrWUCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB69C4CEE5;
-	Tue,  8 Apr 2025 11:04:32 +0000 (UTC)
+	 MIME-Version; b=gswFiQ5JlQMSsV3azc3DJWUxrkSEz3fx3mCsBKXcCN1wC88Q4pkjC6Z6oGnjYsSVF2boC0j9O2cWiBoCiF25uZUMshEUBafs6dUocx3NWHK6D+LA4L9XEmsYHSHqUKAOQ1LldgmSr/Fvy3FWZgY/H5YtA24aS/8o+jMCUXmScPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpvtLxC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8371C4CEE5;
+	Tue,  8 Apr 2025 11:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110272;
-	bh=aTmKWIL2XqxtIllMLgQr6VTkFuMJRBON0ihuhZrrCXw=;
+	s=korg; t=1744113508;
+	bh=3rABR4KOYZaOKYROdZkObOIcJfX9uuwhCj+Togf2y7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHcrWUCQe+PXanb5AWujFBnXbkRkP35304rumu67J0mqM/3qpysu0/GvUU3ap3eUy
-	 3syWgUj/5AnbjgCJhWt+mNjSNtcllJ6kLFGassZezInAFgOJyq4hxztXeubdN/2uK1
-	 w/K8BKnbqKBC7ftg008+SywC757Z6Rkshx9xjTvE=
+	b=jpvtLxC/XJ0jCabozzdcWHniaxYX9jrGJWFxfU0BRRe6l4rwIwcn3UVFs2WD2zyXB
+	 jVNiIrepcv5Fum5QB2pNKA2mfJ0eqEcJdCApHAx7vlMMBpz3KpxcV/i4xg035sBaUX
+	 Zmy6hcVYoT61mjqlD+/HDA/jEvmoFmLN/pO/n2iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Anton Shyndin <mrcold.il@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 216/227] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
-Date: Tue,  8 Apr 2025 12:49:54 +0200
-Message-ID: <20250408104826.788972510@linuxfoundation.org>
+	Vladis Dronov <vdronov@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <sean.j.christopherson@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 184/268] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
+Date: Tue,  8 Apr 2025 12:49:55 +0200
+Message-ID: <20250408104833.512716462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +66,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Vladis Dronov <vdronov@redhat.com>
 
-commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
+[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
 
-Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
-X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
-the kernel overrides to EdgeHigh breaking the keyboard.
+The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
+not just X86_FEATURE_SGX.
 
-    $ sudo dmidecode
-    […]
-    System Information
-            Manufacturer: ASUSTeK COMPUTER INC.
-            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
-    […]
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                 IRQ (Level, ActiveLow, Exclusive, )
-                     {1}
+There is quite a number of hardware which has X86_FEATURE_SGX but not
+X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
+the /dev/sgx_enclave file and does so silently.
 
-Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
+users that the kernel disabled the SGX driver.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Anton Shyndin <mrcold.il@gmail.com>
-Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
+that enables LE (Launch Enclave) hash MSRs to be writable (with
+additional opt-in required in the 'feature control' MSR) when running
+enclaves, i.e. using a custom root key rather than the Intel proprietary
+key for enclave signing.
+
+I've hit this issue myself and have spent some time researching where
+my /dev/sgx_enclave file went on SGX-enabled hardware.
+
+Related links:
+
+  https://github.com/intel/linux-sgx/issues/837
+  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
+
+[ mingo: Made the error message a bit more verbose, and added other cases
+         where the kernel fails to create the /dev/sgx_enclave device node. ]
+
+Signed-off-by: Vladis Dronov <vdronov@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -443,6 +443,13 @@ static const struct dmi_system_id asus_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1404VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
-+		},
-+	},
-+	{
- 		/* Asus Vivobook X1504VAP */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
+index 262f5fb18d74d..c453953d5a33f 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.c
++++ b/arch/x86/kernel/cpu/sgx/driver.c
+@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
+ 	u64 xfrm_mask;
+ 	int ret;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
++	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
++		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
++	}
+ 
+ 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
+ 
+ 	if (!(eax & 1))  {
+-		pr_err("SGX disabled: SGX1 instruction support not available.\n");
++		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
+ 	}
+ 
+ 	ret = misc_register(&sgx_dev_enclave);
+-	if (ret)
++	if (ret) {
++		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
+ 		return ret;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
