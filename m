@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47227A80564
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5D7A807DB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC4504663D0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFBE465334
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4941E2690EB;
-	Tue,  8 Apr 2025 12:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AA426A1BB;
+	Tue,  8 Apr 2025 12:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oX2B99m7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufQC6v7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DF226AA9A;
-	Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A6268C66;
+	Tue,  8 Apr 2025 12:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113906; cv=none; b=cZrn7+qxosoUd+8jiPnoIRJSR9vGfDb/Gbd904Agl30M1wg3EyQYDvhhszhN127MRbtVpJY66c5ok4/q5K2VDsr0FYe8aPgk+dZ7YgK+gf7E4T9vtNZgGGvji21kUpr8+p+mXmtj8sLwPt6rAw1xbzxsMD6p5FJm3p8nVpp3F78=
+	t=1744115212; cv=none; b=qFYIDytANexMG+DjZZ1ZfRYAkmLB56vH33Hg14UkHKjuiLczOxC+hbDYNXDZSvl53ZhRzlm3R3/y/xGj76VmgJA8Zuwtpq8Q9hPnLzPAHbpBuUsqoU5NbtdEJR0zt3Z4ocm26A3V/ZSLUhIyO27m6CHz2Xstr4tfIDozXZ9OF/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113906; c=relaxed/simple;
-	bh=yTdvO5Txp/vKFqk4/LDgNgcr7VlZrYVKB+UZKEoxYAs=;
+	s=arc-20240116; t=1744115212; c=relaxed/simple;
+	bh=+a9Jy1shE7mom28NLaYQbI4N7NRK1myuw+zajOIJ2ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgCG3WAcKuhgY20BPhncyWKvIWWmzJy36KckEMP9APM5eLT3sWvyDY1EVmePdm5y5X/an/07VQmYAAs9h0FlYX2Y8IF8O9mGiFJL0QRRPvZfsJ1To085qLoWQ7YiCOZ57pzwKnTCYQn+eAgCB92FeW2JJ/vKgDYn25NhBtyOwOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oX2B99m7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAB2C4CEE5;
-	Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
+	 MIME-Version; b=DLkmsS07MeWLxKqOP7uMcXJubPmRQUSyy2zPKUoVS9wCwDxBVqCG7jpTgUPn3P2m0lygaM9xGs4LcU+tuETbUpPFscOwdcOtEhA7d0I215dWTwNIa4b+QmNTfXT18oc3gbiJlUF+3dXqvkRp+2AYQIFaOuaRFmyqPbbQ4T8LHHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufQC6v7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A4EC4CEE5;
+	Tue,  8 Apr 2025 12:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113905;
-	bh=yTdvO5Txp/vKFqk4/LDgNgcr7VlZrYVKB+UZKEoxYAs=;
+	s=korg; t=1744115211;
+	bh=+a9Jy1shE7mom28NLaYQbI4N7NRK1myuw+zajOIJ2ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oX2B99m7ZIsfjfH5b9L3tH8eYoLcZ+qNxRM+Isi27NPItLs1mpF+dyJDMMteaOn7h
-	 vmdaIf+gn73KhZbrJ8lSteqf6BNzKvPXF4nfLSXjLb6EP5H2cbTaaNVsXULu3an9xX
-	 1FSKBgqw3e15BXM9d826V22gYfBKmLhPby7NqWOg=
+	b=ufQC6v7hYRiz3AUYXH11uwf3g1OmJvoa9GgTV60UBaudGM/MbHyYJHJ9ot1eKZhzw
+	 MPmSK/uw0h9+xc2G0n+3dok566GqCQfUdzx4YRurUgcoURMaoEZWeAPwOl2sclXj7W
+	 vvnOhjk0xuT8PJdaOotVjZX6EmSz+c+YnOea6nR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 5.4 063/154] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 392/499] udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
 Date: Tue,  8 Apr 2025 12:50:04 +0200
-Message-ID: <20250408104817.313221163@linuxfoundation.org>
+Message-ID: <20250408104901.006250483@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
+[ Upstream commit 5a465a0da13ee9fbd7d3cd0b2893309b0fe4b7e3 ]
 
-When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
-shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
-bring-up fails:
+__udp_enqueue_schedule_skb() has the following condition:
 
-    smp: Bringing up secondary CPUs ...
-    CPU1: failed to come online
-    CPU2: failed to come online
-    CPU3: failed to come online
-    smp: Brought up 1 node, 1 CPU
+  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+          goto drop;
 
-Fix this by adding the missing alignment directive.
+sk->sk_rcvbuf is initialised by net.core.rmem_default and later can
+be configured by SO_RCVBUF, which is limited by net.core.rmem_max,
+or SO_RCVBUFFORCE.
 
-Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
-Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we set INT_MAX to sk->sk_rcvbuf, the condition is always false
+as sk->sk_rmem_alloc is also signed int.
+
+Then, the size of the incoming skb is added to sk->sk_rmem_alloc
+unconditionally.
+
+This results in integer overflow (possibly multiple times) on
+sk->sk_rmem_alloc and allows a single socket to have skb up to
+net.core.udp_mem[1].
+
+For example, if we set a large value to udp_mem[1] and INT_MAX to
+sk->sk_rcvbuf and flood packets to the socket, we can see multiple
+overflows:
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 7956736  <-- (7956736 << 12) bytes > INT_MAX * 15
+                                             ^- PAGE_SHIFT
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -1757018048 ...    <-- flipping the sign repeatedly
+         skmem:(r2537949248,rb2147483646,t0,tb212992,f1984,w0,o0,bl0,d0)
+
+Previously, we had a boundary check for INT_MAX, which was removed by
+commit 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc").
+
+A complete fix would be to revert it and cap the right operand by
+INT_MAX:
+
+  rmem = atomic_add_return(size, &sk->sk_rmem_alloc);
+  if (rmem > min(size + (unsigned int)sk->sk_rcvbuf, INT_MAX))
+          goto uncharge_drop;
+
+but we do not want to add the expensive atomic_add_return() back just
+for the corner case.
+
+Casting rmem to unsigned int prevents multiple wraparounds, but we still
+allow a single wraparound.
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> 12
+
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -2147482816 ...   <-- INT_MAX + 831 bytes
+         skmem:(r2147484480,rb2147483646,t0,tb212992,f3264,w0,o0,bl0,d14468947)
+
+So, let's define rmem and rcvbuf as unsigned int and check skb->truesize
+only when rcvbuf is large enough to lower the overflow possibility.
+
+Note that we still have a small chance to see overflow if multiple skbs
+to the same socket are processed on different core at the same time and
+each size does not exceed the limit but the total size does.
+
+Note also that we must ignore skb->truesize for a small buffer as
+explained in commit 363dc73acacb ("udp: be less conservative with
+sock rmem accounting").
+
+Fixes: 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250401184501.67377-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-shmobile/headsmp.S |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/udp.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/arch/arm/mach-shmobile/headsmp.S
-+++ b/arch/arm/mach-shmobile/headsmp.S
-@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
- 	.long	shmobile_smp_arg - 1b
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index a9bb9ce5438ea..31f7bfec23590 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1726,17 +1726,25 @@ static int udp_rmem_schedule(struct sock *sk, int size)
+ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct sk_buff_head *list = &sk->sk_receive_queue;
+-	int rmem, err = -ENOMEM;
++	unsigned int rmem, rcvbuf;
+ 	spinlock_t *busy = NULL;
+-	int size, rcvbuf;
++	int size, err = -ENOMEM;
  
- 	.bss
-+	.align	2
- 	.globl	shmobile_smp_mpidr
- shmobile_smp_mpidr:
- 	.space	NR_CPUS * 4
+-	/* Immediately drop when the receive queue is full.
+-	 * Always allow at least one packet.
+-	 */
+ 	rmem = atomic_read(&sk->sk_rmem_alloc);
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+-	if (rmem > rcvbuf)
+-		goto drop;
++	size = skb->truesize;
++
++	/* Immediately drop when the receive queue is full.
++	 * Cast to unsigned int performs the boundary check for INT_MAX.
++	 */
++	if (rmem + size > rcvbuf) {
++		if (rcvbuf > INT_MAX >> 1)
++			goto drop;
++
++		/* Always allow at least one packet for small buffer. */
++		if (rmem > rcvbuf)
++			goto drop;
++	}
+ 
+ 	/* Under mem pressure, it might be helpful to help udp_recvmsg()
+ 	 * having linear skbs :
+@@ -1746,10 +1754,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 	if (rmem > (rcvbuf >> 1)) {
+ 		skb_condense(skb);
+-
++		size = skb->truesize;
+ 		busy = busylock_acquire(sk);
+ 	}
+-	size = skb->truesize;
++
+ 	udp_set_dev_scratch(skb);
+ 
+ 	atomic_add(size, &sk->sk_rmem_alloc);
+-- 
+2.39.5
+
 
 
 
