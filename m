@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B64AA80108
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35253A803D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EE0618970F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 331423B27E5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399BE26A0C1;
-	Tue,  8 Apr 2025 11:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDDE269AE4;
+	Tue,  8 Apr 2025 11:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiW0AJ36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvbPAwYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E936C227BB6;
-	Tue,  8 Apr 2025 11:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5F022257E;
+	Tue,  8 Apr 2025 11:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111922; cv=none; b=ll6U8g3nauj5eUpIFBDsM+NiCTeiVZGCCBhavxasfP3TR7bNzE13Rc36GlUMXPQEKST74OQYs9GkjYGSEy2G1NuzgSd02DGh/wS0Phmp2pyvZUFapB1a5pn6pds39t6nFAhJ/M3JFUB8Q0W0l8QM3wA/QOEmMQBeC5d8AIXXGCo=
+	t=1744113273; cv=none; b=JB6xgTp7DSWAogWNv9UWB0DpXSJFHIWYasDPiKpNiQhYRCGYqYxGo+8GdRabSUj4dChEAVvd/M5lcy17KPQvbYvkZOxVN0dk7lrejPyZyHb3xhrT3pWluE3QH5rf9Qz5y8F0Cds/0V3DSituiPHab56g0jT2RKMC0DLejZkQHLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111922; c=relaxed/simple;
-	bh=Fsv/c2E5sKHeoGWB3ODgvJfIiBO30FGTNHvb8o0Pyk8=;
+	s=arc-20240116; t=1744113273; c=relaxed/simple;
+	bh=1FDlIj3sYnYwabLegN+Fcpxo49360BUuAneYCXrbKaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EopHiO+c7GEP5s/9kzjPB28SRkqn1DJZUEVQJZxi9BCLYFfryv7d59KuV33q/aHuzCg2WBaTeIK/6igji3GB+ITMWBBy+MTd2arepE5nmBUAkKrdWGfkbciVWfraUKCbCtDH5eSeNJfNlNCon4bzsCDQatc/yYMdwwYGHXAKvmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiW0AJ36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739F4C4CEEA;
-	Tue,  8 Apr 2025 11:32:01 +0000 (UTC)
+	 MIME-Version; b=nDsHEF6UpgPE0F7w40rZ8jFKabudzLlinkOnUJXKRMJRRyN7oz4uEt6KiKoYrxfh+tjMVRUptuBQju4gwYKu0Z4Nl9Vf+EL/Hkct1qoIAIrQNCRp/cIR0ll2KfQo8adRKIzEEbm5bnD15wMb6/9UflokCALMOiPMD9saIe+CObM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvbPAwYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA78C4CEE5;
+	Tue,  8 Apr 2025 11:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111921;
-	bh=Fsv/c2E5sKHeoGWB3ODgvJfIiBO30FGTNHvb8o0Pyk8=;
+	s=korg; t=1744113273;
+	bh=1FDlIj3sYnYwabLegN+Fcpxo49360BUuAneYCXrbKaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiW0AJ36mQi03NcmgmweihK612aWG9pnzIuIcYm9uWuCvu/HUT7uD3cL5+RpaVpGr
-	 Q9apU7ZxZ4Kr0KJhM05IYmxbSwb8EnjqBOfmO8J6EEBF6GqFnaAlGesghuFSRuwjRP
-	 M38ikrqsGDAhMPKnVJQ70C+ijebQ6B/AbFbRQWm4=
+	b=QvbPAwYtjcx7CD+Ic9Wt3kq1qU88/PhvtcWERs1ekSFRUtdpg6HXPQCGWUod6Vz95
+	 Yltb180BrqVDdMHukPXtt5Afbh6OMXtZxu3uel1hoMNop+renimX/IpnqsIlmwBEtK
+	 qo0pY2Ce6BDw80mXbdH348qP5szjPPCPRFDkE22c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 610/731] spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent
-Date: Tue,  8 Apr 2025 12:48:27 +0200
-Message-ID: <20250408104928.460520880@linuxfoundation.org>
+Subject: [PATCH 6.6 097/268] mfd: sm501: Switch to BIT() to mitigate integer overflows
+Date: Tue,  8 Apr 2025 12:48:28 +0200
+Message-ID: <20250408104831.111634458@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit e19c1272c80a5ecce387c1b0c3b995f4edf9c525 ]
+[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
 
-The lookup table forces the use of the "pinctrl-bcm2835" GPIO chip
-provider and essentially assumes that there is going to be such a
-provider, and if not, we will fail to set-up the SPI device.
+If offset end up being high enough, right hand expression in functions
+like sm501_gpio_set() shifted left for that number of bits, may
+not fit in int type.
 
-While this is true on Raspberry Pi based systems (2835/36/37, 2711,
-2712), this is not true on 7712/77122 Broadcom STB systems which use the
-SPI driver, but not the GPIO driver.
+Just in case, fix that by using BIT() both as an option safe from
+overflow issues and to make this step look similar to other gpio
+drivers.
 
-There used to be an early check:
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-       chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
-       if (!chip)
-               return 0;
-
-which would accomplish that nicely, bring something similar back by
-checking for the compatible strings matched by the pinctrl-bcm2835.c
-driver, if there is no Device Tree node matching those compatible
-strings, then we won't find any GPIO provider registered by the
-"pinctrl-bcm2835" driver.
-
-Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250401233603.2938955-1-florian.fainelli@broadcom.com
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f61be273d369 ("sm501: add gpiolib support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/mfd/sm501.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 06a81727d74dd..77de5a07639af 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1226,7 +1226,12 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
- 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
- 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
--	int ret;
-+	const char *pinctrl_compats[] = {
-+		"brcm,bcm2835-gpio",
-+		"brcm,bcm2711-gpio",
-+		"brcm,bcm7211-gpio",
-+	};
-+	int ret, i;
- 	u32 cs;
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index 28027982cf693..509dcb226cbfb 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
+@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+ 	void __iomem *regs = smchip->regbase;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	unsigned long save;
+ 	unsigned long ddr;
  
- 	if (!target) {
-@@ -1291,6 +1296,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 		goto err_cleanup;
- 	}
- 
-+	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
-+		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
-+			break;
-+	}
-+
-+	if (i == ARRAY_SIZE(pinctrl_compats))
-+		return 0;
-+
- 	/*
- 	 * TODO: The code below is a slightly better alternative to the utter
- 	 * abuse of the GPIO API that I found here before. It creates a
+@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
 -- 
 2.39.5
 
