@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534E6A7FDEE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296BEA802A1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A680189398F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847483A992D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49DD26A0C1;
-	Tue,  8 Apr 2025 10:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D091227EBD;
+	Tue,  8 Apr 2025 11:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA20XD5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1EMg/oA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90650267AFF;
-	Tue,  8 Apr 2025 10:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7C225FA13;
+	Tue,  8 Apr 2025 11:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109993; cv=none; b=aRekDQLpza63kwP3M8mj8aLzCU7ZE5BXaA3KSynVWOTXo7O/ADhHQQOjLoG9MFeob97obJL2JeYhictfb3BGJMwklxa+aRDtt2wziaFHnH25m5PNQOsg4JMgr5cVETiQ1bo9by3ju6PJOV2OKjR03a1/korNcZ1aHNAaZhV93RI=
+	t=1744112592; cv=none; b=WewUDbfMZS7erjvTnnPqwnqw6p47wdRHB1VgYgZpEGpP09qqWpvkQeu8V9QiVO2b/4pFC8fmiR4etc//OATG81Cr8XZBP2XGB9E/4OO5RN5k3p95Gs6GY9lzKsLinmczl+KCTRN05qv311EO5ZjIkSedqJO4QO7chapfJR0uYIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109993; c=relaxed/simple;
-	bh=qvzkXVnTDdE4CWEzrv7d8QauCpUZq8PjuFQoOv+oK6g=;
+	s=arc-20240116; t=1744112592; c=relaxed/simple;
+	bh=f7XDZzG6Oz1w2XRGPVBh1eyOSB6jbsZrdQXKLvWLzQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJeIwm1cZ5jZH+jm09+ZQe/pPcVFGTJzlr07uchdvT+fZLJcHr+WJqj8zCzFy7cB46TnX+zZNrGIPTM3mUQvUsRzBr7jIo0IBzrs+/PSvcktTUsVX/uYhUsNWfSpDUHXHML0Qtu/60YQ/4lDDeZDNPlt2VgjvEGRnK63r7cBamk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA20XD5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ACAC4CEE5;
-	Tue,  8 Apr 2025 10:59:52 +0000 (UTC)
+	 MIME-Version; b=uf1uJTZ9oFhxkhD3z5lsOVpyAL4mgl9vxpGw/JXVXhTKsqJsHmNRH2TuzaahFinKsoW/w44Hj5elVQfg5adGcxhiZ19twwPYE6mU635husfu/5ORwImqfnW7uaANvR58DPsXvGNgcAQLaEYhtYBLHg0jv6mj0rbYD7hAbQF0ZdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1EMg/oA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B030C4CEE7;
+	Tue,  8 Apr 2025 11:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109993;
-	bh=qvzkXVnTDdE4CWEzrv7d8QauCpUZq8PjuFQoOv+oK6g=;
+	s=korg; t=1744112591;
+	bh=f7XDZzG6Oz1w2XRGPVBh1eyOSB6jbsZrdQXKLvWLzQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IA20XD5sP0cpjpdSd/rxKvBH45DJJPoQbAtwuIKc90DQNZlfqUtzeFYj8BZ+VuTyw
-	 NLWz+1LfJFW3nVozUmCApqSq1EmY9PkdlkRYnMsSKlSOw/J3WwmJDXuDcpVQ67SrKM
-	 pkJwNEjeP7gwjNUR0gI/wMXArRkB+ZDRYS7+PgCI=
+	b=P1EMg/oAgF9bPMpF5tYMtK88IN/Gkj40YCYRVzEh5vVIE5IUp22zvfPH1uDSbwIdq
+	 Q7b8RNqVYULZxkVS26kkEkU/CkMk2yQB9YaQZYlwQeLv+h7FnKD9Dj2FSgZBNMxirA
+	 kp8UquVWrzYPfQup45DFiApkkGoqWj4iLjJ5lUdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.10 090/227] batman-adv: Ignore own maximum aggregation size during RX
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Haoyue Xu <xuhaoyue1@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 085/279] RDMA/hns: Remove redundant phy_addr in hns_roce_hem_list_find_mtt()
 Date: Tue,  8 Apr 2025 12:47:48 +0200
-Message-ID: <20250408104823.073856127@linuxfoundation.org>
+Message-ID: <20250408104828.636915875@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 548b0c5de7619ef53bbde5590700693f2f6d2a56 upstream.
+[ Upstream commit 5f652387c5423a82453c5cb446a88834bf41a94b ]
 
-An OGMv1 and OGMv2 packet receive processing were not only limited by the
-number of bytes in the received packet but also by the nodes maximum
-aggregation packet size limit. But this limit is relevant for TX and not
-for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
-loss of information in case of a different limit for sender and receiver.
+This parameter has never been used. Remove it to simplify the function.
 
-This has a minor side effect for B.A.T.M.A.N. IV because the
-batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
-But since the aggregation code itself will not allow more than
-BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
-this context) prior of removing it.
-
-Cc: stable@vger.kernel.org
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20220922123315.3732205-8-xuhaoyue1@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Signed-off-by: Haoyue Xu <xuhaoyue1@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 25655580136d ("RDMA/hns: Fix soft lockup during bt pages loop")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_iv_ogm.c |    3 +--
- net/batman-adv/bat_v_ogm.c  |    3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 7 +------
+ drivers/infiniband/hw/hns/hns_roce_hem.h | 2 +-
+ drivers/infiniband/hw/hns/hns_roce_mr.c  | 4 ++--
+ 3 files changed, 4 insertions(+), 9 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -326,8 +326,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos,
- 	/* check if there is enough space for the optional TVLV */
- 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 99708a7bcda78..57b84f5dc0f16 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1487,19 +1487,17 @@ void hns_roce_hem_list_init(struct hns_roce_hem_list *hem_list)
  
--	return (next_buff_pos <= packet_len) &&
--	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
-+	return next_buff_pos <= packet_len;
+ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
+ 				 struct hns_roce_hem_list *hem_list,
+-				 int offset, int *mtt_cnt, u64 *phy_addr)
++				 int offset, int *mtt_cnt)
+ {
+ 	struct list_head *head = &hem_list->btm_bt;
+ 	struct hns_roce_hem_item *hem, *temp_hem;
+ 	void *cpu_base = NULL;
+-	u64 phy_base = 0;
+ 	int nr = 0;
+ 
+ 	list_for_each_entry_safe(hem, temp_hem, head, sibling) {
+ 		if (hem_list_page_is_in_range(hem, offset)) {
+ 			nr = offset - hem->start;
+ 			cpu_base = hem->addr + nr * BA_BYTE_LEN;
+-			phy_base = hem->dma_addr + nr * BA_BYTE_LEN;
+ 			nr = hem->end + 1 - offset;
+ 			break;
+ 		}
+@@ -1508,8 +1506,5 @@ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
+ 	if (mtt_cnt)
+ 		*mtt_cnt = nr;
+ 
+-	if (phy_addr)
+-		*phy_addr = phy_base;
+-
+ 	return cpu_base;
  }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
+index fa84ce33076ac..150922b22eaa6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
+@@ -132,7 +132,7 @@ void hns_roce_hem_list_release(struct hns_roce_dev *hr_dev,
+ 			       struct hns_roce_hem_list *hem_list);
+ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
+ 				 struct hns_roce_hem_list *hem_list,
+-				 int offset, int *mtt_cnt, u64 *phy_addr);
++				 int offset, int *mtt_cnt);
  
- /* send a batman ogm to a given interface */
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -850,8 +850,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, i
- 	/* check if there is enough space for the optional TVLV */
- 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
+ static inline void hns_roce_hem_first(struct hns_roce_hem *hem,
+ 				      struct hns_roce_hem_iter *iter)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 604dd38b5c8fd..791a45802d6b2 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -614,7 +614,7 @@ static int mtr_map_region(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 	while (offset < end && npage < max_count) {
+ 		count = 0;
+ 		mtts = hns_roce_hem_list_find_mtt(hr_dev, &mtr->hem_list,
+-						  offset, &count, NULL);
++						  offset, &count);
+ 		if (!mtts)
+ 			return -ENOBUFS;
  
--	return (next_buff_pos <= packet_len) &&
--	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
-+	return next_buff_pos <= packet_len;
- }
+@@ -864,7 +864,7 @@ int hns_roce_mtr_find(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 		mtt_count = 0;
+ 		mtts = hns_roce_hem_list_find_mtt(hr_dev, &mtr->hem_list,
+ 						  start_index + total,
+-						  &mtt_count, NULL);
++						  &mtt_count);
+ 		if (!mtts || !mtt_count)
+ 			goto done;
  
- /**
+-- 
+2.39.5
+
 
 
 
