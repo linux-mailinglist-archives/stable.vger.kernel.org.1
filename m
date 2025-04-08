@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDE8A804C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A76AA806F7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD031B64EFD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A3C7A8708
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F2D26A0BA;
-	Tue,  8 Apr 2025 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FF2269CF6;
+	Tue,  8 Apr 2025 12:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df3Nimrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcokFR6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC79263F3B;
-	Tue,  8 Apr 2025 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FAC26980C;
+	Tue,  8 Apr 2025 12:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113850; cv=none; b=gQmPwj35d/WAG/Fk9bx3YoXgtGjqDW00vXhce5TjQzQrFsdmrEWf2TUxPQM8rulcaeVAXyfzLmTLkUSe2HWy/+NxyMN4X59dHul3jkdis4xzeAlTuIsY289jfTRvyHMyyYky1gYc0zIlebQnexNZHL+4YZR1JSPibgTQ+tZ8tPw=
+	t=1744115166; cv=none; b=LmWdf/bSITFElJPNyMNhOuSMQ2DiTcKdQdzqsAJOKXJL2/C4HLm6GmjvrUyfd5x07jpqTAVAXt+omxF5nhVDLTrfVJ0LGqbE8j/D6pi5k4Tq+8uiwfBGHdfYG+aQvVZrKGEjPAd5WTseQvoTSQE7f8wmkoEqdItGqU67gKOtl48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113850; c=relaxed/simple;
-	bh=GZRHOZDaFVLphiZ2wKmkZlX4OvR3TCFH2T16vIs36Kg=;
+	s=arc-20240116; t=1744115166; c=relaxed/simple;
+	bh=mQN8tUcQcIWzAFDRyGiUUH+5BYymYXayfoDe16q59YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gM7PuWb4MzWqaRAdGR9Rsz4T30oI8droAsBStyf3hx+Kum9rD8wo8D6V8rxBcJjm4YOUWIUNSVQN0DyVRyOsUax33KMpdrrfNarGZnTKu84yBF9r7IcOP9WwRBMNt+FcO2mHvxg4BK0qK5Ht4294KhQJd/FztsbVV3qjk50wbHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df3Nimrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68D9C4CEE5;
-	Tue,  8 Apr 2025 12:04:09 +0000 (UTC)
+	 MIME-Version; b=o1t3Rg/86RQvP9TzisvQ1cqAjTmtAJ9UXqP0NQ+L4acSRxHWpAvphdjAQIULcjaE3EWMG7cCheDakL55/iNx0V9jOOoK0dLInVAVAzQa7YvWV7eP8bgVkDTTKnE48l71+CWpTjbXJ+aL6V2sjmahd6spcCk0fwy/hcBNp+OCwj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcokFR6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFFAC4CEE7;
+	Tue,  8 Apr 2025 12:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113850;
-	bh=GZRHOZDaFVLphiZ2wKmkZlX4OvR3TCFH2T16vIs36Kg=;
+	s=korg; t=1744115166;
+	bh=mQN8tUcQcIWzAFDRyGiUUH+5BYymYXayfoDe16q59YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Df3NimrtbE6sQmGoX3paOFKPyMuwqagSFTFKRIrQmrHlELEEaETKXXZFNhLaWYoNk
-	 dHjxqizYArtFPonDjbOzTui00y/oKYs9pp2mObR2bb0qtmVkWdeUKbxV0J7jObgcJa
-	 51OXsCuL2eRfmAH9usVkGUR9//M0irYB8CEUFRqA=
+	b=jcokFR6f3/Ekv3/sj3jayVYiPX+RNhelvzmlpHAD2XDjbf+8c53pJIv8ibfL3NEli
+	 ghN4YlwzuzVJV4OIEcIm2mLnlZrsBUzyoEVR8lhEB0axb7X4RpCtgHjETLESIcqUwb
+	 vMKIOqstJU3aYjfTXGzKJoleAiX0AtJeQl+Z9B2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 044/154] drm/amd/display: Assign normalized_pix_clk when color depth = 14
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 373/499] spi: cadence: Fix out-of-bounds array access in cdns_mrvl_xspi_setup_clock()
 Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104816.685352163@linuxfoundation.org>
+Message-ID: <20250408104900.532295633@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 79e31396fdd7037c503e6add15af7cb00633ea92 upstream.
+[ Upstream commit 7ba0847fa1c22e7801cebfe5f7b75aee4fae317e ]
 
-[WHY & HOW]
-A warning message "WARNING: CPU: 4 PID: 459 at ... /dc_resource.c:3397
-calculate_phy_pix_clks+0xef/0x100 [amdgpu]" occurs because the
-display_color_depth == COLOR_DEPTH_141414 is not handled. This is
-observed in Radeon RX 6600 XT.
+If requested_clk > 128, cdns_mrvl_xspi_setup_clock() iterates over the
+entire cdns_mrvl_xspi_clk_div_list array without breaking out early,
+causing 'i' to go beyond the array bounds.
 
-It is fixed by assigning pix_clk * (14 * 3) / 24 - same as the rests.
+Fix that by stopping the loop when it gets to the last entry, clamping
+the clock to the minimum 6.25 MHz.
 
-Also fixes the indentation in get_norm_pix_clk.
+Fixes the following warning with an UBSAN kernel:
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 274a87eb389f58eddcbc5659ab0b180b37e92775)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  vmlinux.o: warning: objtool: cdns_mrvl_xspi_setup_clock: unexpected end of section .text.cdns_mrvl_xspi_setup_clock
+
+Fixes: 26d34fdc4971 ("spi: cadence: Add clock configuration for Marvell xSPI overlay")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503282236.UhfRsF3B-lkp@intel.com/
+Link: https://lore.kernel.org/r/gs2ooxfkblnee6cc5yfcxh7nu4wvoqnuv4lrllkhccxgcac2jg@7snmwd73jkhs
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/h6bef6wof6zpjfp3jbhrkigqsnykdfy6j4qmmvb6gsabhianhj@k57a7hwpa3bj
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1834,10 +1834,13 @@ static int get_norm_pix_clk(const struct
- 			break;
- 		case COLOR_DEPTH_121212:
- 			normalized_pix_clk = (pix_clk * 36) / 24;
--		break;
-+			break;
-+		case COLOR_DEPTH_141414:
-+			normalized_pix_clk = (pix_clk * 42) / 24;
-+			break;
- 		case COLOR_DEPTH_161616:
- 			normalized_pix_clk = (pix_clk * 48) / 24;
--		break;
-+			break;
- 		default:
- 			ASSERT(0);
- 		break;
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index aed98ab143346..6dcba0e0ddaa3 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -432,7 +432,7 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
+ 	u32 clk_reg;
+ 	bool update_clk = false;
+ 
+-	while (i < ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list)) {
++	while (i < (ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list) - 1)) {
+ 		clk_val = MRVL_XSPI_CLOCK_DIVIDED(
+ 				cdns_mrvl_xspi_clk_div_list[i]);
+ 		if (clk_val <= requested_clk)
+-- 
+2.39.5
+
 
 
 
