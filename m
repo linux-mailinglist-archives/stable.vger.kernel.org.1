@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A2EA803D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC5BA80324
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B593E19E67D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B59823AB466
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C987F268FDE;
-	Tue,  8 Apr 2025 11:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D009A94A;
+	Tue,  8 Apr 2025 11:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSmA9wJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyBwGF5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691A264FA0;
-	Tue,  8 Apr 2025 11:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A69A266EEA;
+	Tue,  8 Apr 2025 11:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113497; cv=none; b=DCm/ACzLZjvIJ6dyxHQHE8lgPpGM4QCHOzYt5Ru9LzhPcFlm2a4C0HznxCAcltAIT01qCS5hYPLZNnRTR7hv0VxJjBM3fO8bQvETo3foTIfs6A4LiS/ByJ+7N/uWac4ZTxx9hsaqI0JlJDhp4WNpN64ESsLkDpzy5M3VTkGIwgM=
+	t=1744112862; cv=none; b=DfPYFSotqqxRCGvC+/esfvl8P/0Ipp692eYvHgz5cdSnldTOWT+QqFHO1S1Y0n4Hdu0qYzitfdgBjxrbr1kamoRiTSYJUZHoVSMid/d5pjftaQ55sAgmnQgLqQNEVo2rA4HWGEDsOrNMwgr2rgDCB0BPCFLBU0OjfDvGiuSkMSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113497; c=relaxed/simple;
-	bh=mtApRLkF+PDdsSWlDBY0V5AuWOzKlNBegEr+XbIt2Yw=;
+	s=arc-20240116; t=1744112862; c=relaxed/simple;
+	bh=pLYaLgqPDk75HlJSk2+4yf0CoLM50HHDyH7sGv9zwcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqeSPDB8f5sik5lV4O3RJN1DBs+8pZhapksGa+hVkZhSTDCA9dEyd6bza4h3vAAiUV5KsZX28Dk5fTPfSge+VRg6aTCno/HRFN5xwe8C/oA2YDnoedg4YYF4048FmJVucjYknre3orlL62GsXaEeoE7cGvBvUEiqXrLjqp36BUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSmA9wJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E389FC4CEE5;
-	Tue,  8 Apr 2025 11:58:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lU/HS/2RebEO4fUfnw7FLPauY6wkYRvwtz0XYkVzc0dRNUijxcgvKiW4WH1j1EgpyH6nlXpbSFDQ+XN+B/SL7wNXT7WBhhxpbfGaDuYY1pdZ6J4aGn1gR6uJDl6cYlcdaX8CDo5RAxgBDUjzqqGqaO9cxedgCDd/t3PFeLwKeoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyBwGF5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE1CC4CEE5;
+	Tue,  8 Apr 2025 11:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113497;
-	bh=mtApRLkF+PDdsSWlDBY0V5AuWOzKlNBegEr+XbIt2Yw=;
+	s=korg; t=1744112862;
+	bh=pLYaLgqPDk75HlJSk2+4yf0CoLM50HHDyH7sGv9zwcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSmA9wJUxk08BE8uNTy1nfTxc29NVPmX80O0AnSXyOg2Yzp6IEyxtriC0TAsTv4w3
-	 mUR2dc3JEywAqcvx8Lae2cBPie5O1pC1eog73DNdz0PouMNAZoO4UtZihq2QRcSvpy
-	 vuTC/stefAXfbZqDcz4nXus3zkWXHuleilNQHrxI=
+	b=VyBwGF5VhOp5wy8g8Q9nugNSBYnc6FU5BAaxmnlzXR8i+bRpHJKKLkqn0c65sXnQy
+	 pJA0UTP7RckY0KK7t63NZaqPZtOs8xbVe7bb0TSr87imPlu9rjuzJrsagt2kbjr8xf
+	 6shk6Z5xabg7ZN2/UuZ+VFr8FQhYP4HHfsf2jJrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/268] x86/hyperv/vtl: Stop kernel from probing VTL0 low memory
+Subject: [PATCH 5.15 208/279] perf python: Dont keep a raw_data pointer to consumed ring buffer space
 Date: Tue,  8 Apr 2025 12:49:51 +0200
-Message-ID: <20250408104833.398261262@linuxfoundation.org>
+Message-ID: <20250408104831.958152559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 59115e2e25f42924181055ed7cc1d123af7598b7 ]
+[ Upstream commit f3fed3ae34d606819d87a63d970cc3092a5be7ab ]
 
-For Linux, running in Hyper-V VTL (Virtual Trust Level), kernel in VTL2
-tries to access VTL0 low memory in probe_roms. This memory is not
-described in the e820 map. Initialize probe_roms call to no-ops
-during boot for VTL2 kernel to avoid this. The issue got identified
-in OpenVMM which detects invalid accesses initiated from kernel running
-in VTL2.
+When processing tracepoints the perf python binding was parsing the
+event before calling perf_mmap__consume(&md->core) in
+pyrf_evlist__read_on_cpu().
 
-Co-developed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Tested-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250116061224.1701-1-namjain@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250116061224.1701-1-namjain@linux.microsoft.com>
+But part of this event parsing was to set the perf_sample->raw_data
+pointer to the payload of the event, which then could be overwritten by
+other event before tracepoint fields were asked for via event.prev_comm
+in a python program, for instance.
+
+This also happened with other fields, but strings were were problems
+were surfacing, as there is UTF-8 validation for the potentially garbled
+data.
+
+This ended up showing up as (with some added debugging messages):
+
+  ( field 'prev_comm' ret=0x7f7c31f65110, raw_size=68 )  ( field 'prev_pid' ret=0x7f7c23b1bed0, raw_size=68 )  ( field 'prev_prio' ret=0x7f7c239c0030, raw_size=68 )  ( field 'prev_state' ret=0x7f7c239c0250, raw_size=68 ) time 14771421785867 prev_comm= prev_pid=1919907691 prev_prio=796026219 prev_state=0x303a32313175 ==>
+  ( XXX '��' len=16, raw_size=68)  ( field 'next_comm' ret=(nil), raw_size=68 ) Traceback (most recent call last):
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 51, in <module>
+     main()
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 46, in main
+     event.next_comm,
+     ^^^^^^^^^^^^^^^
+  AttributeError: 'perf.sample_event' object has no attribute 'next_comm'
+
+When event.next_comm was asked for, the PyUnicode_FromString() python
+API would fail and that tracepoint field wouldn't be available, stopping
+the tools/perf/python/tracepoint.py test tool.
+
+But, since we already do a copy of the whole event in pyrf_event__new,
+just use it and while at it remove what was done in in e8968e654191390a
+("perf python: Fix pyrf_evlist__read_on_cpu event consuming") because we
+don't really need to wait for parsing the sample before declaring the
+event as consumed.
+
+This copy is questionable as is now, as it limits the maximum event +
+sample_type and tracepoint payload to sizeof(union perf_event), this all
+has been "working" because 'struct perf_event_mmap2', the largest entry
+in 'union perf_event' is:
+
+  $ pahole -C perf_event ~/bin/perf | grep mmap2
+	struct perf_record_mmap2   mmap2;              /*     0  4168 */
+  $
+
+Fixes: bae57e3825a3dded ("perf python: Add support to resolve tracepoint fields")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-6-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/python.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index c2f78fabc865b..b12bef0ff7bb6 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -30,6 +30,7 @@ void __init hv_vtl_init_platform(void)
- 	x86_platform.realmode_init = x86_init_noop;
- 	x86_init.irqs.pre_vector_init = x86_init_noop;
- 	x86_init.timers.timer_init = x86_init_noop;
-+	x86_init.resources.probe_roms = x86_init_noop;
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 368a5f2c244c8..42810b63125a9 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1091,11 +1091,9 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
  
- 	/* Avoid searching for BIOS MP tables */
- 	x86_init.mpparse.find_smp_config = x86_init_noop;
+ 		pevent->evsel = evsel;
+ 
+-		err = evsel__parse_sample(evsel, event, &pevent->sample);
+-
+-		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
+ 
++		err = evsel__parse_sample(evsel, &pevent->event, &pevent->sample);
+ 		if (err) {
+ 			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
 -- 
 2.39.5
 
