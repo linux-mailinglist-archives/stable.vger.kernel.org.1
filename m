@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11856A8036F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76029A802C0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B661464665
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EBD04631EC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CC1268C79;
-	Tue,  8 Apr 2025 11:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A3A268C41;
+	Tue,  8 Apr 2025 11:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+kFPjSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux7vAHKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1972268681;
-	Tue,  8 Apr 2025 11:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500FC2686AB;
+	Tue,  8 Apr 2025 11:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113189; cv=none; b=tybav0saXoZcuA2saN+JY07R6mnsvKubohvUDtJEZYazcG5YBh7n67k2eBTBryArnjlolv72yvKVacvuijB4oGP24CMBkZpT35HXdRuBv2kt+dI6QlbMBoVpgtrL4/79yDUlDvVl1WoouF+v/Nr0jj0Hk4Xy/OguCuWsnb/cPf4=
+	t=1744112500; cv=none; b=jA2mDzz4KgGa5O1ClC1l0X4pMKS7YFzyFRQ5aXklyP9viLW3t+asSuTZ7T8ZQqPW8D/mFMEf2wscAsenGh+lMOS33GgM/oj9pJHbKZXhfg+v7A2xsQvqGr0AwSKmj9L6LcUalLFcnr5B4fSmF0+zcWG5ux/pM6lkNI1+m+c56/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113189; c=relaxed/simple;
-	bh=1DfFC/yKMxb69ze+O8KuX0Z4aCzaSXEkXYGrp/H2Rvs=;
+	s=arc-20240116; t=1744112500; c=relaxed/simple;
+	bh=ebHMEIGYfbhp9jGsEZuGFOIt5Ii7TOwmQ18ds8pP7fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGEqRczhSfeYcrgE3QtgwczZpNZwFYoavhd2Zgf5n6jWEajqTvz0GCBZ56C0hO9hN2oSoANLiBHWhPh36F/ip2xTOq6N5kRwVHpGzY/zqe+epJtU9vvURtQFiT96PGkAR5+/WaFTSgO0OZnUpGowBRbIkT7p9lUVQ0g3Ag7kB20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+kFPjSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09913C4CEE5;
-	Tue,  8 Apr 2025 11:53:07 +0000 (UTC)
+	 MIME-Version; b=FoRK7wnFYmv7U4IL5lJjarRbGUQqhIeV5ObcmuDtPR3nvYK58sdAIjwmWBaVml8Urer19LEp806DfzvOttOa1ouFZb+EMHjvP3MtoDC/2ZnlN0lvM8JVY4jj6WqaVte3uedQHEy8bez12F6newmhPfgw+YVvmKpDgnqoKUgleiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ux7vAHKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A89C4CEEA;
+	Tue,  8 Apr 2025 11:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113188;
-	bh=1DfFC/yKMxb69ze+O8KuX0Z4aCzaSXEkXYGrp/H2Rvs=;
+	s=korg; t=1744112500;
+	bh=ebHMEIGYfbhp9jGsEZuGFOIt5Ii7TOwmQ18ds8pP7fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+kFPjSOLHA+BsPn1O6S6IL3xpkVAxNFISJfl7VRYo5D1LYdOz66Sqbn2DIVwW17t
-	 2RUmLQShm0TTdTuefZWRvhue5J63YkWpJdyrhnvG+0oD9qVBnmyDn4pDQLrr3ylfPi
-	 JEO+fIkZP+9fK54V/+VX6Smk6Cnf8KdNX7DSEZzs=
+	b=Ux7vAHKVDsRaDnkJHtGhbT/Wu+uI/IbQ4Fms703UFYsl0zo/vq6ZhEdmBq/nqiAi+
+	 ZAe7sAihxqhmk//0zkq3M2ZsZyK8Vw9CDQkS8MforjYl5dhtFItPJw7lAp4LzqlMus
+	 7JLqH+ZWFHHrGBaHkoRFvghlzFFWgBggwgZcVGsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/268] crypto: hisilicon/sec2 - fix for sec spec check
+Subject: [PATCH 5.15 092/279] ipv6: Set errno after ip_fib_metrics_init() in ip6_route_info_create().
 Date: Tue,  8 Apr 2025 12:47:55 +0200
-Message-ID: <20250408104830.225687093@linuxfoundation.org>
+Message-ID: <20250408104828.835618446@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,279 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit f4f353cb7ae9bb43e34943edb693532a39118eca ]
+[ Upstream commit 9a81fc3480bf5dbe2bf80e278c440770f6ba2692 ]
 
-During encryption and decryption, user requests
-must be checked first, if the specifications that
-are not supported by the hardware are used, the
-software computing is used for processing.
+While creating a new IPv6, we could get a weird -ENOMEM when
+RTA_NH_ID is set and either of the conditions below is true:
 
-Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  1) CONFIG_IPV6_SUBTREES is enabled and rtm_src_len is specified
+  2) nexthop_get() fails
+
+e.g.)
+
+  # strace ip -6 route add fe80::dead:beef:dead:beef nhid 1 from ::
+  recvmsg(3, {msg_iov=[{iov_base=[...[
+    {error=-ENOMEM, msg=[... [...]]},
+    [{nla_len=49, nla_type=NLMSGERR_ATTR_MSG}, "Nexthops can not be used with so"...]
+  ]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 148
+
+Let's set err explicitly after ip_fib_metrics_init() in
+ip6_route_info_create().
+
+Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250312013854.61125-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec.h        |   1 -
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 101 ++++++++-------------
- 2 files changed, 39 insertions(+), 63 deletions(-)
+ net/ipv6/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec.h b/drivers/crypto/hisilicon/sec2/sec.h
-index 30c2b1a64695c..2fc04e210bc4f 100644
---- a/drivers/crypto/hisilicon/sec2/sec.h
-+++ b/drivers/crypto/hisilicon/sec2/sec.h
-@@ -37,7 +37,6 @@ struct sec_aead_req {
- 	u8 *a_ivin;
- 	dma_addr_t a_ivin_dma;
- 	struct aead_request *aead_req;
--	bool fallback;
- };
- 
- /* SEC request of Crypto */
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 99f27200d23ac..789e566b3bf90 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -689,14 +689,10 @@ static int sec_skcipher_fbtfm_init(struct crypto_skcipher *tfm)
- 
- 	c_ctx->fallback = false;
- 
--	/* Currently, only XTS mode need fallback tfm when using 192bit key */
--	if (likely(strncmp(alg, "xts", SEC_XTS_NAME_SZ)))
--		return 0;
--
- 	c_ctx->fbtfm = crypto_alloc_sync_skcipher(alg, 0,
- 						  CRYPTO_ALG_NEED_FALLBACK);
- 	if (IS_ERR(c_ctx->fbtfm)) {
--		pr_err("failed to alloc xts mode fallback tfm!\n");
-+		pr_err("failed to alloc fallback tfm for %s!\n", alg);
- 		return PTR_ERR(c_ctx->fbtfm);
- 	}
- 
-@@ -858,7 +854,7 @@ static int sec_skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	}
- 
- 	memcpy(c_ctx->c_key, key, keylen);
--	if (c_ctx->fallback && c_ctx->fbtfm) {
-+	if (c_ctx->fbtfm) {
- 		ret = crypto_sync_skcipher_setkey(c_ctx->fbtfm, key, keylen);
- 		if (ret) {
- 			dev_err(dev, "failed to set fallback skcipher key!\n");
-@@ -1163,8 +1159,10 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
- 	}
- 
- 	ret = crypto_authenc_extractkeys(&keys, key, keylen);
--	if (ret)
-+	if (ret) {
-+		dev_err(dev, "sec extract aead keys err!\n");
- 		goto bad_key;
-+	}
- 
- 	ret = sec_aead_aes_set_key(c_ctx, &keys);
- 	if (ret) {
-@@ -1178,12 +1176,6 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
- 		goto bad_key;
- 	}
- 
--	if (ctx->a_ctx.a_key_len & WORD_MASK) {
--		ret = -EINVAL;
--		dev_err(dev, "AUTH key length error!\n");
--		goto bad_key;
--	}
--
- 	ret = sec_aead_fallback_setkey(a_ctx, tfm, key, keylen);
- 	if (ret) {
- 		dev_err(dev, "set sec fallback key err!\n");
-@@ -2003,8 +1995,7 @@ static int sec_aead_sha512_ctx_init(struct crypto_aead *tfm)
- 	return sec_aead_ctx_init(tfm, "sha512");
- }
- 
--static int sec_skcipher_cryptlen_check(struct sec_ctx *ctx,
--	struct sec_req *sreq)
-+static int sec_skcipher_cryptlen_check(struct sec_ctx *ctx, struct sec_req *sreq)
- {
- 	u32 cryptlen = sreq->c_req.sk_req->cryptlen;
- 	struct device *dev = ctx->dev;
-@@ -2028,10 +2019,6 @@ static int sec_skcipher_cryptlen_check(struct sec_ctx *ctx,
- 	case SEC_CMODE_CFB:
- 	case SEC_CMODE_OFB:
- 	case SEC_CMODE_CTR:
--		if (unlikely(ctx->sec->qm.ver < QM_HW_V3)) {
--			dev_err(dev, "skcipher HW version error!\n");
--			ret = -EINVAL;
--		}
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -2040,17 +2027,21 @@ static int sec_skcipher_cryptlen_check(struct sec_ctx *ctx,
- 	return ret;
- }
- 
--static int sec_skcipher_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
-+static int sec_skcipher_param_check(struct sec_ctx *ctx,
-+				    struct sec_req *sreq, bool *need_fallback)
- {
- 	struct skcipher_request *sk_req = sreq->c_req.sk_req;
- 	struct device *dev = ctx->dev;
- 	u8 c_alg = ctx->c_ctx.c_alg;
- 
--	if (unlikely(!sk_req->src || !sk_req->dst ||
--		     sk_req->cryptlen > MAX_INPUT_DATA_LEN)) {
-+	if (unlikely(!sk_req->src || !sk_req->dst)) {
- 		dev_err(dev, "skcipher input param error!\n");
- 		return -EINVAL;
- 	}
-+
-+	if (sk_req->cryptlen > MAX_INPUT_DATA_LEN)
-+		*need_fallback = true;
-+
- 	sreq->c_req.c_len = sk_req->cryptlen;
- 
- 	if (ctx->pbuf_supported && sk_req->cryptlen <= SEC_PBUF_SZ)
-@@ -2108,6 +2099,7 @@ static int sec_skcipher_crypto(struct skcipher_request *sk_req, bool encrypt)
- 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(sk_req);
- 	struct sec_req *req = skcipher_request_ctx(sk_req);
- 	struct sec_ctx *ctx = crypto_skcipher_ctx(tfm);
-+	bool need_fallback = false;
- 	int ret;
- 
- 	if (!sk_req->cryptlen) {
-@@ -2121,11 +2113,11 @@ static int sec_skcipher_crypto(struct skcipher_request *sk_req, bool encrypt)
- 	req->c_req.encrypt = encrypt;
- 	req->ctx = ctx;
- 
--	ret = sec_skcipher_param_check(ctx, req);
-+	ret = sec_skcipher_param_check(ctx, req, &need_fallback);
- 	if (unlikely(ret))
- 		return -EINVAL;
- 
--	if (unlikely(ctx->c_ctx.fallback))
-+	if (unlikely(ctx->c_ctx.fallback || need_fallback))
- 		return sec_skcipher_soft_crypto(ctx, sk_req, encrypt);
- 
- 	return ctx->req_op->process(ctx, req);
-@@ -2258,52 +2250,35 @@ static int sec_aead_spec_check(struct sec_ctx *ctx, struct sec_req *sreq)
- 	struct crypto_aead *tfm = crypto_aead_reqtfm(req);
- 	size_t sz = crypto_aead_authsize(tfm);
- 	u8 c_mode = ctx->c_ctx.c_mode;
--	struct device *dev = ctx->dev;
- 	int ret;
- 
--	/* Hardware does not handle cases where authsize is not 4 bytes aligned */
--	if (c_mode == SEC_CMODE_CBC && (sz & WORD_MASK)) {
--		sreq->aead_req.fallback = true;
-+	if (unlikely(ctx->sec->qm.ver == QM_HW_V2 && !sreq->c_req.c_len))
- 		return -EINVAL;
--	}
- 
- 	if (unlikely(req->cryptlen + req->assoclen > MAX_INPUT_DATA_LEN ||
--	    req->assoclen > SEC_MAX_AAD_LEN)) {
--		dev_err(dev, "aead input spec error!\n");
-+		     req->assoclen > SEC_MAX_AAD_LEN))
- 		return -EINVAL;
--	}
- 
- 	if (c_mode == SEC_CMODE_CCM) {
--		if (unlikely(req->assoclen > SEC_MAX_CCM_AAD_LEN)) {
--			dev_err_ratelimited(dev, "CCM input aad parameter is too long!\n");
-+		if (unlikely(req->assoclen > SEC_MAX_CCM_AAD_LEN))
- 			return -EINVAL;
--		}
--		ret = aead_iv_demension_check(req);
--		if (ret) {
--			dev_err(dev, "aead input iv param error!\n");
--			return ret;
--		}
--	}
- 
--	if (sreq->c_req.encrypt)
--		sreq->c_req.c_len = req->cryptlen;
--	else
--		sreq->c_req.c_len = req->cryptlen - sz;
--	if (c_mode == SEC_CMODE_CBC) {
--		if (unlikely(sreq->c_req.c_len & (AES_BLOCK_SIZE - 1))) {
--			dev_err(dev, "aead crypto length error!\n");
-+		ret = aead_iv_demension_check(req);
-+		if (unlikely(ret))
-+			return -EINVAL;
-+	} else if (c_mode == SEC_CMODE_CBC) {
-+		if (unlikely(sz & WORD_MASK))
-+			return -EINVAL;
-+		if (unlikely(ctx->a_ctx.a_key_len & WORD_MASK))
- 			return -EINVAL;
--		}
- 	}
- 
- 	return 0;
- }
- 
--static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
-+static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq, bool *need_fallback)
- {
- 	struct aead_request *req = sreq->aead_req.aead_req;
--	struct crypto_aead *tfm = crypto_aead_reqtfm(req);
--	size_t authsize = crypto_aead_authsize(tfm);
- 	struct device *dev = ctx->dev;
- 	u8 c_alg = ctx->c_ctx.c_alg;
- 
-@@ -2312,12 +2287,10 @@ static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
- 		return -EINVAL;
- 	}
- 
--	if (ctx->sec->qm.ver == QM_HW_V2) {
--		if (unlikely(!req->cryptlen || (!sreq->c_req.encrypt &&
--			     req->cryptlen <= authsize))) {
--			sreq->aead_req.fallback = true;
--			return -EINVAL;
--		}
-+	if (unlikely(ctx->c_ctx.c_mode == SEC_CMODE_CBC &&
-+		     sreq->c_req.c_len & (AES_BLOCK_SIZE - 1))) {
-+		dev_err(dev, "aead cbc mode input data length error!\n");
-+		return -EINVAL;
- 	}
- 
- 	/* Support AES or SM4 */
-@@ -2326,8 +2299,10 @@ static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
- 		return -EINVAL;
- 	}
- 
--	if (unlikely(sec_aead_spec_check(ctx, sreq)))
-+	if (unlikely(sec_aead_spec_check(ctx, sreq))) {
-+		*need_fallback = true;
- 		return -EINVAL;
-+	}
- 
- 	if (ctx->pbuf_supported && (req->cryptlen + req->assoclen) <=
- 		SEC_PBUF_SZ)
-@@ -2371,17 +2346,19 @@ static int sec_aead_crypto(struct aead_request *a_req, bool encrypt)
- 	struct crypto_aead *tfm = crypto_aead_reqtfm(a_req);
- 	struct sec_req *req = aead_request_ctx(a_req);
- 	struct sec_ctx *ctx = crypto_aead_ctx(tfm);
-+	size_t sz = crypto_aead_authsize(tfm);
-+	bool need_fallback = false;
- 	int ret;
- 
- 	req->flag = a_req->base.flags;
- 	req->aead_req.aead_req = a_req;
- 	req->c_req.encrypt = encrypt;
- 	req->ctx = ctx;
--	req->aead_req.fallback = false;
-+	req->c_req.c_len = a_req->cryptlen - (req->c_req.encrypt ? 0 : sz);
- 
--	ret = sec_aead_param_check(ctx, req);
-+	ret = sec_aead_param_check(ctx, req, &need_fallback);
- 	if (unlikely(ret)) {
--		if (req->aead_req.fallback)
-+		if (need_fallback)
- 			return sec_aead_soft_crypto(ctx, a_req, encrypt);
- 		return -EINVAL;
- 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 875cab88f3891..f8b2fdaef67f4 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3807,10 +3807,12 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
+ 	if (nh) {
+ 		if (rt->fib6_src.plen) {
+ 			NL_SET_ERR_MSG(extack, "Nexthops can not be used with source routing");
++			err = -EINVAL;
+ 			goto out_free;
+ 		}
+ 		if (!nexthop_get(nh)) {
+ 			NL_SET_ERR_MSG(extack, "Nexthop has been deleted");
++			err = -ENOENT;
+ 			goto out_free;
+ 		}
+ 		rt->nh = nh;
 -- 
 2.39.5
 
