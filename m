@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A48DA804EB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58FDA808C0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB23A1B65EE7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C118A4C3E2C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D1E26A0AC;
-	Tue,  8 Apr 2025 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5541269B1E;
+	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnZFpgnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYMvnvJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091CD266EEA;
-	Tue,  8 Apr 2025 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B7B224AEB;
+	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113967; cv=none; b=X0P9mmt3oE6znNzq2ctdvhvLl4n0UAWgrcX3fQ3+SP1avJbvzfHjA8aChohAeex/heK9x+QIOMfXEHiA4Ys9GyDJ963wvJlYEpCFQ9crAjRPjVLYtj9h+Vpda/m7Krz4hN5/+6mtBSv7MooDn9eef8DwkJ3YphJYrosTxgkObWQ=
+	t=1744115725; cv=none; b=gcw9E0TtWl7tGST0SqNtcPnZKDYoRZ/iTEinWKt32UXo4MZFwcBvjrLhlMZMlt05aMyKkkL48tMgiVTXSz3NCsmrS/A7Z2hd9VG0uabIhDsyKhxAn6HXMMVEfmSUsaJ/49Yylz27nanFYlb/MYl6jtZA9t8mt9bdE7QIcearrtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113967; c=relaxed/simple;
-	bh=8IzS13onBkNorLOdkcwuDygjn5SjBt9/3Xqjltj3gXc=;
+	s=arc-20240116; t=1744115725; c=relaxed/simple;
+	bh=18BBKuthwnk3j4yIHwzJiTvX6KjnK8MzpzwNM0++zFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDsCsIRe+SOfE0AL/r2z+CMVvaJ+oQOXz+pNUslarFhKVbCCGrX8PuJIbCz0C06hDkpX/MSTcJPU+S0t2BSdCRvS6UZTN04IrxI7+L3wcMFKbF7sxUW+gzQCgK2ajuzXtxV+9pajVwiTyP9aDrL2DUxg1/rAnVI6+/JtzvMZBNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnZFpgnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB0FC4CEE5;
-	Tue,  8 Apr 2025 12:06:06 +0000 (UTC)
+	 MIME-Version; b=nRT8RYYNbzznGUy281lLqR1GCyrftcqY4LySKCD/leXKAwz5f5427ZKQLXQJKxilFIOBz1nH/qa0BQo/AE4W/1JNN7GaniRfgy0rDphW205a69vQw4W0u4ZAsP2XEcmbRa/3zWv7df4L2tXeM05tIdY+VR2VhgC1Bn3ZB41N5rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYMvnvJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D190C4CEE5;
+	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113966;
-	bh=8IzS13onBkNorLOdkcwuDygjn5SjBt9/3Xqjltj3gXc=;
+	s=korg; t=1744115725;
+	bh=18BBKuthwnk3j4yIHwzJiTvX6KjnK8MzpzwNM0++zFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnZFpgnjqbVXOKGlhjGoTXjqX/EL05rA9j4l+lnQCA1nzR5V8HE7tQBAOb4+0J8tJ
-	 AGRoIJdVmuo0NLCtMHGb5QbJ/Qfrm0pkDE7NTjAz8L0PE1EsCgDCfeBeyspRYi8ET+
-	 8zOSBL8h5IUqGJgvI3zoRgJs6x58/dQ0AqvmDw1E=
+	b=wYMvnvJwZkaveOFmo2CQtWEeRN0HAk6BYwzMQOLJUgY2NjQ39M35OC6udbepXB097
+	 Z/Jnl4l0iGiSiwAMPSz42gGBrEEGx2DmV1bMUhNWtQSmRzzV39IGaqOOO948wHWKgm
+	 WM5p1+81xTYFaP9JnBLG1S182PaSqox1RcW1fi4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.4 070/154] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
-Date: Tue,  8 Apr 2025 12:50:11 +0200
-Message-ID: <20250408104817.544750371@linuxfoundation.org>
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/204] mfd: sm501: Switch to BIT() to mitigate integer overflows
+Date: Tue,  8 Apr 2025 12:50:12 +0200
+Message-ID: <20250408104822.762946204@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,38 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
+[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
 
-The common pattern in arm is to emit a "8<--- cut here ---" line for
-faults, but it was missing for do_PrefetchAbort(). Add it.
+If offset end up being high enough, right hand expression in functions
+like sm501_gpio_set() shifted left for that number of bits, may
+not fit in int type.
 
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Just in case, fix that by using BIT() both as an option safe from
+overflow issues and to make this step look similar to other gpio
+drivers.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: f61be273d369 ("sm501: add gpiolib support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/sm501.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -570,6 +570,7 @@ do_PrefetchAbort(unsigned long addr, uns
- 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
- 		return;
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index 3ac4508a6742a..78dcbf8e2c15d 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
+@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+ 	void __iomem *regs = smchip->regbase;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	unsigned long save;
+ 	unsigned long ddr;
  
-+	pr_alert("8<--- cut here ---\n");
- 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
- 		inf->name, ifsr, addr);
- 
+@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
+-- 
+2.39.5
+
 
 
 
