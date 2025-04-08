@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A74A808AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A77AA80B87
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17C4517A145
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885304E6488
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F073826AAAA;
-	Tue,  8 Apr 2025 12:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E05627C163;
+	Tue,  8 Apr 2025 12:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoTPRmyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujJC3XNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0431AAA32;
-	Tue,  8 Apr 2025 12:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7AF26F454;
+	Tue,  8 Apr 2025 12:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115784; cv=none; b=ft5AZEXFDHDgkdlEKxOC07lupBI1od9DyZJ+SfMQlAtAX0CShA1N8Nrl2UK/OWCNlAiyNTekB8r001MXGTs3xDB26Qqo61+C0zAUMYoMMxr4LG0cKseim8LTGfKUvs6hLmlXmCXcBwVBHi2washn7IplHVVtectyd1miV2NcbFM=
+	t=1744116997; cv=none; b=LzoK1ZI310P19mpOg3UYpJPpue7iNToQMz5NnL3QhNc2MMg2s0RBMRdEB5yBURTLUuO4De/KSDdm/e+qpyeQn8ja/gk8VQmp/UptrX4/545XlsyVCcoJ3IKsYuk6xdY7MooAZaz5uOy53MNt2kLsKiKUJhPybhwzMFR1sf1Dl50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115784; c=relaxed/simple;
-	bh=oJOXSHINKtsnV/dGtJwDee0RnO+7Dd9YZ9q4iQz5bKM=;
+	s=arc-20240116; t=1744116997; c=relaxed/simple;
+	bh=73F3K2M83698mdmbDRdlXAjg38TELpgfIRdltUagG4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c65pH+gbQHLyiZXNqkRy5ewzVbZ5N1V5g+tqfOAwwlbaV9tWQY0S+881cmmchYeLQjHkKs2QE3AL5Y40JvqzXLpbeR1XpAmo20f/+Ety73nMDwfYixw4CGXGsZqIU1pTSAV3g/ZTN3Ou/FsDMJ4vVInvHSd/cD1uMHt9I/8lFmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoTPRmyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E176C4CEE5;
-	Tue,  8 Apr 2025 12:36:23 +0000 (UTC)
+	 MIME-Version; b=lX8p0TQmFfaWF9+fwub6GA2r3BvIghuncWTFOyoBrXaMADp4Mune0DwwPK2LmwaGqfGYbEobP5ABBDeyG6+Jdiq6HpPA3N/9BhYwEZ+fv+fy3WothpYUI73cJIVSiNQDFNu5ia5NnkU0Uio49SRjVNnFKQJJscnrwce4M+o+Hp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujJC3XNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF9C4CEE5;
+	Tue,  8 Apr 2025 12:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115784;
-	bh=oJOXSHINKtsnV/dGtJwDee0RnO+7Dd9YZ9q4iQz5bKM=;
+	s=korg; t=1744116996;
+	bh=73F3K2M83698mdmbDRdlXAjg38TELpgfIRdltUagG4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eoTPRmyn/zDcMuNWmQvTrAAoE9UW9tduIGdXdNWHexHDQQ7U1CzS0Ol2P2JMbzVlA
-	 UWso2Qw11WSd620q1zi/pXdMZaUKmrP2BDzHLxVmOcV0aqf2+rg4wKJwy87N556nfd
-	 wvZ9zoTt6vINX4MCb/cXefLiRAr7eCI+QvHhSNmo=
+	b=ujJC3XNjMoqG8iimeT5zk3YSFqOjc4Xu+MTtX9v4qFWSES7Xq/sfcU/WIec17TcZw
+	 U5xHkK9XZncRpdEIpO7GOyKASOn00CVZ9fLnH/brbPqJm/ZsYgdfEOL8VsG0xePxQQ
+	 I8BcMB3x7qLAjAO/tlutyY560IHAnjdMi0M13SNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/204] um: remove copy_from_kernel_nofault_allowed
+Subject: [PATCH 6.12 306/423] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
 Date: Tue,  8 Apr 2025 12:50:32 +0200
-Message-ID: <20250408104823.331009756@linuxfoundation.org>
+Message-ID: <20250408104852.925066863@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-[ Upstream commit 84a6fc378471fbeaf48f8604566a5a33a3d63c18 ]
+[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
 
-There is no need to override the default version of this function
-anymore as UML now has proper _nofault memory access functions.
+There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
+size. This would make xlate_pos negative.
 
-Doing this also fixes the fact that the implementation was incorrect as
-using mincore() will incorrectly flag pages as inaccessible if they were
-swapped out by the host.
+[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
+[   23.734158] ================================================================================
+[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
+[   23.734418] shift exponent -1 is negative
 
-Fixes: f75b1b1bedfb ("um: Implement probe_kernel_read()")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://patch.msgid.link/20250210160926.420133-3-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Ensuring xlate_pos is a positive or zero before BIT.
+
+Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/shared/os.h |  1 -
- arch/um/kernel/Makefile     |  2 +-
- arch/um/kernel/maccess.c    | 19 --------------
- arch/um/os-Linux/process.c  | 51 -------------------------------------
- 4 files changed, 1 insertion(+), 72 deletions(-)
- delete mode 100644 arch/um/kernel/maccess.c
+ drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/include/shared/os.h b/arch/um/include/shared/os.h
-index 0df646c6651ea..3b382da2996f0 100644
---- a/arch/um/include/shared/os.h
-+++ b/arch/um/include/shared/os.h
-@@ -211,7 +211,6 @@ extern int os_protect_memory(void *addr, unsigned long len,
- extern int os_unmap_memory(void *addr, int len);
- extern int os_drop_memory(void *addr, int length);
- extern int can_drop_memory(void);
--extern int os_mincore(void *addr, unsigned long len);
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index ad1786be2554b..f851397b65d6e 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
+ 	if (size != 0 && xlate_pos < 12)
+ 		return -EINVAL;
  
- /* execvp.c */
- extern int execvp_noalloc(char *buf, const char *file, char *const argv[]);
-diff --git a/arch/um/kernel/Makefile b/arch/um/kernel/Makefile
-index 1c2d4b29a3d46..6407fc911007b 100644
---- a/arch/um/kernel/Makefile
-+++ b/arch/um/kernel/Makefile
-@@ -17,7 +17,7 @@ extra-y := vmlinux.lds
- obj-y = config.o exec.o exitcode.o irq.o ksyms.o mem.o \
- 	physmem.o process.o ptrace.o reboot.o sigio.o \
- 	signal.o sysrq.o time.o tlb.o trap.o \
--	um_arch.o umid.o maccess.o kmsg_dump.o capflags.o skas/
-+	um_arch.o umid.o kmsg_dump.o capflags.o skas/
- obj-y += load_file.o
- 
- obj-$(CONFIG_BLK_DEV_INITRD) += initrd.o
-diff --git a/arch/um/kernel/maccess.c b/arch/um/kernel/maccess.c
-deleted file mode 100644
-index 8ccd56813f684..0000000000000
---- a/arch/um/kernel/maccess.c
-+++ /dev/null
-@@ -1,19 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2013 Richard Weinberger <richrd@nod.at>
-- */
--
--#include <linux/uaccess.h>
--#include <linux/kernel.h>
--#include <os.h>
--
--bool copy_from_kernel_nofault_allowed(const void *src, size_t size)
--{
--	void *psrc = (void *)rounddown((unsigned long)src, PAGE_SIZE);
--
--	if ((unsigned long)src < PAGE_SIZE || size <= 0)
--		return false;
--	if (os_mincore(psrc, size + src - psrc) <= 0)
--		return false;
--	return true;
--}
-diff --git a/arch/um/os-Linux/process.c b/arch/um/os-Linux/process.c
-index e52dd37ddadcc..2686120ab2325 100644
---- a/arch/um/os-Linux/process.c
-+++ b/arch/um/os-Linux/process.c
-@@ -223,57 +223,6 @@ int __init can_drop_memory(void)
- 	return ok;
- }
- 
--static int os_page_mincore(void *addr)
--{
--	char vec[2];
--	int ret;
--
--	ret = mincore(addr, UM_KERN_PAGE_SIZE, vec);
--	if (ret < 0) {
--		if (errno == ENOMEM || errno == EINVAL)
--			return 0;
--		else
--			return -errno;
--	}
--
--	return vec[0] & 1;
--}
--
--int os_mincore(void *addr, unsigned long len)
--{
--	char *vec;
--	int ret, i;
--
--	if (len <= UM_KERN_PAGE_SIZE)
--		return os_page_mincore(addr);
--
--	vec = calloc(1, (len + UM_KERN_PAGE_SIZE - 1) / UM_KERN_PAGE_SIZE);
--	if (!vec)
--		return -ENOMEM;
--
--	ret = mincore(addr, UM_KERN_PAGE_SIZE, vec);
--	if (ret < 0) {
--		if (errno == ENOMEM || errno == EINVAL)
--			ret = 0;
--		else
--			ret = -errno;
--
--		goto out;
--	}
--
--	for (i = 0; i < ((len + UM_KERN_PAGE_SIZE - 1) / UM_KERN_PAGE_SIZE); i++) {
--		if (!(vec[i] & 1)) {
--			ret = 0;
--			goto out;
--		}
--	}
--
--	ret = 1;
--out:
--	free(vec);
--	return ret;
--}
--
- void init_new_thread_signals(void)
- {
- 	set_handler(SIGSEGV);
+-	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
++	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
+ 		/*
+ 		 * In certain circumstances we can get a buffer that is
+ 		 * not aligned to its size. (Most of the time
 -- 
 2.39.5
 
