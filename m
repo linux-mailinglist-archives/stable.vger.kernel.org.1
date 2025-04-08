@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207B6A80B20
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92736A80787
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD281BC4133
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5118A340D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179A3269882;
-	Tue,  8 Apr 2025 12:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731D426FA44;
+	Tue,  8 Apr 2025 12:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBfLDw7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dndoLMFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7353279356;
-	Tue,  8 Apr 2025 12:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A8F269D08;
+	Tue,  8 Apr 2025 12:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116918; cv=none; b=bmJmCuP6XaFf4XZVAiGCzpcx7T/118BvbxeUp8PIT1H9D0LcT6TYWJ2mUBA7I7FozvMQc+ByeKuB3DIcAYE+MYPVH6ehYu7WQFQVWUI6ykTa8wAMNgOIo7mxVQ2OeHovDb7L6W9lA7shlsk5msS6wj+aX2WGU6rhFXGh5hd4pws=
+	t=1744115322; cv=none; b=kEESVJCppb8KqoFs6hmTgaXK0qBzBeFkEFi3eqD7CdhYrNxy/mHz1hGunzRLsRc3thkcNXnNVLaDa/oSLUx7P8/YpgO1cSs6dcZGufYCa63+tjzFYtf9WYTFbikes+l1S1IPPAiF7KO/Z3RtMTkFUZhBIrxgvQMQlUrxyu35+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116918; c=relaxed/simple;
-	bh=M4CacRGIuS0Sail1FwZMbdzvi+qYy80DoKVmZX8bT3Q=;
+	s=arc-20240116; t=1744115322; c=relaxed/simple;
+	bh=UUya+A2CucvhjxRjAXawOWOfBdq5WpMoptCjRp+6Gbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dOfbjXgwN8pc7ou+3FkE8C6qOh5d5JsmM0BobXMqerifAh8XSecFz88p5mteQpKlW6U6EdXWJ4ugLgbeoyHnvTaf4mm+5QzDaddVB6oHxdFc+wyMGkcFL1oW3CRZ3am5gQ9N3ggTOKQNblrt5asFYUx1sohxe/p0ss3jmaLUvr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBfLDw7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD102C4CEE5;
-	Tue,  8 Apr 2025 12:55:17 +0000 (UTC)
+	 MIME-Version; b=CXuXY9C3SDTuYWyf3GGBYC6Nr60bXOb4K57EYtvTLtIKI0rL9rzq1PdznpxaCm1kXhhfgrIZUmRnxsLl/9aJspyFa2xe3roa49B8nxJ42+TIXDHKRVdpY21Kybgx0xUO8sG98GyX3g+FDS+pIxg2LMQy0BwRVccGRFJ1CUahYe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dndoLMFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB31C4CEE7;
+	Tue,  8 Apr 2025 12:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116918;
-	bh=M4CacRGIuS0Sail1FwZMbdzvi+qYy80DoKVmZX8bT3Q=;
+	s=korg; t=1744115322;
+	bh=UUya+A2CucvhjxRjAXawOWOfBdq5WpMoptCjRp+6Gbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBfLDw7ijVI4lf590DLs4b+BzqbjQrlbo9NiXBuFOkYGLj3aFYgbPOt48Dr5nmeEJ
-	 eji2v8hJJvEVz5IS5jvtpPnDCAn7Ea5DQB886EdorFYODlUnG+iFo6vn1yIwf/0Z0S
-	 tQSsCT42iq/AAqT62V/27kLDTh686v62df9WdAIc=
+	b=dndoLMFxWflWDoL76fZdQndma+SzRxcUq4e8QnwachaZaNa1zWSeGWF7kgzpIbs1k
+	 RR2NOCHpU92XT1XB/ISydGZZbDwHqturSDw0H3NLfdY+gmLlTO8mttTxRV8SRnzuNq
+	 utFxihugtmG0PHe2/D9eqoUUTOyi+uQomsDqTM98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/423] riscv/purgatory: 4B align purgatory_start
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	kernel test robot <lkp@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.13 432/499] wifi: mac80211: Fix sparse warning for monitor_sdata
 Date: Tue,  8 Apr 2025 12:50:44 +0200
-Message-ID: <20250408104853.220882145@linuxfoundation.org>
+Message-ID: <20250408104902.001606256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit 3f7023171df43641a8a8a1c9a12124501e589010 ]
+commit 861d0445e72e9e33797f2ceef882c74decb16a87 upstream.
 
-When a crashkernel is launched on RISC-V, the entry to purgatory is
-done by trapping via the stvec CSR. From riscv_kexec_norelocate():
+Use rcu_access_pointer() to avoid sparse warning in
+drv_remove_interface().
 
-  |  ...
-  |  /*
-  |   * Switch to physical addressing
-  |   * This will also trigger a jump to CSR_STVEC
-  |   * which in this case is the address of the new
-  |   * kernel.
-  |   */
-  |  csrw    CSR_STVEC, a2
-  |  csrw    CSR_SATP, zero
-
-stvec requires that the address is 4B aligned, which was not the case,
-e.g.:
-
-  | Loaded purgatory at 0xffffc000
-  | kexec_file: kexec_file_load: type:1, start:0xffffd232 head:0x4 flags:0x6
-
-The address 0xffffd232 not 4B aligned.
-
-Correct by adding proper function alignment.
-
-With this change, crashkernels loaded with kexec-file will be able to
-properly enter the purgatory.
-
-Fixes: 736e30af583fb ("RISC-V: Add purgatory")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250328085313.1193815-1-bjorn@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502130534.bVrZZBK0-lkp@intel.com/
+Fixes: 646262c71aca ("wifi: mac80211: remove debugfs dir for virtual monitor")
+Link: https://patch.msgid.link/20250213214330.6113-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/purgatory/entry.S | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/driver-ops.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/purgatory/entry.S b/arch/riscv/purgatory/entry.S
-index 0e6ca6d5ae4b4..c5db2f072c341 100644
---- a/arch/riscv/purgatory/entry.S
-+++ b/arch/riscv/purgatory/entry.S
-@@ -12,6 +12,7 @@
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -121,7 +121,7 @@ void drv_remove_interface(struct ieee802
+ 	 * The virtual monitor interface doesn't get a debugfs
+ 	 * entry, so it's exempt here.
+ 	 */
+-	if (sdata != local->monitor_sdata)
++	if (sdata != rcu_access_pointer(local->monitor_sdata))
+ 		ieee80211_debugfs_recreate_netdev(sdata,
+ 						  sdata->vif.valid_links);
  
- .text
- 
-+.align	2
- SYM_CODE_START(purgatory_start)
- 
- 	lla	sp, .Lstack
--- 
-2.39.5
-
 
 
 
