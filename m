@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2897EA80263
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9238EA801B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38471891B2B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644DC444330
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6290F265CDF;
-	Tue,  8 Apr 2025 11:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FEB267F6E;
+	Tue,  8 Apr 2025 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD/tDDPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AigI8bYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC6A227EBD;
-	Tue,  8 Apr 2025 11:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807AA224239;
+	Tue,  8 Apr 2025 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112589; cv=none; b=EwH2MsGj8MQ4KN9ofWsNk7DTi1Zf3ZA46xuhXaVWI+b1zm70O3R+j1jGQS0Ly/P1+cW3QdOFuPe2WKQYbTXvhsO8AOhadczbfb5yhJSqJonW0A6JYjU02o3JduGDEaQbItQkMaumMdBa851O/PofAjGRde/5QqOfIAbh0cT31bA=
+	t=1744111815; cv=none; b=YS44NQJDBNCq9CB3o8qyWTkc8AxQyytRg8n/AR9WgitCXmqwNbC+k3YIekfzp6vQgocUM4C1r4b5HarZHoBJzqc+5wQxsZLRITIpe+S0zJGwBAInSK2FvLAruIG0FL8dN4DQYFCMBGVPnOY9FAUKvL4XF3QAjkTflyZ4t3pICCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112589; c=relaxed/simple;
-	bh=t94j+rE5SEUeYEOFFghKv1Wxm4JwjO9tiNLkerBpvhQ=;
+	s=arc-20240116; t=1744111815; c=relaxed/simple;
+	bh=5jtySsG7qmAk9i97RO2zMvpRVfkMUonimiPFd9jwK/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlgKM7Yp4OIs5NK2uDjmTMQp5rUE0Q3DK7tp0m0dYE2fHmZbSWRQfyUHDauLpGKQcwsLeRAwixuvTsIy8y1o0OBbpZROf+wxR/EVJSN3ndgqCkeuh1OaEAB2Q2kaUCRzyXC+gCpWBRf1m/NuH3wcLFUYhTx6vURcSs4gi4mrXZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD/tDDPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28DCC4CEE7;
-	Tue,  8 Apr 2025 11:43:08 +0000 (UTC)
+	 MIME-Version; b=MptTohszaihKKlxC+yBRXLYiYarpJ1r6ndi+nafqLO0asri+wTzdCrkdBwehqIfhKE3OWDdytdAsTFUq9xFVImsxnClBNt7pgHGb44hZG9SmjS9cQP5zKfig6ges/T4mY9E4WgbAwxZA4t9m1LFJSFg12Rwt9b8rWVZPArxvr08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AigI8bYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6E7C4CEE5;
+	Tue,  8 Apr 2025 11:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112589;
-	bh=t94j+rE5SEUeYEOFFghKv1Wxm4JwjO9tiNLkerBpvhQ=;
+	s=korg; t=1744111815;
+	bh=5jtySsG7qmAk9i97RO2zMvpRVfkMUonimiPFd9jwK/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD/tDDPJaofN6N8bcK0Ae3kilz7HT0TzIpoNpzN58TANLk5uzQIWgrf5A5alJVCH1
-	 1TrRV8SEIjbAZQ38ku9haU8iTc+7nez+MXF3GZ33Xlxtt8lQLkS4oK+nEvHTE/wA2i
-	 khVOUyZJqjn7Q7/Dl3nESu/2hmfeyScHtdyDhl78=
+	b=AigI8bYdaC8uNf5eNIV1dYJ731aVn0c1qs5/qQ7gTcWRyvGVwU2uZ329DttK1D0OU
+	 +rpuDHaqPXFbXPETLlCdAQvqSLdQ3OPM4cCz5uchx1Ynkb907cjobMNc7HYSfwfLsw
+	 0Z31m2KUonStiRJeXfYiB8a0ZdX4fXTIkba2FeS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/279] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
+Subject: [PATCH 6.14 570/731] objtool: Fix verbose disassembly if CROSS_COMPILE isnt set
 Date: Tue,  8 Apr 2025 12:47:47 +0200
-Message-ID: <20250408104828.610779678@linuxfoundation.org>
+Message-ID: <20250408104927.531714145@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: David Laight <david.laight.linux@gmail.com>
 
-[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
+[ Upstream commit e77956e4e5c11218e60a1fe8cdbccd02476f2e56 ]
 
-Driver is always clearing the mask that sets the VLAN ID/Service Level
-in the adapter. Recent change for supporting multiple traffic class
-exposed this issue.
+In verbose mode, when printing the disassembly of affected functions, if
+CROSS_COMPILE isn't set, the objdump command string gets prefixed with
+"(null)".
 
-Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+Somehow this worked before.  Maybe some versions of glibc return an
+empty string instead of NULL.  Fix it regardless.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[ jpoimboe: Rewrite commit log. ]
+
+Fixes: ca653464dd097 ("objtool: Add verbose option for disassembling affected functions")
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215142321.14081-1-david.laight.linux@gmail.com
+Link: https://lore.kernel.org/r/b931a4786bc0127aa4c94e8b35ed617dcbd3d3da.1743481539.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/objtool/check.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 27cf6e62422aa..3725f05ad297b 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1181,8 +1181,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
- 			qp->path_mtu =
- 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
- 		}
--		qp->modify_flags &=
--			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
- 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
- 		if (qp->max_dest_rd_atomic < 1)
- 			qp->max_dest_rd_atomic = 1;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index aa071017c325c..159fb130e2827 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4489,6 +4489,8 @@ static int disas_funcs(const char *funcs)
+ 	char *cmd;
+ 
+ 	cross_compile = getenv("CROSS_COMPILE");
++	if (!cross_compile)
++		cross_compile = "";
+ 
+ 	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
+ 			"BEGIN { split(_funcs, funcs); }"
 -- 
 2.39.5
 
