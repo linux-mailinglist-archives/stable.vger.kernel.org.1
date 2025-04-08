@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15F0A80351
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A10A80217
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63BE37ACF6A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 126CA1890EF5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5CC2641CC;
-	Tue,  8 Apr 2025 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF17D265602;
+	Tue,  8 Apr 2025 11:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqHrUTwo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBsnrS/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7222690FB;
-	Tue,  8 Apr 2025 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC2D263C90;
+	Tue,  8 Apr 2025 11:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113134; cv=none; b=dMBilaORGSUu0AueTvAAV899LfS6EL9oqdpfE3dKQSbjQTiesKCHpSv7mL2YDv3F1RP9Oo6dvU760W8uNrNv4kSTLqUH0s20BWTy15JfRmb9Ej83tEK6MJLzX+iVEQ5RhPumk8ez+PL/JwwXfpcEQCpQB5X+VEXWHMGhlF0Tgao=
+	t=1744112455; cv=none; b=gcXHP5vYqGr+YOmcx9oJxuA8w14pUBDTxDWPHRI6McZ0Ck5qtDe9bQKr55WHrBH2UMc+W3ZbOJ4Rz/Oo2pxX76IeWsXfM3YzDCesWPMiKtoD+vrXVziTYwTwB1hiH/5uko2SI5/1qutq7siHl/Iy//OtFMw7cFFGhrpBSjXX4h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113134; c=relaxed/simple;
-	bh=rocJ9+COYzXIw6/dD7ks8tKhSraSA5ZbPH2tTYAOqLk=;
+	s=arc-20240116; t=1744112455; c=relaxed/simple;
+	bh=8TwPyF2ykCsRAHiVEiZApPWD5va1YMC/wUZnyZzThtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BBY/BLp8LVhiMoEXD//HNPB1jlJvlwjSBmrBxz9IQJSl5vKBp9/x/UjdP2kdzBPgGlgqJZIjVup/lROxdL0RIXWLb1gndG0FxFKFD8T3poTs/3AuNoeMYHgAyYFyu9MrJoV/Gine+qeloCkfXcNu1dNFkDoGgKsZ3X2VuYlEwq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqHrUTwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA4EC4CEEB;
-	Tue,  8 Apr 2025 11:52:13 +0000 (UTC)
+	 MIME-Version; b=CHRsQSz0Tn5BA4iLl0yH0nDQZus2Kxc3LIyvWfEVY8OjfoBp7rY0QKlEnoxqTPLHpPkuVsC/lYcrCv0yHDJ9yLKUBhh/RQUn9TWvkRa93KiksHvRl5j/G2sq0VvvAP46k0RD9y+FuCiObR39hJ+mATIwTy0Dz5CJK+mV/Kz7FBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBsnrS/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ADAC4CEE5;
+	Tue,  8 Apr 2025 11:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113134;
-	bh=rocJ9+COYzXIw6/dD7ks8tKhSraSA5ZbPH2tTYAOqLk=;
+	s=korg; t=1744112455;
+	bh=8TwPyF2ykCsRAHiVEiZApPWD5va1YMC/wUZnyZzThtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqHrUTwoqzJ+Oma6sLu/2zSgkY7HYqaXtBzI0Uf34lGauq2QCHl9IgQWdbxzhVesu
-	 IuSMFLR10bpjauHEaCoJH5IQU1husMpgkiGAnSFVSQxODEvio+lt7PnKj/sISsPlce
-	 MWBM04S5aVd3AD01nkZLsYoUlbF9IVbQ4mSh59IQ=
+	b=TBsnrS/baYt6DqooZUXeDXV9lekExTWwjQyM0AfEs+EIXiLjXUIO7vvf1d55bSJEi
+	 BOuVwQ6CMDUXkxlqS4iRnClCxJ3K4w5EFuzLUZXlAny9rmTPhFzm+cDxmqat/3hkD5
+	 AgET7ff++jdALK5u8FHTSSbwQrH3ay/P2NqFxuVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/268] PCI: brcmstb: Use internal register to change link capability
+Subject: [PATCH 5.15 074/279] i2c: sis630: Fix an error handling path in sis630_probe()
 Date: Tue,  8 Apr 2025 12:47:37 +0200
-Message-ID: <20250408104829.745540813@linuxfoundation.org>
+Message-ID: <20250408104828.342312417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0c97321e11e0e9e18546f828492758f6aaecec59 ]
+[ Upstream commit 2b22459792fcb4def9f0936d64575ac11a95a58d ]
 
-The driver has been mistakenly writing to a read-only (RO)
-configuration space register (PCI_EXP_LNKCAP) to change the
-PCIe link capability.
+If i2c_add_adapter() fails, the request_region() call in sis630_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Although harmless in this case, the proper write destination
-is an internal register that is reflected by PCI_EXP_LNKCAP.
-
-Thus, fix the brcm_pcie_set_gen() function to correctly update
-the link capability.
-
-Fixes: c0452137034b ("PCI: brcmstb: Add Broadcom STB PCIe host controller driver")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214173944.47506-3-james.quinlan@broadcom.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/3d607601f2c38e896b10207963c6ab499ca5c307.1741033587.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-sis630.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index e47a77f943b1e..54c440f09a7ab 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -378,10 +378,10 @@ static int brcm_pcie_set_ssc(struct brcm_pcie *pcie)
- static void brcm_pcie_set_gen(struct brcm_pcie *pcie, int gen)
+diff --git a/drivers/i2c/busses/i2c-sis630.c b/drivers/i2c/busses/i2c-sis630.c
+index cfb8e04a2a831..6befa6ff83f26 100644
+--- a/drivers/i2c/busses/i2c-sis630.c
++++ b/drivers/i2c/busses/i2c-sis630.c
+@@ -509,6 +509,8 @@ MODULE_DEVICE_TABLE(pci, sis630_ids);
+ 
+ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
  {
- 	u16 lnkctl2 = readw(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
--	u32 lnkcap = readl(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	u32 lnkcap = readl(pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
++	int ret;
++
+ 	if (sis630_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"SIS630 compatible bus not detected, "
+@@ -522,7 +524,15 @@ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	snprintf(sis630_adapter.name, sizeof(sis630_adapter.name),
+ 		 "SMBus SIS630 adapter at %04x", smbus_base + SMB_STS);
  
- 	lnkcap = (lnkcap & ~PCI_EXP_LNKCAP_SLS) | gen;
--	writel(lnkcap, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	writel(lnkcap, pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+-	return i2c_add_adapter(&sis630_adapter);
++	ret = i2c_add_adapter(&sis630_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(smbus_base + SMB_STS, SIS630_SMB_IOREGION);
++	return ret;
+ }
  
- 	lnkctl2 = (lnkctl2 & ~0xf) | gen;
- 	writew(lnkctl2, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
+ static void sis630_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
