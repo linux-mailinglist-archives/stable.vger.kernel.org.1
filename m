@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A43EA80412
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB3CA80AA0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D353B4D5C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94864E38A0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA00269B1B;
-	Tue,  8 Apr 2025 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0E526FA60;
+	Tue,  8 Apr 2025 12:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbtn5/eY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V808kqmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FCD269B08;
-	Tue,  8 Apr 2025 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF63B26B961;
+	Tue,  8 Apr 2025 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113284; cv=none; b=bphlXY9+wgqT00OtyFhYWHceNV6ueE3Dh+oU2aHhuaRfVPcaE4RbJcWKOuItmfCCNmZ9VRZ6ewu4E4Xg6VMJ7K5XEqaUsJCyCUBTblE6oXwddI9SYu51lLYDAycC8xoQpIOOLWZ0ly3Dnu0jh3UMjsiB6+1FGHLA+RGUJ7LAGe4=
+	t=1744116562; cv=none; b=jfyYNXCfx+um/vRnnAYizq6Yx43I5H+E8nkSuiHOc5h2RZrBPwoAMnJ/lsPDCrcHMZryOs55FJNPuR3WSwNUZDF1ctejPzGMQsgq89BjTcf7O5eq/yzHc+/JHIuQ1P+V2KYO8qdM9kSS4rDjP7tl9I2LFFgM5XqFDVgbRtv0kls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113284; c=relaxed/simple;
-	bh=SaMr5vFRYbrzORpLFF1lhAIlZjbP6P9hX6vxRP2PaZw=;
+	s=arc-20240116; t=1744116562; c=relaxed/simple;
+	bh=WUKT7pDTHBVA+p75P90PLNRhT7YZfuKlV4IKmqYoMR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMrRK894TmcQZtqnkYCuZt51pa0yVttK/+1KgohajHtKrP3BbojcNVz57BZwoxunPDp5OGeOHJtstZN9ayuYP6MaGhnt/uM9xELZJy0k3yoj0BoFjZq0fdBw+517ECYijf4Uc8QXVx/H0Wn/XSY/5dqTCVFrAfpgZxvDRYuAwY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbtn5/eY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE60C4CEE5;
-	Tue,  8 Apr 2025 11:54:43 +0000 (UTC)
+	 MIME-Version; b=OmxcWvOGxgb4LBoiRokA3/Oq6/rDrc6ec1eF/v3k7++N+fpzCI7HnEF1CgocpSpcDjSOuVsTjd5AxaggbalgCCDxrnaZSehnz391ed38rQjot9SNq7ehw2s3fgR5oiu1rePekPHfzEnax/SHoW0DDls+PBlvpknwS+cKjwMt7jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V808kqmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B729C4CEE7;
+	Tue,  8 Apr 2025 12:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113284;
-	bh=SaMr5vFRYbrzORpLFF1lhAIlZjbP6P9hX6vxRP2PaZw=;
+	s=korg; t=1744116561;
+	bh=WUKT7pDTHBVA+p75P90PLNRhT7YZfuKlV4IKmqYoMR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wbtn5/eYGfVvfW4kHn0tMXjXV56Pej4dimpUWxRxUo1l8hQ8+zRs/xIayTUAJ6q2s
-	 0LlgtnX4y56ME/hqoHpXxQW9neUEny368BuZofiNqwiCMbNzEOawyUTbytlzRZUjVY
-	 IC1fj5iDK794FdlvUrhxxVvd5FEUbNEcMjzpuDpI=
+	b=V808kqmqn+a8mEUnTvlw1zTKNPnSjRZLTYBw5ruxD9EwSZXVds+JH+qnpi82Zdvfa
+	 SO3NiLp1M6bEqkg032Tm9NchTHKgOvBw4W9QeWgZETYHPsg5HnY6S5/WaXVBIpcdlU
+	 8rBOpSOufHPzLACa3m0SnVYrUIkR5AqHCefII3qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexis GUILLEMET <alexis.guillemet@dunasys.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/268] pinctrl: intel: Fix wrong bypass assignment in intel_pinctrl_probe_pwm()
+Subject: [PATCH 6.12 186/423] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
 Date: Tue,  8 Apr 2025 12:48:32 +0200
-Message-ID: <20250408104831.219348212@linuxfoundation.org>
+Message-ID: <20250408104850.073717846@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 0eee258cdf172763502f142d85e967f27a573be0 ]
+[ Upstream commit c9c59da76ce9cb3f215b66eb3708cda1134a5206 ]
 
-When instantiating PWM, the bypass should be set to false. The field
-is used for the selected Intel SoCs that do not have PWM feature enabled
-in their pin control IPs.
+There is kernel dump when do module test:
+sysfs: cannot create duplicate filename
+/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
+ __dma_async_device_channel_register+0x128/0x19c
+ dma_async_device_register+0x150/0x454
+ fsl_edma_probe+0x6cc/0x8a0
+ platform_probe+0x68/0xc8
 
-Fixes: eb78d3604d6b ("pinctrl: intel: Enumerate PWM device when community has a capability")
-Reported-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
+fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
+dma_async_device_unregister  needs the link to do
+__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
+after dma_async_device_unregister to make sure channel could be freed.
+
+So clean up chan after dma_async_device_unregister to address this.
+
+Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250228071720.3780479-1-peng.fan@oss.nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-intel.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/dma/fsl-edma-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
-index 3be04ab760d3f..9775f6be1c1e6 100644
---- a/drivers/pinctrl/intel/pinctrl-intel.c
-+++ b/drivers/pinctrl/intel/pinctrl-intel.c
-@@ -1524,7 +1524,6 @@ static int intel_pinctrl_probe_pwm(struct intel_pinctrl *pctrl,
- 		.clk_rate = 19200000,
- 		.npwm = 1,
- 		.base_unit_bits = 22,
--		.bypass = true,
- 	};
- 	struct pwm_lpss_chip *pwm;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 70cb7fda757a9..db5f06b8575db 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -699,9 +699,9 @@ static void fsl_edma_remove(struct platform_device *pdev)
+ 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
+ 
+ 	fsl_edma_irq_exit(pdev, fsl_edma);
+-	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
++	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
+ }
  
 -- 
 2.39.5
