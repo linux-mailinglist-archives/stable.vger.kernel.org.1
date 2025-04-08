@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-130528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6F3A80553
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA37CA80BE9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8582467C69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AFA6886747
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDB5269AED;
-	Tue,  8 Apr 2025 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E967927781B;
+	Tue,  8 Apr 2025 12:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ3oCB2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhf5zoKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFF42676CA;
-	Tue,  8 Apr 2025 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A632F268685;
+	Tue,  8 Apr 2025 12:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113951; cv=none; b=jQoJO98G1JI48JWghQ7sjC9zWvEfLgpTt7XyfaUeTcW9+RgQUWP1nhgSYnCieFw31OSQtVMCckKlO9hqCaQx0+tvKgutn7r9HO6+TxhFZYMytVj0rp5qmD4Xg+ovqAQSRk/IPqg/43NseP+BxM57Zl3bpL6ymkau732R2QiV164=
+	t=1744116867; cv=none; b=HXIc02olk4LRzQUQOBlSqKR/7ctntAMuGoHcClbDw5aT0mTPHSW/M3DcpAofbCI8ENTjXJgd9XF2wuKGvpGEHC9jvoa7vncLGJr6+EI00zRAJ+6J2rd2bmsy0QvBFaulCNGkBWJx050dZsRlOxm1ti0yJgdBUlEXT9ei0E27560=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113951; c=relaxed/simple;
-	bh=uVtzqJAjH00HcvxTJ+34XSAqIYUDIzIQTd9WS612Fhg=;
+	s=arc-20240116; t=1744116867; c=relaxed/simple;
+	bh=q3Be9sP9opOaVZ4V4hpdNLE7/4SAgmRmx+BG8VRLbvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cg0hr66SHKg1Baj198P2G4Y+CVIyt8XksBNeoekoO9nkHk4/Ow2e4Pg2AK5FKmYn5iYbNqWI7NWzx8e0rUl50J/rH/fQtKOLhLudxL/QBGZ1OAARlHF1CHN/nZT5B2JlwaKM6l6g3XqCRtLsGp6h5EPO0176th/ZML3lk6tvs0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ3oCB2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C806C4CEE5;
-	Tue,  8 Apr 2025 12:05:50 +0000 (UTC)
+	 MIME-Version; b=oObRXfz7Blmp2onI7AClJ2WsjmEvWD7BCWSl6OXoLK+1gVX8rsU99nzSwuAVDuIIur4WZAOHRrLXV0LGSziDX5WLyTZpr6S8gHwGlQLLM7/TNmdaJMNuypwSn3Ego1gU7XLqVURta4hwbS+v3odf57zUmUWZehEeumG/DJ3VMMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhf5zoKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37041C4CEE5;
+	Tue,  8 Apr 2025 12:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113951;
-	bh=uVtzqJAjH00HcvxTJ+34XSAqIYUDIzIQTd9WS612Fhg=;
+	s=korg; t=1744116867;
+	bh=q3Be9sP9opOaVZ4V4hpdNLE7/4SAgmRmx+BG8VRLbvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJ3oCB2V9OVYCVaD8WM4C8loj882JCk5UM9P2tbOaNEtmPgzWIub6PZA9TriE/7nR
-	 yu/X93megmEKSQYlIQxN4km61aVgzm2Vj9bsT4M74kxp0xYnuiwae68byIFpk4hI57
-	 SDsZaN/z9G0RA6gVr/fXrDcJAIRCbAjK9619z72I=
+	b=lhf5zoKN2YcZqedLJcXli7LGTGzr75W9c6d35zVWJxoA/o/zY8RNqieriN6pCy3Au
+	 ywEEEHhdpEfb98jh2AXtMGbwEtk0Y8r3qoa5nOsVTiKXhd+mH1ZQ/LDAIWs8IWJC8s
+	 hM451oZt0F7ujx6xphc2V8EXhXExKgc+cl2EozZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Oleg Nesterov <oleg@redhat.com>,
+	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/154] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
+Subject: [PATCH 6.12 297/423] can: statistics: use atomic access in hot path
 Date: Tue,  8 Apr 2025 12:50:23 +0200
-Message-ID: <20250408104817.942073399@linuxfoundation.org>
+Message-ID: <20250408104852.707028022@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +64,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
+[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
 
-The init_task instance of struct task_struct is statically allocated and
-may not contain the full FP state for userspace. As such, limit the copy
-to the valid area of both init_task and 'dst' and ensure all memory is
-initialized.
+In can_send() and can_receive() CAN messages and CAN filter matches are
+counted to be visible in the CAN procfs files.
 
-Note that the FP state is only needed for userspace, and as such it is
-entirely reasonable for init_task to not contain parts of it.
+KCSAN detected a data race within can_send() when two CAN frames have
+been generated by a timer event writing to the same CAN netdevice at the
+same time. Use atomic operations to access the statistics in the hot path
+to fix the KCSAN complaint.
 
-Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
-----
-
-v2:
-- Fix code if arch_task_struct_size < sizeof(init_task) by using
-  memcpy_and_pad.
-
+Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/can/af_can.c | 12 ++++++------
+ net/can/af_can.h | 12 ++++++------
+ net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
+ 3 files changed, 39 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index c402b079b74e8..cc9d682a98a13 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -96,7 +96,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
-  */
- int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
- {
--	memcpy(dst, src, arch_task_struct_size);
-+	/* init_task is not dynamically sized (incomplete FPU state) */
-+	if (unlikely(src == &init_task))
-+		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
-+	else
-+		memcpy(dst, src, arch_task_struct_size);
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 01f3fbb3b67dc..65230e81fa08c 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
+ 		netif_rx(newskb);
+ 
+ 	/* update statistics */
+-	pkg_stats->tx_frames++;
+-	pkg_stats->tx_frames_delta++;
++	atomic_long_inc(&pkg_stats->tx_frames);
++	atomic_long_inc(&pkg_stats->tx_frames_delta);
+ 
+ 	return 0;
+ 
+@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	int matches;
+ 
+ 	/* update statistics */
+-	pkg_stats->rx_frames++;
+-	pkg_stats->rx_frames_delta++;
++	atomic_long_inc(&pkg_stats->rx_frames);
++	atomic_long_inc(&pkg_stats->rx_frames_delta);
+ 
+ 	/* create non-zero unique skb identifier together with *skb */
+ 	while (!(can_skb_prv(skb)->skbcnt))
+@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	consume_skb(skb);
+ 
+ 	if (matches > 0) {
+-		pkg_stats->matches++;
+-		pkg_stats->matches_delta++;
++		atomic_long_inc(&pkg_stats->matches);
++		atomic_long_inc(&pkg_stats->matches_delta);
+ 	}
+ }
+ 
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 7c2d9161e2245..22f3352c77fec 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -66,9 +66,9 @@ struct receiver {
+ struct can_pkg_stats {
+ 	unsigned long jiffies_init;
+ 
+-	unsigned long rx_frames;
+-	unsigned long tx_frames;
+-	unsigned long matches;
++	atomic_long_t rx_frames;
++	atomic_long_t tx_frames;
++	atomic_long_t matches;
+ 
+ 	unsigned long total_rx_rate;
+ 	unsigned long total_tx_rate;
+@@ -82,9 +82,9 @@ struct can_pkg_stats {
+ 	unsigned long max_tx_rate;
+ 	unsigned long max_rx_match_ratio;
+ 
+-	unsigned long rx_frames_delta;
+-	unsigned long tx_frames_delta;
+-	unsigned long matches_delta;
++	atomic_long_t rx_frames_delta;
++	atomic_long_t tx_frames_delta;
++	atomic_long_t matches_delta;
+ };
+ 
+ /* persistent statistics */
+diff --git a/net/can/proc.c b/net/can/proc.c
+index bbce97825f13f..25fdf060e30d0 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	unsigned long j = jiffies; /* snapshot */
+ 
++	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
++	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
++	long matches = atomic_long_read(&pkg_stats->matches);
++	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
++	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
++	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
 +
- #ifdef CONFIG_VM86
- 	dst->thread.vm86 = NULL;
- #endif
+ 	/* restart counting in timer context on user request */
+ 	if (user_reset)
+ 		can_init_stats(net);
+@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
++	if (rx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
++	if (tx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* matches overflow - very improbable */
+-	if (pkg_stats->matches > (ULONG_MAX / 100))
++	if (matches > (LONG_MAX / 100))
+ 		can_init_stats(net);
+ 
+ 	/* calc total values */
+-	if (pkg_stats->rx_frames)
+-		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
+-			pkg_stats->rx_frames;
++	if (rx_frames)
++		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
+ 
+ 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->tx_frames);
++					    tx_frames);
+ 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->rx_frames);
++					    rx_frames);
+ 
+ 	/* calc current values */
+-	if (pkg_stats->rx_frames_delta)
++	if (rx_frames_delta)
+ 		pkg_stats->current_rx_match_ratio =
+-			(pkg_stats->matches_delta * 100) /
+-			pkg_stats->rx_frames_delta;
++			(matches_delta * 100) /	rx_frames_delta;
+ 
+-	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
+-	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
++	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
++	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
+ 
+ 	/* check / update maximum values */
+ 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
+@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
+ 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
+ 
+ 	/* clear values for 'current rate' calculation */
+-	pkg_stats->tx_frames_delta = 0;
+-	pkg_stats->rx_frames_delta = 0;
+-	pkg_stats->matches_delta   = 0;
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
+ 
+ 	/* restart timer (one second) */
+ 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
+@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+ 
+ 	seq_putc(m, '\n');
+-	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
+-	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
+-	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
++	seq_printf(m, " %8ld transmitted frames (TXF)\n",
++		   atomic_long_read(&pkg_stats->tx_frames));
++	seq_printf(m, " %8ld received frames (RXF)\n",
++		   atomic_long_read(&pkg_stats->rx_frames));
++	seq_printf(m, " %8ld matched frames (RXMF)\n",
++		   atomic_long_read(&pkg_stats->matches));
+ 
+ 	seq_putc(m, '\n');
+ 
 -- 
 2.39.5
 
