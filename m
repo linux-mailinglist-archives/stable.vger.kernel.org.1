@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5639A8023F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C792A801A2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6700A882158
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624A2462043
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94980263C90;
-	Tue,  8 Apr 2025 11:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703F926AA93;
+	Tue,  8 Apr 2025 11:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xq9/B/1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oalRmdyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5222E25FA13;
-	Tue,  8 Apr 2025 11:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D14A26AA8A;
+	Tue,  8 Apr 2025 11:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112391; cv=none; b=eJ+sIE31TKejIZugRLwdvYZAGeJ+4Le0Bn/Og5eo1PpCWiELVdNdWLgC+EBgXGWrK9fU5sOsEjYrNFmiKyqhvxbVmG3NLyj4Trgctg2Thu4OPcIGy+MS2l05CbPtDh07j4weM6gHlUz9S8KAuW2x6jxIzZ4NsX07miF7bEywoyk=
+	t=1744111733; cv=none; b=XnYsp8Ju6FSqvmmM44Isx2tK5+rgjecqSErgpHpq2FcXGQjoCysfLAwPgKWbp+Yj+yKSSPWZFFPxRKf3PjYqzm5UvLThUf+2saWt0lsNPfi1dkWtDgSbPmI6YftMa+l6PBr+X7J0g/Zdxx/sZ4aItY/2pcaqAAWyyRfE8YePxFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112391; c=relaxed/simple;
-	bh=TSsk73M2t67QPCzE5b79J/Se10U7nBdUJplbEK2vjH8=;
+	s=arc-20240116; t=1744111733; c=relaxed/simple;
+	bh=vn+YZVMG0Wj8zlsqLbCKXQG9cke+yP/yGzCodQYMbFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2Wu2/TN5leAnqwMvM55SnXCFqSZG+fHCJUdqlG2b0J2o4jxrIOiXCggAU6u8fRL4OIAPE6+y40pWbU8gF5ld2DWgv4mWCfp9A6RBc3NmkwDSbc176uBV8ZGDbMbWItsW/iVmtjPW9duHtckVAsDcp8xH5xo1OyFuyZXnypr38U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xq9/B/1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF875C4CEE5;
-	Tue,  8 Apr 2025 11:39:50 +0000 (UTC)
+	 MIME-Version; b=PdxGzZpLIXom1A+5i2ysbB296VZ1xG0FnHDEmRwW/DPHJw3wxypztoEjlb4E1i+gnian52ex321fE+1/kV4rsk7HLH0ZWIbLILp8zzjLR407gwUwOjPHRLMUQZVgi/0y7SpWSL1fbSccH1sSW3iSoGNCQZP5XehVTpcJZAvug/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oalRmdyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5131FC4CEE7;
+	Tue,  8 Apr 2025 11:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112391;
-	bh=TSsk73M2t67QPCzE5b79J/Se10U7nBdUJplbEK2vjH8=;
+	s=korg; t=1744111732;
+	bh=vn+YZVMG0Wj8zlsqLbCKXQG9cke+yP/yGzCodQYMbFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xq9/B/1Thw3IwO/ipnTDvrVzs3m9TTyFXpImSRrTsSIttyhSsl9qyoMTxqapJ8apQ
-	 uTrEDmfREixCyPq3DmaNL9pSXWDK+mFOzYWPyVIHXKKuA3y/9/EethwXNYWclaPCm1
-	 5PCqZO5pNBWZS9mmkngAozsmHz5BBQbM07cIptYA=
+	b=oalRmdypWldAcvsZGqD6qQFrEarW+p7XlSlf6IifN8aReVHij/bWN0vdUKtE3dqMk
+	 EZ4ne2I21nYhLcAFBmnCjnCV+CEKya0rUgiqywgismwUFmRrwpp84RQ5QsZwP7hM0n
+	 yapUEICCdbrj0EvD2LzldHhqDioJizO2WTMhb62I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/279] block: fix kmem_cache of name bio-108 already exists
+Subject: [PATCH 6.14 538/731] perf vendor events arm64 AmpereOneX: Fix frontend_bound calculation
 Date: Tue,  8 Apr 2025 12:47:15 +0200
-Message-ID: <20250408104827.767593358@linuxfoundation.org>
+Message-ID: <20250408104926.790973462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
+[ Upstream commit 182f12f3193341c3400ae719a34c00a8a1204cff ]
 
-Device mapper bioset often has big bio_slab size, which can be more than
-1000, then 8byte can't hold the slab name any more, cause the kmem_cache
-allocation warning of 'kmem_cache of name 'bio-108' already exists'.
+frontend_bound metrics was miscalculated due to different scaling in
+a couple of metrics it depends on. Change the scaling to match with
+AmpereOne.
 
-Fix the warning by extending bio_slab->name to 12 bytes, but fix output
-of /proc/slabinfo
-
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 16438b652b46 ("perf vendor events arm64 AmpereOneX: Add core PMU events and metrics")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250313201559.11332-3-ilkka@os.amperecomputing.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../arch/arm64/ampere/ampereonex/metrics.json          | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/block/bio.c b/block/bio.c
-index 92399883bc5e1..029dba492ac2d 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -73,7 +73,7 @@ struct bio_slab {
- 	struct kmem_cache *slab;
- 	unsigned int slab_ref;
- 	unsigned int slab_size;
--	char name[8];
-+	char name[12];
- };
- static DEFINE_MUTEX(bio_slab_lock);
- static DEFINE_XARRAY(bio_slabs);
+diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
+index c5d1d22bd034b..5228f94a793f9 100644
+--- a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
++++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
+@@ -229,19 +229,19 @@
+     },
+     {
+         "MetricName": "slots_lost_misspeculation_fraction",
+-        "MetricExpr": "(OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
++        "MetricExpr": "100 * (OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
+         "BriefDescription": "Fraction of slots lost due to misspeculation",
+         "DefaultMetricgroupName": "TopdownL1",
+         "MetricGroup": "Default;TopdownL1",
+-        "ScaleUnit": "100percent of slots"
++        "ScaleUnit": "1percent of slots"
+     },
+     {
+         "MetricName": "retired_fraction",
+-        "MetricExpr": "OP_RETIRED / (CPU_CYCLES * #slots)",
++        "MetricExpr": "100 * OP_RETIRED / (CPU_CYCLES * #slots)",
+         "BriefDescription": "Fraction of slots retiring, useful work",
+         "DefaultMetricgroupName": "TopdownL1",
+         "MetricGroup": "Default;TopdownL1",
+-        "ScaleUnit": "100percent of slots"
++        "ScaleUnit": "1percent of slots"
+     },
+     {
+         "MetricName": "backend_core",
+@@ -266,7 +266,7 @@
+     },
+     {
+         "MetricName": "frontend_bandwidth",
+-        "MetricExpr": "frontend_bound - frontend_latency",
++        "MetricExpr": "frontend_bound - 100 * frontend_latency",
+         "BriefDescription": "Fraction of slots the CPU did not dispatch at full bandwidth - able to dispatch partial slots only (1, 2, or 3 uops)",
+         "MetricGroup": "TopdownL2",
+         "ScaleUnit": "1percent of slots"
 -- 
 2.39.5
 
