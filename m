@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E52FA8091E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C54A80B8B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C475A1BA2C99
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3EA78A4F03
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A365126E16B;
-	Tue,  8 Apr 2025 12:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442D027CB30;
+	Tue,  8 Apr 2025 12:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RikvaKyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfGWHDLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607DA268FF0;
-	Tue,  8 Apr 2025 12:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E937226FA41;
+	Tue,  8 Apr 2025 12:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115997; cv=none; b=W2j48PlxKBsJtygeHE6pRdjnhSPWM6zYH+Ohz16OqU0uBo9FfeN/V92yiN+XnOo85OP7AxcjbHb0IPO6DxyHKzkrV3BC1uBduL7XBb+D3E1OklgdZqihxm4CX0wsul5txl2G6mRzLUSL55ODAyRqf+RI+FYlmkG9qeO14hG6ZzI=
+	t=1744117128; cv=none; b=RSt0j/Fv3WITXsckElSij1bGfNBjAgRwawISuWBAdIIUompnOQ1hlXTLdEgdMWBVUv3KEu/lkYXxJqMcAoLMubTE9YevP31K/xSdxtPwbBtAtRG/RV5qcBuhvsN0J8zGmTHtxOdB+gdCuasDdF+GqsFJD0xz89bOhVCQDClPgj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115997; c=relaxed/simple;
-	bh=1gumGZy/TABWmDuhRfsLQ4Gv6RXGL7zc2Xkx4ck6z70=;
+	s=arc-20240116; t=1744117128; c=relaxed/simple;
+	bh=txtXaLH9Cm8XE4652u73zy5wVfCPcgEG+ogn4mgfcSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcE8/akRsmkQygLSVQ90dgHE/i0C2hGPz8/rdmhoIzDYOQgdF1bKS9Nov5Zq7YmL2LPrNxw5Fn35iVYynSAvqP+cfnVXJIHDlCMObAappCHv+IiR/O+r/9U62M1H261b/7sJSC2dF8Hy1auXQov2H6Lfy2FTdxopOixc9IkpaTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RikvaKyX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30DBC4CEE5;
-	Tue,  8 Apr 2025 12:39:56 +0000 (UTC)
+	 MIME-Version; b=jFCu0FQlocdcO9b+ahkSoTZgbQZPC9LDx+/EfDIm89IwjU5T5bVEuhbaEdZZCQY9AkIVPh3yexn6JFuUJbLA1TAa8ee3MVMMABzAVScZxNkX4QSlqttM00eONy+ZqmrUjghNspnCxu9rW5f+kuzngGjIFP5oXhef31xr85EH4UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfGWHDLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78041C4CEE5;
+	Tue,  8 Apr 2025 12:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115997;
-	bh=1gumGZy/TABWmDuhRfsLQ4Gv6RXGL7zc2Xkx4ck6z70=;
+	s=korg; t=1744117127;
+	bh=txtXaLH9Cm8XE4652u73zy5wVfCPcgEG+ogn4mgfcSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RikvaKyXJx6hK/VCoJz38zNqWby3crj6GoRyQOZCTfVrcBcH74uqHRA2oo0qjvvJm
-	 9N5AnyyvXasucmNUr3YXDfmVAvKIjfo1JSFi11Hep1s2An7tJK/ru/a/liR1aw/BGf
-	 iWlQccdOS4M8fs3vVAWGqH0fjN+HUtz3/0ZHil+w=
+	b=kfGWHDLGO2xmuqamin1EwJr3DsYFShMEQT1FGf7NnZ7kSGZoqkOJpFsqVO7z1Idt5
+	 dRxFZxaiybE+b8fovVkrM4iMTQj1RIuA6zm/mE3FVwoR4rlmjMz/LuTwDKuF8H1vZ1
+	 IaPJcaIy7SBQDglFQofBw5O7qsu0KoEJV2W/Om1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 182/204] btrfs: handle errors from btrfs_dec_ref() properly
-Date: Tue,  8 Apr 2025 12:51:52 +0200
-Message-ID: <20250408104825.659122094@linuxfoundation.org>
+	Christian Eggers <ceggers@arri.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.12 387/423] ARM: 9444/1: add KEEP() keyword to ARM_VECTORS
+Date: Tue,  8 Apr 2025 12:51:53 +0200
+Message-ID: <20250408104854.902730168@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 5eb178f373b4f16f3b42d55ff88fc94dd95b93b1 upstream.
+commit c3d944a367c0d9e4e125c7006e52f352e75776dc upstream.
 
-In walk_up_proc() we BUG_ON(ret) from btrfs_dec_ref().  This is
-incorrect, we have proper error handling here, return the error.
+Without this, the vectors are removed if LD_DEAD_CODE_DATA_ELIMINATION
+is enabled.  At startup, the CPU (silently) hangs in the undefined
+instruction exception as soon as the first timer interrupt arrives.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+On my setup, the system also boots fine without the 2nd and 3rd KEEP()
+statements, so I cannot tell whether these are actually required.
+
+[nathan: Use OVERLAY_KEEP() to avoid breaking old ld.lld versions]
+
+Cc: stable@vger.kernel.org
+Fixes: ed0f94102251 ("ARM: 9404/1: arm32: enable HAVE_LD_DEAD_CODE_DATA_ELIMINATION")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/vmlinux.lds.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5575,7 +5575,10 @@ static noinline int walk_up_proc(struct
- 				ret = btrfs_dec_ref(trans, root, eb, 1);
- 			else
- 				ret = btrfs_dec_ref(trans, root, eb, 0);
--			BUG_ON(ret); /* -ENOMEM */
-+			if (ret) {
-+				btrfs_abort_transaction(trans, ret);
-+				return ret;
-+			}
- 			if (is_fstree(root->root_key.objectid)) {
- 				ret = btrfs_qgroup_trace_leaf_items(trans, eb);
- 				if (ret) {
+--- a/arch/arm/include/asm/vmlinux.lds.h
++++ b/arch/arm/include/asm/vmlinux.lds.h
+@@ -125,13 +125,13 @@
+ 	__vectors_lma = .;						\
+ 	OVERLAY 0xffff0000 : NOCROSSREFS AT(__vectors_lma) {		\
+ 		.vectors {						\
+-			*(.vectors)					\
++			OVERLAY_KEEP(*(.vectors))			\
+ 		}							\
+ 		.vectors.bhb.loop8 {					\
+-			*(.vectors.bhb.loop8)				\
++			OVERLAY_KEEP(*(.vectors.bhb.loop8))		\
+ 		}							\
+ 		.vectors.bhb.bpiall {					\
+-			*(.vectors.bhb.bpiall)				\
++			OVERLAY_KEEP(*(.vectors.bhb.bpiall))		\
+ 		}							\
+ 	}								\
+ 	ARM_LMA(__vectors, .vectors);					\
 
 
 
