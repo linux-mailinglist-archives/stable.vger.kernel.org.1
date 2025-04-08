@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25FAA80B07
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7340A8050C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE41904737
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F944A4043
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE28628134F;
-	Tue,  8 Apr 2025 12:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A1126A08C;
+	Tue,  8 Apr 2025 12:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7RJ+LC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jpQJdqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A13926B091;
-	Tue,  8 Apr 2025 12:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774BB26A086;
+	Tue,  8 Apr 2025 12:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116774; cv=none; b=Ma78Wn0dPxYB7a8Q6WcEcXS6a5dX35IfiqQrg6mABpXOns81bJ4AaVQxmzhpSP01wOXnMf0KAKUaKhUezmW+haN0BaqArJojMZ3tDPyVqhSuqNFgePy1JbxsztuQ9QMyZ1Rr3kBg0PfxpHYgktbQQ0uM5mBmSTWyO9hFadAJDHI=
+	t=1744113820; cv=none; b=poE+PNtd4PMTa/Ou9FQedXkdFScUsSQuaWS3aziMAfgxmoVVa1J0kz39wpJNkaS+6IFu5nnfqqkizCIvbntfOt+aT5bjB1EnqrpxeYfPimm+d5NXWgmxHit6W6PQrc2Qp7y7sMErTgxMNIuWrcCfkqXQ8pWktCfA0D+Ecg7sJck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116774; c=relaxed/simple;
-	bh=b/0Iquo2X+GUsyNjo4czugT2oQiYuXTX4zPAYJSRv38=;
+	s=arc-20240116; t=1744113820; c=relaxed/simple;
+	bh=2aqrZb+nCV0TODisUdHR1DrSeVHobo2VUg0np2ZsuJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSv5kq8huCoZG/ogpqwjSz6LbdaahUAQBdImiJ4+TXEF1xvpHeUjpBMp+EyaPlHL9eyQ/hVxxSBFFXq6h8G1iqYVKfEkN5LTs/BFRpS4O5jf4cZ2+o4I54FXm52Lxf+P4VYaqJ6DjZbedbxtioq6B7OsJnK5VqSnbkh1twJgXGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7RJ+LC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19507C4CEE5;
-	Tue,  8 Apr 2025 12:52:53 +0000 (UTC)
+	 MIME-Version; b=epkrr7uZ/14LjAP30oa/i8/h6FVyD7fpmYhg41axoIN9MXM0Qs1TUZHbySWHQEk2PBsD1tAyexuyWS1nQIJwzbvj8vMlUzspif9tjSesIW1F4nIAiAkNbebgc1RMq4tT/LZ6aZn7+ConUe9ulYEKtxKiOT/4DS5jU8Fa+/OAE6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jpQJdqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060E8C4CEE5;
+	Tue,  8 Apr 2025 12:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116774;
-	bh=b/0Iquo2X+GUsyNjo4czugT2oQiYuXTX4zPAYJSRv38=;
+	s=korg; t=1744113820;
+	bh=2aqrZb+nCV0TODisUdHR1DrSeVHobo2VUg0np2ZsuJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7RJ+LC72sFAiZGP3fmfSQaKjwtgUU2cIy9DDfUaoDDhkUtEsBzvj7ZgaK3GIySMJ
-	 6dCmHq8T58h8aTr3A+ucIUHdxVT9ycoeZs+WPt1Snxq5U4A3492Z6fCKaDrwPeJcwi
-	 7TvzFziU7IaxpBdf2oMJ+CM3FAaP1fvJNz5powYI=
+	b=2jpQJdqeltpy90oVyXz21oJRQu6RP8GPheaQ3M4WaQZU7seDUFI26e7LXCbVCVSVj
+	 2fNQQ2uNnSfMuvmjj9g9KSk23jF9+ZOdSW5TM3R1vlJi1wbQO1xHlxVYyuHNMJmtVC
+	 j97sJv1vwPqJKkRkMK3NiSQg9asGShi8iBfiJhd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sally Shi <sshii@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/423] perf bpf-filter: Fix a parsing error with comma
+Subject: [PATCH 5.4 009/154] netpoll: Fix use correct return type for ndo_start_xmit()
 Date: Tue,  8 Apr 2025 12:49:10 +0200
-Message-ID: <20250408104850.943339191@linuxfoundation.org>
+Message-ID: <20250408104815.587519835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit 35d13f841a3d8159ef20d5e32a9ed3faa27875bc ]
+[ Upstream commit a54776f2c4939bdee084c9ecd00a4a5a25b7c429 ]
 
-The previous change to support cgroup filters introduced a bug that
-pathname can include commas.  It confused the lexer to treat an item and
-the trailing comma as a single token.  And it resulted in a parse error:
+The method ndo_start_xmit() returns a value of type netdev_tx_t. Fix
+the ndo function to use the correct type.
 
-  $ sudo perf record -e cycles:P --filter 'period > 0, ip > 64' -- true
-  perf_bpf_filter: Error: Unexpected item: 0,
-  perf_bpf_filter: syntax error, unexpected BFT_ERROR, expecting BFT_NUM
-
-   Usage: perf record [<options>] [<command>]
-      or: perf record [<options>] -- <command> [<options>]
-
-          --filter <filter>
-                            event filter
-
-It should get "0" and "," separately.
-
-An easiest fix would be to remove "," from the possible pathname
-characters.  As it's for cgroup names, probably ok to assume it won't
-have commas in the pathname.
-
-I found that the existing BPF filtering test didn't have any complex
-filter condition with commas.  Let's update the group filter test which
-is supposed to test filter combinations like this.
-
-Link: https://lore.kernel.org/r/20250307220922.434319-1-namhyung@kernel.org
-Fixes: 91e88437d5156b20 ("perf bpf-filter: Support filtering on cgroups")
-Reported-by: Sally Shi <sshii@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/record_bpf_filter.sh | 4 ++--
- tools/perf/util/bpf-filter.l                | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/core/netpoll.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/tests/shell/record_bpf_filter.sh b/tools/perf/tests/shell/record_bpf_filter.sh
-index 1b58ccc1fd882..4d6c3c1b7fb92 100755
---- a/tools/perf/tests/shell/record_bpf_filter.sh
-+++ b/tools/perf/tests/shell/record_bpf_filter.sh
-@@ -89,7 +89,7 @@ test_bpf_filter_fail() {
- test_bpf_filter_group() {
-   echo "Group bpf-filter test"
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 9a67aa989d606..35a3277ee3567 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -70,10 +70,11 @@ module_param(carrier_timeout, uint, 0644);
+ #define np_notice(np, fmt, ...)				\
+ 	pr_notice("%s: " fmt, np->name, ##__VA_ARGS__)
  
--  if ! perf record -e task-clock --filter 'period > 1000 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000, ip > 0' \
- 	  -o /dev/null true 2>/dev/null
-   then
-     echo "Group bpf-filter test [Failed should succeed]"
-@@ -97,7 +97,7 @@ test_bpf_filter_group() {
-     return
-   fi
+-static int netpoll_start_xmit(struct sk_buff *skb, struct net_device *dev,
+-			      struct netdev_queue *txq)
++static netdev_tx_t netpoll_start_xmit(struct sk_buff *skb,
++				      struct net_device *dev,
++				      struct netdev_queue *txq)
+ {
+-	int status = NETDEV_TX_OK;
++	netdev_tx_t status = NETDEV_TX_OK;
+ 	netdev_features_t features;
  
--  if ! perf record -e task-clock --filter 'cpu > 0 || ip > 0' \
-+  if ! perf record -e task-clock --filter 'period > 1000 , cpu > 0 || ip > 0' \
- 	  -o /dev/null true 2>&1 | grep -q PERF_SAMPLE_CPU
-   then
-     echo "Group bpf-filter test [Failed forbidden CPU]"
-diff --git a/tools/perf/util/bpf-filter.l b/tools/perf/util/bpf-filter.l
-index f313404f95a90..6aa65ade33851 100644
---- a/tools/perf/util/bpf-filter.l
-+++ b/tools/perf/util/bpf-filter.l
-@@ -76,7 +76,7 @@ static int path_or_error(void)
- num_dec		[0-9]+
- num_hex		0[Xx][0-9a-fA-F]+
- space		[ \t]+
--path		[^ \t\n]+
-+path		[^ \t\n,]+
- ident		[_a-zA-Z][_a-zA-Z0-9]+
- 
- %%
+ 	features = netif_skb_features(skb);
+@@ -325,7 +326,7 @@ static int netpoll_owner_active(struct net_device *dev)
+ void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
+ 			     struct net_device *dev)
+ {
+-	int status = NETDEV_TX_BUSY;
++	netdev_tx_t status = NETDEV_TX_BUSY;
+ 	unsigned long tries;
+ 	/* It is up to the caller to keep npinfo alive. */
+ 	struct netpoll_info *npinfo;
 -- 
 2.39.5
 
