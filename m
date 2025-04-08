@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-131184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AD9A8087E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F47A80700
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7421B61482
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C341B84EC8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DC42673B7;
-	Tue,  8 Apr 2025 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B4426B2BE;
+	Tue,  8 Apr 2025 12:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRXpWPdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt7M9+GM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273BE20330;
-	Tue,  8 Apr 2025 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C326B2B5;
+	Tue,  8 Apr 2025 12:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115715; cv=none; b=RmeZqQBw5l5fFpRL0vhF3JgVh5/p3OXD0swOkao7JW5FA59hpv5OxfGClbx5foJ868tn3gqSaK2BIBHhp0dh7GcSiluWBxeklGh67H1bFi0x2TpiftlBTwbUmHiuAGuIrraMTkCdgVOfLfyC8yvCi8GafV7mAo5op7rtkMZohVE=
+	t=1744115118; cv=none; b=vC9eQRqcAXpEvY6zMY1yoWXJPI5jFUQ0SH0p69LlREDyv0dmaYMD7TX/RjEFSbqHEKvrXkPJW5HF3pDxazpu4Hloy/J8fQ7ASwYmDBD0BmEFSs5qWhJPULFmDgzTbfqLzU54DRLKz2Ez4xVOFcDX1mwX7MD7ZhgKMsRE5g6QJnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115715; c=relaxed/simple;
-	bh=BsS+3bMdF11+VcHT5WdaQ5afTXguLiKNFNRS40PNX0w=;
+	s=arc-20240116; t=1744115118; c=relaxed/simple;
+	bh=Nl+uBCnhE/AVymn+Amq+GJFVtbruHblMuhPsX0K7XbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gQIzIw5bciSsm20Hl42Jak9OzUxfDRHkEauej7sMMCcvrlp5VRREtqTRK5NPzzSlH3W7baUB5cvspbEudTL83chfo5KEaL6xkEInY3gmXzzUYDXmmQJOs5idjDFta69OhwSvFOtzH2Hy/t4MXITRMcZkd4JL+Pmy/0lOa4gKjRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRXpWPdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2C6C4CEE7;
-	Tue,  8 Apr 2025 12:35:14 +0000 (UTC)
+	 MIME-Version; b=mzuVtKCosO6viswcQMQ5Raon4iPKn1cLnxxZwSzk8pPKjH9+kzbN9uPliJv5Qt1g+bwuMd9qsss0C4/8PsPd5x7uWebaF8EOgGWg1MkunhBtl7KRREi30h/si55nJQkFPVljIjnwG98EgFncO3FMmYRcvGSlzPDnaos+srItcwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt7M9+GM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26552C4CEE5;
+	Tue,  8 Apr 2025 12:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115715;
-	bh=BsS+3bMdF11+VcHT5WdaQ5afTXguLiKNFNRS40PNX0w=;
+	s=korg; t=1744115118;
+	bh=Nl+uBCnhE/AVymn+Amq+GJFVtbruHblMuhPsX0K7XbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRXpWPdDLV18+eEG7WaBvYFiXvQHLEXiG/1suAtHGmHMg9kgT9qwD/Kur7V0io56E
-	 QjNlVVWQG34tEjuOEU1/oXKb/wKHrHu3SdozLHtibhGNYUXtw3GtcxuEKWOMCIhUo8
-	 z8lQQ3XQ2lzT2BoNpgFZFdqcKXbUWda+ZUpGMSnY=
+	b=Vt7M9+GMvmbHFJwHkzWgcsFf+aRTOXUwTc/t3TM/J8/DeBJg56dFtlksktz/G7Z2E
+	 DSWoJ+TY2TXeSH4XsetCrieZ3DY5ajgqFPkWnNcQ4B7yL8pGgvybK0buNiIHFKWzBA
+	 FOuv4RRj7pi3HQqs/NqpsBRBkOxqNKJfFNmQsMik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/204] PCI: brcmstb: Use internal register to change link capability
+Subject: [PATCH 6.13 356/499] spufs: fix a leak in spufs_create_context()
 Date: Tue,  8 Apr 2025 12:49:28 +0200
-Message-ID: <20250408104821.463063535@linuxfoundation.org>
+Message-ID: <20250408104900.112026996@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 0c97321e11e0e9e18546f828492758f6aaecec59 ]
+[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
 
-The driver has been mistakenly writing to a read-only (RO)
-configuration space register (PCI_EXP_LNKCAP) to change the
-PCIe link capability.
+Leak fixes back in 2008 missed one case - if we are trying to set affinity
+and spufs_mkdir() fails, we need to drop the reference to neighbor.
 
-Although harmless in this case, the proper write destination
-is an internal register that is reflected by PCI_EXP_LNKCAP.
-
-Thus, fix the brcm_pcie_set_gen() function to correctly update
-the link capability.
-
-Fixes: c0452137034b ("PCI: brcmstb: Add Broadcom STB PCIe host controller driver")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214173944.47506-3-james.quinlan@broadcom.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 521acd632f1ac..feb825326d596 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -383,10 +383,10 @@ static int brcm_pcie_set_ssc(struct brcm_pcie *pcie)
- static void brcm_pcie_set_gen(struct brcm_pcie *pcie, int gen)
- {
- 	u16 lnkctl2 = readw(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
--	u32 lnkcap = readl(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	u32 lnkcap = readl(pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index c566e7997f2c1..9f9e4b8716278 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -460,8 +460,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ 	}
  
- 	lnkcap = (lnkcap & ~PCI_EXP_LNKCAP_SLS) | gen;
--	writel(lnkcap, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	writel(lnkcap, pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+ 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
+-	if (ret)
++	if (ret) {
++		if (neighbor)
++			put_spu_context(neighbor);
+ 		goto out_aff_unlock;
++	}
  
- 	lnkctl2 = (lnkctl2 & ~0xf) | gen;
- 	writew(lnkctl2, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
+ 	if (affinity) {
+ 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
 -- 
 2.39.5
 
