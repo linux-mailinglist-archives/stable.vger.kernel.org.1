@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-130769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCDFA805A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:20:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AE4A80997
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14DB77AE7AA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78D641BA2ACF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3C626E16B;
-	Tue,  8 Apr 2025 12:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C615F268FE4;
+	Tue,  8 Apr 2025 12:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTa2qLnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2G9MKCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B48826E165;
-	Tue,  8 Apr 2025 12:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CD226983B;
+	Tue,  8 Apr 2025 12:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114602; cv=none; b=uIs7sCtzYcenxiwaxfcXD+OD4LgUeEIgC3ANaBCMIeMHSFRXvwhR63LCO/sHYkiOPSayFvm33VXMVaLHlxN33x4VUSsxZQrpaEMCLc+LP9BFOzDNJ1cLYp3BJNwwjOTC0FKnSDMxT/s9e38mGru13EwPDNDMqcVS4KLxTX2wjjA=
+	t=1744116305; cv=none; b=SR8VA5W8TZmWgnxrjWPKxGra7Nrj33ez0TYY9rnAltxy3dMT09PrlFod1rES7voId/dQsVxhAFhzUgMGCYRzsRNo+B57VKxrxZ5LVnnUi4KUJQwIzYnzBeqS5Zx4mo46EcBW8/+g0YZR/kRisyAaHar53k3zklGAKUZCDEv3iJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114602; c=relaxed/simple;
-	bh=EdZaXzrkYfICibq12hNhHXrXVBo7EvrazShpAOCfCYM=;
+	s=arc-20240116; t=1744116305; c=relaxed/simple;
+	bh=V31CkFDVEMXWJpzkDgIYkykToty07YD4AclOfY0Dvrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iVgYvwkBoDLwQw3lpv0782V2JLemCXdwelIZzzaE1qpRcrFGCWwtSaRmNIb+XzPt3JSKlesqWAxlu2XFN/kNda+ESX49KccO8Y6Zx4YaS8yCuqLVT3uAGITvJy4qqlP3mCDrkaIC6htrbhtG/nw+SMaYiYdAZeMsuz+DDS04KhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTa2qLnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6983C4CEEB;
-	Tue,  8 Apr 2025 12:16:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NQfXUKoQyiyrJAT2WBqVHLxh/tT0nuuCqb8RrzuWovbdKTG4yRXqcNaIUfdjad5SenX8ZB+LfSbaZpRGu/+s0zEfuQ2CqZzw82FzylfRVLqBdxpWHkG0Kk5M8QB/raH5TfJWPhz60hP8M5xYzOpHXR1RQIILvk/Dbvj6Wh3moXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2G9MKCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C60C4CEE5;
+	Tue,  8 Apr 2025 12:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114602;
-	bh=EdZaXzrkYfICibq12hNhHXrXVBo7EvrazShpAOCfCYM=;
+	s=korg; t=1744116305;
+	bh=V31CkFDVEMXWJpzkDgIYkykToty07YD4AclOfY0Dvrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTa2qLnL6098OJjjP8gdZGc4lSarb7mn0e4Be6Igy/XIUsU8iU0hEOLPbuzzGoM1V
-	 uqKoouE9PcnN0AFgFkoQrE/QX4knSk8hIn9msg9fKCFjzrN5P1cWPjQoPWCNy8kM5F
-	 X0sk3nFEjm7EQsG0VuU0IzTD875Xw5cVwCJoriZ8=
+	b=P2G9MKCCD42uyN8rLuaV9bVlEk8zOv3Pnmr71P2YUflXifjQufyEryq/TJ+W9UP/w
+	 d4Zy/vEotc0WT70HmvAeJ/rqjjr40MBhPP8JIgZmvfUd0ZYd0DHWd9ax9pWahSbuyM
+	 Tk1TQdlJv2G2XZmT5N4LgFboe1jyf/oc0sE/WNU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Imre Deak <imre.deak@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 165/499] remoteproc: qcom_q6v5_mss: Handle platforms with one power domain
+Subject: [PATCH 6.12 051/423] drm/dp_mst: Fix drm RAD print
 Date: Tue,  8 Apr 2025 12:46:17 +0200
-Message-ID: <20250408104855.295077656@linuxfoundation.org>
+Message-ID: <20250408104846.936724026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +66,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 4641840341f37dc8231e0840ec1514b4061b4322 ]
+[ Upstream commit 6bbce873a9c97cb12f5455c497be279ac58e707f ]
 
-For example MSM8974 has mx voltage rail exposed as regulator and only cx
-voltage rail is exposed as power domain. This power domain (cx) is
-attached internally in power domain and cannot be attached in this driver.
+[Why]
+The RAD of sideband message printed today is incorrect.
+For RAD stored within MST branch
+- If MST branch LCT is 1, it's RAD array is untouched and remained as 0.
+- If MST branch LCT is larger than 1, use nibble to store the up facing
+  port number in cascaded sequence as illustrated below:
 
-Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
-Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Link: https://lore.kernel.org/r/20250217-msm8226-modem-v5-4-2bc74b80e0ae@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  u8 RAD[0] = (LCT_2_UFP << 4) | LCT_3_UFP
+     RAD[1] = (LCT_4_UFP << 4) | LCT_5_UFP
+     ...
+
+In drm_dp_mst_rad_to_str(), it wrongly to use BIT_MASK(4) to fetch the port
+number of one nibble.
+
+[How]
+Adjust the code by:
+- RAD array items are valuable only for LCT >= 1.
+- Use 0xF as the mask to replace BIT_MASK(4)
+
+V2:
+- Document how RAD is constructed (Imre)
+
+V3:
+- Adjust the comment for rad[] so kdoc formats it properly (Lyude)
+
+Fixes: 2f015ec6eab6 ("drm/dp_mst: Add sideband down request tracing + selftests")
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113091100.3314533-2-Wayne.Lin@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 8 ++++----
+ include/drm/display/drm_dp_mst_helper.h       | 7 +++++++
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index e78bd986dc3f2..2c80d7fe39f8e 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1831,6 +1831,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- 	while (pd_names[num_pds])
- 		num_pds++;
- 
-+	/* Handle single power domain */
-+	if (num_pds == 1 && dev->pm_domain) {
-+		devs[0] = dev;
-+		pm_runtime_enable(dev);
-+		return 1;
-+	}
-+
- 	for (i = 0; i < num_pds; i++) {
- 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
- 		if (IS_ERR_OR_NULL(devs[i])) {
-@@ -1851,8 +1858,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
- 			    size_t pd_count)
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index da6ff36623d30..3e5f721d75400 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -179,13 +179,13 @@ static int
+ drm_dp_mst_rad_to_str(const u8 rad[8], u8 lct, char *out, size_t len)
  {
-+	struct device *dev = qproc->dev;
  	int i;
+-	u8 unpacked_rad[16];
++	u8 unpacked_rad[16] = {};
  
-+	/* Handle single power domain */
-+	if (pd_count == 1 && dev->pm_domain) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
-+
- 	for (i = 0; i < pd_count; i++)
- 		dev_pm_domain_detach(pds[i], false);
- }
-@@ -2449,13 +2463,13 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 			.supply = "pll",
- 			.uA = 100000,
- 		},
--		{}
--	},
--	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "mx",
- 			.uV = 1050000,
- 		},
-+		{}
-+	},
-+	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "cx",
- 			.uA = 100000,
-@@ -2481,7 +2495,6 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 		NULL
- 	},
- 	.proxy_pd_names = (char*[]){
--		"mx",
- 		"cx",
- 		NULL
- 	},
+-	for (i = 0; i < lct; i++) {
++	for (i = 1; i < lct; i++) {
+ 		if (i % 2)
+-			unpacked_rad[i] = rad[i / 2] >> 4;
++			unpacked_rad[i] = rad[(i - 1) / 2] >> 4;
+ 		else
+-			unpacked_rad[i] = rad[i / 2] & BIT_MASK(4);
++			unpacked_rad[i] = rad[(i - 1) / 2] & 0xF;
+ 	}
+ 
+ 	/* TODO: Eventually add something to printk so we can format the rad
+diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+index a80ba457a858f..6398a6b50bd1b 100644
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -222,6 +222,13 @@ struct drm_dp_mst_branch {
+ 	 */
+ 	struct list_head destroy_next;
+ 
++	/**
++	 * @rad: Relative Address of the MST branch.
++	 * For &drm_dp_mst_topology_mgr.mst_primary, it's rad[8] are all 0,
++	 * unset and unused. For MST branches connected after mst_primary,
++	 * in each element of rad[] the nibbles are ordered by the most
++	 * signifcant 4 bits first and the least significant 4 bits second.
++	 */
+ 	u8 rad[8];
+ 	u8 lct;
+ 	int num_ports;
 -- 
 2.39.5
 
