@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0574DA80A7A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B40A806EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B70A21BA67AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94E001B84792
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACC426FA73;
-	Tue,  8 Apr 2025 12:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530AD26A0B3;
+	Tue,  8 Apr 2025 12:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz47DSJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC0K4IRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346E526FA6F;
-	Tue,  8 Apr 2025 12:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12115267B89;
+	Tue,  8 Apr 2025 12:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116567; cv=none; b=OO4KEyhpcXu9h4+JT2hJD8IdmMsP0iwA9zsBrm+3iLELuoVPRBPRz122HhHmeqrGgGzXFVoLzb1emdVHo+ItOU3sTHFanMOYIqCJhbY1xhsKthup4eb/f4IyHJtI24Tg0PwGcZ2Mjw5WVKlcvJT9DSynWV5EQ0r8KJ0X6vpKvb8=
+	t=1744115081; cv=none; b=Gf17mchJ+/n/W8kZNFz3T/+TDURAgrV2Ldtf9QnPBXLJ/mciySLV+PuZQkotq+iImPdoAoTTP83wbuWyWhI/126cYFpxnBDz2fIDp0b84zs32bKgA/N+BscmXTPEthU/9++7HCfDqVUIuWqRmPQLdB7ldz2x412cx+0Y3CKSDSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116567; c=relaxed/simple;
-	bh=Ptyl4+ISPh845D6FkzHdyfQUrYcq75nRCtR1OIFJl9o=;
+	s=arc-20240116; t=1744115081; c=relaxed/simple;
+	bh=a3RQQJQ9k9CC1Obzy20nouWU8UXrCNIWMmFAQAS7sJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YEbNoyKElhL3ityLPmCY55B4P5IXajThQt5ovb7eHgddlAO+jeaezrJhxDr3UYqxPrT3ZRzv5I08ZvQRE7ao7XkXJYaA3rKO0pDCun/pVBPZpv6LiggbYF8IiW43rMweRROazKMIkFHE3ScukrBXTbgx4uCcScIr7X3N1aJo0C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz47DSJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC934C4CEEB;
-	Tue,  8 Apr 2025 12:49:26 +0000 (UTC)
+	 MIME-Version; b=IADQJJnDlFBkbR/zvx/elgTXh35QJA/O1G1X4O295jJGGUY6/Gpak7VXn8QOCEWhvvzYHQdC1UI4S141MpskFdeCXJfZ4uZUnbGSXeQlNZKR19BaF5pthIUOjyb6wvIloI9g2EbJSOQYcDz/MLVJ94XKFEAlx3eH2GyRs7GyHi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC0K4IRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C42C4CEE5;
+	Tue,  8 Apr 2025 12:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116567;
-	bh=Ptyl4+ISPh845D6FkzHdyfQUrYcq75nRCtR1OIFJl9o=;
+	s=korg; t=1744115080;
+	bh=a3RQQJQ9k9CC1Obzy20nouWU8UXrCNIWMmFAQAS7sJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xz47DSJltZ2jo9oY+9L0QfP2foEO1KhGSfI+pqtIJdU62C9ul/3TI6+kvV5BVSlrd
-	 /4PrpnQ/SviENYZj0/K60ASyFVzVJxOpCuElfP6hTu5lgFLG7U4ff4t7zMDJM4qV24
-	 G1hbGuiqzB6piKDS/0j3t7DgTJBvDjhw3HXNJz60=
+	b=fC0K4IRxNjkr02Vp95Iqg6ZUA5xKtq74MSZC91CLpxXHDWNjXNdNTiGphrxJXrEaK
+	 +tFLQJfBhEZo874OGZ5Qk+ffulq2j+fCX8MfJb4UU9C7LR7hIFOkORqDI/1HJESRmP
+	 VT/r/UwaHyMcbqakofPTakRrATzIFYQLIJm6vczc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 188/423] iio: adc: ad4130: Fix comparison of channel setups
+Subject: [PATCH 6.13 302/499] wifi: iwlwifi: fw: allocate chained SG tables for dump
 Date: Tue,  8 Apr 2025 12:48:34 +0200
-Message-ID: <20250408104850.119050443@linuxfoundation.org>
+Message-ID: <20250408104858.748806615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,111 +60,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 280acb19824663d55a3f4d09087c76fabe86fa3c ]
+[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+The firmware dumps can be pretty big, and since we use single
+pages for each SG table entry, even the table itself may end
+up being an order-5 allocation. Build chained tables so that
+we need not allocate a higher-order table here.
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+This could be improved and cleaned up, e.g. by using the SG
+pool code or simply kvmalloc(), but all of that would require
+also updating the devcoredump first since that frees it all,
+so we need to be more careful. SG pool might also run against
+the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
+here.
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad4130_setup_info is expanded, the comparison is adapted, too.
+Also use _devcd_free_sgtable() for the error paths now, much
+simpler especially since it's in two places now.
 
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
-
-Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-12-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad4130.c | 41 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
+ 1 file changed, 58 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index de32cc9d18c5e..712f95f53c9ec 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -223,6 +223,10 @@ enum ad4130_pin_function {
- 	AD4130_PIN_FN_VBIAS = BIT(3),
- };
- 
-+/*
-+ * If you make adaptations in this struct, you most likely also have to adapt
-+ * ad4130_setup_info_eq(), too.
-+ */
- struct ad4130_setup_info {
- 	unsigned int			iout0_val;
- 	unsigned int			iout1_val;
-@@ -591,6 +595,40 @@ static irqreturn_t ad4130_irq_handler(int irq, void *private)
- 	return IRQ_HANDLED;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index fb2ea38e89aca..6594216f873c4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -558,41 +558,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
  }
  
-+static bool ad4130_setup_info_eq(struct ad4130_setup_info *a,
-+				 struct ad4130_setup_info *b)
-+{
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad4130_setup_info was changed.
-+	 */
-+	static_assert(sizeof(*a) ==
-+		      sizeof(struct {
-+				     unsigned int iout0_val;
-+				     unsigned int iout1_val;
-+				     unsigned int burnout;
-+				     unsigned int pga;
-+				     unsigned int fs;
-+				     u32 ref_sel;
-+				     enum ad4130_filter_mode filter_mode;
-+				     bool ref_bufp;
-+				     bool ref_bufm;
-+			     }));
-+
-+	if (a->iout0_val != b->iout0_val ||
-+	    a->iout1_val != b->iout1_val ||
-+	    a->burnout != b->burnout ||
-+	    a->pga != b->pga ||
-+	    a->fs != b->fs ||
-+	    a->ref_sel != b->ref_sel ||
-+	    a->filter_mode != b->filter_mode ||
-+	    a->ref_bufp != b->ref_bufp ||
-+	    a->ref_bufm != b->ref_bufm)
-+		return false;
-+
-+	return true;
-+}
-+
- static int ad4130_find_slot(struct ad4130_state *st,
- 			    struct ad4130_setup_info *target_setup_info,
- 			    unsigned int *slot, bool *overwrite)
-@@ -604,8 +642,7 @@ static int ad4130_find_slot(struct ad4130_state *st,
- 		struct ad4130_slot_info *slot_info = &st->slots_info[i];
+ /*
+- * alloc_sgtable - allocates scallerlist table in the given size,
+- * fills it with pages and returns it
++ * alloc_sgtable - allocates (chained) scatterlist in the given size,
++ *	fills it with pages and returns it
+  * @size: the size (in bytes) of the table
+-*/
+-static struct scatterlist *alloc_sgtable(int size)
++ */
++static struct scatterlist *alloc_sgtable(ssize_t size)
+ {
+-	int alloc_size, nents, i;
+-	struct page *new_page;
+-	struct scatterlist *iter;
+-	struct scatterlist *table;
++	struct scatterlist *result = NULL, *prev;
++	int nents, i, n_prev;
  
- 		/* Immediately accept a matching setup info. */
--		if (!memcmp(target_setup_info, &slot_info->setup,
--			    sizeof(*target_setup_info))) {
-+		if (ad4130_setup_info_eq(target_setup_info, &slot_info->setup)) {
- 			*slot = i;
- 			return 0;
+ 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
+-	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
+-	if (!table)
+-		return NULL;
+-	sg_init_table(table, nents);
+-	iter = table;
+-	for_each_sg(table, iter, sg_nents(table), i) {
+-		new_page = alloc_page(GFP_KERNEL);
+-		if (!new_page) {
+-			/* release all previous allocated pages in the table */
+-			iter = table;
+-			for_each_sg(table, iter, sg_nents(table), i) {
+-				new_page = sg_page(iter);
+-				if (new_page)
+-					__free_page(new_page);
+-			}
+-			kfree(table);
++
++#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
++	/*
++	 * We need an additional entry for table chaining,
++	 * this ensures the loop can finish i.e. we can
++	 * fit at least two entries per page (obviously,
++	 * many more really fit.)
++	 */
++	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
++
++	while (nents > 0) {
++		struct scatterlist *new, *iter;
++		int n_fill, n_alloc;
++
++		if (nents <= N_ENTRIES_PER_PAGE) {
++			/* last needed table */
++			n_fill = nents;
++			n_alloc = nents;
++			nents = 0;
++		} else {
++			/* fill a page with entries */
++			n_alloc = N_ENTRIES_PER_PAGE;
++			/* reserve one for chaining */
++			n_fill = n_alloc - 1;
++			nents -= n_fill;
++		}
++
++		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
++		if (!new) {
++			if (result)
++				_devcd_free_sgtable(result);
+ 			return NULL;
  		}
+-		alloc_size = min_t(int, size, PAGE_SIZE);
+-		size -= PAGE_SIZE;
+-		sg_set_page(iter, new_page, alloc_size, 0);
++		sg_init_table(new, n_alloc);
++
++		if (!result)
++			result = new;
++		else
++			sg_chain(prev, n_prev, new);
++		prev = new;
++		n_prev = n_alloc;
++
++		for_each_sg(new, iter, n_fill, i) {
++			struct page *new_page = alloc_page(GFP_KERNEL);
++
++			if (!new_page) {
++				_devcd_free_sgtable(result);
++				return NULL;
++			}
++
++			sg_set_page(iter, new_page, PAGE_SIZE, 0);
++		}
+ 	}
+-	return table;
++
++	return result;
+ }
+ 
+ static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
 -- 
 2.39.5
 
