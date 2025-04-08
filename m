@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE324A80C20
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F8A8085A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BBC8A7C44
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79D7E887C0D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE66027BF6F;
-	Tue,  8 Apr 2025 12:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DCF26A0A6;
+	Tue,  8 Apr 2025 12:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjJm38zF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6gIbVYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA0127935E;
-	Tue,  8 Apr 2025 12:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F1A26A1A1;
+	Tue,  8 Apr 2025 12:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116937; cv=none; b=kqipPYkJSiLpSMQXkTHbMLL9WnKWHMQyXuDJh+4nVAWL87b+6ObQIZX5plDKIfCYVEtovjNruQ9z1kYaecys1xsnU/lsAMJ2TnmOAi5aap5C9fWkzJ0vhbTn3gOztHwtqnjicwXcDx7pe2DxZ7/BwXuoBxJjuJR4vjxGPclhMwo=
+	t=1744115341; cv=none; b=e6EbLuzk+bB913PFEtep4HszGSShbjGQnvlz90AP96x5m2bFUkW2jcOdoY+CgQUlHvg3CE3v3kj22s7TUd6nOPe4afHwsMrIGYXAtSEkHX7aME+5IlLSHhKdkwVoNC9G9huvwl9dRv0xmNYuEW2YJEyKbsmW/0d2TJxKJUK2CTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116937; c=relaxed/simple;
-	bh=bbLK9z6iK9Syw1SOaLbSxPUcSWU3D/9plf9ru/OIT28=;
+	s=arc-20240116; t=1744115341; c=relaxed/simple;
+	bh=VX6ZS8ZM+b/zqopzf1Td5pl50EEor8gKkvT0er1z8AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6mlNJH+kUnCNOv3rdSHEtj5+pZHownrJnYylVOy9Tv0XRP3qJbRgb08FMRZ7sc6EKXN/YXuP9SRnNuMNo26Bz7Gx+dKHJEJcEcav84HpZFFcm621HJv58cjJevgO1lbF2Sa7Al1hs3Z30VUI15u2vwlE3YY3yuJoVmfQjyhetc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjJm38zF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9FFC4CEE7;
-	Tue,  8 Apr 2025 12:55:36 +0000 (UTC)
+	 MIME-Version; b=NFKrwhxgN5yZGhfF+sdZzXH8Z13gQ2pZzJrjR+4MeUsP66iqWeff8DZQ3ndTdVQ8IS/uksvQ53vDGTJ8M+5K9hBIDuRF5sCCin76gmLwB9nkcVf//dn9yVTbIqHpTBy6u0Z9GV1GFZbmLD2kJTU9bLgzBfHTUveb3ZvxlzthDQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6gIbVYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B3AC4CEE5;
+	Tue,  8 Apr 2025 12:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116937;
-	bh=bbLK9z6iK9Syw1SOaLbSxPUcSWU3D/9plf9ru/OIT28=;
+	s=korg; t=1744115340;
+	bh=VX6ZS8ZM+b/zqopzf1Td5pl50EEor8gKkvT0er1z8AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjJm38zFdPizW7jcPVgoDPXXfF6juQC4ZCvJ26l4n9+OiPurqc//AxfzNsCKQaM8L
-	 xie6q210MK22bnQn6uZ9e4/ANKm+fc5RbL/F/YU4WV3kesCXeaowz2cWO16VCmeCp+
-	 hCFOHcpmbqU3xTp/3He7QY+YwU6IH/tTvQ3dBX6U=
+	b=w6gIbVYBtOchDanNeuVgj0TEu06Bxoz84ww7ncCR+DGs7EgkZ29goMjxPM7aWo/1e
+	 bZ0IhtNYwH1YQvtPmKOTuMUEIFKMBsD9xeoQR9iAC3pVzhjK0QZ+emq9eRVRPUA3T+
+	 U2cBJ2Ny71h5kxanl2BTVoLvWwBrsBmAxvxqrYUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 324/423] e1000e: change k1 configuration on MTP and later platforms
-Date: Tue,  8 Apr 2025 12:50:50 +0200
-Message-ID: <20250408104853.363792270@linuxfoundation.org>
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.13 439/499] LoongArch: BPF: Use move_addr() for BPF_PSEUDO_FUNC
+Date: Tue,  8 Apr 2025 12:50:51 +0200
+Message-ID: <20250408104902.176793002@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit efaaf344bc2917cbfa5997633bc18a05d3aed27f ]
+commit 52266f1015a8b5aabec7d127f83d105f702b388e upstream.
 
-Starting from Meteor Lake, the Kumeran interface between the integrated
-MAC and the I219 PHY works at a different frequency. This causes sporadic
-MDI errors when accessing the PHY, and in rare circumstances could lead
-to packet corruption.
+Vincent reported that running XDP synproxy program on LoongArch results
+in the following error:
 
-To overcome this, introduce minor changes to the Kumeran idle
-state (K1) parameters during device initialization. Hardware reset
-reverts this configuration, therefore it needs to be applied in a few
-places.
+    JIT doesn't support bpf-to-bpf calls
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With dmesg:
+
+    multi-func JIT bug 1391 != 1390
+
+The root cause is that verifier will refill the imm with the correct
+addresses of bpf_calls for BPF_PSEUDO_FUNC instructions and then run
+the last pass of JIT. So we generate different JIT code for the same
+instruction in two passes (one for placeholder and the other for the
+real address). Let's use move_addr() instead.
+
+See commit 64f50f6575721ef0 ("LoongArch, bpf: Use 4 instructions for
+function address in JIT") for a similar fix.
+
+Cc: stable@vger.kernel.org
+Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
+Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Tested-by: Vincent Li <vincent.mc.li@gmail.com>
+Closes: https://lore.kernel.org/loongarch/CAK3+h2yfM9FTNiXvEQBkvtuoJrvzmN4c_NZsFXqEk4Cj1tsBNA@mail.gmail.com/T/#u
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |  3 +
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 80 +++++++++++++++++++--
- drivers/net/ethernet/intel/e1000e/ich8lan.h |  4 ++
- 3 files changed, 82 insertions(+), 5 deletions(-)
+ arch/loongarch/net/bpf_jit.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
-index 5e2cfa73f8891..8294a7c4f122c 100644
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -803,4 +803,7 @@
- /* SerDes Control */
- #define E1000_GEN_POLL_TIMEOUT          640
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -935,7 +935,10 @@ static int build_insn(const struct bpf_i
+ 	{
+ 		const u64 imm64 = (u64)(insn + 1)->imm << 32 | (u32)insn->imm;
  
-+#define E1000_FEXTNVM12_PHYPD_CTRL_MASK	0x00C00000
-+#define E1000_FEXTNVM12_PHYPD_CTRL_P1	0x00800000
-+
- #endif /* _E1000_DEFINES_H_ */
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 2f9655cf5dd9e..364378133526a 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -285,6 +285,45 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
- 	}
- }
- 
-+/**
-+ * e1000_reconfigure_k1_exit_timeout - reconfigure K1 exit timeout to
-+ * align to MTP and later platform requirements.
-+ * @hw: pointer to the HW structure
-+ *
-+ * Context: PHY semaphore must be held by caller.
-+ * Return: 0 on success, negative on failure
-+ */
-+static s32 e1000_reconfigure_k1_exit_timeout(struct e1000_hw *hw)
-+{
-+	u16 phy_timeout;
-+	u32 fextnvm12;
-+	s32 ret_val;
-+
-+	if (hw->mac.type < e1000_pch_mtp)
-+		return 0;
-+
-+	/* Change Kumeran K1 power down state from P0s to P1 */
-+	fextnvm12 = er32(FEXTNVM12);
-+	fextnvm12 &= ~E1000_FEXTNVM12_PHYPD_CTRL_MASK;
-+	fextnvm12 |= E1000_FEXTNVM12_PHYPD_CTRL_P1;
-+	ew32(FEXTNVM12, fextnvm12);
-+
-+	/* Wait for the interface the settle */
-+	usleep_range(1000, 1100);
-+
-+	/* Change K1 exit timeout */
-+	ret_val = e1e_rphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  &phy_timeout);
-+	if (ret_val)
-+		return ret_val;
-+
-+	phy_timeout &= ~I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK;
-+	phy_timeout |= 0xF00;
-+
-+	return e1e_wphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  phy_timeout);
-+}
-+
- /**
-  *  e1000_init_phy_workarounds_pchlan - PHY initialization workarounds
-  *  @hw: pointer to the HW structure
-@@ -327,15 +366,22 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
- 	 */
- 	switch (hw->mac.type) {
-+	case e1000_pch_mtp:
-+	case e1000_pch_lnp:
-+	case e1000_pch_ptp:
-+	case e1000_pch_nvp:
-+		/* At this point the PHY might be inaccessible so don't
-+		 * propagate the failure
-+		 */
-+		if (e1000_reconfigure_k1_exit_timeout(hw))
-+			e_dbg("Failed to reconfigure K1 exit timeout\n");
-+
-+		fallthrough;
- 	case e1000_pch_lpt:
- 	case e1000_pch_spt:
- 	case e1000_pch_cnp:
- 	case e1000_pch_tgp:
- 	case e1000_pch_adp:
--	case e1000_pch_mtp:
--	case e1000_pch_lnp:
--	case e1000_pch_ptp:
--	case e1000_pch_nvp:
- 		if (e1000_phy_is_accessible_pchlan(hw))
- 			break;
- 
-@@ -419,8 +465,20 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		 *  the PHY is in.
- 		 */
- 		ret_val = hw->phy.ops.check_reset_block(hw);
--		if (ret_val)
-+		if (ret_val) {
- 			e_err("ME blocked access to PHY after reset\n");
-+			goto out;
-+		}
-+
-+		if (hw->mac.type >= e1000_pch_mtp) {
-+			ret_val = hw->phy.ops.acquire(hw);
-+			if (ret_val) {
-+				e_err("Failed to reconfigure K1 exit timeout\n");
-+				goto out;
-+			}
-+			ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+			hw->phy.ops.release(hw);
-+		}
+-		move_imm(ctx, dst, imm64, is32);
++		if (bpf_pseudo_func(insn))
++			move_addr(ctx, dst, imm64);
++		else
++			move_imm(ctx, dst, imm64, is32);
+ 		return 1;
  	}
  
- out:
-@@ -4888,6 +4946,18 @@ static s32 e1000_init_hw_ich8lan(struct e1000_hw *hw)
- 	u16 i;
- 
- 	e1000_initialize_hw_bits_ich8lan(hw);
-+	if (hw->mac.type >= e1000_pch_mtp) {
-+		ret_val = hw->phy.ops.acquire(hw);
-+		if (ret_val)
-+			return ret_val;
-+
-+		ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+		hw->phy.ops.release(hw);
-+		if (ret_val) {
-+			e_dbg("Error failed to reconfigure K1 exit timeout\n");
-+			return ret_val;
-+		}
-+	}
- 
- 	/* Initialize identification LED */
- 	ret_val = mac->ops.id_led_init(hw);
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.h b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-index 2504b11c3169f..5feb589a9b5ff 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.h
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-@@ -219,6 +219,10 @@
- #define I217_PLL_CLOCK_GATE_REG	PHY_REG(772, 28)
- #define I217_PLL_CLOCK_GATE_MASK	0x07FF
- 
-+/* PHY Timeouts */
-+#define I217_PHY_TIMEOUTS_REG                   PHY_REG(770, 21)
-+#define I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK       0x0FC0
-+
- #define SW_FLAG_TIMEOUT		1000	/* SW Semaphore flag timeout in ms */
- 
- /* Inband Control */
--- 
-2.39.5
-
 
 
 
