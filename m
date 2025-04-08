@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E50DA80A16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6ADA80796
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58EC17A264F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:58:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE832427EF3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D464126FA66;
-	Tue,  8 Apr 2025 12:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B355C26AAB9;
+	Tue,  8 Apr 2025 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6GyyS5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Q4XDUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B0C26FA5B;
-	Tue,  8 Apr 2025 12:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAC4267731;
+	Tue,  8 Apr 2025 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116564; cv=none; b=dseSCSfG2M7Sx5gWUEdSUULE/rkZUPiQTuz+mz81KtXFlWddRmqz41BPngDLzrAtlj3QbjBNpE3khPQc0iXJ1nIoYTS1rzMjF6pBaW5sZeHy+iHSYCGZ2+JsUm2YLBWsJ5ZzIB4fbSUV052hP/nmeJ7NhZqXU/e1850mmomB3N4=
+	t=1744115078; cv=none; b=ZXigXCgPXHvQJeO4lP+1Yf3VQ1nruQvw71JNnC5d1jHSsrv8ZNc3RZoH9nyv3cj4y0MGtb0z3nSF3lIfK1WsSVrtT6K/Ncu6Kpfnk9vnFGx+IAqBjV05jeV2ztiot1XqehVm3S0kF9l7euymY0PJhGaoAVUlNBmgE6ENdGPuJ+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116564; c=relaxed/simple;
-	bh=wsGxUlMSQheIIxy+PrTq4casmkHmGrR4JGD6IhQHcqQ=;
+	s=arc-20240116; t=1744115078; c=relaxed/simple;
+	bh=sKJyOS9pBsfeeCX64xYu5ItD5R1Ec/QbVfmkLAImncc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtU1OJy+/cPYaMYk9hWQHXmrP88tSybNmgYYOWMDZwC5FB7kE8cJpiw8bZiyTr3dgXJtrqv3i19x0osmRo3ZxQ2LIHL1fFzMBg59spBYjVq0k1PAWFRC3EC8bd23I0d8L5rI21NOn0dI0+Q4wTUD6WjZ2c0lo+zWe5A9UaIWreU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6GyyS5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21508C4CEE7;
-	Tue,  8 Apr 2025 12:49:23 +0000 (UTC)
+	 MIME-Version; b=TIIKBVF7jgokI/uRa/rb3fvOBHhKwi0EeLKkLtpX9sjQTpLOngNZiQj1Nv1hgWIb/j8fQbTToG8d8qz7HmSgiF6DzAVw5d6c+ym5FD1IFYS53FlpdaLTKsyn2Fqhz499hfcPiaZrRS+ltXgnV6oTbGs+oX/FkBH5htRSjTbmPec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4Q4XDUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BF2C4CEE5;
+	Tue,  8 Apr 2025 12:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116564;
-	bh=wsGxUlMSQheIIxy+PrTq4casmkHmGrR4JGD6IhQHcqQ=;
+	s=korg; t=1744115078;
+	bh=sKJyOS9pBsfeeCX64xYu5ItD5R1Ec/QbVfmkLAImncc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6GyyS5tOvXdP2Hh2Afky6cWD9sIe2rfsdvA5Q5MfGZ3wJRs61uNS/2HyVrPdTzKo
-	 wVWEZSvskRKyU09pSdZwztCvi8/L9uMWKSkgqqoj/m0VOjQzEqozL/p+soWVnPelKb
-	 YjqOkVZhoJmoQdpwQV1UxKy5KbUjItNu52ZfHWJU=
+	b=c4Q4XDUABYQGXgJ0SKYKNbbTwE5HUx3ydG/NRf3MMM7xmdKVgdVwQ9uu0fQ6z3CuS
+	 /E+ahD57vyqxiLA9eMs1MKJ3+iJVeCPS6wxOJJu0UpNP5L43XSTcGZUMzCzSjbZgj4
+	 hJhbE163hqquBTjwS1O6j3TdtXqtNimtZyT00np8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/423] dmaengine: fsl-edma: free irq correctly in remove path
+Subject: [PATCH 6.13 301/499] wifi: mac80211: remove debugfs dir for virtual monitor
 Date: Tue,  8 Apr 2025 12:48:33 +0200
-Message-ID: <20250408104850.096697299@linuxfoundation.org>
+Message-ID: <20250408104858.723713436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit fa70c4c3c580c239a0f9e83a14770ab026e8d820 ]
+[ Upstream commit 646262c71aca87bb66945933abe4e620796d6c5a ]
 
-Add fsl_edma->txirq/errirq check to avoid below warning because no
-errirq at i.MX9 platform. Otherwise there will be kernel dump:
-WARNING: CPU: 0 PID: 11 at kernel/irq/devres.c:144 devm_free_irq+0x74/0x80
-Modules linked in:
-CPU: 0 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-rc7#18
-Hardware name: NXP i.MX93 11X11 EVK board (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : devm_free_irq+0x74/0x80
-lr : devm_free_irq+0x48/0x80
-Call trace:
- devm_free_irq+0x74/0x80 (P)
- devm_free_irq+0x48/0x80 (L)
- fsl_edma_remove+0xc4/0xc8
- platform_remove+0x28/0x44
- device_remove+0x4c/0x80
+Don't call ieee80211_debugfs_recreate_netdev() for virtual monitor
+interface when deleting it.
 
-Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel IRQ only when channel is allocated")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250228071720.3780479-2-peng.fan@oss.nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The virtual monitor interface shouldn't have debugfs entries and trying
+to update them will *create* them on deletion.
+
+And when the virtual monitor interface is created/destroyed multiple
+times we'll get warnings about debugfs name conflicts.
+
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://patch.msgid.link/20250204164240.370153-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/mac80211/driver-ops.c | 10 ++++++++--
+ net/mac80211/iface.c      | 11 ++++++-----
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index db5f06b8575db..27645606f900b 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -303,6 +303,7 @@ fsl_edma2_irq_init(struct platform_device *pdev,
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index 299d38e9e8630..2fc60e1e77a55 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -116,8 +116,14 @@ void drv_remove_interface(struct ieee80211_local *local,
  
- 		/* The last IRQ is for eDMA err */
- 		if (i == count - 1) {
-+			fsl_edma->errirq = irq;
- 			ret = devm_request_irq(&pdev->dev, irq,
- 						fsl_edma_err_handler,
- 						0, "eDMA2-ERR", fsl_edma);
-@@ -322,10 +323,13 @@ static void fsl_edma_irq_exit(
- 		struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
- {
- 	if (fsl_edma->txirq == fsl_edma->errirq) {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
- 	} else {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
--		devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->errirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
+ 	sdata->flags &= ~IEEE80211_SDATA_IN_DRIVER;
+ 
+-	/* Remove driver debugfs entries */
+-	ieee80211_debugfs_recreate_netdev(sdata, sdata->vif.valid_links);
++	/*
++	 * Remove driver debugfs entries.
++	 * The virtual monitor interface doesn't get a debugfs
++	 * entry, so it's exempt here.
++	 */
++	if (sdata != local->monitor_sdata)
++		ieee80211_debugfs_recreate_netdev(sdata,
++						  sdata->vif.valid_links);
+ 
+ 	trace_drv_remove_interface(local, sdata);
+ 	local->ops->remove_interface(&local->hw, &sdata->vif);
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 806dffa48ef92..04b3626387309 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1212,16 +1212,17 @@ void ieee80211_del_virtual_monitor(struct ieee80211_local *local)
+ 		return;
  	}
+ 
+-	RCU_INIT_POINTER(local->monitor_sdata, NULL);
+-	mutex_unlock(&local->iflist_mtx);
+-
+-	synchronize_net();
+-
++	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+ 	ieee80211_link_release_channel(&sdata->deflink);
+ 
+ 	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+ 		drv_remove_interface(local, sdata);
+ 
++	RCU_INIT_POINTER(local->monitor_sdata, NULL);
++	mutex_unlock(&local->iflist_mtx);
++
++	synchronize_net();
++
+ 	kfree(sdata);
  }
  
-@@ -513,6 +517,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 	if (!fsl_edma)
- 		return -ENOMEM;
- 
-+	fsl_edma->errirq = -EINVAL;
-+	fsl_edma->txirq = -EINVAL;
- 	fsl_edma->drvdata = drvdata;
- 	fsl_edma->n_chans = chans;
- 	mutex_init(&fsl_edma->fsl_edma_mutex);
 -- 
 2.39.5
 
