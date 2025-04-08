@@ -1,56 +1,92 @@
-Return-Path: <stable+bounces-131657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1659CA80B83
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCD2A8088B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F93F505998
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965BE1BA4042
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183FD27713;
-	Tue,  8 Apr 2025 12:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746A1267B77;
+	Tue,  8 Apr 2025 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJNii+2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrMl2TOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA51E26B2CF;
-	Tue,  8 Apr 2025 12:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319D51AAA32;
+	Tue,  8 Apr 2025 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116986; cv=none; b=qrhjb7NDTe1QlHWNqi9i1GE8qELhZlf1EdIyoZnFRNbsKaig54uHL5/2SMrxhSyKzto94lj+nLKJ/jYxfO449ubB3WM0JXdbAVc8Ux7/h8gQMhigEDcpbNv0wfXZyUSLglT/pG6bWcXf9SHp9P9tf6xnkL+CO0wWSNAWdmOsn7w=
+	t=1744115779; cv=none; b=ihqxm3QsHxd1afrZRuyjGmiQ43i8/EXgpWrEX1jhyHCUzv1ec0kRTIxxJYPV7R6mQ8UvJbWC0g7E1eGx3IYazmTWidV/mO6z4RnRrUhagu3uwoK8RhPCDCzpLt7gA1XP8hioZo2difWu3z4MgJ2nymblngl9fgHoZKwKZOt9p/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116986; c=relaxed/simple;
-	bh=6fPL2qnHnjw29Jv4GBJnpEv3ILoSuTKhf7pvKYy5lXo=;
+	s=arc-20240116; t=1744115779; c=relaxed/simple;
+	bh=1XtyfxqLFTUP4qHKLW5Uy3OeUS6y59d2iBHRuR5n1/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGqK2iJ0ODZkC0+wvas4nqHTwUFh4IzJqtAtdJYI9oM1r3F6IYZvFLT6VMJdChCUHrCKffxQ5CYI4OvxUimt+ydDaQJG+2SfZM56ti6jO8A1QqTYEi4Qy5IBNTxHIs17BtP9C/PcCSHNTKrlckMOR9TdL4zASRgGGKsCRTZxTAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJNii+2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2164C4CEE5;
-	Tue,  8 Apr 2025 12:56:25 +0000 (UTC)
+	 MIME-Version; b=mARiSo8YvslTyUAq7f5m1+qSRE5PPD7AebbJrqBeRN3yczsS76b7sg6UGUUayvYIjTPW//tgbcoQNiUxe5CIW2RLPQyVrh+z/IxD7pNroHQeBQQCEZNRQuXyPO/q9y7RHPo0IVPaHFMrmQ+8H7wIX5QOWELJ4u2TacvJfvFJpG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrMl2TOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F1C4CEE5;
+	Tue,  8 Apr 2025 12:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116986;
-	bh=6fPL2qnHnjw29Jv4GBJnpEv3ILoSuTKhf7pvKYy5lXo=;
+	s=korg; t=1744115779;
+	bh=1XtyfxqLFTUP4qHKLW5Uy3OeUS6y59d2iBHRuR5n1/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJNii+2F1NyC0f7XADRDo6gelpmg+8btCHVgGy8wpeSzBoxbXf5MRbH9b86rdIfil
-	 AwMFdgtOoqEXG7P7rJ5Umnwg1O6r+0pJ3LgTkxHzF3mbvvHVRcIS7x56mDLI5TbJxv
-	 FXID1VHUzBv/u4N+vQW787I4sAfz0kDu/tQ6j2+I=
+	b=yrMl2TOyDLiBFNNn1b+K4feyMFjdC9/Y/B5b7ZjDy0spKUZzOnHlXIcNpQ8Yce7Fo
+	 SeGmhQWLOcXRPCksa+AihQumJF7lS7kvarfkvBpqeEH1ogJlIU6EyPv+AszayqYsex
+	 5YZNWT++nal4aVu80Z7wM4OLpIeV4LbXVSG8Rl90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juhan Jin <juhan.jin@foxmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Asahi Lina <lina@asahilina.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linmiaohe <linmiaohe@huawei.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	=?UTF-8?q?Michael=20 Camp=20Drill=20Sergeant =20Ellerman?= <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ted Tso <tytso@mit.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/423] riscv: ftrace: Add parentheses in macro definitions of make_call_t0 and make_call_ra
+Subject: [PATCH 6.1 101/204] fuse: fix dax truncate/punch_hole fault path
 Date: Tue,  8 Apr 2025 12:50:31 +0200
-Message-ID: <20250408104852.900329449@linuxfoundation.org>
+Message-ID: <20250408104823.301528194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +98,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juhan Jin <juhan.jin@foxmail.com>
+From: Alistair Popple <apopple@nvidia.com>
 
-[ Upstream commit 5f1a58ed91a040d4625d854f9bb3dd4995919202 ]
+[ Upstream commit 7851bf649d423edd7286b292739f2eefded3d35c ]
 
-This patch adds parentheses to parameters caller and callee of macros
-make_call_t0 and make_call_ra. Every existing invocation of these two
-macros uses a single variable for each argument, so the absence of the
-parentheses seems okay. However, future invocations might use more
-complex expressions as arguments. For example, a future invocation might
-look like this: make_call_t0(a - b, c, call). Without parentheses in the
-macro definition, the macro invocation expands to:
+Patch series "fs/dax: Fix ZONE_DEVICE page reference counts", v9.
 
-...
-unsigned int offset = (unsigned long) c - (unsigned long) a - b;
-...
+Device and FS DAX pages have always maintained their own page reference
+counts without following the normal rules for page reference counting.  In
+particular pages are considered free when the refcount hits one rather
+than zero and refcounts are not added when mapping the page.
 
-which is clearly wrong.
+Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+mechanism for allowing GUP to hold references on the page (see
+get_dev_pagemap).  However there doesn't seem to be any reason why FS DAX
+pages need their own reference counting scheme.
 
-The use of parentheses ensures arguments are correctly evaluated and
-potentially saves future users of make_call_t0 and make_call_ra debugging
-trouble.
+By treating the refcounts on these pages the same way as normal pages we
+can remove a lot of special checks.  In particular pXd_trans_huge()
+becomes the same as pXd_leaf(), although I haven't made that change here.
+It also frees up a valuable SW define PTE bit on architectures that have
+devmap PTE bits defined.
 
-Fixes: 6724a76cff85 ("riscv: ftrace: Reduce the detour code size to half")
-Signed-off-by: Juhan Jin <juhan.jin@foxmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/tencent_AE90AA59903A628E87E9F80E563DA5BA5508@qq.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+It also almost certainly allows further clean-up of the devmap managed
+functions, but I have left that as a future improvment.  It also enables
+support for compound ZONE_DEVICE pages which is one of my primary
+motivators for doing this work.
+
+This patch (of 20):
+
+FS DAX requires file systems to call into the DAX layout prior to
+unlinking inodes to ensure there is no ongoing DMA or other remote access
+to the direct mapped page.  The fuse file system implements
+fuse_dax_break_layouts() to do this which includes a comment indicating
+that passing dmap_end == 0 leads to unmapping of the whole file.
+
+However this is not true - passing dmap_end == 0 will not unmap anything
+before dmap_start, and further more dax_layout_busy_page_range() will not
+scan any of the range to see if there maybe ongoing DMA access to the
+range.  Fix this by passing -1 for dmap_end to fuse_dax_break_layouts()
+which will invalidate the entire file range to
+dax_layout_busy_page_range().
+
+Link: https://lkml.kernel.org/r/cover.8068ad144a7eea4a813670301f4d2a86a8e68ec4.1740713401.git-series.apopple@nvidia.com
+Link: https://lkml.kernel.org/r/f09a34b6c40032022e4ddee6fadb7cc676f08867.1740713401.git-series.apopple@nvidia.com
+Fixes: 6ae330cad6ef ("virtiofs: serialize truncate/punch_hole and dax fault path")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Asahi Lina <lina@asahilina.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Michael "Camp Drill Sergeant" Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ted Ts'o <tytso@mit.edu>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/ftrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fuse/dax.c  | 1 -
+ fs/fuse/dir.c  | 2 +-
+ fs/fuse/file.c | 4 ++--
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index 2cddd79ff21b1..f253c8dae878e 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -92,7 +92,7 @@ struct dyn_arch_ftrace {
- #define make_call_t0(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_t0(offset);					\
- 	call[1] = to_jalr_t0(offset);					\
- } while (0)
-@@ -108,7 +108,7 @@ do {									\
- #define make_call_ra(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_ra(offset);					\
- 	call[1] = to_jalr_ra(offset);					\
- } while (0)
+diff --git a/fs/fuse/dax.c b/fs/fuse/dax.c
+index 6e71904c396f1..dc28c28654d93 100644
+--- a/fs/fuse/dax.c
++++ b/fs/fuse/dax.c
+@@ -681,7 +681,6 @@ static int __fuse_dax_break_layouts(struct inode *inode, bool *retry,
+ 			0, 0, fuse_wait_dax_page(inode));
+ }
+ 
+-/* dmap_end == 0 leads to unmapping of whole file */
+ int fuse_dax_break_layouts(struct inode *inode, u64 dmap_start,
+ 				  u64 dmap_end)
+ {
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index de31cb8eb7201..c431abbf48e66 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1712,7 +1712,7 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
+ 	if (FUSE_IS_DAX(inode) && is_truncate) {
+ 		filemap_invalidate_lock(mapping);
+ 		fault_blocked = true;
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err) {
+ 			filemap_invalidate_unlock(mapping);
+ 			return err;
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 0df1311afb87d..723dd9b94e567 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -240,7 +240,7 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
+ 
+ 	if (dax_truncate) {
+ 		filemap_invalidate_lock(inode->i_mapping);
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err)
+ 			goto out_inode_unlock;
+ 	}
+@@ -3020,7 +3020,7 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
+ 	inode_lock(inode);
+ 	if (block_faults) {
+ 		filemap_invalidate_lock(inode->i_mapping);
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err)
+ 			goto out;
+ 	}
 -- 
 2.39.5
 
