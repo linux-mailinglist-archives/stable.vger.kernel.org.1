@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-128962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D447A7FD7E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B14A80344
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4373BB113
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6363B17BB5C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D1268683;
-	Tue,  8 Apr 2025 10:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB68267F6E;
+	Tue,  8 Apr 2025 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+eYmu8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYgk7m/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C80268FE6;
-	Tue,  8 Apr 2025 10:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573D9227BA4;
+	Tue,  8 Apr 2025 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109746; cv=none; b=Jkmt8w2oWHAeGragK86vzaEJYSNgv97FQgVlNyL53WeZZtv6Hw7TZ8kyH5zyi/P7DPEKz2CRkctXAcgXtl2wGuP1tKKhB+4604pV8hF8hPDodpaAbfGELX8dIaz853fM4eFbdgkQk9peS5BL2jcsBvSsg2IpdelCnsRQX4AY8gM=
+	t=1744113068; cv=none; b=LJIuIutpHQrevF+FmK/U3elg9NcDKhbHyp3OEBzW8RTUSX67y8e5cbZu+gZW/1IofWDfsA7UHduIhC9V71pQOBSv4kL9Tb0Do+kW8m99C7adLkEecVkE3nWYOo5o7HNoqptmyjkT4RFk8fTqwCwyATls96w7hoHFqGuSwvyG+5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109746; c=relaxed/simple;
-	bh=OoXSF1BcKTXGyur1BNYNxVl/JRAr3OfGmipBOD92/JU=;
+	s=arc-20240116; t=1744113068; c=relaxed/simple;
+	bh=IfmMmtB2KnKXgEF0fImk6yjh7vYo+ZBCPzzHV6XSd8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCnEBwkMiO7LIkfTzskSCJbIH4T26/+znvnyngbdvVvhKltm/uIxRUBd+dyBq6F6uvsW83HzOfVjcilhAdwUC1UYN6TUu51wYzeahnhDdpohdXYBmXMHrjXl9G1lyW5wIGI5PXJcfweZcltEu7DXZQ0vxdo0acDTSLQQNBX3eEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+eYmu8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61375C4CEE5;
-	Tue,  8 Apr 2025 10:55:46 +0000 (UTC)
+	 MIME-Version; b=of9/3kI3kx7pKFIYFfEIdW7sB7XCLQ/zfg+MEfoqSNZWYfismYhFu++0xDJXvuQQF9mplU4x1bKsmCYarCnMfcfVV8TjJccgHxD1MeF6PrSFpDN4T7xkjdTOVA9l/U8PsPv2iQ/fzbN7V5vUQP2ObOTqHAAQaDlhQf3OdoDGNWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYgk7m/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82AEC4CEE5;
+	Tue,  8 Apr 2025 11:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109746;
-	bh=OoXSF1BcKTXGyur1BNYNxVl/JRAr3OfGmipBOD92/JU=;
+	s=korg; t=1744113068;
+	bh=IfmMmtB2KnKXgEF0fImk6yjh7vYo+ZBCPzzHV6XSd8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+eYmu8ybSMV6Wzlpph5011QAEsvtdgTbHfbTMXrU8WggfIb0thTjea+LI23bC17l
-	 CZcbWNJ58A60TYDxIGyuqUw7hGIbPxnse5OlsPlHXqogCwraB8PBhhdF9uFIyQpITf
-	 8AMfT8iWxhVBIXZNBm12GJwncu+NclO3drDPUOMs=
+	b=lYgk7m/BvniOGQpPD+OPi4Tobk3bOga5Uyi+sbW8CdU8kbA1W677ILX5mIIg47cyv
+	 81WeBCplFdK1r2BHopDF1I9qrywWltjeU27THuiRe6j20rUB2ML028AZgR5jpT2+2w
+	 2QsL1WZEi2sWykCd5TCiBqadH6c+owa0+keNmnCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruozhu Li <david.li@jaguarmicro.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	zuoqian <zuoqian113@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/227] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
+Subject: [PATCH 6.6 003/268] cpufreq: scpi: compare kHz instead of Hz
 Date: Tue,  8 Apr 2025 12:46:54 +0200
-Message-ID: <20250408104821.492112039@linuxfoundation.org>
+Message-ID: <20250408104828.594513339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruozhu Li <david.li@jaguarmicro.com>
+From: zuoqian <zuoqian113@gmail.com>
 
-[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
+[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
 
-The queue state checking in nvmet_rdma_recv_done is not in queue state
-lock.Queue state can transfer to LIVE in cm establish handler between
-state checking and state lock here, cause a silent drop of nvme connect
-cmd.
-Recheck queue state whether in LIVE state in state lock to prevent this
-issue.
+The CPU rate from clk_get_rate() may not be divisible by 1000
+(e.g., 133333333). But the rate calculated from frequency(kHz) is
+always divisible by 1000 (e.g., 133333000).
+Comparing the rate causes a warning during CPU scaling:
+"cpufreq: __target_index: Failed to change cpu frequency: -5".
+When we choose to compare kHz here, the issue does not occur.
 
-Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: zuoqian <zuoqian113@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ drivers/cpufreq/scpi-cpufreq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 944e8a2766630..503e1f59013c9 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -996,6 +996,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
- 	nvmet_req_complete(&cmd->req, status);
- }
- 
-+static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
-+		struct nvmet_rdma_rsp *rsp)
-+{
-+	unsigned long flags;
-+	bool ret = true;
-+
-+	spin_lock_irqsave(&queue->state_lock, flags);
-+	/*
-+	 * recheck queue state is not live to prevent a race condition
-+	 * with RDMA_CM_EVENT_ESTABLISHED handler.
-+	 */
-+	if (queue->state == NVMET_RDMA_Q_LIVE)
-+		ret = false;
-+	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
-+		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
-+	else
-+		nvmet_rdma_put_rsp(rsp);
-+	spin_unlock_irqrestore(&queue->state_lock, flags);
-+	return ret;
-+}
-+
- static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index d33be56983ed3..bfc2e65e1e502 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -39,8 +39,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ static int
+ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
  {
- 	struct nvmet_rdma_cmd *cmd =
-@@ -1037,17 +1058,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	rsp->req.port = queue->port;
- 	rsp->n_rdma = 0;
+-	u64 rate = policy->freq_table[index].frequency * 1000;
++	unsigned long freq_khz = policy->freq_table[index].frequency;
+ 	struct scpi_data *priv = policy->driver_data;
++	unsigned long rate = freq_khz * 1000;
+ 	int ret;
  
--	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
--		unsigned long flags;
--
--		spin_lock_irqsave(&queue->state_lock, flags);
--		if (queue->state == NVMET_RDMA_Q_CONNECTING)
--			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
--		else
--			nvmet_rdma_put_rsp(rsp);
--		spin_unlock_irqrestore(&queue->state_lock, flags);
-+	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
-+	    nvmet_rdma_recv_not_live(queue, rsp))
- 		return;
--	}
+ 	ret = clk_set_rate(priv->clk, rate);
+@@ -48,7 +49,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ 	if (ret)
+ 		return ret;
  
- 	nvmet_rdma_handle_command(queue, rsp);
- }
+-	if (clk_get_rate(priv->clk) != rate)
++	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
+ 		return -EIO;
+ 
+ 	return 0;
 -- 
 2.39.5
 
