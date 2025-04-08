@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-130065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239C9A802A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834FCA802F0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A249F19E3ECE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F505463334
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896E267F4F;
-	Tue,  8 Apr 2025 11:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C172641CC;
+	Tue,  8 Apr 2025 11:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbBM8Xpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeZYORpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADBD266EEA;
-	Tue,  8 Apr 2025 11:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318232676E1;
+	Tue,  8 Apr 2025 11:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112722; cv=none; b=Iuu3lB6YdZ7OMiI7e0vDMonA0gglksHa3QrEhQa691sblV0YHsH84pZP8xDOXVL58+JDxhJoW2R2kAtcSkWhuKswyFK7M9jnl11KMx2DhjLD2+O5219UrTTIYIWFlN/6AMKPK3nhsaJqDC4GX/61QXVKyTfoUYFyU8FHoeQo4vA=
+	t=1744112724; cv=none; b=p5QaYfdYBZjM3XQ70/nzlsDVOsYWgzCXNqxptNwksxIrjQ5njmsPIvYHWGdn7uJ8z1psmiu3KxaOr8rJcaeHKm4t3ImNT/j+wIkTV8TfR+J2oIVNuxBURm3SOsh/jD6iO467eF0Lcvhp2rkbkc/SGdJshog7TThLutnZA4rOVTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112722; c=relaxed/simple;
-	bh=9/BgZtQgoQbPQcj/Bc5tlfZrFb1LK3IiH1VaGZvdEac=;
+	s=arc-20240116; t=1744112724; c=relaxed/simple;
+	bh=1n15NZyuteYo6ZHQjjZoHqT+JZbbvVeM9zBlUomVJV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyg1GmUC1ghJBtwW+s78wWGkqLmW+82myzw8Zlj4a2rVNgHj1EyuqhBvJUQZSstFzBP8Nmja6lLacQn9PHBDg0ok1s8o7JEfp0JzsLZ9oNwTGXrvDGOkSYfpcfH/WvkMWWZ5Vk+7+5wjLm7fb7vt6yQlHhKXJkVeAeG4ZmocrMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbBM8Xpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17078C4CEE5;
-	Tue,  8 Apr 2025 11:45:20 +0000 (UTC)
+	 MIME-Version; b=ehHwGocsx4KXmTG9SLlgmveZpcXHpsESJ72taiS3rxhKCmFWjUbQ4rI8uRITQU4SxeEnITcyD1SJjr095Qbq/54dkaBc6qxDK9Mozf/cDSZ595XyEo4TLn4gVhrNEytfCNowE444qbwrzrYNFRIWPPB75SKui7WdFjRhKHQ/Vjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeZYORpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8486C4CEE5;
+	Tue,  8 Apr 2025 11:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112721;
-	bh=9/BgZtQgoQbPQcj/Bc5tlfZrFb1LK3IiH1VaGZvdEac=;
+	s=korg; t=1744112724;
+	bh=1n15NZyuteYo6ZHQjjZoHqT+JZbbvVeM9zBlUomVJV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbBM8XplXcRtgEybLPlICBbSuy3APOVvAC46XaAU4JKavIx60fMa/l6jOzf7TeciE
-	 jpvqIajAiABj0aj2SfyO+a4VGuRHl/2rFrEkLdwbN2v5iHZaMIDfUk70Ismc2AYRac
-	 m2DPvxIVAxohMO+oNEDIdUntbcYoNULpQ6TXF3dA=
+	b=zeZYORpveksChB3ShD0TNO0nF3hVlFoiZXczhM4y2qPoGgUR/nKGWBT6euepRKBFM
+	 w4bhqbjVF1PO4OhVmhL1zLWgXqSIjdDzn+TAlyZeq/glyL2Gupz/cxQlOnoqlA7KCX
+	 uFDMt/sdWu8ki+0wcHbZe49yhi2nxBh4tSKw6eeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/279] bpf: Use preempt_count() directly in bpf_send_signal_common()
-Date: Tue,  8 Apr 2025 12:49:17 +0200
-Message-ID: <20250408104831.029352497@linuxfoundation.org>
+Subject: [PATCH 5.15 175/279] lib: 842: Improve error handling in sw842_compress()
+Date: Tue,  8 Apr 2025 12:49:18 +0200
+Message-ID: <20250408104831.055631460@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
 References: <20250408104826.319283234@linuxfoundation.org>
@@ -66,45 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-[ Upstream commit b4a8b5bba712a711d8ca1f7d04646db63f9c88f5 ]
+[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
 
-bpf_send_signal_common() uses preemptible() to check whether or not the
-current context is preemptible. If it is preemptible, it will use
-irq_work to send the signal asynchronously instead of trying to hold a
-spin-lock, because spin-lock is sleepable under PREEMPT_RT.
+The static code analysis tool "Coverity Scan" pointed the following
+implementation details out for further development considerations:
+CID 1309755: Unused value
+In sw842_compress: A value assigned to a variable is never used. (CWE-563)
+returned_value: Assigning value from add_repeat_template(p, repeat_count)
+to ret here, but that stored value is overwritten before it can be used.
 
-However, preemptible() depends on CONFIG_PREEMPT_COUNT. When
-CONFIG_PREEMPT_COUNT is turned off (e.g., CONFIG_PREEMPT_VOLUNTARY=y),
-!preemptible() will be evaluated as 1 and bpf_send_signal_common() will
-use irq_work unconditionally.
+Conclusion:
+Add error handling for the return value from an add_repeat_template()
+call.
 
-Fix it by unfolding "!preemptible()" and using "preempt_count() != 0 ||
-irqs_disabled()" instead.
-
-Fixes: 87c544108b61 ("bpf: Send signals asynchronously if !preemptible")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20250220042259.1583319-1-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/842/842_compress.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 60acc3c76316f..dba736defdfec 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -799,7 +799,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type)
- 	if (unlikely(is_global_init(current)))
- 		return -EPERM;
- 
--	if (!preemptible()) {
-+	if (preempt_count() != 0 || irqs_disabled()) {
- 		/* Do an early check on signal validity. Otherwise,
- 		 * the error is lost in deferred irq_work.
- 		 */
+diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
+index c02baa4168e16..055356508d97c 100644
+--- a/lib/842/842_compress.c
++++ b/lib/842/842_compress.c
+@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
+ 		}
+ 		if (repeat_count) {
+ 			ret = add_repeat_template(p, repeat_count);
++			if (ret)
++				return ret;
+ 			repeat_count = 0;
+ 			if (next == last) /* reached max repeat bits */
+ 				goto repeat;
 -- 
 2.39.5
 
