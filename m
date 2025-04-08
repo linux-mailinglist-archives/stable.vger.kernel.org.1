@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D8FA80526
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AC2A803FF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FB21B674DE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7C737ABD33
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3726A09F;
-	Tue,  8 Apr 2025 12:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E1A26AABF;
+	Tue,  8 Apr 2025 12:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCJiaFWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4H/qQNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FD2269AFB;
-	Tue,  8 Apr 2025 12:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9E4268FEB;
+	Tue,  8 Apr 2025 12:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114084; cv=none; b=l2kA/zGPVHvtjjxtbV9VkjsKkrAw14BlfPKWX/1wC6UECfPByNNVrxjWImZw+1YvVZDxrhyNz9Ip4RpnUPXtGF8Hesu83T0SwxpJxjQlqvdH7K9O/k1ljN0bTV6nwBOUPBsRdajBk8hwnOJv/7hOuf//dU0sF+XgTmkWuOXbYiQ=
+	t=1744113751; cv=none; b=W4oqxbAEJdcUTmLWtGRbBHawJzUT51Z8RnTeNDHubJCZb580YrR22wQ71kj6oeO8JMeey91CUSi/4ZuUDBBMBsTeI5aHRER95j5Kmbn+3FA9FHMUvy7874Q9xQcX/ZEMynDgvF0jCGnyIWhOwTf1h94UOLlXlscZOa5Q3CnE0VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114084; c=relaxed/simple;
-	bh=9fhnO/tC1tZ3EWFmI/BSlTnpkbS/gTzWKKufwjrZOfY=;
+	s=arc-20240116; t=1744113751; c=relaxed/simple;
+	bh=tVfxY+VgjURUkNRsR4ORK00xgPVRV5I2whwqn8IYSvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWQL0+3Z/+vEUpwYpU20mL7aw9cwQ1YvNPhxxg9exEtT2pRA/AJBPgHZhs2F30kLFTFIB2S6Ek7q9gjGp6Km6/53wyc6vzGjd5EZMG7rcHMuD/W46N7VH9wY7f2/PfYlCeecpB9nvCa68tWmECA0tU3YKjVb+fnodnUZ5NYZhrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCJiaFWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D90C4CEE5;
-	Tue,  8 Apr 2025 12:08:03 +0000 (UTC)
+	 MIME-Version; b=LPF74HAQLyumRw+46xqK1vsztVuiAa/fDFQVOohZaOqxw9froM41yyOGDaEQGZowtb8BG2AGARU6y2QBSy+6W508E+EOQ4anoCBGM3DlQZpJ9g9hGiKa00C97vWWobFBdAOgUuutxMtcTMGk93B1ICbsvlUbnxOhajEy56c8YAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4H/qQNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C949C4CEE5;
+	Tue,  8 Apr 2025 12:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114084;
-	bh=9fhnO/tC1tZ3EWFmI/BSlTnpkbS/gTzWKKufwjrZOfY=;
+	s=korg; t=1744113750;
+	bh=tVfxY+VgjURUkNRsR4ORK00xgPVRV5I2whwqn8IYSvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCJiaFWZyXLmRqY9o+b84RpEXDfNqKtqnmA0vYdTEx3PuVo5kcB/g/1Jvw6L3ukto
-	 drMz5ULoEfyXXzQCCfDHDHJzLl3L+FiaCuJQxcbhBTcXj0k+aUUzvXBlC8M9dr3Kvc
-	 ZW1tlogJMcbZXLheD/k0bnYULfRHQdf48GGjoLVc=
+	b=l4H/qQNsyeoC3fZMjXccQXFTvNisz+IPi+cC5YuhOjpNbQhLC5U3E082OdbfdyIiR
+	 mo/W1NhCXbkp2M5ACLNxMXB8wXNR91pFmICv81IiMAECzBsoezxf7RXy5jsLHDwx0p
+	 VVQJkhrI26DkoiFDHhwBH1bwcjoWkBxjCUphopzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 113/154] mfd: sm501: Switch to BIT() to mitigate integer overflows
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 243/268] btrfs: handle errors from btrfs_dec_ref() properly
 Date: Tue,  8 Apr 2025 12:50:54 +0200
-Message-ID: <20250408104818.953763829@linuxfoundation.org>
+Message-ID: <20250408104835.141681561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
+commit 5eb178f373b4f16f3b42d55ff88fc94dd95b93b1 upstream.
 
-If offset end up being high enough, right hand expression in functions
-like sm501_gpio_set() shifted left for that number of bits, may
-not fit in int type.
+In walk_up_proc() we BUG_ON(ret) from btrfs_dec_ref().  This is
+incorrect, we have proper error handling here, return the error.
 
-Just in case, fix that by using BIT() both as an option safe from
-overflow issues and to make this step look similar to other gpio
-drivers.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: f61be273d369 ("sm501: add gpiolib support")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/sm501.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/extent-tree.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-index aab8d8910319d..96616f8267530 100644
---- a/drivers/mfd/sm501.c
-+++ b/drivers/mfd/sm501.c
-@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
- {
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	void __iomem *regs = smchip->regbase;
- 	unsigned long save;
- 	unsigned long val;
-@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
- 	void __iomem *regs = smchip->regbase;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	unsigned long save;
- 	unsigned long ddr;
- 
-@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
- {
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	void __iomem *regs = smchip->regbase;
- 	unsigned long save;
- 	unsigned long val;
--- 
-2.39.5
-
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5540,7 +5540,10 @@ static noinline int walk_up_proc(struct
+ 				ret = btrfs_dec_ref(trans, root, eb, 1);
+ 			else
+ 				ret = btrfs_dec_ref(trans, root, eb, 0);
+-			BUG_ON(ret); /* -ENOMEM */
++			if (ret) {
++				btrfs_abort_transaction(trans, ret);
++				return ret;
++			}
+ 			if (is_fstree(root->root_key.objectid)) {
+ 				ret = btrfs_qgroup_trace_leaf_items(trans, eb);
+ 				if (ret) {
 
 
 
