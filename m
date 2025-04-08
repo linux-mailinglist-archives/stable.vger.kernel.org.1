@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25460A8052D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB518A80AE7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854494A43D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243721BA5459
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D4226B2BE;
-	Tue,  8 Apr 2025 12:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93D2268C6B;
+	Tue,  8 Apr 2025 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoHq7fUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9++eP2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E4A263F3B;
-	Tue,  8 Apr 2025 12:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5840F1EB3D;
+	Tue,  8 Apr 2025 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113842; cv=none; b=GSRTEtyfo2WEwwAe14k+M+YIkPAXQ+ur/jouj+SmQ84YF7HI6cUaCPhPeE2/AP/hUKhWG2tcOUL2VSci+LsNAGmLrvpvB/CV6FHa8K7X8whicfqeOljg1xotSUp9lNpadLiPGB8ioQ0yr1rRA/AmOt9+DMl4U3/rNqGVy8egacQ=
+	t=1744116758; cv=none; b=kFE7JeD8FH6I0AdDWsHiBHAOr/cEcDDn9T3Rg9vxnHkoxf7nceuY9flpyFLY7+jfFhhqFInlVxjVTdCEfnK5GyKUD7oPxOHCeDgaj9lduW9ZIVYx5rFSLSl3L79X84SlqFrOVEomECzWIEnu4uUMW4/B2q/VR+phTKlPJGROu2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113842; c=relaxed/simple;
-	bh=OHuv1zREQ8qH5qkvpNRGnOTTcXfN9EjlGqpEFY3Jo90=;
+	s=arc-20240116; t=1744116758; c=relaxed/simple;
+	bh=wNpfxMFMrNlufgDE+XI2ujYRsDNJ5yXa3Bfls1DJW0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtDMq6JNNH7jSe8D5eKUHfUSZASO8/dZ2fy/usAUzelDwLZbrX/Wj94jpqqxHTRB9zrl4MGfjo97f0d+uq4GWsTEI1KSp++jRQlhbSTgmzJsFFKe/FBtQsxoEDJH9LO5tYTh1v0e7MrjeoVlgiElc3625ZoLq/jmKMQV+iHFSB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoHq7fUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42ECC4CEE5;
-	Tue,  8 Apr 2025 12:04:01 +0000 (UTC)
+	 MIME-Version; b=tPqtjbSJrFgKul1DolDWM+VXTb4Rb7en1xEeTeYUgYLJq8MWvi3Zsf1eVWFriPBMnBoueVZyiPW5wvV31hiyANwVkkwThIatW4tLEcnpB/TkUHwOKbYyH6ZPEdw9+MXy4h1Wax3pagaEg06dkugk6t7ia+8jw0uXmJ9mqxooPx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9++eP2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA429C4CEE7;
+	Tue,  8 Apr 2025 12:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113842;
-	bh=OHuv1zREQ8qH5qkvpNRGnOTTcXfN9EjlGqpEFY3Jo90=;
+	s=korg; t=1744116758;
+	bh=wNpfxMFMrNlufgDE+XI2ujYRsDNJ5yXa3Bfls1DJW0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoHq7fUz0xsiGiBey+oXXW9AwW90te1wIoQ6z2tL9h3GnTVkap/96SGfMoc//D6+G
-	 /3IkI8UGanrvsP2J6heOfz5XsTlKbb5RLo8Xqtg1gEOI8P9b40yDNofz+1LkOKNoDe
-	 X91X/3OdFznfxoWtQAv8p7EEQETVWSl1DPpKqiKY=
+	b=R9++eP2PL/Bq0klhrWv089lNS2DXu5pbUuJjEGu5I1geqleYio08k0WtQXY4ecII2
+	 yGY7Au4cyUpYCnBUd4KLxsI6dDoZ8hT9tAYbCsBkhzEBfwFWGGSm4rZdGD35RQ8kbt
+	 NndRwYqtIHf9l2FCCvkc/cKdhtY4oUE9zMi0Mr90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 041/154] USB: serial: option: match on interface class for Telit FN990B
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 256/423] wifi: iwlwifi: mvm: use the right version of the rate API
 Date: Tue,  8 Apr 2025 12:49:42 +0200
-Message-ID: <20250408104816.586976495@linuxfoundation.org>
+Message-ID: <20250408104851.707808436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
+[ Upstream commit a03e2082e678ea10d0d8bdf3ed933eb05a8ddbb0 ]
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
+The firmware uses the newer version of the API in recent devices. For
+older devices, we translate the rate to the new format.
+Don't parse the rate with old parsing macros.
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
-
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.13d70cdcbb4e.Ic92193bce4013b70a823cfef250ee79c16cf7c17@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 65f8933c34b42..0b52d77f57837 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -995,7 +995,7 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+ 	 */
+ 	u8 ru = le32_get_bits(phy_data->d1, IWL_RX_PHY_DATA1_HE_RU_ALLOC_MASK);
+ 	u32 rate_n_flags = phy_data->rate_n_flags;
+-	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK_V1;
++	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
+ 	u8 offs = 0;
+ 
+ 	rx_status->bw = RATE_INFO_BW_HE_RU;
+@@ -1050,13 +1050,13 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+ 
+ 	if (he_mu)
+ 		he_mu->flags2 |=
+-			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
++			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
+ 						   rate_n_flags),
+ 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW);
+-	else if (he_type == RATE_MCS_HE_TYPE_TRIG_V1)
++	else if (he_type == RATE_MCS_HE_TYPE_TRIG)
+ 		he->data6 |=
+ 			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_KNOWN) |
+-			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
++			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
+ 						   rate_n_flags),
+ 					 IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW);
+ }
+-- 
+2.39.5
+
 
 
 
