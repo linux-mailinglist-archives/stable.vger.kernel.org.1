@@ -1,386 +1,128 @@
-Return-Path: <stable+bounces-131841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEBEA8156B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 21:07:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7108A815A6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 21:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E67894E2743
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 19:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E788854D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 19:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5659C2459C5;
-	Tue,  8 Apr 2025 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A4924F5A5;
+	Tue,  8 Apr 2025 19:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jycr3qi5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="octOhNrT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nCsWHMxB"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2474324293C;
-	Tue,  8 Apr 2025 19:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509E723F273
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 19:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744139135; cv=none; b=Cve0lpDtRhq85y31ZTM1X2gVniFPLjW4rD7wZLqDvQjS2xdof2JcpCfsQygKfa52Y1/BTo2J1fx2V0pXKq2PNjQIS6zlXA3Tw8AderTT3yBQDPg63gK6om2fY1zZjjLIQM3D4pgiTtOhSd2NKUiXALrts/O/CcQVQB+sXFKf8Cg=
+	t=1744139213; cv=none; b=WbcXXB5i2LwJ+RBQvcOTiANNPiGbbxETJ2dC6v7St6EGnk9hxYSDHLymTuw77EqLJao0EQqDb0XPJmyBtt75rJANLqAa+NC9qlAAznS/8Sv1g3YXCud1Pq4fAaI+vCflkuRZbm8nqjz5/nMTXhqfsZPiYJQ7X+IG1JaWMsF1Fx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744139135; c=relaxed/simple;
-	bh=mSKVF5vf8AGRYhp6vZi1AHuZz+IwbgUxHVZNPTJ4KiA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YMPQw9bM4oVdIoHXwftJG+e8CeRaV7OBhSDS7zjkzTmR6VYdJg/3Jq9rNtfSdzhsU3ZBIvkQBBApYQsvBF0/debYRH7wPfwHAY4PQOCg5aQttILeveGokg1XUHaIfiTmjx4cZJBBTpZp7rsKGA80VBpSwzbKJgvRKBT9ihd+4yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jycr3qi5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=octOhNrT; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 08 Apr 2025 19:05:30 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744139131;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Np1BYFi2LiUFyUeRiqzMh8O5TPOS2ojFZUDS1JNVI/Y=;
-	b=jycr3qi5jMpF9l82tVjqhbMYMZfOcUsN2RXpl3gTQ9WcN2Iou67aa/RoiFlJP9OG0mzH2Z
-	OKT+ubZkdcT17Zy9X5v6oz4O5MJ/PkE6E/ULQlw2mLNTNV00YWKmLhg8wT08Xsd+2GUE2J
-	l6KJoZXNKruBY6sEUFAk2v0xl15zsmJv8qR2R9XRkv2ONlvUAJxjXntUfGUZ69PM1XMOIg
-	PhbsWV6LJFKgX7aHnMY0H8zO+T8AQE3Wf7bY6TR/1tKd+BuTag8LXtOojIqxxd8FBrXdRL
-	i6lHgESYjHhWUW9lDC9fHw5S2wZDRZIj4Dj+IDpSNQqhDoUth+OKluGsAKj5zA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744139131;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Np1BYFi2LiUFyUeRiqzMh8O5TPOS2ojFZUDS1JNVI/Y=;
-	b=octOhNrTBPoNzlfGWp+Oj8uuxmRAp/y2bSdN8Vdskeiz/qNZ2InaVdmyJu4Vf2XdAubHGY
-	8X/JJlA8Bca5bSBw==
-From: "tip-bot2 for Harshit Agarwal" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: Fix race in push_rt_task
-Cc: Jon Kohler <jon@nutanix.com>,
- Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
- Rahul Chunduru <rahul.chunduru@nutanix.com>,
- Harshit Agarwal <harshit@nutanix.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>, Phil Auld <pauld@redhat.com>,
- Will Ton <william.ton@nutanix.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250225180553.167995-1-harshit@nutanix.com>
-References: <20250225180553.167995-1-harshit@nutanix.com>
+	s=arc-20240116; t=1744139213; c=relaxed/simple;
+	bh=XDO7GZgIXZbIuvcgx0MtmUVNnpEHDttID7IaGMbJf/s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RGtuIJen1YKd+svSg0xEz6IHV98f1QGdJ1uf1ueef5ihHWhZ2BF5deCjux197tlZHaxIWf+i2GoYnYAI9K6NFSHUvNDz76g7q32ASbNoFSbL0qC3xvXR1LNRt3y5gikwKgSHTyJqt+BMTa3pGhhdSKvhAhWHFWhPOGI3jVRrCHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nCsWHMxB; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3913290f754so653945f8f.1
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 12:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744139209; x=1744744009; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=26BZYOZea4bfw7CNCFKawdkyJnG29aqqnfgcKzudge0=;
+        b=nCsWHMxB5lf12q3hAcn3iKQHC+p2PIBTwTv3HsESAajJeiKAPJOWxUFsd9DrebpWtw
+         3E1tVyXPnfZgpSPM//j6H9q8oe2HPARv6UW4HzIwfCxG5xhk7E9vnJdMQKR+Iobs94/U
+         XdhNLIJ5grTj4/KQXGGnMb+mS1B+O5SDMy0DjtR84rgIRTxyZP5knmMX9msQuGYWVi5C
+         btVU8DFwbqQ1RrhbupRBZQq1oI+8SwwaF/wKyAuiyfIiZyO6QkwcNhwZbzTnMcW4eyf7
+         D/Fj9HWbVsoDAidtF+Mcl7LEShs2vcxN782FDPaYG2KcUXCQrMJPgsG6+LrEmSA9RUEg
+         EKOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744139209; x=1744744009;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=26BZYOZea4bfw7CNCFKawdkyJnG29aqqnfgcKzudge0=;
+        b=V5ztylvph8QhxM6MbbEbB4iGXsIFF2BZx4Q9jfXcwNuEjkztctUFsMi5GzbZvglFfb
+         P/xwLevjrHMfdLRTdl8mdKct56Qhb/GyjuGYZ+/ywR7+Te0aYmBVx5ghv5XIBlUe/TWl
+         TkbakGJWLQkBBIniRky02m8sqJfg8r0XVheut2KlBnaZV9BPFywngqqwfU0bWue9ZZA4
+         1t9QlaQTBxU8LlKBJ0/yy0Zyawxwa2jnPXu6wWRF1/3wsJLke8d3nNQML65uckfpbFAx
+         nVM0WC5Y8ssg3coXnUxSA1gu2smUPw6+MgjHarrv1a4+Cm+C/V3fy1dY2l87rgAbXwDg
+         Dq+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVXxsQ7Dt6p2cS+xF1LEkX/KCHbaUkqEHc/IFuhGH6o1bfTB1rii8Huy5wD3cCZNVRZ27PrPS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIdH/HRDCIKaw9v0na3bCvUM080UGxEg7rEe5AVfbAcgPi2BU5
+	3m/pCVxM0jJDubMlZDI9HApms2hfvc5S26xavNTrZMCzpU3yDhw/j8SwoYku6RA=
+X-Gm-Gg: ASbGncvTcxXTLKLKNLuoMtRqObiGYa5gPK5xHVQAWIfmyQTxRNoIR1y/2QNT9rj0Ozm
+	UPgEjBBHEt0sgOdjMT3UkoWswzevbdJF0cPsY8ZhWImQwvAHvwZ0m47nw3XKGgJCIoxitQ/MYnx
+	ShDELlUO5yFIQW+3IVJ8+KTs3uucFAR2Pc6lBC5gqp6zR5HdaaHmcFzrkBygiUjIr73kj1We5yW
+	3zELWyPrmPScIvKqOfXjnBrMDfq/lqielMxZqWnL7W/UIdCcv2haOwZYLP5Qy/xXtr40+A65OTW
+	ybodgEiLu8SXDpaoYZ7832MqWPuNHa6U1Fz90Nd2mNmL9sV/kZJfu6CA9fE+Azs=
+X-Google-Smtp-Source: AGHT+IFEmj19Sjp6m7XUEA3vyo+E8QmKaZA1qZbfv2jh+SPPFex3IJzzYfOY3+icqIou7/aTD5sG1A==
+X-Received: by 2002:a05:600c:a016:b0:439:a3df:66f3 with SMTP id 5b1f17b1804b1-43f1ed660damr1024815e9.6.1744139209570;
+        Tue, 08 Apr 2025 12:06:49 -0700 (PDT)
+Received: from [192.168.1.26] ([178.197.198.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020da17sm15853743f8f.64.2025.04.08.12.06.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 12:06:49 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Peter Griffin <peter.griffin@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com, 
+ semen.protsenko@linaro.org, kernel-team@android.com, 
+ jaewon02.kim@samsung.com, stable@vger.kernel.org
+In-Reply-To: <20250402-pinctrl-fltcon-suspend-v6-0-78ce0d4eb30c@linaro.org>
+References: <20250402-pinctrl-fltcon-suspend-v6-0-78ce0d4eb30c@linaro.org>
+Subject: Re: [PATCH v6 0/4] samsung: pinctrl: Add support for
+ eint_fltcon_offset and filter selection on gs101
+Message-Id: <174413920812.155881.15584409813277033669.b4-ty@linaro.org>
+Date: Tue, 08 Apr 2025 21:06:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174413913083.31282.6439737092347995378.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     690e47d1403e90b7f2366f03b52ed3304194c793
-Gitweb:        https://git.kernel.org/tip/690e47d1403e90b7f2366f03b52ed330419=
-4c793
-Author:        Harshit Agarwal <harshit@nutanix.com>
-AuthorDate:    Tue, 25 Feb 2025 18:05:53=20
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Apr 2025 20:55:55 +02:00
+On Wed, 02 Apr 2025 16:17:29 +0100, Peter Griffin wrote:
+> This series fixes support for correctly saving and restoring fltcon0
+> and fltcon1 registers on gs101 for non-alive banks where the fltcon
+> register offset is not at a fixed offset (unlike previous SoCs).
+> This is done by adding a eint_fltcon_offset and providing GS101
+> specific pin macros that take an additional parameter (similar to
+> how exynosautov920 handles it's eint_con_offset).
+> 
+> [...]
 
-sched/rt: Fix race in push_rt_task
+Applied, thanks!
 
-Overview
-=3D=3D=3D=3D=3D=3D=3D=3D
-When a CPU chooses to call push_rt_task and picks a task to push to
-another CPU's runqueue then it will call find_lock_lowest_rq method
-which would take a double lock on both CPUs' runqueues. If one of the
-locks aren't readily available, it may lead to dropping the current
-runqueue lock and reacquiring both the locks at once. During this window
-it is possible that the task is already migrated and is running on some
-other CPU. These cases are already handled. However, if the task is
-migrated and has already been executed and another CPU is now trying to
-wake it up (ttwu) such that it is queued again on the runqeue
-(on_rq is 1) and also if the task was run by the same CPU, then the
-current checks will pass even though the task was migrated out and is no
-longer in the pushable tasks list.
+[1/4] pinctrl: samsung: refactor drvdata suspend & resume callbacks
+      https://git.kernel.org/pinctrl/samsung/c/3ade961e97f3b05dcdd9a4fabfe179c9e75571e0
+[2/4] pinctrl: samsung: add dedicated SoC eint suspend/resume callbacks
+      https://git.kernel.org/pinctrl/samsung/c/77ac6b742eba063a5b6600cda67834a7a212281a
+[3/4] pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
+      https://git.kernel.org/pinctrl/samsung/c/bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7
+[4/4] pinctrl: samsung: Add filter selection support for alive bank on gs101
+      https://git.kernel.org/pinctrl/samsung/c/a30692b4f81ba864cf880d57e9cc6cf6278a2943
 
-Crashes
-=3D=3D=3D=3D=3D=3D=3D
-This bug resulted in quite a few flavors of crashes triggering kernel
-panics with various crash signatures such as assert failures, page
-faults, null pointer dereferences, and queue corruption errors all
-coming from scheduler itself.
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Some of the crashes:
--> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >=3D MAX_RT_PRIO)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? do_error_trap+0x64/0xa0
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? exc_invalid_op+0x4c/0x60
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? pick_next_task_rt+0x6e/0x1d0
-   __schedule+0x5cb/0x790
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
-
--> BUG: kernel NULL pointer dereference, address: 00000000000000c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? __warn+0x8a/0xe0
-   ? exc_page_fault+0x3d6/0x520
-   ? asm_exc_page_fault+0x1e/0x30
-   ? pick_next_task_rt+0xb5/0x1d0
-   ? pick_next_task_rt+0x8c/0x1d0
-   __schedule+0x583/0x7e0
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
-
--> BUG: unable to handle page fault for address: ffff9464daea5900
-   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu !=3D task_cpu(p))
-
--> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? do_error_trap+0x64/0xa0
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? exc_invalid_op+0x4c/0x60
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   dequeue_rt_entity+0x1f/0x70
-   dequeue_task_rt+0x2d/0x70
-   __schedule+0x1a8/0x7e0
-   ? blk_finish_plug+0x25/0x40
-   schedule+0x3c/0xb0
-   futex_wait_queue_me+0xb6/0x120
-   futex_wait+0xd9/0x240
-   do_futex+0x344/0xa90
-   ? get_mm_exe_file+0x30/0x60
-   ? audit_exe_compare+0x58/0x70
-   ? audit_filter_rules.constprop.26+0x65e/0x1220
-   __x64_sys_futex+0x148/0x1f0
-   do_syscall_64+0x30/0x80
-   entry_SYSCALL_64_after_hwframe+0x62/0xc7
-
--> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? spurious_kernel_fault+0x171/0x1c0
-   ? exc_page_fault+0x3b6/0x520
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? asm_exc_page_fault+0x1e/0x30
-   ? _cond_resched+0x15/0x30
-   ? futex_wait_queue_me+0xc8/0x120
-   ? futex_wait+0xd9/0x240
-   ? try_to_wake_up+0x1b8/0x490
-   ? futex_wake+0x78/0x160
-   ? do_futex+0xcd/0xa90
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? plist_del+0x6a/0xd0
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? dequeue_pushable_task+0x20/0x70
-   ? __schedule+0x382/0x7e0
-   ? asm_sysvec_reschedule_ipi+0xa/0x20
-   ? schedule+0x3c/0xb0
-   ? exit_to_user_mode_prepare+0x9e/0x150
-   ? irqentry_exit_to_user_mode+0x5/0x30
-   ? asm_sysvec_reschedule_ipi+0x12/0x20
-
-Above are some of the common examples of the crashes that were observed
-due to this issue.
-
-Details
-=3D=3D=3D=3D=3D=3D=3D
-Let's look at the following scenario to understand this race.
-
-1) CPU A enters push_rt_task
-  a) CPU A has chosen next_task =3D task p.
-  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z=E2=80=99s rq).
-  c) CPU A identifies CPU X as a destination CPU (X < Z).
-  d) CPU A enters double_lock_balance(CPU Z=E2=80=99s rq, CPU X=E2=80=99s rq).
-  e) Since X is lower than Z, CPU A unlocks CPU Z=E2=80=99s rq. Someone else =
-has
-     locked CPU X=E2=80=99s rq, and thus, CPU A must wait.
-
-2) At CPU Z
-  a) Previous task has completed execution and thus, CPU Z enters
-     schedule, locks its own rq after CPU A releases it.
-  b) CPU Z dequeues previous task and begins executing task p.
-  c) CPU Z unlocks its rq.
-  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
-     lock) which triggers the schedule function on CPU Z.
-  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
-  f) As part of dequeue, it sets p.on_rq =3D 0 and unlocks its rq.
-
-3) At CPU B
-  a) CPU B enters try_to_wake_up with input task p.
-  b) Since CPU Z dequeued task p, p.on_rq =3D 0, and CPU B updates
-     B.state =3D WAKING.
-  c) CPU B via select_task_rq determines CPU Y as the target CPU.
-
-4) The race
-  a) CPU A acquires CPU X=E2=80=99s lock and relocks CPU Z.
-  b) CPU A reads task p.cpu =3D Z and incorrectly concludes task p is
-     still on CPU Z.
-  c) CPU A failed to notice task p had been dequeued from CPU Z while
-     CPU A was waiting for locks in double_lock_balance. If CPU A knew
-     that task p had been dequeued, it would return NULL forcing
-     push_rt_task to give up the task p's migration.
-  d) CPU B updates task p.cpu =3D Y and calls ttwu_queue.
-  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
-     p.on_rq =3D 1.
-  f) CPU B unlocks CPU Y, triggering memory synchronization.
-  g) CPU A reads task p.on_rq =3D 1, cementing its assumption that task p
-     has not migrated.
-  h) CPU A decides to migrate p to CPU X.
-
-This leads to A dequeuing p from Y's queue and various crashes down the
-line.
-
-Solution
-=3D=3D=3D=3D=3D=3D=3D=3D
-The solution here is fairly simple. After obtaining the lock (at 4a),
-the check is enhanced to make sure that the task is still at the head of
-the pushable tasks list. If not, then it is anyway not suitable for
-being pushed out.
-
-Testing
-=3D=3D=3D=3D=3D=3D=3D
-The fix is tested on a cluster of 3 nodes, where the panics due to this
-are hit every couple of days. A fix similar to this was deployed on such
-cluster and was stable for more than 30 days.
-
-Co-developed-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Tested-by: Will Ton <william.ton@nutanix.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
----
- kernel/sched/rt.c | 54 ++++++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
-
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 778911b..e40422c 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1894,6 +1894,27 @@ static int find_lowest_rq(struct task_struct *task)
- 	return -1;
- }
-=20
-+static struct task_struct *pick_next_pushable_task(struct rq *rq)
-+{
-+	struct task_struct *p;
-+
-+	if (!has_pushable_tasks(rq))
-+		return NULL;
-+
-+	p =3D plist_first_entry(&rq->rt.pushable_tasks,
-+			      struct task_struct, pushable_tasks);
-+
-+	BUG_ON(rq->cpu !=3D task_cpu(p));
-+	BUG_ON(task_current(rq, p));
-+	BUG_ON(task_current_donor(rq, p));
-+	BUG_ON(p->nr_cpus_allowed <=3D 1);
-+
-+	BUG_ON(!task_on_rq_queued(p));
-+	BUG_ON(!rt_task(p));
-+
-+	return p;
-+}
-+
- /* Will lock the rq it finds */
- static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *r=
-q)
- {
-@@ -1924,18 +1945,16 @@ static struct rq *find_lock_lowest_rq(struct task_str=
-uct *task, struct rq *rq)
- 			/*
- 			 * We had to unlock the run queue. In
- 			 * the mean time, task could have
--			 * migrated already or had its affinity changed.
--			 * Also make sure that it wasn't scheduled on its rq.
-+			 * migrated already or had its affinity changed,
-+			 * therefore check if the task is still at the
-+			 * head of the pushable tasks list.
- 			 * It is possible the task was scheduled, set
- 			 * "migrate_disabled" and then got preempted, so we must
- 			 * check the task migration disable flag here too.
- 			 */
--			if (unlikely(task_rq(task) !=3D rq ||
-+			if (unlikely(is_migration_disabled(task) ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
--				     task_on_cpu(rq, task) ||
--				     !rt_task(task) ||
--				     is_migration_disabled(task) ||
--				     !task_on_rq_queued(task))) {
-+				     task !=3D pick_next_pushable_task(rq))) {
-=20
- 				double_unlock_balance(rq, lowest_rq);
- 				lowest_rq =3D NULL;
-@@ -1955,27 +1974,6 @@ static struct rq *find_lock_lowest_rq(struct task_stru=
-ct *task, struct rq *rq)
- 	return lowest_rq;
- }
-=20
--static struct task_struct *pick_next_pushable_task(struct rq *rq)
--{
--	struct task_struct *p;
--
--	if (!has_pushable_tasks(rq))
--		return NULL;
--
--	p =3D plist_first_entry(&rq->rt.pushable_tasks,
--			      struct task_struct, pushable_tasks);
--
--	BUG_ON(rq->cpu !=3D task_cpu(p));
--	BUG_ON(task_current(rq, p));
--	BUG_ON(task_current_donor(rq, p));
--	BUG_ON(p->nr_cpus_allowed <=3D 1);
--
--	BUG_ON(!task_on_rq_queued(p));
--	BUG_ON(!rt_task(p));
--
--	return p;
--}
--
- /*
-  * If the current CPU has more than one RT task, see if the non
-  * running task can migrate over to a CPU that is running a task
 
