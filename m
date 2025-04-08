@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-129143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F92A7FECC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BF3A8022E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EDC73BD380
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F340C447428
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16132686A5;
-	Tue,  8 Apr 2025 11:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233D2268C78;
+	Tue,  8 Apr 2025 11:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4eSaKJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h42PamHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D534269830;
-	Tue,  8 Apr 2025 11:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C15268C66;
+	Tue,  8 Apr 2025 11:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110231; cv=none; b=MlMBjWanofr7OCwL8ZjmaXfJVul4zS8T1zGXipTPpPDb9Ng5/hmxnL+IRj29MDoARusFandTJlvV7x2BB1eFg+fkF1+xxyiqSYqfuRb1F3TaaFpQe0vXPUo0p7vPbzHZpbn2f0ZgxtE4NnOO9IkHpEc3aqUWORyN7m2OlcvIZK0=
+	t=1744112053; cv=none; b=fBhL3NZXdTdVSLAvoUJcbE5y17CQycw6tyyCK4BFX7iKU1E01Kx2s6dSg8daPYZJ5WlC3M8SGnLJPLiob7WMxgEkn9/DhEQ7NUmmIkwQk/jLUtZAstZ3aArQ3cqeM+z6sr6tNm90lOLZGi2YG2Q4pqZHQJYbc1Z4oEOJ2UQM8fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110231; c=relaxed/simple;
-	bh=VMncOI48Hw0K2ZgKlhicVhfTCegtmTdu1rsGKrXW36s=;
+	s=arc-20240116; t=1744112053; c=relaxed/simple;
+	bh=w2jKuiTQR2FBMNVzNNC8eRP0F0J1XLQ0wBwD82w1WkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUdiUR8V3yQ9fJjSfBzfLnHwiaAPHBv4+PO0gNHznAihfo25wF1NVLpoRB+ZlmqfNob7BizJ5Gmt9duE+VeP3O+qFxlQx4pjl0tc/IyFz8nkrkNQlXoXFm6CmLselQAdds/B3zZI6h0+JNE7d2/jGGuQ8tYhYBOUFDxu9yCdCKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4eSaKJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB1CC4CEE7;
-	Tue,  8 Apr 2025 11:03:50 +0000 (UTC)
+	 MIME-Version; b=Opa/BSI1FFjI6EIegXJKKOFXVHWpFtGGuwChu+l+RkmhL6hOU+WDjmcWy9IaOELf/CyCGbw34d+wAiY1+nDTigoe6bBg7rRRluBKmjRe09HVhgeAKcjUviIp/5q4RKl33NYq2uKyP77X/BYUoRI0FHj+u/UsYjbLJ57uNNS6TLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h42PamHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60063C4CEE5;
+	Tue,  8 Apr 2025 11:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110231;
-	bh=VMncOI48Hw0K2ZgKlhicVhfTCegtmTdu1rsGKrXW36s=;
+	s=korg; t=1744112053;
+	bh=w2jKuiTQR2FBMNVzNNC8eRP0F0J1XLQ0wBwD82w1WkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4eSaKJIGKCj8SsT+vPw+RaWqRLckAd0YvRRZK+Mfhm70CHI8dVRTVjkl+ucJ5w12
-	 7Bb620kWWA1E3ywuB6uwt/bk2adSiCOJecpKsjiYwP1tc1YxHaoeAxnWFjGxEMejJV
-	 zoLoP72Wa2COwKY4QbISGJ/nmEthhimJXTUHgwQk=
+	b=h42PamHafAsAWR9G++6OytUbp8ibEmj8s2BqIr8NQpVyAkBxqZCMH/YZvtM9FhoPB
+	 Axm5+9xiXAPkeAwNP5bLDnUiPibVe2La9FqseDrj4P0Pg086AiytrJQaXIYju7NdbA
+	 EFqMf6G7duaDfwMaC9rUd8xeNxbF4oPAFF6+WJAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Zhang <markzhang@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 176/227] rtnetlink: Allocate vfinfo size for VF GUIDs when supported
-Date: Tue,  8 Apr 2025 12:49:14 +0200
-Message-ID: <20250408104825.596441278@linuxfoundation.org>
+Subject: [PATCH 6.14 658/731] tty: serial: lpuart: only disable CTS instead of overwriting the whole UARTMODIR register
+Date: Tue,  8 Apr 2025 12:49:15 +0200
+Message-ID: <20250408104929.572976049@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit 23f00807619d15063d676218f36c5dfeda1eb420 ]
+[ Upstream commit e98ab45ec5182605d2e00114cba3bbf46b0ea27f ]
 
-Commit 30aad41721e0 ("net/core: Add support for getting VF GUIDs")
-added support for getting VF port and node GUIDs in netlink ifinfo
-messages, but their size was not taken into consideration in the
-function that allocates the netlink message, causing the following
-warning when a netlink message is filled with many VF port and node
-GUIDs:
- # echo 64 > /sys/bus/pci/devices/0000\:08\:00.0/sriov_numvfs
- # ip link show dev ib0
- RTNETLINK answers: Message too long
- Cannot send link get request: Message too long
+No need to overwrite the whole UARTMODIR register before waiting the
+transmit engine complete, actually our target here is only to disable
+CTS flow control to avoid the dirty data in TX FIFO may block the
+transmit engine complete.
+Also delete the following duplicate CTS disable configuration.
 
-Kernel warning:
-
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 1930 at net/core/rtnetlink.c:4151 rtnl_getlink+0x586/0x5a0
- Modules linked in: xt_conntrack xt_MASQUERADE nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter overlay mlx5_ib macsec mlx5_core tls rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm iw_cm ib_ipoib fuse ib_cm ib_core
- CPU: 2 UID: 0 PID: 1930 Comm: ip Not tainted 6.14.0-rc2+ #1
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:rtnl_getlink+0x586/0x5a0
- Code: cb 82 e8 3d af 0a 00 4d 85 ff 0f 84 08 ff ff ff 4c 89 ff 41 be ea ff ff ff e8 66 63 5b ff 49 c7 07 80 4f cb 82 e9 36 fc ff ff <0f> 0b e9 16 fe ff ff e8 de a0 56 00 66 66 2e 0f 1f 84 00 00 00 00
- RSP: 0018:ffff888113557348 EFLAGS: 00010246
- RAX: 00000000ffffffa6 RBX: ffff88817e87aa34 RCX: dffffc0000000000
- RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff88817e87afb8
- RBP: 0000000000000009 R08: ffffffff821f44aa R09: 0000000000000000
- R10: ffff8881260f79a8 R11: ffff88817e87af00 R12: ffff88817e87aa00
- R13: ffffffff8563d300 R14: 00000000ffffffa6 R15: 00000000ffffffff
- FS:  00007f63a5dbf280(0000) GS:ffff88881ee00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f63a5ba4493 CR3: 00000001700fe002 CR4: 0000000000772eb0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ? __warn+0xa5/0x230
-  ? rtnl_getlink+0x586/0x5a0
-  ? report_bug+0x22d/0x240
-  ? handle_bug+0x53/0xa0
-  ? exc_invalid_op+0x14/0x50
-  ? asm_exc_invalid_op+0x16/0x20
-  ? skb_trim+0x6a/0x80
-  ? rtnl_getlink+0x586/0x5a0
-  ? __pfx_rtnl_getlink+0x10/0x10
-  ? rtnetlink_rcv_msg+0x1e5/0x860
-  ? __pfx___mutex_lock+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? __pfx_lock_acquire+0x10/0x10
-  ? stack_trace_save+0x90/0xd0
-  ? filter_irq_stacks+0x1d/0x70
-  ? kasan_save_stack+0x30/0x40
-  ? kasan_save_stack+0x20/0x40
-  ? kasan_save_track+0x10/0x30
-  rtnetlink_rcv_msg+0x21c/0x860
-  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
-  ? arch_stack_walk+0x9e/0xf0
-  ? rcu_is_watching+0x34/0x60
-  ? lock_acquire+0xd5/0x410
-  ? rcu_is_watching+0x34/0x60
-  netlink_rcv_skb+0xe0/0x210
-  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? __pfx___netlink_lookup+0x10/0x10
-  ? lock_release+0x62/0x200
-  ? netlink_deliver_tap+0xfd/0x290
-  ? rcu_is_watching+0x34/0x60
-  ? lock_release+0x62/0x200
-  ? netlink_deliver_tap+0x95/0x290
-  netlink_unicast+0x31f/0x480
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? lock_acquire+0xd5/0x410
-  netlink_sendmsg+0x369/0x660
-  ? lock_release+0x62/0x200
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? import_ubuf+0xb9/0xf0
-  ? __import_iovec+0x254/0x2b0
-  ? lock_release+0x62/0x200
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ____sys_sendmsg+0x559/0x5a0
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? do_read_fault+0x213/0x4a0
-  ? rcu_is_watching+0x34/0x60
-  ___sys_sendmsg+0xe4/0x150
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? do_fault+0x2cc/0x6f0
-  ? handle_pte_fault+0x2e3/0x3d0
-  ? __pfx_handle_pte_fault+0x10/0x10
-  ? preempt_count_sub+0x14/0xc0
-  ? __down_read_trylock+0x150/0x270
-  ? __handle_mm_fault+0x404/0x8e0
-  ? __pfx___handle_mm_fault+0x10/0x10
-  ? lock_release+0x62/0x200
-  ? __rcu_read_unlock+0x65/0x90
-  ? rcu_is_watching+0x34/0x60
-  __sys_sendmsg+0xd5/0x150
-  ? __pfx___sys_sendmsg+0x10/0x10
-  ? __up_read+0x192/0x480
-  ? lock_release+0x62/0x200
-  ? __rcu_read_unlock+0x65/0x90
-  ? rcu_is_watching+0x34/0x60
-  do_syscall_64+0x6d/0x140
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f63a5b13367
- Code: 0e 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b9 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
- RSP: 002b:00007fff8c726bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000000067b687c2 RCX: 00007f63a5b13367
- RDX: 0000000000000000 RSI: 00007fff8c726c30 RDI: 0000000000000004
- RBP: 00007fff8c726cb8 R08: 0000000000000000 R09: 0000000000000034
- R10: 00007fff8c726c7c R11: 0000000000000246 R12: 0000000000000001
- R13: 0000000000000000 R14: 00007fff8c726cd0 R15: 00007fff8c726cd0
-  </TASK>
- irq event stamp: 0
- hardirqs last  enabled at (0): [<0000000000000000>] 0x0
- hardirqs last disabled at (0): [<ffffffff813f9e58>] copy_process+0xd08/0x2830
- softirqs last  enabled at (0): [<ffffffff813f9e58>] copy_process+0xd08/0x2830
- softirqs last disabled at (0): [<0000000000000000>] 0x0
- ---[ end trace 0000000000000000 ]---
-
-Thus, when calculating ifinfo message size, take VF GUIDs sizes into
-account when supported.
-
-Fixes: 30aad41721e0 ("net/core: Add support for getting VF GUIDs")
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250325090226.749730-1-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d5a2e0834364 ("tty: serial: lpuart: disable flow control while waiting for the transmit engine to complete")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20250307065446.1122482-1-sherry.sun@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/fsl_lpuart.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 2806b9ed63879..bc86034e17eab 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -950,6 +950,9 @@ static inline int rtnl_vfinfo_size(const struct net_device *dev,
- 				 /* IFLA_VF_STATS_TX_DROPPED */
- 				 nla_total_size_64bit(sizeof(__u64)));
- 		}
-+		if (dev->netdev_ops->ndo_get_vf_guid)
-+			size += num_vfs * 2 *
-+				nla_total_size(sizeof(struct ifla_vf_guid));
- 		return size;
- 	} else
- 		return 0;
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index f26162d98db62..9fdb66f2fcb81 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2346,15 +2346,19 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	/* update the per-port timeout */
+ 	uart_update_timeout(port, termios->c_cflag, baud);
+ 
++	/*
++	 * disable CTS to ensure the transmit engine is not blocked by the flow
++	 * control when there is dirty data in TX FIFO
++	 */
++	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++
+ 	/*
+ 	 * LPUART Transmission Complete Flag may never be set while queuing a break
+ 	 * character, so skip waiting for transmission complete when UARTCTRL_SBK is
+ 	 * asserted.
+ 	 */
+-	if (!(old_ctrl & UARTCTRL_SBK)) {
+-		lpuart32_write(port, 0, UARTMODIR);
++	if (!(old_ctrl & UARTCTRL_SBK))
+ 		lpuart32_wait_bit_set(port, UARTSTAT, UARTSTAT_TC);
+-	}
+ 
+ 	/* disable transmit and receive */
+ 	lpuart32_write(port, old_ctrl & ~(UARTCTRL_TE | UARTCTRL_RE),
+@@ -2362,8 +2366,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	lpuart32_write(port, bd, UARTBAUD);
+ 	lpuart32_serial_setbrg(sport, baud);
+-	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
+-	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+ 	/* restore control register */
+ 	lpuart32_write(port, ctrl, UARTCTRL);
+ 	/* re-enable the CTS if needed */
 -- 
 2.39.5
 
