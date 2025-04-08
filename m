@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-129329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000A6A7FF0F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B44A7FF23
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB5B1780A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E5A919E5C89
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A7F2686BC;
-	Tue,  8 Apr 2025 11:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A052A268FC9;
+	Tue,  8 Apr 2025 11:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFXQRjf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5N+GRNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E4F264FA0;
-	Tue,  8 Apr 2025 11:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82B214205;
+	Tue,  8 Apr 2025 11:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110732; cv=none; b=IXDQmp/onReaQjUSOQ+EcRfe/1dMTA+jrG2u1Y041iRGwzkF2kK8C7nVWGq/ShC6grdRCHDBqaJG9oWnpA1lsqsbHApgyOdmuHzTT4R5rxy9WauUE7NC3vH9N7naTtlrADaK3iWQ0Rnzx4WEv/k/6iXPGhE47OIrL3hweM2JCRg=
+	t=1744110624; cv=none; b=rO2KXAiU39pIzEn+QJv1yjckm4GoEtdyYXvu3Ijhxc6x4ZAbjSruia7DYXbhA/HpNLRA0W9xmiHjFW60Ot+VQNxkq3OUa4bvuh+4UNfoCMfdqE+fdZHzl07aQ5Tn40kUL+pfpzsoClVEy45LDMr1lmvMHOW0/5j4i1Oqrc+GVW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110732; c=relaxed/simple;
-	bh=E1z6aU+SWV1IuyPc/Z1seVMJCTN6dYgw7dqR6sWB1rk=;
+	s=arc-20240116; t=1744110624; c=relaxed/simple;
+	bh=BaV3fvVKNprk34VrtoCZL0yylX5BcyGj8xUfG2aBtw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldhPGNzg9ShbN1n1xCnUN631mqtzt3Mrt+A9y9KziYrTq7TqBCCmOu4BXX6saMY2vURviIVjLXeg0xWVGx7yB7e5jZ1euQIJBFlF4o/KRmHB1Ypz1AhqQkcv4CkkrU2nZ07Bs3zPxylMXvkRgJ5MGyEggVIY/xIFxQXjkTTpblo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFXQRjf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59DCC4CEE5;
-	Tue,  8 Apr 2025 11:12:11 +0000 (UTC)
+	 MIME-Version; b=Ei+EFP8VkYeSLl8kkXrRtJKWVi36tiIkLkDsLN4ML+pZnPzZj8k0uVcdQ5v/MJngWsBDYiFQiDXk6Vz5LxA6VpRIMStBUwD9PHFtP5T0fWGYf+iK7bXTQIemK7suBQBlTRxXiwzxjmX1uUX1Ng47NmQ0HZJMBZvwL1UNjrtu6Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5N+GRNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2364C4CEE5;
+	Tue,  8 Apr 2025 11:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110732;
-	bh=E1z6aU+SWV1IuyPc/Z1seVMJCTN6dYgw7dqR6sWB1rk=;
+	s=korg; t=1744110624;
+	bh=BaV3fvVKNprk34VrtoCZL0yylX5BcyGj8xUfG2aBtw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFXQRjf4c2SLIMN2G3haB9nDfWRdB0+TdG7yAciXSKqOdGIaQ/3DjmXbc9VCH3P2w
-	 eSgFLYv3U5kvvw+lgsHnT3fSlpwBMjYEOntQl7HyqMuZmigbZfcdlkG88vXG3CAiCX
-	 oPYHeDOX5hNBjwbHGNoB+jNZQHerUDZJajnModCo=
+	b=M5N+GRNI16pdj+2LxUBnvGt3/7SQt1qhClQRKnTtStKIdZK9gMTMZa/W86xahY47e
+	 fYyOA1w8qaDytUg8oirxELZEVBRlGnUeLyz0y1TUIlAxUlYBQXA6FEg7io3X+ldEQ5
+	 iVmucrHsloPdWUKuHnGBzrBPn8z7o5JOuHz7+ULU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Su Yue <glass.su@suse.com>,
+	Heming Zhao <heming.zhao@suse.com>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 133/731] md/raid1,raid10: dont ignore IO flags
-Date: Tue,  8 Apr 2025 12:40:30 +0200
-Message-ID: <20250408104917.373372643@linuxfoundation.org>
+Subject: [PATCH 6.14 134/731] md/md-bitmap: fix wrong bitmap_limit for clustermd when write sb
+Date: Tue,  8 Apr 2025 12:40:31 +0200
+Message-ID: <20250408104917.395423893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -65,103 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit e879a0d9cb086c8e52ce6c04e5bfa63825a6213c ]
+[ Upstream commit 6130825f34d41718c98a9b1504a79a23e379701e ]
 
-If blk-wbt is enabled by default, it's found that raid write performance
-is quite bad because all IO are throttled by wbt of underlying disks,
-due to flag REQ_IDLE is ignored. And turns out this behaviour exist since
-blk-wbt is introduced.
+In clustermd, separate write-intent-bitmaps are used for each cluster
+node:
 
-Other than REQ_IDLE, other flags should not be ignored as well, for
-example REQ_META can be set for filesystems, clearing it can cause priority
-reverse problems; And REQ_NOWAIT should not be cleared as well, because
-io will wait instead of failing directly in underlying disks.
+0                    4k                     8k                    12k
+-------------------------------------------------------------------
+| idle                | md super            | bm super [0] + bits |
+| bm bits[0, contd]   | bm super[1] + bits  | bm bits[1, contd]   |
+| bm super[2] + bits  | bm bits [2, contd]  | bm super[3] + bits  |
+| bm bits [3, contd]  |                     |                     |
 
-Fix those problems by keep IO flags from master bio.
+So in node 1, pg_index in __write_sb_page() could equal to
+bitmap->storage.file_pages. Then bitmap_limit will be calculated to
+0. md_super_write() will be called with 0 size.
+That means the first 4k sb area of node 1 will never be updated
+through filemap_write_page().
+This bug causes hang of mdadm/clustermd_tests/01r1_Grow_resize.
 
-Fises: f51d46d0e7cb ("md: add support for REQ_NOWAIT")
-Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
-Fixes: 5404bc7a87b9 ("[PATCH] Allow file systems to differentiate between data and meta reads")
-Link: https://lore.kernel.org/linux-raid/20250227121657.832356-1-yukuai1@huaweicloud.com
+Here use (pg_index % bitmap->storage.file_pages) to make calculation
+of bitmap_limit correct.
+
+Fixes: ab99a87542f1 ("md/md-bitmap: fix writing non bitmap pages")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Link: https://lore.kernel.org/linux-raid/20250303033918.32136-1-glass.su@suse.com
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c  | 5 -----
- drivers/md/raid10.c | 8 --------
- 2 files changed, 13 deletions(-)
+ drivers/md/md-bitmap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index cb108b3e28c4d..44dcfebff4f03 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1316,8 +1316,6 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	struct r1conf *conf = mddev->private;
- 	struct raid1_info *mirror;
- 	struct bio *read_bio;
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
- 	int max_sectors;
- 	int rdisk, error;
- 	bool r1bio_existed = !!r1_bio;
-@@ -1405,7 +1403,6 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	read_bio->bi_iter.bi_sector = r1_bio->sector +
- 		mirror->rdev->data_offset;
- 	read_bio->bi_end_io = raid1_end_read_request;
--	read_bio->bi_opf = op | do_sync;
- 	if (test_bit(FailFast, &mirror->rdev->flags) &&
- 	    test_bit(R1BIO_FailFast, &r1_bio->state))
- 	        read_bio->bi_opf |= MD_FAILFAST;
-@@ -1654,8 +1651,6 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 23c09d22fcdbc..9ae6cc8e30cbd 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -426,8 +426,8 @@ static int __write_sb_page(struct md_rdev *rdev, struct bitmap *bitmap,
+ 	struct block_device *bdev;
+ 	struct mddev *mddev = bitmap->mddev;
+ 	struct bitmap_storage *store = &bitmap->storage;
+-	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
+-		PAGE_SHIFT;
++	unsigned long num_pages = bitmap->storage.file_pages;
++	unsigned int bitmap_limit = (num_pages - pg_index % num_pages) << PAGE_SHIFT;
+ 	loff_t sboff, offset = mddev->bitmap_info.offset;
+ 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
+ 	unsigned int size = PAGE_SIZE;
+@@ -436,7 +436,7 @@ static int __write_sb_page(struct md_rdev *rdev, struct bitmap *bitmap,
  
- 		mbio->bi_iter.bi_sector	= (r1_bio->sector + rdev->data_offset);
- 		mbio->bi_end_io	= raid1_end_write_request;
--		mbio->bi_opf = bio_op(bio) |
--			(bio->bi_opf & (REQ_SYNC | REQ_FUA | REQ_ATOMIC));
- 		if (test_bit(FailFast, &rdev->flags) &&
- 		    !test_bit(WriteMostly, &rdev->flags) &&
- 		    conf->raid_disks - mddev->degraded > 1)
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 15b9ae5bf84d8..c897b19dc2d53 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1146,8 +1146,6 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- {
- 	struct r10conf *conf = mddev->private;
- 	struct bio *read_bio;
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
- 	int max_sectors;
- 	struct md_rdev *rdev;
- 	char b[BDEVNAME_SIZE];
-@@ -1228,7 +1226,6 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	read_bio->bi_iter.bi_sector = r10_bio->devs[slot].addr +
- 		choose_data_offset(r10_bio, rdev);
- 	read_bio->bi_end_io = raid10_end_read_request;
--	read_bio->bi_opf = op | do_sync;
- 	if (test_bit(FailFast, &rdev->flags) &&
- 	    test_bit(R10BIO_FailFast, &r10_bio->state))
- 	        read_bio->bi_opf |= MD_FAILFAST;
-@@ -1247,10 +1244,6 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
- 				  struct bio *bio, bool replacement,
- 				  int n_copy)
- {
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
--	const blk_opf_t do_fua = bio->bi_opf & REQ_FUA;
--	const blk_opf_t do_atomic = bio->bi_opf & REQ_ATOMIC;
- 	unsigned long flags;
- 	struct r10conf *conf = mddev->private;
- 	struct md_rdev *rdev;
-@@ -1269,7 +1262,6 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
- 	mbio->bi_iter.bi_sector	= (r10_bio->devs[n_copy].addr +
- 				   choose_data_offset(r10_bio, rdev));
- 	mbio->bi_end_io	= raid10_end_write_request;
--	mbio->bi_opf = op | do_sync | do_fua | do_atomic;
- 	if (!replacement && test_bit(FailFast,
- 				     &conf->mirrors[devnum].rdev->flags)
- 			 && enough(conf, devnum))
+ 	bdev = (rdev->meta_bdev) ? rdev->meta_bdev : rdev->bdev;
+ 	/* we compare length (page numbers), not page offset. */
+-	if ((pg_index - store->sb_index) == store->file_pages - 1) {
++	if ((pg_index - store->sb_index) == num_pages - 1) {
+ 		unsigned int last_page_size = store->bytes & (PAGE_SIZE - 1);
+ 
+ 		if (last_page_size == 0)
 -- 
 2.39.5
 
