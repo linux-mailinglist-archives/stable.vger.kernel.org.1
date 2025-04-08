@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-129564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ACDA8002B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:28:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB6BA7FFBF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18043189666A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:23:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C057A20FB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3D2268C44;
-	Tue,  8 Apr 2025 11:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DB12686AA;
+	Tue,  8 Apr 2025 11:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1ogEwFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGbcFJAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABD82686BC;
-	Tue,  8 Apr 2025 11:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BC7267F55;
+	Tue,  8 Apr 2025 11:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111372; cv=none; b=TURagG8UECO+SeeYwVPGD/rJbRQhl7cly/O+DUSldtmIfl+shHtHL23/ID+IljhMJPRpxtLnZkyPQmIq5BQwTnSuCjbjPRAP37wxsO/kBEoYS0wrwnc6w0CO6h741PpoVAZhi6aeKcf5yjLOL/PZ4Cb9GuDU7+JKsT9wqqTfSCM=
+	t=1744111377; cv=none; b=hjrbShPSRlE9FStqL6bnEbymCJH8gG0KpCeH9DYRsXK4u2WWCxyX34z6y+Qw4+6W7h8UB9somf7h8HYk3a8PMT9u6nL/s/u3ej8dsL/51vyh11avdi0mpsR4DrvWG6N61DnlSL7NO8BJ/LmPJOIati00lEMAfjyuLgiB3L7rlvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111372; c=relaxed/simple;
-	bh=1immG/ovlDAijA7UbOQAFCwLajW9aHvmQ5p1g77BAVo=;
+	s=arc-20240116; t=1744111377; c=relaxed/simple;
+	bh=tqR5QvlKvEI9dP/1jd/gyyfbhZtmRiao3HQ2shB5yek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoCdakyCC9vCPtQrKA4Du1zqPnQHYqqqGaI2C6ygyRRF4u+CxCKFc1aWLyqiKc3dFtuSQOwr/y7cPoFqjjcrh5UciyEFxoQeqH1HwXt4oHktOJiDVGmEEp9K/FXml3RTW7Uh4bpMuvQyueslvULz/bVYBckvdaju8lbMVBcDJYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1ogEwFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A4AC4CEE7;
-	Tue,  8 Apr 2025 11:22:51 +0000 (UTC)
+	 MIME-Version; b=IblV4QYOJpgwB9izi0412Qz87bC6k5jkWeyCQmruYVxsjPU+uAVrEKpXDMlVRKeNCNgdjyiq0ZzTm8zIWPQrFXUiiqkOJn7YdYQcAFj3jO/JQTHX3Obr8UmVskThIoXY9DvmFxuykZMFpM/wqv9jn3TUHHAiwPE80nV/Fv4hNUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGbcFJAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F421C4CEE5;
+	Tue,  8 Apr 2025 11:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111371;
-	bh=1immG/ovlDAijA7UbOQAFCwLajW9aHvmQ5p1g77BAVo=;
+	s=korg; t=1744111376;
+	bh=tqR5QvlKvEI9dP/1jd/gyyfbhZtmRiao3HQ2shB5yek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1ogEwFvzM9BBu1AsfHi8u8tyCCwxcPEOJuxsEYHhwUCjvBIrn6/gaqG5AHK/FZOc
-	 mEXcu4uefeT/XZ+PmiSjtuPL4AF7xYOmryxYsij1diFIcMG/nh3+itbc7yPRS4bDnl
-	 KMJsoFTuwrZ1mu/AwNueZgj/sa38khvvBlE4KaMU=
+	b=xGbcFJAsIb0jnqf73oeSQhWCiQk8hGwO9a+72tzKDIC9zTtLjG9Rrx90N5aybduxA
+	 qewrAFqTROhPUi4I0hD6VUS+B7OXKdhvRYLXODKvExLYOubXAdq5UeisCtx/Y9Co3k
+	 cAagXll7GtMsqCCg4JqcoXTpQ3GAF9qYeLGBDLoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 408/731] clk: mmp: Fix NULL vs IS_ERR() check
-Date: Tue,  8 Apr 2025 12:45:05 +0200
-Message-ID: <20250408104923.763233019@linuxfoundation.org>
+Subject: [PATCH 6.14 409/731] pinctrl: npcm8xx: Fix incorrect struct npcm8xx_pincfg assignment
+Date: Tue,  8 Apr 2025 12:45:06 +0200
+Message-ID: <20250408104923.787420618@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,38 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 00153c64a72d336cc61f4141e5be53b49b7797e1 ]
+[ Upstream commit 113ec87b0f26a17b02c58aa2714a9b8f1020eed9 ]
 
-The devm_kzalloc() function returns NULL on error, not error pointers.
-Fix the check.
+Sparse is not happy about implementation of the NPCM8XX_PINCFG()
 
-Fixes: 03437e857b0a ("clk: mmp: Add Marvell PXA1908 APMU driver")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250307064708.209511-1-hanchunchao@inspur.com
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+ pinctrl-npcm8xx.c:1314:9: warning: obsolete array initializer, use C99 syntax
+ pinctrl-npcm8xx.c:1315:9: warning: obsolete array initializer, use C99 syntax
+ ...
+ pinctrl-npcm8xx.c:1412:9: warning: obsolete array initializer, use C99 syntax
+ pinctrl-npcm8xx.c:1413:9: warning: too many warnings
+
+which uses index-based assignment in a wrong way, i.e. it missed
+the equal sign and hence the index is simply ignored, while the
+entries are indexed naturally. This is not a problem as the pin
+numbering repeats the natural order, but it might be in case of
+shuffling the entries. Fix this by adding missed equal sign and
+reformat a bit for better readability.
+
+Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250318105932.2090926-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mmp/clk-pxa1908-apmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mmp/clk-pxa1908-apmu.c b/drivers/clk/mmp/clk-pxa1908-apmu.c
-index 8cfb1258202f6..d3a070687fc5b 100644
---- a/drivers/clk/mmp/clk-pxa1908-apmu.c
-+++ b/drivers/clk/mmp/clk-pxa1908-apmu.c
-@@ -87,8 +87,8 @@ static int pxa1908_apmu_probe(struct platform_device *pdev)
- 	struct pxa1908_clk_unit *pxa_unit;
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+index 17825bbe14213..f6a1e684a3864 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+@@ -1290,12 +1290,14 @@ static struct npcm8xx_func npcm8xx_funcs[] = {
+ };
  
- 	pxa_unit = devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERNEL);
--	if (IS_ERR(pxa_unit))
--		return PTR_ERR(pxa_unit);
-+	if (!pxa_unit)
-+		return -ENOMEM;
+ #define NPCM8XX_PINCFG(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q) \
+-	[a] { .fn0 = fn_ ## b, .reg0 = NPCM8XX_GCR_ ## c, .bit0 = d, \
++	[a] = {								  \
++			.flag = q,					  \
++			.fn0 = fn_ ## b, .reg0 = NPCM8XX_GCR_ ## c, .bit0 = d, \
+ 			.fn1 = fn_ ## e, .reg1 = NPCM8XX_GCR_ ## f, .bit1 = g, \
+ 			.fn2 = fn_ ## h, .reg2 = NPCM8XX_GCR_ ## i, .bit2 = j, \
+ 			.fn3 = fn_ ## k, .reg3 = NPCM8XX_GCR_ ## l, .bit3 = m, \
+ 			.fn4 = fn_ ## n, .reg4 = NPCM8XX_GCR_ ## o, .bit4 = p, \
+-			.flag = q }
++	}
  
- 	pxa_unit->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(pxa_unit->base))
+ /* Drive strength controlled by NPCM8XX_GP_N_ODSC */
+ #define DRIVE_STRENGTH_LO_SHIFT		8
 -- 
 2.39.5
 
