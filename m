@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A77AA80B87
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329D5A8050E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885304E6488
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4AF4A5537
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E05627C163;
-	Tue,  8 Apr 2025 12:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A4726A0AF;
+	Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujJC3XNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnL4CuKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7AF26F454;
-	Tue,  8 Apr 2025 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6D826A0B3;
+	Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116997; cv=none; b=LzoK1ZI310P19mpOg3UYpJPpue7iNToQMz5NnL3QhNc2MMg2s0RBMRdEB5yBURTLUuO4De/KSDdm/e+qpyeQn8ja/gk8VQmp/UptrX4/545XlsyVCcoJ3IKsYuk6xdY7MooAZaz5uOy53MNt2kLsKiKUJhPybhwzMFR1sf1Dl50=
+	t=1744113980; cv=none; b=h7LBUE4LUu9lf0Kj6SiD71uHVL4ERbVULBnp3O6q0MBFDr7RTYB7CUtfuixCHgf/4phNOZp8DDq9shFQ7FMoaBbtxkJ5WQmsV6FMaVd1Ebe7MWlzI5Lb6hcnE7t/xli5FF6GHyfBT+K7+2QpWMRaybsX0WQk7RCBO0GtTCImwwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116997; c=relaxed/simple;
-	bh=73F3K2M83698mdmbDRdlXAjg38TELpgfIRdltUagG4k=;
+	s=arc-20240116; t=1744113980; c=relaxed/simple;
+	bh=Q+6q9soffcI2bjry5z74yPePfVMJaOBSHo3P1Z2WQxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lX8p0TQmFfaWF9+fwub6GA2r3BvIghuncWTFOyoBrXaMADp4Mune0DwwPK2LmwaGqfGYbEobP5ABBDeyG6+Jdiq6HpPA3N/9BhYwEZ+fv+fy3WothpYUI73cJIVSiNQDFNu5ia5NnkU0Uio49SRjVNnFKQJJscnrwce4M+o+Hp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujJC3XNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF9C4CEE5;
-	Tue,  8 Apr 2025 12:56:36 +0000 (UTC)
+	 MIME-Version; b=hqbPe0Kw9hNLOp1NkZe8adyfPUWiRlZamBGzna74MkrEUGA4OXetCirgmD4q11iHrfVkEGk1Ax0m0DOzhmF/Detqjwm7dA7Z/IMM/JnabbC1so+TyhaRXkem9Lw819uZ9D3sIAU7pCoVtN4c+EmMgNTDHz9W0aONssWYunOGCqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnL4CuKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CEBC4CEE5;
+	Tue,  8 Apr 2025 12:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116996;
-	bh=73F3K2M83698mdmbDRdlXAjg38TELpgfIRdltUagG4k=;
+	s=korg; t=1744113980;
+	bh=Q+6q9soffcI2bjry5z74yPePfVMJaOBSHo3P1Z2WQxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujJC3XNjMoqG8iimeT5zk3YSFqOjc4Xu+MTtX9v4qFWSES7Xq/sfcU/WIec17TcZw
-	 U5xHkK9XZncRpdEIpO7GOyKASOn00CVZ9fLnH/brbPqJm/ZsYgdfEOL8VsG0xePxQQ
-	 I8BcMB3x7qLAjAO/tlutyY560IHAnjdMi0M13SNA=
+	b=EnL4CuKTdmBe48tSfKHI6SMOXP2ZpGSgKckkxFJPVRqTB2XMQZ5J04b5kPb7cmnC2
+	 J/ozh7c1BmWkRX3sYPJYoA2I7JGYMMMjO8O0dilYAVGGOvdpPAB5qJvMSgxWJsCyDT
+	 rYjFB8MhiW/Tmob3Z34ECssCPtxpc21jfVrcxSu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 306/423] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
-Date: Tue,  8 Apr 2025 12:50:32 +0200
-Message-ID: <20250408104852.925066863@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Oleg Gorobets <oleg.goro@gmail.com>
+Subject: [PATCH 5.4 092/154] ALSA: hda/realtek: Always honor no_shutup_pins
+Date: Tue,  8 Apr 2025 12:50:33 +0200
+Message-ID: <20250408104818.271815833@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
+[ Upstream commit 5a0c72c1da3cbc0cd4940a95d1be2830104c6edf ]
 
-There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
-size. This would make xlate_pos negative.
+The workaround for Dell machines to skip the pin-shutup for mic pins
+introduced alc_headset_mic_no_shutup() that is replaced from the
+generic snd_hda_shutup_pins() for certain codecs.  The problem is that
+the call is done unconditionally even if spec->no_shutup_pins is set.
+This seems causing problems on other platforms like Lenovo.
 
-[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
-[   23.734158] ================================================================================
-[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
-[   23.734418] shift exponent -1 is negative
+This patch corrects the behavior and the driver honors always
+spec->no_shutup_pins flag and skips alc_headset_mic_no_shutup() if
+it's set.
 
-Ensuring xlate_pos is a positive or zero before BIT.
-
-Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: dad3197da7a3 ("ALSA: hda/realtek - Fixup headphone noise via runtime suspend")
+Reported-and-tested-by: Oleg Gorobets <oleg.goro@gmail.com>
+Link: https://patch.msgid.link/20250315143020.27184-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index ad1786be2554b..f851397b65d6e 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
- 	if (size != 0 && xlate_pos < 12)
- 		return -EINVAL;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 93bb7c5922e78..2e7b45f5f8b18 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -519,6 +519,9 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ {
+ 	struct alc_spec *spec = codec->spec;
  
--	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
-+	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
- 		/*
- 		 * In certain circumstances we can get a buffer that is
- 		 * not aligned to its size. (Most of the time
++	if (spec->no_shutup_pins)
++		return;
++
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
+@@ -534,8 +537,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 		alc_headset_mic_no_shutup(codec);
+ 		break;
+ 	default:
+-		if (!spec->no_shutup_pins)
+-			snd_hda_shutup_pins(codec);
++		snd_hda_shutup_pins(codec);
+ 		break;
+ 	}
+ }
 -- 
 2.39.5
 
