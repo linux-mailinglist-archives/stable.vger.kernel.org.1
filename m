@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7234DA807C3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5BEA8054A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E71784C2F7E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9518F1B67DFF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9A026AAA3;
-	Tue,  8 Apr 2025 12:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C7F227BA4;
+	Tue,  8 Apr 2025 12:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhlAtDEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjUusmI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FBC2690D7;
-	Tue,  8 Apr 2025 12:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E68269825;
+	Tue,  8 Apr 2025 12:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115440; cv=none; b=uqWG06THBnhQmY9FnKv5KJz2yq5Fux/ey1OweVLBVu2IeyjZXDrPv1L6+Dktt0AcKe6QdCB+QLClgbYp71B9z+A4LOSqqgQOckTxTnxnQckJyxWTfmti0J/jTIoMekxfRswnCLn4aReejCgju3b5K0pv2STtEs+w6nADJRMBE/g=
+	t=1744114132; cv=none; b=nkDoWt7OGw3Yr1E5LkCTuIjf3TeycpKEEeW33n3r2BxiHbHmFUCc3dePqpEX1XMoVdrEMxdduUxDEEIxh0UIiN3Wvkym02gPwKYWQSmrf81jL9Ue5oM/JzfLqi9Ffn111hLcuqNNgCifkxlcgyfH+CzF6Q8F5ThV1aM33rwvWic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115440; c=relaxed/simple;
-	bh=MI37sKP1j7mAi0/I91VIsiReetzaxzs9BVROd/YHYdk=;
+	s=arc-20240116; t=1744114132; c=relaxed/simple;
+	bh=1Y61BbcCTf7op7MwDN6aVCHYGXPVPcyl0weOeuALMRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4wp3TwDlgeuWkz/VMg+iaQaXT0Vb7hP4Ovg57VCvqoUkq/kuJ917MefMa4xVE7kkQ7XADkSqAsSAQFaLGUPsGVNai+zQ2rDoJRF7ykiSoFkdSGj2OumVNS4fpH6MtLNliu2BgHKPBRyFKjuym/ZSeMW3HeT4Fhy50X25pyQ/E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhlAtDEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9351BC4CEE5;
-	Tue,  8 Apr 2025 12:30:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qs8UCRh105fFxLHKHu8EdwkKhVJyEX9bldJM98kuLSkEwOxa8aN2759lRWu/NcDIwKC5e/Cytxo+2Oz5MZuUv9poymy8POXZx/7IDcyzO5pgMD0eOeE+/9vXmIDp4il+otl43HUrUaHPlUGzhe/v8I0OzB4ZBBQlp3ltU8iYDwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjUusmI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C05C4CEE7;
+	Tue,  8 Apr 2025 12:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115439;
-	bh=MI37sKP1j7mAi0/I91VIsiReetzaxzs9BVROd/YHYdk=;
+	s=korg; t=1744114132;
+	bh=1Y61BbcCTf7op7MwDN6aVCHYGXPVPcyl0weOeuALMRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhlAtDEhBWFqx1cWz9HIP145gvhpSx5j3xvLa1TgA70QV4i4MxjlVUQHpztMQl0Ak
-	 l2tcz7y62Wpt8SGhiywNKnipYZEl9MGm7XClx/Lx6g/uqwukMllVcRCDUdrdCIyH1b
-	 wDtxsV0eE9LIm+gPm6mrexvCKys4mqzRb5pMmKGw=
+	b=TjUusmI9dxcpfJ382Lhv78pxp2GVYUYpykpbo8ZTGB6hwDCly0B7ZriYdkol9GM1B
+	 v+zpguiGyBSDghWZpcozN/Bj5UnSuqyWRXb8/QyfpqAMh2mAj8GFUcnzfq+T41npIW
+	 W3+FkjzozqbMV2K3AvZRs1ImgNbYde42BXMs+PB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 476/499] tracing: Ensure module defining synth event cannot be unloaded while tracing
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 5.4 147/154] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
 Date: Tue,  8 Apr 2025 12:51:28 +0200
-Message-ID: <20250408104903.225180355@linuxfoundation.org>
+Message-ID: <20250408104820.012504232@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Raillard <douglas.raillard@arm.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-commit 21581dd4e7ff6c07d0ab577e3c32b13a74b31522 upstream.
+commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
 
-Currently, using synth_event_delete() will fail if the event is being
-used (tracing in progress), but that is normally done in the module exit
-function. At that stage, failing is problematic as returning a non-zero
-status means the module will become locked (impossible to unload or
-reload again).
+The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
+The same call was immediately triggered by a subsequent goto statement.
+Thus avoid such a call repetition.
 
-Instead, ensure the module exit function does not get called in the
-first place by increasing the module refcnt when the event is enabled.
+This issue was detected by using the Coccinelle software.
 
+Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 35ca5207c2d11 ("tracing: Add synthetic event command generation functions")
-Link: https://lore.kernel.org/20250318180906.226841-1-douglas.raillard@arm.com
-Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_synth.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/ntb/test/ntb_perf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -859,6 +859,34 @@ static struct trace_event_fields synth_e
- 	{}
- };
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -838,10 +838,8 @@ static int perf_copy_chunk(struct perf_t
+ 	dma_set_unmap(tx, unmap);
  
-+static int synth_event_reg(struct trace_event_call *call,
-+		    enum trace_reg type, void *data)
-+{
-+	struct synth_event *event = container_of(call, struct synth_event, call);
-+
-+	switch (type) {
-+	case TRACE_REG_REGISTER:
-+	case TRACE_REG_PERF_REGISTER:
-+		if (!try_module_get(event->mod))
-+			return -EBUSY;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	int ret = trace_event_reg(call, type, data);
-+
-+	switch (type) {
-+	case TRACE_REG_UNREGISTER:
-+	case TRACE_REG_PERF_UNREGISTER:
-+		module_put(event->mod);
-+		break;
-+	default:
-+		break;
-+	}
-+	return ret;
-+}
-+
- static int register_synth_event(struct synth_event *event)
- {
- 	struct trace_event_call *call = &event->call;
-@@ -888,7 +916,7 @@ static int register_synth_event(struct s
- 		goto out;
- 	}
- 	call->flags = TRACE_EVENT_FL_TRACEPOINT;
--	call->class->reg = trace_event_reg;
-+	call->class->reg = synth_event_reg;
- 	call->class->probe = trace_event_raw_event_synth;
- 	call->data = event;
- 	call->tp = event->tp;
+ 	ret = dma_submit_error(dmaengine_submit(tx));
+-	if (ret) {
+-		dmaengine_unmap_put(unmap);
++	if (ret)
+ 		goto err_free_resource;
+-	}
+ 
+ 	dmaengine_unmap_put(unmap);
+ 
 
 
 
