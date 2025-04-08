@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA53FA801E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392E6A802FD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E328810AD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96399188D67B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3D0224239;
-	Tue,  8 Apr 2025 11:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936E42676E1;
+	Tue,  8 Apr 2025 11:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZ0PsLX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQxpEMOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A570F207E14;
-	Tue,  8 Apr 2025 11:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B48265602;
+	Tue,  8 Apr 2025 11:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112221; cv=none; b=nfTOxcnLrUoDj3LGq720lIQyRdc8UVUeAOwmwHNQDOGeVyzMgRDSTd8UlBowTpAaPR0SKacJDFTklQXyaskuW0vDnehZNP5BUYVZUcXNm3ZH4aAeiUAtejTUpkDda15WCmZsxFJDgd8mmF7pGwLQN4chnFsDjys7aKg4j0cR200=
+	t=1744112881; cv=none; b=GAvKK7gj5KcBGjPM233DoZzu1bfz6pYpIzBIvCGNHIWsWA6WU0MQ4k5D5fmK8CDZRdc/q5zasrZ8xlCjqZ+NlvM0vQ/MVy39RJAJnJHfMantBD57V2HFAnVA6UXfEW0yNmgcrYbKMGztZTFGgwxVPUbonpC2kbtle5O1w7iFqTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112221; c=relaxed/simple;
-	bh=+kFyfgu/5b100yhPO+Y2rbBVBpqyjC7n24AYtrSPkOc=;
+	s=arc-20240116; t=1744112881; c=relaxed/simple;
+	bh=iFS1JU2KjVxY77Eak7ZM+KLJoteGNrCAZy9eMeu5Qus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbAqkJ18yOyuU7dndxSuF52KmFwx1njrRLDwli5Ry9s+9132K/AZALPxUNrCO3+0eOzlRow7LMwSJVKLhY/LbgUHI5sTjR08QQdXpmF+AVvuGoetUGG6QkmCKcPA8/s6e/W10CDlunUxZainjH2RNPe0N/niUjxrjH29P1q4y/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZ0PsLX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C13C4CEE5;
-	Tue,  8 Apr 2025 11:37:01 +0000 (UTC)
+	 MIME-Version; b=I0cS0XVhFt13S2UjEf8r2iV/JAC5MwJ4PbVb02So4VViF/RMIyFwMxgoPKYZsDzsDrR6Iq0TuDyCT4nZECmNUIvNyt+H0k7hbySweHNnRl7D3HzeNwUzUCIoZGvDaiapOBRZE9vxB9J8pV8rXZEGeYIIjeCj5gTPq2v2WiYJBX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQxpEMOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A183CC4CEE5;
+	Tue,  8 Apr 2025 11:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112221;
-	bh=+kFyfgu/5b100yhPO+Y2rbBVBpqyjC7n24AYtrSPkOc=;
+	s=korg; t=1744112881;
+	bh=iFS1JU2KjVxY77Eak7ZM+KLJoteGNrCAZy9eMeu5Qus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZ0PsLX5LiNkAn8wuf3cqsI5sfsYN34OsefimrxVivTgvwlIhj3s5FeCfCzu+FnFT
-	 AllTFOZYHE7a4ua6wi0fy6mWNrMdp6L/eNzUpOqBw3AfiS+jipG0eheBZFEVbH4B3M
-	 xUd6RpD8E6TYrNLRH1Wwq1IlTrh3AqHnVs/b59zk=
+	b=hQxpEMOpnfvC2RmKYUViXNcWXM3SufTImnndLnSauv9Wl3raUlGwwBtKWxuYlgHIK
+	 n2XJLq/o7qS2ozw1GrOi0Tc225fBFDf4cLqyptiNyZDBPl3bRS/Wl4+fSDfCdhOvYT
+	 dtQ3UWxlaOF6gnqqALXuBtQI+qogrOSGpafktY1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.14 718/731] jfs: fix slab-out-of-bounds read in ea_get()
+	Navon John Lukose <navonjohnlukose@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 232/279] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion x360 14-dy1xxx
 Date: Tue,  8 Apr 2025 12:50:15 +0200
-Message-ID: <20250408104930.975885289@linuxfoundation.org>
+Message-ID: <20250408104832.637956202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Navon John Lukose <navonjohnlukose@gmail.com>
 
-commit fdf480da5837c23b146c4743c18de97202fcab37 upstream.
+[ Upstream commit b11a74ac4f545626d0dc95a8ca8c41df90532bf3 ]
 
-During the "size_check" label in ea_get(), the code checks if the extended
-attribute list (xattr) size matches ea_size. If not, it logs
-"ea_get: invalid extended attribute" and calls print_hex_dump().
+Add a fixup to enable the mute LED on HP Pavilion x360 Convertible
+14-dy1xxx with ALC295 codec. The appropriate coefficient index and bits
+were identified through a brute-force method, as detailed in
+https://bbs.archlinux.org/viewtopic.php?pid=2079504#p2079504.
 
-Here, EALIST_SIZE(ea_buf->xattr) returns 4110417968, which exceeds
-INT_MAX (2,147,483,647). Then ea_size is clamped:
-
-	int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
-
-Although clamp_t aims to bound ea_size between 0 and 4110417968, the upper
-limit is treated as an int, causing an overflow above 2^31 - 1. This leads
-"size" to wrap around and become negative (-184549328).
-
-The "size" is then passed to print_hex_dump() (called "len" in
-print_hex_dump()), it is passed as type size_t (an unsigned
-type), this is then stored inside a variable called
-"int remaining", which is then assigned to "int linelen" which
-is then passed to hex_dump_to_buffer(). In print_hex_dump()
-the for loop, iterates through 0 to len-1, where len is
-18446744073525002176, calling hex_dump_to_buffer()
-on each iteration:
-
-	for (i = 0; i < len; i += rowsize) {
-		linelen = min(remaining, rowsize);
-		remaining -= rowsize;
-
-		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
-				   linebuf, sizeof(linebuf), ascii);
-
-		...
-	}
-
-The expected stopping condition (i < len) is effectively broken
-since len is corrupted and very large. This eventually leads to
-the "ptr+i" being passed to hex_dump_to_buffer() to get closer
-to the end of the actual bounds of "ptr", eventually an out of
-bounds access is done in hex_dump_to_buffer() in the following
-for loop:
-
-	for (j = 0; j < len; j++) {
-			if (linebuflen < lx + 2)
-				goto overflow2;
-			ch = ptr[j];
-		...
-	}
-
-To fix this we should validate "EALIST_SIZE(ea_buf->xattr)"
-before it is utilised.
-
-Reported-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
-Tested-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=4e6e7e4279d046613bc5
-Fixes: d9f9d96136cb ("jfs: xattr: check invalid xattr size more strictly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Navon John Lukose <navonjohnlukose@gmail.com>
+Link: https://patch.msgid.link/20250307213319.35507-1-navonjohnlukose@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -559,11 +559,16 @@ static int ea_get(struct inode *inode, s
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 12967b40ab088..e1de24c9f6265 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4759,6 +4759,21 @@ static void alc236_fixup_hp_coef_micmute_led(struct hda_codec *codec,
+ 	}
+ }
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
-+		if (unlikely(EALIST_SIZE(ea_buf->xattr) > INT_MAX)) {
-+			printk(KERN_ERR "ea_get: extended attribute size too large: %u > INT_MAX\n",
-+			       EALIST_SIZE(ea_buf->xattr));
-+		} else {
-+			int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
- 
--		printk(KERN_ERR "ea_get: invalid extended attribute\n");
--		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
--				     ea_buf->xattr, size, 1);
-+			printk(KERN_ERR "ea_get: invalid extended attribute\n");
-+			print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
-+				       ea_buf->xattr, size, 1);
-+		}
- 		ea_release(inode, ea_buf);
- 		rc = -EIO;
- 		goto clean_up;
++static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
++				const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
++
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0xb;
++		spec->mute_led_coef.mask = 3 << 3;
++		spec->mute_led_coef.on = 1 << 3;
++		spec->mute_led_coef.off = 1 << 4;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
++
+ static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
+ {
+@@ -6998,6 +7013,7 @@ enum {
+ 	ALC290_FIXUP_MONO_SPEAKERS_HSJACK,
+ 	ALC290_FIXUP_SUBWOOFER,
+ 	ALC290_FIXUP_SUBWOOFER_HSJACK,
++	ALC295_FIXUP_HP_MUTE_LED_COEFBIT11,
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
+ 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
+@@ -8544,6 +8560,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC283_FIXUP_INT_MIC,
+ 	},
++	[ALC295_FIXUP_HP_MUTE_LED_COEFBIT11] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc295_fixup_hp_mute_led_coefbit11,
++	},
+ 	[ALC298_FIXUP_SAMSUNG_AMP] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_samsung_amp,
+@@ -9258,6 +9278,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+-- 
+2.39.5
+
 
 
 
