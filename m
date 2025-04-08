@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406FDA807C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3CDA80531
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B934C16E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88371467FDD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3895826B959;
-	Tue,  8 Apr 2025 12:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4DC2686B9;
+	Tue,  8 Apr 2025 12:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TceYV3RR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sonZqHBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77D1263C83;
-	Tue,  8 Apr 2025 12:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC52264FB6;
+	Tue,  8 Apr 2025 12:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115413; cv=none; b=A9w+ykx7t3xIyf9FD6ERnQpl4qyRhKELJZpgh7yR7HOly/W9iTiLapfkI/209Ji/3gkUFSuaAeZY9n5V3f4vUG4EKpjsWozvq1CcRJrwywT0fH+6ZURO+w/smh1ItN0IAdT1bRGcyKP9jL2KUZK06UoNwqnIiYCM3b4KY20k5ag=
+	t=1744113994; cv=none; b=SoFo68olGXsXpKttOII6eREmLGQUIBTw1hrJRD+cYnhBroz/aGhiS2mfJYJT9rLmK425YqlqeVdNvvVomI0FaoY6BnzC//dtCmWU4qqsRSp26M2iUNflF/WlWprLrgvSllxZ1+5dmDDygQyr+FDich/PJXV9BBy3FggpNe9/qfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115413; c=relaxed/simple;
-	bh=3Jz6BpAq91+QYumOLaNIa8QvjanC6RFmy4Bw1E2ufT0=;
+	s=arc-20240116; t=1744113994; c=relaxed/simple;
+	bh=6FgvZ+Rv57akdE7GQmLh51zcsamnDKMG4gWHG6+EZ28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5qOPhTAYB8g+PnkeoJuwoFs3Nvns1NQ+hAwDJ6SpnnDII62J/0U50yHhuxw5Dp3GFs451byYXWfNfwohLRnuXb01TLSHusWHwsM4SrgAtu+4XycV5hzwocPfTAen9hPBi6ihFLMAeLaeCQtZTHVAXaHipZogfZAI7Y2/hLpako=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TceYV3RR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A570C4CEE5;
-	Tue,  8 Apr 2025 12:30:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aUKLx+ZHXmis9J6q9tZ7fdBlaoIEduCRTD/33ooMm2sFzSL7W+C34/WOb/faJL0Mzjqr9GMl+FRVXePoq3BzQY0+6gtaqn8Xutunvb1AP3e0lNIjrfncV1fKFHtzV8M/sbGKA8RQ0wT2CkGWHH/b2VMum3AB2HGxg01s1VMtifo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sonZqHBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739E2C4CEE5;
+	Tue,  8 Apr 2025 12:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115412;
-	bh=3Jz6BpAq91+QYumOLaNIa8QvjanC6RFmy4Bw1E2ufT0=;
+	s=korg; t=1744113993;
+	bh=6FgvZ+Rv57akdE7GQmLh51zcsamnDKMG4gWHG6+EZ28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TceYV3RRVZL+q9FsgsjeoaAUjHWRbvBCKVprF+SdF73Y3YjTM60CRQFqWRXFcrVze
-	 w3aXO0rdIDT3nyDYH+iHxSgDgW05QHPlMQtAVbRcOKq0/F9t2plAefg1RjMFg1tWAg
-	 NtCRH8zpqnWZrb37EsmVHYiTSzWBWOFv6zeQGFzw=
+	b=sonZqHBOAr83tqtFhpviynUfSjJQast+7eB159h1yS8ezUe44E/kyKx8RuEmOZqYY
+	 SmzItxKiFsRiIHM6EiFRrIEcEiREWCK7CT1ZzThrMHbWb2d2PFs6RZabjo18l74p+g
+	 +uHlYJ8LI0bi7H9p+UFRN0CKX8zFTT9nQ/0OJkSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 426/499] staging: gpib: Agilent usb code cleanup
+Subject: [PATCH 5.4 097/154] PCI: pciehp: Dont enable HPIE when resuming in poll mode
 Date: Tue,  8 Apr 2025 12:50:38 +0200
-Message-ID: <20250408104901.852284160@linuxfoundation.org>
+Message-ID: <20250408104818.433972692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,193 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 579b6f18c5ca162af040f44684cc55f7da182236 ]
+[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
 
-Remove useless #ifdef RESET_USB_CONFIG code.
+PCIe hotplug can operate in poll mode without interrupt handlers using a
+polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
+interrupt during suspend") failed to consider that and enables HPIE
+(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
 
-Change kalloc / memset to kzalloc
+Only set HPIE if non-poll mode is in use. This makes
+pcie_enable_interrupt() match how pcie_enable_notification() already
+handles HPIE.
 
-The attach function was not freeing the private data on error
-returns. Separate the releasing of urbs and private data and
-add a common error exit for attach failure.
-
-Set the board private data pointer to NULL after freeing
-the private data.
-
-Reduce console spam by emitting only one attach message.
-
-Change last pr_err in attach to dev_err
-
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250118145046.12181-3-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8491e73a5223 ("staging: gpib: Fix Oops after disconnect in agilent usb")
+Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
+Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpib/agilent_82357a/agilent_82357a.c      | 84 ++++++++-----------
- 1 file changed, 36 insertions(+), 48 deletions(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-index d072c63651629..0d8d495d3dfc6 100644
---- a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-+++ b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-@@ -1146,25 +1146,6 @@ static int agilent_82357a_setup_urbs(gpib_board_t *board)
- 	return retval;
- }
- 
--#ifdef RESET_USB_CONFIG
--static int agilent_82357a_reset_usb_configuration(gpib_board_t *board)
--{
--	struct agilent_82357a_priv *a_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(a_priv->bus_interface);
--	struct usb_device *usb_dev;
--	int retval;
--
--	if (!a_priv->bus_interface)
--		return -ENODEV;
--	usb_dev = interface_to_usbdev(a_priv->bus_interface);
--	retval = usb_reset_configuration(usb_dev);
--	if (retval)
--		dev_err(&usb_dev->dev, "%s: usb_reset_configuration() returned %i\n",
--			__func__, retval);
--	return retval;
--}
--#endif
--
- static void agilent_82357a_cleanup_urbs(struct agilent_82357a_priv *a_priv)
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index bdbe01d4d9e90..c3512a0e5b14c 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -765,7 +765,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
  {
- 	if (a_priv && a_priv->bus_interface) {
-@@ -1175,15 +1156,23 @@ static void agilent_82357a_cleanup_urbs(struct agilent_82357a_priv *a_priv)
- 	}
- };
+ 	u16 mask;
  
-+static void agilent_82357a_release_urbs(struct agilent_82357a_priv *a_priv)
-+{
-+	if (a_priv) {
-+		usb_free_urb(a_priv->interrupt_urb);
-+		a_priv->interrupt_urb = NULL;
-+		kfree(a_priv->interrupt_buffer);
-+	}
-+}
-+
- static int agilent_82357a_allocate_private(gpib_board_t *board)
- {
- 	struct agilent_82357a_priv *a_priv;
- 
--	board->private_data = kmalloc(sizeof(struct agilent_82357a_priv), GFP_KERNEL);
-+	board->private_data = kzalloc(sizeof(struct agilent_82357a_priv), GFP_KERNEL);
- 	if (!board->private_data)
- 		return -ENOMEM;
- 	a_priv = board->private_data;
--	memset(a_priv, 0, sizeof(struct agilent_82357a_priv));
- 	mutex_init(&a_priv->bulk_transfer_lock);
- 	mutex_init(&a_priv->bulk_alloc_lock);
- 	mutex_init(&a_priv->control_alloc_lock);
-@@ -1191,11 +1180,11 @@ static int agilent_82357a_allocate_private(gpib_board_t *board)
- 	return 0;
+-	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
++	mask = PCI_EXP_SLTCTL_DLLSCE;
++	if (!pciehp_poll_mode)
++		mask |= PCI_EXP_SLTCTL_HPIE;
+ 	pcie_write_cmd(ctrl, mask, mask);
  }
  
--static void agilent_82357a_free_private(struct agilent_82357a_priv *a_priv)
-+static void agilent_82357a_free_private(gpib_board_t *board)
- {
--	usb_free_urb(a_priv->interrupt_urb);
--	kfree(a_priv->interrupt_buffer);
--	kfree(a_priv);
-+	kfree(board->private_data);
-+	board->private_data = NULL;
-+
- }
- 
- static int agilent_82357a_init(gpib_board_t *board)
-@@ -1342,16 +1331,14 @@ static int agilent_82357a_attach(gpib_board_t *board, const gpib_board_config_t
- 			a_priv->bus_interface = agilent_82357a_driver_interfaces[i];
- 			usb_set_intfdata(agilent_82357a_driver_interfaces[i], board);
- 			usb_dev = interface_to_usbdev(a_priv->bus_interface);
--			dev_info(&usb_dev->dev,
--				 "bus %d dev num %d attached to gpib minor %d, agilent usb interface %i\n",
--				 usb_dev->bus->busnum, usb_dev->devnum, board->minor, i);
- 			break;
- 		}
- 	}
- 	if (i == MAX_NUM_82357A_INTERFACES) {
--		mutex_unlock(&agilent_82357a_hotplug_lock);
--		pr_err("No Agilent 82357 gpib adapters found, have you loaded its firmware?\n");
--		return -ENODEV;
-+		dev_err(board->gpib_dev,
-+			"No Agilent 82357 gpib adapters found, have you loaded its firmware?\n");
-+		retval = -ENODEV;
-+		goto attach_fail;
- 	}
- 	product_id = le16_to_cpu(interface_to_usbdev(a_priv->bus_interface)->descriptor.idProduct);
- 	switch (product_id) {
-@@ -1365,21 +1352,13 @@ static int agilent_82357a_attach(gpib_board_t *board, const gpib_board_config_t
- 		break;
- 	default:
- 		dev_err(&usb_dev->dev, "bug, unhandled product_id in switch?\n");
--		mutex_unlock(&agilent_82357a_hotplug_lock);
--		return -EIO;
--	}
--#ifdef RESET_USB_CONFIG
--	retval = agilent_82357a_reset_usb_configuration(board);
--	if (retval < 0)	{
--		mutex_unlock(&agilent_82357a_hotplug_lock);
--		return retval;
-+		retval = -EIO;
-+		goto attach_fail;
- 	}
--#endif
-+
- 	retval = agilent_82357a_setup_urbs(board);
--	if (retval < 0)	{
--		mutex_unlock(&agilent_82357a_hotplug_lock);
--		return retval;
--	}
-+	if (retval < 0)
-+		goto attach_fail;
- 
- 	timer_setup(&a_priv->bulk_timer, agilent_82357a_timeout_handler, 0);
- 
-@@ -1388,11 +1367,19 @@ static int agilent_82357a_attach(gpib_board_t *board, const gpib_board_config_t
- 	retval = agilent_82357a_init(board);
- 
- 	if (retval < 0)	{
--		mutex_unlock(&agilent_82357a_hotplug_lock);
--		return retval;
-+		agilent_82357a_cleanup_urbs(a_priv);
-+		agilent_82357a_release_urbs(a_priv);
-+		goto attach_fail;
- 	}
- 
--	dev_info(&usb_dev->dev, "%s: attached\n", __func__);
-+	dev_info(&usb_dev->dev,
-+		 "bus %d dev num %d attached to gpib minor %d, agilent usb interface %i\n",
-+		 usb_dev->bus->busnum, usb_dev->devnum, board->minor, i);
-+	mutex_unlock(&agilent_82357a_hotplug_lock);
-+	return retval;
-+
-+attach_fail:
-+	agilent_82357a_free_private(board);
- 	mutex_unlock(&agilent_82357a_hotplug_lock);
- 	return retval;
- }
-@@ -1455,7 +1442,8 @@ static void agilent_82357a_detach(gpib_board_t *board)
- 		mutex_lock(&a_priv->bulk_alloc_lock);
- 		mutex_lock(&a_priv->interrupt_alloc_lock);
- 		agilent_82357a_cleanup_urbs(a_priv);
--		agilent_82357a_free_private(a_priv);
-+		agilent_82357a_release_urbs(a_priv);
-+		agilent_82357a_free_private(board);
- 	}
- 	dev_info(board->gpib_dev, "%s: detached\n", __func__);
- 	mutex_unlock(&agilent_82357a_hotplug_lock);
 -- 
 2.39.5
 
