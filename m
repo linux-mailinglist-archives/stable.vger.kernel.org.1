@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-129200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1EEA7FE86
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7138DA7FE75
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DBA644219A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:07:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013B1446AB9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400A42698AE;
-	Tue,  8 Apr 2025 11:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB5C26A0C1;
+	Tue,  8 Apr 2025 11:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ4o5TeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCi0Parf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F01267B7F;
-	Tue,  8 Apr 2025 11:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D94A26868F;
+	Tue,  8 Apr 2025 11:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110388; cv=none; b=pM4/3ZSlQXRucfa5Yf0y9u7giVejSvp5JzGQhS0gELh91xMrG+UbsMUa6kq3jO3Pwq6SRzYJB+cqyfsiUaEAUYejedt4wKnVJRQpu4tuIlCDIoJJC3tzHoqit1HXWj+dphkcOcCXKTQZ3wZvx1h2+TeZRahwP52XyN7znJrpu8o=
+	t=1744110289; cv=none; b=LgHb0KFJfGx8I6GyPM4S/30aH1te+TkxMQPBe8LKApEqsHXHJhFqColHHMe1lZQsGINTelZvQprQMbCEgJbzKbUhSUAwEh30e3G3PmDXiZkxGkuh/LaafqqIKoGn1XCETBKPFRHqrDajwtyrx7Roh8Zyve/t70wowoKsijvQqVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110388; c=relaxed/simple;
-	bh=/VUySF31hGgiWDPCaUpGRUXkFlKki6UCDZ4FIZoQAMw=;
+	s=arc-20240116; t=1744110289; c=relaxed/simple;
+	bh=/HrOuVz2/DVPNa48HsNZnJQXnBJVqqoXfJF8lNN1A4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rEpTDKizqSDhanHMv63wlqbCOpV9ftaesl/OxLNOMQ1vyc0VvEz8TwBCJwXJxvx3YAar/P5bui7FbchKBRo5koBHZvC9kLlYtw2QwpbNnJw5S7rhiLrxcpXIG0mf+S7uuredDFpve8Aefs2lWTBxYPgjs88h9QbJcrkPJ0S533A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ4o5TeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BACDC4CEE5;
-	Tue,  8 Apr 2025 11:06:27 +0000 (UTC)
+	 MIME-Version; b=N8H2U+XBX75UCAnnXOgAQpREykgChQ0nuXi9TrC5pLV3iBTNJ9Wy/Jtqt/JeAjBIoFbY4pKDbvVEtxRnWDnhH8koXwpjo/dih4TEzv4LEfJvTWSPPqLGDA1k0weG/wK/IenrlE6iDrBHxF3Yh2POTdupt5Te+6sVqdbwZaeYIZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCi0Parf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F10C4CEE5;
+	Tue,  8 Apr 2025 11:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110387;
-	bh=/VUySF31hGgiWDPCaUpGRUXkFlKki6UCDZ4FIZoQAMw=;
+	s=korg; t=1744110289;
+	bh=/HrOuVz2/DVPNa48HsNZnJQXnBJVqqoXfJF8lNN1A4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQ4o5TeQ6/+q2yJkhy1o/f4ODxy5G/KNzVrhcsRxigPEox+uB0B3WqNgwv1Nbnb8X
-	 JR8vFZodnBdh900A3MfnQC7QvS6/taWGQhK7RBqvYV5ib8N602wKbsO7y1lhnYSKSi
-	 /OHq1ZgaXpGymcAVuGs58c4tIfNpshduS2H3cveI=
+	b=SCi0ParfIbkX3wsmJ3OMnp2H5mfmPplYumwv6wT3Tcv0fIw+AklWgMz1HbXdi2fty
+	 ydFZQgUMwYa33Na0on3Xqvlpvx7dcilteJQLGm9zsJXMJbAiUuSNAGeMAMFlEHRSpt
+	 ZdoNyIV3Z6kSMkrxg300wCesiNQ8hceVSi3hojEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	zihan zhou <15645113830zzh@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 009/731] smack: ipv4/ipv6: tcp/dccp/sctp: fix incorrect child socket label
-Date: Tue,  8 Apr 2025 12:38:26 +0200
-Message-ID: <20250408104914.476465067@linuxfoundation.org>
+Subject: [PATCH 6.14 010/731] sched: Cancel the slice protection of the idle entity
+Date: Tue,  8 Apr 2025 12:38:27 +0200
+Message-ID: <20250408104914.499103874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -60,183 +61,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: zihan zhou <15645113830zzh@gmail.com>
 
-[ Upstream commit 6cce0cc3861337b3ad8d4ac131d6e47efa0954ec ]
+[ Upstream commit f553741ac8c0e467a3b873e305f34b902e50b86d ]
 
-Since inception [1], SMACK initializes ipv* child socket security
-for connection-oriented communications (tcp/sctp/dccp)
-during accept() syscall, in the security_sock_graft() hook:
+A wakeup non-idle entity should preempt idle entity at any time,
+but because of the slice protection of the idle entity, the non-idle
+entity has to wait, so just cancel it.
 
-| void smack_sock_graft(struct sock *sk, ...)
-| {
-|     // only ipv4 and ipv6 are eligible here
-|     // ...
-|     ssp = sk->sk_security; // socket security
-|     ssp->smk_in = skp;     // process label: smk_of_current()
-|     ssp->smk_out = skp;    // process label: smk_of_current()
-| }
+This patch is aimed at minimizing the impact of SCHED_IDLE on
+SCHED_NORMAL. For example, a task with SCHED_IDLE policy that sleeps for
+1s and then runs for 3 ms, running cyclictest on the same cpu, has a
+maximum latency of 3 ms, which is caused by the slice protection of the
+idle entity. It is unreasonable. With this patch, the cyclictest latency
+under the same conditions is basically the same on the cpu with idle
+processes and on empty cpu.
 
-This approach is incorrect for two reasons:
-
-A) initialization occurs too late for child socket security:
-
-   The child socket is created by the kernel once the handshake
-   completes (e.g., for tcp: after receiving ack for syn+ack).
-
-   Data can legitimately start arriving to the child socket
-   immediately, long before the application calls accept()
-   on the socket.
-
-   Those data are (currently — were) processed by SMACK using
-   incorrect child socket security attributes.
-
-B) Incoming connection requests are handled using the listening
-   socket's security, hence, the child socket must inherit the
-   listening socket's security attributes.
-
-   smack_sock_graft() initilizes the child socket's security with
-   a process label, as is done for a new socket()
-
-   But ... the process label is not necessarily the same as the
-   listening socket label. A privileged application may legitimately
-   set other in/out labels for a listening socket.
-
-   When this happens, SMACK processes incoming packets using
-   incorrect socket security attributes.
-
-In [2] Michael Lontke noticed (A) and fixed it in [3] by adding
-socket initialization into security_sk_clone_security() hook like
-
-| void smack_sk_clone_security(struct sock *oldsk, struct sock *newsk)
-| {
-|    *(struct socket_smack *)newsk->sk_security =
-|    *(struct socket_smack *)oldsk->sk_security;
-| }
-
-This initializes the child socket security with the parent (listening)
-socket security at the appropriate time.
-
-I was forced to revisit this old story because
-
-smack_sock_graft() was left in place by [3] and continues overwriting
-the child socket's labels with the process label,
-and there might be a reason for this, so I undertook a study.
-
-If the process label differs from the listening socket's labels,
-the following occurs for ipv4:
-
-assigning the smk_out is not accompanied by netlbl_sock_setattr,
-so the outgoing packet's cipso label does not change.
-
-So, the only effect of this assignment for interhost communications
-is a divergence between the program-visible “out” socket label and
-the cipso network label. For intrahost communications this label,
-however, becomes visible via secmark netfilter marking, and is
-checked for access rights by the client, receiving side.
-
-Assigning the smk_in affects both interhost and intrahost
-communications: the server begins to check access rights against
-an wrong label.
-
-Access check against wrong label (smk_in or smk_out),
-unsurprisingly fails, breaking the connection.
-
-The above affects protocols that calls security_sock_graft()
-during accept(), namely: {tcp,dccp,sctp}/{ipv4,ipv6}
-One extra security_sock_graft() caller, crypto/af_alg.c`af_alg_accept
-is not affected, because smack_sock_graft() does nothing for PF_ALG.
-
-To reproduce, assign non-default in/out labels to a listening socket,
-setup rules between these labels and client label, attempt to connect
-and send some data.
-
-Ipv6 specific: ipv6 packets do not convey SMACK labels. To reproduce
-the issue in interhost communications set opposite labels in
-/smack/ipv6host on both hosts.
-Ipv6 intrahost communications do not require tricking, because SMACK
-labels are conveyed via secmark netfilter marking.
-
-So, currently smack_sock_graft() is not useful, but harmful,
-therefore, I have removed it.
-
-This fixes the issue for {tcp,dccp}/{ipv4,ipv6},
-but not sctp/{ipv4,ipv6}.
-
-Although this change is necessary for sctp+smack to function
-correctly, it is not sufficient because:
-sctp/ipv4 does not call security_sk_clone() and
-sctp/ipv6 ignores SMACK completely.
-
-These are separate issues, belong to other subsystem,
-and should be addressed separately.
-
-[1] 2008-02-04,
-Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
-
-[2] Michael Lontke, 2022-08-31, SMACK LSM checks wrong object label
-                                during ingress network traffic
-Link: https://lore.kernel.org/linux-security-module/6324997ce4fc092c5020a4add075257f9c5f6442.camel@elektrobit.com/
-
-[3] 2022-08-31, michael.lontke,
-    commit 4ca165fc6c49 ("SMACK: Add sk_clone_security LSM hook")
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+[peterz: add helpers]
+Fixes: 63304558ba5d ("sched/eevdf: Curb wakeup-preemption")
+Signed-off-by: zihan zhou <15645113830zzh@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250208080850.16300-1-15645113830zzh@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ kernel/sched/fair.c | 46 ++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 85f3d4337ca19..e68c982e499eb 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4350,29 +4350,6 @@ static int smack_socket_getpeersec_dgram(struct socket *sock,
- 	return 0;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c798d27952431..61a5d08ac3324 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -883,6 +883,26 @@ struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
+ 	return __node_2_se(left);
  }
  
--/**
-- * smack_sock_graft - Initialize a newly created socket with an existing sock
-- * @sk: child sock
-- * @parent: parent socket
-- *
-- * Set the smk_{in,out} state of an existing sock based on the process that
-- * is creating the new socket.
-- */
--static void smack_sock_graft(struct sock *sk, struct socket *parent)
--{
--	struct socket_smack *ssp;
--	struct smack_known *skp = smk_of_current();
--
--	if (sk == NULL ||
--	    (sk->sk_family != PF_INET && sk->sk_family != PF_INET6))
--		return;
--
--	ssp = smack_sock(sk);
--	ssp->smk_in = skp;
--	ssp->smk_out = skp;
--	/* cssp->smk_packet is already set in smack_inet_csk_clone() */
--}
--
- /**
-  * smack_inet_conn_request - Smack access check on connect
-  * @sk: socket involved
-@@ -5187,7 +5164,6 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(sk_free_security, smack_sk_free_security),
- #endif
- 	LSM_HOOK_INIT(sk_clone_security, smack_sk_clone_security),
--	LSM_HOOK_INIT(sock_graft, smack_sock_graft),
- 	LSM_HOOK_INIT(inet_conn_request, smack_inet_conn_request),
- 	LSM_HOOK_INIT(inet_csk_clone, smack_inet_csk_clone),
++/*
++ * HACK, stash a copy of deadline at the point of pick in vlag,
++ * which isn't used until dequeue.
++ */
++static inline void set_protect_slice(struct sched_entity *se)
++{
++	se->vlag = se->deadline;
++}
++
++static inline bool protect_slice(struct sched_entity *se)
++{
++	return se->vlag == se->deadline;
++}
++
++static inline void cancel_protect_slice(struct sched_entity *se)
++{
++	if (protect_slice(se))
++		se->vlag = se->deadline + 1;
++}
++
+ /*
+  * Earliest Eligible Virtual Deadline First
+  *
+@@ -919,11 +939,7 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+ 	if (curr && (!curr->on_rq || !entity_eligible(cfs_rq, curr)))
+ 		curr = NULL;
  
+-	/*
+-	 * Once selected, run a task until it either becomes non-eligible or
+-	 * until it gets a new slice. See the HACK in set_next_entity().
+-	 */
+-	if (sched_feat(RUN_TO_PARITY) && curr && curr->vlag == curr->deadline)
++	if (sched_feat(RUN_TO_PARITY) && curr && protect_slice(curr))
+ 		return curr;
+ 
+ 	/* Pick the leftmost entity if it's eligible */
+@@ -5530,11 +5546,8 @@ set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 		update_stats_wait_end_fair(cfs_rq, se);
+ 		__dequeue_entity(cfs_rq, se);
+ 		update_load_avg(cfs_rq, se, UPDATE_TG);
+-		/*
+-		 * HACK, stash a copy of deadline at the point of pick in vlag,
+-		 * which isn't used until dequeue.
+-		 */
+-		se->vlag = se->deadline;
++
++		set_protect_slice(se);
+ 	}
+ 
+ 	update_stats_curr_start(cfs_rq, se);
+@@ -8783,8 +8796,15 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
+ 	 * in the inverse case).
+ 	 */
+-	if (cse_is_idle && !pse_is_idle)
++	if (cse_is_idle && !pse_is_idle) {
++		/*
++		 * When non-idle entity preempt an idle entity,
++		 * don't give idle entity slice protection.
++		 */
++		cancel_protect_slice(se);
+ 		goto preempt;
++	}
++
+ 	if (cse_is_idle != pse_is_idle)
+ 		return;
+ 
+@@ -8803,8 +8823,8 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	 * Note that even if @p does not turn out to be the most eligible
+ 	 * task at this moment, current's slice protection will be lost.
+ 	 */
+-	if (do_preempt_short(cfs_rq, pse, se) && se->vlag == se->deadline)
+-		se->vlag = se->deadline + 1;
++	if (do_preempt_short(cfs_rq, pse, se))
++		cancel_protect_slice(se);
+ 
+ 	/*
+ 	 * If @p has become the most eligible task, force preemption.
 -- 
 2.39.5
 
