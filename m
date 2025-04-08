@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69665A80A2E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49299A806FC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE878C8146
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134244C34A7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CE326AA9E;
-	Tue,  8 Apr 2025 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED6826FA55;
+	Tue,  8 Apr 2025 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFRcZE3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+pvgUXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E0625F97B;
-	Tue,  8 Apr 2025 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1BD269CEB;
+	Tue,  8 Apr 2025 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116426; cv=none; b=hQMQVE7A31KVJgVMA1Lu5cC82AJ62RaSC1M1CYB0he+oTvEPAutq3XfTA0bnXPGbHEpm0rsWC8kov3gFTFlaXGQsqXWFNOF4G5JFyf4gg9O1TvTtB30HbeqQ4gmEYmw2xuQUlJUpSw4iHMYmn6UcjEzSjVim88/Qe0k3n2mcnpE=
+	t=1744114797; cv=none; b=LQ8D/Kpc60khcDg9oQznLlUYpnrSR69htWjDUFMqY+7IY7HXYioNSHaKaHa4QLcgpEU0pfKCgd2MhRuKGsMcHU/Bcure+Hx+PNAstNoyby/KMSbih1AoK+EeLwN3tP9xw2JmCXxouiiAmnJyx2fYVXDQcsZF7NKR7nj4LqmHEfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116426; c=relaxed/simple;
-	bh=tZRhRgV4/hjCzJYZrZ4zGuM5qrUm890rkos8Il7Ol3Q=;
+	s=arc-20240116; t=1744114797; c=relaxed/simple;
+	bh=T5mdom7VbRmMpA4rwdBg5Dqb61JlK5JNnAWXtPk5Q+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVa6tWbXqLe6CE0J9vdu2UswnK6cAWpC0M0JU0FUBlOw7cmR9/Buhss8D0oXhakTiRBHCSoRmNO8eMZ7JZ9W2yKM7bZRjWf9g7d3X8mDeSwa1WaGjfabVZ6vRMnb+L/qD/dZhQA6P/4YFdLqSFOHIZy7vQ8XF84/jk0KWF6wdys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFRcZE3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241C6C4CEE5;
-	Tue,  8 Apr 2025 12:47:05 +0000 (UTC)
+	 MIME-Version; b=oof2tbptJX6G4nuY3RG6w4FAmVKqGuxwhNHBxA2kXEWDlxUQ3JCHdNlbTiQ5l1/S7neTBFNo0dGCg8KNC3k/Z98QCjAZNOb/f1BZySpR8FOxwHuHh+SbBZ9uivMIeyFUSGYGeuPxgSUzfB3ALcYCOMvwEd8yiDGotIRc43etC4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+pvgUXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D67AC4CEE5;
+	Tue,  8 Apr 2025 12:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116426;
-	bh=tZRhRgV4/hjCzJYZrZ4zGuM5qrUm890rkos8Il7Ol3Q=;
+	s=korg; t=1744114797;
+	bh=T5mdom7VbRmMpA4rwdBg5Dqb61JlK5JNnAWXtPk5Q+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFRcZE3i/OdHL38bgZZEy8GgoKDRO6FhDiOnMK8cQufsLRScdwWTIg59W4Gf3ArUV
-	 m8TTfqWiZDtU2rcvjOk9i1uh5yvnV3LD/Nz37efGVl1+j6gr5Hro1uvkjFhuX8QhFN
-	 54fVK856fhWHuzQZOvMYfL3RQ09vj4QogmM9faxk=
+	b=F+pvgUXNQigQwLJSYkcV4oDd2eFjsuX/ACP5/Wueq6MmAij6xEl434kx7+9Q0vGiY
+	 MYpZKg4qgKsq6Hfn1Ky3puHzBhibbx6Z/prCw7WA1Tiix3Ds23Iw8T0h91cjZhwJhr
+	 JncCY6CSak7BJksu0CLHYXu7cenEKczGnERKYbfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	kernel test robot <oliver.sang@intel.com>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/423] crypto: iaa - Test the correct request flag
+Subject: [PATCH 6.13 211/499] staging: gpib: Fix cb7210 pcmcia Oops
 Date: Tue,  8 Apr 2025 12:47:03 +0200
-Message-ID: <20250408104847.998055246@linuxfoundation.org>
+Message-ID: <20250408104856.471883088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit fc4bd01d9ff592f620c499686245c093440db0e8 ]
+[ Upstream commit c1baf6528bcfd6a86842093ff3f8ff8caf309c12 ]
 
-Test the correct flags for the MAY_SLEEP bit.
+The  pcmcia_driver struct was still only using the old .name
+initialization in the drv field. This led to a NULL pointer
+deref Oops in strcmp called from pcmcia_register_driver.
 
-Fixes: 2ec6761df889 ("crypto: iaa - Add support for deflate-iaa compression algorithm")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Initialize the pcmcia_driver struct name field.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502131453.cb6d2e4a-lkp@intel.com
+Fixes: e9dc69956d4d ("staging: gpib: Add Computer Boards GPIB driver")
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250213103112.4415-1-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/gpib/cb7210/cb7210.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index d2f07e34f3142..e1f60f0f507c9 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1527,7 +1527,7 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 	iaa_wq = idxd_wq_get_private(wq);
+diff --git a/drivers/staging/gpib/cb7210/cb7210.c b/drivers/staging/gpib/cb7210/cb7210.c
+index 59e41c97f518d..ef6be5ab3a17c 100644
+--- a/drivers/staging/gpib/cb7210/cb7210.c
++++ b/drivers/staging/gpib/cb7210/cb7210.c
+@@ -1342,8 +1342,8 @@ static struct pcmcia_device_id cb_pcmcia_ids[] = {
+ MODULE_DEVICE_TABLE(pcmcia, cb_pcmcia_ids);
  
- 	if (!req->dst) {
--		gfp_t flags = req->flags & CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL : GFP_ATOMIC;
-+		gfp_t flags = req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL : GFP_ATOMIC;
- 
- 		/* incompressible data will always be < 2 * slen */
- 		req->dlen = 2 * req->slen;
-@@ -1609,7 +1609,7 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 
- static int iaa_comp_adecompress_alloc_dest(struct acomp_req *req)
- {
--	gfp_t flags = req->flags & CRYPTO_TFM_REQ_MAY_SLEEP ?
-+	gfp_t flags = req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP ?
- 		GFP_KERNEL : GFP_ATOMIC;
- 	struct crypto_tfm *tfm = req->base.tfm;
- 	dma_addr_t src_addr, dst_addr;
+ static struct pcmcia_driver cb_gpib_cs_driver = {
++	.name           = "cb_gpib_cs",
+ 	.owner		= THIS_MODULE,
+-	.drv = { .name = "cb_gpib_cs", },
+ 	.id_table	= cb_pcmcia_ids,
+ 	.probe		= cb_gpib_probe,
+ 	.remove		= cb_gpib_remove,
 -- 
 2.39.5
 
