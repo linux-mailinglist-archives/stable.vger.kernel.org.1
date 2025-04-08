@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-129655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD5A800DB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02780A8021E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46713B3355
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABAD3BADD3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C83268C61;
-	Tue,  8 Apr 2025 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE9C267F55;
+	Tue,  8 Apr 2025 11:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILcVTqud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwD9pt03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E77263C90;
-	Tue,  8 Apr 2025 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB5235973;
+	Tue,  8 Apr 2025 11:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111625; cv=none; b=mcG+Hdlu/C79nZ8kWJBuQaFONxdg0ggDWt+NqSVFCXm917yMJvFXCuPZ5vPIwd1d0ksxFEGnrckMcNr7BjNr2OykbJslwm6BGQNWCcvSEnSxsXkuSBnPyqFHKhhq6gyi6ghcdWC4hzdJ7oBZ6ZbdnittNtvwZRdcw0RC/CzcqT8=
+	t=1744112283; cv=none; b=M1Oqj564AbPfl7KGis36XhefYuOowEMoAqVjCYbFpF8jXTQvek+CbS7WExOG5Ih31cP6OeoKsvu33Xfgnn5dIfiCKRBJ7secJzmgW8GTbzAKC1nz6wiGirKa2QGK6y/5BeOm+NxDcOth9Uz/QllibKBWpUcdjFKz5xfnu1XFgUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111625; c=relaxed/simple;
-	bh=9/QtRIkO3A87fb1WTd8OUiKBXsqrk4nzxX0HFslPKyA=;
+	s=arc-20240116; t=1744112283; c=relaxed/simple;
+	bh=3girt8YbLmOudRa0sq8xx+csZiZ8RMpofI/yB//NtCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQuiDI6l1BmbM4CT3DN/btNeoIvgS0FjLDhz9I/0y+EhFpSKAcewkCDwBqmFsL2t7DK6Ir0o8B0heBdHoRtCNHa4i3nXO6TCbLTq0kmssfBn3utSfPUClV9Ub8lduG0igOT590LPVIPR3KJOb/VSR+Pa4I0YhRj5WEBOnGiJNfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILcVTqud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7AEC4CEEB;
-	Tue,  8 Apr 2025 11:27:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ri8PFs1L3SYbV4UYVa7zgRyz+U5AATZQ2yqxAFm72gcQW613KzgP3jFqAB+zKRZId7CNGSw1cGUQdxhuxia3F663v3ovf13Hm0Tw234cZljjrlZ5GGwMDFHl+MJBppJvZbsjjm1t5JlHeWAsB8DA5WKhPOugUDSxCpqDXv1imC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwD9pt03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE15EC4CEE5;
+	Tue,  8 Apr 2025 11:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111625;
-	bh=9/QtRIkO3A87fb1WTd8OUiKBXsqrk4nzxX0HFslPKyA=;
+	s=korg; t=1744112283;
+	bh=3girt8YbLmOudRa0sq8xx+csZiZ8RMpofI/yB//NtCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILcVTqudCGsYeEuFmlNzjhADzJzJu8qyznMflN5bAj2s1/ih29pCYf79enbBvXO/O
-	 HnBvKJ9m6Ac0PFbQoFirDdkBOvguzI+qU/4/mToCVhJVnadVR0JQ9Z1r0iLtR+YiBP
-	 rvvCJwHoAZPQ3VSWrZzr5xsHyoFerois7FYSyqZc=
+	b=mwD9pt03xKak543vVbz98gi0b3YPspNdMuLc2PZk/jAjZYjsDczc7sPkkXSGIXuev
+	 sX7A6z06pMV4KCUQrRUt1ojQbNsH5utNtQkHipF/jWlfTfeToLewttbJ8WFn406EXj
+	 b58Yh+r7GPHpCDAZsX5WcuOxOPSVVYWHKPt6J790=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 498/731] perf evlist: Add success path to evlist__create_syswide_maps
+Subject: [PATCH 5.15 012/279] net/mlx5: handle errors in mlx5_chains_create_table()
 Date: Tue,  8 Apr 2025 12:46:35 +0200
-Message-ID: <20250408104925.858738667@linuxfoundation.org>
+Message-ID: <20250408104826.709960463@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit fe0ce8a9d85a48642880c9b78944cb0d23e779c5 ]
+[ Upstream commit eab0396353be1c778eba1c0b5180176f04dd21ce ]
 
-Over various refactorings evlist__create_syswide_maps has been made to
-only ever return with -ENOMEM. Fix this so that when
-perf_evlist__set_maps is successfully called, 0 is returned.
+In mlx5_chains_create_table(), the return value of mlx5_get_fdb_sub_ns()
+and mlx5_get_flow_namespace() must be checked to prevent NULL pointer
+dereferences. If either function fails, the function should log error
+message with mlx5_core_warn() and return error pointer.
 
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250228222308.626803-3-irogers@google.com
-Fixes: 8c0498b6891d7ca5 ("perf evlist: Fix create_syswide_maps() not propagating maps")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 39ac237ce009 ("net/mlx5: E-Switch, Refactor chains and priorities")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250307021820.2646-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index f0dd174e2debd..633df7d9204c2 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -1373,19 +1373,18 @@ static int evlist__create_syswide_maps(struct evlist *evlist)
- 	 */
- 	cpus = perf_cpu_map__new_online_cpus();
- 	if (!cpus)
--		goto out;
-+		return -ENOMEM;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+index df58cba37930a..64c1071bece8d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+@@ -196,6 +196,11 @@ mlx5_chains_create_table(struct mlx5_fs_chains *chains,
+ 		ns = mlx5_get_flow_namespace(chains->dev, chains->ns);
+ 	}
  
- 	threads = perf_thread_map__new_dummy();
--	if (!threads)
--		goto out_put;
-+	if (!threads) {
-+		perf_cpu_map__put(cpus);
-+		return -ENOMEM;
++	if (!ns) {
++		mlx5_core_warn(chains->dev, "Failed to get flow namespace\n");
++		return ERR_PTR(-EOPNOTSUPP);
 +	}
- 
- 	perf_evlist__set_maps(&evlist->core, cpus, threads);
--
- 	perf_thread_map__put(threads);
--out_put:
- 	perf_cpu_map__put(cpus);
--out:
--	return -ENOMEM;
-+	return 0;
- }
- 
- int evlist__open(struct evlist *evlist)
++
+ 	ft_attr.autogroup.num_reserved_entries = 2;
+ 	ft_attr.autogroup.max_num_groups = chains->group_num;
+ 	ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
 -- 
 2.39.5
 
