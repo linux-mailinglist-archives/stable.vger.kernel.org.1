@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12660A80664
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3CDA80983
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50AD48851CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C221BA6ABD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB641266580;
-	Tue,  8 Apr 2025 12:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A708A26A0A5;
+	Tue,  8 Apr 2025 12:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVT0qOYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs6GGyEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6601620CCD8;
-	Tue,  8 Apr 2025 12:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D1926B2CD;
+	Tue,  8 Apr 2025 12:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114631; cv=none; b=LVfOx9nSliiABH+7+x9mUF2VR4RvGe/8RCqxwGmpkc8SEYSZYdQEqQU6/WHBMIsLzd1eZw3yk+iaaiVZFjndjZ23xAjZPaNPVms04xiQnb7DdfgUJrERUxDBROvvYm5n9n6rZhC04PM2jj/dJMRPnDJSKJrfnA//Wb87a0a8Ovo=
+	t=1744116238; cv=none; b=hInybC7GuQLkoLYMATaepbeUA5IddZlgPrt68Vi4Plf+of1Cm+l+Pdy/9GMZEa5nkAiB+VlKQE1jwEZ7I+e4B+b7n1Iyp5pTkZ9iZCOqK+Iw2+/IBxAslFHG6yCUID5IFQ7a5iO8ZN2pcmwaIvHrSuuPh7CHXEqqRHFrzAelkRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114631; c=relaxed/simple;
-	bh=ZIGHX+KDTrubVZUJu1fD+B4cXCAPmtuRBp9qHDbwAqA=;
+	s=arc-20240116; t=1744116238; c=relaxed/simple;
+	bh=DA5JV307KvoUz3lVrwetEmTBkrn0kjrnH/60UUpiDog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8y/SaRRHIB+dG1IbsPSlP5Ga0Tq8PMnWBy2+DoWOUhyeKo3TyjMY7DkKkalS+A7JOuUo6r4i75zeCh3xGBzT6FnVbKd09GG+v4zWNyHJTR4dCub1Uml64cQFUSYLx1eEooBTtfZtKyMYYbhEx79bAwTon3LVzdtk2MqJVmBisw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVT0qOYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB534C4CEE5;
-	Tue,  8 Apr 2025 12:17:10 +0000 (UTC)
+	 MIME-Version; b=QyRrEQwGjF7t5QIIqy+2UER1TxPT9N573jgSmajkLIeh47Da9/+mKy2btH9c2eTaO8COeANzI8Sahhfm/wAfY+6V5THtNcjpohkpPHxJ+QoB6xh3Fu31fEgxr99ftH8ClJws2xiacStR+CkZMLfxXCJDe8lLBvPyxuv4cm06q3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs6GGyEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E763CC4CEE5;
+	Tue,  8 Apr 2025 12:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114631;
-	bh=ZIGHX+KDTrubVZUJu1fD+B4cXCAPmtuRBp9qHDbwAqA=;
+	s=korg; t=1744116238;
+	bh=DA5JV307KvoUz3lVrwetEmTBkrn0kjrnH/60UUpiDog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVT0qOYWzyea81xvasI4OWBdtRASdjHZZn53cge3rc/FywFrljgoxBx7XYf4QdeUR
-	 ss4TqpXCa/L0lh4Fq+r8iYeplVFlJnJn2LXSpt896f5CUVfyZ+zhabl2gl9bkAQKpl
-	 V37Hh32RcT7bIvF6dONz0b2gcvcc4FUQFu25DpWU=
+	b=Gs6GGyEtf4SqK6AYkNAjcMQzoReqNYhoECVKcGzE5/WolL0upkU5Z83Hpf0uJyt19
+	 DTkN82uvxD94Exa/DiW4VxtSEHNzIbqyIHTJmlpnlVTB1l6UxGwbRGzCWRL27qdRqR
+	 cL38LDSbsmDI4D1xFB1dNKJaCIj/r/FshrZhZr6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bairavi Alagappan <bairavix.alagappan@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 179/499] crypto: qat - remove access to parity register for QAT GEN4
-Date: Tue,  8 Apr 2025 12:46:31 +0200
-Message-ID: <20250408104855.638128967@linuxfoundation.org>
+Subject: [PATCH 6.12 066/423] drm/msm/dpu: dont use active in atomic_check()
+Date: Tue,  8 Apr 2025 12:46:32 +0200
+Message-ID: <20250408104847.285662098@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bairavi Alagappan <bairavix.alagappan@intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 92c6a707d82f0629debf1c21dd87717776d96af2 ]
+[ Upstream commit 25b4614843bcc56ba150f7c99905125a019e656c ]
 
-The firmware already handles parity errors reported by the accelerators
-by clearing them through the corresponding SSMSOFTERRORPARITY register.
-To ensure consistent behavior and prevent race conditions between the
-driver and firmware, remove the logic that checks the SSMSOFTERRORPARITY
-registers.
+The driver isn't supposed to consult crtc_state->active/active_check for
+resource allocation. Instead all resources should be allocated if
+crtc_state->enabled is set. Stop consulting active / active_changed in
+order to determine whether the hardware resources should be
+(re)allocated.
 
-Additionally, change the return type of the function
-adf_handle_rf_parr_err() to void, as it consistently returns false.
-Parity errors are recoverable and do not necessitate a device reset.
-
-Fixes: 895f7d532c84 ("crypto: qat - add handling of errors from ERRSOU2 for QAT GEN4")
-Signed-off-by: Bairavi Alagappan <bairavix.alagappan@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
+Reported-by: Simona Vetter <simona.vetter@ffwll.ch>
+Closes: https://lore.kernel.org/dri-devel/ZtW_S0j5AEr4g0QW@phenom.ffwll.local/
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/633393/
+Link: https://lore.kernel.org/r/20250123-drm-dirty-modeset-v2-1-bbfd3a6cd1a4@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_common/adf_gen4_ras.c       | 57 ++-----------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    | 4 ----
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 3 +--
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-index bf0ea09faa650..0f7f00a19e7dc 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
-@@ -1043,63 +1043,16 @@ static bool adf_handle_ssmcpppar_err(struct adf_accel_dev *accel_dev,
- 	return reset_required;
- }
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+index db6c57900781d..ecd595215a6be 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+@@ -1191,10 +1191,6 @@ static int dpu_crtc_atomic_check(struct drm_crtc *crtc,
  
--static bool adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
-+static void adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
- 				   void __iomem *csr, u32 iastatssm)
- {
--	struct adf_dev_err_mask *err_mask = GET_ERR_MASK(accel_dev);
--	u32 reg;
--
- 	if (!(iastatssm & ADF_GEN4_IAINTSTATSSM_SSMSOFTERRORPARITY_BIT))
--		return false;
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC);
--	reg &= ADF_GEN4_SSMSOFTERRORPARITY_SRC_BIT;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH);
--	reg &= err_mask->parerr_ath_cph_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT);
--	reg &= err_mask->parerr_cpr_xlt_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS);
--	reg &= err_mask->parerr_dcpr_ucs_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS, reg);
--	}
--
--	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE);
--	reg &= err_mask->parerr_pke_mask;
--	if (reg) {
--		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE, reg);
--	}
--
--	if (err_mask->parerr_wat_wcp_mask) {
--		reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP);
--		reg &= err_mask->parerr_wat_wcp_mask;
--		if (reg) {
--			ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
--			ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP,
--				   reg);
--		}
--	}
-+		return;
+ 	DRM_DEBUG_ATOMIC("%s: check\n", dpu_crtc->name);
  
-+	ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
- 	dev_err(&GET_DEV(accel_dev), "Slice ssm soft parity error reported");
+-	/* force a full mode set if active state changed */
+-	if (crtc_state->active_changed)
+-		crtc_state->mode_changed = true;
+-
+ 	if (cstate->num_mixers) {
+ 		rc = _dpu_crtc_check_and_setup_lm_bounds(crtc, crtc_state);
+ 		if (rc)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 2cf8150adf81f..47b514c89ce66 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -718,12 +718,11 @@ static int dpu_encoder_virt_atomic_check(
+ 		crtc_state->mode_changed = true;
+ 	/*
+ 	 * Release and Allocate resources on every modeset
+-	 * Dont allocate when active is false.
+ 	 */
+ 	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 		dpu_rm_release(global_state, drm_enc);
  
--	return false;
-+	return;
- }
- 
- static bool adf_handle_ser_err_ssmsh(struct adf_accel_dev *accel_dev,
-@@ -1171,8 +1124,8 @@ static bool adf_handle_iaintstatssm(struct adf_accel_dev *accel_dev,
- 	reset_required |= adf_handle_slice_hang_error(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_spppar_err(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_ssmcpppar_err(accel_dev, csr, iastatssm);
--	reset_required |= adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
- 	reset_required |= adf_handle_ser_err_ssmsh(accel_dev, csr, iastatssm);
-+	adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
- 
- 	ADF_CSR_WR(csr, ADF_GEN4_IAINTSTATSSM, iastatssm);
- 
+-		if (!crtc_state->active_changed || crtc_state->enable)
++		if (crtc_state->enable)
+ 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
+ 					drm_enc, crtc_state, topology);
+ 		if (!ret)
 -- 
 2.39.5
 
