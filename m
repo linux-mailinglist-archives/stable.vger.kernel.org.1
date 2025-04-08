@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-130927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C5FA80743
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46822A803FA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57934C4F88
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8374464F4C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258DE268FE4;
-	Tue,  8 Apr 2025 12:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E842690EB;
+	Tue,  8 Apr 2025 11:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIQwYGGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hop6Smi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F7F263F4D;
-	Tue,  8 Apr 2025 12:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC8122257E;
+	Tue,  8 Apr 2025 11:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115032; cv=none; b=FoD3PaJ9MV3nSjzu90h5tGErqV+D1Q5m5m72xzG0fVz5X+vSesKJgTHRtFaCN5RZ1SrYhwOjydPVcoZOYZiZWwmsDngTR5f2ucTtYSL3oQslAMQH3u1vydSOb3dWGgQP5ew/0mWqUOwhJlv7PRV1xPvrAzUpfdNbimWgmUcludU=
+	t=1744113340; cv=none; b=MUf3rZDvsTyWayFiNLs9y05ONxG5AI2upTLwe1jyRY2gg2/ZYGZRyYnxDam26dbP/hDImCjieTDv8mNJ8eOHWUqH71F3C0sLxt+QJhT2j0CaakXEkILmv6c0FoUZmw1ZuEfS8rVXUf8c/NHvIUFnjxVtxmvmV574paNoUKVT+PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115032; c=relaxed/simple;
-	bh=vEp7bncDe+FEqPDsgHB5ZbkjoEuj5vdsnqoGixXZndQ=;
+	s=arc-20240116; t=1744113340; c=relaxed/simple;
+	bh=yo+U5BfgU97FzXmLBu6jVhLnsy5o1d49ergQTLpiM1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=facm8xilX9cbZqJ9dpyEEiSYQ2u1+dfr8uYvefq6Gc1ZE70vIcW4NTgWFyq4+xW9oyOKOtxB9+Yec0g0bQfiY1MxthPL99itfl4QjD7m0f3/C8Z5QrBLbpY+2v1Y+BEKHDnnCbVPZ6VEcm8JR3jpxhIEHvojk7ZtJ943ETjOf/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIQwYGGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CFAC4CEE5;
-	Tue,  8 Apr 2025 12:23:52 +0000 (UTC)
+	 MIME-Version; b=cQTtmsFB4npb6VuDSv2y6YslMumojhHgcu/QHLRPBFPQd5yMn5GtjXRnvRhDA2xJJ8NUMAsfhnU6e4b6mQk3EoKZV0i56PO03rfAA1ocCREELCuMbfXX1VhOx92298WIuiISl2XgsS+9jsywDilnI/3/MYqW0hAPKoQBU6wM+pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hop6Smi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E14FC4CEE5;
+	Tue,  8 Apr 2025 11:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115032;
-	bh=vEp7bncDe+FEqPDsgHB5ZbkjoEuj5vdsnqoGixXZndQ=;
+	s=korg; t=1744113340;
+	bh=yo+U5BfgU97FzXmLBu6jVhLnsy5o1d49ergQTLpiM1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIQwYGGYBZAtmkfHnOJLu66uaRpfD6JLzYfZ9HoyEFAY9NPrNTlblrTvp9l1oKuQL
-	 u/c0i60aTiLD1i+EB4Y9WwPVmIyFjBjHsIQ4tQNxLZ3JAkXdxtOMPNPh/f+qKfN7t9
-	 fka1V+tAHymdqWU51YrH0/5F/Gko9H14KVabZoSg=
+	b=hop6Smi5wI1txpjRz6zisKy7SCnsvJuAq8figH9CuxeAdN7acjmRLQ+Elea7PfVIX
+	 pMMcxm1H5CnFFM4na+12rHIiqpHZI+GGv4jfFn+3j+otYvjOd1CpIZGKgkHlOS3nkS
+	 WA9+bbiCZ8G8qV0o2BeEqvTKKVpEvXTd0YcudUZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 323/499] ALSA: hda/realtek: Add support for ASUS ROG Strix G814 Laptop using CS35L41 HDA
+Subject: [PATCH 6.6 124/268] kexec: initialize ELF lowest address to ULONG_MAX
 Date: Tue,  8 Apr 2025 12:48:55 +0200
-Message-ID: <20250408104859.280726477@linuxfoundation.org>
+Message-ID: <20250408104831.844390213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit f2c11231b57b5163bf16cdfd65271d53d61dd996 ]
+[ Upstream commit 9986fb5164c8b21f6439cfd45ba36d8cc80c9710 ]
 
-Add support for ASUS G814PH/PM/PP and G814FH/FM/FP.
+Patch series "powerpc/crash: use generic crashkernel reservation", v3.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C.
+Commit 0ab97169aa05 ("crash_core: add generic function to do reservation")
+added a generic function to reserve crashkernel memory.  So let's use the
+same function on powerpc and remove the architecture-specific code that
+essentially does the same thing.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-2-sbinding@opensource.cirrus.com
+The generic crashkernel reservation also provides a way to split the
+crashkernel reservation into high and low memory reservations, which can
+be enabled for powerpc in the future.
+
+Additionally move powerpc to use generic APIs to locate memory hole for
+kexec segments while loading kdump kernel.
+
+This patch (of 7):
+
+kexec_elf_load() loads an ELF executable and sets the address of the
+lowest PT_LOAD section to the address held by the lowest_load_addr
+function argument.
+
+To determine the lowest PT_LOAD address, a local variable lowest_addr
+(type unsigned long) is initialized to UINT_MAX.  After loading each
+PT_LOAD, its address is compared to lowest_addr.  If a loaded PT_LOAD
+address is lower, lowest_addr is updated.  However, setting lowest_addr to
+UINT_MAX won't work when the kernel image is loaded above 4G, as the
+returned lowest PT_LOAD address would be invalid.  This is resolved by
+initializing lowest_addr to ULONG_MAX instead.
+
+This issue was discovered while implementing crashkernel high/low
+reservation on the PowerPC architecture.
+
+Link: https://lkml.kernel.org/r/20250131113830.925179-1-sourabhjain@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250131113830.925179-2-sourabhjain@linux.ibm.com
+Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/kexec_elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index dc7e732a7691f..ebacbd996bceb 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10760,6 +10760,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
-+	SND_PCI_QUIRK(0x1043, 0x3e00, "ASUS G814FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x3e20, "ASUS G814PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3e30, "ASUS TP3607SA", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3ee0, "ASUS Strix G815_JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3ef0, "ASUS Strix G635LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+index d3689632e8b90..3a5c25b2adc94 100644
+--- a/kernel/kexec_elf.c
++++ b/kernel/kexec_elf.c
+@@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+ 			 struct kexec_buf *kbuf,
+ 			 unsigned long *lowest_load_addr)
+ {
+-	unsigned long lowest_addr = UINT_MAX;
++	unsigned long lowest_addr = ULONG_MAX;
+ 	int ret;
+ 	size_t i;
+ 
 -- 
 2.39.5
 
