@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47164A80286
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 369B9A7FE81
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D80D67AA58F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A3E3BD727
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB66268FE5;
-	Tue,  8 Apr 2025 11:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CEA268690;
+	Tue,  8 Apr 2025 11:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPUbvTJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFDwGfrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699EB267F5B;
-	Tue,  8 Apr 2025 11:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3AF268685;
+	Tue,  8 Apr 2025 11:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112780; cv=none; b=PS49fVkhCBRKk8aV3B6S2lqH78J5hMKkwCQnuytyY+5m6+0IAlyQkkvQ6tZls8/BYLb3ReiuIHk3iQxE+KVDDO6smapEK+PQR/zn7qg3vbofdXCr4Bzp7SgJ8ZVBqJhfdjdZeqhx+iPlCYkJRKfuONQ87hwE6B53nNsWBjUjHA0=
+	t=1744110188; cv=none; b=T0YSI0gaimWu1KhAOp3MiteweA8XY/9DWCcjVGFa0ha0MFSMVg0E8DrvbsdfPHsyiqfsRugGXFJV0Sa0sYNst2OJ0SFq2qs9K0KHdx4mEuJGlRzaRxKhTzTiTwYjTcT9sGwmMUDTPOVdrC2LjdQBnRYih5qCt5i21cN3s7c9xH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112780; c=relaxed/simple;
-	bh=eGewagAdoXJTfbeT9DxZEDJQywXQd0rUlxKxxLEPWAc=;
+	s=arc-20240116; t=1744110188; c=relaxed/simple;
+	bh=P0cZ1pGOFBOh5iW7vTxzgk6OYs+hndCGiJKta8iXwMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwmlidwXXDlyeqswLwcPLL8mpHEH3cIAmk2JmAuG5ReHeG1TszrYcoOeSteC7Nb87i5QGfkD26YOlsDcJ4i951e/qXbFAEdNamvThz1OXI/cCr+WIVBprRwqmiOg7043ttc9onEFD9pJ9ihQ0VLIXj5/UMlXijdT5sDdmZNpisU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPUbvTJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC8DC4CEE5;
-	Tue,  8 Apr 2025 11:46:19 +0000 (UTC)
+	 MIME-Version; b=Vtxb2cbjLN6OyE/mUuuH5YyOP6ahd0SHc1CbjZncVUKiG6Euae9ghH6QAZ0cVq0hdP/JQcYT0k6EVHR6H3Q+j7hTcvQPNG2O6iMu+mXDjKSu507CVwhPyHwERvwrjjT1WStmQd72m4Sw/4/qzk5NoUZh7dXGE09VbkPcfWs6M2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFDwGfrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2375C4CEE5;
+	Tue,  8 Apr 2025 11:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112780;
-	bh=eGewagAdoXJTfbeT9DxZEDJQywXQd0rUlxKxxLEPWAc=;
+	s=korg; t=1744110188;
+	bh=P0cZ1pGOFBOh5iW7vTxzgk6OYs+hndCGiJKta8iXwMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPUbvTJlYt8RwlR66yGdeXzmdgYDleo1+OmVdHeLxuumuRA/0UuVyAi5Rk8YHxVmf
-	 fkyn+MROBs50GhGDHOsdCi6NNeQ/5ac5k+LfR3NgaZfw9hA5xudIkN812tpTh+w+xc
-	 ma7TU+mfyjJJfDJXWHu/7NIgPB/MGYgB+ccfzMwM=
+	b=DFDwGfrllakAyxZhZipuLkepQE0Xbtj2DGl/s/t/SkH9Gy+I/OHfIVLkASY/O9Ilg
+	 W3YHigy7wcKU4Q/vzCB5SGP5Tfsk2MbzQiSnrlmWHSV5CLIc5IToeic4xxUaG3auiu
+	 bZRSkzZ0zhQtwv2Ys3f3q9q+53eUZ3nz3wvFzdXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 194/279] isofs: fix KMSAN uninit-value bug in do_isofs_readdir()
+Subject: [PATCH 5.10 199/227] vsock: avoid timeout during connect() if the socket is closing
 Date: Tue,  8 Apr 2025 12:49:37 +0200
-Message-ID: <20250408104831.572130281@linuxfoundation.org>
+Message-ID: <20250408104826.271273950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 81a82e8f33880793029cd6f8a766fb13b737e6a7 ]
+[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
 
-In do_isofs_readdir() when assigning the variable
-"struct iso_directory_record *de" the b_data field of the buffer_head
-is accessed and an offset is added to it, the size of b_data is 2048
-and the offset size is 2047, meaning
-"de = (struct iso_directory_record *) (bh->b_data + offset);"
-yields the final byte of the 2048 sized b_data block.
+When a peer attempts to establish a connection, vsock_connect() contains
+a loop that waits for the state to be TCP_ESTABLISHED. However, the
+other peer can be fast enough to accept the connection and close it
+immediately, thus moving the state to TCP_CLOSING.
 
-The first byte of the directory record (de_len) is then read and
-found to be 31, meaning the directory record size is 31 bytes long.
-The directory record is defined by the structure:
+When this happens, the peer in the vsock_connect() is properly woken up,
+but since the state is not TCP_ESTABLISHED, it goes back to sleep
+until the timeout expires, returning -ETIMEDOUT.
 
-	struct iso_directory_record {
-		__u8 length;                     // 1 byte
-		__u8 ext_attr_length;            // 1 byte
-		__u8 extent[8];                  // 8 bytes
-		__u8 size[8];                    // 8 bytes
-		__u8 date[7];                    // 7 bytes
-		__u8 flags;                      // 1 byte
-		__u8 file_unit_size;             // 1 byte
-		__u8 interleave;                 // 1 byte
-		__u8 volume_sequence_number[4];  // 4 bytes
-		__u8 name_len;                   // 1 byte
-		char name[];                     // variable size
-	} __attribute__((packed));
+If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
+vsock_connect() can return immediately without errors or delay since the
+connection actually happened. The socket will be in a closing state,
+but this is not an issue, and subsequent calls will fail as expected.
 
-The fixed portion of this structure occupies 33 bytes. Therefore, a
-valid directory record must be at least 33 bytes long
-(even without considering the variable-length name field).
-Since de_len is only 31, it is insufficient to contain
-the complete fixed header.
+We discovered this issue while developing a test that accepts and
+immediately closes connections to stress the transport switch between
+two connect() calls, where the first one was interrupted by a signal
+(see Closes link).
 
-The code later hits the following sanity check that
-compares de_len against the sum of de->name_len and
-sizeof(struct iso_directory_record):
-
-	if (de_len < de->name_len[0] + sizeof(struct iso_directory_record)) {
-		...
-	}
-
-Since the fixed portion of the structure is
-33 bytes (up to and including name_len member),
-a valid record should have de_len of at least 33 bytes;
-here, however, de_len is too short, and the field de->name_len
-(located at offset 32) is accessed even though it lies beyond
-the available 31 bytes.
-
-This access on the corrupted isofs data triggers a KASAN uninitialized
-memory warning. The fix would be to first verify that de_len is at least
-sizeof(struct iso_directory_record) before accessing any
-fields like de->name_len.
-
-Reported-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Tested-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=812641c6c3d7586a1613
-Fixes: 2deb1acc653c ("isofs: fix access to unallocated memory when reading corrupted filesystem")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250211195900.42406-1-qasdev00@gmail.com
+Reported-by: Luigi Leonardi <leonardi@redhat.com>
+Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
-index eb2f8273e6f15..09df40b612fbf 100644
---- a/fs/isofs/dir.c
-+++ b/fs/isofs/dir.c
-@@ -147,7 +147,8 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
- 			de = tmpde;
- 		}
- 		/* Basic sanity check, whether name doesn't exceed dir entry */
--		if (de_len < de->name_len[0] +
-+		if (de_len < sizeof(struct iso_directory_record) ||
-+		    de_len < de->name_len[0] +
- 					sizeof(struct iso_directory_record)) {
- 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
- 			       " in block %lu of inode %lu\n", block,
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index d7395601a0e30..fc0306ba2d43e 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1382,7 +1382,11 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
+ 	timeout = vsk->connect_timeout;
+ 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 
+-	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
++	/* If the socket is already closing or it is in an error state, there
++	 * is no point in waiting.
++	 */
++	while (sk->sk_state != TCP_ESTABLISHED &&
++	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
+ 		if (flags & O_NONBLOCK) {
+ 			/* If we're not going to block, we schedule a timeout
+ 			 * function to generate a timeout on the connection
 -- 
 2.39.5
 
