@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-130046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960DBA802CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CB3A803AF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A171A3B4C08
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E3691886864
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1434267F4F;
-	Tue,  8 Apr 2025 11:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2A7269801;
+	Tue,  8 Apr 2025 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9V4GDot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRgvhPQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27A265602;
-	Tue,  8 Apr 2025 11:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D5D2690D7;
+	Tue,  8 Apr 2025 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112670; cv=none; b=FFJH4xPLiHsTjJGZ+cIsTrZbNBHjM0Jd54WemhOEhcA+HUXP4+5iRbBn76w6S18qwsTUhhaG24ck2OQITzqVXNUTjQpkR7FwIHZlzSWNWYRowQjHgF1XCPTwmodaPk0qRyz3cGrFDRkDsgjetbGxU28lGBZUf6DYNy2ayn7lE+E=
+	t=1744113343; cv=none; b=ePuESwK+ZwX0QdkdQ2X71N50mzbKTVWXO6tORFADY3z4XaYC5OvApM/0s/cCH13XUlAzoi47H9Tg0YnmfIM3b/zoNYVvxb1DLvwni1YncPqlVEO9uZWNFV6FgIVutOKalFwnQDKp8nfRmtfbB5vDgGdZpDd7YPjAPpWZgP/4Ppc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112670; c=relaxed/simple;
-	bh=Yf8OCvqVpisiFYIsTuI6T6zb8MXfjqFrBh+aofC+go0=;
+	s=arc-20240116; t=1744113343; c=relaxed/simple;
+	bh=UONtUgZWoaQRiBFJBCv+/i5fDExWXW9Jt9uHMhJyP/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YLNVvqrGlyZ+JGz5emHa85qp0TgdliXNCYrlnDSDYBs624vDG+U5gax74wVacPv61YdTFrE0TYNQlNHBVKqFb+35ErSNds/el1B0cDbOwFoFXXsNRV3EO73QwM2i8el9nKuNHNKCp/KSQm/eHn05Zppdlb09ZzFt3UxIA1yQZ4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9V4GDot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A888CC4CEE5;
-	Tue,  8 Apr 2025 11:44:29 +0000 (UTC)
+	 MIME-Version; b=mXGwYSYx7TfM6N5yDAHYDEql49cH/cx+JceHPsV7g/0p6TA3xXaCm9V6+ZJ7VFMj8LwVULPF4/9gr9JnQspfJWQFyOIRfIXYhB5u37v5IWIzATbcVD9+ZZNa7GLIARPQUu41sm+D//Yqxyb4FmZecdaXX3lt464aOAMSG0Rgw0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRgvhPQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F98C4CEE5;
+	Tue,  8 Apr 2025 11:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112670;
-	bh=Yf8OCvqVpisiFYIsTuI6T6zb8MXfjqFrBh+aofC+go0=;
+	s=korg; t=1744113343;
+	bh=UONtUgZWoaQRiBFJBCv+/i5fDExWXW9Jt9uHMhJyP/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9V4GDotbQtc2bicWUZ7VW2xQEz9ts+Kh2pLRqSb7IdGohFHhff3Gv7n8SnLH4pOi
-	 2zRhMoXu5qyxKly41qgnc0djUWaOsPw2AA7UltWxPCXL0gl7iN9mKBci0KXH/Kt+0R
-	 lIjELyF6XX+lbmx4PaN9p1s028VFY/hZSR62EHFQ=
+	b=LRgvhPQmwKk6fqnV+w1rt7do/VpT9GBixJneHrS/NBcrdsiHfDzbiChcPjz9CW3vw
+	 HwOLLeSduYD7tC3KJTEdbNa4lF6wxL+BqZnDr1d7TrXXzXIFGyGlRmFzpXeD9drSjN
+	 D41O8v/MExXw2x3CESm9v/nW+JdIwzsZ9JvV9BL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Stodden <dns@arista.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Kurt Hackel <kurt.hackel@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/279] PCI/ASPM: Fix link state exit during switch upstream function removal
+Subject: [PATCH 6.6 125/268] ocfs2: validate l_tree_depth to avoid out-of-bounds access
 Date: Tue,  8 Apr 2025 12:48:56 +0200
-Message-ID: <20250408104830.467259642@linuxfoundation.org>
+Message-ID: <20250408104831.872424464@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +68,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Stodden <daniel.stodden@gmail.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit cbf937dcadfd571a434f8074d057b32cd14fbea5 ]
+[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
 
-Before 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to
-avoid use-after-free"), we would free the ASPM link only after the last
-function on the bus pertaining to the given link was removed.
+The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
+limited to OCFS2_MAX_PATH_DEPTH.
 
-That was too late. If function 0 is removed before sibling function,
-link->downstream would point to free'd memory after.
+Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
+value, which may occur when reading from a corrupted mounted disk [1].
 
-After above change, we freed the ASPM parent link state upon any function
-removal on the bus pertaining to a given link.
-
-That is too early. If the link is to a PCIe switch with MFD on the upstream
-port, then removing functions other than 0 first would free a link which
-still remains parent_link to the remaining downstream ports.
-
-The resulting GPFs are especially frequent during hot-unplug, because
-pciehp removes devices on the link bus in reverse order.
-
-On that switch, function 0 is the virtual P2P bridge to the internal bus.
-Free exactly when function 0 is removed -- before the parent link is
-obsolete, but after all subordinate links are gone.
-
-Link: https://lore.kernel.org/r/e12898835f25234561c9d7de4435590d957b85d9.1734924854.git.dns@arista.com
-Fixes: 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to avoid use-after-free")
-Signed-off-by: Daniel Stodden <dns@arista.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/ocfs2/alloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index e3f81948ce724..521340126b339 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1014,16 +1014,16 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
- 	parent_link = link->parent;
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index f0937902f7b46..e6191249169e6 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -1796,6 +1796,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
  
- 	/*
--	 * link->downstream is a pointer to the pci_dev of function 0.  If
--	 * we remove that function, the pci_dev is about to be deallocated,
--	 * so we can't use link->downstream again.  Free the link state to
--	 * avoid this.
-+	 * Free the parent link state, no later than function 0 (i.e.
-+	 * link->downstream) being removed.
- 	 *
--	 * If we're removing a non-0 function, it's possible we could
--	 * retain the link state, but PCIe r6.0, sec 7.5.3.7, recommends
--	 * programming the same ASPM Control value for all functions of
--	 * multi-function devices, so disable ASPM for all of them.
-+	 * Do not free the link state any earlier. If function 0 is a
-+	 * switch upstream port, this link state is parent_link to all
-+	 * subordinate ones.
- 	 */
-+	if (pdev != link->downstream)
-+		goto out;
-+
- 	pcie_config_aspm_link(link, 0);
- 	list_del(&link->sibling);
- 	free_link_state(link);
-@@ -1034,6 +1034,7 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
- 		pcie_config_aspm_path(parent_link);
- 	}
- 
-+ out:
- 	mutex_unlock(&aspm_lock);
- 	up_read(&pci_bus_sem);
- }
+ 	el = root_el;
+ 	while (el->l_tree_depth) {
++		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
++			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
++				    "Owner %llu has invalid tree depth %u in extent list\n",
++				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
++				    le16_to_cpu(el->l_tree_depth));
++			ret = -EROFS;
++			goto out;
++		}
+ 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
+ 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+ 				    "Owner %llu has empty extent list at depth %u\n",
 -- 
 2.39.5
 
