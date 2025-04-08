@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E56A80A55
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6B8A8074E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFCC917B55C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37EC5885790
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A583C26B0BC;
-	Tue,  8 Apr 2025 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A7426F451;
+	Tue,  8 Apr 2025 12:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyPcnXqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZB+ogmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DC726B093;
-	Tue,  8 Apr 2025 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242D26F45D;
+	Tue,  8 Apr 2025 12:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116459; cv=none; b=rAA0M6Jz1hwTzp1XmbDEOppbqMfjbfMQ0zRd91EBRuIBfHlAxnBhdYhnerHlc5TgTJr7h3ekCZGuysNr85v2PVPlMlfYo3YLOmve3TxJeGSUT+tT0+HXGYuCYj7W7eqcL80sqbjzuWbKUWhoS918w2D+kCNgebLvnY9ZlQtEmYw=
+	t=1744114864; cv=none; b=Yvhkk6jHZ5vebW6/srr1h4Ff5DvtWY4O0NL/qZS0fxFtkmKxnou+LERL+ZnzF8BOPoOHc/5ki1kJGXX9rMjERElMSMzlBtmE13ZZzOPQhXXK3tyBH1uYTEZ3H8bvLosrvahLXadC9n15+PcADlgpw1l3xeLr6B/4UIF5OMrDLXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116459; c=relaxed/simple;
-	bh=jyc4ZwuSVKfwAuU+IYSrb4JCBzIg7L8gP9G9C2csZRw=;
+	s=arc-20240116; t=1744114864; c=relaxed/simple;
+	bh=Lzm6MFlljiPuzAr+qA6ZW10s+vELuQHD9ki3naHRWJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4qCjvIwTgf4WkwxfvBphMokw/uPA56EMNtiderecqsqJgKVGykbg02YWu1CZ8j/HSPiJxd5fXPnUoWgB1l4lQrcyl3MmCDfd4Oo/5YlzSS3MfKesY4KDdlh4uDix1dZT24W5Gux6VTHI4Z6Z5OfWG3KucYfpMAjN7rD8dIt5SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyPcnXqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80BEC4CEE5;
-	Tue,  8 Apr 2025 12:47:38 +0000 (UTC)
+	 MIME-Version; b=UlNBsm4NKtqKTZLq2yd0Xt2s6kHoUc4msT1cgTdIVcgOwfsC7p67kw7K5cE0PdqRsIADkO+stDhL/WmNwvrxeFs3bjTiLVbSnCTkvC+KUCRJLQo8ar7i2YmeWOfDPeETcS86vpMFHNkHE68byvMqWyu88XMgwC1av4EObcDQeT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZB+ogmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CA3C4CEE7;
+	Tue,  8 Apr 2025 12:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116459;
-	bh=jyc4ZwuSVKfwAuU+IYSrb4JCBzIg7L8gP9G9C2csZRw=;
+	s=korg; t=1744114863;
+	bh=Lzm6MFlljiPuzAr+qA6ZW10s+vELuQHD9ki3naHRWJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xyPcnXqRAM629LJBx/RIE1pZPgGS8RtxtfV+oQjobk9I2kbjV/Joq01uz+fBtOnaf
-	 dVCxFfSM4xi4Uzo8qdQKP4pzAOPvWDxujyakVhvRE2mrynWodfbZllggH99Q6hQYcg
-	 UuiIx6H5FPyBAOyUdZnMNQgwWEicnCLcY2Bv3Zyo=
+	b=EZB+ogmWv1AjaxOz//yGs2EZkr3BEZtIK8FSby+QbOzODNp8TasoNufbJrA2BM6Gv
+	 ZSd3oG0arm90lF9N21Dg5lR+THdvhbuIFde55XCnfDv/lbUyLj93pPFW0Rh5imHsrA
+	 EhWtWbxAviR2CDK3pIQIDVHl/tEKezIgYCpAo9mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/423] power: supply: max77693: Fix wrong conversion of charge input threshold value
-Date: Tue,  8 Apr 2025 12:47:55 +0200
-Message-ID: <20250408104849.202733416@linuxfoundation.org>
+Subject: [PATCH 6.13 264/499] staging: vchiq_arm: Fix possible NPR of keep-alive thread
+Date: Tue,  8 Apr 2025 12:47:56 +0200
+Message-ID: <20250408104857.803388767@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
+[ Upstream commit 3db89bc6d973e2bcaa852f6409c98c228f39a926 ]
 
-The charge input threshold voltage register on the MAX77693 PMIC accepts
-four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
-Due to an oversight, the driver calculated the values for 4.7v and above
-starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
-gives 0).
+In case vchiq_platform_conn_state_changed() is never called or fails before
+driver removal, ka_thread won't be a valid pointer to a task_struct. So
+do the necessary checks before calling kthread_stop to avoid a crash.
 
-Add 1 to the calculation to ensure that 4.7v is converted to a register
-value of 0x1 and that the other two voltages are converted correctly as
-well.
-
-Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 863a756aaf49 ("staging: vc04_services: vchiq_core: Stop kthreads on vchiq module unload")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250309125014.37166-3-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77693_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
-index 4caac142c4285..b32d881111850 100644
---- a/drivers/power/supply/max77693_charger.c
-+++ b/drivers/power/supply/max77693_charger.c
-@@ -608,7 +608,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
- 	case 4700000:
- 	case 4800000:
- 	case 4900000:
--		data = (uvolt - 4700000) / 100000;
-+		data = ((uvolt - 4700000) / 100000) + 1;
- 		break;
- 	default:
- 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index e2e80e90b555b..d3b7d1227d7d6 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1422,7 +1422,8 @@ static void vchiq_remove(struct platform_device *pdev)
+ 	kthread_stop(mgmt->state.slot_handler_thread);
+ 
+ 	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
+-	kthread_stop(arm_state->ka_thread);
++	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
++		kthread_stop(arm_state->ka_thread);
+ }
+ 
+ static struct platform_driver vchiq_driver = {
 -- 
 2.39.5
 
