@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677B1A80779
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3723CA804D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D31014C6CBE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E92D1B6518D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB40226B2DB;
-	Tue,  8 Apr 2025 12:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13A426A1D8;
+	Tue,  8 Apr 2025 12:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfEIFP3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAUCy3sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888E0268FF0;
-	Tue,  8 Apr 2025 12:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D21F268FDE;
+	Tue,  8 Apr 2025 12:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115308; cv=none; b=sAPBXoADvMqYwmZkolbJ/PEeyqYsW4eAeqwnEjXOfnXrk1MrrBix1G9Oat1aSQ0i5aIzL0XKFHSpApfz28FS824s3ZS0o8V2y501dUTPGLoKerZ3CeP3pjmOyf3QtHzfO6hGIZC2yryLZKE2M9JS3sHcJSX00gz8lMAV0UuB+Go=
+	t=1744113895; cv=none; b=tqfQ1yC+ke+KRKX6DQhogvMzkWrEfQVoYdBY8GxnJ7w6A/pWj9/51VuZeGMghL9mD/1weZk2UHNE9nHjEpJl1pUxFyKUd0yRlDEXd9debafz8eRqQDSmqLWtuLnbfczjWqW5/NKppZwFjvSjsiRG7HvxmQenryJvgnm75olTTLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115308; c=relaxed/simple;
-	bh=LuJE7POaSfn21Ry+OMeszzEDsgy4p8sTJwq0owslzc4=;
+	s=arc-20240116; t=1744113895; c=relaxed/simple;
+	bh=vuqaQR+YQYsB1gN7dJg4ZA1pnGlqvAPBf5wmLEyfrdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkPFrk6WfoWdDtI43r4xmUG14i1ugv7YQxkFYr7+H7RNfOgSZYtHn4/BCZTVI0mjBJbrZlFVYEzQbE4YF0YXJYCyx9gfftEvGgRRRr4Cjbg2OmTNJq9A+U64FKrVRRiwVcOiCxbtot2RNuGU99vr1bFOkwo6NoWXs38zVfj5YyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfEIFP3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A95C4CEE7;
-	Tue,  8 Apr 2025 12:28:27 +0000 (UTC)
+	 MIME-Version; b=DH9WplOy/Jz1XDNHlvy4f2cIyTfDOdEO77UDpzHCBlZKqpa1niOwmEggESn5+C5viQEVCyLkOgHiN+qJo1kp6eCZS2gI4taGLirm5QPGo9dJ2aP8dOI/qfa1+VO95s4enHoelk5P9cXqwCszvkshI78S5VKEXFbmy/2nhRx0jTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAUCy3sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E137AC4CEE5;
+	Tue,  8 Apr 2025 12:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115308;
-	bh=LuJE7POaSfn21Ry+OMeszzEDsgy4p8sTJwq0owslzc4=;
+	s=korg; t=1744113895;
+	bh=vuqaQR+YQYsB1gN7dJg4ZA1pnGlqvAPBf5wmLEyfrdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfEIFP3QwfLe5P8N74RxO6NCfZTSI9oVBRL0Ayfp5tdmbtXeaBCWAdASg2FyrBihx
-	 ha+0Y0ntb16yvRLEIuSZizV+rQO9PWRJrfZFeEtXMGemwts85/6iKPRPrI0o9QNdWu
-	 XDFYgcPLy0y06x+ZTxedUg9Kh+hHHt9h/MJC6FO0=
+	b=qAUCy3sbOfNFR6xxGemSMyoP0Uq7ANHim1vK/Po6HVPfxAq3juesPrzJIkhJW0fyX
+	 cT07f7LVLv9ijbrQwAOQiqAA/JU3CMnQk1IswmIULqShwy5HyLingNK+ppiU3PgqYS
+	 t62kZZ/vQSTdjLRrOrBQQsZNVV8KzCk5oSr8w/pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debin Zhu <mowenroot@163.com>,
-	Bitao Ouyang <1985755126@qq.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lin Ma <linma@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 387/499] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
-Date: Tue,  8 Apr 2025 12:49:59 +0200
-Message-ID: <20250408104900.881247741@linuxfoundation.org>
+Subject: [PATCH 5.4 059/154] net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
+Date: Tue,  8 Apr 2025 12:50:00 +0200
+Message-ID: <20250408104817.176055804@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debin Zhu <mowenroot@163.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
+[ Upstream commit 90a7138619a0c55e2aefaad27b12ffc2ddbeed78 ]
 
-When calling netlbl_conn_setattr(), addr->sa_family is used
-to determine the function behavior. If sk is an IPv4 socket,
-but the connect function is called with an IPv6 address,
-the function calipso_sock_setattr() is triggered.
-Inside this function, the following code is executed:
+Previous commit 8b5c171bb3dc ("neigh: new unresolved queue limits")
+introduces new netlink attribute NDTPA_QUEUE_LENBYTES to represent
+approximative value for deprecated QUEUE_LEN. However, it forgot to add
+the associated nla_policy in nl_ntbl_parm_policy array. Fix it with one
+simple NLA_U32 type policy.
 
-sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
-
-Since sk is an IPv4 socket, pinet6 is NULL, leading to a
-null pointer dereference.
-
-This patch fixes the issue by checking if inet6_sk(sk)
-returns a NULL pointer before accessing pinet6.
-
-Signed-off-by: Debin Zhu <mowenroot@163.com>
-Signed-off-by: Bitao Ouyang <1985755126@qq.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
-Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8b5c171bb3dc ("neigh: new unresolved queue limits")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://patch.msgid.link/20250315165113.37600-1-linma@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/calipso.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index dbcea9fee6262..62618a058b8fa 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1072,8 +1072,13 @@ static int calipso_sock_getattr(struct sock *sk,
- 	struct ipv6_opt_hdr *hop;
- 	int opt_len, len, ret_val = -ENOMSG, offset;
- 	unsigned char *opt;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return -EAFNOSUPPORT;
- 
-+	txopts = txopt_get(pinfo);
- 	if (!txopts || !txopts->hopopt)
- 		goto done;
- 
-@@ -1125,8 +1130,13 @@ static int calipso_sock_setattr(struct sock *sk,
- {
- 	int ret_val;
- 	struct ipv6_opt_hdr *old, *new;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return -EAFNOSUPPORT;
- 
-+	txopts = txopt_get(pinfo);
- 	old = NULL;
- 	if (txopts)
- 		old = txopts->hopopt;
-@@ -1153,8 +1163,13 @@ static int calipso_sock_setattr(struct sock *sk,
- static void calipso_sock_delattr(struct sock *sk)
- {
- 	struct ipv6_opt_hdr *new_hop;
--	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
-+	struct ipv6_pinfo *pinfo = inet6_sk(sk);
-+	struct ipv6_txoptions *txopts;
-+
-+	if (!pinfo)
-+		return;
- 
-+	txopts = txopt_get(pinfo);
- 	if (!txopts || !txopts->hopopt)
- 		goto done;
- 
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 7ef3630ea20d7..005cc630f74f3 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2176,6 +2176,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
+ 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
+ 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
++	[NDTPA_QUEUE_LENBYTES]		= { .type = NLA_U32 },
+ 	[NDTPA_PROXY_QLEN]		= { .type = NLA_U32 },
+ 	[NDTPA_APP_PROBES]		= { .type = NLA_U32 },
+ 	[NDTPA_UCAST_PROBES]		= { .type = NLA_U32 },
 -- 
 2.39.5
 
