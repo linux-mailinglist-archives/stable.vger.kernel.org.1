@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FE1A806BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 070F5A80A0C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C204C406C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074541634B5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A12F26A0B3;
-	Tue,  8 Apr 2025 12:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9758F26B956;
+	Tue,  8 Apr 2025 12:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+NZYC4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGqxhKzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCAD26B080;
-	Tue,  8 Apr 2025 12:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5558F26B950;
+	Tue,  8 Apr 2025 12:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114877; cv=none; b=ehlyHXg1WN11rr6rW5WYnTDvTo6vrfsOM7OAEOPaEnGPQ04DrBeYl0AiS8CdymzaKVwgFpps/uYGAd4JRVNQhk87IveCJ8XvjXFK3THe0tzzjnfKveAFf3FPwRxZ5onaVuduEV70N3kOD7GBVDA+fAJAHzTZR+MsriIOKdElUGM=
+	t=1744116481; cv=none; b=jzDw9c/17MoIK4ywAFtXJ13OZD7kmCDEXY/bwg9bU9vg0R3JemMKG8StQbnQGjKlhGqwWDctUzIOGYll0vQTeBERncyYREUBJSBexN95Y66PH3aKiKZGF6mHDoCEx4uXxAOXsn+AC/g+sZ9eDAspmyWULbuWenIZuJ0SBkMuCBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114877; c=relaxed/simple;
-	bh=rq+G9N6tGKxNSAd2oW78zYRSLBO9kpiAgY8kJQ9t35I=;
+	s=arc-20240116; t=1744116481; c=relaxed/simple;
+	bh=On2IIUIU6TK5Ys5ealtJaDyoA0d906hjZu+FKgwJaxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwT2eBUw47+xRmzX5CM88P//LF5bMlzZICViutRDoFpMbgKP8jnJjxw99gl1ZkGXEEzFc2IdX9OKtQPsmtggiSTh2pFEpYcX5t/HTkWZHVBLkAQABh81rpu0qkMr/6JxvUkZnBNgG66NzB0zjytJf/0/RSCB1sIJ+ThBGihrpT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+NZYC4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45366C4CEE7;
-	Tue,  8 Apr 2025 12:21:17 +0000 (UTC)
+	 MIME-Version; b=adAfuhlXCxqJ8o7PdRJvu7qyikBQlhccx+Dip1j0BtHwBfTheaazGQs6dcTV7KjotozoALneVQAydgFEmuabJ1TzOW+dTy1Ckoj0mqMcy0x1UrRnlW5AfTajXE//sp4BBa/YzEfMC/jjmfM0x4y/jPmnTcA+AUkN4lTZNSGL+OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGqxhKzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9FEC4CEEF;
+	Tue,  8 Apr 2025 12:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114877;
-	bh=rq+G9N6tGKxNSAd2oW78zYRSLBO9kpiAgY8kJQ9t35I=;
+	s=korg; t=1744116481;
+	bh=On2IIUIU6TK5Ys5ealtJaDyoA0d906hjZu+FKgwJaxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+NZYC4JQeUw3AKORxn4bsJH+JAR63++7LQPgu+mqMPgMxLsBd0PVoevD0+23dhen
-	 iRzuBsQD9Xg5c4riB/RCRAFDP5dxxCv73os0k3wzncltjZo81P2KYOfZGvXhlLJ7Bd
-	 FaJoPMp3WyX67kEFRD8K4+0QIy1fpQ/NBK0kGvFE=
+	b=BGqxhKzzyQT/iJ0VxhztzxZAO9ifyjZM0pgaGvxoZWbTJH3IueUXJW3L0JLQImCNs
+	 1KyePPGz5DvrIRU8eLxzjGCwwNiKENouJwil517Y3f651giknCynBVgMBV7zObvr5X
+	 SzspqNodjch853sQWV05tgHjbeoA/k1NndUPA7DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Likhitha Korrapati <likhitha@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 269/499] perf tools: Fix is_compat_mode build break in ppc64
+Subject: [PATCH 6.12 155/423] mfd: sm501: Switch to BIT() to mitigate integer overflows
 Date: Tue,  8 Apr 2025 12:48:01 +0200
-Message-ID: <20250408104857.924233766@linuxfoundation.org>
+Message-ID: <20250408104849.348968800@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Likhitha Korrapati <likhitha@linux.ibm.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 7e442be7015af524d2b5fb84f0ff04a44501542b ]
+[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
 
-Commit 54f9aa1092457 ("tools/perf/powerpc/util: Add support to
-handle compatible mode PVR for perf json events") introduced
-to select proper JSON events in case of compat mode using
-auxiliary vector. But this caused a compilation error in ppc64
-Big Endian.
+If offset end up being high enough, right hand expression in functions
+like sm501_gpio_set() shifted left for that number of bits, may
+not fit in int type.
 
-arch/powerpc/util/header.c: In function 'is_compat_mode':
-arch/powerpc/util/header.c:20:21: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |                     ^
-arch/powerpc/util/header.c:20:39: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |
+Just in case, fix that by using BIT() both as an option safe from
+overflow issues and to make this step look similar to other gpio
+drivers.
 
-Commit saved the getauxval(AT_BASE_PLATFORM) and getauxval(AT_PLATFORM)
-return values in u64 which causes the compilation error.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Patch fixes this issue by changing u64 to "unsigned long".
-
-Fixes: 54f9aa1092457 ("tools/perf/powerpc/util: Add support to handle compatible mode PVR for perf json events")
-Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
-Reviewed-by: Athira Rajeev <atrajeev@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250321100726.699956-1-likhitha@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: f61be273d369 ("sm501: add gpiolib support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/powerpc/util/header.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/sm501.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-index c7df534dbf8f8..0be74f048f964 100644
---- a/tools/perf/arch/powerpc/util/header.c
-+++ b/tools/perf/arch/powerpc/util/header.c
-@@ -14,8 +14,8 @@
- 
- static bool is_compat_mode(void)
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index b3592982a83b5..5b6dc1cb9bfc3 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
  {
--	u64 base_platform = getauxval(AT_BASE_PLATFORM);
--	u64 platform = getauxval(AT_PLATFORM);
-+	unsigned long base_platform = getauxval(AT_BASE_PLATFORM);
-+	unsigned long platform = getauxval(AT_PLATFORM);
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
+@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+ 	void __iomem *regs = smchip->regbase;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	unsigned long save;
+ 	unsigned long ddr;
  
- 	if (!strcmp((char *)platform, (char *)base_platform))
- 		return false;
+@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
+ {
+ 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
+ 	struct sm501_gpio *smgpio = smchip->ourgpio;
+-	unsigned long bit = 1 << offset;
++	unsigned long bit = BIT(offset);
+ 	void __iomem *regs = smchip->regbase;
+ 	unsigned long save;
+ 	unsigned long val;
 -- 
 2.39.5
 
