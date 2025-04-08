@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACCAA803B6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4B3A802C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08C987AA6A3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3591A188B333
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344D8269AF8;
-	Tue,  8 Apr 2025 11:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71287268C66;
+	Tue,  8 Apr 2025 11:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lL9nSRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRjy3Vxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45D92698A0;
-	Tue,  8 Apr 2025 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4FF266EEA;
+	Tue,  8 Apr 2025 11:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113535; cv=none; b=TXl35p6bzKCXOcnPIp2aWYWL4NWBHIpqf1VPm112YqybghUrbrBONoDG/f/9UJatbg+SwDIy1Y56ws6LYHh1zIdRYl0wm//G+igpm8DBrAIAK8kso9T32j9xKL0dkxX9ObmryP/LY8Y4MRY3IntpcrTdL6otD51PToxBvvK0b+Y=
+	t=1744112748; cv=none; b=qB9E6lkWzQ0+jkI5Ip/cpSosZT+nYesMxZaoGVjzPsWVy9YSlYjFPJks9v8tBL5E0AUm2+rh7s2Gh17mxfAXagLcXH6ut6WWI3prtRrrBRDho+LoK7AVf05nDIKJ7YnafmZO1IeU9qwEzyaJKabk8pfrkrpdL+jE/qfxf/rv1Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113535; c=relaxed/simple;
-	bh=BREQlBJfdzKCJEkAlkNRhU285tbp2jGYXyRlVPpmj0c=;
+	s=arc-20240116; t=1744112748; c=relaxed/simple;
+	bh=+sdad2PZWoQNwo95PgTI7GYL2O6g6xzStDx+LCQmBiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k20tdBFzc0pyYZtoHB64WtacULgIjWf/exsPi/lZrJXuExv7pypzJnOrAvx+Srp2XDhn1MaQF/nMlPUbUV7if97tuQ7zweeVHNBDegLEGs/wLO1o3zG7R44TOBAViIuJeF8HNwE6smw19I5bdn8Jdu1HulrHsrdpb+kJXEazK3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lL9nSRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754ECC4CEE5;
-	Tue,  8 Apr 2025 11:58:54 +0000 (UTC)
+	 MIME-Version; b=L9ved9eH3bqDHQj0ZnFlSxUVcMNHGR5UM545kQGS4PzYQ28ZJasY6924sEds1BSwC1PII1RW5Vt4N9v/xvDAG6PA9E8xfdQYofsgwZ5Z03+nZbwKU6kxHDrUCYx+fDnQeKaN7lgx6M34BMO4WsBC+zL0C6ktm0nUDUUo48FVdiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRjy3Vxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B03C4CEE5;
+	Tue,  8 Apr 2025 11:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113534;
-	bh=BREQlBJfdzKCJEkAlkNRhU285tbp2jGYXyRlVPpmj0c=;
+	s=korg; t=1744112748;
+	bh=+sdad2PZWoQNwo95PgTI7GYL2O6g6xzStDx+LCQmBiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lL9nSRSu/5vJqfDdqw7nZXG4YfSZtkP9sAzjho+bEUoY6yvQH4tT8OC1DF8/rEuh
-	 3wLGtVCAfbtF8jhcEayV07q3GCzdbowZW0u1tGeaEhu7R3OCk2+CcpzJSUotXp92GQ
-	 +qC964X1UTDiNBkv5+ZzhQXVOSQ6cSARAfO94a7s=
+	b=xRjy3VxxV2Ck/t4Y0tGOdFziXyW996u5Zg5ebLCrsBwFkUIn+01EqC6sxc3OKPCrp
+	 mL35hmNWAlMC/kuQ88usKrgCKAbNc5UD1pk3yqR7HK37lroYaubuyxQFZhR1HT6R6K
+	 G3gGrpct1oIFUIBJ9f+r6UUySPUlxIslI3sLAyQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Gherdovich <ggherdovich@suse.cz>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/268] ACPI: processor: idle: Return an error if both P_LVL{2,3} idle states are invalid
+Subject: [PATCH 5.15 183/279] clk: amlogic: g12b: fix cluster A parent data
 Date: Tue,  8 Apr 2025 12:49:26 +0200
-Message-ID: <20250408104832.720840187@linuxfoundation.org>
+Message-ID: <20250408104831.270153626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Gherdovich <ggherdovich@suse.cz>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 9e9b893404d43894d69a18dd2fc8fcf1c36abb7e ]
+[ Upstream commit 8995f8f108c3ac5ad52b12a6cfbbc7b3b32e9a58 ]
 
-Prior to commit 496121c02127 ("ACPI: processor: idle: Allow probing on
-platforms with one ACPI C-state"), the acpi_idle driver wouldn't load on
-systems without a valid C-State at least as deep as C2.
+Several clocks used by both g12a and g12b use the g12a cpu A clock hw
+pointer as clock parent. This is incorrect on g12b since the parents of
+cluster A cpu clock are different. Also the hw clock provided as parent to
+these children is not even registered clock on g12b.
 
-The behavior was desirable for guests on hypervisors such as VMWare
-ESXi, which by default don't have the _CST ACPI method, and set the C2
-and C3 latencies to 101 and 1001 microseconds respectively via the FADT,
-to signify they're unsupported.
+Fix the problem by reverting to the global namespace and let CCF pick
+the appropriate, as it is already done for other clocks, such as
+cpu_clk_trace_div.
 
-Since the above change though, these virtualized deployments end up
-loading acpi_idle, and thus entering the default C1 C-State set by
-acpi_processor_get_power_info_default(); this is undesirable for a
-system that's communicating to the OS it doesn't want C-States (missing
-_CST, and invalid C2/C3 in FADT).
-
-Make acpi_processor_get_power_info_fadt() return -ENODEV in that case,
-so that acpi_processor_get_cstate_info() exits early and doesn't set
-pr->flags.power = 1.
-
-Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250328143040.9348-1-ggherdovich@suse.cz
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 25e682a02d91 ("clk: meson: g12a: migrate to the new parent description method")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-cpua-parent-fix-v1-1-d8c0f41865fe@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_idle.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/meson/g12a.c | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 831fa4a121598..0888e4d618d53 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -268,6 +268,10 @@ static int acpi_processor_get_power_info_fadt(struct acpi_processor *pr)
- 			 ACPI_CX_DESC_LEN, "ACPI P_LVL3 IOPORT 0x%x",
- 			 pr->power.states[ACPI_STATE_C3].address);
- 
-+	if (!pr->power.states[ACPI_STATE_C2].address &&
-+	    !pr->power.states[ACPI_STATE_C3].address)
-+		return -ENODEV;
-+
- 	return 0;
- }
- 
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 310accf94830b..a623596c1e490 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -1136,8 +1136,18 @@ static struct clk_regmap g12a_cpu_clk_div16_en = {
+ 	.hw.init = &(struct clk_init_data) {
+ 		.name = "cpu_clk_div16_en",
+ 		.ops = &clk_regmap_gate_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) {
+-			&g12a_cpu_clk.hw
++		.parent_data = &(const struct clk_parent_data) {
++			/*
++			 * Note:
++			 * G12A and G12B have different cpu clocks (with
++			 * different struct clk_hw). We fallback to the global
++			 * naming string mechanism so this clock picks
++			 * up the appropriate one. Same goes for the other
++			 * clock using cpu cluster A clock output and present
++			 * on both G12 variant.
++			 */
++			.name = "cpu_clk",
++			.index = -1,
+ 		},
+ 		.num_parents = 1,
+ 		/*
+@@ -1202,7 +1212,10 @@ static struct clk_regmap g12a_cpu_clk_apb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_apb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1236,7 +1249,10 @@ static struct clk_regmap g12a_cpu_clk_atb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_atb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1270,7 +1286,10 @@ static struct clk_regmap g12a_cpu_clk_axi_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_axi_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1305,13 +1324,6 @@ static struct clk_regmap g12a_cpu_clk_trace_div = {
+ 		.name = "cpu_clk_trace_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+ 		.parent_data = &(const struct clk_parent_data) {
+-			/*
+-			 * Note:
+-			 * G12A and G12B have different cpu_clks (with
+-			 * different struct clk_hw). We fallback to the global
+-			 * naming string mechanism so cpu_clk_trace_div picks
+-			 * up the appropriate one.
+-			 */
+ 			.name = "cpu_clk",
+ 			.index = -1,
+ 		},
 -- 
 2.39.5
 
