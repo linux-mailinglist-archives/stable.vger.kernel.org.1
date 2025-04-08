@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-131023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C44DA807D9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C54CBA80943
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3968A6991
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6FE38A4569
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE6D269820;
-	Tue,  8 Apr 2025 12:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7AD26AA98;
+	Tue,  8 Apr 2025 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTPuFgxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTZW5DJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682A82690D6;
-	Tue,  8 Apr 2025 12:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A942925F97B;
+	Tue,  8 Apr 2025 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115282; cv=none; b=ldY3JKTGuTE7ltnCeJ2io6TANMzIpxGXoLx/03i/GW1k5OiK427+xeRCbRnOGB7F9M2dPm/3adq8vIqtsx5AN/kTE4prpPSZysGTMUrfQ8+18HoPhmNykwKtPhZRzfIZnNA32hTFAU9/e2sJe0Iym10JbYgSi8l2PUF8JTnfd7E=
+	t=1744115768; cv=none; b=bbR9H5jeplcSKnYLUWlicP9A6mJOGE0AVupkL7YzuxfAGGUyWhO9ISCXTDeXKdjd6UoTFAh03UUqXlysDJpNagwnwleT8sBaTeBn+JdMBq2JC3IbF+lLrxa7pYo6Ja++yF60S1TgzJavdpIIqXPrG40GSLF+W9JbWu4mLST1r5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115282; c=relaxed/simple;
-	bh=HmWO8BCrJCKOLIbRtn5qXn6NXCry7NAa7wYvr70eOvU=;
+	s=arc-20240116; t=1744115768; c=relaxed/simple;
+	bh=9+ir4BMDWv+mpjiisu/0mzKu/E4bKb//gB/RrPpcHRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0dSNBiNs9OfOFiDgAfaipRrh8qGpPLlFnb6Xe4E+MGD7YMZjdfU58S0zlzWy9RfkVRcycAx2wdqV/AmZh14IaWGIQ22LOF2aeS0m1uYsDcIlZUhV/5f6mlwJhm31H4qX0heniyWS7PIItqiPqDm4fHJStFKzXGAUS7OOALFQuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTPuFgxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857C3C4CEE5;
-	Tue,  8 Apr 2025 12:28:01 +0000 (UTC)
+	 MIME-Version; b=lcnwTnkaJDFCeE5uo7r7fLelIw/N01aZhKeWnBEiP1uJNgNFqCFiIIX8XpXquo0BlkRZMzxzCicw6LKCDrty1erZeH/wkOGGmtegJERPQQsXmoOg695I9qxyvKiJiAyIQ9IVqw4+4OGwgeDsRNFenGCdGlTuYXhQb/dHVZRNBQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTZW5DJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3962AC4CEE5;
+	Tue,  8 Apr 2025 12:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115281;
-	bh=HmWO8BCrJCKOLIbRtn5qXn6NXCry7NAa7wYvr70eOvU=;
+	s=korg; t=1744115768;
+	bh=9+ir4BMDWv+mpjiisu/0mzKu/E4bKb//gB/RrPpcHRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTPuFgxZ7E5SWecQdXovdyUIkzjCx3CItofaMrWIMOA7nD2DV5G37NW4itqlNqsJf
-	 chdh6X2WTVLvCeoW08l4EeTowPGWOTVgqd/BnV+aBbuurdtLyVQMEKMPQVi0xMqtay
-	 f4opAlHe0DI72H9Hg1kkNF1zi3AkMsLwAWWgxJDg=
+	b=DTZW5DJE7B1e4kkSSh/7AZLt5pqhb4tVsD9AQGtBCvfK5jjn3k/jzC+5TPEOLi+TV
+	 I+DEuY636huVV6FyK5U5rlNyzWmi8wnwq1MQ4Tx6pFsvmK1t6svti6R3v4yUtNKIJD
+	 mYe4hFzB0GKE9Q6bpIBX1TWJMhPSKpdmIkExp0mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 415/499] tracing/hist: Support POLLPRI event for poll on histogram
+Subject: [PATCH 6.1 097/204] kexec: initialize ELF lowest address to ULONG_MAX
 Date: Tue,  8 Apr 2025 12:50:27 +0200
-Message-ID: <20250408104901.576292199@linuxfoundation.org>
+Message-ID: <20250408104823.185984933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +67,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 66fc6f521a0b91051ce6968a216a30bc52267bf8 ]
+[ Upstream commit 9986fb5164c8b21f6439cfd45ba36d8cc80c9710 ]
 
-Since POLLIN will not be flushed until the hist file is read, the user
-needs to repeatedly read() and poll() on the hist file for monitoring the
-event continuously. But the read() is somewhat redundant when the user is
-only monitoring for event updates.
+Patch series "powerpc/crash: use generic crashkernel reservation", v3.
 
-Add POLLPRI poll event on the hist file so the event returns when a
-histogram is updated after open(), poll() or read(). Thus it is possible
-to wait for the next event without having to issue a read().
+Commit 0ab97169aa05 ("crash_core: add generic function to do reservation")
+added a generic function to reserve crashkernel memory.  So let's use the
+same function on powerpc and remove the architecture-specific code that
+essentially does the same thing.
 
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/173527248770.464571.2536902137325258133.stgit@devnote2
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
+The generic crashkernel reservation also provides a way to split the
+crashkernel reservation into high and low memory reservations, which can
+be enabled for powerpc in the future.
+
+Additionally move powerpc to use generic APIs to locate memory hole for
+kexec segments while loading kdump kernel.
+
+This patch (of 7):
+
+kexec_elf_load() loads an ELF executable and sets the address of the
+lowest PT_LOAD section to the address held by the lowest_load_addr
+function argument.
+
+To determine the lowest PT_LOAD address, a local variable lowest_addr
+(type unsigned long) is initialized to UINT_MAX.  After loading each
+PT_LOAD, its address is compared to lowest_addr.  If a loaded PT_LOAD
+address is lower, lowest_addr is updated.  However, setting lowest_addr to
+UINT_MAX won't work when the kernel image is loaded above 4G, as the
+returned lowest PT_LOAD address would be invalid.  This is resolved by
+initializing lowest_addr to ULONG_MAX instead.
+
+This issue was discovered while implementing crashkernel high/low
+reservation on the PowerPC architecture.
+
+Link: https://lkml.kernel.org/r/20250131113830.925179-1-sourabhjain@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250131113830.925179-2-sourabhjain@linux.ibm.com
+Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ kernel/kexec_elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index a98753475a3fe..ad7419e240556 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5595,6 +5595,7 @@ static void hist_trigger_show(struct seq_file *m,
- struct hist_file_data {
- 	struct file *file;
- 	u64 last_read;
-+	u64 last_act;
- };
- 
- static u64 get_hist_hit_count(struct trace_event_file *event_file)
-@@ -5630,6 +5631,11 @@ static int hist_show(struct seq_file *m, void *v)
- 			hist_trigger_show(m, data, n++);
- 	}
- 	hist_file->last_read = get_hist_hit_count(event_file);
-+	/*
-+	 * Update last_act too so that poll()/POLLPRI can wait for the next
-+	 * event after any syscall on hist file.
-+	 */
-+	hist_file->last_act = hist_file->last_read;
- 
- 	return 0;
- }
-@@ -5639,6 +5645,8 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
- 	struct trace_event_file *event_file;
- 	struct seq_file *m = file->private_data;
- 	struct hist_file_data *hist_file = m->private;
-+	__poll_t ret = 0;
-+	u64 cnt;
- 
- 	guard(mutex)(&event_mutex);
- 
-@@ -5648,10 +5656,15 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
- 
- 	hist_poll_wait(file, wait);
- 
--	if (hist_file->last_read != get_hist_hit_count(event_file))
--		return EPOLLIN | EPOLLRDNORM;
-+	cnt = get_hist_hit_count(event_file);
-+	if (hist_file->last_read != cnt)
-+		ret |= EPOLLIN | EPOLLRDNORM;
-+	if (hist_file->last_act != cnt) {
-+		hist_file->last_act = cnt;
-+		ret |= EPOLLPRI;
-+	}
- 
--	return 0;
-+	return ret;
- }
- 
- static int event_hist_release(struct inode *inode, struct file *file)
-@@ -5665,6 +5678,7 @@ static int event_hist_release(struct inode *inode, struct file *file)
- 
- static int event_hist_open(struct inode *inode, struct file *file)
+diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+index d3689632e8b90..3a5c25b2adc94 100644
+--- a/kernel/kexec_elf.c
++++ b/kernel/kexec_elf.c
+@@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+ 			 struct kexec_buf *kbuf,
+ 			 unsigned long *lowest_load_addr)
  {
-+	struct trace_event_file *event_file;
- 	struct hist_file_data *hist_file;
+-	unsigned long lowest_addr = UINT_MAX;
++	unsigned long lowest_addr = ULONG_MAX;
  	int ret;
- 
-@@ -5672,16 +5686,25 @@ static int event_hist_open(struct inode *inode, struct file *file)
- 	if (ret)
- 		return ret;
- 
-+	guard(mutex)(&event_mutex);
-+
-+	event_file = event_file_data(file);
-+	if (!event_file)
-+		return -ENODEV;
-+
- 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
- 	if (!hist_file)
- 		return -ENOMEM;
-+
- 	hist_file->file = file;
-+	hist_file->last_act = get_hist_hit_count(event_file);
- 
- 	/* Clear private_data to avoid warning in single_open() */
- 	file->private_data = NULL;
- 	ret = single_open(file, hist_show, hist_file);
- 	if (ret)
- 		kfree(hist_file);
-+
- 	return ret;
- }
+ 	size_t i;
  
 -- 
 2.39.5
