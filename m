@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F16DA80269
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB63A7FDA2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE1091897D62
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD66117063B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E876125FA13;
-	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623DD267B6B;
+	Tue,  8 Apr 2025 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMSPH5pi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCj50uIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C31227EBD;
-	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F71B2676E1;
+	Tue,  8 Apr 2025 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112599; cv=none; b=LVFDF3qE40oT1Zl17RVlqci94gKNbGBDo4tXvKS097sByp1X26sQsG+brnKAJ6DhJIU0v4R72JuFokVuaTROZZFbuKbDndhpbNZIEe8WH3No9QlC3Hr9q1wU4vXJyMbimMar5mxse6hFgzG6IFR0veUdrGQrsS0poSzsQR8Sqe0=
+	t=1744109889; cv=none; b=IZH0VMeCRRkf/whlA3SnDIn7EyI1tMlbpS/+AirJrbgSZGgCFxnSkzIX4ead09dnEYHEStdniohdRLZNkUy85nUd8TyhS7gyJP131nDmK81gif3lUbgiBMA2/Q3cso4Hod3fwI5b8AgcXDxtoXaBo0JtUhMoDMb7vefEaugAsH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112599; c=relaxed/simple;
-	bh=fV6UWKzzGdoVFCaDMgR58Gu7znpgKAq9YiZrCJik7QI=;
+	s=arc-20240116; t=1744109889; c=relaxed/simple;
+	bh=RLmunSpY+eT4btsqY9/QqxlhrNco2L6q4UhWsYYeXbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/MjITlkwQRb9gCG6pCK5Se3CTLzPUBVU3cWej3oFTCb12N/nxDsJh0rksUQRwAckgW0uTWrFEgKF4l9CnjLfN6UXl0vIeBowx9YzPcbxEcGAcRcEOtP/v7skQR1dXwoXS3cy3U63W+J69yZ3D7tobf77qldOgMj4BjpldKhP2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMSPH5pi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D12C4CEE5;
-	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
+	 MIME-Version; b=gwyr/aWBGgg9hrLN8LsgFZp4gjq4AjBgWJvJV+ttjzwGpBERCQsKHV8ejug/ZvF1XumTD270xSU7XGB+yCvLBtYSV5rjxJqFSVaaVv6TgfztSl2nMDkG17NzC12v777WAwgG8iKFJY1aPNOpQo1Oj7busgywr+5mUdwpuqFOfVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCj50uIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22C9C4AF0B;
+	Tue,  8 Apr 2025 10:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112599;
-	bh=fV6UWKzzGdoVFCaDMgR58Gu7znpgKAq9YiZrCJik7QI=;
+	s=korg; t=1744109889;
+	bh=RLmunSpY+eT4btsqY9/QqxlhrNco2L6q4UhWsYYeXbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMSPH5piUnj0QFqaZcxMQxdbFZSESsX7AavYeb4akWgIYKIi4hwmAoQrbTCnfW5Kl
-	 v/oqGuyEK+9V6dbBl3GhTJkJnPama2ud2lYW33O/1NTbOkdt9uTOJ95jlMj+lSMTOn
-	 17vIBdx1fl91YtpCbMXi+IPoMOP0ifOfthAX0sRU=
+	b=KCj50uIbAgRFiNQFvLaOTAgjWEhG2D8qcW0vFnYsVsvu+l3NA2xZA3EyRinjcH2yW
+	 4w2nxW+rZwbS82zms3t7JpAjbqa54cN4gXPBNujBIdfasqVVXvk6w4Ehqaq/49nTzs
+	 K/X8LqVNFJQIQMqjB17B3oxVgJgJU1vYdQdrkpTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 078/279] smb: client: fix potential UAF in cifs_debug_files_proc_show()
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 083/227] regulator: check that dummy regulator has been probed before using it
 Date: Tue,  8 Apr 2025 12:47:41 +0200
-Message-ID: <20250408104828.451307532@linuxfoundation.org>
+Message-ID: <20250408104822.875585062@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit ca545b7f0823f19db0f1148d59bc5e1a56634502 upstream.
+commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ This patch removes lock/unlock operation in routine cifs_ses_exiting()
-  for ses_lock is not present in v5.15 and not ported yet. ses->status
-  is protected by a global lock, cifs_tcp_ses_lock, in v5.15. ]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifs_debug.c |    2 ++
- fs/cifs/cifsglob.h   |    8 ++++++++
- 2 files changed, 10 insertions(+)
+ drivers/regulator/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -183,6 +183,8 @@ static int cifs_debug_files_proc_show(st
- 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		list_for_each(tmp, &server->smb_ses_list) {
- 			ses = list_entry(tmp, struct cifs_ses, smb_ses_list);
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each(tmp1, &ses->tcon_list) {
- 				tcon = list_entry(tmp1, struct cifs_tcon, tcon_list);
- 				spin_lock(&tcon->open_file_lock);
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -2041,4 +2041,12 @@ static inline struct scatterlist *cifs_s
- 	return sg;
- }
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1924,6 +1924,10 @@ static int regulator_resolve_supply(stru
  
-+static inline bool cifs_ses_exiting(struct cifs_ses *ses)
-+{
-+	bool ret;
-+
-+	ret = ses->status == CifsExiting;
-+	return ret;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -1941,6 +1945,10 @@ static int regulator_resolve_supply(stru
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
+ 	}
+ 
+@@ -2049,8 +2057,10 @@ struct regulator *_regulator_get(struct
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
+ 
 
 
 
