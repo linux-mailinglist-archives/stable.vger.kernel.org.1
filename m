@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D311A80AD6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC4EA8084A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 867FA7A6040
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89988168C4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C3927C865;
-	Tue,  8 Apr 2025 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D4E26B2AF;
+	Tue,  8 Apr 2025 12:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh8YbiJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErvPmZEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A0F26F478;
-	Tue,  8 Apr 2025 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8681D269826;
+	Tue,  8 Apr 2025 12:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117080; cv=none; b=tZF6Rssmi1COluZaSHBFqj15pR/Xg2tP0MVJvpixstQRUjytcg8jIyNVY8bVeAYGuyZ/+QaDNk1v0lAbbnEVrxmCzlW8d37oLFlqaMhi68WhqxOWaHXB1ffExYLRYNl0jxCH98KC/h7GiOoRw2NCs/djUugHbuRH8fSWAUlm1Zk=
+	t=1744115482; cv=none; b=bqy5CNt+qk48RCuFXD5h8UMttYGNblkUsqiVg8+5dFa+1ja2VcqEVX4+n2dldaaHHqPM4F/ShVwXga221p7gDF5U3poY6TnZ+F931pZti/BfBEX58+5kgh8yJMkSJiJEAjWiCxFjE78uK8pu4EAZBFiyQrdqg2gvLvVib7bCYuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117080; c=relaxed/simple;
-	bh=959scZ3c6HxBKwp1CAJsjJAm1Edc9E2o7+xyQGNLgzw=;
+	s=arc-20240116; t=1744115482; c=relaxed/simple;
+	bh=zVbck+xKMFwoUs1n3tTKkV1MuNv1Bv3wjVwfsO8drNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nb2HvstMKUuFTclBMhvJbsiTto+Ir1XUv+eKb7ajlIwp30F9PFdS3jB9NWPpg/Z0f2mBPwWGjQsiBH8JZTTOqYtHASTkZPpZVAhu9rK/5ND4yy+r7kkLNsOZN2QGiaefgHuHlXK2GgMDB/sgebdvrcKkiilIBy01Xn6q1vcwGbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh8YbiJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9428BC4CEE5;
-	Tue,  8 Apr 2025 12:57:59 +0000 (UTC)
+	 MIME-Version; b=gHyzN2Tqx47+pUj9pEOpLnwMTdvy4KwtRXtuRwznPC+yK+adTPPkD40lezgxYV87zrhOKneTXgyaV3XmXhfKaEU3rU81GouIwgZW5AY3Tbw96ntoWQ9eJJUXm3Me5+PQsJoeM+6+U/zlMFR2j8xONgmvCFp6Lh+kMQb9dXlGiqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErvPmZEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFD9C4CEE5;
+	Tue,  8 Apr 2025 12:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117079;
-	bh=959scZ3c6HxBKwp1CAJsjJAm1Edc9E2o7+xyQGNLgzw=;
+	s=korg; t=1744115482;
+	bh=zVbck+xKMFwoUs1n3tTKkV1MuNv1Bv3wjVwfsO8drNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eh8YbiJVX1Au501CxGJHiI0AV7LxHhRp9priBQ9JMUs3Eay4Z0DH7SvbA1U0QAP6h
-	 cVyIKGIxr1cwXRj/GGZ/1aktBGZsX7jzqZ9oD6IXiDh9tiLVtDHYKbTnh7WCrY1XYq
-	 q1L7H65aOee9cp0ZxlQNimmBNcgMMq1I/edVmDKU=
+	b=ErvPmZECVOtDherZSqAXlTgT9lO6hcI4qOaiEGJVkxHQkS2tl85p3YzVfCipuVvaD
+	 1oZHWMVkrOEPnv5dD3CXL3KdHqGhhRIJ/4OnXU9HXhpLl7TFnYDWCP96QvU1ED43lO
+	 SIQJsd6jVEhFqGiy67BORyqEJSH8vC7EQLLje7uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.12 376/423] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
-Date: Tue,  8 Apr 2025 12:51:42 +0200
-Message-ID: <20250408104854.629908596@linuxfoundation.org>
+	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 491/499] media: streamzap: fix race between device disconnection and urb callback
+Date: Tue,  8 Apr 2025 12:51:43 +0200
+Message-ID: <20250408104903.604257427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
+commit f656cfbc7a293a039d6a0c7100e1c846845148c1 upstream.
 
-The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
-The same call was immediately triggered by a subsequent goto statement.
-Thus avoid such a call repetition.
+Syzkaller has reported a general protection fault at function
+ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
+dereference of dev->raw pointer, even though it is checked for NULL in
+the same function, which means there is a race condition. It occurs due
+to the incorrect order of actions in the streamzap_disconnect() function:
+rc_unregister_device() is called before usb_kill_urb(). The dev->raw
+pointer is freed and set to NULL in rc_unregister_device(), and only
+after that usb_kill_urb() waits for in-progress requests to finish.
 
-This issue was detected by using the Coccinelle software.
+If rc_unregister_device() is called while streamzap_callback() handler is
+not finished, this can lead to accessing freed resources. Thus
+rc_unregister_device() should be called after usb_kill_urb().
 
-Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/test/ntb_perf.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/rc/streamzap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
- 	dma_set_unmap(tx, unmap);
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct
+ 	if (!sz)
+ 		return;
  
- 	ret = dma_submit_error(dmaengine_submit(tx));
--	if (ret) {
--		dmaengine_unmap_put(unmap);
-+	if (ret)
- 		goto err_free_resource;
--	}
- 
- 	dmaengine_unmap_put(unmap);
+-	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
++	rc_unregister_device(sz->rdev);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
  
 
 
