@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-128992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FDEA7FD8E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D72A801CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24B8216D621
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54AA17A8FA3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372526A090;
-	Tue,  8 Apr 2025 10:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA8D266EFB;
+	Tue,  8 Apr 2025 11:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy+klQ94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okeqMIhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D689426A08C;
-	Tue,  8 Apr 2025 10:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DAD19AD5C;
+	Tue,  8 Apr 2025 11:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109826; cv=none; b=NKyG7A9ZLyILafeFYJLXf5wXquykHzbQNZQl+CdD4cTi4KeKLZke4HkHKAzplZK+t4cFCm/dQF4zs3emg2/Bh7KiTvkbMuiRNVSvt6EuXacnI4zZTwHj22zTZAbM6ofiHc8yQ+vbQOe8oJ+QQZrF+0KAVgoAVckg6nm9Zp8acnc=
+	t=1744112423; cv=none; b=T1aSvPIuGlQj+PQRFbIHFUylCIDllJ0BVvfhnDYjVz6C2DWsITA2zkWe1uDxOKKpBcLGEWy1YVbv1pXdywVbz/eBVeIFwpME81Tqte53SodC606UiXSdlYfso2gyfy0mhwZXGPsRMs0uC5ycQhO0xuN2d5iGmVznGh8Ln/HUPsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109826; c=relaxed/simple;
-	bh=yh5mIIrpa/iTxuJycjJXIKfGo7qgxfxUzDuDrsBgTOk=;
+	s=arc-20240116; t=1744112423; c=relaxed/simple;
+	bh=vwxPOaxjcZkrEQEDS0rGYVI4TjY7atPH3P6Iq3TaUL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCy2QsVyGmgH02vkP5m8u4bgptNgVSYTHnuWPBGDeEcYZBVwaNwPPFmf5EwcAyzn8KYCRNdDkqvWrpyXe9PwbOXupO4E5LjDbcJx8SAS2ylJVFIWMl7/pDp7R1gcHfFH6+hsrawWuSuZaARVmHe7c3hVMp4Ghbc3qYRCHjs9glA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy+klQ94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6786DC4CEE5;
-	Tue,  8 Apr 2025 10:57:06 +0000 (UTC)
+	 MIME-Version; b=ERcL/rjsO12ydkJ9HhUsVLVnfDOobjLgm6eLaQDEq/4EfrSbLAMCwS2g7l/iWXuTYOCAf1CnawxAUlh+IgmCaFDfucRouCUWtN5nmB2LWGmLEV9D0jQTCkb8d1PjLZO8dRM1EnTC4bTipjz+l1xUx7XoFbkvr8tEGksJWzOtC00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okeqMIhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8783C4CEE5;
+	Tue,  8 Apr 2025 11:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109826;
-	bh=yh5mIIrpa/iTxuJycjJXIKfGo7qgxfxUzDuDrsBgTOk=;
+	s=korg; t=1744112423;
+	bh=vwxPOaxjcZkrEQEDS0rGYVI4TjY7atPH3P6Iq3TaUL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qy+klQ945z2JBJey0bgTzfZpbwdgPQhTIlKEn0ZPZORbROCxioRuogjTNOXAVfYZg
-	 G9zcs19y7LcnyEvUjOsKBALhh5XHD/vuhvsXRK3LukBOlkPT/fUa/NLKq/DiVOJDax
-	 jPMXRgPZEa6HZFGqf2mf9Cek8KokTkFOP9Y/YO6k=
+	b=okeqMIhK6Rlpo3r2RmHNWQzhkJFutxABxSlKCdub98j7SxTJfHS0VTxLNf0cD6XVp
+	 iymPvQ1CBJY/vdEh/oJwbAemAL+SwTP81ZtrmwSqkijGS5DSpEQhOjHYQABKHRclnt
+	 TDB3AhN6u7hgsfNTPDq5+vw+Uw53DjBgzHUBTD3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/227] firmware: imx-scu: fix OF node leak in .probe()
-Date: Tue,  8 Apr 2025 12:47:25 +0200
-Message-ID: <20250408104822.414477127@linuxfoundation.org>
+	Yi Lai <yi1.lai@intel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Chen Linxuan <chenlinxuan@deepin.org>
+Subject: [PATCH 5.15 063/279] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Tue,  8 Apr 2025 12:47:26 +0200
+Message-ID: <20250408104828.046711846@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
+commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f upstream.
 
-imx_scu_probe() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it. Add a of_node_put() call
-after done with the node.
+>From memfd_secret(2) manpage:
 
-Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  The memory areas backing the file created with memfd_secret(2) are
+  visible only to the processes that have access to the file descriptor.
+  The memory region is removed from the kernel page tables and only the
+  page tables of the processes holding the file descriptor map the
+  corresponding physical memory. (Thus, the pages in the region can't be
+  accessed by the kernel itself, so that, for example, pointers to the
+  region can't be passed to system calls.)
+
+We need to handle this special case gracefully in build ID fetching
+code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
+family of APIs. Original report and repro can be found in [0].
+
+  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+
+Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+[ Chen Linxuan: backport same logic without folio-based changes ]
+Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/imx/imx-scu.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/buildid.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index dca79caccd01c..fa25c082109ac 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -279,6 +279,7 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		return ret;
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/secretmem.h>
  
- 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
-+	of_node_put(args.np);
+ #define BUILD_ID 3
  
- 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
- 	for (i = 0; i < num_channel; i++) {
--- 
-2.39.5
-
+@@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct
+ 	if (!vma->vm_file)
+ 		return -EINVAL;
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (vma_is_secretmem(vma))
++		return -EFAULT;
++
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
 
 
 
