@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37ED4A80B02
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFD5A80850
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F271BC3B3F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C71A1B6738B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4A927815B;
-	Tue,  8 Apr 2025 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD8226FDBD;
+	Tue,  8 Apr 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mn10oNh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgSL11pg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A3226981C;
-	Tue,  8 Apr 2025 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B38826FDBF;
+	Tue,  8 Apr 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116881; cv=none; b=QzcbLkuyXosV5lsOh326NGV56JZKKU4AhwTxzu6J7UZFj2MQAswPnRxP8FEAlnwGejjiZVw8LcTQ+DXn2IGHlCeaXUSR5ImKMJgH+QVwxcm7KwIYRwtKjqbSAoN1J51GouhHDBtbhVROax04pncbhYTB3skyY4qSuW+OUnqsob0=
+	t=1744115672; cv=none; b=aUtD8Wy+uEfmGKq7SH97euVr5DfE2MUg7GeCyrBfs6+nlElgpZAU21zOxOo+0le/MNND6vXnW68S9OaawhKclFtJAtd3/kVW93+hNYpIQU3Jqk+0gNIwEThF8+wDNFWvlFwW/v7qCsARBuezLCs+SfbXAMcBJp8JfdypG/h8hpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116881; c=relaxed/simple;
-	bh=vmHgK7pPAhUyP6YjXzXmxCOtvNhzlGZk/WvJH01V8K8=;
+	s=arc-20240116; t=1744115672; c=relaxed/simple;
+	bh=BGSr4fQ++AZaSsOHkS38+OkxNJbgXQmuvMb+pwoVDbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2gPlrYXHmaXID+yITW2mVgPLbmJOOoeSTmqinmZ4Xi2Lc9Z+tRqli8MZr++GYgCh+4PJgbAmJYt203FX/8EL2fLHRVYbRVYLaTLtukWg9fKH9RtNKKV3xJIOmXR6YMHJHKzcSDSNp6wLBjAlobii9SPvaRRuCnpSL8XsI/TWtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mn10oNh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E81C4CEE5;
-	Tue,  8 Apr 2025 12:54:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HolxtnXzdUtXt03nD3sedUqS4zNS3qpE4ye9e2DNz5H9OJjS8CrRX5m3C8WxuFsCzhAdp5jZM8OPNwt58OzxjI//FJ0LqP37zJX8zZzALxYmcfheUucdsKMiyzP/TMqG73kcVAE4tYSBXrDu2y56E5b5VtoEe7AqEjVFjRpCtYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgSL11pg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24897C4CEEA;
+	Tue,  8 Apr 2025 12:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116881;
-	bh=vmHgK7pPAhUyP6YjXzXmxCOtvNhzlGZk/WvJH01V8K8=;
+	s=korg; t=1744115672;
+	bh=BGSr4fQ++AZaSsOHkS38+OkxNJbgXQmuvMb+pwoVDbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mn10oNh/H/aH0Y2LHIeZNUihhu106kvL3aEiP1T4cpm4jFW5JowktdeGu3+emkFeQ
-	 pdOg9Nrnx9ZYgmpcAvb7gW8EghBNio8s5bB7uvJ+eHZO8rorp5Rv+IckWMCXyKw8lf
-	 YliNysdy6TY+yA/xfg0Z2Ptqd7fSkGJ+YTVas7CU=
+	b=UgSL11pgwTrNNjtk9E5khcImWD1m6ekuZVSo/HaOCXWUlI7Jo5Tyh5HgZ98Wz8gSM
+	 /vtbbER+JNYlVINieei2dXd6Vb+sotOjpkDdmeL7mqjfTY2CzB1xrAsCeGEBNAM43b
+	 fKMD6smHMcUsA8SunorCT8Nor6L/L2x5h6Td8uco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Gospodnetich <me@kylegospodneti.ch>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/423] ALSA: hda/realtek: Fix Asus Z13 2025 audio
+Subject: [PATCH 6.1 060/204] clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock
 Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104851.897992833@linuxfoundation.org>
+Message-ID: <20250408104822.114432631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit 12784ca33b62fd327631749e6a0cd2a10110a56c ]
+[ Upstream commit cdc59600bccf2cb4c483645438a97d4ec55f326b ]
 
-Use the basic quirk for this type of amplifier. Sound works in speakers,
-headphones, and microphone. Whereas none worked before.
+This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
+GDSC is under HW control so it can be turned off at any moment.
+Instead of checking the dependent clock we can just vote for it to
+enable later when GDSC gets turned on.
 
-Tested-by: Kyle Gospodnetich <me@kylegospodneti.ch>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://patch.msgid.link/20250227175107.33432-3-lkml@antheas.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 9bb6cfc3c77e6 ("clk: qcom: Add Global Clock Controller driver for MSM8953")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20250315-clock-fix-v1-2-2efdc4920dda@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gcc-msm8953.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 20b3586e4cb6f..ae6b6186c7854 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10718,6 +10718,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f1f, "ASUS H7604JI/JV/J3D", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
-+	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+diff --git a/drivers/clk/qcom/gcc-msm8953.c b/drivers/clk/qcom/gcc-msm8953.c
+index 8aafa6591e845..3b32830f7466a 100644
+--- a/drivers/clk/qcom/gcc-msm8953.c
++++ b/drivers/clk/qcom/gcc-msm8953.c
+@@ -3771,7 +3771,7 @@ static struct clk_branch gcc_venus0_axi_clk = {
+ 
+ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
+ 	.halt_reg = 0x4c02c,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x4c02c,
+ 		.enable_mask = BIT(0),
 -- 
 2.39.5
 
