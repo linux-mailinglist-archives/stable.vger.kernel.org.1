@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F3FA80B59
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79392A807BF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BF134E47A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9907D4C4412
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB07426F456;
-	Tue,  8 Apr 2025 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0D526AA8F;
+	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkyCF8Vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyZpYvcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58DE27C163;
-	Tue,  8 Apr 2025 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAAD268C66;
+	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116989; cv=none; b=r3rDqPinBuZ1CBTF0eH4pfpgKWt8Zk5oc+B/SLAPU0gIfcpEX5vopk312dIqe+LVqX/3Vt0/lGi34VyPEGozPqPtb+dlDrI4VM+V7+Y7XbIMuklp20QWUiRN/+u4P6sRkqEa2iTWrrF+p/AAo/aeOki836vMteoXmW1+GDJzunA=
+	t=1744115391; cv=none; b=eHFUOld3b0LofiR7YGyC0gHRRqA92IDLCOT6H/+EHeP55ETpv55SIpszPEmV7XsBCAH4RlaoI/MwYT0VSKYQVxd7dzOoy+nnqHSK/UTn5Zg80bOoYqms0vRn9E23fPKHckIi3CPZ5SVpJ1G68Rn8/33y2vSe3sk0VekVGNY4754=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116989; c=relaxed/simple;
-	bh=d1u7E6BDk0v7gKFv2r+IahjM5ePFekXoupHNaFfzCYQ=;
+	s=arc-20240116; t=1744115391; c=relaxed/simple;
+	bh=uqLPDvk8NHB1Q7dJEO7DDCaTIlaG+nf29l+acQ/05dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mke5YlqLoNA8K2YNNl7dKVPvBmYi5aaBqgBjLrxUPG9otaLgHfnrVDgKZNGa18axj2JIa2S3mYqVPCKmYJvQ9DERVUzDNsQFizi6ZKUDL/3WKE2tnq12B2HAeN9AofwtCSFbQkfRobNrJNQhXYurAwxP0PHm40lYdS912hU+aHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkyCF8Vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8866FC4CEE5;
-	Tue,  8 Apr 2025 12:56:28 +0000 (UTC)
+	 MIME-Version; b=uZi4n04qEsjTiNcGwW9sFb/7f5rjmL1yWo4sQ5tpx1/6hOXhz4QLPuvxBXCoM8m41SCZXrUcv3FYLP7MRiBVYWnqw6Y+1fiqgFuuf6CyO/7T1MfsVrU0ga6m0nmEVzpPFT8XmLOZbD08aOON6lFfTMPTGYthAW8ipX8N1ej0q3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyZpYvcP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C902C4CEEA;
+	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116988;
-	bh=d1u7E6BDk0v7gKFv2r+IahjM5ePFekXoupHNaFfzCYQ=;
+	s=korg; t=1744115391;
+	bh=uqLPDvk8NHB1Q7dJEO7DDCaTIlaG+nf29l+acQ/05dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rkyCF8Vnb3d+zGkLHvgEL30Kkzx7ieJeCypZ8Q2Ik7KKARR1tkWG9NEPiHeVPljC2
-	 KfHQJF+i/O/yWGZChFIG7UsGSS6TDrcWgOhflCc8zYqnEzWNk5agAKXa2EhbFlrP/h
-	 5FP/NEbsOF+5RQpMFfh7p6WhonrTqcqvlsoiw+Yc=
+	b=QyZpYvcPXqfEe1nO21qs04Asfy8QvZ0h67ZWGQRnAuusqkb+58ueUftPFvz/p5J8J
+	 Ttxg4h1uQMdpOfdNZa+C2EclOJbLDefrOQ7PwnCyh0PIsQ7HwxhconrQAIZF7ml9aM
+	 qCv9rW3YF+czvczgLsZwqSbpzmJY27Zna2NrTWVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 341/423] ipv6: Start path selection from the first nexthop
-Date: Tue,  8 Apr 2025 12:51:07 +0200
-Message-ID: <20250408104853.780426762@linuxfoundation.org>
+	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.13 456/499] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Date: Tue,  8 Apr 2025 12:51:08 +0200
+Message-ID: <20250408104902.606960230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 4d0ab3a6885e3e9040310a8d8f54503366083626 ]
+commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
 
-Cited commit transitioned IPv6 path selection to use hash-threshold
-instead of modulo-N. With hash-threshold, each nexthop is assigned a
-region boundary in the multipath hash function's output space and a
-nexthop is chosen if the calculated hash is smaller than the nexthop's
-region boundary.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-Hash-threshold does not work correctly if path selection does not start
-with the first nexthop. For example, if fib6_select_path() is always
-passed the last nexthop in the group, then it will always be chosen
-because its region boundary covers the entire hash function's output
-space.
+Furthermore, it is best to return EINVAL immediately upon seeing the
+invalid user input.  The WARNING is insufficient to prevent further
+undefined behavior based on other invalid user input.
 
-Fix this by starting the selection process from the first nexthop and do
-not consider nexthops for which rt6_score_route() provided a negative
-score.
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
 
-Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
-Reported-by: Stanislav Fomichev <stfomichev@gmail.com>
-Closes: https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250402114224.293392-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[iweiny: update commit message]
+
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/acpi/nfit/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index b393c37d24245..54ce948835a09 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -412,11 +412,35 @@ static bool rt6_check_expired(const struct rt6_info *rt)
- 	return false;
- }
- 
-+static struct fib6_info *
-+rt6_multipath_first_sibling_rcu(const struct fib6_info *rt)
-+{
-+	struct fib6_info *iter;
-+	struct fib6_node *fn;
-+
-+	fn = rcu_dereference(rt->fib6_node);
-+	if (!fn)
-+		goto out;
-+	iter = rcu_dereference(fn->leaf);
-+	if (!iter)
-+		goto out;
-+
-+	while (iter) {
-+		if (iter->fib6_metric == rt->fib6_metric &&
-+		    rt6_qualify_for_ecmp(iter))
-+			return iter;
-+		iter = rcu_dereference(iter->fib6_next);
-+	}
-+
-+out:
-+	return NULL;
-+}
-+
- void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		      struct flowi6 *fl6, int oif, bool have_oif_match,
- 		      const struct sk_buff *skb, int strict)
- {
--	struct fib6_info *match = res->f6i;
-+	struct fib6_info *first, *match = res->f6i;
- 	struct fib6_info *sibling;
- 
- 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
-@@ -440,10 +464,18 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		return;
- 	}
- 
--	if (fl6->mp_hash <= atomic_read(&match->fib6_nh->fib_nh_upper_bound))
-+	first = rt6_multipath_first_sibling_rcu(match);
-+	if (!first)
- 		goto out;
- 
--	list_for_each_entry_rcu(sibling, &match->fib6_siblings,
-+	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
-+	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
-+			    strict) >= 0) {
-+		match = first;
-+		goto out;
-+	}
-+
-+	list_for_each_entry_rcu(sibling, &first->fib6_siblings,
- 				fib6_siblings) {
- 		const struct fib6_nh *nh = sibling->fib6_nh;
- 		int nh_upper_bound;
--- 
-2.39.5
-
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
 
 
 
