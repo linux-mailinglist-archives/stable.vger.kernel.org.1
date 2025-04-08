@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-131624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51DAA80BCC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BB7A80453
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2731E9054EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E5319E33F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F967278171;
-	Tue,  8 Apr 2025 12:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B9B26981F;
+	Tue,  8 Apr 2025 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIIdx0eS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upkqHFl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBFA26E164;
-	Tue,  8 Apr 2025 12:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DC269823;
+	Tue,  8 Apr 2025 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116900; cv=none; b=VgWNhIFHbRTpACisNxaaZ2JUpeAf7RJEaWO9UxrMtJIWYQ8Tes8hsmmKRwYBW68SYYHMIpuBhbRfoCHhTbSkpfySiNGRnPgTRaSHR1SLzp+hGUfSr9iFllaXhYc1UVP+5HCHikHbm4M6/9GnZ2kIo9SAhWP02fkfc0GrQXpACZE=
+	t=1744113620; cv=none; b=jljx6RmVKlr+6gvUWLwL52mv7oeEtbUD9VVhEvLLpua70nSVQXp2QbZ6JsVRw8rkY0KhMPpQtuthADhSPRSYykA05XvZ/q4fdTADbG+68ZdTo9TTPNdGAVIkyeBLDMLlWTJFH1Zh0JDCraLUvq8hAJPC/IsnDBXhPSOktb+jdv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116900; c=relaxed/simple;
-	bh=aqasfx2PcvVbQn2ebJqyIz3VRehVxA3FAfnf/oi6/jM=;
+	s=arc-20240116; t=1744113620; c=relaxed/simple;
+	bh=kNQilbdSLlZnJ/73cbcr6fmajA84b0L4bK8+J7o6fXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aV+Ym2/D7NitjUG5tZ181p4AbKEowauPJk71fNl+WROIdAJLAebB4vTeRBBHGZ+ioKhtYIEIyOgVOpJ5A8VJtYPWehwOBimwqG/657CnoKLsZ9SUR1wDocUPK+mcVCaRx/UzIhndSvu0MX7fS3m+2lqAIlZdo7BuIJwu5wyCY7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIIdx0eS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3248AC4CEEB;
-	Tue,  8 Apr 2025 12:54:59 +0000 (UTC)
+	 MIME-Version; b=hnB4caNzTgXmN4RgB3tEq4H04Aqkl8w9tp5BKmPbpSGdfiut+vplr66qtJjmYJZnVrzEVC03tCwsXDqzvmcUrSLWA/5v+9SaFDyDTyjkn81s5wzrYffYiDONvZf4uR8FVnASm+3XTtno3GbEJ3m+zIcolOtBR8WKX+jgadnTKQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upkqHFl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED27AC4CEE5;
+	Tue,  8 Apr 2025 12:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116899;
-	bh=aqasfx2PcvVbQn2ebJqyIz3VRehVxA3FAfnf/oi6/jM=;
+	s=korg; t=1744113620;
+	bh=kNQilbdSLlZnJ/73cbcr6fmajA84b0L4bK8+J7o6fXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIIdx0eSrZc//jY9GJurX1gbUpGOYJMJhB//7KYBgbyg5wm/qDQv622cW0Roo2lhJ
-	 6PfEz04u2aHCK48KPxWXpt5PWc1QCgDD2pl1t8y6spdzQHbMqst6GDilnu4rfUUTT9
-	 nFJR3SPGoHZ2kRDNT9LF/daWfuXbCwaT/eYHVB3c=
+	b=upkqHFl+s7u/n7tdEVCxJ/opd0eEP1rhKfZ1QpPxx2gQkidmFH56DJZYm3IOIFcxH
+	 fwoTnxbfNNNjs9RwIL6zLA11f4GaX1jpdGqbC3n8+qRpu0MqAmGJOHHHSQ0Iu+hFwe
+	 TdZ+ABVU/9BzVKnz0bnvIwKP29FJ/bGP7trL4zG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Lichtner <olichtne@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Herton R. Krzesinski" <herton@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/423] x86/uaccess: Improve performance by aligning writes to 8 bytes in copy_user_generic(), on non-FSRM/ERMS CPUs
+Subject: [PATCH 6.6 226/268] tracing/hist: Add poll(POLLIN) support on hist file
 Date: Tue,  8 Apr 2025 12:50:37 +0200
-Message-ID: <20250408104853.047111031@linuxfoundation.org>
+Message-ID: <20250408104834.681326102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,191 +65,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herton R. Krzesinski <herton@redhat.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b5322b6ec06a6c58650f52abcd2492000396363b ]
+[ Upstream commit 1bd13edbbed6e7e396f1aab92b224a4775218e68 ]
 
-History of the performance regression:
-======================================
+Add poll syscall support on the `hist` file. The Waiter will be waken
+up when the histogram is updated with POLLIN.
 
-Since the following series of user copy updates were merged upstream
-~2 years ago via:
+Currently, there is no way to wait for a specific event in userspace.
+So user needs to peek the `trace` periodicaly, or wait on `trace_pipe`.
+But it is not a good idea to peek at the `trace` for an event that
+randomly happens. And `trace_pipe` is not coming back until a page is
+filled with events.
 
-  a5624566431d ("Merge branch 'x86-rep-insns': x86 user copy clarifications")
+This allows a user to wait for a specific event on the `hist` file. User
+can set a histogram trigger on the event which they want to monitor
+and poll() on its `hist` file. Since this poll() returns POLLIN, the next
+poll() will return soon unless a read() happens on that hist file.
 
-.. copy_user_generic() on x86_64 stopped doing alignment of the
-writes to the destination to a 8 byte boundary for the non FSRM case.
+NOTE: To read the hist file again, you must set the file offset to 0,
+but just for monitoring the event, you may not need to read the
+histogram.
 
-Previously, this was done through the ALIGN_DESTINATION macro that
-was used in the now removed copy_user_generic_unrolled function.
-
-Turns out this change causes some loss of performance/throughput on
-some use cases and specific CPU/platforms without FSRM and ERMS.
-
-Lately I got two reports of performance/throughput issues after a
-RHEL 9 kernel pulled the same upstream series with updates to user
-copy functions. Both reports consisted of running specific
-networking/TCP related testing using iperf3.
-
-Partial upstream fix
-====================
-
-The first report was related to a Linux Bridge testing using VMs on a
-specific machine with an AMD CPU (EPYC 7402), and after a brief
-investigation it turned out that the later change via:
-
-  ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
-
-... helped/fixed the performance issue.
-
-However, after the later commit/fix was applied, then I got another
-regression reported in a multistream TCP test on a 100Gbit mlx5 nic, also
-running on an AMD based platform (AMD EPYC 7302 CPU), again that was using
-iperf3 to run the test. That regression was after applying the later
-fix/commit, but only this didn't help in telling the whole history.
-
-Testing performed to pinpoint residual regression
-=================================================
-
-So I narrowed down the second regression use case, but running it
-without traffic through a NIC, on localhost, in trying to narrow down
-CPU usage and not being limited by other factor like network bandwidth.
-I used another system also with an AMD CPU (AMD EPYC 7742). Basically,
-I run iperf3 in server and client mode in the same system, for example:
-
- - Start the server binding it to CPU core/thread 19:
-   $ taskset -c 19 iperf3 -D -s -B 127.0.0.1 -p 12000
-
- - Start the client always binding/running on CPU core/thread 17, using
-   perf to get statistics:
-   $ perf stat -o stat.txt taskset -c 17 iperf3 -c 127.0.0.1 -b 0/1000 -V \
-       -n 50G --repeating-payload -l 16384 -p 12000 --cport 12001 2>&1 \
-       > stat-19.txt
-
-For the client, always running/pinned to CPU 17. But for the iperf3 in
-server mode, I did test runs using CPUs 19, 21, 23 or not pinned to any
-specific CPU. So it basically consisted with four runs of the same
-commands, just changing the CPU which the server is pinned, or without
-pinning by removing the taskset call before the server command. The CPUs
-were chosen based on NUMA node they were on, this is the relevant output
-of lscpu on the system:
-
-  $ lscpu
-  ...
-    Model name:             AMD EPYC 7742 64-Core Processor
-  ...
-  Caches (sum of all):
-    L1d:                    2 MiB (64 instances)
-    L1i:                    2 MiB (64 instances)
-    L2:                     32 MiB (64 instances)
-    L3:                     256 MiB (16 instances)
-  NUMA:
-    NUMA node(s):           4
-    NUMA node0 CPU(s):      0,1,8,9,16,17,24,25,32,33,40,41,48,49,56,57,64,65,72,73,80,81,88,89,96,97,104,105,112,113,120,121
-    NUMA node1 CPU(s):      2,3,10,11,18,19,26,27,34,35,42,43,50,51,58,59,66,67,74,75,82,83,90,91,98,99,106,107,114,115,122,123
-    NUMA node2 CPU(s):      4,5,12,13,20,21,28,29,36,37,44,45,52,53,60,61,68,69,76,77,84,85,92,93,100,101,108,109,116,117,124,125
-    NUMA node3 CPU(s):      6,7,14,15,22,23,30,31,38,39,46,47,54,55,62,63,70,71,78,79,86,87,94,95,102,103,110,111,118,119,126,127
-  ...
-
-So for the server run, when picking a CPU, I chose CPUs to be not on the same
-node. The reason is with that I was able to get/measure relevant
-performance differences when changing the alignment of the writes to the
-destination in copy_user_generic.
-
-Testing shows up to +81% performance improvement under iperf3
-=============================================================
-
-Here's a summary of the iperf3 runs:
-
-  # Vanilla upstream alignment:
-
-		     CPU      RATE          SYS          TIME     sender-receiver
-	Server bind   19: 13.0Gbits/sec 28.371851000 33.233499566 86.9%-70.8%
-	Server bind   21: 12.9Gbits/sec 28.283381000 33.586486621 85.8%-69.9%
-	Server bind   23: 11.1Gbits/sec 33.660190000 39.012243176 87.7%-64.5%
-	Server bind none: 18.9Gbits/sec 19.215339000 22.875117865 86.0%-80.5%
-
-  # With the attached patch (aligning writes in non ERMS/FSRM case):
-
-		     CPU      RATE          SYS          TIME     sender-receiver
-	Server bind   19: 20.8Gbits/sec 14.897284000 20.811101382 75.7%-89.0%
-	Server bind   21: 20.4Gbits/sec 15.205055000 21.263165909 75.4%-89.7%
-	Server bind   23: 20.2Gbits/sec 15.433801000 21.456175000 75.5%-89.8%
-	Server bind none: 26.1Gbits/sec 12.534022000 16.632447315 79.8%-89.6%
-
-So I consistently got better results when aligning the write. The
-results above were run on 6.14.0-rc6/rc7 based kernels. The sys is sys
-time and then the total time to run/transfer 50G of data. The last
-field is the CPU usage of sender/receiver iperf3 process. It's also
-worth to note that each pair of iperf3 runs may get slightly different
-results on each run, but I always got consistent higher results with
-the write alignment for this specific test of running the processes
-on CPUs in different NUMA nodes.
-
-Linus Torvalds helped/provided this version of the patch. Initially I
-proposed a version which aligned writes for all cases in
-rep_movs_alternative, however it used two extra registers and thus
-Linus provided an enhanced version that only aligns the write on the
-large_movsq case, which is sufficient since the problem happens only
-on those AMD CPUs like ones mentioned above without ERMS/FSRM, and
-also doesn't require using extra registers. Also, I validated that
-aligning only on large_movsq case is really enough for getting the
-performance back.
-
-I also tested this patch on an old Intel based non-ERMS/FRMS system
-(with Xeon E5-2667 - Sandy Bridge based) and didn't get any problems:
-no performance enhancement but also no regression either, using the
-same iperf3 based benchmark. Also newer Intel processors after
-Sandy Bridge usually have ERMS and should not be affected by this change.
-
-[ mingo: Updated the changelog. ]
-
-Fixes: ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
-Fixes: 034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
-Reported-by: Ondrej Lichtner <olichtne@redhat.com>
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250320142213.2623518-1-herton@redhat.com
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/173527247756.464571.14236296701625509931.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/copy_user_64.S | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ include/linux/trace_events.h     | 14 +++++++
+ kernel/trace/trace_events.c      | 14 +++++++
+ kernel/trace/trace_events_hist.c | 70 ++++++++++++++++++++++++++++++--
+ 3 files changed, 95 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
-index fc9fb5d061744..b8f74d80f35c6 100644
---- a/arch/x86/lib/copy_user_64.S
-+++ b/arch/x86/lib/copy_user_64.S
-@@ -74,6 +74,24 @@ SYM_FUNC_START(rep_movs_alternative)
- 	_ASM_EXTABLE_UA( 0b, 1b)
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index aa1bc41726620..fe95d13c5e4d8 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -683,6 +683,20 @@ struct trace_event_file {
+ 	atomic_t		tm_ref;	/* trigger-mode reference counter */
+ };
  
- .Llarge_movsq:
-+	/* Do the first possibly unaligned word */
-+0:	movq (%rsi),%rax
-+1:	movq %rax,(%rdi)
++#ifdef CONFIG_HIST_TRIGGERS
++extern struct irq_work hist_poll_work;
++extern wait_queue_head_t hist_poll_wq;
 +
-+	_ASM_EXTABLE_UA( 0b, .Lcopy_user_tail)
-+	_ASM_EXTABLE_UA( 1b, .Lcopy_user_tail)
++static inline void hist_poll_wakeup(void)
++{
++	if (wq_has_sleeper(&hist_poll_wq))
++		irq_work_queue(&hist_poll_work);
++}
 +
-+	/* What would be the offset to the aligned destination? */
-+	leaq 8(%rdi),%rax
-+	andq $-8,%rax
-+	subq %rdi,%rax
++#define hist_poll_wait(file, wait)	\
++	poll_wait(file, &hist_poll_wq, wait)
++#endif
 +
-+	/* .. and update pointers and count to match */
-+	addq %rax,%rdi
-+	addq %rax,%rsi
-+	subq %rax,%rcx
+ #define __TRACE_EVENT_FLAGS(name, value)				\
+ 	static int __init trace_init_flags_##name(void)			\
+ 	{								\
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 15041912c277d..562efd6685726 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -3077,6 +3077,20 @@ static bool event_in_systems(struct trace_event_call *call,
+ 	return !*p || isspace(*p) || *p == ',';
+ }
+ 
++#ifdef CONFIG_HIST_TRIGGERS
++/*
++ * Wake up waiter on the hist_poll_wq from irq_work because the hist trigger
++ * may happen in any context.
++ */
++static void hist_poll_event_irq_work(struct irq_work *work)
++{
++	wake_up_all(&hist_poll_wq);
++}
 +
-+	/* make %rcx contain the number of words, %rax the remainder */
- 	movq %rcx,%rax
- 	shrq $3,%rcx
- 	andl $7,%eax
++DEFINE_IRQ_WORK(hist_poll_work, hist_poll_event_irq_work);
++DECLARE_WAIT_QUEUE_HEAD(hist_poll_wq);
++#endif
++
+ static struct trace_event_file *
+ trace_create_new_event(struct trace_event_call *call,
+ 		       struct trace_array *tr)
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 755db2451fb2d..49b7811dec9f8 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5322,6 +5322,8 @@ static void event_hist_trigger(struct event_trigger_data *data,
+ 
+ 	if (resolve_var_refs(hist_data, key, var_ref_vals, true))
+ 		hist_trigger_actions(hist_data, elt, buffer, rec, rbe, key, var_ref_vals);
++
++	hist_poll_wakeup();
+ }
+ 
+ static void hist_trigger_stacktrace_print(struct seq_file *m,
+@@ -5601,15 +5603,36 @@ static void hist_trigger_show(struct seq_file *m,
+ 		   n_entries, (u64)atomic64_read(&hist_data->map->drops));
+ }
+ 
++struct hist_file_data {
++	struct file *file;
++	u64 last_read;
++};
++
++static u64 get_hist_hit_count(struct trace_event_file *event_file)
++{
++	struct hist_trigger_data *hist_data;
++	struct event_trigger_data *data;
++	u64 ret = 0;
++
++	list_for_each_entry(data, &event_file->triggers, list) {
++		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST) {
++			hist_data = data->private_data;
++			ret += atomic64_read(&hist_data->map->hits);
++		}
++	}
++	return ret;
++}
++
+ static int hist_show(struct seq_file *m, void *v)
+ {
++	struct hist_file_data *hist_file = m->private;
+ 	struct event_trigger_data *data;
+ 	struct trace_event_file *event_file;
+ 	int n = 0;
+ 
+ 	guard(mutex)(&event_mutex);
+ 
+-	event_file = event_file_file(m->private);
++	event_file = event_file_file(hist_file->file);
+ 	if (unlikely(!event_file))
+ 		return -ENODEV;
+ 
+@@ -5617,27 +5640,68 @@ static int hist_show(struct seq_file *m, void *v)
+ 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
+ 			hist_trigger_show(m, data, n++);
+ 	}
++	hist_file->last_read = get_hist_hit_count(event_file);
++
+ 	return 0;
+ }
+ 
++static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wait)
++{
++	struct trace_event_file *event_file;
++	struct seq_file *m = file->private_data;
++	struct hist_file_data *hist_file = m->private;
++
++	guard(mutex)(&event_mutex);
++
++	event_file = event_file_data(file);
++	if (!event_file)
++		return EPOLLERR;
++
++	hist_poll_wait(file, wait);
++
++	if (hist_file->last_read != get_hist_hit_count(event_file))
++		return EPOLLIN | EPOLLRDNORM;
++
++	return 0;
++}
++
++static int event_hist_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *m = file->private_data;
++	struct hist_file_data *hist_file = m->private;
++
++	kfree(hist_file);
++	return tracing_single_release_file_tr(inode, file);
++}
++
+ static int event_hist_open(struct inode *inode, struct file *file)
+ {
++	struct hist_file_data *hist_file;
+ 	int ret;
+ 
+ 	ret = tracing_open_file_tr(inode, file);
+ 	if (ret)
+ 		return ret;
+ 
++	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
++	if (!hist_file)
++		return -ENOMEM;
++	hist_file->file = file;
++
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+-	return single_open(file, hist_show, file);
++	ret = single_open(file, hist_show, hist_file);
++	if (ret)
++		kfree(hist_file);
++	return ret;
+ }
+ 
+ const struct file_operations event_hist_fops = {
+ 	.open = event_hist_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+-	.release = tracing_single_release_file_tr,
++	.release = event_hist_release,
++	.poll = event_hist_poll,
+ };
+ 
+ #ifdef CONFIG_HIST_TRIGGERS_DEBUG
 -- 
 2.39.5
 
