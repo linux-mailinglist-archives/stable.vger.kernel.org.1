@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-131473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8A9A80A38
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C181BA80A97
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02E38C584E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9078C5BCF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49FC26E149;
-	Tue,  8 Apr 2025 12:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB8D26B2A3;
+	Tue,  8 Apr 2025 12:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR6+75P5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNlGJE2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EF7269AF5;
-	Tue,  8 Apr 2025 12:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CD62676FA;
+	Tue,  8 Apr 2025 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116494; cv=none; b=ttDlVt3CJuzwgGXHSPVjwmL/Yt3Ij/l2woRkC5X6vtnZhYjnGq+WT6h02isAjj/i0DIusJ5wk4/8ckuQm+29IrR0cy4P+g5IJiiq55GAJxgRHy7BuovwA1inbvlsTTK32POqT+lVAdtWTO/r+A9rVPaamNFE4fvvNvZSoNgMPqc=
+	t=1744116500; cv=none; b=LzvlrgcVCZ4sARrJIrLbtddujID3ZIxUYVQKoxuWQEGDW3Y43/3tDJ1EekqDraoq+u71gR02cQ7j31kan8zwKXnN6MtpkDncCGgvjUsnP/WHyl5k2aWizCrDMxeg71wAbN0oZEZ/0LFu+AZlhjtfvyuwtrxc2SuFGjZXfTComNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116494; c=relaxed/simple;
-	bh=hgu9JVcXpQr0+Mpz97cHCeKOFAacsD2qR4ZzU8wp7yg=;
+	s=arc-20240116; t=1744116500; c=relaxed/simple;
+	bh=uHvyaUHQ937SmdHq9Pfmh+gt0JEyiiX9BM9Rr0Xa8v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utoGzHpzuOo0aKCRR/n0A9eW4lfdxjwl48z5oE+PpV7l91yXsSNCX9/rZZsyArcsx4bxdlV6cMqfI9mWp/CvL5kw4o8kiSXZCda34GemPy4JLHzCzMj+IW8WUcXykDIZKnx1ojctOnPnMPHCjd+dXOaYsnFRhAW7B6kSOlw3PmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR6+75P5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CCEC4CEE7;
-	Tue,  8 Apr 2025 12:48:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yn9pdLP7EIMbwXYPWTHCb5pC7u5P/ZXnPH1RKyYPjf9M5NStelO20tXFS0FoZz808d8/zqYaFFgS1l9Dacy3R7lxphixi85x6gwWsMLL8pj3mQ6atwDiQeThhrOrXh2F+zgSqCleIP4v8gxdTAfzquXw5s1vgmKEoNyg/OTG4B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNlGJE2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4B9C4CEE5;
+	Tue,  8 Apr 2025 12:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116494;
-	bh=hgu9JVcXpQr0+Mpz97cHCeKOFAacsD2qR4ZzU8wp7yg=;
+	s=korg; t=1744116499;
+	bh=uHvyaUHQ937SmdHq9Pfmh+gt0JEyiiX9BM9Rr0Xa8v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR6+75P5+wKflzqUf4bYz8nmVahZgbIwXC2Gs1OzitJn0+Uqx+eqLLDHFTpqrSBGm
-	 V3FRqSNJg+mJ9BErh4nJyyUn63fIdtIe9pHX9f8m1zpBd5aWyxnTI1wrY0TEUzRhLT
-	 Xuj+be31OpPkzFf/tQHeLZoXIOYC+1mLi/S0umWQ=
+	b=LNlGJE2jYCl/eImdkzjORstS6mfEoKVIgnGIPEpdk+OXPZrgkFF7HmvKgTcebxcAP
+	 ldLjLMBXWb9qH4FWd31Qsqx3URaktCGOeyQcu97xj1a4JuekhSZriyhLmi04HCPuqz
+	 pZ/+JDGernA7uinLbK7ZUfLeKJVqyuWW+pUiBTdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexis GUILLEMET <alexis.guillemet@dunasys.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/423] pinctrl: intel: Fix wrong bypass assignment in intel_pinctrl_probe_pwm()
-Date: Tue,  8 Apr 2025 12:48:06 +0200
-Message-ID: <20250408104849.466339392@linuxfoundation.org>
+Subject: [PATCH 6.12 161/423] clk: qcom: mmcc-sdm660: fix stuck video_subcore0 clock
+Date: Tue,  8 Apr 2025 12:48:07 +0200
+Message-ID: <20250408104849.488251042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -61,42 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 0eee258cdf172763502f142d85e967f27a573be0 ]
+[ Upstream commit 000cbe3896c56bf5c625e286ff096533a6b27657 ]
 
-When instantiating PWM, the bypass should be set to false. The field
-is used for the selected Intel SoCs that do not have PWM feature enabled
-in their pin control IPs.
+This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
+GDSC is under HW control so it can be turned off at any moment.
+Instead of checking the dependent clock we can just vote for it to
+enable later when GDSC gets turned on.
 
-Fixes: eb78d3604d6b ("pinctrl: intel: Enumerate PWM device when community has a capability")
-Reported-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
+Fixes: 5db3ae8b33de6 ("clk: qcom: Add SDM660 Multimedia Clock Controller (MMCC) driver")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20250315-clock-fix-v1-1-2efdc4920dda@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-intel.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/mmcc-sdm660.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
-index 928607a21d36d..f8abc69a39d16 100644
---- a/drivers/pinctrl/intel/pinctrl-intel.c
-+++ b/drivers/pinctrl/intel/pinctrl-intel.c
-@@ -1531,7 +1531,6 @@ static int intel_pinctrl_probe_pwm(struct intel_pinctrl *pctrl,
- 		.clk_rate = 19200000,
- 		.npwm = 1,
- 		.base_unit_bits = 22,
--		.bypass = true,
- 	};
- 	struct pwm_chip *chip;
+diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
+index 98ba5b4518fb3..b9f02d91004e8 100644
+--- a/drivers/clk/qcom/mmcc-sdm660.c
++++ b/drivers/clk/qcom/mmcc-sdm660.c
+@@ -2544,7 +2544,7 @@ static struct clk_branch video_core_clk = {
  
+ static struct clk_branch video_subcore0_clk = {
+ 	.halt_reg = 0x1048,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x1048,
+ 		.enable_mask = BIT(0),
 -- 
 2.39.5
 
