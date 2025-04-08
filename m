@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC84A7FE49
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF32EA801E5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD08172877
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5B8461727
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915C7269D15;
-	Tue,  8 Apr 2025 11:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F80264A76;
+	Tue,  8 Apr 2025 11:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6BAowD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egwO1pHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46441267F5B;
-	Tue,  8 Apr 2025 11:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A215E207E14;
+	Tue,  8 Apr 2025 11:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110254; cv=none; b=gP4+VJ+kIYnVKQ0aUFRI/TTbDsuCDZnVALQu9Z1vMM5GOU7Dy4X6q2GYAnmQYWhnPQnSbons+qditULoVd9g6PD4RU1i2UzI42DOOjv/ElyUWNoTmH2I1c/HPQ2VT2bJTnfuAqoG1IEE0BGQ2op2IZpscCTrKzO8e4GAyCjVq7k=
+	t=1744112186; cv=none; b=gKJieGIl6Ul3Oc/WIv+0qidBErEmmZepmmpwvkivCeTGy30qqIGHETbEj2newPb1RMUB6M7UUvb78BYFugG92+i8bHOIpiwH14qYjwXccvDpLMQ/8nFuPafL8/bJbtjyH5fWWo2WJvECr8KKM3nmGZiDuEkQOCCBku2k+E8/PS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110254; c=relaxed/simple;
-	bh=MAS5fLQaK5JfgJh43IkoUQHHeXcV7edAqJN9+EucEtY=;
+	s=arc-20240116; t=1744112186; c=relaxed/simple;
+	bh=CCxQy7C3vnPly9f2nDeYip+XTvIJuDrTgCYR+CJ+ocY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owUuWT8OD2LT+L5MdwPdyDQUU3dcXmbdIT7Ljm3dJkaSDD/rqTiFEoXGJ+uAk5Wf1dZpaTZ1jjGAyHXHATDFuDZ2xSf3PS/Mw1E8KN8v49p9cFaLw4rQ96Vc00aIRp1xDZl1YAqAY6Ga+jg9NQ2Hcmp4K06JfXQJF8ovC+eS+xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6BAowD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA464C4CEEB;
-	Tue,  8 Apr 2025 11:04:13 +0000 (UTC)
+	 MIME-Version; b=mMyHCmTukAt2nxV5qi1NGxS9tADaS8Xurv99TdDVFtIuahG5JwL0JrHY/cln+9eFVif8y3FfYan8NqUqKdMjnCGrEAAqfJCljVFeVcf4fvhHuVnq26CyPQMtkq19CL1308wc0e15JuQWwSCVGStdGECla45WEc2Z6ohhXwdplAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egwO1pHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB40C4CEE5;
+	Tue,  8 Apr 2025 11:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110254;
-	bh=MAS5fLQaK5JfgJh43IkoUQHHeXcV7edAqJN9+EucEtY=;
+	s=korg; t=1744112186;
+	bh=CCxQy7C3vnPly9f2nDeYip+XTvIJuDrTgCYR+CJ+ocY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6BAowD0mQARMu8aC7sfkfto+NZ2noKCvvoyKBbu31zKDuAADDY0bX20dcNd3mgM0
-	 c6ecpODP0h1sdQm7IaqTbUjE0eKgqlQFxlgkIZkjL3Yi6hUJ1rThlQBBEzK2js7vC0
-	 oZAslH8cHt61VtcpHvcOV1BIXy8ciF/0A4bT5Yps=
+	b=egwO1pHpiy9evThYHBAdnqfFDOlDb5T7EIhUJVeLAROheLIRlfqZpQpITsTEbjgF8
+	 U7KtDRQEyREfApIk4pJBUaD7nMfR7zvIsAvTdqpTplatOuPTg+q49bCEjiXIDLltTe
+	 nGcp1yL6tgYfO9jzcWnlEhgZz9pZej2lvoeK9miQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 225/227] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.14 706/731] exfat: fix potential wrong error return from get_block
 Date: Tue,  8 Apr 2025 12:50:03 +0200
-Message-ID: <20250408104827.031960532@linuxfoundation.org>
+Message-ID: <20250408104930.692799524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
+commit 59c30e31425833385e6644ad33151420e37eabe1 upstream.
 
-NFSD sends CB_RECALL_ANY to clients when the server is low on
-memory or that client has a large number of delegations outstanding.
+If there is no error, get_block() should return 0. However, when bh_read()
+returns 1, get_block() also returns 1 in the same manner.
 
-We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
-to disconnected clients, and gets confused. These calls never go
-anywhere if a backchannel transport to the target client isn't
-available. Before the server can send any backchannel operation, the
-client has to connect first and then do a BIND_CONN_TO_SESSION.
+Let's set err to 0, if there is no error from bh_read()
 
-This patch doesn't address the root cause of the confusion, but
-there's no need to queue up these optional operations if they can't
-go anywhere.
-
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ fs/exfat/inode.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6246,14 +6246,19 @@ deleg_reaper(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_state != NFSD4_ACTIVE ||
--			list_empty(&clp->cl_delegations) ||
--			atomic_read(&clp->cl_delegs_in_recall) ||
--			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
--			(ktime_get_boottime_seconds() -
--				clp->cl_ra_time < 5)) {
+--- a/fs/exfat/inode.c
++++ b/fs/exfat/inode.c
+@@ -391,6 +391,8 @@ static int exfat_get_block(struct inode
+ 			/* Zero unwritten part of a block */
+ 			memset(bh_result->b_data + size, 0,
+ 			       bh_result->b_size - size);
 +
-+		if (clp->cl_state != NFSD4_ACTIVE)
-+			continue;
-+		if (list_empty(&clp->cl_delegations))
-+			continue;
-+		if (atomic_read(&clp->cl_delegs_in_recall))
-+			continue;
-+		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
-+			continue;
-+		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
-+			continue;
-+		if (clp->cl_cb_state != NFSD4_CB_UP)
- 			continue;
--		}
- 		list_add(&clp->cl_ra_cblist, &cblist);
- 
- 		/* release in nfsd4_cb_recall_any_release */
++			err = 0;
+ 		} else {
+ 			/*
+ 			 * The range has not been written, clear the mapped flag
 
 
 
