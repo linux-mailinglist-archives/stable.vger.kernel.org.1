@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-131708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFC9A80BDB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BA7A80505
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BEA9501076
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9907888286E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CBA27CB38;
-	Tue,  8 Apr 2025 12:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03582686BC;
+	Tue,  8 Apr 2025 12:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3/tHjwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcBhKHvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F7F26FA41;
-	Tue,  8 Apr 2025 12:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC2321B185;
+	Tue,  8 Apr 2025 12:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117122; cv=none; b=UshP4jKtGeiWUQjj+nIUUdzP+goCjgufuTxw24/G++q8FoBpaC9cl/YetBRbnnYbk5XijIQmD1LZlVw744aAP4vX47wSEyc7Nt159OB0MBvkpV/qSeuMXJAQjdp9aM3zNw81usTuDrRAxCTDFy3khWGbaevIT8uKP9AU+ApZFJ4=
+	t=1744113734; cv=none; b=fGzvT5LslWz/fehs5/Q9L0L6bLSdaWU+yvDvvpLbSYx5NzjIsWxFe9xZCvaCCWOms7k0jf9cBbWxjzyZ2+37zvH3UpU5C6dtFwIINwJEyFnbchStUC71aMH0BHAo86sIwTE3VQIKAxR8jfN+auazr826r+wyhJ/NcAtEsZLanQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117122; c=relaxed/simple;
-	bh=m2zWt6y1mwhXO/XZs75zdPMcLg5c4/WPYNNsKvRh27w=;
+	s=arc-20240116; t=1744113734; c=relaxed/simple;
+	bh=DBIlvVzExCy734IYzJfsJLzipmIDPVPqnk/89Y1BZSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpyyGA6K0jelQai14YMjQCPfCEJeIe2W0EOuWekSphm9ERgN1Uza209n905q/ID68QmcBMd4D17KySESgc4Y2Blu1uSgkg/iNi9HjbpJ5fM2OTp7HHKuy4yvjchmlzjgIjOYikaxgRUpIExXBMBe9ny5YpMps/DA9Nf3oCy8yDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3/tHjwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE329C4CEE7;
-	Tue,  8 Apr 2025 12:58:41 +0000 (UTC)
+	 MIME-Version; b=P38tmZsuaXUv8aZmtLAVDkSRbuaQ+LlvW4j2CDWgcu0y5b7w0ckHOCBxigYb7nepC5pvsu6k0io6s5csY1gUdUrBKeHk/hDWvMs3/X6GvRsc3TG1u2LYle7Dyl4dJw5wCyLVGAM5QxWyw68PU4GvfhNdchDOEBn/bd05jNAhUEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcBhKHvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB4BC4CEE5;
+	Tue,  8 Apr 2025 12:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117122;
-	bh=m2zWt6y1mwhXO/XZs75zdPMcLg5c4/WPYNNsKvRh27w=;
+	s=korg; t=1744113734;
+	bh=DBIlvVzExCy734IYzJfsJLzipmIDPVPqnk/89Y1BZSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3/tHjwC9w39Ax7jWzpPJ/SE8747asxujzHjkYFJUahX9lweZb0/8Eb2rGc4Soz/9
-	 FbIyUPNpsjSxM5wTrRiA0yvlLqLTu4aFknh7s26ivVoL6yA5QngD1cSuKPmrTen9W9
-	 5zJS2LFoREg+/Cqft35t3zvmwWQ5AtGVNwvMS2ok=
+	b=fcBhKHvRprKz+UhMt4OY7FgW7mmzXTsFwYnkECm/gS05JeLj1dhmncYgWrRhtFwit
+	 K2FIhPPoSz68yj6fSHF/uJoaZWzaVFcoiwQSjoNtEbgctuVBjrw//7p+RkeN6mb6CB
+	 zMzoM31sA8QnTReHzTD3EKO6+TbUToHAqTo0ww+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 353/423] tracing: Correct the refcount if the hist/hist_debug file fails to open
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 268/268] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
 Date: Tue,  8 Apr 2025 12:51:19 +0200
-Message-ID: <20250408104854.072590005@linuxfoundation.org>
+Message-ID: <20250408104835.803306153@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0b4ffbe4888a2c71185eaf5c1a02dd3586a9bc04 ]
+commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
 
-The function event_{hist,hist_debug}_open() maintains the refcount of
-'file->tr' and 'file' through tracing_open_file_tr(). However, it does
-not roll back these counts on subsequent failure paths, resulting in a
-refcount leak.
+NFSD sends CB_RECALL_ANY to clients when the server is low on
+memory or that client has a large number of delegations outstanding.
 
-A very obvious case is that if the hist/hist_debug file belongs to a
-specific instance, the refcount leak will prevent the deletion of that
-instance, as it relies on the condition 'tr->ref == 1' within
-__remove_instance().
+We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
+to disconnected clients, and gets confused. These calls never go
+anywhere if a backchannel transport to the target client isn't
+available. Before the server can send any backchannel operation, the
+client has to connect first and then do a BIND_CONN_TO_SESSION.
 
-Fix this by calling tracing_release_file_tr() on all failure paths in
-event_{hist,hist_debug}_open() to correct the refcount.
+This patch doesn't address the root cause of the confusion, but
+there's no need to queue up these optional operations if they can't
+go anywhere.
 
+Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Link: https://lore.kernel.org/20250314065335.1202817-1-wutengda@huaweicloud.com
-Fixes: 1cc111b9cddc ("tracing: Fix uaf issue when open the hist or hist_debug file")
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_hist.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ fs/nfsd/nfs4state.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e07d75adab8e3..4ebafc655223a 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5692,12 +5692,16 @@ static int event_hist_open(struct inode *inode, struct file *file)
- 	guard(mutex)(&event_mutex);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6289,14 +6289,19 @@ deleg_reaper(struct nfsd_net *nn)
+ 	spin_lock(&nn->client_lock);
+ 	list_for_each_safe(pos, next, &nn->client_lru) {
+ 		clp = list_entry(pos, struct nfs4_client, cl_lru);
+-		if (clp->cl_state != NFSD4_ACTIVE ||
+-			list_empty(&clp->cl_delegations) ||
+-			atomic_read(&clp->cl_delegs_in_recall) ||
+-			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
+-			(ktime_get_boottime_seconds() -
+-				clp->cl_ra_time < 5)) {
++
++		if (clp->cl_state != NFSD4_ACTIVE)
++			continue;
++		if (list_empty(&clp->cl_delegations))
++			continue;
++		if (atomic_read(&clp->cl_delegs_in_recall))
++			continue;
++		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
++			continue;
++		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
++			continue;
++		if (clp->cl_cb_state != NFSD4_CB_UP)
+ 			continue;
+-		}
+ 		list_add(&clp->cl_ra_cblist, &cblist);
  
- 	event_file = event_file_data(file);
--	if (!event_file)
--		return -ENODEV;
-+	if (!event_file) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 
- 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
--	if (!hist_file)
--		return -ENOMEM;
-+	if (!hist_file) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
- 
- 	hist_file->file = file;
- 	hist_file->last_act = get_hist_hit_count(event_file);
-@@ -5705,9 +5709,14 @@ static int event_hist_open(struct inode *inode, struct file *file)
- 	/* Clear private_data to avoid warning in single_open() */
- 	file->private_data = NULL;
- 	ret = single_open(file, hist_show, hist_file);
--	if (ret)
-+	if (ret) {
- 		kfree(hist_file);
-+		goto err;
-+	}
- 
-+	return 0;
-+err:
-+	tracing_release_file_tr(inode, file);
- 	return ret;
- }
- 
-@@ -5982,7 +5991,10 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
- 
- 	/* Clear private_data to avoid warning in single_open() */
- 	file->private_data = NULL;
--	return single_open(file, hist_debug_show, file);
-+	ret = single_open(file, hist_debug_show, file);
-+	if (ret)
-+		tracing_release_file_tr(inode, file);
-+	return ret;
- }
- 
- const struct file_operations event_hist_debug_fops = {
--- 
-2.39.5
-
+ 		/* release in nfsd4_cb_recall_any_release */
 
 
 
