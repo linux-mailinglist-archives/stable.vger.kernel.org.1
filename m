@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-129371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B74FA7FF71
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53060A7FF18
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A078189297B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 350211784E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749DC265CC8;
-	Tue,  8 Apr 2025 11:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42AB26868E;
+	Tue,  8 Apr 2025 11:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B033pVOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOjJUntO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314C4264614;
-	Tue,  8 Apr 2025 11:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828122673B7;
+	Tue,  8 Apr 2025 11:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110844; cv=none; b=arDhrpvDABvbt3qYf+TsRBihkTkEsx1AfUHZ1vXu5L/cGtMuhsbBn8E8cJltuJCnnkeQILWIS26Pz+Trng5f4IceLBtqiyKOQO71umTZ0H/QKzf81VT7NBj8BnptAHFpW637aaczS8d+s9I8N0GRObpI0DcKLKAoy9/SYstk88A=
+	t=1744110740; cv=none; b=UsAmDEURrheiLE25xyAk/IjwuBeQ0fgN9K1SViBKeijnzRCQ3Ks5MHnHfm4dPwPMOHPvFzKTXQFiXcpeWIkZxgN7+EX+Q1MVkvbVEOG+Jq33rN88PZHjmJFyBcwa9Mcokj/6/06zhYzGKyJeoYxs1TmU3RBCVtMXNOHrJ4DsgUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110844; c=relaxed/simple;
-	bh=mEcSSldGQi4EZQslDYFX9Ee6DK8TqdSlWdnJWwmx8SI=;
+	s=arc-20240116; t=1744110740; c=relaxed/simple;
+	bh=VsuGen+L6dfru7UT/v30SPWZ8pd1qhpqhFNWgebRXkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=or5OlRuWXz4gni/NfHE515hEAZRYwuK3vCzE+J49btuWkqCOBPL/CngAeZ9lX4QLBUpHOtIwRLoOZxIh6muI8JjEqLLD9T+U/CZz4ctfNdncmnP0DVh9pQ/LN+zvqinecltGSyRsD1NRJi0qqUyaKh9AGg/sDC2lUDqSBPov7KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B033pVOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65B8C4CEE5;
-	Tue,  8 Apr 2025 11:14:03 +0000 (UTC)
+	 MIME-Version; b=ISAoyXApf6kKBpslN4Ie/7ROu1DfvuWOpLyEc4CkgTq20YN6ldZJk3dafgfjncXzGcsf2DCT+d4jWBVXx1PZy7FlsCP7MUZkWY5useUtf8YAPyO60HH0aQpQFVoWiQf0pdEMZq5vgoFNiwmXoWFpVT2aS1MjZHwWXFRaelSbYGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOjJUntO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFFBC4CEE5;
+	Tue,  8 Apr 2025 11:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110844;
-	bh=mEcSSldGQi4EZQslDYFX9Ee6DK8TqdSlWdnJWwmx8SI=;
+	s=korg; t=1744110740;
+	bh=VsuGen+L6dfru7UT/v30SPWZ8pd1qhpqhFNWgebRXkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B033pVOoCI/6UJPDA00atTr0Fkz2oX+Ac84FNUn86Jlm2NtAN0GgOgipR4zBUZx8w
-	 p+VN4Y5Naaij1qDJNoaERwrKkcUoxoUaZv+3uEtKCuPnuudBKQEyBNH/81iWJk0tkC
-	 CocRXO6X/ul+aRJEmud9rkyd/dy4uFFb80zqLs4Q=
+	b=jOjJUntOI6qYVnnYaOulk+/NrnuqJSUNC5/GbACXgGJoMXC/z2wJoPgZtHWQQvby3
+	 fZtdTkfwX1d8eLzmQ/OVofRhrWPSdHN0P2fJq3lHhaNH5VpXKpDzilrE58TK4JIFHa
+	 C4S+KkgUtBDX6ZgJ0JIa6uX1cUgTZgGRlAg8q5n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kundan Kumar <kundan.kumar@samsung.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 176/731] f2fs: fix to avoid running out of free segments
-Date: Tue,  8 Apr 2025 12:41:13 +0200
-Message-ID: <20250408104918.370588629@linuxfoundation.org>
+Subject: [PATCH 6.14 177/731] block: fix adding folio to bio
+Date: Tue,  8 Apr 2025 12:41:14 +0200
+Message-ID: <20250408104918.394279720@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,61 +71,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit f7f8932ca6bb22494ef6db671633ad3b4d982271 ]
+[ Upstream commit 26064d3e2b4d9a14df1072980e558c636fb023ea ]
 
-If checkpoint is disabled, GC can not reclaim any segments, we need
-to detect such condition and bail out from fallocate() of a pinfile,
-rather than letting allocator running out of free segment, which may
-cause f2fs to be shutdown.
+>4GB folio is possible on some ARCHs, such as aarch64, 16GB hugepage
+is supported, then 'offset' of folio can't be held in 'unsigned int',
+cause warning in bio_add_folio_nofail() and IO failure.
 
-reproducer:
-mkfs.f2fs -f /dev/vda 16777216
-mount -o checkpoint=disable:10% /dev/vda /mnt/f2fs
-for ((i=0;i<4096;i++)) do { dd if=/dev/zero of=/mnt/f2fs/$i bs=1M count=1; } done
-sync
-for ((i=0;i<4096;i+=2)) do { rm /mnt/f2fs/$i; } done
-sync
-touch /mnt/f2fs/pinfile
-f2fs_io pinfile set /mnt/f2fs/pinfile
-f2fs_io fallocate 0 0 4201644032 /mnt/f2fs/pinfile
+Fix it by adjusting 'page' & trimming 'offset' so that `->bi_offset` won't
+be overflow, and folio can be added to bio successfully.
 
-cat /sys/kernel/debug/f2fs/status
-output:
-  - Free: 0 (0)
-
-Fixes: f5a53edcf01e ("f2fs: support aligned pinned file")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: ed9832bc08db ("block: introduce folio awareness and add a bigger size from folio")
+Cc: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250312145136.2891229-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ block/bio.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 1bb70499ab598..44a658662462d 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1836,6 +1836,18 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
- next_alloc:
- 		f2fs_down_write(&sbi->pin_sem);
- 
-+		if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+			if (has_not_enough_free_secs(sbi, 0, 0)) {
-+				f2fs_up_write(&sbi->pin_sem);
-+				err = -ENOSPC;
-+				f2fs_warn_ratelimited(sbi,
-+					"ino:%lu, start:%lu, end:%lu, need to trigger GC to "
-+					"reclaim enough free segment when checkpoint is enabled",
-+					inode->i_ino, pg_start, pg_end);
-+				goto out_err;
-+			}
-+		}
+diff --git a/block/bio.c b/block/bio.c
+index 6ac5983ba51e6..6deea10b2cd3d 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1026,9 +1026,10 @@ EXPORT_SYMBOL(bio_add_page);
+ void bio_add_folio_nofail(struct bio *bio, struct folio *folio, size_t len,
+ 			  size_t off)
+ {
++	unsigned long nr = off / PAGE_SIZE;
 +
- 		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
- 			ZONED_PIN_SEC_REQUIRED_COUNT :
- 			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
+ 	WARN_ON_ONCE(len > UINT_MAX);
+-	WARN_ON_ONCE(off > UINT_MAX);
+-	__bio_add_page(bio, &folio->page, len, off);
++	__bio_add_page(bio, folio_page(folio, nr), len, off % PAGE_SIZE);
+ }
+ EXPORT_SYMBOL_GPL(bio_add_folio_nofail);
+ 
+@@ -1049,9 +1050,11 @@ EXPORT_SYMBOL_GPL(bio_add_folio_nofail);
+ bool bio_add_folio(struct bio *bio, struct folio *folio, size_t len,
+ 		   size_t off)
+ {
+-	if (len > UINT_MAX || off > UINT_MAX)
++	unsigned long nr = off / PAGE_SIZE;
++
++	if (len > UINT_MAX)
+ 		return false;
+-	return bio_add_page(bio, &folio->page, len, off) > 0;
++	return bio_add_page(bio, folio_page(folio, nr), len, off % PAGE_SIZE) > 0;
+ }
+ EXPORT_SYMBOL(bio_add_folio);
+ 
 -- 
 2.39.5
 
