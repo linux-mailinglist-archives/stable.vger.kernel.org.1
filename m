@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751BFA80B2C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AB6A8050B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23B6350243F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5014E466535
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B197B278148;
-	Tue,  8 Apr 2025 12:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D263A26A0F5;
+	Tue,  8 Apr 2025 12:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuMFex0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZtpYffv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DECF26A1A7;
-	Tue,  8 Apr 2025 12:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBEA1AAA0F;
+	Tue,  8 Apr 2025 12:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116886; cv=none; b=XGJlMJcGlQR5Amz1EGOREeeWP++9CXNRCRCtUHRK0IKRWPlKzoX+J+OtulqmwrIGUFBQ9orI/J5kx2RANne6HU2xwaMvSKeXNxtubLEznHSmcnN4EgzVEkFB+b7iVko1beiJr2/GIVy0LT0mzLAVZOdji73JkcJ+tv4Fu5iuBH0=
+	t=1744113871; cv=none; b=pZwz9S5Ihb3ldn8i8WbyfmzWkwqq6546Ynyst6GMD3rV1gcdtoS4eGNwTEhULQb+axP0ZIj45GVE6ZzEehlDsXpyLNp12KXn5IE0KouSiK0wuzznUhZCSOKaNBgs7XdN5WoHNOD2PpTm5uvml7HeQViBZXLI9PZw7bDuaeNvVCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116886; c=relaxed/simple;
-	bh=zIEl7hLDLH6umFOmEnTtN3BX0Pg1k5k6suU9QMsKdYc=;
+	s=arc-20240116; t=1744113871; c=relaxed/simple;
+	bh=4T6PUlig/y7iM47vYShwGjWWK+Mc7wzjj4XSD7sGUbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+CC+TjL8YwMmpSXZc1mxpoF6CrDo8ZAL7g7gdSKbJPTB79KUVUQTQ58ZKVTdd1pJY8pUjWJkVxWxt033HfKllUIuCRhBFeJzUG0eS2p7yOaIPCNDPFzjl2N6o4XWzoQHk6ZVdG1l+Qzy59obIPrSPJrwnXMuEqQxPR4gjvQRRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuMFex0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A0CC4CEE5;
-	Tue,  8 Apr 2025 12:54:45 +0000 (UTC)
+	 MIME-Version; b=E4GJ7yQ1JRQfejCrVsr1K19B8HB+bcNDzwceG3vwcUfNkuyRvii9ZMlWowm8FCLMPY3Q4Vo1mM8Hao/Q1uwHIQ2/dAQc2eSFfl7+PxVj3kN0cbgTIQRbTZp654bRy6EkVOGD8TEX9lJbWB3bzR6yom9WY5TDCgNCfFpTlumQvy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZtpYffv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F89DC4CEE5;
+	Tue,  8 Apr 2025 12:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116886;
-	bh=zIEl7hLDLH6umFOmEnTtN3BX0Pg1k5k6suU9QMsKdYc=;
+	s=korg; t=1744113871;
+	bh=4T6PUlig/y7iM47vYShwGjWWK+Mc7wzjj4XSD7sGUbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuMFex0flhoNtAfsJeittd6zp1E9osW9JVdxQhY6a0pFGYZLbpvoMqbqL+j+gwiYf
-	 V6a0QaPwlF3/DWEgrtXOQBjJ9eHJwgtemognQivsdS+5A/WtkxOCIwfthAPCWkv+Wg
-	 1RCzQFstXdxDjz9w7ji22pRMkWO7n9V2QOw/bD+k=
+	b=gZtpYffv3MbaPt/C1lOVLfCFjcH0DDD+4DbTq70ObrJjyVCdHLvEV5RzBaQcZYbpX
+	 ByVTQ0oiB4B1BFznGQs7/iQFtr6w4C/KOQW44rc2T4xcz5cc1KOa4QGmDqiHMLHdy1
+	 vttCrXKldVlcfaTiINUclqbfnL6uOBdnuYmTPsSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/423] perf/core: Fix perf_pmu_register() vs. perf_init_event()
+Subject: [PATCH 5.4 051/154] firmware: imx-scu: fix OF node leak in .probe()
 Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104851.947277858@linuxfoundation.org>
+Message-ID: <20250408104816.914111811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 003659fec9f6d8c04738cb74b5384398ae8a7e88 ]
+[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
 
-There is a fairly obvious race between perf_init_event() doing
-idr_find() and perf_pmu_register() doing idr_alloc() with an
-incompletely initialized PMU pointer.
+imx_scu_probe() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it. Add a of_node_put() call
+after done with the node.
 
-Avoid by doing idr_alloc() on a NULL pointer to register the id, and
-swizzling the real struct pmu pointer at the end using idr_replace().
-
-Also making sure to not set struct pmu members after publishing
-the struct pmu, duh.
-
-[ introduce idr_cmpxchg() in order to better handle the idr_replace()
-  error case -- if it were to return an unexpected pointer, it will
-  already have replaced the value and there is no going back. ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241104135517.858805880@infradead.org
+Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/firmware/imx/imx-scu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 5fff74c736063..cf2ec0a1582fd 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11737,6 +11737,21 @@ static int pmu_dev_alloc(struct pmu *pmu)
- static struct lock_class_key cpuctx_mutex;
- static struct lock_class_key cpuctx_lock;
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index a3b11bc71dcb8..c973760ed9490 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -266,6 +266,7 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
  
-+static bool idr_cmpxchg(struct idr *idr, unsigned long id, void *old, void *new)
-+{
-+	void *tmp, *val = idr_find(idr, id);
-+
-+	if (val != old)
-+		return false;
-+
-+	tmp = idr_replace(idr, new, id);
-+	if (IS_ERR(tmp))
-+		return false;
-+
-+	WARN_ON_ONCE(tmp != val);
-+	return true;
-+}
-+
- int perf_pmu_register(struct pmu *pmu, const char *name, int type)
- {
- 	int cpu, ret, max = PERF_TYPE_MAX;
-@@ -11763,7 +11778,7 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
- 	if (type >= 0)
- 		max = type;
+ 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
++	of_node_put(args.np);
  
--	ret = idr_alloc(&pmu_idr, pmu, max, 0, GFP_KERNEL);
-+	ret = idr_alloc(&pmu_idr, NULL, max, 0, GFP_KERNEL);
- 	if (ret < 0)
- 		goto free_pdc;
- 
-@@ -11771,6 +11786,7 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
- 
- 	type = ret;
- 	pmu->type = type;
-+	atomic_set(&pmu->exclusive_cnt, 0);
- 
- 	if (pmu_bus_running && !pmu->dev) {
- 		ret = pmu_dev_alloc(pmu);
-@@ -11819,14 +11835,22 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
- 	if (!pmu->event_idx)
- 		pmu->event_idx = perf_event_idx_default;
- 
-+	/*
-+	 * Now that the PMU is complete, make it visible to perf_try_init_event().
-+	 */
-+	if (!idr_cmpxchg(&pmu_idr, pmu->type, NULL, pmu))
-+		goto free_context;
- 	list_add_rcu(&pmu->entry, &pmus);
--	atomic_set(&pmu->exclusive_cnt, 0);
-+
- 	ret = 0;
- unlock:
- 	mutex_unlock(&pmus_lock);
- 
- 	return ret;
- 
-+free_context:
-+	free_percpu(pmu->cpu_pmu_context);
-+
- free_dev:
- 	if (pmu->dev && pmu->dev != PMU_NULL_DEV) {
- 		device_del(pmu->dev);
+ 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
+ 	for (i = 0; i < num_channel; i++) {
 -- 
 2.39.5
 
