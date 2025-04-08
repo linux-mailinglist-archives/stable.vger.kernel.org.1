@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B18A80716
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC0A8083C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DB5C4C5C2C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF461BA023E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B6F26B947;
-	Tue,  8 Apr 2025 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DCC268FDE;
+	Tue,  8 Apr 2025 12:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1d720Fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czIvA324"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1528826B941;
-	Tue,  8 Apr 2025 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1204926FA7B;
+	Tue,  8 Apr 2025 12:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115172; cv=none; b=kA/Nlcj7vewioJRctE6A5T2f7DVqWz4KnhqCCMOqDEK4o/mAzc1twjNjnZ0nLytl54P5ymPw+Iwb8d0Zt6um0WYPFJt40PRCJOb0TyT/bbxnHmdjJ/Pdd7ZvyHr48i2z6cBBb2elYpFraayRkBFLYdV0l5wRhzC+WMEH9lrt8Z4=
+	t=1744115662; cv=none; b=V7UYAwZF6bc22cIuDaP8Oq69lghzkpRwqodhI0EuLhQIkaemaXleSU5aSlwDZb3vsjTv2X6L0b8pO62KhJwacYxz8rZLT6KDwqSwseUh6a5XnuZ5WUllFERj5EDlXtVAMBNdFN5IsN4CXoiiRCsCvVOeu0rKQKUdN+4nUAqgWPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115172; c=relaxed/simple;
-	bh=rQZW21/IqW1QwdcXODAvpQl8slpHWCz+3omTEztDn0s=;
+	s=arc-20240116; t=1744115662; c=relaxed/simple;
+	bh=fJA1ndHsYKKxBF21ymgURaceU575IcyS73eAkC11x8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lRB4ko2rIrk9tZiTy2WKZQ5DScTSPIas/RcRLBip7Onuj4blQictC8b1sM4QS4HNiSZdZOyoTALFzXE/ADG7sdEnSLg+ir2SkThwFLZF8OoiOIseK84ARuSuT2hwNJkSxjcbi65GNx9F4D6Wbh/RNd8KrjWVDmcvV47yzqJDn48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1d720Fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982A0C4CEEA;
-	Tue,  8 Apr 2025 12:26:11 +0000 (UTC)
+	 MIME-Version; b=U84BDiLgXBK+C8YDeRMpXiPTV+GXhqvMOlfujDFn/Xw2R+zYux02K8Dh0gITu8OyenYTBoK+CoY3lQQ6hcEeIH8di0Ns46x9gzdsqChCmu7WjIHnTC0LjMyAmt6i+09bT0+tmBKl4Y0QYtGakFljK9JL9vjAJENtiSWQEZAOdrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czIvA324; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD56C4CEE5;
+	Tue,  8 Apr 2025 12:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115172;
-	bh=rQZW21/IqW1QwdcXODAvpQl8slpHWCz+3omTEztDn0s=;
+	s=korg; t=1744115661;
+	bh=fJA1ndHsYKKxBF21ymgURaceU575IcyS73eAkC11x8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1d720FkJBDoxa+NmEdmalx5OBqm+L2rr5uRVtozyIg5+TV2yJXUAiSWCroGysH28
-	 KhKOKRVDMblvp19YiHJlneZzcIMJ9S+zhJyjsGf8FQ9edR0vgZDWKs2UEtOyD3Amho
-	 OxlUucz99py0wHzgGTJH6jrQw3OEdifYtuAUgZKU=
+	b=czIvA324bG7fShPdUiGr14uOPBRf+tdjppSQGLbu/Lw6h+HOm0ZmL7pbg3mMAmWg2
+	 mw9tPq6a/oJO8kukq9+J1g/6gWhDBwHK3S+HkVcnQuHzNN2UqMSPc40MEQk8Bn4x2U
+	 zFhdVoAqA9kADGS5pCRr/AZ5aZXZnsrq0NjVOYxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 375/499] riscv/kexec_file: Handle R_RISCV_64 in purgatory relocator
+Subject: [PATCH 6.1 057/204] libbpf: Fix hypothetical STT_SECTION extern NULL deref case
 Date: Tue,  8 Apr 2025 12:49:47 +0200
-Message-ID: <20250408104900.582518079@linuxfoundation.org>
+Message-ID: <20250408104822.018944603@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 28093cfef5dd62f4cbd537f2bdf6f0bf85309c45 ]
+[ Upstream commit e0525cd72b5979d8089fe524a071ea93fd011dc9 ]
 
-Commit 58ff537109ac ("riscv: Omit optimized string routines when
-using KASAN") introduced calls to EXPORT_SYMBOL() in assembly string
-routines, which result in R_RISCV_64 relocations against
-.export_symbol section. As these rountines are reused by RISC-V
-purgatory and our relocator doesn't recognize these relocations, this
-fails kexec-file-load with dmesg like
+Fix theoretical NULL dereference in linker when resolving *extern*
+STT_SECTION symbol against not-yet-existing ELF section. Not sure if
+it's possible in practice for valid ELF object files (this would require
+embedded assembly manipulations, at which point BTF will be missing),
+but fix the s/dst_sym/dst_sec/ typo guarding this condition anyways.
 
-	[   11.344251] kexec_image: Unknown rela relocation: 2
-	[   11.345972] kexec_image: Error loading purgatory ret=-8
-
-Let's support R_RISCV_64 relocation to fix kexec on 64-bit RISC-V.
-32-bit variant isn't covered since KEXEC_FILE and KEXEC_PURGATORY isn't
-available.
-
-Fixes: 58ff537109ac ("riscv: Omit optimized string routines when using KASAN")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250326051445.55131-2-ziyao@disroot.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
+Fixes: a46349227cd8 ("libbpf: Add linker extern resolution support for functions and global variables")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250220002821.834400-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/elf_kexec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/lib/bpf/linker.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index 3c37661801f95..e783a72d051f4 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -468,6 +468,9 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
- 		case R_RISCV_ALIGN:
- 		case R_RISCV_RELAX:
- 			break;
-+		case R_RISCV_64:
-+			*(u64 *)loc = val;
-+			break;
- 		default:
- 			pr_err("Unknown rela relocation: %d\n", r_type);
- 			return -ENOEXEC;
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 5a99bf6af445b..752ef88c9fd97 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -1962,7 +1962,7 @@ static int linker_append_elf_sym(struct bpf_linker *linker, struct src_obj *obj,
+ 
+ 	obj->sym_map[src_sym_idx] = dst_sym_idx;
+ 
+-	if (sym_type == STT_SECTION && dst_sym) {
++	if (sym_type == STT_SECTION && dst_sec) {
+ 		dst_sec->sec_sym_idx = dst_sym_idx;
+ 		dst_sym->st_value = 0;
+ 	}
 -- 
 2.39.5
 
