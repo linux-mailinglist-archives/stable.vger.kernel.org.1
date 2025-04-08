@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247C6A8047F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CB7A80563
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6DC19E7B26
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9E6422A74
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB89026A0BA;
-	Tue,  8 Apr 2025 12:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB25726989E;
+	Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ary48HMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es4M0XLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B1A94A;
-	Tue,  8 Apr 2025 12:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DD226981A;
+	Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113682; cv=none; b=CvXQ3R+h0UJlEL8OATcR/PaWIGYxQz5WP4rlVBouRF5gPcsSl3xTBmBvx3gTT+IZGz6nzwVUx+w0e+UUtcIgQ1xpVaPeqLG9F/H5cKTgUvC0GZP9ZkVHe77YwwUjvzKd+Kb/7QHlVwRE9FMm8lwo8Kg/UmIUhhmpauS7UJNmfiI=
+	t=1744114057; cv=none; b=UCWweYFwXyGYFw8tDuBYcj+dPEUuzL/VzPUzWSDo/YcjWXjyS9eXu+5BNo2CUeX0lrXybD+1Iu9gqVL2GMRV/BJSDSLFiS2Bl9qjtJ8Ycp7UPwwIx5/srZw4bBdpkC/XphmPZ/9CjHNvYKo/9h3/CYZ6wNbfddAmXTcSTgYSyow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113682; c=relaxed/simple;
-	bh=YdbB0wZjf6CJk4NojXGlHtDPiRt/vpE8afQZQnblEuI=;
+	s=arc-20240116; t=1744114057; c=relaxed/simple;
+	bh=wH6+vwWFOaWUB2/kmQY/luY+3wAtQVTnrAgkgLu6gTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrZeb19uuesO8AOiGEfGbsYURWQBKufgmkqHfgdgGIzM8+UIfeJchyrWjR9wBvEJiAKEntbLZb8C/nJ8Cc0tWTVfC/8QMwS2UUsjF357zN1az+ek+IFhMcQmx08ZmCFJBPyrjCBkJWP8TiNrALmmLq5k0iO6ufdn5jX9q2kBCZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ary48HMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B4C4CEE5;
-	Tue,  8 Apr 2025 12:01:21 +0000 (UTC)
+	 MIME-Version; b=Snbp9tuVnuvQdFIJlFA66RAOvQooABm8SimL/KQVBTT2l4zHxFR1ayezXLnrpKBpkjm4c3ejCZeT6tIRAYKBLiKcQEgOGE5nLXItwhJ3Q1QqlxxMSgm8GRgjlumFLlDZnLNcxuyiqON1UQUS7YUZ3AFCpIiqHpkvS/OIG2rsKKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es4M0XLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E9CC4CEE5;
+	Tue,  8 Apr 2025 12:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113682;
-	bh=YdbB0wZjf6CJk4NojXGlHtDPiRt/vpE8afQZQnblEuI=;
+	s=korg; t=1744114057;
+	bh=wH6+vwWFOaWUB2/kmQY/luY+3wAtQVTnrAgkgLu6gTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ary48HMBrpBC3cxgMPOpCiBuHysblwCY5uk8TjXM9VrkoOGIFQt7/PIW2n0ppzpmL
-	 jTZEenHYb5SlKXb3FIxZMObyE029ezRYxUavVPhV+kaQdFOs9kZUD077Q1BbCJQhmb
-	 kULqgUiDzkLIrC9Zt/4VA9T83wrInGbeV6c2UraE=
+	b=es4M0XLUPOLyzaLmK+KoUExfknxgc64BQ4+h+eEd9EItB7ZZYGzhu6nuUn4VSLNdl
+	 6jXbf/PcQqwrGQG3QzRjixfEK2kXI5QUATRgZ0I+VAmFzdQNWNuvcNmZ89DxHZD4o5
+	 lcIaH6pHCXN+Y2RuE5L1HMVFIZ8C+heCJ6Rn7/r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 251/268] ksmbd: add bounds check for durable handle context
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 121/154] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:51:02 +0200
-Message-ID: <20250408104835.354461585@linuxfoundation.org>
+Message-ID: <20250408104819.193308301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-Add missing bounds check for durable handle context.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tools/perf/util/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2700,6 +2700,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 02460362256d1..2ff87ad8d7e88 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -110,7 +110,7 @@ struct pyrf_event {
+ };
  
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_v2_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
- 			persistent_id = recon_v2->Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2733,6 +2740,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
- 
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon = (struct create_durable_reconn_req *)context;
- 			persistent_id = recon->Data.Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2757,6 +2771,13 @@ static int parse_durable_handle_context(
- 				err = -EINVAL;
- 				goto out;
- 			}
-+
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_req_v2)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
- 
- 			durable_v2_blob =
- 				(struct create_durable_req_v2 *)context;
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
+-- 
+2.39.5
+
 
 
 
