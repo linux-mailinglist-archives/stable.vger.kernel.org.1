@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-128958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C727A7FD48
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC9BA800D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BD317ED65
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5EDD1889CEA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0B52690CB;
-	Tue,  8 Apr 2025 10:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC48A269882;
+	Tue,  8 Apr 2025 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiBWTNrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEhKaoC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6C3266B4B;
-	Tue,  8 Apr 2025 10:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E8268C5D;
+	Tue,  8 Apr 2025 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109736; cv=none; b=DAqpTXCL1vUOF0B49dzKIoPBwP5Zy39O8yGXQruG3P0eo62jUe7vh67E8u+jV+nzebMjeBfWjW+B0RPvLMOtStixRdZqV6NRaXN7TZamFYFMDO6Jfx2qR96JLaRPNakkzFVQ7zN1rDrDTJm+uW2FS9GQKlyWUuKCA/ZUDZKeltI=
+	t=1744111767; cv=none; b=H1DpCiB6YSmwXHsxkglsbhBso43nzjTd2I+oy9XfKF4OoShQsmNK0gEtEyhfhrDQ8zGXaBKgsBxbZpI1o78C+O4YlfNsXmaRLYB+TqFQXlnAYBaR23jqONYqBIuUc/6vWxb35YpdHsddoVZuuMl4BgRKbWWpBNchcVjX1M2dMOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109736; c=relaxed/simple;
-	bh=zfTpTY6pTFIbf0yCeXLxef9/nhbKJERj97e276XUpw8=;
+	s=arc-20240116; t=1744111767; c=relaxed/simple;
+	bh=/Fb8PK4IfEccC+wldkRQ6HQoZBnqHXfxq+t+5ujSLPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3Emm/EIWdKXDNKScTSG/OIMSy3dfcm389SLUcZZh/gaqU+T1eVC1ATnpaDme6TCcwYKH9PiDev2Y5p8fEkKA0Bt7o4NW6ZahCo8hvHed8eUnJv9H4aqSP5VArbDC0wV9lzkRdMHEpFgImPf+WcidTHUPFKdR7rSfNTtzOhi9ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiBWTNrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A07C4CEE5;
-	Tue,  8 Apr 2025 10:55:35 +0000 (UTC)
+	 MIME-Version; b=R4EP2U00t3yttCxYLhJYEzKHwYvIZP37CIhvB1u4MxUUovh3cPVW2jWBpm+jG2HCfi5hzseh9oO5u3M7dK40lTRCnnKqmY0P5Fs5/jmTSSqyoG1u8tIT80c7UF07ssXKRKd2l0vwqHYmQw8gTmlIJjYpIcAZhxpbTgnikiPfTgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEhKaoC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED926C4CEE5;
+	Tue,  8 Apr 2025 11:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109736;
-	bh=zfTpTY6pTFIbf0yCeXLxef9/nhbKJERj97e276XUpw8=;
+	s=korg; t=1744111767;
+	bh=/Fb8PK4IfEccC+wldkRQ6HQoZBnqHXfxq+t+5ujSLPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiBWTNrW0TUMBoNhcG0iAOqwvXY0ch9I3f2ye/k15Ei+cjwqOAQNpiNM7AFBHPKiw
-	 9VdvB2tdHwehCKCVMQCKGzUFIpkS0ZGs8gcwswbCE2DAndrrIaeaXIynAtsQ5hhaSA
-	 eetvRNbVu6lvbvxvbfI+j8bcLM3nRzqcRRa7shfo=
+	b=eEhKaoC8anX9Mgpmn3qRtWaUqgHU58LThxstwpP9aBLdhjqYBRTRUlz9cFPE6elre
+	 bBuKhax79vaEcBpOGwNh0uhT5AdRjJ02QF5k9gc9u5cBCAjmOOwEX77JhElld6Zbt2
+	 Lq92ZRTbnmqeaS4gcqqx+Bcdv5kdKIGQEPa/czzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tang Yizhou <yizhou.tang@shopee.com>,
+	Tejun Heo <tj@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/227] thermal/cpufreq_cooling: Remove structure member documentation
+Subject: [PATCH 6.14 513/731] writeback: fix calculations in trace_balance_dirty_pages() for cgwb
 Date: Tue,  8 Apr 2025 12:46:50 +0200
-Message-ID: <20250408104821.369361993@linuxfoundation.org>
+Message-ID: <20250408104926.207678232@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +69,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Tang Yizhou <yizhou.tang@shopee.com>
 
-[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
+[ Upstream commit 6cc4c3aa714bc58ec5d20f3054ca5f23534984d1 ]
 
-The structure member documentation refers to a member which does not
-exist any more. Remove it.
+In the commit dcc25ae76eb7 ("writeback: move global_dirty_limit into
+wb_domain") of the cgroup writeback backpressure propagation patchset,
+Tejun made some adaptations to trace_balance_dirty_pages() for cgroup
+writeback.  However, this adaptation was incomplete and Tejun missed
+further adaptation in the subsequent patches.
 
-Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
-[ rjw: Minor changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+In the cgroup writeback scenario, if sdtc in balance_dirty_pages() is
+assigned to mdtc, then upon entering trace_balance_dirty_pages(),
+__entry->limit should be assigned based on the dirty_limit of the
+corresponding memcg's wb_domain, rather than global_wb_domain.
+
+To address this issue and simplify the implementation, introduce a 'limit'
+field in struct dirty_throttle_control to store the hard_limit value
+computed in wb_position_ratio() by calling hard_dirty_limit().  This field
+will then be used in trace_balance_dirty_pages() to assign the value to
+__entry->limit.
+
+Link: https://lkml.kernel.org/r/20250304110318.159567-4-yizhou.tang@shopee.com
+Fixes: dcc25ae76eb7 ("writeback: move global_dirty_limit into wb_domain")
+Signed-off-by: Tang Yizhou <yizhou.tang@shopee.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/cpufreq_cooling.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/writeback.h        | 1 +
+ include/trace/events/writeback.h | 5 ++---
+ mm/page-writeback.c              | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-index 6e1d6a31ee4fb..f1ae1530aa642 100644
---- a/drivers/thermal/cpufreq_cooling.c
-+++ b/drivers/thermal/cpufreq_cooling.c
-@@ -58,8 +58,6 @@ struct time_in_idle {
-  * @max_level: maximum cooling level. One less than total number of valid
-  *	cpufreq frequencies.
-  * @em: Reference on the Energy Model of the device
-- * @cdev: thermal_cooling_device pointer to keep track of the
-- *	registered cooling device.
-  * @policy: cpufreq policy.
-  * @node: list_head to link all cpufreq_cooling_device together.
-  * @idle_time: idle time stats
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index 32095928365ce..58bda33479146 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -326,6 +326,7 @@ struct dirty_throttle_control {
+ 	unsigned long		dirty;		/* file_dirty + write + nfs */
+ 	unsigned long		thresh;		/* dirty threshold */
+ 	unsigned long		bg_thresh;	/* dirty background threshold */
++	unsigned long		limit;		/* hard dirty limit */
+ 
+ 	unsigned long		wb_dirty;	/* per-wb counterparts */
+ 	unsigned long		wb_thresh;
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 3213b90237944..5755c2a569e16 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -663,9 +663,8 @@ TRACE_EVENT(balance_dirty_pages,
+ 		unsigned long freerun = (dtc->thresh + dtc->bg_thresh) / 2;
+ 		strscpy_pad(__entry->bdi, bdi_dev_name(wb->bdi), 32);
+ 
+-		__entry->limit		= global_wb_domain.dirty_limit;
+-		__entry->setpoint	= (global_wb_domain.dirty_limit +
+-						freerun) / 2;
++		__entry->limit		= dtc->limit;
++		__entry->setpoint	= (dtc->limit + freerun) / 2;
+ 		__entry->dirty		= dtc->dirty;
+ 		__entry->bdi_setpoint	= __entry->setpoint *
+ 						dtc->wb_thresh / (dtc->thresh + 1);
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index e980b2aec3529..3147119a9a042 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1072,7 +1072,7 @@ static void wb_position_ratio(struct dirty_throttle_control *dtc)
+ 	struct bdi_writeback *wb = dtc->wb;
+ 	unsigned long write_bw = READ_ONCE(wb->avg_write_bandwidth);
+ 	unsigned long freerun = dirty_freerun_ceiling(dtc->thresh, dtc->bg_thresh);
+-	unsigned long limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
++	unsigned long limit = dtc->limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
+ 	unsigned long wb_thresh = dtc->wb_thresh;
+ 	unsigned long x_intercept;
+ 	unsigned long setpoint;		/* dirty pages' target balance point */
 -- 
 2.39.5
 
