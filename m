@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-130282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AD1A803EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F558A7FDCC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96A1464D0F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96058166608
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57975269D08;
-	Tue,  8 Apr 2025 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CAE268FC9;
+	Tue,  8 Apr 2025 10:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+s0ZXdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcLYitaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14091267B89;
-	Tue,  8 Apr 2025 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3B5268688;
+	Tue,  8 Apr 2025 10:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113303; cv=none; b=ETelc7alKf+lJAIk38i6haaT43iBWvqUOi1HYKqEOgbVCJOERKJD5Pavou/iJ54K61IlmMxDqGGTCznLiBSzjzuA4w7pEQ1uAqwtufAw0SSkKpmq1wb8xOO82S/HqU2Sb0LHwfOXDJZ0Qp9/mOanN7LlBmCl+iXaNIEUoCgZuCQ=
+	t=1744109923; cv=none; b=hT4zBiDqvZsbK8i4PocfziLlI1+QjHHYLx1h4fS2A3t7uUXQCsC+1KPX74L4H4gMcfbDkNn1yYjRXJpzw0iHfVktzDC7ACMQEa13FZNYH0Tl/3w7xH8egW0bhNTp9k4O7hdHik9e8RrVZeSvBmfg/STU6RqnzccMjklDz+NaN1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113303; c=relaxed/simple;
-	bh=T9MuduFPUArj2etYQaRCAUh+a34QF110VZUiiLY35yc=;
+	s=arc-20240116; t=1744109923; c=relaxed/simple;
+	bh=K2Rr9ksECkpA5wpuWOp3qRDd61MlNKzY//5vnabaAm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7JO20nuOKO6+vQGtjb2AaycEiA7AqjRFSRjtSmc/gPvtRgXQxqWoLnj/thiPS9XvNZ5hbA9M+Pf19h6O6dgJ3+Zenb8R4mdXD/6uTeHWs/T8c6enpHcquoRKhHlCXL0yAqKUbNaNBltqnqAQ/1P9Evd13nRbxdtvwkXmL/vyo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+s0ZXdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686DFC4CEE5;
-	Tue,  8 Apr 2025 11:55:02 +0000 (UTC)
+	 MIME-Version; b=lranXUdL4vFvSAQXe0zq66xdndAaMusiwy9TWAWNgSOsK31iXt4D4jJfxb3kHtnb2j5GQBXK84pON3ZFF+BQUeOyYfbo4HyhILZA/+gv7crIExKRuaiR19A0E0RP5t4HPssIbczHAUAXPsjLkc0YJVqP3i0y3+2yYU25Kk3Dsls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcLYitaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5FFC4CEE5;
+	Tue,  8 Apr 2025 10:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113302;
-	bh=T9MuduFPUArj2etYQaRCAUh+a34QF110VZUiiLY35yc=;
+	s=korg; t=1744109923;
+	bh=K2Rr9ksECkpA5wpuWOp3qRDd61MlNKzY//5vnabaAm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+s0ZXdmce7PYHHjGvkv4Q5QEmW0vMNzs2HtpQclEsFnfK13HCt6izLHN4fxDHfRZ
-	 GcZyOzCKsbCGYnDwve//Wemb9+c8imZWtX19TOVLXCBicSUnlTv2fdELxONkab/i5r
-	 QxboNHDcC6tnTmZDPhoismMqv+TzJMxKbiaoB3Z8=
+	b=JcLYitaOYcHUcR/o2FST0dOiZEj/JYaXgXZKRUTiKqj6GdzL44dfPkRZ0+TOeJJah
+	 J1kjaufg+Q1lvkfmjPIfagWE1w+Zbcc5SlMpoHw2gOsUlElee/Z4ET/C2clAI75xRM
+	 Vydpwi3MusHTnLDNHV7hW2Eauk0Uo3WH2DWb+fJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yuxin wang <wang1315768607@163.com>,
-	Marius Fleischer <fleischermarius@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/268] x86/mm/pat: Fix VM_PAT handling when fork() fails in copy_page_range()
+	stable <stable@kernel.org>,
+	Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.10 103/227] tty: serial: 8250: Add some more device IDs
 Date: Tue,  8 Apr 2025 12:48:01 +0200
-Message-ID: <20250408104830.383747123@linuxfoundation.org>
+Message-ID: <20250408104823.450321874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,301 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit dc84bc2aba85a1508f04a936f9f9a15f64ebfb31 ]
+commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
 
-If track_pfn_copy() fails, we already added the dst VMA to the maple
-tree. As fork() fails, we'll cleanup the maple tree, and stumble over
-the dst VMA for which we neither performed any reservation nor copied
-any page tables.
+These card IDs got missed the first time around.
 
-Consequently untrack_pfn() will see VM_PAT and try obtaining the
-PAT information from the page table -- which fails because the page
-table was not copied.
-
-The easiest fix would be to simply clear the VM_PAT flag of the dst VMA
-if track_pfn_copy() fails. However, the whole thing is about "simply"
-clearing the VM_PAT flag is shaky as well: if we passed track_pfn_copy()
-and performed a reservation, but copying the page tables fails, we'll
-simply clear the VM_PAT flag, not properly undoing the reservation ...
-which is also wrong.
-
-So let's fix it properly: set the VM_PAT flag only if the reservation
-succeeded (leaving it clear initially), and undo the reservation if
-anything goes wrong while copying the page tables: clearing the VM_PAT
-flag after undoing the reservation.
-
-Note that any copied page table entries will get zapped when the VMA will
-get removed later, after copy_page_range() succeeded; as VM_PAT is not set
-then, we won't try cleaning VM_PAT up once more and untrack_pfn() will be
-happy. Note that leaving these page tables in place without a reservation
-is not a problem, as we are aborting fork(); this process will never run.
-
-A reproducer can trigger this usually at the first try:
-
-  https://gitlab.com/davidhildenbrand/scratchspace/-/raw/main/reproducers/pat_fork.c
-
-  WARNING: CPU: 26 PID: 11650 at arch/x86/mm/pat/memtype.c:983 get_pat_info+0xf6/0x110
-  Modules linked in: ...
-  CPU: 26 UID: 0 PID: 11650 Comm: repro3 Not tainted 6.12.0-rc5+ #92
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-  RIP: 0010:get_pat_info+0xf6/0x110
-  ...
-  Call Trace:
-   <TASK>
-   ...
-   untrack_pfn+0x52/0x110
-   unmap_single_vma+0xa6/0xe0
-   unmap_vmas+0x105/0x1f0
-   exit_mmap+0xf6/0x460
-   __mmput+0x4b/0x120
-   copy_process+0x1bf6/0x2aa0
-   kernel_clone+0xab/0x440
-   __do_sys_clone+0x66/0x90
-   do_syscall_64+0x95/0x180
-
-Likely this case was missed in:
-
-  d155df53f310 ("x86/mm/pat: clear VM_PAT if copy_p4d_range failed")
-
-... and instead of undoing the reservation we simply cleared the VM_PAT flag.
-
-Keep the documentation of these functions in include/linux/pgtable.h,
-one place is more than sufficient -- we should clean that up for the other
-functions like track_pfn_remap/untrack_pfn separately.
-
-Fixes: d155df53f310 ("x86/mm/pat: clear VM_PAT if copy_p4d_range failed")
-Fixes: 2ab640379a0a ("x86: PAT: hooks in generic vm code to help archs to track pfnmap regions - v3")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yuxin wang <wang1315768607@163.com>
-Reported-by: Marius Fleischer <fleischermarius@gmail.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-Link: https://lore.kernel.org/r/20250321112323.153741-1-david@redhat.com
-Closes: https://lore.kernel.org/lkml/CABOYnLx_dnqzpCW99G81DmOr+2UzdmZMk=T3uxwNxwz+R1RAwg@mail.gmail.com/
-Closes: https://lore.kernel.org/lkml/CAJg=8jwijTP5fre8woS4JVJQ8iUA6v+iNcsOgtj9Zfpc3obDOQ@mail.gmail.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pat/memtype.c | 52 +++++++++++++++++++++------------------
- include/linux/pgtable.h   | 28 ++++++++++++++++-----
- kernel/fork.c             |  4 +++
- mm/memory.c               | 11 +++------
- 4 files changed, 58 insertions(+), 37 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index e7b9ac63bb02a..8dc4eedd49475 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -982,29 +982,42 @@ static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
- 	return -EINVAL;
- }
- 
--/*
-- * track_pfn_copy is called when vma that is covering the pfnmap gets
-- * copied through copy_page_range().
-- *
-- * If the vma has a linear pfn mapping for the entire range, we get the prot
-- * from pte and reserve the entire vma range with single reserve_pfn_range call.
-- */
--int track_pfn_copy(struct vm_area_struct *vma)
-+int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma, unsigned long *pfn)
- {
-+	const unsigned long vma_size = src_vma->vm_end - src_vma->vm_start;
- 	resource_size_t paddr;
--	unsigned long vma_size = vma->vm_end - vma->vm_start;
- 	pgprot_t pgprot;
-+	int rc;
- 
--	if (vma->vm_flags & VM_PAT) {
--		if (get_pat_info(vma, &paddr, &pgprot))
--			return -EINVAL;
--		/* reserve the whole chunk covered by vma. */
--		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
--	}
-+	if (!(src_vma->vm_flags & VM_PAT))
-+		return 0;
-+
-+	/*
-+	 * Duplicate the PAT information for the dst VMA based on the src
-+	 * VMA.
-+	 */
-+	if (get_pat_info(src_vma, &paddr, &pgprot))
-+		return -EINVAL;
-+	rc = reserve_pfn_range(paddr, vma_size, &pgprot, 1);
-+	if (rc)
-+		return rc;
- 
-+	/* Reservation for the destination VMA succeeded. */
-+	vm_flags_set(dst_vma, VM_PAT);
-+	*pfn = PHYS_PFN(paddr);
- 	return 0;
- }
- 
-+void untrack_pfn_copy(struct vm_area_struct *dst_vma, unsigned long pfn)
-+{
-+	untrack_pfn(dst_vma, pfn, dst_vma->vm_end - dst_vma->vm_start, true);
-+	/*
-+	 * Reservation was freed, any copied page tables will get cleaned
-+	 * up later, but without getting PAT involved again.
-+	 */
-+}
-+
- /*
-  * prot is passed in as a parameter for the new mapping. If the vma has
-  * a linear pfn mapping for the entire range, or no vma is provided,
-@@ -1093,15 +1106,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 	}
- }
- 
--/*
-- * untrack_pfn_clear is called if the following situation fits:
-- *
-- * 1) while mremapping a pfnmap for a new region,  with the old vma after
-- * its pfnmap page table has been removed.  The new vma has a new pfnmap
-- * to the same pfn & cache type with VM_PAT set.
-- * 2) while duplicating vm area, the new vma fails to copy the pgtable from
-- * old vma.
-- */
- void untrack_pfn_clear(struct vm_area_struct *vma)
- {
- 	vm_flags_clear(vma, VM_PAT);
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8b7daccd11bef..3c3a7dede0ef5 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1286,14 +1286,25 @@ static inline void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
- }
- 
- /*
-- * track_pfn_copy is called when vma that is covering the pfnmap gets
-- * copied through copy_page_range().
-+ * track_pfn_copy is called when a VM_PFNMAP VMA is about to get the page
-+ * tables copied during copy_page_range(). On success, stores the pfn to be
-+ * passed to untrack_pfn_copy().
-  */
--static inline int track_pfn_copy(struct vm_area_struct *vma)
-+static inline int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma, unsigned long *pfn)
- {
- 	return 0;
- }
- 
-+/*
-+ * untrack_pfn_copy is called when a VM_PFNMAP VMA failed to copy during
-+ * copy_page_range(), but after track_pfn_copy() was already called.
-+ */
-+static inline void untrack_pfn_copy(struct vm_area_struct *dst_vma,
-+		unsigned long pfn)
-+{
-+}
-+
- /*
-  * untrack_pfn is called while unmapping a pfnmap for a region.
-  * untrack can be called for a specific region indicated by pfn and size or
-@@ -1306,8 +1317,10 @@ static inline void untrack_pfn(struct vm_area_struct *vma,
- }
- 
- /*
-- * untrack_pfn_clear is called while mremapping a pfnmap for a new region
-- * or fails to copy pgtable during duplicate vm area.
-+ * untrack_pfn_clear is called in the following cases on a VM_PFNMAP VMA:
-+ *
-+ * 1) During mremap() on the src VMA after the page tables were moved.
-+ * 2) During fork() on the dst VMA, immediately after duplicating the src VMA.
-  */
- static inline void untrack_pfn_clear(struct vm_area_struct *vma)
- {
-@@ -1318,7 +1331,10 @@ extern int track_pfn_remap(struct vm_area_struct *vma, pgprot_t *prot,
- 			   unsigned long size);
- extern void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
- 			     pfn_t pfn);
--extern int track_pfn_copy(struct vm_area_struct *vma);
-+extern int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma, unsigned long *pfn);
-+extern void untrack_pfn_copy(struct vm_area_struct *dst_vma,
-+		unsigned long pfn);
- extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 			unsigned long size, bool mm_wr_locked);
- extern void untrack_pfn_clear(struct vm_area_struct *vma);
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 23efaa2c42e4f..97f433fb4b5ef 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -518,6 +518,10 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- 	vma_numab_state_init(new);
- 	dup_anon_vma_name(orig, new);
- 
-+	/* track_pfn_copy() will later take care of copying internal state. */
-+	if (unlikely(new->vm_flags & VM_PFNMAP))
-+		untrack_pfn_clear(new);
-+
- 	return new;
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index c39a45481c443..d04faa09eaf6c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1268,12 +1268,12 @@ int
- copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- {
- 	pgd_t *src_pgd, *dst_pgd;
--	unsigned long next;
- 	unsigned long addr = src_vma->vm_start;
- 	unsigned long end = src_vma->vm_end;
- 	struct mm_struct *dst_mm = dst_vma->vm_mm;
- 	struct mm_struct *src_mm = src_vma->vm_mm;
- 	struct mmu_notifier_range range;
-+	unsigned long next, pfn;
- 	bool is_cow;
- 	int ret;
- 
-@@ -1284,11 +1284,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 		return copy_hugetlb_page_range(dst_mm, src_mm, dst_vma, src_vma);
- 
- 	if (unlikely(src_vma->vm_flags & VM_PFNMAP)) {
--		/*
--		 * We do not free on error cases below as remove_vma
--		 * gets called on error from higher level routine
--		 */
--		ret = track_pfn_copy(src_vma);
-+		ret = track_pfn_copy(dst_vma, src_vma, &pfn);
- 		if (ret)
- 			return ret;
- 	}
-@@ -1325,7 +1321,6 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 			continue;
- 		if (unlikely(copy_p4d_range(dst_vma, src_vma, dst_pgd, src_pgd,
- 					    addr, next))) {
--			untrack_pfn_clear(dst_vma);
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -1335,6 +1330,8 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 		raw_write_seqcount_end(&src_mm->write_protect_seq);
- 		mmu_notifier_invalidate_range_end(&range);
- 	}
-+	if (ret && unlikely(src_vma->vm_flags & VM_PFNMAP))
-+		untrack_pfn_copy(dst_vma, pfn);
- 	return ret;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5160,6 +5160,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
+ 	/*
+ 	 * Brainboxes UC-235/246
+ 	 */
+@@ -5340,6 +5348,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
+ 	/*
+ 	 * Brainboxes UC-420
+ 	 */
 
 
 
