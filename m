@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-131626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9132BA80A95
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AC2A80897
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C217B48E9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDC11B86717
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E9F279347;
-	Tue,  8 Apr 2025 12:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E76726B094;
+	Tue,  8 Apr 2025 12:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tnd3Rei1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4Ssbh9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C485281520;
-	Tue,  8 Apr 2025 12:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CE01AAA32;
+	Tue,  8 Apr 2025 12:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116905; cv=none; b=eAW6dIEnq2yDriqQToW2LGDb937xJgcVhSgLzClxvN1Lk7K57mTArM/2Vb8oM+n7MFJ3XxZyJ1T11C4r2YwH/5TdcxCkcR8kfVLM8yPERrJbX4sDbiTE3BGIn5yjeH6KYaEkQ+xTQhne3UEspv5rduqj59gdb4kC4u2ppgSMha8=
+	t=1744115803; cv=none; b=rbYkQ4U1rofDqjO1kCc4DM4BB9/WpVr2DG0BWLbweEobu2V4nyex7xhmGypPKgwBFOn9c1ALbtuCGnCevfdqZy270YaTei+YXn7F5wTghkobHV4dKTh4/44+ob9B9YioVQhjzBToriIhqhDGgpEcUjdifrLD2cxp5+Kzd251W7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116905; c=relaxed/simple;
-	bh=VmolB/ZGH7XnH6eVh3froFCKHirE7Emhg47qRmHU/lU=;
+	s=arc-20240116; t=1744115803; c=relaxed/simple;
+	bh=kDU9jiqjC725864a22GjtjhhYim1q5pE5UjE1Bl55X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTvtGcdl1RyeVIYVobBTqLrylgmCD6SB8MfI/VbeO57hCqsGE6xv+2Ep3CzTkqQ1VpbMsVzUlWiv6d/G8v/Ab5+LiQR5/mZL0q8BZf1xPXIV7mrlo+kDUr0W8Wx6M99B3Gsq8iybhjPM2nRYocBh4CHBpsmDNeFKAnJxmLKGRlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tnd3Rei1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3BCC4CEE7;
-	Tue,  8 Apr 2025 12:55:04 +0000 (UTC)
+	 MIME-Version; b=VpqM5sUNVWCZRZEVTIrGW+MVyo4O7h59LWYkQRUR0OdXQfTxO0jU4R0dlTBl0gBWVI7M1BSIkhANbpkPK2AOejutbvFi7SlldRWTAkao4Ug/kzCQNM+m0ed3Cx7IlpGyzRjtdXLYW6+nI/XkY5IxtlFIDmrMSkkJXfH3HKv0d60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4Ssbh9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2B6C4CEE5;
+	Tue,  8 Apr 2025 12:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116904;
-	bh=VmolB/ZGH7XnH6eVh3froFCKHirE7Emhg47qRmHU/lU=;
+	s=korg; t=1744115802;
+	bh=kDU9jiqjC725864a22GjtjhhYim1q5pE5UjE1Bl55X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tnd3Rei1f/ZsQvIWB4u/e31tbn3mQmYIrHT2lq5l3mEkJ1SvQ4kha7R4kP7bJQQmz
-	 QfVYRg/Va9n3xyvxOKQqeLw8j0vQs9mSNeDJ+0Dqe8QmuCoCq8k9AQI6aNZ36VM4sn
-	 dk14BPo1kYVc2yokjgrC6Nqeii6dIPNK9icBymYQ=
+	b=z4Ssbh9HmN4+MJtxN6AwRo65xSmW/2CSmeUikq6vM/KrW7HHkIoAuPb5Glv2HERKK
+	 UlPlbY6ScchqrdJQ4Ju/W2EldCHiM63iWvkCEUEm4gt/DbqoVNEES1oRb5tM7+UvXo
+	 CZ0SknwDkz8GBw2beb0qlZBEwvB/8/HMFhHkaNG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/423] s390/entry: Fix setting _CIF_MCCK_GUEST with lowcore relocation
+Subject: [PATCH 6.1 109/204] fs/procfs: fix the comment above proc_pid_wchan()
 Date: Tue,  8 Apr 2025 12:50:39 +0200
-Message-ID: <20250408104853.095852683@linuxfoundation.org>
+Message-ID: <20250408104823.531370643@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 121df45b37a1016ee6828c2ca3ba825f3e18a8c1 ]
+[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
 
-When lowcore relocation is enabled, the machine check handler doesn't
-use the lowcore address when setting _CIF_MCCK_GUEST. Fix this by
-adding the missing base register.
+proc_pid_wchan() used to report kernel addresses to user space but that is
+no longer the case today.  Bring the comment above proc_pid_wchan() in
+sync with the implementation.
 
-Fixes: 0001b7bbc53a ("s390/entry: Make mchk_int_handler() ready for lowcore relocation")
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
+Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/entry.S | 2 +-
+ fs/proc/base.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index 594da4cba707a..a7de838f80318 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -501,7 +501,7 @@ SYM_CODE_START(mcck_int_handler)
- 	clgrjl	%r9,%r14, 4f
- 	larl	%r14,.Lsie_leave
- 	clgrjhe	%r9,%r14, 4f
--	lg	%r10,__LC_PCPU
-+	lg	%r10,__LC_PCPU(%r13)
- 	oi	__PCPU_FLAGS+7(%r10), _CIF_MCCK_GUEST
- 4:	BPENTER	__SF_SIE_FLAGS(%r15),_TIF_ISOLATE_BP_GUEST
- 	SIEEXIT __SF_SIE_CONTROL(%r15),%r13
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 82e4a8805bae6..fb169bdfd9a8e 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -415,7 +415,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
+ #ifdef CONFIG_KALLSYMS
+ /*
+  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
+- * Returns the resolved symbol.  If that fails, simply return the address.
++ * Returns the resolved symbol to user space.
+  */
+ static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
+ 			  struct pid *pid, struct task_struct *task)
 -- 
 2.39.5
 
