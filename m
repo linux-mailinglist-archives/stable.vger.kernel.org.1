@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0170DA809F5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434B2A8066E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74A844C4512
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2163885889
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FFF26B2A1;
-	Tue,  8 Apr 2025 12:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBDC26A0FF;
+	Tue,  8 Apr 2025 12:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2kzeJwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S1So8n7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF9026B0B8;
-	Tue,  8 Apr 2025 12:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD42676FA;
+	Tue,  8 Apr 2025 12:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116097; cv=none; b=CR1C4bHeTXmEk0kNOlDI6jpApel/o/DMxWUAEO6DhWJMbFdCWXzwvyxwQt2Lax4Xm7XbyvhgpiMXf9KbMerS++BzEP6/8AZ8VY38A76BTXnVCthjPLtSi9Cx/QeAXyFuJcomJKDPhyjs2SPrlkyfnUrfaR11dVJee8yMBJMCMRs=
+	t=1744114608; cv=none; b=XPKVFdeKfivxwJ/UwKSEl4Lpt8RW3nSgl0e4uQI/CLONmJGBhp9Cs2qxk2t4/00qcL2OOZ5WY+37vfCcd792hYMXMg5Uqurfsod3P+iPZb+9aRZpY7TqULWFb3AGORSF6Iv2cTk0T9jLMQdfhXk1DFDmdvmCdLRH+d75hxedYgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116097; c=relaxed/simple;
-	bh=XhHUGw0iMJKVW/crM3vcpNxlkoLkht3zqyqhnXaaspU=;
+	s=arc-20240116; t=1744114608; c=relaxed/simple;
+	bh=HwQYQle6SG2PH/jhARsiq2xygS8Y3vHkU1JJNYgEoZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDjbn/WsllSjJ7Y+sad6zjl2w3WD6tf2+uHnINbrv2drFsmaT/UUu7bKj24hYVsu7h7vpLqk6/dmm7kigTJdBhBkuY64LM7USQD3vRamT4BpBSQswKb4Orm+6JHRjEUrSRCQLnvgr/q4H73eKt0371S/Nvj8KwCJiMVWNZT+t7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2kzeJwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C46CC4CEE5;
-	Tue,  8 Apr 2025 12:41:37 +0000 (UTC)
+	 MIME-Version; b=QMvQwSiSl3fRgl5sivna40aggvZppTiV6kPn2jcRNT2abHSwDUzPgx2qRwsEjnQdB4CZOC8vl3Ek6VVykhI2faJFwFuT78PnAV/PSMsGHpoXE7EBk8ekt/qIvobGrBmILHzW8ud3PlEG5mbHFjTaDKzD0TVHsP67ddz0TRQoJyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S1So8n7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB6C4CEE5;
+	Tue,  8 Apr 2025 12:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116097;
-	bh=XhHUGw0iMJKVW/crM3vcpNxlkoLkht3zqyqhnXaaspU=;
+	s=korg; t=1744114607;
+	bh=HwQYQle6SG2PH/jhARsiq2xygS8Y3vHkU1JJNYgEoZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2kzeJwLYGPQA7ahuUsonAqciZH0mpFK9YdcBKaYoKuEZ3sVBbr63g7dVbs11Tkhq
-	 MJcX7eCc7mPKuP+sA0iAC4xWvB3/Jf6GMLJ5UhhkDBAKpHldWTMExjDd4sep4K9GCB
-	 x3Kwfoz/r4Pc7Q00rnp2L7FQiDqbNkpo4QcYznL0=
+	b=2S1So8n76bEEkjkCHtl2TINGRJQ0hhMvWG8SHYHoiCbpvm0Iy5VW/g4SPI9/ibtiS
+	 ciLQCfYuuU06G48tcpJRWTiwmTLXB6X2i+kjTsvgSZs6DpmAUKss5iW1dgP07dYJi0
+	 Z03UKzQKr78wLKrMHNt6+rJQ0FUXuMJcqlZwkOlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/423] PM: sleep: Adjust check before setting power.must_resume
-Date: Tue,  8 Apr 2025 12:45:41 +0200
-Message-ID: <20250408104846.084524568@linuxfoundation.org>
+Subject: [PATCH 6.13 130/499] crypto: hisilicon/sec2 - fix for aead authsize alignment
+Date: Tue,  8 Apr 2025 12:45:42 +0200
+Message-ID: <20250408104854.437156375@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit eeb87d17aceab7803a5a5bcb6cf2817b745157cf ]
+[ Upstream commit a49cc71e219040d771a8c1254879984f98192811 ]
 
-The check before setting power.must_resume in device_suspend_noirq()
-does not take power.child_count into account, but it should do that, so
-use pm_runtime_need_not_resume() in it for this purpose and adjust the
-comment next to it accordingly.
+The hardware only supports authentication sizes
+that are 4-byte aligned. Therefore, the driver
+switches to software computation in this case.
 
-Fixes: 107d47b2b95e ("PM: sleep: core: Simplify the SMART_SUSPEND flag handling")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3353728.44csPzL39Z@rjwysocki.net
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c    | 13 ++++++-------
- drivers/base/power/runtime.c |  2 +-
- include/linux/pm_runtime.h   |  2 ++
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 4a67e83300e16..d4875c3712ede 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -1254,14 +1254,13 @@ static int device_suspend_noirq(struct device *dev, pm_message_t state, bool asy
- 	dev->power.is_noirq_suspended = true;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 66bc07da9eb6f..50223e3c4bccf 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -57,7 +57,6 @@
+ #define SEC_TYPE_MASK		0x0F
+ #define SEC_DONE_MASK		0x0001
+ #define SEC_ICV_MASK		0x000E
+-#define SEC_SQE_LEN_RATE_MASK	0x3
  
- 	/*
--	 * Skipping the resume of devices that were in use right before the
--	 * system suspend (as indicated by their PM-runtime usage counters)
--	 * would be suboptimal.  Also resume them if doing that is not allowed
--	 * to be skipped.
-+	 * Devices must be resumed unless they are explicitly allowed to be left
-+	 * in suspend, but even in that case skipping the resume of devices that
-+	 * were in use right before the system suspend (as indicated by their
-+	 * runtime PM usage counters and child counters) would be suboptimal.
- 	 */
--	if (atomic_read(&dev->power.usage_count) > 1 ||
--	    !(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
--	      dev->power.may_skip_resume))
-+	if (!(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
-+	      dev->power.may_skip_resume) || !pm_runtime_need_not_resume(dev))
- 		dev->power.must_resume = true;
+ #define SEC_TOTAL_IV_SZ(depth)	(SEC_IV_SIZE * (depth))
+ #define SEC_SGL_SGE_NR		128
+@@ -80,16 +79,16 @@
+ #define SEC_TOTAL_PBUF_SZ(depth)	(PAGE_SIZE * SEC_PBUF_PAGE_NUM(depth) +	\
+ 				SEC_PBUF_LEFT_SZ(depth))
  
- 	if (dev->power.must_resume)
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 2ee45841486bc..04113adb092b5 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1874,7 +1874,7 @@ void pm_runtime_drop_link(struct device_link *link)
- 	pm_request_idle(link->supplier);
- }
+-#define SEC_SQE_LEN_RATE	4
+ #define SEC_SQE_CFLAG		2
+ #define SEC_SQE_AEAD_FLAG	3
+ #define SEC_SQE_DONE		0x1
+ #define SEC_ICV_ERR		0x2
+-#define MIN_MAC_LEN		4
+ #define MAC_LEN_MASK		0x1U
+ #define MAX_INPUT_DATA_LEN	0xFFFE00
+ #define BITS_MASK		0xFF
++#define WORD_MASK		0x3
+ #define BYTE_BITS		0x8
++#define BYTES_TO_WORDS(bcount)	((bcount) >> 2)
+ #define SEC_XTS_NAME_SZ		0x3
+ #define IV_CM_CAL_NUM		2
+ #define IV_CL_MASK		0x7
+@@ -1175,7 +1174,7 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 		goto bad_key;
+ 	}
  
--static bool pm_runtime_need_not_resume(struct device *dev)
-+bool pm_runtime_need_not_resume(struct device *dev)
- {
- 	return atomic_read(&dev->power.usage_count) <= 1 &&
- 		(atomic_read(&dev->power.child_count) == 0 ||
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index d39dc863f612f..d0b29cd1fd204 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -66,6 +66,7 @@ static inline bool queue_pm_work(struct work_struct *work)
+-	if (ctx->a_ctx.a_key_len & SEC_SQE_LEN_RATE_MASK) {
++	if (ctx->a_ctx.a_key_len & WORD_MASK) {
+ 		ret = -EINVAL;
+ 		dev_err(dev, "AUTH key length error!\n");
+ 		goto bad_key;
+@@ -1583,11 +1582,10 @@ static void sec_auth_bd_fill_ex(struct sec_auth_ctx *ctx, int dir,
  
- extern int pm_generic_runtime_suspend(struct device *dev);
- extern int pm_generic_runtime_resume(struct device *dev);
-+extern bool pm_runtime_need_not_resume(struct device *dev);
- extern int pm_runtime_force_suspend(struct device *dev);
- extern int pm_runtime_force_resume(struct device *dev);
+ 	sec_sqe->type2.a_key_addr = cpu_to_le64(ctx->a_key_dma);
  
-@@ -241,6 +242,7 @@ static inline bool queue_pm_work(struct work_struct *work) { return false; }
+-	sec_sqe->type2.mac_key_alg = cpu_to_le32(authsize / SEC_SQE_LEN_RATE);
++	sec_sqe->type2.mac_key_alg = cpu_to_le32(BYTES_TO_WORDS(authsize));
  
- static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
- static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
-+static inline bool pm_runtime_need_not_resume(struct device *dev) {return true; }
- static inline int pm_runtime_force_suspend(struct device *dev) { return 0; }
- static inline int pm_runtime_force_resume(struct device *dev) { return 0; }
+ 	sec_sqe->type2.mac_key_alg |=
+-			cpu_to_le32((u32)((ctx->a_key_len) /
+-			SEC_SQE_LEN_RATE) << SEC_AKEY_OFFSET);
++			cpu_to_le32((u32)BYTES_TO_WORDS(ctx->a_key_len) << SEC_AKEY_OFFSET);
  
+ 	sec_sqe->type2.mac_key_alg |=
+ 			cpu_to_le32((u32)(ctx->a_alg) << SEC_AEAD_ALG_OFFSET);
+@@ -1639,12 +1637,10 @@ static void sec_auth_bd_fill_ex_v3(struct sec_auth_ctx *ctx, int dir,
+ 	sqe3->a_key_addr = cpu_to_le64(ctx->a_key_dma);
+ 
+ 	sqe3->auth_mac_key |=
+-			cpu_to_le32((u32)(authsize /
+-			SEC_SQE_LEN_RATE) << SEC_MAC_OFFSET_V3);
++			cpu_to_le32(BYTES_TO_WORDS(authsize) << SEC_MAC_OFFSET_V3);
+ 
+ 	sqe3->auth_mac_key |=
+-			cpu_to_le32((u32)(ctx->a_key_len /
+-			SEC_SQE_LEN_RATE) << SEC_AKEY_OFFSET_V3);
++			cpu_to_le32((u32)BYTES_TO_WORDS(ctx->a_key_len) << SEC_AKEY_OFFSET_V3);
+ 
+ 	sqe3->auth_mac_key |=
+ 			cpu_to_le32((u32)(ctx->a_alg) << SEC_AUTH_ALG_OFFSET_V3);
+@@ -2234,8 +2230,8 @@ static int sec_aead_spec_check(struct sec_ctx *ctx, struct sec_req *sreq)
+ 	struct device *dev = ctx->dev;
+ 	int ret;
+ 
+-	/* Hardware does not handle cases where authsize is less than 4 bytes */
+-	if (unlikely(sz < MIN_MAC_LEN)) {
++	/* Hardware does not handle cases where authsize is not 4 bytes aligned */
++	if (c_mode == SEC_CMODE_CBC && (sz & WORD_MASK)) {
+ 		sreq->aead_req.fallback = true;
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
