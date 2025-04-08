@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA62A801A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C009A80213
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE82316DCA1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086B61889222
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71C8269830;
-	Tue,  8 Apr 2025 11:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32112219301;
+	Tue,  8 Apr 2025 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPK10sAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkuEoPGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8583B268C6F;
-	Tue,  8 Apr 2025 11:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C1B2192F2;
+	Tue,  8 Apr 2025 11:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111783; cv=none; b=EFdOzRApfM/x5lKmyuuTbzOJO73GaIsab/JRS3KoFikgeKAd6X9UeebtI21ajVFzxvX8ZxQxe41PzDV5LU/5fkuNqJpP33afPojN4UBE4LgX8CqNHBh23EnE6ailj3328l0MtmXCIdl6iSY6lbvZU7en5JtAu0Hk4o+ljsM5w6k=
+	t=1744112452; cv=none; b=NP5CGwByb47vBC46YQ0PXD3AZk816bWnB56Qy8HHrEvAh1grEjzcXuwFdT4PMzeNUWt393JNd1Ok2DWoVv9GSkuN+7h/sQNdDr8+iaRnRsQqI82rZX01nssfX7fcZH4QSG2FDYEhq8+4VQFSlHJHCrBel1Upr3JVp84OJuPmmGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111783; c=relaxed/simple;
-	bh=SSBFxZpflptORheHvXfInpv14nu0xxcv9lTbvRfDMWM=;
+	s=arc-20240116; t=1744112452; c=relaxed/simple;
+	bh=zil2V6914sCGaREvPAI9IcymyjV0SwEyMhX2ciRVw/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3j2HxZsJxkQUFILKZwN+lBmCYNSM2Q4wULgjKM4p8uKGwoLoeCQHd4rsZDs+lXHlu2WDcaDKoly3DL1VkOM0GlvfH1s9ancXqi3XuT97X+qlrUjVxTavDOXHIyUigaurI1qsjFsGlE64vy+UrS9rAmDaS3VvhW8dgtY3FGUatA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPK10sAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1578CC4CEE5;
-	Tue,  8 Apr 2025 11:29:42 +0000 (UTC)
+	 MIME-Version; b=s0i3EfWfb8qaKrPdZdHbm0wVcX7U8GBJvhLfC9v9kpYY37Dxh4uoAuo+DZ2+rKN+8v0Lf0Ak9iW44PSs/GKjg9vxrkXsZ+6mgWH5BD8nNTZuZqcH4nMSLYAdLl7oa7wkRDXlgdhOVepFp4+YUVidw9hV/3v0UthFRf66qaJ7i4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkuEoPGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E8CC4CEE7;
+	Tue,  8 Apr 2025 11:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111783;
-	bh=SSBFxZpflptORheHvXfInpv14nu0xxcv9lTbvRfDMWM=;
+	s=korg; t=1744112452;
+	bh=zil2V6914sCGaREvPAI9IcymyjV0SwEyMhX2ciRVw/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPK10sAFutNkAg3swqE5cTKMNAa5R3wQ435XXZHIBIIy7hOlH+GnwhVKOfrxbPqA7
-	 mrjm1YtVbobAvKAE0dUXt05ItoOZUQVahm2Pkja/EDD6pSc0kw1L4kmqjTRnPPdlBR
-	 LzLPaKSK3H6pxndp8KWnIUr23MEvvOV1+Ytn7RoQ=
+	b=PkuEoPGxrxAQwQum8JXpv5jGzo/KejU0oZJF12wa4FHaeYVB6cuw4k9LdC0Vlwwnx
+	 Pq0f4ODy6Eq2O5ZfBN1fy1aL8wzfsImZ6pVDzQuk0dvoy5jz6VdYcmjz5Y/lGwLgQG
+	 eehISaQFea3omncaQ3ZzKuMwSerYsqo8OPuxjinA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 559/731] ksmbd: fix r_count dec/increment mismatch
+Subject: [PATCH 5.15 073/279] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
 Date: Tue,  8 Apr 2025 12:47:36 +0200
-Message-ID: <20250408104927.277339444@linuxfoundation.org>
+Message-ID: <20250408104828.314536479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ddb7ea36ba7129c2ed107e2186591128618864e1 ]
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-r_count is only increased when there is an oplock break wait,
-so r_count inc/decrement are not paired. This can cause r_count
-to become negative, which can lead to a problem where the ksmbd
-thread does not terminate.
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Fixes: 3aa660c05924 ("ksmbd: prevent connection release during oplock break notification")
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 28886ff1ee577..8e6d226dc4e0a 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -724,8 +724,8 @@ static int smb2_oplock_break_noti(struct oplock_info *opinfo)
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index cc58feacd0821..28a57cb6efb99 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -473,6 +473,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
  
-+	ksmbd_conn_r_count_inc(conn);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
--		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
- 		ksmbd_queue_work(work);
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -484,7 +486,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
-@@ -833,8 +833,8 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
  
-+	ksmbd_conn_r_count_inc(conn);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
--		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
- 		wait_for_break_ack(opinfo);
+ static void ali15x3_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
