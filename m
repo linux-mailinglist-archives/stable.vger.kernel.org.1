@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D80A7FDC3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A674A80109
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73D1817B25C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B4847A82DD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66FD269D0C;
-	Tue,  8 Apr 2025 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1CD2676DE;
+	Tue,  8 Apr 2025 11:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7BSIf3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCQ9oeKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F89269CE6;
-	Tue,  8 Apr 2025 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B77926658B;
+	Tue,  8 Apr 2025 11:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109972; cv=none; b=mQlN3Mu2yVQ/v9nWB4PLrb3otYD105dShceQwf1lxdLBlh4FJLfSntZeuzpnl/4UO0WaD5YvATd5kH56SEmhQ9mvkT1QQ9RWQkRjFxv/8b4cMNdEjyTRQ8zp9CXAiSr0Awmc+tnbU9pnmc2mBnGs8JnBrHc5Kr8j380aDxJxEK4=
+	t=1744112005; cv=none; b=YjbRMUrcM2GewhfcMeUO9ejOze+aqIvciFE+i1cN0MTuGKbdCgBVFdg1Z2diM8Mqzp++u+BIzcdJs9xpkYvqH4AjWOHt/7qelzy97+vOiNSBmp/5QWz4jp4WEnz13uO//5+7YF+Rw+T0gQwfmwS7XV+foHhGzyBF6qQpGqkw96E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109972; c=relaxed/simple;
-	bh=i0z1M+iAISgZUKzkS7eVOGr5XIe2gBoENw+MvBvO/6E=;
+	s=arc-20240116; t=1744112005; c=relaxed/simple;
+	bh=hRJ7WE9per4BhrkMe2NPFKEGH4WQkTDIhXKUcKH/PXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3g3dTrQFbKArh7K0VIa8uuSUjbYHI5Qv/SYAJ0eNcJNq2m/KKiXWa+rVMUA2AZ9sxemPEGOoFfFUelybSoQ3xLsncg3xjrIBnWDHTR7Vu9aTDEPiexkIYDETIRCTKwPFlAB5+ChuX7zbNv9mlfXuLMYRDUdd92Mti18WFodMrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7BSIf3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6CBC4CEF1;
-	Tue,  8 Apr 2025 10:59:31 +0000 (UTC)
+	 MIME-Version; b=GoHf/gW6nOkEwxMkBwLLVX4XtuyWwLdoflM2tsBKWNct1e9BfnkIa2Xgi3X/R7osgSHAu/FIy7b249/pFzhru+9VuJ15qyT4HU8iPECms7o+GB2sGH8VT8D7rDbnebHzByGnm8jXeZ/H2u4oEKTLg48nHvMO1MpBNjmQhhM28c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCQ9oeKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB059C4CEE5;
+	Tue,  8 Apr 2025 11:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109972;
-	bh=i0z1M+iAISgZUKzkS7eVOGr5XIe2gBoENw+MvBvO/6E=;
+	s=korg; t=1744112005;
+	bh=hRJ7WE9per4BhrkMe2NPFKEGH4WQkTDIhXKUcKH/PXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7BSIf3Y/VqhTw+lyvZ8ZljpYsl3VvXONfVoM+5kIIqVOPNEDDCrbhYjEJRa4lIU5
-	 BPi+3Tlfn06RxAyYX7ezn9zGuB9Ir5a2SxNXv7NyXUKnKkwITq1DNEykwO461O1d2b
-	 XaegKhppb/vWibjcgyrPpQYkMFQPHMY769KLHbL4=
+	b=rCQ9oeKqXtMFNmjuwenb7WXKRcMtOBLoLfP/8UuSZv4MC+yX2XnCGnwjvgKNSGyl8
+	 HxAb2WNZgzjk+QV/7/nmK0ey3HtepBPm8rStNKz7pZ2cVE8S8/dbHkR2f+3E2LwR+Q
+	 Wuon6MKYY2fQscZjkPoF+NNGZgFX/1eYFYthJWBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/227] EDAC/ie31200: Fix the DIMM size mask for several SoCs
+Subject: [PATCH 6.14 601/731] spi: cadence: Fix out-of-bounds array access in cdns_mrvl_xspi_setup_clock()
 Date: Tue,  8 Apr 2025 12:48:18 +0200
-Message-ID: <20250408104823.937797608@linuxfoundation.org>
+Message-ID: <20250408104928.252201645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
+[ Upstream commit 7ba0847fa1c22e7801cebfe5f7b75aee4fae317e ]
 
-The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
-but bits{5:0}. Fix it.
+If requested_clk > 128, cdns_mrvl_xspi_setup_clock() iterates over the
+entire cdns_mrvl_xspi_clk_div_list array without breaking out early,
+causing 'i' to go beyond the array bounds.
 
-Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
+Fix that by stopping the loop when it gets to the last entry, clamping
+the clock to the minimum 6.25 MHz.
+
+Fixes the following warning with an UBSAN kernel:
+
+  vmlinux.o: warning: objtool: cdns_mrvl_xspi_setup_clock: unexpected end of section .text.cdns_mrvl_xspi_setup_clock
+
+Fixes: 26d34fdc4971 ("spi: cadence: Add clock configuration for Marvell xSPI overlay")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503282236.UhfRsF3B-lkp@intel.com/
+Link: https://lore.kernel.org/r/gs2ooxfkblnee6cc5yfcxh7nu4wvoqnuv4lrllkhccxgcac2jg@7snmwd73jkhs
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/h6bef6wof6zpjfp3jbhrkigqsnykdfy6j4qmmvb6gsabhianhj@k57a7hwpa3bj
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-xspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 662a79dda74eb..0c894b4890678 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -154,6 +154,7 @@
- #define IE31200_MAD_DIMM_0_OFFSET		0x5004
- #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
- #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
-+#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
- #define IE31200_MAD_DIMM_A_RANK			BIT(17)
- #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
- #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
-@@ -368,7 +369,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
- static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
- 				     int chan)
- {
--	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
-+	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
- 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
- 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
- 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index aed98ab143346..6dcba0e0ddaa3 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -432,7 +432,7 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
+ 	u32 clk_reg;
+ 	bool update_clk = false;
+ 
+-	while (i < ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list)) {
++	while (i < (ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list) - 1)) {
+ 		clk_val = MRVL_XSPI_CLOCK_DIVIDED(
+ 				cdns_mrvl_xspi_clk_div_list[i]);
+ 		if (clk_val <= requested_clk)
 -- 
 2.39.5
 
