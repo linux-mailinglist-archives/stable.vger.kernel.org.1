@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE3AA8041D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CD4A80BC6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 565373B2B1B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0167E903005
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B802690C4;
-	Tue,  8 Apr 2025 11:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721D7270EAC;
+	Tue,  8 Apr 2025 12:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcYA9Fqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE6bt8l7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B222257E;
-	Tue,  8 Apr 2025 11:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2B52698A0;
+	Tue,  8 Apr 2025 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113327; cv=none; b=WvKApJBTiHUK6Eu3iyMPeEHoSmRYN3HKg77AJC6rW8A8uoM+rjQp6BrEUEGfDF2YF79IspqN8jJuwa9n9otoboPiRqSGOqhuxnShjSH59NgsTeuhS+lRoymIDK6TbuvTb4mQwmzi5htPzE3CQxs6sxTl/5DucZel8OS9lri7nLA=
+	t=1744116616; cv=none; b=I5enbQS+MDR6oLM7Sstrc70vrL+qkSrq6bXaCvU26y5am12X573ORpo6IKOc8gOk9ydre4SHrgvREnOes2xbBrf5FJsAx3pzixkAyXQMC5EEba8hAcnFssVz/UGunkSrVUYBER/gPJNiMYJt7vCfvPfsZN41sDKELx7sHuispFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113327; c=relaxed/simple;
-	bh=A3fyY8sBMv0pUVZH2Lt7FArYLIuYHKGruKgRlYz7pFg=;
+	s=arc-20240116; t=1744116616; c=relaxed/simple;
+	bh=R0pz7bZfjY0NMxfio1zOD70sA2cL0okAgg0wW2KMfws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eMGZeGla7O0W6+Zx4Co1xAvX/vUcHiQJym478NKq8bfTezi17T7j3+R9EcpvHFtuDkgHmZr7qpfs+ngIJvakth+M5jejGpDJ1ieKrk8KnRyaSRhLxRKpWqAppCgG2A+mRyPdqYHVuAUesxxGHlkvLcI/8wadILoM7+GVsMDZveY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcYA9Fqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903B2C4CEEA;
-	Tue,  8 Apr 2025 11:55:26 +0000 (UTC)
+	 MIME-Version; b=pbpor/xeooBjW2ubytbZGHKzNDk4CHqDgmE+MSs3ngO9PT3ziPH1aHGdFyZ8mG0nLJdDUUeRhNQV+SGwNBBUT1D13Yotyui7yaQm/DNFpPtZWdxbwhAit44CSDz7AwYzwRbyDHQIzjBnuJjSOpyuLgP7WQqBrSM8Y6ArnYKw600=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE6bt8l7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA00C4CEE5;
+	Tue,  8 Apr 2025 12:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113326;
-	bh=A3fyY8sBMv0pUVZH2Lt7FArYLIuYHKGruKgRlYz7pFg=;
+	s=korg; t=1744116615;
+	bh=R0pz7bZfjY0NMxfio1zOD70sA2cL0okAgg0wW2KMfws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcYA9FqkZ87xjyl2hu2AckLh40WfU2zu4EkdKfaaFKgHRQ/hKLoVXR9wNWPie13hP
-	 3mnp8JZdLtLplsX1lX1iHim5veCPDjBwaxWhC4D0IT+4gGqx5Pc+IbMSU7DXaco7jy
-	 pVeuEJk0uSi0j4sTwD78kilE7oBBWIidqectqOqM=
+	b=LE6bt8l7ZYGB0zwZtii2rjWzka8ebY088kMNySTT18/RmZnmJsIQCg19thsHPB8Ym
+	 PWTde2n27b5vRRBKKKN9e7MBvpfG/Oad10q3VwXw7rXBeb2wgNFyZnXDp09PPrYmBs
+	 vWGc4YQd/uCHSMF+r9H8uNEaI0SCwQSn0y3TizAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Disseldorp <ddiss@suse.com>,
+	NeilBrown <neilb@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/268] iio: adc: ad4130: Fix comparison of channel setups
+Subject: [PATCH 6.12 204/423] NFS: fix open_owner_id_maxsz and related fields.
 Date: Tue,  8 Apr 2025 12:48:50 +0200
-Message-ID: <20250408104831.708583530@linuxfoundation.org>
+Message-ID: <20250408104850.487862550@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,111 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 280acb19824663d55a3f4d09087c76fabe86fa3c ]
+[ Upstream commit 43502f6e8d1e767d6736ea0676cc784025cf6eeb ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+A recent change increased the size of an NFSv4 open owner, but didn't
+increase the corresponding max_sz defines.  This is not know to have
+caused failure, but should be fixed.
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+This patch also fixes some relates _maxsz fields that are wrong.
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad4130_setup_info is expanded, the comparison is adapted, too.
+Note that the XXX_owner_id_maxsz values now are only the size of the id
+and do NOT include the len field that will always preceed the id in xdr
+encoding.  I think this is clearer.
 
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
-
-Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-12-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: David Disseldorp <ddiss@suse.com>
+Fixes: d98f72272500 ("nfs: simplify and guarantee owner uniqueness.")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad4130.c | 41 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4xdr.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index e650ebd167b03..6442218628518 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -223,6 +223,10 @@ enum ad4130_pin_function {
- 	AD4130_PIN_FN_VBIAS = BIT(3),
- };
- 
-+/*
-+ * If you make adaptations in this struct, you most likely also have to adapt
-+ * ad4130_setup_info_eq(), too.
-+ */
- struct ad4130_setup_info {
- 	unsigned int			iout0_val;
- 	unsigned int			iout1_val;
-@@ -591,6 +595,40 @@ static irqreturn_t ad4130_irq_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static bool ad4130_setup_info_eq(struct ad4130_setup_info *a,
-+				 struct ad4130_setup_info *b)
-+{
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad4130_setup_info was changed.
-+	 */
-+	static_assert(sizeof(*a) ==
-+		      sizeof(struct {
-+				     unsigned int iout0_val;
-+				     unsigned int iout1_val;
-+				     unsigned int burnout;
-+				     unsigned int pga;
-+				     unsigned int fs;
-+				     u32 ref_sel;
-+				     enum ad4130_filter_mode filter_mode;
-+				     bool ref_bufp;
-+				     bool ref_bufm;
-+			     }));
+diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
+index e8ac3f615f932..71f45cc0ca74d 100644
+--- a/fs/nfs/nfs4xdr.c
++++ b/fs/nfs/nfs4xdr.c
+@@ -82,9 +82,8 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
+  * we currently use size 2 (u64) out of (NFS4_OPAQUE_LIMIT  >> 2)
+  */
+ #define pagepad_maxsz		(1)
+-#define open_owner_id_maxsz	(1 + 2 + 1 + 1 + 2)
+-#define lock_owner_id_maxsz	(1 + 1 + 4)
+-#define decode_lockowner_maxsz	(1 + XDR_QUADLEN(IDMAP_NAMESZ))
++#define open_owner_id_maxsz	(2 + 1 + 2 + 2)
++#define lock_owner_id_maxsz	(2 + 1 + 2)
+ #define compound_encode_hdr_maxsz	(3 + (NFS4_MAXTAGLEN >> 2))
+ #define compound_decode_hdr_maxsz	(3 + (NFS4_MAXTAGLEN >> 2))
+ #define op_encode_hdr_maxsz	(1)
+@@ -185,7 +184,7 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
+ #define encode_claim_null_maxsz	(1 + nfs4_name_maxsz)
+ #define encode_open_maxsz	(op_encode_hdr_maxsz + \
+ 				2 + encode_share_access_maxsz + 2 + \
+-				open_owner_id_maxsz + \
++				1 + open_owner_id_maxsz + \
+ 				encode_opentype_maxsz + \
+ 				encode_claim_null_maxsz)
+ #define decode_space_limit_maxsz	(3)
+@@ -255,13 +254,14 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
+ #define encode_link_maxsz	(op_encode_hdr_maxsz + \
+ 				nfs4_name_maxsz)
+ #define decode_link_maxsz	(op_decode_hdr_maxsz + decode_change_info_maxsz)
+-#define encode_lockowner_maxsz	(7)
++#define encode_lockowner_maxsz	(2 + 1 + lock_owner_id_maxsz)
 +
-+	if (a->iout0_val != b->iout0_val ||
-+	    a->iout1_val != b->iout1_val ||
-+	    a->burnout != b->burnout ||
-+	    a->pga != b->pga ||
-+	    a->fs != b->fs ||
-+	    a->ref_sel != b->ref_sel ||
-+	    a->filter_mode != b->filter_mode ||
-+	    a->ref_bufp != b->ref_bufp ||
-+	    a->ref_bufm != b->ref_bufm)
-+		return false;
-+
-+	return true;
-+}
-+
- static int ad4130_find_slot(struct ad4130_state *st,
- 			    struct ad4130_setup_info *target_setup_info,
- 			    unsigned int *slot, bool *overwrite)
-@@ -604,8 +642,7 @@ static int ad4130_find_slot(struct ad4130_state *st,
- 		struct ad4130_slot_info *slot_info = &st->slots_info[i];
- 
- 		/* Immediately accept a matching setup info. */
--		if (!memcmp(target_setup_info, &slot_info->setup,
--			    sizeof(*target_setup_info))) {
-+		if (ad4130_setup_info_eq(target_setup_info, &slot_info->setup)) {
- 			*slot = i;
- 			return 0;
- 		}
+ #define encode_lock_maxsz	(op_encode_hdr_maxsz + \
+ 				 7 + \
+ 				 1 + encode_stateid_maxsz + 1 + \
+ 				 encode_lockowner_maxsz)
+ #define decode_lock_denied_maxsz \
+-				(8 + decode_lockowner_maxsz)
++				(2 + 2 + 1 + 2 + 1 + lock_owner_id_maxsz)
+ #define decode_lock_maxsz	(op_decode_hdr_maxsz + \
+ 				 decode_lock_denied_maxsz)
+ #define encode_lockt_maxsz	(op_encode_hdr_maxsz + 5 + \
+@@ -617,7 +617,7 @@ static int decode_layoutget(struct xdr_stream *xdr, struct rpc_rqst *req,
+ 				 encode_lockowner_maxsz)
+ #define NFS4_dec_release_lockowner_sz \
+ 				(compound_decode_hdr_maxsz + \
+-				 decode_lockowner_maxsz)
++				 decode_release_lockowner_maxsz)
+ #define NFS4_enc_access_sz	(compound_encode_hdr_maxsz + \
+ 				encode_sequence_maxsz + \
+ 				encode_putfh_maxsz + \
+@@ -1412,7 +1412,7 @@ static inline void encode_openhdr(struct xdr_stream *xdr, const struct nfs_opena
+ 	__be32 *p;
+  /*
+  * opcode 4, seqid 4, share_access 4, share_deny 4, clientid 8, ownerlen 4,
+- * owner 4 = 32
++ * owner 28
+  */
+ 	encode_nfs4_seqid(xdr, arg->seqid);
+ 	encode_share_access(xdr, arg->share_access);
+@@ -5077,7 +5077,7 @@ static int decode_link(struct xdr_stream *xdr, struct nfs4_change_info *cinfo)
+ /*
+  * We create the owner, so we know a proper owner.id length is 4.
+  */
+-static int decode_lock_denied (struct xdr_stream *xdr, struct file_lock *fl)
++static int decode_lock_denied(struct xdr_stream *xdr, struct file_lock *fl)
+ {
+ 	uint64_t offset, length, clientid;
+ 	__be32 *p;
 -- 
 2.39.5
 
