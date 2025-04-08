@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D14A801D5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED850A802C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030C83B4FD9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5B1C7A6AE0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF8224AEF;
-	Tue,  8 Apr 2025 11:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D3E265602;
+	Tue,  8 Apr 2025 11:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qAdxNsS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHr54/gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7062192F2;
-	Tue,  8 Apr 2025 11:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E665FA94A;
+	Tue,  8 Apr 2025 11:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112150; cv=none; b=mAFbKr5KUzBDwTzLnxdQGZGtQXjobnPwCtuA6R9I3+x0XvM6XPRE24uNGvK6hW2lHkhwnw8opQFwIHBxzKUWWGUi65wqG2X9tlWL9JKO7AETrH/ObX9ftxTtPPtIJOacO649hdAEU70PLh3dbbT8+7UycqWHGEH9I2anVhK+iyk=
+	t=1744112892; cv=none; b=eMt9Ho9ugaMVjnhaM1Gi5SHpCRCquuYaJTU732pIH9FzQKnmwv/WHrx0+63HL29k59zEnUPxDk4pFQskpVxOW0eH1mWN5BtIazQLti26PlH2l+4QrkvrnLMLyg6qZixjnyu8wzd+H21PZAiyvy9C7XJ0j046IWanfFsUf8XgGsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112150; c=relaxed/simple;
-	bh=khUJZfkkperJfv7SejENLWkZ1ppp2Z5zxB5ebgw5oyI=;
+	s=arc-20240116; t=1744112892; c=relaxed/simple;
+	bh=GZ6Oz9lvVNaSo/y87dNr1wxiwc+ZNrC5uTnElfEsuCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a31ACOCsZJ7bpc2s4it13Ab64AcQUV7vX+BBPeDkTePoYz08eau86qQteChzpuZ6sx+Xfy0uAXmWjgsC25tQAn2ZMmWlzzNZBWa74nVx5ajAPWnKNvIyzN+W6u9+NQoot+/k5I59jYYt1ADCNu6rCU/vei0x722UwpzTXxV8htU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qAdxNsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B42C4CEE5;
-	Tue,  8 Apr 2025 11:35:49 +0000 (UTC)
+	 MIME-Version; b=O/I0AaFBBi6hltupCEAdXheSr2cZNZ2VXEZoQIFaGj59BoL83t8zQFtuscQUD3aZUJLM4HOe5xQWKpnrCaUvonwN0u0t3WVuKt+hJLtLxlwSA0wndzuMtcyPgnQeBAEwrun5WXOJBoCBfv7+6ZsGkaNHx974+6wzGdlBG9KzVs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHr54/gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787BBC4CEE5;
+	Tue,  8 Apr 2025 11:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112149;
-	bh=khUJZfkkperJfv7SejENLWkZ1ppp2Z5zxB5ebgw5oyI=;
+	s=korg; t=1744112891;
+	bh=GZ6Oz9lvVNaSo/y87dNr1wxiwc+ZNrC5uTnElfEsuCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qAdxNsS5rh16xxhFRypcLn0owdi8DSw1kkP1jea47zinDl2lYvt8tanx43Xrkl8i
-	 g5q9ijZe/HcEkdUDn/6NzK3Y2sjMzLKKLPe9eyzIAUN+BcwqQbZFCnoIlmSfZoR/f8
-	 2ZWimeJDVOnmHAtyvazT4zUXKbxaiLD3ba+mIihU=
+	b=VHr54/gcjjVO/gynQJvlWvdDHiN2JfZg787P5vRq0EXpEovBmfOL+w8+9Z85Ak40O
+	 AuIX936IHBEnb0YPGKJXGek0Av8ArT3ZBFOJK/Gd52MCUhmrGD/KUpJUqobCOvNikt
+	 Pr5B/olNitumZeLzVlKPjk4FsUWXtWhxPOISK/sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.14 695/731] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 209/279] perf python: Check if there is space to copy all the event
 Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104930.433652643@linuxfoundation.org>
+Message-ID: <20250408104831.984971831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karel Balej <balejk@matfyz.cz>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit a41fcca4b342811b473bbaa4b44f1d34d87fcce6 upstream.
+[ Upstream commit 89aaeaf84231157288035b366cb6300c1c6cac64 ]
 
-Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
-prevent conversion of R1B responses to R1. Without this, the eMMC card
-in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
-with this mmc host doesn't probe with the ETIMEDOUT error originating in
-__mmc_poll_for_busy.
+The pyrf_event__new() method copies the event obtained from the perf
+ring buffer to a structure that will then be turned into a python object
+for further consumption, so it copies perf_event.header.size bytes to
+its 'event' member:
 
-Note that the other issues reported for this phone and host, namely
-floods of "Tuning failed, falling back to fixed sampling clock" dmesg
-messages for the eMMC and unstable SDIO are not mitigated by this
-change.
+  $ pahole -C pyrf_event /tmp/build/perf-tools-next/python/perf.cpython-312-x86_64-linux-gnu.so
+  struct pyrf_event {
+  	PyObject                   ob_base;              /*     0    16 */
+  	struct evsel *             evsel;                /*    16     8 */
+  	struct perf_sample         sample;               /*    24   312 */
 
-Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
-Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
-Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
-Cc: stable@vger.kernel.org
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Link: https://lore.kernel.org/r/20250310140707.23459-1-balejk@matfyz.cz
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  	/* XXX last struct has 7 bytes of padding, 2 holes */
+
+  	/* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
+  	union perf_event           event;                /*   336  4168 */
+
+  	/* size: 4504, cachelines: 71, members: 4 */
+  	/* member types with holes: 1, total: 2 */
+  	/* paddings: 1, sum paddings: 7 */
+  	/* last cacheline: 24 bytes */
+  };
+
+  $
+
+It was doing so without checking if the event just obtained has more
+than that space, fix it.
+
+This isn't a proper, final solution, as we need to support larger
+events, but for the time being we at least bounds check and document it.
+
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-7-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pxav3.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/python.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pxav3.c
-+++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct plat
- 	if (!IS_ERR(pxa->clk_core))
- 		clk_prepare_enable(pxa->clk_core);
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 42810b63125a9..b9fd7edfbb3cc 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -585,6 +585,11 @@ static PyObject *pyrf_event__new(union perf_event *event)
+ 	      event->header.type == PERF_RECORD_SWITCH_CPU_WIDE))
+ 		return NULL;
  
-+	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
- 	/* enable 1/8V DDR capable */
- 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
- 
++	// FIXME this better be dynamic or we need to parse everything
++	// before calling perf_mmap__consume(), including tracepoint fields.
++	if (sizeof(pevent->event) < event->header.size)
++		return NULL;
++
+ 	ptype = pyrf_event__type[event->header.type];
+ 	pevent = PyObject_New(struct pyrf_event, ptype);
+ 	if (pevent != NULL)
+-- 
+2.39.5
+
 
 
 
