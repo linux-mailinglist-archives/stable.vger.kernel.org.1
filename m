@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D01A80398
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C8EA7FDC8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F4F3B3733
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6790D3BA24F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FEF267F68;
-	Tue,  8 Apr 2025 11:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184326A0E8;
+	Tue,  8 Apr 2025 10:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyHqmxXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWLeNLqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF97227BA4;
-	Tue,  8 Apr 2025 11:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D82826A0A6;
+	Tue,  8 Apr 2025 10:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113110; cv=none; b=ZX6pTok/lH5wBjtXRd/IQ2h3TyKWC60lMPXXHnuhT2yi0try5wROqIR6xAy2HAWZeY1bvMpRb7VAo91WF2irWZ/DADoGOwgBsSHKtaIoPEwPjLlcv+NGIQ/S25L++IdasGTBBLK2ZdvlX1+SmDZJ/kdv6HJDR40HWav65O9bzCU=
+	t=1744109840; cv=none; b=Cw/e1IJ6Pid46V7PYJ3kYtQcXX53x651DOPnv9STJKWv+szQSjsvS3HD5buFyMcl7LDq+NoFkxIqz5b6KJeuh7ZC/7QR+5++FSs9WoTbdCHCYb10hfRuD1LtuIR+C9remwY6sxyMlu+NEv4gqslWXF2680K+FEa4v2G7yZLWVhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113110; c=relaxed/simple;
-	bh=V2LCV7s3TJQzTena3RsLTxFYBwAcxIC5rbbeO127Xuw=;
+	s=arc-20240116; t=1744109840; c=relaxed/simple;
+	bh=3smmB//ksvIgOVcLsOYH3eM+nogxv6sU5kQKZcjV0JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2+aH1jL/xJ6PED1U+kw34RtDrczg9xZ9WWpDxd7lYOYVW4m05Z8hGNDRbYpeQ8iDHFoyuVcTZQ+avVsPCTvemTwEBtnLFGb/ARq5VfMkv8niq9S39+i12LJj75UHeowUSNvf2q1Fh5Sxd8/RdI+1Ztqjxvq0QNXhHUV1pNjwuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyHqmxXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0F1C4CEE5;
-	Tue,  8 Apr 2025 11:51:49 +0000 (UTC)
+	 MIME-Version; b=ne/uP0VpvUj0sEjeBe2hJ6bVlTwM2cylh2JpNvZfgV9N3ZA0+woerrp1ag7eJsW8IjtjqveRt5PWGedKwf0zFzqjK9woQA40DGbtyqhT4R6z5kh5sUCsT7rJHtWhheB0XsfZsgFC6581bfiRHeqmzEUyY6ueNWwJ7Df4nfyZtY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWLeNLqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6274C4CEE5;
+	Tue,  8 Apr 2025 10:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113110;
-	bh=V2LCV7s3TJQzTena3RsLTxFYBwAcxIC5rbbeO127Xuw=;
+	s=korg; t=1744109840;
+	bh=3smmB//ksvIgOVcLsOYH3eM+nogxv6sU5kQKZcjV0JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LyHqmxXnSsrvJkhzI7pEJnLrIwxn4IntU7I0uMFbvWztkkDEbULLt7FJsZPXMfqet
-	 kjaxT0Oy4flVcggYib+cDyiidF/vjmlA246fzjtJkJgqa08GU3DtvkM1VGULaSP9c1
-	 Ga+Y+E2LuPqFMkdze3FwNtzjVEDraGWCH1Wdy/ec=
+	b=bWLeNLqhJAp7HGtqpRKiEammfMB3UwU+57jcXu9xeQe/4+0GXmRu9/Mi9ZoeakGB8
+	 tUEbaTP7cbArLzHnNjreKZPlkZZ4nXNpvMxw+97UUMCOyPvE0bYe1245/jcUteLmH9
+	 Uk6NfexsRHkFdSeVQzLZBcK8gLxV+W1eq2sNgYr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/268] drm/mediatek: mtk_hdmi: Unregister audio platform device on failure
+Subject: [PATCH 5.10 071/227] ARM: dts: bcm2711: Dont mark timer regs unconfigured
 Date: Tue,  8 Apr 2025 12:47:29 +0200
-Message-ID: <20250408104829.528859767@linuxfoundation.org>
+Message-ID: <20250408104822.528064467@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 0be123cafc06eed0fd1227166a66e786434b0c50 ]
+[ Upstream commit c24f272ae751a9f54f8816430e7f2d56031892cc ]
 
-The probe function of this driver may fail after registering the
-audio platform device: in that case, the state is not getting
-cleaned up, leaving this device registered.
+During upstream process of Raspberry Pi 4 back in 2019 the ARMv7 stubs
+didn't configured the ARM architectural timer. This firmware issue has
+been fixed in 2020, which gave users enough time to update their system.
 
-Adding up to the mix, should the probe function of this driver
-return a probe deferral for N times, we're registering up to N
-audio platform devices and, again, never freeing them up.
+So drop this property to allow the use of the vDSO version of
+clock_gettime.
 
-To fix this, add a pointer to the audio platform device in the
-mtk_hdmi structure, and add a devm action to unregister it upon
-driver removal or probe failure.
-
-Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-18-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Link: https://github.com/raspberrypi/tools/pull/113
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250222094113.48198-1-wahrenst@gmx.net
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/bcm2711.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-index 86133bf16326b..cff5ed3802413 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-@@ -173,6 +173,7 @@ struct mtk_hdmi {
- 	unsigned int sys_offset;
- 	void __iomem *regs;
- 	enum hdmi_colorspace csp;
-+	struct platform_device *audio_pdev;
- 	struct hdmi_audio_param aud_param;
- 	bool audio_enable;
- 	bool powered;
-@@ -1666,6 +1667,11 @@ static const struct hdmi_codec_ops mtk_hdmi_audio_codec_ops = {
- 	.no_capture_mute = 1,
- };
- 
-+static void mtk_hdmi_unregister_audio_driver(void *data)
-+{
-+	platform_device_unregister(data);
-+}
-+
- static int mtk_hdmi_register_audio_driver(struct device *dev)
- {
- 	struct mtk_hdmi *hdmi = dev_get_drvdata(dev);
-@@ -1675,13 +1681,20 @@ static int mtk_hdmi_register_audio_driver(struct device *dev)
- 		.i2s = 1,
- 		.data = hdmi,
+diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
+index 0f559f2653920..9bb98338609b6 100644
+--- a/arch/arm/boot/dts/bcm2711.dtsi
++++ b/arch/arm/boot/dts/bcm2711.dtsi
+@@ -424,8 +424,6 @@ IRQ_TYPE_LEVEL_LOW)>,
+ 					  IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
+ 					  IRQ_TYPE_LEVEL_LOW)>;
+-		/* This only applies to the ARMv7 stub */
+-		arm,cpu-registers-not-fw-configured;
  	};
--	struct platform_device *pdev;
-+	int ret;
  
--	pdev = platform_device_register_data(dev, HDMI_CODEC_DRV_NAME,
--					     PLATFORM_DEVID_AUTO, &codec_data,
--					     sizeof(codec_data));
--	if (IS_ERR(pdev))
--		return PTR_ERR(pdev);
-+	hdmi->audio_pdev = platform_device_register_data(dev,
-+							 HDMI_CODEC_DRV_NAME,
-+							 PLATFORM_DEVID_AUTO,
-+							 &codec_data,
-+							 sizeof(codec_data));
-+	if (IS_ERR(hdmi->audio_pdev))
-+		return PTR_ERR(hdmi->audio_pdev);
-+
-+	ret = devm_add_action_or_reset(dev, mtk_hdmi_unregister_audio_driver,
-+				       hdmi->audio_pdev);
-+	if (ret)
-+		return ret;
- 
- 	DRM_INFO("%s driver bound to HDMI\n", HDMI_CODEC_DRV_NAME);
- 	return 0;
+ 	cpus: cpus {
 -- 
 2.39.5
 
