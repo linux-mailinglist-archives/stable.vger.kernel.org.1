@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-130285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E62A803F2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03563A806A4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6477C3B4B94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF611B658DD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7555D268FDB;
-	Tue,  8 Apr 2025 11:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E34B26A0C7;
+	Tue,  8 Apr 2025 12:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3CKwC8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OopVCLJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DF3264FA0;
-	Tue,  8 Apr 2025 11:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA751B87CF;
+	Tue,  8 Apr 2025 12:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113311; cv=none; b=OML33aQ1Wojv7ZZeA65A2+xWm3s4/+FtbG9BY9DzMb/iXnFORWIJz0QxyF/e1EKJKRGzAL+x2ONg1cpyFFIQb6zY/HP+hEFxTZKYZhctwZ2dOT20HYbcOQ7PVIclc8NfjSmxfo+7Y3yQ0AG8b6qpbJeb6FgAUGFu4nS6+CJRUis=
+	t=1744114891; cv=none; b=Zvj1/STizrVH+dJp8T0GJPw5PB3ddKHFnLoxMj/E7mk8J/F1fKr6Hin2FkqyP8q2uf8yDktIeWvVv3gYXUZ18GmUX/Yqai56+mW++wxUrDtGW4RbsPTyt3OqqCQGgLTfXpnQC7qh3FXcSsHXVhCq3C2QCLn+rr6ZcE6ErMR5cEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113311; c=relaxed/simple;
-	bh=qxSbjpxzuet8zDF59GqzN3A/96wyDmMiHll9x2Fy0e0=;
+	s=arc-20240116; t=1744114891; c=relaxed/simple;
+	bh=vKdGpLIOlmy3ZSOAEh85BwkXxdpNd7PdiH+PkdXEhUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b45XQDlr54aSd5duQYueZsA89kwIUXnPwjuqB6J3sxoNY3px91mWEzsM8kuD+EPXNdNy7V/wohSy18DZzUhBsY9KGnYYuazaD3xnXAD6pGcFZgSXTP27yWQxlVnaGSEM+coWOcBgPrIO2EQR8R+fokXBBMjmnJbX55adax5EOow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3CKwC8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90730C4CEE5;
-	Tue,  8 Apr 2025 11:55:10 +0000 (UTC)
+	 MIME-Version; b=gs3XA5CxOcwaoswheaxrx6XroNdiiaJSCBza7LQzl+jGsy7QqC3b7RmVnEFhGtmxFz+/peluLno0d2mRDm3w23kHKwboSsP49N+Rj4DttErtNqCOO+lBQjC1shBtXeMk8YCLBU15NLC34Eu9DfCIJV+0LtlREJ36ee4zTV54IJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OopVCLJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEBC4CEE5;
+	Tue,  8 Apr 2025 12:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113311;
-	bh=qxSbjpxzuet8zDF59GqzN3A/96wyDmMiHll9x2Fy0e0=;
+	s=korg; t=1744114891;
+	bh=vKdGpLIOlmy3ZSOAEh85BwkXxdpNd7PdiH+PkdXEhUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3CKwC8AbjpREss9OrqMK567xKuS/ltE6du/dN2BVejE2H9u+iJ0OQpTi4WpBRcY9
-	 jpAg0USGbeo83xlclWneSLr1mhCf/WPv/P08FIt2GtQabhltEshD4ckgNw4IkAbmCT
-	 MGSW1tKthk6MWILm5Ty0A9CUdC/DVqpMbf1gKKHk=
+	b=OopVCLJb858spaTaywr6Y7i3csrcTbnGe9DFwO/7p3tVbvi6JLTFV2i0kbbsjGU36
+	 bGNbL4hQfWHPzrEdUfT6NUYtEa/NSyMnQHm45K0D5b2WS2l2xdUNHZTMXOqLLwQ/xu
+	 WbV16ZKPaynR/ZeK177PQoDV2Jtl+7xqDDVyAuEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Bakker <kees@ijzerbout.nl>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/268] RDMA/mana_ib: Ensure variable err is initialized
-Date: Tue,  8 Apr 2025 12:48:04 +0200
-Message-ID: <20250408104830.466805935@linuxfoundation.org>
+Subject: [PATCH 6.13 273/499] objtool, nvmet: Fix out-of-bounds stack access in nvmet_ctrl_state_show()
+Date: Tue,  8 Apr 2025 12:48:05 +0200
+Message-ID: <20250408104858.026713197@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Bakker <kees@ijzerbout.nl>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit be35a3127d60964b338da95c7bfaaf4a01b330d4 ]
+[ Upstream commit 107a23185d990e3df6638d9a84c835f963fe30a6 ]
 
-In the function mana_ib_gd_create_dma_region if there are no dma blocks
-to process the variable `err` remains uninitialized.
+The csts_state_names[] array only has six sparse entries, but the
+iteration code in nvmet_ctrl_state_show() iterates seven, resulting in a
+potential out-of-bounds stack read.  Fix that.
 
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
-Link: https://patch.msgid.link/20250221195833.7516C16290A@bout3.ijzerbout.nl
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes the following warning with an UBSAN kernel:
+
+  vmlinux.o: warning: objtool: .text.nvmet_ctrl_state_show: unexpected end of section
+
+Fixes: 649fd41420a8 ("nvmet: add debugfs support")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Chaitanya Kulkarni <kch@nvidia.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/f1f60858ee7a941863dc7f5506c540cb9f97b5f6.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503171547.LlCTJLQL-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mana/main.c | 2 +-
+ drivers/nvme/target/debugfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 6fa9b12532997..c4c49a3f11b0a 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -327,7 +327,7 @@ int mana_ib_gd_create_dma_region(struct mana_ib_dev *dev, struct ib_umem *umem,
- 	unsigned int tail = 0;
- 	u64 *page_addr_list;
- 	void *request_buf;
--	int err;
-+	int err = 0;
+diff --git a/drivers/nvme/target/debugfs.c b/drivers/nvme/target/debugfs.c
+index 220c7391fc19a..c6571fbd35e30 100644
+--- a/drivers/nvme/target/debugfs.c
++++ b/drivers/nvme/target/debugfs.c
+@@ -78,7 +78,7 @@ static int nvmet_ctrl_state_show(struct seq_file *m, void *p)
+ 	bool sep = false;
+ 	int i;
  
- 	mdev = dev->gdma_dev;
- 	gc = mdev->gdma_context;
+-	for (i = 0; i < 7; i++) {
++	for (i = 0; i < ARRAY_SIZE(csts_state_names); i++) {
+ 		int state = BIT(i);
+ 
+ 		if (!(ctrl->csts & state))
 -- 
 2.39.5
 
