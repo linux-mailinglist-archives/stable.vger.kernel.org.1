@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADC1A80B5C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E512A8091D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276EF505374
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B2C4E2A7B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57326B94F;
-	Tue,  8 Apr 2025 12:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE5326AA82;
+	Tue,  8 Apr 2025 12:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeWlCDkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib3wx/TH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9CF26B95F;
-	Tue,  8 Apr 2025 12:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1983269AE8;
+	Tue,  8 Apr 2025 12:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116811; cv=none; b=R3OStm8B93Yf20Rso7BIW4Z/thXf+5PLBiw8LLVrhpU4Qh8mxrZZ33Vmx38m7dKz0DyoWa7HT4JOkrVyNHzkOW2BqnwkmVughPPTFM7syMXBYW1Kh8TVdul9V00cRCzr7CFv3lnyUKNd9J4afQmvw0Xt+x0ZijH0ZRoc9vaeJUo=
+	t=1744115752; cv=none; b=O6QkEjtA1V9SRcV/Zh+fE5yivMuQLVWj2SXsPRlbuR8HSCiQGfBWgS0FOTY6nLzUrKpw5HQ4We58M2LhEUNhYisYxb0hANpMdxM/DbFda738IUjqh7tXaskFPLycbIbu3XAPol2VlAyPZ7kisP+9qemViHUoW0pkMcieFJnqgSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116811; c=relaxed/simple;
-	bh=nTEi8E/iqDU6S4KzkKHHJpfB2utk5a8hbGYaQ9gTN08=;
+	s=arc-20240116; t=1744115752; c=relaxed/simple;
+	bh=exGrcVYIDSMoh7tzty76FvhVkLjC1YTDICGEc4CeSPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAaTS5XzDLsyLjZPWR5sHE32rU4M5v55QlqUHO6GsxH6x6gxP5Q+QLnlglQeJSV/fUG3noK9+3S3U4cvRosQoPuGUcBN5zbDhwChtbpcZyz9F6JR8WYHiVIsNHQKpfNxiKBuG1qa2yz90gsJGCHxtYSc4+ivbU2ENhVfjrjDIzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeWlCDkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF887C4CEEB;
-	Tue,  8 Apr 2025 12:53:30 +0000 (UTC)
+	 MIME-Version; b=cI/5yxMH2jcqEMLtJ75MlsQyEdrjmWx7TBhOhZjNtfHrKRhKY1eFu3Tt2Ma+vrmONjaAwYmqsRXLC3b6wqpYB+gAECECLpsQLHq6X83Ei6D6yf7AjNx/nPl4lNdPagpcRBtww4cm6YIUUiWADmX6uKp258jBGoK5J4/g3WDMbeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib3wx/TH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5598AC4CEE5;
+	Tue,  8 Apr 2025 12:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116811;
-	bh=nTEi8E/iqDU6S4KzkKHHJpfB2utk5a8hbGYaQ9gTN08=;
+	s=korg; t=1744115752;
+	bh=exGrcVYIDSMoh7tzty76FvhVkLjC1YTDICGEc4CeSPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeWlCDkLHjde3TrMv700mfYcEjWUZjrQFRWnoMK5vFJUswrizry/w5zUimAFBzjlg
-	 1b8r08Ce2WCLeF7y2ZBAU+4FRLi2e2d9ZfytYPKgPOlAHs20QKMRG81rt1qN9ywHJo
-	 GxuxEYs4c5y1aOu7hOGVgl6z3XJlQX3Y5ThT7L2I=
+	b=ib3wx/THLf9kkAeckyDeC4/u9SPfdUGwYLtgBeSzxyqgnh/awxpFBXoz9/h4CiYO8
+	 Haz04bgJMs/mZu8innqEaVqZUdmSUjaPI1nsA9672R+YabufLSnBXgRF4EBdiHwf2o
+	 6aIeSPucNyUPmAtB9kSxnZIP4idQa+EKENR2naHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 278/423] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 074/204] selftests/bpf: Select NUMA_NO_NODE to create map
 Date: Tue,  8 Apr 2025 12:50:04 +0200
-Message-ID: <20250408104852.246666972@linuxfoundation.org>
+Message-ID: <20250408104822.530998735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
+[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
 
-Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
+On powerpc, a CPU does not necessarily originate from NUMA node 0.
+This contrasts with architectures like x86, where CPU 0 is not
+hot-pluggable, making NUMA node 0 a consistently valid node.
+This discrepancy can lead to failures when creating a map on NUMA
+node 0, which is initialized by default, if no CPUs are allocated
+from NUMA node 0.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
+creation for this selftest.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
+Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a960ef29a7036..6117aad97ba37 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10620,7 +10620,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
-+	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10a4, "ASUS TP3407SA", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+index f79815b7e951b..fff16cdc93f20 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+@@ -6,6 +6,10 @@
+ #include <test_progs.h>
+ #include "bloom_filter_map.skel.h"
+ 
++#ifndef NUMA_NO_NODE
++#define NUMA_NO_NODE	(-1)
++#endif
++
+ static void test_fail_cases(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts);
+@@ -69,6 +73,7 @@ static void test_success_cases(void)
+ 
+ 	/* Create a map */
+ 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
++	opts.numa_node = NUMA_NO_NODE;
+ 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
+ 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
+ 		return;
 -- 
 2.39.5
 
