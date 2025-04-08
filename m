@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B01A7FF81
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125E2A7FFBB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAB7D1891EC7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0DC03B357D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B942265CAF;
-	Tue,  8 Apr 2025 11:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3DE266583;
+	Tue,  8 Apr 2025 11:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpkGdfvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsWC2a3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFAF20897E;
-	Tue,  8 Apr 2025 11:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D108265630;
+	Tue,  8 Apr 2025 11:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110947; cv=none; b=E4ZtGWYbThHOCR3Gm+1uYFPA+UHTdG+vV+kxs9nYmyExcM/oD15tJOzvhPaJ1P38DGmKlpMFcI+LvKmuFVULHog5vV9plAwMc5mHRW/1X2+qBibDVRoxuRffszIphCV2Vmsuw2aVw1t/CQHdDQWmCWaI+NGuJyzvyKJXGl0ma6I=
+	t=1744111081; cv=none; b=GXvmXVk/8R9cZE+0sQpo2EzhKtdYv+tjslEuCipTpdS/fPfiExlA0Hk4fx9ycHBE4WLFAuZu7GSqfIQO2Krn+7lSGWskMqC2HjBgwz5px6fiXizpvzjF5MldFLQBUQcNCmxoqo9izr6RnOhYEDYXEXUh+Vwa+BNGOYi//tNlq68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110947; c=relaxed/simple;
-	bh=r7F0REHPnn02teg+QEJ+gcH+ZD3OeHbaFSfqYXMI2cs=;
+	s=arc-20240116; t=1744111081; c=relaxed/simple;
+	bh=HSRC68Wx0QPvZ9W8f4bbWSeitd2KB2sxVGNr7T1BmiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9t8HNzRhpUpZnBqrRIc4cHpN+R3OkjqlWbuS5xzEJ85Qw38xLluOSH3ePrHuOveklhZ5Ew1F8ZXSueBGrEGoPjJiiV3zq4hZbBF7ylkOo9IPVd1Vb6Y5JGt87SvNSvsN8CHr4SkoMxk6QgcAD2S0TIUAZ+4RbJ8AsxUy9hYuRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpkGdfvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12870C4CEEB;
-	Tue,  8 Apr 2025 11:15:45 +0000 (UTC)
+	 MIME-Version; b=iUdX2ynmd4J0MoifJTbrgcNXvplSBLoM5dz9IArN2x4ydJvAEDyNakxY3+j1T0iLGEJBwiNrkmuOcFmF5g+HuN+dco0XuIRoi17DYus9wX6ghhqaslO2AW/K20pJrMwco/FVYppsqO/oUHG/dbyicZNde89tRReCofGp06l+hxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsWC2a3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7019C4CEE5;
+	Tue,  8 Apr 2025 11:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110946;
-	bh=r7F0REHPnn02teg+QEJ+gcH+ZD3OeHbaFSfqYXMI2cs=;
+	s=korg; t=1744111081;
+	bh=HSRC68Wx0QPvZ9W8f4bbWSeitd2KB2sxVGNr7T1BmiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpkGdfvSaIDMLFCMfKrUcxX0cKAG0pBKduujOUeL02d7ROOTa1f9knv30B5AKmzPv
-	 2g10FcEQUqV1LERhV/SgDT7unOugH5bDPendZqvE+GKXbBRkVldjMxXZlbaMd9QX1Z
-	 5Wv7s31gElwGxa+nX8HZ3Pr/OrwH85JbnXwfhy+M=
+	b=bsWC2a3LPyHTbCdV2SBkFw+uxJSYmPHaVAn551KFbxmVKZuIi2BIMjrAne1fWXZhF
+	 /s7sayLYySI2M8BhKrh/cM/w+XwWbXbXFx5HgYGoTNY8lM2FuMwZM5B3wU1o9Tbu4i
+	 Ci51EsmXf9bGgVWJhXBmd/36TvEKeOMQOLoGc3K0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Wang Liang <wangliang74@huawei.com>,
-	Simon Horman <horms@kernel.org>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 251/731] net: fix NULL pointer dereference in l3mdev_l3_rcv
-Date: Tue,  8 Apr 2025 12:42:28 +0200
-Message-ID: <20250408104920.123810388@linuxfoundation.org>
+Subject: [PATCH 6.14 252/731] virtio_net: Fix endian with virtio_net_ctrl_rss
+Date: Tue,  8 Apr 2025 12:42:29 +0200
+Message-ID: <20250408104920.146675567@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,64 +70,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-[ Upstream commit 0032c99e83b9ce6d5995d65900aa4b6ffb501cce ]
+[ Upstream commit 97841341e302eac13d54eb5e968570b5626196a7 ]
 
-When delete l3s ipvlan:
+Mark the fields of struct virtio_net_ctrl_rss as little endian as
+they are in struct virtio_net_rss_config, which it follows.
 
-    ip link del link eth0 ipvlan1 type ipvlan mode l3s
-
-This may cause a null pointer dereference:
-
-    Call trace:
-     ip_rcv_finish+0x48/0xd0
-     ip_rcv+0x5c/0x100
-     __netif_receive_skb_one_core+0x64/0xb0
-     __netif_receive_skb+0x20/0x80
-     process_backlog+0xb4/0x204
-     napi_poll+0xe8/0x294
-     net_rx_action+0xd8/0x22c
-     __do_softirq+0x12c/0x354
-
-This is because l3mdev_l3_rcv() visit dev->l3mdev_ops after
-ipvlan_l3s_unregister() assign the dev->l3mdev_ops to NULL. The process
-like this:
-
-    (CPU1)                     | (CPU2)
-    l3mdev_l3_rcv()            |
-      check dev->priv_flags:   |
-        master = skb->dev;     |
-                               |
-                               | ipvlan_l3s_unregister()
-                               |   set dev->priv_flags
-                               |   dev->l3mdev_ops = NULL;
-                               |
-      visit master->l3mdev_ops |
-
-To avoid this by do not set dev->l3mdev_ops when unregister l3s ipvlan.
-
-Suggested-by: David Ahern <dsahern@kernel.org>
-Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250321090353.1170545-1-wangliang74@huawei.com
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20250321-virtio-v2-2-33afb8f4640b@daynix.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_l3s.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/virtio_net.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
-index b4ef386bdb1ba..7c017fe35522a 100644
---- a/drivers/net/ipvlan/ipvlan_l3s.c
-+++ b/drivers/net/ipvlan/ipvlan_l3s.c
-@@ -226,5 +226,4 @@ void ipvlan_l3s_unregister(struct ipvl_port *port)
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 7646ddd9bef70..d1ed544ba03ac 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -368,15 +368,15 @@ struct receive_queue {
+  */
+ #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+ struct virtio_net_ctrl_rss {
+-	u32 hash_types;
+-	u16 indirection_table_mask;
+-	u16 unclassified_queue;
+-	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
+-	u16 max_tx_vq;
++	__le32 hash_types;
++	__le16 indirection_table_mask;
++	__le16 unclassified_queue;
++	__le16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
++	__le16 max_tx_vq;
+ 	u8 hash_key_length;
+ 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
  
- 	dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
- 	ipvlan_unregister_nf_hook(read_pnet(&port->pnet));
--	dev->l3mdev_ops = NULL;
+-	u16 *indirection_table;
++	__le16 *indirection_table;
+ };
+ 
+ /* Control VQ buffers: protected by the rtnl lock */
+@@ -3576,9 +3576,9 @@ static void virtnet_rss_update_by_qpairs(struct virtnet_info *vi, u16 queue_pair
+ 
+ 	for (; i < vi->rss_indir_table_size; ++i) {
+ 		indir_val = ethtool_rxfh_indir_default(i, queue_pairs);
+-		vi->rss.indirection_table[i] = indir_val;
++		vi->rss.indirection_table[i] = cpu_to_le16(indir_val);
+ 	}
+-	vi->rss.max_tx_vq = queue_pairs;
++	vi->rss.max_tx_vq = cpu_to_le16(queue_pairs);
  }
+ 
+ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+@@ -4097,10 +4097,10 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
+ 
+ static void virtnet_init_default_rss(struct virtnet_info *vi)
+ {
+-	vi->rss.hash_types = vi->rss_hash_types_supported;
++	vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_supported);
+ 	vi->rss_hash_types_saved = vi->rss_hash_types_supported;
+ 	vi->rss.indirection_table_mask = vi->rss_indir_table_size
+-						? vi->rss_indir_table_size - 1 : 0;
++						? cpu_to_le16(vi->rss_indir_table_size - 1) : 0;
+ 	vi->rss.unclassified_queue = 0;
+ 
+ 	virtnet_rss_update_by_qpairs(vi, vi->curr_queue_pairs);
+@@ -4218,7 +4218,7 @@ static bool virtnet_set_hashflow(struct virtnet_info *vi, struct ethtool_rxnfc *
+ 
+ 	if (new_hashtypes != vi->rss_hash_types_saved) {
+ 		vi->rss_hash_types_saved = new_hashtypes;
+-		vi->rss.hash_types = vi->rss_hash_types_saved;
++		vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		if (vi->dev->features & NETIF_F_RXHASH)
+ 			return virtnet_commit_rss_command(vi);
+ 	}
+@@ -5398,7 +5398,7 @@ static int virtnet_get_rxfh(struct net_device *dev,
+ 
+ 	if (rxfh->indir) {
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			rxfh->indir[i] = vi->rss.indirection_table[i];
++			rxfh->indir[i] = le16_to_cpu(vi->rss.indirection_table[i]);
+ 	}
+ 
+ 	if (rxfh->key)
+@@ -5426,7 +5426,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
+ 			return -EOPNOTSUPP;
+ 
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			vi->rss.indirection_table[i] = rxfh->indir[i];
++			vi->rss.indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
+ 		update = true;
+ 	}
+ 
+@@ -6044,9 +6044,9 @@ static int virtnet_set_features(struct net_device *dev,
+ 
+ 	if ((dev->features ^ features) & NETIF_F_RXHASH) {
+ 		if (features & NETIF_F_RXHASH)
+-			vi->rss.hash_types = vi->rss_hash_types_saved;
++			vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		else
+-			vi->rss.hash_types = VIRTIO_NET_HASH_REPORT_NONE;
++			vi->rss.hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
+ 
+ 		if (!virtnet_commit_rss_command(vi))
+ 			return -EINVAL;
 -- 
 2.39.5
 
