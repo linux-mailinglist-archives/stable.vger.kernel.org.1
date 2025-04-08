@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3B3A8078C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B5FA80855
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE0A4C2BD4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47341B84B48
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C0026A1DE;
-	Tue,  8 Apr 2025 12:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C4126B2BF;
+	Tue,  8 Apr 2025 12:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvSfJNuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poWbrD0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B753926A0A2;
-	Tue,  8 Apr 2025 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434C226988E;
+	Tue,  8 Apr 2025 12:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115198; cv=none; b=dcryKCW1OkZ1SUnYgQwGFRV6kr2zxpxNLoOfhK/8UciXHjrhxsF8vxFjyx0G9XEo0vb00XlSVu5WnApuk3ILdvxTV0VLt1xAwdGMnOFjjbLGDVREWVz3FIsmFXhxHfLVeT9WydnADXppxv/8B15mLbCWUTGG9q9Q7+P/F0zyyUg=
+	t=1744115675; cv=none; b=uJ0tcGP2wKw539ALWQCjehfcW1Id0DDkxssjt4t+MExsFFQxNYo2WitUDhf+WCioKgvGI3Lbi+Ex8aNVjN9iPGFd/NKVYTq6WJaE9Y4nSF21EQ1NPqOibOGEupgaFkcuHxsAxiT05PVWuseT6EZLkgBoyYv8PbLJU2fLGEuEqDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115198; c=relaxed/simple;
-	bh=uf5rkHmYsKy/R29qfyuA3DG6t1YYX72S8tEAIInabWc=;
+	s=arc-20240116; t=1744115675; c=relaxed/simple;
+	bh=WqWYCvme/Rub5rJrz8rtcMVUNSYUQ8yYwlaMLhx95ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQ4uGdpljZVVTDYHuH0AgAIejv/Sfg3OtYs6JePj4InGXamWcI+WuNNpaWwaNrHvmBKfC47HhFX9pD3sQbYDwkInn1abodzOwDjkoQOkPoGRncYBErQVCxxiOpSSon0NjXVxEqLqrerz6ZancdqmE5xpqOextWN7V9WhKEciChQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvSfJNuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D5EC4CEE5;
-	Tue,  8 Apr 2025 12:26:38 +0000 (UTC)
+	 MIME-Version; b=qIHa3HoxfljbSPeIj/PnVkaGg0lhJayTpLyxk+iPDKcvgwjOswUmLKsCze9kZg2FuWm4lxQv3JLW+2oN88FZRnWtqjfAoZGWR6KCNKb4Uj3DGxlALl1gPgT3bL8AFjxTWYL8z2goGomvw6hITLNmdbsuxD4Z9+8l8LRPbpIDDnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poWbrD0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15C0C4CEEA;
+	Tue,  8 Apr 2025 12:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115198;
-	bh=uf5rkHmYsKy/R29qfyuA3DG6t1YYX72S8tEAIInabWc=;
+	s=korg; t=1744115675;
+	bh=WqWYCvme/Rub5rJrz8rtcMVUNSYUQ8yYwlaMLhx95ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvSfJNukbUm5Go5uRLgqVKR1GdjnGGeanPL5uryPx/IMteGcgjVCoW331c0zSaTg8
-	 RFZtr54qkMGxcQ0T73DrZvQY3Lgsvd1GfmHS0kvcYXPvQgHxbspwae7pELT/7j5+mn
-	 WmTeYzvY6YDW2y0EH7Ld/Xr96FyY/KYP02kwPA3M=
+	b=poWbrD0wlcuktpZpUTOH6HrrKfQv7MT62R06HIT4047IVFI5HPK+iqNwCCA226fnR
+	 IaJg1l4Co1YxQO0MO+uCviIiQ2Hly47N8Un9MH4uUl/he0z5jRvr3Ayemzv741nzUr
+	 1gS/2abZl3qL+cz1ecaMhnBRnzQAlTB/Q01pu9eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 379/499] ASoC: imx-card: Add NULL check in imx_card_probe()
+Subject: [PATCH 6.1 061/204] bpf: Use preempt_count() directly in bpf_send_signal_common()
 Date: Tue,  8 Apr 2025 12:49:51 +0200
-Message-ID: <20250408104900.684094393@linuxfoundation.org>
+Message-ID: <20250408104822.145987444@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
+[ Upstream commit b4a8b5bba712a711d8ca1f7d04646db63f9c88f5 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-imx_card_probe() does not check for this case, which results in a NULL
-pointer dereference.
+bpf_send_signal_common() uses preemptible() to check whether or not the
+current context is preemptible. If it is preemptible, it will use
+irq_work to send the signal asynchronously instead of trying to hold a
+spin-lock, because spin-lock is sleepable under PREEMPT_RT.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+However, preemptible() depends on CONFIG_PREEMPT_COUNT. When
+CONFIG_PREEMPT_COUNT is turned off (e.g., CONFIG_PREEMPT_VOLUNTARY=y),
+!preemptible() will be evaluated as 1 and bpf_send_signal_common() will
+use irq_work unconditionally.
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix it by unfolding "!preemptible()" and using "preempt_count() != 0 ||
+irqs_disabled()" instead.
+
+Fixes: 87c544108b61 ("bpf: Send signals asynchronously if !preemptible")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20250220042259.1583319-1-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-card.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/bpf_trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 95a57fda02503..6684a4135b644 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -767,6 +767,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].sink =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Playback");
-+				if (!data->dapm_routes[i].sink)
-+					return -ENOMEM;
- 				data->dapm_routes[i].source = "CPU-Playback";
- 			}
- 		}
-@@ -784,6 +786,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].source =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Capture");
-+				if (!data->dapm_routes[i].source)
-+					return -ENOMEM;
- 				data->dapm_routes[i].sink = "CPU-Capture";
- 			}
- 		}
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index af48f66466e81..6b5bb0e380b55 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -857,7 +857,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type)
+ 	if (unlikely(is_global_init(current)))
+ 		return -EPERM;
+ 
+-	if (!preemptible()) {
++	if (preempt_count() != 0 || irqs_disabled()) {
+ 		/* Do an early check on signal validity. Otherwise,
+ 		 * the error is lost in deferred irq_work.
+ 		 */
 -- 
 2.39.5
 
