@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AB6A8050B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29742A80741
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5014E466535
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5A5F1B87188
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D263A26A0F5;
-	Tue,  8 Apr 2025 12:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D326B08E;
+	Tue,  8 Apr 2025 12:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZtpYffv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVmaVJI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBEA1AAA0F;
-	Tue,  8 Apr 2025 12:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A0F26B971;
+	Tue,  8 Apr 2025 12:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113871; cv=none; b=pZwz9S5Ihb3ldn8i8WbyfmzWkwqq6546Ynyst6GMD3rV1gcdtoS4eGNwTEhULQb+axP0ZIj45GVE6ZzEehlDsXpyLNp12KXn5IE0KouSiK0wuzznUhZCSOKaNBgs7XdN5WoHNOD2PpTm5uvml7HeQViBZXLI9PZw7bDuaeNvVCM=
+	t=1744115229; cv=none; b=tgM+4VsijcTHE+hbiSpRnw9Bb6C90Sh1pYvGN9D+fDXKi39dyXjNPlaTlZbKCXulSrA/OF4aRnrl+IoH5gBC83e8Gq2SBop/1zCH8uO78ieJd/gAnnmmiRxe1eTa/kLU7fgTdlOLRUh2G4UwDhRylzwppKXwyJlWWwJH5KVGLNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113871; c=relaxed/simple;
-	bh=4T6PUlig/y7iM47vYShwGjWWK+Mc7wzjj4XSD7sGUbE=;
+	s=arc-20240116; t=1744115229; c=relaxed/simple;
+	bh=v8q7UCv1ki7A9NYKOj5elKREF5YLrkrw4oX2fO8SBLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4GJ7yQ1JRQfejCrVsr1K19B8HB+bcNDzwceG3vwcUfNkuyRvii9ZMlWowm8FCLMPY3Q4Vo1mM8Hao/Q1uwHIQ2/dAQc2eSFfl7+PxVj3kN0cbgTIQRbTZp654bRy6EkVOGD8TEX9lJbWB3bzR6yom9WY5TDCgNCfFpTlumQvy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZtpYffv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F89DC4CEE5;
-	Tue,  8 Apr 2025 12:04:30 +0000 (UTC)
+	 MIME-Version; b=t9tmrMfNXk0PVu8dKvHjiql6sLkKWxwHcX4UlW2nx9FHBPWnrFm/uRGvpwQpeQs6y1RnBoyPZNc6HHNyXOn3V2jwOv09Cinf6NLIXZ2N/9141Cp1/VI3SQKvsNDb1u+uxQunGMEbN6mJmGn9wxmApvvgaP3n/S7NHcizI2ovqpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVmaVJI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C9DC4CEE7;
+	Tue,  8 Apr 2025 12:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113871;
-	bh=4T6PUlig/y7iM47vYShwGjWWK+Mc7wzjj4XSD7sGUbE=;
+	s=korg; t=1744115229;
+	bh=v8q7UCv1ki7A9NYKOj5elKREF5YLrkrw4oX2fO8SBLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZtpYffv3MbaPt/C1lOVLfCFjcH0DDD+4DbTq70ObrJjyVCdHLvEV5RzBaQcZYbpX
-	 ByVTQ0oiB4B1BFznGQs7/iQFtr6w4C/KOQW44rc2T4xcz5cc1KOa4QGmDqiHMLHdy1
-	 vttCrXKldVlcfaTiINUclqbfnL6uOBdnuYmTPsSo=
+	b=aVmaVJI7n++3sxqxLryjZYFQG9zp8xiKgtTyjbmEabsQkGiVKZiK+DEJNDo6eIl/J
+	 fKTJjKzbYZqXAN+WemPENl3vwr9bgckuOVtSrcgaZQ0W7Xo7Ox5F/OKOEqagHRbn82
+	 U35XBp6BWOWwOKu9fCwn63LCrpqTkqlskLUxqc50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/154] firmware: imx-scu: fix OF node leak in .probe()
+Subject: [PATCH 6.13 380/499] spi: bcm2835: Do not call gpiod_put() on invalid descriptor
 Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104816.914111811@linuxfoundation.org>
+Message-ID: <20250408104900.709769770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
+[ Upstream commit d6691010523fe1016f482a1e1defcc6289eeea48 ]
 
-imx_scu_probe() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it. Add a of_node_put() call
-after done with the node.
+If we are unable to lookup the chip-select GPIO, the error path will
+call bcm2835_spi_cleanup() which unconditionally calls gpiod_put() on
+the cs->gpio variable which we just determined was invalid.
 
-Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250401224238.2854256-1-florian.fainelli@broadcom.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-bcm2835.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index a3b11bc71dcb8..c973760ed9490 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -266,6 +266,7 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 0d1aa65924846..06a81727d74dd 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1162,7 +1162,8 @@ static void bcm2835_spi_cleanup(struct spi_device *spi)
+ 				 sizeof(u32),
+ 				 DMA_TO_DEVICE);
  
- 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
-+	of_node_put(args.np);
+-	gpiod_put(bs->cs_gpio);
++	if (!IS_ERR(bs->cs_gpio))
++		gpiod_put(bs->cs_gpio);
+ 	spi_set_csgpiod(spi, 0, NULL);
  
- 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
- 	for (i = 0; i < num_channel; i++) {
+ 	kfree(target);
 -- 
 2.39.5
 
