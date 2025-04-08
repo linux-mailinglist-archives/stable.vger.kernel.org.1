@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434B2A8066E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB7BA808BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2163885889
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 566057AB22F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBDC26A0FF;
-	Tue,  8 Apr 2025 12:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B69226B2AA;
+	Tue,  8 Apr 2025 12:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S1So8n7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgLmoYRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD42676FA;
-	Tue,  8 Apr 2025 12:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D6B26B0A7;
+	Tue,  8 Apr 2025 12:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114608; cv=none; b=XPKVFdeKfivxwJ/UwKSEl4Lpt8RW3nSgl0e4uQI/CLONmJGBhp9Cs2qxk2t4/00qcL2OOZ5WY+37vfCcd792hYMXMg5Uqurfsod3P+iPZb+9aRZpY7TqULWFb3AGORSF6Iv2cTk0T9jLMQdfhXk1DFDmdvmCdLRH+d75hxedYgE=
+	t=1744116100; cv=none; b=RochSC90nrSTuTLZHjAuYtvFMKt2etZWgswlIoggJgI9AIh+agpasFRbYFACsiqYxhnUUHngzzbMia0oSI5vb6yqSTgOWIceQr4JA1g/8dU/OIPoFGEHhj1ltE2YxK8b7CVCF50gb/zBcEAomrOYMS8Uyrsx/fTjicJj5E+aG0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114608; c=relaxed/simple;
-	bh=HwQYQle6SG2PH/jhARsiq2xygS8Y3vHkU1JJNYgEoZY=;
+	s=arc-20240116; t=1744116100; c=relaxed/simple;
+	bh=52Gc5GjLR6gitlcKBkW+KF4wpXvnTxqdHdc/eNIRylY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMvQwSiSl3fRgl5sivna40aggvZppTiV6kPn2jcRNT2abHSwDUzPgx2qRwsEjnQdB4CZOC8vl3Ek6VVykhI2faJFwFuT78PnAV/PSMsGHpoXE7EBk8ekt/qIvobGrBmILHzW8ud3PlEG5mbHFjTaDKzD0TVHsP67ddz0TRQoJyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S1So8n7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB6C4CEE5;
-	Tue,  8 Apr 2025 12:16:46 +0000 (UTC)
+	 MIME-Version; b=X8mBbMl5As8ON59Iov3kVYVxmff76gKOOSBT+bGqZxmN2aAAhMN954hH4VRbsbtWyYMxVW77QkFZ7/23rilko0W6sTFrnkm3UKKQtqUfti6SUT/JQ+LXcwKPtz5QWynYuzbO8oznONHBeqw8cZRYFVb2wdX73RL6Ojl4wQAWOS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgLmoYRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB62C4CEE5;
+	Tue,  8 Apr 2025 12:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114607;
-	bh=HwQYQle6SG2PH/jhARsiq2xygS8Y3vHkU1JJNYgEoZY=;
+	s=korg; t=1744116100;
+	bh=52Gc5GjLR6gitlcKBkW+KF4wpXvnTxqdHdc/eNIRylY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2S1So8n76bEEkjkCHtl2TINGRJQ0hhMvWG8SHYHoiCbpvm0Iy5VW/g4SPI9/ibtiS
-	 ciLQCfYuuU06G48tcpJRWTiwmTLXB6X2i+kjTsvgSZs6DpmAUKss5iW1dgP07dYJi0
-	 Z03UKzQKr78wLKrMHNt6+rJQ0FUXuMJcqlZwkOlM=
+	b=RgLmoYRFPHamWvMTSlFtAR/D1Y03vt+nO+uv95WEnQJwMTzDlR3ZZbMlCD5juEr9a
+	 Yi2H/DiJLg/aAbKMkMDLbtN6wN/J194G3gg+BfT1wfteG9Q08jRiEzR5UPCE8u/Xdk
+	 ii257cHEjJy+ybjBaekQ2x13zQpk74WHNmHqefqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 130/499] crypto: hisilicon/sec2 - fix for aead authsize alignment
+Subject: [PATCH 6.12 016/423] cpufreq: tegra194: Allow building for Tegra234
 Date: Tue,  8 Apr 2025 12:45:42 +0200
-Message-ID: <20250408104854.437156375@linuxfoundation.org>
+Message-ID: <20250408104846.109264387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit a49cc71e219040d771a8c1254879984f98192811 ]
+[ Upstream commit 4a1e3bf61fc78ad100018adb573355303915dca3 ]
 
-The hardware only supports authentication sizes
-that are 4-byte aligned. Therefore, the driver
-switches to software computation in this case.
+Support was added for Tegra234 in the referenced commit, but the Kconfig
+was not updated to allow building for the arch.
 
-Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 273bc890a2a8 ("cpufreq: tegra194: Add support for Tegra234")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ drivers/cpufreq/Kconfig.arm | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 66bc07da9eb6f..50223e3c4bccf 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -57,7 +57,6 @@
- #define SEC_TYPE_MASK		0x0F
- #define SEC_DONE_MASK		0x0001
- #define SEC_ICV_MASK		0x000E
--#define SEC_SQE_LEN_RATE_MASK	0x3
+diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+index 5f7e13e60c802..e67b2326671c9 100644
+--- a/drivers/cpufreq/Kconfig.arm
++++ b/drivers/cpufreq/Kconfig.arm
+@@ -245,7 +245,7 @@ config ARM_TEGRA186_CPUFREQ
  
- #define SEC_TOTAL_IV_SZ(depth)	(SEC_IV_SIZE * (depth))
- #define SEC_SGL_SGE_NR		128
-@@ -80,16 +79,16 @@
- #define SEC_TOTAL_PBUF_SZ(depth)	(PAGE_SIZE * SEC_PBUF_PAGE_NUM(depth) +	\
- 				SEC_PBUF_LEFT_SZ(depth))
- 
--#define SEC_SQE_LEN_RATE	4
- #define SEC_SQE_CFLAG		2
- #define SEC_SQE_AEAD_FLAG	3
- #define SEC_SQE_DONE		0x1
- #define SEC_ICV_ERR		0x2
--#define MIN_MAC_LEN		4
- #define MAC_LEN_MASK		0x1U
- #define MAX_INPUT_DATA_LEN	0xFFFE00
- #define BITS_MASK		0xFF
-+#define WORD_MASK		0x3
- #define BYTE_BITS		0x8
-+#define BYTES_TO_WORDS(bcount)	((bcount) >> 2)
- #define SEC_XTS_NAME_SZ		0x3
- #define IV_CM_CAL_NUM		2
- #define IV_CL_MASK		0x7
-@@ -1175,7 +1174,7 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
- 		goto bad_key;
- 	}
- 
--	if (ctx->a_ctx.a_key_len & SEC_SQE_LEN_RATE_MASK) {
-+	if (ctx->a_ctx.a_key_len & WORD_MASK) {
- 		ret = -EINVAL;
- 		dev_err(dev, "AUTH key length error!\n");
- 		goto bad_key;
-@@ -1583,11 +1582,10 @@ static void sec_auth_bd_fill_ex(struct sec_auth_ctx *ctx, int dir,
- 
- 	sec_sqe->type2.a_key_addr = cpu_to_le64(ctx->a_key_dma);
- 
--	sec_sqe->type2.mac_key_alg = cpu_to_le32(authsize / SEC_SQE_LEN_RATE);
-+	sec_sqe->type2.mac_key_alg = cpu_to_le32(BYTES_TO_WORDS(authsize));
- 
- 	sec_sqe->type2.mac_key_alg |=
--			cpu_to_le32((u32)((ctx->a_key_len) /
--			SEC_SQE_LEN_RATE) << SEC_AKEY_OFFSET);
-+			cpu_to_le32((u32)BYTES_TO_WORDS(ctx->a_key_len) << SEC_AKEY_OFFSET);
- 
- 	sec_sqe->type2.mac_key_alg |=
- 			cpu_to_le32((u32)(ctx->a_alg) << SEC_AEAD_ALG_OFFSET);
-@@ -1639,12 +1637,10 @@ static void sec_auth_bd_fill_ex_v3(struct sec_auth_ctx *ctx, int dir,
- 	sqe3->a_key_addr = cpu_to_le64(ctx->a_key_dma);
- 
- 	sqe3->auth_mac_key |=
--			cpu_to_le32((u32)(authsize /
--			SEC_SQE_LEN_RATE) << SEC_MAC_OFFSET_V3);
-+			cpu_to_le32(BYTES_TO_WORDS(authsize) << SEC_MAC_OFFSET_V3);
- 
- 	sqe3->auth_mac_key |=
--			cpu_to_le32((u32)(ctx->a_key_len /
--			SEC_SQE_LEN_RATE) << SEC_AKEY_OFFSET_V3);
-+			cpu_to_le32((u32)BYTES_TO_WORDS(ctx->a_key_len) << SEC_AKEY_OFFSET_V3);
- 
- 	sqe3->auth_mac_key |=
- 			cpu_to_le32((u32)(ctx->a_alg) << SEC_AUTH_ALG_OFFSET_V3);
-@@ -2234,8 +2230,8 @@ static int sec_aead_spec_check(struct sec_ctx *ctx, struct sec_req *sreq)
- 	struct device *dev = ctx->dev;
- 	int ret;
- 
--	/* Hardware does not handle cases where authsize is less than 4 bytes */
--	if (unlikely(sz < MIN_MAC_LEN)) {
-+	/* Hardware does not handle cases where authsize is not 4 bytes aligned */
-+	if (c_mode == SEC_CMODE_CBC && (sz & WORD_MASK)) {
- 		sreq->aead_req.fallback = true;
- 		return -EINVAL;
- 	}
+ config ARM_TEGRA194_CPUFREQ
+ 	tristate "Tegra194 CPUFreq support"
+-	depends on ARCH_TEGRA_194_SOC || (64BIT && COMPILE_TEST)
++	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC || (64BIT && COMPILE_TEST)
+ 	depends on TEGRA_BPMP
+ 	default y
+ 	help
 -- 
 2.39.5
 
