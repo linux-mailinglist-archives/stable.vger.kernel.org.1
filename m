@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53419A80785
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B0AA80909
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1194C7AD308
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 600881B6722E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BAE2236FC;
-	Tue,  8 Apr 2025 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C664A276050;
+	Tue,  8 Apr 2025 12:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjMs3tvw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK8RSHXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56CD268C72;
-	Tue,  8 Apr 2025 12:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8325527604A;
+	Tue,  8 Apr 2025 12:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115472; cv=none; b=Qxo0/QHqq+YOq2cydf6lq8uL7DAcn2ze7ApxZg0HBTvjANBj6qRL5tK7JN7MuqvJBqlBq/K1glkENfg5dgpd2giWaQYHVZhwLFTqdJ4YdCpub8ghbsf/b7s/B2VOhuIltpEo/Hmdrk3nyL5x9eyExqdtaC2WxGsumKfP165tn+s=
+	t=1744115962; cv=none; b=BKGOfnTLsuqJoH2YMGSx+OpGmOgzpJKFnHF13tF/TKlYkUXhaDELbYUSc72U+viaHHzR3bec3xI/sGxWUPVcV+fYVFGbIldiqMokZmHMNAHH25W0mouB4LOYaMA9pvnLr8VCzC1I8+edkfKtTheQSYzp90GhFzIO1IepVACBI4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115472; c=relaxed/simple;
-	bh=5aWKwHBAEzvZiOA/5yWDB0saOzqoa9j/ps+8+GsoTfk=;
+	s=arc-20240116; t=1744115962; c=relaxed/simple;
+	bh=W03f4jkNmNJJjmvA76597EC2jxLyrz1NMpdrTHMaWM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mtdxhut3PUGkSbm1neIlRmwmRxbQy6DIXGrFRxBORe+O1DcPrD9o+eSO68DnCRoX/aWEW5ONMopzn5PcTApdKufQ7ZM3Dp8/zFznWezCpseqhgnCdfU+o2W+Qd3KwBll+8t5exVcpWp83o+KZ7T/YHrggdoPieGr93zB+alZA3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjMs3tvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77060C4CEE7;
-	Tue,  8 Apr 2025 12:31:11 +0000 (UTC)
+	 MIME-Version; b=CEvzCfWKjcZ1xcZFYHKs/kjv0iLDMmtZ5GkNAQFpI/m9MqHRNR4OpaGtl5ZyRohAHNr1Y4FRs/xTtaZDsdNqr9I/Mm52f6jWojYgEeFQqZpdlA2LUDRQEKfn1DLZgL3urCpc5xg9isw46iiuK9G1A/1j175++1ni/q2Q3rsyZJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK8RSHXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FE8C4CEE5;
+	Tue,  8 Apr 2025 12:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115471;
-	bh=5aWKwHBAEzvZiOA/5yWDB0saOzqoa9j/ps+8+GsoTfk=;
+	s=korg; t=1744115962;
+	bh=W03f4jkNmNJJjmvA76597EC2jxLyrz1NMpdrTHMaWM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FjMs3tvwcwS2/1zg6uwMjFX8OxWLNzzki6GFvMGdlf70wj8ilQ94h12Sl6xPFMSjZ
-	 KKegL8RQp8eRvMPAxkV3iBbuwnMVCwdF/V4OcKI0dsgDTn0Gm2XM5UTXCGLN0E3JGL
-	 dZIwUVP6I6huQi/05RwPEAv86JBkClohX5NWpNVM=
+	b=pK8RSHXD0praWmh30FCUkp4Yft82LUAuEU/dtR2Ju511hDcQ2VU81gtfM1sx3pQGY
+	 6v81kW9t3v8odldz+njwo5JkNf7wqBC3ByitjAmbXXSwaPSikOg1WmabZLNKVgor9d
+	 L5HQkZOyXCzq1zKJwnsKNJXSuRA8GutuiYEhwNcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.13 487/499] jfs: add index corruption check to DT_GETPAGE()
-Date: Tue,  8 Apr 2025 12:51:39 +0200
-Message-ID: <20250408104903.503569492@linuxfoundation.org>
+	Sunil Khatri <sunil.khatri@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 170/204] drm/amdgpu/gfx11: fix num_mec
+Date: Tue,  8 Apr 2025 12:51:40 +0200
+Message-ID: <20250408104825.307197426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
+[ Upstream commit 4161050d47e1b083a7e1b0b875c9907e1a6f1f1f ]
 
-If the file system is corrupted, the header.stblindex variable
-may become greater than 127. Because of this, an array access out
-of bounds may occur:
+GC11 only has 1 mec.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
-index 237 is out of range for type 'struct dtslot[128]'
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
- dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
- jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
- wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
- iterate_dir+0x571/0x800 fs/readdir.c:108
- __do_sys_getdents64 fs/readdir.c:403 [inline]
- __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace ]---
-
-Add a stblindex check for corruption.
-
-Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d879e81f0f9 ("drm/amdgpu: add init support for GFX11 (v2)")
+Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -117,7 +117,8 @@ do {									\
- 	if (!(RC)) {							\
- 		if (((P)->header.nextindex >				\
- 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
--		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
-+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
-+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
- 			BT_PUTPAGE(MP);					\
- 			jfs_error((IP)->i_sb,				\
- 				  "DT_GETPAGE: dtree page corrupt\n");	\
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index c76895cca4d9a..61e869839641e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1301,7 +1301,7 @@ static int gfx_v11_0_sw_init(void *handle)
+ 		adev->gfx.me.num_me = 1;
+ 		adev->gfx.me.num_pipe_per_me = 1;
+ 		adev->gfx.me.num_queue_per_pipe = 1;
+-		adev->gfx.mec.num_mec = 2;
++		adev->gfx.mec.num_mec = 1;
+ 		adev->gfx.mec.num_pipe_per_mec = 4;
+ 		adev->gfx.mec.num_queue_per_pipe = 4;
+ 		break;
+-- 
+2.39.5
+
 
 
 
