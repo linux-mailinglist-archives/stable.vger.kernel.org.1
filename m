@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1364CA80103
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D623A8029E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A021888B22
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B7419E321C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637A026982F;
-	Tue,  8 Apr 2025 11:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3989267F6C;
+	Tue,  8 Apr 2025 11:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUlCfK7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmccTOAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEBB268C60;
-	Tue,  8 Apr 2025 11:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F652641CC;
+	Tue,  8 Apr 2025 11:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111911; cv=none; b=FasZXJbfCtIkIL+pW7Gm+IV/dnCTAxjriIo6RfcJiFAfAIcMSBxSCv/kmMEqaGNFLhMni8k6FtZRAeLnfSw6gLaTcgWR4/O4Qu9pU9fAe0V/C9XCLoFv6WKnfMQbqjBxVfq4/xXrxk49UCmixnWEGO0w8TlhZNstC80EcjeQyoM=
+	t=1744112713; cv=none; b=Z0UmhFboqDwavqWAtDB84a83HGQevLan54wj8Diy51MDHHJG840G2vrq43/YLtIDIw8mMZJdtSHMdLzW5MwBrKLDQpJkg2QOFUGg+CqWdBy2pqDv+W2OxOcHIvKXLdmZAowt1YiAEklT0nMHCB8l9AhjFBL01Owb9MYGFTrI/QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111911; c=relaxed/simple;
-	bh=0kcyTKjIscb6n5Lt2IhePNaYoh4jQ2FdAdRj/CExt6c=;
+	s=arc-20240116; t=1744112713; c=relaxed/simple;
+	bh=l4jp40eoBndLVAMb45+0spEwmOOoLmXVZTWRGBO+01w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abGPa4suNBYjjd4dH2Uq7/Xta5F9EcqTcr7cCJviG8+2FhI3FMyUnVtJfliVF1OT3HsTGhsb74Ox2lfQREyId13HeG02TUqxmFboaw+J5JRXZApQ0GZqBUuesZX0/zDMy4bmST3ItK5TaNe6x1DVJd6CyYeQQArctXY8xiUcydw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUlCfK7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0602C4CEE5;
-	Tue,  8 Apr 2025 11:31:50 +0000 (UTC)
+	 MIME-Version; b=W+bWEzlWaCaP0CsmvwLNV7Pa8uGbenwQzUXvH0aLE3vfofVURc4F159op6pug2Xg+BZPQck+s3FVtUjr30SFb+CatTbn31fjQavqilQCvFTbn8BsgC6AWL2K+mDV6uyZv8IOw3DD4jAd6vZ/GAeOncN0ULC0lPnbgrZz32vOHOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmccTOAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE81C4CEEB;
+	Tue,  8 Apr 2025 11:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111911;
-	bh=0kcyTKjIscb6n5Lt2IhePNaYoh4jQ2FdAdRj/CExt6c=;
+	s=korg; t=1744112713;
+	bh=l4jp40eoBndLVAMb45+0spEwmOOoLmXVZTWRGBO+01w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUlCfK7r1/z8a3XorQBafmGwLwJYMmNAj7JfCn/IqOQOj3iNy+KpbgLYHsvSDSSPg
-	 6PS13Sb8Ce0cMHh77L+DEth7Is2Ja4R2E7CK0xjFtYwgvOXfJfVkWCRntRor6iEATh
-	 XiINPB4lzHuhYUvBcWCRB+jWkMTS2mv9/A8lTG5Q=
+	b=AmccTOAg+Z5fDlqhJQQ8nrN7tz06H8Lo+w5NTUoky3hn9lFMWgVK8PTKc0K2FCQ61
+	 mVYTQH4vllAZ34574dWikjU3R0UiRYae1A/G+CQIgGnFDetREpLiE0wrt9u1++GRIb
+	 k64eAalbzKoJnMt8/KKbunNFwhNCHl09nv6GyS2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 606/731] nvme-pci: skip nvme_write_sq_db on empty rqlist
-Date: Tue,  8 Apr 2025 12:48:23 +0200
-Message-ID: <20250408104928.368986674@linuxfoundation.org>
+	Cameron Williams <cang1@live.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 121/279] tty: serial: 8250: Add Brainboxes XC devices
+Date: Tue,  8 Apr 2025 12:48:24 +0200
+Message-ID: <20250408104829.614035872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 288ff0d10beb069355036355d5f7612579dc869c ]
+commit 5c7e2896481a177bbda41d7850f05a9f5a8aee2b upstream.
 
-nvme_submit_cmds() should check the rqlist before calling
-nvme_write_sq_db(); if the list is empty, it must return immediately.
+These ExpressCard devices use the OxPCIE chip and can be used with
+this driver.
 
-Fixes: beadf0088501 ("nvme-pci: reverse request order in nvme_queue_rqs")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/DB7PR02MB3802907A9360F27F6CD67AAFC4D62@DB7PR02MB3802.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 3ad7f197c8087..1dc12784efafc 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -989,6 +989,9 @@ static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct rq_list *rqlist)
- {
- 	struct request *req;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -2869,6 +2869,22 @@ static struct pci_serial_quirk pci_seria
+ 		.setup		= pci_oxsemi_tornado_setup,
+ 	},
+ 	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4026,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
++		.vendor		= PCI_VENDOR_ID_INTASHIELD,
++		.device		= 0x4021,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_oxsemi_tornado_init,
++		.setup		= pci_oxsemi_tornado_setup,
++	},
++	{
+ 		.vendor         = PCI_VENDOR_ID_INTEL,
+ 		.device         = 0x8811,
+ 		.subvendor	= PCI_ANY_ID,
+@@ -5898,6 +5914,20 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-235
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4026,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
++	 * Brainboxes XC-475
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4021,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
  
-+	if (rq_list_empty(rqlist))
-+		return;
-+
- 	spin_lock(&nvmeq->sq_lock);
- 	while ((req = rq_list_pop(rqlist))) {
- 		struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
--- 
-2.39.5
-
+ 	/*
+ 	 * Perle PCI-RAS cards
 
 
 
