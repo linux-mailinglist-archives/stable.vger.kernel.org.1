@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B666AA80B1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55373A80751
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8A190370D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508384A1AA7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A13926A1B7;
-	Tue,  8 Apr 2025 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6984726B94A;
+	Tue,  8 Apr 2025 12:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND/Mf1Zy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DViuu6DH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C1226A095;
-	Tue,  8 Apr 2025 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268202063FD;
+	Tue,  8 Apr 2025 12:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116653; cv=none; b=EJAlm8TqXFntlETWNKx3BaclyHt2cgsWwEhtU+GvDcS7twUvmFIo0iLsw+LVBEeMAfbzl7Ida/oCH0z69UxOXhlFO0nFUBcVHupNc5GbRHCYbya6Ob1wSlSA/3R//X/+whiOjMmVh/R1DuJOcnWTk6vdb86AVKTPiXzUa6xrYic=
+	t=1744114969; cv=none; b=JVHt5Ox71t2vsxqH2QBlfZpQesGgn7T6zHi1tPd+FBWQ2Excu3z7dMBo48WyPMoD98A9VJW5GIj2SuyQPXqfvOqxehy4L69a9AhI6nMgvm2BrFCQp6ltXIr5TrjJ8OxF1VRBET7FDNrwLGw1xb60+cu8HBWOp1Y0l6qpr5xxo6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116653; c=relaxed/simple;
-	bh=JdwEUuG8J5JlDVR1bZ63sy+7d2CG3ETRBFbG6SskJRI=;
+	s=arc-20240116; t=1744114969; c=relaxed/simple;
+	bh=1BhMN6KT3jcbFs0Xmk9csUqMFX3jnK5Wpr+EGn+AGBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ucMJOedUhcaPU0a15rrGBKdHKQGwhVaJa+KasrPcrHPEn8t+O0XCdyRs8Au8piOgBp9ZK3Hqjr6qINGx48NeuS8U7nW/bihXsRxUulxe8U9hOrYNlxJwCPUOQ5a8C4w4CtRw2nhqiWx6WDq7QEVtxdX+rkiIihlVuC+60BIlrAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND/Mf1Zy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E49C4CEE5;
-	Tue,  8 Apr 2025 12:50:52 +0000 (UTC)
+	 MIME-Version; b=oPJmoSclzGwpjzrGIm607mXMey98RONKYXeTQqoQ+9OCtNW3Ni9KeLFVsjBbrakId3spz8mwY4FxqtYthXR8jBcIcyjAQob9NHt/qleI1qmOO4+isdJQd16ClwKlhaH2pJSPZdOEZCAJ+UlrL3yaYCTtNjtMnt0Nokplghjv2wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DViuu6DH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BB0C4CEE5;
+	Tue,  8 Apr 2025 12:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116653;
-	bh=JdwEUuG8J5JlDVR1bZ63sy+7d2CG3ETRBFbG6SskJRI=;
+	s=korg; t=1744114969;
+	bh=1BhMN6KT3jcbFs0Xmk9csUqMFX3jnK5Wpr+EGn+AGBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ND/Mf1ZyMy5i9m9lJbbzYm3Yaue57UfsaWJaTyP8imRqKsBkz5JrKGxo6oOmL5j3F
-	 0mK2ZonaoB2IdSPkkeVrAuEbbl8E3oLbdL108Udmic2McvxORiMpu4dqEej98xjRcz
-	 VpC4+q/hVnNwErV2tG1LUTC57r5p2EJeVGENip/E=
+	b=DViuu6DHju3kJw2f9kuhflfZekuBxL77SVCUTjfxT+50HNLQ7OKdRYBAEiWQ+1Sc5
+	 8k/uWQRHkGPO9vm/3iYDiBQ/2HWSn9FiuGIfYfwbZGlqPVFbmNMuf3lfIf0ZuEKkmR
+	 Fc5c5hiLe8HtJxE8gKAJa5dzLZ8C/PaqPkAp1T4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/423] iio: backend: make sure to NULL terminate stack buffer
+Subject: [PATCH 6.13 294/499] objtool: Fix verbose disassembly if CROSS_COMPILE isnt set
 Date: Tue,  8 Apr 2025 12:48:26 +0200
-Message-ID: <20250408104849.934950927@linuxfoundation.org>
+Message-ID: <20250408104858.546853987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: David Laight <david.laight.linux@gmail.com>
 
-[ Upstream commit 035b4989211dc1c8626e186d655ae8ca5141bb73 ]
+[ Upstream commit e77956e4e5c11218e60a1fe8cdbccd02476f2e56 ]
 
-Make sure to NULL terminate the buffer in
-iio_backend_debugfs_write_reg() before passing it to sscanf(). It is a
-stack variable so we should not assume it will 0 initialized.
+In verbose mode, when printing the disassembly of affected functions, if
+CROSS_COMPILE isn't set, the objdump command string gets prefixed with
+"(null)".
 
-Fixes: cdf01e0809a4 ("iio: backend: add debugFs interface")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250218-dev-iio-misc-v1-1-bf72b20a1eb8@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Somehow this worked before.  Maybe some versions of glibc return an
+empty string instead of NULL.  Fix it regardless.
+
+[ jpoimboe: Rewrite commit log. ]
+
+Fixes: ca653464dd097 ("objtool: Add verbose option for disassembling affected functions")
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215142321.14081-1-david.laight.linux@gmail.com
+Link: https://lore.kernel.org/r/b931a4786bc0127aa4c94e8b35ed617dcbd3d3da.1743481539.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-backend.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/objtool/check.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index fb34a8e4d04e7..42e0ee683ef6b 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -155,10 +155,12 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
- 	ssize_t rc;
- 	int ret;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 8785c9fff8234..9c7e60f71327d 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4633,6 +4633,8 @@ static int disas_funcs(const char *funcs)
+ 	char *cmd;
  
--	rc = simple_write_to_buffer(buf, sizeof(buf), ppos, userbuf, count);
-+	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
- 	if (rc < 0)
- 		return rc;
+ 	cross_compile = getenv("CROSS_COMPILE");
++	if (!cross_compile)
++		cross_compile = "";
  
-+	buf[count] = '\0';
-+
- 	ret = sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
- 
- 	switch (ret) {
+ 	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
+ 			"BEGIN { split(_funcs, funcs); }"
 -- 
 2.39.5
 
