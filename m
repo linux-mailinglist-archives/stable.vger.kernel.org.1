@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A63A809F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2A3A80AFC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADDB8873A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36C981BC381C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95325269B1B;
-	Tue,  8 Apr 2025 12:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A2E2777F5;
+	Tue,  8 Apr 2025 12:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYBI/Qei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqfRPms7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AFE269825;
-	Tue,  8 Apr 2025 12:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1565276053;
+	Tue,  8 Apr 2025 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115824; cv=none; b=kbGkgPuQP6OwOCFFui1B2Kj36WGwQWpzd2mOZR/Deq08cQFUSWC2uZHyUIbujm2rjUOCG9Zg54SF0urHh+UCnHRq9/JFUtnrA45mL41gY6HBP16eIRFujg2dan4uUB83zzef2AoMq40iqocK/shYTVm6LtIccOdnlMLMfi9yzCM=
+	t=1744116824; cv=none; b=WFEfs74FeInUd4NWWzTXISwjOfwqW42tR3iMsHdJq4BK5mMSJT/gRzUl3VNDprngfEPlsTwKXC9k1AtE/MWihcrNemlW1nqCKat+QjWQQHAUxJJ7ywHayEmrtVyqH6LuSJhFI8uPtM5ui9HFo1JAdgk32mi3Jora2BU5INMEzck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115824; c=relaxed/simple;
-	bh=j3l7GjF5+AC53AVSqSq3k5mYvhorOofz2VjR51G5ORU=;
+	s=arc-20240116; t=1744116824; c=relaxed/simple;
+	bh=NIWvmteYvNsDq9xkS2f/0GFIUNhZFOmTfMlDLfIgiFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSkensmyct9hTPRfjj1tx15IkIFGgfFiJxDg5cyH8/ohD83J8pOf8HwnvBmkc4KyR0mo7LXSmc7oIvXnC2df0L+xe65GbNbR/JqCQDNBPtMV9FYDy/Kk9ZIACUtRHGCQFtmxeFHZYb3sxzE1lla9mY41etwv8JQyJgzJ7I0Pwxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYBI/Qei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD632C4CEE5;
-	Tue,  8 Apr 2025 12:37:03 +0000 (UTC)
+	 MIME-Version; b=bY7QcwRexdSUZiMaEbo/SNBXpo5OUcwGdLYXVGTlp4CCVMMb9ZbQZJ2AQCwzqcqwA2aQlsVATpb2zDwevzPLFFS5EGiIKCNbh4h3oBfFBBcT5tYW2E08Ma1fkbeTjOIWtQMZlKwZKbIvqxwca8PpRHkWjilGNwrhMW1wXJUSlmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqfRPms7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53666C4CEE5;
+	Tue,  8 Apr 2025 12:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115824;
-	bh=j3l7GjF5+AC53AVSqSq3k5mYvhorOofz2VjR51G5ORU=;
+	s=korg; t=1744116824;
+	bh=NIWvmteYvNsDq9xkS2f/0GFIUNhZFOmTfMlDLfIgiFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYBI/QeiphO/R2jAiPrj+7iKOzXlY+CcnzOtSVGsqO4B8UsRiuodh5IktgrnbEKsO
-	 3AeTJ0Dq6X/V3D4m1c06U55p4bW3T9Zk0UP62deRaUb1IZRY/apW0z6b4RxieE1/Si
-	 x+1YWRZp/v2k0sCpPBMyG/e21rAqEUJ0m1Eq+nR0=
+	b=gqfRPms762DNKbpzBtJk4pLh70Rlf17Dq6b5l3Wp9W39NWAi3Ef7Wq/9G+ieN9US7
+	 y14PEBlvjI/WoxqlpZrU3YLMH7USSvbA2EpTAicdLqFkgFw8gYPZ5DApIpWCfG7sCO
+	 THkbTQ++sud5xoz02corRy63cPJu/y5tW8tYm+bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/204] power: supply: max77693: Fix wrong conversion of charge input threshold value
+Subject: [PATCH 6.12 282/423] ALSA: hda/realtek: Add support for ASUS Zenbook UM3406KA Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:50:08 +0200
-Message-ID: <20250408104822.650815956@linuxfoundation.org>
+Message-ID: <20250408104852.343922930@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
+[ Upstream commit 8463d2adbe1901247937fcdfe4b525130f6db10b ]
 
-The charge input threshold voltage register on the MAX77693 PMIC accepts
-four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
-Due to an oversight, the driver calculated the values for 4.7v and above
-starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
-gives 0).
+Laptop uses 2 CS35L41 Amps with HDA, using External boost with I2C
 
-Add 1 to the calculation to ensure that 4.7v is converted to a register
-value of 0x1 and that the other two voltages are converted correctly as
-well.
-
-Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-8-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77693_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
-index a2c5c9858639f..ef3482fa4023e 100644
---- a/drivers/power/supply/max77693_charger.c
-+++ b/drivers/power/supply/max77693_charger.c
-@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
- 	case 4700000:
- 	case 4800000:
- 	case 4900000:
--		data = (uvolt - 4700000) / 100000;
-+		data = ((uvolt - 4700000) / 100000) + 1;
- 		break;
- 	default:
- 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 4ff531b4f50ed..f97837f211253 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10630,6 +10630,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1154, "ASUS TP3607SH", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
 -- 
 2.39.5
 
