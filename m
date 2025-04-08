@@ -1,234 +1,386 @@
-Return-Path: <stable+bounces-131840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E70A814F5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 20:50:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEBEA8156B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 21:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB35C19E4012
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E67894E2743
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 19:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E14623F411;
-	Tue,  8 Apr 2025 18:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5659C2459C5;
+	Tue,  8 Apr 2025 19:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="dBa6NX0t"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jycr3qi5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="octOhNrT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5431D23A562
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 18:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2474324293C;
+	Tue,  8 Apr 2025 19:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744138218; cv=none; b=nc+dzPgD3wVn+yRLk8hxYyWICazbybap2vy1biD0P5SIqGGm0DMzroh2mwjEBx6v1CjwCNWXwfjTcQoaGQEMb3vxoPlIZjpCLpRXovxV6ASbYByLLfyMLn1YD++ZNNQeyZ2vienPFKzXGGnovY6zjSebM6w20gt8aI5tV4y0eOI=
+	t=1744139135; cv=none; b=Cve0lpDtRhq85y31ZTM1X2gVniFPLjW4rD7wZLqDvQjS2xdof2JcpCfsQygKfa52Y1/BTo2J1fx2V0pXKq2PNjQIS6zlXA3Tw8AderTT3yBQDPg63gK6om2fY1zZjjLIQM3D4pgiTtOhSd2NKUiXALrts/O/CcQVQB+sXFKf8Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744138218; c=relaxed/simple;
-	bh=7tq6qaJMbHnZOnMEprQALgIh/9nLaUKXPKzYdt7v+CY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RnBRnQBlKWSPUE5B90YbY/5JDkuLqGPglhK7E5eBDQYIG2KzfAJVTG2lpgWXI1YWawCVTm/Rc2FzWrN5XVw/iAD/cU+2nVoI43qedg2KDEgViolxTQoBRX8lPk47btqsvHaTHgUmB+1KwI0LycIPXlv9AGwzAVouRkY1UzBrLjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=dBa6NX0t; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4775ce8a4b0so104447281cf.1
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 11:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1744138214; x=1744743014; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FwDylyzDPsrF74vrQtby3ilZT9HGhvLa0st+FyPJEAY=;
-        b=dBa6NX0tarjtThFStMeNNBRnSSGXj9cqox7iZmB80uqo8xp50jjgqDNuEXu90ag6mR
-         UrBs6RgPM9Vn7x/WLHOY51mhoIVO8hgxxF+mTspM15scq9RIGbhAda0cLs+/AoDcJh5d
-         7RONoGaSv249xvjObSK1vka6pFKS+jAuzrKGV4cAAU+tM7N2lZ8GiQ0UPQ19Oz20zK4j
-         zgk93lp7e315fEpzBbunfibGNLYhpTyaNCitRX5BuHJn740xR6N6jT4PDwb05byOOel1
-         6lWINEu7VulmE/G88qLzTLhY3rYTZc4+9kHJhIhrAlCEEz1VZZpv6SGQOsbiNjpu+7U0
-         MOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744138214; x=1744743014;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FwDylyzDPsrF74vrQtby3ilZT9HGhvLa0st+FyPJEAY=;
-        b=bg6JKz7T5p0HtQLN19JwRnP5JLzJsKbth/w0wO/SYydLHl+ZXqX4mejQdfbejmLvl+
-         HB6bpUwQ4jdSNcn3GYGiLUWyONG5aWKBR9A0+qbYHp2zttl11BlWL0YnRY9v4XUtK5RE
-         PPPG4v1ZDOuvWpd8PQYhRyTgErnYGgFWPFGpVFksvWXEwMzgMoxWs60YJjmATOBmsogG
-         TRvEYHO08HBW42XSSFjKErdfp9+Xd9yq6HEjylH8owEeVia8Z2ps0/j1FReLcGbg/eUS
-         4S7iSgJcslZ2xY2kcZacH+E9Py9fd+lajxqpVcXuGLORAfp9ZOd22kWhSEPW+9aujSSZ
-         vHoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvK4TjYHD6EZFyO6od/KhpeV31Q6omxBc5YT1inSiNL1EpSCiPTOwJceqDlPqOs2/GITlowJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9zDlOY/mTYBtFmm5DXSUoh64FJOULq7QNF0tJB4XDf09V68Jb
-	8TpNSCZvOj+5T1540VDBW9p5oOeytJIODgppQY/U8NBZXE3+bHpOLB6fzDBg0/E=
-X-Gm-Gg: ASbGncvDKyb3eIAkuPQZ/adSQqUcXV/SW7wBoUotDHkb+K5992MCcO5HFIA/cYbf11F
-	urubcNjcQaEcBZTZOC9kq/p+UwyRxJ2T3aT47bgdcPnHRZ5tKefoL03iAkvy5F0bfM0GymU6l9o
-	L+aaq85qKIHPcvJO3k+u2nHFxnj/tXfWnHy0GE4ga30j3iOgCIOHlHR5K8P8yMyMVIJz+JJHQyM
-	3S3GdcafvqyryCbOAdBf7crIdSyc+wXYtcT1QWM3z0yESqcvLa6sgmVFGksucWSUjGJLAQbcGan
-	qbOsIm3503jf5AemP2Zp8DeKSWGyy3v2Wi6SIk4nTVs=
-X-Google-Smtp-Source: AGHT+IHbWilH5kMWNF4Wf7I0KGh/1NSK677mnEizu3hGba+oaeLYEvko8oaHEsEM9Yb1/YDtPtxO5Q==
-X-Received: by 2002:ac8:5d04:0:b0:476:90ee:bc6a with SMTP id d75a77b69052e-4795f2e3607mr761051cf.28.1744138213965;
-        Tue, 08 Apr 2025 11:50:13 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4791b088346sm81560331cf.41.2025.04.08.11.50.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 11:50:13 -0700 (PDT)
-Date: Tue, 8 Apr 2025 14:50:09 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Carlos Song <carlos.song@nxp.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
-Message-ID: <20250408185009.GF816@cmpxchg.org>
-References: <20250407180154.63348-1-hannes@cmpxchg.org>
- <D91FIQHR9GEK.3VMV7CAKW1BFO@google.com>
+	s=arc-20240116; t=1744139135; c=relaxed/simple;
+	bh=mSKVF5vf8AGRYhp6vZi1AHuZz+IwbgUxHVZNPTJ4KiA=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=YMPQw9bM4oVdIoHXwftJG+e8CeRaV7OBhSDS7zjkzTmR6VYdJg/3Jq9rNtfSdzhsU3ZBIvkQBBApYQsvBF0/debYRH7wPfwHAY4PQOCg5aQttILeveGokg1XUHaIfiTmjx4cZJBBTpZp7rsKGA80VBpSwzbKJgvRKBT9ihd+4yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jycr3qi5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=octOhNrT; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 08 Apr 2025 19:05:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744139131;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Np1BYFi2LiUFyUeRiqzMh8O5TPOS2ojFZUDS1JNVI/Y=;
+	b=jycr3qi5jMpF9l82tVjqhbMYMZfOcUsN2RXpl3gTQ9WcN2Iou67aa/RoiFlJP9OG0mzH2Z
+	OKT+ubZkdcT17Zy9X5v6oz4O5MJ/PkE6E/ULQlw2mLNTNV00YWKmLhg8wT08Xsd+2GUE2J
+	l6KJoZXNKruBY6sEUFAk2v0xl15zsmJv8qR2R9XRkv2ONlvUAJxjXntUfGUZ69PM1XMOIg
+	PhbsWV6LJFKgX7aHnMY0H8zO+T8AQE3Wf7bY6TR/1tKd+BuTag8LXtOojIqxxd8FBrXdRL
+	i6lHgESYjHhWUW9lDC9fHw5S2wZDRZIj4Dj+IDpSNQqhDoUth+OKluGsAKj5zA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744139131;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Np1BYFi2LiUFyUeRiqzMh8O5TPOS2ojFZUDS1JNVI/Y=;
+	b=octOhNrTBPoNzlfGWp+Oj8uuxmRAp/y2bSdN8Vdskeiz/qNZ2InaVdmyJu4Vf2XdAubHGY
+	8X/JJlA8Bca5bSBw==
+From: "tip-bot2 for Harshit Agarwal" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/rt: Fix race in push_rt_task
+Cc: Jon Kohler <jon@nutanix.com>,
+ Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
+ Rahul Chunduru <rahul.chunduru@nutanix.com>,
+ Harshit Agarwal <harshit@nutanix.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "Steven Rostedt (Google)" <rostedt@goodmis.org>, Phil Auld <pauld@redhat.com>,
+ Will Ton <william.ton@nutanix.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250225180553.167995-1-harshit@nutanix.com>
+References: <20250225180553.167995-1-harshit@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D91FIQHR9GEK.3VMV7CAKW1BFO@google.com>
+Message-ID: <174413913083.31282.6439737092347995378.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 08, 2025 at 05:22:00PM +0000, Brendan Jackman wrote:
-> On Mon Apr 7, 2025 at 6:01 PM UTC, Johannes Weiner wrote:
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -2194,11 +2194,11 @@ try_to_claim_block(struct zone *zone, struct page *page,
-> >   * The use of signed ints for order and current_order is a deliberate
-> >   * deviation from the rest of this file, to make the for loop
-> >   * condition simpler.
-> > - *
-> > - * Return the stolen page, or NULL if none can be found.
-> >   */
-> 
-> This commentary is pretty confusing now, there's a block of text that
-> kinda vaguely applies to the aggregate of __rmqueue_steal(),
-> __rmqueue_fallback() and half of __rmqueue(). I think this new code does
-> a better job of speaking for itself so I think we should just delete
-> this block comment and replace it with some more verbosity elsewhere.
+The following commit has been merged into the sched/core branch of tip:
 
-I'm glad you think so, let's remove it then!
+Commit-ID:     690e47d1403e90b7f2366f03b52ed3304194c793
+Gitweb:        https://git.kernel.org/tip/690e47d1403e90b7f2366f03b52ed330419=
+4c793
+Author:        Harshit Agarwal <harshit@nutanix.com>
+AuthorDate:    Tue, 25 Feb 2025 18:05:53=20
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 08 Apr 2025 20:55:55 +02:00
 
-> > +/* Try to claim a whole foreign block, take a page, expand the remainder */
-> 
-> Also on the commentary front, I am not a fan of "foreign" and "native":
-> 
-> - "Foreign" is already used in this file to mean NUMA-nonlocal.
-> 
-> - We already have "start" and "fallback" being used in identifiers
->   as adjectives to describe the mitegratetype concept.
-> 
->   I wouldn't say those are _better_, "native" and "foreign" might be
->   clearer, but it's not worth introducing inconsistency IMO.
+sched/rt: Fix race in push_rt_task
 
-That's a fair point, no objection to renaming them.
+Overview
+=3D=3D=3D=3D=3D=3D=3D=3D
+When a CPU chooses to call push_rt_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_lowest_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
 
-> >  static __always_inline struct page *
-> > -__rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
-> > +__rmqueue_claim(struct zone *zone, int order, int start_migratetype,
-> >  						unsigned int alloc_flags)
-> >  {
-> >  	struct free_area *area;
-> 
-> [pasting in more context that wasn't in the original diff..]
-> >	/*
-> >	 * Find the largest available free page in the other list. This roughly
-> >	 * approximates finding the pageblock with the most free pages, which
-> >	 * would be too costly to do exactly.
-> >	 */
-> >	for (current_order = MAX_PAGE_ORDER; current_order >= min_order;
-> >				--current_order) {
-> 
-> IIUC we could go one step further here and also avoid repeating this
-> iteration? Maybe something for a separate patch though?
+Crashes
+=3D=3D=3D=3D=3D=3D=3D
+This bug resulted in quite a few flavors of crashes triggering kernel
+panics with various crash signatures such as assert failures, page
+faults, null pointer dereferences, and queue corruption errors all
+coming from scheduler itself.
 
-That might be worth a test, but agree this should be a separate patch.
+Some of the crashes:
+-> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >=3D MAX_RT_PRIO)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? do_error_trap+0x64/0xa0
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? exc_invalid_op+0x4c/0x60
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? pick_next_task_rt+0x6e/0x1d0
+   __schedule+0x5cb/0x790
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
 
-AFAICS, in the most common configurations MAX_PAGE_ORDER is only one
-step above pageblock_order or even the same. It might not be worth the
-complication.
+-> BUG: kernel NULL pointer dereference, address: 00000000000000c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? __warn+0x8a/0xe0
+   ? exc_page_fault+0x3d6/0x520
+   ? asm_exc_page_fault+0x1e/0x30
+   ? pick_next_task_rt+0xb5/0x1d0
+   ? pick_next_task_rt+0x8c/0x1d0
+   __schedule+0x583/0x7e0
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
 
-> Anyway, the approach seems like a clear improvement, thanks. I will need
-> to take a closer look at it tomorrow, I've run out of brain juice today.
+-> BUG: unable to handle page fault for address: ffff9464daea5900
+   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu !=3D task_cpu(p))
 
-Much appreciate you taking a look, thanks.
+-> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? do_error_trap+0x64/0xa0
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? exc_invalid_op+0x4c/0x60
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   dequeue_rt_entity+0x1f/0x70
+   dequeue_task_rt+0x2d/0x70
+   __schedule+0x1a8/0x7e0
+   ? blk_finish_plug+0x25/0x40
+   schedule+0x3c/0xb0
+   futex_wait_queue_me+0xb6/0x120
+   futex_wait+0xd9/0x240
+   do_futex+0x344/0xa90
+   ? get_mm_exe_file+0x30/0x60
+   ? audit_exe_compare+0x58/0x70
+   ? audit_filter_rules.constprop.26+0x65e/0x1220
+   __x64_sys_futex+0x148/0x1f0
+   do_syscall_64+0x30/0x80
+   entry_SYSCALL_64_after_hwframe+0x62/0xc7
 
-> Here's what I got from redistributing the block comment and flipping
-> the terminology:
-> 
-> diff --git i/mm/page_alloc.c w/mm/page_alloc.c
-> index dfb2b3f508af..b8142d605691 100644
-> --- i/mm/page_alloc.c
-> +++ w/mm/page_alloc.c
-> @@ -2183,21 +2183,13 @@ try_to_claim_block(struct zone *zone, struct page *page,
->  }
->  
->  /*
-> - * Try finding a free buddy page on the fallback list.
-> - *
-> - * This will attempt to claim a whole pageblock for the requested type
-> - * to ensure grouping of such requests in the future.
-> - *
-> - * If a whole block cannot be claimed, steal an individual page, regressing to
-> - * __rmqueue_smallest() logic to at least break up as little contiguity as
-> - * possible.
-> + * Try to allocate from some fallback migratetype by claiming the entire block,
-> + * i.e. converting it to the allocation's start migratetype.
->   *
->   * The use of signed ints for order and current_order is a deliberate
->   * deviation from the rest of this file, to make the for loop
->   * condition simpler.
->   */
-> -
-> -/* Try to claim a whole foreign block, take a page, expand the remainder */
->  static __always_inline struct page *
->  __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
->                                                 unsigned int alloc_flags)
-> @@ -2247,7 +2239,10 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
->         return NULL;
->  }
->  
-> -/* Try to steal a single page from a foreign block */
-> +/*
-> + * Try to steal a single page from some fallback migratetype. Leave the rest of
-> + * the block as its current migratetype, potentially causing fragmentation.
-> + */
->  static __always_inline struct page *
->  __rmqueue_steal(struct zone *zone, int order, int start_migratetype)
->  {
-> @@ -2307,7 +2302,9 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
->         }
->  
->         /*
-> -        * Try the different freelists, native then foreign.
-> +        * First try the freelists of the requested migratetype, then try
-> +        * fallbacks. Roughly, each fallback stage poses more of a fragmentation
-> +        * risk.
+-> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? spurious_kernel_fault+0x171/0x1c0
+   ? exc_page_fault+0x3b6/0x520
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? asm_exc_page_fault+0x1e/0x30
+   ? _cond_resched+0x15/0x30
+   ? futex_wait_queue_me+0xc8/0x120
+   ? futex_wait+0xd9/0x240
+   ? try_to_wake_up+0x1b8/0x490
+   ? futex_wake+0x78/0x160
+   ? do_futex+0xcd/0xa90
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? plist_del+0x6a/0xd0
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? dequeue_pushable_task+0x20/0x70
+   ? __schedule+0x382/0x7e0
+   ? asm_sysvec_reschedule_ipi+0xa/0x20
+   ? schedule+0x3c/0xb0
+   ? exit_to_user_mode_prepare+0x9e/0x150
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_sysvec_reschedule_ipi+0x12/0x20
 
-How about "then try fallback modes with increasing levels of
-fragmentation risk."
+Above are some of the common examples of the crashes that were observed
+due to this issue.
 
->          * The fallback logic is expensive and rmqueue_bulk() calls in
->          * a loop with the zone->lock held, meaning the freelists are
-> @@ -2332,7 +2329,7 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
->         case RMQUEUE_CLAIM:
->                 page = __rmqueue_claim(zone, order, migratetype, alloc_flags);
->                 if (page) {
-> -                       /* Replenished native freelist, back to normal mode */
-> +                       /* Replenished requested migratetype's freelist, back to normal mode */
->                         *mode = RMQUEUE_NORMAL;
+Details
+=3D=3D=3D=3D=3D=3D=3D
+Let's look at the following scenario to understand this race.
 
-This line is kind of long now. How about:
+1) CPU A enters push_rt_task
+  a) CPU A has chosen next_task =3D task p.
+  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z=E2=80=99s rq).
+  c) CPU A identifies CPU X as a destination CPU (X < Z).
+  d) CPU A enters double_lock_balance(CPU Z=E2=80=99s rq, CPU X=E2=80=99s rq).
+  e) Since X is lower than Z, CPU A unlocks CPU Z=E2=80=99s rq. Someone else =
+has
+     locked CPU X=E2=80=99s rq, and thus, CPU A must wait.
 
-			/* Replenished preferred freelist, back to normal mode */
+2) At CPU Z
+  a) Previous task has completed execution and thus, CPU Z enters
+     schedule, locks its own rq after CPU A releases it.
+  b) CPU Z dequeues previous task and begins executing task p.
+  c) CPU Z unlocks its rq.
+  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+     lock) which triggers the schedule function on CPU Z.
+  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+  f) As part of dequeue, it sets p.on_rq =3D 0 and unlocks its rq.
 
-But yeah, I like your proposed changes. Would you care to send a
-proper patch?
+3) At CPU B
+  a) CPU B enters try_to_wake_up with input task p.
+  b) Since CPU Z dequeued task p, p.on_rq =3D 0, and CPU B updates
+     B.state =3D WAKING.
+  c) CPU B via select_task_rq determines CPU Y as the target CPU.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+4) The race
+  a) CPU A acquires CPU X=E2=80=99s lock and relocks CPU Z.
+  b) CPU A reads task p.cpu =3D Z and incorrectly concludes task p is
+     still on CPU Z.
+  c) CPU A failed to notice task p had been dequeued from CPU Z while
+     CPU A was waiting for locks in double_lock_balance. If CPU A knew
+     that task p had been dequeued, it would return NULL forcing
+     push_rt_task to give up the task p's migration.
+  d) CPU B updates task p.cpu =3D Y and calls ttwu_queue.
+  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+     p.on_rq =3D 1.
+  f) CPU B unlocks CPU Y, triggering memory synchronization.
+  g) CPU A reads task p.on_rq =3D 1, cementing its assumption that task p
+     has not migrated.
+  h) CPU A decides to migrate p to CPU X.
+
+This leads to A dequeuing p from Y's queue and various crashes down the
+line.
+
+Solution
+=3D=3D=3D=3D=3D=3D=3D=3D
+The solution here is fairly simple. After obtaining the lock (at 4a),
+the check is enhanced to make sure that the task is still at the head of
+the pushable tasks list. If not, then it is anyway not suitable for
+being pushed out.
+
+Testing
+=3D=3D=3D=3D=3D=3D=3D
+The fix is tested on a cluster of 3 nodes, where the panics due to this
+are hit every couple of days. A fix similar to this was deployed on such
+cluster and was stable for more than 30 days.
+
+Co-developed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Will Ton <william.ton@nutanix.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
+---
+ kernel/sched/rt.c | 54 ++++++++++++++++++++++------------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
+
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 778911b..e40422c 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1894,6 +1894,27 @@ static int find_lowest_rq(struct task_struct *task)
+ 	return -1;
+ }
+=20
++static struct task_struct *pick_next_pushable_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_tasks(rq))
++		return NULL;
++
++	p =3D plist_first_entry(&rq->rt.pushable_tasks,
++			      struct task_struct, pushable_tasks);
++
++	BUG_ON(rq->cpu !=3D task_cpu(p));
++	BUG_ON(task_current(rq, p));
++	BUG_ON(task_current_donor(rq, p));
++	BUG_ON(p->nr_cpus_allowed <=3D 1);
++
++	BUG_ON(!task_on_rq_queued(p));
++	BUG_ON(!rt_task(p));
++
++	return p;
++}
++
+ /* Will lock the rq it finds */
+ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *r=
+q)
+ {
+@@ -1924,18 +1945,16 @@ static struct rq *find_lock_lowest_rq(struct task_str=
+uct *task, struct rq *rq)
+ 			/*
+ 			 * We had to unlock the run queue. In
+ 			 * the mean time, task could have
+-			 * migrated already or had its affinity changed.
+-			 * Also make sure that it wasn't scheduled on its rq.
++			 * migrated already or had its affinity changed,
++			 * therefore check if the task is still at the
++			 * head of the pushable tasks list.
+ 			 * It is possible the task was scheduled, set
+ 			 * "migrate_disabled" and then got preempted, so we must
+ 			 * check the task migration disable flag here too.
+ 			 */
+-			if (unlikely(task_rq(task) !=3D rq ||
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !rt_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     task !=3D pick_next_pushable_task(rq))) {
+=20
+ 				double_unlock_balance(rq, lowest_rq);
+ 				lowest_rq =3D NULL;
+@@ -1955,27 +1974,6 @@ static struct rq *find_lock_lowest_rq(struct task_stru=
+ct *task, struct rq *rq)
+ 	return lowest_rq;
+ }
+=20
+-static struct task_struct *pick_next_pushable_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_tasks(rq))
+-		return NULL;
+-
+-	p =3D plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
+-
+-	BUG_ON(rq->cpu !=3D task_cpu(p));
+-	BUG_ON(task_current(rq, p));
+-	BUG_ON(task_current_donor(rq, p));
+-	BUG_ON(p->nr_cpus_allowed <=3D 1);
+-
+-	BUG_ON(!task_on_rq_queued(p));
+-	BUG_ON(!rt_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * If the current CPU has more than one RT task, see if the non
+  * running task can migrate over to a CPU that is running a task
 
