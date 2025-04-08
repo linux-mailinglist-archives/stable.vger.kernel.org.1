@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C482A80AEA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 399D0A8054E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003C21B85D9F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9AD3B6841
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7E126B97C;
-	Tue,  8 Apr 2025 12:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D964826AA8A;
+	Tue,  8 Apr 2025 12:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeRezxhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEjoPf2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC0526B972;
-	Tue,  8 Apr 2025 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9499426656B;
+	Tue,  8 Apr 2025 12:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116816; cv=none; b=T0+rROg3q6E4eQQrQ0YQ9NCUfdzyQzKsDXxSMGO7y2ucMUk76rn3CyKwA45Z/4tXk+MFP+Y/YBtDYKE9yCwF5A0owFnRyq/jLezQkndzDAXszFh3lknvTidVpyVCfnKIOpoWoIElIvgLA5J6uLOJqu2uFHKy4uabd9c9Fqmme18=
+	t=1744113908; cv=none; b=fZVWVPDPMYgIMKDtajWc9QcJMZNxUjz+n3kiuqffx18owPrFNwlwpvRAe+h19qD3YDK+1qfPIz8YM9Q/AfUqhxS2JWqQmgM9C2i40m8p/F089DGNVNOZ4/g+oaczLoIXCCvLwyhhW679M6i4f/KKFqfTSHXvw3IjzgssjOeBBfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116816; c=relaxed/simple;
-	bh=YoZnQ+ODiQ6prZe2CHcwQWpHNhUP6irJA1k4ZObrxy0=;
+	s=arc-20240116; t=1744113908; c=relaxed/simple;
+	bh=48fht+LnK3p2kHYTVTZYy4UjAIkslDGz4yM/wDKbI8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMjQjZEzIVM25u6djbXktBI/mn7MxzzMsiqfM1IxF04YQVB/K4YrUbqiB9F3LaFyu006e1YuIxFp/XtmLPCw/6xNLPx4m8w9cOUfxnlfCO5PqbKVPjGlavuseW73e3RgLryuCUa7dFRO7tdDeujgUIJGNEnr/AmDJsPSiw6SzS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeRezxhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507B2C4CEE5;
-	Tue,  8 Apr 2025 12:53:36 +0000 (UTC)
+	 MIME-Version; b=UAyo/ESQVzigEUN1mcFtYyzp52rG2JGETphngiQhNMQ9R0R3MN4wi3NkmJDmpgQy4IImuwffe1vJfESYROBYFboAYsbyt2AXeNr6s7427/gucSg6k0WwNnfXwylevpnsEop5KVJF2GmNVcWB013BX0GhZb0zV4OtNErasmEiT4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEjoPf2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253B5C4CEE5;
+	Tue,  8 Apr 2025 12:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116816;
-	bh=YoZnQ+ODiQ6prZe2CHcwQWpHNhUP6irJA1k4ZObrxy0=;
+	s=korg; t=1744113908;
+	bh=48fht+LnK3p2kHYTVTZYy4UjAIkslDGz4yM/wDKbI8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeRezxhFm6tPxOXdj9YaBRqsiDYbPl2zzZ3LZwh97iGAXPcqKx68G4iHLa9rLhi56
-	 tkpoHVW2NcTDE7lcFkaZmwUM27DZHZx8fDDYckxLb9e0GgIyk0rkPmjd2NQQ/31RXz
-	 3H1c8MHrxCxoqCB5Z2+qwG7VIruYO61SuyqYapRw=
+	b=mEjoPf2ibJxe56vn5IUXCLp2JME7l01Bx3ROP3dROdWeQpRF2choRqiCJDnBw5dDa
+	 78lONRVN9T9VX6a/p0Mace+3Xm0lYUGgcwwC4rzQrXUPpV7+hfGUl+Z4Y4zJzK2/TE
+	 iJyezgWfS/B/AWuhi4X0Bcb3Ylf2vsBpsBDzQUnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 279/423] ALSA: hda/realtek: Add support for various ASUS Laptops using CS35L41 HDA
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 064/154] batman-adv: Ignore own maximum aggregation size during RX
 Date: Tue,  8 Apr 2025 12:50:05 +0200
-Message-ID: <20250408104852.271595654@linuxfoundation.org>
+Message-ID: <20250408104817.346876007@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 859a11917001424776e1cca02b762efcabb4044e ]
+commit 548b0c5de7619ef53bbde5590700693f2f6d2a56 upstream.
 
-Add support for ASUS B3405CVA, B5405CVA, B5605CVA, B3605CVA.
+An OGMv1 and OGMv2 packet receive processing were not only limited by the
+number of bytes in the received packet but also by the nodes maximum
+aggregation packet size limit. But this limit is relevant for TX and not
+for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
+loss of information in case of a different limit for sender and receiver.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
+This has a minor side effect for B.A.T.M.A.N. IV because the
+batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
+But since the aggregation code itself will not allow more than
+BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
+this context) prior of removing it.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-5-sbinding@opensource.cirrus.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/batman-adv/bat_iv_ogm.c |    3 +--
+ net/batman-adv/bat_v_ogm.c  |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 6117aad97ba37..7a9d996ac1a45 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10636,6 +10636,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1290, "ASUS X441SA", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x1294, "ASUS B3405CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
- 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
-@@ -10722,6 +10723,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
-@@ -10740,6 +10742,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3f10, "ASUS Strix G835LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3f20, "ASUS Strix G615LR_LW", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x3f30, "ASUS Strix G815LR_LW", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x1043, 0x3fd0, "ASUS B3605CVA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3ff0, "ASUS B5405CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
--- 
-2.39.5
-
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -325,8 +325,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /* send a batman ogm to a given interface */
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -845,8 +845,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, i
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /**
 
 
 
