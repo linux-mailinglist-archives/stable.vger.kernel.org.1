@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277D8A808DE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D69AA80828
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58361BA4E1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86D244A29BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9E426FDB5;
-	Tue,  8 Apr 2025 12:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2FF26E16D;
+	Tue,  8 Apr 2025 12:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf0qhEN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF+5VmJz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56B26B2BF;
-	Tue,  8 Apr 2025 12:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23E26989E;
+	Tue,  8 Apr 2025 12:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115911; cv=none; b=q+UBF35mm/X7AzmEYYZPlTW/MX8RVo6NIWrkAd1FA0d7w5dkRcC2EITaR0ebGRLjNCFkNccY++QHTEnucMaHDpKoeVPc8LEd7lLtmzA5pVV23uRWp0QoS/hsnGqlljjq6FGgWSX7PclgwhjnkE4cuU/VaQj8u9NMp84ED8TqUu8=
+	t=1744115512; cv=none; b=qs2Td5Mqqf5fvRw0i1pChNvJ1/8nDSwuv3chwCgwhBD8Nt3k9UZdGsOx29Ex0N0FizOqc3Q5V7KAdYwyjGyrvOQseMNe3gGMY+ShVGpmiNYT4peGIT7ubLY6qhusK6+8eHpUX5qBR/8Z+GgrUKyF/zbwAMuBx6rKW7IpcvPCsv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115911; c=relaxed/simple;
-	bh=z+YetIoz3JnCfnBQ8J36fY3J0R+PvCgYBwxKLff7jOI=;
+	s=arc-20240116; t=1744115512; c=relaxed/simple;
+	bh=8GHBySf/n9zU+6MPR4rdSRwfPodYLsKZeqcKVrG7HGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjqo1w6jPj1tmnqjWgjYDrIARZ9ebyltQ2zObuq4vnSHGD1cF9/LyTHkxPNSyQdDzTIf2yq3PvgysrZk+lbdnb4A2l0diLMz9UBMJLm2R/YVUN1yXocLh93Ca1dztTlizi0xH4tBy4LxaNGD20hBHnj7xhi0NPaVlCxKOtsceQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf0qhEN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B208C4CEE5;
-	Tue,  8 Apr 2025 12:38:30 +0000 (UTC)
+	 MIME-Version; b=ZpDHgwIU/OqE3t3UP6uNy29ep2uhkmmSgrxSI9IecWfmxOewH162LinysencrW09ASH+NM8JxeWqahBsV4P9R4NPsOlvlCIGj7vwifRd5s79QHcASPHESwfy4z85nwXxTYPm79II/GOvo6xk629vMtHeBMvYAcnghaHQhTosilk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF+5VmJz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA6BC4CEE5;
+	Tue,  8 Apr 2025 12:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115911;
-	bh=z+YetIoz3JnCfnBQ8J36fY3J0R+PvCgYBwxKLff7jOI=;
+	s=korg; t=1744115511;
+	bh=8GHBySf/n9zU+6MPR4rdSRwfPodYLsKZeqcKVrG7HGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gf0qhEN39TpMSfwfiELlRoQDfA79oc2AJVSl5JsZOnllG1AmUJK123+phz+jWqDpf
-	 vbrK5KA9BXEWHEVgCoBEdGL5lTHYFuGa/O5l1t3E9WKVyijf4lFffm0M3myRufvShQ
-	 1jqiPdkPila3jGLFEkJ0nZUFRrY8bpV4xv9JjuUs=
+	b=JF+5VmJzw6/mJgW5s9EC8+vSXTOFpwmn/YuDnQQeY1PD69fdZK+3GfE/r/QWoyMIE
+	 dKHK8XXzVk9sW30/y4tU5+OdhyBatJU43hmJq+V75QZpp7+3alFzwIAY1qD7gHEbOs
+	 gHQvjj6pYiMokfkA8TMrXoY/BHo2b6rRIecim5A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/204] spufs: fix gang directory lifetimes
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 467/499] ksmbd: add bounds check for create lease context
 Date: Tue,  8 Apr 2025 12:51:19 +0200
-Message-ID: <20250408104824.670022070@linuxfoundation.org>
+Message-ID: <20250408104902.888575970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,200 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Norbert Szetei <norbert@doyensec.com>
 
-[ Upstream commit c134deabf4784e155d360744d4a6a835b9de4dd4 ]
+commit bab703ed8472aa9d109c5f8c1863921533363dae upstream.
 
-prior to "[POWERPC] spufs: Fix gang destroy leaks" we used to have
-a problem with gang lifetimes - creation of a gang returns opened
-gang directory, which normally gets removed when that gets closed,
-but if somebody has created a context belonging to that gang and
-kept it alive until the gang got closed, removal failed and we
-ended up with a leak.
+Add missing bounds check for create lease context.
 
-Unfortunately, it had been fixed the wrong way.  Dentry of gang
-directory was no longer pinned, and rmdir on close was gone.
-One problem was that failure of open kept calling simple_rmdir()
-as cleanup, which meant an unbalanced dput().  Another bug was
-in the success case - gang creation incremented link count on
-root directory, but that was no longer undone when gang got
-destroyed.
-
-Fix consists of
-	* reverting the commit in question
-	* adding a counter to gang, protected by ->i_rwsem
-of gang directory inode.
-	* having it set to 1 at creation time, dropped
-in both spufs_dir_close() and spufs_gang_close() and bumped
-in spufs_create_context(), provided that it's not 0.
-	* using simple_recursive_removal() to take the gang
-directory out when counter reaches zero.
-
-Fixes: 877907d37da9 "[POWERPC] spufs: Fix gang destroy leaks"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/cell/spufs/gang.c  |  1 +
- arch/powerpc/platforms/cell/spufs/inode.c | 54 +++++++++++++++++++----
- arch/powerpc/platforms/cell/spufs/spufs.h |  2 +
- 3 files changed, 49 insertions(+), 8 deletions(-)
+ fs/smb/server/oplock.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/gang.c b/arch/powerpc/platforms/cell/spufs/gang.c
-index 827d338deaf4c..2c2999de6bfa2 100644
---- a/arch/powerpc/platforms/cell/spufs/gang.c
-+++ b/arch/powerpc/platforms/cell/spufs/gang.c
-@@ -25,6 +25,7 @@ struct spu_gang *alloc_spu_gang(void)
- 	mutex_init(&gang->aff_mutex);
- 	INIT_LIST_HEAD(&gang->list);
- 	INIT_LIST_HEAD(&gang->aff_list_head);
-+	gang->alive = 1;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1505,6 +1505,10 @@ struct lease_ctx_info *parse_lease_state
+ 	if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
+ 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
  
- out:
- 	return gang;
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index ac10339ea4172..79d45fa599002 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -200,6 +200,23 @@ static int spufs_fill_dir(struct dentry *dir,
- 	return 0;
- }
- 
-+static void unuse_gang(struct dentry *dir)
-+{
-+	struct inode *inode = dir->d_inode;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
++		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
++		    sizeof(struct create_lease_v2) - 4)
++			return NULL;
 +
-+	if (gang) {
-+		bool dead;
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+ 		lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
+@@ -1517,6 +1521,10 @@ struct lease_ctx_info *parse_lease_state
+ 	} else {
+ 		struct create_lease *lc = (struct create_lease *)cc;
+ 
++		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
++		    sizeof(struct create_lease))
++			return NULL;
 +
-+		inode_lock(inode); // exclusion with spufs_create_context()
-+		dead = !--gang->alive;
-+		inode_unlock(inode);
-+
-+		if (dead)
-+			simple_recursive_removal(dir, NULL);
-+	}
-+}
-+
- static int spufs_dir_close(struct inode *inode, struct file *file)
- {
- 	struct inode *parent;
-@@ -214,6 +231,7 @@ static int spufs_dir_close(struct inode *inode, struct file *file)
- 	inode_unlock(parent);
- 	WARN_ON(ret);
- 
-+	unuse_gang(dir->d_parent);
- 	return dcache_dir_close(inode, file);
- }
- 
-@@ -406,7 +424,7 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- {
- 	int ret;
- 	int affinity;
--	struct spu_gang *gang;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
- 	struct spu_context *neighbor;
- 	struct path path = {.mnt = mnt, .dentry = dentry};
- 
-@@ -421,11 +439,15 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	if ((flags & SPU_CREATE_ISOLATE) && !isolated_loader)
- 		return -ENODEV;
- 
--	gang = NULL;
-+	if (gang) {
-+		if (!gang->alive)
-+			return -ENOENT;
-+		gang->alive++;
-+	}
-+
- 	neighbor = NULL;
- 	affinity = flags & (SPU_CREATE_AFFINITY_MEM | SPU_CREATE_AFFINITY_SPU);
- 	if (affinity) {
--		gang = SPUFS_I(inode)->i_gang;
- 		if (!gang)
- 			return -EINVAL;
- 		mutex_lock(&gang->aff_mutex);
-@@ -454,6 +476,8 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- out_aff_unlock:
- 	if (affinity)
- 		mutex_unlock(&gang->aff_mutex);
-+	if (ret && gang)
-+		gang->alive--; // can't reach 0
- 	return ret;
- }
- 
-@@ -483,6 +507,7 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode->i_fop = &simple_dir_operations;
- 
- 	d_instantiate(dentry, inode);
-+	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(d_inode(dentry));
- 	return ret;
-@@ -493,6 +518,21 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	return ret;
- }
- 
-+static int spufs_gang_close(struct inode *inode, struct file *file)
-+{
-+	unuse_gang(file->f_path.dentry);
-+	return dcache_dir_close(inode, file);
-+}
-+
-+static const struct file_operations spufs_gang_fops = {
-+	.open		= dcache_dir_open,
-+	.release	= spufs_gang_close,
-+	.llseek		= dcache_dir_lseek,
-+	.read		= generic_read_dir,
-+	.iterate_shared	= dcache_readdir,
-+	.fsync		= noop_fsync,
-+};
-+
- static int spufs_gang_open(const struct path *path)
- {
- 	int ret;
-@@ -512,7 +552,7 @@ static int spufs_gang_open(const struct path *path)
- 		return PTR_ERR(filp);
- 	}
- 
--	filp->f_op = &simple_dir_operations;
-+	filp->f_op = &spufs_gang_fops;
- 	fd_install(ret, filp);
- 	return ret;
- }
-@@ -527,10 +567,8 @@ static int spufs_create_gang(struct inode *inode,
- 	ret = spufs_mkgang(inode, dentry, mode & 0777);
- 	if (!ret) {
- 		ret = spufs_gang_open(&path);
--		if (ret < 0) {
--			int err = simple_rmdir(inode, dentry);
--			WARN_ON(err);
--		}
-+		if (ret < 0)
-+			unuse_gang(dentry);
- 	}
- 	return ret;
- }
-diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
-index 84958487f696a..d33787c57c39a 100644
---- a/arch/powerpc/platforms/cell/spufs/spufs.h
-+++ b/arch/powerpc/platforms/cell/spufs/spufs.h
-@@ -151,6 +151,8 @@ struct spu_gang {
- 	int aff_flags;
- 	struct spu *aff_ref_spu;
- 	atomic_t aff_sched_count;
-+
-+	int alive;
- };
- 
- /* Flag bits for spu_gang aff_flags */
--- 
-2.39.5
-
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+ 		lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
 
 
 
