@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-131100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE5AA80790
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A40A80B6A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E7017A3802
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C22428C8102
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1817326A1A0;
-	Tue,  8 Apr 2025 12:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41FB27CB15;
+	Tue,  8 Apr 2025 12:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avN0GSLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYjPYn+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A6D1FCFF3;
-	Tue,  8 Apr 2025 12:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48E26A0FF;
+	Tue,  8 Apr 2025 12:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115487; cv=none; b=MVfwUo0/W0HXxtf1ecLnXpcFicpHBn+Lc9hBmK6JCTE1R0AipDKcoO3DVLLbqqeuzoROzuzCWo2T2dyiOgS2d0EvmdW95Pe0PL94DxHLrvSW5iC67s0iiKeYq8+gNpACZVanuMybGTkXW0U+S1tJQcW7SY2oig5avjcngS5QNyQ=
+	t=1744117088; cv=none; b=lRAS+Gm5+LlM5GccmyImMgaE0txKZZalDSivr9fsHIPMcRiUH6L5m23JA2TvnmsSnzsiwKYFLZicEzsEAISyhC36RliyxMuCbayx/+wilpPuO3QEtoIxIsWcKrPfxLDInYFqcMM0Cm7XJ0WHl0phbp71hSICa9rgI+YiL6uCYUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115487; c=relaxed/simple;
-	bh=15z6SxpM/Q4ynXVg0b+d1DcmdKhsEAm0gPrFInUbT9Q=;
+	s=arc-20240116; t=1744117088; c=relaxed/simple;
+	bh=6zqnYydIaz4CvX98RPv+ik05vfE2KA4zieMX9FqLRcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vlt3Dg4iHkmbJLPNR3PT+Y5WN56gh5h5VJS0qPlwB3NoS4NdzC0vCluwuBV7Ds5FAUj7DZzkxIZu+Rd1ghVK0kc1R7rgqTGiGanGysEqYK5L5wkfbJM76tb5g5E0yc3+9auuAAjh2mRZBN2acxIY0EXG9dEYwK4z7dPtFuM95Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avN0GSLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59313C4CEE5;
-	Tue,  8 Apr 2025 12:31:27 +0000 (UTC)
+	 MIME-Version; b=YYocFx0kelqgBA2OStP5wYNxvoXMBmOxI4shpnDtL0dBY7NpFzuGAgo2zm42an7aKY6nZPWvhJpBN2VTlgjVD0QRcu2ulLF84LKUwHI0PRTEik8GNR5u6UYf1zR2FncQgjz+snH0ABmN7dnenc1dKT6yQqJnmu3QpVJ+zeXiqkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYjPYn+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B17C4CEE5;
+	Tue,  8 Apr 2025 12:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115487;
-	bh=15z6SxpM/Q4ynXVg0b+d1DcmdKhsEAm0gPrFInUbT9Q=;
+	s=korg; t=1744117088;
+	bh=6zqnYydIaz4CvX98RPv+ik05vfE2KA4zieMX9FqLRcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avN0GSLULvJ2rhR/IMIVaj6OUDKTUqbB9mBcITodE9voIrrTfQ0kFHWsbFYizzYlO
-	 TEjcWvkgXInBP0tuIXfQYVx6ynYWamGIMQYEhv8OLqBZuuRzg1mUzzInJ3B/3xqMYY
-	 w8bWFNAWRnS8Th8Pxly/ymhezRaTXrRJD9HtVpE8=
+	b=LYjPYn+Si5B+NYXaqnmKFt/VZrqD5iDFLshpVVuCFSM5oh288QYrogzwaixG7l1ni
+	 aY22dg8TkvB3mfYq3Da4+w7NOYGaDxQR6l4h+2B9FMpofLW7QXuNmcWsDaXSJLwYoS
+	 3C7xqMmj3yD1Q2rNAcYYK+LxprVWJhTNXwIOUfOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 492/499] nfsd: allow SC_STATUS_FREEABLE when searching via nfs4_lookup_stateid()
-Date: Tue,  8 Apr 2025 12:51:44 +0200
-Message-ID: <20250408104903.629136267@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: [PATCH 6.12 379/423] uprobes/x86: Harden uretprobe syscall trampoline check
+Date: Tue,  8 Apr 2025 12:51:45 +0200
+Message-ID: <20250408104854.706420375@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +68,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit d1bc15b147d35b4cb7ca99a9a7d79d41ca342c13 upstream.
+commit fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0 upstream.
 
-The pynfs DELEG8 test fails when run against nfsd. It acquires a
-delegation and then lets the lease time out. It then tries to use the
-deleg stateid and expects to see NFS4ERR_DELEG_REVOKED, but it gets
-bad NFS4ERR_BAD_STATEID instead.
+Jann reported a possible issue when trampoline_check_ip returns
+address near the bottom of the address space that is allowed to
+call into the syscall if uretprobes are not set up:
 
-When a delegation is revoked, it's initially marked with
-SC_STATUS_REVOKED, or SC_STATUS_ADMIN_REVOKED and later, it's marked
-with the SC_STATUS_FREEABLE flag, which denotes that it is waiting for
-s FREE_STATEID call.
+   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
 
-nfs4_lookup_stateid() accepts a statusmask that includes the status
-flags that a found stateid is allowed to have. Currently, that mask
-never includes SC_STATUS_FREEABLE, which means that revoked delegations
-are (almost) never found.
+Though the mmap minimum address restrictions will typically prevent
+creating mappings there, let's make sure uretprobe syscall checks
+for that.
 
-Add SC_STATUS_FREEABLE to the always-allowed status flags, and remove it
-from nfsd4_delegreturn() since it's now always implied.
-
-Fixes: 8dd91e8d31fe ("nfsd: fix race between laundromat and free_stateid")
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kernel/uprobes.c |   14 +++++++++-----
+ include/linux/uprobes.h   |    2 ++
+ kernel/events/uprobes.c   |    2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6902,7 +6902,7 @@ nfsd4_lookup_stateid(struct nfsd4_compou
- 		 */
- 		statusmask |= SC_STATUS_REVOKED;
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned lo
+ 	return &insn;
+ }
  
--	statusmask |= SC_STATUS_ADMIN_REVOKED;
-+	statusmask |= SC_STATUS_ADMIN_REVOKED | SC_STATUS_FREEABLE;
+-static unsigned long trampoline_check_ip(void)
++static unsigned long trampoline_check_ip(unsigned long tramp)
+ {
+-	unsigned long tramp = uprobe_get_trampoline_vaddr();
+-
+ 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+ }
  
- 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
- 		CLOSE_STATEID(stateid))
-@@ -7557,9 +7557,7 @@ nfsd4_delegreturn(struct svc_rqst *rqstp
- 	if ((status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)))
- 		return status;
+ SYSCALL_DEFINE0(uretprobe)
+ {
+ 	struct pt_regs *regs = task_pt_regs(current);
+-	unsigned long err, ip, sp, r11_cx_ax[3];
++	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++
++	/* If there's no trampoline, we are called from wrong place. */
++	tramp = uprobe_get_trampoline_vaddr();
++	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
++		goto sigill;
  
--	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG,
--				      SC_STATUS_REVOKED | SC_STATUS_FREEABLE,
--				      &s, nn);
-+	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, SC_STATUS_REVOKED, &s, nn);
- 	if (status)
- 		goto out;
- 	dp = delegstateid(s);
+-	if (regs->ip != trampoline_check_ip())
++	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
++	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+ 		goto sigill;
+ 
+ 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -28,6 +28,8 @@ struct page;
+ 
+ #define MAX_URETPROBE_DEPTH		64
+ 
++#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
++
+ struct uprobe_consumer {
+ 	/*
+ 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1898,8 +1898,8 @@ void uprobe_copy_process(struct task_str
+  */
+ unsigned long uprobe_get_trampoline_vaddr(void)
+ {
++	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+ 	struct xol_area *area;
+-	unsigned long trampoline_vaddr = -1;
+ 
+ 	/* Pairs with xol_add_vma() smp_store_release() */
+ 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
 
 
 
