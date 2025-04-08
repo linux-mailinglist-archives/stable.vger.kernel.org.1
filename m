@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-129320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07E7A7FF8F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:22:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B31CA7FF1C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1FA3A7D8F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D551717CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568FF2676E0;
-	Tue,  8 Apr 2025 11:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E286267F67;
+	Tue,  8 Apr 2025 11:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cK/ZTYUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTX2Maw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156E5264FB6;
-	Tue,  8 Apr 2025 11:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD96214205;
+	Tue,  8 Apr 2025 11:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110709; cv=none; b=tzFV54mD2+5fFcdlpB2S7W6kF3IGHvhtNpGU7/cl5Cc8BrAdiNNRL0Vkk2sUvYufDRzOSewY0NRrzHX/3GZrVQMC2oBvTrL6CKUPE4xhsmPERMMSJC4DQMy1olPHvqOO0fiUJ45AzpTrqb/n7imHHpfNW6OHo+Qk5cRTdqZtaPs=
+	t=1744110714; cv=none; b=HdXojhBev7J37A8hXCyt11yM2h4R2ykCNEuIgT6UcjdeefFBtY4jSjoFWymGE1KXzeRFHyB19U2GnsCFxAF3HGu6V6IojKS8sCW5mqQnXs3wWo+rPSWFv5Cvf+kik31+PycWOXoBbKixj9l/HL+3pfwa3bqIj1yvbvaqplsg22c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110709; c=relaxed/simple;
-	bh=uvkYWI8Fh45LJKxP4A+EJncCb0Ein7AsJfEpna2T4oI=;
+	s=arc-20240116; t=1744110714; c=relaxed/simple;
+	bh=nyPWrgfYQpiuJFFB/9aRWh97LzODLsuHI2vCfSeJbGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T62/cWhnve0f98zkPek92OU2hYmCIWjtBXQlG8FsXzChIK02c7Q6NtdG3dxDvIRnq3GJIDYbGd4ibr+FKbahQLTJwmkGgJ2HReW8AD2bbg7O2r2ZBmRIS7Z6mgHpXiVlotw2tNZJZWq0ueCqpdWyijSZDuRIgmyq9iR5zoWcMA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cK/ZTYUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411C5C4CEE5;
-	Tue,  8 Apr 2025 11:11:48 +0000 (UTC)
+	 MIME-Version; b=IiV3B8hSITtaZ2gdVcSVsF0F0QNQWH4F7/NV/zyovehA7M5awWQKwK6SHuC2RcOB8qvrnC/hrC5ns82MY1klSpVds/xCfqgsHEr7s3T9Bh25JeBgpEiYp4WNgKjP9Gu0BW2dkdFi1YI8ogE+uvSZfW7FKYxNrJiG8zCkga03fqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTX2Maw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B5DC4CEEB;
+	Tue,  8 Apr 2025 11:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110708;
-	bh=uvkYWI8Fh45LJKxP4A+EJncCb0Ein7AsJfEpna2T4oI=;
+	s=korg; t=1744110713;
+	bh=nyPWrgfYQpiuJFFB/9aRWh97LzODLsuHI2vCfSeJbGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cK/ZTYUPQJx0ONdRfhbiy/aCp6eNq34967UBs2aF3KVGb4narzTvS8flz2XqPrK/2
-	 KKm1ORjBsb8leElfG04Gzj8KRx3kMNhI5UfsW0UI07VO0tc1cVMaGiFUN2aDiCrGkx
-	 z6s0XrMEjhlVnNtDi1rBj8ib1GI2u+pBrj5rhxZc=
+	b=BTX2Maw9RfjlxEOKNTz84gxMOWZEAbJPh19dKB0Rn6nWOFteM5xZOsLVAMqki8zPO
+	 yMXFP/ILeD0JUjHFKangIzS44dmJ3PF4K+N/u5an9SruB+37r9UmMZFM9QGgFCAzPq
+	 cB5YcRJ/kaYrqhmQTxN4e+20ELHKx2nmcohK4cM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 163/731] firmware: arm_scmi: use ioread64() instead of ioread64_hi_lo()
-Date: Tue,  8 Apr 2025 12:41:00 +0200
-Message-ID: <20250408104918.068129935@linuxfoundation.org>
+Subject: [PATCH 6.14 164/731] net: airoha: Fix lan4 support in airoha_qdma_get_gdm_port()
+Date: Tue,  8 Apr 2025 12:41:01 +0200
+Message-ID: <20250408104918.089929034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,51 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 3b8c56d8072750fd9625f03b92d8d6000c98628f ]
+[ Upstream commit 35ea4f06fd33fc32f556a0c26d1d8340497fa7f8 ]
 
-The scmi_common_fastchannel_db_ring() function calls either ioread64()
-or ioread64_hi_lo() depending on whether it is compiler for 32-bit
-or 64-bit architectures.
+EN7581 SoC supports lan{1,4} ports on MT7530 DSA switch. Fix lan4
+reported value in airoha_qdma_get_gdm_port routine.
 
-The same logic is used to define ioread64() itself in the
-linux/io-64-nonatomic-hi-lo.h header file, so the special case
-is not really needed.
-
-The behavior here should not change at all.
-
-Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20250304144346.1025658-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250304-airoha-eth-fix-lan4-v1-1-832417da4bb5@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/driver.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 60050da54bf24..1c75a4c9c3716 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1997,17 +1997,7 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
- 	else if (db->width == 4)
- 		SCMI_PROTO_FC_RING_DB(32);
- 	else /* db->width == 8 */
--#ifdef CONFIG_64BIT
- 		SCMI_PROTO_FC_RING_DB(64);
--#else
--	{
--		u64 val = 0;
--
--		if (db->mask)
--			val = ioread64_hi_lo(db->addr) & db->mask;
--		iowrite64_hi_lo(db->set | val, db->addr);
--	}
--#endif
- }
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 09f448f291240..c1c2ab82a08d8 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -1547,7 +1547,7 @@ static int airoha_qdma_get_gdm_port(struct airoha_eth *eth,
  
- /**
+ 	sport = FIELD_GET(QDMA_ETH_RXMSG_SPORT_MASK, msg1);
+ 	switch (sport) {
+-	case 0x10 ... 0x13:
++	case 0x10 ... 0x14:
+ 		port = 0;
+ 		break;
+ 	case 0x2 ... 0x4:
 -- 
 2.39.5
 
