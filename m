@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-131276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3396FA808ED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803CBA80BF3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D121B8827F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E039F9015B8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282EF270ED7;
-	Tue,  8 Apr 2025 12:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72727C870;
+	Tue,  8 Apr 2025 12:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5XnWO0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ws+4jj1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D970926656B;
-	Tue,  8 Apr 2025 12:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1726F478;
+	Tue,  8 Apr 2025 12:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115959; cv=none; b=Vn3XSvNDC5bG2xRnYB7z6MnC+iib1p2+ryKmF9mQmoOCEoHyww+7lhFOXyDnOyR6Zuu9eAT4B9mGetriurOI2f+Ag0DUl766fjd7ixwds9VauRL611l7PZPYY26Qlryjo06AExdZqx+LIynuq++llagjNckIrau8Hr6J6I+DCXg=
+	t=1744117069; cv=none; b=fZB/0Bwjwsmu8oo2q/4MgM93o8HOA304fkBHREU1PJRsGBCuWclluO5+uB68oFA7p2GFaD1OOXe9X+pT6Aq5RgocSK5KlwEBSJcEARDw0tFOtG0l/N1NaTVEEke1gP0BdmRVTRCeV1PnicBPOyvtWayILzUeA9zaDolnjMyaUg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115959; c=relaxed/simple;
-	bh=ljqYJxyEV7le+IKkbL/mhjUyDS6TAlQoQgpTpN08ac4=;
+	s=arc-20240116; t=1744117069; c=relaxed/simple;
+	bh=cqOHWzKx5E4+KX4/huJOxRP0twoiHziAyFQxWevvBUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQh+3e3CnosHM3hMdI6MRkKeMbugKLOwAmCiqGM6PzZTix4tkKhGbkAPhMlRgpfUqyhHVKmXLxDwelqtaa92DromaRSU6tVTx3qWxJhtQaZNYj+QXnR5BhmiYGu2xISF5YISbVeVVHG/0tyq+q2olCcsr9YNurxxWv1pkH2dby8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5XnWO0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5B8C4CEE5;
-	Tue,  8 Apr 2025 12:39:19 +0000 (UTC)
+	 MIME-Version; b=SUfjPz3X/qqjCgg5QFGrEwqqPXTkYyKWcTSpT+En1k8XfHq8c4cfaK9fevVC0v9i/6XX8iOpJ1ivCr3atr8gbpNWS1BBltNUYkLg8UHO34VlKrjuOkbBJ+2V2N8WirLp0EbI9uoUXcHIbDI8nVZGnd3DKxf4O+hRufjOsYV8uyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ws+4jj1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05B1C4CEE5;
+	Tue,  8 Apr 2025 12:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115959;
-	bh=ljqYJxyEV7le+IKkbL/mhjUyDS6TAlQoQgpTpN08ac4=;
+	s=korg; t=1744117069;
+	bh=cqOHWzKx5E4+KX4/huJOxRP0twoiHziAyFQxWevvBUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5XnWO0yYY1itoZOq/GKMNmpSfhOsBnMyHtLhIL9HOmNoni7QGoWiFouGKu/+BRTE
-	 4aSV/Q/HCy8vrNn4hP2c9Ry6Oc2UE7KGkMmAXJ3FK9n96hhcWutuj6/JLvozsRfo89
-	 1o0ztuJbuoGIwX8gTgTmPxR56vtmqBhbKISzr+8A=
+	b=Ws+4jj1mfSMdqZMwviaSzK/P9xUP0O5cwVzJdK1gApjgd5GLGGHkcAHV2jCpzOw7P
+	 ezIZntRmPM6dG6LUWAk7XazIbIMsGDi5Z4BCkquIWgu8c2xKgM0Xttjl8XWRzre43q
+	 LjcJWwHXi+FVk8eDYsSWvHRd1OHTJpfOWwHkAfL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 169/204] io_uring/filetable: ensure node switch is always done, if needed
+	Agoston Lorincz <pipacsba@gmail.com>,
+	All applicable <stable@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 373/423] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
 Date: Tue,  8 Apr 2025 12:51:39 +0200
-Message-ID: <20250408104825.279264124@linuxfoundation.org>
+Message-ID: <20250408104854.558706581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Hans de Goede <hdegoede@redhat.com>
 
-No upstream patch exists for this issue, as it was introduced by
-a stable backport.
+commit 2fa87c71d2adb4b82c105f9191e6120340feff00 upstream.
 
-A previous backport relied on other code changes in the io_uring file
-table and resource node handling, which means that sometimes a resource
-node switch can get missed. For 6.1-stable, that code is still in
-io_install_fixed_file(), so ensure we fall-through to that case for the
-success path too.
+Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
+Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
+1 (Windows) and 4 (Android(GMIN)).
 
-Fixes: a3812a47a320 ("io_uring: drop any code related to SCM_RIGHTS")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
+causing Linux' x86-android-tables code which deals with the general
+brokenness of this device's ACPI tables to fail to probe with:
+
+[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
+[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
+
+which renders sound, the touchscreen, charging-management,
+battery-monitoring and more non functional.
+
+Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
+device to fix this.
+
+Reported-by: Agoston Lorincz <pipacsba@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
+Cc: All applicable <stable@kernel.org>
+Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250325210450.358506-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/filetable.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/io_uring/filetable.c
-+++ b/io_uring/filetable.c
-@@ -98,7 +98,7 @@ static int io_install_fixed_file(struct
- 	*io_get_tag_slot(ctx->file_data, slot_index) = 0;
- 	io_fixed_file_set(file_slot, file);
- 	io_file_bitmap_set(&ctx->file_table, slot_index);
--	return 0;
-+	ret = 0;
- err:
- 	if (needs_switch)
- 		io_rsrc_node_switch(ctx, ctx->file_data);
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -374,7 +374,8 @@ static const struct dmi_system_id acpi_q
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+-					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
+ 		/* Medion Lifetab S10346 */
 
 
 
