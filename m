@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC920A80696
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FD2A80A1A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B01F427FD2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA9C4C3FB2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548F126B2D4;
-	Tue,  8 Apr 2025 12:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F36379F2;
+	Tue,  8 Apr 2025 12:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRyaM1IP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVC52gD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101AB26B2D2;
-	Tue,  8 Apr 2025 12:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D17C17A311;
+	Tue,  8 Apr 2025 12:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114733; cv=none; b=C36VGMwsZa8GVMrQu6c0yR94+V/Qc30V13RfJpPEo3ErEmtMR19zcgEVSRqhITywnHElckiFSdtQjmKq5ZMkEGW8O/5mrdgpf0azZkQN8uzKoMm1kchUHitCz0r5Q8b/6lemwqcciZD1EmF58rFxU4u7CUGn57wF9WRWHsWe4EA=
+	t=1744116308; cv=none; b=NTWYnIMOAlTsNbMaZPR12DbcwlaI9WMeMBIWhdf8DZ0OqCfGWY1BvZPZ4SYKrPuUOFL8F4DvessEXUhmyAo7KfBS9t7Qk3xYK0d6P4iZt1Zfq2ttxV9XZMTDH14aXHBjhiVgnIDu9SKK0Q1hKgIh0YOKBU2lCtscp2XUkmisv+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114733; c=relaxed/simple;
-	bh=4YS1wNDACdKNS9YZUR0lnzEDbs6Mb8kojZwXYb1xHhE=;
+	s=arc-20240116; t=1744116308; c=relaxed/simple;
+	bh=LseAnPphlQtWa6MoJYi64x+f/1U9q8DOEF4ZgG+y6Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0Lf23UsgdXw2Hs3nluAq5JBRn0rZpqZsWAjfdiRmg8W8s/X9BoSW15+iQGodqVXilsKRzFK81yBmXwFwHy+zQEUWM08UuZNGLC0GWq9N+nl1Pw8q6mzpZXcZQw9n391ncpdR54jbk9bqlPxPpsSsEUbSGebwXP+F7pAIgMLL8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRyaM1IP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9178FC4CEE5;
-	Tue,  8 Apr 2025 12:18:52 +0000 (UTC)
+	 MIME-Version; b=hPlZ+6mraVsASRPQdASJx4GUHMmyQI4Un7C2Hw/ebwmaOsCc/RJ8OG6oiLvcUL87IcFVp1O8MU5p7SDrKecpA3+eCuuhXbEzY4L2gSX9dVz5GamGqyZQfky1q0E25MM3ITlNJcW96gvMxKURBOVGa/i0izPrUvB4TITNmSEgCVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVC52gD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09D7C4CEE5;
+	Tue,  8 Apr 2025 12:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114732;
-	bh=4YS1wNDACdKNS9YZUR0lnzEDbs6Mb8kojZwXYb1xHhE=;
+	s=korg; t=1744116308;
+	bh=LseAnPphlQtWa6MoJYi64x+f/1U9q8DOEF4ZgG+y6Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRyaM1IPuZU9lPtiJ0H5IwDNEzRk3wov8zvoRtOZwHaleOdGkFunBBYbQO688CYou
-	 6u0OZ/DOaghfzHLhUIyNWCWihtRRQ6Ocw+4qdVH12iQKdNyV5VyzXYR8zqCn3lEzzP
-	 3MVAeKCzBHf+cAvxDmii9toaj+rKDAI9bG5r/mDk=
+	b=rVC52gD1WlB3Sn6nQdV8eKKuuo/JvzBIR6W3OnQERJwkqAEmYR3QJ61oQiU6YFWUu
+	 Ru4RxEKcZzO+pI6pBzFh85sHH6y6AAsAyGC1TMKkZdIhLMNxkjQ/2TzMl5phVXbiFY
+	 NAO2i6dA7+DRNfy7kyqS6NCa0CWmPPIOaoRVlpsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sicelo A. Mhlongo" <absicsz@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Hermes Wu <Hermes.wu@ite.com.tw>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 166/499] power: supply: bq27xxx_battery: do not update cached flags prematurely
+Subject: [PATCH 6.12 052/423] drm/bridge: it6505: fix HDCP V match check is not performed correctly
 Date: Tue,  8 Apr 2025 12:46:18 +0200
-Message-ID: <20250408104855.322374950@linuxfoundation.org>
+Message-ID: <20250408104846.959788548@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sicelo A. Mhlongo <absicsz@gmail.com>
+From: Hermes Wu <Hermes.wu@ite.com.tw>
 
-[ Upstream commit 45291874a762dbb12a619dc2efaf84598859007a ]
+[ Upstream commit a5072fc77fb9e38fa9fd883642c83c3720049159 ]
 
-Commit 243f8ffc883a1 ("power: supply: bq27xxx_battery: Notify also about
-status changes") intended to notify userspace when the status changes,
-based on the flags register. However, the cached state is updated too
-early, before the flags are tested for any changes. Remove the premature
-update.
+Fix a typo where V compare incorrectly compares av[] with av[] itself,
+which can result in HDCP failure.
 
-Fixes: 243f8ffc883a1 ("power: supply: bq27xxx_battery: Notify also about status changes")
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-Link: https://lore.kernel.org/r/20241125152945.47937-1-absicsz@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+The loop of V compare is expected to iterate for 5 times
+which compare V array form av[0][] to av[4][].
+It should check loop counter reach the last statement "i == 5"
+before return true
+
+Fixes: 0989c02c7a5c ("drm/bridge: it6505: fix HDCP CTS compare V matching")
+Signed-off-by: Hermes Wu <Hermes.wu@ite.com.tw>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250121-fix-hdcp-v-comp-v4-1-185f45c728dc@ite.com.tw
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 40c5ac7a11188..b2c65fe43d5cb 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1913,7 +1913,6 @@ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
- 		cache.flags = -1; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
--		di->cache.flags = cache.flags;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index faee8e2e82a05..967aa24b7c537 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2042,12 +2042,13 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
+ 			continue;
+ 		}
  
- 		/*
- 		 * On gauges with signed current reporting the current must be
+-		for (i = 0; i < 5; i++) {
++		for (i = 0; i < 5; i++)
+ 			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
+-			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
++			    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
+ 				break;
+ 
+-			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
++		if (i == 5) {
++			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d", retry);
+ 			return true;
+ 		}
+ 	}
 -- 
 2.39.5
 
