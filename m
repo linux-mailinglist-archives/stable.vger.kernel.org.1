@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82ECDA80BAC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:19:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D41A807BD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E393A500660
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00FB41BA103C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1184427CB19;
-	Tue,  8 Apr 2025 12:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E0026B2B3;
+	Tue,  8 Apr 2025 12:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uiu1KFxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5klccZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C384F26F47A;
-	Tue,  8 Apr 2025 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D734D20330;
+	Tue,  8 Apr 2025 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117095; cv=none; b=SlgCwtLoVqGQ6nWYV+G2wQpfm51lJrM4bhrr581yN8Iq//Gb38om5vyz38ZsoDvgXOhp7CcWm7asv6GO66GutQxtHcAum8k7KDBRD8ghhYBWwTiUnDglS6SdnfpEDDz5bFW6YZxTu35gzMJWUNcu5+BffJxzouio8UFOTs4sXwM=
+	t=1744115495; cv=none; b=OuW1V+P/T6+Jzdigw4EQkSu5068cuPHnDJX8o1ucWhSuFGz/OXoFhx3HvO9WuJNOSbgBFK0lWC0HZc5riMKgzQMJsAJCqaVkNHvcD5+S7aedZ3AKg1n7Z3eeDH8l5zsJvK+MKJNMS2HnxhIl/i2oSQxQBJzUxcmUp5AZ2VVHQhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117095; c=relaxed/simple;
-	bh=SnpRDNiemkvEEF9rcAVKwDD19Q4RBYNrYquvlOSzjyA=;
+	s=arc-20240116; t=1744115495; c=relaxed/simple;
+	bh=h8KHUdZoGkVWy1ND1d8TZArm+sp0/DwMJ6jsB55KVbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlMvk8hiDm5lAzdUB0n7VoZ5pkGmpXAKWaAaHSTIDmV3d/ENpxVfBxMtFM3J8uvMCE4/BTx4wWuitBl3u7boH8XBpya+3gXSnepUOt8jRY7I2fLi4ybCHyEFreavwdohf/fNO59FBnWeIY2Vx/eiOIVDXdiB0GLvlXVlKEcyG3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uiu1KFxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8721C4CEE5;
-	Tue,  8 Apr 2025 12:58:14 +0000 (UTC)
+	 MIME-Version; b=qJ8c5hbQUlo53/yh9Okchv19fN2d2ewHIA4HRmbhJPmWZlPK8lQae31rglg98UERXZxjCG9iG+Z/54T1WmH+j/AOenYmlbkA6FBpCq3XhwebkcGcZ1lnSpcu6YD/QXJ8FOuv+evcXCnkJWU532aR4C0DPCFIspdqW0uo65YIpN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5klccZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66995C4CEE5;
+	Tue,  8 Apr 2025 12:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117095;
-	bh=SnpRDNiemkvEEF9rcAVKwDD19Q4RBYNrYquvlOSzjyA=;
+	s=korg; t=1744115495;
+	bh=h8KHUdZoGkVWy1ND1d8TZArm+sp0/DwMJ6jsB55KVbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uiu1KFxgc2OmFHeS8g7rupRedNsivRb6EgPmmUFQnepF/RJseHjnnsgBBaX4xCE+1
-	 6OH0ZX/rDdqN33tWtWFNU1jzOT88N6jcwFbfjdl3P9EwTzZ7Wut9iUIyBURMoEGjHL
-	 RTUk7e/bSbNh666K02RQe1bdxWBqKcM/6bjoc3RI=
+	b=W5klccZhyH8Dpjzjsu5bkS98Wy/xlDnOvQ0hAIO95BiL7Tdj0NkCUXnvxEtTsANs+
+	 UBTTuOHEKefFWzgtqVRrwdvzlhtl+uXrFfW20hDBOdq80cVFSO2C3FgxH6/y/lR79R
+	 gF3UnV8VVn3j5d8LKRBmR5Dnqdh3tVyDrzSGDyJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 381/423] x86/Kconfig: Add cmpxchg8b support back to Geode CPUs
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.13 495/499] NFSD: nfsd_unlink() clobbers non-zero status returned from fh_fill_pre_attrs()
 Date: Tue,  8 Apr 2025 12:51:47 +0200
-Message-ID: <20250408104854.754782237@linuxfoundation.org>
+Message-ID: <20250408104903.703747447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 6ac43f2be982ea54b75206dccd33f4cf81bfdc39 upstream.
+commit d7d8e3169b56e7696559a2427c922c0d55debcec upstream.
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+If fh_fill_pre_attrs() returns a non-zero status, the error flow
+takes it through out_unlock, which then overwrites the returned
+status code with
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+	err = nfserrno(host_err);
+
+Fixes: a332018a91c4 ("nfsd: handle failure to collect pre/post-op attrs more sanely")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250226213714.4040853-2-arnd@kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig.cpu |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/vfs.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
- 
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
- 
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -2011,11 +2011,9 @@ out_nfserr:
+ 		 * error status.
+ 		 */
+ 		err = nfserr_file_open;
+-	} else {
+-		err = nfserrno(host_err);
+ 	}
+ out:
+-	return err;
++	return err != nfs_ok ? err : nfserrno(host_err);
+ out_unlock:
+ 	inode_unlock(dirp);
+ 	goto out_drop_write;
 
 
 
