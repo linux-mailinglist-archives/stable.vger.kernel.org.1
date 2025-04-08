@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803CBA80BF3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53419A80785
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E039F9015B8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1194C7AD308
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72727C870;
-	Tue,  8 Apr 2025 12:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BAE2236FC;
+	Tue,  8 Apr 2025 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ws+4jj1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjMs3tvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1726F478;
-	Tue,  8 Apr 2025 12:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56CD268C72;
+	Tue,  8 Apr 2025 12:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117069; cv=none; b=fZB/0Bwjwsmu8oo2q/4MgM93o8HOA304fkBHREU1PJRsGBCuWclluO5+uB68oFA7p2GFaD1OOXe9X+pT6Aq5RgocSK5KlwEBSJcEARDw0tFOtG0l/N1NaTVEEke1gP0BdmRVTRCeV1PnicBPOyvtWayILzUeA9zaDolnjMyaUg0=
+	t=1744115472; cv=none; b=Qxo0/QHqq+YOq2cydf6lq8uL7DAcn2ze7ApxZg0HBTvjANBj6qRL5tK7JN7MuqvJBqlBq/K1glkENfg5dgpd2giWaQYHVZhwLFTqdJ4YdCpub8ghbsf/b7s/B2VOhuIltpEo/Hmdrk3nyL5x9eyExqdtaC2WxGsumKfP165tn+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117069; c=relaxed/simple;
-	bh=cqOHWzKx5E4+KX4/huJOxRP0twoiHziAyFQxWevvBUQ=;
+	s=arc-20240116; t=1744115472; c=relaxed/simple;
+	bh=5aWKwHBAEzvZiOA/5yWDB0saOzqoa9j/ps+8+GsoTfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUfjPz3X/qqjCgg5QFGrEwqqPXTkYyKWcTSpT+En1k8XfHq8c4cfaK9fevVC0v9i/6XX8iOpJ1ivCr3atr8gbpNWS1BBltNUYkLg8UHO34VlKrjuOkbBJ+2V2N8WirLp0EbI9uoUXcHIbDI8nVZGnd3DKxf4O+hRufjOsYV8uyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ws+4jj1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05B1C4CEE5;
-	Tue,  8 Apr 2025 12:57:48 +0000 (UTC)
+	 MIME-Version; b=Mtdxhut3PUGkSbm1neIlRmwmRxbQy6DIXGrFRxBORe+O1DcPrD9o+eSO68DnCRoX/aWEW5ONMopzn5PcTApdKufQ7ZM3Dp8/zFznWezCpseqhgnCdfU+o2W+Qd3KwBll+8t5exVcpWp83o+KZ7T/YHrggdoPieGr93zB+alZA3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjMs3tvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77060C4CEE7;
+	Tue,  8 Apr 2025 12:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117069;
-	bh=cqOHWzKx5E4+KX4/huJOxRP0twoiHziAyFQxWevvBUQ=;
+	s=korg; t=1744115471;
+	bh=5aWKwHBAEzvZiOA/5yWDB0saOzqoa9j/ps+8+GsoTfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ws+4jj1mfSMdqZMwviaSzK/P9xUP0O5cwVzJdK1gApjgd5GLGGHkcAHV2jCpzOw7P
-	 ezIZntRmPM6dG6LUWAk7XazIbIMsGDi5Z4BCkquIWgu8c2xKgM0Xttjl8XWRzre43q
-	 LjcJWwHXi+FVk8eDYsSWvHRd1OHTJpfOWwHkAfL0=
+	b=FjMs3tvwcwS2/1zg6uwMjFX8OxWLNzzki6GFvMGdlf70wj8ilQ94h12Sl6xPFMSjZ
+	 KKegL8RQp8eRvMPAxkV3iBbuwnMVCwdF/V4OcKI0dsgDTn0Gm2XM5UTXCGLN0E3JGL
+	 dZIwUVP6I6huQi/05RwPEAv86JBkClohX5NWpNVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agoston Lorincz <pipacsba@gmail.com>,
-	All applicable <stable@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 373/423] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
+	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 6.13 487/499] jfs: add index corruption check to DT_GETPAGE()
 Date: Tue,  8 Apr 2025 12:51:39 +0200
-Message-ID: <20250408104854.558706581@linuxfoundation.org>
+Message-ID: <20250408104903.503569492@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 2fa87c71d2adb4b82c105f9191e6120340feff00 upstream.
+commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
 
-Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
-Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
-1 (Windows) and 4 (Android(GMIN)).
+If the file system is corrupted, the header.stblindex variable
+may become greater than 127. Because of this, an array access out
+of bounds may occur:
 
-In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
-causing Linux' x86-android-tables code which deals with the general
-brokenness of this device's ACPI tables to fail to probe with:
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
+index 237 is out of range for type 'struct dtslot[128]'
+CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
+ dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
+ jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
+ wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
+ iterate_dir+0x571/0x800 fs/readdir.c:108
+ __do_sys_getdents64 fs/readdir.c:403 [inline]
+ __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+---[ end trace ]---
 
-[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
-[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
+Add a stblindex check for corruption.
 
-which renders sound, the touchscreen, charging-management,
-battery-monitoring and more non functional.
-
-Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
-device to fix this.
-
-Reported-by: Agoston Lorincz <pipacsba@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
-Cc: All applicable <stable@kernel.org>
-Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250325210450.358506-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c |    3 ++-
+ fs/jfs/jfs_dtree.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -374,7 +374,8 @@ static const struct dmi_system_id acpi_q
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
- 		/* Medion Lifetab S10346 */
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -117,7 +117,8 @@ do {									\
+ 	if (!(RC)) {							\
+ 		if (((P)->header.nextindex >				\
+ 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
+-		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
++		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
++		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
+ 			BT_PUTPAGE(MP);					\
+ 			jfs_error((IP)->i_sb,				\
+ 				  "DT_GETPAGE: dtree page corrupt\n");	\
 
 
 
