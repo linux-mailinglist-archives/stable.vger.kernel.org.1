@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6767DA807BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7B8A808D5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3613F4C2E9E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9723D8A7404
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A43D26E149;
-	Tue,  8 Apr 2025 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABD8374D1;
+	Tue,  8 Apr 2025 12:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8Li52G6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9EyXApl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0FB26B099;
-	Tue,  8 Apr 2025 12:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE9B2063FD;
+	Tue,  8 Apr 2025 12:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115255; cv=none; b=dQ9nUaUAbVl/SSBnyESmpp40g1yqDKizsoyZ8IbzYWnA+bAfLjVmIFJQ2/AZ266gA8a8MxFy2KuOj2OxrjnAFdLVOwg1ZWuvqQnQonY7UEf/LdCwvCtNvPZ652wWznnwwefxUHuK2D+hnIaC/W+sQZJWiyPU/1E/jVfQdJk0ma4=
+	t=1744115741; cv=none; b=QtZsKUN6tVG38y537xSo7OeumaGtlXOj0UrIYs5XLdp8E1WuxSnjDstms58qE77HnO6GioOMRzTq0DxlnBYFTqtdT0OiFkV9nwl0VAMv9aXsC2ESMEkauYrWMep7imiN7owENWCDkgt26nGwBv9dNs5DGEf6gT1L18qfaBcB8b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115255; c=relaxed/simple;
-	bh=BwCiIK1EVekZkpLV10idTZXfHz2ZYJcCKR0ogFQkg6E=;
+	s=arc-20240116; t=1744115741; c=relaxed/simple;
+	bh=lTSvX2Rm0xLnFLg8vhhQUD0xGfGB31hYrIxHYT1xyvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYAcfyDpO6EH0W120KYbwJlJFip9QmWzGaioeLJpZw4lY8OviuvHgtipiLWM1XlJRrVV9wutDoOILtM5Xt8GX1F8i13fN/c2+2xVyCB0bWtq+z7kC866nLLPfiX0LryRp0g3Lj69ynmTovcrRpA+3qvX6S0HW1ZWguUSrB0Zk1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8Li52G6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEEFC4CEE5;
-	Tue,  8 Apr 2025 12:27:34 +0000 (UTC)
+	 MIME-Version; b=pawFw2G2sSumPYC1Ht027anVTsHhTzjoHkjgGupGvmUpKZWJ3ryKQp+hH5Bep9xb05UvUb+xn01lDYzE4X2faSavok1Blwrc2z6AG1ZMqCRXO9fDDyGnjgMcJKqX6gL1U9+DDYRsuOSFCQ8jceTkyra9WNnggwIVswbJr0i9meA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9EyXApl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3602BC4CEE5;
+	Tue,  8 Apr 2025 12:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115255;
-	bh=BwCiIK1EVekZkpLV10idTZXfHz2ZYJcCKR0ogFQkg6E=;
+	s=korg; t=1744115741;
+	bh=lTSvX2Rm0xLnFLg8vhhQUD0xGfGB31hYrIxHYT1xyvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8Li52G6+5ISmdgNtShe0vWHy5jDtC51DxUCgNigIe8QLXE+7B8cvZ/XuLBoDvLxd
-	 miM7L9ljEa3EL5AVALMNon3r8N7d0giJzcP9NW4lk2rmJLi+0Kt4uLeaYeKP6d7BVT
-	 cMk6EGXOFwSjKTUtJtuLaUghnjCif11S1H693ZYM=
+	b=S9EyXAplvZBTXBH3pYTgU7vhYl3uCYfe+Tyl0skZS4kPuxL5v13pFSHU87sUQbTPD
+	 NHF1MoaQnVPWfYEdV/OEgM0plI0rqxeJYHRMNUNPz9cmQdF1EwhwFqK+AWy35vzB5a
+	 rO+EFRJG7+2P0n4Vjb2qdIEwOjqwU5rsajeI74yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 406/499] kbuild: deb-pkg: dont set KBUILD_BUILD_VERSION unconditionally
+Subject: [PATCH 6.1 088/204] coresight: catu: Fix number of pages while using 64k pages
 Date: Tue,  8 Apr 2025 12:50:18 +0200
-Message-ID: <20250408104901.350836400@linuxfoundation.org>
+Message-ID: <20250408104822.934389862@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit 62604063621fb075c7966286bdddcb057d883fa8 ]
+[ Upstream commit 0e14e062f5ff98aa15264dfa87c5f5e924028561 ]
 
-In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
-the kernel package. This does not have a dash in the name or version.
-This is built by editing ".version" before a build, and setting
-EXTRAVERSION="+hp" and KDEB_PKGVERSION make variables:
+Trying to record a trace on kernel with 64k pages resulted in -ENOMEM.
+This happens due to a bug in calculating the number of table pages, which
+returns zero. Fix the issue by rounding up.
 
-    echo 68 > .version
-    make -j<n> EXTRAVERSION="+hp" bindeb-pkg KDEB_PKGVERSION=6.12.2+hp69
+$ perf record --kcore -e cs_etm/@tmc_etr55,cycacc,branch_broadcast/k --per-thread taskset --cpu-list 1 dd if=/dev/zero of=/dev/null
+failed to mmap with 12 (Cannot allocate memory)
 
-    .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
-
-Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
-scripts/package/deb-build-option to debian/rules"), this no longer
-works. The deb build logic changed, even though, the commit message
-implies that the logic should be unmodified.
-
-Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
-not contain a dash. After the change KBUILD_BUILD_VERSION is always
-set to KDEB_PKGVERSION. Since this determines UTS_VERSION, the uname
-output to look off:
-
-    (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
-    (expected) uname -a: version 6.12.2+hp ... #69
-
-Update the debian/rules logic to restore the original behavior.
-
-Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-option to debian/rules")
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 8ed536b1e283 ("coresight: catu: Add support for scatter gather tables")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250109215348.5483-1-ilkka@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/debian/rules | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
-index ca07243bd5cdf..2b3f9a0bd6c40 100755
---- a/scripts/package/debian/rules
-+++ b/scripts/package/debian/rules
-@@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
-     endif
- endif
- 
--revision = $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version)))
-+revision = $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
- CROSS_COMPILE ?= $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYPE)-)
--make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) KBUILD_BUILD_VERSION=$(revision) $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
-+make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) \
-+    $(addprefix KBUILD_BUILD_VERSION=,$(revision)) \
-+    $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
- 
- binary-targets := $(addprefix binary-, image image-dbg headers libc-dev)
- 
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index bc90a03f478fd..6ef7afa25631f 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -267,7 +267,7 @@ catu_init_sg_table(struct device *catu_dev, int node,
+ 	 * Each table can address upto 1MB and we can have
+ 	 * CATU_PAGES_PER_SYSPAGE tables in a system page.
+ 	 */
+-	nr_tpages = DIV_ROUND_UP(size, SZ_1M) / CATU_PAGES_PER_SYSPAGE;
++	nr_tpages = DIV_ROUND_UP(size, CATU_PAGES_PER_SYSPAGE * SZ_1M);
+ 	catu_table = tmc_alloc_sg_table(catu_dev, node, nr_tpages,
+ 					size >> PAGE_SHIFT, pages);
+ 	if (IS_ERR(catu_table))
 -- 
 2.39.5
 
