@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49124A8025D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5B6A803E6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 278B4189568E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6379D425397
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788E7264A76;
-	Tue,  8 Apr 2025 11:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E6B26981C;
+	Tue,  8 Apr 2025 11:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB91UiAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW/8mhqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3519AD5C;
-	Tue,  8 Apr 2025 11:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0251D2676E1;
+	Tue,  8 Apr 2025 11:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112570; cv=none; b=IURfFHITdPl1ObBCMlnY0j0cU8BfR/wMCyPJRGMcCS2D7ogDR+4L9zmWfHH8wS5YcaAeypEEj1thd2r5gBTQ86FgB0UDeYIc0y54VvR7kis2G4zsBkCQyfRnKg+6JqzIXZTzyhLZrhHu6TLZeJTAkCDiv/qYHGTyyNhRyRsBsbg=
+	t=1744113247; cv=none; b=NTFheea66SUaIzXEB2NwfU2SHvWX2jNOUP5G/GK9tJSW7Fi6N0uKYV6k86x5xHWwAIKcoOeG1QSoqLgqfkxs4Rg3VsDhTYQ2nsCCPXPLOLtPxNTzozTWHKF1cxEoY9b9L8hjRsMEqR9jKl+sPKOLUxZoS7Q5v6+OD7oKz7T6TbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112570; c=relaxed/simple;
-	bh=VbuYX/V4nlhmKrGC1CDP6sTCv5QNuGy1qEGnhqOg31M=;
+	s=arc-20240116; t=1744113247; c=relaxed/simple;
+	bh=y3UkM9B7nDwhlRI46+Uh41tSK+cH76QlgR6Z9LNui94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lvq7LxmkpL+l1oUfqMoD8T/9Mrv2j1Wiz3PyWxdL9oK7PkuTc8glU+w8KsTdxVWx2ifhs693MRATojE0hrFvpaq26Mc6p6dgQyKNsnjEfW2625sDc3ezNJBA61TZp2ix56+8CKc0CVjxK1xflsC/eql123maUjgJcVnn2QcSYXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB91UiAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB455C4CEE5;
-	Tue,  8 Apr 2025 11:42:49 +0000 (UTC)
+	 MIME-Version; b=PEE43UlDvw5iQx7QAnuuf2JM7EQFSXbyi6BlWDrAZ24hz+oa9Oov35V+/o3sbne8ruOx2IJzQy1uxtMyuVzqsrJVmUo5E5B+FZ23tZ/gLWIHXt1xlDZ4ptgYqS27J56jqpGmPNH1EaSxDU7LOu2fCAtuYq9lGEjaX2Y05/88R9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW/8mhqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86105C4CEE5;
+	Tue,  8 Apr 2025 11:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112570;
-	bh=VbuYX/V4nlhmKrGC1CDP6sTCv5QNuGy1qEGnhqOg31M=;
+	s=korg; t=1744113246;
+	bh=y3UkM9B7nDwhlRI46+Uh41tSK+cH76QlgR6Z9LNui94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VB91UiAh3iNNrc4zSeS7fivTby64iMF7YwZnBBKRwySswPG3WGUR8OtEaeQmDFZD0
-	 ungNfyfmuiGkVDJMhttah7rQxjnlfGx+9rNZDVuIEFZ4s5fuYHTni1AHgmgtpZ8MlP
-	 HUMx0ZD6qzMZyp8FIhzxgaXTxEh/F7s7q08PGRTc=
+	b=lW/8mhqo0Qj5YVgElJ9EzOzKa/zFOSMvrvvkkX7qOYOVXLWOtx9W4KWexPHjlsdRP
+	 /2jS2GQKRNWa9BtIZhmYOZ2GQszmJqaJ9KQ2PNLI/rvGyQRoINaeXwGuw/pBziRD/9
+	 udd6AOQB56wwBdzZfG1CSd4vyZ1u4unX5QMhHYRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxim@isovalent.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 116/279] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 088/268] selftests/bpf: Select NUMA_NO_NODE to create map
 Date: Tue,  8 Apr 2025 12:48:19 +0200
-Message-ID: <20250408104829.476978624@linuxfoundation.org>
+Message-ID: <20250408104830.863943627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
+[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
 
-nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
-restore the original 5-tuple in case of SNAT, to be able to find the
-right socket (if any). Then socket_match() can correctly check whether
-the socket was transparent.
+On powerpc, a CPU does not necessarily originate from NUMA node 0.
+This contrasts with architectures like x86, where CPU 0 is not
+hot-pluggable, making NUMA node 0 a consistently valid node.
+This discrepancy can lead to failures when creating a map on NUMA
+node 0, which is initialized by default, if no CPUs are allocated
+from NUMA node 0.
 
-However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
-conntrack lookup, making xt_socket fail to match on the socket when the
-packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
+This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
+creation for this selftest.
 
-IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
-pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
-with the node's external address. Cilium leverages Envoy to enforce L7
-policies, and Envoy uses transparent sockets. Cilium inserts an iptables
-prerouting rule that matches on `-m socket --transparent` and redirects
-the packets to localhost, but it fails to match SNATed IPv6 packets due
-to that missing conntrack lookup.
-
-Closes: https://github.com/cilium/cilium/issues/37932
-Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/ipv6/netfilter/nf_socket_ipv6.c
-+++ b/net/ipv6/netfilter/nf_socket_ipv6.c
-@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 	struct sk_buff *data_skb = NULL;
- 	int doff = 0;
- 	int thoff = 0, tproto;
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn const *ct;
-+#endif
+diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+index f79815b7e951b..fff16cdc93f20 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+@@ -6,6 +6,10 @@
+ #include <test_progs.h>
+ #include "bloom_filter_map.skel.h"
  
- 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
- 	if (tproto < 0) {
-@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 		return NULL;
- 	}
- 
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	/* Do the lookup with the original socket address in
-+	 * case this is a reply packet of an established
-+	 * SNAT-ted connection.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (ct &&
-+	    ((tproto != IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
-+	     (tproto == IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_RELATED_REPLY)) &&
-+	    (ct->status & IPS_SRC_NAT_DONE)) {
-+		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
-+		dport = (tproto == IPPROTO_TCP) ?
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
-+	}
++#ifndef NUMA_NO_NODE
++#define NUMA_NO_NODE	(-1)
 +#endif
 +
- 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
- 				     sport, dport, indev);
- }
+ static void test_fail_cases(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts);
+@@ -69,6 +73,7 @@ static void test_success_cases(void)
+ 
+ 	/* Create a map */
+ 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
++	opts.numa_node = NUMA_NO_NODE;
+ 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
+ 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
+ 		return;
+-- 
+2.39.5
+
 
 
 
