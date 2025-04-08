@@ -1,199 +1,234 @@
-Return-Path: <stable+bounces-131839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7476A814E9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 20:45:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E70A814F5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 20:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CEA3B2F7E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:45:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB35C19E4012
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD28204F79;
-	Tue,  8 Apr 2025 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E14623F411;
+	Tue,  8 Apr 2025 18:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RerGrZ9A"
+	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="dBa6NX0t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B84D23A0
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 18:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5431D23A562
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 18:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744137923; cv=none; b=fYCwLanUcLJOYwAYju5AQg95cEkv7Mqu6CiexfMa3Nf6vb/ljhehSlAYJHwaZpht6wN21mxkZZS92+ESmMpfWByQKuaBN2IcaBYDR22RHXi8MMRl9E09MS5t1we4qxBiVt4YnlL2Ua4E7MiyG63Iv7P6rDDsCwrDT5+Zx1gmXCM=
+	t=1744138218; cv=none; b=nc+dzPgD3wVn+yRLk8hxYyWICazbybap2vy1biD0P5SIqGGm0DMzroh2mwjEBx6v1CjwCNWXwfjTcQoaGQEMb3vxoPlIZjpCLpRXovxV6ASbYByLLfyMLn1YD++ZNNQeyZ2vienPFKzXGGnovY6zjSebM6w20gt8aI5tV4y0eOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744137923; c=relaxed/simple;
-	bh=OS+5MrM5St3m2FWaSjKKYWydpMCMlPYsspCzzA3pZow=;
+	s=arc-20240116; t=1744138218; c=relaxed/simple;
+	bh=7tq6qaJMbHnZOnMEprQALgIh/9nLaUKXPKzYdt7v+CY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qKEpVjjg10dboPAqebTmGY3NLBNIZXz2Pe4ZW5djgp22QCAZ+FHOfEtx4u1r0N6tYdjN+84mwv+k4ysBRoi/1cNC4aN/3tnAn7n9Lic2MV0xuhIDlkBySe9LLVq6gcx3xsC0kVFoJpyXoZe7q30B65izcwmLYXo+rVEDc0op4Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RerGrZ9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB0EC4CEE5;
-	Tue,  8 Apr 2025 18:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744137922;
-	bh=OS+5MrM5St3m2FWaSjKKYWydpMCMlPYsspCzzA3pZow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RerGrZ9AIJwLdJwB4NeYZcGBatxDbgZ5L8JjGDK6grmRDE9yQu56fJYdRPyPYG8+W
-	 r89RXKwJtt4jTCVI/i35Mw9Ld3ZL1Wk6/Qfo7GPobQixQP31FplpQ8rLwsLw/ZTs2p
-	 7EgWO5E4bWqBMrOiR4f0V8ChoS39fmpVAHp+ufeavnUXNkdqddkZ6N45uSUw69UB5O
-	 hYGKVwspb/Z78OoHzW/Wvl8gXIWzOyl8IK83HlFD7LGTDs8EW0TYM7oFTMNZLN8rSp
-	 kTwZ4uW4mPQHzOSeDsZBO1/uB+wLeBeNriUhwTIwbVvVLx0aoLRO8mCAVWHoWk0Gp9
-	 ZRnZVdjqlEhfg==
-Date: Tue, 8 Apr 2025 11:45:18 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: lkml@johnrowley.me, mpearson-lenovo@squebb.ca,
-	rafael.j.wysocki@intel.com, samitolvanen@google.com,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] ACPI: platform-profile: Fix CFI violation
- when accessing" failed to apply to 6.13-stable tree
-Message-ID: <20250408184518.GA2217235@ax162>
-References: <2025040803-womb-decorated-10be@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RnBRnQBlKWSPUE5B90YbY/5JDkuLqGPglhK7E5eBDQYIG2KzfAJVTG2lpgWXI1YWawCVTm/Rc2FzWrN5XVw/iAD/cU+2nVoI43qedg2KDEgViolxTQoBRX8lPk47btqsvHaTHgUmB+1KwI0LycIPXlv9AGwzAVouRkY1UzBrLjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=dBa6NX0t; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4775ce8a4b0so104447281cf.1
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 11:50:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1744138214; x=1744743014; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FwDylyzDPsrF74vrQtby3ilZT9HGhvLa0st+FyPJEAY=;
+        b=dBa6NX0tarjtThFStMeNNBRnSSGXj9cqox7iZmB80uqo8xp50jjgqDNuEXu90ag6mR
+         UrBs6RgPM9Vn7x/WLHOY51mhoIVO8hgxxF+mTspM15scq9RIGbhAda0cLs+/AoDcJh5d
+         7RONoGaSv249xvjObSK1vka6pFKS+jAuzrKGV4cAAU+tM7N2lZ8GiQ0UPQ19Oz20zK4j
+         zgk93lp7e315fEpzBbunfibGNLYhpTyaNCitRX5BuHJn740xR6N6jT4PDwb05byOOel1
+         6lWINEu7VulmE/G88qLzTLhY3rYTZc4+9kHJhIhrAlCEEz1VZZpv6SGQOsbiNjpu+7U0
+         MOiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744138214; x=1744743014;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FwDylyzDPsrF74vrQtby3ilZT9HGhvLa0st+FyPJEAY=;
+        b=bg6JKz7T5p0HtQLN19JwRnP5JLzJsKbth/w0wO/SYydLHl+ZXqX4mejQdfbejmLvl+
+         HB6bpUwQ4jdSNcn3GYGiLUWyONG5aWKBR9A0+qbYHp2zttl11BlWL0YnRY9v4XUtK5RE
+         PPPG4v1ZDOuvWpd8PQYhRyTgErnYGgFWPFGpVFksvWXEwMzgMoxWs60YJjmATOBmsogG
+         TRvEYHO08HBW42XSSFjKErdfp9+Xd9yq6HEjylH8owEeVia8Z2ps0/j1FReLcGbg/eUS
+         4S7iSgJcslZ2xY2kcZacH+E9Py9fd+lajxqpVcXuGLORAfp9ZOd22kWhSEPW+9aujSSZ
+         vHoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvK4TjYHD6EZFyO6od/KhpeV31Q6omxBc5YT1inSiNL1EpSCiPTOwJceqDlPqOs2/GITlowJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9zDlOY/mTYBtFmm5DXSUoh64FJOULq7QNF0tJB4XDf09V68Jb
+	8TpNSCZvOj+5T1540VDBW9p5oOeytJIODgppQY/U8NBZXE3+bHpOLB6fzDBg0/E=
+X-Gm-Gg: ASbGncvDKyb3eIAkuPQZ/adSQqUcXV/SW7wBoUotDHkb+K5992MCcO5HFIA/cYbf11F
+	urubcNjcQaEcBZTZOC9kq/p+UwyRxJ2T3aT47bgdcPnHRZ5tKefoL03iAkvy5F0bfM0GymU6l9o
+	L+aaq85qKIHPcvJO3k+u2nHFxnj/tXfWnHy0GE4ga30j3iOgCIOHlHR5K8P8yMyMVIJz+JJHQyM
+	3S3GdcafvqyryCbOAdBf7crIdSyc+wXYtcT1QWM3z0yESqcvLa6sgmVFGksucWSUjGJLAQbcGan
+	qbOsIm3503jf5AemP2Zp8DeKSWGyy3v2Wi6SIk4nTVs=
+X-Google-Smtp-Source: AGHT+IHbWilH5kMWNF4Wf7I0KGh/1NSK677mnEizu3hGba+oaeLYEvko8oaHEsEM9Yb1/YDtPtxO5Q==
+X-Received: by 2002:ac8:5d04:0:b0:476:90ee:bc6a with SMTP id d75a77b69052e-4795f2e3607mr761051cf.28.1744138213965;
+        Tue, 08 Apr 2025 11:50:13 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4791b088346sm81560331cf.41.2025.04.08.11.50.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 11:50:13 -0700 (PDT)
+Date: Tue, 8 Apr 2025 14:50:09 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Carlos Song <carlos.song@nxp.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
+Message-ID: <20250408185009.GF816@cmpxchg.org>
+References: <20250407180154.63348-1-hannes@cmpxchg.org>
+ <D91FIQHR9GEK.3VMV7CAKW1BFO@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="uzFJSWkS2KTdaKUP"
-Content-Disposition: inline
-In-Reply-To: <2025040803-womb-decorated-10be@gregkh>
-
-
---uzFJSWkS2KTdaKUP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <D91FIQHR9GEK.3VMV7CAKW1BFO@google.com>
 
-On Tue, Apr 08, 2025 at 11:14:03AM +0200, gregkh@linuxfoundation.org wrote:
-...
-> From dd4f730b557ce701a2cd4f604bf1e57667bd8b6e Mon Sep 17 00:00:00 2001
-> From: Nathan Chancellor <nathan@kernel.org>
-> Date: Mon, 10 Feb 2025 21:28:25 -0500
-> Subject: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
->  sysfs files
+On Tue, Apr 08, 2025 at 05:22:00PM +0000, Brendan Jackman wrote:
+> On Mon Apr 7, 2025 at 6:01 PM UTC, Johannes Weiner wrote:
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -2194,11 +2194,11 @@ try_to_claim_block(struct zone *zone, struct page *page,
+> >   * The use of signed ints for order and current_order is a deliberate
+> >   * deviation from the rest of this file, to make the for loop
+> >   * condition simpler.
+> > - *
+> > - * Return the stolen page, or NULL if none can be found.
+> >   */
+> 
+> This commentary is pretty confusing now, there's a block of text that
+> kinda vaguely applies to the aggregate of __rmqueue_steal(),
+> __rmqueue_fallback() and half of __rmqueue(). I think this new code does
+> a better job of speaking for itself so I think we should just delete
+> this block comment and replace it with some more verbosity elsewhere.
 
-Attached is a backport that should apply cleanly to 6.13 through 5.15.
+I'm glad you think so, let's remove it then!
 
-Cheers,
-Nathan
+> > +/* Try to claim a whole foreign block, take a page, expand the remainder */
+> 
+> Also on the commentary front, I am not a fan of "foreign" and "native":
+> 
+> - "Foreign" is already used in this file to mean NUMA-nonlocal.
+> 
+> - We already have "start" and "fallback" being used in identifiers
+>   as adjectives to describe the mitegratetype concept.
+> 
+>   I wouldn't say those are _better_, "native" and "foreign" might be
+>   clearer, but it's not worth introducing inconsistency IMO.
 
---uzFJSWkS2KTdaKUP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment;
-	filename=0001-ACPI-platform-profile-Fix-CFI-violation-when-accessi.patch
+That's a fair point, no objection to renaming them.
 
-From 52492863472c7f8eb750dcda14f574e96bebe471 Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 10 Feb 2025 21:28:25 -0500
-Subject: [PATCH 6.13 and earlier] ACPI: platform-profile: Fix CFI violation
- when accessing sysfs files
+> >  static __always_inline struct page *
+> > -__rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
+> > +__rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+> >  						unsigned int alloc_flags)
+> >  {
+> >  	struct free_area *area;
+> 
+> [pasting in more context that wasn't in the original diff..]
+> >	/*
+> >	 * Find the largest available free page in the other list. This roughly
+> >	 * approximates finding the pageblock with the most free pages, which
+> >	 * would be too costly to do exactly.
+> >	 */
+> >	for (current_order = MAX_PAGE_ORDER; current_order >= min_order;
+> >				--current_order) {
+> 
+> IIUC we could go one step further here and also avoid repeating this
+> iteration? Maybe something for a separate patch though?
 
-commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
+That might be worth a test, but agree this should be a separate patch.
 
-When an attribute group is created with sysfs_create_group(), the
-->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
-and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
-respectively. These functions use container_of() to get the respective
-callback from the passed attribute, meaning that these callbacks need to
-be of the same type as the callbacks in 'struct kobj_attribute'.
+AFAICS, in the most common configurations MAX_PAGE_ORDER is only one
+step above pageblock_order or even the same. It might not be worth the
+complication.
 
-However, ->show() and ->store() in the platform_profile driver are
-defined for struct device_attribute with the help of DEVICE_ATTR_RO()
-and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
-platform_profile or platform_profile_choices under /sys/firmware/acpi
-because the types do not match:
+> Anyway, the approach seems like a clear improvement, thanks. I will need
+> to take a closer look at it tomorrow, I've run out of brain juice today.
 
-  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+Much appreciate you taking a look, thanks.
 
-There is no functional issue from the type mismatch because the layout
-of 'struct kobj_attribute' and 'struct device_attribute' are the same,
-so the container_of() cast does not break anything aside from CFI.
+> Here's what I got from redistributing the block comment and flipping
+> the terminology:
+> 
+> diff --git i/mm/page_alloc.c w/mm/page_alloc.c
+> index dfb2b3f508af..b8142d605691 100644
+> --- i/mm/page_alloc.c
+> +++ w/mm/page_alloc.c
+> @@ -2183,21 +2183,13 @@ try_to_claim_block(struct zone *zone, struct page *page,
+>  }
+>  
+>  /*
+> - * Try finding a free buddy page on the fallback list.
+> - *
+> - * This will attempt to claim a whole pageblock for the requested type
+> - * to ensure grouping of such requests in the future.
+> - *
+> - * If a whole block cannot be claimed, steal an individual page, regressing to
+> - * __rmqueue_smallest() logic to at least break up as little contiguity as
+> - * possible.
+> + * Try to allocate from some fallback migratetype by claiming the entire block,
+> + * i.e. converting it to the allocation's start migratetype.
+>   *
+>   * The use of signed ints for order and current_order is a deliberate
+>   * deviation from the rest of this file, to make the for loop
+>   * condition simpler.
+>   */
+> -
+> -/* Try to claim a whole foreign block, take a page, expand the remainder */
+>  static __always_inline struct page *
+>  __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+>                                                 unsigned int alloc_flags)
+> @@ -2247,7 +2239,10 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+>         return NULL;
+>  }
+>  
+> -/* Try to steal a single page from a foreign block */
+> +/*
+> + * Try to steal a single page from some fallback migratetype. Leave the rest of
+> + * the block as its current migratetype, potentially causing fragmentation.
+> + */
+>  static __always_inline struct page *
+>  __rmqueue_steal(struct zone *zone, int order, int start_migratetype)
+>  {
+> @@ -2307,7 +2302,9 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+>         }
+>  
+>         /*
+> -        * Try the different freelists, native then foreign.
+> +        * First try the freelists of the requested migratetype, then try
+> +        * fallbacks. Roughly, each fallback stage poses more of a fragmentation
+> +        * risk.
 
-Change the type of platform_profile_choices_show() and
-platform_profile_{show,store}() to match the callbacks in
-'struct kobj_attribute' and update the attribute variables to
-match, which resolves the CFI violation.
+How about "then try fallback modes with increasing levels of
+fragmentation risk."
 
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
-Reported-by: John Rowley <lkml@johnrowley.me>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
-Tested-by: John Rowley <lkml@johnrowley.me>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[nathan: Fix conflicts in older stable branches]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/acpi/platform_profile.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+>          * The fallback logic is expensive and rmqueue_bulk() calls in
+>          * a loop with the zone->lock held, meaning the freelists are
+> @@ -2332,7 +2329,7 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+>         case RMQUEUE_CLAIM:
+>                 page = __rmqueue_claim(zone, order, migratetype, alloc_flags);
+>                 if (page) {
+> -                       /* Replenished native freelist, back to normal mode */
+> +                       /* Replenished requested migratetype's freelist, back to normal mode */
+>                         *mode = RMQUEUE_NORMAL;
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index d2f7fd7743a1..11278f785526 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -22,8 +22,8 @@ static const char * const profile_names[] = {
- };
- static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
- 
--static ssize_t platform_profile_choices_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_choices_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	int len = 0;
-@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
- 	return len;
- }
- 
--static ssize_t platform_profile_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
- 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
- }
- 
--static ssize_t platform_profile_store(struct device *dev,
--			    struct device_attribute *attr,
-+static ssize_t platform_profile_store(struct kobject *kobj,
-+			    struct kobj_attribute *attr,
- 			    const char *buf, size_t count)
- {
- 	int err, i;
-@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
- 	return count;
- }
- 
--static DEVICE_ATTR_RO(platform_profile_choices);
--static DEVICE_ATTR_RW(platform_profile);
-+static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
-+static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
- 
- static struct attribute *platform_profile_attrs[] = {
--	&dev_attr_platform_profile_choices.attr,
--	&dev_attr_platform_profile.attr,
-+	&attr_platform_profile_choices.attr,
-+	&attr_platform_profile.attr,
- 	NULL
- };
- 
+This line is kind of long now. How about:
 
-base-commit: 1edf71b4b7d9f599843d2c5280537d10be495ebc
--- 
-2.49.0
+			/* Replenished preferred freelist, back to normal mode */
 
+But yeah, I like your proposed changes. Would you care to send a
+proper patch?
 
---uzFJSWkS2KTdaKUP--
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
