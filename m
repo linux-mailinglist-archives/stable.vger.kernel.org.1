@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-129330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D65A7FF25
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:19:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A237A7FE39
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27AD17A09C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5B657A32B0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D21267F6E;
-	Tue,  8 Apr 2025 11:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FEC268C60;
+	Tue,  8 Apr 2025 11:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7l2cPSe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRTAdwNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C575374C4;
-	Tue,  8 Apr 2025 11:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88F4214205;
+	Tue,  8 Apr 2025 11:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110738; cv=none; b=sg7ugCdUzR8qSzntimaYaOT2Z07bGYgR8g82JpoNISq2LKm17ELHMJXYEkEEI/ny1XXXLae4yhYkhP+uz9HwnWYqxKSqFWtFLiZWn26MTgvZQ6AkBi6SdCI+xq677Xz2Dlb+BrDBLWmy7FxcUY1QgZ9jmP6A/6z4Nks1YbosWig=
+	t=1744110621; cv=none; b=ehe7RoE6ChpZeU49yhMWftn+vitlCgy5VfUdUbJgC6olSPwB77fCrkZpfVz5gCIe2sc42E8yjTRfrMDFxjcJQv25G8dOMPj6Nc19rh/pDtillp0IORqxsxqGbG/+3v6AOCGlH3tgNFsSYP2L9UiBL76hfM/FB4LRJSD69pfKmDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110738; c=relaxed/simple;
-	bh=0J1emmOBCffqiH7ZpzWvVHnlWqQlp8h/V+rhN/6Pxl0=;
+	s=arc-20240116; t=1744110621; c=relaxed/simple;
+	bh=cT0stCHWdLoHDZCsTdClFE5V4ajnbV8vRCCxD6jWSSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UuPWrXkiW/jjkbVINVGuU21t0esyDz764/qyLBWQBx9Sxq7PCL+q118S4J6JqnRDNREzkD9mu6bb+odvzNON8LJX0sO2bczWPX1M5YfF71Pm2NYw3g2xVI03s8ELoP45uHvJIK8BlGKX12Chl4cCb444rD2szu3AVr0X/jCK6vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7l2cPSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D165C4CEE5;
-	Tue,  8 Apr 2025 11:12:14 +0000 (UTC)
+	 MIME-Version; b=FY7n7nmGFh1qGZtxR3HUxPS/7SgMITuPW8WNgEn3RuYuGy0WmOfd/69qOxZl2mx1Rbc9A0hle4zifgZxcH6k06/skTLHegFL8nC+R7EvWDyg0yx5cTHGMbbOfd7t3UNXdsUNLBAA26qdPZ4leYffLO6Wwao2JW8S6jYum2OWpso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRTAdwNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E46C4CEE5;
+	Tue,  8 Apr 2025 11:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110734;
-	bh=0J1emmOBCffqiH7ZpzWvVHnlWqQlp8h/V+rhN/6Pxl0=;
+	s=korg; t=1744110621;
+	bh=cT0stCHWdLoHDZCsTdClFE5V4ajnbV8vRCCxD6jWSSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7l2cPSeSoOAsNb1wo2bKTl67uvrs5T07oHDv9rIXp/7hx2rKJ2aN5fxhzRM601uX
-	 fNsSUlilb6lmpFg9kCtfA7O9Ru7h9OBwPLkZVxSAHW4v9DkXxmbU9Bj4VsGuBKbqcf
-	 8RAqv7ZbwfD0odOu2jsbQU34FzSd6f0hxkCAynY4=
+	b=YRTAdwNSkPzi3pdndiblVTLniJKe6xpK+Fmf51ntAcsmjaj6UNLyDOdVxQ2PnCKiB
+	 2dGLMIgbsjpfSlwvUKDBm043eERW4O4BvAqkd2aJtnQFgzn81ZDAE9lks5MKsILskI
+	 6ArarU+4fAzS3II+ldHInF7oaqM93jpZyVPw4sJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 124/731] arm64: dts: mediatek: mt8390-genio-common: Fix duplicated regulator name
-Date: Tue,  8 Apr 2025 12:40:21 +0200
-Message-ID: <20250408104917.163360317@linuxfoundation.org>
+Subject: [PATCH 6.14 125/731] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
+Date: Tue,  8 Apr 2025 12:40:22 +0200
+Message-ID: <20250408104917.186966440@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,36 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 18aa138d125dd56838edbdb8c813e91e5e95d496 ]
+[ Upstream commit 68410c5bd381a81bcc92b808e7dc4e6b9ed25d11 ]
 
-usb_p2_vbus regulator has the same regulator-name property value as
-sdio_fixed_3v3, so change it to avoid this.
+If a shared IRQ is used by the driver due to platform limitation, then the
+IRQ affinity hint is set right after the allocation of IRQ vectors in
+ath11k_pci_alloc_msi(). This does no harm unless one of the functions
+requesting the IRQ fails and attempt to free the IRQ. This results in the
+below warning:
 
-Fixes: a4fd1943bf9b ("arm64: dts: mediatek: mt8390-genio-700-evk: update regulator names")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250221-fix-mtk8390-genio-common-dup-regulator-name-v1-1-92f7b9f7a414@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
+Call trace:
+ free_irq+0x278/0x29c
+ ath11k_pcic_free_irq+0x70/0x10c [ath11k]
+ ath11k_pci_probe+0x800/0x820 [ath11k_pci]
+ local_pci_probe+0x40/0xbc
+
+The warning is due to not clearing the affinity hint before freeing the
+IRQs.
+
+So to fix this issue, clear the IRQ affinity hint before calling
+ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
+again further down the error path due to code organization, but that does
+no harm.
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250225053447.16824-2-manivannan.sadhasivam@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi b/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-index a37cf102a6e92..e828864433a6f 100644
---- a/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-@@ -213,7 +213,7 @@
- 	/* used by ssusb2 */
- 	usb_p2_vbus: regulator-9 {
- 		compatible = "regulator-fixed";
--		regulator-name = "wifi_3v3";
-+		regulator-name = "vbus_p2";
- 		regulator-min-microvolt = <5000000>;
- 		regulator-max-microvolt = <5000000>;
- 		enable-active-high;
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index b93f04973ad79..eaac9eabcc70a 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -939,6 +939,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_free_irq:
++	/* __free_irq() expects the caller to have cleared the affinity hint */
++	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 	ath11k_pcic_free_irq(ab);
+ 
+ err_ce_free:
 -- 
 2.39.5
 
