@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9100BA802BF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE346A801B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F01179C5E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B834445BC3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61119227EBD;
-	Tue,  8 Apr 2025 11:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582352690FA;
+	Tue,  8 Apr 2025 11:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkcLF7rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYso/xY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE7119AD5C;
-	Tue,  8 Apr 2025 11:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13722268C41;
+	Tue,  8 Apr 2025 11:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112533; cv=none; b=jeJaBKvCLDrNL6bT96BUz5lXB5qT0vbGaJ3FGqE/XWrCFm9RMfhPxrltc2rD/9dMFXiWfEQCHHsjaKs4cfLWTXgKssnfv0tU/pruOjOY7yAxBmdaCcz8+I+ZCrmM7rRGsvQ1/DrZtcNp+11MzTpPFz2xtsljLR/cv0U+UxOKJzA=
+	t=1744111873; cv=none; b=VxeOoqrDJcMia7qhyZdAVLTO5Aurx+57j56GqwNVg4s3dKdefz4sw0dm+bNOE/CTSUqeoBDKmyfxLq4oWkYdcnY1VwNHLy/iMS1WFc61nXkRqIMeAYaBZo+5msKFyEB0sCbiInEMM5T3DG/sUAN5FoocYC3XUg4bD439y/tWiOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112533; c=relaxed/simple;
-	bh=HNw589pkZdNDYjmbt/iM0doeTMKqMvIfqISPOZsyfUY=;
+	s=arc-20240116; t=1744111873; c=relaxed/simple;
+	bh=6nCCFiD3CJ9ZWI3G+D1aYokP2+qcoWgQmkvLAHzIxwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGLUu9atg/IwFiuVktGDEv+SEQE/c19cD8vuFtV55NM1ijJqDO0JWnjyVJSYt8zFO4YZel96x/FFUnLfLssWchbuuEXB0Ay+xxb72YyB7cUE8NH736LQTPRxGuc40IKoMGns5PmnUtr+JKvr3fMedwY1tuW1vrkL0pLjzUGbC44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkcLF7rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780CC4CEE5;
-	Tue,  8 Apr 2025 11:42:12 +0000 (UTC)
+	 MIME-Version; b=r7NbVQFqzTvb9c7mZHoiqumdAqD3+xLoarAdgKWLKeSqHz0Oy11zDuDzFCznsl5KG78x/R3v/viK9R7AMlWMy84bus1WUJXGdYxMpc3RQLrKqHhYSMRQzrydPNtQzA3D2bBr8VC4UJBvMq8YLqgJ3+klMZgfSbPe2lWsed33IYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYso/xY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CDEC4CEE5;
+	Tue,  8 Apr 2025 11:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112532;
-	bh=HNw589pkZdNDYjmbt/iM0doeTMKqMvIfqISPOZsyfUY=;
+	s=korg; t=1744111872;
+	bh=6nCCFiD3CJ9ZWI3G+D1aYokP2+qcoWgQmkvLAHzIxwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkcLF7rnS3AoHXXg7AS3JqQhKXIlyYoKNU8rQkpkraIpCSEz91ZkD3cudAcZaa6xN
-	 SWpCMVUyh441TZOPe61UeAiE94I5kJy9NLalft+iVvLSwrnO4gxLXMNIoHz+TIr+q3
-	 yG1T6Ny8cc3lmJpFmCcmqBLldz+UF0uyJZKK6oAo=
+	b=uYso/xY1pZdzXnxDV1AosBr9gKTB03rr7BFQO1IJoVpqjo5X9lvJSXE4ES/ej7SxH
+	 WUSvOxQh3Shp5UiDHQu0rjpLQkAoXazjsyQ3Q4k2zxVxbpRWrWi4VGeOWfP/LgA13g
+	 V3mg2lt+1cPLIQP4OOTXMI//2Iqaj3qkup6OiJ6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Saranya R <quic_sarar@quicinc.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 103/279] soc: qcom: pdr: Fix the potential deadlock
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 589/731] riscv: Fix riscv_online_cpu_vec
 Date: Tue,  8 Apr 2025 12:48:06 +0200
-Message-ID: <20250408104829.126452136@linuxfoundation.org>
+Message-ID: <20250408104927.975337976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saranya R <quic_sarar@quicinc.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-commit 2eeb03ad9f42dfece63051be2400af487ddb96d2 upstream.
+[ Upstream commit 5af72a818612332a11171b16f27a62ec0a0f91d7 ]
 
-When some client process A call pdr_add_lookup() to add the look up for
-the service and does schedule locator work, later a process B got a new
-server packet indicating locator is up and call pdr_locator_new_server()
-which eventually sets pdr->locator_init_complete to true which process A
-sees and takes list lock and queries domain list but it will timeout due
-to deadlock as the response will queued to the same qmi->wq and it is
-ordered workqueue and process B is not able to complete new server
-request work due to deadlock on list lock.
+We shouldn't probe when we already know vector is unsupported and
+we should probe when we see we don't yet know whether it's supported.
+Furthermore, we should ensure we've set the access type to
+unsupported when we don't have vector at all.
 
-Fix it by removing the unnecessary list iteration as the list iteration
-is already being done inside locator work, so avoid it here and just
-call schedule_work() here.
-
-       Process A                        Process B
-
-                                     process_scheduled_works()
-pdr_add_lookup()                      qmi_data_ready_work()
- process_scheduled_works()             pdr_locator_new_server()
-                                         pdr->locator_init_complete=true;
-   pdr_locator_work()
-    mutex_lock(&pdr->list_lock);
-
-     pdr_locate_service()                  mutex_lock(&pdr->list_lock);
-
-      pdr_get_domain_list()
-       pr_err("PDR: %s get domain list
-               txn wait failed: %d\n",
-               req->service_name,
-               ret);
-
-Timeout error log due to deadlock:
-
-"
- PDR: tms/servreg get domain list txn wait failed: -110
- PDR: service lookup for msm/adsp/sensor_pd:tms/servreg failed: -110
-"
-
-Thanks to Bjorn and Johan for letting me know that this commit also fixes
-an audio regression when using the in-kernel pd-mapper as that makes it
-easier to hit this race. [1]
-
-Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/ # [1]
-Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-CC: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Saranya R <quic_sarar@quicinc.com>
-Co-developed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-12-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_interface.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ arch/riscv/kernel/unaligned_access_speed.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/pdr_interface.c
-+++ b/drivers/soc/qcom/pdr_interface.c
-@@ -74,7 +74,6 @@ static int pdr_locator_new_server(struct
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 85c868a8cee63..2e41b42498c76 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -370,10 +370,12 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ 
+ static int riscv_online_cpu_vec(unsigned int cpu)
  {
- 	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
- 					      locator_hdl);
--	struct pdr_service *pds;
+-	if (!has_vector())
++	if (!has_vector()) {
++		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
+ 		return 0;
++	}
  
- 	mutex_lock(&pdr->lock);
- 	/* Create a local client port for QMI communication */
-@@ -86,12 +85,7 @@ static int pdr_locator_new_server(struct
- 	mutex_unlock(&pdr->lock);
+-	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED)
++	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
+ 		return 0;
  
- 	/* Service pending lookup requests */
--	mutex_lock(&pdr->list_lock);
--	list_for_each_entry(pds, &pdr->lookups, node) {
--		if (pds->need_locator_lookup)
--			schedule_work(&pdr->locator_work);
--	}
--	mutex_unlock(&pdr->list_lock);
-+	schedule_work(&pdr->locator_work);
- 
- 	return 0;
- }
+ 	check_vector_unaligned_access_emulated(NULL);
+-- 
+2.39.5
+
 
 
 
