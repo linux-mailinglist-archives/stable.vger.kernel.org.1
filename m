@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-128982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0970A7FD83
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FE6A8035F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88081894C1D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7630C7A317B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5696A269AE5;
-	Tue,  8 Apr 2025 10:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94D82690CC;
+	Tue,  8 Apr 2025 11:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pxr/ME9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9GevoG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC5E269885;
-	Tue,  8 Apr 2025 10:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D97268685;
+	Tue,  8 Apr 2025 11:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109800; cv=none; b=mEBBuV+vd4K9T1E0YILZGv7CH4V08Qoq108HD5nou+dAXtL9fQdVFmnJSxnRhDEA2LGmrD+8g2A/bazcGt5WCp2I8DSphjciWgzMcjPoYGOl+Rlcf2k94xCsYV4Xot3zSFKH/itDMhEgT6OIcfJcyZVU+Jr4RLcK8400+YYt35Y=
+	t=1744113151; cv=none; b=plztC2/8rEvoksaol2ruKiYZoVRnuJbEeAw4GpHpONJXfjZHX2y4MilCHH+AolzEy1Ix/yGYtNi1jXZgCLlUjro3jA0yLZruGH/N/JTiUC5QpTcQcRzku6yLAn4bSOr6aQVHm4RrKRPntMoYBLWgumx7UyNu0e4e83CrzkOGmQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109800; c=relaxed/simple;
-	bh=TaSUeY9obYRmwc1ZCZwbFWeZmZsUBzVD7R6OGsMgRp0=;
+	s=arc-20240116; t=1744113151; c=relaxed/simple;
+	bh=adgxhVOSK6y5y7a5LzeZ+TDS6AgZQU4YAWeNInHzD7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pe2JZWinTJe9dkDkB+QWgi3vePlJoRG3DJNrIsBAwu0C1Tall34+xmG/M3zTpFH46msr/KpSbsk29SU3znWj4+XJoQ/6zLC8N1/pOy/n2O6q2ogLDJNcPBWmW4ZSNisA9v3/7XnqWdE00WpxHd5SoQGx2r2HuTa0qADh1okaDlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pxr/ME9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD8C4CEE5;
-	Tue,  8 Apr 2025 10:56:39 +0000 (UTC)
+	 MIME-Version; b=l45Pq0EeW9p5R7Ol1D8ESlz6iTO5wP0VHDfy90NbfZ79oMywJLQz0Kfcjl5eivfnlJdlL7HlKndccGIF3xH0NwfXFlQQ5EvSCYkd66ZTRKLt57UdW1vBdxYiuFOup459SYQh3MqZ3RucSZxsd5xnUCx7m2XOvBm0j8q0HFkB6vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9GevoG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AABEC4CEE5;
+	Tue,  8 Apr 2025 11:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109799;
-	bh=TaSUeY9obYRmwc1ZCZwbFWeZmZsUBzVD7R6OGsMgRp0=;
+	s=korg; t=1744113150;
+	bh=adgxhVOSK6y5y7a5LzeZ+TDS6AgZQU4YAWeNInHzD7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pxr/ME9AHG2AVJ6pLJ9YWLKvkYqIcSvT3+7kRSB/iajKvskNvj7p+Lri+FEd4x/5L
-	 e/oYIEwDLHS6WcPr4ludiAGO50OFGZAhVP07sMrxx3SfzYi7donYkTJfy2N878Wz2R
-	 pt1VUZZnfguO8kHc2oMddzeYL6mDrO2YgwtsagQA=
+	b=L9GevoG7biv6ikuaVQgmg8Fe9E0iXWo2FTgYPZPT8uGKGo3aPrEyYG0BFhnsBGtpW
+	 vecNHLTv9t18YMeLvGm8GIszDeGSDrXnV2KDJebwy7Z4bAhAKI9yOt+s7C6r3SJfn0
+	 4qb8nOxEqlYSVRZDZ2DlGb06CeQb9foI9oP+G4zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/227] i2c: ali1535: Fix an error handling path in ali1535_probe()
+Subject: [PATCH 6.6 025/268] media: platform: allgro-dvt: unregister v4l2_device on the error path
 Date: Tue,  8 Apr 2025 12:47:16 +0200
-Message-ID: <20250408104822.143905657@linuxfoundation.org>
+Message-ID: <20250408104829.186262944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 9b5463f349d019a261f1e80803447efca3126151 ]
+[ Upstream commit c2b96a6818159fba8a3bcc38262da9e77f9b3ec7 ]
 
-If i2c_add_adapter() fails, the request_region() call in ali1535_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+In allegro_probe(), the v4l2 device is not unregistered in the error
+path, which results in a memory leak. Fix it by calling
+v4l2_device_unregister() before returning error.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/0daf63d7a2ce74c02e2664ba805bbfadab7d25e5.1741031571.git.christophe.jaillet@wanadoo.fr
+Fixes: d74d4e2359ec ("media: allegro: move driver out of staging")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ali1535.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/media/platform/allegro-dvt/allegro-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-ali1535.c b/drivers/i2c/busses/i2c-ali1535.c
-index fb93152845f43..b36b75fc5b089 100644
---- a/drivers/i2c/busses/i2c-ali1535.c
-+++ b/drivers/i2c/busses/i2c-ali1535.c
-@@ -490,6 +490,8 @@ MODULE_DEVICE_TABLE(pci, ali1535_ids);
+diff --git a/drivers/media/platform/allegro-dvt/allegro-core.c b/drivers/media/platform/allegro-dvt/allegro-core.c
+index 7dffea2ad88a1..4994a2e65fedc 100644
+--- a/drivers/media/platform/allegro-dvt/allegro-core.c
++++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+@@ -3914,6 +3914,7 @@ static int allegro_probe(struct platform_device *pdev)
+ 	if (ret < 0) {
+ 		v4l2_err(&dev->v4l2_dev,
+ 			 "failed to request firmware: %d\n", ret);
++		v4l2_device_unregister(&dev->v4l2_dev);
+ 		return ret;
+ 	}
  
- static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
-+
- 	if (ali1535_setup(dev)) {
- 		dev_warn(&dev->dev,
- 			"ALI1535 not detected, module not inserted.\n");
-@@ -501,7 +503,15 @@ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 
- 	snprintf(ali1535_adapter.name, sizeof(ali1535_adapter.name),
- 		"SMBus ALI1535 adapter at %04x", ali1535_offset);
--	return i2c_add_adapter(&ali1535_adapter);
-+	ret = i2c_add_adapter(&ali1535_adapter);
-+	if (ret)
-+		goto release_region;
-+
-+	return 0;
-+
-+release_region:
-+	release_region(ali1535_smba, ALI1535_SMB_IOSIZE);
-+	return ret;
- }
- 
- static void ali1535_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
