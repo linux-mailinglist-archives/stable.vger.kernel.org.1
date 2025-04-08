@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-129657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17341A800DF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1281A7FD3B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68C0C880D72
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4469C169545
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BDE26A095;
-	Tue,  8 Apr 2025 11:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E2B267F6E;
+	Tue,  8 Apr 2025 10:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSUWSSP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwy/HGB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44FD263C90;
-	Tue,  8 Apr 2025 11:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EAE264A85;
+	Tue,  8 Apr 2025 10:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111630; cv=none; b=R0kAfXKpyDiVonnSNxei5YYIHaEFzq1liHG+hsIvJCU782Y4f6fONIjMFP2MsRjBq3+Cmz2ktv0Lgy8S47i2ZO/tvuB62mLIDKORC3kLYtIeO5yNtttGN8FSeBgXF1W8d+/9vpjNNdYzbk4ZZt8cgBrRH6bXWaRLQ2gi1+VFjwM=
+	t=1744109693; cv=none; b=OxhrbRxoYdZhHO49zsq0Elo2UKaVeOhDFtg3qEC1Z+/VF/U202kTACN3hctkD9pK6JUBZMcNJzVI0dxlIpKfjp/r6ugxLJZ0d5sme1HsPJcymGxRXpPQz8LRWumvUlGzlrDBMPJex55T5bUIprIF8gslfSrznUHcL62H9T+En58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111630; c=relaxed/simple;
-	bh=nekFRW9NQHp2KOCTPW/ukqxmjyEPXjBHtxLgTCzqSeQ=;
+	s=arc-20240116; t=1744109693; c=relaxed/simple;
+	bh=vRYQRRbfqE78zDDr2efV0VlMEP+JqxoaUO5gC0UXap8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLS5QeRR/O5W6A1nh8VJMnfoVohb2iBDcJyJROiPiMBMUkwCEuXELR8sMqnz0VUYsyhDftjy714fsJv5yny/0rlwqBlmQGGnbk5G9h03y33rWsMIz8SIfGRVoI0SkMhmxfk1XawjXRtFRxXkijbE4yr7VOe3Hij6ICmRo3YKouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSUWSSP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63727C4CEE5;
-	Tue,  8 Apr 2025 11:27:10 +0000 (UTC)
+	 MIME-Version; b=LJYKWMfcx8jEP4ABc6shSbijfu8rkNZRulJrkCCgBk6blKRmKvov7FCxG7lT/EI49czzW11y+MP++K9Q6A/41F3ZfRPLtyY/RDxwCf+N1R8DjwkhiX4OesomNaxxdtSLltaa5lBHOTy8KBj6EofNNkWtusojPDNGZi9yJVDjSmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwy/HGB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FEFC4CEE5;
+	Tue,  8 Apr 2025 10:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111630;
-	bh=nekFRW9NQHp2KOCTPW/ukqxmjyEPXjBHtxLgTCzqSeQ=;
+	s=korg; t=1744109693;
+	bh=vRYQRRbfqE78zDDr2efV0VlMEP+JqxoaUO5gC0UXap8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSUWSSP49X3lX05acOxVVY3d2UzEzKP4gABTGAFbVf20tyP7+5PFFja94ikgr03vf
-	 XtM7yTC1Dr0y9GjlGoGnBDInvIgHW0D88RLMdtK7qPFhPEwQA/UhTW2rs7lfsXqEEw
-	 C6prEJ3Ky6LDyyVjH4HiGG1wlb7vHSKeCwP2LbkE=
+	b=hwy/HGB3xKYLggrT8pBdTJlCkUNF9Py9QSwpcaurxA9EhWwTlPM83EOh2HhwAkRbi
+	 sEWRR1b4yy0Ec9n/hVYF8xpd1gOG6wgmq3PmLdTsJoQID8Z7+6H4YItQzOlORamw2w
+	 fedhan+MjEIRDbnDHoHWhQ1H9RJTL+dzHAn3tVVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Thomas Falcon <thomas.falcon@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Alexey Kashavkin <akashavkin@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 500/731] perf x86/topdown: Fix topdown leader sampling test error on hybrid
+Subject: [PATCH 5.10 019/227] netfilter: nft_exthdr: fix offset with ipv4_find_option()
 Date: Tue,  8 Apr 2025 12:46:37 +0200
-Message-ID: <20250408104925.904596444@linuxfoundation.org>
+Message-ID: <20250408104820.973663479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Alexey Kashavkin <akashavkin@gmail.com>
 
-[ Upstream commit b74683b3bb224eccb644cf260753dfc82e802d92 ]
+[ Upstream commit 6edd78af9506bb182518da7f6feebd75655d9a0e ]
 
-When running topdown leader smapling test on Intel hybrid platforms,
-such as LNL/ARL, we see the below error.
+There is an incorrect calculation in the offset variable which causes
+the nft_skb_copy_to_reg() function to always return -EFAULT. Adding the
+start variable is redundant. In the __ip_options_compile() function the
+correct offset is specified when finding the function. There is no need
+to add the size of the iphdr structure to the offset.
 
-Topdown leader sampling test
-Topdown leader sampling [Failed topdown events not reordered correctly]
-
-It indciates the below command fails.
-
-perf record -o "${perfdata}" -e "{instructions,slots,topdown-retiring}:S" true
-
-The root cause is that perf tool creats a perf event for each PMU type
-if it can create.
-
-As for this command, there would be 5 perf events created,
-cpu_atom/instructions/,cpu_atom/topdown_retiring/,
-cpu_core/slots/,cpu_core/instructions/,cpu_core/topdown-retiring/
-
-For these 5 events, the 2 cpu_atom events are in a group and the other 3
-cpu_core events are in another group.
-
-When arch_topdown_sample_read() traverses all these 5 events, events
-cpu_atom/instructions/ and cpu_core/slots/ don't have a same group
-leade, and then return false directly and lead to cpu_core/slots/ event
-is used to sample and this is not allowed by PMU driver.
-
-It's a overkill to return false directly if "evsel->core.leader !=
- leader->core.leader" since there could be multiple groups in the event
-list.
-
-Just "continue" instead of "return false" to fix this issue.
-
-Fixes: 1e53e9d1787b ("perf x86/topdown: Correct leader selection with sample_read enabled")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Thomas Falcon <thomas.falcon@intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250307023906.1135613-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
+Signed-off-by: Alexey Kashavkin <akashavkin@gmail.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/x86/util/topdown.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_exthdr.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/arch/x86/util/topdown.c b/tools/perf/arch/x86/util/topdown.c
-index f63747d0abdf9..d1c6548390496 100644
---- a/tools/perf/arch/x86/util/topdown.c
-+++ b/tools/perf/arch/x86/util/topdown.c
-@@ -81,7 +81,7 @@ bool arch_topdown_sample_read(struct evsel *leader)
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index c9f89f035ccff..5bde436b87548 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -85,7 +85,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
+ 	unsigned char optbuf[sizeof(struct ip_options) + 40];
+ 	struct ip_options *opt = (struct ip_options *)optbuf;
+ 	struct iphdr *iph, _iph;
+-	unsigned int start;
+ 	bool found = false;
+ 	__be32 info;
+ 	int optlen;
+@@ -93,7 +92,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
+ 	iph = skb_header_pointer(skb, 0, sizeof(_iph), &_iph);
+ 	if (!iph)
+ 		return -EBADMSG;
+-	start = sizeof(struct iphdr);
+ 
+ 	optlen = iph->ihl * 4 - (int)sizeof(struct iphdr);
+ 	if (optlen <= 0)
+@@ -103,7 +101,7 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
+ 	/* Copy the options since __ip_options_compile() modifies
+ 	 * the options.
  	 */
- 	evlist__for_each_entry(leader->evlist, evsel) {
- 		if (evsel->core.leader != leader->core.leader)
--			return false;
-+			continue;
- 		if (evsel != leader && arch_is_topdown_metrics(evsel))
- 			return true;
- 	}
+-	if (skb_copy_bits(skb, start, opt->__data, optlen))
++	if (skb_copy_bits(skb, sizeof(struct iphdr), opt->__data, optlen))
+ 		return -EBADMSG;
+ 	opt->optlen = optlen;
+ 
+@@ -118,18 +116,18 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
+ 		found = target == IPOPT_SSRR ? opt->is_strictroute :
+ 					       !opt->is_strictroute;
+ 		if (found)
+-			*offset = opt->srr + start;
++			*offset = opt->srr;
+ 		break;
+ 	case IPOPT_RR:
+ 		if (!opt->rr)
+ 			break;
+-		*offset = opt->rr + start;
++		*offset = opt->rr;
+ 		found = true;
+ 		break;
+ 	case IPOPT_RA:
+ 		if (!opt->router_alert)
+ 			break;
+-		*offset = opt->router_alert + start;
++		*offset = opt->router_alert;
+ 		found = true;
+ 		break;
+ 	default:
 -- 
 2.39.5
 
