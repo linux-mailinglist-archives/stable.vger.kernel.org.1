@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E78A806D5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F85CA80B5A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381B8188A917
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3943A4E799E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EB526B96D;
-	Tue,  8 Apr 2025 12:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D77269D17;
+	Tue,  8 Apr 2025 12:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlMbX/3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWVYnZHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2E26B96A;
-	Tue,  8 Apr 2025 12:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BB8269D01;
+	Tue,  8 Apr 2025 12:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115038; cv=none; b=hZfejul6uWHyJ+ntd5cBzXBBSkhHIvVBIrowIc9wlsViVv0y5O5mmuTq2ZJ24tNi+sMcbNaSximHFQH2akHvY1t7MK2EyUXqlZb+rSeU+iHTNs8Y6GQtSdkUYbpuY+khIuwdulyuB/zfNLQSoLnr9edY7KMw9p7js8oYK9KpZ1Q=
+	t=1744116634; cv=none; b=JJApXmO8z2BFonE2FyuUh3Bn0iKSJAw2wajQYbZIUm7xe72s9wCtvCcd820pUEtptLs8jnH5tDDMzqrmey0l8/4BzRWH6Y3S+MpVb+mhIDPHkKgKyg9GHuoJWGmV/32lblSNIdze29gL8biNCHekOVCpapokG64vMKwbjHvHAn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115038; c=relaxed/simple;
-	bh=sFMHuKynNrsXGJHv8eiqpCfGYBgYGQ/MLNnMhwJNa8A=;
+	s=arc-20240116; t=1744116634; c=relaxed/simple;
+	bh=cqeYDQKmv7QWYHiZuYFW8GGM9Dc7tSrnHR8Bm/DJHqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtW4D6mjMwZ9CLWbnt1uRFHDHxROd6B8CfpFAA8PLneKofz5VT2cwlRLLm9b2tU1t4pZATaxC3uG3XR75mTYYenc9U2S1K4djwtxYuvahNy1FuhIczo5hpQHW7rXk5T1XHswvwMfy0474qatY5KI3cTlfzDoQ831rROdrRC7MGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlMbX/3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03C2C4CEE5;
-	Tue,  8 Apr 2025 12:23:57 +0000 (UTC)
+	 MIME-Version; b=WAj7zgK6HiVkV0fXpOO+fvJBPXOtoyOEztwdExT5Hd5K0PX9IimlKBfHXwmjjgt+UZODoLonRzMT5S2APgregFoIDoXvx6VraDxH1t9x4BkJXa7mKD1mZMDFq0a/nestrU7NypjHQozmwG751RMDOzdaYIvZXnp4BYUjBjBP9h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWVYnZHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D006C4CEE5;
+	Tue,  8 Apr 2025 12:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115038;
-	bh=sFMHuKynNrsXGJHv8eiqpCfGYBgYGQ/MLNnMhwJNa8A=;
+	s=korg; t=1744116634;
+	bh=cqeYDQKmv7QWYHiZuYFW8GGM9Dc7tSrnHR8Bm/DJHqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlMbX/3C6DIuh7hZ8+HucgzeHcFB3moEpWzeICi6ZKq2bUwB3hVSZZADJbtV+EtSq
-	 YfCpd2WjXZc4CK84ch51JXy05IIuWEAszc2C+4zQbiU6cBzrpl67c6YZR+tAvHsZJw
-	 F2mp6uPsN4mv9k5B3xPRlHrcTa5M6wsCERscfOOQ=
+	b=KWVYnZHwryLucLurYocLgSncC+UUH4kYEGbH+dcArm0+cNeDggagiXljQk1q4w+vm
+	 alx2E0zXGJFvzaO6akNaVrtvHa5Qyw0QkhhJDOrzQ+eN9N8rx250mmw05rcxN7wHkb
+	 OXC+tTt9jv3/5MhwJxxAoVSOFuXdVZ/Ja0yiU2VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 325/499] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
+Subject: [PATCH 6.12 211/423] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:48:57 +0200
-Message-ID: <20250408104859.330882248@linuxfoundation.org>
+Message-ID: <20250408104850.647102313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
-
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c4e01becdb625..1b216e8fa4046 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10651,7 +10651,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
-+	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10a4, "ASUS TP3407SA", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index ee3d43a7ba457..80ca08efb9bfd 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -79,7 +79,7 @@ struct pyrf_event {
+ };
+ 
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
 -- 
 2.39.5
 
