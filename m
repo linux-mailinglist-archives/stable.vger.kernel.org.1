@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A840CA809A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02FFA806A1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1E67B350A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA7C1B64EFD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9455626B965;
-	Tue,  8 Apr 2025 12:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BF926A1AA;
+	Tue,  8 Apr 2025 12:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEOS3gkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcesL2jF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527D326B955;
-	Tue,  8 Apr 2025 12:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EE026A0B0;
+	Tue,  8 Apr 2025 12:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116484; cv=none; b=TixNmLeT3DXL7bQPOwuis5Gc+fy2KnDAvtjUuGhBv2JrHTfBxfYKTX8ubdmPjrOGu2DSB1oy8wad6Yp/r4wCd241VDfKHpt4LPBVWngvHctPSkvS0zpCDsTI+YIQj33ootySd4SWQBbCDYT7sv1vghRVg96Cz8YSTR/MezBas/M=
+	t=1744114880; cv=none; b=AiDGEptI4FyxFM28df9mFIq45ABh/NYfd0iwe+0SGAnzqRRaqFBSyW5qRZRPZcDF/1S9bUx913QqMB2VpI5DK2XwI5VC5BU9RWPZG4PJZwgMYF/omDMtPXBpfHZyzaUXZVDcOpydBzP1CEbRuerhg2yhbNvL/L+lCa/byBOjtns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116484; c=relaxed/simple;
-	bh=egKTCV2zle0BUg2AagiApywgH9qsQGTk+1tvL82+hpA=;
+	s=arc-20240116; t=1744114880; c=relaxed/simple;
+	bh=ZRGX5NeWVVqIM9q6/IQfKKe4BiwtB9kZoCv84JfM7t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzgjKRI8AzDm1VYUI/uEfdagnXcsR9uiDxFNAHY2iEterGuBVyhrSVo1Ry7GNthsGHeo31FYAkwLYow8yQmhKrXTwJmHWp5WLJyB213nZbjwXWA5puN1cf7Vm0X5+8xeRbf384rPZXU/+Qw/yHZWs1GNGobGssK4VZBFgK1MBCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEOS3gkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78374C4CEE5;
-	Tue,  8 Apr 2025 12:48:03 +0000 (UTC)
+	 MIME-Version; b=O5rZtPaA/xuj2x/Zi2aWIIUuHl7TaFFsXdgEtD+ZbUbubSwCuG5lWOqlSZyjr/2YW2BFZr34S0geweLBnE0Hr3S+UTewqGWxdGXOIIrZGTFZuFnq4fU7OFdS8awUJgECa7Lpsq7D/O8CfkD0BC7oDEI5QumqiAv9n2TZtcR7dVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcesL2jF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F60C4CEE5;
+	Tue,  8 Apr 2025 12:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116483;
-	bh=egKTCV2zle0BUg2AagiApywgH9qsQGTk+1tvL82+hpA=;
+	s=korg; t=1744114880;
+	bh=ZRGX5NeWVVqIM9q6/IQfKKe4BiwtB9kZoCv84JfM7t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEOS3gkp8rm5bY55XtO0vAcyb0VcaiB87WOyusZEgBTKHoiZXNk7ni+IodbBEylE1
-	 gHLIj8JmC9QqBc7eCfFYUl1ZCFljU1xr9Tkbz0i9rEXEumANt7G/QExVv5HmCS2WJa
-	 oYpXYRp2IMCwvIHJEgJJ61X+yHpMYWGwcK7P54cM=
+	b=RcesL2jF4BdyBb/8XYgxj2Lq5StLzAq9qCUnQo3I04x+cmS3OvTJ4oyeOmBjDL0kC
+	 6MCiom9CUdmDlUzz8qXg9RSeEbyTqY0LiC3/Y8dDGOM4JIrofafibZCbicXek1W5gN
+	 gjzNVTw7cSnu/sOsvQ6NZFhc8r1mwk4SA8F4SsTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	Marcus Meissner <meissner@suse.de>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/423] leds: Fix LED_OFF brightness race
+Subject: [PATCH 6.13 270/499] perf tools: annotate asm_pure_loop.S
 Date: Tue,  8 Apr 2025 12:48:02 +0200
-Message-ID: <20250408104849.374023317@linuxfoundation.org>
+Message-ID: <20250408104857.950454561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Marcus Meissner <meissner@suse.de>
 
-[ Upstream commit 2c70953b6f535f7698ccbf22c1f5ba26cb6c2816 ]
+[ Upstream commit 9a352a90e88a041f4b26d359493e12a7f5ae1a6a ]
 
-While commit fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-successfully forces led_set_brightness() to be called with LED_OFF at
-least once when switching from blinking to LED on state so that
-hw-blinking can be disabled, another race remains. Indeed in
-led_set_brightness(LED_OFF) followed by led_set_brightness(any)
-scenario the following CPU scheduling can happen:
+Annotate so it is built with non-executable stack.
 
-    CPU0                                     CPU1
-    ----                                     ----
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-                                         led_set_brightness(LED_OFF) {
-                                           set_bit(BRIGHTNESS_OFF)
-					   queue_work()
-                                         }
-                                         led_set_brightness(any) {
-                                           set_bit(BRIGHTNESS)
-					   queue_work() //already queued
-                                         }
-   test_and_clear_bit(BRIGHTNESS)
-     /* LED set with brightness any */
- }
-
- /* From previous CPU1 queue_work() */
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-     /* LED turned off */
-   test_and_clear_bit(BRIGHTNESS)
-     /* Clear from previous run, LED remains off */
-
-In that case the led_set_brightness(LED_OFF)/led_set_brightness(any)
-sequence will be effectively executed in reverse order and LED will
-remain off.
-
-With the introduction of commit 32360bf6a5d4 ("leds: Introduce ordered
-workqueue for LEDs events instead of system_wq") the race is easier to
-trigger as sysfs brightness configuration does not wait for
-set_brightness_delayed() work to finish (flush_work() removal).
-
-Use delayed_set_value to optionnally re-configure brightness after a
-LED_OFF. That way a LED state could be configured more that once but
-final state will always be as expected. Ensure that delayed_set_value
-modification is seen before set_bit() using smp_mb__before_atomic().
-
-Fixes: fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/19c81177059dab7b656c42063958011a8e4d1a66.1740050412.git.repk@triplefau.lt
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 8b97519711c3 ("perf test: Add asm pureloop test tool")
+Signed-off-by: Marcus Meissner <meissner@suse.de>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250323085410.23751-1-meissner@suse.de
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-core.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
-index 001c290bc07b7..cda0995b16798 100644
---- a/drivers/leds/led-core.c
-+++ b/drivers/leds/led-core.c
-@@ -159,8 +159,19 @@ static void set_brightness_delayed(struct work_struct *ws)
- 	 * before this work item runs once. To make sure this works properly
- 	 * handle LED_SET_BRIGHTNESS_OFF first.
- 	 */
--	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags))
-+	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags)) {
- 		set_brightness_delayed_set_brightness(led_cdev, LED_OFF);
-+		/*
-+		 * The consecutives led_set_brightness(LED_OFF),
-+		 * led_set_brightness(LED_FULL) could have been executed out of
-+		 * order (LED_FULL first), if the work_flags has been set
-+		 * between LED_SET_BRIGHTNESS_OFF and LED_SET_BRIGHTNESS of this
-+		 * work. To avoid ending with the LED turned off, turn the LED
-+		 * on again.
-+		 */
-+		if (led_cdev->delayed_set_value != LED_OFF)
-+			set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
-+	}
- 
- 	if (test_and_clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags))
- 		set_brightness_delayed_set_brightness(led_cdev, led_cdev->delayed_set_value);
-@@ -331,10 +342,13 @@ void led_set_brightness_nopm(struct led_classdev *led_cdev, unsigned int value)
- 	 * change is done immediately afterwards (before the work runs),
- 	 * it uses a separate work_flag.
- 	 */
--	if (value) {
--		led_cdev->delayed_set_value = value;
-+	led_cdev->delayed_set_value = value;
-+	/* Ensure delayed_set_value is seen before work_flags modification */
-+	smp_mb__before_atomic();
+diff --git a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+index 75cf084a927d3..5777600467723 100644
+--- a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
++++ b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+@@ -26,3 +26,5 @@ skip:
+ 	mov	x0, #0
+ 	mov	x8, #93 // __NR_exit syscall
+ 	svc	#0
 +
-+	if (value)
- 		set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
--	} else {
-+	else {
- 		clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
- 		clear_bit(LED_SET_BLINK, &led_cdev->work_flags);
- 		set_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags);
++.section .note.GNU-stack, "", @progbits
 -- 
 2.39.5
 
