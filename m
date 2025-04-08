@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5ED7A803CA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51859A802CB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3650919E4AD6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF1A188A089
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36276269819;
-	Tue,  8 Apr 2025 11:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DF4268FED;
+	Tue,  8 Apr 2025 11:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3/PfiJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YP07sou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A0B20CCD8;
-	Tue,  8 Apr 2025 11:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6AA266EEA;
+	Tue,  8 Apr 2025 11:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113436; cv=none; b=F4W79bvM689Yubapyxi7AVIOghzE+YHxFffrMewPQZE2R04yagq8FfEplxYrq9TS72Z6GdUQhYQWU15jqEiNdruJUrnQmtInQOuxzW/xYrlhAvMRyxlGbPqD9atOQgbwOjx/8PJ7Vl6S/WLpfTJGsdYxKCu2sjUNo2HzanEQjmU=
+	t=1744112759; cv=none; b=SdU5KpdulAr7QttiEi/8IW2t9WfcAgplcVBEgUjPQTW2OiPZZfxUQmGdbxRtdTSmwiq7kdl/zVZ/9lh2H0z+Q1vmYK1+DOPt3UdDyjuDmQn7tAZzGnXPRRjzg9dMtaZ0VlRGDSfbRIZy5L9CbW9O/DsPVAtH6IPx4YeRba013xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113436; c=relaxed/simple;
-	bh=3zEmpOKXv69onhUWWoMM54uMOcRtYaZhVX9KeUXrCrQ=;
+	s=arc-20240116; t=1744112759; c=relaxed/simple;
+	bh=24mHujU6Xdz0flljewBdRnnoBjd5Qjc0q/EqJtVxDhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHysdiCezaAMZ/UrtGkCIn2562zZ/CgHxdXGLcp0yzTbozXcO39p4Wll3CbXTWwvuopHVvfMfJ0AwZfzGc8I4akHK2BoS4WUoA+2HGjI2ygrFTWY0l5RhPW2l8kCIawzLvHAr2mPRKUJ2MbxoLBE7Pklj1ysDj0L4GBY+CzN9Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3/PfiJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79812C4CEE5;
-	Tue,  8 Apr 2025 11:57:15 +0000 (UTC)
+	 MIME-Version; b=NKvg0/XrhbvN/7vVNyYi0QhwQV/2aGmY24ZPdVZpSdcupG15i+giv+Shp9IAHR/dBX06dqMcQLAkGlwdEHhJfSQXcu8lSvG897srmwjSBzIUPHNOrXW+8WX/AM04oLlusZkvLOPQRccFD+0YMhsrWuZZ6pLzLt1vNL4j2ZBLkvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YP07sou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929F7C4CEE5;
+	Tue,  8 Apr 2025 11:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113435;
-	bh=3zEmpOKXv69onhUWWoMM54uMOcRtYaZhVX9KeUXrCrQ=;
+	s=korg; t=1744112758;
+	bh=24mHujU6Xdz0flljewBdRnnoBjd5Qjc0q/EqJtVxDhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3/PfiJVrGJVEgGm8v4hW2O3vMoGqr7XaPJ4pLQ2mrEEQD3UDtEakgvlWRd15yqDR
-	 /pt9xEVAeYjHJGkzuVFGwqCB5GmZOF1pozSEozkzV5WHgy1Hm1hnTUYwoxolX0cUJx
-	 5fYqJjd5l22DCK4POhx2H0waIuQLTUrOy1luUMVU=
+	b=1YP07souy1+AzcLHgxHd1pvflaE8kzl4Px+X/U5kFgObx3Imm4j9eQTCOLquNNc1n
+	 3b/vrSbaL+ymDsLG8WSERM9KvRrG3B2gMWvpdZboY+5NjDeHQjTY0JQpFECs6yNInS
+	 FaavkwkLm7OkG/das9qtjx+Z06bf6kkGI26MMgQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/268] sched/smt: Always inline sched_smt_active()
+Subject: [PATCH 5.15 187/279] power: supply: max77693: Fix wrong conversion of charge input threshold value
 Date: Tue,  8 Apr 2025 12:49:30 +0200
-Message-ID: <20250408104832.837994897@linuxfoundation.org>
+Message-ID: <20250408104831.383363711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 09f37f2d7b21ff35b8b533f9ab8cfad2fe8f72f6 ]
+[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
 
-sched_smt_active() can be called from noinstr code, so it should always
-be inlined.  The CONFIG_SCHED_SMT version already has __always_inline.
-Do the same for its !CONFIG_SCHED_SMT counterpart.
+The charge input threshold voltage register on the MAX77693 PMIC accepts
+four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
+Due to an oversight, the driver calculated the values for 4.7v and above
+starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
+gives 0).
 
-Fixes the following warning:
+Add 1 to the calculation to ensure that 4.7v is converted to a register
+value of 0x1 and that the other two voltages are converted correctly as
+well.
 
-  vmlinux.o: error: objtool: intel_idle_ibrs+0x13: call to sched_smt_active() leaves .noinstr.text section
-
-Fixes: 321a874a7ef8 ("sched/smt: Expose sched_smt_present static key")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/1d03907b0a247cf7fb5c1d518de378864f603060.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503311434.lyw2Tveh-lkp@intel.com/
+Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/smt.h | 2 +-
+ drivers/power/supply/max77693_charger.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/smt.h b/include/linux/sched/smt.h
-index 59d3736c454cf..737b50f40137b 100644
---- a/include/linux/sched/smt.h
-+++ b/include/linux/sched/smt.h
-@@ -12,7 +12,7 @@ static __always_inline bool sched_smt_active(void)
- 	return static_branch_likely(&sched_smt_present);
- }
- #else
--static inline bool sched_smt_active(void) { return false; }
-+static __always_inline bool sched_smt_active(void) { return false; }
- #endif
- 
- void arch_smt_update(void);
+diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
+index a2c5c9858639f..ef3482fa4023e 100644
+--- a/drivers/power/supply/max77693_charger.c
++++ b/drivers/power/supply/max77693_charger.c
+@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
+ 	case 4700000:
+ 	case 4800000:
+ 	case 4900000:
+-		data = (uvolt - 4700000) / 100000;
++		data = ((uvolt - 4700000) / 100000) + 1;
+ 		break;
+ 	default:
+ 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
 -- 
 2.39.5
 
