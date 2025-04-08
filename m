@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E38A8081A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69A3A80A9F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFCC68A6F98
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3DF47B1D61
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379C326A0C2;
-	Tue,  8 Apr 2025 12:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E5E26E174;
+	Tue,  8 Apr 2025 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eu21UAQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6NEdIkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DCF26A0A6;
-	Tue,  8 Apr 2025 12:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26142267B89;
+	Tue,  8 Apr 2025 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115333; cv=none; b=lisz5HMEpsMAGEqyE5+07hmxmkL9iiF/s1S2dVzLeFLZyIzFn7mfkAX8CRRFicvktu5KhKJbtOZhj58s0s7b8p8HZ1hsDhBI1sEq13+DVLh4cE242IqwAXIKQh+xiZhCcSEvIVJYIa2xks5koVDhrjVPxpUlUO9owkE1agBGrFg=
+	t=1744116932; cv=none; b=jBpJYj+52CRtNx4mE2W1cGNUeGsrd0CpHE4VevH7sx/pAcaWN+qq0ZpUdRLz/PUWisG4iHifHlPnEJOsE/cozeF8xxql73dy+REE+yp/jbMwRdPptWldpR7IMf99mmmFBRaj9dH2IDVUWIh/MPJl9B09D/PClqyBnQfTxCDKobQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115333; c=relaxed/simple;
-	bh=kBq547XsgDXIbVoD5nzuF9VTprRKC6NBfdHUtSb7JkU=;
+	s=arc-20240116; t=1744116932; c=relaxed/simple;
+	bh=FyrqQSlHoDvsfZQF3kkntF75vhWDaazc/V4r04i74aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaNzZmgMDB3cj9DU3D2sTiybiJC2InYDIsFs7LnmeSG+kvQlt99G4hN0x5vDiQt4fx9XJhC+jYbbBSh/Yx8J8jgMZ8WHK/IzxMcw/j2fcxYUlzKxk42xUy4R9QrhD1bD0c83lVqGpz4l0lQ/PB/ClDPbIn4GmmfwTSroOSSRo+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eu21UAQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D513C4CEE5;
-	Tue,  8 Apr 2025 12:28:52 +0000 (UTC)
+	 MIME-Version; b=tFSJQs1BiXH4aMuvMES8932yBm1eJn0hkmAwHlQKy2dLLB1DfVx20IL2bMqhBKazNvGlIyawAbmxeJSV+iuWkahkbH4KMv+NLkWB8QUvzIYXyXjIjhRaLGH6g64Zg3B/FnIlfeN4obTJfcuTvK0pAyfdmUEPlTZh/xETTsnuqwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6NEdIkJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67C9C4CEE5;
+	Tue,  8 Apr 2025 12:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115332;
-	bh=kBq547XsgDXIbVoD5nzuF9VTprRKC6NBfdHUtSb7JkU=;
+	s=korg; t=1744116932;
+	bh=FyrqQSlHoDvsfZQF3kkntF75vhWDaazc/V4r04i74aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eu21UAQIPxvj0EhoaV06tF9HKgmIwRSf2vwz2Q61lnkEERsWL15X+eVaKMmbQkUj6
-	 Glsq8XYlr8g8uPrI6GG3htnWxyzfmQgP+9uJoxheKrhXtbpaAyYETC+wTN5g36iau+
-	 V/QEJWk/kCoGMl+WzcZdUHRJ0HnQT/psqBzK/r2w=
+	b=k6NEdIkJi9wkIRvpwyOQcFe8D0Dc+Qo16rvdgroo70ezz1IwYR3YIvgl2LjUKtE5J
+	 WzBJHjyJzm+GbJ4A6QG4bJsSvGeYaKW67uf9NC5U/yCermfi7qEhJzDPSw+OY7IF2j
+	 hsvfiNImQVYg8Yqc5w8p5mVXpQICDZIDtAeVyJg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <baimingcong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 436/499] LoongArch: Increase MAX_IO_PICS up to 8
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 322/423] ALSA: hda/realtek: Fix built-in mic on another ASUS VivoBook model
 Date: Tue,  8 Apr 2025 12:50:48 +0200
-Message-ID: <20250408104902.103650384@linuxfoundation.org>
+Message-ID: <20250408104853.315139585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit ec105cadff5d8c0a029a3dc1084cae46cf3f799d upstream.
+[ Upstream commit 8983dc1b66c0e1928a263b8af0bb06f6cb9229c4 ]
 
-Begin with Loongson-3C6000, the number of PCI host can be as many as
-8 for multi-chip machines, and this number should be the same for I/O
-interrupt controllers. To support these machines we also increase the
-MAX_IO_PICS up to 8.
+There is another VivoBook model which built-in mic got broken recently
+by the fix of the pin sort.  Apply the correct quirk
+ALC256_FIXUP_ASUS_MIC_NO_PRESENCE to this model for addressing the
+regression, too.
 
-Cc: stable@vger.kernel.org
-Tested-by: Mingcong Bai <baimingcong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Closes: https://lore.kernel.org/Z95s5T6OXFPjRnKf@eldamar.lan
+Link: https://patch.msgid.link/20250402074208.7347-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/irq.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/loongarch/include/asm/irq.h
-+++ b/arch/loongarch/include/asm/irq.h
-@@ -53,7 +53,7 @@ void spurious_interrupt(void);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- void arch_trigger_cpumask_backtrace(const struct cpumask *mask, int exclude_cpu);
- 
--#define MAX_IO_PICS 2
-+#define MAX_IO_PICS 8
- #define NR_IRQS	(64 + NR_VECTORS * (NR_CPUS + MAX_IO_PICS))
- 
- struct acpi_vector_group {
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 1e2059035d5b1..59e59fdc38f2c 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10716,6 +10716,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1c43, "ASUS UX8406MA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1c63, "ASUS GU605M", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
++	SND_PCI_QUIRK(0x1043, 0x1c80, "ASUS VivoBook TP401", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-- 
+2.39.5
+
 
 
 
