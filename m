@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F0BA802B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BA4A8018B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75CED3A941F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62A7188281C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B12263C78;
-	Tue,  8 Apr 2025 11:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2DE269B1E;
+	Tue,  8 Apr 2025 11:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNxKM0PZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+e5n8sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12532219301;
-	Tue,  8 Apr 2025 11:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F77269B0C;
+	Tue,  8 Apr 2025 11:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112646; cv=none; b=QJPwJlkBW42PKAxYVmaPXXD34mit5f5mUVKuWFOj8vMizZngq3KjfeQ//R6lDADx7qq3LGGWlfHLepO080m9f2ewysgw31e51C+0oqi+WQSJQEwxkCZ6cmZwH5l9VBTkHo2teZDNDCgoJPGrm5JKoQV3++UZLZOnuo6fLo9OFZ4=
+	t=1744111983; cv=none; b=QOFJWEcGWQP34b9CNEQa7kDEUi43G0dP1n7L4wOGMx5pEIxJEZ9rrV15VilCluGknwC78RCvdNHSK3CppAHaNU7mOPCfqBmuIlktWvXZNqFkymkeHlRDZaoPGFi1bQ91okz3/zTQU4v7YF1hKHeAFtdSOZOeZtlJRC+luTq5WuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112646; c=relaxed/simple;
-	bh=rOwH67MbRkj+rXdsa1bh2/FYgkZc9MUOrqVJhSp714c=;
+	s=arc-20240116; t=1744111983; c=relaxed/simple;
+	bh=rPEwXyDViuDPZ9tRgg4Q01APOowTo1RIlQoppeW3Fg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSNYQ/9DztKfCnzOqOUzI9fUlS2OAYB/4PSa8Lhs4h1wMGrA9ikFuctaeMZG8IhDWGwYN25+1Sejlsj2ZWD6ifhanTQevBdT5Q9JFz5twAa/eg+ZQ5hHLL2gy5dZPJEPe0G4IkKPjYjhGXFBfj0V3LcE4KjnO453ZtA8RcG1/y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNxKM0PZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CB1C4CEE5;
-	Tue,  8 Apr 2025 11:44:05 +0000 (UTC)
+	 MIME-Version; b=URMutsNaf9URbVIl8OmdOmRoWIwJoQ70p1KBlw6pu6+hLD848u45N3mzJGB7pr7zNAgw5AHwNBfN0Xcm3vA7yQo/GAcSfUaHHp8lKosC8RKDCz5otmqcbOnHBb6QhyFZ+DywHM96GkHOmhrzIhOg15dSxvl5DT3670kGRUqvwLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+e5n8sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261EDC4CEE5;
+	Tue,  8 Apr 2025 11:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112645;
-	bh=rOwH67MbRkj+rXdsa1bh2/FYgkZc9MUOrqVJhSp714c=;
+	s=korg; t=1744111983;
+	bh=rPEwXyDViuDPZ9tRgg4Q01APOowTo1RIlQoppeW3Fg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNxKM0PZxfegE13oQOLOYuqfDIFbmjkVVI0uZPqsKP+KBjvXJipviaVKg0SpJlhcq
-	 L+ea2yNCTUdQj5TJEzKlBR5Q3mJ8fd8wKNytuo8xhgmuiRgUBTbbMpqaVLjksvpf4c
-	 q1SqilwfwwsEBPllrc4fxYhglUX6S5sK+/D/MRSI=
+	b=q+e5n8sfepOhP1b53hfELCF/wlxoj8rTcR7WbWjGrKRcE6QGzr+hoGHzzpeRSOkeR
+	 8yX+SGejXU+x4yIBMo/+TCTjG2ojzBh3olRp5Y06qlXLHrfKDLlSztMyA4fU44RvB5
+	 rHq5gSNKSNicxAqgnddQ7E1XNcsx6cbTjfGJqsjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Oleg Gorobets <oleg.goro@gmail.com>
-Subject: [PATCH 5.15 145/279] ALSA: hda/realtek: Always honor no_shutup_pins
+	Magnus Karlsson <magnus.karlsson@gmail.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 631/731] xsk: Fix __xsk_generic_xmit() error code when cq is full
 Date: Tue,  8 Apr 2025 12:48:48 +0200
-Message-ID: <20250408104830.253543531@linuxfoundation.org>
+Message-ID: <20250408104928.948942590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 5a0c72c1da3cbc0cd4940a95d1be2830104c6edf ]
+[ Upstream commit 5d0b204654de25615cf712be86c3192eca68ed80 ]
 
-The workaround for Dell machines to skip the pin-shutup for mic pins
-introduced alc_headset_mic_no_shutup() that is replaced from the
-generic snd_hda_shutup_pins() for certain codecs.  The problem is that
-the call is done unconditionally even if spec->no_shutup_pins is set.
-This seems causing problems on other platforms like Lenovo.
+When the cq reservation is failed, the error code is not set which is
+initialized to zero in __xsk_generic_xmit(). That means the packet is not
+send successfully but sendto() return ok.
 
-This patch corrects the behavior and the driver honors always
-spec->no_shutup_pins flag and skips alc_headset_mic_no_shutup() if
-it's set.
+Considering the impact on uapi, return -EAGAIN is a good idea. The cq is
+full usually because it is not released in time, try to send msg again is
+appropriate.
 
-Fixes: dad3197da7a3 ("ALSA: hda/realtek - Fixup headphone noise via runtime suspend")
-Reported-and-tested-by: Oleg Gorobets <oleg.goro@gmail.com>
-Link: https://patch.msgid.link/20250315143020.27184-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The bug was at the very early implementation of xsk, so the Fixes tag
+targets the commit that introduced the changes in
+xsk_cq_reserve_addr_locked where this fix depends on.
+
+Fixes: e6c4047f5122 ("xsk: Use xsk_buff_pool directly for cq functions")
+Suggested-by: Magnus Karlsson <magnus.karlsson@gmail.com>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250227081052.4096337-1-wangliang74@huawei.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/xdp/xsk.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index cc0d6e040a1d2..12967b40ab088 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -576,6 +576,9 @@ static void alc_shutup_pins(struct hda_codec *codec)
- {
- 	struct alc_spec *spec = codec->spec;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 41093ea63700c..a373a7130d757 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -805,8 +805,11 @@ static int __xsk_generic_xmit(struct sock *sk)
+ 		 * if there is space in it. This avoids having to implement
+ 		 * any buffering in the Tx path.
+ 		 */
+-		if (xsk_cq_reserve_addr_locked(xs->pool, desc.addr))
++		err = xsk_cq_reserve_addr_locked(xs->pool, desc.addr);
++		if (err) {
++			err = -EAGAIN;
+ 			goto out;
++		}
  
-+	if (spec->no_shutup_pins)
-+		return;
-+
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-@@ -591,8 +594,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 		alc_headset_mic_no_shutup(codec);
- 		break;
- 	default:
--		if (!spec->no_shutup_pins)
--			snd_hda_shutup_pins(codec);
-+		snd_hda_shutup_pins(codec);
- 		break;
- 	}
- }
+ 		skb = xsk_build_skb(xs, &desc);
+ 		if (IS_ERR(skb)) {
 -- 
 2.39.5
 
