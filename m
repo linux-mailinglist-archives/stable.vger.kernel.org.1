@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4224EA80A7B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB72A806A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A7217FD27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:54:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5743719E4EF4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C9F26B943;
-	Tue,  8 Apr 2025 12:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FBB26A0D4;
+	Tue,  8 Apr 2025 12:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6isLC20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f95XH47c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A679D278151;
-	Tue,  8 Apr 2025 12:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D822126A0D6;
+	Tue,  8 Apr 2025 12:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116513; cv=none; b=MJNkIUh/NY7ljViWRLPfasEcKtY191b8rEg5oE0CRKwitObEQw2v8PSO4GBfZ2ah4yVveMmbqnjI/tzd/SCE63iSJhVPEGnVZhwCpdPysX00BGvQyifQrFO/5X26gXxLp0ikk45+UzNuP7nArl4oo5XpZH9E90UUQrtZfJSacUg=
+	t=1744114909; cv=none; b=F+glWuLft+N/7tI7yuRCnVsV1KHwxg6FIJ9GMTwvuM12z0TT3DZyYPu6y10Ug6K6k67cEwXGLO46E0i0qK1UVlGGCNYJmicY1Rq+yIHBhKM68c+TuubdaW0ijPGqzYhk4+2KfVFcXU3PtFXH/wbjufQztYM2gTOri8MK3NdHcuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116513; c=relaxed/simple;
-	bh=DhcnPidyw1XawgHuFIf/h3g1sO0t1XvERLbbI1v8qek=;
+	s=arc-20240116; t=1744114909; c=relaxed/simple;
+	bh=FBfyDHo1Y7gZQLmN9RoqJLObbKVFCOwmoxgGjPJ6yJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwbq+VqItSl/YH9FUDFzJ2lktwZEjKaTAzx9ugA4yrlxYVC4YzqBv107iZjKDI61cMCzkXzvQ7OjmG6iXjxp3jca0Wi6jAVeFnVj46FCbgU73tSXRxMZi0oerXTDbmKlrcmaw/H3q9EEWQDrxCVYSrFKvGHCMjKQtbypb7kPKWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6isLC20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2F0C4CEEC;
-	Tue,  8 Apr 2025 12:48:32 +0000 (UTC)
+	 MIME-Version; b=cBlkZZZ1IbbTKuR1xj2aS+PcTVwyDdxvbnu8RcRVbYle2jrG9iEFhLdTptLsfECZI23VbT0QDCFchJyfuhUB9SIQ0vfDu/qhNHqCl1h4Hbn3SvIIkiw2Q5XO1ajLRLCAC96qZ31NXUHvvKR7tB6NY8n4WVHUwk7vr3GwLuO+gNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f95XH47c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6586DC4CEE5;
+	Tue,  8 Apr 2025 12:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116513;
-	bh=DhcnPidyw1XawgHuFIf/h3g1sO0t1XvERLbbI1v8qek=;
+	s=korg; t=1744114909;
+	bh=FBfyDHo1Y7gZQLmN9RoqJLObbKVFCOwmoxgGjPJ6yJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6isLC209wPozB67U5aHmzXr3CSVzN8B3MGun8AoRic1rHgyEKoPJhe8NJ4UaeSmD
-	 BYEaenPXxrs9h2GVUKx2Wa5cBxlUkp6Td2KRgVHloy3LzvDn3k4sK8p6/E1d9gz9B6
-	 SHDAvsdvmhrNW70ktfKSLQqBBsZQSBXZTg7bjbgk=
+	b=f95XH47crx87l6CJYJ7gje2YJM4zpfxHn1n3YS/huMeKrDah0IrMDfk7RbLSk1Bsm
+	 JJ37gduIJMTiNWxjCLOM2irCn4WL5DFb3TCXvl7icVi0/FjwwZw3Y1KVi9KUmCSn/y
+	 1XTRrxQiXHPhvB4ZslyM94lvoJAWRzqou1a4zIxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/423] phy: phy-rockchip-samsung-hdptx: Dont use dt aliases to determine phy-id
+Subject: [PATCH 6.13 280/499] rndis_host: Flag RNDIS modems as WWAN devices
 Date: Tue,  8 Apr 2025 12:48:12 +0200
-Message-ID: <20250408104849.605490008@linuxfoundation.org>
+Message-ID: <20250408104858.200361290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit f08d1c08563846f9be79a4859e912c8795d690fd ]
+[ Upstream commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8 ]
 
-The phy needs to know its identity in the system (phy0 or phy1 on rk3588)
-for some actions and the driver currently contains code abusing of_alias
-for that.
+Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+Broadband Modems, as opposed to regular Ethernet adapters.
 
-Devicetree aliases are always optional and should not be used for core
-device functionality, so instead keep a list of phys on a soc in the
-of_device_data and find the phy-id by comparing against the mapped
-register-base.
+Otherwise NetworkManager gets confused, misjudges the device type,
+and wouldn't know it should connect a modem to get the device to work.
+What would be the result depends on ModemManager version -- older
+ModemManager would end up disconnecting a device after an unsuccessful
+probe attempt (if it connected without needing to unlock a SIM), while
+a newer one might spawn a separate PPP connection over a tty interface
+instead, resulting in a general confusion and no end of chaos.
 
-Fixes: c4b09c562086 ("phy: phy-rockchip-samsung-hdptx: Add clock provider support")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20241206103401.1780416-3-heiko@sntech.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The only way to get this work reliably is to fix the device type
+and have good enough version ModemManager (or equivalent).
+
+Fixes: 63ba395cd7a5 ("rndis_host: support Novatel Verizon USB730L")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://patch.msgid.link/20250325095842.1567999-1-lkundrak@v3.sk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../phy/rockchip/phy-rockchip-samsung-hdptx.c | 50 ++++++++++++++++---
- 1 file changed, 44 insertions(+), 6 deletions(-)
+ drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 69c3ec0938f74..be6f1ca9095aa 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -266,11 +266,22 @@ enum rk_hdptx_reset {
- 	RST_MAX
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 7b3739b29c8f7..bb0bf14158727 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info = {
+ 	.tx_fixup =	rndis_tx_fixup,
  };
  
-+#define MAX_HDPTX_PHY_NUM	2
-+
-+struct rk_hdptx_phy_cfg {
-+	unsigned int num_phys;
-+	unsigned int phy_ids[MAX_HDPTX_PHY_NUM];
++static const struct driver_info	wwan_rndis_info = {
++	.description =	"Mobile Broadband RNDIS device",
++	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
++	.bind =		rndis_bind,
++	.unbind =	rndis_unbind,
++	.status =	rndis_status,
++	.rx_fixup =	rndis_rx_fixup,
++	.tx_fixup =	rndis_tx_fixup,
 +};
 +
- struct rk_hdptx_phy {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	struct regmap *grf;
+ /*-------------------------------------------------------------------------*/
  
-+	/* PHY const config */
-+	const struct rk_hdptx_phy_cfg *cfgs;
-+	int phy_id;
-+
- 	struct phy *phy;
- 	struct phy_config *phy_cfg;
- 	struct clk_bulk_data *clks;
-@@ -1019,15 +1030,14 @@ static int rk_hdptx_phy_clk_register(struct rk_hdptx_phy *hdptx)
- 	struct device *dev = hdptx->dev;
- 	const char *name, *pname;
- 	struct clk *refclk;
--	int ret, id;
-+	int ret;
- 
- 	refclk = devm_clk_get(dev, "ref");
- 	if (IS_ERR(refclk))
- 		return dev_err_probe(dev, PTR_ERR(refclk),
- 				     "Failed to get ref clock\n");
- 
--	id = of_alias_get_id(dev->of_node, "hdptxphy");
--	name = id > 0 ? "clk_hdmiphy_pixel1" : "clk_hdmiphy_pixel0";
-+	name = hdptx->phy_id > 0 ? "clk_hdmiphy_pixel1" : "clk_hdmiphy_pixel0";
- 	pname = __clk_get_name(refclk);
- 
- 	hdptx->hw.init = CLK_HW_INIT(name, pname, &hdptx_phy_clk_ops,
-@@ -1070,8 +1080,9 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
- 	struct phy_provider *phy_provider;
- 	struct device *dev = &pdev->dev;
- 	struct rk_hdptx_phy *hdptx;
-+	struct resource *res;
- 	void __iomem *regs;
--	int ret;
-+	int ret, id;
- 
- 	hdptx = devm_kzalloc(dev, sizeof(*hdptx), GFP_KERNEL);
- 	if (!hdptx)
-@@ -1079,11 +1090,27 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
- 
- 	hdptx->dev = dev;
- 
--	regs = devm_platform_ioremap_resource(pdev, 0);
-+	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(regs))
- 		return dev_err_probe(dev, PTR_ERR(regs),
- 				     "Failed to ioremap resource\n");
- 
-+	hdptx->cfgs = device_get_match_data(dev);
-+	if (!hdptx->cfgs)
-+		return dev_err_probe(dev, -EINVAL, "missing match data\n");
-+
-+	/* find the phy-id from the io address */
-+	hdptx->phy_id = -ENODEV;
-+	for (id = 0; id < hdptx->cfgs->num_phys; id++) {
-+		if (res->start == hdptx->cfgs->phy_ids[id]) {
-+			hdptx->phy_id = id;
-+			break;
-+		}
-+	}
-+
-+	if (hdptx->phy_id < 0)
-+		return dev_err_probe(dev, -ENODEV, "no matching device found\n");
-+
- 	ret = devm_clk_bulk_get_all(dev, &hdptx->clks);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to get clocks\n");
-@@ -1147,8 +1174,19 @@ static const struct dev_pm_ops rk_hdptx_phy_pm_ops = {
- 		       rk_hdptx_phy_runtime_resume, NULL)
+ static const struct usb_device_id	products [] = {
+@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] = {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Novatel Verizon USB730L */
++	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
++	 * Telit FN990A (RNDIS)
++	 */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long) &rndis_info,
++	.driver_info = (unsigned long)&wwan_rndis_info,
+ },
+ 	{ },		// END
  };
- 
-+static const struct rk_hdptx_phy_cfg rk3588_hdptx_phy_cfgs = {
-+	.num_phys = 2,
-+	.phy_ids = {
-+		0xfed60000,
-+		0xfed70000,
-+	},
-+};
-+
- static const struct of_device_id rk_hdptx_phy_of_match[] = {
--	{ .compatible = "rockchip,rk3588-hdptx-phy", },
-+	{
-+		.compatible = "rockchip,rk3588-hdptx-phy",
-+		.data = &rk3588_hdptx_phy_cfgs
-+	},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, rk_hdptx_phy_of_match);
 -- 
 2.39.5
 
