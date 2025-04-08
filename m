@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF6EA80772
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4F4A804F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5E11BA0029
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDAC34634F0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08AB26A1C1;
-	Tue,  8 Apr 2025 12:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF4126A0D0;
+	Tue,  8 Apr 2025 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeCmTHYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfOxZ9Gh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA0E2673B7;
-	Tue,  8 Apr 2025 12:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F42264FB0;
+	Tue,  8 Apr 2025 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115367; cv=none; b=Rzfcrw54UWjUHkTAh7s/u95Ymslu1nVKLX4L4dDLmj1MHctB5qe+TUu2NoMFN0jio1vSZWUWaq8PclV6ffPwHmaQ1Ha0NSkYw8sm74UQa4f3q5UGrXXFHdaOJGzniNtJEIfywoD0clyE0saVOvP8M0pI9q3CKk1sJ7dUYwxf95s=
+	t=1744113677; cv=none; b=V5ahR8pQTklCrVhizL6GTtHf66HY8rKBM9NEAi2WKFCKroMQt2vegPT2iDA9wLVtNtXPx/jcz/U5p/DypU8T34HZ1czgyOuHpimJnOECiLRlaerYnu80YZyCZAsqi3s0DtYMQLrs9PSBFhGci1kfk1RdWUgYClcYMOqCr2IjtR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115367; c=relaxed/simple;
-	bh=QmeBQfBoiTGpX445bh02rWMBwGEjfv80+Xqw9chD6us=;
+	s=arc-20240116; t=1744113677; c=relaxed/simple;
+	bh=V1IwRE3n4Q6YIkQGpWES06NcONLL6rf0P8KtDlQHpKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KK/+5BqUY+TlVCxcRTCZmWBTu29iYRrVdPVdpTjbveIoC+ap6wEp5Xvl3MEQzNc0z2ZQekUbs2P+vLNb0ywgjIosp3X8bK21q68ZYNei3CPlk4jMPXMPimxoYT0isoUid3TOsbGdeX9ww8Dq3VmGKYpa+LBajIr4OpCIpaBAKRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeCmTHYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B7BC4CEE5;
-	Tue,  8 Apr 2025 12:29:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Up+HKLtcJ3oI+ny6plghTmtGr+P1XxwNNCe8FQAScFAPbcTV0NE+P7TD+Z/jd+8CXsU3XPhvYbVgVollDnkmVmRlgo+rMI17f98G/K4mGYx6F102JrUp3vdO6mStRj36q+lIVdorYgsxkVIM00zEjkXYwLG2+pscqa65KApanc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfOxZ9Gh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6DCC4CEE5;
+	Tue,  8 Apr 2025 12:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115367;
-	bh=QmeBQfBoiTGpX445bh02rWMBwGEjfv80+Xqw9chD6us=;
+	s=korg; t=1744113677;
+	bh=V1IwRE3n4Q6YIkQGpWES06NcONLL6rf0P8KtDlQHpKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeCmTHYMxlaoDsL05yxeH/zDDkBX8bt8a0JVh66VvgGHMOAvqXWNtWd9vtbwF1l4G
-	 7WOc86rUYekNudRj+m8sOmyVqnQQjC5Fsj/mWgxAaPuqRdesnnHbA56AN9wN0hKm67
-	 RtF+OVjchxH1W/JbZg9wAdAHhOYLaQDWvdnAOn/U=
+	b=EfOxZ9GhTSgXsf5kZw2fiv0JzgdYXUrpMmEOzese74pkrZTBcsmgFCMRNjtwnIoRJ
+	 wfmZG8cr19pOAS8Sp6wLJ864IJ2V1ZdGLlJH1Fhmv5crovdD0ykk7aj8XVp3+kL589
+	 1WGCnpH0JC75YJLsfAQIMx3kKJF7gVYzc3yaKKao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.13 448/499] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
+	Karel Balej <balejk@matfyz.cz>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 249/268] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
 Date: Tue,  8 Apr 2025 12:51:00 +0200
-Message-ID: <20250408104902.402355270@linuxfoundation.org>
+Message-ID: <20250408104835.304594652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Karel Balej <balejk@matfyz.cz>
 
-commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
+commit a41fcca4b342811b473bbaa4b44f1d34d87fcce6 upstream.
 
-The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
-The same call was immediately triggered by a subsequent goto statement.
-Thus avoid such a call repetition.
+Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+prevent conversion of R1B responses to R1. Without this, the eMMC card
+in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+with this mmc host doesn't probe with the ETIMEDOUT error originating in
+__mmc_poll_for_busy.
 
-This issue was detected by using the Coccinelle software.
+Note that the other issues reported for this phone and host, namely
+floods of "Tuning failed, falling back to fixed sampling clock" dmesg
+messages for the eMMC and unstable SDIO are not mitigated by this
+change.
 
-Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
+Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
+Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
 Cc: stable@vger.kernel.org
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20250310140707.23459-1-balejk@matfyz.cz
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/test/ntb_perf.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-pxav3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
- 	dma_set_unmap(tx, unmap);
+--- a/drivers/mmc/host/sdhci-pxav3.c
++++ b/drivers/mmc/host/sdhci-pxav3.c
+@@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct plat
+ 	if (!IS_ERR(pxa->clk_core))
+ 		clk_prepare_enable(pxa->clk_core);
  
- 	ret = dma_submit_error(dmaengine_submit(tx));
--	if (ret) {
--		dmaengine_unmap_put(unmap);
-+	if (ret)
- 		goto err_free_resource;
--	}
- 
- 	dmaengine_unmap_put(unmap);
++	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+ 	/* enable 1/8V DDR capable */
+ 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
  
 
 
