@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C793A7FD6D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5E0A8020F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44B9618932C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87683173088
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D68268FE6;
-	Tue,  8 Apr 2025 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD7F227BB6;
+	Tue,  8 Apr 2025 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oibhYGhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DF8MawE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD67268688;
-	Tue,  8 Apr 2025 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AE4263C8A;
+	Tue,  8 Apr 2025 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109749; cv=none; b=qYQd88Wf2eGZvYGkaz3ImoN3LCMqpkWJ5M4lE/f5x83oYuiZwP9X1sFTMc3VKaNadL2HVSIqktN6CRfYzPVMX2U8yFJnX/fp2jYm3DkasVKYJivNiy7+Hy7tOK/DiXo/p7pjDUTl9Wtz2ByJcJAXcvIfAzbmeWwzIVW/k3dE7zU=
+	t=1744112343; cv=none; b=nCe/QraSxKCKeY6SNQl+dBi5Krnjdq5qrecvVQ/yLv1kBYOJoMN0I8ADcP/ODS92Gwgxw2hdYqObiJh/8cwJ3VY74/4NosTntqI2S5fcrhBtE/hzSgkspOVX8CVSXRlmCXDghrcPrFKXqfsf90BBQtkIxgwWdxhDms08XElx/ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109749; c=relaxed/simple;
-	bh=oiJwVyPo1YRXcHtpa52HbOjGv/oTJXjxACu+Zg3uiSQ=;
+	s=arc-20240116; t=1744112343; c=relaxed/simple;
+	bh=5Xo7wUuTFWLwUet+wSjt9YddE/KYtFtYiMXMmWTgI00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVqP1ASozATLrVsjHYt87wJ9Z1IkqkIcyf73YggHR+xqRgMNA5XKiVOkLxkCT8/K1jBcWVCzkqP2dOkJdf3hICAC7T+Bt80/Ip+AXGkWtxgXOLB0mPh3VhGZbOsl1wzzrGVYn0CYXIyVZAct6HR+6yhYrY8zmRflgYKWwpOCIvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oibhYGhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E91C4CEE5;
-	Tue,  8 Apr 2025 10:55:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MVco3ydg0PMzqHxHDxUbNUkgv1y/uSXGp9R7fF4krAdSnupcIyd1bGDFoOzjUQEFl1Vlr0hEfs4Uhk8k6Ni+1+ymoUfUfw8xX7NViH00T0RRSZ7i2zrWado/fhpQTUn9wi7WNXohLYq8l2hJ4KSU4OXSFzcvpfB3m+RXw69VmCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DF8MawE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E974C4CEE5;
+	Tue,  8 Apr 2025 11:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109749;
-	bh=oiJwVyPo1YRXcHtpa52HbOjGv/oTJXjxACu+Zg3uiSQ=;
+	s=korg; t=1744112342;
+	bh=5Xo7wUuTFWLwUet+wSjt9YddE/KYtFtYiMXMmWTgI00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oibhYGhQv2FHk+SbPrdkaaTe7kiZCadQwvMlhxkmMZZEuSpBiHMSfuHsWwfarA9Of
-	 4uynUauMAildhDp4SsHKleCCp8beKv5arjcTAErqaNXpeXaczPgtSl4dIQ9/mW3AO2
-	 iO2iBM0gEde+RR9Cg7cBxGGb+qS1cVeXBauQW+sk=
+	b=DF8MawE9nZEM3bOAu3wrLniHb5tw1C4pkh9gw3Yzy24poLyEnMYDkLTMMusmRmme3
+	 njxaAWBgTi7Ako90vrQ2Ptxjp44gJlnMrnsxjAoxrHQNlm6nwa36KrggCjcxJTD4YJ
+	 BPBEnwfmhA05PUkDf8MfJJyuggBMIiHwjX/kyaz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/227] sctp: Fix undefined behavior in left shift operation
+Subject: [PATCH 5.15 032/279] vboxsf: fix building with GCC 15
 Date: Tue,  8 Apr 2025 12:46:55 +0200
-Message-ID: <20250408104821.520677522@linuxfoundation.org>
+Message-ID: <20250408104827.249363766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
+[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
 
-According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
-"If E1 has a signed type and E1 x 2^E2 is not representable in the result
-type, the behavior is undefined."
+Building with GCC 15 results in build error
+fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
+   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
+      |                                                      ^~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-Shifting 1 << 31 causes signed integer overflow, which leads to undefined
-behavior.
+Due to GCC having enabled -Werror=unterminated-string-initialization[0]
+by default. Separately initializing each array element of
+VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
+and fixing the build error.
 
-Fix this by explicitly using '1U << 31' to ensure the shift operates on
-an unsigned type, avoiding undefined behavior.
+[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
 
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/vboxsf/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index ee6514af830f7..0527728aee986 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
- 	 *     value SHOULD be the smallest TSN not acknowledged by the
- 	 *     receiver of the request plus 2^31.
- 	 */
--	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
-+	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
- 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
- 			 init_tsn, GFP_ATOMIC);
+diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
+index 44725007ccc2c..20cfb2a9e8707 100644
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -21,7 +21,8 @@
  
+ #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
+ 
+-static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
++static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
++						       '\375' };
+ 
+ static int follow_symlinks;
+ module_param(follow_symlinks, int, 0444);
 -- 
 2.39.5
 
