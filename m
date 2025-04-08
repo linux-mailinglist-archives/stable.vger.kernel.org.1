@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE32A804CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E080EA8072E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 722F942753A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61A7816EA7B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA467269D09;
-	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1028F26B2A7;
+	Tue,  8 Apr 2025 12:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6W38t6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJM3SQzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84D72676CA;
-	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED53267731;
+	Tue,  8 Apr 2025 12:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113801; cv=none; b=KCp+xg6vJhYrKK4pkAoEuGeWyW/i0xmYSlvsJJMRnQA+fNtY/EKcGlaDoxtvmU9XCLv/+GpxB6VHWOOXx+F6Q1qgM2bz7CQkv0pvpR/4HSPUkrKwlRpfXLaYzDauOVfg0RD0vqT2LWWcRtZ/XATNgQtmNTGm8XbLjIfMC8ZkA/U=
+	t=1744115110; cv=none; b=G3YN5v9CL03PKaGlVwDZn4ARm8Xf22jos3WP7jAxk5sEU6HQCjRMjVulgz+ByG1qx7PmWVFV9KS5gtpypUxppUjkld36vDSW36K6uCoagtmYNIlJgRUPLe5V1H/PSV4kshfPtVkEyALXh043XELv+d6Pi7wRPn3OpdCpEG6o4do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113801; c=relaxed/simple;
-	bh=wJx1/DBSmjo6dyO1q+y9gIatSn8K96OMRGBtgbzXxiw=;
+	s=arc-20240116; t=1744115110; c=relaxed/simple;
+	bh=ZpHksXkTi7n03CrhDzf3IiDss76XnZkD7/UmW4o4Sw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnyXDm6wQ3UWJ/3jLiZR05YDSTOJadWVBTCqOIhH++uzuFTyi1p3g9/mqAlq6OLpeoEaXSm6RSXGRovZrmnu3Bd7sWLsYXlgGAbsPLU3e+6Zo0GwiC4gvXrt75+AtlFBw/BiMSBmMJF8Fuo54658mi+8wNq+KwMKWEwkUzQbukc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6W38t6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFC2C4CEE5;
-	Tue,  8 Apr 2025 12:03:21 +0000 (UTC)
+	 MIME-Version; b=F7GFC8YHhIP3Chi1dOnsic8nIA4Gt0A/YOm1zRWN2/KY2m13GVFBE3BHWopjN+caGhVniuLd+aAr1aywLF53gSKd2+aiOizchigA/vXYu4WjcAvKUc83azJI6hab4WZ1RDynlTDukNr7UxR3DB7/B8JSR4TZCc6/vD3k6QWeuz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJM3SQzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1CAC4CEEA;
+	Tue,  8 Apr 2025 12:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113801;
-	bh=wJx1/DBSmjo6dyO1q+y9gIatSn8K96OMRGBtgbzXxiw=;
+	s=korg; t=1744115110;
+	bh=ZpHksXkTi7n03CrhDzf3IiDss76XnZkD7/UmW4o4Sw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6W38t6muvAapsuFjzEWKlweurP4Dzxdco9Xu6KGB+yxKH6SdE5Mrohs6em55znic
-	 41PN3d+xSGCqWqylbznRX0aeUWYB0+W5uTAe/+KnW412aq4d8itulMXm+fnu1PUJy2
-	 sp8OToOGwY6GL5hU7awTqF4aVpWv/6jQjoz/juuQ=
+	b=hJM3SQzCMZGGw6r16yEiwZbONDpNL4Bwft4QxExgdFkQljIblaUv/S3HVcb/XPCmt
+	 kCNbT0vczj3YJXj8uGzAetkQfCEzE+qQjQ20bQQml3ZrBp1q5hivRIEWH9PRHMOIQz
+	 uiQwmHfFf56lQ0s6kbmYqzAM/INmFYAhhJdAstpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/154] scsi: qla1280: Fix kernel oops when debug level > 2
+Subject: [PATCH 6.13 354/499] spufs: fix a leak on spufs_new_file() failure
 Date: Tue,  8 Apr 2025 12:49:26 +0200
-Message-ID: <20250408104816.076875469@linuxfoundation.org>
+Message-ID: <20250408104900.061455769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
+[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
 
-A null dereference or oops exception will eventually occur when qla1280.c
-driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
-think its clear from the code that the intention here is sg_dma_len(s) not
-length of sg_next(s) when printing the debug info.
+It's called from spufs_fill_dir(), and caller of that will do
+spufs_rmdir() in case of failure.  That does remove everything
+we'd managed to create, but... the problem dentry is still
+negative.  IOW, it needs to be explicitly dropped.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
-index 832af42130467..a13db27b04ede 100644
---- a/drivers/scsi/qla1280.c
-+++ b/drivers/scsi/qla1280.c
-@@ -2871,7 +2871,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
- 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
- 				cpu_to_le32(upper_32_bits(dma_handle)),
- 				cpu_to_le32(lower_32_bits(dma_handle)),
--				cpu_to_le32(sg_dma_len(sg_next(s))));
-+				cpu_to_le32(sg_dma_len(s)));
- 			remseg--;
- 		}
- 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 70236d1df3d3e..793c005607cf0 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -192,8 +192,10 @@ static int spufs_fill_dir(struct dentry *dir,
+ 			return -ENOMEM;
+ 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
+ 					files->mode & mode, files->size, ctx);
+-		if (ret)
++		if (ret) {
++			dput(dentry);
+ 			return ret;
++		}
+ 		files++;
+ 	}
+ 	return 0;
 -- 
 2.39.5
 
