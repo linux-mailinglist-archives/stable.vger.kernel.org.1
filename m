@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-129055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA97A7FDED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D4BA8036D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EAFB189596F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D82A442C8D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4095D26A09B;
-	Tue,  8 Apr 2025 10:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30482686AD;
+	Tue,  8 Apr 2025 11:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIcAAFNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTOGcUFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02E4267B77;
-	Tue,  8 Apr 2025 10:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F459267B91;
+	Tue,  8 Apr 2025 11:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109991; cv=none; b=J+WLoJYOSk4obNvEDmLnrx//8hKvWUuMCwEE3Ii2Gk+aoScdkPjw+xnuYw8cVNPV7O9wjxXufqmV850Z9JI9htcNpKO8CQYNbzYTPOo/vPfg0DtRsuW9v6dCA2JU0fZrsz6i6S2qDYAuJtkMcRvuImKfwmRlnoR2EQ/NnDynK6s=
+	t=1744113164; cv=none; b=Ae9lVY6DaguZG5l5jDdMEHqReoSaGFwA3q+rIo/UwRzoJMZ6LFvCFJtSF7eC95TohR2P3zuNYZIhWPZb858EAuQTZppWmY7yiKuFRH1+6KiOhRegkHvxbea2urJW1MDbb7X3Wz2vY4VHTHUbxuKiVnRt8OcRhvAAzudpfsEkYa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109991; c=relaxed/simple;
-	bh=NozlhIw2UFEDDhpG9KkLJslQ2dRNt+AXEmmFMrf7q/4=;
+	s=arc-20240116; t=1744113164; c=relaxed/simple;
+	bh=GiP44AK+c3Ux3zyodmXlf0j3oElGFyHHmnx6f4WQTHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMUaSDBDZd62bvNowclv3IAvVYUudi2KFMj35oyvSnYcYsDFSCb0aSuG+uCcZGX31Hkh/uhG9ev9MWAJGsZKsZnhtxeeKLYHSG1S0p/NGxPfAuNTFGa6Tu5umhn97KhqZOnnUYQ9uRJLAPp6mJIBHcNpjsJPWReBHT7JzelD8ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIcAAFNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCB6C4CEE5;
-	Tue,  8 Apr 2025 10:59:50 +0000 (UTC)
+	 MIME-Version; b=EXPsUpxIAOD5g4DYYDDtRDKptO/O85HS2JYdjG+1IxZ8YzSlANolDcACxDjkscVRaLW9pNPKG2EzQaf1FaHpYOvEeKP9hm+L0w7wkuuQe+tWrijp7AJTuG4KmqFqA9hB23rek6hhokC5xCqoSQioAOobeNL9f665TrJlWNHghcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTOGcUFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D5CC4CEE5;
+	Tue,  8 Apr 2025 11:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109990;
-	bh=NozlhIw2UFEDDhpG9KkLJslQ2dRNt+AXEmmFMrf7q/4=;
+	s=korg; t=1744113164;
+	bh=GiP44AK+c3Ux3zyodmXlf0j3oElGFyHHmnx6f4WQTHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIcAAFNX/GKfy0f9atR/43uXwX/pbVpWgEX8pNxcMun0u4eraZhB6jksrYNdMlLni
-	 AOcmVr4p7V91It4mjKMy9C1Xls0tU0Kd2vJLrG1xcudOkKpBm5ouceXuvX+rQI8swt
-	 Mmb+Hz2na38vG8XYXzuHJyyevcsO82236Flu7Jwk=
+	b=dTOGcUFQ1dltvfTiRVhoxcqF6qs2AMvAA9oV26/hyl75VXttYlO6N/2+p77P7lFZl
+	 rooCkwdCoENWCgKJxaAobvT9Ff8cxm393TDXewXl2GJHspXHbwCJEbfsXpkF3F49Xw
+	 1pIVhiqStrnFqe4SLrO6Q2ibPsfkSYqkhHWyI/fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 089/227] bpf, sockmap: Fix race between element replace and close()
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/268] drm/amd/display: avoid NPD when ASIC does not support DMUB
 Date: Tue,  8 Apr 2025 12:47:47 +0200
-Message-ID: <20250408104823.043525169@linuxfoundation.org>
+Message-ID: <20250408104830.011124802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,258 +66,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit ed1fc5d76b81a4d681211333c026202cad4d5649 upstream.
+[ Upstream commit 42d9d7bed270247f134190ba0cb05bbd072f58c2 ]
 
-Element replace (with a socket different from the one stored) may race
-with socket's close() link popping & unlinking. __sock_map_delete()
-unconditionally unrefs the (wrong) element:
+ctx->dmub_srv will de NULL if the ASIC does not support DMUB, which is
+tested in dm_dmub_sw_init.
 
-// set map[0] = s0
-map_update_elem(map, 0, s0)
+However, it will be dereferenced in dmub_hw_lock_mgr_cmd if
+should_use_dmub_lock returns true.
 
-// drop fd of s0
-close(s0)
-  sock_map_close()
-    lock_sock(sk)               (s0!)
-    sock_map_remove_links(sk)
-      link = sk_psock_link_pop()
-      sock_map_unlink(sk, link)
-        sock_map_delete_from_link
-                                        // replace map[0] with s1
-                                        map_update_elem(map, 0, s1)
-                                          sock_map_update_elem
-                                (s1!)       lock_sock(sk)
-                                            sock_map_update_common
-                                              psock = sk_psock(sk)
-                                              spin_lock(&stab->lock)
-                                              osk = stab->sks[idx]
-                                              sock_map_add_link(..., &stab->sks[idx])
-                                              sock_map_unref(osk, &stab->sks[idx])
-                                                psock = sk_psock(osk)
-                                                sk_psock_put(sk, psock)
-                                                  if (refcount_dec_and_test(&psock))
-                                                    sk_psock_drop(sk, psock)
-                                              spin_unlock(&stab->lock)
-                                            unlock_sock(sk)
-          __sock_map_delete
-            spin_lock(&stab->lock)
-            sk = *psk                        // s1 replaced s0; sk == s1
-            if (!sk_test || sk_test == sk)   // sk_test (s0) != sk (s1); no branch
-              sk = xchg(psk, NULL)
-            if (sk)
-              sock_map_unref(sk, psk)        // unref s1; sks[idx] will dangle
-                psock = sk_psock(sk)
-                sk_psock_put(sk, psock)
-                  if (refcount_dec_and_test())
-                    sk_psock_drop(sk, psock)
-            spin_unlock(&stab->lock)
-    release_sock(sk)
+This has been the case since dmub support has been added for PSR1.
 
-Then close(map) enqueues bpf_map_free_deferred, which finally calls
-sock_map_free(). This results in some refcount_t warnings along with
-a KASAN splat [1].
+Fix this by checking for dmub_srv in should_use_dmub_lock.
 
-Fix __sock_map_delete(), do not allow sock_map_unref() on elements that
-may have been replaced.
+[   37.440832] BUG: kernel NULL pointer dereference, address: 0000000000000058
+[   37.447808] #PF: supervisor read access in kernel mode
+[   37.452959] #PF: error_code(0x0000) - not-present page
+[   37.458112] PGD 0 P4D 0
+[   37.460662] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+[   37.465553] CPU: 2 UID: 1000 PID: 1745 Comm: DrmThread Not tainted 6.14.0-rc1-00003-gd62e938120f0 #23 99720e1cb1e0fc4773b8513150932a07de3c6e88
+[   37.478324] Hardware name: Google Morphius/Morphius, BIOS Google_Morphius.13434.858.0 10/26/2023
+[   37.487103] RIP: 0010:dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.492074] Code: 44 24 0e 00 00 00 00 48 c7 04 24 45 00 00 0c 40 88 74 24 0d 0f b6 02 88 44 24 0c 8b 01 89 44 24 08 85 f6 75 05 c6 44 24 0e 01 <48> 8b 7f 58 48 89 e6 ba 01 00 00 00 e8 08 3c 2a 00 65 48 8b 04 5
+[   37.510822] RSP: 0018:ffff969442853300 EFLAGS: 00010202
+[   37.516052] RAX: 0000000000000000 RBX: ffff92db03000000 RCX: ffff969442853358
+[   37.523185] RDX: ffff969442853368 RSI: 0000000000000001 RDI: 0000000000000000
+[   37.530322] RBP: 0000000000000001 R08: 00000000000004a7 R09: 00000000000004a5
+[   37.537453] R10: 0000000000000476 R11: 0000000000000062 R12: ffff92db0ade8000
+[   37.544589] R13: ffff92da01180ae0 R14: ffff92da011802a8 R15: ffff92db03000000
+[   37.551725] FS:  0000784a9cdfc6c0(0000) GS:ffff92db2af00000(0000) knlGS:0000000000000000
+[   37.559814] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   37.565562] CR2: 0000000000000058 CR3: 0000000112b1c000 CR4: 00000000003506f0
+[   37.572697] Call Trace:
+[   37.575152]  <TASK>
+[   37.577258]  ? __die_body+0x66/0xb0
+[   37.580756]  ? page_fault_oops+0x3e7/0x4a0
+[   37.584861]  ? exc_page_fault+0x3e/0xe0
+[   37.588706]  ? exc_page_fault+0x5c/0xe0
+[   37.592550]  ? asm_exc_page_fault+0x22/0x30
+[   37.596742]  ? dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.601107]  dcn10_cursor_lock+0x1e1/0x240
+[   37.605211]  program_cursor_attributes+0x81/0x190
+[   37.609923]  commit_planes_for_stream+0x998/0x1ef0
+[   37.614722]  update_planes_and_stream_v2+0x41e/0x5c0
+[   37.619703]  dc_update_planes_and_stream+0x78/0x140
+[   37.624588]  amdgpu_dm_atomic_commit_tail+0x4362/0x49f0
+[   37.629832]  ? srso_return_thunk+0x5/0x5f
+[   37.633847]  ? mark_held_locks+0x6d/0xd0
+[   37.637774]  ? _raw_spin_unlock_irq+0x24/0x50
+[   37.642135]  ? srso_return_thunk+0x5/0x5f
+[   37.646148]  ? lockdep_hardirqs_on+0x95/0x150
+[   37.650510]  ? srso_return_thunk+0x5/0x5f
+[   37.654522]  ? _raw_spin_unlock_irq+0x2f/0x50
+[   37.658883]  ? srso_return_thunk+0x5/0x5f
+[   37.662897]  ? wait_for_common+0x186/0x1c0
+[   37.666998]  ? srso_return_thunk+0x5/0x5f
+[   37.671009]  ? drm_crtc_next_vblank_start+0xc3/0x170
+[   37.675983]  commit_tail+0xf5/0x1c0
+[   37.679478]  drm_atomic_helper_commit+0x2a2/0x2b0
+[   37.684186]  drm_atomic_commit+0xd6/0x100
+[   37.688199]  ? __cfi___drm_printfn_info+0x10/0x10
+[   37.692911]  drm_atomic_helper_update_plane+0xe5/0x130
+[   37.698054]  drm_mode_cursor_common+0x501/0x670
+[   37.702600]  ? __cfi_drm_mode_cursor_ioctl+0x10/0x10
+[   37.707572]  drm_mode_cursor_ioctl+0x48/0x70
+[   37.711851]  drm_ioctl_kernel+0xf2/0x150
+[   37.715781]  drm_ioctl+0x363/0x590
+[   37.719189]  ? __cfi_drm_mode_cursor_ioctl+0x10/0x10
+[   37.724165]  amdgpu_drm_ioctl+0x41/0x80
+[   37.728013]  __se_sys_ioctl+0x7f/0xd0
+[   37.731685]  do_syscall_64+0x87/0x100
+[   37.735355]  ? vma_end_read+0x12/0xe0
+[   37.739024]  ? srso_return_thunk+0x5/0x5f
+[   37.743041]  ? find_held_lock+0x47/0xf0
+[   37.746884]  ? vma_end_read+0x12/0xe0
+[   37.750552]  ? srso_return_thunk+0x5/0x5f
+[   37.754565]  ? lock_release+0x1c4/0x2e0
+[   37.758406]  ? vma_end_read+0x12/0xe0
+[   37.762079]  ? exc_page_fault+0x84/0xe0
+[   37.765921]  ? srso_return_thunk+0x5/0x5f
+[   37.769938]  ? lockdep_hardirqs_on+0x95/0x150
+[   37.774303]  ? srso_return_thunk+0x5/0x5f
+[   37.778317]  ? exc_page_fault+0x84/0xe0
+[   37.782163]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[   37.787218] RIP: 0033:0x784aa5ec3059
+[   37.790803] Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 77 1d 48 8b 45 c8 64 48 2b 04 25 28 00 0
+[   37.809553] RSP: 002b:0000784a9cdf90e0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[   37.817121] RAX: ffffffffffffffda RBX: 0000784a9cdf917c RCX: 0000784aa5ec3059
+[   37.824256] RDX: 0000784a9cdf917c RSI: 00000000c01c64a3 RDI: 0000000000000020
+[   37.831391] RBP: 0000784a9cdf9130 R08: 0000000000000100 R09: 0000000000ff0000
+[   37.838525] R10: 0000000000000000 R11: 0000000000000246 R12: 0000025c01606ed0
+[   37.845657] R13: 0000025c00030200 R14: 00000000c01c64a3 R15: 0000000000000020
+[   37.852799]  </TASK>
+[   37.854992] Modules linked in:
+[   37.864546] gsmi: Log Shutdown Reason 0x03
+[   37.868656] CR2: 0000000000000058
+[   37.871979] ---[ end trace 0000000000000000 ]---
+[   37.880976] RIP: 0010:dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.885954] Code: 44 24 0e 00 00 00 00 48 c7 04 24 45 00 00 0c 40 88 74 24 0d 0f b6 02 88 44 24 0c 8b 01 89 44 24 08 85 f6 75 05 c6 44 24 0e 01 <48> 8b 7f 58 48 89 e6 ba 01 00 00 00 e8 08 3c 2a 00 65 48 8b 04 5
+[   37.904703] RSP: 0018:ffff969442853300 EFLAGS: 00010202
+[   37.909933] RAX: 0000000000000000 RBX: ffff92db03000000 RCX: ffff969442853358
+[   37.917068] RDX: ffff969442853368 RSI: 0000000000000001 RDI: 0000000000000000
+[   37.924201] RBP: 0000000000000001 R08: 00000000000004a7 R09: 00000000000004a5
+[   37.931336] R10: 0000000000000476 R11: 0000000000000062 R12: ffff92db0ade8000
+[   37.938469] R13: ffff92da01180ae0 R14: ffff92da011802a8 R15: ffff92db03000000
+[   37.945602] FS:  0000784a9cdfc6c0(0000) GS:ffff92db2af00000(0000) knlGS:0000000000000000
+[   37.953689] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   37.959435] CR2: 0000000000000058 CR3: 0000000112b1c000 CR4: 00000000003506f0
+[   37.966570] Kernel panic - not syncing: Fatal exception
+[   37.971901] Kernel Offset: 0x30200000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[   37.982840] gsmi: Log Shutdown Reason 0x02
 
-[1]:
-BUG: KASAN: slab-use-after-free in sock_map_free+0x10e/0x330
-Write of size 4 at addr ffff88811f5b9100 by task kworker/u64:12/1063
-
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Not tainted 6.12.0+ #125
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0x90
- print_report+0x174/0x4f6
- kasan_report+0xb9/0x190
- kasan_check_range+0x10f/0x1e0
- sock_map_free+0x10e/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 1202:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- __kasan_slab_alloc+0x85/0x90
- kmem_cache_alloc_noprof+0x131/0x450
- sk_prot_alloc+0x5b/0x220
- sk_alloc+0x2c/0x870
- unix_create1+0x88/0x8a0
- unix_create+0xc5/0x180
- __sock_create+0x241/0x650
- __sys_socketpair+0x1ce/0x420
- __x64_sys_socketpair+0x92/0x100
- do_syscall_64+0x93/0x180
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 46:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- kasan_save_free_info+0x37/0x60
- __kasan_slab_free+0x4b/0x70
- kmem_cache_free+0x1a1/0x590
- __sk_destruct+0x388/0x5a0
- sk_psock_destroy+0x73e/0xa50
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
-
-The buggy address belongs to the object at ffff88811f5b9080
- which belongs to the cache UNIX-STREAM of size 1984
-The buggy address is located 128 bytes inside of
- freed 1984-byte region [ffff88811f5b9080, ffff88811f5b9840)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11f5b8
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-memcg:ffff888127d49401
-flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
-raw: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
-head: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
-head: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
-head: 0017ffffc0000003 ffffea00047d6e01 ffffffffffffffff 0000000000000000
-head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88811f5b9000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88811f5b9080: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff88811f5b9180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88811f5b9200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-Disabling lock debugging due to kernel taint
-
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 14 PID: 1063 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B              6.12.0+ #125
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-RIP: 0010:refcount_warn_saturate+0xce/0x150
-Code: 34 73 eb 03 01 e8 82 53 ad fe 0f 0b eb b1 80 3d 27 73 eb 03 00 75 a8 48 c7 c7 80 bd 95 84 c6 05 17 73 eb 03 01 e8 62 53 ad fe <0f> 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05
-RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: 0000000000000002 R08: 0000000000000001 R09: ffffed10bcde6349
-R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
-R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
-FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn.cold+0x5f/0x1ff
- ? refcount_warn_saturate+0xce/0x150
- ? report_bug+0x1ec/0x390
- ? handle_bug+0x58/0x90
- ? exc_invalid_op+0x13/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0xce/0x150
- sock_map_free+0x2e5/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-irq event stamp: 10741
-hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
-hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
-softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 14 PID: 1063 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B   W          6.12.0+ #125
-Tainted: [B]=BAD_PAGE, [W]=WARN
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-RIP: 0010:refcount_warn_saturate+0xee/0x150
-Code: 17 73 eb 03 01 e8 62 53 ad fe 0f 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05 f6 72 eb 03 01 e8 42 53 ad fe <0f> 0b e9 6e ff ff ff 80 3d e6 72 eb 03 00 0f 85 61 ff ff ff 48 c7
-RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: 0000000000000003 R08: 0000000000000001 R09: ffffed10bcde6349
-R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
-R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
-FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn.cold+0x5f/0x1ff
- ? refcount_warn_saturate+0xee/0x150
- ? report_bug+0x1ec/0x390
- ? handle_bug+0x58/0x90
- ? exc_invalid_op+0x13/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0xee/0x150
- sock_map_free+0x2d3/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-irq event stamp: 10741
-hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
-hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
-softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-3-1e88579e7bd5@rbox.co
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b5c764d6ed55 ("drm/amd/display: Use HW lock mgr for PSR1")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Sun peng Li <sunpeng.li@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -420,15 +420,14 @@ static void *sock_map_lookup_sys(struct
- static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 			     struct sock **psk)
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+index 5c7530287730e..4dc9856e87301 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -63,6 +63,10 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
+ 
+ bool should_use_dmub_lock(struct dc_link *link)
  {
--	struct sock *sk;
-+	struct sock *sk = NULL;
- 	int err = 0;
++	/* ASIC doesn't support DMUB */
++	if (!link->ctx->dmub_srv)
++		return false;
++
+ 	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+ 		return true;
  
- 	if (irqs_disabled())
- 		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
- 
- 	raw_spin_lock_bh(&stab->lock);
--	sk = *psk;
--	if (!sk_test || sk_test == sk)
-+	if (!sk_test || sk_test == *psk)
- 		sk = xchg(psk, NULL);
- 
- 	if (likely(sk))
+-- 
+2.39.5
+
 
 
 
