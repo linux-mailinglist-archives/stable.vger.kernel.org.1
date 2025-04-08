@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6674CA801C9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D6BA7FE45
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4A1880F72
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F97519E066C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CD2227EBD;
-	Tue,  8 Apr 2025 11:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112EC268682;
+	Tue,  8 Apr 2025 11:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xghAujXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5BRcTyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433619AD5C;
-	Tue,  8 Apr 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF825FA29;
+	Tue,  8 Apr 2025 11:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112152; cv=none; b=IfooUEM8LYVVHK/hWdobWkIqVqbC+lZEfF3bhvmEHTJQAe6j8lOB7iKZvhtEo0M1mKNxHWZdGeTAR6vxDsieKSuKnyF4UPcdW5yax4wC5of5yKaw7aKNCT9gNVD+rtjByPKMndXwduNT3DCt7+R6qMAuf4yixvFk4bTjuECAvSU=
+	t=1744110182; cv=none; b=pWHdyeaLu5FTR+E2qyjCuIDMEm74pTcsnKzJkouXkEZ/awuL86MEaJR+JfqXLunS/uQ9+SNBJ5d8JQRnTh+/Ypkvv0AuTffqksFYStUtrv4+mZz/qvTHpDa41iHHtgp3reGf7ZqXZm/EyUfV17sm98XfspU1ciKg+tc6KslSfMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112152; c=relaxed/simple;
-	bh=WriH3lL8sg1YOzq7BRBYC8gvEoHyCCij5a/3f0KYm4M=;
+	s=arc-20240116; t=1744110182; c=relaxed/simple;
+	bh=Y3PQlPC0QcMxDSz9ppmQLvEfa96Wm+U7rOVHwmCy7eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2F1NmatWq5Jfwz0qoDWUECqH/rUjK1JQzkoKeQUSugK5vylj6/yGYiQIvJiWhlkc/4LsBnEOmynhFXCD2JdXa6TEXWhH81XpCLc20cGPSJJG5z6jKvdOtdGTif0dO0VU6B3eVUj/gr7O8hDY6cnNxV2/Mv19fXb0iBlEKTR0nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xghAujXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4293AC4CEE5;
-	Tue,  8 Apr 2025 11:35:52 +0000 (UTC)
+	 MIME-Version; b=hjwFkGYCStj1+xd4PX00jCziYscnLMFyoWi4LD52M1toRKqQB1HCsxw8ElErdL0C9/MI3xX6QeazKBVyLmy4p3afZj/K+myrbtE9JXLXr3O86u0mk+DLcbIfCaRYiUP/AMNWcd24OCVy5HLyx32ZsZcWUhd+hUFa/sMjUNIJq6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5BRcTyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AEEC4CEE5;
+	Tue,  8 Apr 2025 11:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112152;
-	bh=WriH3lL8sg1YOzq7BRBYC8gvEoHyCCij5a/3f0KYm4M=;
+	s=korg; t=1744110182;
+	bh=Y3PQlPC0QcMxDSz9ppmQLvEfa96Wm+U7rOVHwmCy7eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xghAujXQO92XUravqD6q0/MB7G29uLHk6r7A58QYs/Mr8cWgFDRBjmRMExNAuXsVz
-	 1S0oIKn61+BYf1AivKERoXkkdguqgWWcDnT2lrCrVGVVMihaCgA0ad+OY9M0YQZdsk
-	 R6iEq0R6xfNCoHRTYfoTqKJ3VF7YtN+alIpK3qnQ=
+	b=j5BRcTyg2UyUTJ+uBBHjmJEpATEZymmLcPaWqnSLV6mpcowPPjOCgWWm2R4wRiQKO
+	 3BEcxZkk0wbcJdZFVt/PRSHD8m/tyrkswYb83k3mtz5iSOT1ff6E4LX0N6dkqenpsD
+	 Q8W02csdYYfPlhOg3+6TWmtqsz4pvZtneUq4KjuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.14 678/731] perf/x86/intel: Apply static call for drain_pebs
+	Debin Zhu <mowenroot@163.com>,
+	Bitao Ouyang <1985755126@qq.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 197/227] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
 Date: Tue,  8 Apr 2025 12:49:35 +0200
-Message-ID: <20250408104930.038087568@linuxfoundation.org>
+Message-ID: <20250408104826.209839561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra (Intel) <peterz@infradead.org>
+From: Debin Zhu <mowenroot@163.com>
 
-commit 314dfe10576912e1d786b13c5d4eee8c51b63caa upstream.
+[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
 
-The x86_pmu_drain_pebs static call was introduced in commit 7c9903c9bf71
-("x86/perf, static_call: Optimize x86_pmu methods"), but it's not really
-used to replace the old method.
+When calling netlbl_conn_setattr(), addr->sa_family is used
+to determine the function behavior. If sk is an IPv4 socket,
+but the connect function is called with an IPv6 address,
+the function calipso_sock_setattr() is triggered.
+Inside this function, the following code is executed:
 
-Apply the static call for drain_pebs.
+sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
 
-Fixes: 7c9903c9bf71 ("x86/perf, static_call: Optimize x86_pmu methods")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-1-kan.liang@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since sk is an IPv4 socket, pinet6 is NULL, leading to a
+null pointer dereference.
+
+This patch fixes the issue by checking if inet6_sk(sk)
+returns a NULL pointer before accessing pinet6.
+
+Signed-off-by: Debin Zhu <mowenroot@163.com>
+Signed-off-by: Bitao Ouyang <1985755126@qq.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c |    2 +-
- arch/x86/events/intel/ds.c   |    2 +-
- arch/x86/events/perf_event.h |    1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ net/ipv6/calipso.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3070,7 +3070,7 @@ static int handle_pmi_common(struct pt_r
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 0ea66e9db2495..e17e756bb1ad9 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1075,8 +1075,13 @@ static int calipso_sock_getattr(struct sock *sk,
+ 	struct ipv6_opt_hdr *hop;
+ 	int opt_len, len, ret_val = -ENOMSG, offset;
+ 	unsigned char *opt;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
- 		handled++;
- 		x86_pmu_handle_guest_pebs(regs, &data);
--		x86_pmu.drain_pebs(regs, &data);
-+		static_call(x86_pmu_drain_pebs)(regs, &data);
- 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
  
- 		/*
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -957,7 +957,7 @@ static inline void intel_pmu_drain_pebs_
+@@ -1128,8 +1133,13 @@ static int calipso_sock_setattr(struct sock *sk,
  {
- 	struct perf_sample_data data;
+ 	int ret_val;
+ 	struct ipv6_opt_hdr *old, *new;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
--	x86_pmu.drain_pebs(NULL, &data);
-+	static_call(x86_pmu_drain_pebs)(NULL, &data);
- }
- 
- /*
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1108,6 +1108,7 @@ extern struct x86_pmu x86_pmu __read_mos
- 
- DECLARE_STATIC_CALL(x86_pmu_set_period, *x86_pmu.set_period);
- DECLARE_STATIC_CALL(x86_pmu_update,     *x86_pmu.update);
-+DECLARE_STATIC_CALL(x86_pmu_drain_pebs,	*x86_pmu.drain_pebs);
- 
- static __always_inline struct x86_perf_task_context_opt *task_context_opt(void *ctx)
++	txopts = txopt_get(pinfo);
+ 	old = NULL;
+ 	if (txopts)
+ 		old = txopts->hopopt;
+@@ -1156,8 +1166,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ static void calipso_sock_delattr(struct sock *sk)
  {
+ 	struct ipv6_opt_hdr *new_hop;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
+-- 
+2.39.5
+
 
 
 
