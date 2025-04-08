@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-129607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63213A7FFF6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:26:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0007FA80081
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8395D7A6AD9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDAC0425383
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B10269819;
-	Tue,  8 Apr 2025 11:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792EE26988A;
+	Tue,  8 Apr 2025 11:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpzD85Ns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+vqeYci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28B02690FB;
-	Tue,  8 Apr 2025 11:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E262690C8;
+	Tue,  8 Apr 2025 11:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111493; cv=none; b=oqMbcuov++ZzgbsYPkr7j7giPqbEZ29HgrxDJDm/9XLe3RztdhCd/ZkKJuu/GbC9rfQzQLRFS9+lvN+cZyNyP30vAcuLDzqPDGcIsMFIbLF9vJMjq+jyJYbPW9PmWGkR/lGE7N8EeyJQHJNM704rpbM3RYSsH1pq4n6PaKpui34=
+	t=1744111499; cv=none; b=m8LhlT4kZAQZNChL1pFWPNeNKsDbSQ7Eys5/JRnLZkRAqB8+YNI8B8zVoUtE67mdvyR0NHowMdmgzXNA07WIeul8wUu5SE8tS+DLj41xhND4ienCGPf5rIOGm6W8VWCBSWo3YktgIqokPe5NoRW270EFkMgGwHwZA4gtR202HdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111493; c=relaxed/simple;
-	bh=uaGGJXQiR31qpE6ifimTnIu7BUnIv7TSlhkRdCWZ+Hk=;
+	s=arc-20240116; t=1744111499; c=relaxed/simple;
+	bh=nEkYrKi5gP9burtVWBxVdQzdB5oAtqEzs0OCXyHSXTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iv252dktJbfKG1vlHvmK66MKaM3hemRyUpdUVyO6T37q1krfBnaPTDIVzzY5RMoAURn3psZ2JcqbYsRAJhR9QZoZ1IoxkONfvxbr+Z4uSlA0w2xccETmUyVnCAgDI6qgz5zAfnfw53SHfSOGvRzT81gKj4nP4EVlTtxs79In6Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpzD85Ns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC3FC4CEE7;
-	Tue,  8 Apr 2025 11:24:53 +0000 (UTC)
+	 MIME-Version; b=kUQEfBNvzNswdPpj49UBut9fflOhN5x7o+lWPGd5uyUVu6SNj93ZMgJq64QSdC9xBPWS4saZstSx8Po4wThg3nPNGWjXUFkJOylwM6eiVnxZMp4ultmQDn8HTdQwp+ZbaBOkYd1x13Ecs525BHd/jJokoiiLKz6o9bQH1PdXt9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+vqeYci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB164C4CEE5;
+	Tue,  8 Apr 2025 11:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111493;
-	bh=uaGGJXQiR31qpE6ifimTnIu7BUnIv7TSlhkRdCWZ+Hk=;
+	s=korg; t=1744111499;
+	bh=nEkYrKi5gP9burtVWBxVdQzdB5oAtqEzs0OCXyHSXTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpzD85NsQbhLXI5tUNE3OG3RQ6PYYydzzjW+/1ZPCchXcKTpYF3h9xqN78puuCACk
-	 L9v9COln8QAilXwtxqr9U9aDOJyCUc2PbWQk23/paF3o5CN95e78axKANcwfJxu+KF
-	 zMBl5jmsCS/Hq2/UFxcaxrLHwxtnLA/BXk3x+ylc=
+	b=I+vqeYciIQV5ekyOkinjZ9Lxau3tk1C7OHIgQjM2ZgnajsUogSkiW5DeSHTcBVuMm
+	 4Q923qkx7Unaz4mFcpEhSu3OxwFOVvqqcenhgjTf1u3S/kU2I5VzSUE9ILKwdQwWg/
+	 d2OWdVKJGs+DQ+VWCGTkoHyeRbfeV4DUjUUbLCKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 451/731] iio: adc: ad7124: Really disable all channels at probe time
-Date: Tue,  8 Apr 2025 12:45:48 +0200
-Message-ID: <20250408104924.770055971@linuxfoundation.org>
+Subject: [PATCH 6.14 452/731] phy: phy-rockchip-samsung-hdptx: Dont use dt aliases to determine phy-id
+Date: Tue,  8 Apr 2025 12:45:49 +0200
+Message-ID: <20250408104924.793305298@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -60,68 +62,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit e903868b4ce73d1ba3663d5e0718424946cebd99 ]
+[ Upstream commit f08d1c08563846f9be79a4859e912c8795d690fd ]
 
-If one or more of the 16 channels are enabled and the driver is not
-aware of that, unexpected things happen because different channels are
-used than intended. To prevent that, all channels should be disabled at
-probe time. In Commit 4be339af334c ("iio: adc: ad7124: Disable all
-channels at probe time") I intended do that, however only the channels
-that are potentially used by the driver and not all channels are
-disabled since then. So disable all 16 channels and not only the used
-ones.
+The phy needs to know its identity in the system (phy0 or phy1 on rk3588)
+for some actions and the driver currently contains code abusing of_alias
+for that.
 
-Also fix the same issue in the .disable_all() callback.
+Devicetree aliases are always optional and should not be used for core
+device functionality, so instead keep a list of phys on a soc in the
+of_device_data and find the phy-id by comparing against the mapped
+register-base.
 
-Fixes: 4be339af334c ("iio: adc: ad7124: Disable all channels at probe time")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250204115023.265813-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: c4b09c562086 ("phy: phy-rockchip-samsung-hdptx: Add clock provider support")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20241206103401.1780416-3-heiko@sntech.de
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ .../phy/rockchip/phy-rockchip-samsung-hdptx.c | 50 ++++++++++++++++---
+ 1 file changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 2fdeb32479522..6bc418d388202 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -550,11 +550,10 @@ static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 0965b9d4f9cf1..2fb4f297fda3d 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -263,11 +263,22 @@ enum rk_hdptx_reset {
+ 	RST_MAX
+ };
  
- static int ad7124_disable_all(struct ad_sigma_delta *sd)
- {
--	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
- 	int ret;
- 	int i;
- 
--	for (i = 0; i < st->num_channels; i++) {
-+	for (i = 0; i < 16; i++) {
- 		ret = ad7124_disable_one(sd, i);
- 		if (ret < 0)
- 			return ret;
-@@ -1017,11 +1016,10 @@ static int ad7124_setup(struct ad7124_state *st)
- 		 * set all channels to this default value.
- 		 */
- 		ad7124_set_channel_odr(st, i, 10);
--
--		/* Disable all channels to prevent unintended conversions. */
--		ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, 0);
- 	}
- 
-+	ad7124_disable_all(&st->sd);
++#define MAX_HDPTX_PHY_NUM	2
 +
- 	ret = ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
++struct rk_hdptx_phy_cfg {
++	unsigned int num_phys;
++	unsigned int phy_ids[MAX_HDPTX_PHY_NUM];
++};
++
+ struct rk_hdptx_phy {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+ 	struct regmap *grf;
+ 
++	/* PHY const config */
++	const struct rk_hdptx_phy_cfg *cfgs;
++	int phy_id;
++
+ 	struct phy *phy;
+ 	struct phy_config *phy_cfg;
+ 	struct clk_bulk_data *clks;
+@@ -1007,15 +1018,14 @@ static int rk_hdptx_phy_clk_register(struct rk_hdptx_phy *hdptx)
+ 	struct device *dev = hdptx->dev;
+ 	const char *name, *pname;
+ 	struct clk *refclk;
+-	int ret, id;
++	int ret;
+ 
+ 	refclk = devm_clk_get(dev, "ref");
+ 	if (IS_ERR(refclk))
+ 		return dev_err_probe(dev, PTR_ERR(refclk),
+ 				     "Failed to get ref clock\n");
+ 
+-	id = of_alias_get_id(dev->of_node, "hdptxphy");
+-	name = id > 0 ? "clk_hdmiphy_pixel1" : "clk_hdmiphy_pixel0";
++	name = hdptx->phy_id > 0 ? "clk_hdmiphy_pixel1" : "clk_hdmiphy_pixel0";
+ 	pname = __clk_get_name(refclk);
+ 
+ 	hdptx->hw.init = CLK_HW_INIT(name, pname, &hdptx_phy_clk_ops,
+@@ -1058,8 +1068,9 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
+ 	struct phy_provider *phy_provider;
+ 	struct device *dev = &pdev->dev;
+ 	struct rk_hdptx_phy *hdptx;
++	struct resource *res;
+ 	void __iomem *regs;
+-	int ret;
++	int ret, id;
+ 
+ 	hdptx = devm_kzalloc(dev, sizeof(*hdptx), GFP_KERNEL);
+ 	if (!hdptx)
+@@ -1067,11 +1078,27 @@ static int rk_hdptx_phy_probe(struct platform_device *pdev)
+ 
+ 	hdptx->dev = dev;
+ 
+-	regs = devm_platform_ioremap_resource(pdev, 0);
++	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(regs))
+ 		return dev_err_probe(dev, PTR_ERR(regs),
+ 				     "Failed to ioremap resource\n");
+ 
++	hdptx->cfgs = device_get_match_data(dev);
++	if (!hdptx->cfgs)
++		return dev_err_probe(dev, -EINVAL, "missing match data\n");
++
++	/* find the phy-id from the io address */
++	hdptx->phy_id = -ENODEV;
++	for (id = 0; id < hdptx->cfgs->num_phys; id++) {
++		if (res->start == hdptx->cfgs->phy_ids[id]) {
++			hdptx->phy_id = id;
++			break;
++		}
++	}
++
++	if (hdptx->phy_id < 0)
++		return dev_err_probe(dev, -ENODEV, "no matching device found\n");
++
+ 	ret = devm_clk_bulk_get_all(dev, &hdptx->clks);
  	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to setup CONTROL register\n");
+ 		return dev_err_probe(dev, ret, "Failed to get clocks\n");
+@@ -1132,8 +1159,19 @@ static const struct dev_pm_ops rk_hdptx_phy_pm_ops = {
+ 		       rk_hdptx_phy_runtime_resume, NULL)
+ };
+ 
++static const struct rk_hdptx_phy_cfg rk3588_hdptx_phy_cfgs = {
++	.num_phys = 2,
++	.phy_ids = {
++		0xfed60000,
++		0xfed70000,
++	},
++};
++
+ static const struct of_device_id rk_hdptx_phy_of_match[] = {
+-	{ .compatible = "rockchip,rk3588-hdptx-phy", },
++	{
++		.compatible = "rockchip,rk3588-hdptx-phy",
++		.data = &rk3588_hdptx_phy_cfgs
++	},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, rk_hdptx_phy_of_match);
 -- 
 2.39.5
 
