@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4F1A800A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69749A7FD72
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38884189418A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BEC3189370D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F0F269CF6;
-	Tue,  8 Apr 2025 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DCF2690D0;
+	Tue,  8 Apr 2025 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLhuEHul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Omipk2U3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54805268FDD;
-	Tue,  8 Apr 2025 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B9C269820;
+	Tue,  8 Apr 2025 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111588; cv=none; b=DlOW9pcRQDhYbkO5adQHg6OYbOI15/0hSZFO5sJwhmqORNeFHRPoBaonxnBOXEqMIMd2WiXS2N6kMdPg4BCekyLIyWgqYB1fZwy1m6R7oE7LkskEfVlgdD/Lfyvg3rEX2FknQsyg0bZOsu6EgJn9s9tCT+4Rds+FHkjsCKELbZI=
+	t=1744109757; cv=none; b=eGdPim8k0kG4ArKLt5q3KVR9YH2wHZ4de3IzKSpQzE20RCQwLY+q2XIl5n4XBaNrRNwcaPV15rP779/TymZo5cNiViJq0BvSFCJdu0rRowiYG/HYz1GL3Z1tnWhnjJ9+nMoFohsxec7cjbTz/HLdQNLMTIwyZ/s1HvSSjLPRtZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111588; c=relaxed/simple;
-	bh=sPcLjZND1VoFj4bzVEDjIUG400YjdOjxQn0NjQzZTTQ=;
+	s=arc-20240116; t=1744109757; c=relaxed/simple;
+	bh=+EY/ntD6XkQ8vIGFk0c4sq2muF7N/c2Asvghr/RgxKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sh9w8gdYE1ylGRID1X792/m56d/NWTYLJps2UVACt6zFc0g4IKK1BU7iLphSGiUY8T3662oAwI8l5FZFiU9YB4vdY9WQA8n95LePDi5/HWBKKYbW+0xFSV8NmUGF3X0IlHvx5C1hQs/8RbEECwohlm0WZne2RHMAwCAWJp8Rvr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLhuEHul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B28C4CEEA;
-	Tue,  8 Apr 2025 11:26:27 +0000 (UTC)
+	 MIME-Version; b=Z1ZMAmqzFE8TXBprzQhGcYoaHhF8PRNTJ8iOAQFN1K54C4F+dcCGDqLzFKFB93aGAVsjz+fjk+Vit/IN0wjRzKwcg7wq5+IxQAe01fCEwEqW5m4PYqgY7oJXefjcol8CifdWen45iFgiQ+Eh8n9nfoUexk/tL9CB98UleQWAvYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Omipk2U3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA19AC4CEE5;
+	Tue,  8 Apr 2025 10:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111588;
-	bh=sPcLjZND1VoFj4bzVEDjIUG400YjdOjxQn0NjQzZTTQ=;
+	s=korg; t=1744109757;
+	bh=+EY/ntD6XkQ8vIGFk0c4sq2muF7N/c2Asvghr/RgxKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLhuEHulrwWDoGsr5p12Ue10Y3ADpgSQ6cQP3fJy3SzA8K78vwd0USWecm4kuJXpF
-	 jmTqSrlbUeZzUvxPejq3j91PQZVNUNOrVUfwu/skfRdrHFKzSL/FhShAtAa/5umnib
-	 cJYTLsY8Mg5CVKUT9IrJzNDlfFYkdFuUogFZ79fo=
+	b=Omipk2U30IFKkE7oB9J6aOaVqKLwUPLG0atoHfr7F06RS1OXApG+8J6JSy1H7aawI
+	 l5k6nNAzx0a1qUKe0J9SaY0wg2GFeIUJycnOJYc4cW2VeuzONL3RMlvI0ypwJeWFej
+	 Py9U4t3kIsPy/p7JL/ImaCzlXgpDCSFQ3L/Grcr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 485/731] NFSD: Fix callback decoder status codes
+	Hulk Robot <hulkci@huawei.com>,
+	Wang Yufen <wangyufen@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Abdelkareem Abdelsaamad <kareemem@amazon.com>
+Subject: [PATCH 5.10 004/227] ipv6: Fix signed integer overflow in __ip6_append_data
 Date: Tue,  8 Apr 2025 12:46:22 +0200
-Message-ID: <20250408104925.557198157@linuxfoundation.org>
+Message-ID: <20250408104820.497901174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Wang Yufen <wangyufen@huawei.com>
 
-[ Upstream commit 8ce35dcaf3aed7113cd692759dc0a26cec8cd0c3 ]
+commit f93431c86b631bbca5614c66f966bf3ddb3c2803 upstream.
 
-fs/nfsd/nfs4callback.c implements a callback client. Thus its XDR
-decoders are decoding replies, not calls.
+Resurrect ubsan overflow checks and ubsan report this warning,
+fix it by change the variable [length] type to size_t.
 
-NFS4ERR_BAD_XDR is an on-the-wire status code that reports that the
-client sent a corrupted RPC /call/. It's not used as the internal
-error code when a /reply/ can't be decoded, since that kind of
-failure is never reported to the sender of that RPC message.
+UBSAN: signed-integer-overflow in net/ipv6/ip6_output.c:1489:19
+2147479552 + 8567 cannot be represented in type 'int'
+CPU: 0 PID: 253 Comm: err Not tainted 5.16.0+ #1
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+  dump_backtrace+0x214/0x230
+  show_stack+0x30/0x78
+  dump_stack_lvl+0xf8/0x118
+  dump_stack+0x18/0x30
+  ubsan_epilogue+0x18/0x60
+  handle_overflow+0xd0/0xf0
+  __ubsan_handle_add_overflow+0x34/0x44
+  __ip6_append_data.isra.48+0x1598/0x1688
+  ip6_append_data+0x128/0x260
+  udpv6_sendmsg+0x680/0xdd0
+  inet6_sendmsg+0x54/0x90
+  sock_sendmsg+0x70/0x88
+  ____sys_sendmsg+0xe8/0x368
+  ___sys_sendmsg+0x98/0xe0
+  __sys_sendmmsg+0xf4/0x3b8
+  __arm64_sys_sendmmsg+0x34/0x48
+  invoke_syscall+0x64/0x160
+  el0_svc_common.constprop.4+0x124/0x300
+  do_el0_svc+0x44/0xc8
+  el0_svc+0x3c/0x1e8
+  el0t_64_sync_handler+0x88/0xb0
+  el0t_64_sync+0x16c/0x170
 
-Instead, a reply decoder should return -EIO, as the reply decoders
-in the NFS client do.
+Changes since v1:
+-Change the variable [length] type to unsigned, as Eric Dumazet suggested.
+Changes since v2:
+-Don't change exthdrlen type in ip6_make_skb, as Paolo Abeni suggested.
+Changes since v3:
+-Don't change ulen type in udpv6_sendmsg and l2tp_ip6_sendmsg, as
+Jakub Kicinski suggested.
 
-Fixes: 6487a13b5c6b ("NFSD: add support for CB_GETATTR callback")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+Link: https://lore.kernel.org/r/20220607120028.845916-1-wangyufen@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Conflict due to f37a4cc6bb0b ("udp6: pass flow in ip6_make_skb
+  together with cork") not in the tree ]
+Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/net/ipv6.h    |    4 ++--
+ net/ipv6/ip6_output.c |    6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 484077200c5d7..d649a3d65a3a5 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -101,15 +101,15 @@ static int decode_cb_fattr4(struct xdr_stream *xdr, uint32_t *bitmap,
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -991,7 +991,7 @@ int ip6_find_1stfragopt(struct sk_buff *
+ int ip6_append_data(struct sock *sk,
+ 		    int getfrag(void *from, char *to, int offset, int len,
+ 				int odd, struct sk_buff *skb),
+-		    void *from, int length, int transhdrlen,
++		    void *from, size_t length, int transhdrlen,
+ 		    struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
+ 		    struct rt6_info *rt, unsigned int flags);
  
- 	if (bitmap[0] & FATTR4_WORD0_CHANGE)
- 		if (xdr_stream_decode_u64(xdr, &fattr->ncf_cb_change) < 0)
--			return -NFSERR_BAD_XDR;
-+			return -EIO;
- 	if (bitmap[0] & FATTR4_WORD0_SIZE)
- 		if (xdr_stream_decode_u64(xdr, &fattr->ncf_cb_fsize) < 0)
--			return -NFSERR_BAD_XDR;
-+			return -EIO;
- 	if (bitmap[2] & FATTR4_WORD2_TIME_DELEG_ACCESS) {
- 		fattr4_time_deleg_access access;
- 
- 		if (!xdrgen_decode_fattr4_time_deleg_access(xdr, &access))
--			return -NFSERR_BAD_XDR;
-+			return -EIO;
- 		fattr->ncf_cb_atime.tv_sec = access.seconds;
- 		fattr->ncf_cb_atime.tv_nsec = access.nseconds;
- 
-@@ -118,7 +118,7 @@ static int decode_cb_fattr4(struct xdr_stream *xdr, uint32_t *bitmap,
- 		fattr4_time_deleg_modify modify;
- 
- 		if (!xdrgen_decode_fattr4_time_deleg_modify(xdr, &modify))
--			return -NFSERR_BAD_XDR;
-+			return -EIO;
- 		fattr->ncf_cb_mtime.tv_sec = modify.seconds;
- 		fattr->ncf_cb_mtime.tv_nsec = modify.nseconds;
- 
-@@ -682,15 +682,15 @@ static int nfs4_xdr_dec_cb_getattr(struct rpc_rqst *rqstp,
- 	if (unlikely(status || cb->cb_status))
- 		return status;
- 	if (xdr_stream_decode_uint32_array(xdr, bitmap, 3) < 0)
--		return -NFSERR_BAD_XDR;
-+		return -EIO;
- 	if (xdr_stream_decode_u32(xdr, &attrlen) < 0)
--		return -NFSERR_BAD_XDR;
-+		return -EIO;
- 	maxlen = sizeof(ncf->ncf_cb_change) + sizeof(ncf->ncf_cb_fsize);
- 	if (bitmap[2] != 0)
- 		maxlen += (sizeof(ncf->ncf_cb_mtime.tv_sec) +
- 			   sizeof(ncf->ncf_cb_mtime.tv_nsec)) * 2;
- 	if (attrlen > maxlen)
--		return -NFSERR_BAD_XDR;
-+		return -EIO;
- 	status = decode_cb_fattr4(xdr, bitmap, ncf);
- 	return status;
- }
--- 
-2.39.5
-
+@@ -1007,7 +1007,7 @@ struct sk_buff *__ip6_make_skb(struct so
+ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+-			     void *from, int length, int transhdrlen,
++			     void *from, size_t length, int transhdrlen,
+ 			     struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
+ 			     struct rt6_info *rt, unsigned int flags,
+ 			     struct inet_cork_full *cork);
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1449,7 +1449,7 @@ static int __ip6_append_data(struct sock
+ 			     struct page_frag *pfrag,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+-			     void *from, int length, int transhdrlen,
++			     void *from, size_t length, int transhdrlen,
+ 			     unsigned int flags, struct ipcm6_cookie *ipc6)
+ {
+ 	struct sk_buff *skb, *skb_prev = NULL;
+@@ -1795,7 +1795,7 @@ error:
+ int ip6_append_data(struct sock *sk,
+ 		    int getfrag(void *from, char *to, int offset, int len,
+ 				int odd, struct sk_buff *skb),
+-		    void *from, int length, int transhdrlen,
++		    void *from, size_t length, int transhdrlen,
+ 		    struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
+ 		    struct rt6_info *rt, unsigned int flags)
+ {
+@@ -1989,7 +1989,7 @@ EXPORT_SYMBOL_GPL(ip6_flush_pending_fram
+ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+-			     void *from, int length, int transhdrlen,
++			     void *from, size_t length, int transhdrlen,
+ 			     struct ipcm6_cookie *ipc6, struct flowi6 *fl6,
+ 			     struct rt6_info *rt, unsigned int flags,
+ 			     struct inet_cork_full *cork)
 
 
 
