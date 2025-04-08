@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A4AA809AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0F7A80629
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B661D8C43B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC081B81B40
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B39A267393;
-	Tue,  8 Apr 2025 12:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DA026E15B;
+	Tue,  8 Apr 2025 12:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDFH6W+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjjsfTdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1723E2673B7;
-	Tue,  8 Apr 2025 12:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065D1269820;
+	Tue,  8 Apr 2025 12:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116295; cv=none; b=IZeHWQ3aHh6ofe0vg+JC1Lru3ng9WMWrJB0ktMRHOMQZDWqqEiJnSyI9atqax30yOaKUJQMx7OwcePsFD9LNGG6EgbMy/4OtbXmxhaNTyqbcw+d+tyYKbCp9BRXndMQ9ugGfmizq/ioT/WUp3nXuOrq1te0FfHoLuzK/cDYWT6A=
+	t=1744114600; cv=none; b=iQAmh3V+ezA4dl05bwnanaw1clsbhJy3BMMfJNcUktdJqgeA7KBJli53IrFAL6HncVQMIRX0CWDYGslSdsctjyAhrgSdqivJ8ksCY9l1pHvVzAA33lDp9wph/JS1Ktdl1N5/5WRiIODeVJ996Zn8kvw/Hi8gDiRAgpgEkii7qEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116295; c=relaxed/simple;
-	bh=1d6t7SmW6P/A1X/7dyHE3M3Js8rfNvlh85pAkgjeams=;
+	s=arc-20240116; t=1744114600; c=relaxed/simple;
+	bh=QGTYLowFX/YFrO4EsvXExkVmpeOxPxgpx7W5xqnGDx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LklUO8gSyg1MOY2SlcYuUqAuwTmuxPqoDErrISZEsPvF2BO4HJ7BENXiy1MnS9qKI/ujfVCylpatm8c/sfldHhoxStOTthxtIHN1MZ5kJxR3HpN9jSBfcDJC1761FjTABDKqTGJ+xm1d6hmzK+tmj6SGOI3HI0L4PUcfowqK4mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDFH6W+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304F9C4CEE7;
-	Tue,  8 Apr 2025 12:44:54 +0000 (UTC)
+	 MIME-Version; b=KHvMFcd2ud8BqYi9xnQts3yk9uVAjQbSk1gA2hyZJvaQQK0SmDtxbCjBFKuAzeJtn3rA82Seobx5A4UHsPtI8jyAI9RAqS1GnVoip0Ev2UJBi4y0FQ3zrXTwT3OgRxWYSTFoF4IKy3wLqbYl6Op36CYhuDUtwC1sgDL9kvY2OrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjjsfTdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2602AC4CEE7;
+	Tue,  8 Apr 2025 12:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116294;
-	bh=1d6t7SmW6P/A1X/7dyHE3M3Js8rfNvlh85pAkgjeams=;
+	s=korg; t=1744114599;
+	bh=QGTYLowFX/YFrO4EsvXExkVmpeOxPxgpx7W5xqnGDx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDFH6W+W7qdp7555JABPHSeqyMV9i9Y4vcY8YEoN/MA11JOhSdzle9HWz0LDmirLi
-	 QT20/ujSvDk0gKHOLabl5c56zWwVlOEmGs/Uok06cY34uVnB70jldktc8VfBdfxBl9
-	 dsB52VmpuqcXJj2oyyU1hKEujphT7VRhVHB9YmvY=
+	b=XjjsfTdx0E5CLng8zinKSsg5fVfpcit2gVk7MPh4ie+xVz0FQmJ40jsHuXrbS2R/e
+	 QRRxB0Dv11QyT20zCQ+Cl1jG6GQIiijrurnTFH4EN84qoV0irFO0F0r5j1WJjS0rQm
+	 rka9in/4XfRSErVIGgiEzjiHV5ilSygkVHINqHFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Cheng Xu <chengyou@linux.alibaba.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/423] drm/ssd130x: ensure ssd132x pitch is correct
+Subject: [PATCH 6.13 164/499] RDMA/erdma: Prevent use-after-free in erdma_accept_newconn()
 Date: Tue,  8 Apr 2025 12:46:16 +0200
-Message-ID: <20250408104846.914413091@linuxfoundation.org>
+Message-ID: <20250408104855.269955352@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Cheng Xu <chengyou@linux.alibaba.com>
 
-[ Upstream commit 229adcffdb54b13332d2afd2dc5d203418d50908 ]
+[ Upstream commit 83437689249e6a17b25e27712fbee292e42e7855 ]
 
-The bounding rectangle is adjusted to ensure it aligns to
-SSD132X_SEGMENT_WIDTH, which may adjust the pitch.  Calculate the pitch
-after aligning the left and right edge.
+After the erdma_cep_put(new_cep) being called, new_cep will be freed,
+and the following dereference will cause a UAF problem. Fix this issue.
 
-Fixes: fdd591e00a9c ("drm/ssd130x: Add support for the SSD132x OLED controller family")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250115110139.1672488-3-jkeeping@inmusicbrands.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: 920d93eac8b9 ("RDMA/erdma: Add connection management (CM) support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/solomon/ssd130x.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/erdma/erdma_cm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
-index 7d071a2f7a460..06f5057690bd8 100644
---- a/drivers/gpu/drm/solomon/ssd130x.c
-+++ b/drivers/gpu/drm/solomon/ssd130x.c
-@@ -1037,7 +1037,7 @@ static int ssd132x_fb_blit_rect(struct drm_framebuffer *fb,
- 				struct drm_format_conv_state *fmtcnv_state)
- {
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(fb->dev);
--	unsigned int dst_pitch = drm_rect_width(rect);
-+	unsigned int dst_pitch;
- 	struct iosys_map dst;
- 	int ret = 0;
+diff --git a/drivers/infiniband/hw/erdma/erdma_cm.c b/drivers/infiniband/hw/erdma/erdma_cm.c
+index 771059a8eb7d7..e349e8d2fb50a 100644
+--- a/drivers/infiniband/hw/erdma/erdma_cm.c
++++ b/drivers/infiniband/hw/erdma/erdma_cm.c
+@@ -705,7 +705,6 @@ static void erdma_accept_newconn(struct erdma_cep *cep)
+ 		erdma_cancel_mpatimer(new_cep);
  
-@@ -1046,6 +1046,8 @@ static int ssd132x_fb_blit_rect(struct drm_framebuffer *fb,
- 	rect->x2 = min_t(unsigned int, round_up(rect->x2, SSD132X_SEGMENT_WIDTH),
- 			 ssd130x->width);
+ 		erdma_cep_put(new_cep);
+-		new_cep->sock = NULL;
+ 	}
  
-+	dst_pitch = drm_rect_width(rect);
-+
- 	ret = drm_gem_fb_begin_cpu_access(fb, DMA_FROM_DEVICE);
- 	if (ret)
- 		return ret;
+ 	if (new_s) {
 -- 
 2.39.5
 
