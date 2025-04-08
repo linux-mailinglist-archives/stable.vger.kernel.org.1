@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AB0A7FED9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47164A80286
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9191425935
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D80D67AA58F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE9621ADAE;
-	Tue,  8 Apr 2025 11:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB66268FE5;
+	Tue,  8 Apr 2025 11:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMLZNPbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPUbvTJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E9D268690;
-	Tue,  8 Apr 2025 11:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699EB267F5B;
+	Tue,  8 Apr 2025 11:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110185; cv=none; b=q8cY833qFz5ljqoj6SQmRJb9a/abvFACCvEYFQZ5jHOJV9JMTNd2/ZE2dQloG2o9RGsrylYRO61186lr2aHSjSP/4IpFlR50bTN0KGMh4IvPi5mKdLzvHlBn715aeGN9Buag6w6laWr+7XiNssZlWwrxehfVSbCKWiUh6/okV7M=
+	t=1744112780; cv=none; b=PS49fVkhCBRKk8aV3B6S2lqH78J5hMKkwCQnuytyY+5m6+0IAlyQkkvQ6tZls8/BYLb3ReiuIHk3iQxE+KVDDO6smapEK+PQR/zn7qg3vbofdXCr4Bzp7SgJ8ZVBqJhfdjdZeqhx+iPlCYkJRKfuONQ87hwE6B53nNsWBjUjHA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110185; c=relaxed/simple;
-	bh=hZ2FCuzFt0tVUl27ltdsyBffhz46PNva3s2xrSZPqIA=;
+	s=arc-20240116; t=1744112780; c=relaxed/simple;
+	bh=eGewagAdoXJTfbeT9DxZEDJQywXQd0rUlxKxxLEPWAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9EHYdJ41Kq3p6TMku0CcTW+jaH/W3RDD0kFqzkjymYaWcA020vC+kQsHRl8KQy4R4KZeGobvnb5eNt5u9ofv9t1L6yCM8jHR5iAtpvu35u80npnLUn6DwzMn7+ExYX1Yt69DsFsixykWnFWLm131SwtIhVoBDz5NP/nt9daF/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMLZNPbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FFC4CEE5;
-	Tue,  8 Apr 2025 11:03:04 +0000 (UTC)
+	 MIME-Version; b=BwmlidwXXDlyeqswLwcPLL8mpHEH3cIAmk2JmAuG5ReHeG1TszrYcoOeSteC7Nb87i5QGfkD26YOlsDcJ4i951e/qXbFAEdNamvThz1OXI/cCr+WIVBprRwqmiOg7043ttc9onEFD9pJ9ihQ0VLIXj5/UMlXijdT5sDdmZNpisU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPUbvTJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC8DC4CEE5;
+	Tue,  8 Apr 2025 11:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110185;
-	bh=hZ2FCuzFt0tVUl27ltdsyBffhz46PNva3s2xrSZPqIA=;
+	s=korg; t=1744112780;
+	bh=eGewagAdoXJTfbeT9DxZEDJQywXQd0rUlxKxxLEPWAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMLZNPbbsnZHd5M+b0qswrDeXkkbvJKzCKH1JXLgEAsMRXjubeaYfvXgHXk9D2Rvy
-	 +T6vTMM/0icWR5XnEURgK2Lk26gy/mhdtz+tX8J3bCsztXHxzvBsKC7n5o6zcnDXPr
-	 HF5FWWwTxc1OFua3MlN5Fgk8tOxFBKG6dQX/Xupk=
+	b=vPUbvTJlYt8RwlR66yGdeXzmdgYDleo1+OmVdHeLxuumuRA/0UuVyAi5Rk8YHxVmf
+	 fkyn+MROBs50GhGDHOsdCi6NNeQ/5ac5k+LfR3NgaZfw9hA5xudIkN812tpTh+w+xc
+	 ma7TU+mfyjJJfDJXWHu/7NIgPB/MGYgB+ccfzMwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
-	Nishanth Devarajan <ndev2021@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/227] net_sched: skbprio: Remove overly strict queue assertions
-Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104826.240028684@linuxfoundation.org>
+Subject: [PATCH 5.15 194/279] isofs: fix KMSAN uninit-value bug in do_isofs_readdir()
+Date: Tue,  8 Apr 2025 12:49:37 +0200
+Message-ID: <20250408104831.572130281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
+[ Upstream commit 81a82e8f33880793029cd6f8a766fb13b737e6a7 ]
 
-In the current implementation, skbprio enqueue/dequeue contains an assertion
-that fails under certain conditions when SKBPRIO is used as a child qdisc under
-TBF with specific parameters. The failure occurs because TBF sometimes peeks at
-packets in the child qdisc without actually dequeuing them when tokens are
-unavailable.
+In do_isofs_readdir() when assigning the variable
+"struct iso_directory_record *de" the b_data field of the buffer_head
+is accessed and an offset is added to it, the size of b_data is 2048
+and the offset size is 2047, meaning
+"de = (struct iso_directory_record *) (bh->b_data + offset);"
+yields the final byte of the 2048 sized b_data block.
 
-This peek operation creates a discrepancy between the parent and child qdisc
-queue length counters. When TBF later receives a high-priority packet,
-SKBPRIO's queue length may show a different value than what's reflected in its
-internal priority queue tracking, triggering the assertion.
+The first byte of the directory record (de_len) is then read and
+found to be 31, meaning the directory record size is 31 bytes long.
+The directory record is defined by the structure:
 
-The fix removes this overly strict assertions in SKBPRIO, they are not
-necessary at all.
+	struct iso_directory_record {
+		__u8 length;                     // 1 byte
+		__u8 ext_attr_length;            // 1 byte
+		__u8 extent[8];                  // 8 bytes
+		__u8 size[8];                    // 8 bytes
+		__u8 date[7];                    // 7 bytes
+		__u8 flags;                      // 1 byte
+		__u8 file_unit_size;             // 1 byte
+		__u8 interleave;                 // 1 byte
+		__u8 volume_sequence_number[4];  // 4 bytes
+		__u8 name_len;                   // 1 byte
+		char name[];                     // variable size
+	} __attribute__((packed));
 
-Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
-Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
-Cc: Nishanth Devarajan <ndev2021@gmail.com>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The fixed portion of this structure occupies 33 bytes. Therefore, a
+valid directory record must be at least 33 bytes long
+(even without considering the variable-length name field).
+Since de_len is only 31, it is insufficient to contain
+the complete fixed header.
+
+The code later hits the following sanity check that
+compares de_len against the sum of de->name_len and
+sizeof(struct iso_directory_record):
+
+	if (de_len < de->name_len[0] + sizeof(struct iso_directory_record)) {
+		...
+	}
+
+Since the fixed portion of the structure is
+33 bytes (up to and including name_len member),
+a valid record should have de_len of at least 33 bytes;
+here, however, de_len is too short, and the field de->name_len
+(located at offset 32) is accessed even though it lies beyond
+the available 31 bytes.
+
+This access on the corrupted isofs data triggers a KASAN uninitialized
+memory warning. The fix would be to first verify that de_len is at least
+sizeof(struct iso_directory_record) before accessing any
+fields like de->name_len.
+
+Reported-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
+Tested-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=812641c6c3d7586a1613
+Fixes: 2deb1acc653c ("isofs: fix access to unallocated memory when reading corrupted filesystem")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250211195900.42406-1-qasdev00@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_skbprio.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/isofs/dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
-index df72fb83d9c7d..c9e422e466159 100644
---- a/net/sched/sch_skbprio.c
-+++ b/net/sched/sch_skbprio.c
-@@ -121,8 +121,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	/* Check to update highest and lowest priorities. */
- 	if (skb_queue_empty(lp_qdisc)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			/* The incoming packet is the only packet in queue. */
--			BUG_ON(sch->q.qlen != 1);
- 			q->lowest_prio = prio;
- 			q->highest_prio = prio;
- 		} else {
-@@ -154,7 +152,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
- 	/* Update highest priority field. */
- 	if (skb_queue_empty(hpq)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			BUG_ON(sch->q.qlen);
- 			q->highest_prio = 0;
- 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
- 		} else {
+diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
+index eb2f8273e6f15..09df40b612fbf 100644
+--- a/fs/isofs/dir.c
++++ b/fs/isofs/dir.c
+@@ -147,7 +147,8 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
+ 			de = tmpde;
+ 		}
+ 		/* Basic sanity check, whether name doesn't exceed dir entry */
+-		if (de_len < de->name_len[0] +
++		if (de_len < sizeof(struct iso_directory_record) ||
++		    de_len < de->name_len[0] +
+ 					sizeof(struct iso_directory_record)) {
+ 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
+ 			       " in block %lu of inode %lu\n", block,
 -- 
 2.39.5
 
