@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-129065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F81A7FDF7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAA3A802B3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0AEA3A5FD0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 129604476B1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84216267F6D;
-	Tue,  8 Apr 2025 11:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD82265602;
+	Tue,  8 Apr 2025 11:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaH+On52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2t9N19i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404FA26AAB5;
-	Tue,  8 Apr 2025 11:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5392288CB;
+	Tue,  8 Apr 2025 11:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110018; cv=none; b=D6HswyHwMYeC2Stg8jwanAX/oFjrgiKWHY855jfGqnIfn/+DgAdupLzD0dYYfLKv1P0qbYX9fN2KTsmMlkQN05vLL7qgZlbESUv7HA4b9V9V507qS+fswCt4oYrC/iPj/E+MT3gHvFwe+rhXQx8GoJBa5vOKLRITi4sflrhMos0=
+	t=1744112616; cv=none; b=cShAYsyP4GKIP4gDrTuvS4eSyxPPCGsCrQ1Qcv/gxpBOke+uQpFyrSYXKBGByGuI34tx+asBgyE/5GbWmeEA/t7aGW8+GQ5uWwtFoD2wukGlgTLRQF3Da0xWlZkcYhZ1tkvhWAiSG6wpBo2Qq3chb1ESgF3CFoJKa9jI41Ntzq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110018; c=relaxed/simple;
-	bh=sk4tnJ4Qtt+ubnffXSEtDnZWirwdyOu2P9hcLuUXRZs=;
+	s=arc-20240116; t=1744112616; c=relaxed/simple;
+	bh=tdzkpIOEHFfPUrrySmP5NOU9FO7IvHGRCVWfYbnS2bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McJxW0qOdpbuYF/975+dkMG31wqUpHP6X5LbZ6h2u3DFPqdbiOgvWZ2kUxmWHwSxrCswIwh3BbKSS7qseinCg2JKPCVJQY40TKi1tKVs8PyrhJCVuOPlVyCTfBQJsGofTvVTBprF7E+8vKr/J+GSBtJpk8x+8pEIXkfx+cwsmIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaH+On52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B1BC4CEE5;
-	Tue,  8 Apr 2025 11:00:17 +0000 (UTC)
+	 MIME-Version; b=uAoAe0arVoddP2MUqwxkNVdDGzVWk0pVKLtHUpK5jXCbqdwa+erGGhZ+5vlhmk7roUTWlmwK7ju769eiEJKRBcYo+QQv1PzXpeLySLxwcjwip89Kt3PTvFclESAq8w7CDjgLy0MHjV6Nmnqe2bNBzlRzPX8NM7bhXMGiLInSs9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2t9N19i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8402BC4CEE5;
+	Tue,  8 Apr 2025 11:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110018;
-	bh=sk4tnJ4Qtt+ubnffXSEtDnZWirwdyOu2P9hcLuUXRZs=;
+	s=korg; t=1744112615;
+	bh=tdzkpIOEHFfPUrrySmP5NOU9FO7IvHGRCVWfYbnS2bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaH+On52fbi5rvw4dREKf1M4WjHw/drlTdvuc2yFbIApUxTvU+hWsFyfuZqQAiY+h
-	 G1oTFnIPLP5n3oADhHX+gnOLN2r1DJSKvE2OFz9+NCGp1DzeSFL4KiqDDNYFYiOK4K
-	 tErjkg0SdC4ciZ2bnz8Nsr/b+BbG3Dkv9lnnxlf8=
+	b=t2t9N19i/hPZlVvpz6dQRPA+ijWfyybhqDm7ca+IN1e3BR+531zP8HNIsEfXZI5lU
+	 T6iTN1aNvpob/uIaUUa0jl7D5nJesTylMn314jDLTzsJgRPJKwQRFa9BEFDdCUFdVp
+	 N/n4JXaEc3FGxF/UGpTazl17v9aqgm+EnB11EFqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Tim Schumacher <tim.schumacher1@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/227] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
-Date: Tue,  8 Apr 2025 12:48:37 +0200
-Message-ID: <20250408104824.476586163@linuxfoundation.org>
+Subject: [PATCH 5.15 135/279] selinux: Chain up tool resolving errors in install_policy.sh
+Date: Tue,  8 Apr 2025 12:48:38 +0200
+Message-ID: <20250408104829.983177504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Tim Schumacher <tim.schumacher1@huawei.com>
 
-[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
+[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
 
-There is a type bug because the return statement:
+Subshell evaluations are not exempt from errexit, so if a command is
+not available, `which` will fail and exit the script as a whole.
+This causes the helpful error messages to not be printed if they are
+tacked on using a `$?` comparison.
 
-        return ret < 0 ? ret : recv_cnt;
+Resolve the issue by using chains of logical operators, which are not
+subject to the effects of errexit.
 
-The issue is that ret is an int, recv_cnt is a u32 and the function
-returns ssize_t, which is a signed long.  The way that the type promotion
-works is that the negative error codes are first cast to u32 and then
-to signed long.  The error codes end up being positive instead of
-negative and the callers treat them as success.
-
-Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
+Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/selinux/install_policy.sh | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
-index 17d45f06cedf3..3fa22af13f745 100644
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -920,12 +920,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 				     const struct mipi_dsi_msg *msg)
- {
- 	struct mtk_dsi *dsi = host_to_dsi(host);
--	u32 recv_cnt, i;
-+	ssize_t recv_cnt;
- 	u8 read_data[16];
- 	void *src_addr;
- 	u8 irq_flag = CMD_DONE_INT_FLAG;
- 	u32 dsi_mode;
--	int ret;
-+	int ret, i;
+diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
+index 20af56ce245c5..c68f0e045fb00 100755
+--- a/scripts/selinux/install_policy.sh
++++ b/scripts/selinux/install_policy.sh
+@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
+ 	exit 1
+ fi
  
- 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
- 	if (dsi_mode & MODE) {
-@@ -974,7 +974,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 	if (recv_cnt)
- 		memcpy(msg->rx_buf, src_addr, recv_cnt);
+-SF=`which setfiles`
+-if [ $? -eq 1 ]; then
++SF=`which setfiles` || {
+ 	echo "Could not find setfiles"
+ 	echo "Do you have policycoreutils installed?"
+ 	exit 1
+-fi
++}
  
--	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
-+	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
- 		 recv_cnt, *((u8 *)(msg->tx_buf)));
+-CP=`which checkpolicy`
+-if [ $? -eq 1 ]; then
++CP=`which checkpolicy` || {
+ 	echo "Could not find checkpolicy"
+ 	echo "Do you have checkpolicy installed?"
+ 	exit 1
+-fi
++}
+ VERS=`$CP -V | awk '{print $1}'`
  
- restore_dsi_mode:
+-ENABLED=`which selinuxenabled`
+-if [ $? -eq 1 ]; then
++ENABLED=`which selinuxenabled` || {
+ 	echo "Could not find selinuxenabled"
+ 	echo "Do you have libselinux-utils installed?"
+ 	exit 1
+-fi
++}
+ 
+ if selinuxenabled; then
+     echo "SELinux is already enabled"
 -- 
 2.39.5
 
