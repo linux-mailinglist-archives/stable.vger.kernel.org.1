@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9019EA80270
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B729A8011C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DECA4189210C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51731898DC7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173D6264A76;
-	Tue,  8 Apr 2025 11:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2892698B9;
+	Tue,  8 Apr 2025 11:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wq2i1HKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dL3zo4L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E5F227EBD;
-	Tue,  8 Apr 2025 11:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE29F22424C;
+	Tue,  8 Apr 2025 11:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112626; cv=none; b=UQbrTxdqEmDZybVMro7vecdApTtrPtfHc+OptmIbfF0Rs6QDOYq+iKvyovpLFKc2lIKPHIMZwAwKGboXy7BFGmJalDm9wBewzgLRDr7fZB+5TTjeRFJnEvVu257en/BMkO2vlOr1B4zAt90a9HM4s8QXCyZQmMalm0YyoN8IOUI=
+	t=1744111970; cv=none; b=poLZfG6pkqhUCL3HUVRAk8tkKTQbLZdC8SDV6drGJl1QbscYSXs/BAF2spZLa/cWbfHg8gu6zvwV1Cr9HVPzZmoG8POO5SznY87Yi3beZf/Z8r9unNpRGwFXY+USMNz9X8rpPgQmeQEj0lRfr4gNteixqIT58dsBx0P2NAHsIlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112626; c=relaxed/simple;
-	bh=LdMjE7qqXEAjuTFWu7GfD2z2sbF5r8u7VAxKpbAnOjk=;
+	s=arc-20240116; t=1744111970; c=relaxed/simple;
+	bh=Fahz+PAOdAXiJBJE4SfWhZ9SVbcniyMZBhB3TKqSwec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cJsrWbgQS6cdvhWZuNCGGl590o4+PKIYR7+2OKty0k9dnCdfypvcCpbvCZMHcaIijOye5+kOnuK48WgC1+4JaXGc2c/t02r7a8QPImzlPUFFOVVRxmAPjPOcznvtRsmSp1aiXwvzLppEkAMRPtaoTwUMylLFfb9/m8h2c3j55vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wq2i1HKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFC2C4CEE5;
-	Tue,  8 Apr 2025 11:43:46 +0000 (UTC)
+	 MIME-Version; b=rdi8IuH3FNCJNKGOre3hdBDz2TcE/zQCnAKcwiZlvTC+8xaaS+PWgoJyY/6sqsFP+qIKo8Kggpl8+/iWlVbIrRWXCmBdx4KwfpLAjwB40DA5gzfoe5SeK9EgNkE7TdIuGabw8Hl+eII8SYftPyHAXCbbjitIqDE47WLrRey9ioU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dL3zo4L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB9AC4CEE5;
+	Tue,  8 Apr 2025 11:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112626;
-	bh=LdMjE7qqXEAjuTFWu7GfD2z2sbF5r8u7VAxKpbAnOjk=;
+	s=korg; t=1744111969;
+	bh=Fahz+PAOdAXiJBJE4SfWhZ9SVbcniyMZBhB3TKqSwec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wq2i1HKL40/jl6OoSggG37yzu3QQRAm0HA0dwVQamF9S37Hx1HVzN8eWECLyO6XGU
-	 33IgHELrTYwt0rDzje+AY/3dgQ7KFOxhJc3AyVvzTPylp1LvTNNZBgPSm/hP8tVY3m
-	 0/a55H/r4BBFySrc07tQPa4iIP2papwKjt4EM4MI=
+	b=dL3zo4L7LRtQB6Kp9FGrztyc9IPjochJr5WLv+J0LHjRdFsGw7WlEfnzDJ98b7iBQ
+	 nJIEgOJrhhtuVvUkpWuulWk395XX8z47QVyy7yk76SxmS6T6yPcKmN3k6DKGq1WhwI
+	 dH6No81RlHT77jELfUBzKZ0FZ6lMqWCJx1cnma6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/279] thermal: int340x: Add NULL check for adev
-Date: Tue,  8 Apr 2025 12:48:42 +0200
-Message-ID: <20250408104830.092814448@linuxfoundation.org>
+Subject: [PATCH 6.14 626/731] rtnetlink: Use register_pernet_subsys() in rtnl_net_debug_init().
+Date: Tue,  8 Apr 2025 12:48:43 +0200
+Message-ID: <20250408104928.833975765@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
+[ Upstream commit 1b7fdc702c031134c619b74c4f311c590e50ca3d ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL.
-This is similar to the commit cd2fd6eab480
-("platform/x86: int3472: Check for adev == NULL").
+rtnl_net_debug_init() registers rtnl_net_debug_net_ops by
+register_pernet_device() but calls unregister_pernet_subsys()
+in case register_netdevice_notifier() fails.
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in int3402_thermal_probe().
+It corrupts pernet_list because first_device is updated in
+register_pernet_device() but not unregister_pernet_subsys().
 
-Note, under the same directory, int3400_thermal_probe() has such a
-check.
+Let's fix it by calling register_pernet_subsys() instead.
 
-Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
-[ rjw: Subject edit, added Fixes: ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The _subsys() one fits better for the use case because it keeps
+the notifier alive until default_device_exit_net(), giving it
+more chance to test NETDEV_UNREGISTER.
+
+Fixes: 03fa53485659 ("rtnetlink: Add ASSERT_RTNL_NET() placeholder for netdev notifier.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250401190716.70437-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/rtnl_net_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-index 43fa351e2b9ec..b7fdf25bfd237 100644
---- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
- 	struct int3402_thermal_data *d;
+diff --git a/net/core/rtnl_net_debug.c b/net/core/rtnl_net_debug.c
+index 7ecd28cc1c225..f3272b09c2556 100644
+--- a/net/core/rtnl_net_debug.c
++++ b/net/core/rtnl_net_debug.c
+@@ -102,7 +102,7 @@ static int __init rtnl_net_debug_init(void)
+ {
  	int ret;
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(adev->handle, "_TMP"))
- 		return -ENODEV;
+-	ret = register_pernet_device(&rtnl_net_debug_net_ops);
++	ret = register_pernet_subsys(&rtnl_net_debug_net_ops);
+ 	if (ret)
+ 		return ret;
  
 -- 
 2.39.5
