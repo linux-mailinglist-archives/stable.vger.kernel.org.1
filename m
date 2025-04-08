@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517ADA800F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DCEA801FC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A37D0188C2FA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A024A7A7F05
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61BA267F55;
-	Tue,  8 Apr 2025 11:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A666266EFB;
+	Tue,  8 Apr 2025 11:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA0Zwlb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb8/dVHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2F269819;
-	Tue,  8 Apr 2025 11:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579D8266583;
+	Tue,  8 Apr 2025 11:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111876; cv=none; b=irtP7LPLgijajbLynNd0pIjWxc4LgPU/o183j5S2kuRaNkO/Z0o3fDIjL/GzZ7g07QhHDcqSIIBo0Nslsqmb19h5DolVdWsPRWPSaBNnc1swimW7OrZr9N4yU12xsf25j4b3Jrc0nW3bT3F08rF4XfhbrUJrfc/yN5GlTCHEnoc=
+	t=1744112535; cv=none; b=MWD9T0p3dvCdtYDtnWhkSJgD3fiuao1o8JQYluowGaMfxvDKi6Rmh7ymvqy4qVdEAi36g93ZF7rksBCZny/8AIXMULKQxTfCComgn4jrqlqVSbj6vKW23/C/xb7NgFknxKCBU8zuMqj9jPGhYocSbNQoUBv6Qt6xsasYwpGYlHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111876; c=relaxed/simple;
-	bh=xizE3i1MUmIQsf3//NL4fbuyKHoxlNs7c7jEWLklCWU=;
+	s=arc-20240116; t=1744112535; c=relaxed/simple;
+	bh=sU+fP2c8GTxWk4N+43+RigMqkNo5qO8uoGlc2P8qTig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBhrey3KKsyZKJP6owI322gLRa9SvnHVKOQnW59oebN412g5QEoFB4mBoteHX4f5fzBTizGXBN+SeL4hEquNW0B/oSiuIOGx8AleLPoAo/4UgrLjS2m/vGk40sQ6XQm/pu5NHYOteXv3v8Z0Ha6kqNuSjNNAwq/GWK0cskAeEg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA0Zwlb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF978C4CEE5;
-	Tue,  8 Apr 2025 11:31:15 +0000 (UTC)
+	 MIME-Version; b=fCmW/kePHGKyP2YKgdk4rMD7gAgfy/hVzlUoioDZuUtxgLwFIPuRxCLDKcvkR6Hq2V1myuS3+x3pw0uJEf5u+X1j8p2K83neE7m73MsPy2OoEjCkKC1tYSgQVhz8Ps2UGNhsoojAsomhwyNdQZu+nMijvb/kFQYn+dqOYLu5iHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb8/dVHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59ADC4CEE5;
+	Tue,  8 Apr 2025 11:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111876;
-	bh=xizE3i1MUmIQsf3//NL4fbuyKHoxlNs7c7jEWLklCWU=;
+	s=korg; t=1744112535;
+	bh=sU+fP2c8GTxWk4N+43+RigMqkNo5qO8uoGlc2P8qTig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oA0Zwlb6HwsRfmliute9s+BdZyccTT+KoNCzlAVPfeNAaY65yvWajBSo/ru9MbHLZ
-	 LOYO2hGhCgXlFLaITf3qHlHbPKECJ+fprt4uqfSK03IV1zBX1Rqeppv9QyKy9JU5J7
-	 UHuyZysypS28loiykY31RW/7PIdxwdMwzQ0VFE/E=
+	b=sb8/dVHs8W4YzszuhC6EeZL/qtDC+S0PxLGDXWBzKyme5I3fUNSIij22aNo9SpSVd
+	 OUY5Np9GdH3wZO3L8uMT44Y95H8WzvlQ5T0BeiPZ8pcM991CYo0svReeT1lsdOJYBk
+	 wK/zi/6hqUn9IroxnoWWbTXqf3d509Na/edotexM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 590/731] riscv: Fix check_unaligned_access_all_cpus
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 104/279] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
 Date: Tue,  8 Apr 2025 12:48:07 +0200
-Message-ID: <20250408104927.998418268@linuxfoundation.org>
+Message-ID: <20250408104829.153921482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit e6d0adf2eb5bb3244cb21a7a15899aa058bd384f ]
+commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
 
-check_vector_unaligned_access_emulated_all_cpus(), like its name
-suggests, will return true when all cpus emulate unaligned vector
-accesses. If the function returned false it may have been because
-vector isn't supported at all (!has_vector()) or because at least
-one cpu doesn't emulate unaligned vector accesses. Since false may
-be returned for two cases, checking for it isn't sufficient when
-attempting to determine if we should proceed with the vector speed
-check. Move the !has_vector() functionality to
-check_unaligned_access_all_cpus() in order for
-check_vector_unaligned_access_emulated_all_cpus() to return false
-for a single case.
+On the off chance that command stream passed from userspace via
+ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
+first command to execute is to encode (case 0x03000001), the function
+in question will attempt to call radeon_vce_cs_reloc() with size
+argument that has not been properly initialized. Specifically, 'size'
+will point to 'tmp' variable before the latter had a chance to be
+assigned any value.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250304120014.143628-13-ajones@ventanamicro.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Play it safe and init 'tmp' with 0, thus ensuring that
+radeon_vce_cs_reloc() will catch an early error in cases like these.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps_misaligned.c       |  6 ------
- arch/riscv/kernel/unaligned_access_speed.c | 11 +++++++----
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index aacbd9d7196e7..4354c87c0376f 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -609,12 +609,6 @@ bool __init check_vector_unaligned_access_emulated_all_cpus(void)
+--- a/drivers/gpu/drm/radeon/radeon_vce.c
++++ b/drivers/gpu/drm/radeon/radeon_vce.c
+@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
  {
- 	int cpu;
+ 	int session_idx = -1;
+ 	bool destroyed = false, created = false, allocated = false;
+-	uint32_t tmp, handle = 0;
++	uint32_t tmp = 0, handle = 0;
+ 	uint32_t *size = &tmp;
+ 	int i, r = 0;
  
--	if (!has_vector()) {
--		for_each_online_cpu(cpu)
--			per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
--		return false;
--	}
--
- 	schedule_on_each_cpu(check_vector_unaligned_access_emulated);
- 
- 	for_each_online_cpu(cpu)
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 2e41b42498c76..78ab4cb2ab050 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -406,13 +406,16 @@ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __alway
- 
- static int __init check_unaligned_access_all_cpus(void)
- {
--	bool all_cpus_emulated, all_cpus_vec_unsupported;
-+	bool all_cpus_emulated;
-+	int cpu;
- 
- 	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
--	all_cpus_vec_unsupported = check_vector_unaligned_access_emulated_all_cpus();
- 
--	if (!all_cpus_vec_unsupported &&
--	    IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
-+	if (!has_vector()) {
-+		for_each_online_cpu(cpu)
-+			per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
-+	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
-+		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
- 		kthread_run(vec_check_unaligned_access_speed_all_cpus,
- 			    NULL, "vec_check_unaligned_access_speed_all_cpus");
- 	}
--- 
-2.39.5
-
 
 
 
