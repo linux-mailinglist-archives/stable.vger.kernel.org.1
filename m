@@ -1,79 +1,56 @@
-Return-Path: <stable+bounces-129660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E5EA800E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84462A7FD69
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED1FF880DF9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2597189679F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5B726A09F;
-	Tue,  8 Apr 2025 11:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17FE267F7F;
+	Tue,  8 Apr 2025 10:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ux6OH+Rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwRxX0Q3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398ED26A08E;
-	Tue,  8 Apr 2025 11:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD51263C71;
+	Tue,  8 Apr 2025 10:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111639; cv=none; b=ENHZUwmh8l1ksVANmHPqu2u3pw2EKs5JILw4/ImdKJQ1KtY6K/ZDRy3TLRGloJnNkJPda/7d3m1IifTxhv5+hYgALdwFfyKqPiCCKBbFfzX+uTtE5rfElz4WXlEkbhEwGmh3cuSgonTUxYETzeMxinV6QKUiJfhLN9z7SPSGKbk=
+	t=1744109704; cv=none; b=R+2pg2DWUJxDFGurYWThRR3o4zdBTKddkS1PjnkI4ZX/8YhOF72/ZtYDTEJ8FvkyGFhh1slOox5IuLxKTTQgJ2FeQUbfo/xCtS8aGdu1CtwqAx5kM0ReQuBpMBS4Fz64QF9m8J8I8We7NrqHWj3nzK5X/CB7IHUdPnHrOm6YW+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111639; c=relaxed/simple;
-	bh=Dl4j0081yegnCy7YFmzj+7sJ18Mr3jhjXtZ3r8eFaR8=;
+	s=arc-20240116; t=1744109704; c=relaxed/simple;
+	bh=KevFOGu/93n+pleLgF694JexCnIb36KuT3FBIZoHVb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0GpLiUWssw+CLEDkYRptyXzeIDXLHfDSx9sWbijQM49aB0KUdCTGpxv4FIDKr9h4Mx7peGI3FyZyKH0XApfzjQ6Vx/sJhGaCc2GDswtkFGTbP8QBhaaD6ZzX4smcph80cdUluBiDap/fFQGJAyYUatBEc1tUZrgkbRCxjYwqwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ux6OH+Rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25677C4CEE5;
-	Tue,  8 Apr 2025 11:27:18 +0000 (UTC)
+	 MIME-Version; b=RIwVRDR1DQSPrMJ9Mr4qY5RCA9h8siopekTormNACcxQUYFnODa5HGNF1aV8gbXtdEeEPPwbnbBCU0YPvv2GqUC87Z4YEok1C6r1C5kud8BhMA3vupEKqJLAsOHNdjnp5kNlMq2y4xDEBPakUODIato1zVdm6NlM850MNw5FYgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwRxX0Q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89C9C4CEE5;
+	Tue,  8 Apr 2025 10:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111638;
-	bh=Dl4j0081yegnCy7YFmzj+7sJ18Mr3jhjXtZ3r8eFaR8=;
+	s=korg; t=1744109704;
+	bh=KevFOGu/93n+pleLgF694JexCnIb36KuT3FBIZoHVb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ux6OH+RbZyMkkJwhTuBeiqeOloHVoLL43r95dDKl/+GIFG9gLCjUgA9sWpPgzr14I
-	 OK82FkTfCvKimbTNYfvVZpq0y8RK/YlXzmePp+7YRNHKIyYMIkIe/eotuaoZuJxyPT
-	 hlBdCCEVT0MFKRNnr/V6MDS21D52QQwq8J9wbwaY=
+	b=IwRxX0Q3VDyztdrVdetI4yfHFLi/HzyP5/w9BK7lhNvDiMu9HRuA+7QkcJdw4uHsY
+	 2fnPZxYtE7QW+Izv/RnaZu6ZOo3/luTppqysyboWeLf829a4kyGE8qLmPhIgg8y75d
+	 C4JyIRABlj/XzGQbSTBj2WrSzNk13KQHulJE0GX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Alex Shi <alexs@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Karol Herbst <kherbst@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Lyude <lyude@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Peter Xu <peterx@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 503/731] kernel/events/uprobes: handle device-exclusive entries correctly in __replace_page()
+Subject: [PATCH 5.10 022/227] hrtimers: Mark is_migration_base() with __always_inline
 Date: Tue,  8 Apr 2025 12:46:40 +0200
-Message-ID: <20250408104925.974075703@linuxfoundation.org>
+Message-ID: <20250408104821.059416792@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,100 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 096cbb80ab3fd85a9035ec17a1312c2a7db8bc8c ]
+[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
 
-Ever since commit b756a3b5e7ea ("mm: device exclusive memory access") we
-can return with a device-exclusive entry from page_vma_mapped_walk().
+When is_migration_base() is unused, it prevents kernel builds
+with clang, `make W=1` and CONFIG_WERROR=y:
 
-__replace_page() is not prepared for that, so teach it about these PFN
-swap PTEs.  Note that device-private entries are so far not applicable on
-that path, because GUP would never have returned such folios (conversion
-to device-private happens by page migration, not in-place conversion of
-the PTE).
+kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
+  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
+      |                    ^~~~~~~~~~~~~~~~~
 
-There is a race between GUP and us locking the folio to look it up using
-page_vma_mapped_walk(), so this is likely a fix (unless something else
-could prevent that race, but it doesn't look like).  pte_pfn() on
-something that is not a present pte could give use garbage, and we'd
-wrongly mess up the mapcount because it was already adjusted by calling
-folio_remove_rmap_pte() when making the entry device-exclusive.
+Fix this by marking it with __always_inline.
 
-Link: https://lkml.kernel.org/r/20250210193801.781278-9-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ tglx: Use __always_inline instead of __maybe_unused and move it into the
+  	usage sites conditional ]
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ kernel/time/hrtimer.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index b4ca8898fe178..eac24f39c2c2d 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -173,6 +173,7 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 	DEFINE_FOLIO_VMA_WALK(pvmw, old_folio, vma, addr, 0);
- 	int err;
- 	struct mmu_notifier_range range;
-+	pte_t pte;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 7f9f2fc183fe3..c202488695c46 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -144,11 +144,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
  
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
- 				addr + PAGE_SIZE);
-@@ -192,6 +193,16 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 	if (!page_vma_mapped_walk(&pvmw))
- 		goto unlock;
- 	VM_BUG_ON_PAGE(addr != pvmw.address, old_page);
-+	pte = ptep_get(pvmw.pte);
-+
-+	/*
-+	 * Handle PFN swap PTES, such as device-exclusive ones, that actually
-+	 * map pages: simply trigger GUP again to fix it up.
-+	 */
-+	if (unlikely(!pte_present(pte))) {
-+		page_vma_mapped_walk_done(&pvmw);
-+		goto unlock;
-+	}
+ #define migration_base	migration_cpu_base.clock_base[0]
  
- 	if (new_page) {
- 		folio_get(new_folio);
-@@ -206,7 +217,7 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 		inc_mm_counter(mm, MM_ANONPAGES);
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return base == &migration_base;
+-}
+-
+ /*
+  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
+  * means that all timers which are tied to this base via timer->base are
+@@ -273,11 +268,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 
+ #else /* CONFIG_SMP */
+ 
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return false;
+-}
+-
+ static inline struct hrtimer_clock_base *
+ lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+ {
+@@ -1275,6 +1265,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
  	}
+ }
  
--	flush_cache_page(vma, addr, pte_pfn(ptep_get(pvmw.pte)));
-+	flush_cache_page(vma, addr, pte_pfn(pte));
- 	ptep_clear_flush(vma, addr, pvmw.pte);
- 	if (new_page)
- 		set_pte_at(mm, addr, pvmw.pte,
++#ifdef CONFIG_SMP
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return base == &migration_base;
++}
++#else
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return false;
++}
++#endif
++
+ /*
+  * This function is called on PREEMPT_RT kernels when the fast path
+  * deletion of a timer failed because the timer callback function was
 -- 
 2.39.5
 
