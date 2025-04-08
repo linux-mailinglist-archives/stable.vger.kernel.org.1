@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3800FA80A93
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED58A80469
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2EA1BA6E69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15C243B6A2B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A39426FDB3;
-	Tue,  8 Apr 2025 12:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2401B268FFA;
+	Tue,  8 Apr 2025 11:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRZI96Ds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+qPSYpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C626F460;
-	Tue,  8 Apr 2025 12:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D47265626;
+	Tue,  8 Apr 2025 11:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116602; cv=none; b=mn77OZuDTOUC/2esrLcjyXiO3BM3e2yBDbzjo2IU2kUnK8GSpJe2yMmQRM9VwPKTggVezPK2Dc5felV5vtG61iskuCUtcxUisww5AIvpywV8GjOSmJvvlPvP8vio1hRiWSb+W2RZAIkE+fc73/urMdcEVjjfYcDua/v3VU4chW4=
+	t=1744113427; cv=none; b=OyAhBjcKvrNYB1ptklGq5oCISTYkklCQ8rqkhGMH2NrZS1wqTaEnE1flnXytz1jy1uTrcR8/Tmibap6BNnjUBPijEJQ0E+hvVfNJwfjuYJALmTn+048RB3CPD1tb5jd2xTTSzoxva6xHz2b4NGmiVYL3JwcXP+pVQ6PrM+I74r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116602; c=relaxed/simple;
-	bh=2LHF7wr4sR8ge2Ppjc8m1FZpfHcCNE7OFDNrnpsNLqE=;
+	s=arc-20240116; t=1744113427; c=relaxed/simple;
+	bh=gTUvwDnh1cuHL399lXxXA1pyZ/hypT77PQml0mi9ik4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3Q0Hsv3SfToMESGla05IU8flTN1mlBUpj2gG/wstURjG9uyVkIkx/wOZKfij0JBtm5JREHfcYpBw8jYoaAKJsjNJO2C5jm8Td09jMohI5EDByaJPJgYyWpWLIRq9CjO9wHgdiva9RfA8gdl+51dgpJUf7rgnZW/MQ+GlFD82/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRZI96Ds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FD9C4CEE5;
-	Tue,  8 Apr 2025 12:50:01 +0000 (UTC)
+	 MIME-Version; b=UmalWB7VUOb6tBKzuyVQAI6xuRTWrbm9UCztLi57qUki21FtnnKS6po1f5pDLRo6P+7CzT3gqcdBq/G4FVSj0skWtKI1nqAelQD9ewSEJG1pt93mGFCP98zaXa+ICWpRphQAIvZXAKj2noqgj1rnGJlSfLPEfSGwojUGRmeSapQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+qPSYpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62ED1C4CEE5;
+	Tue,  8 Apr 2025 11:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116602;
-	bh=2LHF7wr4sR8ge2Ppjc8m1FZpfHcCNE7OFDNrnpsNLqE=;
+	s=korg; t=1744113427;
+	bh=gTUvwDnh1cuHL399lXxXA1pyZ/hypT77PQml0mi9ik4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRZI96DssWFIvE7uqG0U71XaB4qDtNQJk7G1ODdJHNfbrASggmOfs+wBNcjB3vJ+u
-	 fmrxRjBMXQ+6s9SXI9rRqpMTsUotpXzRMTqnnJPdD1ePvuiKh5NHXrMhmi6W3EDmi7
-	 PtsfzX8UnM0Q0fny5KQOemry3TsG4CTfpd+manlo=
+	b=S+qPSYpJasBMo7EU1gMHbOFYkfrFUZfjgfSNaH64dC+g7QwgnUjmbiNjpCXXaUxp5
+	 DR0B1u6aArEJ9REtftDpRgWTkKEGn/crSzi4/xynKGuVDnkN0vCfhQxyvJQUApm6tz
+	 WSPP6PjDKKAFzm0vZ0Ga+Q4MEOhfDvahj92rVnEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/423] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
-Date: Tue,  8 Apr 2025 12:48:46 +0200
-Message-ID: <20250408104850.393084318@linuxfoundation.org>
+Subject: [PATCH 6.6 116/268] fs/ntfs3: Fix a couple integer overflows on 32bit systems
+Date: Tue,  8 Apr 2025 12:48:47 +0200
+Message-ID: <20250408104831.625890071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
+[ Upstream commit 5ad414f4df2294b28836b5b7b69787659d6aa708 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. Avoid at least some loops by not requiring the
-NFSv4 state manager to scan for delegations that are marked for
-return-on-close. Instead, either mark them for immediate return (if
-possible) or else leave it up to nfs4_inode_return_delegation_on_close()
-to return them once the file is closed by the application.
+On 32bit systems the "off + sizeof(struct NTFS_DE)" addition can
+have an integer wrapping issue.  Fix it by using size_add().
 
-Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ fs/ntfs3/index.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 4db912f562305..df77d68d9ff99 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -590,17 +590,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 9089c58a005ce..28aae6ea1e615 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -618,7 +618,7 @@ static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
+ 	u32 off = le32_to_cpu(hdr->de_off);
  
- 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
- 		ret = true;
--	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
--		struct inode *inode;
--
--		spin_lock(&delegation->lock);
--		inode = delegation->inode;
--		if (inode && list_empty(&NFS_I(inode)->open_files))
--			ret = true;
--		spin_unlock(&delegation->lock);
--	}
--	if (ret)
--		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
- 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
-@@ -878,11 +867,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
- 	return nfs4_inode_return_delegation(inode);
- }
+ 	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
+-	    off + sizeof(struct NTFS_DE) > end) {
++	    size_add(off, sizeof(struct NTFS_DE)) > end) {
+ 		/* incorrect index buffer. */
+ 		return false;
+ 	}
+@@ -736,7 +736,7 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
+ 	if (end > total)
+ 		return NULL;
  
--static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
--		struct nfs_delegation *delegation)
-+static void
-+nfs_mark_return_if_closed_delegation(struct nfs_server *server,
-+				     struct nfs_delegation *delegation)
- {
--	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
--	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
-+	struct inode *inode;
-+
-+	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
-+	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
-+		return;
-+	spin_lock(&delegation->lock);
-+	inode = delegation->inode;
-+	if (!inode)
-+		goto out;
-+	if (list_empty(&NFS_I(inode)->open_files))
-+		nfs_mark_return_delegation(server, delegation);
-+	else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out:
-+	spin_unlock(&delegation->lock);
- }
+-	if (off + sizeof(struct NTFS_DE) > end)
++	if (size_add(off, sizeof(struct NTFS_DE)) > end)
+ 		return NULL;
  
- static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
+ 	e = Add2Ptr(hdr, off);
 -- 
 2.39.5
 
