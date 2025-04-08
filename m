@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A150DA80458
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7969CA804F9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1E8019E4987
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BC911B66241
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDF269CF7;
-	Tue,  8 Apr 2025 12:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4803268FD9;
+	Tue,  8 Apr 2025 12:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIftD4xN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K98vYPYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A56269CF0;
-	Tue,  8 Apr 2025 12:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F64A94A;
+	Tue,  8 Apr 2025 12:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113631; cv=none; b=MWqEkAlXM+g2HK+MZpKKdCcqrbvkUVj9JxhG4GEQ0vK+W+3UR/clO10XmeYFpLQFdlr1zfdFy6IyWXzEgq52oPyKQP+5+JrFFkxNiHa2gV7gSmIx56nRIrUGaWKPtnUmOM1G2XQnMwBQvBdanM+IN9XVYvjcwRgKWarVuhOmxHE=
+	t=1744114004; cv=none; b=jv1UMhltsM+qgVLu10LfgS4xpcQh1l5Bf0CZbF3a3Fv7V2ZQnrPdUvMqN1jEn5EgoWml9/Ko/o/fCFaXwmpax2RezXJEShMeiMAN198O3Ay8fZR6qg0HtacIk3GtTcoTp3C9BA9H8JTN/8yULWjm59fFi+4nvR87tkLiOuWSfqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113631; c=relaxed/simple;
-	bh=QgvtBLP2+Lmai7NIAketobtHYPFXLHM/KT2NIlqHLs8=;
+	s=arc-20240116; t=1744114004; c=relaxed/simple;
+	bh=ZQDul53xiOQQjlEfA6uMstHv811WeGIgpiiYOP0Tdy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q3Meabf7KRB0OdjLtfOAtkRvql+YUeZTao6FEzttRTwI8mFoEpNQ/uwCMa41riKxexIi33crUtJjdLwmuxBcRD+3ytj9jIgWdLCO44DrDBUF7t8SEWp5PkIPn0+IASaQSfgY8L/A95LdYslZjKqaTAMFCHiKJmrHhah34lg4+zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIftD4xN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EA9C4CEE5;
-	Tue,  8 Apr 2025 12:00:30 +0000 (UTC)
+	 MIME-Version; b=kzJMop+pdlE7RPV0Wxw7yVfd9r5y8Rl24it165NYRAwZoZs6QvKNW7Z2gP2VD8Xj/nEpyohip3+yGtVA9PoLz+av9P17vngcShCY29DGHn7Q0Kjz1omJZBAhCMujGyTW3Tf954MKHQW6u/0CMvzc6VpGHGYrHNHPH6QsZhR34CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K98vYPYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2162EC4CEE5;
+	Tue,  8 Apr 2025 12:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113631;
-	bh=QgvtBLP2+Lmai7NIAketobtHYPFXLHM/KT2NIlqHLs8=;
+	s=korg; t=1744114004;
+	bh=ZQDul53xiOQQjlEfA6uMstHv811WeGIgpiiYOP0Tdy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIftD4xNYfycG2U0T9NaCXx6uErcE1v9hVlJVsh/sgMT0lQNja2HHvISEfMFOFiXS
-	 qIsWJsm2YwnmFjKtMdWSQxfYsYoVzvwEkUNbkjuIf17yI2VYnXeriq7I0Vkw+K9cV7
-	 n0yZ+tZsrsEYAyzztmZZ+lktJ2eXDiDeZBcJcEmY=
+	b=K98vYPYFaFLmJ0gSwmYwSixEJUuAn2VF9vbLGSROKvPAg9u14U6V6DN9SataDEFYG
+	 h5poAkuZIskZGVtvTOArbvXGrHXnBRsb0/tpP6o0QjvaI3o2LCzGFrmPRZex5i2iVb
+	 mEgJNONfpa93dYKMNl/QR8/ug0QjpklVGVG7ozZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Lu <luying1@xiaomi.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 230/268] usbnet:fix NPE during rx_complete
+	Danila Chernetsov <listdansp@mail.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 100/154] fbdev: sm501fb: Add some geometry checks.
 Date: Tue,  8 Apr 2025 12:50:41 +0200
-Message-ID: <20250408104834.791423265@linuxfoundation.org>
+Message-ID: <20250408104818.532700368@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Lu <luying1@xiaomi.com>
+From: Danila Chernetsov <listdansp@mail.ru>
 
-commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
+[ Upstream commit aee50bd88ea5fde1ff4cc021385598f81a65830c ]
 
-Missing usbnet_going_away Check in Critical Path.
-The usb_submit_urb function lacks a usbnet_going_away
-validation, whereas __usbnet_queue_skb includes this check.
+Added checks for xoffset, yoffset settings.
+Incorrect settings of these parameters can lead to errors
+in sm501fb_pan_ functions.
 
-This inconsistency creates a race condition where:
-A URB request may succeed, but the corresponding SKB data
-fails to be queued.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Subsequent processes:
-(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
-attempt to access skb->next, triggering a NULL pointer
-dereference (Kernel Panic).
-
-Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ying Lu <luying1@xiaomi.com>
-Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5fc404e47bdf ("[PATCH] fb: SM501 framebuffer driver")
+Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/sm501fb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
- 	    netif_device_present (dev->net) &&
- 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
- 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
--	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
-+	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
-+	    !usbnet_going_away(dev)) {
- 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
- 		case -EPIPE:
- 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
-@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
- 			tasklet_schedule (&dev->bh);
- 			break;
- 		case 0:
--			if (!usbnet_going_away(dev))
--				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
-+			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
- 		}
- 	} else {
- 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
+index 3dd1b1d76e983..a7acf0acd3e92 100644
+--- a/drivers/video/fbdev/sm501fb.c
++++ b/drivers/video/fbdev/sm501fb.c
+@@ -326,6 +326,13 @@ static int sm501fb_check_var(struct fb_var_screeninfo *var,
+ 	if (var->xres_virtual > 4096 || var->yres_virtual > 2048)
+ 		return -EINVAL;
+ 
++	/* geometry sanity checks */
++	if (var->xres + var->xoffset > var->xres_virtual)
++		return -EINVAL;
++
++	if (var->yres + var->yoffset > var->yres_virtual)
++		return -EINVAL;
++
+ 	/* can cope with 8,16 or 32bpp */
+ 
+ 	if (var->bits_per_pixel <= 8)
+-- 
+2.39.5
+
 
 
 
