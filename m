@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-131257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275A0A808E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA90A80B94
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CE151BA2420
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2C38A60EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5F926988C;
-	Tue,  8 Apr 2025 12:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8314526F453;
+	Tue,  8 Apr 2025 12:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rb9Zu3Jh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNtnr2WS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49873269AE4;
-	Tue,  8 Apr 2025 12:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF2C263C76;
+	Tue,  8 Apr 2025 12:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115909; cv=none; b=eF6u2SsFiKuOhTaSXWUZvWroKfOFlOMWS4gB0txHkfOKSZUruORXM4525tNgXK6aS3ZCu4NHMxb3+yiXffBUlc+P09YQZkIkQfZbqwy4hd1qSMp7Kxt2W2XLVzQWU+6/F6o7v3GYsQSJ1W+wP9T7EXE/VbfHkA/58MV8MgcU1/o=
+	t=1744117121; cv=none; b=U1tPc+/oPoYJNOjld4w4oOPf8u1uyWBZokQ3mxcL7bGaOYww0MT6htEdpfPA6yHX2z04ugx3RKZHTqObW761RoMuKI/Kd+qFWFOz3TIC0pXSSqFRzlONlVuhFSnOQmISZpB8Yk+bY2yLkAD7sgPvWOx10HWrCPu8/Jg+PdfI3dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115909; c=relaxed/simple;
-	bh=sIiZJF+OTrjM+MyJNVgc5IlhmP/vO17eK5UcF+VpvYc=;
+	s=arc-20240116; t=1744117121; c=relaxed/simple;
+	bh=jl3Ivb7VJz5lrJKt1Za1PP5ZrOVtcyYmWLFXPtunRl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTWNo8aD0wU3jSeKmgiJjHCnf9FXWKwTlusl3G8I8PaN0ZBg9ZvDXp0cx9mqgIKW0/R6xkSqrzZ+ncs76lezOLt4+ag+Wgwf+EJezcThghD8JklCpTlRKd1WSVn5eruYp39XBr5be4sePWI2HpCfkoxNUE+RU7eh56GMEmBfRFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rb9Zu3Jh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72543C4CEE5;
-	Tue,  8 Apr 2025 12:38:28 +0000 (UTC)
+	 MIME-Version; b=IHKPA9yIJuLp1AzRsi0TuZjcnmWQSwLqC0nGHY8eMQs7agU0KDf23DPdRmcCD/XxHG3dmjlVId+eKGOYMxLkZxgeuTZHFTnY8GgdT12HolVK3VItPrHvUjhYKfRIlvph5Cp0U+47+nJBQtjhZQUjLPrjcDVHAN6cbffm7e4Lobk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNtnr2WS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED2EC4CEE7;
+	Tue,  8 Apr 2025 12:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115908;
-	bh=sIiZJF+OTrjM+MyJNVgc5IlhmP/vO17eK5UcF+VpvYc=;
+	s=korg; t=1744117119;
+	bh=jl3Ivb7VJz5lrJKt1Za1PP5ZrOVtcyYmWLFXPtunRl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rb9Zu3JhkmwoDImPs0DwA11Y8toSLfaugyK8F7cSE0SPghTOKfOjmFhJbjv8a8NTs
-	 5B8xuEIDynwJ78kjCfqBCq5fgpTIxpVd5T90/lqjyD4SoWjnJAhgD6W4t7PMvSBR/e
-	 nU50qL5xfSVesYodFRwym0HeuBP2PeHmjOYjrJE8=
+	b=kNtnr2WSXJ/LrawZ5urhxHn5Cw4MbH9CI1OslktUWc7IAGH0NTea0HaiXNk74Wfww
+	 938Fr4nR7odnjCHVlKAv+w7755j+x+eRSuCsXJwXhcZUeRC2oh16H/CBcaA89Zq6ac
+	 M78/nbchSyZo26EHFeZ0CEA26GozNQkQ+Vcl0e8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Shuah Khan <shuah@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/204] spufs: fix a leak on spufs_new_file() failure
+Subject: [PATCH 6.12 352/423] tracing/hist: Support POLLPRI event for poll on histogram
 Date: Tue,  8 Apr 2025 12:51:18 +0200
-Message-ID: <20250408104824.634354890@linuxfoundation.org>
+Message-ID: <20250408104854.048315424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
+[ Upstream commit 66fc6f521a0b91051ce6968a216a30bc52267bf8 ]
 
-It's called from spufs_fill_dir(), and caller of that will do
-spufs_rmdir() in case of failure.  That does remove everything
-we'd managed to create, but... the problem dentry is still
-negative.  IOW, it needs to be explicitly dropped.
+Since POLLIN will not be flushed until the hist file is read, the user
+needs to repeatedly read() and poll() on the hist file for monitoring the
+event continuously. But the read() is somewhat redundant when the user is
+only monitoring for event updates.
 
-Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Add POLLPRI poll event on the hist file so the event returns when a
+histogram is updated after open(), poll() or read(). Thus it is possible
+to wait for the next event without having to issue a read().
+
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/173527248770.464571.2536902137325258133.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index dbcfe361831a6..ac10339ea4172 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -191,8 +191,10 @@ static int spufs_fill_dir(struct dentry *dir,
- 			return -ENOMEM;
- 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
- 					files->mode & mode, files->size, ctx);
--		if (ret)
-+		if (ret) {
-+			dput(dentry);
- 			return ret;
-+		}
- 		files++;
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 9e33cd2a73b5c..e07d75adab8e3 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5598,6 +5598,7 @@ static void hist_trigger_show(struct seq_file *m,
+ struct hist_file_data {
+ 	struct file *file;
+ 	u64 last_read;
++	u64 last_act;
+ };
+ 
+ static u64 get_hist_hit_count(struct trace_event_file *event_file)
+@@ -5633,6 +5634,11 @@ static int hist_show(struct seq_file *m, void *v)
+ 			hist_trigger_show(m, data, n++);
  	}
+ 	hist_file->last_read = get_hist_hit_count(event_file);
++	/*
++	 * Update last_act too so that poll()/POLLPRI can wait for the next
++	 * event after any syscall on hist file.
++	 */
++	hist_file->last_act = hist_file->last_read;
+ 
  	return 0;
+ }
+@@ -5642,6 +5648,8 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+ 	struct trace_event_file *event_file;
+ 	struct seq_file *m = file->private_data;
+ 	struct hist_file_data *hist_file = m->private;
++	__poll_t ret = 0;
++	u64 cnt;
+ 
+ 	guard(mutex)(&event_mutex);
+ 
+@@ -5651,10 +5659,15 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+ 
+ 	hist_poll_wait(file, wait);
+ 
+-	if (hist_file->last_read != get_hist_hit_count(event_file))
+-		return EPOLLIN | EPOLLRDNORM;
++	cnt = get_hist_hit_count(event_file);
++	if (hist_file->last_read != cnt)
++		ret |= EPOLLIN | EPOLLRDNORM;
++	if (hist_file->last_act != cnt) {
++		hist_file->last_act = cnt;
++		ret |= EPOLLPRI;
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int event_hist_release(struct inode *inode, struct file *file)
+@@ -5668,6 +5681,7 @@ static int event_hist_release(struct inode *inode, struct file *file)
+ 
+ static int event_hist_open(struct inode *inode, struct file *file)
+ {
++	struct trace_event_file *event_file;
+ 	struct hist_file_data *hist_file;
+ 	int ret;
+ 
+@@ -5675,16 +5689,25 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ 	if (ret)
+ 		return ret;
+ 
++	guard(mutex)(&event_mutex);
++
++	event_file = event_file_data(file);
++	if (!event_file)
++		return -ENODEV;
++
+ 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
+ 	if (!hist_file)
+ 		return -ENOMEM;
++
+ 	hist_file->file = file;
++	hist_file->last_act = get_hist_hit_count(event_file);
+ 
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+ 	ret = single_open(file, hist_show, hist_file);
+ 	if (ret)
+ 		kfree(hist_file);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
