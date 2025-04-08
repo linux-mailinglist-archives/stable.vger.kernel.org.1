@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2F3A80AF7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE611A8044A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8631BA5E9E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97543466B49
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC28281362;
-	Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB19268FD2;
+	Tue,  8 Apr 2025 11:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5r5HtbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrko41dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567F628135C;
-	Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2CF20CCD8;
+	Tue,  8 Apr 2025 11:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116783; cv=none; b=YRH7PivEiGQFK0s32Cf2RenlmJXiolXVipV6hxlSoQvl8f+W95KYKTB14aAUK+3spwaYik7eFxvaUEw1HaN6+obrIEOcQllCDRtL9Wnal1WgXxTMGKlryXBqVF4rLWtOUybuC8Y060Dfi5Xfp7UnGSCGDQG015LXtD4Art25dsA=
+	t=1744113481; cv=none; b=QNG0qxBPBiNwKTrv8WaGA3AmqptBAFsh4q+uhkgdbm8V96UUvU+YhESw9x9e+ybkJyLesI6xe4R0f8gVlZU2V+dJfGaAJJMDJ3KxAMf24s437rq8bM2gwSav/8OPRDvUXjAtf6JepLZldqSi/guGvHFeUuBbM5QzcgXOPT6uDAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116783; c=relaxed/simple;
-	bh=dXqMpQIoQZE538p5J1QfHGwBXOD99KUG+QRH0x7LYHs=;
+	s=arc-20240116; t=1744113481; c=relaxed/simple;
+	bh=vwVIU2aJjVO8phJSXQFW/qbuYeFvGfzgApdqRK3LqQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/m00VDPO2SkggHWMl6E4nTOZe+ChgjD3/qsR68n9qP4pbp5nvuPTX2uqNdWJqekkOLCnzLZbJoVH9p8hAQjKzJvrSg6bH8GOcYZNpkV7UsTGQFqpwo3dxqgTcKf/12CGwYEp/tCW95MN9DyOIfurVUphbmfb3zreErO91Y0Qe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5r5HtbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94DAC4CEE5;
-	Tue,  8 Apr 2025 12:53:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KwlVMtNiwc0aThT16oW6JLXE9L5Sndl/rxFsnsVwWYbPox/gMIHuZETPqpYHhzExEyLF9PXMxblUryf5TFe2EDMQ+K3zTO7yOpRBMjI0mtR7RSRcy69tRVoTpjZA+3HMo/alE13Vfyx+o9USSMyhlN6Elkt0v9KW6Yu+PsT57v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrko41dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9797C4CEEB;
+	Tue,  8 Apr 2025 11:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116783;
-	bh=dXqMpQIoQZE538p5J1QfHGwBXOD99KUG+QRH0x7LYHs=;
+	s=korg; t=1744113481;
+	bh=vwVIU2aJjVO8phJSXQFW/qbuYeFvGfzgApdqRK3LqQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5r5HtbHcH+FJZ/tu1bF5X/rck8CRzTJKahQhRfqpQtVvsIcESXMBwXyZdlfo2gLI
-	 0pC5FaNq8s8h7yR9GrDQfp3CYveLX8013xXTk1qf9E65bxGwNEOe33Wf+XD1RM7dYC
-	 /6YfVK8etFq5pq2wrZspjY6a15zYvrtT1bIXNTSs=
+	b=nrko41dyWQo4SVdj+xmOgcODIPdnSqyjYELjHTvrQliUOfccideZ3q7m1JsoZ0hEA
+	 5aUrz2qhhCYF2zW6DJhuGWaVDiIByuOAhM7Qmt0bwflrsIZiM5s4hK/7fzwnfa/8Po
+	 MrFr9e/Y6qLdFGu7Jd4KrJH3qYKGgDOm27mNaZKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Keith Busch <kbusch@kernel.org>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 260/423] nvme-pci: skip CMB blocks incompatible with PCI P2P DMA
+Subject: [PATCH 6.6 175/268] platform/x86/intel/vsec: Add Diamond Rapids support
 Date: Tue,  8 Apr 2025 12:49:46 +0200
-Message-ID: <20250408104851.802831154@linuxfoundation.org>
+Message-ID: <20250408104833.264561232@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit 56cf7ef0d490b28fad8f8629fc135c5ab7c9f54e ]
+[ Upstream commit f317f38e7fbb15a0d8329289fef8cf034938fb4f ]
 
-The PCI P2PDMA code will register the CMB block to the memory
-hot-plugging subsystem, which have an alignment requirement. Memory
-blocks that do not satisfy this alignment requirement (usually 2MB) will
-lead to a WARNING from memory hotplugging.
+Add PCI ID for the Diamond Rapids Platforms
 
-Verify the CMB block's address and size against the alignment and only
-try to send CMB blocks compatible with it to prevent this warning.
-
-Tested on Intel DC D4502 SSD, which has a 512K CMB block that is too
-small for memory hotplugging (thus PCI P2PDMA).
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Link: https://lore.kernel.org/r/20250226214728.1256747-1-david.e.box@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/platform/x86/intel/vsec.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 84c0611697a9b..833a67b79e13c 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1984,6 +1984,18 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (offset > bar_size)
- 		return;
+diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
+index 343ab6a82c017..666ed3698afe7 100644
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -420,6 +420,11 @@ static const struct intel_vsec_platform_info oobmsm_info = {
+ 	.caps = VSEC_CAP_TELEMETRY | VSEC_CAP_SDSI | VSEC_CAP_TPMI,
+ };
  
-+	/*
-+	 * Controllers may support a CMB size larger than their BAR, for
-+	 * example, due to being behind a bridge. Reduce the CMB to the
-+	 * reported size of the BAR
-+	 */
-+	size = min(size, bar_size - offset);
++/* DMR OOBMSM info */
++static const struct intel_vsec_platform_info dmr_oobmsm_info = {
++	.caps = VSEC_CAP_TELEMETRY | VSEC_CAP_TPMI,
++};
 +
-+	if (!IS_ALIGNED(size, memremap_compat_align()) ||
-+	    !IS_ALIGNED(pci_resource_start(pdev, bar),
-+			memremap_compat_align()))
-+		return;
-+
- 	/*
- 	 * Tell the controller about the host side address mapping the CMB,
- 	 * and enable CMB decoding for the NVMe 1.4+ scheme:
-@@ -1994,14 +2006,6 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 			     dev->bar + NVME_REG_CMBMSC);
- 	}
- 
--	/*
--	 * Controllers may support a CMB size larger than their BAR,
--	 * for example, due to being behind a bridge. Reduce the CMB to
--	 * the reported size of the BAR
--	 */
--	if (size > bar_size - offset)
--		size = bar_size - offset;
--
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
+ /* TGL info */
+ static const struct intel_vsec_platform_info tgl_info = {
+ 	.caps = VSEC_CAP_TELEMETRY,
+@@ -431,6 +436,7 @@ static const struct intel_vsec_platform_info tgl_info = {
+ #define PCI_DEVICE_ID_INTEL_VSEC_MTL_M		0x7d0d
+ #define PCI_DEVICE_ID_INTEL_VSEC_MTL_S		0xad0d
+ #define PCI_DEVICE_ID_INTEL_VSEC_OOBMSM		0x09a7
++#define PCI_DEVICE_ID_INTEL_VSEC_OOBMSM_DMR	0x09a1
+ #define PCI_DEVICE_ID_INTEL_VSEC_RPL		0xa77d
+ #define PCI_DEVICE_ID_INTEL_VSEC_TGL		0x9a0d
+ static const struct pci_device_id intel_vsec_pci_ids[] = {
+@@ -439,6 +445,7 @@ static const struct pci_device_id intel_vsec_pci_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, VSEC_MTL_M, &mtl_info) },
+ 	{ PCI_DEVICE_DATA(INTEL, VSEC_MTL_S, &mtl_info) },
+ 	{ PCI_DEVICE_DATA(INTEL, VSEC_OOBMSM, &oobmsm_info) },
++	{ PCI_DEVICE_DATA(INTEL, VSEC_OOBMSM_DMR, &dmr_oobmsm_info) },
+ 	{ PCI_DEVICE_DATA(INTEL, VSEC_RPL, &tgl_info) },
+ 	{ PCI_DEVICE_DATA(INTEL, VSEC_TGL, &tgl_info) },
+ 	{ }
 -- 
 2.39.5
 
