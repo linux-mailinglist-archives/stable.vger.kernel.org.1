@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-130414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D571A804A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482D8A80554
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED30444A10
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C500466B94
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D9426B2A1;
-	Tue,  8 Apr 2025 12:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D326988E;
+	Tue,  8 Apr 2025 12:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVzv8e9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKGAXtDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C9626B0A5;
-	Tue,  8 Apr 2025 12:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F3F264627;
+	Tue,  8 Apr 2025 12:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113650; cv=none; b=gmRU2C10OFPJRlgAkOS7wsNhKORNxvE43SKYJrUtatMBFyw9YfUI+K5ynySoFTYWuFzcuTl67OiZH2wyjWfA6R07tyV/HunEQLUwkTM/Kw0lIY7DSnxT0TQQCQXi7LSSNCO/BCCRET4bwmQ0htjE7bBGKvK/Fjhu1L0KGRKeB40=
+	t=1744113937; cv=none; b=buUU8fbSvq5upOX+uJlCKd5FyyF4kVKIF149ZrWeiRJfhSo8XStTOQ0GPDIykQ6ibYl/FQsS/R1aBBSHhndnpL4Sw3krHvDVyWDqCidEBVCeJ5yGtiPJM6IVHUZfShm/fQY2dSPJrUELHUK7fCCGmpRLQT0tWirFVlHaVizLk0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113650; c=relaxed/simple;
-	bh=SxYiOli6mArQx1NxrTBrjOJkP32NzkFAubMtQ4rr0qc=;
+	s=arc-20240116; t=1744113937; c=relaxed/simple;
+	bh=ySCqwnznISe2IutyBngFhcxFXg3KoGZE6AOnIww5khU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as3PHYi5piVE7OiqMYVJPMCakWF8fRhm66c40jzkKb75w9cPspXKo13HaMJw/xGyTglywu2D/eK1rOxI5ZTIElHAKQfgn2ck5ZaLmFI6vC6VISc3Yal5ZmPBtsoUEVAFX2CKgx6J/ngCwn3XXAPY/POQXsjCEo2svsB43iLcCQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVzv8e9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BB4C4CEE5;
-	Tue,  8 Apr 2025 12:00:49 +0000 (UTC)
+	 MIME-Version; b=KgwXfXucY4hhB+D5pQB5skuWuTtGWg4be6Qd9Aw7Tg+CndbxE5xO79WKmnSn8B0Njx0i2Su7v902qG5FZDVaF1H9AamhfTiTyZTpMqBKQX8RiRx2J6rewPcLqb6yBwx+NsVGppzq6bl4ObrzOo/1F/FyY6hOUHCppoCe6/JVmvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKGAXtDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21089C4CEE5;
+	Tue,  8 Apr 2025 12:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113649;
-	bh=SxYiOli6mArQx1NxrTBrjOJkP32NzkFAubMtQ4rr0qc=;
+	s=korg; t=1744113937;
+	bh=ySCqwnznISe2IutyBngFhcxFXg3KoGZE6AOnIww5khU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVzv8e9PPFFsxwmzSkPTFwE3vaz6Rsa3KORW9Ci736q8bm+MT2gKOYMpRZJ0dfIzy
-	 fFji9neCFM5XuJKiLrWh3OrQhnYih3C2aYc39PfPXgr6/ZK2hoW/6RaWrPcfmUgABh
-	 s4ccv2O4L5dY0jbMK9gAPBNsY+LJLhh6W/39F7t8=
+	b=MKGAXtDTDXrrPdl5X13mEeGZ4MSUJCn5phtvD4Bo25uygbwc0eKyhFX+GNzHEUo7U
+	 dnp/kXiNwGKezCOso+PLEHz+axNidOHtbnVBWB+/sOJoYGNJ0hraqU2kwH6z/RZ63t
+	 zwNcVU63sjDKBAa3e4J48/gwg4V5SjIs2QjzBZ3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/268] RISC-V: errata: Use medany for relocatable builds
+	Mark Brown <broonie@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Wang Kefeng <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.4 069/154] ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
 Date: Tue,  8 Apr 2025 12:50:10 +0200
-Message-ID: <20250408104833.921937893@linuxfoundation.org>
+Message-ID: <20250408104817.512995785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +67,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit bb58e1579f431d42469b6aed0f03eff383ba6db5 ]
+commit 169f9102f9198b04afffa6164372a4ba4070f412 upstream.
 
-We're trying to mix non-PIC/PIE objects into the otherwise-PIE
-relocatable kernels, to avoid GOT/PLT references during early boot
-alternative resolution (which happens before the GOT/PLT are set up).
+Under PAN emulation when dumping backtraces from things like the
+LKDTM EXEC_USERSPACE test[1], a double fault (which would hang a CPU)
+would happen because of dump_instr() attempting to read a userspace
+address. Make sure copy_from_kernel_nofault() does not attempt this
+any more.
 
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/sifive/errata.o: relocation R_RISCV_HI20 against `tlb_flush_all_threshold' can not be used when making a shared object; recompile with -fPIC
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/thead/errata.o: relocation R_RISCV_HI20 against `riscv_cbom_block_size' can not be used when making a shared object; recompile with -fPIC
+Closes: https://lava.sirena.org.uk/scheduler/job/497571
+Link: https://lore.kernel.org/all/202401181125.D48DCB4C@keescook/ [1]
 
-Fixes: 8dc2a7e8027f ("riscv: Fix relocatable kernels with early alternatives using -fno-pie")
-Link: https://lore.kernel.org/r/20250326224506.27165-2-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/errata/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/mm/fault.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
-index 8a27394851233..f96ace8ea1df1 100644
---- a/arch/riscv/errata/Makefile
-+++ b/arch/riscv/errata/Makefile
-@@ -1,5 +1,9 @@
- ifdef CONFIG_RELOCATABLE
--KBUILD_CFLAGS += -fno-pie
-+# We can't use PIC/PIE when handling early-boot errata parsing, as the kernel
-+# doesn't have a GOT setup at that point.  So instead just use medany: it's
-+# usually position-independent, so it should be good enough for the errata
-+# handling.
-+KBUILD_CFLAGS += -fno-pie -mcmodel=medany
- endif
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -25,6 +25,13 @@
  
- obj-$(CONFIG_ERRATA_ANDES) += andes/
--- 
-2.39.5
-
+ #include "fault.h"
+ 
++bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
++{
++	unsigned long addr = (unsigned long)unsafe_src;
++
++	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
++}
++
+ #ifdef CONFIG_MMU
+ 
+ /*
 
 
 
