@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79392A807BF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780A1A80483
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9907D4C4412
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0831B63A7E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0D526AA8F;
-	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBFB26A0FD;
+	Tue,  8 Apr 2025 12:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyZpYvcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJpW0Drt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAAD268C66;
-	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF88268C66;
+	Tue,  8 Apr 2025 12:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115391; cv=none; b=eHFUOld3b0LofiR7YGyC0gHRRqA92IDLCOT6H/+EHeP55ETpv55SIpszPEmV7XsBCAH4RlaoI/MwYT0VSKYQVxd7dzOoy+nnqHSK/UTn5Zg80bOoYqms0vRn9E23fPKHckIi3CPZ5SVpJ1G68Rn8/33y2vSe3sk0VekVGNY4754=
+	t=1744113701; cv=none; b=Y5foQhlxE5RchKKZ4Qt/MgY15UPjRmKmhu+kYP6eLbL1edHPKMK03+xbtOS7HXS6JJTzqXtUkxp//a5VvnjyDFfQqaP3DuK3zgvPVVHqgUCZ3waBWRhwOO2f9LbmFhzHI9YnV5cclnF6cFqJIv+dMisKtryo9AywIOfS5w86zG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115391; c=relaxed/simple;
-	bh=uqLPDvk8NHB1Q7dJEO7DDCaTIlaG+nf29l+acQ/05dU=;
+	s=arc-20240116; t=1744113701; c=relaxed/simple;
+	bh=4e5w0xwvr7XWWIWjuUJMkEZ+zIRAx91F/wSy+olfS+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZi4n04qEsjTiNcGwW9sFb/7f5rjmL1yWo4sQ5tpx1/6hOXhz4QLPuvxBXCoM8m41SCZXrUcv3FYLP7MRiBVYWnqw6Y+1fiqgFuuf6CyO/7T1MfsVrU0ga6m0nmEVzpPFT8XmLOZbD08aOON6lFfTMPTGYthAW8ipX8N1ej0q3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyZpYvcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C902C4CEEA;
-	Tue,  8 Apr 2025 12:29:51 +0000 (UTC)
+	 MIME-Version; b=EoXJYMIir38sC7LBpXu/2KOf7CyNzmE9dNSvxjC2FQrgoZf+oO276IvxJjXFiU82EhuDG9RLisPXaqdPK8rZZRKiYkEJ/xJzxWm/P14pyam1GtIOUe7CCei+824xMAOBPG0z+d61ET+eR8rXbQK+EaRVTyxT8zKFhNpVgiSAaLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJpW0Drt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FD4C4CEE5;
+	Tue,  8 Apr 2025 12:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115391;
-	bh=uqLPDvk8NHB1Q7dJEO7DDCaTIlaG+nf29l+acQ/05dU=;
+	s=korg; t=1744113700;
+	bh=4e5w0xwvr7XWWIWjuUJMkEZ+zIRAx91F/wSy+olfS+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyZpYvcPXqfEe1nO21qs04Asfy8QvZ0h67ZWGQRnAuusqkb+58ueUftPFvz/p5J8J
-	 Ttxg4h1uQMdpOfdNZa+C2EclOJbLDefrOQ7PwnCyh0PIsQ7HwxhconrQAIZF7ml9aM
-	 qCv9rW3YF+czvczgLsZwqSbpzmJY27Zna2NrTWVM=
+	b=JJpW0DrthffxnyzCg+4G+DJEAAhg3Jiv/ayOcnwKM/nthoyi8Egmvgx7wd2f5N/ft
+	 un/psZwVZnrLVg3VWXGaX5FPuMEOC74dueGl1f0nihK0tUgq14EJyrM7pxfOvvfg9X
+	 X2IGrv3t8PtwkYpiz3NPByryHdfYuiHWH9s49CaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 6.13 456/499] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 257/268] tracing: Ensure module defining synth event cannot be unloaded while tracing
 Date: Tue,  8 Apr 2025 12:51:08 +0200
-Message-ID: <20250408104902.606960230@linuxfoundation.org>
+Message-ID: <20250408104835.514493997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Douglas Raillard <douglas.raillard@arm.com>
 
-commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
+commit 21581dd4e7ff6c07d0ab577e3c32b13a74b31522 upstream.
 
-Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
-bus families can be translated". This warning is emited if the argument
-is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
-verifies that a user-provided value call_pkg->nd_family of type u64 is
-not equal to 0. Then the value is converted to int, and only after that
-is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
-argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
-the lower 32 bits are zero.
+Currently, using synth_event_delete() will fail if the event is being
+used (tracing in progress), but that is normally done in the module exit
+function. At that stage, failing is problematic as returning a non-zero
+status means the module will become locked (impossible to unload or
+reload again).
 
-Furthermore, it is best to return EINVAL immediately upon seeing the
-invalid user input.  The WARNING is insufficient to prevent further
-undefined behavior based on other invalid user input.
+Instead, ensure the module exit function does not get called in the
+first place by increasing the module refcnt when the event is enabled.
 
-All checks of the input value should be applied to the original variable
-call_pkg->nd_family.
-
-[iweiny: update commit message]
-
-Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 35ca5207c2d11 ("tracing: Add synthetic event command generation functions")
+Link: https://lore.kernel.org/20250318180906.226841-1-douglas.raillard@arm.com
+Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/nfit/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_synth.c |   30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
- 		cmd_mask = nd_desc->cmd_mask;
- 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
- 			family = call_pkg->nd_family;
--			if (family > NVDIMM_BUS_FAMILY_MAX ||
-+			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
- 			    !test_bit(family, &nd_desc->bus_family_mask))
- 				return -EINVAL;
- 			family = array_index_nospec(family,
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -859,6 +859,34 @@ static struct trace_event_fields synth_e
+ 	{}
+ };
+ 
++static int synth_event_reg(struct trace_event_call *call,
++		    enum trace_reg type, void *data)
++{
++	struct synth_event *event = container_of(call, struct synth_event, call);
++
++	switch (type) {
++	case TRACE_REG_REGISTER:
++	case TRACE_REG_PERF_REGISTER:
++		if (!try_module_get(event->mod))
++			return -EBUSY;
++		break;
++	default:
++		break;
++	}
++
++	int ret = trace_event_reg(call, type, data);
++
++	switch (type) {
++	case TRACE_REG_UNREGISTER:
++	case TRACE_REG_PERF_UNREGISTER:
++		module_put(event->mod);
++		break;
++	default:
++		break;
++	}
++	return ret;
++}
++
+ static int register_synth_event(struct synth_event *event)
+ {
+ 	struct trace_event_call *call = &event->call;
+@@ -888,7 +916,7 @@ static int register_synth_event(struct s
+ 		goto out;
+ 	}
+ 	call->flags = TRACE_EVENT_FL_TRACEPOINT;
+-	call->class->reg = trace_event_reg;
++	call->class->reg = synth_event_reg;
+ 	call->class->probe = trace_event_raw_event_synth;
+ 	call->data = event;
+ 	call->tp = event->tp;
 
 
 
