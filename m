@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F123AA806D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B125A80963
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E014C338F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51127B3B2D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFED26E167;
-	Tue,  8 Apr 2025 12:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D80E26A0D4;
+	Tue,  8 Apr 2025 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0k5ZnZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCKiV6m7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6672126E170;
-	Tue,  8 Apr 2025 12:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B84C267B6B;
+	Tue,  8 Apr 2025 12:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114794; cv=none; b=YChwx4qkhoWVOTlYYMLdNNEgaxTDFAWo9cBAv+p7vXfjipN6z+Qb1QLA+sElJtFPNx07T/BeEXOUl+Y8BbbYRTyieUQ9N27I4BptDPfUO7Qopc7njeNs7tccPJs6Kps42hjtul+U2FIeOM3HmJQHugG/loGbV0osz7chqdHud1g=
+	t=1744116397; cv=none; b=kuVWTVXEzQno8iUmnmBltJf0ucy1yIx9Cz5+s40V6g7QYPsvZ3qu1TY8a7Gf/1ZJHXiJjXN27eLayG99+0dxgDrsc9YVgU9ys6eTH/Lvjrm65UqcSVbrwldC9Em9Oks+h2jYRa/uBDc/2i6NFoXqLsKQ+GrqEWizrU33TPKXaKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114794; c=relaxed/simple;
-	bh=xSoWjXHMZV46N3QlD1sOh7hAZkAzNgxYRE06AAOrH2M=;
+	s=arc-20240116; t=1744116397; c=relaxed/simple;
+	bh=WWnt54jmdMyu8r0e90TcdfTWEV8K+4CFXZWU10q4/GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDn/o8Ugrpn5/P129rZSor++KqLBL6lyIEzXsfoMdlzmnKIQjKIsxl9ixZQk4WwViX1gm5IXo+9x10gBdQJ5Qz3JsAiYV6qcUQWjdJW/PHyB2RUWu/wsj03DWYh99j7K6HKChBkPE6UfzauCsthrpJ1Qw3YhhyGKv4ORO/flB84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0k5ZnZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CA5C4CEEA;
-	Tue,  8 Apr 2025 12:19:53 +0000 (UTC)
+	 MIME-Version; b=Ehz9zD8QM0R6t28qbW5JyBninkhviC6tTJEdyB4p+7vibaQqL9Q2IGDnVef/FtmBvbOVSyHggNetaJeX1eNVycm6jTSBvr9HXNLznonVpwLgFBQsX0N+nO3+13I7kz9nR3NXA/SZYtSzZnkw0nhpFt8el7WzUJx3KPVA9jV3QXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCKiV6m7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B18C4CEE5;
+	Tue,  8 Apr 2025 12:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114794;
-	bh=xSoWjXHMZV46N3QlD1sOh7hAZkAzNgxYRE06AAOrH2M=;
+	s=korg; t=1744116396;
+	bh=WWnt54jmdMyu8r0e90TcdfTWEV8K+4CFXZWU10q4/GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0k5ZnZ0dNcCvN20IRSDnv8kpH6iTj02bOFLigcwIpNWgIRbu7viEHKBuVPsx/XNs
-	 o0zWx4VPb08aZfQUmWGtOjzgTG+wOeP8MmQvBtbbsTnILPaIf5THdStIFispyNVWA6
-	 RQDRBzSIHAjUzBn2w8XK69idBh0hTZC2CSX16o18=
+	b=tCKiV6m7ux+5ok51j9h7X1j5PpRdXbuPPAMNJ4XZfGTRRNhKumv47S79htk9CKFmb
+	 iFclOlijD8b/rJs3lxhWgPbayrYQ4PJKOVVxISHilN4oXNNTrlASh6zEeV0QXtOHu8
+	 +FspwOYZp/gLS6vxHxeML/wadf/lOo0xzPygkp/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 237/499] perf evlist: Add success path to evlist__create_syswide_maps
-Date: Tue,  8 Apr 2025 12:47:29 +0200
-Message-ID: <20250408104857.126607537@linuxfoundation.org>
+Subject: [PATCH 6.12 124/423] clk: qcom: gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK
+Date: Tue,  8 Apr 2025 12:47:30 +0200
+Message-ID: <20250408104848.614989621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit fe0ce8a9d85a48642880c9b78944cb0d23e779c5 ]
+[ Upstream commit b60521eff227ef459e03879cbea2b2bd85a8d7af ]
 
-Over various refactorings evlist__create_syswide_maps has been made to
-only ever return with -ENOMEM. Fix this so that when
-perf_evlist__set_maps is successfully called, 0 is returned.
+The GPU clock is required for CPU access to GPUSS registers. It was
+previously decided (on this and many more platforms) that the added
+overhead/hassle introduced by keeping track of it would not bring much
+measurable improvement in the power department.
 
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250228222308.626803-3-irogers@google.com
-Fixes: 8c0498b6891d7ca5 ("perf evlist: Fix create_syswide_maps() not propagating maps")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+The display clock is basically the same story over again.
+
+Now, we're past that discussion and this commit is not trying to change
+that. Instead, the clocks are both force-enabled in .probe *and*
+registered with the common clock framework, resulting in them being
+toggled off after ignore_unused.
+
+Unregister said clocks to fix breakage when clk_ignore_unused is absent
+(as it should be).
+
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250111-topic-x1e_fixups-v1-1-77dc39237c12@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/clk/qcom/gcc-x1e80100.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index f0dd174e2debd..633df7d9204c2 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -1373,19 +1373,18 @@ static int evlist__create_syswide_maps(struct evlist *evlist)
- 	 */
- 	cpus = perf_cpu_map__new_online_cpus();
- 	if (!cpus)
--		goto out;
-+		return -ENOMEM;
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 7288af845434d..009f39139b644 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -2564,19 +2564,6 @@ static struct clk_branch gcc_disp_hf_axi_clk = {
+ 	},
+ };
  
- 	threads = perf_thread_map__new_dummy();
--	if (!threads)
--		goto out_put;
-+	if (!threads) {
-+		perf_cpu_map__put(cpus);
-+		return -ENOMEM;
-+	}
- 
- 	perf_evlist__set_maps(&evlist->core, cpus, threads);
+-static struct clk_branch gcc_disp_xo_clk = {
+-	.halt_reg = 0x27018,
+-	.halt_check = BRANCH_HALT,
+-	.clkr = {
+-		.enable_reg = 0x27018,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(const struct clk_init_data) {
+-			.name = "gcc_disp_xo_clk",
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
 -
- 	perf_thread_map__put(threads);
--out_put:
- 	perf_cpu_map__put(cpus);
--out:
--	return -ENOMEM;
-+	return 0;
- }
+ static struct clk_branch gcc_gp1_clk = {
+ 	.halt_reg = 0x64000,
+ 	.halt_check = BRANCH_HALT,
+@@ -2631,21 +2618,6 @@ static struct clk_branch gcc_gp3_clk = {
+ 	},
+ };
  
- int evlist__open(struct evlist *evlist)
+-static struct clk_branch gcc_gpu_cfg_ahb_clk = {
+-	.halt_reg = 0x71004,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.hwcg_reg = 0x71004,
+-	.hwcg_bit = 1,
+-	.clkr = {
+-		.enable_reg = 0x71004,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(const struct clk_init_data) {
+-			.name = "gcc_gpu_cfg_ahb_clk",
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_gpu_gpll0_cph_clk_src = {
+ 	.halt_check = BRANCH_HALT_DELAY,
+ 	.clkr = {
+@@ -6268,7 +6240,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
+ 	[GCC_CNOC_PCIE_TUNNEL_CLK] = &gcc_cnoc_pcie_tunnel_clk.clkr,
+ 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
+ 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
+-	[GCC_DISP_XO_CLK] = &gcc_disp_xo_clk.clkr,
+ 	[GCC_GP1_CLK] = &gcc_gp1_clk.clkr,
+ 	[GCC_GP1_CLK_SRC] = &gcc_gp1_clk_src.clkr,
+ 	[GCC_GP2_CLK] = &gcc_gp2_clk.clkr,
+@@ -6281,7 +6252,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
+ 	[GCC_GPLL7] = &gcc_gpll7.clkr,
+ 	[GCC_GPLL8] = &gcc_gpll8.clkr,
+ 	[GCC_GPLL9] = &gcc_gpll9.clkr,
+-	[GCC_GPU_CFG_AHB_CLK] = &gcc_gpu_cfg_ahb_clk.clkr,
+ 	[GCC_GPU_GPLL0_CPH_CLK_SRC] = &gcc_gpu_gpll0_cph_clk_src.clkr,
+ 	[GCC_GPU_GPLL0_DIV_CPH_CLK_SRC] = &gcc_gpu_gpll0_div_cph_clk_src.clkr,
+ 	[GCC_GPU_MEMNOC_GFX_CLK] = &gcc_gpu_memnoc_gfx_clk.clkr,
 -- 
 2.39.5
 
