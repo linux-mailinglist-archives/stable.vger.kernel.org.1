@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657BEA80414
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3270FA80ABB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23009465764
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E941BC1223
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A426C269899;
-	Tue,  8 Apr 2025 11:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418B226B080;
+	Tue,  8 Apr 2025 12:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYxxZ8ja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDtx0oW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E2F268C66;
-	Tue,  8 Apr 2025 11:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37E7269D03;
+	Tue,  8 Apr 2025 12:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113367; cv=none; b=dTqx0gRuStbDgLKeMtP3xa0uVlaKrPuNjC7dDPg4xBPbXNV5Pn/UZxjHXU0EUU9m1VaSA8q1xeXNu8lYTtjutuG9fQz8x+kMFB+VnwfuRzteVZqqlPMUN7LBZIV9Ui4q0IMup1F5klmvqdJwEmnF4DH2Y0g9XcOftDd1JzgVjD4=
+	t=1744116726; cv=none; b=jqJNh7H9F45cxjj3Dyp8cdkVRXc8VlpfGC3Kb6V31zT/uxGrFPKKwRoG4k1jSkf0dkLCKVLJ2Q5g9nAXGHNVJMxyVzA+89d6MNpCMKbEZTtoCM0FLX8fISkUlenLyz0/zmIm/dAGu9aEV1SiHyw1RlF16zEq4dV2BMNdDx7Kt18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113367; c=relaxed/simple;
-	bh=+7sh84ocRXAQYxNjR1hvttPaKHiXrQVdvXV1iDqXHyg=;
+	s=arc-20240116; t=1744116726; c=relaxed/simple;
+	bh=Jz0fnuvDcRGHFDLuSi55+3d9gS+Mw1ousAjTxKrjMaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHSToKcRZxjn5EbCv9NAIqBwyzbSHQg06USNP6RVAfbJy8kGsHKxjC7XpPx0FtyNNIl0V6noxRkim6lnmd7pQln5C+MTWhiR/V8Ud/upqvqdu3R9ejLY6dNe1Nxw/Gorwf3MKtRoF2Y5NN3Lno/IuE3chP1bgYI5sYYiTEj+xXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYxxZ8ja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0575C4CEE7;
-	Tue,  8 Apr 2025 11:56:06 +0000 (UTC)
+	 MIME-Version; b=EYT7m054fmgEgV5XLBuTe+BtndH/VtDSFVd9VPKK52SRwYrwScq7ZVR+UjXyus9bBDVeNxPyCV2GCKhSRroiLwbHjZL1PXt4dsKaCMStgIHnJsnO0Qnn/rzphX0wvDAO73L44JP7QjfILFHzci2pZk5CbSBL+ZGSbyraa5N8xAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDtx0oW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8496BC4CEE5;
+	Tue,  8 Apr 2025 12:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113367;
-	bh=+7sh84ocRXAQYxNjR1hvttPaKHiXrQVdvXV1iDqXHyg=;
+	s=korg; t=1744116725;
+	bh=Jz0fnuvDcRGHFDLuSi55+3d9gS+Mw1ousAjTxKrjMaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYxxZ8ja8wEcmzUuS4Jnxg4aM89ES6C6ZWrV4QYEkNDiPt1sH55lxpL7iV6i9ECM1
-	 3EGoq0M9YzXWKBn9wCHYfLeF4W0uUslfDx+7GWGRHb8QofSrtW0aAUYXndYq9ioMDd
-	 8UMD9Ge+UqJZhfHjCp1r08myCRqhJspjBOIMkqrQ=
+	b=LDtx0oW0Ir4Pb8JsT0GmDEH7kRrempFyS41QdZNlB2OLfItJprYaAeUQJfnjtoNu4
+	 QX5h7JFFFrKmDTPEt9ylOO+dtsxSSy4FRudvneSRdTl4SSxxGw4B/ptHBhpQazKnGJ
+	 I+mr/MHb6UNmW4yqvEnQDzG+GfbhQ7iPs0pOEKGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/268] perf python: Fixup description of sample.id event member
-Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104832.102822470@linuxfoundation.org>
+Subject: [PATCH 6.12 219/423] staging: vchiq_arm: Fix possible NPR of keep-alive thread
+Date: Tue,  8 Apr 2025 12:49:05 +0200
+Message-ID: <20250408104850.829380038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
+[ Upstream commit 3db89bc6d973e2bcaa852f6409c98c228f39a926 ]
 
-Some old cut'n'paste error, its "ip", so the description should be
-"event ip", not "event type".
+In case vchiq_platform_conn_state_changed() is never called or fails before
+driver removal, ka_thread won't be a valid pointer to a task_struct. So
+do the necessary checks before calling kthread_stop to avoid a crash.
 
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 863a756aaf49 ("staging: vc04_services: vchiq_core: Stop kthreads on vchiq module unload")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250309125014.37166-3-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index b01b0e5510563..8753c9d3670ac 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -238,7 +238,7 @@ struct pyrf_event {
- };
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index ecf6e9635a10b..97787002080a1 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1786,7 +1786,8 @@ static void vchiq_remove(struct platform_device *pdev)
+ 	kthread_stop(mgmt->state.slot_handler_thread);
  
- #define sample_members \
--	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
-+	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
- 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
- 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
- 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
+ 	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
+-	kthread_stop(arm_state->ka_thread);
++	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
++		kthread_stop(arm_state->ka_thread);
+ }
+ 
+ static struct platform_driver vchiq_driver = {
 -- 
 2.39.5
 
