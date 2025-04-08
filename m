@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D0FA809BE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B059CA8072C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EFF91BA7A43
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26DEA8A2DAC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D95B265CD3;
-	Tue,  8 Apr 2025 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D11268685;
+	Tue,  8 Apr 2025 12:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTNexVpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWsa0zRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF47026A1D7;
-	Tue,  8 Apr 2025 12:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3E5207E14;
+	Tue,  8 Apr 2025 12:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116378; cv=none; b=ZnNDQUNIhdI31T3aFHW6iDeM9fDLYEj3ht3yWDAnkRPURbmktGbsUOA6JRv9wuYLi5I6JlVEBRfayTJpGot39Pz49nPUYi5ciQrWVOKIy2bIwBFJuJmHh2lKFlBmWFVGdlpPAWrwcmaA1l3PnAF29hHFg8S6W5x16mN17c7zZ8U=
+	t=1744114783; cv=none; b=VXbn90foy+6vtpjhfeeX01mblxzbnL66W6Pj6oRlLwXhbTpAgD6UjXYkDPGpBAyZeynxLAgDETaYuCv59dzladPj4VXpqBcs2si0sei72+9hTyf/+M0ixEY0w7b55tDiyFAky4Y19sKdkFrIrRUV816AS0jzMFEkgnw+zIYwhZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116378; c=relaxed/simple;
-	bh=upB4SGusFd5PqQh2cWfFri5PZxlCVoS36Df7Gw41MRQ=;
+	s=arc-20240116; t=1744114783; c=relaxed/simple;
+	bh=DKhNqFyMtzlnx0QF8DqZPCInqaHYFMSCTAhDKCjw3zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0Q8b96VRlKoRQaQcEUaZEl69w9yHSL1obC2ldUyyxzBbH+qds/p7Gmr7ZwC1EBzAPmcvm/yNsE9gyYIzQD7my7m+S+5OxkQWKk1FNe3Gn7fmJpcEYkOAPjajmA7VasPw1P6K0dMCzaESX0TLzlYtDWLKqBvQLjloiBs2lXRpOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTNexVpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF12C4CEE7;
-	Tue,  8 Apr 2025 12:46:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fIt6w2SOmV6vRLW0BAO23021DWSU2XzgqWH9SzDH3LXj5PmRNMNyo8PQyMRJL6YAT5Ddf9a7uAXSjperjwx+naMGkk/9+FdEh8G+TP4ugHkr0oru3XURY3Ln4PmWhu38IUBTdtShDNxGZ3q1kKzcwryxN9bplrn+5tPWm6dqieQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWsa0zRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED171C4CEE7;
+	Tue,  8 Apr 2025 12:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116377;
-	bh=upB4SGusFd5PqQh2cWfFri5PZxlCVoS36Df7Gw41MRQ=;
+	s=korg; t=1744114783;
+	bh=DKhNqFyMtzlnx0QF8DqZPCInqaHYFMSCTAhDKCjw3zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTNexVprxfNtsY7rStfHaQfsEDsXlSWStWV61VnLpn4hMLihDYrGLkOjtsBwkUYOC
-	 iWfqNRIhgKCbPJ/dfURtu2uS6RyYqNerax5U5EUbOcyhuOoGFJMa/S/RQGmsgUpbTp
-	 Z91u64vAfuY0GKROcVefCHUEue9CDaIwbGBSx47Q=
+	b=xWsa0zRp9PYDrnmyyFDVv9xtoU+NoXlu/cxNK1UcJ1el5wPH4jI5yTAiMhyWWqSPO
+	 pkcYCCaC/WGzeEyueUigX7bYlUTz6Cy01wrFLR0liXnAJCm/X5MDBER8wPind+rfLN
+	 NPjEuocO82MOFJv2wYzuQbNmAfh95Y7utSKxyZfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/423] crypto: tegra - Fix CMAC intermediate result handling
-Date: Tue,  8 Apr 2025 12:47:24 +0200
-Message-ID: <20250408104848.476765585@linuxfoundation.org>
+Subject: [PATCH 6.13 233/499] iio: adc: ad7173: Fix comparison of channel configs
+Date: Tue,  8 Apr 2025 12:47:25 +0200
+Message-ID: <20250408104857.024471357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit ce390d6c2675d2e24d798169a1a0e3cdbc076907 ]
+[ Upstream commit 7b6033ed5a9e1a369a9cf58018388ae4c5f17e41 ]
 
-Saving and restoring of the intermediate results are needed if there is
-context switch caused by another ongoing request on the same engine.
-This is therefore not only to support import/export functionality.
-Hence, save and restore the intermediate result for every non-first task.
+Checking the binary representation of two structs (of the same type)
+for equality doesn't have the same semantic as comparing all members for
+equality. The former might find a difference where the latter doesn't in
+the presence of padding or when ambiguous types like float or bool are
+involved. (Floats typically have different representations for single
+values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
+at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
+true, but memcmp finds a difference.)
 
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+When searching for a channel that already has the configuration we need,
+the comparison by member is the one that is needed.
+
+Convert the comparison accordingly to compare the members one after
+another. Also add a static_assert guard to (somewhat) ensure that when
+struct ad7173_channel_config::config_props is expanded, the comparison
+is adapted, too.
+
+This issue is somewhat theoretic, but using memcmp() on a struct is a
+bad pattern that is worth fixing.
+
+Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250303114659.1672695-14-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ad7173.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index 06f60260e0a0f..3308962f11c59 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -1513,9 +1513,8 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 	rctx->residue.size = nresidue;
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 8b03c1e5567e5..050e965358cb3 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -183,7 +183,11 @@ struct ad7173_channel_config {
+ 	u8 cfg_slot;
+ 	bool live;
  
- 	/*
--	 * If this is not the first 'update' call, paste the previous copied
-+	 * If this is not the first task, paste the previous copied
- 	 * intermediate results to the registers so that it gets picked up.
--	 * This is to support the import/export functionality.
- 	 */
- 	if (!(rctx->task & SHA_FIRST))
- 		tegra_cmac_paste_result(ctx->se, rctx);
-@@ -1523,13 +1522,7 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
- 	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
- 
--	/*
--	 * If this is not the final update, copy the intermediate results
--	 * from the registers so that it can be used in the next 'update'
--	 * call. This is to support the import/export functionality.
--	 */
--	if (!(rctx->task & SHA_FINAL))
--		tegra_cmac_copy_result(ctx->se, rctx);
-+	tegra_cmac_copy_result(ctx->se, rctx);
- 
- 	return ret;
- }
-@@ -1553,6 +1546,13 @@ static int tegra_cmac_do_final(struct ahash_request *req)
- 	rctx->total_len += rctx->residue.size;
- 	rctx->config = tegra234_aes_cfg(SE_ALG_CMAC, 0);
- 
+-	/* Following fields are used to compare equality. */
 +	/*
-+	 * If this is not the first task, paste the previous copied
-+	 * intermediate results to the registers so that it gets picked up.
++	 * Following fields are used to compare equality. If you
++	 * make adaptations in it, you most likely also have to adapt
++	 * ad7173_find_live_config(), too.
 +	 */
-+	if (!(rctx->task & SHA_FIRST))
-+		tegra_cmac_paste_result(ctx->se, rctx);
+ 	struct_group(config_props,
+ 		bool bipolar;
+ 		bool input_buf;
+@@ -602,15 +606,28 @@ static struct ad7173_channel_config *
+ ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
+ {
+ 	struct ad7173_channel_config *cfg_aux;
+-	ptrdiff_t cmp_size;
+ 	int i;
+ 
+-	cmp_size = sizeof_field(struct ad7173_channel_config, config_props);
++	/*
++	 * This is just to make sure that the comparison is adapted after
++	 * struct ad7173_channel_config was changed.
++	 */
++	static_assert(sizeof_field(struct ad7173_channel_config, config_props) ==
++		      sizeof(struct {
++				     bool bipolar;
++				     bool input_buf;
++				     u8 odr;
++				     u8 ref_sel;
++			     }));
 +
- 	/* Prepare command and submit */
- 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
- 	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
+ 
+ 		if (cfg_aux->live &&
+-		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
++		    cfg->bipolar == cfg_aux->bipolar &&
++		    cfg->input_buf == cfg_aux->input_buf &&
++		    cfg->odr == cfg_aux->odr &&
++		    cfg->ref_sel == cfg_aux->ref_sel)
+ 			return cfg_aux;
+ 	}
+ 	return NULL;
 -- 
 2.39.5
 
