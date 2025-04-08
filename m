@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-131206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEEEA8088E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD8A804E9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE59B1BA3FBD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7C9A1B65F50
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4681626A090;
-	Tue,  8 Apr 2025 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA3526A0BD;
+	Tue,  8 Apr 2025 12:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDXAuhqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b36gCchX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DC12690EC;
-	Tue,  8 Apr 2025 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC39266EEA;
+	Tue,  8 Apr 2025 12:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115774; cv=none; b=R64czmdbCUFneuT+kNXXVAwLmMsNpsi6Sen/H8H4AdaWQeQm9wAe8yRyJpvjfHHW/s0k0/XVv3ulmsG0Ailzm5ajtsfW12tBDla61YukdTfsFkpt1CDa5V8zSMTp8s8FhZHDEVDxsPLr+DHQiOkVLViTJmuGgedLSB3yGy5z2L8=
+	t=1744113969; cv=none; b=gtZB7DnDX+gCaR7WxnD8vlq860IOorASXCIBOWA6bOreXCqll2+4R2NJDmNt+oSIVpgLt+2+tRpY1E1DvOO4gMs8JIaYZvUe9/OgQKwWDfCLgyroXxbfAQ9ugXH8oZhcsrA0R3+kykVmf3+zdrEyuUfrr6InxlgwRGzHGibi2hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115774; c=relaxed/simple;
-	bh=v53GdqbMmBUuR0O3F2GHbhWvYR+wI858ndL+Pg3jKY0=;
+	s=arc-20240116; t=1744113969; c=relaxed/simple;
+	bh=DC8Bh/hNyCVGLI00lK05Lo7RP8ZFdJKSkHFKeH/6yVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmPvE5UXGIcZ3DuSw6vnZMx022Lwon9DQzk1JQiw0Ce52WbL3eCvt+aS+5kYF24fO0EvLfBkXCNWItQdx3wWVm2SQDNg42UjGLG2/GrWC1LX+Zy3SKMOxhIBcGvVnKIuop1psfd04PepyeyCmhfbQIDMFA7HhtgFduIqIQw8ZRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDXAuhqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEA5C4CEE5;
-	Tue,  8 Apr 2025 12:36:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N/oY8ioByVb/H6NMBp2zHe8F6+AmJhfk2xcRH6dvf8mc2OsPWLu/AvOCVyeYXUe8brXGW7dqkcusm1+bi00VX2B6b/nfIEs3cvbDwbdWkVIGwwYjTvFOAn+2EygpGBfKDug/448eG7mvi0CAan9azSLSxTWgjwmtWUGBY1Q0wfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b36gCchX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE50C4CEE5;
+	Tue,  8 Apr 2025 12:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115773;
-	bh=v53GdqbMmBUuR0O3F2GHbhWvYR+wI858ndL+Pg3jKY0=;
+	s=korg; t=1744113969;
+	bh=DC8Bh/hNyCVGLI00lK05Lo7RP8ZFdJKSkHFKeH/6yVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDXAuhqhHs2dsYU1c4JoMExaq0qXcAmK8JuQ4p0P/rPtxoxE1QF6BkmjwY9ra/S5p
-	 mOd1cbJNYyzCCf/rCPAFaJUA0nna1tRrt68ZHLAO0pfi1NfNomh3xJl679afa3VzMC
-	 5AUaAWSVzODt8NGsasI3nElQqZxXpUcWHBCWF8UI=
+	b=b36gCchXdNrJtvkcPicbCHTZet1LAjCSI/SKYkHKbEhJKM2PR7U1vBR4LEMvhc6gx
+	 YYWdMjTsjVUQDX7bazXi5/H4sbZrbJnFjiNCdeNS5p7RH90CHtr9QbYAQHkYJ2Tj83
+	 25twefRIp60rDWammb4dOrPivWYeLj5vVwXKjM5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Steven Price <steven.price@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/204] arch/powerpc: drop GENERIC_PTDUMP from mpc885_ads_defconfig
+Subject: [PATCH 5.4 088/154] thermal: int340x: Add NULL check for adev
 Date: Tue,  8 Apr 2025 12:50:29 +0200
-Message-ID: <20250408104823.243032081@linuxfoundation.org>
+Message-ID: <20250408104818.138069947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,56 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 2c5e6ac2db64ace51f66a9f3b3b3ab9553d748e8 ]
+[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
 
-GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be
-dropped off from mpc885_ads_defconfig.  Replace with CONFIG_PTDUMP_DEBUGFS
-instead.
+Not all devices have an ACPI companion fwnode, so adev might be NULL.
+This is similar to the commit cd2fd6eab480
+("platform/x86: int3472: Check for adev == NULL").
 
-Link: https://lkml.kernel.org/r/20250226122404.1927473-3-anshuman.khandual@arm.com
-Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in int3402_thermal_probe().
+
+Note, under the same directory, int3400_thermal_probe() has such a
+check.
+
+Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
+[ rjw: Subject edit, added Fixes: ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/mpc885_ads_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index 56b876e418e91..6b998cb572553 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -78,4 +78,4 @@ CONFIG_DEBUG_VM_PGTABLE=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_BDI_SWITCH=y
- CONFIG_PPC_EARLY_DEBUG=y
--CONFIG_GENERIC_PTDUMP=y
-+CONFIG_PTDUMP_DEBUGFS=y
+diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+index 43fa351e2b9ec..b7fdf25bfd237 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
+ 	struct int3402_thermal_data *d;
+ 	int ret;
+ 
++	if (!adev)
++		return -ENODEV;
++
+ 	if (!acpi_has_method(adev->handle, "_TMP"))
+ 		return -ENODEV;
+ 
 -- 
 2.39.5
 
