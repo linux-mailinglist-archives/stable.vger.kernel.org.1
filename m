@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF97A80433
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B95DA80C08
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68E207A720F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0441988560B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA2D26A1CA;
-	Tue,  8 Apr 2025 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9926B957;
+	Tue,  8 Apr 2025 12:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfFENzss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFoZKxrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908F26A0FF;
-	Tue,  8 Apr 2025 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7A26982F;
+	Tue,  8 Apr 2025 12:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113887; cv=none; b=qinjEEOQ3yki7JhA5cvtIIx64GzPKpFfsox9A3yrklioJEGNrZdtihxkud6V2HDN0HGfdqkXSVg9CF9t+gT7IdGULRdbftOxfS4jNW/qWR8YYmtRgKz+VaW5+C4n4MrvcXmrvfqGB+J+2wFv8WXw41FSn7ELks5qM+UzS2UNqVg=
+	t=1744116793; cv=none; b=WYuT13pjP/8W6ySXm+dkzaygBW//mCC9yD4aYTn/jvLwh8IU+L7tSLr0i1n7bgIdChGmYDRrn79N5+tO2WI7aAJO+OKvDa4tPvl5Iw4+GJsk8pgxe/S2ME7snUUkgGARIXAaUesCaddfQvlr4pQ9dclgYN1DbbgLEE2MzeJDGfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113887; c=relaxed/simple;
-	bh=3CSXOQYEGeFf5oXWi0MO5NzJRN24G6NO4Fg+iIcoU0A=;
+	s=arc-20240116; t=1744116793; c=relaxed/simple;
+	bh=RM6T8D0NuKBOuQq+FcYvEEUglPAyyhH2GGZdLWXLIfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyty7AkbmWkNbdU1kVWI0R2OYOY4vQaCpOfJjfZiem75kFQKXI8j39gIKLonfV0wPETQVwVZEcLpomvPcZhHapkQDAENVAvM2s7hSAJ0JdwfMV/kzbf6Fan0QwGyW5rI5FpT7NQp+jTDU5GxuOfhpqJ1Sl7DSYGViGPWhYbJGPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfFENzss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F68C4CEE5;
-	Tue,  8 Apr 2025 12:04:46 +0000 (UTC)
+	 MIME-Version; b=s8Pu3EVjD4sGq+daK5wA6pl5H7QDSqDr24U1hPrCwBAVDluJWcCzcSbfEqWYEAMxoxWVvwBpgBzalrzeVzLc0Xsrb3hKiRGCsaaC7CUBBEh9IphWAp0BfZulUU5g8mqNDCYz/jbtCiZwa/eiyJT/1gy+it+cWxZPxKE17mrnsVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFoZKxrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F063C4CEE5;
+	Tue,  8 Apr 2025 12:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113887;
-	bh=3CSXOQYEGeFf5oXWi0MO5NzJRN24G6NO4Fg+iIcoU0A=;
+	s=korg; t=1744116792;
+	bh=RM6T8D0NuKBOuQq+FcYvEEUglPAyyhH2GGZdLWXLIfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfFENzssyNb8voPGfhvk53WMpS/aaY5wPyFFd44uQ2fBW0lI3zK/Nn+khSQHYaqXn
-	 FpJw+6VxpiKrsaxD2NoPO4HrCD0HQqUMLmjxIqsbw+fC0+Ipl4Ugzri9WSaaMMUoEE
-	 AXQ8UsISr1AqVd8sQ8Jn2hXnGWb2wAV6N39CrOqM=
+	b=ZFoZKxrrhBp/3YNa1gP/+xcj9cFcLdjoakHUfoYl9WB4y0s3mgZBZ6SKVcZReIeEj
+	 X4lM7EdNG1N+kaxLO36eFXUyKLSd30cnM6HUIrGVurADyiyvIMSArmbILid5TWX7ro
+	 VjuewJcUkeRsVjbXcOUYcqcsRT+lE7ItI/MDVFvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/154] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
+Subject: [PATCH 6.12 271/423] net: dsa: rtl8366rb: dont prompt users for LED control
 Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104817.079476649@linuxfoundation.org>
+Message-ID: <20250408104852.069146449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
+[ Upstream commit c34424eb3be4c01db831428c0d7d483701ae820f ]
 
-fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
-when it fails.
+Make NET_DSA_REALTEK_RTL8366RB_LEDS a hidden symbol.
+It seems very unlikely user would want to intentionally
+disable it.
 
-Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
-but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
-case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
-
-Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
-error path.
-
-Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
-later in net-next.git.
-
-Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250228004534.3428681-1-kuba@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/realtek/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 99908861246d3..d037979f6579f 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3549,7 +3549,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 		in6_dev_put(idev);
+diff --git a/drivers/net/dsa/realtek/Kconfig b/drivers/net/dsa/realtek/Kconfig
+index 10687722d14c0..d6eb6713e5f6b 100644
+--- a/drivers/net/dsa/realtek/Kconfig
++++ b/drivers/net/dsa/realtek/Kconfig
+@@ -44,7 +44,7 @@ config NET_DSA_REALTEK_RTL8366RB
+ 	  Select to enable support for Realtek RTL8366RB.
  
- 	if (err) {
--		lwtstate_put(fib6_nh->fib_nh_lws);
-+		fib_nh_common_release(&fib6_nh->nh_common);
-+		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
- 		fib6_nh->fib_nh_lws = NULL;
- 		if (dev)
- 			dev_put(dev);
+ config NET_DSA_REALTEK_RTL8366RB_LEDS
+-	bool "Support RTL8366RB LED control"
++	bool
+ 	depends on (LEDS_CLASS=y || LEDS_CLASS=NET_DSA_REALTEK_RTL8366RB)
+ 	depends on NET_DSA_REALTEK_RTL8366RB
+ 	default NET_DSA_REALTEK_RTL8366RB
 -- 
 2.39.5
 
