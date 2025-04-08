@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99850A80609
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFFDA8095C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A80617AF774
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51CB47B3954
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C8426B972;
-	Tue,  8 Apr 2025 12:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9752690D7;
+	Tue,  8 Apr 2025 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ41bbUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyBbtvo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DC626B96C;
-	Tue,  8 Apr 2025 12:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A87B276042;
+	Tue,  8 Apr 2025 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114768; cv=none; b=WHDEfH4Z09g8KBR95M7aUxNuUb9Q09gelcPBXCZBGQJwVjHTibp/3dg89Xm30zqlTQV27KbZl0N2hSbwUxRvdrFAimSt4Azun+LNCw9v9/zdKl20+/wbV8maMisZvebCnVcUaxmXsb+LDMwt51ARk16KeDz0SQNoib/eq+XaXkI=
+	t=1744116367; cv=none; b=uxSy211bRVpXCacBxsDbUUIZlFTUy8JaSVtX6/t6zbsIV1SueHTQKWjsn13RwLlpCs6pXVY7RlBTTmXQCQYLncEADCu4Q8G5wuRto4e6LePPmAUvDshM649izHJP9QOcbSF/R8xUST0EBQWpx7DifTDzEe1iPG+A0mbaLZpwcWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114768; c=relaxed/simple;
-	bh=ZLlLgi87CxXLjt6lIgkFA40s7D2kPhVCJF+4y6DFcUo=;
+	s=arc-20240116; t=1744116367; c=relaxed/simple;
+	bh=lYY4b6UH/ZjPxEGjeA6Xblo8wCiySVjXzTTMxFtXzj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjKgYm/l5kkeHtxLr4kN8HSU0la1xfRMCV1QJ800F76BixPWVNK0H28ponGApsJxlauA4FdBU4dY3ajnyajsJ2O2pwqEiTJLCVzRUzBHRL+TYE5CpSUngibcdWKc4Opw9RiAS+Sc40Ss4wLGRSg2fkJ7lG4CKzY7HUoHRlo0R4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ41bbUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A838C4CEE5;
-	Tue,  8 Apr 2025 12:19:27 +0000 (UTC)
+	 MIME-Version; b=ZzOLo8SuXh+b7OYzGS5ubMkoIpTiDF9+KZbIKqJSM64mdzGg//wWdr2WL1KyZ1zHAltStYR+Rj5zcWy7Gaz5urs1K32cy+tq58MtN0LOBtumiTbp+/hWF6KnolXHGltWieuW+rjsQfbsM3vS6mQpqDjAWFXgAl/VAAcI8bJ9f0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyBbtvo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9004DC4CEE7;
+	Tue,  8 Apr 2025 12:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114767;
-	bh=ZLlLgi87CxXLjt6lIgkFA40s7D2kPhVCJF+4y6DFcUo=;
+	s=korg; t=1744116366;
+	bh=lYY4b6UH/ZjPxEGjeA6Xblo8wCiySVjXzTTMxFtXzj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZ41bbUF+CILIn4mQT9Gdvd5bG7HNCnf6htBE2XAnBHWLmGueKFuwisN5K0VuHuhG
-	 imsokKGrsWStQECHJgHgcsZJBo+Cv/DuSE45URMKYOvzMq/j/IKBhuHrBKuCXbqKFq
-	 LXGArLp5ftHND0xWJ9PTYlyO1OG7cJR3tK5krV2E=
+	b=QyBbtvo/IfRgnYJR8aHavEj2gEdhKyYUb1dpezFlnIHLZimSn9uIbmMVGkUTXDwHg
+	 IlghdnntUiL+Ti1tEq9KjSJT+y/lAvjik5cveGH4LS2dxTi5YZoxJhFRPswF/uDYpG
+	 PdqsSfau8KvQhzMLPUzkbaMPEHhKGQivvIziZp/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 228/499] fs/ntfs3: Prevent integer overflow in hdr_first_de()
+Subject: [PATCH 6.12 114/423] clk: renesas: r8a08g045: Check the source of the CPU PLL settings
 Date: Tue,  8 Apr 2025 12:47:20 +0200
-Message-ID: <20250408104856.899189425@linuxfoundation.org>
+Message-ID: <20250408104848.387562661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
+[ Upstream commit dc0f16c1b76293ac942a783e960abfd19e95fdf5 ]
 
-The "de_off" and "used" variables come from the disk so they both need to
-check.  The problem is that on 32bit systems if they're both greater than
-UINT_MAX - 16 then the check does work as intended because of an integer
-overflow.
+On the RZ/G3S SoC, the CPU PLL settings can be set and retrieved through
+the CPG_PLL1_CLK1 and CPG_PLL1_CLK2 registers.  However, these settings
+are applied only when CPG_PLL1_SETTING.SEL_PLL1 is set to 0.
+Otherwise, the CPU PLL operates at the default frequency of 1.1 GHz.
+Hence add support to the PLL driver for returning the 1.1 GHz frequency
+when the CPU PLL is configured with the default frequency.
 
-Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 01eabef547e6 ("clk: renesas: rzg2l: Add support for RZ/G3S PLL")
+Fixes: de60a3ebe410 ("clk: renesas: Add minimal boot support for RZ/G3S SoC")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250115142059.1833063-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/renesas/r9a08g045-cpg.c |  5 +++--
+ drivers/clk/renesas/rzg2l-cpg.c     | 13 ++++++++++++-
+ drivers/clk/renesas/rzg2l-cpg.h     | 10 +++++++---
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 241f2ffdd9201..1ff13b6f96132 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
- 	struct NTFS_DE *e;
- 	u16 esize;
+diff --git a/drivers/clk/renesas/r9a08g045-cpg.c b/drivers/clk/renesas/r9a08g045-cpg.c
+index 1ce40fb51f13b..a1f961d5b8569 100644
+--- a/drivers/clk/renesas/r9a08g045-cpg.c
++++ b/drivers/clk/renesas/r9a08g045-cpg.c
+@@ -50,7 +50,7 @@
+ #define G3S_SEL_SDHI2		SEL_PLL_PACK(G3S_CPG_SDHI_DSEL, 8, 2)
  
--	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
-+	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
- 		return NULL;
+ /* PLL 1/4/6 configuration registers macro. */
+-#define G3S_PLL146_CONF(clk1, clk2)	((clk1) << 22 | (clk2) << 12)
++#define G3S_PLL146_CONF(clk1, clk2, setting)	((clk1) << 22 | (clk2) << 12 | (setting))
  
- 	e = Add2Ptr(hdr, de_off);
+ #define DEF_G3S_MUX(_name, _id, _conf, _parent_names, _mux_flags, _clk_flags) \
+ 	DEF_TYPE(_name, _id, CLK_TYPE_MUX, .conf = (_conf), \
+@@ -133,7 +133,8 @@ static const struct cpg_core_clk r9a08g045_core_clks[] __initconst = {
+ 
+ 	/* Internal Core Clocks */
+ 	DEF_FIXED(".osc_div1000", CLK_OSC_DIV1000, CLK_EXTAL, 1, 1000),
+-	DEF_G3S_PLL(".pll1", CLK_PLL1, CLK_EXTAL, G3S_PLL146_CONF(0x4, 0x8)),
++	DEF_G3S_PLL(".pll1", CLK_PLL1, CLK_EXTAL, G3S_PLL146_CONF(0x4, 0x8, 0x100),
++		    1100000000UL),
+ 	DEF_FIXED(".pll2", CLK_PLL2, CLK_EXTAL, 200, 3),
+ 	DEF_FIXED(".pll3", CLK_PLL3, CLK_EXTAL, 200, 3),
+ 	DEF_FIXED(".pll4", CLK_PLL4, CLK_EXTAL, 100, 3),
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index b43b763dfe186..229f4540b219e 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -51,6 +51,7 @@
+ #define RZG3S_DIV_M		GENMASK(25, 22)
+ #define RZG3S_DIV_NI		GENMASK(21, 13)
+ #define RZG3S_DIV_NF		GENMASK(12, 1)
++#define RZG3S_SEL_PLL		BIT(0)
+ 
+ #define CLK_ON_R(reg)		(reg)
+ #define CLK_MON_R(reg)		(0x180 + (reg))
+@@ -60,6 +61,7 @@
+ #define GET_REG_OFFSET(val)		((val >> 20) & 0xfff)
+ #define GET_REG_SAMPLL_CLK1(val)	((val >> 22) & 0xfff)
+ #define GET_REG_SAMPLL_CLK2(val)	((val >> 12) & 0xfff)
++#define GET_REG_SAMPLL_SETTING(val)	((val) & 0xfff)
+ 
+ #define CPG_WEN_BIT		BIT(16)
+ 
+@@ -943,6 +945,7 @@ rzg2l_cpg_sipll5_register(const struct cpg_core_clk *core,
+ 
+ struct pll_clk {
+ 	struct clk_hw hw;
++	unsigned long default_rate;
+ 	unsigned int conf;
+ 	unsigned int type;
+ 	void __iomem *base;
+@@ -980,12 +983,19 @@ static unsigned long rzg3s_cpg_pll_clk_recalc_rate(struct clk_hw *hw,
+ {
+ 	struct pll_clk *pll_clk = to_pll(hw);
+ 	struct rzg2l_cpg_priv *priv = pll_clk->priv;
+-	u32 nir, nfr, mr, pr, val;
++	u32 nir, nfr, mr, pr, val, setting;
+ 	u64 rate;
+ 
+ 	if (pll_clk->type != CLK_TYPE_G3S_PLL)
+ 		return parent_rate;
+ 
++	setting = GET_REG_SAMPLL_SETTING(pll_clk->conf);
++	if (setting) {
++		val = readl(priv->base + setting);
++		if (val & RZG3S_SEL_PLL)
++			return pll_clk->default_rate;
++	}
++
+ 	val = readl(priv->base + GET_REG_SAMPLL_CLK1(pll_clk->conf));
+ 
+ 	pr = 1 << FIELD_GET(RZG3S_DIV_P, val);
+@@ -1038,6 +1048,7 @@ rzg2l_cpg_pll_clk_register(const struct cpg_core_clk *core,
+ 	pll_clk->base = priv->base;
+ 	pll_clk->priv = priv;
+ 	pll_clk->type = core->type;
++	pll_clk->default_rate = core->default_rate;
+ 
+ 	ret = devm_clk_hw_register(dev, &pll_clk->hw);
+ 	if (ret)
+diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
+index ecfe7e7ea8a17..019efe00ffd9f 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.h
++++ b/drivers/clk/renesas/rzg2l-cpg.h
+@@ -102,7 +102,10 @@ struct cpg_core_clk {
+ 	const struct clk_div_table *dtable;
+ 	const u32 *mtable;
+ 	const unsigned long invalid_rate;
+-	const unsigned long max_rate;
++	union {
++		const unsigned long max_rate;
++		const unsigned long default_rate;
++	};
+ 	const char * const *parent_names;
+ 	notifier_fn_t notifier;
+ 	u32 flag;
+@@ -144,8 +147,9 @@ enum clk_types {
+ 	DEF_TYPE(_name, _id, _type, .parent = _parent)
+ #define DEF_SAMPLL(_name, _id, _parent, _conf) \
+ 	DEF_TYPE(_name, _id, CLK_TYPE_SAM_PLL, .parent = _parent, .conf = _conf)
+-#define DEF_G3S_PLL(_name, _id, _parent, _conf) \
+-	DEF_TYPE(_name, _id, CLK_TYPE_G3S_PLL, .parent = _parent, .conf = _conf)
++#define DEF_G3S_PLL(_name, _id, _parent, _conf, _default_rate) \
++	DEF_TYPE(_name, _id, CLK_TYPE_G3S_PLL, .parent = _parent, .conf = _conf, \
++		 .default_rate = _default_rate)
+ #define DEF_INPUT(_name, _id) \
+ 	DEF_TYPE(_name, _id, CLK_TYPE_IN)
+ #define DEF_FIXED(_name, _id, _parent, _mult, _div) \
 -- 
 2.39.5
 
