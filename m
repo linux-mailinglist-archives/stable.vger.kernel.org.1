@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9A3A802FA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09ADA80174
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2909617EE9A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD0919E1FB5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0EF2676E1;
-	Tue,  8 Apr 2025 11:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED48B263C8A;
+	Tue,  8 Apr 2025 11:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyT85Ibj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naDcj78C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0442641CC;
-	Tue,  8 Apr 2025 11:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C1A226D03;
+	Tue,  8 Apr 2025 11:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112814; cv=none; b=q0tvLd4Xr0wTicCSpEYFvsaLKv2wFHp8byZuAfizjSUifQm/UwChj/R3qPK2pUcG85kT2ko50GIAX3UGkfNqqSmxHOxFIdnL6i+fGBZl7Q7N6uR3PccTDsrwRC/adCPXKtTPRkbZqOXg+I5V9B7kt0rDadqgDzNchT8opu3iCs4=
+	t=1744112139; cv=none; b=hbV/pNaUkITbzmFUVx5Wa6huZgVpZ196nx+L1GZQA2ZUzOTO6sw+eqN63nKDneauuwZgvb+pP3kT6UJ7vSg4lK4tTusTFHyDsVN7xdRGm6VLvhwz1ElH2jRuk2japftn67K1MskvBZlVpsGMiZsPGywqJW5faCkq7BUU5eC5QKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112814; c=relaxed/simple;
-	bh=xcMPnH3/gLwHgaKIMrGugoKEK5Omm0p9Be7eFugIPbQ=;
+	s=arc-20240116; t=1744112139; c=relaxed/simple;
+	bh=w34X21WH+VBalLdHI3xRs0FKOmD1Nv8uEtnF6HsZh/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLaAt47YCYUdbHePTxczk1w4v2lMaTEDhcdgSPu4/WIh5OvtHKilFzcO3GvHXH/pjCJqxjEoJD7zU4UQcx8D9PKTid6zKz4t/V7vEE25YaCijkOqzHyq35DH5xhsgx4a53YK91oBiPU+tvnA8qSYQBuSIUEK848CvzYdtUqXLFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyT85Ibj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6A3C4CEE5;
-	Tue,  8 Apr 2025 11:46:53 +0000 (UTC)
+	 MIME-Version; b=spTJOz4UiPZUgdZPCPR4P9nphthcbXawVcLQduaqGLXndAtDLTDfBwUxDSd1/vhKu1B2uohTSAgJwZeDjBE6c1eRf4MF/m9SXGGy8ExTtOWgtsPH3+TlIoMYz1GQ26McJaH6FZkC+y2FAgGXTEQfH7L+OWQe2/342kUr2ui9LWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naDcj78C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB69C4CEE5;
+	Tue,  8 Apr 2025 11:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112814;
-	bh=xcMPnH3/gLwHgaKIMrGugoKEK5Omm0p9Be7eFugIPbQ=;
+	s=korg; t=1744112139;
+	bh=w34X21WH+VBalLdHI3xRs0FKOmD1Nv8uEtnF6HsZh/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyT85IbjcvJVyKGfI0w54fmXoZiUhk8I0HgDFBPdSErZSaC6XdgdLefDq4RPHwnSA
-	 Z39q7+9WXR5Z/BtjKWQwBABtQVFoGofQuPM+RTX3+3PfwIe5aUyFCy0LjKAD98/utA
-	 95oyMF7/uUxSTvzuLh51Vjs+/rPO6HoRshh3xPZE=
+	b=naDcj78CatHmYmvsu9YFGD2b2JN17LfhIyuSHrGW6ZO24Gt2crtx3R3UpUoKUqCvq
+	 y3GJjYuZSsj1cOUb8AI84J6vwyyuQlb7vWaJcU0//g0uIie/lS096SX40AeOqnYlZm
+	 yO5wjJvrRR3E2Vaj4O7xCPr9RS/NlHP5ylmVztVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 205/279] i3c: master: svc: Fix missing the IBI rules
+	Christian Eggers <ceggers@arri.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.14 691/731] ARM: 9444/1: add KEEP() keyword to ARM_VECTORS
 Date: Tue,  8 Apr 2025 12:49:48 +0200
-Message-ID: <20250408104831.874224394@linuxfoundation.org>
+Message-ID: <20250408104930.340608669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 9cecad134d84d14dc72a0eea7a107691c3e5a837 ]
+commit c3d944a367c0d9e4e125c7006e52f352e75776dc upstream.
 
-The code does not add IBI rules for devices with controller capability.
-However, the secondary controller has the controller capability and works
-at target mode when the device is probed. Therefore, add IBI rules for
-such devices.
+Without this, the vectors are removed if LD_DEAD_CODE_DATA_ELIMINATION
+is enabled.  At startup, the CPU (silently) hangs in the undefined
+instruction exception as soon as the first timer interrupt arrives.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250318053606.3087121-2-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On my setup, the system also boots fine without the 2nd and 3rd KEEP()
+statements, so I cannot tell whether these are actually required.
+
+[nathan: Use OVERLAY_KEEP() to avoid breaking old ld.lld versions]
+
+Cc: stable@vger.kernel.org
+Fixes: ed0f94102251 ("ARM: 9404/1: arm32: enable HAVE_LD_DEAD_CODE_DATA_ELIMINATION")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/include/asm/vmlinux.lds.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 7fc82b003b961..29440a1266b8a 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -807,7 +807,7 @@ static int svc_i3c_update_ibirules(struct svc_i3c_master *master)
- 
- 	/* Create the IBIRULES register for both cases */
- 	i3c_bus_for_each_i3cdev(&master->base.bus, dev) {
--		if (I3C_BCR_DEVICE_ROLE(dev->info.bcr) == I3C_BCR_I3C_MASTER)
-+		if (!(dev->info.bcr & I3C_BCR_IBI_REQ_CAP))
- 			continue;
- 
- 		if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD) {
--- 
-2.39.5
-
+--- a/arch/arm/include/asm/vmlinux.lds.h
++++ b/arch/arm/include/asm/vmlinux.lds.h
+@@ -131,13 +131,13 @@
+ 	__vectors_lma = .;						\
+ 	OVERLAY 0xffff0000 : NOCROSSREFS AT(__vectors_lma) {		\
+ 		.vectors {						\
+-			*(.vectors)					\
++			OVERLAY_KEEP(*(.vectors))			\
+ 		}							\
+ 		.vectors.bhb.loop8 {					\
+-			*(.vectors.bhb.loop8)				\
++			OVERLAY_KEEP(*(.vectors.bhb.loop8))		\
+ 		}							\
+ 		.vectors.bhb.bpiall {					\
+-			*(.vectors.bhb.bpiall)				\
++			OVERLAY_KEEP(*(.vectors.bhb.bpiall))		\
+ 		}							\
+ 	}								\
+ 	ARM_LMA(__vectors, .vectors);					\
 
 
 
