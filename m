@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F6DA8091A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85280A80675
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65BBC7B2C54
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 962384A6C29
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CA226FA55;
-	Tue,  8 Apr 2025 12:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451FD269D08;
+	Tue,  8 Apr 2025 12:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAnnXXzN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwymMwse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7A2265630;
-	Tue,  8 Apr 2025 12:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E231E269CE8;
+	Tue,  8 Apr 2025 12:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116246; cv=none; b=R5NKgsOjmwOFZWpoWkO7O2nYY4gBKlsgGgqABna/eevNpq3sErANX/nxaiEXqA6ijtYPCcFfCMW0tY787U3CputK0FlI8DeGqPfHjYvg5MzlR0FhaPS86PWLPzIhjAQ3Oj9/39LJDxRx1yhWbR8lCpdO53mnZk9bdMJp5BoGbls=
+	t=1744114644; cv=none; b=a8WGSRweR16MRHDTBGwVyJc+alrO7jYCHqB39s1FQGkzJtlTurZQARj0NKZpbqAoNIDIjV4mFypQP9NcSTXuYILdLSuJdeZcBX5DogA0WhZ+CvGYxcFUZQ+YsDddurnVSfKIUKUYbsHHewwoQlOQn2h8R2Ugk+HzwtLSvVcXOyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116246; c=relaxed/simple;
-	bh=CXCUiOiODMVWKOzRN0yVdfv4o+1wTi0TgHXHJVK1Wt0=;
+	s=arc-20240116; t=1744114644; c=relaxed/simple;
+	bh=uW+IDr/8odRU5xLhGs9vcC1/ZXVlsp8/yIcvIpFaX3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHTDIQdKSB/RCzsWeiDUMxAV0Xv1UK7iAIM4/qSt8tdVrhAxocMHOu7ji4XNFzUU0qd6Ybam+oOEQjobmuKSPpcZo/u168jvV44RLreZl6CuUJgyJQc1B2pg3dqxdrFpO/d77I6o7D7i0c/f85w51s+agseT8SbNV0ZYKTaE77w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAnnXXzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03F6C4CEE5;
-	Tue,  8 Apr 2025 12:44:05 +0000 (UTC)
+	 MIME-Version; b=fMpe8VRY+wZw2jQOfPITHJY1h7Ts2p7n5v7zmeQz2XG3H2VYuRu6ppElcTQexTkakcALtz1leG85s989+3+rfWQaZ1n8UXeyFpd8o0bfg/u9WnR3olLYtK9PJIjhaKIzgGC4fG4CeDf46GVtL1p7hJ815M45aPFyGGiK88rBlPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwymMwse; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7307AC4CEEA;
+	Tue,  8 Apr 2025 12:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116246;
-	bh=CXCUiOiODMVWKOzRN0yVdfv4o+1wTi0TgHXHJVK1Wt0=;
+	s=korg; t=1744114643;
+	bh=uW+IDr/8odRU5xLhGs9vcC1/ZXVlsp8/yIcvIpFaX3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAnnXXzNNY1W1SwynPWKyaxyl+CFhk2OhFT5xD24IsqoH4bIxnochh7LFDdWZe/7A
-	 YievwKLStFrLIP0avxgLVc+XXJ5VMb1UM18XRSEiB60fHBoC7wAbO0cO8cw0N6fulY
-	 QCML6hqyMGXZBfSK9r95BWSMY8Y0DQU5u4YOgmRQ=
+	b=QwymMwseyCvQXItfJAUuy378TNZmzU1ZUfRkhV7u+2CR6qosFxypRAQUdwVuR8o7U
+	 E7IwNSQKMzZwBuFhdXkfUwS/yQhuafMCWmM6rWDCw68/7tmfYC06iGf6DEwkq3OfgP
+	 BzpT/pY1+edcVrBsTUon1hN0An/SovwdVj606g0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/423] drm/msm/dsi: Set PHY usescase (and mode) before registering DSI host
+Subject: [PATCH 6.13 183/499] power: supply: max77693: Fix wrong conversion of charge input threshold value
 Date: Tue,  8 Apr 2025 12:46:35 +0200
-Message-ID: <20250408104847.353703182@linuxfoundation.org>
+Message-ID: <20250408104855.741760840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 660c396c98c061f9696bebacc178b74072e80054 ]
+[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
 
-Ordering issues here cause an uninitialized (default STANDALONE)
-usecase to be programmed (which appears to be a MUX) in some cases
-when msm_dsi_host_register() is called, leading to the slave PLL in
-bonded-DSI mode to source from a clock parent (dsi1vco) that is off.
+The charge input threshold voltage register on the MAX77693 PMIC accepts
+four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
+Due to an oversight, the driver calculated the values for 4.7v and above
+starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
+gives 0).
 
-This should seemingly not be a problem as the actual dispcc clocks from
-DSI1 that are muxed in the clock tree of DSI0 are way further down, this
-bit still seems to have an effect on them somehow and causes the right
-side of the panel controlled by DSI1 to not function.
+Add 1 to the calculation to ensure that 4.7v is converted to a register
+value of 0x1 and that the other two voltages are converted correctly as
+well.
 
-In an ideal world this code is refactored to no longer have such
-error-prone calls "across subsystems", and instead model the "PLL src"
-register field as a regular mux so that changing the clock parents
-programmatically or in DTS via `assigned-clock-parents` has the
-desired effect.
-But for the avid reader, the clocks that we *are* muxing into DSI0's
-tree are way further down, so if this bit turns out to be a simple mux
-between dsiXvco and out_div, that shouldn't have any effect as this
-whole tree is off anyway.
-
-Fixes: 57bf43389337 ("drm/msm/dsi: Pass down use case to PHY")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/637650/
-Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-2-913100d6103f@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_manager.c | 32 ++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ drivers/power/supply/max77693_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_manager.c b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-index a210b7c9e5ca2..4fabb01345aa2 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-@@ -74,17 +74,35 @@ static int dsi_mgr_setup_components(int id)
- 	int ret;
- 
- 	if (!IS_BONDED_DSI()) {
-+		/*
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+
- 		ret = msm_dsi_host_register(msm_dsi->host);
- 		if (ret)
- 			return ret;
--
--		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
- 	} else if (other_dsi) {
- 		struct msm_dsi *master_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							msm_dsi : other_dsi;
- 		struct msm_dsi *slave_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							other_dsi : msm_dsi;
-+
-+		/*
-+		 * PLL0 is to drive both DSI link clocks in bonded DSI mode.
-+		 *
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
-+					MSM_DSI_PHY_MASTER);
-+		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
-+					MSM_DSI_PHY_SLAVE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
-+
- 		/* Register slave host first, so that slave DSI device
- 		 * has a chance to probe, and do not block the master
- 		 * DSI device's probe.
-@@ -98,14 +116,6 @@ static int dsi_mgr_setup_components(int id)
- 		ret = msm_dsi_host_register(master_link_dsi->host);
- 		if (ret)
- 			return ret;
--
--		/* PLL0 is to drive both 2 DSI link clocks in bonded DSI mode. */
--		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
--					MSM_DSI_PHY_MASTER);
--		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
--					MSM_DSI_PHY_SLAVE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
--		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
- 	}
- 
- 	return 0;
+diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
+index cdea35c0d1de1..027d6a539b65a 100644
+--- a/drivers/power/supply/max77693_charger.c
++++ b/drivers/power/supply/max77693_charger.c
+@@ -608,7 +608,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
+ 	case 4700000:
+ 	case 4800000:
+ 	case 4900000:
+-		data = (uvolt - 4700000) / 100000;
++		data = ((uvolt - 4700000) / 100000) + 1;
+ 		break;
+ 	default:
+ 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
 -- 
 2.39.5
 
