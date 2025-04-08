@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-130940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BF7A8072A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF932A80AE4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA754C1E98
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97A21B88508
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BC526AAAA;
-	Tue,  8 Apr 2025 12:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9005269B0E;
+	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TpDFc1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsEdPRHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138C026A0A7;
-	Tue,  8 Apr 2025 12:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53261EB3D;
+	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115065; cv=none; b=lhnmjoaEwPBUCj16aN67KhjjMEoAm6kGy4Jn5EtK2h1In1CDz/s2x+KqrAWgOLDNptB9I2mVS4+UJJKP0ihwJrQa+E4W+8zJXnoVXegYgZBo91nXTneLbzNhB+L6PkUUyeFinWLN2sTy3Lu7qLTvrxXrKOzQpqktmbLuAQ89jKY=
+	t=1744116755; cv=none; b=O22LQ3f5k6UwgHAb3mmkk+XxRptHpJjihKt6UytFBBAviKBHt1s5Cw0mIdS6s3fwLzSA3ttut4OpiRuzcydCNT1eTNegnvSYxGBYIvSCNLjze4DTnkOA6ojoU0rhGb6TsB9vxLCnB5BCGpaADDZGywXfxPYrREAv9STQ1+Gpa2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115065; c=relaxed/simple;
-	bh=YanGxqBISbE8K1iD9zz+rjyV9zw4/odQhyccBXUuDco=;
+	s=arc-20240116; t=1744116755; c=relaxed/simple;
+	bh=R7LB4mjrh0+MbCnWNMZZpl5Qpj4aebh1wUVPvQmBSRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VzAyKPBzKKT+/wigcGbvKiaTe14IMLfH4RlDy1ShGT5Bt9+yzjfwqPxQZOoz4um7QzaxNGwt9zz1yYmyelI4Ncwx4fRAXUU5Fxk4vPhii2CXAggKIZGjBGkY7mELaFivHv/0eq0IkSkiGHMkXBa4RKQNOu5g/eNxdSUn216/P8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TpDFc1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EEEC4CEE5;
-	Tue,  8 Apr 2025 12:24:24 +0000 (UTC)
+	 MIME-Version; b=VJ6Mpeh5K4zQq2xBEN7QYdtLjEACLbZ21HS32jzEAKxzIhHcUSTqzfSAYAzKePz8Q/thF/cObsXpZtaNtAgpi8QMlqAj6TEkXmJ3JN9SaEEQ1S/0lE7KGkPTwH1Go765/2z9LcUaaQQjBCGJdRVZE3rlFDvCLF76RGxd3QeW+1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsEdPRHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3495DC4CEE5;
+	Tue,  8 Apr 2025 12:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115064;
-	bh=YanGxqBISbE8K1iD9zz+rjyV9zw4/odQhyccBXUuDco=;
+	s=korg; t=1744116755;
+	bh=R7LB4mjrh0+MbCnWNMZZpl5Qpj4aebh1wUVPvQmBSRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TpDFc1us32UiwSfHpr7MGHAiJP//9LP29KOiT/3vAESc/mq+SUK30VhKnx8WXvk6
-	 ihJ897DsYC3jny1+yRIyxRLF7d7ojwYuk2zIN/kUFfk9St4PMamc4tw/pUGDc5WDDG
-	 zAC7svQ/yo6EVxnLd7DQJFMP+MjSaF/G2EdBaiFA=
+	b=DsEdPRHCupqV8+FeSfSvAfV2hJMAdB/dc5IB2CWtogR+6wjyT3fICtRGCmJrC/bAP
+	 L0m+VAbExJP+fb6iRMrTlzTBysEAFekELSlF6kOD9RP2hVx1IgM6wEDwuuli71RL4N
+	 aszTwuO3u2Tn0ZMgsCO3tXXseeEMxYnRoTJTUSaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Shuming Fan <shumingf@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 334/499] ASoC: rt1320: set wake_capable = 0 explicitly
+Subject: [PATCH 6.12 220/423] tty: n_tty: use uint for space returned by tty_write_room()
 Date: Tue,  8 Apr 2025 12:49:06 +0200
-Message-ID: <20250408104859.554181080@linuxfoundation.org>
+Message-ID: <20250408104850.854426860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 927e6bec5cf3624665b0a2e9f64a1d32f3d22cdd ]
+[ Upstream commit d97aa066678bd1e2951ee93db9690835dfe57ab6 ]
 
-"generic_new_peripheral_assigned: invalid dev_num 1, wake supported 1"
-is reported by our internal CI test.
+tty_write_room() returns an "unsigned int". So in case some insane
+driver (like my tty test driver) returns (legitimate) UINT_MAX from its
+tty_operations::write_room(), n_tty is confused on several places.
 
-Rt1320's wake feature is not used in Linux and that's why it is not in
-the wake_capable_list[] list in intel_auxdevice.c.
-However, BIOS may set it as wake-capable. Overwrite wake_capable to 0
-in the codec driver to align with wake_capable_list[].
+For example, in process_output_block(), the result of tty_write_room()
+is stored into (signed) "int". So this UINT_MAX suddenly becomes -1. And
+that is extended to ssize_t and returned from process_output_block().
+This causes a write() to such a node to receive -EPERM (which is -1).
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Acked-by: Shuming Fan <shumingf@realtek.com>
-Link: https://patch.msgid.link/20250305134113.201326-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix that by using proper "unsigned int" and proper "== 0" test. And
+return 0 constant directly in that "if", so that it is immediately clear
+what is returned ("space" equals to 0 at that point).
+
+Similarly for process_output() and __process_echoes().
+
+Note this does not fix any in-tree driver as of now.
+
+If you want "Fixes: something", it would be commit 03b3b1a2405c ("tty:
+make tty_operations::write_room return uint"). I intentionally do not
+mark this patch by a real tag below.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250317070046.24386-6-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt1320-sdw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/n_tty.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
-index 3510c3819074b..d83b236a04503 100644
---- a/sound/soc/codecs/rt1320-sdw.c
-+++ b/sound/soc/codecs/rt1320-sdw.c
-@@ -535,6 +535,9 @@ static int rt1320_read_prop(struct sdw_slave *slave)
- 	/* set the timeout values */
- 	prop->clk_stop_timeout = 64;
+diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
+index 5e9ca4376d686..94fa981081fdb 100644
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -486,7 +486,8 @@ static int do_output_char(u8 c, struct tty_struct *tty, int space)
+ static int process_output(u8 c, struct tty_struct *tty)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space, retval;
++	unsigned int space;
++	int retval;
  
-+	/* BIOS may set wake_capable. Make sure it is 0 as wake events are disabled. */
-+	prop->wake_capable = 0;
-+
- 	return 0;
- }
+ 	mutex_lock(&ldata->output_lock);
+ 
+@@ -522,16 +523,16 @@ static ssize_t process_output_block(struct tty_struct *tty,
+ 				    const u8 *buf, unsigned int nr)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space;
+-	int	i;
++	unsigned int space;
++	int i;
+ 	const u8 *cp;
+ 
+ 	mutex_lock(&ldata->output_lock);
+ 
+ 	space = tty_write_room(tty);
+-	if (space <= 0) {
++	if (space == 0) {
+ 		mutex_unlock(&ldata->output_lock);
+-		return space;
++		return 0;
+ 	}
+ 	if (nr > space)
+ 		nr = space;
+@@ -696,7 +697,7 @@ static int n_tty_process_echo_ops(struct tty_struct *tty, size_t *tail,
+ static size_t __process_echoes(struct tty_struct *tty)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space, old_space;
++	unsigned int space, old_space;
+ 	size_t tail;
+ 	u8 c;
  
 -- 
 2.39.5
