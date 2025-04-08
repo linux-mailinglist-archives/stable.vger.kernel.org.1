@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25DEA80822
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791FEA80439
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17CFB1B87B63
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CBFA3BB003
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA0726E151;
-	Tue,  8 Apr 2025 12:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FEA269B1B;
+	Tue,  8 Apr 2025 11:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQaYCQBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiHaTEfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5849B26E14D;
-	Tue,  8 Apr 2025 12:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0289F269885;
+	Tue,  8 Apr 2025 11:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115638; cv=none; b=OJ82l/+4C8dfaR7qBgmJAD13NY/wyGdEGTQHri7Jryz4/sQ71O9+Db+JNJqdZ9l8jhG1luIhc98eRxd5cDWyssWov93pUXBaugJ4ElPci4G0K1XqXS6HT0WkUp8Mj/q4bobK18HWN1ujK2l3FHA5WrcmvHMVbyJoHmAcm9K7Y6U=
+	t=1744113460; cv=none; b=hmuumU36rl0uAQ/j9IDSaCPtqKykj0EGv/0qVR0HQuN2k98Q9tpc1QLXMQ5MgjCS+GvDcLAQIML1VMLn8no3kRPdd3fCThCikEwyN2r9WBeI75HFSxrNOvar/1/kqKQVHQHpfljYO6XiCJ2pochw/JdVw+0RsDCAmr76GAWkgbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115638; c=relaxed/simple;
-	bh=oD9RkAKtQhijCoAEfPuLYa7s8jrJukX4vZdky49ZF1c=;
+	s=arc-20240116; t=1744113460; c=relaxed/simple;
+	bh=6vrp2dhiWkBJA42bvN85osYUzuF4IQ6+np81/jrDekY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lb9Z4d+U8KbNj9WU+sKOjgL39VTrc9OcMXbwZwpQI1g5jGpsdLvOvdxWfTSvNYfo7cOPPsEwUr0Z9bN/xJao39NFSj+mp27gU0Ci3ur3zTlEmNkjlmdg72PLaJE5QtvOrsIuhh11plJ0z9gwKendbM88yDFRi847rjFwVymELqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQaYCQBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DE5C4CEE5;
-	Tue,  8 Apr 2025 12:33:57 +0000 (UTC)
+	 MIME-Version; b=PKg7H+SK9BwAmTKN2IcNxQX6UW4Yh326SFns+N9SpvbolVRBZv7+B3NNIivRoHiFvGPjyx77HBxNHCNp6QnoRHuz6xjbXJLDbfaQkWTktgOunpDAyJZrJOYXHHlVuy3Rlp4rHPnrgFzxgybZDp5BXjZtjo5ZySZeHW1Kej2NO1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiHaTEfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E2C4CEE5;
+	Tue,  8 Apr 2025 11:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115637;
-	bh=oD9RkAKtQhijCoAEfPuLYa7s8jrJukX4vZdky49ZF1c=;
+	s=korg; t=1744113459;
+	bh=6vrp2dhiWkBJA42bvN85osYUzuF4IQ6+np81/jrDekY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQaYCQBgqdGl/Aou3oPW0ejyVNkeQ8xkXw1k605Oid45LcR8c56dl+GFYozzXybeJ
-	 ivr/muA04Cxy0RXW8E8RXcfpwnuYzQ2ozrE4ptWp2kOshatE10QFP/kah7nLbHy2Xm
-	 XNEBDtBUEqHKTb85If+1yg8zS1z930j20CX+tHYA=
+	b=ZiHaTEfeZVNS5xMvNA8uu5efHaXNoTMwyK1xmqDSnrMNCii0XMcmTRy1LCiXJZy+B
+	 ZuSLI9UIstUWuN22oZhErdNw8C3fen6RflGMCNgF2vAciK82apc5fkvdPePPxAPx+A
+	 1HaIlqgLu5zf13Sa4N3qMVsqI9sRvrAdk54Wv6N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Helge Deller <deller@gmx.de>,
+	Simon Tatham <anakin@pobox.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/204] fbdev: au1100fb: Move a variable assignment behind a null pointer check
+Subject: [PATCH 6.6 168/268] affs: generate OFS sequence numbers starting at 1
 Date: Tue,  8 Apr 2025 12:49:39 +0200
-Message-ID: <20250408104821.783192470@linuxfoundation.org>
+Message-ID: <20250408104833.080249349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Simon Tatham <anakin@pobox.com>
 
-[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
+[ Upstream commit e4cf8ec4de4e13f156c1d61977d282d90c221085 ]
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function “au1100fb_setmode”.
+If I write a file to an OFS floppy image, and try to read it back on
+an emulated Amiga running Workbench 1.3, the Amiga reports a disk
+error trying to read the file. (That is, it's unable to read it _at
+all_, even to copy it to the NIL: device. It isn't a matter of getting
+the wrong data and being unable to parse the file format.)
 
-This issue was detected by using the Coccinelle software.
+This is because the 'sequence number' field in the OFS data block
+header is supposed to be based at 1, but affs writes it based at 0.
+All three locations changed by this patch were setting the sequence
+number to a variable 'bidx' which was previously obtained by dividing
+a file position by bsize, so bidx will naturally use 0 for the first
+block. Therefore all three should add 1 to that value before writing
+it into the sequence number field.
 
-Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+With this change, the Amiga successfully reads the file.
+
+For data block reference: https://wiki.osdev.org/FFS_(Amiga)
+
+Signed-off-by: Simon Tatham <anakin@pobox.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1100fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/affs/file.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 519313b8bb004..ab7f311d1b56a 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
- 	 */
- int au1100fb_setmode(struct au1100fb_device *fbdev)
- {
--	struct fb_info *info = &fbdev->info;
-+	struct fb_info *info;
- 	u32 words;
- 	int index;
- 
- 	if (!fbdev)
- 		return -EINVAL;
- 
-+	info = &fbdev->info;
-+
- 	/* Update var-dependent FB info */
- 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
- 		if (info->var.bits_per_pixel <= 8) {
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index 04c018e196028..8fd1a7c5958a8 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -597,7 +597,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 		BUG_ON(tmp > bsize);
+ 		AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 		AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 		affs_fix_checksum(sb, bh);
+ 		bh->b_state &= ~(1UL << BH_New);
+@@ -748,7 +748,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		if (buffer_new(bh)) {
+ 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(bsize);
+ 			AFFS_DATA_HEAD(bh)->next = 0;
+ 			bh->b_state &= ~(1UL << BH_New);
+@@ -782,7 +782,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		if (buffer_new(bh)) {
+ 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
+ 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
+-			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
++			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
+ 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
+ 			AFFS_DATA_HEAD(bh)->next = 0;
+ 			bh->b_state &= ~(1UL << BH_New);
 -- 
 2.39.5
 
