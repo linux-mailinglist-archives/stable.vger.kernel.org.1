@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FF9A8028A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0B8A7FE27
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6396319E104F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11BEC18920D5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F321267F6E;
-	Tue,  8 Apr 2025 11:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396F3269B12;
+	Tue,  8 Apr 2025 11:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMl83E7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVP9KCAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C65E2676DE;
-	Tue,  8 Apr 2025 11:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1C22686A5;
+	Tue,  8 Apr 2025 11:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112684; cv=none; b=buFx234GXnq2h5peuw+2dwwtGx/RY8DDml8FWt1s2K4h/GqbVgIeBqzU2ehLr5ip2AG1fxRBOV+smIflJXDE9pf5znciK92qk7P/C62iXzqE2xJEcPvqMz8SCT2ijlGYTBh2P2ukTupEJ+nC1bnzA8nZaZYFtxxWia21BEN+TE4=
+	t=1744110090; cv=none; b=P0F9u3dMgXQw0LEYxXUPfJo7Z5DPRLU2aglNm3zxX5bkJc8O4nvPr4PgZBgmgCOqYsZBqYCXs3n+k7wRoqaylWJHz2aWNMU5B19UlBtGYcdbnpWldxSJYq+l8utcR2nr7/rRLRi3MmPdhUr5u34wznUUQDTyihp9gaSpgi39bUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112684; c=relaxed/simple;
-	bh=FHpDche0pIXZcedJZl8mk7UOIUlg1Ag6qsmjmGngX60=;
+	s=arc-20240116; t=1744110090; c=relaxed/simple;
+	bh=2Dm6L2Y0b7/5U70WCO8W+yW/uHA5D7UD0Xkz3mq/4UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpJXPDTP70MYRg4ZVeIbAzpN/bd2wpll87HYlOTq0VnlZBzruqTBbvh3CA+xYUX3CIaWgydnleAzfgphZUdwmldWMJNkzm9Zu51Uh+TW8ygtBP5eiR0iJCPMIvTTddyJ3Vv9Ln3HYcWpDvP4JqfxnuPiv1oyXp0iAKKH+8TEaTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMl83E7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C90C4CEE7;
-	Tue,  8 Apr 2025 11:44:43 +0000 (UTC)
+	 MIME-Version; b=Yb5o0BMGjt+2i96peo3TzphXZrT0ny6tfhBEVaE+0ojjpUED6NcZwb4dzwjN8doq3n/imdM5KgSSGVq9jZ7GRp3X39a50VEhC8f+5MOBSJu7LmZi2eKDoSiGCF3vihP3bhvauSZrD8PCyGE0lb0p4lsLadMwuh1WOmdarmWnQ3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVP9KCAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75604C4CEE5;
+	Tue,  8 Apr 2025 11:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112683;
-	bh=FHpDche0pIXZcedJZl8mk7UOIUlg1Ag6qsmjmGngX60=;
+	s=korg; t=1744110089;
+	bh=2Dm6L2Y0b7/5U70WCO8W+yW/uHA5D7UD0Xkz3mq/4UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMl83E7OlPMNlOilVwC72BAvAV2hy/NLXZaY/oJUpBWbY2y60ZmfvbAcrlH7gESN1
-	 skcJo19GVeF4Zb/SeZtwGR/hVKzjYYsUMnE1oNrVqVr0bUeKxlZiB0ixub4u10yoza
-	 L/4WkGSwe5YQJEkakWDjPxgm6V1kt1HnanX6hjpY=
+	b=nVP9KCAxQ1BfQ2UAq75seyrneiUMGsTh1HA1U7DmCIy50G4Q6osLBi+rCJl+8cWiY
+	 DjwRRlyY+UyDBuhCF1RMv4sCifHUXg/yBwps/2w1HKY7abTM83KVFP6bdYH1lRVcWK
+	 6HcIxajWOraBqpU0JXp1Kvdj9x9iTBDBcfOV+ojY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/279] drm/amd/display: fix type mismatch in CalculateDynamicMetadataParameters()
+Subject: [PATCH 5.10 163/227] coresight: catu: Fix number of pages while using 64k pages
 Date: Tue,  8 Apr 2025 12:49:01 +0200
-Message-ID: <20250408104830.600231452@linuxfoundation.org>
+Message-ID: <20250408104825.207827821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit c3c584c18c90a024a54716229809ba36424f9660 ]
+[ Upstream commit 0e14e062f5ff98aa15264dfa87c5f5e924028561 ]
 
-There is a type mismatch between what CalculateDynamicMetadataParameters()
-takes and what is passed to it. Currently this function accepts several
-args as signed long but it's called with unsigned integers and integer. On
-some systems where long is 32 bits and one of these unsigned int params is
-greater than INT_MAX it may cause passing input params as negative values.
+Trying to record a trace on kernel with 64k pages resulted in -ENOMEM.
+This happens due to a bug in calculating the number of table pages, which
+returns zero. Fix the issue by rounding up.
 
-Fix this by changing these argument types from long to unsigned int and to
-int respectively. Also this will align the function's definition with
-similar functions in other dcn* drivers.
+$ perf record --kcore -e cs_etm/@tmc_etr55,cycacc,branch_broadcast/k --per-thread taskset --cpu-list 1 dd if=/dev/zero of=/dev/null
+failed to mmap with 12 (Cannot allocate memory)
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 6725a88f88a7 ("drm/amd/display: Add DCN3 DML")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 8ed536b1e283 ("coresight: catu: Add support for scatter gather tables")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250109215348.5483-1-ilkka@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml/dcn30/display_mode_vba_30.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-index de0fa87b301a5..5c0d49d4eb8ec 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-@@ -283,10 +283,10 @@ static void CalculateDynamicMetadataParameters(
- 		double DISPCLK,
- 		double DCFClkDeepSleep,
- 		double PixelClock,
--		long HTotal,
--		long VBlank,
--		long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired,
-+		unsigned int HTotal,
-+		unsigned int VBlank,
-+		unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired,
- 		int InterlaceEnable,
- 		bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup,
-@@ -3375,8 +3375,8 @@ static double CalculateWriteBackDelay(
- 
- 
- static void CalculateDynamicMetadataParameters(int MaxInterDCNTileRepeaters, double DPPCLK, double DISPCLK,
--		double DCFClkDeepSleep, double PixelClock, long HTotal, long VBlank, long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
-+		double DCFClkDeepSleep, double PixelClock, unsigned int HTotal, unsigned int VBlank, unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup, double *Tdmbf, double *Tdmec, double *Tdmsks)
- {
- 	double TotalRepeaterDelayTime = 0;
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 8e19e8cdcce5e..3357e55fc5590 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -267,7 +267,7 @@ catu_init_sg_table(struct device *catu_dev, int node,
+ 	 * Each table can address upto 1MB and we can have
+ 	 * CATU_PAGES_PER_SYSPAGE tables in a system page.
+ 	 */
+-	nr_tpages = DIV_ROUND_UP(size, SZ_1M) / CATU_PAGES_PER_SYSPAGE;
++	nr_tpages = DIV_ROUND_UP(size, CATU_PAGES_PER_SYSPAGE * SZ_1M);
+ 	catu_table = tmc_alloc_sg_table(catu_dev, node, nr_tpages,
+ 					size >> PAGE_SHIFT, pages);
+ 	if (IS_ERR(catu_table))
 -- 
 2.39.5
 
