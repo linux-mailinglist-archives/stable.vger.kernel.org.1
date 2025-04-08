@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B29CA802D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4263EA803C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D47DA7A8C94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BB37A9853
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D192266562;
-	Tue,  8 Apr 2025 11:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8AC26A0F3;
+	Tue,  8 Apr 2025 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5f+P52v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JeL793L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095A1A94A;
-	Tue,  8 Apr 2025 11:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C6226A1A3;
+	Tue,  8 Apr 2025 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112916; cv=none; b=gEPQSUkRtvnJ7xv++5zwNQa4SgBHgpyeD/DxsNR435hMfRZr5Vjo52R2IQfkc1+Jm5wKIBAKInK4QnyVvCk+UXJGr4Q2kX9j3c8absbtzg1u+7hSgLB8WJVoqSs2qwHWOWofVZxiweDuSHTnWNlWHoPoQRjHpyCNAi6z6MwvXQg=
+	t=1744113591; cv=none; b=Ao01YHWXPlyuH8/8aJXLBJWGSnqbSqgY1x8MT9L4MgwB5EEvb/yQDp4X9J2u/QvUpHthHe156CJpx8816Fe6AZbIEi41sIX3VMmdRkRqwKNDNMtXFfv41k4A4IeVRHi0BtDsqseTzRcp2TDRtU3pj7UWD3D0ikXtqnJjpOUQBQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112916; c=relaxed/simple;
-	bh=xesdYI3ls4r2we67YuAYfzBC+/NkKC2W9vc3D0BjRjc=;
+	s=arc-20240116; t=1744113591; c=relaxed/simple;
+	bh=c1r5R1pTSTpfvaYLqpEArqnSbkx7DCCNhsKvLKbOorQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkigh/ygDZGNST16fZdQMGUZ8ieXVilBa7PimgDAko/9V76er3V/bRP1TlMcpjcAgqinsegiSTrUvJPVX+I/msR9kRQFX72wYQFpDenslM5CYeRfC4JhIYqZ3AJ4tCQctKe+J1v7tYONsUEB9LtApQ2FkXJN0pdvT5wO2V6Epyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5f+P52v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A708C4CEE5;
-	Tue,  8 Apr 2025 11:48:35 +0000 (UTC)
+	 MIME-Version; b=VWPKUVWnF/bQ3n5e/RPbj5pxMffO7botVO6S+nO5gd0M+T5l9wztGXXBCXKHqdDWb3b4Nk6iHMAD77QH/iMd3AXdRXSZle8Sao1aMyCd+UiL7mRaQdJqWTvUyYXyGCyISWdHZ5lYamprNBNElkQ5X9uHCci+uHYTJC0zp/HRORU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JeL793L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAD2C4CEE5;
+	Tue,  8 Apr 2025 11:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112915;
-	bh=xesdYI3ls4r2we67YuAYfzBC+/NkKC2W9vc3D0BjRjc=;
+	s=korg; t=1744113591;
+	bh=c1r5R1pTSTpfvaYLqpEArqnSbkx7DCCNhsKvLKbOorQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5f+P52v/uShrFS0PZWQNmjAmzyOOzzCJDktXEnUX8sxAmPtBs+gdJqoLUnc5kkGf
-	 s47TqL4E1DddDuHsk4WAUlSWl8X5tqXfBY+HRu4GC6DepvBa6Ooy3i7jgg99TYdVme
-	 zAuy9hN3yTn2bQclpfoUAfDnXUrNeIkO3gbMnGeE=
+	b=0JeL793LqeHTR0KMlWFJgrgEsgOA9yXb4Skph8V07yebU2lUzMgw7M+SGbfnWdCOt
+	 7pHSkD+2zStur6dZcQTX8sVq8shH4RflJa6R75Fx2GwyNoMY5hmmVv87rsg7B5WX4Z
+	 LwkdG8WQE+GBTuGDri4co5mbCjWdYezNMJZQrNFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/279] net: mvpp2: Prevent parser TCAM memory corruption
+Subject: [PATCH 6.6 216/268] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
 Date: Tue,  8 Apr 2025 12:50:27 +0200
-Message-ID: <20250408104832.975195813@linuxfoundation.org>
+Message-ID: <20250408104834.407410577@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,661 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 
-[ Upstream commit 96844075226b49af25a69a1d084b648ec2d9b08d ]
+[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
 
-Protect the parser TCAM/SRAM memory, and the cached (shadow) SRAM
-information, from concurrent modifications.
+The mv88e6xxx has an internal PPU that polls PHY state. If we want to
+access the internal PHYs, we need to disable the PPU first. Because
+that is a slow operation, a 10ms timer is used to re-enable it,
+canceled with every access, so bulk operations effectively only
+disable it once and re-enable it some 10ms after the last access.
 
-Both the TCAM and SRAM tables are indirectly accessed by configuring
-an index register that selects the row to read or write to. This means
-that operations must be atomic in order to, e.g., avoid spreading
-writes across multiple rows. Since the shadow SRAM array is used to
-find free rows in the hardware table, it must also be protected in
-order to avoid TOCTOU errors where multiple cores allocate the same
-row.
+If a PHY is accessed and then the mv88e6xxx module is removed before
+the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
 
-This issue was detected in a situation where `mvpp2_set_rx_mode()` ran
-concurrently on two CPUs. In this particular case the
-MVPP2_PE_MAC_UC_PROMISCUOUS entry was corrupted, causing the
-classifier unit to drop all incoming unicast - indicated by the
-`rx_classifier_drops` counter.
+This especially affects probing during bootup. The MDIO bus and PHY
+registration may succeed, but registration with the DSA framework
+may fail later on (e.g. because the CPU port depends on another,
+very slow device that isn't done probing yet, returning -EPROBE_DEFER).
+In this case, probe() fails, but the MDIO subsystem may already have
+accessed the MIDO bus or PHYs, arming the timer.
 
-Fixes: 3f518509dedc ("ethernet: Add new driver for Marvell Armada 375 network unit")
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250401065855.3113635-1-tobias@waldekranz.com
+This is fixed as follows:
+ - If probe fails after mv88e6xxx_phy_init(), make sure we also call
+   mv88e6xxx_phy_destroy() before returning
+ - In mv88e6xxx_remove(), make sure we do the teardown in the correct
+   order, calling mv88e6xxx_phy_destroy() after unregistering the
+   switch device.
+ - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
+   that the timer might schedule, synchronously waiting in case one of
+   the callbacks already fired and destroying the timer first, before
+   waiting for the work item.
+ - Access to the PPU is guarded by a mutex, the worker acquires it
+   with a mutex_trylock(), not proceeding with the expensive shutdown
+   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
+   sure the slow PPU shutdown is already done or won't even enter, when
+   we wait for the work item.
+
+Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
+Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2.h    |   3 +
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   |   3 +-
- .../net/ethernet/marvell/mvpp2/mvpp2_prs.c    | 201 ++++++++++++------
- 3 files changed, 140 insertions(+), 67 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
+ drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-index 24a8c9b8126b7..8732134cb33c9 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-@@ -1108,6 +1108,9 @@ struct mvpp2 {
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index a39b33353ca6c..8b01ee3e684a3 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7156,13 +7156,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	err = mv88e6xxx_switch_reset(chip);
+ 	mv88e6xxx_reg_unlock(chip);
+ 	if (err)
+-		goto out;
++		goto out_phy;
  
- 	/* Spinlocks for CM3 shared memory configuration */
- 	spinlock_t mss_spinlock;
-+
-+	/* Spinlock for shared PRS parser memory and shadow table */
-+	spinlock_t prs_spinlock;
- };
- 
- struct mvpp2_pcpu_stats {
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 2a60f949d9532..7fa880e62d096 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -7589,8 +7589,9 @@ static int mvpp2_probe(struct platform_device *pdev)
- 	if (mvpp2_read(priv, MVPP2_VER_ID_REG) == MVPP2_VER_PP23)
- 		priv->hw_version = MVPP23;
- 
--	/* Init mss lock */
-+	/* Init locks for shared packet processor resources */
- 	spin_lock_init(&priv->mss_spinlock);
-+	spin_lock_init(&priv->prs_spinlock);
- 
- 	/* Initialize network controller */
- 	err = mvpp2_init(pdev, priv);
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_prs.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_prs.c
-index 9af22f497a40f..93e978bdf303c 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_prs.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_prs.c
-@@ -23,6 +23,8 @@ static int mvpp2_prs_hw_write(struct mvpp2 *priv, struct mvpp2_prs_entry *pe)
- {
- 	int i;
- 
-+	lockdep_assert_held(&priv->prs_spinlock);
-+
- 	if (pe->index > MVPP2_PRS_TCAM_SRAM_SIZE - 1)
- 		return -EINVAL;
- 
-@@ -43,11 +45,13 @@ static int mvpp2_prs_hw_write(struct mvpp2 *priv, struct mvpp2_prs_entry *pe)
- }
- 
- /* Initialize tcam entry from hw */
--int mvpp2_prs_init_from_hw(struct mvpp2 *priv, struct mvpp2_prs_entry *pe,
--			   int tid)
-+static int __mvpp2_prs_init_from_hw(struct mvpp2 *priv,
-+				    struct mvpp2_prs_entry *pe, int tid)
- {
- 	int i;
- 
-+	lockdep_assert_held(&priv->prs_spinlock);
-+
- 	if (tid > MVPP2_PRS_TCAM_SRAM_SIZE - 1)
- 		return -EINVAL;
- 
-@@ -73,6 +77,18 @@ int mvpp2_prs_init_from_hw(struct mvpp2 *priv, struct mvpp2_prs_entry *pe,
- 	return 0;
- }
- 
-+int mvpp2_prs_init_from_hw(struct mvpp2 *priv, struct mvpp2_prs_entry *pe,
-+			   int tid)
-+{
-+	int err;
-+
-+	spin_lock_bh(&priv->prs_spinlock);
-+	err = __mvpp2_prs_init_from_hw(priv, pe, tid);
-+	spin_unlock_bh(&priv->prs_spinlock);
-+
-+	return err;
-+}
-+
- /* Invalidate tcam hw entry */
- static void mvpp2_prs_hw_inv(struct mvpp2 *priv, int index)
- {
-@@ -374,7 +390,7 @@ static int mvpp2_prs_flow_find(struct mvpp2 *priv, int flow)
- 		    priv->prs_shadow[tid].lu != MVPP2_PRS_LU_FLOWS)
- 			continue;
- 
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 		bits = mvpp2_prs_sram_ai_get(&pe);
- 
- 		/* Sram store classification lookup ID in AI bits [5:0] */
-@@ -441,7 +457,7 @@ static void mvpp2_prs_mac_drop_all_set(struct mvpp2 *priv, int port, bool add)
- 
- 	if (priv->prs_shadow[MVPP2_PE_DROP_ALL].valid) {
- 		/* Entry exist - update port only */
--		mvpp2_prs_init_from_hw(priv, &pe, MVPP2_PE_DROP_ALL);
-+		__mvpp2_prs_init_from_hw(priv, &pe, MVPP2_PE_DROP_ALL);
- 	} else {
- 		/* Entry doesn't exist - create new */
- 		memset(&pe, 0, sizeof(pe));
-@@ -469,14 +485,17 @@ static void mvpp2_prs_mac_drop_all_set(struct mvpp2 *priv, int port, bool add)
- }
- 
- /* Set port to unicast or multicast promiscuous mode */
--void mvpp2_prs_mac_promisc_set(struct mvpp2 *priv, int port,
--			       enum mvpp2_prs_l2_cast l2_cast, bool add)
-+static void __mvpp2_prs_mac_promisc_set(struct mvpp2 *priv, int port,
-+					enum mvpp2_prs_l2_cast l2_cast,
-+					bool add)
- {
- 	struct mvpp2_prs_entry pe;
- 	unsigned char cast_match;
- 	unsigned int ri;
- 	int tid;
- 
-+	lockdep_assert_held(&priv->prs_spinlock);
-+
- 	if (l2_cast == MVPP2_PRS_L2_UNI_CAST) {
- 		cast_match = MVPP2_PRS_UCAST_VAL;
- 		tid = MVPP2_PE_MAC_UC_PROMISCUOUS;
-@@ -489,7 +508,7 @@ void mvpp2_prs_mac_promisc_set(struct mvpp2 *priv, int port,
- 
- 	/* promiscuous mode - Accept unknown unicast or multicast packets */
- 	if (priv->prs_shadow[tid].valid) {
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	} else {
- 		memset(&pe, 0, sizeof(pe));
- 		mvpp2_prs_tcam_lu_set(&pe, MVPP2_PRS_LU_MAC);
-@@ -522,6 +541,14 @@ void mvpp2_prs_mac_promisc_set(struct mvpp2 *priv, int port,
- 	mvpp2_prs_hw_write(priv, &pe);
- }
- 
-+void mvpp2_prs_mac_promisc_set(struct mvpp2 *priv, int port,
-+			       enum mvpp2_prs_l2_cast l2_cast, bool add)
-+{
-+	spin_lock_bh(&priv->prs_spinlock);
-+	__mvpp2_prs_mac_promisc_set(priv, port, l2_cast, add);
-+	spin_unlock_bh(&priv->prs_spinlock);
-+}
-+
- /* Set entry for dsa packets */
- static void mvpp2_prs_dsa_tag_set(struct mvpp2 *priv, int port, bool add,
- 				  bool tagged, bool extend)
-@@ -539,7 +566,7 @@ static void mvpp2_prs_dsa_tag_set(struct mvpp2 *priv, int port, bool add,
- 
- 	if (priv->prs_shadow[tid].valid) {
- 		/* Entry exist - update port only */
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	} else {
- 		/* Entry doesn't exist - create new */
- 		memset(&pe, 0, sizeof(pe));
-@@ -610,7 +637,7 @@ static void mvpp2_prs_dsa_tag_ethertype_set(struct mvpp2 *priv, int port,
- 
- 	if (priv->prs_shadow[tid].valid) {
- 		/* Entry exist - update port only */
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	} else {
- 		/* Entry doesn't exist - create new */
- 		memset(&pe, 0, sizeof(pe));
-@@ -673,7 +700,7 @@ static int mvpp2_prs_vlan_find(struct mvpp2 *priv, unsigned short tpid, int ai)
- 		    priv->prs_shadow[tid].lu != MVPP2_PRS_LU_VLAN)
- 			continue;
- 
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 		match = mvpp2_prs_tcam_data_cmp(&pe, 0, tpid);
- 		if (!match)
- 			continue;
-@@ -726,7 +753,7 @@ static int mvpp2_prs_vlan_add(struct mvpp2 *priv, unsigned short tpid, int ai,
- 			    priv->prs_shadow[tid_aux].lu != MVPP2_PRS_LU_VLAN)
- 				continue;
- 
--			mvpp2_prs_init_from_hw(priv, &pe, tid_aux);
-+			__mvpp2_prs_init_from_hw(priv, &pe, tid_aux);
- 			ri_bits = mvpp2_prs_sram_ri_get(&pe);
- 			if ((ri_bits & MVPP2_PRS_RI_VLAN_MASK) ==
- 			    MVPP2_PRS_RI_VLAN_DOUBLE)
-@@ -760,7 +787,7 @@ static int mvpp2_prs_vlan_add(struct mvpp2 *priv, unsigned short tpid, int ai,
- 
- 		mvpp2_prs_shadow_set(priv, pe.index, MVPP2_PRS_LU_VLAN);
- 	} else {
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	}
- 	/* Update ports' mask */
- 	mvpp2_prs_tcam_port_map_set(&pe, port_map);
-@@ -800,7 +827,7 @@ static int mvpp2_prs_double_vlan_find(struct mvpp2 *priv, unsigned short tpid1,
- 		    priv->prs_shadow[tid].lu != MVPP2_PRS_LU_VLAN)
- 			continue;
- 
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 
- 		match = mvpp2_prs_tcam_data_cmp(&pe, 0, tpid1) &&
- 			mvpp2_prs_tcam_data_cmp(&pe, 4, tpid2);
-@@ -849,7 +876,7 @@ static int mvpp2_prs_double_vlan_add(struct mvpp2 *priv, unsigned short tpid1,
- 			    priv->prs_shadow[tid_aux].lu != MVPP2_PRS_LU_VLAN)
- 				continue;
- 
--			mvpp2_prs_init_from_hw(priv, &pe, tid_aux);
-+			__mvpp2_prs_init_from_hw(priv, &pe, tid_aux);
- 			ri_bits = mvpp2_prs_sram_ri_get(&pe);
- 			ri_bits &= MVPP2_PRS_RI_VLAN_MASK;
- 			if (ri_bits == MVPP2_PRS_RI_VLAN_SINGLE ||
-@@ -880,7 +907,7 @@ static int mvpp2_prs_double_vlan_add(struct mvpp2 *priv, unsigned short tpid1,
- 
- 		mvpp2_prs_shadow_set(priv, pe.index, MVPP2_PRS_LU_VLAN);
- 	} else {
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	}
- 
- 	/* Update ports' mask */
-@@ -1213,8 +1240,8 @@ static void mvpp2_prs_mac_init(struct mvpp2 *priv)
- 	/* Create dummy entries for drop all and promiscuous modes */
- 	mvpp2_prs_drop_fc(priv);
- 	mvpp2_prs_mac_drop_all_set(priv, 0, false);
--	mvpp2_prs_mac_promisc_set(priv, 0, MVPP2_PRS_L2_UNI_CAST, false);
--	mvpp2_prs_mac_promisc_set(priv, 0, MVPP2_PRS_L2_MULTI_CAST, false);
-+	__mvpp2_prs_mac_promisc_set(priv, 0, MVPP2_PRS_L2_UNI_CAST, false);
-+	__mvpp2_prs_mac_promisc_set(priv, 0, MVPP2_PRS_L2_MULTI_CAST, false);
- }
- 
- /* Set default entries for various types of dsa packets */
-@@ -1533,12 +1560,6 @@ static int mvpp2_prs_vlan_init(struct platform_device *pdev, struct mvpp2 *priv)
- 	struct mvpp2_prs_entry pe;
- 	int err;
- 
--	priv->prs_double_vlans = devm_kcalloc(&pdev->dev, sizeof(bool),
--					      MVPP2_PRS_DBL_VLANS_MAX,
--					      GFP_KERNEL);
--	if (!priv->prs_double_vlans)
--		return -ENOMEM;
--
- 	/* Double VLAN: 0x88A8, 0x8100 */
- 	err = mvpp2_prs_double_vlan_add(priv, ETH_P_8021AD, ETH_P_8021Q,
- 					MVPP2_PRS_PORT_MASK);
-@@ -1941,7 +1962,7 @@ static int mvpp2_prs_vid_range_find(struct mvpp2_port *port, u16 vid, u16 mask)
- 		    port->priv->prs_shadow[tid].lu != MVPP2_PRS_LU_VID)
- 			continue;
- 
--		mvpp2_prs_init_from_hw(port->priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(port->priv, &pe, tid);
- 
- 		mvpp2_prs_tcam_data_byte_get(&pe, 2, &byte[0], &enable[0]);
- 		mvpp2_prs_tcam_data_byte_get(&pe, 3, &byte[1], &enable[1]);
-@@ -1970,6 +1991,8 @@ int mvpp2_prs_vid_entry_add(struct mvpp2_port *port, u16 vid)
- 
- 	memset(&pe, 0, sizeof(pe));
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	/* Scan TCAM and see if entry with this <vid,port> already exist */
- 	tid = mvpp2_prs_vid_range_find(port, vid, mask);
- 
-@@ -1988,8 +2011,10 @@ int mvpp2_prs_vid_entry_add(struct mvpp2_port *port, u16 vid)
- 						MVPP2_PRS_VLAN_FILT_MAX_ENTRY);
- 
- 		/* There isn't room for a new VID filter */
--		if (tid < 0)
-+		if (tid < 0) {
-+			spin_unlock_bh(&priv->prs_spinlock);
- 			return tid;
-+		}
- 
- 		mvpp2_prs_tcam_lu_set(&pe, MVPP2_PRS_LU_VID);
- 		pe.index = tid;
-@@ -1997,7 +2022,7 @@ int mvpp2_prs_vid_entry_add(struct mvpp2_port *port, u16 vid)
- 		/* Mask all ports */
- 		mvpp2_prs_tcam_port_map_set(&pe, 0);
- 	} else {
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 	}
- 
- 	/* Enable the current port */
-@@ -2019,6 +2044,7 @@ int mvpp2_prs_vid_entry_add(struct mvpp2_port *port, u16 vid)
- 	mvpp2_prs_shadow_set(priv, pe.index, MVPP2_PRS_LU_VID);
- 	mvpp2_prs_hw_write(priv, &pe);
- 
-+	spin_unlock_bh(&priv->prs_spinlock);
- 	return 0;
- }
- 
-@@ -2028,15 +2054,16 @@ void mvpp2_prs_vid_entry_remove(struct mvpp2_port *port, u16 vid)
- 	struct mvpp2 *priv = port->priv;
- 	int tid;
- 
--	/* Scan TCAM and see if entry with this <vid,port> already exist */
--	tid = mvpp2_prs_vid_range_find(port, vid, 0xfff);
-+	spin_lock_bh(&priv->prs_spinlock);
- 
--	/* No such entry */
--	if (tid < 0)
--		return;
-+	/* Invalidate TCAM entry with this <vid,port>, if it exists */
-+	tid = mvpp2_prs_vid_range_find(port, vid, 0xfff);
-+	if (tid >= 0) {
-+		mvpp2_prs_hw_inv(priv, tid);
-+		priv->prs_shadow[tid].valid = false;
-+	}
- 
--	mvpp2_prs_hw_inv(priv, tid);
--	priv->prs_shadow[tid].valid = false;
-+	spin_unlock_bh(&priv->prs_spinlock);
- }
- 
- /* Remove all existing VID filters on this port */
-@@ -2045,6 +2072,8 @@ void mvpp2_prs_vid_remove_all(struct mvpp2_port *port)
- 	struct mvpp2 *priv = port->priv;
- 	int tid;
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	for (tid = MVPP2_PRS_VID_PORT_FIRST(port->id);
- 	     tid <= MVPP2_PRS_VID_PORT_LAST(port->id); tid++) {
- 		if (priv->prs_shadow[tid].valid) {
-@@ -2052,6 +2081,8 @@ void mvpp2_prs_vid_remove_all(struct mvpp2_port *port)
- 			priv->prs_shadow[tid].valid = false;
+ 	if (np) {
+ 		chip->irq = of_irq_get(np, 0);
+ 		if (chip->irq == -EPROBE_DEFER) {
+ 			err = chip->irq;
+-			goto out;
++			goto out_phy;
  		}
  	}
-+
-+	spin_unlock_bh(&priv->prs_spinlock);
- }
  
- /* Remove VID filering entry for this port */
-@@ -2060,10 +2091,14 @@ void mvpp2_prs_vid_disable_filtering(struct mvpp2_port *port)
- 	unsigned int tid = MVPP2_PRS_VID_PORT_DFLT(port->id);
- 	struct mvpp2 *priv = port->priv;
+@@ -7181,7 +7181,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	mv88e6xxx_reg_unlock(chip);
  
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	/* Invalidate the guard entry */
- 	mvpp2_prs_hw_inv(priv, tid);
+ 	if (err)
+-		goto out;
++		goto out_phy;
  
- 	priv->prs_shadow[tid].valid = false;
-+
-+	spin_unlock_bh(&priv->prs_spinlock);
- }
- 
- /* Add guard entry that drops packets when no VID is matched on this port */
-@@ -2079,6 +2114,8 @@ void mvpp2_prs_vid_enable_filtering(struct mvpp2_port *port)
- 
- 	memset(&pe, 0, sizeof(pe));
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	pe.index = tid;
- 
- 	reg_val = mvpp2_read(priv, MVPP2_MH_REG(port->id));
-@@ -2111,6 +2148,8 @@ void mvpp2_prs_vid_enable_filtering(struct mvpp2_port *port)
- 	/* Update shadow table */
- 	mvpp2_prs_shadow_set(priv, pe.index, MVPP2_PRS_LU_VID);
- 	mvpp2_prs_hw_write(priv, &pe);
-+
-+	spin_unlock_bh(&priv->prs_spinlock);
- }
- 
- /* Parser default initialization */
-@@ -2118,6 +2157,20 @@ int mvpp2_prs_default_init(struct platform_device *pdev, struct mvpp2 *priv)
- {
- 	int err, index, i;
- 
-+	priv->prs_shadow = devm_kcalloc(&pdev->dev, MVPP2_PRS_TCAM_SRAM_SIZE,
-+					sizeof(*priv->prs_shadow),
-+					GFP_KERNEL);
-+	if (!priv->prs_shadow)
-+		return -ENOMEM;
-+
-+	priv->prs_double_vlans = devm_kcalloc(&pdev->dev, sizeof(bool),
-+					      MVPP2_PRS_DBL_VLANS_MAX,
-+					      GFP_KERNEL);
-+	if (!priv->prs_double_vlans)
-+		return -ENOMEM;
-+
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	/* Enable tcam table */
- 	mvpp2_write(priv, MVPP2_PRS_TCAM_CTRL_REG, MVPP2_PRS_TCAM_EN_MASK);
- 
-@@ -2136,12 +2189,6 @@ int mvpp2_prs_default_init(struct platform_device *pdev, struct mvpp2 *priv)
- 	for (index = 0; index < MVPP2_PRS_TCAM_SRAM_SIZE; index++)
- 		mvpp2_prs_hw_inv(priv, index);
- 
--	priv->prs_shadow = devm_kcalloc(&pdev->dev, MVPP2_PRS_TCAM_SRAM_SIZE,
--					sizeof(*priv->prs_shadow),
--					GFP_KERNEL);
--	if (!priv->prs_shadow)
--		return -ENOMEM;
--
- 	/* Always start from lookup = 0 */
- 	for (index = 0; index < MVPP2_MAX_PORTS; index++)
- 		mvpp2_prs_hw_port_init(priv, index, MVPP2_PRS_LU_MH,
-@@ -2158,26 +2205,13 @@ int mvpp2_prs_default_init(struct platform_device *pdev, struct mvpp2 *priv)
- 	mvpp2_prs_vid_init(priv);
- 
- 	err = mvpp2_prs_etype_init(priv);
--	if (err)
--		return err;
--
--	err = mvpp2_prs_vlan_init(pdev, priv);
--	if (err)
--		return err;
--
--	err = mvpp2_prs_pppoe_init(priv);
--	if (err)
--		return err;
--
--	err = mvpp2_prs_ip6_init(priv);
--	if (err)
--		return err;
--
--	err = mvpp2_prs_ip4_init(priv);
--	if (err)
--		return err;
-+	err = err ? : mvpp2_prs_vlan_init(pdev, priv);
-+	err = err ? : mvpp2_prs_pppoe_init(priv);
-+	err = err ? : mvpp2_prs_ip6_init(priv);
-+	err = err ? : mvpp2_prs_ip4_init(priv);
- 
--	return 0;
-+	spin_unlock_bh(&priv->prs_spinlock);
-+	return err;
- }
- 
- /* Compare MAC DA with tcam entry data */
-@@ -2217,7 +2251,7 @@ mvpp2_prs_mac_da_range_find(struct mvpp2 *priv, int pmap, const u8 *da,
- 		    (priv->prs_shadow[tid].udf != udf_type))
- 			continue;
- 
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 		entry_pmap = mvpp2_prs_tcam_port_map_get(&pe);
- 
- 		if (mvpp2_prs_mac_range_equals(&pe, da, mask) &&
-@@ -2229,7 +2263,8 @@ mvpp2_prs_mac_da_range_find(struct mvpp2 *priv, int pmap, const u8 *da,
- }
- 
- /* Update parser's mac da entry */
--int mvpp2_prs_mac_da_accept(struct mvpp2_port *port, const u8 *da, bool add)
-+static int __mvpp2_prs_mac_da_accept(struct mvpp2_port *port,
-+				     const u8 *da, bool add)
- {
- 	unsigned char mask[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 	struct mvpp2 *priv = port->priv;
-@@ -2261,7 +2296,7 @@ int mvpp2_prs_mac_da_accept(struct mvpp2_port *port, const u8 *da, bool add)
- 		/* Mask all ports */
- 		mvpp2_prs_tcam_port_map_set(&pe, 0);
- 	} else {
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
+ 	if (chip->info->g2_irqs > 0) {
+ 		err = mv88e6xxx_g2_irq_setup(chip);
+@@ -7215,6 +7215,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++out_phy:
++	mv88e6xxx_phy_destroy(chip);
+ out:
+ 	if (pdata)
+ 		dev_put(pdata->netdev);
+@@ -7237,7 +7239,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_ptp_free(chip);
  	}
  
- 	mvpp2_prs_tcam_lu_set(&pe, MVPP2_PRS_LU_MAC);
-@@ -2317,6 +2352,17 @@ int mvpp2_prs_mac_da_accept(struct mvpp2_port *port, const u8 *da, bool add)
- 	return 0;
+-	mv88e6xxx_phy_destroy(chip);
+ 	mv88e6xxx_unregister_switch(chip);
+ 
+ 	mv88e6xxx_g1_vtu_prob_irq_free(chip);
+@@ -7250,6 +7251,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++
++	mv88e6xxx_phy_destroy(chip);
  }
  
-+int mvpp2_prs_mac_da_accept(struct mvpp2_port *port, const u8 *da, bool add)
-+{
-+	int err;
-+
-+	spin_lock_bh(&port->priv->prs_spinlock);
-+	err = __mvpp2_prs_mac_da_accept(port, da, add);
-+	spin_unlock_bh(&port->priv->prs_spinlock);
-+
-+	return err;
-+}
-+
- int mvpp2_prs_update_mac_da(struct net_device *dev, const u8 *da)
+ static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
+diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
+index 8bb88b3d900db..ee9e5d7e52770 100644
+--- a/drivers/net/dsa/mv88e6xxx/phy.c
++++ b/drivers/net/dsa/mv88e6xxx/phy.c
+@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
+ 
+ static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
  {
- 	struct mvpp2_port *port = netdev_priv(dev);
-@@ -2345,6 +2391,8 @@ void mvpp2_prs_mac_del_all(struct mvpp2_port *port)
- 	unsigned long pmap;
- 	int index, tid;
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	for (tid = MVPP2_PE_MAC_RANGE_START;
- 	     tid <= MVPP2_PE_MAC_RANGE_END; tid++) {
- 		unsigned char da[ETH_ALEN], da_mask[ETH_ALEN];
-@@ -2354,7 +2402,7 @@ void mvpp2_prs_mac_del_all(struct mvpp2_port *port)
- 		    (priv->prs_shadow[tid].udf != MVPP2_PRS_UDF_MAC_DEF))
- 			continue;
- 
--		mvpp2_prs_init_from_hw(priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(priv, &pe, tid);
- 
- 		pmap = mvpp2_prs_tcam_port_map_get(&pe);
- 
-@@ -2375,14 +2423,17 @@ void mvpp2_prs_mac_del_all(struct mvpp2_port *port)
- 			continue;
- 
- 		/* Remove entry from TCAM */
--		mvpp2_prs_mac_da_accept(port, da, false);
-+		__mvpp2_prs_mac_da_accept(port, da, false);
- 	}
-+
-+	spin_unlock_bh(&priv->prs_spinlock);
++	mutex_lock(&chip->ppu_mutex);
+ 	del_timer_sync(&chip->ppu_timer);
++	cancel_work_sync(&chip->ppu_work);
++	mutex_unlock(&chip->ppu_mutex);
  }
  
- int mvpp2_prs_tag_mode_set(struct mvpp2 *priv, int port, int type)
- {
- 	switch (type) {
- 	case MVPP2_TAG_TYPE_EDSA:
-+		spin_lock_bh(&priv->prs_spinlock);
- 		/* Add port to EDSA entries */
- 		mvpp2_prs_dsa_tag_set(priv, port, true,
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_EDSA);
-@@ -2393,9 +2444,11 @@ int mvpp2_prs_tag_mode_set(struct mvpp2 *priv, int port, int type)
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_DSA);
- 		mvpp2_prs_dsa_tag_set(priv, port, false,
- 				      MVPP2_PRS_UNTAGGED, MVPP2_PRS_DSA);
-+		spin_unlock_bh(&priv->prs_spinlock);
- 		break;
- 
- 	case MVPP2_TAG_TYPE_DSA:
-+		spin_lock_bh(&priv->prs_spinlock);
- 		/* Add port to DSA entries */
- 		mvpp2_prs_dsa_tag_set(priv, port, true,
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_DSA);
-@@ -2406,10 +2459,12 @@ int mvpp2_prs_tag_mode_set(struct mvpp2 *priv, int port, int type)
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_EDSA);
- 		mvpp2_prs_dsa_tag_set(priv, port, false,
- 				      MVPP2_PRS_UNTAGGED, MVPP2_PRS_EDSA);
-+		spin_unlock_bh(&priv->prs_spinlock);
- 		break;
- 
- 	case MVPP2_TAG_TYPE_MH:
- 	case MVPP2_TAG_TYPE_NONE:
-+		spin_lock_bh(&priv->prs_spinlock);
- 		/* Remove port form EDSA and DSA entries */
- 		mvpp2_prs_dsa_tag_set(priv, port, false,
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_DSA);
-@@ -2419,6 +2474,7 @@ int mvpp2_prs_tag_mode_set(struct mvpp2 *priv, int port, int type)
- 				      MVPP2_PRS_TAGGED, MVPP2_PRS_EDSA);
- 		mvpp2_prs_dsa_tag_set(priv, port, false,
- 				      MVPP2_PRS_UNTAGGED, MVPP2_PRS_EDSA);
-+		spin_unlock_bh(&priv->prs_spinlock);
- 		break;
- 
- 	default:
-@@ -2437,11 +2493,15 @@ int mvpp2_prs_add_flow(struct mvpp2 *priv, int flow, u32 ri, u32 ri_mask)
- 
- 	memset(&pe, 0, sizeof(pe));
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	tid = mvpp2_prs_tcam_first_free(priv,
- 					MVPP2_PE_LAST_FREE_TID,
- 					MVPP2_PE_FIRST_FREE_TID);
--	if (tid < 0)
-+	if (tid < 0) {
-+		spin_unlock_bh(&priv->prs_spinlock);
- 		return tid;
-+	}
- 
- 	pe.index = tid;
- 
-@@ -2461,6 +2521,7 @@ int mvpp2_prs_add_flow(struct mvpp2 *priv, int flow, u32 ri, u32 ri_mask)
- 	mvpp2_prs_tcam_port_map_set(&pe, MVPP2_PRS_PORT_MASK);
- 	mvpp2_prs_hw_write(priv, &pe);
- 
-+	spin_unlock_bh(&priv->prs_spinlock);
- 	return 0;
- }
- 
-@@ -2472,6 +2533,8 @@ int mvpp2_prs_def_flow(struct mvpp2_port *port)
- 
- 	memset(&pe, 0, sizeof(pe));
- 
-+	spin_lock_bh(&port->priv->prs_spinlock);
-+
- 	tid = mvpp2_prs_flow_find(port->priv, port->id);
- 
- 	/* Such entry not exist */
-@@ -2480,8 +2543,10 @@ int mvpp2_prs_def_flow(struct mvpp2_port *port)
- 		tid = mvpp2_prs_tcam_first_free(port->priv,
- 						MVPP2_PE_LAST_FREE_TID,
- 					       MVPP2_PE_FIRST_FREE_TID);
--		if (tid < 0)
-+		if (tid < 0) {
-+			spin_unlock_bh(&port->priv->prs_spinlock);
- 			return tid;
-+		}
- 
- 		pe.index = tid;
- 
-@@ -2492,13 +2557,14 @@ int mvpp2_prs_def_flow(struct mvpp2_port *port)
- 		/* Update shadow table */
- 		mvpp2_prs_shadow_set(port->priv, pe.index, MVPP2_PRS_LU_FLOWS);
- 	} else {
--		mvpp2_prs_init_from_hw(port->priv, &pe, tid);
-+		__mvpp2_prs_init_from_hw(port->priv, &pe, tid);
- 	}
- 
- 	mvpp2_prs_tcam_lu_set(&pe, MVPP2_PRS_LU_FLOWS);
- 	mvpp2_prs_tcam_port_map_set(&pe, (1 << port->id));
- 	mvpp2_prs_hw_write(port->priv, &pe);
- 
-+	spin_unlock_bh(&port->priv->prs_spinlock);
- 	return 0;
- }
- 
-@@ -2509,11 +2575,14 @@ int mvpp2_prs_hits(struct mvpp2 *priv, int index)
- 	if (index > MVPP2_PRS_TCAM_SRAM_SIZE)
- 		return -EINVAL;
- 
-+	spin_lock_bh(&priv->prs_spinlock);
-+
- 	mvpp2_write(priv, MVPP2_PRS_TCAM_HIT_IDX_REG, index);
- 
- 	val = mvpp2_read(priv, MVPP2_PRS_TCAM_HIT_CNT_REG);
- 
- 	val &= MVPP2_PRS_TCAM_HIT_CNT_MASK;
- 
-+	spin_unlock_bh(&priv->prs_spinlock);
- 	return val;
- }
+ int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
 -- 
 2.39.5
 
