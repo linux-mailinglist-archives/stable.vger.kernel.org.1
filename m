@@ -1,57 +1,92 @@
-Return-Path: <stable+bounces-129846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77023A80140
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1DAA802E8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B7057A17F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA731890D43
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCAC268C70;
-	Tue,  8 Apr 2025 11:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B721268685;
+	Tue,  8 Apr 2025 11:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBRdcxA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shkfMDcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5892192F2;
-	Tue,  8 Apr 2025 11:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBAB2641CC;
+	Tue,  8 Apr 2025 11:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112134; cv=none; b=DzaMCsRA1dy99zq+/ocTJdoxQnbK0/4W3XRpWGmNU2zDNl1cDen7efAOwjZOuXQLmPB/Gn2sYEf9uxSPAtktbx0bAN2WfhhB7y+5gtaRDXQjkg6iamyjUPCaVca1Q6dj6OZGy5aEgnWIMLpOtUH5EJae19vpGkOqgLRfDyBf5Ls=
+	t=1744112811; cv=none; b=Y6SYaD111/cyCbbM2HlyapWkk/pgQxBv/Ptl1iVFgTwf7Q0cuU4VPDy3XirGGVA+P/aJj7fuZNxyeFtlVGm6KrpQ8lalLeukOcaJgJ9TbOIFjvs+8DTIyUyrVopGfBqJN3UEVvSUFHxn93JKGu2aGA8zX8fe4cBKcoLz81PBy3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112134; c=relaxed/simple;
-	bh=UXwViAboYL881URZzSl71xL0Rjx9w3qzHBT3a5QC9Io=;
+	s=arc-20240116; t=1744112811; c=relaxed/simple;
+	bh=j/tfrOXLtPQI2ELXQdEYDCuD838Ultnwt/2GcBG0nx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8oGlUKGOGnGBB6hbWHFc3dj6bvBAZPAFquhudAeRdZXY70RN9lyhguroTL4wTHruMKNMQYJ5pVHbAXFu1Q55Fz+uicKFOmUQ4OEpfdVu0uz5ooUE2rTl7WR3sFO8SYz/9dGex2oc1tPIC7stlKPvHdiQr8rMhIQM+SNkJORSBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBRdcxA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2D0C4CEE7;
-	Tue,  8 Apr 2025 11:35:33 +0000 (UTC)
+	 MIME-Version; b=jS9By4JuEwxNSUDnM1AsREr5pS6JVY5Fj+pVS7EM5kliTT3wHdT3SUYl50JErlgFe/9GvL4pbYSymIr0IjAWX95yPQiM2AzCCAAGwKeIMMYUo0mrhthTmqi8mENjuGIKFqbSGHXHoGgZg/THlsptuMOrVETVObnv2Lx0GEBoRiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shkfMDcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C93C4CEE5;
+	Tue,  8 Apr 2025 11:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112133;
-	bh=UXwViAboYL881URZzSl71xL0Rjx9w3qzHBT3a5QC9Io=;
+	s=korg; t=1744112811;
+	bh=j/tfrOXLtPQI2ELXQdEYDCuD838Ultnwt/2GcBG0nx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBRdcxA8OXHlM3gZakEsNoJtLVf32YF1bLMLDGtfyGw7QQINy4B3QjMwud8oDwVae
-	 f5R7rIiGwleAjrrcM2CMtXHB1NomkjNJog3YxJbZdn5wnqGSTyZAslSNDVS+a1PYbC
-	 nn3PAoMcECUoGttYSqv5SI/2uZX1laD2WYQdrsdw=
+	b=shkfMDcwLXnIZLqXJMcmt1rR6M3JWUc8/0oHi9qFcyynIcxDmJfy21KL+kYsx95W9
+	 Cl3pithDBoWPyDut7UMdzGMw7Z8NbrOVOWcPt74KbHMyE/iVLSj4Izvz+gv3jc01sg
+	 Ra/9btqZT+wfAYlP3F/899+clr/HkCT0YndOaRw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.14 689/731] ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
-Date: Tue,  8 Apr 2025 12:49:46 +0200
-Message-ID: <20250408104930.293948003@linuxfoundation.org>
+	Alistair Popple <apopple@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Asahi Lina <lina@asahilina.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linmiaohe <linmiaohe@huawei.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	=?UTF-8?q?Michael=20 Camp=20Drill=20Sergeant =20Ellerman?= <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ted Tso <tytso@mit.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 204/279] fuse: fix dax truncate/punch_hole fault path
+Date: Tue,  8 Apr 2025 12:49:47 +0200
+Message-ID: <20250408104831.844341522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +98,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit ebca08fef88febdb0a898cefa7c99b9e25b3a984 upstream.
+[ Upstream commit 7851bf649d423edd7286b292739f2eefded3d35c ]
 
-The _DDC method should return a buffer, or an integer in case of an error.
-But some Lenovo laptops incorrectly return EDID as buffer in ACPI package.
+Patch series "fs/dax: Fix ZONE_DEVICE page reference counts", v9.
 
-Calling _DDC generates this ACPI Warning:
-ACPI Warning: \_SB.PCI0.GP17.VGA.LCD._DDC: Return type mismatch - \
-found Package, expected Integer/Buffer (20240827/nspredef-254)
+Device and FS DAX pages have always maintained their own page reference
+counts without following the normal rules for page reference counting.  In
+particular pages are considered free when the refcount hits one rather
+than zero and refcounts are not added when mapping the page.
 
-Use the first element of the package to get the EDID buffer.
+Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+mechanism for allowing GUP to hold references on the page (see
+get_dev_pagemap).  However there doesn't seem to be any reason why FS DAX
+pages need their own reference counting scheme.
 
-The DSDT:
+By treating the refcounts on these pages the same way as normal pages we
+can remove a lot of special checks.  In particular pXd_trans_huge()
+becomes the same as pXd_leaf(), although I haven't made that change here.
+It also frees up a valuable SW define PTE bit on architectures that have
+devmap PTE bits defined.
 
-Name (AUOP, Package (0x01)
-{
-	Buffer (0x80)
-	{
-	...
-	}
-})
+It also almost certainly allows further clean-up of the devmap managed
+functions, but I have left that as a future improvment.  It also enables
+support for compound ZONE_DEVICE pages which is one of my primary
+motivators for doing this work.
 
-...
+This patch (of 20):
 
-Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
-{
-	If ((PAID == AUID))
-        {
-		Return (AUOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.AUOP */
-	}
-	ElseIf ((PAID == IVID))
-	{
-		Return (IVOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.IVOP */
-	}
-	ElseIf ((PAID == BOID))
-	{
-		Return (BOEP) /* \_SB_.PCI0.GP17.VGA_.LCD_.BOEP */
-	}
-	ElseIf ((PAID == SAID))
-	{
-		Return (SUNG) /* \_SB_.PCI0.GP17.VGA_.LCD_.SUNG */
-	}
+FS DAX requires file systems to call into the DAX layout prior to
+unlinking inodes to ensure there is no ongoing DMA or other remote access
+to the direct mapped page.  The fuse file system implements
+fuse_dax_break_layouts() to do this which includes a comment indicating
+that passing dmap_end == 0 leads to unmapping of the whole file.
 
-	Return (Zero)
-}
+However this is not true - passing dmap_end == 0 will not unmap anything
+before dmap_start, and further more dax_layout_busy_page_range() will not
+scan any of the range to see if there maybe ongoing DMA access to the
+range.  Fix this by passing -1 for dmap_end to fuse_dax_break_layouts()
+which will invalidate the entire file range to
+dax_layout_busy_page_range().
 
-Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/Apx_B_Video_Extensions/output-device-specific-methods.html#ddc-return-the-edid-for-this-device
-Cc: stable@vger.kernel.org
-Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4085
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/61c3df83ab73aba0bc7a941a443cd7faf4cf7fb0.1743195250.git.soyer@irl.hu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/cover.8068ad144a7eea4a813670301f4d2a86a8e68ec4.1740713401.git-series.apopple@nvidia.com
+Link: https://lkml.kernel.org/r/f09a34b6c40032022e4ddee6fadb7cc676f08867.1740713401.git-series.apopple@nvidia.com
+Fixes: 6ae330cad6ef ("virtiofs: serialize truncate/punch_hole and dax fault path")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Asahi Lina <lina@asahilina.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Michael "Camp Drill Sergeant" Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ted Ts'o <tytso@mit.edu>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/fuse/dax.c  | 1 -
+ fs/fuse/dir.c  | 2 +-
+ fs/fuse/file.c | 4 ++--
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -648,6 +648,13 @@ acpi_video_device_EDID(struct acpi_video
- 
- 	obj = buffer.pointer;
- 
-+	/*
-+	 * Some buggy implementations incorrectly return the EDID buffer in an ACPI package.
-+	 * In this case, extract the buffer from the package.
-+	 */
-+	if (obj && obj->type == ACPI_TYPE_PACKAGE && obj->package.count == 1)
-+		obj = &obj->package.elements[0];
-+
- 	if (obj && obj->type == ACPI_TYPE_BUFFER) {
- 		*edid = kmemdup(obj->buffer.pointer, obj->buffer.length, GFP_KERNEL);
- 		ret = *edid ? obj->buffer.length : -ENOMEM;
-@@ -657,7 +664,7 @@ acpi_video_device_EDID(struct acpi_video
- 		ret = -EFAULT;
- 	}
- 
--	kfree(obj);
-+	kfree(buffer.pointer);
- 	return ret;
+diff --git a/fs/fuse/dax.c b/fs/fuse/dax.c
+index 3e7aafe2e9533..d3ebb02626e2f 100644
+--- a/fs/fuse/dax.c
++++ b/fs/fuse/dax.c
+@@ -681,7 +681,6 @@ static int __fuse_dax_break_layouts(struct inode *inode, bool *retry,
+ 			0, 0, fuse_wait_dax_page(inode));
  }
  
+-/* dmap_end == 0 leads to unmapping of whole file */
+ int fuse_dax_break_layouts(struct inode *inode, u64 dmap_start,
+ 				  u64 dmap_end)
+ {
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 03dadc44e9b1c..1b8bf81d6c16b 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1600,7 +1600,7 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
+ 	if (FUSE_IS_DAX(inode) && is_truncate) {
+ 		filemap_invalidate_lock(mapping);
+ 		fault_blocked = true;
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err) {
+ 			filemap_invalidate_unlock(mapping);
+ 			return err;
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 8702ef9ff8b9e..40fdb4dac5bbc 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -242,7 +242,7 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
+ 
+ 	if (dax_truncate) {
+ 		filemap_invalidate_lock(inode->i_mapping);
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err)
+ 			goto out_inode_unlock;
+ 	}
+@@ -2962,7 +2962,7 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
+ 	inode_lock(inode);
+ 	if (block_faults) {
+ 		filemap_invalidate_lock(inode->i_mapping);
+-		err = fuse_dax_break_layouts(inode, 0, 0);
++		err = fuse_dax_break_layouts(inode, 0, -1);
+ 		if (err)
+ 			goto out;
+ 	}
+-- 
+2.39.5
+
 
 
 
