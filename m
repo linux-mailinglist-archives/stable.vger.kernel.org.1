@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28DFA800BE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E01AA7FD7F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926C11892A7F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CEAF16A3CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3AE26982A;
-	Tue,  8 Apr 2025 11:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FCF269D18;
+	Tue,  8 Apr 2025 10:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4huG6qA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQE66kHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFAC26A1D0;
-	Tue,  8 Apr 2025 11:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A932690DB;
+	Tue,  8 Apr 2025 10:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111719; cv=none; b=Fhj93UDkmqmWGfwxttpuqj+UPMM64P2xE4umMAyeWF5yH5es6lBgo7V0bcllhHrgVGVWAxvgSebxI5UOydWd+Mnj/B5KX+FaomqyEocPpnukOoonD2qlnM66s/8lC0dE2we4ikE0pYWAhyep0f8z9ySTxgR0xSgHm9CbAY8NnRY=
+	t=1744109786; cv=none; b=Ntdka2yrSYyMN0e0Wk+OhZ8V8KunOCIuDUqcpG/+hh0hevuKdkI4yS3UK+fh+J5bn78XxuC6KWd1Zp2mOxcBMqFFSwLMr2LufGQpoTHk54izVC2ZWzJrZc8TYzolNYoZpi+TApclQ89x5FzBOvPnr0DVUSkSCohS7rgIK2ab37Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111719; c=relaxed/simple;
-	bh=0ZzRNgnCk8MRzbBUHTHfzHBEITvWMrrH4SYs5b/gT+Q=;
+	s=arc-20240116; t=1744109786; c=relaxed/simple;
+	bh=uG2hytOgYvEseBu8k5R/QznssrLbia2xe5e/0C5qcNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOTDzV82zpz21U4rYK2Svg6DcxMKbgUqWZN4s4qqamBTFNP1Da8vxf2sp0rxRNif2aakwfeR+1nk6dfBrqxpEWtOTFI+qTP8pDYgFgea6cMFMSO1eRbb/dJn+o9uOxWqN6epJb+zQwLuqQqoiTbYrAh2saRyG2LrbER9Moy8ZfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4huG6qA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8F0C4CEE5;
-	Tue,  8 Apr 2025 11:28:38 +0000 (UTC)
+	 MIME-Version; b=tOXhiUGyZ72CPTmw3MDNHK5yOfs9MJ42TXRHXfgzt5mzUPfAfmdYDK9GB0PpKstSSQULHesxr0RA/AZF2efAMNw14HYwsJ9p85GUZxcZfqyhgaz/1qzoSNezy5WTiCVW/8YJXTNLuJMzHp/nQhHqB0k1e0Y7jWXBQwT0V8SpA3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQE66kHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C70C4CEE5;
+	Tue,  8 Apr 2025 10:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111719;
-	bh=0ZzRNgnCk8MRzbBUHTHfzHBEITvWMrrH4SYs5b/gT+Q=;
+	s=korg; t=1744109786;
+	bh=uG2hytOgYvEseBu8k5R/QznssrLbia2xe5e/0C5qcNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4huG6qACtlgEgBT+NX1yIYSZv2kJmZwZTfiO15m3cmCE8uuoEGRM2XDqx6XQ+kf4
-	 Soxguw4AzG/8q6XbzZxR7E2AXqWUAQVMRzLbxfU86hfzOmIDGk3aPfANQeFmAiYXbM
-	 WVnMEwtDR0D64efGn6wqu3y5zO6tD+DglC3SaRd8=
+	b=uQE66kHDQMIih/COLkZ3bR1R6b6E66FL+GN9MACUI573FuljB6mrVVLva6PZ7C+rM
+	 LBPj0b9IlJdZG63Q4NlczMwYbuvs5nqoTSASHAdqpHyA4WNc6gmC4VdAjvFQfzs/XQ
+	 7xKJDBfarr/3YpISzTnPN83e57qhEYon/sIPpbzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 534/731] staging: vchiq_arm: Register debugfs after cdev
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 053/227] drm/amd/display: Assign normalized_pix_clk when color depth = 14
 Date: Tue,  8 Apr 2025 12:47:11 +0200
-Message-ID: <20250408104926.699027397@linuxfoundation.org>
+Message-ID: <20250408104821.989469272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 63f4dbb196db60a8536ba3d1b835d597a83f6cbb ]
+commit 79e31396fdd7037c503e6add15af7cb00633ea92 upstream.
 
-The commit 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
-moved the debugfs directory creation before vchiq character device
-registration. In case the latter fails, the debugfs directory won't
-be cleaned up.
+[WHY & HOW]
+A warning message "WARNING: CPU: 4 PID: 459 at ... /dc_resource.c:3397
+calculate_phy_pix_clks+0xef/0x100 [amdgpu]" occurs because the
+display_color_depth == COLOR_DEPTH_141414 is not handled. This is
+observed in Radeon RX 6600 XT.
 
-Fixes: 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250309125014.37166-2-wahrenst@gmx.net
+It is fixed by assigning pix_clk * (14 * 3) / 24 - same as the rests.
+
+Also fixes the indentation in get_norm_pix_clk.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 274a87eb389f58eddcbc5659ab0b180b37e92775)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index a4e83e5d619bc..e2e80e90b555b 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -1386,8 +1386,6 @@ static int vchiq_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	vchiq_debugfs_init(&mgmt->state);
--
- 	dev_dbg(&pdev->dev, "arm: platform initialised - version %d (min %d)\n",
- 		VCHIQ_VERSION, VCHIQ_VERSION_MIN);
- 
-@@ -1401,6 +1399,8 @@ static int vchiq_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	vchiq_debugfs_init(&mgmt->state);
-+
- 	bcm2835_audio = vchiq_device_register(&pdev->dev, "bcm2835-audio");
- 	bcm2835_camera = vchiq_device_register(&pdev->dev, "bcm2835-camera");
- 
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1975,10 +1975,13 @@ static int get_norm_pix_clk(const struct
+ 			break;
+ 		case COLOR_DEPTH_121212:
+ 			normalized_pix_clk = (pix_clk * 36) / 24;
+-		break;
++			break;
++		case COLOR_DEPTH_141414:
++			normalized_pix_clk = (pix_clk * 42) / 24;
++			break;
+ 		case COLOR_DEPTH_161616:
+ 			normalized_pix_clk = (pix_clk * 48) / 24;
+-		break;
++			break;
+ 		default:
+ 			ASSERT(0);
+ 		break;
 
 
 
