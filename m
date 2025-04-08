@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFC7A80139
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0069A802D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EFF8189EA87
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDD016E4E8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C982268FD5;
-	Tue,  8 Apr 2025 11:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC5D267F6E;
+	Tue,  8 Apr 2025 11:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRRkOD+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0MOE9yp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0924C227BB6;
-	Tue,  8 Apr 2025 11:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD1265602;
+	Tue,  8 Apr 2025 11:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112024; cv=none; b=R2+VFf5GPDADxXhF0QZZK3DUukx9+YO1I3qZ16j0HqKKkjMys+iuqkau9zb1kaGWMrCdM825VQAdIeN8kFFl1d6+H3cY5XK+VJbRDIyLzLw1ME0UNX3J/O/r9JjLHSGaX0R2vI4rldKPd9baLQ7VZbLe98/62Wut7PZKa5ntxtQ=
+	t=1744112697; cv=none; b=U5KJ02bECE6TLccbZYzp/BrUys2BBhuTmIWA1Jt+H4zBt7fpoMKptHu033ArYn0dtojE2HbU975WoI4FW02p2AS3Jngn2cxyE6px4oIShk/is+FxSvlp34QVvSzlZaMp3B1JWP6p252Z3POsM1ydckGD/dbhK8TkXML9On9lhZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112024; c=relaxed/simple;
-	bh=PnAu2BZ/4D+pi5WzyF1EHjOKEqxw1b8/Lck4dTzWH3E=;
+	s=arc-20240116; t=1744112697; c=relaxed/simple;
+	bh=lU82SEjUDhCxFgkytCRCF9GbIMn6odaKKepHxHDVc18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgM11wX8C/cPARJrYq1sm87qDf/RU2B0D3y4crKq4rRfTX61EGX8/BY2dhiaTc7W8Gjf1pgJcBwImr+FQ3bYxmOK9+oBmD/sPE3Iwlz4rqL7UyKSUCY3IQCZ/BS72eDl7KCiJ8c2MkehwQm+6q0QAxUCBzHUQPNhp4fAPPzXcA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRRkOD+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C61CC4CEE5;
-	Tue,  8 Apr 2025 11:33:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q1R9Nf/+7BoXVh+hyH0ZcSqYFr4oqw6Ytgto9t9olAfkfc/yQgON2rfpfenbMKDC2WAhRybQpvHp9mQFAOkUuUUoz9V22T/w17ffkzfChNqg4y5T5joM5eCRpjWFiuxLzTtWpPj/YwnUcPz6gDvrnaxj78DsmzkmVGmmm9crsDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0MOE9yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C252CC4CEE5;
+	Tue,  8 Apr 2025 11:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112023;
-	bh=PnAu2BZ/4D+pi5WzyF1EHjOKEqxw1b8/Lck4dTzWH3E=;
+	s=korg; t=1744112697;
+	bh=lU82SEjUDhCxFgkytCRCF9GbIMn6odaKKepHxHDVc18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRRkOD+CgZHvQS62zd6e/0eekYpqvIEBXxlzuR5cyGV2z/sNyTVrQWFWFiElqN9ZK
-	 yRzIMbO4fHJjYvBVsObOPkdpzIkjVs1M34TMCoXODWHyOcnXqK2UQZIkCo0DsXYN9L
-	 +rnWXIwO6ya/HIbwnh4eyKf+8lyZXdwZNRpJoED4=
+	b=s0MOE9ypvM+6FYddl+wzf+zlGujAPi+8qr/kiglKq4tl1AYzxzzfuOFVKVo4Kz4if
+	 9XH4yCyl66kMh6DZEiCEbn7sZeqwhZr36ZG7e7u2VXswGGfSiuDRoiIFAtUjFGu/qz
+	 h7bQbduvRO7m/Qvn1GM/olLvIkC/ge/Wwc0aQXxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 648/731] drm/amdgpu/gfx12: fix num_mec
+Subject: [PATCH 5.15 162/279] PCI: pciehp: Dont enable HPIE when resuming in poll mode
 Date: Tue,  8 Apr 2025 12:49:05 +0200
-Message-ID: <20250408104929.338899274@linuxfoundation.org>
+Message-ID: <20250408104830.708814448@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit dce8bd9137b88735dd0efc4e2693213d98c15913 ]
+[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
 
-GC12 only has 1 mec.
+PCIe hotplug can operate in poll mode without interrupt handlers using a
+polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
+interrupt during suspend") failed to consider that and enables HPIE
+(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
 
-Fixes: 52cb80c12e8a ("drm/amdgpu: Add gfx v12_0 ip block support (v6)")
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Only set HPIE if non-poll mode is in use. This makes
+pcie_enable_interrupt() match how pcie_enable_notification() already
+handles HPIE.
+
+Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
+Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-index 48ff00427882c..c21b168f75a75 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -1337,7 +1337,7 @@ static int gfx_v12_0_sw_init(struct amdgpu_ip_block *ip_block)
- 		adev->gfx.me.num_me = 1;
- 		adev->gfx.me.num_pipe_per_me = 1;
- 		adev->gfx.me.num_queue_per_pipe = 1;
--		adev->gfx.mec.num_mec = 2;
-+		adev->gfx.mec.num_mec = 1;
- 		adev->gfx.mec.num_pipe_per_mec = 2;
- 		adev->gfx.mec.num_queue_per_pipe = 4;
- 		break;
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index 7773009b8b32e..6647ade09f054 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -840,7 +840,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
+ {
+ 	u16 mask;
+ 
+-	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
++	mask = PCI_EXP_SLTCTL_DLLSCE;
++	if (!pciehp_poll_mode)
++		mask |= PCI_EXP_SLTCTL_HPIE;
+ 	pcie_write_cmd(ctrl, mask, mask);
+ }
+ 
 -- 
 2.39.5
 
