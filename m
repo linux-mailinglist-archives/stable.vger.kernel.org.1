@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED850A802C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221E3A7FE61
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5B1C7A6AE0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 708404469F5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D3E265602;
-	Tue,  8 Apr 2025 11:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A9126A095;
+	Tue,  8 Apr 2025 11:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHr54/gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1qq4Oq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E665FA94A;
-	Tue,  8 Apr 2025 11:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D51374C4;
+	Tue,  8 Apr 2025 11:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112892; cv=none; b=eMt9Ho9ugaMVjnhaM1Gi5SHpCRCquuYaJTU732pIH9FzQKnmwv/WHrx0+63HL29k59zEnUPxDk4pFQskpVxOW0eH1mWN5BtIazQLti26PlH2l+4QrkvrnLMLyg6qZixjnyu8wzd+H21PZAiyvy9C7XJ0j046IWanfFsUf8XgGsw=
+	t=1744110267; cv=none; b=F0mQ15XaKpaDJyYhWNd48qIsQkkgLm/Jskn5RW+HKoQJWM7NK2RApOSRlGbhhz/xd+VvHTidWZyiiPk8P75k/oPCzAfW+5OOVpS0VTr6iPsMIX2sL+DbYrvOjQbhOp8tfIY79RWe3xWFhdzRHDyqN3lHNHbN1j4zIkbmvE6NIRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112892; c=relaxed/simple;
-	bh=GZ6Oz9lvVNaSo/y87dNr1wxiwc+ZNrC5uTnElfEsuCQ=;
+	s=arc-20240116; t=1744110267; c=relaxed/simple;
+	bh=w61hcUYnm7MnJPkPL5UwIrYcy18x8zaXRaQNIKmVbPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/I0AaFBBi6hltupCEAdXheSr2cZNZ2VXEZoQIFaGj59BoL83t8zQFtuscQUD3aZUJLM4HOe5xQWKpnrCaUvonwN0u0t3WVuKt+hJLtLxlwSA0wndzuMtcyPgnQeBAEwrun5WXOJBoCBfv7+6ZsGkaNHx974+6wzGdlBG9KzVs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHr54/gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787BBC4CEE5;
-	Tue,  8 Apr 2025 11:48:11 +0000 (UTC)
+	 MIME-Version; b=pbRzCFSoSrDHdj7+CH1iE5R0L9xsbKhawxrhoThXJ7xFhzGW0FYw8g1+bL7QWcn9kkiTzHpN/75iMckZiV2ZHP46wWCkGnL9Jd8ypGOM3yQoKPuTJDesxUhH5hh4PxU7IYmiqNIfkFIjHxRts/7fIxxFuzplbUseZ91iDHXBO2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1qq4Oq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1367DC4CEE5;
+	Tue,  8 Apr 2025 11:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112891;
-	bh=GZ6Oz9lvVNaSo/y87dNr1wxiwc+ZNrC5uTnElfEsuCQ=;
+	s=korg; t=1744110267;
+	bh=w61hcUYnm7MnJPkPL5UwIrYcy18x8zaXRaQNIKmVbPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHr54/gcjjVO/gynQJvlWvdDHiN2JfZg787P5vRq0EXpEovBmfOL+w8+9Z85Ak40O
-	 AuIX936IHBEnb0YPGKJXGek0Av8ArT3ZBFOJK/Gd52MCUhmrGD/KUpJUqobCOvNikt
-	 Pr5B/olNitumZeLzVlKPjk4FsUWXtWhxPOISK/sA=
+	b=C1qq4Oq/Gn3x0Quca5rBtKygXjx/Anw8ZFK2ukUDGCrnyhApQH4oQJfTtjFaJEabT
+	 m4TDFtzvSXi8Q3LC1oiQAxDk37R60LTGPX8mV/TZnAz1KRmxHQAQQxHD0TgLgRMl3E
+	 CdZSF/iRCoeKvofNfJbCZe/0qftAuAlfcriMYMj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 209/279] perf python: Check if there is space to copy all the event
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 214/227] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
 Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104831.984971831@linuxfoundation.org>
+Message-ID: <20250408104826.730971241@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 89aaeaf84231157288035b366cb6300c1c6cac64 ]
+commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
 
-The pyrf_event__new() method copies the event obtained from the perf
-ring buffer to a structure that will then be turned into a python object
-for further consumption, so it copies perf_event.header.size bytes to
-its 'event' member:
+On the following path, flush_tlb_range() can be used for zapping normal
+PMD entries (PMD entries that point to page tables) together with the PTE
+entries in the pointed-to page table:
 
-  $ pahole -C pyrf_event /tmp/build/perf-tools-next/python/perf.cpython-312-x86_64-linux-gnu.so
-  struct pyrf_event {
-  	PyObject                   ob_base;              /*     0    16 */
-  	struct evsel *             evsel;                /*    16     8 */
-  	struct perf_sample         sample;               /*    24   312 */
+    collapse_pte_mapped_thp
+      pmdp_collapse_flush
+        flush_tlb_range
 
-  	/* XXX last struct has 7 bytes of padding, 2 holes */
+The arm64 version of flush_tlb_range() has a comment describing that it can
+be used for page table removal, and does not use any last-level
+invalidation optimizations. Fix the X86 version by making it behave the
+same way.
 
-  	/* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
-  	union perf_event           event;                /*   336  4168 */
+Currently, X86 only uses this information for the following two purposes,
+which I think means the issue doesn't have much impact:
 
-  	/* size: 4504, cachelines: 71, members: 4 */
-  	/* member types with holes: 1, total: 2 */
-  	/* paddings: 1, sum paddings: 7 */
-  	/* last cacheline: 24 bytes */
-  };
+ - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
+   IPI'd to avoid issues with speculative page table walks.
+ - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
 
-  $
+The patch "x86/mm: only invalidate final translations with INVLPGB" which
+is currently under review (see
+<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
+would probably be making the impact of this a lot worse.
 
-It was doing so without checking if the event just obtained has more
-than that space, fix it.
-
-This isn't a proper, final solution, as we need to support larger
-events, but for the time being we at least bounds check and document it.
-
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-7-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/python.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/include/asm/tlbflush.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 42810b63125a9..b9fd7edfbb3cc 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -585,6 +585,11 @@ static PyObject *pyrf_event__new(union perf_event *event)
- 	      event->header.type == PERF_RECORD_SWITCH_CPU_WIDE))
- 		return NULL;
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -222,7 +222,7 @@ void flush_tlb_others(const struct cpuma
+ 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+ 			   ((vma)->vm_flags & VM_HUGETLB)		\
+ 				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, false)
++				: PAGE_SHIFT, true)
  
-+	// FIXME this better be dynamic or we need to parse everything
-+	// before calling perf_mmap__consume(), including tracepoint fields.
-+	if (sizeof(pevent->event) < event->header.size)
-+		return NULL;
-+
- 	ptype = pyrf_event__type[event->header.type];
- 	pevent = PyObject_New(struct pyrf_event, ptype);
- 	if (pevent != NULL)
--- 
-2.39.5
-
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
 
 
 
