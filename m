@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB944A80258
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6AE1A803C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703511894F1D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E2F8445142
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A9D227EBD;
-	Tue,  8 Apr 2025 11:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A06926A0DC;
+	Tue,  8 Apr 2025 11:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUAFtJ/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FODzV1WW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E812266583;
-	Tue,  8 Apr 2025 11:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED3126A0D3;
+	Tue,  8 Apr 2025 11:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112559; cv=none; b=hHD/a3quWlNIlgyin+yVwV/uQ04TUp+IpxmfKmWJ6VMRwjhgfqh2eOGd0WPpPlxW8Qj8jHnyrnNrObPXcXioJiOZVxavNK+gpKbubs04OAF4F6j5+ZgwHtgjpCCMBinYG+K3/ZWHc+/YR2hGuKTLMEgpgAtFb58QPQRgYmGYtuA=
+	t=1744113234; cv=none; b=a8hCAEdmYu3cHLdYCe4VjiB3wWkXlf924KU5SnxCVxE00i+bjH+ZYeBR5WD7Zh5EPMp91DpSN+EmQkPHuhleezwJE4WYjod5XjantixZaReGSX+4gnFh2syllpQI8GHz5HSc3wkw4lwF9FejS3uCH8ykDG32YZvpHQaPL5CbNiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112559; c=relaxed/simple;
-	bh=EFORVDTgIRS6X4MxGTr02Z5q861l8v7wYa3ukdnw8Js=;
+	s=arc-20240116; t=1744113234; c=relaxed/simple;
+	bh=jrYV/tj3gws3Y2DzK2M9dqrcQF634sCqVKbeQIXDN1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwXZmJsbwAlgcbmFGRDsmH93NHape+nK6cXAXEWaLKlG1bAFCzKxLPp/1XAvzGK0RhyPTc0RR5hetT/K02enqE9+g7A0/GY88xs/Q8csNAmcGazZwXGglESm30JJSKOrcPJyy8q/xiPmoiVYLzc+uG1YgqrMbR6xKmCt5rFn/Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUAFtJ/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB994C4CEE5;
-	Tue,  8 Apr 2025 11:42:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AWgcKhZOOsXEC1lHlpvbtb7S0dR+0Qw9PM7leQJ26qzrXSxX3gIC5yltCawwtJu+aTrtv/4TD+NmSzKFHKxpQFlKZlgdjRbUeXAKn4EBIHxyGScepc48cXRHbJSaYuxkY0zAzv6Y0+DI3KVDb/rP1LpLFtUtnP8NcKbD90GJzuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FODzV1WW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56289C4CEE5;
+	Tue,  8 Apr 2025 11:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112559;
-	bh=EFORVDTgIRS6X4MxGTr02Z5q861l8v7wYa3ukdnw8Js=;
+	s=korg; t=1744113233;
+	bh=jrYV/tj3gws3Y2DzK2M9dqrcQF634sCqVKbeQIXDN1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUAFtJ/pMjgOGIM5dFBb7KYrSVra4UgzcMpV5MPAlR8x1k8nzuN5GPLaf96nRICkH
-	 usGm+FlfzCdh6VqBPQIl7OCdiqwac8ahufuxnx8Tuzqh62QcnWW7JAH7qYrVqE3HbA
-	 61lIY6iC51ZR+aWgL1ss64zI4pdATzOBP63a7zsE=
+	b=FODzV1WW/z1brCZyPturm5gbyaqKWM42ZobhduMZkTeAlGVFVnAqey2S7p8inpGW+
+	 94DhQp3fOk5EwJjTqKJUjAxiPMmMY544u9T+EHmKK5JA+fEag0W7pcJoEvDTaCJbX6
+	 xzQ/t8AsKsIBh4cBticQ/YRr2fF9N21nLoX7GkAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minjoong Kim <pwn9uin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 112/279] atm: Fix NULL pointer dereference
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/268] IB/mad: Check available slots before posting receive WRs
 Date: Tue,  8 Apr 2025 12:48:15 +0200
-Message-ID: <20250408104829.370360917@linuxfoundation.org>
+Message-ID: <20250408104830.759676178@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,132 +60,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjoong Kim <pwn9uin@gmail.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-commit bf2986fcf82a449441f9ee4335df19be19e83970 upstream.
+[ Upstream commit 37826f0a8c2f6b6add5179003b8597e32a445362 ]
 
-When MPOA_cache_impos_rcvd() receives the msg, it can trigger
-Null Pointer Dereference Vulnerability if both entry and
-holding_time are NULL. Because there is only for the situation
-where entry is NULL and holding_time exists, it can be passed
-when both entry and holding_time are NULL. If these are NULL,
-the entry will be passd to eg_cache_put() as parameter and
-it is referenced by entry->use code in it.
+The ib_post_receive_mads() function handles posting receive work
+requests (WRs) to MAD QPs and is called in two cases:
+1) When a MAD port is opened.
+2) When a receive WQE is consumed upon receiving a new MAD.
 
-kasan log:
+Whereas, if MADs arrive during the port open phase, a race condition
+might cause an extra WR to be posted, exceeding the QP’s capacity.
+This leads to failures such as:
+infiniband mlx5_0: ib_post_recv failed: -12
+infiniband mlx5_0: Couldn't post receive WRs
+infiniband mlx5_0: Couldn't start port
+infiniband mlx5_0: Couldn't open port 1
 
-[    3.316691] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006:I
-[    3.317568] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[    3.318188] CPU: 3 UID: 0 PID: 79 Comm: ex Not tainted 6.14.0-rc2 #102
-[    3.318601] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[    3.319298] RIP: 0010:eg_cache_remove_entry+0xa5/0x470
-[    3.319677] Code: c1 f7 6e fd 48 c7 c7 00 7e 38 b2 e8 95 64 54 fd 48 c7 c7 40 7e 38 b2 48 89 ee e80
-[    3.321220] RSP: 0018:ffff88800583f8a8 EFLAGS: 00010006
-[    3.321596] RAX: 0000000000000006 RBX: ffff888005989000 RCX: ffffffffaecc2d8e
-[    3.322112] RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000030
-[    3.322643] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6558b88
-[    3.323181] R10: 0000000000000003 R11: 203a207972746e65 R12: 1ffff11000b07f15
-[    3.323707] R13: dffffc0000000000 R14: ffff888005989000 R15: ffff888005989068
-[    3.324185] FS:  000000001b6313c0(0000) GS:ffff88806d380000(0000) knlGS:0000000000000000
-[    3.325042] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    3.325545] CR2: 00000000004b4b40 CR3: 000000000248e000 CR4: 00000000000006f0
-[    3.326430] Call Trace:
-[    3.326725]  <TASK>
-[    3.326927]  ? die_addr+0x3c/0xa0
-[    3.327330]  ? exc_general_protection+0x161/0x2a0
-[    3.327662]  ? asm_exc_general_protection+0x26/0x30
-[    3.328214]  ? vprintk_emit+0x15e/0x420
-[    3.328543]  ? eg_cache_remove_entry+0xa5/0x470
-[    3.328910]  ? eg_cache_remove_entry+0x9a/0x470
-[    3.329294]  ? __pfx_eg_cache_remove_entry+0x10/0x10
-[    3.329664]  ? console_unlock+0x107/0x1d0
-[    3.329946]  ? __pfx_console_unlock+0x10/0x10
-[    3.330283]  ? do_syscall_64+0xa6/0x1a0
-[    3.330584]  ? entry_SYSCALL_64_after_hwframe+0x47/0x7f
-[    3.331090]  ? __pfx_prb_read_valid+0x10/0x10
-[    3.331395]  ? down_trylock+0x52/0x80
-[    3.331703]  ? vprintk_emit+0x15e/0x420
-[    3.331986]  ? __pfx_vprintk_emit+0x10/0x10
-[    3.332279]  ? down_trylock+0x52/0x80
-[    3.332527]  ? _printk+0xbf/0x100
-[    3.332762]  ? __pfx__printk+0x10/0x10
-[    3.333007]  ? _raw_write_lock_irq+0x81/0xe0
-[    3.333284]  ? __pfx__raw_write_lock_irq+0x10/0x10
-[    3.333614]  msg_from_mpoad+0x1185/0x2750
-[    3.333893]  ? __build_skb_around+0x27b/0x3a0
-[    3.334183]  ? __pfx_msg_from_mpoad+0x10/0x10
-[    3.334501]  ? __alloc_skb+0x1c0/0x310
-[    3.334809]  ? __pfx___alloc_skb+0x10/0x10
-[    3.335283]  ? _raw_spin_lock+0xe0/0xe0
-[    3.335632]  ? finish_wait+0x8d/0x1e0
-[    3.335975]  vcc_sendmsg+0x684/0xba0
-[    3.336250]  ? __pfx_vcc_sendmsg+0x10/0x10
-[    3.336587]  ? __pfx_autoremove_wake_function+0x10/0x10
-[    3.337056]  ? fdget+0x176/0x3e0
-[    3.337348]  __sys_sendto+0x4a2/0x510
-[    3.337663]  ? __pfx___sys_sendto+0x10/0x10
-[    3.337969]  ? ioctl_has_perm.constprop.0.isra.0+0x284/0x400
-[    3.338364]  ? sock_ioctl+0x1bb/0x5a0
-[    3.338653]  ? __rseq_handle_notify_resume+0x825/0xd20
-[    3.339017]  ? __pfx_sock_ioctl+0x10/0x10
-[    3.339316]  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-[    3.339727]  ? selinux_file_ioctl+0xa4/0x260
-[    3.340166]  __x64_sys_sendto+0xe0/0x1c0
-[    3.340526]  ? syscall_exit_to_user_mode+0x123/0x140
-[    3.340898]  do_syscall_64+0xa6/0x1a0
-[    3.341170]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[    3.341533] RIP: 0033:0x44a380
-[    3.341757] Code: 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c00
-[    3.343078] RSP: 002b:00007ffc1d404098 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[    3.343631] RAX: ffffffffffffffda RBX: 00007ffc1d404458 RCX: 000000000044a380
-[    3.344306] RDX: 000000000000019c RSI: 00007ffc1d4040b0 RDI: 0000000000000003
-[    3.344833] RBP: 00007ffc1d404260 R08: 0000000000000000 R09: 0000000000000000
-[    3.345381] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-[    3.346015] R13: 00007ffc1d404448 R14: 00000000004c17d0 R15: 0000000000000001
-[    3.346503]  </TASK>
-[    3.346679] Modules linked in:
-[    3.346956] ---[ end trace 0000000000000000 ]---
-[    3.347315] RIP: 0010:eg_cache_remove_entry+0xa5/0x470
-[    3.347737] Code: c1 f7 6e fd 48 c7 c7 00 7e 38 b2 e8 95 64 54 fd 48 c7 c7 40 7e 38 b2 48 89 ee e80
-[    3.349157] RSP: 0018:ffff88800583f8a8 EFLAGS: 00010006
-[    3.349517] RAX: 0000000000000006 RBX: ffff888005989000 RCX: ffffffffaecc2d8e
-[    3.350103] RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000030
-[    3.350610] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6558b88
-[    3.351246] R10: 0000000000000003 R11: 203a207972746e65 R12: 1ffff11000b07f15
-[    3.351785] R13: dffffc0000000000 R14: ffff888005989000 R15: ffff888005989068
-[    3.352404] FS:  000000001b6313c0(0000) GS:ffff88806d380000(0000) knlGS:0000000000000000
-[    3.353099] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    3.353544] CR2: 00000000004b4b40 CR3: 000000000248e000 CR4: 00000000000006f0
-[    3.354072] note: ex[79] exited with irqs disabled
-[    3.354458] note: ex[79] exited with preempt_count 1
+Fix this by checking the current receive count before posting a new WR.
+If the QP’s receive queue is full, do not post additional WRs.
 
-Signed-off-by: Minjoong Kim <pwn9uin@gmail.com>
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250322105200.14981-1-pwn9uin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Link: https://patch.msgid.link/c4984ba3c3a98a5711a558bccefcad789587ecf1.1741875592.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/mpc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/core/mad.c | 38 ++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -1314,6 +1314,8 @@ static void MPOA_cache_impos_rcvd(struct
- 	holding_time = msg->content.eg_info.holding_time;
- 	dprintk("(%s) entry = %p, holding_time = %u\n",
- 		mpc->dev->name, entry, holding_time);
-+	if (entry == NULL && !holding_time)
-+		return;
- 	if (entry == NULL && holding_time) {
- 		entry = mpc->eg_ops->add_entry(msg, mpc);
- 		mpc->eg_ops->put(entry);
+diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
+index 58befbaaf0ad5..242434c09e8d8 100644
+--- a/drivers/infiniband/core/mad.c
++++ b/drivers/infiniband/core/mad.c
+@@ -2671,11 +2671,11 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 				    struct ib_mad_private *mad)
+ {
+ 	unsigned long flags;
+-	int post, ret;
+ 	struct ib_mad_private *mad_priv;
+ 	struct ib_sge sg_list;
+ 	struct ib_recv_wr recv_wr;
+ 	struct ib_mad_queue *recv_queue = &qp_info->recv_queue;
++	int ret = 0;
+ 
+ 	/* Initialize common scatter list fields */
+ 	sg_list.lkey = qp_info->port_priv->pd->local_dma_lkey;
+@@ -2685,7 +2685,7 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 	recv_wr.sg_list = &sg_list;
+ 	recv_wr.num_sge = 1;
+ 
+-	do {
++	while (true) {
+ 		/* Allocate and map receive buffer */
+ 		if (mad) {
+ 			mad_priv = mad;
+@@ -2693,10 +2693,8 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 		} else {
+ 			mad_priv = alloc_mad_private(port_mad_size(qp_info->port_priv),
+ 						     GFP_ATOMIC);
+-			if (!mad_priv) {
+-				ret = -ENOMEM;
+-				break;
+-			}
++			if (!mad_priv)
++				return -ENOMEM;
+ 		}
+ 		sg_list.length = mad_priv_dma_size(mad_priv);
+ 		sg_list.addr = ib_dma_map_single(qp_info->port_priv->device,
+@@ -2705,37 +2703,41 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
+ 						 DMA_FROM_DEVICE);
+ 		if (unlikely(ib_dma_mapping_error(qp_info->port_priv->device,
+ 						  sg_list.addr))) {
+-			kfree(mad_priv);
+ 			ret = -ENOMEM;
+-			break;
++			goto free_mad_priv;
+ 		}
+ 		mad_priv->header.mapping = sg_list.addr;
+ 		mad_priv->header.mad_list.mad_queue = recv_queue;
+ 		mad_priv->header.mad_list.cqe.done = ib_mad_recv_done;
+ 		recv_wr.wr_cqe = &mad_priv->header.mad_list.cqe;
+-
+-		/* Post receive WR */
+ 		spin_lock_irqsave(&recv_queue->lock, flags);
+-		post = (++recv_queue->count < recv_queue->max_active);
+-		list_add_tail(&mad_priv->header.mad_list.list, &recv_queue->list);
++		if (recv_queue->count >= recv_queue->max_active) {
++			/* Fully populated the receive queue */
++			spin_unlock_irqrestore(&recv_queue->lock, flags);
++			break;
++		}
++		recv_queue->count++;
++		list_add_tail(&mad_priv->header.mad_list.list,
++			      &recv_queue->list);
+ 		spin_unlock_irqrestore(&recv_queue->lock, flags);
++
+ 		ret = ib_post_recv(qp_info->qp, &recv_wr, NULL);
+ 		if (ret) {
+ 			spin_lock_irqsave(&recv_queue->lock, flags);
+ 			list_del(&mad_priv->header.mad_list.list);
+ 			recv_queue->count--;
+ 			spin_unlock_irqrestore(&recv_queue->lock, flags);
+-			ib_dma_unmap_single(qp_info->port_priv->device,
+-					    mad_priv->header.mapping,
+-					    mad_priv_dma_size(mad_priv),
+-					    DMA_FROM_DEVICE);
+-			kfree(mad_priv);
+ 			dev_err(&qp_info->port_priv->device->dev,
+ 				"ib_post_recv failed: %d\n", ret);
+ 			break;
+ 		}
+-	} while (post);
++	}
+ 
++	ib_dma_unmap_single(qp_info->port_priv->device,
++			    mad_priv->header.mapping,
++			    mad_priv_dma_size(mad_priv), DMA_FROM_DEVICE);
++free_mad_priv:
++	kfree(mad_priv);
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
