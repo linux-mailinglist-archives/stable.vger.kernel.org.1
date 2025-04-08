@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CD6A805B8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:20:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EAEA80981
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B66B7AEAC0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C391BA23C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11525269892;
-	Tue,  8 Apr 2025 12:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA1026F452;
+	Tue,  8 Apr 2025 12:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8NjJNbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWmnrnd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD35267B96;
-	Tue,  8 Apr 2025 12:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A28626B2BF;
+	Tue,  8 Apr 2025 12:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114628; cv=none; b=EiS+WoFYYR3EtRCgc0s5F/7k/0kkPNqSytsx1NDxKdgX+KyaIEHqQNX8ZjCDS2xXkncCsOIY39I6GuE7PI+Adqtghqd4YxVvf6W0TnRSTl4UTHYDHOGqkuTCA7V0mZaaiahRfwd0QOZG9kocgiEXwtwPQNMoczm6hR9sFbiCfnM=
+	t=1744116230; cv=none; b=bqNqen+gbQg25/rGAQoVazt00pVf5r4eDI1N1Kan6CXVk3rKsRu3PZ/TJkrI8DK56LFilXYFa15zN6tviueBzGW4zsZ9p7ac6IxACXYP1OEPLlZjzg3NKg6F/zktikOR6lY5NAqUhSiSIzL2lre9SJOik7qyTwCECvWjdc2YqxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114628; c=relaxed/simple;
-	bh=+4nIE5+G6Dlk/1tBWoSo19IsZa7mhaHS6e+t/rE/jHA=;
+	s=arc-20240116; t=1744116230; c=relaxed/simple;
+	bh=zniD8U8KUKnlvsyWmDih191BNTF+wZN3fMOrgmYr26U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgG6A8Mz27/8fIHTALz9FppG9epn5FLHgcZaZ+/+rvcS3BFN6duehRr4XfnrxbPsAbGx5bcAGOsMUWCxk/SMYzT+1xL4wAWaa/yrGCXZYljUKTo0lfA7wlZgdzYUmTrhAbK9jcdl5v19VtUTJLXMxqHYjNlKPD7DpeGNcIudY/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8NjJNbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5D7C4CEE5;
-	Tue,  8 Apr 2025 12:17:08 +0000 (UTC)
+	 MIME-Version; b=KrFkpOWZLF734FgSEsVp9y+idnqSXaPldWdltwZF45xa/qVUqPPPICIDEMmSSGPVRUbZq9Tc8lSQ9ty3oZk/h02AekeKC+SFPVzQCpE6QlNGJLqy0ONizb1TqCWSC2gqCuV2XJCTM3jvVNr/nKmJ+hnIAp+EeoLBKM0CXkdSFUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWmnrnd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0ADAC4CEE5;
+	Tue,  8 Apr 2025 12:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114628;
-	bh=+4nIE5+G6Dlk/1tBWoSo19IsZa7mhaHS6e+t/rE/jHA=;
+	s=korg; t=1744116230;
+	bh=zniD8U8KUKnlvsyWmDih191BNTF+wZN3fMOrgmYr26U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8NjJNbv47h60y3vJcl/21lZ7IaYX4rWJrO4iP8Ptc2eulU6eP9FOS7ZV8KFnhbrK
-	 6MrQrVM7DFkKRQb2OqAuPTpQaVb2qC7nIAbbngrMK5UZK0DgFE1oObc8BWCxVRqIfQ
-	 G65gRrzR6V2I2r/12Nx6nnw9vEeWumaKLb0P6TyA=
+	b=jWmnrnd1K3iVyWHIBO4aguBkLhWpaK6WxH32MCoc7w0Y4eMjMgPoYMeINijfwRtJS
+	 ERwmmi6Xe6xPFnw6GR1SPCS5f+2/gksKhBYHkeM9hiy3EE3fBYZqyZO88+YAeKiDVy
+	 PfapP4ThDCXsZohnqyK4a5PhnRveZk18jfR4AUQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ruowen Qin <ruqin@redhat.com>,
+	Tushar Dave <tdave@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 178/499] samples/bpf: Fix broken vmlinux path for VMLINUX_BTF
+Subject: [PATCH 6.12 064/423] PCI/ACS: Fix pci=config_acs= parameter
 Date: Tue,  8 Apr 2025 12:46:30 +0200
-Message-ID: <20250408104855.612260962@linuxfoundation.org>
+Message-ID: <20250408104847.239906682@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinghao Jia <jinghao7@illinois.edu>
+From: Tushar Dave <tdave@nvidia.com>
 
-[ Upstream commit 94f53edc64e19640b5245721cd6d0c4a84f52587 ]
+[ Upstream commit 9cf8a952d57b422d3ff8a9a0163f8adf694f4b2b ]
 
-Commit 13b25489b6f8 ("kbuild: change working directory to external
-module directory with M=") changed kbuild working directory of bpf
-sample programs to samples/bpf, which broke the vmlinux path for
-VMLINUX_BTF, as the Makefiles assume the current work directory to be
-the kernel output directory and use a relative path (i.e., ./vmlinux):
+Commit 47c8846a49ba ("PCI: Extend ACS configurability") introduced bugs
+that fail to configure ACS ctrl to the value specified by the kernel
+parameter. Essentially there are two bugs:
 
-  Makefile:316: *** Cannot find a vmlinux for VMLINUX_BTF at any of "  /path/to/linux/samples/bpf/vmlinux", build the kernel or set VMLINUX_BTF like "VMLINUX_BTF=/sys/kernel/btf/vmlinux" or VMLINUX_H variable.  Stop.
+1) When ACS is configured for multiple PCI devices using 'config_acs'
+   kernel parameter, it results into error "PCI: Can't parse ACS command
+   line parameter". This is due to a bug that doesn't preserve the ACS
+   mask, but instead overwrites the mask with value 0.
 
-Correctly refer to the kernel output directory using $(objtree).
+   For example, using 'config_acs' to configure ACS ctrl for multiple BDFs
+   fails:
 
-Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Ruowen Qin <ruqin@redhat.com>
-Link: https://lore.kernel.org/bpf/20250203085506.220297-3-jinghao7@illinois.edu
+      Kernel command line: pci=config_acs=1111011@0020:02:00.0;101xxxx@0039:00:00.0 "dyndbg=file drivers/pci/pci.c +p"
+      PCI: Can't parse ACS command line parameter
+      pci 0020:02:00.0: ACS mask  = 0x007f
+      pci 0020:02:00.0: ACS flags = 0x007b
+      pci 0020:02:00.0: Configured ACS to 0x007b
+
+   After this fix:
+
+      Kernel command line: pci=config_acs=1111011@0020:02:00.0;101xxxx@0039:00:00.0 "dyndbg=file drivers/pci/pci.c +p"
+      pci 0020:02:00.0: ACS mask  = 0x007f
+      pci 0020:02:00.0: ACS flags = 0x007b
+      pci 0020:02:00.0: ACS control = 0x005f
+      pci 0020:02:00.0: ACS fw_ctrl = 0x0053
+      pci 0020:02:00.0: Configured ACS to 0x007b
+      pci 0039:00:00.0: ACS mask  = 0x0070
+      pci 0039:00:00.0: ACS flags = 0x0050
+      pci 0039:00:00.0: ACS control = 0x001d
+      pci 0039:00:00.0: ACS fw_ctrl = 0x0000
+      pci 0039:00:00.0: Configured ACS to 0x0050
+
+2) In the bit manipulation logic, we copy the bit from the firmware
+   settings when mask bit 0.
+
+   For example, 'disable_acs_redir' fails to clear all three ACS P2P redir
+   bits due to the wrong bit fiddling:
+
+      Kernel command line: pci=disable_acs_redir=0020:02:00.0;0030:02:00.0;0039:00:00.0 "dyndbg=file drivers/pci/pci.c +p"
+      pci 0020:02:00.0: ACS mask  = 0x002c
+      pci 0020:02:00.0: ACS flags = 0xffd3
+      pci 0020:02:00.0: Configured ACS to 0xfffb
+      pci 0030:02:00.0: ACS mask  = 0x002c
+      pci 0030:02:00.0: ACS flags = 0xffd3
+      pci 0030:02:00.0: Configured ACS to 0xffdf
+      pci 0039:00:00.0: ACS mask  = 0x002c
+      pci 0039:00:00.0: ACS flags = 0xffd3
+      pci 0039:00:00.0: Configured ACS to 0xffd3
+
+   After this fix:
+
+      Kernel command line: pci=disable_acs_redir=0020:02:00.0;0030:02:00.0;0039:00:00.0 "dyndbg=file drivers/pci/pci.c +p"
+      pci 0020:02:00.0: ACS mask  = 0x002c
+      pci 0020:02:00.0: ACS flags = 0xffd3
+      pci 0020:02:00.0: ACS control = 0x007f
+      pci 0020:02:00.0: ACS fw_ctrl = 0x007b
+      pci 0020:02:00.0: Configured ACS to 0x0053
+      pci 0030:02:00.0: ACS mask  = 0x002c
+      pci 0030:02:00.0: ACS flags = 0xffd3
+      pci 0030:02:00.0: ACS control = 0x005f
+      pci 0030:02:00.0: ACS fw_ctrl = 0x005f
+      pci 0030:02:00.0: Configured ACS to 0x0053
+      pci 0039:00:00.0: ACS mask  = 0x002c
+      pci 0039:00:00.0: ACS flags = 0xffd3
+      pci 0039:00:00.0: ACS control = 0x001d
+      pci 0039:00:00.0: ACS fw_ctrl = 0x0000
+      pci 0039:00:00.0: Configured ACS to 0x0000
+
+Link: https://lore.kernel.org/r/20250207030338.456887-1-tdave@nvidia.com
+Fixes: 47c8846a49ba ("PCI: Extend ACS configurability")
+Signed-off-by: Tushar Dave <tdave@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 96a05e70ace30..f5865fbbae62f 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -307,7 +307,7 @@ $(obj)/$(TRACE_HELPERS): TPROGS_CFLAGS := $(TPROGS_CFLAGS) -D__must_check=
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 1aa5d6f98ebda..25211d1219227 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -955,8 +955,10 @@ struct pci_acs {
+ };
  
- VMLINUX_BTF_PATHS ?= $(abspath $(if $(O),$(O)/vmlinux))				\
- 		     $(abspath $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux))	\
--		     $(abspath ./vmlinux)
-+		     $(abspath $(objtree)/vmlinux)
- VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
+ static void __pci_config_acs(struct pci_dev *dev, struct pci_acs *caps,
+-			     const char *p, u16 mask, u16 flags)
++			     const char *p, const u16 acs_mask, const u16 acs_flags)
+ {
++	u16 flags = acs_flags;
++	u16 mask = acs_mask;
+ 	char *delimit;
+ 	int ret = 0;
  
- $(obj)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL)
+@@ -964,7 +966,7 @@ static void __pci_config_acs(struct pci_dev *dev, struct pci_acs *caps,
+ 		return;
+ 
+ 	while (*p) {
+-		if (!mask) {
++		if (!acs_mask) {
+ 			/* Check for ACS flags */
+ 			delimit = strstr(p, "@");
+ 			if (delimit) {
+@@ -972,6 +974,8 @@ static void __pci_config_acs(struct pci_dev *dev, struct pci_acs *caps,
+ 				u32 shift = 0;
+ 
+ 				end = delimit - p - 1;
++				mask = 0;
++				flags = 0;
+ 
+ 				while (end > -1) {
+ 					if (*(p + end) == '0') {
+@@ -1028,10 +1032,14 @@ static void __pci_config_acs(struct pci_dev *dev, struct pci_acs *caps,
+ 
+ 	pci_dbg(dev, "ACS mask  = %#06x\n", mask);
+ 	pci_dbg(dev, "ACS flags = %#06x\n", flags);
++	pci_dbg(dev, "ACS control = %#06x\n", caps->ctrl);
++	pci_dbg(dev, "ACS fw_ctrl = %#06x\n", caps->fw_ctrl);
+ 
+-	/* If mask is 0 then we copy the bit from the firmware setting. */
+-	caps->ctrl = (caps->ctrl & ~mask) | (caps->fw_ctrl & mask);
+-	caps->ctrl |= flags;
++	/*
++	 * For mask bits that are 0, copy them from the firmware setting
++	 * and apply flags for all the mask bits that are 1.
++	 */
++	caps->ctrl = (caps->fw_ctrl & ~mask) | (flags & mask);
+ 
+ 	pci_info(dev, "Configured ACS to %#06x\n", caps->ctrl);
+ }
 -- 
 2.39.5
 
