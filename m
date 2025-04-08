@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1941A8090E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBBBA80AC4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27794C2E7A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A12750484A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CFA269CE6;
-	Tue,  8 Apr 2025 12:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D35F26A0E2;
+	Tue,  8 Apr 2025 12:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkDUxs/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR05np+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC7A20330;
-	Tue,  8 Apr 2025 12:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF2E1A2860;
+	Tue,  8 Apr 2025 12:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115709; cv=none; b=PiB+Qjxn89JjuB00FiD2LLrww42we/JS/2DRKEDJywEYFcexl0pZk+QDGyNv7T5MZeBqYi/Bx5sfRNMCtvhtbg2NgWk8/kDjDPwSsD62kYVWVyTMFVkVdObjHeEUMERwdH9Z1/knpIWlDQ0dqaVPaYFKWGiQpLLCYzQGnA69bXM=
+	t=1744116710; cv=none; b=AY3MOEi/1eBNsWsRn4GLtm9Z+91RW9OGzQvrCZ1w5fLY33DkYCpcuCOhr61P8BOHr/Nu44EUWUAnLY2aqDOdOsSVHdh07/AHmCCjzXUB2FYVWblf3/10Inw4txZYbklSp6xcMUG+qzdFikZEJOl3aP/zDq+4zOZEF//QPiz0VOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115709; c=relaxed/simple;
-	bh=MF5XEjWlW3x2Clze/6InWw9Wk9l1ldAxicvl7byLJb4=;
+	s=arc-20240116; t=1744116710; c=relaxed/simple;
+	bh=hq6uLfz0ovdwU4oead3+YI7+Zcn93FPSwXsW1uPAiUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGNJyOOfsi+JhhWBpmSFwJNAwarfKTsXlTdZxshxxeZ/gAYHbKzPaoQ7xI7pm5hGRBrN7Ft+4zd64AfspkC4a7ep8sx0qhBQs53pBFRbcicqsulRLgvb403oJg2ZaUZcXzz9QlCgqEHBA0BfYUNV7UwxFEhAA88gzdfsBENzScM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkDUxs/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BD5C4CEE5;
-	Tue,  8 Apr 2025 12:35:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZT8pqKNqmbEVp5KDYLZyetRYFSLNI2RUQWXyq/vNC0vUHmX1c2nQ0BzfmuGlNsdpsmsJF54ZlWZMvxlUQTCaAkfmfoimkLRlx2nLk0UGg7YW/uaZxKhHdHtNVXc/xudqX+nVojjgwxnF12ZPKh/6pxLuejr7z06zRVO3Y//MypM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR05np+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806D7C4CEE5;
+	Tue,  8 Apr 2025 12:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115709;
-	bh=MF5XEjWlW3x2Clze/6InWw9Wk9l1ldAxicvl7byLJb4=;
+	s=korg; t=1744116709;
+	bh=hq6uLfz0ovdwU4oead3+YI7+Zcn93FPSwXsW1uPAiUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkDUxs/bYG0eWj/JO13NT3za5BpxlRG8+tnCyiYLTzXY5EtvRSciNfpotTT1rmheq
-	 12IRMqTOTXrqtvJ/YSWY6tHRLOxuDtKIL8b/vXepP3i79//I1V8WI1cOLrY6x6C49d
-	 2luzTGPsmG47ubJJRZ2Zc7pJtP774ltdLyBvHvh4=
+	b=OR05np+ygrzcT2e/HVR27O+Zedm7Oqnm/Mys4GhQj3IH58JtTr1FqC4DyVh0ngpWn
+	 AEQPzlEyuaCMe+4IOnf8cjVYY/xyic2ipkn6zrLfBaI6Z1p2pYx3zp5TFJ+GiOPxLx
+	 fHaRlVfCPN5paRQiB6NLcy+VY8BCCUczySmk363Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/204] drm/msm/dsi: Set PHY usescase (and mode) before registering DSI host
+Subject: [PATCH 6.12 240/423] LoongArch: Fix help text of CMDLINE_EXTEND in Kconfig
 Date: Tue,  8 Apr 2025 12:49:26 +0200
-Message-ID: <20250408104821.399660842@linuxfoundation.org>
+Message-ID: <20250408104851.319589215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit 660c396c98c061f9696bebacc178b74072e80054 ]
+[ Upstream commit be216cbc1ddf99a51915414ce147311c0dfd50a2 ]
 
-Ordering issues here cause an uninitialized (default STANDALONE)
-usecase to be programmed (which appears to be a MUX) in some cases
-when msm_dsi_host_register() is called, leading to the slave PLL in
-bonded-DSI mode to source from a clock parent (dsi1vco) that is off.
+It is the built-in command line appended to the bootloader command line,
+not the bootloader command line appended to the built-in command line.
 
-This should seemingly not be a problem as the actual dispcc clocks from
-DSI1 that are muxed in the clock tree of DSI0 are way further down, this
-bit still seems to have an effect on them somehow and causes the right
-side of the panel controlled by DSI1 to not function.
-
-In an ideal world this code is refactored to no longer have such
-error-prone calls "across subsystems", and instead model the "PLL src"
-register field as a regular mux so that changing the clock parents
-programmatically or in DTS via `assigned-clock-parents` has the
-desired effect.
-But for the avid reader, the clocks that we *are* muxing into DSI0's
-tree are way further down, so if this bit turns out to be a simple mux
-between dsiXvco and out_div, that shouldn't have any effect as this
-whole tree is off anyway.
-
-Fixes: 57bf43389337 ("drm/msm/dsi: Pass down use case to PHY")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/637650/
-Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-2-913100d6103f@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: fa96b57c1490 ("LoongArch: Add build infrastructure")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_manager.c | 32 ++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ arch/loongarch/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_manager.c b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-index 3a14173972832..f9e6cbd9e2d20 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-@@ -100,17 +100,35 @@ static int dsi_mgr_setup_components(int id)
- 	int ret;
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index d9fce0fd475a0..fe9f895138dba 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -375,8 +375,8 @@ config CMDLINE_BOOTLOADER
+ config CMDLINE_EXTEND
+ 	bool "Use built-in to extend bootloader kernel arguments"
+ 	help
+-	  The command-line arguments provided during boot will be
+-	  appended to the built-in command line. This is useful in
++	  The built-in command line will be appended to the command-
++	  line arguments provided during boot. This is useful in
+ 	  cases where the provided arguments are insufficient and
+ 	  you don't want to or cannot modify them.
  
- 	if (!IS_BONDED_DSI()) {
-+		/*
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+
- 		ret = msm_dsi_host_register(msm_dsi->host);
- 		if (ret)
- 			return ret;
--
--		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
- 	} else if (other_dsi) {
- 		struct msm_dsi *master_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							msm_dsi : other_dsi;
- 		struct msm_dsi *slave_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							other_dsi : msm_dsi;
-+
-+		/*
-+		 * PLL0 is to drive both DSI link clocks in bonded DSI mode.
-+		 *
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
-+					MSM_DSI_PHY_MASTER);
-+		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
-+					MSM_DSI_PHY_SLAVE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
-+
- 		/* Register slave host first, so that slave DSI device
- 		 * has a chance to probe, and do not block the master
- 		 * DSI device's probe.
-@@ -124,14 +142,6 @@ static int dsi_mgr_setup_components(int id)
- 		ret = msm_dsi_host_register(master_link_dsi->host);
- 		if (ret)
- 			return ret;
--
--		/* PLL0 is to drive both 2 DSI link clocks in bonded DSI mode. */
--		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
--					MSM_DSI_PHY_MASTER);
--		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
--					MSM_DSI_PHY_SLAVE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
--		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
- 	}
- 
- 	return 0;
 -- 
 2.39.5
 
