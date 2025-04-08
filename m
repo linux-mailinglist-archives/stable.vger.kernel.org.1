@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58FDA808C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96EBA80470
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C118A4C3E2C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F68E1B630EE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5541269B1E;
-	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FB326B2D1;
+	Tue,  8 Apr 2025 12:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYMvnvJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH9965Ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B7B224AEB;
-	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46ED26A0A8;
+	Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115725; cv=none; b=gcw9E0TtWl7tGST0SqNtcPnZKDYoRZ/iTEinWKt32UXo4MZFwcBvjrLhlMZMlt05aMyKkkL48tMgiVTXSz3NCsmrS/A7Z2hd9VG0uabIhDsyKhxAn6HXMMVEfmSUsaJ/49Yylz27nanFYlb/MYl6jtZA9t8mt9bdE7QIcearrtA=
+	t=1744113655; cv=none; b=eY/u9Oijilv/cibUcnVkBOlL/HW8dosOHwyyPdP9Z7TaGt0t3J9SVBYwkO2gZEqW8YU9aX4vVPQdQIu2va4H3cnawOpfW5Hy1MavLfBwsDle+j+v/+1Wkwol5WX0YPblR4GdTqOq4m0D9Xcm9H97shXU+Fo58ZxVmGuvoCNu5xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115725; c=relaxed/simple;
-	bh=18BBKuthwnk3j4yIHwzJiTvX6KjnK8MzpzwNM0++zFk=;
+	s=arc-20240116; t=1744113655; c=relaxed/simple;
+	bh=gVEK7Qpr2Xd59IaP9ANU/Geg2Cug4meAq3VVzlZvCyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRT8RYYNbzznGUy281lLqR1GCyrftcqY4LySKCD/leXKAwz5f5427ZKQLXQJKxilFIOBz1nH/qa0BQo/AE4W/1JNN7GaniRfgy0rDphW205a69vQw4W0u4ZAsP2XEcmbRa/3zWv7df4L2tXeM05tIdY+VR2VhgC1Bn3ZB41N5rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYMvnvJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D190C4CEE5;
-	Tue,  8 Apr 2025 12:35:25 +0000 (UTC)
+	 MIME-Version; b=vC7ou7pfNG0R/PkYZDHfoIMol61N7iRNccmwURHqd5LmBbPzscGgtxBaWualT9SmvOzjX2wymqg76JfWvp/mvIP9jcBAxCD30tdYVFH/1mOWYpYZgQUfjnKu5fcwOi5EVSo2nZ9kQiRuU0roW7cEt+pBz4fvCkxf8USNneYePMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH9965Ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB26C4CEE5;
+	Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115725;
-	bh=18BBKuthwnk3j4yIHwzJiTvX6KjnK8MzpzwNM0++zFk=;
+	s=korg; t=1744113655;
+	bh=gVEK7Qpr2Xd59IaP9ANU/Geg2Cug4meAq3VVzlZvCyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYMvnvJwZkaveOFmo2CQtWEeRN0HAk6BYwzMQOLJUgY2NjQ39M35OC6udbepXB097
-	 Z/Jnl4l0iGiSiwAMPSz42gGBrEEGx2DmV1bMUhNWtQSmRzzV39IGaqOOO948wHWKgm
-	 WM5p1+81xTYFaP9JnBLG1S182PaSqox1RcW1fi4U=
+	b=xH9965Ig8fL84BZYLCiCU4AKrRVfMBi1PUeiicWcqcAJhlFPyFlTJnVBSdTVHjL+l
+	 Ja1fENSKD0a9XD4sJ6nYpEiDkukntJE05VDk+PxlpEE2FZrcoMFRtw/1aTSVdEes6e
+	 gSWbdUugDWXI0IO6afj/7QQ8fvdk4cUeYST22P2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Lee Jones <lee@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/204] mfd: sm501: Switch to BIT() to mitigate integer overflows
+Subject: [PATCH 6.6 201/268] ASoC: codecs: rt5665: Fix some error handling paths in rt5665_probe()
 Date: Tue,  8 Apr 2025 12:50:12 +0200
-Message-ID: <20250408104822.762946204@linuxfoundation.org>
+Message-ID: <20250408104833.976343369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2d8cb9ffe18c2f1e5bd07a19cbce85b26c1d0cf0 ]
+[ Upstream commit 1ebd4944266e86a7ce274f197847f5a6399651e8 ]
 
-If offset end up being high enough, right hand expression in functions
-like sm501_gpio_set() shifted left for that number of bits, may
-not fit in int type.
+Should an error occur after a successful regulator_bulk_enable() call,
+regulator_bulk_disable() should be called, as already done in the remove
+function.
 
-Just in case, fix that by using BIT() both as an option safe from
-overflow issues and to make this step look similar to other gpio
-drivers.
+Instead of adding an error handling path in the probe, switch from
+devm_regulator_bulk_get() to devm_regulator_bulk_get_enable() and
+simplify the remove function and some other places accordingly.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Finally, add a missing const when defining rt5665_supply_names to please
+checkpatch and constify a few bytes.
 
-Fixes: f61be273d369 ("sm501: add gpiolib support")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20250115171206.20308-1-n.zhandarovich@fintech.ru
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/e3c2aa1b2fdfa646752d94f4af968630c0d58248.1742629525.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/sm501.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/codecs/rt5665.c | 24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-index 3ac4508a6742a..78dcbf8e2c15d 100644
---- a/drivers/mfd/sm501.c
-+++ b/drivers/mfd/sm501.c
-@@ -920,7 +920,7 @@ static void sm501_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
- {
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	void __iomem *regs = smchip->regbase;
- 	unsigned long save;
- 	unsigned long val;
-@@ -946,7 +946,7 @@ static int sm501_gpio_input(struct gpio_chip *chip, unsigned offset)
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
- 	void __iomem *regs = smchip->regbase;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	unsigned long save;
- 	unsigned long ddr;
+diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
+index a39de4a7df002..532d1d6958af3 100644
+--- a/sound/soc/codecs/rt5665.c
++++ b/sound/soc/codecs/rt5665.c
+@@ -31,9 +31,7 @@
+ #include "rl6231.h"
+ #include "rt5665.h"
  
-@@ -971,7 +971,7 @@ static int sm501_gpio_output(struct gpio_chip *chip,
+-#define RT5665_NUM_SUPPLIES 3
+-
+-static const char *rt5665_supply_names[RT5665_NUM_SUPPLIES] = {
++static const char * const rt5665_supply_names[] = {
+ 	"AVDD",
+ 	"MICVDD",
+ 	"VBAT",
+@@ -46,7 +44,6 @@ struct rt5665_priv {
+ 	struct gpio_desc *gpiod_ldo1_en;
+ 	struct gpio_desc *gpiod_reset;
+ 	struct snd_soc_jack *hs_jack;
+-	struct regulator_bulk_data supplies[RT5665_NUM_SUPPLIES];
+ 	struct delayed_work jack_detect_work;
+ 	struct delayed_work calibrate_work;
+ 	struct delayed_work jd_check_work;
+@@ -4471,8 +4468,6 @@ static void rt5665_remove(struct snd_soc_component *component)
+ 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
+ 
+ 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
+-
+-	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
+ }
+ 
+ #ifdef CONFIG_PM
+@@ -4758,7 +4753,7 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
  {
- 	struct sm501_gpio_chip *smchip = gpiochip_get_data(chip);
- 	struct sm501_gpio *smgpio = smchip->ourgpio;
--	unsigned long bit = 1 << offset;
-+	unsigned long bit = BIT(offset);
- 	void __iomem *regs = smchip->regbase;
- 	unsigned long save;
- 	unsigned long val;
+ 	struct rt5665_platform_data *pdata = dev_get_platdata(&i2c->dev);
+ 	struct rt5665_priv *rt5665;
+-	int i, ret;
++	int ret;
+ 	unsigned int val;
+ 
+ 	rt5665 = devm_kzalloc(&i2c->dev, sizeof(struct rt5665_priv),
+@@ -4774,24 +4769,13 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
+ 	else
+ 		rt5665_parse_dt(rt5665, &i2c->dev);
+ 
+-	for (i = 0; i < ARRAY_SIZE(rt5665->supplies); i++)
+-		rt5665->supplies[i].supply = rt5665_supply_names[i];
+-
+-	ret = devm_regulator_bulk_get(&i2c->dev, ARRAY_SIZE(rt5665->supplies),
+-				      rt5665->supplies);
++	ret = devm_regulator_bulk_get_enable(&i2c->dev, ARRAY_SIZE(rt5665_supply_names),
++					     rt5665_supply_names);
+ 	if (ret != 0) {
+ 		dev_err(&i2c->dev, "Failed to request supplies: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	ret = regulator_bulk_enable(ARRAY_SIZE(rt5665->supplies),
+-				    rt5665->supplies);
+-	if (ret != 0) {
+-		dev_err(&i2c->dev, "Failed to enable supplies: %d\n", ret);
+-		return ret;
+-	}
+-
+-
+ 	rt5665->gpiod_ldo1_en = devm_gpiod_get_optional(&i2c->dev,
+ 							"realtek,ldo1-en",
+ 							GPIOD_OUT_HIGH);
 -- 
 2.39.5
 
