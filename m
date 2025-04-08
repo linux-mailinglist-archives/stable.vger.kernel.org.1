@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290B9A80726
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25FAA80B07
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 847F74A5509
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE41904737
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD45D26E14E;
-	Tue,  8 Apr 2025 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE28628134F;
+	Tue,  8 Apr 2025 12:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fn5wMwqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7RJ+LC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C726E148;
-	Tue,  8 Apr 2025 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A13926B091;
+	Tue,  8 Apr 2025 12:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115086; cv=none; b=QIWGKQ5qGj3Qaqmr0D5jsikqRSrtQLWVj2qIL4MSdSCPqlf68DSoKy0Nfcgz1IuXuWOMbshNiSMRMbXUAx+2bPSPuaBaGBzfq8vRYrXxNmkq7OMfiwaS6bVKKKKG0KzueTOp+C/Vw8JhFI8nI+fk3qyyfe9QV1i+0SE+JbQY/A8=
+	t=1744116774; cv=none; b=Ma78Wn0dPxYB7a8Q6WcEcXS6a5dX35IfiqQrg6mABpXOns81bJ4AaVQxmzhpSP01wOXnMf0KAKUaKhUezmW+haN0BaqArJojMZ3tDPyVqhSuqNFgePy1JbxsztuQ9QMyZ1Rr3kBg0PfxpHYgktbQQ0uM5mBmSTWyO9hFadAJDHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115086; c=relaxed/simple;
-	bh=8gNtVEyiXnye02AlsEgL0+Y5VAbqOeHQLBYnwvexvhY=;
+	s=arc-20240116; t=1744116774; c=relaxed/simple;
+	bh=b/0Iquo2X+GUsyNjo4czugT2oQiYuXTX4zPAYJSRv38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWATZO9/1TSEFZ1PyUbbAlFochZdrkwmioxK6BDmvnuRW0pwRebpb6/dQLEDPM3lLLJSH/BIfF5VlO6bd8X8oXdXdyxQxl7BdYTi4keteYvbeTxtOYAolux9K8fPzoxdZZxzyuvIhOMJtkuD3S6pBFcZs9qBb7iyY6cSVAHQNKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fn5wMwqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01670C4CEE5;
-	Tue,  8 Apr 2025 12:24:45 +0000 (UTC)
+	 MIME-Version; b=CSv5kq8huCoZG/ogpqwjSz6LbdaahUAQBdImiJ4+TXEF1xvpHeUjpBMp+EyaPlHL9eyQ/hVxxSBFFXq6h8G1iqYVKfEkN5LTs/BFRpS4O5jf4cZ2+o4I54FXm52Lxf+P4VYaqJ6DjZbedbxtioq6B7OsJnK5VqSnbkh1twJgXGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7RJ+LC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19507C4CEE5;
+	Tue,  8 Apr 2025 12:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115086;
-	bh=8gNtVEyiXnye02AlsEgL0+Y5VAbqOeHQLBYnwvexvhY=;
+	s=korg; t=1744116774;
+	bh=b/0Iquo2X+GUsyNjo4czugT2oQiYuXTX4zPAYJSRv38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fn5wMwqIfI7Azw2wUNtNYcbC30WbGwX6fqJl7EVW+dFmxFQfgMwiLQtGOu1nYJIOh
-	 3lOiSYwh4KqNEYKU+mtz1QGZ7FA2CDMJfbEBtqp6srUKysp0/KpPcXfbMN2homkpYE
-	 3KZPlB7ICPo+4Q3YRuwetdcMe6pl9OQqflojAl+Q=
+	b=C7RJ+LC72sFAiZGP3fmfSQaKjwtgUU2cIy9DDfUaoDDhkUtEsBzvj7ZgaK3GIySMJ
+	 6dCmHq8T58h8aTr3A+ucIUHdxVT9ycoeZs+WPt1Snxq5U4A3492Z6fCKaDrwPeJcwi
+	 7TvzFziU7IaxpBdf2oMJ+CM3FAaP1fvJNz5powYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sally Shi <sshii@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 337/499] locking/semaphore: Use wake_q to wake up processes outside lock critical section
-Date: Tue,  8 Apr 2025 12:49:09 +0200
-Message-ID: <20250408104859.627484689@linuxfoundation.org>
+Subject: [PATCH 6.12 224/423] perf bpf-filter: Fix a parsing error with comma
+Date: Tue,  8 Apr 2025 12:49:10 +0200
+Message-ID: <20250408104850.943339191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
+[ Upstream commit 35d13f841a3d8159ef20d5e32a9ed3faa27875bc ]
 
-A circular lock dependency splat has been seen involving down_trylock():
+The previous change to support cgroup filters introduced a bug that
+pathname can include commas.  It confused the lexer to treat an item and
+the trailing comma as a single token.  And it resulted in a parse error:
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  6.12.0-41.el10.s390x+debug
-  ------------------------------------------------------
-  dd/32479 is trying to acquire lock:
-  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
+  $ sudo perf record -e cycles:P --filter 'period > 0, ip > 64' -- true
+  perf_bpf_filter: Error: Unexpected item: 0,
+  perf_bpf_filter: syntax error, unexpected BFT_ERROR, expecting BFT_NUM
 
-  but task is already holding lock:
-  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
+   Usage: perf record [<options>] [<command>]
+      or: perf record [<options>] -- <command> [<options>]
 
-  the existing dependency chain (in reverse order) is:
-  -> #4 (&zone->lock){-.-.}-{2:2}:
-  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
-  -> #2 (&rq->__lock){-.-.}-{2:2}:
-  -> #1 (&p->pi_lock){-.-.}-{2:2}:
-  -> #0 ((console_sem).lock){-.-.}-{2:2}:
+          --filter <filter>
+                            event filter
 
-The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
-while holding the console_sem raw_spinlock. This dependency can be broken
-by using wake_q to do the wakeup instead of calling try_to_wake_up()
-under the console_sem lock. This will also make the semaphore's
-raw_spinlock become a terminal lock without taking any further locks
-underneath it.
+It should get "0" and "," separately.
 
-The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
-spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
-the debug_objects_fill_pool() helper function in the debugobjects code.
+An easiest fix would be to remove "," from the possible pathname
+characters.  As it's for cgroup names, probably ok to assume it won't
+have commas in the pathname.
 
-  -> #4 (&zone->lock){-.-.}-{2:2}:
-         __lock_acquire+0xe86/0x1cc0
-         lock_acquire.part.0+0x258/0x630
-         lock_acquire+0xb8/0xe0
-         _raw_spin_lock_irqsave+0xb4/0x120
-         rmqueue_bulk+0xac/0x8f0
-         __rmqueue_pcplist+0x580/0x830
-         rmqueue_pcplist+0xfc/0x470
-         rmqueue.isra.0+0xdec/0x11b0
-         get_page_from_freelist+0x2ee/0xeb0
-         __alloc_pages_noprof+0x2c2/0x520
-         alloc_pages_mpol_noprof+0x1fc/0x4d0
-         alloc_pages_noprof+0x8c/0xe0
-         allocate_slab+0x320/0x460
-         ___slab_alloc+0xa58/0x12b0
-         __slab_alloc.isra.0+0x42/0x60
-         kmem_cache_alloc_noprof+0x304/0x350
-         fill_pool+0xf6/0x450
-         debug_object_activate+0xfe/0x360
-         enqueue_hrtimer+0x34/0x190
-         __run_hrtimer+0x3c8/0x4c0
-         __hrtimer_run_queues+0x1b2/0x260
-         hrtimer_interrupt+0x316/0x760
-         do_IRQ+0x9a/0xe0
-         do_irq_async+0xf6/0x160
+I found that the existing BPF filtering test didn't have any complex
+filter condition with commas.  Let's update the group filter test which
+is supposed to test filter combinations like this.
 
-Normally a raw_spinlock to spinlock dependency is not legitimate
-and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
-but debug_objects_fill_pool() is an exception as it explicitly
-allows this dependency for non-PREEMPT_RT kernel without causing
-PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
-legitimate and not a bug.
-
-Anyway, semaphore is the only locking primitive left that is still
-using try_to_wake_up() to do wakeup inside critical section, all the
-other locking primitives had been migrated to use wake_q to do wakeup
-outside of the critical section. It is also possible that there are
-other circular locking dependencies involving printk/console_sem or
-other existing/new semaphores lurking somewhere which may show up in
-the future. Let just do the migration now to wake_q to avoid headache
-like this.
-
-Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
+Link: https://lore.kernel.org/r/20250307220922.434319-1-namhyung@kernel.org
+Fixes: 91e88437d5156b20 ("perf bpf-filter: Support filtering on cgroups")
+Reported-by: Sally Shi <sshii@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/semaphore.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/perf/tests/shell/record_bpf_filter.sh | 4 ++--
+ tools/perf/util/bpf-filter.l                | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
-index 34bfae72f2952..de9117c0e671e 100644
---- a/kernel/locking/semaphore.c
-+++ b/kernel/locking/semaphore.c
-@@ -29,6 +29,7 @@
- #include <linux/export.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
-+#include <linux/sched/wake_q.h>
- #include <linux/semaphore.h>
- #include <linux/spinlock.h>
- #include <linux/ftrace.h>
-@@ -38,7 +39,7 @@ static noinline void __down(struct semaphore *sem);
- static noinline int __down_interruptible(struct semaphore *sem);
- static noinline int __down_killable(struct semaphore *sem);
- static noinline int __down_timeout(struct semaphore *sem, long timeout);
--static noinline void __up(struct semaphore *sem);
-+static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
+diff --git a/tools/perf/tests/shell/record_bpf_filter.sh b/tools/perf/tests/shell/record_bpf_filter.sh
+index 1b58ccc1fd882..4d6c3c1b7fb92 100755
+--- a/tools/perf/tests/shell/record_bpf_filter.sh
++++ b/tools/perf/tests/shell/record_bpf_filter.sh
+@@ -89,7 +89,7 @@ test_bpf_filter_fail() {
+ test_bpf_filter_group() {
+   echo "Group bpf-filter test"
  
- /**
-  * down - acquire the semaphore
-@@ -183,13 +184,16 @@ EXPORT_SYMBOL(down_timeout);
- void __sched up(struct semaphore *sem)
- {
- 	unsigned long flags;
-+	DEFINE_WAKE_Q(wake_q);
+-  if ! perf record -e task-clock --filter 'period > 1000 || ip > 0' \
++  if ! perf record -e task-clock --filter 'period > 1000, ip > 0' \
+ 	  -o /dev/null true 2>/dev/null
+   then
+     echo "Group bpf-filter test [Failed should succeed]"
+@@ -97,7 +97,7 @@ test_bpf_filter_group() {
+     return
+   fi
  
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(list_empty(&sem->wait_list)))
- 		sem->count++;
- 	else
--		__up(sem);
-+		__up(sem, &wake_q);
- 	raw_spin_unlock_irqrestore(&sem->lock, flags);
-+	if (!wake_q_empty(&wake_q))
-+		wake_up_q(&wake_q);
- }
- EXPORT_SYMBOL(up);
+-  if ! perf record -e task-clock --filter 'cpu > 0 || ip > 0' \
++  if ! perf record -e task-clock --filter 'period > 1000 , cpu > 0 || ip > 0' \
+ 	  -o /dev/null true 2>&1 | grep -q PERF_SAMPLE_CPU
+   then
+     echo "Group bpf-filter test [Failed forbidden CPU]"
+diff --git a/tools/perf/util/bpf-filter.l b/tools/perf/util/bpf-filter.l
+index f313404f95a90..6aa65ade33851 100644
+--- a/tools/perf/util/bpf-filter.l
++++ b/tools/perf/util/bpf-filter.l
+@@ -76,7 +76,7 @@ static int path_or_error(void)
+ num_dec		[0-9]+
+ num_hex		0[Xx][0-9a-fA-F]+
+ space		[ \t]+
+-path		[^ \t\n]+
++path		[^ \t\n,]+
+ ident		[_a-zA-Z][_a-zA-Z0-9]+
  
-@@ -269,11 +273,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
- 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
- }
- 
--static noinline void __sched __up(struct semaphore *sem)
-+static noinline void __sched __up(struct semaphore *sem,
-+				  struct wake_q_head *wake_q)
- {
- 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
- 						struct semaphore_waiter, list);
- 	list_del(&waiter->list);
- 	waiter->up = true;
--	wake_up_process(waiter->task);
-+	wake_q_add(wake_q, waiter->task);
- }
+ %%
 -- 
 2.39.5
 
