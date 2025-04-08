@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-130847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54352A806AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF40A80A47
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A986A4A421E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E6A8C8085
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB704266EEA;
-	Tue,  8 Apr 2025 12:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFC926AA93;
+	Tue,  8 Apr 2025 12:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlUNfaXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6sEGkl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998A32673B7;
-	Tue,  8 Apr 2025 12:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7702698AE;
+	Tue,  8 Apr 2025 12:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114813; cv=none; b=ZLogY7HdSl99iDGqmWxlGd6ldhcuR0t5axaF+dZFxcRFWLZR+ulWk07vEksCF1mn1Da5DSQBuhklHQ6quI8VEC/8crwyIxrTyXrCi9HLeiqaohpODVd50YH6eI+CvojtSkvpls6XBhIOXaeQKZlUe3rbZa45bFQ7UGI5CrzqIxc=
+	t=1744116416; cv=none; b=DUf5577mftsEEbKZyl+oP0XqG6qPb0xnibcW3YY0VycjYf8e5AFgO2EsdA6Ip59cNkL9DG4NrrRPrHPaTudsSv3LRaexn7llhb9e4X7/ryVtpIs834NDVLn6XhBG5SAYrjxDb+lHazqmQSzRsvtCVVbThKf+b5BP1efHb/D5/wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114813; c=relaxed/simple;
-	bh=wqdIRxCiPQ8pqbpcjr411NdOCpevbRaRjGRhnSZ/eoc=;
+	s=arc-20240116; t=1744116416; c=relaxed/simple;
+	bh=XVI8VKqPIWihtMq42yFwym6ZeDJlyF7erPzz4iTB3eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bk0f4gxooEpb0NHXHFo6qHlRU7Lbk9JkOnZevk7knIvxJAcjc95lBv2rmfGxJhOjniHqe8fo0JDk0vAxFZdX6n1vBOKFFVXQYYomdC0LemjxZD5IacCoiS8PZfqmnjmdt2ithkR45mFZJhz1UScDi0rubVTC8DhS9L//w2SinHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlUNfaXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B9DC4CEE5;
-	Tue,  8 Apr 2025 12:20:12 +0000 (UTC)
+	 MIME-Version; b=h55o3h90WCBbsakacj30r7w5Uvisqq/xPVEBWqU8C4LQk/4seBMxzk/Ktd2bDHfaFdDwiU+rlUdVLeBT8g1JxfyllE0Bc2nlhju72JYZgprcBIyG+V+gI1qcsagxx7lFCr/GhgB0BP1EgQGjBFKN62cL76jbN8CNEGnuD9sASbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6sEGkl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E7CC4CEE5;
+	Tue,  8 Apr 2025 12:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114813;
-	bh=wqdIRxCiPQ8pqbpcjr411NdOCpevbRaRjGRhnSZ/eoc=;
+	s=korg; t=1744116415;
+	bh=XVI8VKqPIWihtMq42yFwym6ZeDJlyF7erPzz4iTB3eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VlUNfaXp/lDtVpjUym87vvBqtNTmSxyTa82qFu/1cLp1hQWjzIBIMci8Lk4YNDG0S
-	 oYAIlvYEJe7F7k57MAg7gta/XstzuaNVCDlkuRz7cI0KV/7KyLHqPtvy2YVugoFDN0
-	 h/KdJFiXJBIuO4n2fGc3xL+o0Jo0zS7lwb975aY4=
+	b=m6sEGkl5mF1HRzT/T04ylW104O4Bj7M8NqTD05U7B22t6qxwSOB5JYVH4ksB5xj/l
+	 Dr0ktPEEMeiiDPCOAF16NfYyfOAIscptReMVgf7qXuM3Ude+bPebwzwpWvaM8prftX
+	 vA+AuasQdtgljFvy96iuk5M8qumwY+OgF2vvTkfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Kurt Hackel <kurt.hackel@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 243/499] ocfs2: validate l_tree_depth to avoid out-of-bounds access
-Date: Tue,  8 Apr 2025 12:47:35 +0200
-Message-ID: <20250408104857.277546563@linuxfoundation.org>
+Subject: [PATCH 6.12 130/423] selftests/bpf: Fix freplace_link segfault in tailcalls prog test
+Date: Tue,  8 Apr 2025 12:47:36 +0200
+Message-ID: <20250408104848.751817440@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,58 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
+[ Upstream commit a63a631c9b5cb25a1c17dd2cb18c63df91e978b1 ]
 
-The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
-limited to OCFS2_MAX_PATH_DEPTH.
+There are two bpf_link__destroy(freplace_link) calls in
+test_tailcall_bpf2bpf_freplace(). After the first bpf_link__destroy()
+is called, if the following bpf_map_{update,delete}_elem() throws an
+exception, it will jump to the "out" label and call bpf_link__destroy()
+again, causing double free and eventually leading to a segfault.
 
-Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
-value, which may occur when reading from a corrupted mounted disk [1].
+Fix it by directly resetting freplace_link to NULL after the first
+bpf_link__destroy() call.
 
-Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Kurt Hackel <kurt.hackel@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Vasiliy Kovalev <kovalev@altlinux.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 021611d33e78 ("selftests/bpf: Add test to verify tailcall and freplace restrictions")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/bpf/20250122022838.1079157-1-wutengda@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/alloc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/tailcalls.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-index 395e239206322..ca120b1aafa6c 100644
---- a/fs/ocfs2/alloc.c
-+++ b/fs/ocfs2/alloc.c
-@@ -1803,6 +1803,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
+diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
+index 40f22454cf05b..1f0977742741f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
++++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
+@@ -1599,6 +1599,7 @@ static void test_tailcall_bpf2bpf_freplace(void)
+ 		goto out;
  
- 	el = root_el;
- 	while (el->l_tree_depth) {
-+		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
-+			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
-+				    "Owner %llu has invalid tree depth %u in extent list\n",
-+				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
-+				    le16_to_cpu(el->l_tree_depth));
-+			ret = -EROFS;
-+			goto out;
-+		}
- 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
- 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
- 				    "Owner %llu has empty extent list at depth %u\n",
+ 	err = bpf_link__destroy(freplace_link);
++	freplace_link = NULL;
+ 	if (!ASSERT_OK(err, "destroy link"))
+ 		goto out;
+ 
 -- 
 2.39.5
 
