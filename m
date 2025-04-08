@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E6BA803AE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F81A802FE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94D4D7A8182
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A49BD463D71
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917B9269838;
-	Tue,  8 Apr 2025 11:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A056B2690D6;
+	Tue,  8 Apr 2025 11:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEsxRHxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in8Rb2g8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD7F2690F9;
-	Tue,  8 Apr 2025 11:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2622686B9;
+	Tue,  8 Apr 2025 11:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113449; cv=none; b=Keo8zhHtDctJBWK92lyGYGmKwp6jgTx4uScTXDInMW3hj3Wy78S6NXspCnDWT2AIxUAPQhGV1iVSjf7cyYn/Pg7tLrE5n9bOxR5EuL2xGmxz/MHo9+c1yEf12rkWEr2fDAUZTfoUnyp1WFwc2yUdTAgWsBjhnF2Bqee0K+c2F/A=
+	t=1744112772; cv=none; b=LIJdEFEZZFgAmWlo9/nnkODD3Jzrme8Uql5g1R2opSF2AMbNrQy6EIBgQQv/rZLK7pmG2OaQd/ED45KJi3dzKN+RKP4DF5UjX5AucVrIbRoAwfumveBoVeQl5hr1b3X2yvfu+u9mUSDmn57bTiL15MvOxGh5lpuiLjI95eED81Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113449; c=relaxed/simple;
-	bh=vZZ6kGFsVT8+PVB+Rl7xdkJwPK3Le28eBenXZVqurvQ=;
+	s=arc-20240116; t=1744112772; c=relaxed/simple;
+	bh=gS2hwGKL+/w6zz7VA1eDh05Vt/npvV5PACDGwjSw6oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GI4SOuZzDizz7ovAGwpiNjuSZYxYgC+K5ARa3peSuDB7UfYcg0dL6itU5HbBt/ZPt3keyxMLAOmuWx4vvB2GMqV3XztRt0qykxtR/tQmPqcNfdtTxFKrcRUgfilZ62MY3HRZdTjLPS36TWXhQU1/aKXINaPdREbrOiJVEyzABq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEsxRHxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7820C4CEE5;
-	Tue,  8 Apr 2025 11:57:28 +0000 (UTC)
+	 MIME-Version; b=APvg2zWNJRk3vscNjm9gQVdHm2bRG+6FLcTa63V/G6Qu8tjQw6w2vUUGz/ej2E/DV3xNffnTk+bc0wyFloudcW6ujbJ/WIiSII/NQ6CmZBuzeodQAGSJldU/AdU8913ivIrI2b3C9Nd1sDC5RuvgWjgwCWNsObBdrlCVz7Xz9nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in8Rb2g8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22EDC4CEE5;
+	Tue,  8 Apr 2025 11:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113449;
-	bh=vZZ6kGFsVT8+PVB+Rl7xdkJwPK3Le28eBenXZVqurvQ=;
+	s=korg; t=1744112772;
+	bh=gS2hwGKL+/w6zz7VA1eDh05Vt/npvV5PACDGwjSw6oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEsxRHxzicEVaT9FZldMsjG4Nf+q6XaWvrxSr/JYjS05Fm72ucMC4VU+CtghbA6iJ
-	 TGuQsGmno7IeUjpvvNyevft+4yvjFt3x590T7Q1E3Sj2HQomqCpAI10fHptezilh8b
-	 6EBN4/2K1dRBxBHdFpDrDQkBcN+tba4TUulkzb0k=
+	b=in8Rb2g8NIexN1s+VFlB6TVJbkBeNZTxCmYQLqf0ehVn4e5Bomxd32kLC/UnY+FH+
+	 8YMZDmiml1Z+j4LQCDrSQGSlBqI244MnVEsTHneeM7QKUmD+MRC5+hQXNOb/yVUMNa
+	 wcNoNNCzCctVlCtW81kj8FXQ07azWRQET5MkYIKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Guanghui <zhang.guanghui@cestc.cn>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/268] nvme-tcp: fix possible UAF in nvme_tcp_poll
+Subject: [PATCH 5.15 192/279] crypto: hisilicon/sec2 - fix for aead auth key length
 Date: Tue,  8 Apr 2025 12:49:35 +0200
-Message-ID: <20250408104832.974964030@linuxfoundation.org>
+Message-ID: <20250408104831.522081438@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit 8c1624b63a7d24142a2bbc3a5ee7e95f004ea36e ]
+[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
 
-nvme_tcp_poll() may race with the send path error handler because
-it may complete the request while it is actively being polled for
-completion, resulting in a UAF panic [1]:
+According to the HMAC RFC, the authentication key
+can be 0 bytes, and the hardware can handle this
+scenario. Therefore, remove the incorrect validation
+for this case.
 
-We should make sure to stop polling when we see an error when
-trying to read from the socket. Hence make sure to propagate the
-error so that the block layer breaks the polling cycle.
-
-[1]:
---
-[35665.692310] nvme nvme2: failed to send request -13
-[35665.702265] nvme nvme2: unsupported pdu type (3)
-[35665.702272] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[35665.702542] nvme nvme2: queue 1 receive failed:  -22
-[35665.703209] #PF: supervisor write access in kernel mode
-[35665.703213] #PF: error_code(0x0002) - not-present page
-[35665.703214] PGD 8000003801cce067 P4D 8000003801cce067 PUD 37e6f79067 PMD 0
-[35665.703220] Oops: 0002 [#1] SMP PTI
-[35665.703658] nvme nvme2: starting error recovery
-[35665.705809] Hardware name: Inspur aaabbb/YZMB-00882-104, BIOS 4.1.26 09/22/2022
-[35665.705812] Workqueue: kblockd blk_mq_requeue_work
-[35665.709172] RIP: 0010:_raw_spin_lock+0xc/0x30
-[35665.715788] Call Trace:
-[35665.716201]  <TASK>
-[35665.716613]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717049]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717457]  ? blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.717950]  ? __die_body.cold+0x8/0xd
-[35665.718361]  ? page_fault_oops+0xac/0x140
-[35665.718749]  ? blk_mq_start_request+0x30/0xf0
-[35665.719144]  ? nvme_tcp_queue_rq+0xc7/0x170 [nvme_tcp]
-[35665.719547]  ? exc_page_fault+0x62/0x130
-[35665.719938]  ? asm_exc_page_fault+0x22/0x30
-[35665.720333]  ? _raw_spin_lock+0xc/0x30
-[35665.720723]  blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.721101]  blk_mq_requeue_work+0xa5/0x180
-[35665.721451]  process_one_work+0x1e8/0x390
-[35665.721809]  worker_thread+0x53/0x3d0
-[35665.722159]  ? process_one_work+0x390/0x390
-[35665.722501]  kthread+0x124/0x150
-[35665.722849]  ? set_kthread_struct+0x50/0x50
-[35665.723182]  ret_from_fork+0x1f/0x30
-
-Reported-by: Zhang Guanghui <zhang.guanghui@cestc.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 2a8bd812b1a6f..84db7f4f861cb 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2467,6 +2467,7 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- {
- 	struct nvme_tcp_queue *queue = hctx->driver_data;
- 	struct sock *sk = queue->sock->sk;
-+	int ret;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 6de3ccd0fa9b7..915333deae6f0 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -1047,11 +1047,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
+ 	int blocksize, digestsize, ret;
  
- 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
- 		return 0;
-@@ -2474,9 +2475,9 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- 	set_bit(NVME_TCP_Q_POLLING, &queue->flags);
- 	if (sk_can_busy_loop(sk) && skb_queue_empty_lockless(&sk->sk_receive_queue))
- 		sk_busy_loop(sk, true);
--	nvme_tcp_try_recv(queue);
-+	ret = nvme_tcp_try_recv(queue);
- 	clear_bit(NVME_TCP_Q_POLLING, &queue->flags);
--	return queue->nr_cqe;
-+	return ret < 0 ? ret : queue->nr_cqe;
- }
+-	if (!keys->authkeylen) {
+-		pr_err("hisi_sec2: aead auth key error!\n");
+-		return -EINVAL;
+-	}
+-
+ 	blocksize = crypto_shash_blocksize(hash_tfm);
+ 	digestsize = crypto_shash_digestsize(hash_tfm);
+ 	if (keys->authkeylen > blocksize) {
+@@ -1063,7 +1058,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 		}
+ 		ctx->a_key_len = digestsize;
+ 	} else {
+-		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
++		if (keys->authkeylen)
++			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
+ 		ctx->a_key_len = keys->authkeylen;
+ 	}
  
- static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
 -- 
 2.39.5
 
