@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-131744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4701A80B9E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D330A80921
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AC251BC5D8F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9F31BA3183
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2127E2B2DA;
-	Tue,  8 Apr 2025 13:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48552269CE8;
+	Tue,  8 Apr 2025 12:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx/HQeOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6KaTnSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22E4D2FB;
-	Tue,  8 Apr 2025 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A3F268C66;
+	Tue,  8 Apr 2025 12:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117216; cv=none; b=N4F+0Y6EVziBFP6SPwxdXpR+2EcZ93LCa4pEs9P5bOe0BtaCOWx379X7w82txOOGXxTzM+lE1smNGdK0si2lN8vIcSjKTZKJ7Aq02pnCx/ExvlpUx1jvDx7zh0TtcCy04zx6tkGm82YBWIhfG80+k98PWkFRim7qG+ZPMFNSdRo=
+	t=1744116016; cv=none; b=KwEhq4m0M2cfq5QJTTb+1aak4VJN6fGgAIMAF58tYtDid2BTIZnINBDbLU86UJhSenrqeuty1AlqDxCXxCa2xhYJj0gd7FRd1fkV7lFmNvZHXNjKGURgEFB4iU778Wt2WXpOM2CbaFaSK/OplqOKPamPFtPLzv2IipzNifMtm7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117216; c=relaxed/simple;
-	bh=qx/p2qV7xGdaow5qvt9wH7ZIQZiS56skV+WOedzB4zE=;
+	s=arc-20240116; t=1744116016; c=relaxed/simple;
+	bh=u91TgpPDZExhg0i7mpctC+iTDHWq3DN3xnu1mdVoK9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeD7eqdOF0HHq0AL8HsvIwBTzqE9xQEtFKL/hYnfdFWHuwzLtFE/psJY3+8TZ71HaJapZ2p3RjY0FCleiAZ3vjbuQyvht+2J6i/Cjax1Z8KGknB0MbiJygYhMV5RD7mkZeINTMhe+kKJ9SDA/X+0bhgci1/tz0AHdp95e4lauJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx/HQeOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05733C4CEE5;
-	Tue,  8 Apr 2025 13:00:15 +0000 (UTC)
+	 MIME-Version; b=ZiKnFV2xUZRJ0S/jrvhxWGq9wkGMDxIDjbEnnsfKSbKuUqWIwsxWoeVR0En90gJn8MTvd+7z1+BoTKOtE0bSPTpjU6FuJgYz33fBfaSFYtK9U5XGYUMIGtO6HM4U5VLFr6iQ2WBqD/vSurNaiJhxlbou8/v1FfXOnaDGWvf4lDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6KaTnSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE5FC4CEE5;
+	Tue,  8 Apr 2025 12:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117216;
-	bh=qx/p2qV7xGdaow5qvt9wH7ZIQZiS56skV+WOedzB4zE=;
+	s=korg; t=1744116015;
+	bh=u91TgpPDZExhg0i7mpctC+iTDHWq3DN3xnu1mdVoK9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sx/HQeOt5YnhUqwW/1uX+21unGaTUztKGZDvXFdWefle3ShEYmz55RQ34qPhbfMgL
-	 fYSbCA6MvMjFHodaCYT4R2B+NMIOccTNIpb1o2LEquo44DZH1NSN4/mpVP3ozoheai
-	 wTCRK9kiMTnQSOKEMAypFEgibMYPYs8rFUnfNTXM=
+	b=T6KaTnSr2M04mqTlocapUT2XAy2o8g2n4WdAQUwmD6DLnuL/a3961Np2pdsf6tF2S
+	 ZzzmxNYau84uHk7IJmDRTmZI92UgJrXGG0ssaPsNwxSqzdOosn5f6zySpkNJHdWsxL
+	 oVKb89Qv9X5dFnb/c+W0KBcbK6OvmasrJhIPKSSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.12 392/423] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
+Subject: [PATCH 6.1 188/204] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
 Date: Tue,  8 Apr 2025 12:51:58 +0200
-Message-ID: <20250408104855.025229756@linuxfoundation.org>
+Message-ID: <20250408104825.829707880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/mmc/host/sdhci-omap.c
 +++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
+@@ -1340,8 +1340,8 @@ static int sdhci_omap_probe(struct platf
  	/* R1B responses is required to properly manage HW busy detection. */
  	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
  
