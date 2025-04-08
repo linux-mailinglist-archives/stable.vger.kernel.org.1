@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17620A80721
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0A1A808B0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22E2B7AF1D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 998DD4C6405
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965F426A0EB;
-	Tue,  8 Apr 2025 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C326A1BD;
+	Tue,  8 Apr 2025 12:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrlLvXAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvkeNNW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7EB268FDE;
-	Tue,  8 Apr 2025 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB3626461E;
+	Tue,  8 Apr 2025 12:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115263; cv=none; b=j+zGRwVXG1V7KdjUEPg2Moo1UvFbbtaaieDMp1occ1u0gStCyqVPUI/dV1jjNE77phuWWHVOvnR0I2b4zXEPFCYT6KRcKLd4v3F73r0Su0/In/JMzPWVqX4ceXTIpBML73aI/cCAi4P5HN8oiaAOtWmKO89KP6xAd48/g1muE10=
+	t=1744115747; cv=none; b=XdgyCt7uOBDJBmLBEd7rhd8qomKi4g4XfZYRjD+by/QKyVI2vHmabsuXhscoiMtuuCH9Y0CHZ8ba7bAT7XFBeKW19PNRcJOG+g30b+h2iaj2uKy3eLjB7z6HGcH5lPZIKlGEpuKfq1NEQbE6tFoA6VWhYyWgpuEMFcUrNM+QZB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115263; c=relaxed/simple;
-	bh=+adt78YNmlSDIyZgiYt/p9VH/Jh9mnrCJT+Bb54yfHg=;
+	s=arc-20240116; t=1744115747; c=relaxed/simple;
+	bh=r8/JN5bT213eNxj26jSQ12X194yy9UadwXg6MXCr0lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdZ0jHnFMvbjmaYdrjkWe6NYDY8MYMPM31PFnS6qz6nAZSUPkJWF7URYFj264jN+3MXxTtFRjySmVs408o/uKl4To1bGX2YVNjgfAAxl7dR2qvtEyzFNHcTgk6fN9VKNVdM+8AXUf4I3j8eFrFP6AysFIozQk+G1Wcczynn3wo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrlLvXAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5ABC4CEE5;
-	Tue,  8 Apr 2025 12:27:42 +0000 (UTC)
+	 MIME-Version; b=Pj3zAUMdOPnV1p8d5mpT3LL4kdGrUAcleS3jN7XvwQqeX/YD7S/Tr+TEnpWuzcvlJLZnyKvtImQuUITuRIRJ0ykW5o13r72isS1cmBYdqwBoUoKAECzcCXndP8ivbia9SHLcpihvLRZW3C6TAeTumf4NcwcnSoAmcEUuCBIdHc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvkeNNW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A68C4CEE7;
+	Tue,  8 Apr 2025 12:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115263;
-	bh=+adt78YNmlSDIyZgiYt/p9VH/Jh9mnrCJT+Bb54yfHg=;
+	s=korg; t=1744115747;
+	bh=r8/JN5bT213eNxj26jSQ12X194yy9UadwXg6MXCr0lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrlLvXALwB6YvDu3sMWgd4zUNh8SV+DeKIAs9c4Wh6fAZvQmjN/f25bs8M3HueN3u
-	 qzkZUyIi0ln2JbE87TtsNEbWdG8ZUx3/XT6cVvl8xkPTW5/6vOyK7xPx2pgeaIydBu
-	 VhasnlVWCNTTOtTiU7a5F7p7ntIIrXDLgpyxX9zQ=
+	b=bvkeNNW0pu8PJABc2ZJ3hsl99qAz1qIwD+/g91g5R4QoquzsiP96FfRTh/YPTbALe
+	 7R6E5m+og85VLHl0cdKm2T2/8mqq3z0EU8svPq/c/GR50lTnSiA3QeRXrCAdOmnNV1
+	 wCZO+KPUrWdDGNUcG1wzX4WgzD5rUQrLbux8thq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 408/499] drm/amdgpu/gfx11: fix num_mec
+Subject: [PATCH 6.1 090/204] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
 Date: Tue,  8 Apr 2025 12:50:20 +0200
-Message-ID: <20250408104901.400796636@linuxfoundation.org>
+Message-ID: <20250408104822.987291730@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 4161050d47e1b083a7e1b0b875c9907e1a6f1f1f ]
+[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
 
-GC11 only has 1 mec.
+If a match was not found, then the write_raw() callback would return
+the odr index, not an error. Return -EINVAL if this occurs.
+To avoid similar issues in future, introduce j, a new indexing variable
+rather than using ret for this purpose.
 
-Fixes: 3d879e81f0f9 ("drm/amdgpu: add init support for GFX11 (v2)")
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/mma8452.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 2ae058a224f4d..a24119b386db1 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -1553,7 +1553,7 @@ static int gfx_v11_0_sw_init(struct amdgpu_ip_block *ip_block)
- 		adev->gfx.me.num_me = 1;
- 		adev->gfx.me.num_pipe_per_me = 1;
- 		adev->gfx.me.num_queue_per_pipe = 1;
--		adev->gfx.mec.num_mec = 2;
-+		adev->gfx.mec.num_mec = 1;
- 		adev->gfx.mec.num_pipe_per_mec = 4;
- 		adev->gfx.mec.num_queue_per_pipe = 4;
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 3ba28c2ff68a3..ad7b7770d5262 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -711,7 +711,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
+ 			     int val, int val2, long mask)
+ {
+ 	struct mma8452_data *data = iio_priv(indio_dev);
+-	int i, ret;
++	int i, j, ret;
+ 
+ 	ret = iio_device_claim_direct_mode(indio_dev);
+ 	if (ret)
+@@ -771,14 +771,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
  		break;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-		ret = mma8452_get_odr_index(data);
++		j = mma8452_get_odr_index(data);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
+-			if (mma8452_os_ratio[i][ret] == val) {
++			if (mma8452_os_ratio[i][j] == val) {
+ 				ret = mma8452_set_power_mode(data, i);
+ 				break;
+ 			}
+ 		}
++		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
++			ret = -EINVAL;
++			break;
++		}
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
 -- 
 2.39.5
 
