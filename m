@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-131649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744CCA80B89
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF6EA80772
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60D7902648
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5E11BA0029
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CE527C14D;
-	Tue,  8 Apr 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08AB26A1C1;
+	Tue,  8 Apr 2025 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y59cOQZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeCmTHYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE38027BF9E;
-	Tue,  8 Apr 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA0E2673B7;
+	Tue,  8 Apr 2025 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116967; cv=none; b=ix76UJbaamNDjOiUHygq2G6Yfa3KTDHsM9KSvJFLipllu1VCvSMhyDL7FffKfdxRtSxBgUIy6nzmP0/MiOZIjRbI/yYCb+n3eVWFBkPPrv2s7+38Qyez1LTG+8gzOBYPhvdwJjXS+SY9eJ+pWDveQFSmPkBG/ibpnAS8gBDW+QE=
+	t=1744115367; cv=none; b=Rzfcrw54UWjUHkTAh7s/u95Ymslu1nVKLX4L4dDLmj1MHctB5qe+TUu2NoMFN0jio1vSZWUWaq8PclV6ffPwHmaQ1Ha0NSkYw8sm74UQa4f3q5UGrXXFHdaOJGzniNtJEIfywoD0clyE0saVOvP8M0pI9q3CKk1sJ7dUYwxf95s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116967; c=relaxed/simple;
-	bh=O+bvEeebAS80ZBoN4pHUsZTDbbJHc07eEb0hf/fv2as=;
+	s=arc-20240116; t=1744115367; c=relaxed/simple;
+	bh=QmeBQfBoiTGpX445bh02rWMBwGEjfv80+Xqw9chD6us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0g6F2yNzMzJadjS4Lq9lIK8g8oRrGRPm2p0iMtHhSJ7U6YtlwxMUkXng+tZJatyn/nIrAdeXwP91mNH+U7zMrflaEanoWmUu0VMzhmhZ5ZSGT9tZv3YfciFzd00lDsuznLYM4yo1KP6uRPtFIRGr8weEnIwj2+oqobBLgOLHYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y59cOQZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF38C4CEE5;
-	Tue,  8 Apr 2025 12:56:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KK/+5BqUY+TlVCxcRTCZmWBTu29iYRrVdPVdpTjbveIoC+ap6wEp5Xvl3MEQzNc0z2ZQekUbs2P+vLNb0ywgjIosp3X8bK21q68ZYNei3CPlk4jMPXMPimxoYT0isoUid3TOsbGdeX9ww8Dq3VmGKYpa+LBajIr4OpCIpaBAKRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeCmTHYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B7BC4CEE5;
+	Tue,  8 Apr 2025 12:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116967;
-	bh=O+bvEeebAS80ZBoN4pHUsZTDbbJHc07eEb0hf/fv2as=;
+	s=korg; t=1744115367;
+	bh=QmeBQfBoiTGpX445bh02rWMBwGEjfv80+Xqw9chD6us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y59cOQZz5AU+NOvza03FkPL5FV4TtIZuvrGegjL5WmNPxO6SOO9ParPHUpjty8qpe
-	 q3KqpveTg2uIoL1hII3DXAgdKAxWXf0lcOXVYMJduKZuU33oiv5egy+SHcRSUcfeSM
-	 A49hWyrDi75x5YEZV2RidVqac1YJWHThIli2QwII=
+	b=HeCmTHYMxlaoDsL05yxeH/zDDkBX8bt8a0JVh66VvgGHMOAvqXWNtWd9vtbwF1l4G
+	 7WOc86rUYekNudRj+m8sOmyVqnQQjC5Fsj/mWgxAaPuqRdesnnHbA56AN9wN0hKm67
+	 RtF+OVjchxH1W/JbZg9wAdAHhOYLaQDWvdnAOn/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/423] vsock: avoid timeout during connect() if the socket is closing
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.13 448/499] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
 Date: Tue,  8 Apr 2025 12:51:00 +0200
-Message-ID: <20250408104853.612507074@linuxfoundation.org>
+Message-ID: <20250408104902.402355270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
+commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
 
-When a peer attempts to establish a connection, vsock_connect() contains
-a loop that waits for the state to be TCP_ESTABLISHED. However, the
-other peer can be fast enough to accept the connection and close it
-immediately, thus moving the state to TCP_CLOSING.
+The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
+The same call was immediately triggered by a subsequent goto statement.
+Thus avoid such a call repetition.
 
-When this happens, the peer in the vsock_connect() is properly woken up,
-but since the state is not TCP_ESTABLISHED, it goes back to sleep
-until the timeout expires, returning -ETIMEDOUT.
+This issue was detected by using the Coccinelle software.
 
-If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
-vsock_connect() can return immediately without errors or delay since the
-connection actually happened. The socket will be in a closing state,
-but this is not an issue, and subsequent calls will fail as expected.
-
-We discovered this issue while developing a test that accepts and
-immediately closes connections to stress the transport switch between
-two connect() calls, where the first one was interrupted by a signal
-(see Closes link).
-
-Reported-by: Luigi Leonardi <leonardi@redhat.com>
-Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/ntb/test/ntb_perf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index eb6ea26b390ee..d08f205b33dcc 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1551,7 +1551,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 	timeout = vsk->connect_timeout;
- 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
+ 	dma_set_unmap(tx, unmap);
  
--	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
-+	/* If the socket is already closing or it is in an error state, there
-+	 * is no point in waiting.
-+	 */
-+	while (sk->sk_state != TCP_ESTABLISHED &&
-+	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
- 		if (flags & O_NONBLOCK) {
- 			/* If we're not going to block, we schedule a timeout
- 			 * function to generate a timeout on the connection
--- 
-2.39.5
-
+ 	ret = dma_submit_error(dmaengine_submit(tx));
+-	if (ret) {
+-		dmaengine_unmap_put(unmap);
++	if (ret)
+ 		goto err_free_resource;
+-	}
+ 
+ 	dmaengine_unmap_put(unmap);
+ 
 
 
 
