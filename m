@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D275A808E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5501FA80B25
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949381B83CF2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6994E5632
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A579726B2A8;
-	Tue,  8 Apr 2025 12:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E174427C164;
+	Tue,  8 Apr 2025 12:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhqrtrbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUGPvV6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638A226A1A3;
-	Tue,  8 Apr 2025 12:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E04226F455;
+	Tue,  8 Apr 2025 12:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115879; cv=none; b=nBOlQhAuKs9UmTyr6xKnYYlv8D16rcN4+hKplEkHF7B3yo9wN2RASGR8tfkMMeM8TS7e6CNnxucPF6d6ndj3YKNI7vmBYHYPnDflIWJ1STqk+N1PvDxg0/jmTBPqadiowuJB6yXVs65nbpPINnYr7U5EaaF7RrVAZj6/SoyfLZk=
+	t=1744116991; cv=none; b=Nxc84Qhvmg5GnROSjQpGuMdPe+MXOTngSzHVvnZIN9P5J+O8JrVVhLdM5cViEz3ve/7WfUIWbHpxZKZ5zW+fcAZjQWfFlgshhVxiO6ekWXqoquz3h/JyObYhqFMGUkOlgGCAy3Ld4xz1DzZnRRfq4KeH3iV/PutrjTL4Xf7mGO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115879; c=relaxed/simple;
-	bh=IyTzrGIxRqsz4vf5E/1xpuARLc5pfRH5XtjEFK6FlwI=;
+	s=arc-20240116; t=1744116991; c=relaxed/simple;
+	bh=FouxXW2F0gQ4u8XlOZDpIFbBlStIs42evfoMAJiD2Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQuSRX9aodM8IyjzYJymMTCNh5mZyhrCCaZQZ+EYTGGOAmWnHbIsQkcmPaDp4qlUjeGWp8oT4Stk4HwhDEy8QVwwUoN2WTG79V8Lg6qnjT2FWICdpvRkyhIw0U1nrVlscSsT6CXXoMD/mslqWyAlFMz+u1OQ/VGK8Fn0t/Ih//w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhqrtrbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7921C4CEE5;
-	Tue,  8 Apr 2025 12:37:58 +0000 (UTC)
+	 MIME-Version; b=W8B0z8wyf8PS/dkzTdGqmBKPlPzsr9T5TnHF3/+0+/VXzMNpNDJtk/lHBsCPFXciJtwRckSpsRtT8MM/ZvgKKLO7ZOqU2i3xAo0GFbUMEUlbQ7WspeLiBaCS5oMPSrABZI34pfeR6879r/GcdrIWg6WSiwC1hQwHa+lu5EEEWpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUGPvV6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3216AC4CEE7;
+	Tue,  8 Apr 2025 12:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115879;
-	bh=IyTzrGIxRqsz4vf5E/1xpuARLc5pfRH5XtjEFK6FlwI=;
+	s=korg; t=1744116991;
+	bh=FouxXW2F0gQ4u8XlOZDpIFbBlStIs42evfoMAJiD2Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhqrtrbxZedhODdcn5pd7m1wcQWjR8U2893cTlODJYX8Rdds6CFizilqQhUzhGo6h
-	 KbJuV7zhXYt6Vb/Z5nBGQW5oq58ABeaTCOTpVV+IF+v8KYTk9IwahEb1o/g12iptLH
-	 7y2LVaVyeIgaR2EBXyklnbePyHd/Ski6QbuMfacU=
+	b=dUGPvV6+LZJdbdcKHAtEeiZmTPedxozyuQ+A/6AunYUHkdVTpzcioF6KIEA0CRrV3
+	 60wcV+s74mt6gFUNqcnm/3Gw9vmDG+g0w8J3zavkIGXqC9DtTobADKqHT1B36J4UIR
+	 +MMKkMX/X5NDcKXILfpoPPe3jb2B7fT7LQjUbR3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/204] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
+Subject: [PATCH 6.12 342/423] ipv6: Do not consider link down nexthops in path selection
 Date: Tue,  8 Apr 2025 12:51:08 +0200
-Message-ID: <20250408104824.346171417@linuxfoundation.org>
+Message-ID: <20250408104853.804815947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
+[ Upstream commit 8b8e0dd357165e0258d9f9cdab5366720ed2f619 ]
 
-Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
+Nexthops whose link is down are not supposed to be considered during
+path selection when the "ignore_routes_with_linkdown" sysctl is set.
+This is done by assigning them a negative region boundary.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+However, when comparing the computed hash (unsigned) with the region
+boundary (signed), the negative region boundary is treated as unsigned,
+resulting in incorrect nexthop selection.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
+Fix by treating the computed hash as signed. Note that the computed hash
+is always in range of [0, 2^31 - 1].
+
+Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250402114224.293392-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/route.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 55fc63472ddc2..841338c82e807 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9996,7 +9996,9 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
-+	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 54ce948835a09..987492dcb07ca 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -442,6 +442,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ {
+ 	struct fib6_info *first, *match = res->f6i;
+ 	struct fib6_info *sibling;
++	int hash;
+ 
+ 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
+ 		goto out;
+@@ -468,7 +469,8 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 	if (!first)
+ 		goto out;
+ 
+-	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
++	hash = fl6->mp_hash;
++	if (hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
+ 	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
+ 			    strict) >= 0) {
+ 		match = first;
+@@ -481,7 +483,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		int nh_upper_bound;
+ 
+ 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
+-		if (fl6->mp_hash > nh_upper_bound)
++		if (hash > nh_upper_bound)
+ 			continue;
+ 		if (rt6_score_route(nh, sibling->fib6_flags, oif, strict) < 0)
+ 			break;
 -- 
 2.39.5
 
