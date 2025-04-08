@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-129298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0442A7FF38
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:19:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7343FA7FF03
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 867F6426059
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670F117A6A3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE42268FD7;
-	Tue,  8 Apr 2025 11:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9043E267F5B;
+	Tue,  8 Apr 2025 11:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dW3g+SZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRUMB2CB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC89224F6;
-	Tue,  8 Apr 2025 11:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB6264614;
+	Tue,  8 Apr 2025 11:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110650; cv=none; b=S76qyUM36qPzFoGhyg04R2AS7UJcFkgwWwpbOEJdgnER2EQwMDUXNSPJZOt4QkBdUS27GtmAHLWkAD3y9vVQoS8qKVextCUBNILNIuv0j+QdBZniZKz+qtFMZ0cJUv01ONvYLp7I/KI6zgfJQGTGPpFrr6fTuWA4iPzImADaCpI=
+	t=1744110655; cv=none; b=gei3mP8xJBZyC+7OKsNOEhvu9ZbkmwqT7qPmVQM+h1zEgnhEWLef3UD+MC0jz1aWOyNvT2qlFCmuLpdkL2Ty80KFgUQ0q68RT/DrZj/5SH/z1PBhEiQjaR/rq8VbUzzEnMisqwlyLWZCuoBBA7tVeD9/neqt4lsOyRDsrNz4xFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110650; c=relaxed/simple;
-	bh=DWIUSPMcgQCVLaBOiMzJ0anq3z9Wi2mAGp48dIsCugg=;
+	s=arc-20240116; t=1744110655; c=relaxed/simple;
+	bh=4A11iAZDtffd5QPqzrMtSepz23dwVt3psFzxiJjFyLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jE6AKDfUEb07f0cm2CZwraCIMgXsqUl6jNP67/vRz2AZte8NCs5Ver6i8dULJXa7Sg8kA17ajL0hwH7TCB7MAtOKHdACtp2agArvkS+Dq+VHfQFhPTmJ6SvA42PVvdlRdWttiv3QbnR1hz9VH5lZ7MykMWfQhdXLbrMuEuOtLtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dW3g+SZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5BAC4CEE5;
-	Tue,  8 Apr 2025 11:10:49 +0000 (UTC)
+	 MIME-Version; b=Zzk1QforGifRwIDxLF5qRIg9kpwU96JlsEEVzqOzaDEpsmgKGnEPr9JT4gqYVl2XdRfieDsP8KAVE2Q8di0WFgFJ8DkIYCRacgCfFA0v7c8jRXjdBrZ6k54DeBq2gEWbTRCvVSbzMpt8jrYZeH/o6r+USvy23S/bxZAB0eo1IRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRUMB2CB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF571C4CEE7;
+	Tue,  8 Apr 2025 11:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110649;
-	bh=DWIUSPMcgQCVLaBOiMzJ0anq3z9Wi2mAGp48dIsCugg=;
+	s=korg; t=1744110655;
+	bh=4A11iAZDtffd5QPqzrMtSepz23dwVt3psFzxiJjFyLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dW3g+SZVoGirhDPKA8mZ/6bMNMmKs4CTRuMdcgJuLp1Htz2WnV1+4XyAsLFdjiQYn
-	 bLq+yKt7CpuChHWa1BZAA78cef+Ygu/pcoOrmV2nkE/yHHgUOK8ZzTE+rMfiJZ/Zr7
-	 orGSgK+tQX9kNqCHpL3JzOtdGH4Cmyl3NCfvTYlA=
+	b=SRUMB2CB0DWr2RcGOMInc0NyXTnJqTs8XS8+akVNKHRME2+tBXr141320HpZ7b6HC
+	 1aGmSVL34mwDWpmysM7F0gFNZpA72b/KjLATDjTmmVPFK5I2ZepqMlZOlvvUEhThx0
+	 lqkMnzGeniz96Fg4vTAPAhAUcTE0g/w5VkJE+R5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 143/731] soc: mediatek: mtk-mmsys: Fix MT8188 VDO1 DPI1 output selection
-Date: Tue,  8 Apr 2025 12:40:40 +0200
-Message-ID: <20250408104917.601408289@linuxfoundation.org>
+Subject: [PATCH 6.14 144/731] soc: mediatek: mt8167-mmsys: Fix missing regval in all entries
+Date: Tue,  8 Apr 2025 12:40:41 +0200
+Message-ID: <20250408104917.624173832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,39 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 881d5094b138d002aab14922d41ec2058b9570c7 ]
+[ Upstream commit 5424793452d134ec1a173bd748c757144f25b1e2 ]
 
-The VDO1_MERGE4 hardware (merge5 software component) should be
-set to enable output to DPI1_SEL by setting BIT(2) but, despite
-the intention being exactly that, this won't work because the
-declared register mask is wrong as it is set as GENMASK(1, 0).
+The mmsys routing table for this SoC was effectively missing
+initialization of the val variable of struct mtk_mmsys_routes:
+this means that `val` was incorrectly initialized to zero,
+hence the registers were wrongly initialized.
 
-Register MERGE4_MOUT_EN in VDO1 has four used bits [3, 0] so
-fix the mask to reflect that.
-That, in turn, allows the mmsys driver to actually set BIT(2)
-in this register, fixing the MERGE4 output to DPI1 selection.
+Add the required regval to all of the entries of the routing
+table for this SoC to fix display controller functionality.
 
-Fixes: c0349314d5a0 ("soc: mediatek: Support MT8188 VDOSYS1 in mtk-mmsys")
-Link: https://lore.kernel.org/r/20250212100012.33001-3-angelogioacchino.delregno@collabora.com
+Fixes: 060f7875bd23 ("soc: mediatek: mmsys: Add support for MT8167 SoC")
+Link: https://lore.kernel.org/r/20250212100012.33001-6-angelogioacchino.delregno@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mt8188-mmsys.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/mediatek/mt8167-mmsys.h | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mt8188-mmsys.h b/drivers/soc/mediatek/mt8188-mmsys.h
-index 6bebf1a69fc07..a1d63be0a73dc 100644
---- a/drivers/soc/mediatek/mt8188-mmsys.h
-+++ b/drivers/soc/mediatek/mt8188-mmsys.h
-@@ -343,7 +343,7 @@ static const struct mtk_mmsys_routes mmsys_mt8188_vdo1_routing_table[] = {
- 		MT8188_DISP_DPI1_SEL_IN_FROM_VPP_MERGE4_MOUT
+diff --git a/drivers/soc/mediatek/mt8167-mmsys.h b/drivers/soc/mediatek/mt8167-mmsys.h
+index f7a35b3656bb1..655ef962abe9f 100644
+--- a/drivers/soc/mediatek/mt8167-mmsys.h
++++ b/drivers/soc/mediatek/mt8167-mmsys.h
+@@ -17,18 +17,23 @@ static const struct mtk_mmsys_routes mt8167_mmsys_routing_table[] = {
+ 	{
+ 		DDP_COMPONENT_OVL0, DDP_COMPONENT_COLOR0,
+ 		MT8167_DISP_REG_CONFIG_DISP_OVL0_MOUT_EN, OVL0_MOUT_EN_COLOR0,
++		OVL0_MOUT_EN_COLOR0
  	}, {
- 		DDP_COMPONENT_MERGE5, DDP_COMPONENT_DPI1,
--		MT8188_VDO1_MERGE4_SOUT_SEL, GENMASK(1, 0),
-+		MT8188_VDO1_MERGE4_SOUT_SEL, GENMASK(3, 0),
- 		MT8188_MERGE4_SOUT_TO_DPI1_SEL
+ 		DDP_COMPONENT_DITHER0, DDP_COMPONENT_RDMA0,
+-		MT8167_DISP_REG_CONFIG_DISP_DITHER_MOUT_EN, MT8167_DITHER_MOUT_EN_RDMA0
++		MT8167_DISP_REG_CONFIG_DISP_DITHER_MOUT_EN, MT8167_DITHER_MOUT_EN_RDMA0,
++		MT8167_DITHER_MOUT_EN_RDMA0
  	}, {
- 		DDP_COMPONENT_MERGE5, DDP_COMPONENT_DP_INTF1,
+ 		DDP_COMPONENT_OVL0, DDP_COMPONENT_COLOR0,
+-		MT8167_DISP_REG_CONFIG_DISP_COLOR0_SEL_IN, COLOR0_SEL_IN_OVL0
++		MT8167_DISP_REG_CONFIG_DISP_COLOR0_SEL_IN, COLOR0_SEL_IN_OVL0,
++		COLOR0_SEL_IN_OVL0
+ 	}, {
+ 		DDP_COMPONENT_RDMA0, DDP_COMPONENT_DSI0,
+-		MT8167_DISP_REG_CONFIG_DISP_DSI0_SEL_IN, MT8167_DSI0_SEL_IN_RDMA0
++		MT8167_DISP_REG_CONFIG_DISP_DSI0_SEL_IN, MT8167_DSI0_SEL_IN_RDMA0,
++		MT8167_DSI0_SEL_IN_RDMA0
+ 	}, {
+ 		DDP_COMPONENT_RDMA0, DDP_COMPONENT_DSI0,
+-		MT8167_DISP_REG_CONFIG_DISP_RDMA0_SOUT_SEL_IN, MT8167_RDMA0_SOUT_DSI0
++		MT8167_DISP_REG_CONFIG_DISP_RDMA0_SOUT_SEL_IN, MT8167_RDMA0_SOUT_DSI0,
++		MT8167_RDMA0_SOUT_DSI0
+ 	},
+ };
+ 
 -- 
 2.39.5
 
