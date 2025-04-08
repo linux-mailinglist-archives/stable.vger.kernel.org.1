@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-129289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B44A7FF23
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CF9A7FF10
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E5A919E5C89
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228D04463EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A052A268FC9;
-	Tue,  8 Apr 2025 11:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A27268C65;
+	Tue,  8 Apr 2025 11:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5N+GRNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW61Nk3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82B214205;
-	Tue,  8 Apr 2025 11:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09236214205;
+	Tue,  8 Apr 2025 11:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110624; cv=none; b=rO2KXAiU39pIzEn+QJv1yjckm4GoEtdyYXvu3Ijhxc6x4ZAbjSruia7DYXbhA/HpNLRA0W9xmiHjFW60Ot+VQNxkq3OUa4bvuh+4UNfoCMfdqE+fdZHzl07aQ5Tn40kUL+pfpzsoClVEy45LDMr1lmvMHOW0/5j4i1Oqrc+GVW8=
+	t=1744110627; cv=none; b=q9ZmkBZzUTgBdZL4WqhJXk3qb+D5WuDAip/ql7ehQJH9D59b8bI3tU9wvo/6CuwFf9dhub0VKDHtI0YLu3HK+n+gcFA8l5oN0qIb4gGihuzcrUfFdJ2lteyfLcppg7/aLB9iu45FPPeLKHKEI9pbay0MME2w57FMPz+sgskE3WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110624; c=relaxed/simple;
-	bh=BaV3fvVKNprk34VrtoCZL0yylX5BcyGj8xUfG2aBtw8=;
+	s=arc-20240116; t=1744110627; c=relaxed/simple;
+	bh=ZPJXWm4y7YG337VCgsOwVaQlUyFAqb5cxzPdMWuak5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ei+EFP8VkYeSLl8kkXrRtJKWVi36tiIkLkDsLN4ML+pZnPzZj8k0uVcdQ5v/MJngWsBDYiFQiDXk6Vz5LxA6VpRIMStBUwD9PHFtP5T0fWGYf+iK7bXTQIemK7suBQBlTRxXiwzxjmX1uUX1Ng47NmQ0HZJMBZvwL1UNjrtu6Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5N+GRNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2364C4CEE5;
-	Tue,  8 Apr 2025 11:10:23 +0000 (UTC)
+	 MIME-Version; b=ZyCPcVOd9bbMheARofgkiGOr7qvBQtkWJbgcvrJIVoNQX0/HukHAuW5yo/Ty244E0M/sxWq4Hbqh/v5pJnOx8SNzdENy6UobXuRnuJLaQfkxVjGRjDGcqVbfhkFe5LBCaDvswUVkK4stk5CDqKNwH/NIqEGaq+2xDzbfiDcOVR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW61Nk3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8997CC4CEE5;
+	Tue,  8 Apr 2025 11:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110624;
-	bh=BaV3fvVKNprk34VrtoCZL0yylX5BcyGj8xUfG2aBtw8=;
+	s=korg; t=1744110626;
+	bh=ZPJXWm4y7YG337VCgsOwVaQlUyFAqb5cxzPdMWuak5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5N+GRNI16pdj+2LxUBnvGt3/7SQt1qhClQRKnTtStKIdZK9gMTMZa/W86xahY47e
-	 fYyOA1w8qaDytUg8oirxELZEVBRlGnUeLyz0y1TUIlAxUlYBQXA6FEg7io3X+ldEQ5
-	 iVmucrHsloPdWUKuHnGBzrBPn8z7o5JOuHz7+ULU=
+	b=OW61Nk3PSGySuoHRBQ3OSLvLVYs+PNxXokWAK2cKBs2A8UF7mJoSMbP2e/UtZ6oAh
+	 dqSFLUS4PFLgUGNTrgb2gEyLDiPkslQgTthjqyM1VJjaA4BCDk0AcFHE19y+or2kKr
+	 mORVW+EO0+IPbgj2FMTOkG6r+pMALbAHhfdhjPqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 134/731] md/md-bitmap: fix wrong bitmap_limit for clustermd when write sb
-Date: Tue,  8 Apr 2025 12:40:31 +0200
-Message-ID: <20250408104917.395423893@linuxfoundation.org>
+Subject: [PATCH 6.14 135/731] tracing: Fix DECLARE_TRACE_CONDITION
+Date: Tue,  8 Apr 2025 12:40:32 +0200
+Message-ID: <20250408104917.419156212@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,64 +72,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 6130825f34d41718c98a9b1504a79a23e379701e ]
+[ Upstream commit 486df3466daf7b185f534a7408fa6f9dbb16dbeb ]
 
-In clustermd, separate write-intent-bitmaps are used for each cluster
-node:
+Commit 287050d39026 ("tracing: Add TRACE_EVENT_CONDITIONAL()") adds
+macros to define conditional trace events (TRACE_EVENT_CONDITIONAL) and
+tracepoints (DECLARE_TRACE_CONDITION), but sets up functionality for
+direct use only for the former.
 
-0                    4k                     8k                    12k
--------------------------------------------------------------------
-| idle                | md super            | bm super [0] + bits |
-| bm bits[0, contd]   | bm super[1] + bits  | bm bits[1, contd]   |
-| bm super[2] + bits  | bm bits [2, contd]  | bm super[3] + bits  |
-| bm bits [3, contd]  |                     |                     |
+Add preprocessor bits in define_trace.h to allow usage of
+DECLARE_TRACE_CONDITION just like DECLARE_TRACE.
 
-So in node 1, pg_index in __write_sb_page() could equal to
-bitmap->storage.file_pages. Then bitmap_limit will be calculated to
-0. md_super_write() will be called with 0 size.
-That means the first 4k sb area of node 1 will never be updated
-through filemap_write_page().
-This bug causes hang of mdadm/clustermd_tests/01r1_Grow_resize.
-
-Here use (pg_index % bitmap->storage.file_pages) to make calculation
-of bitmap_limit correct.
-
-Fixes: ab99a87542f1 ("md/md-bitmap: fix writing non bitmap pages")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Link: https://lore.kernel.org/linux-raid/20250303033918.32136-1-glass.su@suse.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/20250218123121.253551-2-gmonaco@redhat.com
+Fixes: 287050d39026 ("tracing: Add TRACE_EVENT_CONDITIONAL()")
+Link: https://lore.kernel.org/linux-trace-kernel/20250128111926.303093-1-gmonaco@redhat.com
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/trace/define_trace.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 23c09d22fcdbc..9ae6cc8e30cbd 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -426,8 +426,8 @@ static int __write_sb_page(struct md_rdev *rdev, struct bitmap *bitmap,
- 	struct block_device *bdev;
- 	struct mddev *mddev = bitmap->mddev;
- 	struct bitmap_storage *store = &bitmap->storage;
--	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
--		PAGE_SHIFT;
-+	unsigned long num_pages = bitmap->storage.file_pages;
-+	unsigned int bitmap_limit = (num_pages - pg_index % num_pages) << PAGE_SHIFT;
- 	loff_t sboff, offset = mddev->bitmap_info.offset;
- 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
- 	unsigned int size = PAGE_SIZE;
-@@ -436,7 +436,7 @@ static int __write_sb_page(struct md_rdev *rdev, struct bitmap *bitmap,
+diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
+index e1c1079f8c8db..ed52d0506c69f 100644
+--- a/include/trace/define_trace.h
++++ b/include/trace/define_trace.h
+@@ -76,6 +76,10 @@
+ #define DECLARE_TRACE(name, proto, args)	\
+ 	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
  
- 	bdev = (rdev->meta_bdev) ? rdev->meta_bdev : rdev->bdev;
- 	/* we compare length (page numbers), not page offset. */
--	if ((pg_index - store->sb_index) == store->file_pages - 1) {
-+	if ((pg_index - store->sb_index) == num_pages - 1) {
- 		unsigned int last_page_size = store->bytes & (PAGE_SIZE - 1);
++#undef DECLARE_TRACE_CONDITION
++#define DECLARE_TRACE_CONDITION(name, proto, args, cond)	\
++	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
++
+ /* If requested, create helpers for calling these tracepoints from Rust. */
+ #ifdef CREATE_RUST_TRACE_POINTS
+ #undef DEFINE_RUST_DO_TRACE
+@@ -108,6 +112,8 @@
+ /* Make all open coded DECLARE_TRACE nops */
+ #undef DECLARE_TRACE
+ #define DECLARE_TRACE(name, proto, args)
++#undef DECLARE_TRACE_CONDITION
++#define DECLARE_TRACE_CONDITION(name, proto, args, cond)
  
- 		if (last_page_size == 0)
+ #ifdef TRACEPOINTS_ENABLED
+ #include <trace/trace_events.h>
+@@ -129,6 +135,7 @@
+ #undef DEFINE_EVENT_CONDITION
+ #undef TRACE_HEADER_MULTI_READ
+ #undef DECLARE_TRACE
++#undef DECLARE_TRACE_CONDITION
+ 
+ /* Only undef what we defined in this file */
+ #ifdef UNDEF_TRACE_INCLUDE_FILE
 -- 
 2.39.5
 
