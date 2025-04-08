@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A812BA80271
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67605A8013C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4F3117BE16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ECD2442D6F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49076219301;
-	Tue,  8 Apr 2025 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C4D26AABE;
+	Tue,  8 Apr 2025 11:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slP7+7UX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUsgszFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0580B227BAA;
-	Tue,  8 Apr 2025 11:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374AF26AA89;
+	Tue,  8 Apr 2025 11:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112405; cv=none; b=ty8sX7RzOqi7LYjAWTL4k5Sfm1UCDSuKXzvveJXAg3d2mBM0saOWieCdsy5M2ox5tjsPoD1U6e3u4drmdA1+Gi4b5cUdqw92wfvtLgYNpybevXAXflTx1eF5JoH2o4HdkiIj8HrTyacPuomQi5MtRFJYCD7ZVEplhCWJWpA2y8Q=
+	t=1744111746; cv=none; b=Q7nKxLM7wVSfGK3lQzlOpz3piUfbL12fIE5kiy90kuGFJkorTTRYaRimxySaEBDgcRvX1EhqoPiQZG6hogYd4WVG8b/0uAGOWvGR12kfJ1LpYq/StSeUYkR3DlT5GVQNCmfZtakcJnpiVcOyFPc0qQY3eI7AXxb+3W1BC0W3r0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112405; c=relaxed/simple;
-	bh=8IisFmcLE5RIs5q2zmdoBvvfwO7tspOJ3E62vQHXGm0=;
+	s=arc-20240116; t=1744111746; c=relaxed/simple;
+	bh=dgfpyDbxHAnwVsdtd/abe58+/wtgNXfjNniYpybVky0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBJRFuSCPcE3ECIORsBv7vLX8IzdbFGb6Sqfs5wKXatNoPFauSni0yCuKobnKWHfnvXDF2oed5z/RqU72lcYqk5yOz4GKqnBIL8tqnewGonvU/i5N4oFqqFMGLPEHt96Ynok6PmVskRjLY/0zUh4mFrWoY7eXQb9D+f0PlicIaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slP7+7UX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAB9C4CEE5;
-	Tue,  8 Apr 2025 11:40:04 +0000 (UTC)
+	 MIME-Version; b=eEQOnHaCmJZE7XVUIaNa3Z35c2PjJu3+qyjmdMvhPmq0D2vBMJ6pRHbkocJZtz3RQhgT8F1DQWN5RVuU0vyuGxI6MjIdnR4GA8raiBo9rpXdePiYj/kGwgavDZY2cS2cTYZ5ob3qc2MHlRYOOwgMtxAMp755n+Lvh0u6ijwybNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUsgszFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB307C4CEE5;
+	Tue,  8 Apr 2025 11:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112404;
-	bh=8IisFmcLE5RIs5q2zmdoBvvfwO7tspOJ3E62vQHXGm0=;
+	s=korg; t=1744111746;
+	bh=dgfpyDbxHAnwVsdtd/abe58+/wtgNXfjNniYpybVky0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slP7+7UXqfrI5dmidiFl7M5fKa6SAmloGQJb5eNy295J+HzSNp5tHihaFbaeMxZec
-	 kR9GeAUh45gj58boNghzZw5oV8dII0Sf31aoVDeI4UgawM4PURxoYk1eOusS92wjaK
-	 vsiVAVsWk0/2cupYuBeHrScU/ARJmh+M118aVjXA=
+	b=qUsgszFH/7nunOhPZZzFOAVa3TrxyPOE5kmD5VEJhk6zFzF5jm6XA5d2wlNR/Mqv2
+	 KpDdbrTkr46VKSFHBNnn2+0TLHBQpxEl89Gmt2iy1GzFFMZZudx/s4rjl2Th0B0tw/
+	 xuXGRHrdUhq1HFy06E7hekXP56+aJnl+tjbv5eKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 056/279] USB: serial: option: match on interface class for Telit FN990B
-Date: Tue,  8 Apr 2025 12:47:19 +0200
-Message-ID: <20250408104827.870359093@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 543/731] objtool: Handle various symbol types of rodata
+Date: Tue,  8 Apr 2025 12:47:20 +0200
+Message-ID: <20250408104926.907425008@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
+[ Upstream commit ab6ce22b789622ca732e91cbb3a5cb5ba370cbd0 ]
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
+In the relocation section ".rela.rodata" of each .o file compiled with
+LoongArch toolchain, there are various symbol types such as STT_NOTYPE,
+STT_OBJECT, STT_FUNC in addition to the usual STT_SECTION, it needs to
+use reloc symbol offset instead of reloc addend to find the destination
+instruction in find_jump_table() and add_jump_table().
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
+For the most part, an absolute relocation type is used for rodata. In the
+case of STT_SECTION, reloc->sym->offset is always zero, and for the other
+symbol types, reloc_addend(reloc) is always zero, thus it can use a simple
+statement "reloc->sym->offset + reloc_addend(reloc)" to obtain the symbol
+offset for various symbol types.
 
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Link: https://lore.kernel.org/r/20250211115016.26913-2-yangtiezhu@loongson.cn
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Stable-dep-of: ef753d66051c ("objtool: Fix detection of consecutive jump tables on Clang 20")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ tools/objtool/check.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c1fa0220f33de..79c49c75b429b 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1954,6 +1954,7 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 	unsigned int prev_offset = 0;
+ 	struct reloc *reloc = table;
+ 	struct alternative *alt;
++	unsigned long sym_offset;
+ 
+ 	/*
+ 	 * Each @reloc is a switch table relocation which points to the target
+@@ -1971,9 +1972,10 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 		if (prev_offset && reloc_offset(reloc) != prev_offset + 8)
+ 			break;
+ 
++		sym_offset = reloc->sym->offset + reloc_addend(reloc);
++
+ 		/* Detect function pointers from contiguous objects: */
+-		if (reloc->sym->sec == pfunc->sec &&
+-		    reloc_addend(reloc) == pfunc->offset)
++		if (reloc->sym->sec == pfunc->sec && sym_offset == pfunc->offset)
+ 			break;
+ 
+ 		/*
+@@ -1981,10 +1983,10 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 		 * which point to the end of the function.  Ignore them.
+ 		 */
+ 		if (reloc->sym->sec == pfunc->sec &&
+-		    reloc_addend(reloc) == pfunc->offset + pfunc->len)
++		    sym_offset == pfunc->offset + pfunc->len)
+ 			goto next;
+ 
+-		dest_insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
++		dest_insn = find_insn(file, reloc->sym->sec, sym_offset);
+ 		if (!dest_insn)
+ 			break;
+ 
+@@ -2023,6 +2025,7 @@ static void find_jump_table(struct objtool_file *file, struct symbol *func,
+ 	struct reloc *table_reloc;
+ 	struct instruction *dest_insn, *orig_insn = insn;
+ 	unsigned long table_size;
++	unsigned long sym_offset;
+ 
+ 	/*
+ 	 * Backward search using the @first_jump_src links, these help avoid
+@@ -2046,7 +2049,10 @@ static void find_jump_table(struct objtool_file *file, struct symbol *func,
+ 		table_reloc = arch_find_switch_table(file, insn, &table_size);
+ 		if (!table_reloc)
+ 			continue;
+-		dest_insn = find_insn(file, table_reloc->sym->sec, reloc_addend(table_reloc));
++
++		sym_offset = table_reloc->sym->offset + reloc_addend(table_reloc);
++
++		dest_insn = find_insn(file, table_reloc->sym->sec, sym_offset);
+ 		if (!dest_insn || !insn_func(dest_insn) || insn_func(dest_insn)->pfunc != func)
+ 			continue;
+ 
+-- 
+2.39.5
+
 
 
 
