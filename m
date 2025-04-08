@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD3EA80AC9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26044A804C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4FD1BC10B2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62EC718956C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4A0276046;
-	Tue,  8 Apr 2025 12:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1534267F4F;
+	Tue,  8 Apr 2025 12:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaFlmeCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjbRcDt/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AB326AAAA;
-	Tue,  8 Apr 2025 12:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2551AAA0F;
+	Tue,  8 Apr 2025 12:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116718; cv=none; b=ThZPI2OBtPfQ24PAz+ukn9K42MCQFA09bANkPTlc9Gg4COkLGFs0G0pIsg06By3/ypgxo/3kWPRh3KYN0B8m5H0H6FwGox5W/XtqWfk0ic4KGKupAapDiB/P5sFtVneaRT+WuFpPxOJgJlD4A7Hgm64UQX9b5frRr6+r0AxnUt4=
+	t=1744113855; cv=none; b=kTHwygmt5fjMenWRzkFblyux+6O7ZSoS4IcHSeReyxnDdIBvbcM4zApQFeW8m6VNVfT9fKl2T5LeX865MNTNcbBA2oEuKWqC4QvORZ3Azx3ipEI8z4VoViyG0OF1feaVCX8UjHfywsMRl3zUInsvKdOroYqWReqf9TUtgsIOjyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116718; c=relaxed/simple;
-	bh=TRCurcaElBslU6jaHNGuNX+tLMu7raBoX8m1CH15RCU=;
+	s=arc-20240116; t=1744113855; c=relaxed/simple;
+	bh=GuvO47yP22s7wYcR4N568YNSGCo+e5nkgHcn1q8+Sac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzTKdtH0KkOjXb30zdOTNDraKnbZYNQnoFKeCesgkeyWjkKrBg9sX0vos//azPbQpFruGKKFPqQQNK6tu919mJfuFFfvHxjg0oz6/C0exjBMWhAl5pfGkL7mPxeTdEniFZp65zyFVKo6rQFaqOpqWCsOVLuqS3c3ndt7OJ8xQOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaFlmeCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A785C4CEEB;
-	Tue,  8 Apr 2025 12:51:57 +0000 (UTC)
+	 MIME-Version; b=ZYF0hD88JSh48s1mwuHZUQq01+86HqEM2tUI0EPAi5gHF141z3ay0Rgy6nK2LhuwW6w+jYPXTIVqe+Qojg7rZmXOa55YG/iMR13/F7cFkbQXzQRkAbjSIWYhjD+i1Kfn6ndSHEXBpz/b8c0+eDP5sOd82ji0sDmUDq03pxn0zic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjbRcDt/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1696BC4CEE5;
+	Tue,  8 Apr 2025 12:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116717;
-	bh=TRCurcaElBslU6jaHNGuNX+tLMu7raBoX8m1CH15RCU=;
+	s=korg; t=1744113855;
+	bh=GuvO47yP22s7wYcR4N568YNSGCo+e5nkgHcn1q8+Sac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaFlmeCKV3Gj1O/nA40OIsd2PqorlDwXzUJYDlvYkUkNy7ioejw68sYQ1aAv+rMJ1
-	 17ejAicE9kXDRD54Iqet8cHprnQfWnT2trIKcXVXEZDKIJeE+83Eg3hJ8EVS8TFeS3
-	 zcV7hQVsv00qVESA04tdNvy3nrzQl5XEKjha0BMA=
+	b=gjbRcDt/K5NU0yMihmJ2Ft/c//Fym1d1jdhK9A+ivgPhY9FZNTdhLe/ig64s3Yelm
+	 kzQtD5hUMttKy1OEb5Nm3AFpRMU29MW6oR7v1QDAPFjQ3/C27cdwGzLvlB+XuFqgCB
+	 LeRAbD4KmG51eTI860PKaOlRSueo/DgJhPfJkoss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Gherdovich <ggherdovich@suse.cz>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/423] ACPI: processor: idle: Return an error if both P_LVL{2,3} idle states are invalid
+Subject: [PATCH 5.4 028/154] HID: ignore non-functional sensor in HP 5MP Camera
 Date: Tue,  8 Apr 2025 12:49:29 +0200
-Message-ID: <20250408104851.390166894@linuxfoundation.org>
+Message-ID: <20250408104816.166616747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Gherdovich <ggherdovich@suse.cz>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit 9e9b893404d43894d69a18dd2fc8fcf1c36abb7e ]
+[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
 
-Prior to commit 496121c02127 ("ACPI: processor: idle: Allow probing on
-platforms with one ACPI C-state"), the acpi_idle driver wouldn't load on
-systems without a valid C-State at least as deep as C2.
+The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
+is not actually implemented. Attempting to access this non-functional
+sensor via iio_info causes system hangs as runtime PM tries to wake up
+an unresponsive sensor.
 
-The behavior was desirable for guests on hypervisors such as VMWare
-ESXi, which by default don't have the _CST ACPI method, and set the C2
-and C3 latencies to 101 and 1001 microseconds respectively via the FADT,
-to signify they're unsupported.
+  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
 
-Since the above change though, these virtualized deployments end up
-loading acpi_idle, and thus entering the default C1 C-State set by
-acpi_processor_get_power_info_default(); this is undesirable for a
-system that's communicating to the OS it doesn't want C-States (missing
-_CST, and invalid C2/C3 in FADT).
+Add this device to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
 
-Make acpi_processor_get_power_info_fadt() return -ENODEV in that case,
-so that acpi_processor_get_cstate_info() exits early and doesn't set
-pr->flags.power = 1.
-
-Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250328143040.9348-1-ggherdovich@suse.cz
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_idle.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 831fa4a121598..0888e4d618d53 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -268,6 +268,10 @@ static int acpi_processor_get_power_info_fadt(struct acpi_processor *pr)
- 			 ACPI_CX_DESC_LEN, "ACPI P_LVL3 IOPORT 0x%x",
- 			 pr->power.states[ACPI_STATE_C3].address);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index bc0115548a579..d5369577b4755 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1005,6 +1005,7 @@
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
++#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
  
-+	if (!pr->power.states[ACPI_STATE_C2].address &&
-+	    !pr->power.states[ACPI_STATE_C3].address)
-+		return -ENODEV;
-+
- 	return 0;
- }
+ #define I2C_VENDOR_ID_RAYDIUM		0x2386
+ #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 99009fda7b80a..9b375ca53946e 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -876,6 +876,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+ 	{ }
+ };
  
 -- 
 2.39.5
