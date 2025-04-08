@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-130202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3916EA8038F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F36A7FD81
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE04B3B6398
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E491894B8E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A8126983B;
-	Tue,  8 Apr 2025 11:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185702686AA;
+	Tue,  8 Apr 2025 10:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xenm+82u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcA2A8ZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662462698BE;
-	Tue,  8 Apr 2025 11:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D74269885;
+	Tue,  8 Apr 2025 10:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113090; cv=none; b=mLHlSjdxESw2awuDkIP7/6u6BqfQxJ4mKRGYxMP7eVfIHMq9hnnwIrcaT/7j20jSrlrPy48MeptLP7yNM4RbXyhj5S+pqfxKmDPVkr0j8VLcgxxsCetuqgICeH2qRvI/CYe7xxIHSHbciXbZhADEYfNXziWrh92+PNpvAWPIvbs=
+	t=1744109794; cv=none; b=YorF0n4etG2wngW7Q+IpcSoiYLiw7U12gYTIhXFv1cmYb9HKD3Ln/TUGWAWQ04SnjQQdZ1r/fPrrXEW5E357FzSxLCkt6Fdlwk3nquTEtvwOf/VNmWZB7jZCPfRZT30h/ByhdneDZFtRV5ekjh56I71+TQ4088m0GIPb5ayazxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113090; c=relaxed/simple;
-	bh=yO5PRmpTHrPnPF7Eaps0Prm2n15iHpSmiKIhZXiPiZw=;
+	s=arc-20240116; t=1744109794; c=relaxed/simple;
+	bh=6Fwk28RjB/yU0mBGufh/h30w1A6owN4T/0ki/OEq/gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZ6OZ4VE01rrnWT21iiJKZaylhfw9FDWSZk8+TeBMFL76MqNxeypvnP6nINsf8DkKOEz460fQcN4h5fCGB5QfvMSiMs4FlEKbcEGD+XRzJydS7/wPLBy/UcN602ZgIyGxxcYGT+4FFZLjZWkDI5a5CwbEJlS1orv41l8ERVo+80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xenm+82u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64592C4CEE5;
-	Tue,  8 Apr 2025 11:51:29 +0000 (UTC)
+	 MIME-Version; b=Kj+yUTz+HmfHafMvjQdqwdQRYVQ6+oDNCE+0s8KdpsOAUbeNlu8dcYEdhWTqbW1uVqQcgsTHPgL7cqxzCX0no2cOS48EHx7UjoPSvKB1K5vLpkqdJZ/DsQD/28OjJNizt4ZZVZaGPxiKWDw9c7bnK7a2aB3yUV6I8LsmGhTQY3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcA2A8ZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B57FC4CEEB;
+	Tue,  8 Apr 2025 10:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113089;
-	bh=yO5PRmpTHrPnPF7Eaps0Prm2n15iHpSmiKIhZXiPiZw=;
+	s=korg; t=1744109794;
+	bh=6Fwk28RjB/yU0mBGufh/h30w1A6owN4T/0ki/OEq/gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xenm+82uo4wO7ct5rvmgtudMXl6QpoNLeTSkf+Pc3p5wSOptSPElt0TrqyVPHQUdO
-	 /HtCV+jNqsFXz5+Xvq9QSDDzm5h2O1z0u0yYkB5xJ+bmwhZXfr+qqI9dgWZcCBNaQE
-	 ox7T58/cZfU861eM3F+t1Oo1neW6ruV9/OS3Xe5M=
+	b=CcA2A8ZD4CV0JRMmxB2lbKhUvEqdMBkJQ1TUsgnc+UB2toAThkSPN1G1nqmgOSoo2
+	 CZnxF4cEapvrKBdF3g3mZHx/d+Da7wmBkNyupv8gVJ79Un4oLHpUooepOWKXs+zflg
+	 J2O4yMUtPFKmasOTHmDr0xqa7jOOMU9al3+179Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/268] x86/fpu/xstate: Fix inconsistencies in guest FPU xfeatures
+Subject: [PATCH 5.10 056/227] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
 Date: Tue,  8 Apr 2025 12:47:14 +0200
-Message-ID: <20250408104829.132596608@linuxfoundation.org>
+Message-ID: <20250408104822.079697760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,88 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit dda366083e5ff307a4a728757db874bbfe7550be ]
+[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
 
-Guest FPUs manage vCPU FPU states. They are allocated via
-fpu_alloc_guest_fpstate() and are resized in fpstate_realloc() when XFD
-features are enabled.
+Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
+pci_gfx_root in the mid_get_vbt_data().
 
-Since the introduction of guest FPUs, there have been inconsistencies in
-the kernel buffer size and xfeatures:
+This change is similar to the checks implemented in mid_get_fuse_settings()
+and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
+("gma500: Final enables for Oaktrail") as "additional minor
+bulletproofing".
 
- 1. fpu_alloc_guest_fpstate() uses fpu_user_cfg since its introduction. See:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-    69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
-    36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
-
- 2. __fpstate_reset() references fpu_kernel_cfg to set storage attributes.
-
- 3. fpu->guest_perm uses fpu_kernel_cfg, affecting fpstate_realloc().
-
-A recent commit in the tip:x86/fpu tree partially addressed the inconsistency
-between (1) and (3) by using fpu_kernel_cfg for size calculation in (1),
-but left fpu_guest->xfeatures and fpu_guest->perm still referencing
-fpu_user_cfg:
-
-  https://lore.kernel.org/all/20250218141045.85201-1-stanspas@amazon.de/
-
-  1937e18cc3cf ("x86/fpu: Fix guest FPU state buffer allocation size")
-
-The inconsistencies within fpu_alloc_guest_fpstate() and across the
-mentioned functions cause confusion.
-
-Fix them by using fpu_kernel_cfg consistently in fpu_alloc_guest_fpstate(),
-except for fields related to the UABI buffer. Referencing fpu_kernel_cfg
-won't impact functionalities, as:
-
- 1. fpu_guest->perm is overwritten shortly in fpu_init_guest_permissions()
-    with fpstate->guest_perm, which already uses fpu_kernel_cfg.
-
- 2. fpu_guest->xfeatures is solely used to check if XFD features are enabled.
-    Including supervisor xfeatures doesn't affect the check.
-
-Fixes: 36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
-Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/20250317140613.1761633-1-chao.gao@intel.com
+Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index db200990b5569..aaed20f46be4c 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -232,8 +232,8 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
- 	fpstate->is_guest	= true;
+diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
+index 8ab44fec4bfa4..b76b86278e0e3 100644
+--- a/drivers/gpu/drm/gma500/mid_bios.c
++++ b/drivers/gpu/drm/gma500/mid_bios.c
+@@ -277,6 +277,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
+ 					    0, PCI_DEVFN(2, 0));
+ 	int ret = -1;
  
- 	gfpu->fpstate		= fpstate;
--	gfpu->xfeatures		= fpu_user_cfg.default_features;
--	gfpu->perm		= fpu_user_cfg.default_features;
-+	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
-+	gfpu->perm		= fpu_kernel_cfg.default_features;
- 
- 	/*
- 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
++	if (pci_gfx_root == NULL) {
++		WARN_ON(1);
++		return;
++	}
++
+ 	/* Get the address of the platform config vbt */
+ 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
+ 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
