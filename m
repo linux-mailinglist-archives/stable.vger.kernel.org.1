@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2144BA802A0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FEA7FE59
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11C4A7A555E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DF84469B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D7A2676DE;
-	Tue,  8 Apr 2025 11:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F0269CFD;
+	Tue,  8 Apr 2025 11:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsYXPuP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2Nrrb83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF601AAA0F;
-	Tue,  8 Apr 2025 11:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393BD2135CD;
+	Tue,  8 Apr 2025 11:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112833; cv=none; b=tqyJg7A4+13xo07RljRk+tLneB+8l9T9NT0jO5yqLzi+7hikLdTFlMqo0Bd6ONdm77yR1IlLDDLuAmefjSZAtrkONkitHKeWWpdYQbwdoojWzv3NOFV1gPchvWYFjshfDUSp01EmvB3ig2WOpdOVPP6Qucw5J6bbKQDrmA/l3ZU=
+	t=1744110262; cv=none; b=gedZJLyXQD3mJgjJb14Rn6/94qcdofc1xcjYHdfsVDdGCooLpDU+l5tgN/ovVUbYEnzwQ3Ef9KD9nc2cVfNJtw6p9MJD7JDDVBwnzgxWD12k8mHbixECDFVzO8IzL/2DSK5rf4KSEZFB5jIiQq7M7WVgVoBdApAN5BT3pToUF8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112833; c=relaxed/simple;
-	bh=GX7poqs+V8KaVGukVrku0kPmqvGLo61z3FZM/ZA/l1o=;
+	s=arc-20240116; t=1744110262; c=relaxed/simple;
+	bh=IVW8+jlEsmRaoxTZ9ReDgrhROH9y0N6zuargdmWH0FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hblV2bU1cqDNylIEJ37/Xc8tvZY3iVz+OajAPmoD00ME6c3bhXhk/PhAJIU9GaEG/VM48k1XqMKKmIukRo2tE8GAW1Ru63Jy5MyerXO+JTLugVCSmM9naFzhq98+hqvVXHKvnnf6uBUkPvEji0ixANEF2KnLCzYro2uaT9DHpOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsYXPuP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F81C4CEE5;
-	Tue,  8 Apr 2025 11:47:12 +0000 (UTC)
+	 MIME-Version; b=NLZ+iSNH6/z+jfBU+lk+11rIAFBJJPuLv9jM0+8kAEZx4EhkoIhMAsb2yFSJcxoeo6zjrPQBMdyUAs4hWc3IYiwkAubpQeom+Su9qgajrE502xcJXQF/FQ/nToRQw02BPxxmvaBonf4a5RyRSafk/HGRkOkguVOfjHPbJKiLZa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2Nrrb83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE66C4CEEA;
+	Tue,  8 Apr 2025 11:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112832;
-	bh=GX7poqs+V8KaVGukVrku0kPmqvGLo61z3FZM/ZA/l1o=;
+	s=korg; t=1744110262;
+	bh=IVW8+jlEsmRaoxTZ9ReDgrhROH9y0N6zuargdmWH0FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsYXPuP/zIF3/V3LIbFuOpDci2Pd7NQhucUi6Rt5MxiFl56UeAyafVwdRGbFRCFBB
-	 p3FfzMqpg5hh16vpNBF7RgW+nDd5c+ZPE+CcOxwCOa1p8U3CzpoyxIQSBQUwW972f2
-	 Aj/wUkx/HjI0OKSooXPqoA/2nMda296zfrY/OAwQ=
+	b=l2Nrrb83y/NI4nqGh6x1nrcLvFbFr45fU2+iy99VgjNGOtkMk2EAJEeweNtWGx2Lv
+	 M/ZlyAHFv2fqOR3ZNdXw4S8RUM4kFaihMKlakJvx8ynYG+cQyLNPj6XJ+rF7MMUR+f
+	 UtWo43g2POPwPRAviKxkyN7sgqyxmCF5pvHPAp3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/279] perf python: Decrement the refcount of just created event on failure
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 212/227] btrfs: handle errors from btrfs_dec_ref() properly
 Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104831.929243265@linuxfoundation.org>
+Message-ID: <20250408104826.672932321@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
+commit 5eb178f373b4f16f3b42d55ff88fc94dd95b93b1 upstream.
 
-To avoid a leak if we have the python object but then something happens
-and we need to return the operation, decrement the offset of the newly
-created object.
+In walk_up_proc() we BUG_ON(ret) from btrfs_dec_ref().  This is
+incorrect, we have proper error handling here, return the error.
 
-Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/python.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 13d65a3cc6d7d..368a5f2c244c8 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -1084,6 +1084,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
- 
- 		evsel = evlist__event2evsel(evlist, event);
- 		if (!evsel) {
-+			Py_DECREF(pyevent);
- 			Py_INCREF(Py_None);
- 			return Py_None;
- 		}
-@@ -1095,9 +1096,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
- 		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
- 
--		if (err)
-+		if (err) {
-+			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
- 					    "perf: can't parse sample, err=%d", err);
-+		}
-+
- 		return pyevent;
- 	}
- end:
--- 
-2.39.5
-
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5240,7 +5240,10 @@ static noinline int walk_up_proc(struct
+ 				ret = btrfs_dec_ref(trans, root, eb, 1);
+ 			else
+ 				ret = btrfs_dec_ref(trans, root, eb, 0);
+-			BUG_ON(ret); /* -ENOMEM */
++			if (ret) {
++				btrfs_abort_transaction(trans, ret);
++				return ret;
++			}
+ 			if (is_fstree(root->root_key.objectid)) {
+ 				ret = btrfs_qgroup_trace_leaf_items(trans, eb);
+ 				if (ret) {
 
 
 
