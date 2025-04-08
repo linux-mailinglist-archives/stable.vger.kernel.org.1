@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2E2A80198
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F657A8038A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F9DA3A6428
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B54BB7AC0A5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1028E268FF0;
-	Tue,  8 Apr 2025 11:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824472690FB;
+	Tue,  8 Apr 2025 11:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYHkPpoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCAY8VtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F5B2676DE;
-	Tue,  8 Apr 2025 11:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0982690EC;
+	Tue,  8 Apr 2025 11:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111999; cv=none; b=YEJST3YmRRv5cTMmL/Zn9ozTQbegf+Unkkwjv97QjiT4jFFn6DyE69ogEt1uXeDCBQylvJq9TKtjRLFsQkXzmD99d7SHD6eIAOo4l/Dt9OAFH1LHF3CAsCTaq1WmyowxUvwbk6rq9HQ9OzCALB7ySFYuBJ3VBQUUQmEGa+jTLIw=
+	t=1744113239; cv=none; b=SLBr3djuIQuoIvNzR4ELP6BtpHaGxGRWXieow4COsyJudVKgioMzFoDjLkM4geRJp2zrSdfrqjtLEt6dFzXe6vip0/yYRIULGPvBzscjf5rSGu9I2tezPA6J7c0O7Vk1cBgB3qjP9FkPvTIKWklg/dfdwkUVLW1ZuEG1O8sDHlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111999; c=relaxed/simple;
-	bh=BzEvyEOTTlj2YimVDPJUppu6Ld5ng2+XFOi4regKyWA=;
+	s=arc-20240116; t=1744113239; c=relaxed/simple;
+	bh=rvpgXEo4k86tRpwbJNRkha9HjWFe8cB5xuLLzMO6c/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ON/vfL8qPVNwvyya2lnKKEYwo49u/5f+qI8AaTPUCKMpZ5xUcgaMz79w6QXAd4rpPvJgUHt/dwEzcaKAFTni/wC08H9P7Y3+T7XRPZfVm48/s/gAT2TJ7xeUk3RILxLy7k6B4ahHGQHSiO2WUh90umFmYfvbZ1s9jp7rC++4/o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYHkPpoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B4C4CEE5;
-	Tue,  8 Apr 2025 11:33:19 +0000 (UTC)
+	 MIME-Version; b=UktwpBgUZ/7khrXDRUgAi8bQhCwDfTEQ41GVNCbnapT1vVPHjJQMNs01zhh2DaICxOlNNMslNk41MHQR0z24bA5cIZwVFEvmVspiXS+DInPDdJMeM2stSzZXJI1EnEliPHCDWF3hlKs9MacyBJ5F5gYokyrRZ3eVdaqgLRtitzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCAY8VtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71B9C4CEE5;
+	Tue,  8 Apr 2025 11:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111999;
-	bh=BzEvyEOTTlj2YimVDPJUppu6Ld5ng2+XFOi4regKyWA=;
+	s=korg; t=1744113239;
+	bh=rvpgXEo4k86tRpwbJNRkha9HjWFe8cB5xuLLzMO6c/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYHkPpoKyyMdMvrrkXaBglDKxGokzjtABe1QcGeLJA/TNIzg5M8T8ndd51UaCcuNc
-	 PbDWzU82q37Smcg5gMVOVzeLlm0gU+2ojSrRbvlZp7YM/e8hxOwHGZlBulf4/NlJHC
-	 8e3R8+KB6uctXnEOGDtjN6cBajUIUeYwjfJch6/E=
+	b=uCAY8VtJCc2C04dtWOTtD08fNK0IhiaiLXN7eoF9M7XOuoltL+j6ODJSaUIGLfpV3
+	 ObluIYZbqE8uJM1P0OQy0DH00Z5I02wj2T10P8rIKWRY8QmXvCje1B4qVqSYyxCUYE
+	 8Zngn1RGqvcCgLxJlHk9glafy2kmNiaoti4VqkxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Prathamesh Shete <pshete@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 599/731] s390/entry: Fix setting _CIF_MCCK_GUEST with lowcore relocation
+Subject: [PATCH 6.6 085/268] pinctrl: tegra: Set SFIO mode to Mux Register
 Date: Tue,  8 Apr 2025 12:48:16 +0200
-Message-ID: <20250408104928.205816683@linuxfoundation.org>
+Message-ID: <20250408104830.786353475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-[ Upstream commit 121df45b37a1016ee6828c2ca3ba825f3e18a8c1 ]
+[ Upstream commit 17013f0acb322e5052ff9b9d0fab0ab5a4bfd828 ]
 
-When lowcore relocation is enabled, the machine check handler doesn't
-use the lowcore address when setting _CIF_MCCK_GUEST. Fix this by
-adding the missing base register.
+Tegra devices have an 'sfsel' bit field that determines whether a pin
+operates in SFIO (Special Function I/O) or GPIO mode. Currently,
+tegra_pinctrl_gpio_disable_free() sets this bit when releasing a GPIO.
 
-Fixes: 0001b7bbc53a ("s390/entry: Make mchk_int_handler() ready for lowcore relocation")
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+However, tegra_pinctrl_set_mux() can be called independently in certain
+code paths where gpio_disable_free() is not invoked. In such cases, failing
+to set the SFIO mode could lead to incorrect pin configurations, resulting
+in functional issues for peripherals relying on SFIO.
+
+This patch ensures that whenever set_mux() is called, the SFIO mode is
+correctly set in the Mux Register if the 'sfsel' bit is present. This
+prevents situations where the pin remains in GPIO mode despite being
+configured for SFIO use.
+
+Fixes: 971dac7123c7 ("pinctrl: add a driver for NVIDIA Tegra")
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Link: https://lore.kernel.org/20250306050542.16335-1-pshete@nvidia.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/entry.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/tegra/pinctrl-tegra.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index 4cc3408c4dacf..88e09a650d2df 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -467,7 +467,7 @@ SYM_CODE_START(mcck_int_handler)
- 	clgrjl	%r9,%r14, 4f
- 	larl	%r14,.Lsie_leave
- 	clgrjhe	%r9,%r14, 4f
--	lg	%r10,__LC_PCPU
-+	lg	%r10,__LC_PCPU(%r13)
- 	oi	__PCPU_FLAGS+7(%r10), _CIF_MCCK_GUEST
- 4:	BPENTER	__SF_SIE_FLAGS(%r15),_TIF_ISOLATE_BP_GUEST
- 	SIEEXIT __SF_SIE_CONTROL(%r15),%r13
+diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
+index 734c71ef005b8..7c12a3470642c 100644
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.c
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
+@@ -272,6 +272,9 @@ static int tegra_pinctrl_set_mux(struct pinctrl_dev *pctldev,
+ 	val = pmx_readl(pmx, g->mux_bank, g->mux_reg);
+ 	val &= ~(0x3 << g->mux_bit);
+ 	val |= i << g->mux_bit;
++	/* Set the SFIO/GPIO selection to SFIO when under pinmux control*/
++	if (pmx->soc->sfsel_in_mux)
++		val |= (1 << g->sfsel_bit);
+ 	pmx_writel(pmx, val, g->mux_bank, g->mux_reg);
+ 
+ 	return 0;
 -- 
 2.39.5
 
