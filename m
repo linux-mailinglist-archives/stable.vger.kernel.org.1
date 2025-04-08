@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-130969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61237A807C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97E1A80BF2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C738873AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153E88C4371
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C58C26B2DB;
-	Tue,  8 Apr 2025 12:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D293826B092;
+	Tue,  8 Apr 2025 12:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpWlaRd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i275KUmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEEE268685;
-	Tue,  8 Apr 2025 12:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EBF26AAA3;
+	Tue,  8 Apr 2025 12:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115140; cv=none; b=PSCgtMX81KR/fimc+OG6xKnWz08cCX5LrLDb2/fm6GayW6umLdeE8BED0xkTsYY9CrwXr09BF69L32MgKHv34NAl8VQLtTU/WFLHMMWYNgTcJS+Hz2eT1IUGFV+tJ/aPGd/ov/FB7KgyI6F40Mc1Hk1LRJ5SwJxi0UqnR5jQz40=
+	t=1744116739; cv=none; b=lgVpwobdO5pDZ1991/9e1MvFlpkpLCVcOdrGIeyr7bCU+tKbX9P+HvZmWzlLOb9E2/eaSO9jncj+RV+PTwA5ql3/dgzp3n66iyY8AOlm2O1gSz1yF4SoIo7Cn/GgCexbBJlZEJzeogFFuzf42GeIg2pETNQpdYv0ZbJFHzsFGk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115140; c=relaxed/simple;
-	bh=zZr5pehIhnsanQQsjURM03T1XLd2yA0fxnvyj/btWQY=;
+	s=arc-20240116; t=1744116739; c=relaxed/simple;
+	bh=rND0Ib0oUB7aoemYHguJn6aEFgMKNUanc9TyRyytpuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RLD16m0amnLtq/tfXyjUjP+WaxLyVu6CvvoYsFVZsVwomb/gWunzjU2q0t+BOFVgb32UPAHK2HGz01U8QjawtAxOMoPfJ2VJQU/4ROuW/hQvJmNr7ZXAhsAmyoC/gdbc7WdbaeEP9df7TLbrCYdPjaLoFJFTuG1Rs1VvAlV2pMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpWlaRd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB68C4CEE5;
-	Tue,  8 Apr 2025 12:25:39 +0000 (UTC)
+	 MIME-Version; b=dR8rsHxshgtMl4pYMUnZnd95ePovaVKcXJWIMbVZR/KdSHIBV+7DQU3TTiPaWAxx1iLlR81ZZ3N2hXUihJAEXZPPjHOJb/das7gKTvfnugRx5S0p7L+OLI20V47Yd5f4J4Bp3shP9evfkecVXB7FIciQUbAQUkPV3R0pzgweySs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i275KUmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEF3C4CEE5;
+	Tue,  8 Apr 2025 12:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115139;
-	bh=zZr5pehIhnsanQQsjURM03T1XLd2yA0fxnvyj/btWQY=;
+	s=korg; t=1744116739;
+	bh=rND0Ib0oUB7aoemYHguJn6aEFgMKNUanc9TyRyytpuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpWlaRd2U1epp24w1MsemwKqeN9KszJvT3mvG18RytxT7YRlQukrMnzk+6gqk6PLd
-	 5qyQId0WuNzsBKOBlrRfzmNuT8GAHjSUbKubAGJ30t3XxbsoaprQyuCGLGlJ6Ogw8s
-	 NG4e5kVSUD/Gx9rsVYmV+Ql93hoR4vWqiI+ri/og=
+	b=i275KUmkgGKeIj1urTSgsC6qTl2p+Roe+JLDS8J9lHoWgzq37C3Rb+l+E0yHcY+C8
+	 /QfMHU6QOvVzjWHFTBALq40bBc0mzxr8oBzacFIKLCNwi93VyUf8yYjO0hDwovn0Hd
+	 eqxBK5d9U3/7svifNMocan0+l54EQmYHUfVHZyeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 364/499] riscv: Fix riscv_online_cpu_vec
+Subject: [PATCH 6.12 250/423] rcu-tasks: Always inline rcu_irq_work_resched()
 Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104900.307694640@linuxfoundation.org>
+Message-ID: <20250408104851.560278014@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 5af72a818612332a11171b16f27a62ec0a0f91d7 ]
+[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
 
-We shouldn't probe when we already know vector is unsupported and
-we should probe when we see we don't yet know whether it's supported.
-Furthermore, we should ensure we've set the access type to
-unsupported when we don't have vector at all.
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  rcu_irq_work_resched() can be called from
+noinstr code, so make sure it's always inlined.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250304120014.143628-12-ajones@ventanamicro.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/rcupdate.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 85c868a8cee63..2e41b42498c76 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -370,10 +370,12 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 48e5c03df1dd8..bd69ddc102fbc 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -138,7 +138,7 @@ static inline void rcu_sysrq_end(void) { }
+ #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
+ void rcu_irq_work_resched(void);
+ #else
+-static inline void rcu_irq_work_resched(void) { }
++static __always_inline void rcu_irq_work_resched(void) { }
+ #endif
  
- static int riscv_online_cpu_vec(unsigned int cpu)
- {
--	if (!has_vector())
-+	if (!has_vector()) {
-+		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
- 		return 0;
-+	}
- 
--	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED)
-+	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
- 		return 0;
- 
- 	check_vector_unaligned_access_emulated(NULL);
+ #ifdef CONFIG_RCU_NOCB_CPU
 -- 
 2.39.5
 
