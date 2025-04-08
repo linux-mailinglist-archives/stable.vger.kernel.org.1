@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-131535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1747A80AD5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AEBA8075D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DFA95044BB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978E04C4F48
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA85B26A1C3;
-	Tue,  8 Apr 2025 12:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785D226A097;
+	Tue,  8 Apr 2025 12:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZH1unNSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scZoGCCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889DF1EA65;
-	Tue,  8 Apr 2025 12:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D43263F4D;
+	Tue,  8 Apr 2025 12:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116658; cv=none; b=qFANAdSk6u/+GWv7FibkCDgqPgcfbwsL3/R+oqFxW7G7tk7qMUbtH+aPAHcXkJE5k9Whl89pkkCJaE/mXBKy8fK9B6SqzTJY45LGl7MBqpXeZNB+LF8+DP1nl7EBBdTukTWlHIR3/4yNNp9/b4/gw5JUFykEw+A4jsZTLg9urG0=
+	t=1744115030; cv=none; b=FxCI4tsfeqnmpPsrcS1Mp+fxOcwwjjWb1Zmzg++wZeXhFcmxOHUJHnqo1qzkA5h8hEVOhFsWZ9JiHLPZSqv2m58DTm51U9Es1v5kfRFhu2kI2V/i7uAoWvAKyGdeq60UgtrWDehXx5z+WhI0m0svJajXWFd2IC4eouqeXUU/2y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116658; c=relaxed/simple;
-	bh=BqEgGPU7jjssAbs7VZ7sfIyGH/quxtJvk6cX5usvwK4=;
+	s=arc-20240116; t=1744115030; c=relaxed/simple;
+	bh=PckkhWHm62BoE/wYz+M4gVQFSWSY2swgUmpiiddeWAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVLqWqAyBNN3b5B6nFIx6GZC+eDRGEDCYYE2h5ZUEA5WUXbBvPiXkJaFalK0UlPuM0eawzS6jU/e+V+9lZcKc7X9KIgOptg7Kn0WkPOWRSlRe7lzD30n/j0mYWQyQNJV5NagFNOpHDyG2FiQ7RLZUsT7kceY9PLJ/p7anNW/Dcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZH1unNSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10113C4CEE5;
-	Tue,  8 Apr 2025 12:50:57 +0000 (UTC)
+	 MIME-Version; b=AKN4La2D2V6hmFU4H99r/anHzK+8t0HLjv57Ou5iCY1CiM3Y22KvMKPAQGBUxvU0K5wRUlJ9tKaXaxXkLmRrMBl7ZjjS4rgx7cHZWdjFrVZZmI/J7Hy8kmd7bG4xSVarZbRkCPdAiywgmZd8gjjA0/gkAchMbdYjfEmW1z0CYOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scZoGCCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD6BC4CEE5;
+	Tue,  8 Apr 2025 12:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116658;
-	bh=BqEgGPU7jjssAbs7VZ7sfIyGH/quxtJvk6cX5usvwK4=;
+	s=korg; t=1744115030;
+	bh=PckkhWHm62BoE/wYz+M4gVQFSWSY2swgUmpiiddeWAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZH1unNSxQxoNaznyl0Y7TAfxzuWcCgO8lOiVWCMKvzJMQ6+/MCPxw/M85OpMkCfWO
-	 hx9KZDob+RNeLXULTz/q2ftX4npMCmCgzvyvJvKMlEL/j7hJ/++v9VYiYgiUkicj4o
-	 Hz+ZMA/D3vaORDE54g7olvjtLiErzY1rkw1n2/LA=
+	b=scZoGCCV3UDFIwKDmczcQqnATD+9xG4J0EOdswgsDcJZpiublkGGA7tLnXZhg1+o3
+	 piA9+VSmMoqReuzWP8X2Dhk6qdYOnydablxKcqI2+/Sbu+HNT6O7Ca7QeQT9NBFtCA
+	 u0Cw3FixXpKm4cChSLhEAavuTI8mgnUe3cppNXDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/423] perf bench: Fix perf bench syscall loop count
+Subject: [PATCH 6.13 296/499] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
 Date: Tue,  8 Apr 2025 12:48:28 +0200
-Message-ID: <20250408104849.980916114@linuxfoundation.org>
+Message-ID: <20250408104858.596915532@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 957d194163bf983da98bf7ec7e4f86caff8cd0eb ]
+[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
 
-Command 'perf bench syscall fork -l 100000' offers option -l to run for
-a specified number of iterations. However this option is not always
-observed. The number is silently limited to 10000 iterations as can be
-seen:
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  These can be called from noinstr code, so make
+sure they're always inlined.
 
-Output before:
- # perf bench syscall fork -l 100000
- # Running 'syscall/fork' benchmark:
- # Executed 10,000 fork() calls
-     Total time: 23.388 [sec]
+Fixes the following warnings:
 
-    2338.809800 usecs/op
-            427 ops/sec
- #
+  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
 
-When explicitly specified with option -l or --loops, also observe
-higher number of iterations:
-
-Output after:
- # perf bench syscall fork -l 100000
- # Running 'syscall/fork' benchmark:
- # Executed 100,000 fork() calls
-     Total time: 716.982 [sec]
-
-    7169.829510 usecs/op
-            139 ops/sec
- #
-
-This patch fixes the issue for basic execve fork and getpgid.
-
-Fixes: ece7f7c0507c ("perf bench syscall: Add fork syscall benchmark")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Tested-by: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Link: https://lore.kernel.org/r/20250304092349.2618082-1-tmricht@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/bench/syscall.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ include/linux/context_tracking_irq.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/bench/syscall.c b/tools/perf/bench/syscall.c
-index ea4dfc07cbd6b..e7dc216f717f5 100644
---- a/tools/perf/bench/syscall.c
-+++ b/tools/perf/bench/syscall.c
-@@ -22,8 +22,7 @@
- #define __NR_fork -1
+diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
+index c50b5670c4a52..197916ee91a4b 100644
+--- a/include/linux/context_tracking_irq.h
++++ b/include/linux/context_tracking_irq.h
+@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
+ void ct_nmi_enter(void);
+ void ct_nmi_exit(void);
+ #else
+-static inline void ct_irq_enter(void) { }
+-static inline void ct_irq_exit(void) { }
++static __always_inline void ct_irq_enter(void) { }
++static __always_inline void ct_irq_exit(void) { }
+ static inline void ct_irq_enter_irqson(void) { }
+ static inline void ct_irq_exit_irqson(void) { }
+-static inline void ct_nmi_enter(void) { }
+-static inline void ct_nmi_exit(void) { }
++static __always_inline void ct_nmi_enter(void) { }
++static __always_inline void ct_nmi_exit(void) { }
  #endif
  
--#define LOOPS_DEFAULT 10000000
--static	int loops = LOOPS_DEFAULT;
-+static	int loops;
- 
- static const struct option options[] = {
- 	OPT_INTEGER('l', "loop",	&loops,		"Specify number of loops"),
-@@ -80,6 +79,18 @@ static int bench_syscall_common(int argc, const char **argv, int syscall)
- 	const char *name = NULL;
- 	int i;
- 
-+	switch (syscall) {
-+	case __NR_fork:
-+	case __NR_execve:
-+		/* Limit default loop to 10000 times to save time */
-+		loops = 10000;
-+		break;
-+	default:
-+		loops = 10000000;
-+		break;
-+	}
-+
-+	/* Options -l and --loops override default above */
- 	argc = parse_options(argc, argv, options, bench_syscall_usage, 0);
- 
- 	gettimeofday(&start, NULL);
-@@ -94,16 +105,9 @@ static int bench_syscall_common(int argc, const char **argv, int syscall)
- 			break;
- 		case __NR_fork:
- 			test_fork();
--			/* Only loop 10000 times to save time */
--			if (i == 10000)
--				loops = 10000;
- 			break;
- 		case __NR_execve:
- 			test_execve();
--			/* Only loop 10000 times to save time */
--			if (i == 10000)
--				loops = 10000;
--			break;
- 		default:
- 			break;
- 		}
+ #endif
 -- 
 2.39.5
 
