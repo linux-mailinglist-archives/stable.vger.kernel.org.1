@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-131254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00855A80975
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09F5A8077D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3CE8C4CDE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0C3E7AB23C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C4E26FD9B;
-	Tue,  8 Apr 2025 12:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435C61B87CF;
+	Tue,  8 Apr 2025 12:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbXdGXut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7oWaj6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77EB26B2B5;
-	Tue,  8 Apr 2025 12:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028AB2686AA;
+	Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115900; cv=none; b=BJMnecEi99lWM4ZnJbSv2DO6lDScy/yIIh1FSoCR6yvYksPP5Lr2UGccds6aFvZhZTQF61IqYbJn52DNFPoox2u4RO01R6aG35ElVNW/CxpN2IdnOHScn7/CG4wFisxfZfizoScnqOzfxRPgPwH0Bl9snPrkCfNqt0Yxk/ELCtE=
+	t=1744115456; cv=none; b=f0zY12zJKSrWzRX0XcuiK/uNLooPJeHLFiCNo9OfYpgEIkPoY8XchqMWkd1MzvnsBja+Em9w7JehDa4MWGkGvN5P+OVzJN7uvoAQJi3EI4TuOPbWhb/b0Hhzf+DIQMBhT8EpPIGgaTr+1fZR5RJwDKEkvMj+/0usnARDqyFbw3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115900; c=relaxed/simple;
-	bh=gwHF9LiEEtszT1wA1zZ3cr6uM+/Nc7b9LuDkxrhYCHc=;
+	s=arc-20240116; t=1744115456; c=relaxed/simple;
+	bh=71ic/70oAp7t7sN59oG5YXoDdgwn1XDAzx5052d/pok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7sxR5CXzYeXGScWx3N95S9b2ro+FwuuO4/OF85hgdeutQq5Ns+7RBkHnOGV8IlhtwlqMu+J5bD4FNrHYm/x9aE6CNBdcE87da1rW72qqvb60dYgpgua7bQ95nsDDW3NN53KhqvKvArkqkWrNlELfs7y9eVo0/3ZjrIoEkk9aMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbXdGXut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3CEC4CEEA;
-	Tue,  8 Apr 2025 12:38:20 +0000 (UTC)
+	 MIME-Version; b=Hq7DGFFxUhbvGCa75CxxskYONPQMuPw7HYw1/3RnU9SzKISGXT4K6B6O9FddAChEKzCt3n9qCuZxXmD/ZDJ3YLJWjUi7QYy8bZ0RfmRDMtssN42umVLpmsF8PxgqwwPx7UClzCF3RMkCVH1VAmHQDXhEdyyo5CpedYs3+sgolGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7oWaj6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C8BC4CEE5;
+	Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115900;
-	bh=gwHF9LiEEtszT1wA1zZ3cr6uM+/Nc7b9LuDkxrhYCHc=;
+	s=korg; t=1744115455;
+	bh=71ic/70oAp7t7sN59oG5YXoDdgwn1XDAzx5052d/pok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbXdGXutdfKyYWlFxcUR3fH/5lVjHYgbpZmFyLK+Tj4czHBWdRyELeXIfkVGEG1LD
-	 S14Q6FFn0fYlD8DSbQShvl1IP8r9FmQ2P9yt1Xn7f1U9gCQLS/WvfF6xgpyAW3gOmm
-	 3hWAREh0g+bHxxeoa7jjG34MkCT2Goten8sIXGxo=
+	b=E7oWaj6Rm/sB3dKOep4wNewO7Gy80C0uUPteac299gsJXsr1yJ9zvw/hZzZf7eR5x
+	 U1b9vnNPrFjKc9mPDVp4uGZpjyZg0HLv2fsM4R9OWn35ikp1dzKbNTn/Tn7vznge63
+	 8eQay4pf++iichifcRReDVgCE7YUG3va41uOko/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/204] can: statistics: use atomic access in hot path
-Date: Tue,  8 Apr 2025 12:51:15 +0200
-Message-ID: <20250408104824.549565346@linuxfoundation.org>
+	David Owens <daowens01@gmail.com>,
+	Romain Naour <romain.naour@smile.fr>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.13 464/499] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
+Date: Tue,  8 Apr 2025 12:51:16 +0200
+Message-ID: <20250408104902.812482904@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,199 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
+commit 49d162635151d0dd04935070d7cf67137ab863aa upstream.
 
-In can_send() and can_receive() CAN messages and CAN filter matches are
-counted to be visible in the CAN procfs files.
+We have received reports about cards can become corrupt related to the
+aggressive PM support. Let's make a partial revert of the change that
+enabled the feature.
 
-KCSAN detected a data race within can_send() when two CAN frames have
-been generated by a timer event writing to the same CAN netdevice at the
-same time. Use atomic operations to access the statistics in the hot path
-to fix the KCSAN complaint.
-
-Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: David Owens <daowens01@gmail.com>
+Reported-by: Romain Naour <romain.naour@smile.fr>
+Reported-by: Robert Nelson <robertcnelson@gmail.com>
+Tested-by: Robert Nelson <robertcnelson@gmail.com>
+Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20250312121712.1168007-1-ulf.hansson@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/af_can.c | 12 ++++++------
- net/can/af_can.h | 12 ++++++------
- net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 31 deletions(-)
+ drivers/mmc/host/sdhci-omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index 7d8543e877b44..bbd8e959137d9 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
- 		netif_rx(newskb);
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
+ 	/* R1B responses is required to properly manage HW busy detection. */
+ 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
  
- 	/* update statistics */
--	pkg_stats->tx_frames++;
--	pkg_stats->tx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->tx_frames);
-+	atomic_long_inc(&pkg_stats->tx_frames_delta);
+-	/* Allow card power off and runtime PM for eMMC/SD card devices */
+-	mmc->caps |= MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
++	/*  Enable SDIO card power off. */
++	mmc->caps |= MMC_CAP_POWER_OFF_CARD;
  
- 	return 0;
- 
-@@ -648,8 +648,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	int matches;
- 
- 	/* update statistics */
--	pkg_stats->rx_frames++;
--	pkg_stats->rx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->rx_frames);
-+	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
- 	/* create non-zero unique skb identifier together with *skb */
- 	while (!(can_skb_prv(skb)->skbcnt))
-@@ -670,8 +670,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	consume_skb(skb);
- 
- 	if (matches > 0) {
--		pkg_stats->matches++;
--		pkg_stats->matches_delta++;
-+		atomic_long_inc(&pkg_stats->matches);
-+		atomic_long_inc(&pkg_stats->matches_delta);
- 	}
- }
- 
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 7c2d9161e2245..22f3352c77fec 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -66,9 +66,9 @@ struct receiver {
- struct can_pkg_stats {
- 	unsigned long jiffies_init;
- 
--	unsigned long rx_frames;
--	unsigned long tx_frames;
--	unsigned long matches;
-+	atomic_long_t rx_frames;
-+	atomic_long_t tx_frames;
-+	atomic_long_t matches;
- 
- 	unsigned long total_rx_rate;
- 	unsigned long total_tx_rate;
-@@ -82,9 +82,9 @@ struct can_pkg_stats {
- 	unsigned long max_tx_rate;
- 	unsigned long max_rx_match_ratio;
- 
--	unsigned long rx_frames_delta;
--	unsigned long tx_frames_delta;
--	unsigned long matches_delta;
-+	atomic_long_t rx_frames_delta;
-+	atomic_long_t tx_frames_delta;
-+	atomic_long_t matches_delta;
- };
- 
- /* persistent statistics */
-diff --git a/net/can/proc.c b/net/can/proc.c
-index bbce97825f13f..25fdf060e30d0 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
- 	unsigned long j = jiffies; /* snapshot */
- 
-+	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
-+	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
-+	long matches = atomic_long_read(&pkg_stats->matches);
-+	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
-+	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
-+	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
-+
- 	/* restart counting in timer context on user request */
- 	if (user_reset)
- 		can_init_stats(net);
-@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
-+	if (rx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
-+	if (tx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* matches overflow - very improbable */
--	if (pkg_stats->matches > (ULONG_MAX / 100))
-+	if (matches > (LONG_MAX / 100))
- 		can_init_stats(net);
- 
- 	/* calc total values */
--	if (pkg_stats->rx_frames)
--		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
--			pkg_stats->rx_frames;
-+	if (rx_frames)
-+		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
- 
- 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->tx_frames);
-+					    tx_frames);
- 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->rx_frames);
-+					    rx_frames);
- 
- 	/* calc current values */
--	if (pkg_stats->rx_frames_delta)
-+	if (rx_frames_delta)
- 		pkg_stats->current_rx_match_ratio =
--			(pkg_stats->matches_delta * 100) /
--			pkg_stats->rx_frames_delta;
-+			(matches_delta * 100) /	rx_frames_delta;
- 
--	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
--	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
-+	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
-+	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
- 
- 	/* check / update maximum values */
- 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
-@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
- 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
- 
- 	/* clear values for 'current rate' calculation */
--	pkg_stats->tx_frames_delta = 0;
--	pkg_stats->rx_frames_delta = 0;
--	pkg_stats->matches_delta   = 0;
-+	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->matches_delta, 0);
- 
- 	/* restart timer (one second) */
- 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
-@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
- 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
- 
- 	seq_putc(m, '\n');
--	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
--	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
--	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
-+	seq_printf(m, " %8ld transmitted frames (TXF)\n",
-+		   atomic_long_read(&pkg_stats->tx_frames));
-+	seq_printf(m, " %8ld received frames (RXF)\n",
-+		   atomic_long_read(&pkg_stats->rx_frames));
-+	seq_printf(m, " %8ld matched frames (RXMF)\n",
-+		   atomic_long_read(&pkg_stats->matches));
- 
- 	seq_putc(m, '\n');
- 
--- 
-2.39.5
-
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
 
 
 
