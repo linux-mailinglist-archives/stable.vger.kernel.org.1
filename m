@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-130235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B55DA803AD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1476EA803A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECEAD420032
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC6C142077B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FD4268FF0;
-	Tue,  8 Apr 2025 11:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C6B268FDD;
+	Tue,  8 Apr 2025 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o05+QEYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYHwdxob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DEE268FD8;
-	Tue,  8 Apr 2025 11:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7B62676E1;
+	Tue,  8 Apr 2025 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113180; cv=none; b=Juq3wffaDd0qBTJum019UOfpQ5ImNrn8reXNegb9FQyLVvL8RRKovkbTQUzHQW4SWhVuuaNEU1cICGyoobHUz8T5F8+pnlxV8G/g13tS5pvqtr/a/C7oXeCsFRTbKzwQEI3lSH+poFiMU53AJWHj6VSkcrlmoa1K6SnUX/GP2CU=
+	t=1744113191; cv=none; b=NDn6qCglAtcwy4xR1c+n1bNt42pk/ZUiGHHKDumA951W59qfbKoMP3U/Yb7Kn2S1UAbbh5TXrn5n5v5KXqwP7rcqlCHx+ZaNtPP66c2dIIodxw6+P7UQlB/lWNHt+GRebo1rm1mIb2qRIm1/LTKpk72Kz/mFqlYA7RTw91o0K2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113180; c=relaxed/simple;
-	bh=7PB9y9INk7Kvk5F/daMzTAGISrEy4td+QTm2m58s894=;
+	s=arc-20240116; t=1744113191; c=relaxed/simple;
+	bh=k/P4JMW9U5PJMCxfeKShnrFPIXoFUxJAe5mOZLQhtXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EafdyC5ic/ogoOf6ufj7aKehMwu91s8hrLIUgHA4KVzOFTNu4EzCBKF6wKntcEz5+uKroSAf1sVNqGTaeHhmpT50Eg4wpBQW2ahzMAeg3SwaSuT6SgJMtqGvESTlWEF1IZQwTYEeA2BUeBFvJfL53/8G1rOvBJR9s9LtdBTgzYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o05+QEYx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED86C4CEE5;
-	Tue,  8 Apr 2025 11:52:59 +0000 (UTC)
+	 MIME-Version; b=Dqh90kwbQ9lATlZehrAexzyIHojn/QJtyjzd5eIk3H+ar/Shr9ZCY88LWztO0Y48Sjkk7UHEljH/H9TilryaeS6Nct0mAMt/6OxYWyuahhJcOToEqenJSbwjgLUUL+49sDhU6w2hAm6d0ZLa/B15bJbkXTbOtMaNObpDU3CC54w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYHwdxob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B2DC4CEE5;
+	Tue,  8 Apr 2025 11:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113180;
-	bh=7PB9y9INk7Kvk5F/daMzTAGISrEy4td+QTm2m58s894=;
+	s=korg; t=1744113191;
+	bh=k/P4JMW9U5PJMCxfeKShnrFPIXoFUxJAe5mOZLQhtXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o05+QEYxaAWub55eLTF4T8Mr2FjltYgp/qpUmHFe4153xUDuHqgNURiJgB8eGK4ZU
-	 peGpMiMllKCp4CpaVjcbOi49NL2uzpdnqU9ZWcM3oLiPgkkIh0V+t2STEJtuKFQ5oD
-	 0Ir/9GZtgjwSn/Ts8oSZp4SDQwLORIoaCz8cbWUk=
+	b=wYHwdxobvDXStGgBsQxgTQyKqPVuDnpMmIg2xoDimfjQNBE3xZvn0UR+h0eTbnMxV
+	 etFn5QV1TGc4yxyX9w123PFDYJmr+YG4FsFfzPOVMbKjL43WAYYjbfcgz0AQWDSSgL
+	 5u/z/5BZHlslW4wDP32xPC5MlXwCNskHDI8eUvao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/268] platform/x86: dell-ddv: Fix temperature calculation
-Date: Tue,  8 Apr 2025 12:47:17 +0200
-Message-ID: <20250408104829.210865788@linuxfoundation.org>
+Subject: [PATCH 6.6 027/268] ASoC: cs35l41: check the return value from spi_setup()
+Date: Tue,  8 Apr 2025 12:47:18 +0200
+Message-ID: <20250408104829.236962721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
 References: <20250408104828.499967190@linuxfoundation.org>
@@ -61,52 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 7a248294a3145bc65eb0d8980a0a8edbb1b92db4 ]
+[ Upstream commit ad5a0970f86d82e39ebd06d45a1f7aa48a1316f8 ]
 
-On the Dell Inspiron 3505 the battery temperature is always
-0.1 degrees larger than the temperature show inside the OEM
-application.
+Currently the return value from spi_setup() is not checked for a failure.
+It is unlikely it will ever fail in this particular case but it is still
+better to add this check for the sake of completeness and correctness. This
+is cheap since it is performed once when the device is being probed.
 
-Emulate this behaviour to avoid showing strange looking values
-like 29.1 degrees.
+Handle spi_setup() return value.
 
-Fixes: 0331b1b0ba653 ("platform/x86: dell-ddv: Fix temperature scaling")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20250305053009.378609-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 872fc0b6bde8 ("ASoC: cs35l41: Set the max SPI speed for the whole device")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://patch.msgid.link/20250304115643.2748-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-ddv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l41-spi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-ddv.c b/drivers/platform/x86/dell/dell-wmi-ddv.c
-index db1e9240dd02c..8fb434b6ab4b9 100644
---- a/drivers/platform/x86/dell/dell-wmi-ddv.c
-+++ b/drivers/platform/x86/dell/dell-wmi-ddv.c
-@@ -665,8 +665,10 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *attr, char
- 	if (ret < 0)
- 		return ret;
+diff --git a/sound/soc/codecs/cs35l41-spi.c b/sound/soc/codecs/cs35l41-spi.c
+index 5c8bb24909eb4..bd73944758c6d 100644
+--- a/sound/soc/codecs/cs35l41-spi.c
++++ b/sound/soc/codecs/cs35l41-spi.c
+@@ -39,7 +39,9 @@ static int cs35l41_spi_probe(struct spi_device *spi)
+ 		return -ENOMEM;
  
--	/* Use 2731 instead of 2731.5 to avoid unnecessary rounding */
--	return sysfs_emit(buf, "%d\n", value - 2731);
-+	/* Use 2732 instead of 2731.5 to avoid unnecessary rounding and to emulate
-+	 * the behaviour of the OEM application which seems to round down the result.
-+	 */
-+	return sysfs_emit(buf, "%d\n", value - 2732);
- }
+ 	spi->max_speed_hz = CS35L41_SPI_MAX_FREQ;
+-	spi_setup(spi);
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
  
- static ssize_t eppid_show(struct device *dev, struct device_attribute *attr, char *buf)
+ 	spi_set_drvdata(spi, cs35l41);
+ 	cs35l41->regmap = devm_regmap_init_spi(spi, regmap_config);
 -- 
 2.39.5
 
