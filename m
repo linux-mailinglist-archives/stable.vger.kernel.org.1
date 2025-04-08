@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FDCA80B2E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637E0A803F4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CA6A503259
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53A0425FC9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E454826FA5D;
-	Tue,  8 Apr 2025 12:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F315E2673B7;
+	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt7rnFnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFE4TNf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D9F26FA57;
-	Tue,  8 Apr 2025 12:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF34B269B12;
+	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116559; cv=none; b=dtcEWUGrokpbGJy/wVLp/1QQyw4Wyg2SOqdnOx41vES3uEzZfpJYI2Gqqosvs6TKvae3ixrL578BUBY2MvvKCUwdgribnc+FbRukk5YlX/bN2oNJgNq3t6TzrGNeqAZ2MeyB0WZSwLjlAeBlPDtDuWeOe4zshEmZx62nwjv87b0=
+	t=1744113281; cv=none; b=aUunw6fAonHuwevTI3URMGP/LMO27bINwsIYH32uUINOlYsCmuQPJgJUAOk7adpJ4tqdJTpb040ZscsD6RIpBGsjFRRI5cXmMgyXbeZECFLMI+J4FWmteyI+HRJiBYRKxIk3YDF4SfBB6uCaH8/ZGl/JuRSojMkdte7E2MpJF1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116559; c=relaxed/simple;
-	bh=cyNARMMsY6Vk8UULX2LbPcP8MrOdnuulfl6rGThExHI=;
+	s=arc-20240116; t=1744113281; c=relaxed/simple;
+	bh=fDdZ8j2ogzMGhBoHLMXAzpNOgL3xAQuvLc/bLHhXcRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBphRytcA8r04L9W1YHhLpliS2b6wpSMpQjQ1uX5whhVj/K67gu16wDu2rGAsyZrlBp6DwzRWpx7V57nzacdCzfxU6WpvQC/ULcHXnqYhW3qz97UrpifPVMRi5E1yeWlBvEbW/wafr7NGZWov8IwIOIUld12Z99SFf48kQ1pFj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt7rnFnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C29C4CEE5;
-	Tue,  8 Apr 2025 12:49:18 +0000 (UTC)
+	 MIME-Version; b=kKM3Y34uW4mPAZHWtN8c8c9KGPBo/Q1Oybhb8kPtGZ4m2MLQPlmuqFgCJN2aVnlmdh0zlwBH8BsMowoQnbLsPaGmwV31Qp1HIQPxjDavq+R77WV+bsKDLCjpIIGetk0H06xA2IA8M8/s3RdUZ37myQ2spOWd64tfChEh7LBH4W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFE4TNf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38268C4CEE5;
+	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116559;
-	bh=cyNARMMsY6Vk8UULX2LbPcP8MrOdnuulfl6rGThExHI=;
+	s=korg; t=1744113281;
+	bh=fDdZ8j2ogzMGhBoHLMXAzpNOgL3xAQuvLc/bLHhXcRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt7rnFnxxJUVrbQ/BCad5v9jFJtgmtYJknG4aJbwKt1FHAloqGym/6OO47ANncd4W
-	 ylbhS1lSKKoT8C2VJg6O6WQQQVuBMI5lGlpKsyqKvJNGe2k3SpnjqlUiOardgoEedi
-	 UhB1/fAnTIfyuuhoWqz07TXmTgZWhLFU7DqZvUQ0=
+	b=hFE4TNf4PFkMR5pNBQeTwGVzNkb5qRPPZOqdznpE1KM7sMr5JnrMbTXq9zSR4o9iy
+	 CCCCA71MnRbVRFmjK2VMfWqEYbJLV5yXz1ljTXSgIkNCQ3Uf85KFOm5ywFWzpT9V0C
+	 mB8of4DnqLlnOewa33GCWofMmZfHy+xLrEcklxwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/423] fs/ntfs3: Prevent integer overflow in hdr_first_de()
+Subject: [PATCH 6.6 100/268] crypto: hisilicon/sec2 - fix for aead auth key length
 Date: Tue,  8 Apr 2025 12:48:31 +0200
-Message-ID: <20250408104850.051087715@linuxfoundation.org>
+Message-ID: <20250408104831.193967926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
+[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
 
-The "de_off" and "used" variables come from the disk so they both need to
-check.  The problem is that on 32bit systems if they're both greater than
-UINT_MAX - 16 then the check does work as intended because of an integer
-overflow.
+According to the HMAC RFC, the authentication key
+can be 0 bytes, and the hardware can handle this
+scenario. Therefore, remove the incorrect validation
+for this case.
 
-Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 241f2ffdd9201..1ff13b6f96132 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
- 	struct NTFS_DE *e;
- 	u16 esize;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 789e566b3bf90..d6727b8ff582b 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -1089,11 +1089,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
+ 	int blocksize, digestsize, ret;
  
--	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
-+	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
- 		return NULL;
+-	if (!keys->authkeylen) {
+-		pr_err("hisi_sec2: aead auth key error!\n");
+-		return -EINVAL;
+-	}
+-
+ 	blocksize = crypto_shash_blocksize(hash_tfm);
+ 	digestsize = crypto_shash_digestsize(hash_tfm);
+ 	if (keys->authkeylen > blocksize) {
+@@ -1105,7 +1100,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 		}
+ 		ctx->a_key_len = digestsize;
+ 	} else {
+-		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
++		if (keys->authkeylen)
++			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
+ 		ctx->a_key_len = keys->authkeylen;
+ 	}
  
- 	e = Add2Ptr(hdr, de_off);
 -- 
 2.39.5
 
