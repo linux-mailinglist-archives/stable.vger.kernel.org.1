@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AE1A803C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA08A7FDBC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E2F8445142
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69AE3189504A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A06926A0DC;
-	Tue,  8 Apr 2025 11:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE3126988C;
+	Tue,  8 Apr 2025 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FODzV1WW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqYPD87z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED3126A0D3;
-	Tue,  8 Apr 2025 11:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D055265630;
+	Tue,  8 Apr 2025 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113234; cv=none; b=a8hCAEdmYu3cHLdYCe4VjiB3wWkXlf924KU5SnxCVxE00i+bjH+ZYeBR5WD7Zh5EPMp91DpSN+EmQkPHuhleezwJE4WYjod5XjantixZaReGSX+4gnFh2syllpQI8GHz5HSc3wkw4lwF9FejS3uCH8ykDG32YZvpHQaPL5CbNiE=
+	t=1744109964; cv=none; b=gm/xB0q2+t4djxhEUXKtnv5s3GbjW7ilnCvITQd2A4U6t7mNOtOKcqjI8p3ZjlHtooyWgAxJFnUHQ71YmzZvnXmsh1VmQo5c72sp/Lr8IimqmX8+SHsn10/+eshd9aoNxJa+Z1a50lj2p4Wu2/jCTsD2WdhCMW0ozc8SWKPKSGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113234; c=relaxed/simple;
-	bh=jrYV/tj3gws3Y2DzK2M9dqrcQF634sCqVKbeQIXDN1o=;
+	s=arc-20240116; t=1744109964; c=relaxed/simple;
+	bh=tPjAUO7e9goMdEg69Y0YILdC9cK0KisOS2zknijlj9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AWgcKhZOOsXEC1lHlpvbtb7S0dR+0Qw9PM7leQJ26qzrXSxX3gIC5yltCawwtJu+aTrtv/4TD+NmSzKFHKxpQFlKZlgdjRbUeXAKn4EBIHxyGScepc48cXRHbJSaYuxkY0zAzv6Y0+DI3KVDb/rP1LpLFtUtnP8NcKbD90GJzuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FODzV1WW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56289C4CEE5;
-	Tue,  8 Apr 2025 11:53:53 +0000 (UTC)
+	 MIME-Version; b=A21E+2eLbyluMdiXfSw7l16CjESphx73lLNkfCFJdHXoI+H6LBEarygeu9MFOIl3UfDNb/s8IM2mV90FOOuRW+sbsswnjVJKNPXoRcnSSp1IiFZQnRoUwmohIrsKGjjl0Ad0Sz4XEbIhsw5rApNPbVSSVLTAaTCQOETXveEH/8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqYPD87z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EA0C4CEE5;
+	Tue,  8 Apr 2025 10:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113233;
-	bh=jrYV/tj3gws3Y2DzK2M9dqrcQF634sCqVKbeQIXDN1o=;
+	s=korg; t=1744109964;
+	bh=tPjAUO7e9goMdEg69Y0YILdC9cK0KisOS2zknijlj9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FODzV1WW/z1brCZyPturm5gbyaqKWM42ZobhduMZkTeAlGVFVnAqey2S7p8inpGW+
-	 94DhQp3fOk5EwJjTqKJUjAxiPMmMY544u9T+EHmKK5JA+fEag0W7pcJoEvDTaCJbX6
-	 xzQ/t8AsKsIBh4cBticQ/YRr2fF9N21nLoX7GkAI=
+	b=xqYPD87zeBwVsEApmhPcdI4ECaBMjBqNumG9/x6hcAGoP9sz/ViWuLxYgRxiU0zix
+	 F7n5ppiCq1Aqg0KejqY5URuEVAWj3pROl2VWy0hLI3BNtfGJycxzGIEq1kcJ0Z86Al
+	 TKKqoGvNDhIMeHaxTSWhegTdtC2gl3/vArCv2NQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/268] IB/mad: Check available slots before posting receive WRs
+Subject: [PATCH 5.10 117/227] PM: sleep: Adjust check before setting power.must_resume
 Date: Tue,  8 Apr 2025 12:48:15 +0200
-Message-ID: <20250408104830.759676178@linuxfoundation.org>
+Message-ID: <20250408104823.849793934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,134 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 37826f0a8c2f6b6add5179003b8597e32a445362 ]
+[ Upstream commit eeb87d17aceab7803a5a5bcb6cf2817b745157cf ]
 
-The ib_post_receive_mads() function handles posting receive work
-requests (WRs) to MAD QPs and is called in two cases:
-1) When a MAD port is opened.
-2) When a receive WQE is consumed upon receiving a new MAD.
+The check before setting power.must_resume in device_suspend_noirq()
+does not take power.child_count into account, but it should do that, so
+use pm_runtime_need_not_resume() in it for this purpose and adjust the
+comment next to it accordingly.
 
-Whereas, if MADs arrive during the port open phase, a race condition
-might cause an extra WR to be posted, exceeding the QP’s capacity.
-This leads to failures such as:
-infiniband mlx5_0: ib_post_recv failed: -12
-infiniband mlx5_0: Couldn't post receive WRs
-infiniband mlx5_0: Couldn't start port
-infiniband mlx5_0: Couldn't open port 1
-
-Fix this by checking the current receive count before posting a new WR.
-If the QP’s receive queue is full, do not post additional WRs.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/c4984ba3c3a98a5711a558bccefcad789587ecf1.1741875592.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 107d47b2b95e ("PM: sleep: core: Simplify the SMART_SUSPEND flag handling")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/3353728.44csPzL39Z@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/mad.c | 38 ++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ drivers/base/power/main.c    | 13 ++++++-------
+ drivers/base/power/runtime.c |  2 +-
+ include/linux/pm_runtime.h   |  2 ++
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
-index 58befbaaf0ad5..242434c09e8d8 100644
---- a/drivers/infiniband/core/mad.c
-+++ b/drivers/infiniband/core/mad.c
-@@ -2671,11 +2671,11 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 				    struct ib_mad_private *mad)
- {
- 	unsigned long flags;
--	int post, ret;
- 	struct ib_mad_private *mad_priv;
- 	struct ib_sge sg_list;
- 	struct ib_recv_wr recv_wr;
- 	struct ib_mad_queue *recv_queue = &qp_info->recv_queue;
-+	int ret = 0;
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index fbc57c4fcdd01..34f1969dab73b 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -1242,14 +1242,13 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
+ 	dev->power.is_noirq_suspended = true;
  
- 	/* Initialize common scatter list fields */
- 	sg_list.lkey = qp_info->port_priv->pd->local_dma_lkey;
-@@ -2685,7 +2685,7 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 	recv_wr.sg_list = &sg_list;
- 	recv_wr.num_sge = 1;
+ 	/*
+-	 * Skipping the resume of devices that were in use right before the
+-	 * system suspend (as indicated by their PM-runtime usage counters)
+-	 * would be suboptimal.  Also resume them if doing that is not allowed
+-	 * to be skipped.
++	 * Devices must be resumed unless they are explicitly allowed to be left
++	 * in suspend, but even in that case skipping the resume of devices that
++	 * were in use right before the system suspend (as indicated by their
++	 * runtime PM usage counters and child counters) would be suboptimal.
+ 	 */
+-	if (atomic_read(&dev->power.usage_count) > 1 ||
+-	    !(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
+-	      dev->power.may_skip_resume))
++	if (!(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
++	      dev->power.may_skip_resume) || !pm_runtime_need_not_resume(dev))
+ 		dev->power.must_resume = true;
  
--	do {
-+	while (true) {
- 		/* Allocate and map receive buffer */
- 		if (mad) {
- 			mad_priv = mad;
-@@ -2693,10 +2693,8 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 		} else {
- 			mad_priv = alloc_mad_private(port_mad_size(qp_info->port_priv),
- 						     GFP_ATOMIC);
--			if (!mad_priv) {
--				ret = -ENOMEM;
--				break;
--			}
-+			if (!mad_priv)
-+				return -ENOMEM;
- 		}
- 		sg_list.length = mad_priv_dma_size(mad_priv);
- 		sg_list.addr = ib_dma_map_single(qp_info->port_priv->device,
-@@ -2705,37 +2703,41 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 						 DMA_FROM_DEVICE);
- 		if (unlikely(ib_dma_mapping_error(qp_info->port_priv->device,
- 						  sg_list.addr))) {
--			kfree(mad_priv);
- 			ret = -ENOMEM;
--			break;
-+			goto free_mad_priv;
- 		}
- 		mad_priv->header.mapping = sg_list.addr;
- 		mad_priv->header.mad_list.mad_queue = recv_queue;
- 		mad_priv->header.mad_list.cqe.done = ib_mad_recv_done;
- 		recv_wr.wr_cqe = &mad_priv->header.mad_list.cqe;
--
--		/* Post receive WR */
- 		spin_lock_irqsave(&recv_queue->lock, flags);
--		post = (++recv_queue->count < recv_queue->max_active);
--		list_add_tail(&mad_priv->header.mad_list.list, &recv_queue->list);
-+		if (recv_queue->count >= recv_queue->max_active) {
-+			/* Fully populated the receive queue */
-+			spin_unlock_irqrestore(&recv_queue->lock, flags);
-+			break;
-+		}
-+		recv_queue->count++;
-+		list_add_tail(&mad_priv->header.mad_list.list,
-+			      &recv_queue->list);
- 		spin_unlock_irqrestore(&recv_queue->lock, flags);
-+
- 		ret = ib_post_recv(qp_info->qp, &recv_wr, NULL);
- 		if (ret) {
- 			spin_lock_irqsave(&recv_queue->lock, flags);
- 			list_del(&mad_priv->header.mad_list.list);
- 			recv_queue->count--;
- 			spin_unlock_irqrestore(&recv_queue->lock, flags);
--			ib_dma_unmap_single(qp_info->port_priv->device,
--					    mad_priv->header.mapping,
--					    mad_priv_dma_size(mad_priv),
--					    DMA_FROM_DEVICE);
--			kfree(mad_priv);
- 			dev_err(&qp_info->port_priv->device->dev,
- 				"ib_post_recv failed: %d\n", ret);
- 			break;
- 		}
--	} while (post);
-+	}
- 
-+	ib_dma_unmap_single(qp_info->port_priv->device,
-+			    mad_priv->header.mapping,
-+			    mad_priv_dma_size(mad_priv), DMA_FROM_DEVICE);
-+free_mad_priv:
-+	kfree(mad_priv);
- 	return ret;
+ 	if (dev->power.must_resume)
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index f5c9e6629f0c7..4950864d3ea50 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1811,7 +1811,7 @@ void pm_runtime_drop_link(struct device_link *link)
+ 	pm_request_idle(link->supplier);
  }
+ 
+-static bool pm_runtime_need_not_resume(struct device *dev)
++bool pm_runtime_need_not_resume(struct device *dev)
+ {
+ 	return atomic_read(&dev->power.usage_count) <= 1 &&
+ 		(atomic_read(&dev->power.child_count) == 0 ||
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index ca856e5829145..96e3256738e48 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -32,6 +32,7 @@ static inline bool queue_pm_work(struct work_struct *work)
+ 
+ extern int pm_generic_runtime_suspend(struct device *dev);
+ extern int pm_generic_runtime_resume(struct device *dev);
++extern bool pm_runtime_need_not_resume(struct device *dev);
+ extern int pm_runtime_force_suspend(struct device *dev);
+ extern int pm_runtime_force_resume(struct device *dev);
+ 
+@@ -220,6 +221,7 @@ static inline bool queue_pm_work(struct work_struct *work) { return false; }
+ 
+ static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
+ static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
++static inline bool pm_runtime_need_not_resume(struct device *dev) {return true; }
+ static inline int pm_runtime_force_suspend(struct device *dev) { return 0; }
+ static inline int pm_runtime_force_resume(struct device *dev) { return 0; }
  
 -- 
 2.39.5
