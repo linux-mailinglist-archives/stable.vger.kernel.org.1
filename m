@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B805CA7FD9C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15F0A80351
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ACEB19E0AFD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63BE37ACF6A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF9E26988E;
-	Tue,  8 Apr 2025 10:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5CC2641CC;
+	Tue,  8 Apr 2025 11:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn0M8DIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqHrUTwo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2826A1A4;
-	Tue,  8 Apr 2025 10:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7222690FB;
+	Tue,  8 Apr 2025 11:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109863; cv=none; b=V0jcEOcpZUgrmSukefkIooWoKfbDjC5nSOceDLwwKVgJ4R+h6pT9tW5fMvSUCN3shOgA+knd5FRxdnoxFuPZFVQg9qfyWrKr2KQnSddOlJjh7jiQDBQtYZondGD/BpE6cR6d5G5r5H/hKMTSogX26XXy35YihdiAXJsUOvaYloo=
+	t=1744113134; cv=none; b=dMBilaORGSUu0AueTvAAV899LfS6EL9oqdpfE3dKQSbjQTiesKCHpSv7mL2YDv3F1RP9Oo6dvU760W8uNrNv4kSTLqUH0s20BWTy15JfRmb9Ej83tEK6MJLzX+iVEQ5RhPumk8ez+PL/JwwXfpcEQCpQB5X+VEXWHMGhlF0Tgao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109863; c=relaxed/simple;
-	bh=onqPFiJPMo5Ttk6YbO3DE+BGXQ5gys/egLHyMAYmRCY=;
+	s=arc-20240116; t=1744113134; c=relaxed/simple;
+	bh=rocJ9+COYzXIw6/dD7ks8tKhSraSA5ZbPH2tTYAOqLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oa30pNwjmyujBsuTaHT6snH/feh+auOAC43+ZnxQ0+9Bp+8awIeXNZmkqBjtehc/8g1Cbl+ILqV5HvLHAtzPGlINzqF5JFDk4smE1/MnsgF1WQWF2qe+cOsQ5hkRRGOGPYkno1SQKx2LeLwVJISucWe0ucSw0Yg5yRTGgPWUpe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn0M8DIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B72EC4CEE5;
-	Tue,  8 Apr 2025 10:57:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BBY/BLp8LVhiMoEXD//HNPB1jlJvlwjSBmrBxz9IQJSl5vKBp9/x/UjdP2kdzBPgGlgqJZIjVup/lROxdL0RIXWLb1gndG0FxFKFD8T3poTs/3AuNoeMYHgAyYFyu9MrJoV/Gine+qeloCkfXcNu1dNFkDoGgKsZ3X2VuYlEwq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqHrUTwo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA4EC4CEEB;
+	Tue,  8 Apr 2025 11:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109861;
-	bh=onqPFiJPMo5Ttk6YbO3DE+BGXQ5gys/egLHyMAYmRCY=;
+	s=korg; t=1744113134;
+	bh=rocJ9+COYzXIw6/dD7ks8tKhSraSA5ZbPH2tTYAOqLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vn0M8DIVMEiPRi0VymlvqCkuk9ysxFKeQZ6Q7+l50vZkpPIa0q5HkQKf7E+4ND1C2
-	 Y2novdDDnSwOakKPUz51rhiYhmJ+kJBYjZlL5w/4PI8JgcGZ2McD7+ItOvriaRSkyi
-	 rgUp6IWjPk0Fy+PLUD14iurpSnB/iv+dCd5pmd0Q=
+	b=aqHrUTwoqzJ+Oma6sLu/2zSgkY7HYqaXtBzI0Uf34lGauq2QCHl9IgQWdbxzhVesu
+	 IuSMFLR10bpjauHEaCoJH5IQU1husMpgkiGAnSFVSQxODEvio+lt7PnKj/sISsPlce
+	 MWBM04S5aVd3AD01nkZLsYoUlbF9IVbQ4mSh59IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/227] net: atm: fix use after free in lec_send()
+Subject: [PATCH 6.6 046/268] PCI: brcmstb: Use internal register to change link capability
 Date: Tue,  8 Apr 2025 12:47:37 +0200
-Message-ID: <20250408104822.759555053@linuxfoundation.org>
+Message-ID: <20250408104829.745540813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
+[ Upstream commit 0c97321e11e0e9e18546f828492758f6aaecec59 ]
 
-The ->send() operation frees skb so save the length before calling
-->send() to avoid a use after free.
+The driver has been mistakenly writing to a read-only (RO)
+configuration space register (PCI_EXP_LNKCAP) to change the
+PCIe link capability.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Although harmless in this case, the proper write destination
+is an internal register that is reflected by PCI_EXP_LNKCAP.
+
+Thus, fix the brcm_pcie_set_gen() function to correctly update
+the link capability.
+
+Fixes: c0452137034b ("PCI: brcmstb: Add Broadcom STB PCIe host controller driver")
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250214173944.47506-3-james.quinlan@broadcom.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 7226c784dbe0c..ca9952c52fb5c 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -181,6 +181,7 @@ static void
- lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index e47a77f943b1e..54c440f09a7ab 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -378,10 +378,10 @@ static int brcm_pcie_set_ssc(struct brcm_pcie *pcie)
+ static void brcm_pcie_set_gen(struct brcm_pcie *pcie, int gen)
  {
- 	struct net_device *dev = skb->dev;
-+	unsigned int len = skb->len;
+ 	u16 lnkctl2 = readw(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
+-	u32 lnkcap = readl(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
++	u32 lnkcap = readl(pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
  
- 	ATM_SKB(skb)->vcc = vcc;
- 	atm_account_tx(vcc, skb);
-@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 	}
+ 	lnkcap = (lnkcap & ~PCI_EXP_LNKCAP_SLS) | gen;
+-	writel(lnkcap, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
++	writel(lnkcap, pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
  
- 	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	dev->stats.tx_bytes += len;
- }
- 
- static void lec_tx_timeout(struct net_device *dev, unsigned int txqueue)
+ 	lnkctl2 = (lnkctl2 & ~0xf) | gen;
+ 	writew(lnkctl2, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
 -- 
 2.39.5
 
