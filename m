@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-128794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F774A7F1C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:55:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6D5A7F1C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 399761897C73
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 007D43B42E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EE625F7A6;
-	Tue,  8 Apr 2025 00:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DE725FA23;
+	Tue,  8 Apr 2025 00:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N56u2zpX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZ6QIA5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BC825F7A1;
-	Tue,  8 Apr 2025 00:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6136525F7B1;
+	Tue,  8 Apr 2025 00:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744073643; cv=none; b=jAu5Wbr4FDvL5zW/yurMNFBO6BiaDRjZCkDIDek+8myA0SsckbJFvcVbtwPbSP4pwTuq9SOnzG+JPTS/onK33YUPrTLJ7MpGc7n1Ha5Y6utk+hYTDJ4KybzphGGS+IWSwcPuCffGwqiN+xwG88lXi63v3j05xUUF7iI3o50kqeo=
+	t=1744073647; cv=none; b=jJocIQlUCGfk1y7pVibcp3XV6qGXNFQXIST5WCMywJB+Z2hiH7PbbnPZD2GVEYZ5j+q+p4sgqJyFI2vxm3Udzw0vIxhOxAxAU6I6DH8dinCSjyJu1MUzWvuGC9aMFJE7YqGuNvHCjBXyVyVKfgWEVBVi7dpxtvMG3oD6ELN+HGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744073643; c=relaxed/simple;
-	bh=0kTEpk9P6j3NjzoQKYrL3gZ5oj7C2kRlUkSqokABmLY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kVGYlIAiYcNPZ3Y0Sf8kwyvqRRAyBi5YR3cX3+yeWA2zuQMASfBejIMSgRxisL2QyNoslx/CqcwXY9770tm2CKj02TxBeTwB5VFN180S1e7x0oQ+H605Da0pyMEZuvAQeLx76YJrX62Rx+EocMEXyt2dP62SpOnghf8uDDBK5YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N56u2zpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2D6C4CEDD;
-	Tue,  8 Apr 2025 00:54:01 +0000 (UTC)
+	s=arc-20240116; t=1744073647; c=relaxed/simple;
+	bh=MVR2vAI22iGvBbBnR2pt1Mw9yEChpxWKfs51ldW/Ais=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RakQB4qMC4fCqT58y7a5YW0wM3uomXwDXl+iW3rXMlV9tpIeNQGUd/db4zN9S4UwG40v7bFWLfPRao7lGeAAoniELLupv2xc32hZPtDwyenGzcYK0VqlEcg5Es72objzvX+D5hAQOgm+FU6Pe5c1p63BxAWANEHAMsskHM1NBaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZ6QIA5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FB9C4CEE8;
+	Tue,  8 Apr 2025 00:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744073643;
-	bh=0kTEpk9P6j3NjzoQKYrL3gZ5oj7C2kRlUkSqokABmLY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=N56u2zpXfAAwfOJHvBkRrW5PEiaTBiPJZQkkzoTA6gEsmfAEnKZugFaLzj8Y93gl1
-	 trPCXwy07wETmCCE8uMUCDCLfiSqyC8fZtKb+wtMsN7l+aw3H2UYckUyHsdCvwE9uk
-	 5LE6jGtWcafU67OyXH0QkXXBSldYTS+Q3ViBuvzQPuHYeG2hUq8Ckl7AgGCei6p/Sf
-	 n0D5RE1cqt4WoW8NZFFTPGKW49nhOuz+VfkJOE9SJtVTux0FXWWiCLtE0jyKzEFvYN
-	 4XlOKxafm8lPYGbkeTvwniI6HFdSq47pJeslTNONk4mxKiBI1NVVUbI17pEri45eqE
-	 pxUbYsDOUDhlA==
+	s=k20201202; t=1744073647;
+	bh=MVR2vAI22iGvBbBnR2pt1Mw9yEChpxWKfs51ldW/Ais=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TZ6QIA5ulnqQCaJNV/qlpKKKfvqCJ7KSXPMWQe6xWS+TGHG+8mp+yDUs1YJWk9lJm
+	 slleQkCo+tbABqQ0UJUH2hzaRisnApg+hPr0Ph25B/dI9cJmRCex3q9uCn1YfsLJrw
+	 gDogE0cNcmiMUApYvMB7wjTEi6pKMW4FWlZOCtxGg2ZJ0wk2BowqAuXItA4zz3gvPw
+	 fcNaQ3O1hO+SQcRneZOPHl5Ao5llRkVRTT8dmNOd9hqWezifDv6wqUSBB5lF9Ekpwc
+	 JckrtuKjiuji3QCrjgozHca+56QmC++eEY/EKv2RSEt8luAQUe312P+qGi1uyOzpuz
+	 ipsQ4TQfMjICA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 1/2] kbuild: add dependency from vmlinux to sorttable
-Date: Mon,  7 Apr 2025 20:53:56 -0400
-Message-Id: <20250408005357.3334801-1-sashal@kernel.org>
+	ojeda@kernel.org,
+	aliceryhl@google.com,
+	akpm@linux-foundation.org,
+	tj@kernel.org,
+	masahiroy@kernel.org,
+	mmaurer@google.com,
+	yoann.congal@smile.fr,
+	jeffxu@chromium.org,
+	roman.gushchin@linux.dev,
+	axboe@kernel.dk,
+	chenridong@huawei.com,
+	jannh@google.com,
+	mark.rutland@arm.com,
+	vincent.guittot@linaro.org,
+	brgerst@gmail.com
+Subject: [PATCH AUTOSEL 6.12 2/2] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+Date: Mon,  7 Apr 2025 20:53:57 -0400
+Message-Id: <20250408005357.3334801-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250408005357.3334801-1-sashal@kernel.org>
+References: <20250408005357.3334801-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,37 +80,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 82c09de2d4c472ab1b973e6e033671020691e637 ]
+[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
 
-Without this dependency it's really puzzling when we bisect for a "bad"
-commit in a series of sorttable change: when "git bisect" switches to
-another commit, "make" just does nothing to vmlinux.
+kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
+the Kconfig entry we have right now:
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+	config CPU_ISOLATION
+		bool "CPU isolation"
+		depends on SMP || COMPILE_TEST
+
+allows the creation of pointless .config's which cause
+build failures.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.vmlinux | 4 ++++
- 1 file changed, 4 insertions(+)
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 1284f05555b97..0c2494ffcaf87 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -33,6 +33,10 @@ targets += vmlinux
- vmlinux: scripts/link-vmlinux.sh vmlinux.o $(KBUILD_LDS) FORCE
- 	+$(call if_changed_dep,link_vmlinux)
+diff --git a/init/Kconfig b/init/Kconfig
+index 293c565c62168..f3d2a9b50d76e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -703,7 +703,7 @@ endmenu # "CPU/Task time and stats accounting"
  
-+ifdef CONFIG_BUILDTIME_TABLE_SORT
-+vmlinux: scripts/sorttable
-+endif
-+
- # module.builtin.ranges
- # ---------------------------------------------------------------------------
- ifdef CONFIG_BUILTIN_MODULE_RANGES
+ config CPU_ISOLATION
+ 	bool "CPU isolation"
+-	depends on SMP || COMPILE_TEST
++	depends on SMP
+ 	default y
+ 	help
+ 	  Make sure that CPUs running critical tasks are not disturbed by
 -- 
 2.39.5
 
