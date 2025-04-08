@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F17CA80753
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF5EA80530
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E31338A52B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4301427E85
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29598269836;
-	Tue,  8 Apr 2025 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF2A26A1C8;
+	Tue,  8 Apr 2025 12:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+emZNhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaaw7JHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C59267731;
-	Tue,  8 Apr 2025 12:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD3D26A0FF;
+	Tue,  8 Apr 2025 12:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115123; cv=none; b=Ro5VwD71xhN2d2vPGWApZM3j8qCzuDCPvOPFuD+oR1qX8BcBmRR7vMyoMOSlOe/gKYA3YTgCXohT3uf0qqpgSY8hu3lNEIrj4hppMclCvE30HfD2K6r+alJLlrv0aGbjlvnikhAOGsY0ybxdRg6h/rSw82cMowefbl2TWlLZAeA=
+	t=1744113884; cv=none; b=TUoz/Fy0KvCFtOmVIz0HI2Z8slbqtvXgxf9nam1Od/nlZBH4qKZIk7rKgF7FecEbLlyOKBEGtz2vi3S73hiUTGVnCtmaoVYPIDRqqeZsdpLmBVh59yTQcClRNkM6K2ZC6ZGumxg6VpQq00jMaxVSUBF1FgN0t2SjqARgR8kxKvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115123; c=relaxed/simple;
-	bh=RVJsTHiSZTAiNmD/c3yxqbANJn6h34BbN472DadH9rM=;
+	s=arc-20240116; t=1744113884; c=relaxed/simple;
+	bh=UDc4/kxTdKJQJcfO5fc1y/T+h2pLYgaDg+vrDYIMqhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV4WFdOWbgUZPA2CY40bSbKnCMLFBMkTy2OpHWmjX8PgvnSuU585uEmbvr6LvUG3HTDmdu0d9Mrb/r97rM+0YvUbM1i3JFcitwkYS113YSVXKwfNow3rTdM2qLiD0spjYvLSJBJv6Y3diTqVRRo8Iz7DXpEHTR7cqSumnATzEC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+emZNhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6616FC4CEE5;
-	Tue,  8 Apr 2025 12:25:23 +0000 (UTC)
+	 MIME-Version; b=B2zm1ppfPKgyzJSsR8OjKZYuIfIGiod8KajULQNUoiN0hGo9j8B8dnsF+G4YJe9dt02QdImj8fB3QSFH+DHFSEtdZ+mF/Ytxd5OWoy+4wFkCa0qa2FOCASmNsj4vupzUdoAc9Vvs4GQpA/6Rz12mhXC5LllDLv6o9E5uPgpnAes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaaw7JHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB29C4CEE5;
+	Tue,  8 Apr 2025 12:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115123;
-	bh=RVJsTHiSZTAiNmD/c3yxqbANJn6h34BbN472DadH9rM=;
+	s=korg; t=1744113884;
+	bh=UDc4/kxTdKJQJcfO5fc1y/T+h2pLYgaDg+vrDYIMqhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+emZNhcmBU5ceJTKA2YqBbEPwuxR3nDQhxt4HR0W9POV4HF8BvKkbM7ADMOU1yrY
-	 woRCJZdt1ede3e2I48L46Y7ZWk+ZW2QLr2LGKgv2GRq3OC2Ad4EWgQiwoDyj4oORAo
-	 RxeYAVJvzRz8pvCqvtCNel1kgyPzOhvmVmcrJfVY=
+	b=uaaw7JHhqueqHWAtH6rnbZhc+KzBLawBtY2BU8RGsFkiVJ0YW9FhVsxfDqRMgpcPL
+	 WnJi5O5hx+j5PcEaGmfF2sQotgUgboONrOJRxd7pHcR4ozVBi8fMTGxN0AifzHgnZS
+	 JPGxXWlER0E536pIDfgI7WZioLYE+HSMQkvKZwSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juhan Jin <juhan.jin@foxmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 358/499] riscv: ftrace: Add parentheses in macro definitions of make_call_t0 and make_call_ra
+Subject: [PATCH 5.4 029/154] s390/cio: Fix CHPID "configure" attribute caching
 Date: Tue,  8 Apr 2025 12:49:30 +0200
-Message-ID: <20250408104900.161007643@linuxfoundation.org>
+Message-ID: <20250408104816.196304434@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juhan Jin <juhan.jin@foxmail.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 5f1a58ed91a040d4625d854f9bb3dd4995919202 ]
+[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
 
-This patch adds parentheses to parameters caller and callee of macros
-make_call_t0 and make_call_ra. Every existing invocation of these two
-macros uses a single variable for each argument, so the absence of the
-parentheses seems okay. However, future invocations might use more
-complex expressions as arguments. For example, a future invocation might
-look like this: make_call_t0(a - b, c, call). Without parentheses in the
-macro definition, the macro invocation expands to:
+In some environments, the SCLP firmware interface used to query a
+CHPID's configured state is not supported. On these environments,
+rapidly reading the corresponding sysfs attribute produces inconsistent
+results:
 
-...
-unsigned int offset = (unsigned long) c - (unsigned long) a - b;
-...
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  3
 
-which is clearly wrong.
+This occurs for example when Linux is run as a KVM guest. The
+inconsistency is a result of CIO using cached results for generating
+the value of the "configure" attribute while failing to handle the
+situation where no data was returned by SCLP.
 
-The use of parentheses ensures arguments are correctly evaluated and
-potentially saves future users of make_call_t0 and make_call_ra debugging
-trouble.
+Fix this by not updating the cache-expiration timestamp when SCLP
+returns no data. With the fix applied, the system response is
+consistent:
 
-Fixes: 6724a76cff85 ("riscv: ftrace: Reduce the detour code size to half")
-Signed-off-by: Juhan Jin <juhan.jin@foxmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/tencent_AE90AA59903A628E87E9F80E563DA5BA5508@qq.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/ftrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/cio/chp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index 3d66437a10297..af174ea0c9451 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -92,7 +92,7 @@ struct dyn_arch_ftrace {
- #define make_call_t0(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_t0(offset);					\
- 	call[1] = to_jalr_t0(offset);					\
- } while (0)
-@@ -108,7 +108,7 @@ do {									\
- #define make_call_ra(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_ra(offset);					\
- 	call[1] = to_jalr_ra(offset);					\
- } while (0)
+diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
+index 1fd982b4d64bd..18b2fc50463ba 100644
+--- a/drivers/s390/cio/chp.c
++++ b/drivers/s390/cio/chp.c
+@@ -646,7 +646,8 @@ static int info_update(void)
+ 	if (time_after(jiffies, chp_info_expires)) {
+ 		/* Data is too old, update. */
+ 		rc = sclp_chp_read_info(&chp_info);
+-		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
++		if (!rc)
++			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
+ 	}
+ 	mutex_unlock(&info_lock);
+ 
 -- 
 2.39.5
 
