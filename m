@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-128934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41587A7FDC9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4BDA80268
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 218323B6984
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:57:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 143A4173010
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1EC267B15;
-	Tue,  8 Apr 2025 10:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0E2263C90;
+	Tue,  8 Apr 2025 11:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzE9Z8Ym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la4eEWDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA5D264FB6;
-	Tue,  8 Apr 2025 10:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD02224AEB;
+	Tue,  8 Apr 2025 11:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109669; cv=none; b=iurVv5f/xADz4ApnihJpi2TyPu6d/FvjR4SmNSnqvvU8SFJJf49fIPrRloQ4m/iKPlQ+jksrqxc8jqUveoac87RIyzibnRQX6L+dTDWPlTr5XF/nM6P2pq9BhvdMooft/NlbGtsRnMs/IaZm8yRfT0TJfl2iAmXSyUUraUDUW6A=
+	t=1744112353; cv=none; b=r4bVnBtIcMvQqIPXvkqfWR2IOyS+VoVivjbHdiVgXXq1YkuLEllKGiTRZuO70TudjUB9lN4mHKCAlIDCUxU0gp58SBMtM4nzkY1fpJIiHBoOtJ46XdafFDidwnIHEauMMomNHBiMGLVcVfQVDQlWyy/xI+jMvVKF/IByAHy2TcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109669; c=relaxed/simple;
-	bh=vjS18xhvJFnp1OkDXIqmgyOYc4ehhHy6rcBhRgD7p7g=;
+	s=arc-20240116; t=1744112353; c=relaxed/simple;
+	bh=o+cP/HU412XmaGVi3FEQZZovcMRU/O4hKUif3rcJt6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxTI7nRfbDgDW0WbJVV5YPvbdNYptKyR2F795wrhq0aNEC9435W/C1ORfTRlMNkVZ4plNd2b0nIL7S3dD8LghW66JNd2sQHu79jC8lxwD7YW2e1zwvXnXI5h4ehWTAFCQ3wwBdh2qUaAKN7Pf/z9aRhFc9m8oKdq6uECcv5Q2xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzE9Z8Ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BC0C4CEF1;
-	Tue,  8 Apr 2025 10:54:28 +0000 (UTC)
+	 MIME-Version; b=mWqqiP9OGccEIgUC6xUFkMmIUtNlPEfk07N+UaSRB/e3V4mx4GdAhykQHyAN6QY+JH/gPiRh0vEwaVdoKbgzMS7yj9nNCPGPz4NpruyXr3EICxNwTtn1d1ur7l7aaotZyddn9vo4FPQjBIYKZBpGoNYaA1rYn9JQlE3AT4dzekM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la4eEWDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5933AC4CEE5;
+	Tue,  8 Apr 2025 11:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109668;
-	bh=vjS18xhvJFnp1OkDXIqmgyOYc4ehhHy6rcBhRgD7p7g=;
+	s=korg; t=1744112353;
+	bh=o+cP/HU412XmaGVi3FEQZZovcMRU/O4hKUif3rcJt6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzE9Z8YmCtjySjgNwBVgsORj/uHQp0g5SHVjCcsJyI8m2/Sud4vHqOl2c4uqsWdAw
-	 1JnEJQoDnUMXXvU7gwtlxkaeDtSNTRGH5MD0wrIqparioBk7DOzv+LPYKbC74Ox4cY
-	 1QmF21aQgNJ+a6csUg4e2TbmbG4om5CltJFS3jks=
+	b=la4eEWDgv3vvlGkw8uGX7eOjWYS+GIVwhMiwXsdpP/7rHmjsB1oSUiW6Mdq+Ceb7W
+	 qGg1A3KhoM3o5HVh6MHoPkNSmt+46L7I4yaEtTtjtdGzJFU5W0ZtJroMfdVQVjRzXk
+	 02VBByTIkqqUGAX0jdHPCykeywF8TboSlfSOL/SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/227] netfilter: nft_ct: fix use after free when attaching zone template
+Subject: [PATCH 5.15 005/279] fbdev: hyperv_fb: iounmap() the correct memory when removing a device
 Date: Tue,  8 Apr 2025 12:46:28 +0200
-Message-ID: <20250408104820.699516904@linuxfoundation.org>
+Message-ID: <20250408104826.497012446@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 34243b9ec856309339172b1507379074156947e8 ]
+[ Upstream commit 7241c886a71797cc51efc6fadec7076fcf6435c2 ]
 
-The conversion erroneously removed the refcount increment.
-In case we can use the percpu template, we need to increment
-the refcount, else it will be released when the skb gets freed.
+When a Hyper-V framebuffer device is removed, or the driver is unbound
+from a device, any allocated and/or mapped memory must be released. In
+particular, MMIO address space that was mapped to the framebuffer must
+be unmapped. Current code unmaps the wrong address, resulting in an
+error like:
 
-In case the slowpath is taken, the new template already has a
-refcount of 1.
+[ 4093.980597] iounmap: bad address 00000000c936c05c
 
-Fixes: 719774377622 ("netfilter: conntrack: convert to refcount_t api")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5cfe5612ca95 ("netfilter: nft_ct: Use __refcount_inc() for per-CPU nft_ct_pcpu_template.")
+followed by a stack dump.
+
+Commit d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for
+Hyper-V frame buffer driver") changed the kind of address stored in
+info->screen_base, and the iounmap() call in hvfb_putmem() was not
+updated accordingly.
+
+Fix this by updating hvfb_putmem() to unmap the correct address.
+
+Fixes: d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250209235252.2987-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250209235252.2987-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/hyperv_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 78631804e5c53..4b75c7113de4d 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -260,9 +260,12 @@ static void nft_ct_set_zone_eval(const struct nft_expr *expr,
- 	ct = this_cpu_read(nft_ct_pcpu_template);
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index 6a881cfd7f5c0..5fd1b33d11238 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -1130,7 +1130,7 @@ static void hvfb_putmem(struct hv_device *hdev, struct fb_info *info)
  
- 	if (likely(refcount_read(&ct->ct_general.use) == 1)) {
-+		refcount_inc(&ct->ct_general.use);
- 		nf_ct_zone_add(ct, &zone);
+ 	if (par->need_docopy) {
+ 		vfree(par->dio_vp);
+-		iounmap(info->screen_base);
++		iounmap(par->mmio_vp);
+ 		vmbus_free_mmio(par->mem->start, screen_fb_size);
  	} else {
--		/* previous skb got queued to userspace */
-+		/* previous skb got queued to userspace, allocate temporary
-+		 * one until percpu template can be reused.
-+		 */
- 		ct = nf_ct_tmpl_alloc(nft_net(pkt), &zone, GFP_ATOMIC);
- 		if (!ct) {
- 			regs->verdict.code = NF_DROP;
+ 		hvfb_release_phymem(hdev, info->fix.smem_start,
 -- 
 2.39.5
 
