@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FEA7FE59
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278C5A80248
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DF84469B2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B141442114
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F0269CFD;
-	Tue,  8 Apr 2025 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8827268C66;
+	Tue,  8 Apr 2025 11:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2Nrrb83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/1nZXcg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393BD2135CD;
-	Tue,  8 Apr 2025 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F072192F2;
+	Tue,  8 Apr 2025 11:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110262; cv=none; b=gedZJLyXQD3mJgjJb14Rn6/94qcdofc1xcjYHdfsVDdGCooLpDU+l5tgN/ovVUbYEnzwQ3Ef9KD9nc2cVfNJtw6p9MJD7JDDVBwnzgxWD12k8mHbixECDFVzO8IzL/2DSK5rf4KSEZFB5jIiQq7M7WVgVoBdApAN5BT3pToUF8E=
+	t=1744112147; cv=none; b=bpF+AomDT5d/YGPKIDNF6/aY/ojwyX3XnTXxxc8hVluAgKhutHGG9SpHTKVJWB8vCDEYf87Gu8oNiVonmxFwwywwRQK3OqilHqQLfwew4WQeYhoj1qlqvxelnZ72OkgP2Va9hKInb6apY0O2x1Ti9/Za+r+qX8r/aIpmAPJSCgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110262; c=relaxed/simple;
-	bh=IVW8+jlEsmRaoxTZ9ReDgrhROH9y0N6zuargdmWH0FI=;
+	s=arc-20240116; t=1744112147; c=relaxed/simple;
+	bh=2XUHbKdoQxPmhn/S3Z2Zilmk0Whe7tNjGXWtoK+Azf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLZ+iSNH6/z+jfBU+lk+11rIAFBJJPuLv9jM0+8kAEZx4EhkoIhMAsb2yFSJcxoeo6zjrPQBMdyUAs4hWc3IYiwkAubpQeom+Su9qgajrE502xcJXQF/FQ/nToRQw02BPxxmvaBonf4a5RyRSafk/HGRkOkguVOfjHPbJKiLZa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2Nrrb83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE66C4CEEA;
-	Tue,  8 Apr 2025 11:04:21 +0000 (UTC)
+	 MIME-Version; b=NmfbNvCKCPSy9t+as+lcMzcPCQgAlmKp5mMQpDSTUuYes5DpNqrl51RmJCvlVOjI0WZrx+w45XB4/k/BsyBXZrzb6Zu8TN46NHbnIKZUpayLjBqvAlGeezQpNtNBTjOGsXYEQwxWFmT/TY4AQ07ArjHSKzTY93oDHIVAH2GMgIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/1nZXcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E23C4CEE5;
+	Tue,  8 Apr 2025 11:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110262;
-	bh=IVW8+jlEsmRaoxTZ9ReDgrhROH9y0N6zuargdmWH0FI=;
+	s=korg; t=1744112147;
+	bh=2XUHbKdoQxPmhn/S3Z2Zilmk0Whe7tNjGXWtoK+Azf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2Nrrb83y/NI4nqGh6x1nrcLvFbFr45fU2+iy99VgjNGOtkMk2EAJEeweNtWGx2Lv
-	 M/ZlyAHFv2fqOR3ZNdXw4S8RUM4kFaihMKlakJvx8ynYG+cQyLNPj6XJ+rF7MMUR+f
-	 UtWo43g2POPwPRAviKxkyN7sgqyxmCF5pvHPAp3Q=
+	b=m/1nZXcgk6orffjBoI7KOVkQuanNoTGjtjVJn+/yABxjA7PxxmLxpGgROP+iOL1Tq
+	 /P7anbZBGHurKh3OH9CDH3gUEZeRXLRqXU2LNkwMhpTfELB8FdJsDbQtv9JlEh5AgB
+	 jW6fVhnu+nHulm09G/CJzfbH3HCnWPOQ2MCsZwlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 212/227] btrfs: handle errors from btrfs_dec_ref() properly
-Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104826.672932321@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.14 694/731] mmc: omap: Fix memory leak in mmc_omap_new_slot
+Date: Tue,  8 Apr 2025 12:49:51 +0200
+Message-ID: <20250408104930.410129926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 5eb178f373b4f16f3b42d55ff88fc94dd95b93b1 upstream.
+commit 3834a759afb817e23a7a2f09c2c9911b0ce5c588 upstream.
 
-In walk_up_proc() we BUG_ON(ret) from btrfs_dec_ref().  This is
-incorrect, we have proper error handling here, return the error.
+Add err_free_host label to properly pair mmc_alloc_host() with
+mmc_free_host() in GPIO error paths. The allocated host memory was
+leaked when GPIO lookups failed.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250318140226.19650-1-linmq006@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/omap.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5240,7 +5240,10 @@ static noinline int walk_up_proc(struct
- 				ret = btrfs_dec_ref(trans, root, eb, 1);
- 			else
- 				ret = btrfs_dec_ref(trans, root, eb, 0);
--			BUG_ON(ret); /* -ENOMEM */
-+			if (ret) {
-+				btrfs_abort_transaction(trans, ret);
-+				return ret;
-+			}
- 			if (is_fstree(root->root_key.objectid)) {
- 				ret = btrfs_qgroup_trace_leaf_items(trans, eb);
- 				if (ret) {
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1272,19 +1272,25 @@ static int mmc_omap_new_slot(struct mmc_
+ 	/* Check for some optional GPIO controls */
+ 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vsd))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
++	if (IS_ERR(slot->vsd)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
+ 				     "error looking up VSD GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vio))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
++	if (IS_ERR(slot->vio)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
+ 				     "error looking up VIO GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
+ 						    id, GPIOD_IN);
+-	if (IS_ERR(slot->cover))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
++	if (IS_ERR(slot->cover)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
+ 				     "error looking up cover switch GPIO\n");
++		goto err_free_host;
++	}
+ 
+ 	host->slots[id] = slot;
+ 
+@@ -1344,6 +1350,7 @@ err_remove_slot_name:
+ 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
+ err_remove_host:
+ 	mmc_remove_host(mmc);
++err_free_host:
+ 	mmc_free_host(mmc);
+ 	return r;
+ }
 
 
 
