@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D90DA806C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9930A8092B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C1D4C1CE8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D4377B2F69
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E0926F446;
-	Tue,  8 Apr 2025 12:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12D526FD9E;
+	Tue,  8 Apr 2025 12:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZI+i0Qq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzqOFggk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC926F443;
-	Tue,  8 Apr 2025 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C60526FD85;
+	Tue,  8 Apr 2025 12:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114669; cv=none; b=Yey+Nwll9Fb03hcI0H3uefQe76RmBc2doKNjqPQEpnnbsoN6yOPrSftkkx/yxWfCTv8S6NGMP4UPBDYZ8fKYOrUilOY8H5gQKOaejIyzv/7IE6TxwIayAcwO1dKa2ccya65MNh7KKdSSMpprWYsjpKxtyxPYuD67B4pJZ6l2T3E=
+	t=1744116273; cv=none; b=E9sssgt706tuWfEBvxmcLFZMfcHF0WSsVXBr4zHzuGKPYR4I0xRfoL6r4paNaKqIsDQtwec8ynGG0IBvR3tvvm1S6EvG0lA+c5XY9GGK8kEadyAbOx1SzYiDW6ni01c/Kl+spnIsqYpZ/ed7yWcTTX/RGH3lwFHoM4D1JOpr4Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114669; c=relaxed/simple;
-	bh=lk/PlWermvrU1ATLDZM7euW0Pj+9mSOswdTFNFzfv2w=;
+	s=arc-20240116; t=1744116273; c=relaxed/simple;
+	bh=Ua/w2j+E0Cv3Xpl0RR6+ONiVNNni70gnTYbMcK4kRlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpXfUbDIF22IjaRP4y11eJowyCoce6mzO0/uOVvpT90Pb2VLvnjSLRsQpS/T2xhLJgtVfuXbHB3YsSNqzDMUGK2lf7Htq6WoeD/PwV3Vsq6j83YKJ2HT30gfkS6/pGw8mIDf5aZ44ewIkx3Qv7TY/GHutA/P9sTGgRprHyU8sVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZI+i0Qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78D1C4CEF2;
-	Tue,  8 Apr 2025 12:17:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l9msN8IQE94MABN2eT9VMMDKrP+4oNFkSNffXjRD+8bBHCETYlxVX9W3cL8RNiZW3IfSdsGLBuCbwnZmUNUaroxL4B+aSCX4D7njASGGGHGO4iXkoDZkmvelPHzeMiqHJIXAXhotZK456YOH11AfQuGSds0MCTt60a9kI9ZesFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzqOFggk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893C5C4CEE5;
+	Tue,  8 Apr 2025 12:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114668;
-	bh=lk/PlWermvrU1ATLDZM7euW0Pj+9mSOswdTFNFzfv2w=;
+	s=korg; t=1744116272;
+	bh=Ua/w2j+E0Cv3Xpl0RR6+ONiVNNni70gnTYbMcK4kRlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZI+i0QqEc9E3jRj8on5KUw+xqcaFhgZOCzXJywdD2fq5MlQQIycLbsElkCy+tZBB
-	 AE+Zeuo54dTNeoXQRkHo5UaOxM4gYFHCz33v1YPdhe6fa56KUmUVIMvH9ebXg5p08f
-	 shgX4+oU0W8ig63OfYT0RQvNhHa+fauMLfJulVo0=
+	b=WzqOFggkk5PmGnBBvIS/svU2/Vpbjw2VYuj03MKXcscu/Vs1Ui5QRtnaYVerW0tLC
+	 B10VdTXrbZEYUnhcbDlfFQixP2F0+hkwOdekDwV6XuFpNhl3fT+bPJkCVUiKB59zTp
+	 zMNxnDv5WfbVx16C4OuGN5XZyZIA6XwWWR1nSZO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	Ashley Smith <ashley.smith@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 191/499] leds: Fix LED_OFF brightness race
-Date: Tue,  8 Apr 2025 12:46:43 +0200
-Message-ID: <20250408104855.945470618@linuxfoundation.org>
+Subject: [PATCH 6.12 078/423] drm/panthor: Update CS_STATUS_ defines to correct values
+Date: Tue,  8 Apr 2025 12:46:44 +0200
+Message-ID: <20250408104847.563229620@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Ashley Smith <ashley.smith@collabora.com>
 
-[ Upstream commit 2c70953b6f535f7698ccbf22c1f5ba26cb6c2816 ]
+[ Upstream commit c82734fbdc50dc9e568e8686622eaa4498acb81e ]
 
-While commit fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-successfully forces led_set_brightness() to be called with LED_OFF at
-least once when switching from blinking to LED on state so that
-hw-blinking can be disabled, another race remains. Indeed in
-led_set_brightness(LED_OFF) followed by led_set_brightness(any)
-scenario the following CPU scheduling can happen:
+Values for SC_STATUS_BLOCKED_REASON_ are documented in the G610 "Odin"
+GPU specification (CS_STATUS_BLOCKED_REASON register).
 
-    CPU0                                     CPU1
-    ----                                     ----
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-                                         led_set_brightness(LED_OFF) {
-                                           set_bit(BRIGHTNESS_OFF)
-					   queue_work()
-                                         }
-                                         led_set_brightness(any) {
-                                           set_bit(BRIGHTNESS)
-					   queue_work() //already queued
-                                         }
-   test_and_clear_bit(BRIGHTNESS)
-     /* LED set with brightness any */
- }
+This change updates the defines to the correct values.
 
- /* From previous CPU1 queue_work() */
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-     /* LED turned off */
-   test_and_clear_bit(BRIGHTNESS)
-     /* Clear from previous run, LED remains off */
-
-In that case the led_set_brightness(LED_OFF)/led_set_brightness(any)
-sequence will be effectively executed in reverse order and LED will
-remain off.
-
-With the introduction of commit 32360bf6a5d4 ("leds: Introduce ordered
-workqueue for LEDs events instead of system_wq") the race is easier to
-trigger as sysfs brightness configuration does not wait for
-set_brightness_delayed() work to finish (flush_work() removal).
-
-Use delayed_set_value to optionnally re-configure brightness after a
-LED_OFF. That way a LED state could be configured more that once but
-final state will always be as expected. Ensure that delayed_set_value
-modification is seen before set_bit() using smp_mb__before_atomic().
-
-Fixes: fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/19c81177059dab7b656c42063958011a8e4d1a66.1740050412.git.repk@triplefau.lt
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 2718d91816ee ("drm/panthor: Add the FW logical block")
+Signed-off-by: Ashley Smith <ashley.smith@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303180444.3768993-1-ashley.smith@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-core.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panthor/panthor_fw.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
-index f6c46d2e5276b..e3d8ddcff5670 100644
---- a/drivers/leds/led-core.c
-+++ b/drivers/leds/led-core.c
-@@ -159,8 +159,19 @@ static void set_brightness_delayed(struct work_struct *ws)
- 	 * before this work item runs once. To make sure this works properly
- 	 * handle LED_SET_BRIGHTNESS_OFF first.
- 	 */
--	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags))
-+	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags)) {
- 		set_brightness_delayed_set_brightness(led_cdev, LED_OFF);
-+		/*
-+		 * The consecutives led_set_brightness(LED_OFF),
-+		 * led_set_brightness(LED_FULL) could have been executed out of
-+		 * order (LED_FULL first), if the work_flags has been set
-+		 * between LED_SET_BRIGHTNESS_OFF and LED_SET_BRIGHTNESS of this
-+		 * work. To avoid ending with the LED turned off, turn the LED
-+		 * on again.
-+		 */
-+		if (led_cdev->delayed_set_value != LED_OFF)
-+			set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
-+	}
- 
- 	if (test_and_clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags))
- 		set_brightness_delayed_set_brightness(led_cdev, led_cdev->delayed_set_value);
-@@ -331,10 +342,13 @@ void led_set_brightness_nopm(struct led_classdev *led_cdev, unsigned int value)
- 	 * change is done immediately afterwards (before the work runs),
- 	 * it uses a separate work_flag.
- 	 */
--	if (value) {
--		led_cdev->delayed_set_value = value;
-+	led_cdev->delayed_set_value = value;
-+	/* Ensure delayed_set_value is seen before work_flags modification */
-+	smp_mb__before_atomic();
-+
-+	if (value)
- 		set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
--	} else {
-+	else {
- 		clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
- 		clear_bit(LED_SET_BLINK, &led_cdev->work_flags);
- 		set_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags);
+diff --git a/drivers/gpu/drm/panthor/panthor_fw.h b/drivers/gpu/drm/panthor/panthor_fw.h
+index 22448abde9923..6598d96c6d2aa 100644
+--- a/drivers/gpu/drm/panthor/panthor_fw.h
++++ b/drivers/gpu/drm/panthor/panthor_fw.h
+@@ -102,9 +102,9 @@ struct panthor_fw_cs_output_iface {
+ #define CS_STATUS_BLOCKED_REASON_SB_WAIT	1
+ #define CS_STATUS_BLOCKED_REASON_PROGRESS_WAIT	2
+ #define CS_STATUS_BLOCKED_REASON_SYNC_WAIT	3
+-#define CS_STATUS_BLOCKED_REASON_DEFERRED	5
+-#define CS_STATUS_BLOCKED_REASON_RES		6
+-#define CS_STATUS_BLOCKED_REASON_FLUSH		7
++#define CS_STATUS_BLOCKED_REASON_DEFERRED	4
++#define CS_STATUS_BLOCKED_REASON_RESOURCE	5
++#define CS_STATUS_BLOCKED_REASON_FLUSH		6
+ #define CS_STATUS_BLOCKED_REASON_MASK		GENMASK(3, 0)
+ 	u32 status_blocked_reason;
+ 	u32 status_wait_sync_value_hi;
 -- 
 2.39.5
 
