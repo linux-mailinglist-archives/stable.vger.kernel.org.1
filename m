@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-131236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F10A808A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB75A8049D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4551B86FA3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16A6423C8E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32AF26B94B;
-	Tue,  8 Apr 2025 12:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193D926A0E8;
+	Tue,  8 Apr 2025 12:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcHDV+iR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPyiJuHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9892686AA;
-	Tue,  8 Apr 2025 12:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB150267F57;
+	Tue,  8 Apr 2025 12:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115853; cv=none; b=ZfxVcEnoGEbw3GX9xGENKGmNI9LWMu740GHow2wluGVGfErdQvCHoPyADAsKBbbKrEPfXjVxIxX6k41WWAv1j78lX1hU2WyOuqViAiBHLgX+qcBeirPuG4ccl4ZS0/2wBNxQA2HmEn6HUm4nnl6nec84ZSSr9JdY0/0W6pp6YJA=
+	t=1744113679; cv=none; b=AaNclRbWpMW/EYLfbwzxoNkTUHdarct9C83wFcab5zRT2JkaPnq8Hcqw438N/3lGVXdI02k1MVaFpIAd9dy7wImpG2VD+a+eP9U7mHzKYRC/5OOWR6pmPqdpQJquxyJxoLkHDLc3SC6uT2T30+ce0HvdkoqS/bStJtALlN3Fnes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115853; c=relaxed/simple;
-	bh=7W1FRoWhAA6/MbB+mFA4ZXyHsvMFrvJFTMYVZXVcYyc=;
+	s=arc-20240116; t=1744113679; c=relaxed/simple;
+	bh=vjSZCsyZonu3qYhgm+pS3HFnf/IgyoA7d2R+aVXfv8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXA++tPKZuqUXPUKX2n32NByiZikw+49iIXn8BI8V0YeErd45lIs/zHyVWV1O36pVwifXokqexmtNFSEY1MU5QRkvJKnUFYhRqPq7uyo3m9gDFfoTqCwca29xk+4rhXJNJARVUx2K0r2GklF6t+ShtF50KtPx7FTidMyztcTpLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcHDV+iR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FBBC4CEE5;
-	Tue,  8 Apr 2025 12:37:32 +0000 (UTC)
+	 MIME-Version; b=rHKojVsS6Nu0vcV+cLEjCnJDviITGP6q7rNiMVRzSmJj4LhOwjkN8b3DCrxOMofpB8AeTOhNgE+6peUz5CsbX1Ib5HT54IorH1MXst0REbUakwrUSNt6DkSuSv4Z2a9U3FWkCGYaCdwUKRTc5hY0cF3VEKN6/jMrP03Bkbypp+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPyiJuHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589EBC4CEE5;
+	Tue,  8 Apr 2025 12:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115853;
-	bh=7W1FRoWhAA6/MbB+mFA4ZXyHsvMFrvJFTMYVZXVcYyc=;
+	s=korg; t=1744113679;
+	bh=vjSZCsyZonu3qYhgm+pS3HFnf/IgyoA7d2R+aVXfv8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UcHDV+iRGVt7Wp43DWLwccXPXPTw911nfdRs4qB1uGDfnetVNtYG1DG5C6RuiLWIC
-	 2EJtsGrFG4AG6PeRaURKg6CigdTbfKKzssYTZkrzD21Rqu0NNlgRBho5vWTpr0dKEu
-	 R8UBpwmYjGWj9KdDMFlhqnLqdmYUeTpVzTPon1rU=
+	b=hPyiJuHPPLIWwrkzctxiYXoSzSCBOCMbnHpTGPXlhDNwi+amU7k7JV/8p7RAKyFbm
+	 M7X3miLNQQDPP/nRjauqLk8ZRM1UMszImZkybSLKptmHVy6TqTq1gUEnIqzSMOd1JD
+	 LPIaWmwUA5HsVUMxANA++FZUuiMjk49Rj67LXg6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/204] nvme-pci: skip CMB blocks incompatible with PCI P2P DMA
-Date: Tue,  8 Apr 2025 12:51:00 +0200
-Message-ID: <20250408104824.116474841@linuxfoundation.org>
+	David Owens <daowens01@gmail.com>,
+	Romain Naour <romain.naour@smile.fr>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.6 250/268] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
+Date: Tue,  8 Apr 2025 12:51:01 +0200
+Message-ID: <20250408104835.329719831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 56cf7ef0d490b28fad8f8629fc135c5ab7c9f54e ]
+commit 49d162635151d0dd04935070d7cf67137ab863aa upstream.
 
-The PCI P2PDMA code will register the CMB block to the memory
-hot-plugging subsystem, which have an alignment requirement. Memory
-blocks that do not satisfy this alignment requirement (usually 2MB) will
-lead to a WARNING from memory hotplugging.
+We have received reports about cards can become corrupt related to the
+aggressive PM support. Let's make a partial revert of the change that
+enabled the feature.
 
-Verify the CMB block's address and size against the alignment and only
-try to send CMB blocks compatible with it to prevent this warning.
-
-Tested on Intel DC D4502 SSD, which has a 512K CMB block that is too
-small for memory hotplugging (thus PCI P2PDMA).
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: David Owens <daowens01@gmail.com>
+Reported-by: Romain Naour <romain.naour@smile.fr>
+Reported-by: Robert Nelson <robertcnelson@gmail.com>
+Tested-by: Robert Nelson <robertcnelson@gmail.com>
+Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20250312121712.1168007-1-ulf.hansson@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/mmc/host/sdhci-omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index bfca71f958a06..da858463b2557 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1928,6 +1928,18 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (offset > bar_size)
- 		return;
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
+ 	/* R1B responses is required to properly manage HW busy detection. */
+ 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
  
-+	/*
-+	 * Controllers may support a CMB size larger than their BAR, for
-+	 * example, due to being behind a bridge. Reduce the CMB to the
-+	 * reported size of the BAR
-+	 */
-+	size = min(size, bar_size - offset);
-+
-+	if (!IS_ALIGNED(size, memremap_compat_align()) ||
-+	    !IS_ALIGNED(pci_resource_start(pdev, bar),
-+			memremap_compat_align()))
-+		return;
-+
- 	/*
- 	 * Tell the controller about the host side address mapping the CMB,
- 	 * and enable CMB decoding for the NVMe 1.4+ scheme:
-@@ -1938,14 +1950,6 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 			     dev->bar + NVME_REG_CMBMSC);
- 	}
+-	/* Allow card power off and runtime PM for eMMC/SD card devices */
+-	mmc->caps |= MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
++	/*  Enable SDIO card power off. */
++	mmc->caps |= MMC_CAP_POWER_OFF_CARD;
  
--	/*
--	 * Controllers may support a CMB size larger than their BAR,
--	 * for example, due to being behind a bridge. Reduce the CMB to
--	 * the reported size of the BAR
--	 */
--	if (size > bar_size - offset)
--		size = bar_size - offset;
--
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
--- 
-2.39.5
-
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
 
 
 
