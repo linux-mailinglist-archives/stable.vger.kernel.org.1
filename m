@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E753BA803D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AB7A80297
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D65D17115E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870483A66E1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B52269895;
-	Tue,  8 Apr 2025 11:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646AE264A76;
+	Tue,  8 Apr 2025 11:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJR5hiRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq63Cet2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DCE268C66;
-	Tue,  8 Apr 2025 11:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE266EEA;
+	Tue,  8 Apr 2025 11:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113255; cv=none; b=bA/Cxtcjk/+EbDwRvCMtd66qqbu6FqsFl3Ng7qa67QbtTDOkuqVGfeLP/4Y9imNYNiErzIl97zm+cB8lVr4GfVEnkRMsBCBxEZfgxx2CSoHJfiklOnD1BMF90BngqwqByN3GVmwcQzmC3UD/yOq4MWzFQ+3gV5szTeXRkBhc5r4=
+	t=1744112581; cv=none; b=fi859wD7Z+iA6d3L7Hz9l0kSb85oxm+FGWkVn0fS7MUTwZ25BVghT2q0SrccFsqtEjbUEZBVie1+PeQJxrPdxlOXuSPsU1Z3iYbg9nfTzo76xCtQ3Qelp7/l4mQozMiSf+0E+rgPIY7pBykzZIeggeQf+qPYpO9y73fNjyk9NoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113255; c=relaxed/simple;
-	bh=OXGwtP3YozQehmU9muQd7ONm7XioBPE+KMIAhpRK3BY=;
+	s=arc-20240116; t=1744112581; c=relaxed/simple;
+	bh=cBk7P/pinbzlvibvpiFv5lsB43XiWywcUrEbJ72a8mM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEJC5OeL1ZagaA3+8/drDaBQe1L8bvAvwHnWOBEko3sDqbUM2bQYzVfjPB9JPWBCFUt+sbc2gOnb1ifNwCs20LCl1VK7vlJyEpcA0PojGmiCphVOHpkdklq67f4SZwg1EosBcow8ZlCTYSOls3atxGMCxZwiU3mSuuLIPVB51po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJR5hiRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895CDC4CEE7;
-	Tue,  8 Apr 2025 11:54:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FmjGq+yx+NtjsGTU/tOFh2Kmx1zfi5fz2Kg7m71CKSi6gGC8fs1gjIM31FAtQbHGl80EzCCkIPOeQUqbe1LBIXAW7NL0ifmeo50cx8gSHGqHbbXzSJg8bL6FkTuWnwj6aG5ySrbZWrz1sQ3joJaBSHN+Uv0Ufnq8WuNAJYvGlXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq63Cet2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EB5C4CEE7;
+	Tue,  8 Apr 2025 11:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113254;
-	bh=OXGwtP3YozQehmU9muQd7ONm7XioBPE+KMIAhpRK3BY=;
+	s=korg; t=1744112581;
+	bh=cBk7P/pinbzlvibvpiFv5lsB43XiWywcUrEbJ72a8mM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJR5hiRpkkr/0fPvdgKUYvBcVwzNtr4gdud4zhvBgk3RXmIl2ebTNcbgfZ+ruVO8q
-	 2BD0pHnFBFU6la+yWHPDhy4FYNNtkWbPtNut7AWDN1aCZtnt8/pQmaGvuYEdXVJoBl
-	 WAn0AV0Ebl5jadZ/XVquHoZpREviIaMAsHTkBv4A=
+	b=Cq63Cet2Gq8QaQTOXPeh5YYk42NFDfJNHqm5kSNFKgXgykq/Wna9+8Wp17glA2q1o
+	 YHP2p/OsjI7fQ86wch1aSMusyLRALEDvrVv/na/Ybt4oEGuHo7Jry3V9pglDYvnvrT
+	 etC56MPFBq+/ZufclG1xLEdXIG+npiv7zWPFzxIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/268] clk: amlogic: g12a: fix mmc A peripheral clock
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 5.15 119/279] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
 Date: Tue,  8 Apr 2025 12:48:22 +0200
-Message-ID: <20250408104830.946085637@linuxfoundation.org>
+Message-ID: <20250408104829.557270600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
+commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
 
-The bit index of the peripheral clock for mmc A is wrong
-This was probably not a problem for mmc A as the peripheral is likely left
-enabled by the bootloader.
+Hardware initialize of the timer counter channel does not occur on probe
+thus leaving the Count in an undefined state until the first
+function_write() callback is executed. Fix this by performing the proper
+hardware initialization during probe.
 
-No issues has been reported so far but it could be a problem, most likely
-some form of conflict between the ethernet and mmc A clock, breaking
-ethernet on init.
-
-Use the value provided by the documentation for mmc A before this
-becomes an actual problem.
-
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Reported-by: Csókás Bence <csokas.bence@prolan.hu>
+Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
+Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/meson/g12a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index faaf33a82721d..233ce4a4c1c2f 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4201,7 +4201,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
- static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
- static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
- static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
--static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
-+static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
- static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
- static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
- static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
--- 
-2.39.5
-
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -370,6 +370,25 @@ static int mchp_tc_probe(struct platform
+ 			channel);
+ 	}
+ 
++	/* Disable Quadrature Decoder and position measure */
++	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
++	if (ret)
++		return ret;
++
++	/* Setup the period capture mode */
++	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
++				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
++				 ATMEL_TC_TCCLKS,
++				 ATMEL_TC_CMR_MASK);
++	if (ret)
++		return ret;
++
++	/* Enable clock and trigger counter */
++	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
++			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
++	if (ret)
++		return ret;
++
+ 	priv->tc_cfg = tcb_config;
+ 	priv->regmap = regmap;
+ 	priv->counter.name = dev_name(&pdev->dev);
 
 
 
