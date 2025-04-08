@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956B8A80B86
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F06A80479
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEBB04C21BD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD15A466D9B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014FA27815E;
-	Tue,  8 Apr 2025 12:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B0A263F3B;
+	Tue,  8 Apr 2025 11:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSEvUXR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOaLELY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F79278143;
-	Tue,  8 Apr 2025 12:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A27263C83;
+	Tue,  8 Apr 2025 11:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116883; cv=none; b=Tf41TpRrF5RLST3MvL6vsyNoaKN3dnAtTMsnu2kBrSWpsJxP4MafjQpXI0FmdU2bQuRl0EMety9qQ6JVzRWHHFHAM1AHhLDoOXJUr/TRw7YdWl4hPjmvjVYnsUnV7ZVAKqa3NzB0BaU3VqTPD8E8ctQJgz99uSE/QZwhvJDv+ZQ=
+	t=1744113500; cv=none; b=K3Nzow37exA1QTzvl96pnI+/msxZkX5CUyqorhCtA11cMUae+dtpqR1RG9FeR/E8B0zrEL7pjHpRu9VjNLRzGXIsVP6JmBDWAC6Vq/4kNfpadkMJETicXvOS74E0naaEqrzS7czKCWvo1FxSi75MVTXm8/pjiOy0dZYZx3qCl8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116883; c=relaxed/simple;
-	bh=KAsCzO1P0Q4s1yMQUG8AF8Iz8oqTOUBxAfTX3TOdTnE=;
+	s=arc-20240116; t=1744113500; c=relaxed/simple;
+	bh=3rZG/bPSuAZ75HAArvjJnKqYihqvVkttjbYQei3Ryhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GhnBMIeV9Z8PYvy1LzxeRmGalK0bQgwHVszaJ8MmxnXW9tyhqeyeEs64AzOiVTA8aN5U+7GNBdTpREv4E4GR4DHaYCj+sVnlcRSwi2fugCb6jgMfLWeg1/eK84MecQzl9m8N1rUUGmw/6C/822hhzaYGLAQYnFjvnDJ7nQi41kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSEvUXR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A3DC4CEE5;
-	Tue,  8 Apr 2025 12:54:43 +0000 (UTC)
+	 MIME-Version; b=Z1/cPuJR39W5Cl1MxrJNPck7GWhQDR4ybyYg+kqALFU9wfS2OXQUoEYH8XJ9KKb2GOXpsPvC/r0vCmpY6ndVYydNsFuzHatrLtZ7nRQbM5hIEdbzajNouMNhPQM1yTamjPBSMyl6ZATjIuhm8BEoslLrHY3Usz9sWM2bGQJcrcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOaLELY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0C0C4CEE5;
+	Tue,  8 Apr 2025 11:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116883;
-	bh=KAsCzO1P0Q4s1yMQUG8AF8Iz8oqTOUBxAfTX3TOdTnE=;
+	s=korg; t=1744113500;
+	bh=3rZG/bPSuAZ75HAArvjJnKqYihqvVkttjbYQei3Ryhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSEvUXR91w5c6gejuxuD5eyxYlmmwcxD1kSckewz1Re3JSl2kk2F0jOwb4jZ30Ppo
-	 /EW85/1LvaUg7kVn0muDBo4dFehqjXqsurSRVgfDgq8txSfBu+lNMx28rWRz6NDBtS
-	 38gVreWRkGsxFjpojJFZ3JHkvUM2VgI0cWn56IdY=
+	b=uOaLELY4CgdFvVHBUcicFuF3DxLwsIqaTVQxxJbP3RkCuGTXm5uP0Qk9rThZ65yOL
+	 qEIxLRt9Ax/1swsEdXpoQylibtcap2ropa8wc3s5lQn8aF6wECm25gNA3Ne/HVvF92
+	 fvNgHFkmVefBK2MsrvTckc0K9EPSFZ+cozfLVIk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Daniel=20B=C3=A1rta?= <daniel.barta@trustlab.cz>,
-	Takashi Iwai <tiwai@suse.de>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/423] ALSA: hda: Fix speakers on ASUS EXPERTBOOK P5405CSA 1.0
-Date: Tue,  8 Apr 2025 12:49:51 +0200
-Message-ID: <20250408104851.922454533@linuxfoundation.org>
+Subject: [PATCH 6.6 181/268] wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
+Date: Tue,  8 Apr 2025 12:49:52 +0200
+Message-ID: <20250408104833.428527700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bárta <daniel.barta@trustlab.cz>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit f479ecc5ef15ed8d774968c1a8726a49420f11a0 ]
+[ Upstream commit 43e04077170799d0e6289f3e928f727e401b3d79 ]
 
-After some digging around I have found that this laptop has Cirrus's smart
-aplifiers connected to SPI bus (spi1-CSC3551:00-cs35l41-hda).
+We first want to flush the station to make sure we no longer have any
+frames being Tx by the station before the station is moved to
+un-authorized state. Failing to do that will lead to races: a frame may
+be sent after the station's state has been changed.
 
-To get them correctly detected and working I had to modify patch_realtek.c
-with ASUS EXPERTBOOK P5405CSA 1.0 SystemID (0x1043, 0x1f63) and add
-corresponding hda_quirk (ALC245_FIXUP_CS35L41_SPI_2).
+Since the API clearly states that the driver can't fail the sta_state()
+transition down the list of state, we can easily flush the station
+first, and only then call the driver's sta_state().
 
-Signed-off-by: Daniel Bárta <daniel.barta@trustlab.cz>
-Link: https://patch.msgid.link/20250227161256.18061-2-daniel.barta@trustlab.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250306123626.450bc40e8b04.I636ba96843c77f13309c15c9fd6eb0c5a52a7976@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/sta_info.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ae6b6186c7854..7dafafaf23b74 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10717,6 +10717,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f1f, "ASUS H7604JI/JV/J3D", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 5d71e8d084c45..64cf5589989bb 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ 
+ #include <linux/module.h>
+@@ -1321,9 +1321,13 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		sta->sta.addr, new_state);
+ 
+ 	/* notify the driver before the actual changes so it can
+-	 * fail the transition
++	 * fail the transition if the state is increasing.
++	 * The driver is required not to fail when the transition
++	 * is decreasing the state, so first, do all the preparation
++	 * work and only then, notify the driver.
+ 	 */
+-	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
++	if (new_state > sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
+ 		int err = drv_sta_state(sta->local, sta->sdata, sta,
+ 					sta->sta_state, new_state);
+ 		if (err)
+@@ -1399,6 +1403,16 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		break;
+ 	}
+ 
++	if (new_state < sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
++		int err = drv_sta_state(sta->local, sta->sdata, sta,
++					sta->sta_state, new_state);
++
++		WARN_ONCE(err,
++			  "Driver is not allowed to fail if the sta_state is transitioning down the list: %d\n",
++			  err);
++	}
++
+ 	sta->sta_state = new_state;
+ 
+ 	return 0;
 -- 
 2.39.5
 
