@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6B8A80207
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D818FA802E0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE28488154E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8EC1892593
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991CA264A70;
-	Tue,  8 Apr 2025 11:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4F9267F6E;
+	Tue,  8 Apr 2025 11:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS8xnrnp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfrMzm7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AF235973;
-	Tue,  8 Apr 2025 11:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1754E2676E1;
+	Tue,  8 Apr 2025 11:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112224; cv=none; b=dK0bn1NbhNXaBplq0u5dPW/0JnlxIqNAe3GNiYVT9wcF0vW1dYRU+hQZM/CAG2nl6SWo3zNHeHomInyddxSWJqZN9/fzNARLfk1iSW1M/Y+m6lHyFkTTFGuEa9Cf+gwPS+Wpm+GwBNIvXi9FOYM76cOT88o6+sPIwLL8RKWdu4s=
+	t=1744112783; cv=none; b=ZzVA9eMpbJtI1xPQjSNP3QphBGfrmUBj52koAiK+3CjtgBhOwp7u5jJfvRve0TTvoEofrwSgsy7gNO6g2sHhWItHUQgV1DbgbZDhe3QgyOdEMvunTUKMDwQnrZt3/2nGaSjZk5Pi8P1+03TDet9Xa1UFOc4M2ay7OULCRwVoSxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112224; c=relaxed/simple;
-	bh=jDsj6MgTzKJ5oHBIcpDnNmsvzOPCIdLAlEZxsMIordQ=;
+	s=arc-20240116; t=1744112783; c=relaxed/simple;
+	bh=A6oB4zM9GrwxOYd8LaKpfkNEiKiRc56JmMnJ+g/JYQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdHuVeheTUlpdzlXCGWyuNCTFKB9R/OPuiImnNDm4iRyweZhL34WIJvcCiq8QzVMZQSGOXUsXgBXGElShsk1UP7Ai3E2ztxCU1OBtTY1i3ysvpHl/ST6e2MuNBmJE8IEd+ndBqT8JMVZMp7+1QLt8qx9rlEUNzlpolicTXxfF6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS8xnrnp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A9FC4CEE5;
-	Tue,  8 Apr 2025 11:37:03 +0000 (UTC)
+	 MIME-Version; b=H44PwY6NIK6ga+ktwQLBs1435q3hVvvjPzZkJKj2qqMoZe5y+3SS0WWJxiisb36Pb9QPB+tqEGOSXE91Cey8OF6yZn3hiq+waPbK4K+7W7eBKOdKb3COO0oS+4gI0urndrG1KF8Igb9robEYutWV4XPDLj6QNtCJqTBKJnS8DdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfrMzm7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB40C4CEE5;
+	Tue,  8 Apr 2025 11:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112224;
-	bh=jDsj6MgTzKJ5oHBIcpDnNmsvzOPCIdLAlEZxsMIordQ=;
+	s=korg; t=1744112782;
+	bh=A6oB4zM9GrwxOYd8LaKpfkNEiKiRc56JmMnJ+g/JYQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GS8xnrnpPALquHpFYaCetsi9flmI2sjaiutEI9fReA49CQGy/lTdIaWAfdTpXhpy1
-	 nGgMVn1vnB7Y1PFUQWaaD2SY/E8nTMusqLKMrYB1DQ5CKDcu7il7NX918bT20A3NhD
-	 6fbNjLl2sJzWUus0Mnb2Rh/xuy2w9S+Slezu29rw=
+	b=DfrMzm7pf3qaGYWX11/QWqEWtmk5qLTZa3xUShuZ6bUgFezl0V8MoAkybdwaxfMKZ
+	 ccEgX3erk4FKLtNchxVEbCRDxrMuis4NcWH9OLLC1iz+hrtxmNMBcF/wiTz9VV7GPW
+	 zU3shX8kUyYFBiKJ1MJvcXwxiI78iDb/2Kxn4dQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.14 681/731] bcachefs: bch2_ioctl_subvolume_destroy() fixes
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 195/279] soundwire: slave: fix an OF node reference leak in soundwire slave device
 Date: Tue,  8 Apr 2025 12:49:38 +0200
-Message-ID: <20250408104930.108888835@linuxfoundation.org>
+Message-ID: <20250408104831.601234148@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 707549600c4a012ed71c0204a7992a679880bf33 ]
+[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
 
-bch2_evict_subvolume_inodes() was getting stuck - due to incorrectly
-pruning the dcache.
+When initializing a soundwire slave device, an OF node is stored to the
+device with refcount incremented. However, the refcount is not
+decremented in .release(), thus call of_node_put() in
+sdw_slave_release().
 
-Also, fix missing permissions checks.
-
-Reported-by: Alexander Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bcachefs/fs-ioctl.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soundwire/slave.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/bcachefs/fs-ioctl.c
-+++ b/fs/bcachefs/fs-ioctl.c
-@@ -515,10 +515,12 @@ static long bch2_ioctl_subvolume_destroy
- 		ret = -ENOENT;
- 		goto err;
- 	}
--	ret = __bch2_unlink(dir, victim, true);
-+
-+	ret =   inode_permission(file_mnt_idmap(filp), d_inode(victim), MAY_WRITE) ?:
-+		__bch2_unlink(dir, victim, true);
- 	if (!ret) {
- 		fsnotify_rmdir(dir, victim);
--		d_delete(victim);
-+		d_invalidate(victim);
- 	}
- err:
- 	inode_unlock(dir);
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index 25e76b5d4a1a3..a5a9118612de2 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -12,6 +12,7 @@ static void sdw_slave_release(struct device *dev)
+ {
+ 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
+ 
++	of_node_put(slave->dev.of_node);
+ 	mutex_destroy(&slave->sdw_dev_lock);
+ 	kfree(slave);
+ }
+-- 
+2.39.5
+
 
 
 
