@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76831A802F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7CDA8024B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B1619E2B7B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD9A460108
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB62676E1;
-	Tue,  8 Apr 2025 11:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B64D267F6E;
+	Tue,  8 Apr 2025 11:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrT+gUXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuygwWxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9DF22257E;
-	Tue,  8 Apr 2025 11:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3869B267F5F;
+	Tue,  8 Apr 2025 11:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112859; cv=none; b=TYqGLs69X/xxfdDA1R12VL07QAnohm1+KhNrKqZP2cqDQf6E8nHSkVVDA6Hs3OmC79f+ijZXtPda9dAvdpkg27YcqTeQptOohX3W2Vttjthl/Hor4qcxOcSmakZO60g2wT2Wv9EYXN2lpxqEjAUvrvEBnTZu5FjXzJrR8pySAiQ=
+	t=1744112200; cv=none; b=IPrjsk2/Mvy63WDrH7pOB9Et/Ic2qG9UUlbrDVhUWrfwInOyVYnMxyRI/u7YjLYehwQMv65jpp1RD9O8naAPu1cjHYS64g/4AjISBKsnXvDo4jWPtVFd73S42LxjBZXuw4ELvhJJhm4f4A2jOhrf+L/MAnwQQ87/wkzPsL9KBDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112859; c=relaxed/simple;
-	bh=3qmoWWPSebXY+ED6+onjWeMlUJmRmcYqZ1TkwDtgyAg=;
+	s=arc-20240116; t=1744112200; c=relaxed/simple;
+	bh=BE9mTJ4xhBnqaXs8MLDKsTLdbJ3LhpEwL7TOomo5Yz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtWqI+/kU0u5XEOIGLt3zt6DhsS2UyIrpfH5RDGnt0gF1CP60b7tBZ0RDaMCDyyyVml+JB0BEbmgmHBncFeRWpjpoqtBOpLSkkUydvxl3AsKWEO3irSi1dDhJurXmRMrqiaKzeaja+eNBEdQEHd/jkuapXNU3MUwQgBqX6nYQMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrT+gUXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E54C4CEE5;
-	Tue,  8 Apr 2025 11:47:38 +0000 (UTC)
+	 MIME-Version; b=aKQKJdJ8S1lR99AIqYTSgyxvIx0jEnYLgM5QcFkZQAcMW137MayQajuSW4x/6ZjmB8+rCha9FP5WA5sT9VzK+0NCu8aibdk3WyYZMZNCo+58wM8jg+R3cM09Tapm9haPVX5urHQinD4023MnUJXGT3ejhdOIw4azU464VuI0Lis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuygwWxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EBCC4CEE5;
+	Tue,  8 Apr 2025 11:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112859;
-	bh=3qmoWWPSebXY+ED6+onjWeMlUJmRmcYqZ1TkwDtgyAg=;
+	s=korg; t=1744112200;
+	bh=BE9mTJ4xhBnqaXs8MLDKsTLdbJ3LhpEwL7TOomo5Yz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrT+gUXeqhNl/loyt9gCxkeTmQdkHSe5Ak3MP3L/igly6w4iNQgfYtmoM03wo6y57
-	 pUEFMvjIkDG3+/H0mx3fbHWOlER70aRX6amy0L/ugk9U4CqraZDXKKH5KBUgIRsfyr
-	 2BcI0Ej6sHxMaGD2PKqDl7Lkptoz/Y0LS+c8B6Ic=
+	b=fuygwWxX4KSH1HP9SrBRyQ4u/i2CpTcncQnkMRGyRPZIrsmxzxmWj+2PSDwP4QeMn
+	 OquFU8iApI1G/dX7g1+TM2z6Kk/BKu/QGznELyqMTJxhmApdGw9z+iGX72JhKknAJm
+	 Tnz/KAl2591Az/B5QIGFMU3VLm0ZZ0iQdQ8yYVVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 225/279] affs: generate OFS sequence numbers starting at 1
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Libo Chen <libo.chen@oracle.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 711/731] tracing: Verify event formats that have "%*p.."
 Date: Tue,  8 Apr 2025 12:50:08 +0200
-Message-ID: <20250408104832.443670067@linuxfoundation.org>
+Message-ID: <20250408104930.811248871@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e4cf8ec4de4e13f156c1d61977d282d90c221085 ]
+commit ea8d7647f9ddf1f81e2027ed305299797299aa03 upstream.
 
-If I write a file to an OFS floppy image, and try to read it back on
-an emulated Amiga running Workbench 1.3, the Amiga reports a disk
-error trying to read the file. (That is, it's unable to read it _at
-all_, even to copy it to the NIL: device. It isn't a matter of getting
-the wrong data and being unable to parse the file format.)
+The trace event verifier checks the formats of trace events to make sure
+that they do not point at memory that is not in the trace event itself or
+in data that will never be freed. If an event references data that was
+allocated when the event triggered and that same data is freed before the
+event is read, then the kernel can crash by reading freed memory.
 
-This is because the 'sequence number' field in the OFS data block
-header is supposed to be based at 1, but affs writes it based at 0.
-All three locations changed by this patch were setting the sequence
-number to a variable 'bidx' which was previously obtained by dividing
-a file position by bsize, so bidx will naturally use 0 for the first
-block. Therefore all three should add 1 to that value before writing
-it into the sequence number field.
+The verifier runs at boot up (or module load) and scans the print formats
+of the events and checks their arguments to make sure that dereferenced
+pointers are safe. If the format uses "%*p.." the verifier will ignore it,
+and that could be dangerous. Cover this case as well.
 
-With this change, the Amiga successfully reads the file.
+Also add to the sample code a use case of "%*pbl".
 
-For data block reference: https://wiki.osdev.org/FFS_(Amiga)
+Link: https://lore.kernel.org/all/bcba4d76-2c3f-4d11-baf0-02905db953dd@oracle.com/
 
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
+Link: https://lore.kernel.org/20250327195311.2d89ec66@gandalf.local.home
+Reported-by: Libo Chen <libo.chen@oracle.com>
+Reviewed-by: Libo Chen <libo.chen@oracle.com>
+Tested-by: Libo Chen <libo.chen@oracle.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/affs/file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/trace/trace_events.c                |    7 +++++++
+ samples/trace_events/trace-events-sample.h |    8 ++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 25d480ea797bd..88d4e6263df96 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -598,7 +598,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 		BUG_ON(tmp > bsize);
- 		AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 		AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 		affs_fix_checksum(sb, bh);
- 		bh->b_state &= ~(1UL << BH_New);
-@@ -748,7 +748,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(bsize);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
-@@ -782,7 +782,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
--- 
-2.39.5
-
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -470,6 +470,7 @@ static void test_event_printk(struct tra
+ 			case '%':
+ 				continue;
+ 			case 'p':
++ do_pointer:
+ 				/* Find dereferencing fields */
+ 				switch (fmt[i + 1]) {
+ 				case 'B': case 'R': case 'r':
+@@ -498,6 +499,12 @@ static void test_event_printk(struct tra
+ 						continue;
+ 					if (fmt[i + j] == '*') {
+ 						star = true;
++						/* Handle %*pbl case */
++						if (!j && fmt[i + 1] == 'p') {
++							arg++;
++							i++;
++							goto do_pointer;
++						}
+ 						continue;
+ 					}
+ 					if ((fmt[i + j] == 's')) {
+--- a/samples/trace_events/trace-events-sample.h
++++ b/samples/trace_events/trace-events-sample.h
+@@ -319,7 +319,8 @@ TRACE_EVENT(foo_bar,
+ 		__assign_cpumask(cpum, cpumask_bits(mask));
+ 	),
+ 
+-	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
++	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
++		  __entry->foo, __entry->bar,
+ 
+ /*
+  * Notice here the use of some helper functions. This includes:
+@@ -370,7 +371,10 @@ TRACE_EVENT(foo_bar,
+ 
+ 		  __get_str(str), __get_str(lstr),
+ 		  __get_bitmask(cpus), __get_cpumask(cpum),
+-		  __get_str(vstr))
++		  __get_str(vstr),
++		  __get_dynamic_array_len(cpus),
++		  __get_dynamic_array_len(cpus),
++		  __get_dynamic_array(cpus))
+ );
+ 
+ /*
 
 
 
