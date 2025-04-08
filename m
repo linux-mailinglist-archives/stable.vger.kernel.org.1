@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A989A80A07
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E49EA80655
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9303C4E65D0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022171893A03
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502B26FDB7;
-	Tue,  8 Apr 2025 12:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF01F26A0C5;
+	Tue,  8 Apr 2025 12:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELnP8DwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ep/Z3K+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF12B269831;
-	Tue,  8 Apr 2025 12:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC2F26A0AF;
+	Tue,  8 Apr 2025 12:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116279; cv=none; b=ONdQ88SG/51f5WXW1lA9//zbnNWrcRtUH6Lphc7q9bMYB1uzPyfoiWd4lekMUIpCYUOv6Ksn8liGbXwMIkxJ+7x0R2s8P8fJ2ZLlcMJpSMtuD0G2VoxtZ75AIiGZLCdllWH9ZUaLDnq6V4CD3tMqY4QycJ9SJPQTYC3JGC0sV7E=
+	t=1744114676; cv=none; b=fUsm/6alTPKjyUBJ+Gt4W2nMaSPqGa8u5wDDzg+ScfH+8aNb3z56uiCfAwZLVNsg3Balo4kJBCCShLhhwqA43BzxN4Vr4+g9yXJMoqM0eIveNqEYHaRpB5p2Zs8dsQlUy8dQBUAyyP7tFMdaaBPmmUwuLrrm/2LtsIttADPCGkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116279; c=relaxed/simple;
-	bh=S51EXWuRNsXkPebjfZ4/J7K9XN+qAq5oCOKFBtWgW/M=;
+	s=arc-20240116; t=1744114676; c=relaxed/simple;
+	bh=XB6T9Gj15MsWYNExr817IiK8yqTgtGpYhbQPq/zoTqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwLp53Qm2LA2k9stBue5qeWf1Yasx7OVxdmBNrygM2C5r/vjNl1THkd66cmCZ/tBRaiZmJPJjQFRod6CCDnUOpTlHqzMwzI4q01+p5aZeApdeAYVOee9H0+0ZlUzGYs/CYorfIZq+810CWs4eO4sWGBx6UmIt25kHbQ+hf+FyyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELnP8DwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16173C4CEE5;
-	Tue,  8 Apr 2025 12:44:37 +0000 (UTC)
+	 MIME-Version; b=gTNFhVuvCdWGREAVy1PBUVUg4vdugigXWVUnrN3S2Ni2fDxm4mxyEvTSQ47Yqi5PCFENOnodzOe5irKF7MlkY+zYXhyG7k8QW6DFkUsRdS6G5nUWlAO72KJ6CrAUZ6oAA65S7bjEe8B1EeJYp1St5BJFTc+x5Jkfx+WVFwyhVgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ep/Z3K+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4FEC4CEE5;
+	Tue,  8 Apr 2025 12:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116278;
-	bh=S51EXWuRNsXkPebjfZ4/J7K9XN+qAq5oCOKFBtWgW/M=;
+	s=korg; t=1744114676;
+	bh=XB6T9Gj15MsWYNExr817IiK8yqTgtGpYhbQPq/zoTqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELnP8DwOYVNa72dCNpeqDZ+wlvLePhEAt/KKxDjSLXJbX0i8eWue9DbxBQ3itewY5
-	 CorpNLr7ZMPtwqaRDvPqToh9WtQBM3E4v97UjObmbIX2CYlp54F54mPHRPb1KMyl4o
-	 zR8QqL1SxMEPlcWfvDPdxf1S+iOF8WCmcwy386Gc=
+	b=Ep/Z3K+CNvYGguHyLotW/6lG8U+wETsWkceb9OFwPM42lBPQdeBgCP1Mk9vx6wK+n
+	 rcrmq9x7s60U4lYPfcrmqG3GjLwAtaZKtbxON/IZ/H5pdVt+KhFseKE36ssGoJ8CVv
+	 HwObjsicpq7eKay+DbxpTgZWVZnjmdaunlq63pto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/423] drm/msm/a6xx: Fix a6xx indexed-regs in devcoreduump
+Subject: [PATCH 6.13 194/499] crypto: hisilicon/sec2 - fix for aead auth key length
 Date: Tue,  8 Apr 2025 12:46:46 +0200
-Message-ID: <20250408104847.608029843@linuxfoundation.org>
+Message-ID: <20250408104856.023698120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit 06dd5d86c6aef1c7609ca3a5ffa4097e475e2213 ]
+[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
 
-Somehow, possibly as a result of rebase gone badly, setting
-nr_indexed_regs for pre-a650 a6xx devices lost the setting of
-nr_indexed_regs, resulting in values getting snapshot, but omitted
-from the devcoredump.
+According to the HMAC RFC, the authentication key
+can be 0 bytes, and the hardware can handle this
+scenario. Therefore, remove the incorrect validation
+for this case.
 
-Fixes: e997ae5f45ca ("drm/msm/a6xx: Mostly implement A7xx gpu_state")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/640289/
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 0fcae53c0b140..159665cb6b14f 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -1507,6 +1507,8 @@ static void a6xx_get_indexed_registers(struct msm_gpu *gpu,
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 82827d637492a..8ea5305bc320f 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -1085,11 +1085,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
+ 	int blocksize, digestsize, ret;
  
- 	/* Restore the size in the hardware */
- 	gpu_write(gpu, REG_A6XX_CP_MEM_POOL_SIZE, mempool_size);
-+
-+	a6xx_state->nr_indexed_regs = count;
- }
+-	if (!keys->authkeylen) {
+-		pr_err("hisi_sec2: aead auth key error!\n");
+-		return -EINVAL;
+-	}
+-
+ 	blocksize = crypto_shash_blocksize(hash_tfm);
+ 	digestsize = crypto_shash_digestsize(hash_tfm);
+ 	if (keys->authkeylen > blocksize) {
+@@ -1101,7 +1096,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 		}
+ 		ctx->a_key_len = digestsize;
+ 	} else {
+-		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
++		if (keys->authkeylen)
++			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
+ 		ctx->a_key_len = keys->authkeylen;
+ 	}
  
- static void a7xx_get_indexed_registers(struct msm_gpu *gpu,
 -- 
 2.39.5
 
