@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-128796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9483A7F1D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:56:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FDAA7F1CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A611795AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E9F1898B33
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5857D25F7A1;
-	Tue,  8 Apr 2025 00:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A9725EFB9;
+	Tue,  8 Apr 2025 00:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqop2yX8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCLE7QNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B2A25EFB9;
-	Tue,  8 Apr 2025 00:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2F525EFBF;
+	Tue,  8 Apr 2025 00:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744073655; cv=none; b=Su+33noi1BvB1nJWKqjdrZX1eW/ATMdlyoPoPk4CS4rbmmGGGjiKHJKjNy3pASjojCwUACE1eYeHzBdWZsB52rvUcmf1QDVC5AAporcW7nlivT9WUQl2ck8xii5obv3+NoPMxdq7JyJy5ywxklwBJuZabPNoGbvq1cwTdNJHZC4=
+	t=1744073662; cv=none; b=YZqdYeKEwrLtu/L5KpYwejpuf5zuoZT+EyZYSfBW1Mok0m0Ms6xmppPjdAH8Igns4KKlpOFMixo2e7NCKXpjVTzFKctNjvbg65Q1qNzSc3YOiBha6AMf56vcqNuSKALzPtWQzP9hopHOKF/o6i5tEe2fqe5FQTk4UTbf9yM9JRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744073655; c=relaxed/simple;
-	bh=o9IIhpMkcq8AqUjhaGKgwTnHUVemufUNK/6bG3Ql40I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uw5sce3kX9qHGKsqEFPz+k4PhyxYyv12jgYlxXpijw10UQ5L92JynkETWMHuDGB50QCn9wm4S4SmsSduCxVvA7P8L/JA1ZniD6WSHF31p3RfnKMzaqkrEpMm/3ssbcKrn5OXBA2kcMpVniQIPEevs8HDvARKWdKlvMVmmZSI8kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqop2yX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58CDC4CEDD;
-	Tue,  8 Apr 2025 00:54:12 +0000 (UTC)
+	s=arc-20240116; t=1744073662; c=relaxed/simple;
+	bh=EkrBKqACC5C4XNctk4OYs+595jMLXhpholdr99UmyFg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PlNBrecRoE/bGKniWveHotzMJOm6YCDKXCIR/5teo/ziaI7fRrwTY9+QLnSJh1XvjdDozS5qB7CO/CE1RC0SAwFpK0LZX093SOzKA8VkbCRwRsjHkGgomrP9JNwechHfW+aXl+rh/fQUQDtd8x409e/+YUDYRhQCsaaX8LEZZXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCLE7QNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771B2C4CEE8;
+	Tue,  8 Apr 2025 00:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744073654;
-	bh=o9IIhpMkcq8AqUjhaGKgwTnHUVemufUNK/6bG3Ql40I=;
+	s=k20201202; t=1744073662;
+	bh=EkrBKqACC5C4XNctk4OYs+595jMLXhpholdr99UmyFg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=tqop2yX84SZI5eUuqXfeolaM7t8a9OteKodikteaFyLft7nppkwmiWrNg/RyOYtPk
-	 lKDH33AbvX9yS6B03Iw8Dc2DQbsw72Qwng2cW3VIWXEpwOEy333W+s0S+ZpkVvttSA
-	 dBUN/GzSNsE6AYV7jgV9kU/U9hLHu/Hvf1mYxA0O/56B7Shs6R2ClgbJKQuwofglQF
-	 RRgS6ctitEffTJqXQajkUQHwPP9m6uePtlLgHkcKEfuwECkcarDiv1IGtWprwxkVtg
-	 sPCoWzUJ/LhFEJ53jPyYKpN2FzB47jcffsuTIwGo5Makg+A25g3+0ngHovuVB6ya3p
-	 IZCWw2japm8qw==
+	b=bCLE7QNRoUSMFxAqepTSIZ2GwEcpdw3FGgkAw04mKLTDpRJnR54Xula38J1Sd32Qd
+	 0NApCjE4EG6sdVx4iiMIgOSw1kSf6+VpSneAr0TzT8O5D1PtKR1tEwXrUBf8zjk9Z0
+	 CV3H3xqn385Q/uRdj5kVYOxR1Ue0vmD+PKZZvUhmskepIxX497MMHe24ga/F5wIfTj
+	 qvCspDg0tZLqCw8O6biy/SlAIA0qHxhVr3BH8fgH1kIrnY8JU2SqrUYuHXnX2GjmA3
+	 Cj676viV++c6ESrJ9Y2dIpGyYoFeel1Bvf7Iki2/NKNsrkqRyn7hiBu8Vgp37TS17e
+	 jLwIGHqsEbmww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	ojeda@kernel.org,
 	aliceryhl@google.com,
+	akpm@linux-foundation.org,
 	masahiroy@kernel.org,
 	tj@kernel.org,
-	akpm@linux-foundation.org,
 	mmaurer@google.com,
 	yoann.congal@smile.fr,
 	jeffxu@chromium.org,
@@ -60,11 +60,11 @@ Cc: Oleg Nesterov <oleg@redhat.com>,
 	chenridong@huawei.com,
 	jannh@google.com,
 	mark.rutland@arm.com,
-	brgerst@gmail.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 6.6] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
-Date: Mon,  7 Apr 2025 20:54:07 -0400
-Message-Id: <20250408005408.3334851-1-sashal@kernel.org>
+	vincent.guittot@linaro.org,
+	brgerst@gmail.com
+Subject: [PATCH AUTOSEL 6.1] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+Date: Mon,  7 Apr 2025 20:54:15 -0400
+Message-Id: <20250408005416.3334910-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.86
+X-stable-base: Linux 6.1.133
 Content-Transfer-Encoding: 8bit
 
 From: Oleg Nesterov <oleg@redhat.com>
@@ -103,10 +103,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/init/Kconfig b/init/Kconfig
-index 1105cb53f391a..8b630143c720f 100644
+index b6786ddc88a80..8b6a2848da4a5 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -689,7 +689,7 @@ endmenu # "CPU/Task time and stats accounting"
+@@ -678,7 +678,7 @@ endmenu # "CPU/Task time and stats accounting"
  
  config CPU_ISOLATION
  	bool "CPU isolation"
