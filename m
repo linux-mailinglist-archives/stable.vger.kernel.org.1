@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CD3A809E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6DCA80BFB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395FD4E55D9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E428D5026BC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84A1279335;
-	Tue,  8 Apr 2025 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266E427F4D4;
+	Tue,  8 Apr 2025 12:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="likI+4Mk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2Fsex9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419927932D;
-	Tue,  8 Apr 2025 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CDC27F4D5;
+	Tue,  8 Apr 2025 12:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116069; cv=none; b=DRymHLLjrRwC1/L8skjqT5dOqBVGerTRXdgeiWJ05jdnV+4E521eLaCLntMZaqpxNCx8eRtU9UwPE/zqicw4vOU4NeYZy7bwQsuGtIwQPQJMgX9fOFJBJboLt2i3QAkjLt5qaHFCpsCx2ZDUTL/gSeqi02Sk36g6w4gI38NtHgM=
+	t=1744117160; cv=none; b=HjsjjuE2HXSLJtXUSItvEbDk0eIpH/zvY9scTdkbCn9LhMjjRTqDxHv7WeM9LEQoV/rAXcQ8PW6qYgAFBL8YLl40gTnlJEbShf/kqIEKBA99DIyHFifq3/5HOj3Wg43FdKcXR5BPSVBYaVcg2nA7EGxeB+s08gC7vHkt9tnWi58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116069; c=relaxed/simple;
-	bh=l8iNcYeM6ChrNpXZY5iM+3szAUCr8pxjGnCPcBYNfOk=;
+	s=arc-20240116; t=1744117160; c=relaxed/simple;
+	bh=5Y++awOS64NZXp8i7DFq0I+ULUslFjk6jlroqEeKwzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ip4WVAyYEGAvex788ioaz1FCLYCe8FMrR5KWdWP+81rDPLj9C0ODMf5aaf4g0lhnKse7n1200WhBBdLMprbUo86DW8/3dWukihhQsoHGsUPmXBew3U5k11IJ8z2vFmAJzduabz13+8n/qlkAOefqN7tN6RKP3cBP46tVsZA7P+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=likI+4Mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1403AC4CEE5;
-	Tue,  8 Apr 2025 12:41:08 +0000 (UTC)
+	 MIME-Version; b=ZbhRYVcjukP/SPZ5pO7kPDPiM1qr2miQNZef8SnidVkch174Ux/5USXmbs4jEObM+mfY0AIML/PP8N23RR1bn2tT/0HHGnACV8KB+7nHmdGVDlR9b5FLu0CStNNHJO7wejfQqyQLGdyNY2WYNLYsOekPm26+O//C02CWExRlXOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2Fsex9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08566C4CEE5;
+	Tue,  8 Apr 2025 12:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116069;
-	bh=l8iNcYeM6ChrNpXZY5iM+3szAUCr8pxjGnCPcBYNfOk=;
+	s=korg; t=1744117160;
+	bh=5Y++awOS64NZXp8i7DFq0I+ULUslFjk6jlroqEeKwzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=likI+4Mk+cJtCMgIyJ46rb60RsP8RfrQoe91FEeAGA5hwTqUdOeJdXPiznZ7nMGDG
-	 iJq5QYTvDy1Lmi6XTZhCIV5LkhAn74KwwpnHODJ/8sjVWLwKr0tCn5QdoEDUuQLnpi
-	 67ZupR77TQpH/ECNJW25g0Rya0ae3/gmSm9F27qM=
+	b=o2Fsex9U+42KA8wGVQXuoFt4f81Xe4G+20Floo7gwFW3C6Qw1nVaQHvKqQx6sP7x7
+	 v4E3FCZ7I03cEW2E7XCtB23ZkN+RcDl2rPPwX81MLGAUttPfwMAwK42m1jw9bzilHl
+	 z2BuoR0v9TNhHL39FtyRCc71jaYQFhH8LUV5BPus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 202/204] media: streamzap: fix race between device disconnection and urb callback
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 406/423] tracing/osnoise: Fix possible recursive locking for cpus_read_lock()
 Date: Tue,  8 Apr 2025 12:52:12 +0200
-Message-ID: <20250408104826.248611418@linuxfoundation.org>
+Message-ID: <20250408104855.368149883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-commit f656cfbc7a293a039d6a0c7100e1c846845148c1 upstream.
+commit 7e6b3fcc9c5294aeafed0dbe1a09a1bc899bd0f2 upstream.
 
-Syzkaller has reported a general protection fault at function
-ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
-dereference of dev->raw pointer, even though it is checked for NULL in
-the same function, which means there is a race condition. It occurs due
-to the incorrect order of actions in the streamzap_disconnect() function:
-rc_unregister_device() is called before usb_kill_urb(). The dev->raw
-pointer is freed and set to NULL in rc_unregister_device(), and only
-after that usb_kill_urb() waits for in-progress requests to finish.
+Lockdep reports this deadlock log:
 
-If rc_unregister_device() is called while streamzap_callback() handler is
-not finished, this can lead to accessing freed resources. Thus
-rc_unregister_device() should be called after usb_kill_urb().
+osnoise: could not start sampling thread
+============================================
+WARNING: possible recursive locking detected
+--------------------------------------------
+       CPU0
+       ----
+  lock(cpu_hotplug_lock);
+  lock(cpu_hotplug_lock);
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+ Call Trace:
+  <TASK>
+  print_deadlock_bug+0x282/0x3c0
+  __lock_acquire+0x1610/0x29a0
+  lock_acquire+0xcb/0x2d0
+  cpus_read_lock+0x49/0x120
+  stop_per_cpu_kthreads+0x7/0x60
+  start_kthread+0x103/0x120
+  osnoise_hotplug_workfn+0x5e/0x90
+  process_one_work+0x44f/0xb30
+  worker_thread+0x33e/0x5e0
+  kthread+0x206/0x3b0
+  ret_from_fork+0x31/0x50
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
 
-Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
+This is the deadlock scenario:
+osnoise_hotplug_workfn()
+  guard(cpus_read_lock)();      // first lock call
+  start_kthread(cpu)
+    if (IS_ERR(kthread)) {
+      stop_per_cpu_kthreads(); {
+        cpus_read_lock();      // second lock call. Cause the AA deadlock
+      }
+    }
+
+It is not necessary to call stop_per_cpu_kthreads() which stops osnoise
+kthread for every other CPUs in the system if a failure occurs during
+hotplug of a certain CPU.
+For start_per_cpu_kthreads(), if the start_kthread() call fails,
+this function calls stop_per_cpu_kthreads() to handle the error.
+Therefore, similarly, there is no need to call stop_per_cpu_kthreads()
+again within start_kthread().
+So just remove stop_per_cpu_kthreads() from start_kthread to solve this issue.
+
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://lore.kernel.org/20250321095249.2739397-1-ranxiaokai627@163.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/streamzap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_osnoise.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct
- 	if (!sz)
- 		return;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2038,7 +2038,6 @@ static int start_kthread(unsigned int cp
  
--	rc_unregister_device(sz->rdev);
- 	usb_kill_urb(sz->urb_in);
-+	rc_unregister_device(sz->rdev);
- 	usb_free_urb(sz->urb_in);
- 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+ 	if (IS_ERR(kthread)) {
+ 		pr_err(BANNER "could not start sampling thread\n");
+-		stop_per_cpu_kthreads();
+ 		return -ENOMEM;
+ 	}
  
 
 
