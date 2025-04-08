@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-128999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1389A7FD97
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B16A80357
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F0719E0220
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3078D19E0949
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E9726A0EE;
-	Tue,  8 Apr 2025 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76BD267F57;
+	Tue,  8 Apr 2025 11:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hvl/YRN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGkvFizJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB5E267B77;
-	Tue,  8 Apr 2025 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9463E264FB0;
+	Tue,  8 Apr 2025 11:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109845; cv=none; b=epvfIIJI9D5I311wcrR9UVkB9xMRdUU4wVMpZLR+xZ6O6cn0lEFB8VHrLtK7TfYlL9kLtFYLFgUkx6uEhs/bKiD88QJdm/5Admo0zw0FmOCsFymQ4+Cm/b6baS3RGxGF08W/lpfQbjW+z/NF1q1D/CEY9oRMrKLz0n79MHXXlS8=
+	t=1744113115; cv=none; b=QY6nzNSeMW/vO2tIzxE2jWfQem0A7PKGbSikVtofHbO/v+ciFcZi9UmGjCQKSKGt2pP5M4hfsgyKUbagKAEroF14JrKWkE33Z+TXTRrH/jZQeKBfHLKRZMWQwFINgAp+C61/sD/LahhdAozpTuWCKktG0mvNEyT2r04/K0omNP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109845; c=relaxed/simple;
-	bh=g9spkogedmOzCghAQIpCeQE94pRk6E9MfxMHeDDSuno=;
+	s=arc-20240116; t=1744113115; c=relaxed/simple;
+	bh=KcPNb5hySchjR0aP7UFzVPVX0h8yToP0rOn7hiK4rp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/CQUaRauzPe2RJL7Ij7bJG1fT5KmwFSwhM87NPgp/MkERsFgsAxNcQT8RY+R6V1LUhrmU00L9EqZNboWm9Ajs73VyJNKY66m1/JXSZByR9CTZzj/IG7CY2GPJIWfjoUToGmjsAQzldTcFPMdMJMMTEksRXUix0BVeVKqLMaqhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hvl/YRN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FD1C4CEE5;
-	Tue,  8 Apr 2025 10:57:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MoedzAhqw62L+OBWxFsmuV3m1d0U2DL64nyHHh3u2TlH3ONlZcKO0OyO0eAzznOBUHnnpWsBt2KIFcNIINBGMU/pYEyIUUZkATZjgcZq8t48dE3guh3hmQ1kv/TJW3Vc0a9SCTEkqk5lhBirKISJxsgQcokWLuxAdIfthdpRwNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGkvFizJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F194CC4CEE5;
+	Tue,  8 Apr 2025 11:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109845;
-	bh=g9spkogedmOzCghAQIpCeQE94pRk6E9MfxMHeDDSuno=;
+	s=korg; t=1744113115;
+	bh=KcPNb5hySchjR0aP7UFzVPVX0h8yToP0rOn7hiK4rp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hvl/YRN/xzRuahSy+8Mj/C6W3ppi3zMiyI+iSPkoV+5tJ3AW8sueuYe+Bg4Ha5s+l
-	 DWA1gHcsx9LIeZh8I8DMpo/id52n4pzek+rgZgJBlFO8Weq7XR6rBl+kgPTY0mM1aC
-	 rg/cFO4/4xyLrXLeeLSVDfLEcIh43CpZV4nx0WKk=
+	b=LGkvFizJEIVjrzZDMThCeDFOf+2cwLhrj+8KCfVpRmnyAVzqx8qOOBLnhgEyWzz1B
+	 yIW0tqFl8lKaq5JcDL6Ucx2OxpsIpz2X58eYa/frGd0FVgFQUdrqcY5ragTGNYS2c3
+	 trS7SiPYPyTJSQjGk/kdf+q2G95zdNWMT0AQ5+fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Haoyue Xu <xuhaoyue1@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Daniel Stodden <dns@arista.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/227] RDMA/hns: Remove redundant phy_addr in hns_roce_hem_list_find_mtt()
+Subject: [PATCH 6.6 040/268] PCI/ASPM: Fix link state exit during switch upstream function removal
 Date: Tue,  8 Apr 2025 12:47:31 +0200
-Message-ID: <20250408104822.585219907@linuxfoundation.org>
+Message-ID: <20250408104829.586716436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Daniel Stodden <daniel.stodden@gmail.com>
 
-[ Upstream commit 5f652387c5423a82453c5cb446a88834bf41a94b ]
+[ Upstream commit cbf937dcadfd571a434f8074d057b32cd14fbea5 ]
 
-This parameter has never been used. Remove it to simplify the function.
+Before 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to
+avoid use-after-free"), we would free the ASPM link only after the last
+function on the bus pertaining to the given link was removed.
 
-Link: https://lore.kernel.org/r/20220922123315.3732205-8-xuhaoyue1@hisilicon.com
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-Signed-off-by: Haoyue Xu <xuhaoyue1@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 25655580136d ("RDMA/hns: Fix soft lockup during bt pages loop")
+That was too late. If function 0 is removed before sibling function,
+link->downstream would point to free'd memory after.
+
+After above change, we freed the ASPM parent link state upon any function
+removal on the bus pertaining to a given link.
+
+That is too early. If the link is to a PCIe switch with MFD on the upstream
+port, then removing functions other than 0 first would free a link which
+still remains parent_link to the remaining downstream ports.
+
+The resulting GPFs are especially frequent during hot-unplug, because
+pciehp removes devices on the link bus in reverse order.
+
+On that switch, function 0 is the virtual P2P bridge to the internal bus.
+Free exactly when function 0 is removed -- before the parent link is
+obsolete, but after all subordinate links are gone.
+
+Link: https://lore.kernel.org/r/e12898835f25234561c9d7de4435590d957b85d9.1734924854.git.dns@arista.com
+Fixes: 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to avoid use-after-free")
+Signed-off-by: Daniel Stodden <dns@arista.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 7 +------
- drivers/infiniband/hw/hns/hns_roce_hem.h | 2 +-
- drivers/infiniband/hw/hns/hns_roce_mr.c  | 4 ++--
- 3 files changed, 4 insertions(+), 9 deletions(-)
+ drivers/pci/pcie/aspm.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index 61ec96b3a89d5..d4169dc584ed7 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -1462,19 +1462,17 @@ void hns_roce_hem_list_init(struct hns_roce_hem_list *hem_list)
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 0aef6dc055b92..4e995ca4de01b 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -977,16 +977,16 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 	parent_link = link->parent;
  
- void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
- 				 struct hns_roce_hem_list *hem_list,
--				 int offset, int *mtt_cnt, u64 *phy_addr)
-+				 int offset, int *mtt_cnt)
- {
- 	struct list_head *head = &hem_list->btm_bt;
- 	struct hns_roce_hem_item *hem, *temp_hem;
- 	void *cpu_base = NULL;
--	u64 phy_base = 0;
- 	int nr = 0;
+ 	/*
+-	 * link->downstream is a pointer to the pci_dev of function 0.  If
+-	 * we remove that function, the pci_dev is about to be deallocated,
+-	 * so we can't use link->downstream again.  Free the link state to
+-	 * avoid this.
++	 * Free the parent link state, no later than function 0 (i.e.
++	 * link->downstream) being removed.
+ 	 *
+-	 * If we're removing a non-0 function, it's possible we could
+-	 * retain the link state, but PCIe r6.0, sec 7.5.3.7, recommends
+-	 * programming the same ASPM Control value for all functions of
+-	 * multi-function devices, so disable ASPM for all of them.
++	 * Do not free the link state any earlier. If function 0 is a
++	 * switch upstream port, this link state is parent_link to all
++	 * subordinate ones.
+ 	 */
++	if (pdev != link->downstream)
++		goto out;
++
+ 	pcie_config_aspm_link(link, 0);
+ 	list_del(&link->sibling);
+ 	free_link_state(link);
+@@ -997,6 +997,7 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 		pcie_config_aspm_path(parent_link);
+ 	}
  
- 	list_for_each_entry_safe(hem, temp_hem, head, sibling) {
- 		if (hem_list_page_is_in_range(hem, offset)) {
- 			nr = offset - hem->start;
- 			cpu_base = hem->addr + nr * BA_BYTE_LEN;
--			phy_base = hem->dma_addr + nr * BA_BYTE_LEN;
- 			nr = hem->end + 1 - offset;
- 			break;
- 		}
-@@ -1483,8 +1481,5 @@ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
- 	if (mtt_cnt)
- 		*mtt_cnt = nr;
- 
--	if (phy_addr)
--		*phy_addr = phy_base;
--
- 	return cpu_base;
++ out:
+ 	mutex_unlock(&aspm_lock);
+ 	up_read(&pci_bus_sem);
  }
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
-index 5b2162a2b8cef..ecf5159aba9fa 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
-@@ -131,7 +131,7 @@ void hns_roce_hem_list_release(struct hns_roce_dev *hr_dev,
- 			       struct hns_roce_hem_list *hem_list);
- void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
- 				 struct hns_roce_hem_list *hem_list,
--				 int offset, int *mtt_cnt, u64 *phy_addr);
-+				 int offset, int *mtt_cnt);
- 
- static inline void hns_roce_hem_first(struct hns_roce_hem *hem,
- 				      struct hns_roce_hem_iter *iter)
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index b062301258683..66098d25cb49e 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -649,7 +649,7 @@ static int mtr_map_region(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
- 	while (offset < end && npage < max_count) {
- 		count = 0;
- 		mtts = hns_roce_hem_list_find_mtt(hr_dev, &mtr->hem_list,
--						  offset, &count, NULL);
-+						  offset, &count);
- 		if (!mtts)
- 			return -ENOBUFS;
- 
-@@ -923,7 +923,7 @@ int hns_roce_mtr_find(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
- 		mtt_count = 0;
- 		mtts = hns_roce_hem_list_find_mtt(hr_dev, &mtr->hem_list,
- 						  start_index + total,
--						  &mtt_count, NULL);
-+						  &mtt_count);
- 		if (!mtts || !mtt_count)
- 			goto done;
- 
 -- 
 2.39.5
 
