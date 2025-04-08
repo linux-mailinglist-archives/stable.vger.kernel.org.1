@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-130388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA19A80409
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E85DA8076C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA69C1B60F93
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C86DD4C69E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F67F2698A0;
-	Tue,  8 Apr 2025 11:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3842F26B0BE;
+	Tue,  8 Apr 2025 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2Jyh8jd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT/5zuKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD86267F67;
-	Tue,  8 Apr 2025 11:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EC526A0E7;
+	Tue,  8 Apr 2025 12:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113583; cv=none; b=SIsaqvRYsdyGWCTnJflBh8EOJEAjORt97y+nHp4XzKLGlIuM8vkHttQWFeNQ9OE/9mVL5/oF0tRwZuFUGBwo8KRGrrkjd25CoxOjG/h8m90/Ld85TWycD5YAqvyholOYVi21c5MgelPFtkg32pfZJG1Uqr26W3U3HugW+l6Pj2U=
+	t=1744115277; cv=none; b=OIMw541U5tqqMGHshbfPfTozS0zmGmF816RMbP8S9Jk2p93yEr+tsym3hSljwzzL4Vi8RB1rARQ7iwsWoyIGBaZtSCy0LejmEJKg6vEb4FOphRVxHoWbPadb/pl3MIoGBNwFOa1Sg6nq/LO8dRN12fDC7g/VnY1GB6sro5bWXy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113583; c=relaxed/simple;
-	bh=H5XtKZkpaeuzDGsoiF/37pGDpodIg7UJOF/tnw042fY=;
+	s=arc-20240116; t=1744115277; c=relaxed/simple;
+	bh=0cpMFj1USyUsDy1FDy/EP7swNVeaNBjUIIlK6tl6VI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ey9PDLozzTZh9N8HXj9bxWYJ9kdA+c04luhweZXQeodOJt+1gneNoC/JMhosZGXKv4/sSn17QM4c8WiVCAZJ/jJYRPaInssOdH0CJPmP/X8B5HWSNkKP/c85wmWz5U2mxLHbH84lCz1UpWzUOa5oUDrs+mmLIyxY92EC79b0fCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2Jyh8jd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0663C4CEE5;
-	Tue,  8 Apr 2025 11:59:42 +0000 (UTC)
+	 MIME-Version; b=RpWUZI1dw/lpRwQAOH2b73a0nktFrigJXxvfyu4pC02wHrtvPwmgGQnBtvxQda/7YPMnGS8Rr6e7Le6k4+HyYkxMIdlHdQScwyQ/Q4oUJFewVuduYRqD6DEipJfC5edvsz4fSjcrKWh/vxRp8R/G1YbSI7E6nffXbNaMy/Xs00w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT/5zuKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302DDC4CEE5;
+	Tue,  8 Apr 2025 12:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113583;
-	bh=H5XtKZkpaeuzDGsoiF/37pGDpodIg7UJOF/tnw042fY=;
+	s=korg; t=1744115276;
+	bh=0cpMFj1USyUsDy1FDy/EP7swNVeaNBjUIIlK6tl6VI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2Jyh8jdkLp3vz00Cv6UGxaeo1P1GVqYc39lr9NdgLXvTaYkcXxstyAo7SjXcNdeg
-	 JDBtg77CXwrqPe1LKSa+05i9zmv2EqQjuDDt0SBJshQEg1FSw10y7zl8VYAbzbjoK7
-	 ZwR1yJUvzrVxsSCopxlMQC6Xug2XOV5K3UbgwsGk=
+	b=XT/5zuKj0uz5Rl+Y86IFQ89/ztWZaanIwjjTvtw7uvijJ2/4aZ5kthHWvpBs32FxP
+	 tg+90vsLcDLnb4tDQ3PzS6zYK/7qsiVIFVUVarXkVD2OM8Fdw6fTyCaHJINeqdohjd
+	 9PKUvDXmm3GIGydcAlovTgIbejScKsoB5EvlPVU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/268] net: decrease cached dst counters in dst_release
-Date: Tue,  8 Apr 2025 12:50:24 +0200
-Message-ID: <20250408104834.326650047@linuxfoundation.org>
+Subject: [PATCH 6.13 413/499] tracing: Switch trace_events_hist.c code over to use guard()
+Date: Tue,  8 Apr 2025 12:50:25 +0200
+Message-ID: <20250408104901.524681942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +66,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 3a0a3ff6593d670af2451ec363ccb7b18aec0c0a ]
+[ Upstream commit 2b36a97aeeb71b1e4a48bfedc7f21f44aeb1e6fb ]
 
-Upstream fix ac888d58869b ("net: do not delay dst_entries_add() in
-dst_release()") moved decrementing the dst count from dst_destroy to
-dst_release to avoid accessing already freed data in case of netns
-dismantle. However in case CONFIG_DST_CACHE is enabled and OvS+tunnels
-are used, this fix is incomplete as the same issue will be seen for
-cached dsts:
+There are a couple functions in trace_events_hist.c that have "goto out" or
+equivalent on error in order to release locks that were taken. This can be
+error prone or just simply make the code more complex.
 
-  Unable to handle kernel paging request at virtual address ffff5aabf6b5c000
-  Call trace:
-   percpu_counter_add_batch+0x3c/0x160 (P)
-   dst_release+0xec/0x108
-   dst_cache_destroy+0x68/0xd8
-   dst_destroy+0x13c/0x168
-   dst_destroy_rcu+0x1c/0xb0
-   rcu_do_batch+0x18c/0x7d0
-   rcu_core+0x174/0x378
-   rcu_core_si+0x18/0x30
+Switch every location that ends with unlocking a mutex on error over to
+using the guard(mutex)() infrastructure to let the compiler worry about
+releasing locks. This makes the code easier to read and understand.
 
-Fix this by invalidating the cache, and thus decrementing cached dst
-counters, in dst_release too.
-
-Fixes: d71785ffc7e7 ("net: add dst_cache to ovs vxlan lwtunnel")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250326173634.31096-1-atenart@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/20241219201345.694601480@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dst.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/trace/trace_events_hist.c | 32 ++++++++++----------------------
+ 1 file changed, 10 insertions(+), 22 deletions(-)
 
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 137b8d1c72203..aad197e761cb4 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -167,6 +167,14 @@ static void dst_count_dec(struct dst_entry *dst)
- void dst_release(struct dst_entry *dst)
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 89e5bcb915628..dfd568054f41e 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5594,25 +5594,19 @@ static int hist_show(struct seq_file *m, void *v)
  {
- 	if (dst && rcuref_put(&dst->__rcuref)) {
-+#ifdef CONFIG_DST_CACHE
-+		if (dst->flags & DST_METADATA) {
-+			struct metadata_dst *md_dst = (struct metadata_dst *)dst;
-+
-+			if (md_dst->type == METADATA_IP_TUNNEL)
-+				dst_cache_reset_now(&md_dst->u.tun_info.dst_cache);
-+		}
-+#endif
- 		dst_count_dec(dst);
- 		call_rcu_hurry(&dst->rcu_head, dst_destroy_rcu);
+ 	struct event_trigger_data *data;
+ 	struct trace_event_file *event_file;
+-	int n = 0, ret = 0;
++	int n = 0;
+ 
+-	mutex_lock(&event_mutex);
++	guard(mutex)(&event_mutex);
+ 
+ 	event_file = event_file_file(m->private);
+-	if (unlikely(!event_file)) {
+-		ret = -ENODEV;
+-		goto out_unlock;
+-	}
++	if (unlikely(!event_file))
++		return -ENODEV;
+ 
+ 	list_for_each_entry(data, &event_file->triggers, list) {
+ 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
+ 			hist_trigger_show(m, data, n++);
  	}
+-
+- out_unlock:
+-	mutex_unlock(&event_mutex);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int event_hist_open(struct inode *inode, struct file *file)
+@@ -5873,25 +5867,19 @@ static int hist_debug_show(struct seq_file *m, void *v)
+ {
+ 	struct event_trigger_data *data;
+ 	struct trace_event_file *event_file;
+-	int n = 0, ret = 0;
++	int n = 0;
+ 
+-	mutex_lock(&event_mutex);
++	guard(mutex)(&event_mutex);
+ 
+ 	event_file = event_file_file(m->private);
+-	if (unlikely(!event_file)) {
+-		ret = -ENODEV;
+-		goto out_unlock;
+-	}
++	if (unlikely(!event_file))
++		return -ENODEV;
+ 
+ 	list_for_each_entry(data, &event_file->triggers, list) {
+ 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
+ 			hist_trigger_debug_show(m, data, n++);
+ 	}
+-
+- out_unlock:
+-	mutex_unlock(&event_mutex);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int event_hist_debug_open(struct inode *inode, struct file *file)
 -- 
 2.39.5
 
