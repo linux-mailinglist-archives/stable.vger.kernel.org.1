@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66892A80498
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF03AA8089F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484EF4250AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B338A700A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C0826B0A9;
-	Tue,  8 Apr 2025 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CA426B2DC;
+	Tue,  8 Apr 2025 12:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+BKKXR0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcvgaNuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCF426B08E;
-	Tue,  8 Apr 2025 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344926A0EC;
+	Tue,  8 Apr 2025 12:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113612; cv=none; b=m9Sal7/RhzXxWb92ZdHrSnpiQbNaowobQ/jlWBGNYbc8CXjlODIzsGTb/BBnCoKBhyPfCSXWTPt3oJDRUoE1zr4K1uO3dfBNfjA7Aen4W6N/c6zKjpBGHiNPBEu2NHbsKIdygnx/YiSBRaJEyhmqEGlafQ5rOa0ubo6Opj6r7N4=
+	t=1744115343; cv=none; b=VNtiyT85B5MvBzENjweua1bh+EFG9csdDNPRgF6kqDtSNT1+rLgiR6pahhY9GqG3pzo8RRoOT8nz8EGJh34kZxGQzyJ4baQg7YWc8wufM54cIsOBRQWHBkkkWkgc5XJ4/rSitIn2lA8UTnpD8HVWi43tzdyFGX9nTIVlSjt1jNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113612; c=relaxed/simple;
-	bh=/EtZdqdFzOaX5Mpyo5GuALnvHIqbjSZrjNCHvVn4Jkw=;
+	s=arc-20240116; t=1744115343; c=relaxed/simple;
+	bh=Ol7Om3V9k5yFEZuXj1Rmw87xNrZ122+kkihDsKDnvqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kooODhw7d+1FGIEWxm593TPa4hF/hz4W1vhW9HDG45FMB8ydkO8fuX1kfyOWoFRnAP1/lITNhlQ+sDoyTsXhf+CWnYdF6DtkHOSaVQpDboSs3RqPXO/dcI+j3PuoojnVVuV2uRslppUNT/h+bm9KuKVTzQhBGoWdVrfb96be89Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+BKKXR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B6FC4CEEB;
-	Tue,  8 Apr 2025 12:00:11 +0000 (UTC)
+	 MIME-Version; b=rhf3XRMvgpXmtu7yoMMlAErNXrDxZ1YbbnxbVe86F8mSkttvjyUz/hvmK53h3LWW0Tq3snUx0cU+9q7FzJvewKG6BfvHPY70WgansaR8rspMmP/5iAxWoPPdbDRNtehbAROJ7JPvWuBmfl5xqb7ooVpUFnP3gloinAWYLjGi+Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcvgaNuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405CDC4CEE5;
+	Tue,  8 Apr 2025 12:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113612;
-	bh=/EtZdqdFzOaX5Mpyo5GuALnvHIqbjSZrjNCHvVn4Jkw=;
+	s=korg; t=1744115343;
+	bh=Ol7Om3V9k5yFEZuXj1Rmw87xNrZ122+kkihDsKDnvqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+BKKXR0GpJPFC9SusoMewNmv+6YntJYBawMTikLb3qt9GCLbXoVteQMgOhqv+gOE
-	 f8Ti8X8ROb9KDWxgR1j/RdmeUFGleSYAkMNGYW2KVBeljEArV8GJAwblE0GeDq94fc
-	 ghaHrtjqZDNe2MbOK/L6V2PacNO2cGQTeUEIapvI=
+	b=vcvgaNuTT3I+Ho8ixsb7EG+vzyY6i5B/fy42oJ7YqRCPBLOT6U6NvRkHJ5D/BMoVv
+	 RaXPBPy1IYqhIj1LgUJVV+kf0uH3mCV+dGr7+oBWX7s16QY1wGM9kxbmxu0RcXYkCj
+	 xtMIwU8lD6M2bd6kRfMz08mQCKFUU6L0Nl+rzqg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Leo Yan <leo.yan@arm.com>,
+	stable <stable@kernel.org>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/268] perf/core: Fix child_total_time_enabled accounting bug at task exit
+Subject: [PATCH 6.13 422/499] staging: gpib: Fix Oops after disconnect in ni_usb
 Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104834.598569784@linuxfoundation.org>
+Message-ID: <20250408104901.752249053@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +62,362 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit a3c3c66670cee11eb13aa43905904bf29cb92d32 ]
+[ Upstream commit a239c6e91b665f1837cf57b97fe638ef1baf2e78 ]
 
-The perf events code fails to account for total_time_enabled of
-inactive events.
+If the usb dongle is disconnected subsequent calls to the
+driver cause a NULL dereference Oops as the bus_interface
+is set to NULL on disconnect.
 
-Here is a failure case for accounting total_time_enabled for
-CPU PMU events:
+This problem was introduced by setting usb_dev from the bus_interface
+for dev_xxx messages.
 
-  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 2s
-  ...
+Previously bus_interface was checked for NULL only in the the functions
+directly calling usb_fill_bulk_urb or usb_control_msg.
 
-  armv8_pmuv3_0/event=0x08/: 1138698008 2289429840 2174835740
-  armv8_pmuv3_1/event=0x08/: 1826791390 1950025700 847648440
-                             `          `          `
-                             `          `          > total_time_running with child
-                             `          > total_time_enabled with child
-                             > count with child
+Check for valid bus_interface on all interface entry points
+and return -ENODEV if it is NULL.
 
-  Performance counter stats for 'stress-ng --pthread=2 -t 2s':
-
-       1,138,698,008      armv8_pmuv3_0/event=0x08/                                               (94.99%)
-       1,826,791,390      armv8_pmuv3_1/event=0x08/                                               (43.47%)
-
-The two events above are opened on two different CPU PMUs, for example,
-each event is opened for a cluster in an Arm big.LITTLE system, they
-will never run on the same CPU.  In theory, the total enabled time should
-be same for both events, as two events are opened and closed together.
-
-As the result show, the two events' total enabled time including
-child event is different (2289429840 vs 1950025700).
-
-This is because child events are not accounted properly
-if a event is INACTIVE state when the task exits:
-
-  perf_event_exit_event()
-   `> perf_remove_from_context()
-     `> __perf_remove_from_context()
-       `> perf_child_detach()   -> Accumulate child_total_time_enabled
-         `> list_del_event()    -> Update child event's time
-
-The problem is the time accumulation happens prior to child event's
-time updating. Thus, it misses to account the last period's time when
-the event exits.
-
-The perf core layer follows the rule that timekeeping is tied to state
-change. To address the issue, make __perf_remove_from_context()
-handle the task exit case by passing 'DETACH_EXIT' to it and
-invoke perf_event_state() for state alongside with accounting the time.
-
-Then, perf_child_detach() populates the time into the parent's time metrics.
-
-After this patch, the bug is fixed:
-
-  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 10s
-  ...
-  armv8_pmuv3_0/event=0x08/: 15396770398 32157963940 21898169000
-  armv8_pmuv3_1/event=0x08/: 22428964974 32157963940 10259794940
-
-   Performance counter stats for 'stress-ng --pthread=2 -t 10s':
-
-      15,396,770,398      armv8_pmuv3_0/event=0x08/                                               (68.10%)
-      22,428,964,974      armv8_pmuv3_1/event=0x08/                                               (31.90%)
-
-[ mingo: Clarified the changelog. ]
-
-Fixes: ef54c1a476aef ("perf: Rework perf_event_exit_event()")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/20250326082003.1630986-1-yeoreum.yun@arm.com
+Fixes: 4934b98bb243 ("staging: gpib: Update messaging and usb_device refs in ni_usb")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250222165817.12856-1-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 93 ++++++++++++++++++-----
+ 1 file changed, 73 insertions(+), 20 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index a524329149a71..b710976fb01b1 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2333,6 +2333,7 @@ group_sched_out(struct perf_event *group_event, struct perf_event_context *ctx)
- #define DETACH_GROUP	0x01UL
- #define DETACH_CHILD	0x02UL
- #define DETACH_DEAD	0x04UL
-+#define DETACH_EXIT	0x08UL
- 
- /*
-  * Cross CPU call to remove a performance event
-@@ -2347,6 +2348,7 @@ __perf_remove_from_context(struct perf_event *event,
- 			   void *info)
+diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
+index b6c28a28ee25d..7faae29b66e61 100644
+--- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
++++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
+@@ -592,7 +592,7 @@ static int ni_usb_read(gpib_board_t *board, uint8_t *buffer, size_t length,
  {
- 	struct perf_event_pmu_context *pmu_ctx = event->pmu_ctx;
-+	enum perf_event_state state = PERF_EVENT_STATE_OFF;
- 	unsigned long flags = (unsigned long)info;
+ 	int retval, parse_retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x20;
+ 	int in_data_length;
+@@ -605,8 +605,11 @@ static int ni_usb_read(gpib_board_t *board, uint8_t *buffer, size_t length,
+ 	struct ni_usb_register reg;
  
- 	if (ctx->is_active & EVENT_TIME) {
-@@ -2358,16 +2360,19 @@ __perf_remove_from_context(struct perf_event *event,
- 	 * Ensure event_sched_out() switches to OFF, at the very least
- 	 * this avoids raising perf_pending_task() at this time.
- 	 */
--	if (flags & DETACH_DEAD)
-+	if (flags & DETACH_EXIT)
-+		state = PERF_EVENT_STATE_EXIT;
-+	if (flags & DETACH_DEAD) {
- 		event->pending_disable = 1;
-+		state = PERF_EVENT_STATE_DEAD;
-+	}
- 	event_sched_out(event, ctx);
-+	perf_event_set_state(event, min(event->state, state));
- 	if (flags & DETACH_GROUP)
- 		perf_group_detach(event);
- 	if (flags & DETACH_CHILD)
- 		perf_child_detach(event);
- 	list_del_event(event, ctx);
--	if (flags & DETACH_DEAD)
--		event->state = PERF_EVENT_STATE_DEAD;
+ 	*bytes_read = 0;
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
+ 	if (length > max_read_length)
+ 		return -EINVAL;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+ 		return -ENOMEM;
+@@ -719,7 +722,7 @@ static int ni_usb_write(gpib_board_t *board, uint8_t *buffer, size_t length,
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	int out_data_length;
+ 	static const int in_data_length = 0x10;
+@@ -729,9 +732,11 @@ static int ni_usb_write(gpib_board_t *board, uint8_t *buffer, size_t length,
+ 	struct ni_usb_status_block status;
+ 	static const int max_write_length = 0xffff;
  
- 	if (!pmu_ctx->nr_events) {
- 		pmu_ctx->rotate_necessary = 0;
-@@ -13140,12 +13145,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
- 		mutex_lock(&parent_event->child_mutex);
- 	}
+-	*bytes_written = 0;
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
+ 	if (length > max_write_length)
+ 		return -EINVAL;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data_length = length + 0x10;
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+@@ -818,7 +823,7 @@ static int ni_usb_command_chunk(gpib_board_t *board, uint8_t *buffer, size_t len
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	int out_data_length;
+ 	static const int in_data_length = 0x10;
+@@ -830,8 +835,11 @@ static int ni_usb_command_chunk(gpib_board_t *board, uint8_t *buffer, size_t len
+ 	static const int max_command_length = 0x10;
  
--	perf_remove_from_context(event, detach_flags);
--
--	raw_spin_lock_irq(&ctx->lock);
--	if (event->state > PERF_EVENT_STATE_EXIT)
--		perf_event_set_state(event, PERF_EVENT_STATE_EXIT);
--	raw_spin_unlock_irq(&ctx->lock);
-+	perf_remove_from_context(event, detach_flags | DETACH_EXIT);
+ 	*command_bytes_written = 0;
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
+ 	if (length > max_command_length)
+ 		length = max_command_length;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data_length = length + 0x10;
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+@@ -924,7 +932,7 @@ static int ni_usb_take_control(gpib_board_t *board, int synchronous)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x10;
+ 	static const int  in_data_length = 0x10;
+@@ -932,6 +940,9 @@ static int ni_usb_take_control(gpib_board_t *board, int synchronous)
+ 	int i = 0;
+ 	struct ni_usb_status_block status;
  
- 	/*
- 	 * Child events can be freed.
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+ 		return -ENOMEM;
+@@ -982,7 +993,7 @@ static int ni_usb_go_to_standby(gpib_board_t *board)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x10;
+ 	static const int  in_data_length = 0x20;
+@@ -990,6 +1001,9 @@ static int ni_usb_go_to_standby(gpib_board_t *board)
+ 	int i = 0;
+ 	struct ni_usb_status_block status;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+ 		return -ENOMEM;
+@@ -1038,11 +1052,14 @@ static void ni_usb_request_system_control(gpib_board_t *board, int request_contr
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[4];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	if (request_control) {
+ 		writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 		writes[i].address = CMDR;
+@@ -1086,7 +1103,7 @@ static void ni_usb_interface_clear(gpib_board_t *board, int assert)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x10;
+ 	static const int  in_data_length = 0x10;
+@@ -1094,7 +1111,10 @@ static void ni_usb_interface_clear(gpib_board_t *board, int assert)
+ 	int i = 0;
+ 	struct ni_usb_status_block status;
+ 
+-	// FIXME: we are going to pulse when assert is true, and ignore otherwise
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++// FIXME: we are going to pulse when assert is true, and ignore otherwise
+ 	if (assert == 0)
+ 		return;
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+@@ -1132,10 +1152,13 @@ static void ni_usb_remote_enable(gpib_board_t *board, int enable)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	struct ni_usb_register reg;
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	reg.device = NIUSB_SUBDEV_TNT4882;
+ 	reg.address = nec7210_to_tnt4882_offset(AUXMR);
+ 	if (enable)
+@@ -1179,11 +1202,14 @@ static unsigned int ni_usb_update_status(gpib_board_t *board, unsigned int clear
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	static const int buffer_length = 8;
+ 	u8 *buffer;
+ 	struct ni_usb_status_block status;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	buffer = kmalloc(buffer_length, GFP_KERNEL);
+ 	if (!buffer)
+ 		return board->status;
+@@ -1231,11 +1257,14 @@ static int ni_usb_primary_address(gpib_board_t *board, unsigned int address)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[2];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 	writes[i].address = nec7210_to_tnt4882_offset(ADR);
+ 	writes[i].value = address;
+@@ -1286,11 +1315,14 @@ static int ni_usb_secondary_address(gpib_board_t *board, unsigned int address, i
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[3];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	i += ni_usb_write_sad(writes, address, enable);
+ 	retval = ni_usb_write_registers(ni_priv, writes, i, &ibsta);
+ 	if (retval < 0) {
+@@ -1305,7 +1337,7 @@ static int ni_usb_parallel_poll(gpib_board_t *board, uint8_t *result)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x10;
+ 	static const int  in_data_length = 0x20;
+@@ -1314,6 +1346,9 @@ static int ni_usb_parallel_poll(gpib_board_t *board, uint8_t *result)
+ 	int j = 0;
+ 	struct ni_usb_status_block status;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+ 		return -ENOMEM;
+@@ -1357,11 +1392,14 @@ static void ni_usb_parallel_poll_configure(gpib_board_t *board, uint8_t config)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[1];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
+ 	writes[i].value = PPR | config;
+@@ -1379,11 +1417,14 @@ static void ni_usb_parallel_poll_response(gpib_board_t *board, int ist)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[1];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
+ 	if (ist)
+@@ -1404,11 +1445,14 @@ static void ni_usb_serial_poll_response(gpib_board_t *board, u8 status)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[1];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 	writes[i].address = nec7210_to_tnt4882_offset(SPMR);
+ 	writes[i].value = status;
+@@ -1431,11 +1475,14 @@ static void ni_usb_return_to_local(gpib_board_t *board)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	int i = 0;
+ 	struct ni_usb_register writes[1];
+ 	unsigned int ibsta;
+ 
++	if (!ni_priv->bus_interface)
++		return; // -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	writes[i].device = NIUSB_SUBDEV_TNT4882;
+ 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
+ 	writes[i].value = AUX_RTL;
+@@ -1453,7 +1500,7 @@ static int ni_usb_line_status(const gpib_board_t *board)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	u8 *out_data, *in_data;
+ 	static const int out_data_length = 0x20;
+ 	static const int  in_data_length = 0x20;
+@@ -1463,6 +1510,9 @@ static int ni_usb_line_status(const gpib_board_t *board)
+ 	int line_status = ValidALL;
+ 	// NI windows driver reads 0xd(HSSEL), 0xc (ARD0), 0x1f (BSR)
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	out_data = kmalloc(out_data_length, GFP_KERNEL);
+ 	if (!out_data)
+ 		return -ENOMEM;
+@@ -1569,12 +1619,15 @@ static unsigned int ni_usb_t1_delay(gpib_board_t *board, unsigned int nano_sec)
+ {
+ 	int retval;
+ 	struct ni_usb_priv *ni_priv = board->private_data;
+-	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
++	struct usb_device *usb_dev;
+ 	struct ni_usb_register writes[3];
+ 	unsigned int ibsta;
+ 	unsigned int actual_ns;
+ 	int i;
+ 
++	if (!ni_priv->bus_interface)
++		return -ENODEV;
++	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
+ 	i = ni_usb_setup_t1_delay(writes, nano_sec, &actual_ns);
+ 	retval = ni_usb_write_registers(ni_priv, writes, i, &ibsta);
+ 	if (retval < 0) {
 -- 
 2.39.5
 
