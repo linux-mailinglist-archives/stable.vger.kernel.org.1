@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C76FA806D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D47A809F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0087B46713A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC2B4E29B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AAB26A0E7;
-	Tue,  8 Apr 2025 12:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DB81E489;
+	Tue,  8 Apr 2025 12:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHr3DfTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XljHEJCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F138A206F18;
-	Tue,  8 Apr 2025 12:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F22E26F44C;
+	Tue,  8 Apr 2025 12:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114725; cv=none; b=CgzKA5fvPaAo377dWD2bbl4abAi5jHln7N8EaCRlJFxbSjHqZgzFuAY0uIRZ/DUs2hUOB/bNH5H1bbazQswTQH9W5bc1z807QDuRLenh7KKJk39L6cYWQ/SR+B3fkhrfCn0FnMhnZ7ARuI6rhIQuWWPj+/wCeREIirA86d7gGQc=
+	t=1744116217; cv=none; b=UxrcfKtzqoIwMrGk4pB4llmls41xjLS/vOxgYQpu5C5Gui3pvCDviadK7ffpw1SzOXrKATgEeRMYeZIuE5x7u06N3Y0mEeLAmim66kmdCzEV2Xl1burDptQf/Z54A2oW5ktUXesH2ToI7Tv8eBv61652qGCJXzNFT/g8MQ7Wppg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114725; c=relaxed/simple;
-	bh=d+0drtCsFZ2t5vdYEb23k5nWa4J4SK7SBKqiMk8lfy4=;
+	s=arc-20240116; t=1744116217; c=relaxed/simple;
+	bh=MEFweAQzvIENn/p8ikouwPTY2xhtIxZ2lVciIzEyMV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uN4U7fV2kcjJLy6j3VnxbdJq8xmcr4f4WsFHImjgkStXkJubzQe9eWs6lJfY38LlLkC74J8ktHXIg997NvbdHC1nfPi8HGBXUQ/Utl3+J+4HfBDN59u6yPxozVY+m+VZRt5KdwRdh0+apkHDjeo/ksYFSj5SGY7l+jTo1PEOXxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHr3DfTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAF4C4CEE5;
-	Tue,  8 Apr 2025 12:18:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kVlW6qDjvZQPOKVBJyzv5TekwUe1sreAiH0pba+vfp9cA5HFsZffvk48xHVFyE2RN0dRK2dR8Oh9QOEEvMg/nwyk9u+gPdge8qAWXWn6mXXQI6hfJI+nftxbPydBVT4JGKbSyyDyk9UQU+KuvOEBcNYEMAjrugSeGEwt52Tbi7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XljHEJCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2796C4CEEA;
+	Tue,  8 Apr 2025 12:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114724;
-	bh=d+0drtCsFZ2t5vdYEb23k5nWa4J4SK7SBKqiMk8lfy4=;
+	s=korg; t=1744116217;
+	bh=MEFweAQzvIENn/p8ikouwPTY2xhtIxZ2lVciIzEyMV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHr3DfTLazywxaZTwbwYE2yca/UjKX2/qy5/nrXGvxTzkxmFvFhlkqKtQGBPv2589
-	 WSYuVm00a2sEUlL7QcY+n0oxKukz8zFXKUn15owmqRuYft7Ov2gw0TiLuESjOTiQUQ
-	 JCGs/7SgAL5uU/1BsXQLE46SSZVcC/ZeIfsnAzsE=
+	b=XljHEJCtlIRzBRE/KKstB/RFr8eVdhMo3ZztqsrFRf1An7lzv0+JBnqESrpWo+kBq
+	 GOpDpPlkxDlHJry+cbSX4mncy+08If1jad67vZRpkUZpWXuYGJN5NVRK/esd+j4aaj
+	 OnBsHHIVXzpXJaihedGhoKcD1QSRViFGOG/jJpDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xiaochun Lee <lixc17@lenovo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 173/499] rust: fix signature of rust_fmt_argument
+Subject: [PATCH 6.12 059/423] PCI: Remove add_align overwrite unrelated to size0
 Date: Tue,  8 Apr 2025 12:46:25 +0200
-Message-ID: <20250408104855.490856438@linuxfoundation.org>
+Message-ID: <20250408104847.122861387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 901b3290bd4dc35e613d13abd03c129e754dd3dd ]
+[ Upstream commit d06cc1e3809040e8250f69a4c656e3717e6b963c ]
 
-Without this change, the rest of this series will emit the following
-error message:
+Commit 566f1dd52816 ("PCI: Relax bridge window tail sizing rules")
+relaxed bridge window tail alignment rule for the non-optional part
+(size0, no add_size/add_align). The change, however, also overwrote
+add_align, which is only related to case where optional size1 related
+entry is added into realloc head.
 
-error[E0308]: `if` and `else` have incompatible types
-  --> <linux>/rust/kernel/print.rs:22:22
-   |
-21 | #[export]
-   | --------- expected because of this
-22 | unsafe extern "C" fn rust_fmt_argument(
-   |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
-   |
-   = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
-              found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
+Correct this by removing the add_align overwrite.
 
-The error may be different depending on the architecture.
-
-To fix this, change the void pointer argument to use a const pointer,
-and change the imports to use crate::ffi instead of core::ffi for
-integer types.
-
-Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20250303-export-macro-v3-1-41fbad85a27f@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20241216175632.4175-2-ilpo.jarvinen@linux.intel.com
+Fixes: 566f1dd52816 ("PCI: Relax bridge window tail sizing rules")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xiaochun Lee <lixc17@lenovo.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/vsprintf.c       | 2 +-
- rust/kernel/print.rs | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/pci/setup-bus.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 9d3dac38a3f4a..2b86b2c72897f 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -2299,7 +2299,7 @@ int __init no_hash_pointers_enable(char *str)
- early_param("no_hash_pointers", no_hash_pointers_enable);
- 
- /* Used for Rust formatting ('%pA'). */
--char *rust_fmt_argument(char *buf, char *end, void *ptr);
-+char *rust_fmt_argument(char *buf, char *end, const void *ptr);
- 
- /*
-  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index b19ee490be58f..61ee36c5e5f5d 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -6,12 +6,11 @@
- //!
- //! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
- 
--use core::{
-+use crate::{
-     ffi::{c_char, c_void},
--    fmt,
-+    str::RawFormatter,
- };
--
--use crate::str::RawFormatter;
-+use core::fmt;
- 
- // Called from `vsprintf` with format specifier `%pA`.
- #[expect(clippy::missing_safety_doc)]
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index a6e653a4f5b1a..f16c7ce3bf3fc 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -1150,7 +1150,6 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+ 		min_align = 1ULL << (max_order + __ffs(SZ_1M));
+ 		min_align = max(min_align, win_align);
+ 		size0 = calculate_memsize(size, min_size, 0, 0, resource_size(b_res), win_align);
+-		add_align = win_align;
+ 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
+ 			 b_res, &bus->busn_res);
+ 	}
 -- 
 2.39.5
 
