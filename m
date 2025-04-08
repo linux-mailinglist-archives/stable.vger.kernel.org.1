@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB3A8053C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96E4A80417
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2412A3A7D16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B672C46588F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5027F269D17;
-	Tue,  8 Apr 2025 12:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF40326A0D5;
+	Tue,  8 Apr 2025 11:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjFcAz78"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovDKNjDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6312676CA;
-	Tue,  8 Apr 2025 12:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFFE2698AE;
+	Tue,  8 Apr 2025 11:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113807; cv=none; b=sodFNvpPiVJ/b8gppZtgZy1vO7EU9wZ6cOT7D4WIErw7erfShVI6L3BFTThGFrdOIiJyFZXSvLtCxQbNwggBKMpakjO83doFq5xUQfadeAiAEmfCa/0KYs6zcRJN2rjJO02TA4tgpTqoWtHHzm1PfvoT6A5wsD/n2UKtDTBifWw=
+	t=1744113372; cv=none; b=Qlow6K4ZtQ7Uhmttjm23MR8K88t+XOiJkd8Rpob6hQtfAwW7s/tSPvhB50/c9E8MPQmwobSCTNLRgKEWTXOZcriWL0dK+QzBoRmJzAubB6Jlsdfr99K5+c6cCCyd13NELbdTQVZZateW1TfmuyU2uMVpxIkctkt23PSSCSeadqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113807; c=relaxed/simple;
-	bh=6jYRH2rFpLI1exDO6dQSAls/jmY4fQdbE4PFO8ZgDgo=;
+	s=arc-20240116; t=1744113372; c=relaxed/simple;
+	bh=uV40eaZi/oaZ9U8Q4Plgud7omjMYMMEkbXIEoj8r0tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbM5CmWpb2vJ3cch167C0c+O2/8d1GG+WS/xNd+pcjdhzdC6iU/X8D9eXynmLiQevTjP4RXJ1akvxsTHg8IGKsfOJ6n9SlQB3NxNT5crJv1XLbvSbvSxEYQg5vBMJXMMxnEJWaZt8fch8BotYOyCTCBV+e/nHnKAzL1dVF3oazM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjFcAz78; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFF7C4CEE5;
-	Tue,  8 Apr 2025 12:03:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FKomyETikWizeln+0iAQt+uDU9HvFFvygTLHWw2TMiofGyc88zn0J+7IoLk4qrxF0UKdX8QBsJOLs8lGUzK6CqW2nFwFzG9g3kJxrRKpFVRyx+s22FAcWjerYXchccxjvryuJxGQ85OJ254lWuCtoJ784wEQG7IPalrIW0zr0Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovDKNjDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAA2C4CEE7;
+	Tue,  8 Apr 2025 11:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113806;
-	bh=6jYRH2rFpLI1exDO6dQSAls/jmY4fQdbE4PFO8ZgDgo=;
+	s=korg; t=1744113372;
+	bh=uV40eaZi/oaZ9U8Q4Plgud7omjMYMMEkbXIEoj8r0tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjFcAz78dIbTvZCr30uNksg9454Gm4dkHlNd5Rvm4AZ2j7TOW/d78g56pkBh2JBOQ
-	 4Xsny//sGQNDOHfDA4nECAR4xI0zkkQ/velvGcsBIniUjikBHhZAJGSAaTQlKacDl8
-	 FF9HY0VIQE5pGUARSt8Wz1dylNKKBmNZv1ZbJMFs=
+	b=ovDKNjDheg0U/zpviwgEslc30oxIP09X5aXrC8Dl1ODbYIp8Lev8C095d94AhIIcr
+	 QY/CRqMxuLD36ccT01qfQEs3P2E0arzakFE6qGYPgMe3d9Ma82Sux5QhGoFV/4cYJH
+	 PLHSKwOokK/E08ODWg9/kgq8hRAS5mNUi1/Io57A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Magali Lemes <magali.lemes@canonical.com>
-Subject: [PATCH 5.4 004/154] Revert "sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy"
-Date: Tue,  8 Apr 2025 12:49:05 +0200
-Message-ID: <20250408104815.433896809@linuxfoundation.org>
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 135/268] perf python: Dont keep a raw_data pointer to consumed ring buffer space
+Date: Tue,  8 Apr 2025 12:49:06 +0200
+Message-ID: <20250408104832.159996254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,36 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magali Lemes <magali.lemes@canonical.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-This reverts commit 1031462a944ba0fa83c25ab1111465f8345b5589 as it
-was backported incorrectly.
-A subsequent commit will re-backport the original patch.
+[ Upstream commit f3fed3ae34d606819d87a63d970cc3092a5be7ab ]
 
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When processing tracepoints the perf python binding was parsing the
+event before calling perf_mmap__consume(&md->core) in
+pyrf_evlist__read_on_cpu().
+
+But part of this event parsing was to set the perf_sample->raw_data
+pointer to the payload of the event, which then could be overwritten by
+other event before tracepoint fields were asked for via event.prev_comm
+in a python program, for instance.
+
+This also happened with other fields, but strings were were problems
+were surfacing, as there is UTF-8 validation for the potentially garbled
+data.
+
+This ended up showing up as (with some added debugging messages):
+
+  ( field 'prev_comm' ret=0x7f7c31f65110, raw_size=68 )  ( field 'prev_pid' ret=0x7f7c23b1bed0, raw_size=68 )  ( field 'prev_prio' ret=0x7f7c239c0030, raw_size=68 )  ( field 'prev_state' ret=0x7f7c239c0250, raw_size=68 ) time 14771421785867 prev_comm= prev_pid=1919907691 prev_prio=796026219 prev_state=0x303a32313175 ==>
+  ( XXX '��' len=16, raw_size=68)  ( field 'next_comm' ret=(nil), raw_size=68 ) Traceback (most recent call last):
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 51, in <module>
+     main()
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 46, in main
+     event.next_comm,
+     ^^^^^^^^^^^^^^^
+  AttributeError: 'perf.sample_event' object has no attribute 'next_comm'
+
+When event.next_comm was asked for, the PyUnicode_FromString() python
+API would fail and that tracepoint field wouldn't be available, stopping
+the tools/perf/python/tracepoint.py test tool.
+
+But, since we already do a copy of the whole event in pyrf_event__new,
+just use it and while at it remove what was done in in e8968e654191390a
+("perf python: Fix pyrf_evlist__read_on_cpu event consuming") because we
+don't really need to wait for parsing the sample before declaring the
+event as consumed.
+
+This copy is questionable as is now, as it limits the maximum event +
+sample_type and tracepoint payload to sizeof(union perf_event), this all
+has been "working" because 'struct perf_event_mmap2', the largest entry
+in 'union perf_event' is:
+
+  $ pahole -C perf_event ~/bin/perf | grep mmap2
+	struct perf_record_mmap2   mmap2;              /*     0  4168 */
+  $
+
+Fixes: bae57e3825a3dded ("perf python: Add support to resolve tracepoint fields")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-6-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/perf/util/python.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -441,8 +441,7 @@ static int proc_sctp_do_auth(struct ctl_
- 			     void __user *buffer, size_t *lenp,
- 			     loff_t *ppos)
- {
--	struct net *net = container_of(ctl->data, struct net,
--				       sctp.sctp_hmac_alg);
-+	struct net *net = current->nsproxy->net_ns;
- 	struct ctl_table tbl;
- 	int new_value, ret;
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 47c43b9c72fe7..4697bbb17c39a 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1177,11 +1177,9 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
  
+ 		pevent->evsel = evsel;
+ 
+-		err = evsel__parse_sample(evsel, event, &pevent->sample);
+-
+-		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
+ 
++		err = evsel__parse_sample(evsel, &pevent->event, &pevent->sample);
+ 		if (err) {
+ 			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
+-- 
+2.39.5
+
 
 
 
