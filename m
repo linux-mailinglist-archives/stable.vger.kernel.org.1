@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5DEA8086F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE83A804DF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8D21B83B82
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34AF0425E52
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A273269AFB;
-	Tue,  8 Apr 2025 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C62A26B2DA;
+	Tue,  8 Apr 2025 12:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ZHFweQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7OmPZP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07479224AEB;
-	Tue,  8 Apr 2025 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5026A08E;
+	Tue,  8 Apr 2025 12:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115723; cv=none; b=PwSukN+Wrrfddhr2d6TY6NO9YcQvFA7ceTQ8imqO5MX19q3OiZ9ueXRQXC8cBjNXwtlGWXqQF+rBmTyDKNSOHdciTwuu3Ysp36Wuzdg4AlSNWENLE4cgJnL3ihGVoIJn/7T0DFvUZDC8bF23VJITTWen4ak4QxLBQp1GFlT9vPA=
+	t=1744113659; cv=none; b=S+v9fQObfCf3RlI9JWJpq7NpO14VQBL6T4V2XpiaseL+t4dsAvOG+u/dGfqkMaIvKy9ivxdpQDAHnTWD2X62WKGl/BViBL8k2k4O3ueJjXL+jqb0t54oVbMu1vaKnWQlBN69uPpWBb/fuQq7cPxyPhU4sfjE20Wtvaipex9lk1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115723; c=relaxed/simple;
-	bh=ofsXOf4SEkCm/g7hAEtQ1v++73qr8OVeS8dxj5iH3ZQ=;
+	s=arc-20240116; t=1744113659; c=relaxed/simple;
+	bh=jaBH7vBqY3h1rIei0G4zBFVmuQmEWymXW6xki+yZfHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdax1tfy5gpkU4HSW/6Koz8/S9WdGygWSt0wdiHp/kA2x03Jkk4fxLIwTAkTwlmaZNCgte7JXV0qhu6c4mkTsEY5A419WpiKj4kV39RxI5u+34aFpNjEYV36r6ty+ksRvegx1yqR42nj8acWU+I2nI1uL3ReVfMmPE1GE6+aVqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ZHFweQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8C7C4CEE5;
-	Tue,  8 Apr 2025 12:35:22 +0000 (UTC)
+	 MIME-Version; b=fZ7G+TGF0JQu2jGllsqJsuK4INVkWAKIAkyJApPubk4e0iouMalNpp+zKrz2/dDasM6CR5B7BFwYOPM7l9+7UbsQR0qfKQn08XKHkE45nLApaqcndH4gONkpJxF4OgOL2e/xcIbP5UpOCTLf/oyzIiNPl2935/4EQO9kUJi73VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7OmPZP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC2FC4CEE7;
+	Tue,  8 Apr 2025 12:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115722;
-	bh=ofsXOf4SEkCm/g7hAEtQ1v++73qr8OVeS8dxj5iH3ZQ=;
+	s=korg; t=1744113658;
+	bh=jaBH7vBqY3h1rIei0G4zBFVmuQmEWymXW6xki+yZfHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2ZHFweQIWkicC7LNdiErveHE96gxN3AIHNWOYzQ7vLqaAxvafTtlTm/hQHKtCW6z
-	 +fna7Im2I8CMRh89ttYVxp0W1FVwn8i6pkRbarJqnrIHHvzlqxQDWLze9V7+ygjy4P
-	 9CFppDfB+KMkNzxLxIh1kgjEUvWkxf/l8LS1Afn8=
+	b=D7OmPZP9rN4VFl77saXCySW/DYYw4Jx3FTeq8GAKYvuhlFTDI3ZIyjah9XpAwNFky
+	 ZoVZ2JWSoxIixzhzsLFY1jjvGciMMtg83wBXDnsC0gBH3xTMSG0jFC+ge0oENsXe+B
+	 L8kzkdFLFFIBRthxYfS92o1qvargwPwwBRtMhAXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/204] clk: amlogic: gxbb: drop non existing 32k clock parent
+Subject: [PATCH 6.6 192/268] spufs: fix gang directory lifetimes
 Date: Tue,  8 Apr 2025 12:50:03 +0200
-Message-ID: <20250408104822.500643091@linuxfoundation.org>
+Message-ID: <20250408104833.735901711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
+[ Upstream commit c134deabf4784e155d360744d4a6a835b9de4dd4 ]
 
-The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
-that this clock should be provided by AO controller.
+prior to "[POWERPC] spufs: Fix gang destroy leaks" we used to have
+a problem with gang lifetimes - creation of a gang returns opened
+gang directory, which normally gets removed when that gets closed,
+but if somebody has created a context belonging to that gang and
+kept it alive until the gang got closed, removal failed and we
+ended up with a leak.
 
-The HW probably has this clock but it does not exist at the moment in
-any controller implementation. Furthermore, referencing clock by the global
-name should be avoided whenever possible.
+Unfortunately, it had been fixed the wrong way.  Dentry of gang
+directory was no longer pinned, and rmdir on close was gone.
+One problem was that failure of open kept calling simple_rmdir()
+as cleanup, which meant an unbalanced dput().  Another bug was
+in the success case - gang creation incremented link count on
+root directory, but that was no longer undone when gang got
+destroyed.
 
-There is no reason to keep this hack around, at least for now.
+Fix consists of
+	* reverting the commit in question
+	* adding a counter to gang, protected by ->i_rwsem
+of gang directory inode.
+	* having it set to 1 at creation time, dropped
+in both spufs_dir_close() and spufs_gang_close() and bumped
+in spufs_create_context(), provided that it's not 0.
+	* using simple_recursive_removal() to take the gang
+directory out when counter reaches zero.
 
-Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: 877907d37da9 "[POWERPC] spufs: Fix gang destroy leaks"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/gxbb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/cell/spufs/gang.c  |  1 +
+ arch/powerpc/platforms/cell/spufs/inode.c | 54 +++++++++++++++++++----
+ arch/powerpc/platforms/cell/spufs/spufs.h |  2 +
+ 3 files changed, 49 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
-index 48c47503ea752..35bc13e73c0dd 100644
---- a/drivers/clk/meson/gxbb.c
-+++ b/drivers/clk/meson/gxbb.c
-@@ -1270,14 +1270,13 @@ static struct clk_regmap gxbb_cts_i958 = {
- 	},
+diff --git a/arch/powerpc/platforms/cell/spufs/gang.c b/arch/powerpc/platforms/cell/spufs/gang.c
+index 827d338deaf4c..2c2999de6bfa2 100644
+--- a/arch/powerpc/platforms/cell/spufs/gang.c
++++ b/arch/powerpc/platforms/cell/spufs/gang.c
+@@ -25,6 +25,7 @@ struct spu_gang *alloc_spu_gang(void)
+ 	mutex_init(&gang->aff_mutex);
+ 	INIT_LIST_HEAD(&gang->list);
+ 	INIT_LIST_HEAD(&gang->aff_list_head);
++	gang->alive = 1;
+ 
+ out:
+ 	return gang;
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 8acefe5f654c9..a0f297581a66c 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -200,6 +200,23 @@ static int spufs_fill_dir(struct dentry *dir,
+ 	return 0;
+ }
+ 
++static void unuse_gang(struct dentry *dir)
++{
++	struct inode *inode = dir->d_inode;
++	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
++
++	if (gang) {
++		bool dead;
++
++		inode_lock(inode); // exclusion with spufs_create_context()
++		dead = !--gang->alive;
++		inode_unlock(inode);
++
++		if (dead)
++			simple_recursive_removal(dir, NULL);
++	}
++}
++
+ static int spufs_dir_close(struct inode *inode, struct file *file)
+ {
+ 	struct inode *parent;
+@@ -214,6 +231,7 @@ static int spufs_dir_close(struct inode *inode, struct file *file)
+ 	inode_unlock(parent);
+ 	WARN_ON(ret);
+ 
++	unuse_gang(dir->d_parent);
+ 	return dcache_dir_close(inode, file);
+ }
+ 
+@@ -406,7 +424,7 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ {
+ 	int ret;
+ 	int affinity;
+-	struct spu_gang *gang;
++	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
+ 	struct spu_context *neighbor;
+ 	struct path path = {.mnt = mnt, .dentry = dentry};
+ 
+@@ -421,11 +439,15 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ 	if ((flags & SPU_CREATE_ISOLATE) && !isolated_loader)
+ 		return -ENODEV;
+ 
+-	gang = NULL;
++	if (gang) {
++		if (!gang->alive)
++			return -ENOENT;
++		gang->alive++;
++	}
++
+ 	neighbor = NULL;
+ 	affinity = flags & (SPU_CREATE_AFFINITY_MEM | SPU_CREATE_AFFINITY_SPU);
+ 	if (affinity) {
+-		gang = SPUFS_I(inode)->i_gang;
+ 		if (!gang)
+ 			return -EINVAL;
+ 		mutex_lock(&gang->aff_mutex);
+@@ -454,6 +476,8 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ out_aff_unlock:
+ 	if (affinity)
+ 		mutex_unlock(&gang->aff_mutex);
++	if (ret && gang)
++		gang->alive--; // can't reach 0
+ 	return ret;
+ }
+ 
+@@ -483,6 +507,7 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	inode->i_fop = &simple_dir_operations;
+ 
+ 	d_instantiate(dentry, inode);
++	dget(dentry);
+ 	inc_nlink(dir);
+ 	inc_nlink(d_inode(dentry));
+ 	return ret;
+@@ -493,6 +518,21 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	return ret;
+ }
+ 
++static int spufs_gang_close(struct inode *inode, struct file *file)
++{
++	unuse_gang(file->f_path.dentry);
++	return dcache_dir_close(inode, file);
++}
++
++static const struct file_operations spufs_gang_fops = {
++	.open		= dcache_dir_open,
++	.release	= spufs_gang_close,
++	.llseek		= dcache_dir_lseek,
++	.read		= generic_read_dir,
++	.iterate_shared	= dcache_readdir,
++	.fsync		= noop_fsync,
++};
++
+ static int spufs_gang_open(const struct path *path)
+ {
+ 	int ret;
+@@ -512,7 +552,7 @@ static int spufs_gang_open(const struct path *path)
+ 		return PTR_ERR(filp);
+ 	}
+ 
+-	filp->f_op = &simple_dir_operations;
++	filp->f_op = &spufs_gang_fops;
+ 	fd_install(ret, filp);
+ 	return ret;
+ }
+@@ -527,10 +567,8 @@ static int spufs_create_gang(struct inode *inode,
+ 	ret = spufs_mkgang(inode, dentry, mode & 0777);
+ 	if (!ret) {
+ 		ret = spufs_gang_open(&path);
+-		if (ret < 0) {
+-			int err = simple_rmdir(inode, dentry);
+-			WARN_ON(err);
+-		}
++		if (ret < 0)
++			unuse_gang(dentry);
+ 	}
+ 	return ret;
+ }
+diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
+index 84958487f696a..d33787c57c39a 100644
+--- a/arch/powerpc/platforms/cell/spufs/spufs.h
++++ b/arch/powerpc/platforms/cell/spufs/spufs.h
+@@ -151,6 +151,8 @@ struct spu_gang {
+ 	int aff_flags;
+ 	struct spu *aff_ref_spu;
+ 	atomic_t aff_sched_count;
++
++	int alive;
  };
  
-+/*
-+ * This table skips a clock named 'cts_slow_oscin' in the documentation
-+ * This clock does not exist yet in this controller or the AO one
-+ */
-+static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
- static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
- 	{ .fw_name = "xtal", },
--	/*
--	 * FIXME: This clock is provided by the ao clock controller but the
--	 * clock is not yet part of the binding of this controller, so string
--	 * name must be use to set this parent.
--	 */
--	{ .name = "cts_slow_oscin", .index = -1 },
- 	{ .hw = &gxbb_fclk_div3.hw },
- 	{ .hw = &gxbb_fclk_div5.hw },
- };
-@@ -1287,6 +1286,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
- 		.offset = HHI_32K_CLK_CNTL,
- 		.mask = 0x3,
- 		.shift = 16,
-+		.table = gxbb_32k_clk_parents_val_table,
- 		},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "32k_clk_sel",
+ /* Flag bits for spu_gang aff_flags */
 -- 
 2.39.5
 
