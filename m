@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-131030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2661A807D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C21A80905
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 678AE468499
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357894E201F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D064F26B2C3;
-	Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8B6277002;
+	Tue,  8 Apr 2025 12:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHVKLVu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOObvOgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E55126B2BE;
-	Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043E527605A;
+	Tue,  8 Apr 2025 12:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115300; cv=none; b=T13iCcPovly6ZPtQZQAYqgkva9wDF4jlx7ymZc9ULE2DypzFLPE17BKCZM2qCRYCp8Pd5+xrJhEV0r0Vbgasc32T0fpMCbpuO2jQp53BD1YUB54FDUoFj7J56OAVdl9YXAYETcx21kR8H3hnEvXkL8I6U1ISYd9MRPv7EjIixUw=
+	t=1744115689; cv=none; b=Xv9tKmF1vbL+vAxf4I4YX80/v7z06vWebVyorCYiVU2kbc/ti/9TfJGpR6fOhsmvhDPBkLOjOP4Ga5yRc9dZY20bxsSK55PYQDqVBnBNijggSAY5KpaUzusPIMGokt6be4Qj+P4rnEL4C0sb/aiM7PzKntpcrgPpKjCKLAAHDdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115300; c=relaxed/simple;
-	bh=OSyR8Acx84E5zi0P2jChqN4R/RLiuqMTzFH6ugcc4xA=;
+	s=arc-20240116; t=1744115689; c=relaxed/simple;
+	bh=wTnywnGnSOrqZ4UmxLnyRbrC//wUYau51NyO1y5+KN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUtgwFeXefS8IAulkw48UG2k8EUQgPlt6YBxbP6MKKACRHNN2PH1SHqnypWZKwtx75tq9JVXQXoKsLiHa4kXl3RL3BkwJmttQg4Xn2FVuS1nHRzgbjqnoYGlghMSH3MOe8UOHlK0HmX4pBOiTBnrplmXpDAV2EZULe4o/m4/Y9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHVKLVu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B498C4CEE5;
-	Tue,  8 Apr 2025 12:28:19 +0000 (UTC)
+	 MIME-Version; b=l0DinfbpldJzVSbgIhyKHENvc60dcpUrcrcYuPi62w+2IrpdUQIUGriJeUtTxSnFegch7Lvn8G4QwTRAmP+cBDYjv7BNAVqBdPO2Rx0NgNdabp6aDazB53E4ARIANuX3cyOAAHc9vpLjCbUhxl64SCruZj31QMmpStM212xPMtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOObvOgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDE6C4CEE5;
+	Tue,  8 Apr 2025 12:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115300;
-	bh=OSyR8Acx84E5zi0P2jChqN4R/RLiuqMTzFH6ugcc4xA=;
+	s=korg; t=1744115688;
+	bh=wTnywnGnSOrqZ4UmxLnyRbrC//wUYau51NyO1y5+KN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHVKLVu+hk0ILXf54FwxowXQ6/jcRpMszzk0X165LEsHt2DmLbm3VJwIIgzNhmZMA
-	 PC2z5wgQFWq37gWjV2GdhwLjKqXRuDDc/G602i0tveoezSmAAbo9xWcoPDGXY4eYl9
-	 nYCqVdQrlXnqo9CWlscdhAeDhAnop6OJMuk5lzjM=
+	b=WOObvOgOTfcw0snhlelzgMWsYjEZA3nitm+Czv2NqRco6ZaHNPGWy/jw6CPjW9p7g
+	 1fY+MChpvKmXVofCQysj4sYoetibQ9Oj/IKai6qlTMypcSr8CSJ4w/d4mwb46LCND4
+	 4k9rP3Wpn3vGHDYoXASAJyYDn0YfGQyDkOACkubk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuying Ma <yuma@redhat.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Parav Pandit <parav@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 384/499] idpf: fix adapter NULL pointer dereference on reboot
+Subject: [PATCH 6.1 066/204] RDMA/core: Dont expose hw_counters outside of init net namespace
 Date: Tue,  8 Apr 2025 12:49:56 +0200
-Message-ID: <20250408104900.806142619@linuxfoundation.org>
+Message-ID: <20250408104822.297944560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-[ Upstream commit 4c9106f4906a85f6b13542d862e423bcdc118cc3 ]
+[ Upstream commit a1ecb30f90856b0be4168ad51b8875148e285c1f ]
 
-With SRIOV enabled, idpf ends up calling into idpf_remove() twice.
-First via idpf_shutdown() and then again when idpf_remove() calls into
-sriov_disable(), because the VF devices use the idpf driver, hence the
-same remove routine. When that happens, it is possible for the adapter
-to be NULL from the first call to idpf_remove(), leading to a NULL
-pointer dereference.
+Commit 467f432a521a ("RDMA/core: Split port and device counter sysfs
+attributes") accidentally almost exposed hw counters to non-init net
+namespaces. It didn't expose them fully, as an attempt to read any of
+those counters leads to a crash like this one:
 
-echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
-reboot
+[42021.807566] BUG: kernel NULL pointer dereference, address: 0000000000000028
+[42021.814463] #PF: supervisor read access in kernel mode
+[42021.819549] #PF: error_code(0x0000) - not-present page
+[42021.824636] PGD 0 P4D 0
+[42021.827145] Oops: 0000 [#1] SMP PTI
+[42021.830598] CPU: 82 PID: 2843922 Comm: switchto-defaul Kdump: loaded Tainted: G S      W I        XXX
+[42021.841697] Hardware name: XXX
+[42021.849619] RIP: 0010:hw_stat_device_show+0x1e/0x40 [ib_core]
+[42021.855362] Code: 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 49 89 d0 4c 8b 5e 20 48 8b 8f b8 04 00 00 48 81 c7 f0 fa ff ff <48> 8b 41 28 48 29 ce 48 83 c6 d0 48 c1 ee 04 69 d6 ab aa aa aa 48
+[42021.873931] RSP: 0018:ffff97fe90f03da0 EFLAGS: 00010287
+[42021.879108] RAX: ffff9406988a8c60 RBX: ffff940e1072d438 RCX: 0000000000000000
+[42021.886169] RDX: ffff94085f1aa000 RSI: ffff93c6cbbdbcb0 RDI: ffff940c7517aef0
+[42021.893230] RBP: ffff97fe90f03e70 R08: ffff94085f1aa000 R09: 0000000000000000
+[42021.900294] R10: ffff94085f1aa000 R11: ffffffffc0775680 R12: ffffffff87ca2530
+[42021.907355] R13: ffff940651602840 R14: ffff93c6cbbdbcb0 R15: ffff94085f1aa000
+[42021.914418] FS:  00007fda1a3b9700(0000) GS:ffff94453fb80000(0000) knlGS:0000000000000000
+[42021.922423] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[42021.928130] CR2: 0000000000000028 CR3: 00000042dcfb8003 CR4: 00000000003726f0
+[42021.935194] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[42021.942257] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[42021.949324] Call Trace:
+[42021.951756]  <TASK>
+[42021.953842]  [<ffffffff86c58674>] ? show_regs+0x64/0x70
+[42021.959030]  [<ffffffff86c58468>] ? __die+0x78/0xc0
+[42021.963874]  [<ffffffff86c9ef75>] ? page_fault_oops+0x2b5/0x3b0
+[42021.969749]  [<ffffffff87674b92>] ? exc_page_fault+0x1a2/0x3c0
+[42021.975549]  [<ffffffff87801326>] ? asm_exc_page_fault+0x26/0x30
+[42021.981517]  [<ffffffffc0775680>] ? __pfx_show_hw_stats+0x10/0x10 [ib_core]
+[42021.988482]  [<ffffffffc077564e>] ? hw_stat_device_show+0x1e/0x40 [ib_core]
+[42021.995438]  [<ffffffff86ac7f8e>] dev_attr_show+0x1e/0x50
+[42022.000803]  [<ffffffff86a3eeb1>] sysfs_kf_seq_show+0x81/0xe0
+[42022.006508]  [<ffffffff86a11134>] seq_read_iter+0xf4/0x410
+[42022.011954]  [<ffffffff869f4b2e>] vfs_read+0x16e/0x2f0
+[42022.017058]  [<ffffffff869f50ee>] ksys_read+0x6e/0xe0
+[42022.022073]  [<ffffffff8766f1ca>] do_syscall_64+0x6a/0xa0
+[42022.027441]  [<ffffffff8780013b>] entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-...
-RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
-...
-? idpf_remove+0x22/0x1f0 [idpf]
-? idpf_remove+0x1e4/0x1f0 [idpf]
-pci_device_remove+0x3f/0xb0
-device_release_driver_internal+0x19f/0x200
-pci_stop_bus_device+0x6d/0x90
-pci_stop_and_remove_bus_device+0x12/0x20
-pci_iov_remove_virtfn+0xbe/0x120
-sriov_disable+0x34/0xe0
-idpf_sriov_configure+0x58/0x140 [idpf]
-idpf_remove+0x1b9/0x1f0 [idpf]
-idpf_shutdown+0x12/0x30 [idpf]
-pci_device_shutdown+0x35/0x60
-device_shutdown+0x156/0x200
-...
+The problem can be reproduced using the following steps:
+  ip netns add foo
+  ip netns exec foo bash
+  cat /sys/class/infiniband/mlx4_0/hw_counters/*
 
-Replace the direct idpf_remove() call in idpf_shutdown() with
-idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
-the bulk of the cleanup, such as stopping the init task, freeing IRQs,
-destroying the vports and freeing the mailbox. This avoids the calls to
-sriov_disable() in addition to a small netdev cleanup, and destroying
-workqueues, which don't seem to be required on shutdown.
+The panic occurs because of casting the device pointer into an
+ib_device pointer using container_of() in hw_stat_device_show() is
+wrong and leads to a memory corruption.
 
-Reported-by: Yuying Ma <yuma@redhat.com>
-Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+However the real problem is that hw counters should never been exposed
+outside of the non-init net namespace.
+
+Fix this by saving the index of the corresponding attribute group
+(it might be 1 or 2 depending on the presence of driver-specific
+attributes) and zeroing the pointer to hw_counters group for compat
+devices during the initialization.
+
+With this fix applied hw_counters are not available in a non-init
+net namespace:
+  find /sys/class/infiniband/mlx4_0/ -name hw_counters
+    /sys/class/infiniband/mlx4_0/ports/1/hw_counters
+    /sys/class/infiniband/mlx4_0/ports/2/hw_counters
+    /sys/class/infiniband/mlx4_0/hw_counters
+
+  ip netns add foo
+  ip netns exec foo bash
+  find /sys/class/infiniband/mlx4_0/ -name hw_counters
+
+Fixes: 467f432a521a ("RDMA/core: Split port and device counter sysfs attributes")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Maher Sanalla <msanalla@nvidia.com>
+Cc: linux-rdma@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Link: https://patch.msgid.link/20250227165420.3430301-1-roman.gushchin@linux.dev
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/device.c | 9 +++++++++
+ drivers/infiniband/core/sysfs.c  | 1 +
+ include/rdma/ib_verbs.h          | 1 +
+ 3 files changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index b6c515d14cbf0..bec4a02c53733 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
-  */
- static void idpf_shutdown(struct pci_dev *pdev)
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index 291ded20934c8..a5ba2cb3031f2 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -543,6 +543,8 @@ static struct class ib_class = {
+ static void rdma_init_coredev(struct ib_core_device *coredev,
+ 			      struct ib_device *dev, struct net *net)
  {
--	idpf_remove(pdev);
-+	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
++	bool is_full_dev = &dev->coredev == coredev;
 +
-+	cancel_delayed_work_sync(&adapter->vc_event_task);
-+	idpf_vc_core_deinit(adapter);
-+	idpf_deinit_dflt_mbx(adapter);
+ 	/* This BUILD_BUG_ON is intended to catch layout change
+ 	 * of union of ib_core_device and device.
+ 	 * dev must be the first element as ib_core and providers
+@@ -554,6 +556,13 @@ static void rdma_init_coredev(struct ib_core_device *coredev,
  
- 	if (system_state == SYSTEM_POWER_OFF)
- 		pci_set_power_state(pdev, PCI_D3hot);
+ 	coredev->dev.class = &ib_class;
+ 	coredev->dev.groups = dev->groups;
++
++	/*
++	 * Don't expose hw counters outside of the init namespace.
++	 */
++	if (!is_full_dev && dev->hw_stats_attr_index)
++		coredev->dev.groups[dev->hw_stats_attr_index] = NULL;
++
+ 	device_initialize(&coredev->dev);
+ 	coredev->owner = dev;
+ 	INIT_LIST_HEAD(&coredev->port_list);
+diff --git a/drivers/infiniband/core/sysfs.c b/drivers/infiniband/core/sysfs.c
+index ec5efdc166601..a9c33a6220ea8 100644
+--- a/drivers/infiniband/core/sysfs.c
++++ b/drivers/infiniband/core/sysfs.c
+@@ -984,6 +984,7 @@ int ib_setup_device_attrs(struct ib_device *ibdev)
+ 	for (i = 0; i != ARRAY_SIZE(ibdev->groups); i++)
+ 		if (!ibdev->groups[i]) {
+ 			ibdev->groups[i] = &data->group;
++			ibdev->hw_stats_attr_index = i;
+ 			return 0;
+ 		}
+ 	WARN(true, "struct ib_device->groups is too small");
+diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
+index 5582509003264..41eb2a7c9695d 100644
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2725,6 +2725,7 @@ struct ib_device {
+ 	 * It is a NULL terminated array.
+ 	 */
+ 	const struct attribute_group	*groups[4];
++	u8				hw_stats_attr_index;
+ 
+ 	u64			     uverbs_cmd_mask;
+ 
 -- 
 2.39.5
 
