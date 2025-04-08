@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-131669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847C4A80AC3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67240A8059D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 701517A04D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C655885AB2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3BB27C843;
-	Tue,  8 Apr 2025 12:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B497269895;
+	Tue,  8 Apr 2025 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIvkUzza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRhBHkLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B46B27C840;
-	Tue,  8 Apr 2025 12:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469D8207E14;
+	Tue,  8 Apr 2025 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117018; cv=none; b=pEzqN0t1B+/XdvpYRM/4s8d8QMzw3ybtxvoaHhcAqBqadnM9t8VHeSgDK9iA/VepeXjUSXppssw2MigysyhZ6XdmjB9O3c0oCCyPTsOdYJBFp1xuI8VxBtzEqSD8eh5qO7A6dvhWRFML8+hVyiPs199+YIXSzwL/7M5vfetNDxI=
+	t=1744114116; cv=none; b=qEgu3j54bwtJGMzT7w8COsK1xv1SEJxtvNrzqqG7P+jCMRhL28PxMh2nVl6zbd6dNMz+VEqGzl7OTYjPspGAtq1Rw87OmfZ1JfFTcyt1FUrUzEVElhPN8zCS1T9Sp1lmjqgEJqNwsikvVszy+LYc+2YQwLQE3CbeLFHrJuONz/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117018; c=relaxed/simple;
-	bh=rs4BoYWXnjFw42NFxdYl18/6Wtw4lP5MxsEWK0NXHRE=;
+	s=arc-20240116; t=1744114116; c=relaxed/simple;
+	bh=0y4Xn4xlp+wIvlu6iEMd0lAiR3K11U8rBlDxCBkpAAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJs8oen4yHHS+ku4gtty4d1y9HJe5qI753MZG7zV4f08TysbjeVsmpQ4OJTJUc9ptJ8BkvdWSoT6xS5sZS4LHdfH3f5ydcCx6VIRs7tAhMv+SEa4B5PUxkOc9z6UbgOMlquzrnQs/GkRFs1qF0fhCjYkVIMdxP/1AdbT/1MkWZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIvkUzza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC48FC4CEE5;
-	Tue,  8 Apr 2025 12:56:57 +0000 (UTC)
+	 MIME-Version; b=GyldXRRf97lM5g2KxjHo6TEZ7yJ1UHUj8CJqXwN6EnIiVvpEo5T/Mn7Y9C+B5NhcOhGEaUSjFvovtFMhFBqTibudZmdhl7w0o33Zjfz23EW/NgPp6h5pOIvHR2nJfSjk9Yf9iy7KvH3etNiSrGBGZLkq6cAYDpO8J40yMIGDAXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRhBHkLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27AAC4CEE7;
+	Tue,  8 Apr 2025 12:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117018;
-	bh=rs4BoYWXnjFw42NFxdYl18/6Wtw4lP5MxsEWK0NXHRE=;
+	s=korg; t=1744114116;
+	bh=0y4Xn4xlp+wIvlu6iEMd0lAiR3K11U8rBlDxCBkpAAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIvkUzzarGIQrmqxx/3uS6fqkf8VqbU6NsDj6Z/MicUoTeNSunOrxY3JQt6OC47h3
-	 VNwn7Nwiayzy/zErr5BuUjkHuZtJmx5hwAoq0CmbzSm1w8PJv03UGORmi/Hh8K/UIx
-	 rLDmvOeqt8v46KqpqVrFJhfWLkg/sdTqnyNhY7PY=
+	b=DRhBHkLA9iyrBs1KGGAJL5UYp5TybbhGN+rx0n8gTfVkbULUCcUXGkizNtgH2NyLs
+	 3KpNyDQuv+pQsgWe+pKdiy8W5p/g8zF0uIRUG0AvvFK4RYAVWVGNvA98JD5zFMlwl6
+	 y3Jts+JRVVxts7nIfdAe72OnGQkKxwXmBANJniqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
+	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
+	Nishanth Devarajan <ndev2021@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 355/423] cgroup/rstat: Tracking cgroup-level niced CPU time
-Date: Tue,  8 Apr 2025 12:51:21 +0200
-Message-ID: <20250408104854.120449269@linuxfoundation.org>
+Subject: [PATCH 5.4 141/154] net_sched: skbprio: Remove overly strict queue assertions
+Date: Tue,  8 Apr 2025 12:51:22 +0200
+Message-ID: <20250408104819.834175289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Hahn <joshua.hahn6@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit aefa398d93d5db7c555be78a605ff015357f127d ]
+[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
 
-Cgroup-level CPU statistics currently include time spent on
-user/system processes, but do not include niced CPU time (despite
-already being tracked). This patch exposes niced CPU time to the
-userspace, allowing users to get a better understanding of their
-hardware limits and can facilitate more informed workload distribution.
+In the current implementation, skbprio enqueue/dequeue contains an assertion
+that fails under certain conditions when SKBPRIO is used as a child qdisc under
+TBF with specific parameters. The failure occurs because TBF sometimes peeks at
+packets in the child qdisc without actually dequeuing them when tokens are
+unavailable.
 
-A new field 'ntime' is added to struct cgroup_base_stat as opposed to
-struct task_cputime to minimize footprint.
+This peek operation creates a discrepancy between the parent and child qdisc
+queue length counters. When TBF later receives a high-priority packet,
+SKBPRIO's queue length may show a different value than what's reflected in its
+internal priority queue tracking, triggering the assertion.
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Stable-dep-of: c4af66a95aa3 ("cgroup/rstat: Fix forceidle time in cpu.stat")
+The fix removes this overly strict assertions in SKBPRIO, they are not
+necessary at all.
+
+Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
+Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
+Cc: Nishanth Devarajan <ndev2021@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup-defs.h |  1 +
- kernel/cgroup/rstat.c       | 19 ++++++++++++++-----
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ net/sched/sch_skbprio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index a32eebcd23da4..38b2af336e4a0 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -324,6 +324,7 @@ struct cgroup_base_stat {
- #ifdef CONFIG_SCHED_CORE
- 	u64 forceidle_sum;
- #endif
-+	u64 ntime;
- };
- 
- /*
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index ce295b73c0a36..aac91466279f1 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -444,6 +444,7 @@ static void cgroup_base_stat_add(struct cgroup_base_stat *dst_bstat,
- #ifdef CONFIG_SCHED_CORE
- 	dst_bstat->forceidle_sum += src_bstat->forceidle_sum;
- #endif
-+	dst_bstat->ntime += src_bstat->ntime;
- }
- 
- static void cgroup_base_stat_sub(struct cgroup_base_stat *dst_bstat,
-@@ -455,6 +456,7 @@ static void cgroup_base_stat_sub(struct cgroup_base_stat *dst_bstat,
- #ifdef CONFIG_SCHED_CORE
- 	dst_bstat->forceidle_sum -= src_bstat->forceidle_sum;
- #endif
-+	dst_bstat->ntime -= src_bstat->ntime;
- }
- 
- static void cgroup_base_stat_flush(struct cgroup *cgrp, int cpu)
-@@ -534,8 +536,10 @@ void __cgroup_account_cputime_field(struct cgroup *cgrp,
- 	rstatc = cgroup_base_stat_cputime_account_begin(cgrp, &flags);
- 
- 	switch (index) {
--	case CPUTIME_USER:
- 	case CPUTIME_NICE:
-+		rstatc->bstat.ntime += delta_exec;
-+		fallthrough;
-+	case CPUTIME_USER:
- 		rstatc->bstat.cputime.utime += delta_exec;
- 		break;
- 	case CPUTIME_SYSTEM:
-@@ -590,6 +594,7 @@ static void root_cgroup_cputime(struct cgroup_base_stat *bstat)
- #ifdef CONFIG_SCHED_CORE
- 		bstat->forceidle_sum += cpustat[CPUTIME_FORCEIDLE];
- #endif
-+		bstat->ntime += cpustat[CPUTIME_NICE];
- 	}
- }
- 
-@@ -607,13 +612,14 @@ static void cgroup_force_idle_show(struct seq_file *seq, struct cgroup_base_stat
- void cgroup_base_stat_cputime_show(struct seq_file *seq)
- {
- 	struct cgroup *cgrp = seq_css(seq)->cgroup;
--	u64 usage, utime, stime;
-+	u64 usage, utime, stime, ntime;
- 
- 	if (cgroup_parent(cgrp)) {
- 		cgroup_rstat_flush_hold(cgrp);
- 		usage = cgrp->bstat.cputime.sum_exec_runtime;
- 		cputime_adjust(&cgrp->bstat.cputime, &cgrp->prev_cputime,
- 			       &utime, &stime);
-+		ntime = cgrp->bstat.ntime;
- 		cgroup_rstat_flush_release(cgrp);
- 	} else {
- 		/* cgrp->bstat of root is not actually used, reuse it */
-@@ -621,16 +627,19 @@ void cgroup_base_stat_cputime_show(struct seq_file *seq)
- 		usage = cgrp->bstat.cputime.sum_exec_runtime;
- 		utime = cgrp->bstat.cputime.utime;
- 		stime = cgrp->bstat.cputime.stime;
-+		ntime = cgrp->bstat.ntime;
- 	}
- 
- 	do_div(usage, NSEC_PER_USEC);
- 	do_div(utime, NSEC_PER_USEC);
- 	do_div(stime, NSEC_PER_USEC);
-+	do_div(ntime, NSEC_PER_USEC);
- 
- 	seq_printf(seq, "usage_usec %llu\n"
--		   "user_usec %llu\n"
--		   "system_usec %llu\n",
--		   usage, utime, stime);
-+			"user_usec %llu\n"
-+			"system_usec %llu\n"
-+			"nice_usec %llu\n",
-+			usage, utime, stime, ntime);
- 
- 	cgroup_force_idle_show(seq, &cgrp->bstat);
- }
+diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
+index 7a5e4c4547156..7dca66026ca4d 100644
+--- a/net/sched/sch_skbprio.c
++++ b/net/sched/sch_skbprio.c
+@@ -121,8 +121,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	/* Check to update highest and lowest priorities. */
+ 	if (skb_queue_empty(lp_qdisc)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			/* The incoming packet is the only packet in queue. */
+-			BUG_ON(sch->q.qlen != 1);
+ 			q->lowest_prio = prio;
+ 			q->highest_prio = prio;
+ 		} else {
+@@ -154,7 +152,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
+ 	/* Update highest priority field. */
+ 	if (skb_queue_empty(hpq)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			BUG_ON(sch->q.qlen);
+ 			q->highest_prio = 0;
+ 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
+ 		} else {
 -- 
 2.39.5
 
