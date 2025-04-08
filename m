@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-129670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5EDA80132
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6364A800CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885BC441D33
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ADB6880798
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5588A2690CC;
-	Tue,  8 Apr 2025 11:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABC926B2D7;
+	Tue,  8 Apr 2025 11:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIqyHZ+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U99+WfhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DBB22424C;
-	Tue,  8 Apr 2025 11:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C126B2D0;
+	Tue,  8 Apr 2025 11:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111666; cv=none; b=TTFA74xT+lOi2wMW7lwiQc9NLmfXArT23UszHEj9+51qMwyj6OyUgPKwocLgIv9Cf1dJz9+HFtQSG2b++S3r0Qd/VPzUqmFk2mFoRA2f729kq8olUVWtgX57RR9dV0fdFtTH0RzvSfZPc93jFhZ0r27yUSyLPe5vyR7S4BCejyg=
+	t=1744111552; cv=none; b=EIVilm9IODHUa57QaIt1/u5Ys5YcS4bVJvUrU85Ttbmr+qrIZc8UhWLVbdkaWk9OseiE9Mus5KCcCewVD0S4g4vEQhFJgIolB6X4GvvMrc0C8nfwkjTBGctGE9UXksLG+V9K3+dWFg1+IBKzwUKPUm4cY5W+cnnDoIIsFRTZYUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111666; c=relaxed/simple;
-	bh=xt0cDSJpzp28U89OfebGvWs780D8TxqHtL1OJLiEmQY=;
+	s=arc-20240116; t=1744111552; c=relaxed/simple;
+	bh=JX2HlB+DgoZRShvVLV37a3O1XNWzfuumHqRiR1uHxfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2AWsf8Sbq6oD4GaX7Wmag5tZXNa8XzpfpBUnLNZn+g6A8r1xLKgYXyojK1EevSbxsdG2ogwz/9pXDbkUakNGl7CXWvamXN/ThbutIk/fEeBQ8Ir5kpLK9hYYfp5CAO8EmjZ5YBw3SPc9zmVdi0pfX8AyJ43sDWdbjpOBII+Cyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIqyHZ+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3335AC4CEE5;
-	Tue,  8 Apr 2025 11:27:45 +0000 (UTC)
+	 MIME-Version; b=U+r2llty2BwYeRo9VG+QQ0LieJ+uxuKLnflqq6EKr9IDfToV8Z6A9hOY1IroxDHUdAy63CL6t0xRTJKIZ0xWQvQ7MQocoF0xTj7fYFoDD2G/E+tihAOBj3BhqHqTLisVUnnNVabQWdWZzsrSKbTZSEf/0fNtdmmmuaD5NUykrgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U99+WfhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753F6C4CEE5;
+	Tue,  8 Apr 2025 11:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111665;
-	bh=xt0cDSJpzp28U89OfebGvWs780D8TxqHtL1OJLiEmQY=;
+	s=korg; t=1744111551;
+	bh=JX2HlB+DgoZRShvVLV37a3O1XNWzfuumHqRiR1uHxfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fIqyHZ+J/oEXcktYuz/yAoYKZUuA92r6cI/ids6qrra0UCDoQ0rFX7/iggpnlkhwN
-	 kcSOTfLOmSgy0GEKSHqlN1t7tDHOgkiQ7EFrudi/D9rMa9fH14LJm61eGIXu0+yReP
-	 on2n1hWngdfVmhZHppNd7FlDqEwjZkm8ISC5ggGU=
+	b=U99+WfhKu6ub1oUU9FzcxEi8ST2r3OWYwC0D6q9ktgwqtqRJsi+xACKfbtuIQMzvL
+	 dgVZixerheea/mX6XgmRGUycg9hIkKR0AyF2lu/eQYgXdvE/H7QWVSGE7LetoM9MF+
+	 P9fP+oqFT9GUW68h2c52TOTD3yKL44mMKXYJBicY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 464/731] coresight-etm4x: add isb() before reading the TRCSTATR
-Date: Tue,  8 Apr 2025 12:46:01 +0200
-Message-ID: <20250408104925.071523516@linuxfoundation.org>
+Subject: [PATCH 6.14 465/731] perf pmus: Restructure pmu_read_sysfs to scan fewer PMUs
+Date: Tue,  8 Apr 2025 12:46:02 +0200
+Message-ID: <20250408104925.095231358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,194 +67,300 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4ff6039ffb79a4a8a44b63810a8a2f2b43264856 ]
+[ Upstream commit 57e13264dcea670d5f42a067562f02aa923219e2 ]
 
-As recommended by section 4.3.7 ("Synchronization when using system
-instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-self-hosted trace analyzer must perform a Context synchronization
-event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-Additionally, add an ISB between the each read of TRCSTATR on
-coresight_timeout() when using system instructions to program the
-trace unit.
+Rather than scanning core or all PMUs, allow pmu_read_sysfs to read
+some combination of core, other, hwmon and tool PMUs. The PMUs that
+should be read and are already read are held as bitmaps. It is known
+that a "hwmon_" prefix is necessary for a hwmon PMU's name, similarly
+with "tool", so only scan those PMUs in situations the PMU name or the
+PMU's type number make sense to.
 
-Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
-Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250116-etm_sync-v4-1-39f2b05e9514@quicinc.com
+The number of openat system calls reduces from 276 to 98 for a hwmon
+event. The number of openats for regular perf events isn't changed.
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20250201074320.746259-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c  | 20 ++++++--
- .../coresight/coresight-etm4x-core.c          | 48 +++++++++++++++++--
- include/linux/coresight.h                     |  4 ++
- 3 files changed, 62 insertions(+), 10 deletions(-)
+ tools/perf/util/pmu.h  |   2 +
+ tools/perf/util/pmus.c | 146 +++++++++++++++++++++++++++--------------
+ 2 files changed, 97 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index 0a9380350fb52..4936dc2f7a56b 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -1092,18 +1092,20 @@ static void coresight_remove_conns(struct coresight_device *csdev)
- }
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index dbed6c243a5ef..edd36c20aedc2 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -37,6 +37,8 @@ struct perf_pmu_caps {
+ };
  
- /**
-- * coresight_timeout - loop until a bit has changed to a specific register
-- *			state.
-+ * coresight_timeout_action - loop until a bit has changed to a specific register
-+ *                  state, with a callback after every trial.
-  * @csa: coresight device access for the device
-  * @offset: Offset of the register from the base of the device.
-  * @position: the position of the bit of interest.
-  * @value: the value the bit should have.
-+ * @cb: Call back after each trial.
-  *
-  * Return: 0 as soon as the bit has taken the desired state or -EAGAIN if
-  * TIMEOUT_US has elapsed, which ever happens first.
+ enum {
++	PERF_PMU_TYPE_PE_START    = 0,
++	PERF_PMU_TYPE_PE_END      = 0xFFFEFFFF,
+ 	PERF_PMU_TYPE_HWMON_START = 0xFFFF0000,
+ 	PERF_PMU_TYPE_HWMON_END   = 0xFFFFFFFD,
+ 	PERF_PMU_TYPE_TOOL = 0xFFFFFFFE,
+diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
+index 60d81d69503e3..8a0a919415d49 100644
+--- a/tools/perf/util/pmus.c
++++ b/tools/perf/util/pmus.c
+@@ -37,10 +37,25 @@
   */
--int coresight_timeout(struct csdev_access *csa, u32 offset,
--		      int position, int value)
-+int coresight_timeout_action(struct csdev_access *csa, u32 offset,
-+		      int position, int value,
-+			  coresight_timeout_cb_t cb)
+ static LIST_HEAD(core_pmus);
+ static LIST_HEAD(other_pmus);
+-static bool read_sysfs_core_pmus;
+-static bool read_sysfs_all_pmus;
++enum perf_tool_pmu_type {
++	PERF_TOOL_PMU_TYPE_PE_CORE,
++	PERF_TOOL_PMU_TYPE_PE_OTHER,
++	PERF_TOOL_PMU_TYPE_TOOL,
++	PERF_TOOL_PMU_TYPE_HWMON,
++
++#define PERF_TOOL_PMU_TYPE_PE_CORE_MASK (1 << PERF_TOOL_PMU_TYPE_PE_CORE)
++#define PERF_TOOL_PMU_TYPE_PE_OTHER_MASK (1 << PERF_TOOL_PMU_TYPE_PE_OTHER)
++#define PERF_TOOL_PMU_TYPE_TOOL_MASK (1 << PERF_TOOL_PMU_TYPE_TOOL)
++#define PERF_TOOL_PMU_TYPE_HWMON_MASK (1 << PERF_TOOL_PMU_TYPE_HWMON)
++
++#define PERF_TOOL_PMU_TYPE_ALL_MASK (PERF_TOOL_PMU_TYPE_PE_CORE_MASK |	\
++					PERF_TOOL_PMU_TYPE_PE_OTHER_MASK | \
++					PERF_TOOL_PMU_TYPE_TOOL_MASK |	\
++					PERF_TOOL_PMU_TYPE_HWMON_MASK)
++};
++static unsigned int read_pmu_types;
+ 
+-static void pmu_read_sysfs(bool core_only);
++static void pmu_read_sysfs(unsigned int to_read_pmus);
+ 
+ size_t pmu_name_len_no_suffix(const char *str)
  {
- 	int i;
- 	u32 val;
-@@ -1119,7 +1121,8 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
- 			if (!(val & BIT(position)))
- 				return 0;
- 		}
--
-+		if (cb)
-+			cb(csa, offset, position, value);
- 		/*
- 		 * Delay is arbitrary - the specification doesn't say how long
- 		 * we are expected to wait.  Extra check required to make sure
-@@ -1131,6 +1134,13 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
+@@ -102,8 +117,7 @@ void perf_pmus__destroy(void)
  
- 	return -EAGAIN;
+ 		perf_pmu__delete(pmu);
+ 	}
+-	read_sysfs_core_pmus = false;
+-	read_sysfs_all_pmus = false;
++	read_pmu_types = 0;
  }
-+EXPORT_SYMBOL_GPL(coresight_timeout_action);
-+
-+int coresight_timeout(struct csdev_access *csa, u32 offset,
-+		      int position, int value)
-+{
-+	return coresight_timeout_action(csa, offset, position, value, NULL);
-+}
- EXPORT_SYMBOL_GPL(coresight_timeout);
  
- u32 coresight_relaxed_read32(struct coresight_device *csdev, u32 offset)
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 2c1a60577728e..5bda265d02340 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -428,6 +428,29 @@ static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+ static struct perf_pmu *pmu_find(const char *name)
+@@ -129,6 +143,7 @@ struct perf_pmu *perf_pmus__find(const char *name)
+ 	struct perf_pmu *pmu;
+ 	int dirfd;
+ 	bool core_pmu;
++	unsigned int to_read_pmus = 0;
+ 
+ 	/*
+ 	 * Once PMU is loaded it stays in the list,
+@@ -139,11 +154,11 @@ struct perf_pmu *perf_pmus__find(const char *name)
+ 	if (pmu)
+ 		return pmu;
+ 
+-	if (read_sysfs_all_pmus)
++	if (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK)
+ 		return NULL;
+ 
+ 	core_pmu = is_pmu_core(name);
+-	if (core_pmu && read_sysfs_core_pmus)
++	if (core_pmu && (read_pmu_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK))
+ 		return NULL;
+ 
+ 	dirfd = perf_pmu__event_source_devices_fd();
+@@ -151,15 +166,27 @@ struct perf_pmu *perf_pmus__find(const char *name)
+ 			       /*eager_load=*/false);
+ 	close(dirfd);
+ 
+-	if (!pmu) {
+-		/*
+-		 * Looking up an inidividual PMU failed. This may mean name is
+-		 * an alias, so read the PMUs from sysfs and try to find again.
+-		 */
+-		pmu_read_sysfs(core_pmu);
++	if (pmu)
++		return pmu;
++
++	/* Looking up an individual perf event PMU failed, check if a tool PMU should be read. */
++	if (!strncmp(name, "hwmon_", 6))
++		to_read_pmus |= PERF_TOOL_PMU_TYPE_HWMON_MASK;
++	else if (!strcmp(name, "tool"))
++		to_read_pmus |= PERF_TOOL_PMU_TYPE_TOOL_MASK;
++
++	if (to_read_pmus) {
++		pmu_read_sysfs(to_read_pmus);
+ 		pmu = pmu_find(name);
++		if (pmu)
++			return pmu;
+ 	}
+-	return pmu;
++	/* Read all necessary PMUs from sysfs and see if the PMU is found. */
++	to_read_pmus = PERF_TOOL_PMU_TYPE_PE_CORE_MASK;
++	if (!core_pmu)
++		to_read_pmus |= PERF_TOOL_PMU_TYPE_PE_OTHER_MASK;
++	pmu_read_sysfs(to_read_pmus);
++	return pmu_find(name);
  }
- #endif /* CONFIG_ETM4X_IMPDEF_FEATURE */
  
-+static void etm4x_sys_ins_barrier(struct csdev_access *csa, u32 offset, int pos, int val)
-+{
-+	if (!csa->io_mem)
-+		isb();
-+}
-+
-+/*
-+ * etm4x_wait_status: Poll for TRCSTATR.<pos> == <val>. While using system
-+ * instruction to access the trace unit, each access must be separated by a
-+ * synchronization barrier. See ARM IHI0064H.b section "4.3.7 Synchronization of
-+ * register updates", for system instructions section, in "Notes":
-+ *
-+ *   "In particular, whenever disabling or enabling the trace unit, a poll of
-+ *    TRCSTATR needs explicit synchronization between each read of TRCSTATR"
-+ */
-+static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
-+{
-+	if (!csa->io_mem)
-+		return coresight_timeout_action(csa, TRCSTATR, pos, val,
-+						etm4x_sys_ins_barrier);
-+	return coresight_timeout(csa, TRCSTATR, pos, val);
-+}
-+
- static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ static struct perf_pmu *perf_pmu__find2(int dirfd, const char *name)
+@@ -176,11 +203,11 @@ static struct perf_pmu *perf_pmu__find2(int dirfd, const char *name)
+ 	if (pmu)
+ 		return pmu;
+ 
+-	if (read_sysfs_all_pmus)
++	if (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK)
+ 		return NULL;
+ 
+ 	core_pmu = is_pmu_core(name);
+-	if (core_pmu && read_sysfs_core_pmus)
++	if (core_pmu && (read_pmu_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK))
+ 		return NULL;
+ 
+ 	return perf_pmu__lookup(core_pmu ? &core_pmus : &other_pmus, dirfd, name,
+@@ -197,52 +224,60 @@ static int pmus_cmp(void *priv __maybe_unused,
+ }
+ 
+ /* Add all pmus in sysfs to pmu list: */
+-static void pmu_read_sysfs(bool core_only)
++static void pmu_read_sysfs(unsigned int to_read_types)
  {
- 	int i, rc;
-@@ -459,7 +482,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 		isb();
+-	int fd;
+-	DIR *dir;
+-	struct dirent *dent;
+ 	struct perf_pmu *tool_pmu;
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1))
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1))
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 	if (drvdata->nr_pe)
-@@ -552,7 +575,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 		isb();
+-	if (read_sysfs_all_pmus || (core_only && read_sysfs_core_pmus))
++	if ((read_pmu_types & to_read_types) == to_read_types) {
++		/* All requested PMU types have been read. */
+ 		return;
++	}
  
- 	/* wait for TRCSTATR.IDLE to go back down to '0' */
--	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 0))
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
+-	fd = perf_pmu__event_source_devices_fd();
+-	if (fd < 0)
+-		return;
++	if (to_read_types & (PERF_TOOL_PMU_TYPE_PE_CORE_MASK | PERF_TOOL_PMU_TYPE_PE_OTHER_MASK)) {
++		int fd = perf_pmu__event_source_devices_fd();
++		DIR *dir;
++		struct dirent *dent;
++		bool core_only = (to_read_types & PERF_TOOL_PMU_TYPE_PE_OTHER_MASK) == 0;
  
-@@ -941,10 +964,25 @@ static void etm4_disable_hw(void *info)
- 	tsb_csync();
- 	etm4x_relaxed_write32(csa, control, TRCPRGCTLR);
+-	dir = fdopendir(fd);
+-	if (!dir) {
+-		close(fd);
+-		return;
+-	}
++		if (fd < 0)
++			goto skip_pe_pmus;
  
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using system
-+	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-+	 * self-hosted trace analyzer must perform a Context synchronization
-+	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-+	 */
-+	if (!csa->io_mem)
-+		isb();
+-	while ((dent = readdir(dir))) {
+-		if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
+-			continue;
+-		if (core_only && !is_pmu_core(dent->d_name))
+-			continue;
+-		/* add to static LIST_HEAD(core_pmus) or LIST_HEAD(other_pmus): */
+-		perf_pmu__find2(fd, dent->d_name);
+-	}
++		dir = fdopendir(fd);
++		if (!dir) {
++			close(fd);
++			goto skip_pe_pmus;
++		}
+ 
+-	closedir(dir);
+-	if (list_empty(&core_pmus)) {
++		while ((dent = readdir(dir))) {
++			if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
++				continue;
++			if (core_only && !is_pmu_core(dent->d_name))
++				continue;
++			/* add to static LIST_HEAD(core_pmus) or LIST_HEAD(other_pmus): */
++			perf_pmu__find2(fd, dent->d_name);
++		}
 +
- 	/* wait for TRCSTATR.PMSTABLE to go to '1' */
--	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1))
-+	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1))
- 		dev_err(etm_dev,
- 			"timeout while waiting for PM stable Trace Status\n");
-+	/*
-+	 * As recommended by section 4.3.7 (Synchronization of register updates)
-+	 * of ARM IHI 0064H.b.
-+	 */
-+	isb();
++		closedir(dir);
++	}
++skip_pe_pmus:
++	if ((to_read_types & PERF_TOOL_PMU_TYPE_PE_CORE_MASK) && list_empty(&core_pmus)) {
+ 		if (!perf_pmu__create_placeholder_core_pmu(&core_pmus))
+ 			pr_err("Failure to set up any core PMUs\n");
+ 	}
+ 	list_sort(NULL, &core_pmus, pmus_cmp);
+-	if (!core_only) {
 +
- 	/* read the status of the single shot comparators */
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
- 		config->ss_status[i] =
-@@ -1746,7 +1784,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 	etm4_os_lock(drvdata);
++	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
++	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
+ 		tool_pmu = perf_pmus__tool_pmu();
+ 		list_add_tail(&tool_pmu->list, &other_pmus);
+-		perf_pmus__read_hwmon_pmus(&other_pmus);
+ 	}
++	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
++	    (read_pmu_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) == 0)
++		perf_pmus__read_hwmon_pmus(&other_pmus);
++
+ 	list_sort(NULL, &other_pmus, pmus_cmp);
+-	if (!list_empty(&core_pmus)) {
+-		read_sysfs_core_pmus = true;
+-		if (!core_only)
+-			read_sysfs_all_pmus = true;
+-	}
++
++	read_pmu_types |= to_read_types;
+ }
  
- 	/* wait for TRCSTATR.PMSTABLE to go up */
--	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for PM Stable Status\n");
- 		etm4_os_unlock(drvdata);
-@@ -1837,7 +1875,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+ static struct perf_pmu *__perf_pmus__find_by_type(unsigned int type)
+@@ -263,12 +298,21 @@ static struct perf_pmu *__perf_pmus__find_by_type(unsigned int type)
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
-diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-index 17276965ff1d0..6ddcbb8be5165 100644
---- a/include/linux/coresight.h
-+++ b/include/linux/coresight.h
-@@ -649,6 +649,10 @@ extern int coresight_enable_sysfs(struct coresight_device *csdev);
- extern void coresight_disable_sysfs(struct coresight_device *csdev);
- extern int coresight_timeout(struct csdev_access *csa, u32 offset,
- 			     int position, int value);
-+typedef void (*coresight_timeout_cb_t) (struct csdev_access *, u32, int, int);
-+extern int coresight_timeout_action(struct csdev_access *csa, u32 offset,
-+					int position, int value,
-+					coresight_timeout_cb_t cb);
+ struct perf_pmu *perf_pmus__find_by_type(unsigned int type)
+ {
++	unsigned int to_read_pmus;
+ 	struct perf_pmu *pmu = __perf_pmus__find_by_type(type);
  
- extern int coresight_claim_device(struct coresight_device *csdev);
- extern int coresight_claim_device_unlocked(struct coresight_device *csdev);
+-	if (pmu || read_sysfs_all_pmus)
++	if (pmu || (read_pmu_types == PERF_TOOL_PMU_TYPE_ALL_MASK))
+ 		return pmu;
+ 
+-	pmu_read_sysfs(/*core_only=*/false);
++	if (type >= PERF_PMU_TYPE_PE_START && type <= PERF_PMU_TYPE_PE_END) {
++		to_read_pmus = PERF_TOOL_PMU_TYPE_PE_CORE_MASK |
++			PERF_TOOL_PMU_TYPE_PE_OTHER_MASK;
++	} else if (type >= PERF_PMU_TYPE_HWMON_START && type <= PERF_PMU_TYPE_HWMON_END) {
++		to_read_pmus = PERF_TOOL_PMU_TYPE_HWMON_MASK;
++	} else {
++		to_read_pmus = PERF_TOOL_PMU_TYPE_TOOL_MASK;
++	}
++	pmu_read_sysfs(to_read_pmus);
+ 	pmu = __perf_pmus__find_by_type(type);
+ 	return pmu;
+ }
+@@ -282,7 +326,7 @@ struct perf_pmu *perf_pmus__scan(struct perf_pmu *pmu)
+ 	bool use_core_pmus = !pmu || pmu->is_core;
+ 
+ 	if (!pmu) {
+-		pmu_read_sysfs(/*core_only=*/false);
++		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_ALL_MASK);
+ 		pmu = list_prepare_entry(pmu, &core_pmus, list);
+ 	}
+ 	if (use_core_pmus) {
+@@ -300,7 +344,7 @@ struct perf_pmu *perf_pmus__scan(struct perf_pmu *pmu)
+ struct perf_pmu *perf_pmus__scan_core(struct perf_pmu *pmu)
+ {
+ 	if (!pmu) {
+-		pmu_read_sysfs(/*core_only=*/true);
++		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_PE_CORE_MASK);
+ 		return list_first_entry_or_null(&core_pmus, typeof(*pmu), list);
+ 	}
+ 	list_for_each_entry_continue(pmu, &core_pmus, list)
+@@ -316,7 +360,7 @@ static struct perf_pmu *perf_pmus__scan_skip_duplicates(struct perf_pmu *pmu)
+ 	const char *last_pmu_name = (pmu && pmu->name) ? pmu->name : "";
+ 
+ 	if (!pmu) {
+-		pmu_read_sysfs(/*core_only=*/false);
++		pmu_read_sysfs(PERF_TOOL_PMU_TYPE_ALL_MASK);
+ 		pmu = list_prepare_entry(pmu, &core_pmus, list);
+ 	} else
+ 		last_pmu_name_len = pmu_name_len_no_suffix(pmu->name ?: "");
 -- 
 2.39.5
 
