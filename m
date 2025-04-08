@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EA8A80862
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE5AA80790
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAB227B05BA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E7017A3802
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8647827605E;
-	Tue,  8 Apr 2025 12:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1817326A1A0;
+	Tue,  8 Apr 2025 12:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjLYKRm3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avN0GSLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421C7276048;
-	Tue,  8 Apr 2025 12:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A6D1FCFF3;
+	Tue,  8 Apr 2025 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115973; cv=none; b=Nu4Ewk5IbYfDtlE5DOUy8Q7IpxuqIUT01X8eVlbXNbjpnkFvF25tkiQHuzQ2UYCUnqcwGxNVx66X7J4LdjHeyEY2oEbGIieakGVbh70Z9i2i4dtbUHSuOCxXphXlnpRP4zr1ybXYvYmwM1EuZwFL12N3LtO5D2H2rQ2qZAAbhxM=
+	t=1744115487; cv=none; b=MVfwUo0/W0HXxtf1ecLnXpcFicpHBn+Lc9hBmK6JCTE1R0AipDKcoO3DVLLbqqeuzoROzuzCWo2T2dyiOgS2d0EvmdW95Pe0PL94DxHLrvSW5iC67s0iiKeYq8+gNpACZVanuMybGTkXW0U+S1tJQcW7SY2oig5avjcngS5QNyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115973; c=relaxed/simple;
-	bh=RA+okFfYB2KxxGNWUTh+Y7BrBsIVwC5ZqQMTUN+jluU=;
+	s=arc-20240116; t=1744115487; c=relaxed/simple;
+	bh=15z6SxpM/Q4ynXVg0b+d1DcmdKhsEAm0gPrFInUbT9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCr6oE2Ur7iePjeaX6CzSwVDt5VjR/dzZLFBHZVBgjW/cTwqJDv7mmoOl5UrmrYXtHbaNOPWJpcL02gNq8ujAvkDsLpowLJu1laEHC7rub0aP08fJiOWa40ZdaN9pzOx4gnJ4G33XIdHI+qi0HjQZfllx/kV/2eCdrXTzE5lykU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjLYKRm3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69FFC4CEE5;
-	Tue,  8 Apr 2025 12:39:32 +0000 (UTC)
+	 MIME-Version; b=Vlt3Dg4iHkmbJLPNR3PT+Y5WN56gh5h5VJS0qPlwB3NoS4NdzC0vCluwuBV7Ds5FAUj7DZzkxIZu+Rd1ghVK0kc1R7rgqTGiGanGysEqYK5L5wkfbJM76tb5g5E0yc3+9auuAAjh2mRZBN2acxIY0EXG9dEYwK4z7dPtFuM95Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avN0GSLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59313C4CEE5;
+	Tue,  8 Apr 2025 12:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115973;
-	bh=RA+okFfYB2KxxGNWUTh+Y7BrBsIVwC5ZqQMTUN+jluU=;
+	s=korg; t=1744115487;
+	bh=15z6SxpM/Q4ynXVg0b+d1DcmdKhsEAm0gPrFInUbT9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjLYKRm3THlMgddVCkFkVTDoCf/3jstrOrT7294/OX4/w9gHZFHjCCnywDbD6yHLX
-	 lL5b8CfUm+UitfBl3OxQBq/7lKnl47njhHWIslfsBx0LP/nsjqVuwsOc8ZMQKCmKZc
-	 keBitnRrNY3hQOgQWmGKIkbQM9GSfjMKg3d4+ubo=
+	b=avN0GSLULvJ2rhR/IMIVaj6OUDKTUqbB9mBcITodE9voIrrTfQ0kFHWsbFYizzYlO
+	 TEjcWvkgXInBP0tuIXfQYVx6ynYWamGIMQYEhv8OLqBZuuRzg1mUzzInJ3B/3xqMYY
+	 w8bWFNAWRnS8Th8Pxly/ymhezRaTXrRJD9HtVpE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 174/204] LoongArch: Increase ARCH_DMA_MINALIGN up to 16
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.13 492/499] nfsd: allow SC_STATUS_FREEABLE when searching via nfs4_lookup_stateid()
 Date: Tue,  8 Apr 2025 12:51:44 +0200
-Message-ID: <20250408104825.422040058@linuxfoundation.org>
+Message-ID: <20250408104903.629136267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 4103cfe9dcb88010ae4911d3ff417457d1b6a720 upstream.
+commit d1bc15b147d35b4cb7ca99a9a7d79d41ca342c13 upstream.
 
-ARCH_DMA_MINALIGN is 1 by default, but some LoongArch-specific devices
-(such as APBDMA) require 16 bytes alignment. When the data buffer length
-is too small, the hardware may make an error writing cacheline. Thus, it
-is dangerous to allocate a small memory buffer for DMA. It's always safe
-to define ARCH_DMA_MINALIGN as L1_CACHE_BYTES but unnecessary (kmalloc()
-need small memory objects). Therefore, just increase it to 16.
+The pynfs DELEG8 test fails when run against nfsd. It acquires a
+delegation and then lets the lease time out. It then tries to use the
+deleg stateid and expects to see NFS4ERR_DELEG_REVOKED, but it gets
+bad NFS4ERR_BAD_STATEID instead.
 
+When a delegation is revoked, it's initially marked with
+SC_STATUS_REVOKED, or SC_STATUS_ADMIN_REVOKED and later, it's marked
+with the SC_STATUS_FREEABLE flag, which denotes that it is waiting for
+s FREE_STATEID call.
+
+nfs4_lookup_stateid() accepts a statusmask that includes the status
+flags that a found stateid is allowed to have. Currently, that mask
+never includes SC_STATUS_FREEABLE, which means that revoked delegations
+are (almost) never found.
+
+Add SC_STATUS_FREEABLE to the always-allowed status flags, and remove it
+from nfsd4_delegreturn() since it's now always implied.
+
+Fixes: 8dd91e8d31fe ("nfsd: fix race between laundromat and free_stateid")
 Cc: stable@vger.kernel.org
-Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/cache.h |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4state.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/include/asm/cache.h
-+++ b/arch/loongarch/include/asm/cache.h
-@@ -8,6 +8,8 @@
- #define L1_CACHE_SHIFT		CONFIG_L1_CACHE_SHIFT
- #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6902,7 +6902,7 @@ nfsd4_lookup_stateid(struct nfsd4_compou
+ 		 */
+ 		statusmask |= SC_STATUS_REVOKED;
  
-+#define ARCH_DMA_MINALIGN	(16)
-+
- #define __read_mostly __section(".data..read_mostly")
+-	statusmask |= SC_STATUS_ADMIN_REVOKED;
++	statusmask |= SC_STATUS_ADMIN_REVOKED | SC_STATUS_FREEABLE;
  
- #endif /* _ASM_CACHE_H */
+ 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
+ 		CLOSE_STATEID(stateid))
+@@ -7557,9 +7557,7 @@ nfsd4_delegreturn(struct svc_rqst *rqstp
+ 	if ((status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)))
+ 		return status;
+ 
+-	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG,
+-				      SC_STATUS_REVOKED | SC_STATUS_FREEABLE,
+-				      &s, nn);
++	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, SC_STATUS_REVOKED, &s, nn);
+ 	if (status)
+ 		goto out;
+ 	dp = delegstateid(s);
 
 
 
