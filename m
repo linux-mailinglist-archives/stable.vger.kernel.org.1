@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBFFA8030A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFB2A7FE16
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356233A7126
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6FD16D90A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5182676DE;
-	Tue,  8 Apr 2025 11:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443EC26A0C1;
+	Tue,  8 Apr 2025 11:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiin43OO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzfNyz5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9B7266EEA;
-	Tue,  8 Apr 2025 11:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEAB26A0B0;
+	Tue,  8 Apr 2025 11:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112827; cv=none; b=gYaHia+HIDAUKr/Hao8/WXBssisIxhzoFNKoT7jwVOHnj3O2+F/P7UkR1jeRW0te99mP5D3txTHC/kKNLLTXYYDdBFjNLS2ulr7nB00OCGixq6qeKg5vmeVhhxqjQvkFTL6HdKTE5ly3JZUm/sZlaCfmg7vjUOGTAhCYO7GMIXs=
+	t=1744110127; cv=none; b=qXFUx2j8mEZEAQQvb2oa/wPPWVl/I0K8mZGNKPOfr99rWn2qLEvwc41xtbfJ4m9F0Z6Wu+NfVmScBxronxA+vGHctQ5QUmGRYHZB+YeEalvvojn7vQmp3xdtA7IuGtIilK7yB9EG41/nfThSKeGNys3u9N34ONYxmEuoxNkL0JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112827; c=relaxed/simple;
-	bh=qMmVol4nnnGo8Vi/rHeKOII4TIGXD5jbdDt1ciAGM8Y=;
+	s=arc-20240116; t=1744110127; c=relaxed/simple;
+	bh=p2oLZ+rKFl48JIRVQrhK9pWjsiIxlHt9Gs6UdEnsTGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKuM493Uu2H60lEThEr9fXNxeQjPVolSd9qaY+TM42VLAUqWHIz660DuWcKgjpCb/PSbRJNzkahM1XwwPNwfirKJpkNqtlJVaMRp+qSkrRpIflja4OW92XzOod6Fz1A1xgFLsyIG/pZsZ2SuGlpy9Bb17vtCJ17hNVqxq0WlC9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiin43OO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29464C4CEE5;
-	Tue,  8 Apr 2025 11:47:07 +0000 (UTC)
+	 MIME-Version; b=ckNGIoW9wqS+H9HlcQePTJHv2b1hz7C9zGULPxuQkK8T+5rZM2o9YlHU2/tS9XP3Tg38mCZebCdziYUzt2TtqcxJ2Df6oU7iWqFoDjEHaq1X4Dy+iD4w8pbyrxOJE7fM5Z1+eUptesrwjPvj9wppkDutKArS0RhGOMTavpUKJd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzfNyz5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C64EC4CEE5;
+	Tue,  8 Apr 2025 11:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112827;
-	bh=qMmVol4nnnGo8Vi/rHeKOII4TIGXD5jbdDt1ciAGM8Y=;
+	s=korg; t=1744110126;
+	bh=p2oLZ+rKFl48JIRVQrhK9pWjsiIxlHt9Gs6UdEnsTGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiin43OO/bQ6L0IUkivFS1fXsnmgavtmunt8NLxzPHK4/B5N20KezhpKAyUOKLbyC
-	 Hoh1XUFrdFoykeIa/8k1auvtNmXQ8POzDdwUovedk+sL9wa0H8qRzVvCBygOgbOpWZ
-	 PM5MLgJyyA0KofyBBEsf8L6lsudhmCLk6hZBYYPI=
+	b=XzfNyz5esdcr1wqDo8tnjqvOKlkTB0kneTwC0wv6HqfMkVpqz1Qx7EROm3BE+aqND
+	 ofq7MD+A/tLw0b3hnMkJpGv7ZyHU4SAh3FJTssTUcIXAOTV1givzqwlQxzcN+B74PN
+	 YJCTkZaCRACXIv/B+2A7SQ24B4a+6aNJfbWJCTXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will McVicker <willmcvicker@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Giovanni Gherdovich <ggherdovich@suse.cz>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 172/279] clk: samsung: Fix UBSAN panic in samsung_clk_init()
-Date: Tue,  8 Apr 2025 12:49:15 +0200
-Message-ID: <20250408104830.974212500@linuxfoundation.org>
+Subject: [PATCH 5.10 178/227] ACPI: processor: idle: Return an error if both P_LVL{2,3} idle states are invalid
+Date: Tue,  8 Apr 2025 12:49:16 +0200
+Message-ID: <20250408104825.655545706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will McVicker <willmcvicker@google.com>
+From: Giovanni Gherdovich <ggherdovich@suse.cz>
 
-[ Upstream commit d19d7345a7bcdb083b65568a11b11adffe0687af ]
+[ Upstream commit 9e9b893404d43894d69a18dd2fc8fcf1c36abb7e ]
 
-With UBSAN_ARRAY_BOUNDS=y, I'm hitting the below panic due to
-dereferencing `ctx->clk_data.hws` before setting
-`ctx->clk_data.num = nr_clks`. Move that up to fix the crash.
+Prior to commit 496121c02127 ("ACPI: processor: idle: Allow probing on
+platforms with one ACPI C-state"), the acpi_idle driver wouldn't load on
+systems without a valid C-State at least as deep as C2.
 
-  UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
-  <snip>
-  Call trace:
-   samsung_clk_init+0x110/0x124 (P)
-   samsung_clk_init+0x48/0x124 (L)
-   samsung_cmu_register_one+0x3c/0xa0
-   exynos_arm64_register_cmu+0x54/0x64
-   __gs101_cmu_top_of_clk_init_declare+0x28/0x60
-   ...
+The behavior was desirable for guests on hypervisors such as VMWare
+ESXi, which by default don't have the _CST ACPI method, and set the C2
+and C3 latencies to 101 and 1001 microseconds respectively via the FADT,
+to signify they're unsupported.
 
-Fixes: e620a1e061c4 ("drivers/clk: convert VL struct to struct_size")
-Signed-off-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20250212183253.509771-1-willmcvicker@google.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Since the above change though, these virtualized deployments end up
+loading acpi_idle, and thus entering the default C1 C-State set by
+acpi_processor_get_power_info_default(); this is undesirable for a
+system that's communicating to the OS it doesn't want C-States (missing
+_CST, and invalid C2/C3 in FADT).
+
+Make acpi_processor_get_power_info_fadt() return -ENODEV in that case,
+so that acpi_processor_get_cstate_info() exits early and doesn't set
+pr->flags.power = 1.
+
+Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
+Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/20250328143040.9348-1-ggherdovich@suse.cz
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/processor_idle.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/samsung/clk.c b/drivers/clk/samsung/clk.c
-index 1949ae7851b2e..0468ce5506aef 100644
---- a/drivers/clk/samsung/clk.c
-+++ b/drivers/clk/samsung/clk.c
-@@ -64,11 +64,11 @@ struct samsung_clk_provider *__init samsung_clk_init(struct device_node *np,
- 	if (!ctx)
- 		panic("could not allocate clock provider context.\n");
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index ae07927910ca0..42c7bdb352d20 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -270,6 +270,10 @@ static int acpi_processor_get_power_info_fadt(struct acpi_processor *pr)
+ 			 ACPI_CX_DESC_LEN, "ACPI P_LVL3 IOPORT 0x%x",
+ 			 pr->power.states[ACPI_STATE_C3].address);
  
-+	ctx->clk_data.num = nr_clks;
- 	for (i = 0; i < nr_clks; ++i)
- 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
++	if (!pr->power.states[ACPI_STATE_C2].address &&
++	    !pr->power.states[ACPI_STATE_C3].address)
++		return -ENODEV;
++
+ 	return 0;
+ }
  
- 	ctx->reg_base = base;
--	ctx->clk_data.num = nr_clks;
- 	spin_lock_init(&ctx->lock);
- 
- 	return ctx;
 -- 
 2.39.5
 
