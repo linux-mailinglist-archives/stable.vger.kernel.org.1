@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-130689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B22A80532
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247C5A805D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4BD07ADCE3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:14:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECB731B82B0B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF3A26B2C6;
-	Tue,  8 Apr 2025 12:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613E926B2C8;
+	Tue,  8 Apr 2025 12:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISijec59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8K6Mqi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE99726B2C1;
-	Tue,  8 Apr 2025 12:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AB926B2B1;
+	Tue,  8 Apr 2025 12:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114387; cv=none; b=A+w+VggAiEJzyNsdzgIEeiN0LgI6LXxQNOxUNwfn16MaY78G5+fYbIw9Kh4LAuiD1zNR2/+jAD5HL4qLPQR7RPcf5lGG11Y04Rx4FbjiS8jR9A+JdgRa/KbRQy8SCaTaMnwNMGKbHQUC1f3trHibWoaZe/W3luU+zYzB2VXXpWU=
+	t=1744114389; cv=none; b=T5K327+xS3ExIdYbNpUzrt0/+41X5WAFBlufzgSNcLxonPx+ySlAGh77pRjB2A73abcZ14njAQi/rV7Y2F/OIttNnu/l85XqoH9NzKlzxrx/SCDgUYzCXpGICnA7y9D8i0F0UYIHsQXhePJZL8GLW3KPSJKbURCsJMG2qdu5fRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114387; c=relaxed/simple;
-	bh=DJ83m2dWLd9EVmL5iDmIMSwiwLLJsNHhLo+g4iRtC+Q=;
+	s=arc-20240116; t=1744114389; c=relaxed/simple;
+	bh=3cmOViJzCiRVUrkrN1kKuBoanjhTf9mCably8v9BUTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9iwuc9Vv2maWFWe/amlpdjXiwbnXd7EUICfhIUx84G3ji5ejw+183/p6Fgan/KhQrprNy9PAEZcIy/hPWAm3oEth5LgjhamFI+SFExyLDkMmzpadCzJ71XavsbuelZYSXuyeS9HODBnRVsCmcIA1VVH7hXOy6WsW++VilfvUwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISijec59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B1C4CEE5;
-	Tue,  8 Apr 2025 12:13:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iqbRf2m/pTNFJYxoaqxppUT5xF20lK6pzPMwLiiqEre+A9prr4vke6cY2zwuxqWlWHVsWbI+kwOnuhR58jS0PyyZnXzYeRRpKfHWOBvdNMAHPgiaQNHZYG2eo9vujzqiQqEH1/WRdjLHIgTCn36PeaJXgjpw6XoVFGZw5RjuB+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8K6Mqi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE11C4CEE5;
+	Tue,  8 Apr 2025 12:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114386;
-	bh=DJ83m2dWLd9EVmL5iDmIMSwiwLLJsNHhLo+g4iRtC+Q=;
+	s=korg; t=1744114389;
+	bh=3cmOViJzCiRVUrkrN1kKuBoanjhTf9mCably8v9BUTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISijec59gl80HUqKKTte6O9CwnSkuR4Go6Yl3omw7zGIuHbWd4ojg4kSvebXeXNN5
-	 4I5yZtwGxYX/Xy+2FTVWuwIJIApooaiZhfMxShRpQnv0mnePah1ILyWhTyoYWgVmOm
-	 2J3x5keRw07HcNRs+OLYqWPLozzNtcewDKVi1/Ec=
+	b=R8K6Mqi79o0aDooP9K84PbLjztkS0v9GFZq0edKHoNtpiYQGuZNHzvrNnkalDsDYd
+	 uvaxSiyOKY8MEcC5q3NklTIHllBCHu7NJ5nBhNna52ynF6KrBeb6GlvuEWwAnhQQSi
+	 FDkR2DCNYXpjkariNbUIDRzq9hWb8pG3ekw2s9Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 047/499] auxdisplay: panel: Fix an API misuse in panel.c
-Date: Tue,  8 Apr 2025 12:44:19 +0200
-Message-ID: <20250408104852.415494405@linuxfoundation.org>
+Subject: [PATCH 6.13 048/499] platform/x86: lenovo-yoga-tab2-pro-1380-fastcharger: Make symbol static
+Date: Tue,  8 Apr 2025 12:44:20 +0200
+Message-ID: <20250408104852.441089542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -60,50 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 72e1c440c848624ad4cfac93d69d8a999a20355b ]
+[ Upstream commit 886ca11a0c70efe5627a18557062e8a44370d78f ]
 
-Variable allocated by charlcd_alloc() should be released
-by charlcd_free(). The following patch changed kfree() to
-charlcd_free() to fix an API misuse.
+Sparse reports:
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+lenovo-yoga-tab2-pro-1380-fastcharger.c:222:29: warning: symbol
+'yt2_1380_fc_serdev_driver' was not declared. Should it be static?
+
+Fix that by making the symbol static.
+
+Fixes: b2ed33e8d486a ("platform/x86: Add  lenovo-yoga-tab2-pro-1380-fastcharger driver")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250304160639.4295-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/panel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
-index a731f28455b45..6dc8798d01f98 100644
---- a/drivers/auxdisplay/panel.c
-+++ b/drivers/auxdisplay/panel.c
-@@ -1664,7 +1664,7 @@ static void panel_attach(struct parport *port)
- 	if (lcd.enabled)
- 		charlcd_unregister(lcd.charlcd);
- err_unreg_device:
--	kfree(lcd.charlcd);
-+	charlcd_free(lcd.charlcd);
- 	lcd.charlcd = NULL;
- 	parport_unregister_device(pprt);
- 	pprt = NULL;
-@@ -1692,7 +1692,7 @@ static void panel_detach(struct parport *port)
- 		charlcd_unregister(lcd.charlcd);
- 		lcd.initialized = false;
- 		kfree(lcd.charlcd->drvdata);
--		kfree(lcd.charlcd);
-+		charlcd_free(lcd.charlcd);
- 		lcd.charlcd = NULL;
- 	}
+diff --git a/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c b/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
+index a96b215cd2c5e..25933cd018d17 100644
+--- a/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
++++ b/drivers/platform/x86/lenovo-yoga-tab2-pro-1380-fastcharger.c
+@@ -219,7 +219,7 @@ static int yt2_1380_fc_serdev_probe(struct serdev_device *serdev)
+ 	return 0;
+ }
  
+-struct serdev_device_driver yt2_1380_fc_serdev_driver = {
++static struct serdev_device_driver yt2_1380_fc_serdev_driver = {
+ 	.probe = yt2_1380_fc_serdev_probe,
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
 -- 
 2.39.5
 
