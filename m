@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-130813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A20A806C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C226A80977
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578AE4C25EB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B736F1BA673F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257826B0B8;
-	Tue,  8 Apr 2025 12:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A560E26A1AF;
+	Tue,  8 Apr 2025 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GBa7jYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJaXUXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE48268FDE;
-	Tue,  8 Apr 2025 12:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8731E489;
+	Tue,  8 Apr 2025 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114719; cv=none; b=t/NqC78ixK5bb8fOr9UemU/IxT3rMh+Tzk6Q627lPpyi1IddnLv7oaVf6wvNKLeeooDmBKK7phSo7YAfzxi33yt780pIn0U8q9XD94zi4c2CszXAAjlVWlLoe+qWJd5i+ZsK3ka/XVsgnrM9GYTXUWrJg0pqYpidar1uaBcG2ok=
+	t=1744116214; cv=none; b=BGTuZ6dYwCveMfAfrm98uslERPQ0laTjXyKqstATVF1pjV+eKFDmcPKAZnIpOJq8LdlCn5xBgwbuUG8mPI1whxjx16qslGLJoH8h9ZV2NeSSaoMLTIS3SYcfizXme4ET47iR402pq+ASMfPv4xtrL9ddaw1MfENpHEMnrKMOvlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114719; c=relaxed/simple;
-	bh=URWJhpdbCl4FWa74wW0SIMDVpRuJ/ikpXdGN44G3Kg4=;
+	s=arc-20240116; t=1744116214; c=relaxed/simple;
+	bh=EgVmbBidQ5T3Qwhjzw76nO9QEjEQIZOh2BGry3Bbxgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCPbrZU/vVi4eZquAWK2K0giUQEiY4IrPMALxxD5uv5iro32g48fBbJsVNN8hrPOxm3Wzfppy3/++X+fYLlq1Q/uEyUBSdY2tzNy+hQBR43rceSQ15i07ewG9K3t+cK37uSNSBOk2YKSEjQgNA1s6MSgtJmBvu+xxeuxv69K10w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GBa7jYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF1FC4CEE5;
-	Tue,  8 Apr 2025 12:18:38 +0000 (UTC)
+	 MIME-Version; b=QE8iNr68OhfgSyXWXYaegr0GAUiFYZyfHegEu7Hp7+r3Hlyl6v0STn/CTnErSpspiIN5D6XXmuMFjUaVKEcvBnJ+5jn4EqT4L1GSpQuJz+Dw32ALyHzhmzv1mVqZZvOEA+kYeBI3lgkF0lAN9+/r5mzxN6soQi+y7+sfwRdRFbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJaXUXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDFAC4CEE5;
+	Tue,  8 Apr 2025 12:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114719;
-	bh=URWJhpdbCl4FWa74wW0SIMDVpRuJ/ikpXdGN44G3Kg4=;
+	s=korg; t=1744116214;
+	bh=EgVmbBidQ5T3Qwhjzw76nO9QEjEQIZOh2BGry3Bbxgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GBa7jYp3kGwYSQVJIz3JQ9/t4SNdsNPQI7HFLOz8tJ5la1jPScbjZYLwWt6dqain
-	 ZvkZ+Wf4nOdZz+oHCMWQEPeaU1V9fOUkX4YVsAtPvkvlVAAlfrfWHz9notd/jJ55XD
-	 JVjEFxjPlqXmGxIzx5pzokbMf5r1BO3irBD8Qt3s=
+	b=oJJaXUXN+1mzh//4gj1Dbg4qSvgm87AKlFRba5QRrAGBq6SqlUfY5LNbuJiNHeDHI
+	 RHjrH7H58blJeyZW8DyaZPhdHsQfsxzx0DM6Z4sjV4aE/87EAafVR5qgpKztbm5CEY
+	 LoUeDJXq7zWre9arM6hlDV0T1Kfw54KI8SkxhLmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Carol Soto <csoto@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 171/499] clk: amlogic: gxbb: drop non existing 32k clock parent
-Date: Tue,  8 Apr 2025 12:46:23 +0200
-Message-ID: <20250408104855.440801965@linuxfoundation.org>
+Subject: [PATCH 6.12 058/423] PCI: Use downstream bridges for distributing resources
+Date: Tue,  8 Apr 2025 12:46:24 +0200
+Message-ID: <20250408104847.099093652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Kai-Heng Feng <kaihengf@nvidia.com>
 
-[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
+[ Upstream commit 1a596ad00ffe9b37fc60a93cbdd4daead3bf95f3 ]
 
-The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
-that this clock should be provided by AO controller.
+7180c1d08639 ("PCI: Distribute available resources for root buses, too")
+breaks BAR assignment on some devices:
 
-The HW probably has this clock but it does not exist at the moment in
-any controller implementation. Furthermore, referencing clock by the global
-name should be avoided whenever possible.
+  pci 0006:03:00.0: BAR 0 [mem 0x6300c0000000-0x6300c1ffffff 64bit pref]: assigned
+  pci 0006:03:00.1: BAR 0 [mem 0x6300c2000000-0x6300c3ffffff 64bit pref]: assigned
+  pci 0006:03:00.2: BAR 0 [mem size 0x00800000 64bit pref]: can't assign; no space
+  pci 0006:03:00.0: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
+  pci 0006:03:00.1: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
 
-There is no reason to keep this hack around, at least for now.
+The apertures of domain 0006 before 7180c1d08639:
 
-Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+  6300c0000000-63ffffffffff : PCI Bus 0006:00
+    6300c0000000-6300c9ffffff : PCI Bus 0006:01
+      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
+        6300c0000000-6300c8ffffff : PCI Bus 0006:03      #   144MB
+          6300c0000000-6300c1ffffff : 0006:03:00.0       #     32MB
+          6300c2000000-6300c3ffffff : 0006:03:00.1       #     32MB
+          6300c4000000-6300c47fffff : 0006:03:00.2       #      8MB
+          6300c4800000-6300c67fffff : 0006:03:00.0       #     32MB
+          6300c6800000-6300c87fffff : 0006:03:00.1       #     32MB
+        6300c9000000-6300c9bfffff : PCI Bus 0006:04      #    12MB
+          6300c9000000-6300c9bfffff : PCI Bus 0006:05    #    12MB
+            6300c9000000-6300c91fffff : PCI Bus 0006:06  #      2MB
+            6300c9200000-6300c93fffff : PCI Bus 0006:07  #      2MB
+            6300c9400000-6300c95fffff : PCI Bus 0006:08  #      2MB
+            6300c9600000-6300c97fffff : PCI Bus 0006:09  #      2MB
+
+After 7180c1d08639:
+
+  6300c0000000-63ffffffffff : PCI Bus 0006:00
+    6300c0000000-6300c9ffffff : PCI Bus 0006:01
+      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
+        6300c0000000-6300c43fffff : PCI Bus 0006:03      #    68MB
+          6300c0000000-6300c1ffffff : 0006:03:00.0       #      32MB
+          6300c2000000-6300c3ffffff : 0006:03:00.1       #      32MB
+              --- no space ---      : 0006:03:00.2       #       8MB
+              --- no space ---      : 0006:03:00.0       #      32MB
+              --- no space ---      : 0006:03:00.1       #      32MB
+        6300c4400000-6300c4dfffff : PCI Bus 0006:04      #    10MB
+          6300c4400000-6300c4dfffff : PCI Bus 0006:05    #      10MB
+            6300c4400000-6300c45fffff : PCI Bus 0006:06  #        2MB
+            6300c4600000-6300c47fffff : PCI Bus 0006:07  #        2MB
+            6300c4800000-6300c49fffff : PCI Bus 0006:08  #        2MB
+            6300c4a00000-6300c4bfffff : PCI Bus 0006:09  #        2MB
+
+We can see that the window to 0006:03 gets shrunken too much and 0006:04
+eats away the window for 0006:03:00.2.
+
+The offending commit distributes the upstream bridge's resources multiple
+times to every downstream bridge, hence makes the aperture smaller than
+desired because calculation of io_per_b, mmio_per_b and mmio_pref_per_b
+becomes incorrect.
+
+Instead, distribute downstream bridges' own resources to resolve the issue.
+
+Link: https://lore.kernel.org/r/20241204022457.51322-1-kaihengf@nvidia.com
+Fixes: 7180c1d08639 ("PCI: Distribute available resources for root buses, too")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219540
+Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Carol Soto <csoto@nvidia.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Chris Chiu <chris.chiu@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/gxbb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/setup-bus.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
-index df9250de51dc8..3abb44a2532b9 100644
---- a/drivers/clk/meson/gxbb.c
-+++ b/drivers/clk/meson/gxbb.c
-@@ -1266,14 +1266,13 @@ static struct clk_regmap gxbb_cts_i958 = {
- 	},
- };
- 
-+/*
-+ * This table skips a clock named 'cts_slow_oscin' in the documentation
-+ * This clock does not exist yet in this controller or the AO one
-+ */
-+static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
- static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
- 	{ .fw_name = "xtal", },
--	/*
--	 * FIXME: This clock is provided by the ao clock controller but the
--	 * clock is not yet part of the binding of this controller, so string
--	 * name must be use to set this parent.
--	 */
--	{ .name = "cts_slow_oscin", .index = -1 },
- 	{ .hw = &gxbb_fclk_div3.hw },
- 	{ .hw = &gxbb_fclk_div5.hw },
- };
-@@ -1283,6 +1282,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
- 		.offset = HHI_32K_CLK_CNTL,
- 		.mask = 0x3,
- 		.shift = 16,
-+		.table = gxbb_32k_clk_parents_val_table,
- 		},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "32k_clk_sel",
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 23082bc0ca37a..a6e653a4f5b1a 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -2105,8 +2105,7 @@ pci_root_bus_distribute_available_resources(struct pci_bus *bus,
+ 		 * in case of root bus.
+ 		 */
+ 		if (bridge && pci_bridge_resources_not_assigned(dev))
+-			pci_bridge_distribute_available_resources(bridge,
+-								  add_list);
++			pci_bridge_distribute_available_resources(dev, add_list);
+ 		else
+ 			pci_root_bus_distribute_available_resources(b, add_list);
+ 	}
 -- 
 2.39.5
 
