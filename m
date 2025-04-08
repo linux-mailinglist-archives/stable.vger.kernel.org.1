@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02780A8021E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0946CA7FD67
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABAD3BADD3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40647188F4C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE9C267F55;
-	Tue,  8 Apr 2025 11:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB91267F6D;
+	Tue,  8 Apr 2025 10:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwD9pt03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE5w6Qwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB5235973;
-	Tue,  8 Apr 2025 11:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2EC268C43;
+	Tue,  8 Apr 2025 10:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112283; cv=none; b=M1Oqj564AbPfl7KGis36XhefYuOowEMoAqVjCYbFpF8jXTQvek+CbS7WExOG5Ih31cP6OeoKsvu33Xfgnn5dIfiCKRBJ7secJzmgW8GTbzAKC1nz6wiGirKa2QGK6y/5BeOm+NxDcOth9Uz/QllibKBWpUcdjFKz5xfnu1XFgUE=
+	t=1744109688; cv=none; b=kQ3iwO2Yd2YSqUzfZZ3BNkueRKDJNC6IeyufvG8Jiy7uDQJi90S6ohQNX07ym1SJqE6jwea923jWeAmbQ2HHAmj+omt/MSRKXWdnVOxl5Vh1wnlh7SzGTuTsfxmn4wICS3tHkH2LoJZ10kWljVNQInJ5prcLytKPXUFEf2rZ7VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112283; c=relaxed/simple;
-	bh=3girt8YbLmOudRa0sq8xx+csZiZ8RMpofI/yB//NtCU=;
+	s=arc-20240116; t=1744109688; c=relaxed/simple;
+	bh=7/1kARzhQvV5gnwFgRNkwNl3O0m0PwXsI/oyNrZEQsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ri8PFs1L3SYbV4UYVa7zgRyz+U5AATZQ2yqxAFm72gcQW613KzgP3jFqAB+zKRZId7CNGSw1cGUQdxhuxia3F663v3ovf13Hm0Tw234cZljjrlZ5GGwMDFHl+MJBppJvZbsjjm1t5JlHeWAsB8DA5WKhPOugUDSxCpqDXv1imC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwD9pt03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE15EC4CEE5;
-	Tue,  8 Apr 2025 11:38:02 +0000 (UTC)
+	 MIME-Version; b=RV3wHZkJVcMFt2Bd5bexhQ3Ro81bFeRG8lhZ0xnP+j7ZhOpiyD8kBwsn6mLnfdRgTqqCvGGJrllq2dxHiNBN06ZfAR4LIeN/1cfrAfuBgwmZvLxH8dUlsdDC6ojdqNdLXtXoj5X/H4YssjYVdiwDMIN6+KJYoCc7FV8biWNBM8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE5w6Qwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D1CC4CEEB;
+	Tue,  8 Apr 2025 10:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112283;
-	bh=3girt8YbLmOudRa0sq8xx+csZiZ8RMpofI/yB//NtCU=;
+	s=korg; t=1744109688;
+	bh=7/1kARzhQvV5gnwFgRNkwNl3O0m0PwXsI/oyNrZEQsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwD9pt03xKak543vVbz98gi0b3YPspNdMuLc2PZk/jAjZYjsDczc7sPkkXSGIXuev
-	 sX7A6z06pMV4KCUQrRUt1ojQbNsH5utNtQkHipF/jWlfTfeToLewttbJ8WFn406EXj
-	 b58Yh+r7GPHpCDAZsX5WcuOxOPSVVYWHKPt6J790=
+	b=UE5w6QwgX1xvsojS2kMIYifwP3K1m7xRBMLS5pJbB5Btqb/2ZCOtogNVUUT3ryOmo
+	 gdGTfrgkY47/YhVaGwhGhiC111mZoiTK5TlXM4f9lEj7JS4A0euyBdRz3/sNAxkuNx
+	 XhU0emoOrjDIMiNRSvywGrrVZrE6YzHRqghWmMy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/279] net/mlx5: handle errors in mlx5_chains_create_table()
+Subject: [PATCH 5.10 017/227] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
 Date: Tue,  8 Apr 2025 12:46:35 +0200
-Message-ID: <20250408104826.709960463@linuxfoundation.org>
+Message-ID: <20250408104820.913603316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit eab0396353be1c778eba1c0b5180176f04dd21ce ]
+[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
 
-In mlx5_chains_create_table(), the return value of mlx5_get_fdb_sub_ns()
-and mlx5_get_flow_namespace() must be checked to prevent NULL pointer
-dereferences. If either function fails, the function should log error
-message with mlx5_core_warn() and return error pointer.
+The get->num_services variable is an unsigned int which is controlled by
+the user.  The struct_size() function ensures that the size calculation
+does not overflow an unsigned long, however, we are saving the result to
+an int so the calculation can overflow.
 
-Fixes: 39ac237ce009 ("net/mlx5: E-Switch, Refactor chains and priorities")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250307021820.2646-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Both "len" and "get->num_services" come from the user.  This check is
+just a sanity check to help the user and ensure they are using the API
+correctly.  An integer overflow here is not a big deal.  This has no
+security impact.
+
+Save the result from struct_size() type size_t to fix this integer
+overflow bug.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
-index df58cba37930a..64c1071bece8d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
-@@ -196,6 +196,11 @@ mlx5_chains_create_table(struct mlx5_fs_chains *chains,
- 		ns = mlx5_get_flow_namespace(chains->dev, chains->ns);
- 	}
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index d0b64c36471d5..fb9f1badeddbf 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -2852,12 +2852,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 	case IP_VS_SO_GET_SERVICES:
+ 	{
+ 		struct ip_vs_get_services *get;
+-		int size;
++		size_t size;
  
-+	if (!ns) {
-+		mlx5_core_warn(chains->dev, "Failed to get flow namespace\n");
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+
- 	ft_attr.autogroup.num_reserved_entries = 2;
- 	ft_attr.autogroup.max_num_groups = chains->group_num;
- 	ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
+ 		get = (struct ip_vs_get_services *)arg;
+ 		size = struct_size(get, entrytable, get->num_services);
+ 		if (*len != size) {
+-			pr_err("length: %u != %u\n", *len, size);
++			pr_err("length: %u != %zu\n", *len, size);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -2893,12 +2893,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 	case IP_VS_SO_GET_DESTS:
+ 	{
+ 		struct ip_vs_get_dests *get;
+-		int size;
++		size_t size;
+ 
+ 		get = (struct ip_vs_get_dests *)arg;
+ 		size = struct_size(get, entrytable, get->num_dests);
+ 		if (*len != size) {
+-			pr_err("length: %u != %u\n", *len, size);
++			pr_err("length: %u != %zu\n", *len, size);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
 -- 
 2.39.5
 
