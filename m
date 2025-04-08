@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B50A8077F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15813A804C3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627E21B668E3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F03503B4596
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3A82676C9;
-	Tue,  8 Apr 2025 12:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F74726A0E9;
+	Tue,  8 Apr 2025 12:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W944K6HD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgG7F0tw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAF22063FD;
-	Tue,  8 Apr 2025 12:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E184E2676E1;
+	Tue,  8 Apr 2025 12:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115381; cv=none; b=jnGASVZB5FrrJwcS/no7TcPk8QpgAsVK96qwAjfsZm89XTUy6NxJHm6VyqaIAih78pHboE7HEgMJ8FCiI5VYPV8CKPy01386PSWzU+VEo5f1HJVHtxb8TZLFy06rSUNtcmZx2lMvj6B/f57EH/GtQsKJ1eZ564pEduTSgKLcfRY=
+	t=1744113688; cv=none; b=HC2U2KZXDBF8lMFwJ1E/Jiaj5PfM0JTo13R6q5uGZKTlM7ZqnshEL/S3E3XrU0kENzKTDx1TvscR5suJnNBisSQJF5WKQDoZxajgO/algAC0WZsltEDFLG8G3XPbSE9XPMruESvs5ItZMzwcDNBjsuxNRce032eAaRj6K9Ew6t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115381; c=relaxed/simple;
-	bh=Z0Hs8qPHL5qWYi/33m61NJ+XsR/Iv6jhAjP7C7Cofxo=;
+	s=arc-20240116; t=1744113688; c=relaxed/simple;
+	bh=9AAdLibJJ/hs88YGCFYrGPkWWP59rR9v+p70a8iWGGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmdlQ2to0yTWTb5eOpkjCL+he7MmoOHBdqJYXSI4udVxkfv0Hwu4BVS6WApkB96NzjdtSlJDnSZnJHOKa+AaYfBCKSLqT2wnNUAEYx6lcn9z7HgKynFplbxIvQoWpSzmpNgi1yO5FbUY9Vcm7Kk0NeQrGoxiRtLm1RE1nr0EXw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W944K6HD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92674C4CEE5;
-	Tue,  8 Apr 2025 12:29:40 +0000 (UTC)
+	 MIME-Version; b=K3zjC71KWkbFt/7s9PvNqdBwluW1cIaTuwaVdLNLgydvza/G9aD7DKi+3Qf7U30TZKCXmSMrbORXify60JKTs4MZy/L0H9RBO926kJ95O0/cNhEeIKgPrh1Zshx6RpcpOjexORPQvUnatnrYNSq9PzHHe9J4ivnP/Eh55gDPS0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgG7F0tw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72881C4CEE5;
+	Tue,  8 Apr 2025 12:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115380;
-	bh=Z0Hs8qPHL5qWYi/33m61NJ+XsR/Iv6jhAjP7C7Cofxo=;
+	s=korg; t=1744113687;
+	bh=9AAdLibJJ/hs88YGCFYrGPkWWP59rR9v+p70a8iWGGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W944K6HDFH2vF6F2JrmAYdBfrQTx7Ri9EuLzC2yCeS/WZaphsG/rz0w9EYNpcYC1W
-	 k5PDQQJpp3+HftF/Cogl77Mj/1dxj73ZURieATAykARVkyNij7+I/2ebYczpen8dg/
-	 9QbnsQ7pXZhywkTpG5eygRlijOnuFt/Pkk5VHyDM=
+	b=RgG7F0twTuKNg/vN93IpR5X2BBu8OgMjv3758Xp4TiZhoDyt4GX+P4d76I2A7Jtzk
+	 JvJoBYI+nzGP8+Oh0mcONlotuMujBcyQoQA4WsfPwte9sTYFADtxa52bN07EbCK9FO
+	 CGHadow92X0ECIJMTRghurVgzF3gQcr9yEfLT/Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 452/499] x86/Kconfig: Add cmpxchg8b support back to Geode CPUs
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 253/268] ksmbd: fix use-after-free in ksmbd_sessions_deregister()
 Date: Tue,  8 Apr 2025 12:51:04 +0200
-Message-ID: <20250408104902.505264533@linuxfoundation.org>
+Message-ID: <20250408104835.407908391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 6ac43f2be982ea54b75206dccd33f4cf81bfdc39 upstream.
+commit 15a9605f8d69dc85005b1a00c31a050b8625e1aa upstream.
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+In multichannel mode, UAF issue can occur in session_deregister
+when the second channel sets up a session through the connection of
+the first channel. session that is freed through the global session
+table can be accessed again through ->sessions of connection.
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250226213714.4040853-2-arnd@kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig.cpu |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
- 
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
- 
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -229,6 +229,9 @@ void ksmbd_sessions_deregister(struct ks
+ 			if (!ksmbd_chann_del(conn, sess) &&
+ 			    xa_empty(&sess->ksmbd_chann_list)) {
+ 				hash_del(&sess->hlist);
++				down_write(&conn->session_lock);
++				xa_erase(&conn->sessions, sess->id);
++				up_write(&conn->session_lock);
+ 				ksmbd_session_destroy(sess);
+ 			}
+ 		}
 
 
 
