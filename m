@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-130402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04525A80452
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2989A80B4E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DE919E2A8C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC82A1BA2FDD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69631269820;
-	Tue,  8 Apr 2025 12:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFCE27C175;
+	Tue,  8 Apr 2025 12:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKj2c5yi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d43EYcOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A56269801;
-	Tue,  8 Apr 2025 12:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6B327C16B;
+	Tue,  8 Apr 2025 12:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113618; cv=none; b=BWOPJhRIP2fd4jak7L0y4JLhNgmw3w0xwUDPT0NCMoWpZ0PfV8aTJ7Qpy7d3PGc5dQAvK0bWZg5hBsXIsxZCaPIWvodTSrimGxbwUBnSBe7rERc8Daw+BTdFUVWL1AEQ7ImbjEO7hbwefKmx8saKH5MYLN/Nx2Evd7ohGZAkloE=
+	t=1744117007; cv=none; b=hm7JMBG4BSWLJhWXcFzRgjVTTwvak1kV+/d/fJMZ05NmYsMCcIeHfl55t5kzADuvmiKwqJn+UD+kgQu7QIKeX7Cy2+bfju+kxUsJpTEW5bxhEzt5f5BRjmEHJmYH5iuw1qVEAdsNmFfuDNVoOLXMuKkXtPX0KmtsZdPKgHA3ZEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113618; c=relaxed/simple;
-	bh=Np45aB7spLmtQbiolo4UmxF8Itf3AwAZqgik6yO0abc=;
+	s=arc-20240116; t=1744117007; c=relaxed/simple;
+	bh=6m1WUX+lB0bJ2E1N7ZVtdo5rXERUhizp8lwa0m5jzD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeEKcNAUFWEQaEA8ZEd79IB684Nh1dYymRGgNuWxLptfKPKXMDcswBqbFPaXIPnmK7rPqjJhB4eVLvfRZtkV4D6u8jGiZJvzgVwC7muHxhWTzlQOhFCz5Du6+d/+FaoU5AMBXVe6LS0QPcK/35O6eTx0oBBcVuujHXpqfVn2noE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKj2c5yi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BC7C4CEE5;
-	Tue,  8 Apr 2025 12:00:17 +0000 (UTC)
+	 MIME-Version; b=uW6Q8izbJ1TtvA8c0tF4mnxHHiybevqax+yplMvLKiduhfog6m9S5//C8YwBS2nF1O8L8Io0tzniazDo5MC0MDql4AsJ+4/C0ucrRFXVKpKwE54/grnIqEJvtGikB7BkZEtg1ndXxbWDU3VoJGGeW3WHw6hAZIAu5Ymf21dhHMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d43EYcOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C228C4CEE5;
+	Tue,  8 Apr 2025 12:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113617;
-	bh=Np45aB7spLmtQbiolo4UmxF8Itf3AwAZqgik6yO0abc=;
+	s=korg; t=1744117007;
+	bh=6m1WUX+lB0bJ2E1N7ZVtdo5rXERUhizp8lwa0m5jzD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKj2c5yi7ZyODVl7RZ/0K0AK03f2Wo485sShUgLEq6vjdg0fSZhMdnr6Mvs2yuJDi
-	 SfXYA4k8uCj9fzEPC2muiqY+UPJzy9xQTMRpmuXvcWzOx0NGqxgT5xBV+lrr88YjT3
-	 UIWluutYnMSUfWM+VrJpzbjN+z0T2kSaS16aN6VM=
+	b=d43EYcOlh5aX/UeleKp9DZZox0qeTzWGptL1rUZilq3vXI3HU60UVkGi679x/qWGf
+	 JBL2xk12tQ5syYrFQm554efoA0zhiWUrnB0mraDmwiDCTFwgASpvAXUBrZX9u1JmLO
+	 9lUgER9CouZB6qtsOZUIhu6828y703uRix1RqH7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/268] tracing: Switch trace_events_hist.c code over to use guard()
+Subject: [PATCH 6.12 310/423] RISC-V: errata: Use medany for relocatable builds
 Date: Tue,  8 Apr 2025 12:50:36 +0200
-Message-ID: <20250408104834.651196950@linuxfoundation.org>
+Message-ID: <20250408104853.023065118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-[ Upstream commit 2b36a97aeeb71b1e4a48bfedc7f21f44aeb1e6fb ]
+[ Upstream commit bb58e1579f431d42469b6aed0f03eff383ba6db5 ]
 
-There are a couple functions in trace_events_hist.c that have "goto out" or
-equivalent on error in order to release locks that were taken. This can be
-error prone or just simply make the code more complex.
+We're trying to mix non-PIC/PIE objects into the otherwise-PIE
+relocatable kernels, to avoid GOT/PLT references during early boot
+alternative resolution (which happens before the GOT/PLT are set up).
 
-Switch every location that ends with unlocking a mutex on error over to
-using the guard(mutex)() infrastructure to let the compiler worry about
-releasing locks. This makes the code easier to read and understand.
+riscv64-unknown-linux-gnu-ld: arch/riscv/errata/sifive/errata.o: relocation R_RISCV_HI20 against `tlb_flush_all_threshold' can not be used when making a shared object; recompile with -fPIC
+riscv64-unknown-linux-gnu-ld: arch/riscv/errata/thead/errata.o: relocation R_RISCV_HI20 against `riscv_cbom_block_size' can not be used when making a shared object; recompile with -fPIC
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/20241219201345.694601480@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
+Fixes: 8dc2a7e8027f ("riscv: Fix relocatable kernels with early alternatives using -fno-pie")
+Link: https://lore.kernel.org/r/20250326224506.27165-2-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ arch/riscv/errata/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 604d63380a90b..755db2451fb2d 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5605,25 +5605,19 @@ static int hist_show(struct seq_file *m, void *v)
- {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
+diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
+index f0da9d7b39c37..bc6c77ba837d2 100644
+--- a/arch/riscv/errata/Makefile
++++ b/arch/riscv/errata/Makefile
+@@ -1,5 +1,9 @@
+ ifdef CONFIG_RELOCATABLE
+-KBUILD_CFLAGS += -fno-pie
++# We can't use PIC/PIE when handling early-boot errata parsing, as the kernel
++# doesn't have a GOT setup at that point.  So instead just use medany: it's
++# usually position-independent, so it should be good enough for the errata
++# handling.
++KBUILD_CFLAGS += -fno-pie -mcmodel=medany
+ endif
  
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
--	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_show(m, data, n++);
- 	}
--
-- out_unlock:
--	mutex_unlock(&event_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int event_hist_open(struct inode *inode, struct file *file)
-@@ -5884,25 +5878,19 @@ static int hist_debug_show(struct seq_file *m, void *v)
- {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
- 
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
--	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_debug_show(m, data, n++);
- 	}
--
-- out_unlock:
--	mutex_unlock(&event_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int event_hist_debug_open(struct inode *inode, struct file *file)
+ ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
 -- 
 2.39.5
 
