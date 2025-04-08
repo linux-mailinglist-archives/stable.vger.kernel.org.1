@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B222A80537
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B69B5A808AA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A111F4A515E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945B24C3E4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A2269B18;
-	Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94DF26AA91;
+	Tue,  8 Apr 2025 12:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWVkFOhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qaA386pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AC1264627;
-	Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C5225F97B;
+	Tue,  8 Apr 2025 12:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113956; cv=none; b=P1V/FE4PdT+E2HWVcBZ8hAZh2TH1EnBO4QFSXpUYLPLbmNm6uMu51VULYtN2VNLoj+724Bgr/AEfXO4zGqc4NUaNxmv6lIbsmUVMf/ZVQ0MJL0JmreomBHC08UkQlI2E1JLWfO+K6b42LhymxT+VqPbAurrUk/b8pCJeV8o0iiM=
+	t=1744115763; cv=none; b=g7/g8hEH0ryhIf64CrvqidIf2gAra7SxOa7TXjdUxSLt4DmdaCOLOiNi4l/PvOERpKvDgdPV1hsK91XhDzGvOppuGNiidPxYVLwnp68fpBQ0JbdeCqLLeg35Z9B4PVyhIw+lZHGx8gDKDVLxZ/85U2ob+2WjXzkHPL+CRsS6Y9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113956; c=relaxed/simple;
-	bh=KjyDL+Ssa6GlbKbUbzdY+VEMCES3AmHrnGXEi4S03so=;
+	s=arc-20240116; t=1744115763; c=relaxed/simple;
+	bh=fPcbG8fVPl1EYKYbmtUortljiVHA2pIF/SBT+dDLmxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXhzpReEwcHj8R1Gnu7n/H8aRu8gIXcJGBdbmu1owja/rzxLTsVNO1HB3l7lXAf2RZGJdiKTIowvnyXEgZzICfZMBPuv5l0aRNnHBJz7l8k8O/IsuikthP1I+v72a2UlBAaJGtATSa8NPj6CrV7lycSOxqoTaWrLlVn5Hv940Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWVkFOhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD66C4CEE5;
-	Tue,  8 Apr 2025 12:05:55 +0000 (UTC)
+	 MIME-Version; b=tTG5NbguQf976bGOekTQKI6TKXcbD5ugLRbn0LBDJ++mzsHOzLtF39PizPvTDYES+uZbkPBeC+LPuko6TV7RfWvBJkOhZtt+oZixVkfveki+DCQdZjEPXcy2CPo1s+TXW+JgR3T2CcgkPFsRdMik7wSFbqzGXkvK35DNzZOiTgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaA386pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE91C4CEE5;
+	Tue,  8 Apr 2025 12:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113956;
-	bh=KjyDL+Ssa6GlbKbUbzdY+VEMCES3AmHrnGXEi4S03so=;
+	s=korg; t=1744115763;
+	bh=fPcbG8fVPl1EYKYbmtUortljiVHA2pIF/SBT+dDLmxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWVkFOhLTHhfpj8Am47UA4dKuCiJJpHRmwwXBaVEhZHlR8iftG1V4XJKRAqNr83+1
-	 lMxECIQc9raNbhIU2ljuWNNrKHhhlvkcvbpQK+VTkmHgi+nWA9+Z+PWGPSN8h863oY
-	 /0ACuClZzJYUkSx4lNH5yadqO6XWr6H7nVWlNGI0=
+	b=qaA386pQTGmndxZas3V9ZPvpvwI640ZmVhM4xQvIekBDgbmSzp4rRMuojv+AmnzHl
+	 1xkSq7n/baATwqyPJFdq0dt6l+xere0D0EWlZquYEpxEZvInpvISH3OgDjrLlQBf1y
+	 D3yoSNDKkKy2jMaY+EK/p6odnHxVxPsfi9/O9ZbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <tim.schumacher1@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 084/154] selinux: Chain up tool resolving errors in install_policy.sh
+Subject: [PATCH 6.1 095/204] perf evlist: Add success path to evlist__create_syswide_maps
 Date: Tue,  8 Apr 2025 12:50:25 +0200
-Message-ID: <20250408104818.006081403@linuxfoundation.org>
+Message-ID: <20250408104823.128243970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <tim.schumacher1@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
+[ Upstream commit fe0ce8a9d85a48642880c9b78944cb0d23e779c5 ]
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+Over various refactorings evlist__create_syswide_maps has been made to
+only ever return with -ENOMEM. Fix this so that when
+perf_evlist__set_maps is successfully called, 0 is returned.
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
-
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/r/20250228222308.626803-3-irogers@google.com
+Fixes: 8c0498b6891d7ca5 ("perf evlist: Fix create_syswide_maps() not propagating maps")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ tools/perf/util/evlist.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 20af56ce245c5..c68f0e045fb00 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index dca6843ea3225..41bbe6f85b0d3 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -1342,19 +1342,18 @@ static int evlist__create_syswide_maps(struct evlist *evlist)
+ 	 */
+ 	cpus = perf_cpu_map__new(NULL);
+ 	if (!cpus)
+-		goto out;
++		return -ENOMEM;
  
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
-+}
+ 	threads = perf_thread_map__new_dummy();
+-	if (!threads)
+-		goto out_put;
++	if (!threads) {
++		perf_cpu_map__put(cpus);
++		return -ENOMEM;
++	}
  
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
+ 	perf_evlist__set_maps(&evlist->core, cpus, threads);
+-
+ 	perf_thread_map__put(threads);
+-out_put:
+ 	perf_cpu_map__put(cpus);
+-out:
+-	return -ENOMEM;
++	return 0;
+ }
  
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
- 
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ int evlist__open(struct evlist *evlist)
 -- 
 2.39.5
 
