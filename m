@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E512A8091D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47227A80564
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B2C4E2A7B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC4504663D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE5326AA82;
-	Tue,  8 Apr 2025 12:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4941E2690EB;
+	Tue,  8 Apr 2025 12:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib3wx/TH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oX2B99m7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1983269AE8;
-	Tue,  8 Apr 2025 12:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DF226AA9A;
+	Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115752; cv=none; b=O6QkEjtA1V9SRcV/Zh+fE5yivMuQLVWj2SXsPRlbuR8HSCiQGfBWgS0FOTY6nLzUrKpw5HQ4We58M2LhEUNhYisYxb0hANpMdxM/DbFda738IUjqh7tXaskFPLycbIbu3XAPol2VlAyPZ7kisP+9qemViHUoW0pkMcieFJnqgSs=
+	t=1744113906; cv=none; b=cZrn7+qxosoUd+8jiPnoIRJSR9vGfDb/Gbd904Agl30M1wg3EyQYDvhhszhN127MRbtVpJY66c5ok4/q5K2VDsr0FYe8aPgk+dZ7YgK+gf7E4T9vtNZgGGvji21kUpr8+p+mXmtj8sLwPt6rAw1xbzxsMD6p5FJm3p8nVpp3F78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115752; c=relaxed/simple;
-	bh=exGrcVYIDSMoh7tzty76FvhVkLjC1YTDICGEc4CeSPQ=;
+	s=arc-20240116; t=1744113906; c=relaxed/simple;
+	bh=yTdvO5Txp/vKFqk4/LDgNgcr7VlZrYVKB+UZKEoxYAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI/5yxMH2jcqEMLtJ75MlsQyEdrjmWx7TBhOhZjNtfHrKRhKY1eFu3Tt2Ma+vrmONjaAwYmqsRXLC3b6wqpYB+gAECECLpsQLHq6X83Ei6D6yf7AjNx/nPl4lNdPagpcRBtww4cm6YIUUiWADmX6uKp258jBGoK5J4/g3WDMbeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib3wx/TH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5598AC4CEE5;
-	Tue,  8 Apr 2025 12:35:52 +0000 (UTC)
+	 MIME-Version; b=XgCG3WAcKuhgY20BPhncyWKvIWWmzJy36KckEMP9APM5eLT3sWvyDY1EVmePdm5y5X/an/07VQmYAAs9h0FlYX2Y8IF8O9mGiFJL0QRRPvZfsJ1To085qLoWQ7YiCOZ57pzwKnTCYQn+eAgCB92FeW2JJ/vKgDYn25NhBtyOwOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oX2B99m7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAB2C4CEE5;
+	Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115752;
-	bh=exGrcVYIDSMoh7tzty76FvhVkLjC1YTDICGEc4CeSPQ=;
+	s=korg; t=1744113905;
+	bh=yTdvO5Txp/vKFqk4/LDgNgcr7VlZrYVKB+UZKEoxYAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ib3wx/THLf9kkAeckyDeC4/u9SPfdUGwYLtgBeSzxyqgnh/awxpFBXoz9/h4CiYO8
-	 Haz04bgJMs/mZu8innqEaVqZUdmSUjaPI1nsA9672R+YabufLSnBXgRF4EBdiHwf2o
-	 6aIeSPucNyUPmAtB9kSxnZIP4idQa+EKENR2naHw=
+	b=oX2B99m7ZIsfjfH5b9L3tH8eYoLcZ+qNxRM+Isi27NPItLs1mpF+dyJDMMteaOn7h
+	 vmdaIf+gn73KhZbrJ8lSteqf6BNzKvPXF4nfLSXjLb6EP5H2cbTaaNVsXULu3an9xX
+	 1FSKBgqw3e15BXM9d826V22gYfBKmLhPby7NqWOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/204] selftests/bpf: Select NUMA_NO_NODE to create map
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 5.4 063/154] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
 Date: Tue,  8 Apr 2025 12:50:04 +0200
-Message-ID: <20250408104822.530998735@linuxfoundation.org>
+Message-ID: <20250408104817.313221163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
+commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
 
-On powerpc, a CPU does not necessarily originate from NUMA node 0.
-This contrasts with architectures like x86, where CPU 0 is not
-hot-pluggable, making NUMA node 0 a consistently valid node.
-This discrepancy can lead to failures when creating a map on NUMA
-node 0, which is initialized by default, if no CPUs are allocated
-from NUMA node 0.
+When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
+shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
+bring-up fails:
 
-This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
-creation for this selftest.
+    smp: Bringing up secondary CPUs ...
+    CPU1: failed to come online
+    CPU2: failed to come online
+    CPU3: failed to come online
+    smp: Brought up 1 node, 1 CPU
 
-Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding the missing alignment directive.
+
+Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
+Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mach-shmobile/headsmp.S |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-index f79815b7e951b..fff16cdc93f20 100644
---- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-@@ -6,6 +6,10 @@
- #include <test_progs.h>
- #include "bloom_filter_map.skel.h"
+--- a/arch/arm/mach-shmobile/headsmp.S
++++ b/arch/arm/mach-shmobile/headsmp.S
+@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
+ 	.long	shmobile_smp_arg - 1b
  
-+#ifndef NUMA_NO_NODE
-+#define NUMA_NO_NODE	(-1)
-+#endif
-+
- static void test_fail_cases(void)
- {
- 	LIBBPF_OPTS(bpf_map_create_opts, opts);
-@@ -69,6 +73,7 @@ static void test_success_cases(void)
- 
- 	/* Create a map */
- 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
-+	opts.numa_node = NUMA_NO_NODE;
- 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
- 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
- 		return;
--- 
-2.39.5
-
+ 	.bss
++	.align	2
+ 	.globl	shmobile_smp_mpidr
+ shmobile_smp_mpidr:
+ 	.space	NR_CPUS * 4
 
 
 
