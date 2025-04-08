@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D60AA80B70
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DA4A80755
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB714C3971
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B184C6610
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2834277809;
-	Tue,  8 Apr 2025 12:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D992B26AABF;
+	Tue,  8 Apr 2025 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTdRvqTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddgPrRWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0602690D6;
-	Tue,  8 Apr 2025 12:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97007267F5B;
+	Tue,  8 Apr 2025 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116846; cv=none; b=EBLeszeAQKEdL282g2vg/uyolWzVOVPVH1i1Uk2UZ32745s2/F2g93jwwlDywd+0bbzAm2xPbpmQ/TulZWvSlgbXTKJTJ6JTMKccdXhEOAHQUBFgf5y7C5+gG3+W/GaYbbJ0lnA2U4iW8Ou+exCxsgvHeHlmiqZ08yql1/tZpNs=
+	t=1744115245; cv=none; b=F3arnlZTKUldVn9ZUdo6F3AsXX6x1b4DG9i5B9zDZhTU0yYNj/ZwDKEoPPvAO7/LTVpTwnFKFsoD8zez5sxWAUwR0fnozri/5+NlDUGDgRRWeEZezuNRN6ViP2DBYwtSgei93ZhNAshM8fS725jMp7byx6gUkOTTaig06ujTs4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116846; c=relaxed/simple;
-	bh=uSw4JlOC/IaR2FoF71jTdYeNSjMJU9hygp0Q+l+qVuU=;
+	s=arc-20240116; t=1744115245; c=relaxed/simple;
+	bh=UwC5q7rhiCOW5Ce3+vOo6PZZrxCouDt1ShYuPs5scUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrorKPQYmlbRynD60Cwcj2jhsjGY2QzSSHrF1xey7x3OIGmWUO/zjXKlCw/42TpN8purJZB0HR06x8yHW8ItSgrU+3WbopO8JxSAK6GMOZ18BGijtycMq8i9JmNV4HhEcRPmquBE08TE+CVvnYUVwSZUuRgvS3I8XPYIKHJhmvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTdRvqTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDEFC4CEE5;
-	Tue,  8 Apr 2025 12:54:05 +0000 (UTC)
+	 MIME-Version; b=Oq3JGJA6VcZPFNfqrnxfLA+cnfR35enE3IJStyxSDkpBUm3OpdVTqvtt7+dZkxDLZx4GYFxpO2jx7JnK8dJQcwDHtzo3l4c46rbEVcvJ3CwYNkLTt4xsdXsHt4Arq7l1pP7BvZereNQiWiDPb3KTXDrV56ipGZJyneKjVl0XryE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddgPrRWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289A6C4CEE5;
+	Tue,  8 Apr 2025 12:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116846;
-	bh=uSw4JlOC/IaR2FoF71jTdYeNSjMJU9hygp0Q+l+qVuU=;
+	s=korg; t=1744115245;
+	bh=UwC5q7rhiCOW5Ce3+vOo6PZZrxCouDt1ShYuPs5scUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTdRvqTusO+MV5uNn60JjRniNd93WeUbDkmL5hCIQuV4hk8IUQ1HzqH3C6WnSIO3Y
-	 dJkR7DNIKK5b5g03AG44kPKPywqb0UI/Fltoplo4h9oMsgXm5ej7ePAflQ0cZFaV64
-	 FySysDqnGJpHsTMCMfWB6pcHp08Ig+LTrpyg00FM=
+	b=ddgPrRWuqAfUh/JxeIhKUexd2NHE+daijz2GG+8JeKx4Az73XvMICfku918NGSjfN
+	 mBwkvfuWku8lzgxxydRUljtHtNhLMuDruxSHzf76mL6N/62Tdj6xq6sPx9wFLklx0K
+	 OUsMqWm56GK9aKILclq3zhhJTEiHEov4I0e0epiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/423] locking/semaphore: Use wake_q to wake up processes outside lock critical section
+Subject: [PATCH 6.13 403/499] ipv6: Do not consider link down nexthops in path selection
 Date: Tue,  8 Apr 2025 12:50:15 +0200
-Message-ID: <20250408104852.511324541@linuxfoundation.org>
+Message-ID: <20250408104901.274855592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
+[ Upstream commit 8b8e0dd357165e0258d9f9cdab5366720ed2f619 ]
 
-A circular lock dependency splat has been seen involving down_trylock():
+Nexthops whose link is down are not supposed to be considered during
+path selection when the "ignore_routes_with_linkdown" sysctl is set.
+This is done by assigning them a negative region boundary.
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  6.12.0-41.el10.s390x+debug
-  ------------------------------------------------------
-  dd/32479 is trying to acquire lock:
-  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
+However, when comparing the computed hash (unsigned) with the region
+boundary (signed), the negative region boundary is treated as unsigned,
+resulting in incorrect nexthop selection.
 
-  but task is already holding lock:
-  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
+Fix by treating the computed hash as signed. Note that the computed hash
+is always in range of [0, 2^31 - 1].
 
-  the existing dependency chain (in reverse order) is:
-  -> #4 (&zone->lock){-.-.}-{2:2}:
-  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
-  -> #2 (&rq->__lock){-.-.}-{2:2}:
-  -> #1 (&p->pi_lock){-.-.}-{2:2}:
-  -> #0 ((console_sem).lock){-.-.}-{2:2}:
-
-The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
-while holding the console_sem raw_spinlock. This dependency can be broken
-by using wake_q to do the wakeup instead of calling try_to_wake_up()
-under the console_sem lock. This will also make the semaphore's
-raw_spinlock become a terminal lock without taking any further locks
-underneath it.
-
-The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
-spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
-the debug_objects_fill_pool() helper function in the debugobjects code.
-
-  -> #4 (&zone->lock){-.-.}-{2:2}:
-         __lock_acquire+0xe86/0x1cc0
-         lock_acquire.part.0+0x258/0x630
-         lock_acquire+0xb8/0xe0
-         _raw_spin_lock_irqsave+0xb4/0x120
-         rmqueue_bulk+0xac/0x8f0
-         __rmqueue_pcplist+0x580/0x830
-         rmqueue_pcplist+0xfc/0x470
-         rmqueue.isra.0+0xdec/0x11b0
-         get_page_from_freelist+0x2ee/0xeb0
-         __alloc_pages_noprof+0x2c2/0x520
-         alloc_pages_mpol_noprof+0x1fc/0x4d0
-         alloc_pages_noprof+0x8c/0xe0
-         allocate_slab+0x320/0x460
-         ___slab_alloc+0xa58/0x12b0
-         __slab_alloc.isra.0+0x42/0x60
-         kmem_cache_alloc_noprof+0x304/0x350
-         fill_pool+0xf6/0x450
-         debug_object_activate+0xfe/0x360
-         enqueue_hrtimer+0x34/0x190
-         __run_hrtimer+0x3c8/0x4c0
-         __hrtimer_run_queues+0x1b2/0x260
-         hrtimer_interrupt+0x316/0x760
-         do_IRQ+0x9a/0xe0
-         do_irq_async+0xf6/0x160
-
-Normally a raw_spinlock to spinlock dependency is not legitimate
-and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
-but debug_objects_fill_pool() is an exception as it explicitly
-allows this dependency for non-PREEMPT_RT kernel without causing
-PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
-legitimate and not a bug.
-
-Anyway, semaphore is the only locking primitive left that is still
-using try_to_wake_up() to do wakeup inside critical section, all the
-other locking primitives had been migrated to use wake_q to do wakeup
-outside of the critical section. It is also possible that there are
-other circular locking dependencies involving printk/console_sem or
-other existing/new semaphores lurking somewhere which may show up in
-the future. Let just do the migration now to wake_q to avoid headache
-like this.
-
-Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
+Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250402114224.293392-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/semaphore.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/ipv6/route.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
-index 34bfae72f2952..de9117c0e671e 100644
---- a/kernel/locking/semaphore.c
-+++ b/kernel/locking/semaphore.c
-@@ -29,6 +29,7 @@
- #include <linux/export.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
-+#include <linux/sched/wake_q.h>
- #include <linux/semaphore.h>
- #include <linux/spinlock.h>
- #include <linux/ftrace.h>
-@@ -38,7 +39,7 @@ static noinline void __down(struct semaphore *sem);
- static noinline int __down_interruptible(struct semaphore *sem);
- static noinline int __down_killable(struct semaphore *sem);
- static noinline int __down_timeout(struct semaphore *sem, long timeout);
--static noinline void __up(struct semaphore *sem);
-+static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
- 
- /**
-  * down - acquire the semaphore
-@@ -183,13 +184,16 @@ EXPORT_SYMBOL(down_timeout);
- void __sched up(struct semaphore *sem)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 2656356c980ca..1114480b3755c 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -442,6 +442,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
  {
- 	unsigned long flags;
-+	DEFINE_WAKE_Q(wake_q);
+ 	struct fib6_info *first, *match = res->f6i;
+ 	struct fib6_info *sibling;
++	int hash;
  
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(list_empty(&sem->wait_list)))
- 		sem->count++;
- 	else
--		__up(sem);
-+		__up(sem, &wake_q);
- 	raw_spin_unlock_irqrestore(&sem->lock, flags);
-+	if (!wake_q_empty(&wake_q))
-+		wake_up_q(&wake_q);
- }
- EXPORT_SYMBOL(up);
+ 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
+ 		goto out;
+@@ -468,7 +469,8 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 	if (!first)
+ 		goto out;
  
-@@ -269,11 +273,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
- 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
- }
+-	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
++	hash = fl6->mp_hash;
++	if (hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
+ 	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
+ 			    strict) >= 0) {
+ 		match = first;
+@@ -481,7 +483,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		int nh_upper_bound;
  
--static noinline void __sched __up(struct semaphore *sem)
-+static noinline void __sched __up(struct semaphore *sem,
-+				  struct wake_q_head *wake_q)
- {
- 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
- 						struct semaphore_waiter, list);
- 	list_del(&waiter->list);
- 	waiter->up = true;
--	wake_up_process(waiter->task);
-+	wake_q_add(wake_q, waiter->task);
- }
+ 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
+-		if (fl6->mp_hash > nh_upper_bound)
++		if (hash > nh_upper_bound)
+ 			continue;
+ 		if (rt6_score_route(nh, sibling->fib6_flags, oif, strict) < 0)
+ 			break;
 -- 
 2.39.5
 
