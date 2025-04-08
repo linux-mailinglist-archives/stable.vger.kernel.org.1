@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62F4A80AF6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4B5A8091B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CA4F7B5063
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52D914C55C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3161827CCE3;
-	Tue,  8 Apr 2025 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B71026A091;
+	Tue,  8 Apr 2025 12:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLhsgcNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWqpRVHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B0927CCDF;
-	Tue,  8 Apr 2025 12:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA62638B8;
+	Tue,  8 Apr 2025 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117139; cv=none; b=WtuM3+2nb/h13Oc5fcPqe4pUNKKg/sqC/2P9+QI6yXD5OXokIwHqT8UrwqnZzbb6E+Bp5uFzVmQvIj2dgdLqGWQci4dlOr+T0fFD9cc337EmE/rDzDHTA7jd6gheKEqdUPt0VrGU4SwlJMxDIOZ7/ntHg/T2cuyWiPGBmhvVfHE=
+	t=1744116035; cv=none; b=Q9PS43wHL8YtwFMn2vb4AoBhPP/Oio6kZ3Wyc9spJ1tu4JITtQi9mXKHPyAYXEm+gtNlMaEdeZoCbue6iY581ZF6aBONcDCQRe+6E0EnP668DgQA8bfT//bQ+lSrBx9s4t/rNnIu7AJR1tH6VuMhPW2+g7qHC3+DsbJa3aJraH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117139; c=relaxed/simple;
-	bh=gchogbbi9NooacrVLRF+35QLA01RvlrwR+7GudT1WKg=;
+	s=arc-20240116; t=1744116035; c=relaxed/simple;
+	bh=DsLNXGqzmRdZLhypfEm+WRXHSwkUm9teff5DHqTLhX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXJV9G7qDOpDCACXVqSxdU5fsY6X1EpVmkFPR14eN4NiR2t+bRsWQ3vfxb3sa5F8BDmSPNHoXWVSemfuk3zOexz7VsD94m5z5T9NfNXJx6ycvWrMLWL2yb5LTgvuD7xwpuqGDEmy85PpjcuO8hgnm0GY+suNbe9+zUgSu/ZULdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLhsgcNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47652C4CEE5;
-	Tue,  8 Apr 2025 12:58:58 +0000 (UTC)
+	 MIME-Version; b=mFW5SIVu/yIMLYZ7Pkh0oti2nFuz2KkQDU7Ll6exS6AQZlaB8DwWDBsnJOBe49RO0/V4MeGhsDWb/wsAVLLInq5IlrptWGZM7cek9p/kMCduPvoE6Si7+XNTGcg91v1DvhGv12IisNiUvrm0V3GOSdmUYpL0Dg+Krfa5IBdg+Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWqpRVHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B631C4CEE7;
+	Tue,  8 Apr 2025 12:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117138;
-	bh=gchogbbi9NooacrVLRF+35QLA01RvlrwR+7GudT1WKg=;
+	s=korg; t=1744116034;
+	bh=DsLNXGqzmRdZLhypfEm+WRXHSwkUm9teff5DHqTLhX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLhsgcNtBc6T/g53L+5vaUfdocuQ/2OSe/HRMG2uFjTR2Hs8fAaFeYr1Nj7h+fUIL
-	 m4fY+5yfN84pdtLh9ozSwdfVbhIjmoE7ZqNUMqCDUIEe1EMR/AZl2cYOzj2TsarS8x
-	 w4r6kkSaYT5E3f9l790m7jn51UhB8m+qceWBYGvQ=
+	b=pWqpRVHlw7o9WJek9WJFEjtnDw1HQgDRC0pLu7vYlbs9kX15P/yuQu3UgVxPh4bJC
+	 lIvJlm62E3Yyaf7T5FO/02lHRPyvgV5QX60Rj+1ax4tsnswa5BQrrw3qs7s3J1rd0r
+	 Ng5BrHu8laN8hOIFma6vb7waUwiE9DFFjlbBZSak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 399/423] ksmbd: validate zero num_subauth before sub_auth is accessed
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 195/204] tracing: Fix synth event printk format for str fields
 Date: Tue,  8 Apr 2025 12:52:05 +0200
-Message-ID: <20250408104855.196650992@linuxfoundation.org>
+Message-ID: <20250408104826.033584000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Douglas Raillard <douglas.raillard@arm.com>
 
-commit bf21e29d78cd2c2371023953d9c82dfef82ebb36 upstream.
+commit 4d38328eb442dc06aec4350fd9594ffa6488af02 upstream.
 
-Access psid->sub_auth[psid->num_subauth - 1] without checking
-if num_subauth is non-zero leads to an out-of-bounds read.
-This patch adds a validation step to ensure num_subauth != 0
-before sub_auth is accessed.
+The printk format for synth event uses "%.*s" to print string fields,
+but then only passes the pointer part as var arg.
+
+Replace %.*s with %s as the C string is guaranteed to be null-terminated.
+
+The output in print fmt should never have been updated as __get_str()
+handles the string limit because it can access the length of the string in
+the string meta data that is saved in the ring buffer.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 8db4d6bfbbf92 ("tracing: Change synthetic event string format to limit printed length")
+Link: https://lore.kernel.org/20250325165202.541088-1-douglas.raillard@arm.com
+Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/trace/trace_events_synth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -270,6 +270,11 @@ static int sid_to_id(struct mnt_idmap *i
- 		return -EIO;
- 	}
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -312,7 +312,7 @@ static const char *synth_field_fmt(char
+ 	else if (strcmp(type, "gfp_t") == 0)
+ 		fmt = "%x";
+ 	else if (synth_field_is_string(type))
+-		fmt = "%.*s";
++		fmt = "%s";
+ 	else if (synth_field_is_stack(type))
+ 		fmt = "%s";
  
-+	if (psid->num_subauth == 0) {
-+		pr_err("%s: zero subauthorities!\n", __func__);
-+		return -EIO;
-+	}
-+
- 	if (sidtype == SIDOWNER) {
- 		kuid_t uid;
- 		uid_t id;
 
 
 
