@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22F4A80571
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946DBA80B1D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1784A5AA1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34B738C5B71
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C0426983B;
-	Tue,  8 Apr 2025 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DF726E17D;
+	Tue,  8 Apr 2025 12:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3X+/ev2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QHpZKIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AA4267B89;
-	Tue,  8 Apr 2025 12:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7606326E175;
+	Tue,  8 Apr 2025 12:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114049; cv=none; b=C0eFIbmVNECah+Li6Uh0g0QCVcUPOpbfJOeWyDCSsPV72scAH4M5hklLft4XpzWKdblH8wDKy7C5fsgkUqdFUAXLQ8LH1tp79wILivxudqVu+PkFfDh7NESW4dFMUuyodEHRIzek+YWIG0Tk05ri5mHNUe5uh5kDnPwTjk+peBU=
+	t=1744116854; cv=none; b=XE3zR+FWDvqx3GPunqDrmth0o42x+D+EgF4tvji4NxRtJMtpEfjEBSc8sARcTRNfjSjk49oldOzQmNM2GAg2bLtnTzT/kzqXScrrdKUHE7J2fyaypF0L1kbUwcIoLkRbTtf3d8NGRv0MxIxHnhwx2ChGIyAa/2DVxcZWHeOfuZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114049; c=relaxed/simple;
-	bh=n83DTev8TuKt8atIN7FBVUFAgLo4ACIevw1ZyvUyv0Q=;
+	s=arc-20240116; t=1744116854; c=relaxed/simple;
+	bh=MxmOkvkeCxdILuwE2dy5dywz6rC9K4q2/ykqL5t+Fxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfCCkPUK5+Ael0thW7MJPVbYT4p/fEbGB2LzmAOqCiLVqRfh6gEyhUSDPda8VOeY/LinfJbTUfmmqVUC4jgNTm0r+K5/LOnF8x/8o1uhfY0MPKGZdy0pYVbuYbmn6tqca0g20DFGhWMreCKLA6tLjtSAYD6tgsuDmSFq5d9MLCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3X+/ev2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E151AC4CEE5;
-	Tue,  8 Apr 2025 12:07:28 +0000 (UTC)
+	 MIME-Version; b=OmDL/v/K+AhFPXwQFmDsnYNWZTV8VoFRUI8JAnxu820X1v1F8fiT2BnQUXb3Ud0adKJxThUhgDp10wbfA31GveRGrzAuGvbLrTzvUNZuM3no2MklWtZS6vRccwDlbFGGjaVYzNESOsJKbT4kVzX2d3YRGS38qwJkPi70ltMSjMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QHpZKIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07476C4CEE5;
+	Tue,  8 Apr 2025 12:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114049;
-	bh=n83DTev8TuKt8atIN7FBVUFAgLo4ACIevw1ZyvUyv0Q=;
+	s=korg; t=1744116854;
+	bh=MxmOkvkeCxdILuwE2dy5dywz6rC9K4q2/ykqL5t+Fxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3X+/ev2eqAAVyq1UI7mhU3FN/iAmYptU2ICA1SBU17jEPkF+qNaXxxDE42ld2Oce
-	 Ahvr1M2o8cOvbEpuMksSEItWIs0owvAlLO/2JTc11vB0tv6NSJpJyD6YAXBlESx+ZA
-	 1mUMN7/pA2o4dRzFCwoZypCXgCKxFv5rN6Xvxcoo=
+	b=2QHpZKIUEUFzBvUiISY0Vg9SSKVyIcT0/YNAtjcVGprJyP15NhA7BZ89CJoGq7pcv
+	 /ciachJxOPBHGdS57+7y6X7AhIksWBD+45HLLFBnOZ/KVly4BxM+qGGj+a631vCY4v
+	 F2MBs4nhtdFehvk4XhyV/x9pF7bqEwYDQ2/SNWtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Naseef <naseefkm@gmail.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 077/154] net: usb: usbnet: restore usb%d name exception for local mac addresses
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 292/423] nvme-pci: fix stuck reset on concurrent DPC and HP
 Date: Tue,  8 Apr 2025 12:50:18 +0200
-Message-ID: <20250408104817.778850790@linuxfoundation.org>
+Message-ID: <20250408104852.584469223@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit 2ea396448f26d0d7d66224cb56500a6789c7ed07 upstream.
+[ Upstream commit 3f674e7b670b7b7d9261935820e4eba3c059f835 ]
 
-commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
-that local addresses always came from the kernel, but some devices hand
-out local mac addresses so we ended up with point-to-point devices with
-a mac set by the driver, renaming to eth%d when they used to be named
-usb%d.
+The PCIe error handling has the nvme driver quiesce the device, attempt
+to restart it, then wait for that restart to complete.
 
-Userspace should not rely on device name, but for the sake of stability
-restore the local mac address check portion of the naming exception:
-point to point devices which either have no mac set by the driver or
-have a local mac handed out by the driver will keep the usb%d name.
+A PCIe DPC event also toggles the PCIe link. If the slot doesn't have
+out-of-band presence detection, this will trigger a pciehp
+re-enumeration.
 
-(some USB LTE modems are known to hand out a stable mac from the locally
-administered range; that mac appears to be random (different for
-mulitple devices) and can be reset with device-specific commands, so
-while such devices would benefit from getting a OUI reserved, we have
-to deal with these and might as well preserve the existing behavior
-to avoid breaking fragile openwrt configurations and such on upgrade.)
+The error handling that calls nvme_error_resume is holding the device
+lock while this happens. This lock blocks pciehp's request to disconnect
+the driver from proceeding.
 
-Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
-Cc: stable@vger.kernel.org
-Tested-by: Ahmed Naseef <naseefkm@gmail.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Meanwhile the nvme's reset can't make forward progress because its
+device isn't there anymore with outstanding IO, and the timeout handler
+won't do anything to fix it because the device is undergoing error
+handling.
+
+End result: deadlocked.
+
+Fix this by having the timeout handler short cut the disabling for a
+disconnected PCIe device. The downside is that we're relying on an IO
+timeout to clean up this mess, which could be a minute by default.
+
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/nvme/host/pci.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -167,6 +167,17 @@ int usbnet_get_ethernet_addr(struct usbn
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 833a67b79e13c..af45a1b865ee1 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1413,9 +1413,20 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
+ 	struct nvme_dev *dev = nvmeq->dev;
+ 	struct request *abort_req;
+ 	struct nvme_command cmd = { };
++	struct pci_dev *pdev = to_pci_dev(dev->dev);
+ 	u32 csts = readl(dev->bar + NVME_REG_CSTS);
+ 	u8 opcode;
  
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
++	/*
++	 * Shutdown the device immediately if we see it is disconnected. This
++	 * unblocks PCIe error handling if the nvme driver is waiting in
++	 * error_resume for a device that has been removed. We can't unbind the
++	 * driver while the driver's error callback is waiting to complete, so
++	 * we're relying on a timeout to break that deadlock if a removal
++	 * occurs while reset work is running.
 +	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
-+
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1730,13 +1741,11 @@ usbnet_probe (struct usb_interface *udev
- 		if (status < 0)
- 			goto out1;
++	if (pci_dev_is_disconnected(pdev))
++		nvme_change_ctrl_state(&dev->ctrl, NVME_CTRL_DELETING);
+ 	if (nvme_state_terminal(&dev->ctrl))
+ 		goto disable;
  
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+@@ -1423,7 +1434,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
+ 	 * the recovery mechanism will surely fail.
+ 	 */
+ 	mb();
+-	if (pci_channel_offline(to_pci_dev(dev->dev)))
++	if (pci_channel_offline(pdev))
+ 		return BLK_EH_RESET_TIMER;
+ 
+ 	/*
+-- 
+2.39.5
+
 
 
 
