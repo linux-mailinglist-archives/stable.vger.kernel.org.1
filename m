@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A89A802C9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E786A7FE0D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 434B517AF17
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7450F1893038
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6920265602;
-	Tue,  8 Apr 2025 11:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5092690D7;
+	Tue,  8 Apr 2025 11:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdZkODal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnRhRjTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72525227EBD;
-	Tue,  8 Apr 2025 11:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D1268C72;
+	Tue,  8 Apr 2025 11:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112656; cv=none; b=A9B2WHABo6YFeuF8LFPd5fPcsewGZugPe1yVZEfS+AWIGKd5WaJJVCJ9PMLeoBnBlwKGsPSra7qkxSJ2fK4zy1paCi6pAAOvj6zT+lXUbBcJ6vRw5zFm0Hu8yRY9a/rdghfB3yPuo3vk9AS9v/kS/yivPyFmcdbwwfkSjRbpg/4=
+	t=1744110065; cv=none; b=RrREJKQEIhRB1ejKGdRBo2LaBSPhgbtW7DRQ9zdS0Vwy4dfX+0S6BlZ7hgtdwbka10N+3HjldGjFiWNWopf7grP/yU7QsSRhufVYvRKoW0GayVf3MBadq9ybyh8QQNDnLRqTNtDCJN7WpLcctaJ4hMYJ9LNcf1nJzLe/CXCbZoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112656; c=relaxed/simple;
-	bh=R50GI6e/sfs1gW+dkCxdRDAsAUTkNAaJ8rXMu9wIl6o=;
+	s=arc-20240116; t=1744110065; c=relaxed/simple;
+	bh=/pcRKVNvxrONDbBhPN41Rrp9H7MSk2A2ZMTpmKKS8X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRIfNgQaYJ/slbqlKMz7jY026P5/GFDzlWlGvCa6Fp80YnVkLFr/mj5yeJHdjpPHFSMnqgheEmtQzpxvMib34+vtXu6hkyNNWzKHN0XKV4yY/orNGhwPM3QmmCBx0dCrW+CcvLqrGaKaUz07vO/l2M28yhT2q33z7/erJH9yOw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdZkODal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7C6C4CEE7;
-	Tue,  8 Apr 2025 11:44:15 +0000 (UTC)
+	 MIME-Version; b=YpWZJ1pGYts8u9QL2/zC5Nd9x0vtkJGH3IrzraUq6J/yBRHzhVleluHDjXEgET+UewhLUtPqLBNpnAHND6t+TP3ttisqJHlDLxMC90k3wCHBB5RqEyTEwg9HMkoE29pS9YhsjE0QGyi5a9Z2Gbn21+aM33+TojY0EXsh4MDFceQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnRhRjTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A88CC4CEE5;
+	Tue,  8 Apr 2025 11:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112656;
-	bh=R50GI6e/sfs1gW+dkCxdRDAsAUTkNAaJ8rXMu9wIl6o=;
+	s=korg; t=1744110065;
+	bh=/pcRKVNvxrONDbBhPN41Rrp9H7MSk2A2ZMTpmKKS8X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdZkODalD4SqO+9/YLL8Q+DyuPYxSCtZm725ApftBNd5InbKNpnPcGIvrT3OO6ppu
-	 BbxJSZfwhAUjsat5RTxwsys4Xy7iC216Jk1diPcESVp6WWOnxVuook6II0XXd/w8qr
-	 m0x52QG+5Tw/EMjXuJzivTeV20KiVxm9y1QjcXm4=
+	b=ZnRhRjTmTRv8SoKW8MQauU//YtYpB3NoOzPtWBTIzd3V0iSXBnPLgArtshdfINcVC
+	 HtC1RA/v/iFK9ZJcq3WXH/Bh+TyGMmdaeeMsvyuGc1Eq4C+iEwhC5lF9oqaylLrKxK
+	 gs6sbEpn0tgpJI/uuyy3f2gkjxmcGFjupTFR1HL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/279] drm: xlnx: zynqmp: Fix max dma segment size
+Subject: [PATCH 5.10 154/227] clk: amlogic: gxbb: drop non existing 32k clock parent
 Date: Tue,  8 Apr 2025 12:48:52 +0200
-Message-ID: <20250408104830.358190128@linuxfoundation.org>
+Message-ID: <20250408104824.936626024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 28b529a98525123acd37372a04d21e87ec2edcf7 ]
+[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
 
-Fix "mapping sg segment longer than device claims to support" warning by
-setting the max segment size.
+The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
+that this clock should be provided by AO controller.
 
-Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Tested-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250115-xilinx-formats-v2-10-160327ca652a@ideasonboard.com
+The HW probably has this clock but it does not exist at the moment in
+any controller implementation. Furthermore, referencing clock by the global
+name should be avoided whenever possible.
+
+There is no reason to keep this hack around, at least for now.
+
+Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/meson/gxbb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-index 5bb42d0a2de98..78b7dd210d89c 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-@@ -204,6 +204,8 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
+index a6428823371bf..cfdb1ce6d361c 100644
+--- a/drivers/clk/meson/gxbb.c
++++ b/drivers/clk/meson/gxbb.c
+@@ -1269,14 +1269,13 @@ static struct clk_regmap gxbb_cts_i958 = {
+ 	},
+ };
  
-+	dma_set_max_seg_size(&pdev->dev, DMA_BIT_MASK(32));
-+
- 	/* Try the reserved memory. Proceed if there's none. */
- 	of_reserved_mem_device_init(&pdev->dev);
- 
++/*
++ * This table skips a clock named 'cts_slow_oscin' in the documentation
++ * This clock does not exist yet in this controller or the AO one
++ */
++static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
+ static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
+ 	{ .fw_name = "xtal", },
+-	/*
+-	 * FIXME: This clock is provided by the ao clock controller but the
+-	 * clock is not yet part of the binding of this controller, so string
+-	 * name must be use to set this parent.
+-	 */
+-	{ .name = "cts_slow_oscin", .index = -1 },
+ 	{ .hw = &gxbb_fclk_div3.hw },
+ 	{ .hw = &gxbb_fclk_div5.hw },
+ };
+@@ -1286,6 +1285,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
+ 		.offset = HHI_32K_CLK_CNTL,
+ 		.mask = 0x3,
+ 		.shift = 16,
++		.table = gxbb_32k_clk_parents_val_table,
+ 		},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "32k_clk_sel",
 -- 
 2.39.5
 
