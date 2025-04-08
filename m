@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9CCA80686
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F54CA807D2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12C977AC8BA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583E81B86EE7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA17926A1C4;
-	Tue,  8 Apr 2025 12:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5D426AA88;
+	Tue,  8 Apr 2025 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0VaJMRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TApcQ5mY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626026A1BC;
-	Tue,  8 Apr 2025 12:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED062698AE;
+	Tue,  8 Apr 2025 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115035; cv=none; b=gERKDPhROkoF4o0ZqlghQiumCSQDKs3aCLZsdcLlpePg1fQf+oojiEFM58GQm1CwpeOn5mKd8MxmE6cxhKEbXb4m2A9ZRMSpnW+8jyPdJeIF5+l/uY5oNwOCkET20w3k+lph0dK+WC9ADvUokdFJsp6jOytzm29mrwXM3/rWBYA=
+	t=1744115597; cv=none; b=ltCbcVg4dEPSeqRfs3CPAxkmOK6YANlUjjepQ9aomziWSkMeN7i0e2CFzJblxvlWwgB9EXkE4SeoCQ7UldqCp40vpw38YdzGwzgGnrgJIyf5MpOQOChEo6v6UdKqiX1RvzozwaOB66GC0bsDOv6gofe8Nk4GNYaUWYF6HeLV0XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115035; c=relaxed/simple;
-	bh=1bZdioDyvSC4Fs10KcKcRuDWKzW3XpiD+PwuNhJJnMI=;
+	s=arc-20240116; t=1744115597; c=relaxed/simple;
+	bh=6TKCyjYMbtH8v55URAKgdggVWb9HMu5p6QdKa0umPJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoPgxT8nf+JTYIoNtIzi46fuEMgkq7eIDUqsbgTX9Jt65tzIfT9QwHB+OjYjI7/Vp1fE7DTxbISy1pnzNefiAIaFrhJECFvY/ms14X5kK8bCvmQJjaJRBv62DUwuShDZ9wy8QmpqbKPXb6CJ7SSRsBpv2e1gOml11UmxRAXrG8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0VaJMRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1727BC4CEE5;
-	Tue,  8 Apr 2025 12:23:54 +0000 (UTC)
+	 MIME-Version; b=jWJI9nsFtWiO54s0dLio9vyoKXMgPlo16Jc8Q2YBM2efFvRBH76LSxT+S+OhdNvjFqJzBfwriQajSK+CZTGlvEhndg+T21Kz3pvV2Ud7ywtCoyjLh5bkrnzOZEHd+TAwxwDBzk7f/Dns/wKh+qzJWOD1FzXt8klnNTsuMSbZKFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TApcQ5mY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E5BC4CEEA;
+	Tue,  8 Apr 2025 12:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115035;
-	bh=1bZdioDyvSC4Fs10KcKcRuDWKzW3XpiD+PwuNhJJnMI=;
+	s=korg; t=1744115597;
+	bh=6TKCyjYMbtH8v55URAKgdggVWb9HMu5p6QdKa0umPJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0VaJMRpinyF6p1BEnxhMfF9pZvOpX4clzYiIqSFs9srehu2eIJe/Q7Ago4Hx0dEh
-	 gMoCm1sdRuU3eBtdcKMV8SuJF/d3rCXzkepoqtirWUwPDudcT0Juh9J0WUHFVJtcOF
-	 t/U5Fku8UGyL27q4tgID9UNZUN4Nuaq6hoL6EmH8=
+	b=TApcQ5mY9GxkMJ/SPEzEAfNsGoxK0I8zPOWpTt8SCTu85e8CjJ+BJnlKLRo1NBwjA
+	 HZPA6Cr45FZmgiiHceAd5cND6VEIxNMlhOS2vObVfwysff4b3LtxO5IfLWEsGaW3gn
+	 scEvKB+DR45TucVUUSbgT5lGEdP/1AnKPHuJh02k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Stanislav Spassov <stanspas@amazon.de>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 324/499] ALSA: hda/realtek: Add support for ASUS ROG Strix GA603 Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 006/204] x86/fpu: Fix guest FPU state buffer allocation size
 Date: Tue,  8 Apr 2025 12:48:56 +0200
-Message-ID: <20250408104859.304469375@linuxfoundation.org>
+Message-ID: <20250408104820.478987021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Stanislav Spassov <stanspas@amazon.de>
 
-[ Upstream commit 16dc157346dd4404b02b42e73b88604be3652039 ]
+[ Upstream commit 1937e18cc3cf27e2b3ef70e8c161437051ab7608 ]
 
-Add support for ASUS GA603KP, GA603KM and GA603KH.
+Ongoing work on an optimization to batch-preallocate vCPU state buffers
+for KVM revealed a mismatch between the allocation sizes used in
+fpu_alloc_guest_fpstate() and fpstate_realloc(). While the former
+allocates a buffer sized to fit the default set of XSAVE features
+in UABI form (as per fpu_user_cfg), the latter uses its ksize argument
+derived (for the requested set of features) in the same way as the sizes
+found in fpu_kernel_cfg, i.e. using the compacted in-kernel
+representation.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+The correct size to use for guest FPU state should indeed be the
+kernel one as seen in fpstate_realloc(). The original issue likely
+went unnoticed through a combination of UABI size typically being
+larger than or equal to kernel size, and/or both amounting to the
+same number of allocated 4K pages.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-3-sbinding@opensource.cirrus.com
+Fixes: 69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
+Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250218141045.85201-1-stanspas@amazon.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/fpu/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ebacbd996bceb..c4e01becdb625 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10760,6 +10760,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
-+	SND_PCI_QUIRK(0x1043, 0x3d78, "ASUS GA603KH", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x3d88, "ASUS GA603KM", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3e00, "ASUS G814FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3e20, "ASUS G814PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3e30, "ASUS TP3607SA", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index f1446f532b17b..cbaa3afdd223f 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -220,7 +220,7 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	struct fpstate *fpstate;
+ 	unsigned int size;
+ 
+-	size = fpu_user_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
++	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
+ 	fpstate = vzalloc(size);
+ 	if (!fpstate)
+ 		return false;
 -- 
 2.39.5
 
