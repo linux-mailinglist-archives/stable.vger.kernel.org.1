@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4BCA80AED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A52A80434
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11C9F504FB3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AEDC3BBA1F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED15C267B65;
-	Tue,  8 Apr 2025 12:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C56269AF8;
+	Tue,  8 Apr 2025 11:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on/zaPxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZcICZFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A863A27703A;
-	Tue,  8 Apr 2025 12:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D854E20CCD8;
+	Tue,  8 Apr 2025 11:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116763; cv=none; b=tg6T1zetuZ2SNjM5aPWAC3EVmXXs5Y9OFSj0ty64rCymNxDw8JE60iraIVl+M5UgLSpjbZdDYLHjFL6QfhPTBaqHBlhyDL/T3/vd+3MdudUm010Vo6EAOy7Fzao15fnIWSRXhl7udo/b162CbLPpMByxyXiIV72SGr26pDkhWaA=
+	t=1744113475; cv=none; b=C1mzF8T2lOcwWJkqjbXJ2ZElSxF2b2H9250tfUcw+kpVYWUwZVrHxtxuK05JAOJNtjoEApxxycu+uc/eU74MI3HyDXb/uw8GlZUryHqaDAd8B9VmzhCk6whHhLRGnY2QprAhnIf8PNOvGy1rj+wKsIOhvZcGQ7Qe+nYHxG7I/0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116763; c=relaxed/simple;
-	bh=s/mgmr3LzYQy9rKt7d859Rr/jzUXGSmkthAU/tBFmZY=;
+	s=arc-20240116; t=1744113475; c=relaxed/simple;
+	bh=YJw/vbBOKiiehEo0qVlzBN2ZJb79+/eB+QZIos74STI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHrFkOhNinzSnBTkuNC9hddrh5vB6xaP6sbMhLhe87laHDSE+G2zdKi2btzAAt7svSEOZR7adDjRYSLlN3icrIg9KO3nX+E6uDq69Ig4+k0F3Rxv6BGi0vXg3dBqNshLt8onWF7pyPIDfRB0xE+ivoLcCgV8vy1SYFcntpEVwFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on/zaPxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34528C4CEE5;
-	Tue,  8 Apr 2025 12:52:43 +0000 (UTC)
+	 MIME-Version; b=hFJPH42y0ZAeygA6aVPeUS3qJgkTOYUj/qHXGnpmL7sBJGKVexJvgimLQQQErfyQrbUQFs1V//Ukc0tdUoHMiMDIgizjLeJoS75gZg7vve2bZKA0L+LETZfQHHRVVdAnY6YDTXTFoKCGlsSYxgBlMMk5yb5/FbIQtYB+1Dqf8lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZcICZFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69885C4CEEC;
+	Tue,  8 Apr 2025 11:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116763;
-	bh=s/mgmr3LzYQy9rKt7d859Rr/jzUXGSmkthAU/tBFmZY=;
+	s=korg; t=1744113475;
+	bh=YJw/vbBOKiiehEo0qVlzBN2ZJb79+/eB+QZIos74STI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=on/zaPxwqV5atgqcs8J5nhZbHtfC68nYYxdJQtH0WRtGJHXOteXOZ3uaDli9E55yv
-	 MZWwu24pwHg2iCrnTr3mDGVTP0J/hu5XX+0qHllCKzr+sS8Ndbu/CjBmYFQH7k1MGW
-	 8AV7ovg39z2K6MAlJ0zmxYsBoZnnnb/tYp5sSFk8=
+	b=KZcICZFudgEEz82D0Fx3AiHNdw1npjWmaw/w/6FtCONss1aMb3v6e6MEkJAA6+znE
+	 6DZW5M1RMC1/34GO+KHg98q8bf5ooNsWTSvWacnmfi+GpRHoERdm71Hd3UEW/OYY4o
+	 b35ZqbIsgFUZGVAmYbXt/Z/cK9JSgqKAmK/TGzgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Guanghui <zhang.guanghui@cestc.cn>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/423] nvme-tcp: fix possible UAF in nvme_tcp_poll
+Subject: [PATCH 6.6 173/268] cifs: fix incorrect validation for num_aces field of smb_acl
 Date: Tue,  8 Apr 2025 12:49:44 +0200
-Message-ID: <20250408104851.753989837@linuxfoundation.org>
+Message-ID: <20250408104833.211044025@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8c1624b63a7d24142a2bbc3a5ee7e95f004ea36e ]
+[ Upstream commit aa2a739a75ab6f24ef72fb3fdb9192c081eacf06 ]
 
-nvme_tcp_poll() may race with the send path error handler because
-it may complete the request while it is actively being polled for
-completion, resulting in a UAF panic [1]:
+parse_dcal() validate num_aces to allocate ace array.
 
-We should make sure to stop polling when we see an error when
-trying to read from the socket. Hence make sure to propagate the
-error so that the block layer breaks the polling cycle.
+f (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
 
-[1]:
---
-[35665.692310] nvme nvme2: failed to send request -13
-[35665.702265] nvme nvme2: unsupported pdu type (3)
-[35665.702272] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[35665.702542] nvme nvme2: queue 1 receive failed:  -22
-[35665.703209] #PF: supervisor write access in kernel mode
-[35665.703213] #PF: error_code(0x0002) - not-present page
-[35665.703214] PGD 8000003801cce067 P4D 8000003801cce067 PUD 37e6f79067 PMD 0
-[35665.703220] Oops: 0002 [#1] SMP PTI
-[35665.703658] nvme nvme2: starting error recovery
-[35665.705809] Hardware name: Inspur aaabbb/YZMB-00882-104, BIOS 4.1.26 09/22/2022
-[35665.705812] Workqueue: kblockd blk_mq_requeue_work
-[35665.709172] RIP: 0010:_raw_spin_lock+0xc/0x30
-[35665.715788] Call Trace:
-[35665.716201]  <TASK>
-[35665.716613]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717049]  ? show_trace_log_lvl+0x1c1/0x2d9
-[35665.717457]  ? blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.717950]  ? __die_body.cold+0x8/0xd
-[35665.718361]  ? page_fault_oops+0xac/0x140
-[35665.718749]  ? blk_mq_start_request+0x30/0xf0
-[35665.719144]  ? nvme_tcp_queue_rq+0xc7/0x170 [nvme_tcp]
-[35665.719547]  ? exc_page_fault+0x62/0x130
-[35665.719938]  ? asm_exc_page_fault+0x22/0x30
-[35665.720333]  ? _raw_spin_lock+0xc/0x30
-[35665.720723]  blk_mq_request_bypass_insert+0x2c/0xb0
-[35665.721101]  blk_mq_requeue_work+0xa5/0x180
-[35665.721451]  process_one_work+0x1e8/0x390
-[35665.721809]  worker_thread+0x53/0x3d0
-[35665.722159]  ? process_one_work+0x390/0x390
-[35665.722501]  kthread+0x124/0x150
-[35665.722849]  ? set_kthread_struct+0x50/0x50
-[35665.723182]  ret_from_fork+0x1f/0x30
+It is an incorrect validation that we can create an array of size ULONG_MAX.
+smb_acl has ->size field to calculate actual number of aces in response buffer
+size. Use this to check invalid num_aces.
 
-Reported-by: Zhang Guanghui <zhang.guanghui@cestc.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsacl.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index eeb05b7bc0fd0..854aa6a070ca8 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2736,6 +2736,7 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- {
- 	struct nvme_tcp_queue *queue = hctx->driver_data;
- 	struct sock *sk = queue->sock->sk;
-+	int ret;
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index 1fc1683b15bd8..db9076da2182a 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -778,7 +778,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 	}
  
- 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
- 		return 0;
-@@ -2743,9 +2744,9 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
- 	set_bit(NVME_TCP_Q_POLLING, &queue->flags);
- 	if (sk_can_busy_loop(sk) && skb_queue_empty_lockless(&sk->sk_receive_queue))
- 		sk_busy_loop(sk, true);
--	nvme_tcp_try_recv(queue);
-+	ret = nvme_tcp_try_recv(queue);
- 	clear_bit(NVME_TCP_Q_POLLING, &queue->flags);
--	return queue->nr_cqe;
-+	return ret < 0 ? ret : queue->nr_cqe;
- }
+ 	/* validate that we do not go past end of acl */
+-	if (end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
++	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
++	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
+ 		cifs_dbg(VFS, "ACL too small to parse DACL\n");
+ 		return;
+ 	}
+@@ -799,8 +800,11 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 	if (num_aces > 0) {
+ 		umode_t denied_mode = 0;
  
- static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
+-		if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
++		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
++				(offsetof(struct smb_ace, sid) +
++				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
+ 			return;
++
+ 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
+ 				      GFP_KERNEL);
+ 		if (!ppace)
 -- 
 2.39.5
 
