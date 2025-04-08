@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B58A801A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6DAA8028E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3CB288030B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF7A19E113A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CBB269D0D;
-	Tue,  8 Apr 2025 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2736267F65;
+	Tue,  8 Apr 2025 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0MpapQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsKE99cL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC97227BB6;
-	Tue,  8 Apr 2025 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6D5267F4F;
+	Tue,  8 Apr 2025 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112016; cv=none; b=snRycPWsuVQslKTunwbVdWSUezL04R1AHovH7/G4wPRlh2aJpMMaeJm6K666SYPRWTHmPzA+A5KFHKY0rbtHqRIaMV4TTVe4Gya4fPkyOwRyNaKXWH2qJFbMJ4/Glby//RdZMp8qpeY3/mgT6FId35CDip7K2tOSvRA+k/WI1ns=
+	t=1744112689; cv=none; b=nwf1CFugaADiDtDdJeiLrHXXD8xNR/zNWqURnBSOqA6rWlwOZkNnsTMFTu2XT+k4iw5yttPCJsM7PEAbr4Hr4N36pat9DIzVQbvyMY6o/18zaFMIjgl+jLHvjQivbjls425axxGNAjkWGa69RfL1E2a7OPK2kIl0QyqV8wF0MKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112016; c=relaxed/simple;
-	bh=r6+CIXGW7jcICQWkyiP8aKSMvgpWiXWnOvuvBqvcQfo=;
+	s=arc-20240116; t=1744112689; c=relaxed/simple;
+	bh=2RsSZm/gutwCTFPejUP0lIEKpS6V8iPVkSzYrOkOxTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6w6uv4Jf7P8QQsQak7VVNmmHpKVcUS4ptAQb4oAMllxmRGLAxNV/y6LiWuuGrvKykAJ6533ltPZ24rfn2GSVe/S6FUA+Eoi/p+DH4vIZ4o4PDBafpJnDIqE7bqDv+2R/tFrt2pC97VjcDHu9ssrNmUFK2odEQitrtTPxWSUeU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0MpapQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D413C4CEE5;
-	Tue,  8 Apr 2025 11:33:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LCuYEXUtX5646O2/iBDJB3+t/fI+NErUsAJwa35nOJ7LfYkPMK8exWT7qciCO2kYCnABiftGEcIW5GVN0l4SI0BKmsHeXobCpP+wi0tI3xhYbB8l3x+7l45M4xpf9Yn0D5S53vg+2xS6xzbAPHb0PiTlxwi3vmW61VCGg7tBjUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsKE99cL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE27BC4CEE5;
+	Tue,  8 Apr 2025 11:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112015;
-	bh=r6+CIXGW7jcICQWkyiP8aKSMvgpWiXWnOvuvBqvcQfo=;
+	s=korg; t=1744112689;
+	bh=2RsSZm/gutwCTFPejUP0lIEKpS6V8iPVkSzYrOkOxTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0MpapQoVPOpmBxvs07sG28P3XZpplZrpJtZygfO2iOd3j4RlF5GeBERhUwOOkhXd
-	 Px9zQduO3SuJ7JrP/DIWT/CvZY1IDSqWubVPW8ZuYu9DgtQKtCqzlf0NW6m2P6hoiv
-	 eHiuxCM9KSMeycIxKv3xct55rTS6S0D7pQGggUtc=
+	b=vsKE99cLDeNBkM1lCeQaFTCgWmOJ2G3MEveizHu/4ZIfH3nPxYd/c/Pb/mh0HTx9o
+	 +FdPdNcYRQtKxxqRh00+hCV752W4+pb7+Z9mdT95NC7mJCXY1QDYG1HkX82ljS6FKI
+	 XDUhmd3f2et7YIVLTYBWZnYbJEl0z+Iqk0vzoKaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 645/731] kbuild: deb-pkg: dont set KBUILD_BUILD_VERSION unconditionally
-Date: Tue,  8 Apr 2025 12:49:02 +0200
-Message-ID: <20250408104929.268918819@linuxfoundation.org>
+Subject: [PATCH 5.15 160/279] PCI: xilinx-cpm: Fix IRQ domain leak in error path of probe
+Date: Tue,  8 Apr 2025 12:49:03 +0200
+Message-ID: <20250408104830.655986027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+From: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
 
-[ Upstream commit 62604063621fb075c7966286bdddcb057d883fa8 ]
+[ Upstream commit 57b0302240741e73fe51f88404b3866e0d2933ad ]
 
-In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
-the kernel package. This does not have a dash in the name or version.
-This is built by editing ".version" before a build, and setting
-EXTRAVERSION="+hp" and KDEB_PKGVERSION make variables:
+The IRQ domain allocated for the PCIe controller is not freed if
+resource_list_first_type() returns NULL, leading to a resource leak.
 
-    echo 68 > .version
-    make -j<n> EXTRAVERSION="+hp" bindeb-pkg KDEB_PKGVERSION=6.12.2+hp69
+This fix ensures properly cleaning up the allocated IRQ domain in
+the error path.
 
-    .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
-
-Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
-scripts/package/deb-build-option to debian/rules"), this no longer
-works. The deb build logic changed, even though, the commit message
-implies that the logic should be unmodified.
-
-Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
-not contain a dash. After the change KBUILD_BUILD_VERSION is always
-set to KDEB_PKGVERSION. Since this determines UTS_VERSION, the uname
-output to look off:
-
-    (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
-    (expected) uname -a: version 6.12.2+hp ... #69
-
-Update the debian/rules logic to restore the original behavior.
-
-Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-option to debian/rules")
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
+Signed-off-by: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
+[kwilczynski: added missing Fixes: tag, refactored to use one of the goto labels]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lore.kernel.org/r/20250224155025.782179-2-thippeswamy.havalige@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/debian/rules | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-xilinx-cpm.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
-index ca07243bd5cdf..2b3f9a0bd6c40 100755
---- a/scripts/package/debian/rules
-+++ b/scripts/package/debian/rules
-@@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
-     endif
- endif
+diff --git a/drivers/pci/controller/pcie-xilinx-cpm.c b/drivers/pci/controller/pcie-xilinx-cpm.c
+index 95426df032000..1e72cea8563f3 100644
+--- a/drivers/pci/controller/pcie-xilinx-cpm.c
++++ b/drivers/pci/controller/pcie-xilinx-cpm.c
+@@ -556,13 +556,15 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
+ 		return err;
  
--revision = $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version)))
-+revision = $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
- CROSS_COMPILE ?= $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYPE)-)
--make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) KBUILD_BUILD_VERSION=$(revision) $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
-+make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) \
-+    $(addprefix KBUILD_BUILD_VERSION=,$(revision)) \
-+    $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
+ 	bus = resource_list_first_type(&bridge->windows, IORESOURCE_BUS);
+-	if (!bus)
+-		return -ENODEV;
++	if (!bus) {
++		err = -ENODEV;
++		goto err_free_irq_domains;
++	}
  
- binary-targets := $(addprefix binary-, image image-dbg headers libc-dev)
+ 	err = xilinx_cpm_pcie_parse_dt(port, bus->res);
+ 	if (err) {
+ 		dev_err(dev, "Parsing DT failed\n");
+-		goto err_parse_dt;
++		goto err_free_irq_domains;
+ 	}
  
+ 	xilinx_cpm_pcie_init_port(port);
+@@ -586,7 +588,7 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
+ 	xilinx_cpm_free_interrupts(port);
+ err_setup_irq:
+ 	pci_ecam_free(port->cfg);
+-err_parse_dt:
++err_free_irq_domains:
+ 	xilinx_cpm_free_irq_domains(port);
+ 	return err;
+ }
 -- 
 2.39.5
 
