@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-129726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9238EA801B4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534E6A7FDEE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644DC444330
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A680189398F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FEB267F6E;
-	Tue,  8 Apr 2025 11:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49DD26A0C1;
+	Tue,  8 Apr 2025 10:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AigI8bYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA20XD5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807AA224239;
-	Tue,  8 Apr 2025 11:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90650267AFF;
+	Tue,  8 Apr 2025 10:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111815; cv=none; b=YS44NQJDBNCq9CB3o8qyWTkc8AxQyytRg8n/AR9WgitCXmqwNbC+k3YIekfzp6vQgocUM4C1r4b5HarZHoBJzqc+5wQxsZLRITIpe+S0zJGwBAInSK2FvLAruIG0FL8dN4DQYFCMBGVPnOY9FAUKvL4XF3QAjkTflyZ4t3pICCo=
+	t=1744109993; cv=none; b=aRekDQLpza63kwP3M8mj8aLzCU7ZE5BXaA3KSynVWOTXo7O/ADhHQQOjLoG9MFeob97obJL2JeYhictfb3BGJMwklxa+aRDtt2wziaFHnH25m5PNQOsg4JMgr5cVETiQ1bo9by3ju6PJOV2OKjR03a1/korNcZ1aHNAaZhV93RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111815; c=relaxed/simple;
-	bh=5jtySsG7qmAk9i97RO2zMvpRVfkMUonimiPFd9jwK/M=;
+	s=arc-20240116; t=1744109993; c=relaxed/simple;
+	bh=qvzkXVnTDdE4CWEzrv7d8QauCpUZq8PjuFQoOv+oK6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MptTohszaihKKlxC+yBRXLYiYarpJ1r6ndi+nafqLO0asri+wTzdCrkdBwehqIfhKE3OWDdytdAsTFUq9xFVImsxnClBNt7pgHGb44hZG9SmjS9cQP5zKfig6ges/T4mY9E4WgbAwxZA4t9m1LFJSFg12Rwt9b8rWVZPArxvr08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AigI8bYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6E7C4CEE5;
-	Tue,  8 Apr 2025 11:30:14 +0000 (UTC)
+	 MIME-Version; b=VJeIwm1cZ5jZH+jm09+ZQe/pPcVFGTJzlr07uchdvT+fZLJcHr+WJqj8zCzFy7cB46TnX+zZNrGIPTM3mUQvUsRzBr7jIo0IBzrs+/PSvcktTUsVX/uYhUsNWfSpDUHXHML0Qtu/60YQ/4lDDeZDNPlt2VgjvEGRnK63r7cBamk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA20XD5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ACAC4CEE5;
+	Tue,  8 Apr 2025 10:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111815;
-	bh=5jtySsG7qmAk9i97RO2zMvpRVfkMUonimiPFd9jwK/M=;
+	s=korg; t=1744109993;
+	bh=qvzkXVnTDdE4CWEzrv7d8QauCpUZq8PjuFQoOv+oK6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AigI8bYdaC8uNf5eNIV1dYJ731aVn0c1qs5/qQ7gTcWRyvGVwU2uZ329DttK1D0OU
-	 +rpuDHaqPXFbXPETLlCdAQvqSLdQ3OPM4cCz5uchx1Ynkb907cjobMNc7HYSfwfLsw
-	 0Z31m2KUonStiRJeXfYiB8a0ZdX4fXTIkba2FeS0=
+	b=IA20XD5sP0cpjpdSd/rxKvBH45DJJPoQbAtwuIKc90DQNZlfqUtzeFYj8BZ+VuTyw
+	 NLWz+1LfJFW3nVozUmCApqSq1EmY9PkdlkRYnMsSKlSOw/J3WwmJDXuDcpVQ67SrKM
+	 pkJwNEjeP7gwjNUR0gI/wMXArRkB+ZDRYS7+PgCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight.linux@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 570/731] objtool: Fix verbose disassembly if CROSS_COMPILE isnt set
-Date: Tue,  8 Apr 2025 12:47:47 +0200
-Message-ID: <20250408104927.531714145@linuxfoundation.org>
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.10 090/227] batman-adv: Ignore own maximum aggregation size during RX
+Date: Tue,  8 Apr 2025 12:47:48 +0200
+Message-ID: <20250408104823.073856127@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <david.laight.linux@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit e77956e4e5c11218e60a1fe8cdbccd02476f2e56 ]
+commit 548b0c5de7619ef53bbde5590700693f2f6d2a56 upstream.
 
-In verbose mode, when printing the disassembly of affected functions, if
-CROSS_COMPILE isn't set, the objdump command string gets prefixed with
-"(null)".
+An OGMv1 and OGMv2 packet receive processing were not only limited by the
+number of bytes in the received packet but also by the nodes maximum
+aggregation packet size limit. But this limit is relevant for TX and not
+for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
+loss of information in case of a different limit for sender and receiver.
 
-Somehow this worked before.  Maybe some versions of glibc return an
-empty string instead of NULL.  Fix it regardless.
+This has a minor side effect for B.A.T.M.A.N. IV because the
+batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
+But since the aggregation code itself will not allow more than
+BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
+this context) prior of removing it.
 
-[ jpoimboe: Rewrite commit log. ]
-
-Fixes: ca653464dd097 ("objtool: Add verbose option for disassembling affected functions")
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215142321.14081-1-david.laight.linux@gmail.com
-Link: https://lore.kernel.org/r/b931a4786bc0127aa4c94e8b35ed617dcbd3d3da.1743481539.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/bat_iv_ogm.c |    3 +--
+ net/batman-adv/bat_v_ogm.c  |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index aa071017c325c..159fb130e2827 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4489,6 +4489,8 @@ static int disas_funcs(const char *funcs)
- 	char *cmd;
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -326,8 +326,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
  
- 	cross_compile = getenv("CROSS_COMPILE");
-+	if (!cross_compile)
-+		cross_compile = "";
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
  
- 	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
- 			"BEGIN { split(_funcs, funcs); }"
--- 
-2.39.5
-
+ /* send a batman ogm to a given interface */
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -850,8 +850,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, i
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /**
 
 
 
