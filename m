@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-129383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12E1A7FF56
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC315A7FF6E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5211A168B5F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94074443424
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B6D26659C;
-	Tue,  8 Apr 2025 11:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C35266EFC;
+	Tue,  8 Apr 2025 11:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRSxYXSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlDmXh4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737C1374C4;
-	Tue,  8 Apr 2025 11:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABA025FA04;
+	Tue,  8 Apr 2025 11:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110876; cv=none; b=i5YD4vSgUdDdG00K5Nsvp+C2LzI+4MZTfutCN3s2Aoi6Eqo8PLe2ofb3SB4KmGKwkSASQBDodrtlmNIIe/u+4NsB2rcSlSLAZTeIuDRjubS5nyMDgLwuqVxU9bZI+dhpmnG6kLNMA5zSN7pPg5jX2A7/Y6LmIF0FbFb+XEM+a+M=
+	t=1744110881; cv=none; b=BLcfLu4mqwCWko8TqUoOmbsSquw09gZWQd+ADcmAglfNzIR2rAYeF4EdxD3OX1UibiaHheXr5qe/KpClaLGJld4ttlRReBXoRpFp4jHWWtI7XVadIQTCFcNARimqCS2nd2p8eey2p1QYd7UgBumI+Vygm2yxnon3niaZ9THMJMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110876; c=relaxed/simple;
-	bh=I/qAMPxl/XRnzGfvp1RM6+Ch1r15n3zvdL8vVJzTTxc=;
+	s=arc-20240116; t=1744110881; c=relaxed/simple;
+	bh=N27tBPx4wo/XGHSaxSqO6vCy9rpKw+1VQwmUmEVApLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzJurBbnr27T6ObOQOIBCx+ygqCdZelArfi5p0/siCRJUvt1btn0fKaB4VemQ4m+xR1pMXBH/1wrMCKXptI4DTEGerzz6L5Yh4glQ19yufcFLk8O5NIw5YhDMasNxaEbGS5YHocyJm701uHQcrxipXwilAPhw/047viCMBMDhtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRSxYXSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A20C4CEE5;
-	Tue,  8 Apr 2025 11:14:35 +0000 (UTC)
+	 MIME-Version; b=OqO7LpWrCNWfIYqELlKuvY3tuJcAB4AZRL/h6cUrchgwV6ucPfJFFtegnC22t1Hw9EwuEdCbO3gT+DNWSKlfk9EGLTOmqc5bpgaiNbZQBzu95HSAKLj37DlJOJMEETkiaf/GPQ7lOclOUgmHoIQePaisMTfQJ3naQOP5teUdPQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlDmXh4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5170AC4CEE5;
+	Tue,  8 Apr 2025 11:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110876;
-	bh=I/qAMPxl/XRnzGfvp1RM6+Ch1r15n3zvdL8vVJzTTxc=;
+	s=korg; t=1744110881;
+	bh=N27tBPx4wo/XGHSaxSqO6vCy9rpKw+1VQwmUmEVApLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRSxYXStHRyf/xwD97pt46Ty77BQIE/MK7RVElrhyh294s/RLM9IOHXk2RArdWkBY
-	 rjEdxPb+hdEdt7KQ2RIGHwJl3/gWsUd82Srm4oK2Q/st5s9+5zVb3uwRyGj3wucyag
-	 S5JwwI4dTdl7yQ1UjdaR7O+WuWFWPICzWJKnD4Cc=
+	b=XlDmXh4eVX6l/wmHkW4quhk8pe9QuOzeARNfMMkeb/epXrSHd+5CZo3QEqGSktqfS
+	 q+kd6OjyidrvczivC7fWhLxaH3ai+Efi6/PY2rLJh4+cMDr46eJW5IOfWoUD2Nv4Ud
+	 mAmVhdN1XqkMiEZa2/XGBnHy9NGkwPwxrVvrbwaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Kumar <maheshkumar657g@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 228/731] ext4: avoid journaling sb update on error if journal is destroying
-Date: Tue,  8 Apr 2025 12:42:05 +0200
-Message-ID: <20250408104919.584152168@linuxfoundation.org>
+Subject: [PATCH 6.14 229/731] eth: bnxt: fix out-of-range access of vnic_info array
+Date: Tue,  8 Apr 2025 12:42:06 +0200
+Message-ID: <20250408104919.607872034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,171 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit ce2f26e73783b4a7c46a86e3af5b5c8de0971790 ]
+[ Upstream commit 919f9f497dbcee75d487400e8f9815b74a6a37df ]
 
-Presently we always BUG_ON if trying to start a transaction on a journal marked
-with JBD2_UNMOUNT, since this should never happen. However, while ltp running
-stress tests, it was observed that in case of some error handling paths, it is
-possible for update_super_work to start a transaction after the journal is
-destroyed eg:
+The bnxt_queue_{start | stop}() access vnic_info as much as allocated,
+which indicates bp->nr_vnics.
+So, it should not reach bp->vnic_info[bp->nr_vnics].
 
-(umount)
-ext4_kill_sb
-  kill_block_super
-    generic_shutdown_super
-      sync_filesystem /* commits all txns */
-      evict_inodes
-        /* might start a new txn */
-      ext4_put_super
-	flush_work(&sbi->s_sb_upd_work) /* flush the workqueue */
-        jbd2_journal_destroy
-          journal_kill_thread
-            journal->j_flags |= JBD2_UNMOUNT;
-          jbd2_journal_commit_transaction
-            jbd2_journal_get_descriptor_buffer
-              jbd2_journal_bmap
-                ext4_journal_bmap
-                  ext4_map_blocks
-                    ...
-                    ext4_inode_error
-                      ext4_handle_error
-                        schedule_work(&sbi->s_sb_upd_work)
-
-                                               /* work queue kicks in */
-                                               update_super_work
-                                                 jbd2_journal_start
-                                                   start_this_handle
-                                                     BUG_ON(journal->j_flags &
-                                                            JBD2_UNMOUNT)
-
-Hence, introduce a new mount flag to indicate journal is destroying and only do
-a journaled (and deferred) update of sb if this flag is not set. Otherwise, just
-fallback to an un-journaled commit.
-
-Further, in the journal destroy path, we have the following sequence:
-
-  1. Set mount flag indicating journal is destroying
-  2. force a commit and wait for it
-  3. flush pending sb updates
-
-This sequence is important as it ensures that, after this point, there is no sb
-update that might be journaled so it is safe to update the sb outside the
-journal. (To avoid race discussed in 2d01ddc86606)
-
-Also, we don't need a similar check in ext4_grp_locked_error since it is only
-called from mballoc and AFAICT it would be always valid to schedule work here.
-
-Fixes: 2d01ddc86606 ("ext4: save error info to sb through journal if available")
-Reported-by: Mahesh Kumar <maheshkumar657g@gmail.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/9613c465d6ff00cd315602f99283d5f24018c3f7.1742279837.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 661958552eda ("eth: bnxt: do not use BNXT_VNIC_NTUPLE unconditionally in queue restart logic")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250316025837.939527-1-ap420073@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h      |  3 ++-
- fs/ext4/ext4_jbd2.h | 15 +++++++++++++++
- fs/ext4/super.c     | 16 ++++++++--------
- 3 files changed, 25 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 7f5fd1a433662..df30d9f235123 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1821,7 +1821,8 @@ static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
-  */
- enum {
- 	EXT4_MF_MNTDIR_SAMPLED,
--	EXT4_MF_FC_INELIGIBLE	/* Fast commit ineligible */
-+	EXT4_MF_FC_INELIGIBLE,	/* Fast commit ineligible */
-+	EXT4_MF_JOURNAL_DESTROY	/* Journal is in process of destroying */
- };
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 55f553debd3b2..0ddc3d41e2d81 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15651,7 +15651,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 	cpr = &rxr->bnapi->cp_ring;
+ 	cpr->sw_stats->rx.rx_resets++;
  
- static inline void ext4_set_mount_flag(struct super_block *sb, int bit)
-diff --git a/fs/ext4/ext4_jbd2.h b/fs/ext4/ext4_jbd2.h
-index 930778e507cc4..ada46189b0860 100644
---- a/fs/ext4/ext4_jbd2.h
-+++ b/fs/ext4/ext4_jbd2.h
-@@ -521,6 +521,21 @@ static inline int ext4_journal_destroy(struct ext4_sb_info *sbi, journal_t *jour
- {
- 	int err = 0;
+-	for (i = 0; i <= bp->nr_vnics; i++) {
++	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
  
-+	/*
-+	 * At this point only two things can be operating on the journal.
-+	 * JBD2 thread performing transaction commit and s_sb_upd_work
-+	 * issuing sb update through the journal. Once we set
-+	 * EXT4_JOURNAL_DESTROY, new ext4_handle_error() calls will not
-+	 * queue s_sb_upd_work and ext4_force_commit() makes sure any
-+	 * ext4_handle_error() calls from the running transaction commit are
-+	 * finished. Hence no new s_sb_upd_work can be queued after we
-+	 * flush it here.
-+	 */
-+	ext4_set_mount_flag(sbi->s_sb, EXT4_MF_JOURNAL_DESTROY);
-+
-+	ext4_force_commit(sbi->s_sb);
-+	flush_work(&sbi->s_sb_upd_work);
-+
- 	err = jbd2_journal_destroy(journal);
- 	sbi->s_journal = NULL;
+ 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
+@@ -15679,7 +15679,7 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+ 	struct bnxt_vnic_info *vnic;
+ 	int i;
  
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index f658c017055f3..b666ef71a034a 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -716,9 +716,13 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
- 		 * In case the fs should keep running, we need to writeout
- 		 * superblock through the journal. Due to lock ordering
- 		 * constraints, it may not be safe to do it right here so we
--		 * defer superblock flushing to a workqueue.
-+		 * defer superblock flushing to a workqueue. We just need to be
-+		 * careful when the journal is already shutting down. If we get
-+		 * here in that case, just update the sb directly as the last
-+		 * transaction won't commit anyway.
- 		 */
--		if (continue_fs && journal)
-+		if (continue_fs && journal &&
-+		    !ext4_test_mount_flag(sb, EXT4_MF_JOURNAL_DESTROY))
- 			schedule_work(&EXT4_SB(sb)->s_sb_upd_work);
- 		else
- 			ext4_commit_super(sb);
-@@ -1303,7 +1307,6 @@ static void ext4_put_super(struct super_block *sb)
- 	ext4_unregister_li_request(sb);
- 	ext4_quotas_off(sb, EXT4_MAXQUOTAS);
- 
--	flush_work(&sbi->s_sb_upd_work);
- 	destroy_workqueue(sbi->rsv_conversion_wq);
- 	ext4_release_orphan_info(sb);
- 
-@@ -1313,7 +1316,8 @@ static void ext4_put_super(struct super_block *sb)
- 		if ((err < 0) && !aborted) {
- 			ext4_abort(sb, -err, "Couldn't clean up the journal");
- 		}
--	}
-+	} else
-+		flush_work(&sbi->s_sb_upd_work);
- 
- 	ext4_es_unregister_shrinker(sbi);
- 	timer_shutdown_sync(&sbi->s_err_report);
-@@ -4972,8 +4976,6 @@ static int ext4_load_and_init_journal(struct super_block *sb,
- 	return 0;
- 
- out:
--	/* flush s_sb_upd_work before destroying the journal. */
--	flush_work(&sbi->s_sb_upd_work);
- 	ext4_journal_destroy(sbi, sbi->s_journal);
- 	return -EINVAL;
- }
-@@ -5663,8 +5665,6 @@ failed_mount8: __maybe_unused
- 	sbi->s_ea_block_cache = NULL;
- 
- 	if (sbi->s_journal) {
--		/* flush s_sb_upd_work before journal destroy. */
--		flush_work(&sbi->s_sb_upd_work);
- 		ext4_journal_destroy(sbi, sbi->s_journal);
- 	}
- failed_mount3a:
+-	for (i = 0; i <= bp->nr_vnics; i++) {
++	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
+ 		vnic->mru = 0;
+ 		bnxt_hwrm_vnic_update(bp, vnic,
 -- 
 2.39.5
 
