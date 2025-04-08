@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90A2A805FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0CDA80957
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C97E1B836A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD22188FAF4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15927268C4F;
-	Tue,  8 Apr 2025 12:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F160526B959;
+	Tue,  8 Apr 2025 12:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIy1eN6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtdS4Oy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F38263F4D;
-	Tue,  8 Apr 2025 12:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF54826982F;
+	Tue,  8 Apr 2025 12:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114514; cv=none; b=W1vhQdOsVxFNKEo5AKLGYNCoyA0XKHt8jttxB7N2DTy9DDDwfqb7U7K5KTl8SCl4qNfKpQE+OswwrYVRqMts71LMjiMWEpSgjSSADdnFdqna2MLk8TL4RKA7pi5QaB+9ot4pHa/WExsrMqM0m51GcziexXgK8HRa2+AQV5Az0aQ=
+	t=1744116121; cv=none; b=noGAPVICgyOEtCbACECl1WyUfJuruyten3x2rlstrpdM/lUu3iMU6EHqdu1/UFe6+olx1Rgrey7ZJujinZAUXftHNkA6wp8ucEQbxeAKA/QttI/HwfJwY5f5fFbnckZ+b23yEsgoRtxX00yasRy2xWXNnP/46skRjjNoTys5HI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114514; c=relaxed/simple;
-	bh=dYygCOZP2n+8zfU2ua88UxqLxVFXzAry8A0zAibysFU=;
+	s=arc-20240116; t=1744116121; c=relaxed/simple;
+	bh=TMkpjeZ7dMC/IVfzRg7CaMxvoF4FqLi41cWES71dy7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4+ni+K+aiJs8pQzKewukrP0sZ3QEvusHHLFdYQ9oFA5L5ZDd6y7obZbnjGD6t70n+6zJ6K4VED/fOpoklMgt6BlgdFpP5XO0JdfCqAUNJplTwE0hR7cVZxPS8lHAhd1NoH4Nyl2plXVSd0agSlYrtYybDVCiDyLvZ2/9oDOTEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIy1eN6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF7BC4CEE7;
-	Tue,  8 Apr 2025 12:15:14 +0000 (UTC)
+	 MIME-Version; b=nir7yc9RQjJleHwYafdhxocSiu1hiP/6zP43UeYFRLCds12t1b67wb9XpTIC9mozylGD2xawDMgCia4IoQyx126AO8jDs1GM05MzTbLIDbycoqYLTF/sEv89YMYKSVExLfG+f7X0WUz8iMWX0d02Aq/oPUyj8iklXK8mzuaM6FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtdS4Oy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403FCC4CEE5;
+	Tue,  8 Apr 2025 12:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114514;
-	bh=dYygCOZP2n+8zfU2ua88UxqLxVFXzAry8A0zAibysFU=;
+	s=korg; t=1744116121;
+	bh=TMkpjeZ7dMC/IVfzRg7CaMxvoF4FqLi41cWES71dy7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIy1eN6pCrxvYGBVISA9qrL9MTj4kNNw/tcLpsxa4GcHGMqlazvHe5xXiMGHhaW5o
-	 0oek3Jn+zUCwEmrtHacFLDFl3zwa1HKTymTJkjR7MwnL8Vi8/2Jz47JXUyiho4tAR7
-	 70UaxadH907biBGlOWUqd3VQJHlpKTYJtnWr03rk=
+	b=HtdS4Oy06JKmuIahgIvITeHVKoL1VkMVEnPLW07fsPaWVmZkDmXVetJiBASGjSAee
+	 Y0nkx2Ln9zzuvkyruyD6ju8BRTpFwsZ0KhtzE4K9UM1KVG0NfclrkNshpSBR1/ieok
+	 dOv5HDAtSzUoK5jFOHrVfDnevwaprgI/FTOc35XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 136/499] remoteproc: qcom_q6v5_pas: Make single-PD handling more robust
-Date: Tue,  8 Apr 2025 12:45:48 +0200
-Message-ID: <20250408104854.582571357@linuxfoundation.org>
+Subject: [PATCH 6.12 023/423] EDAC/ie31200: Fix the error path order of ie31200_init()
+Date: Tue,  8 Apr 2025 12:45:49 +0200
+Message-ID: <20250408104846.284460872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit e917b73234b02aa4966325e7380d2559bf127ba9 ]
+[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
 
-Only go into the if condition for single-PD handling when there's
-actually just one power domain specified there. Otherwise it'll be an
-issue in the dts and we should fail in the regular code path.
+The error path order of ie31200_init() is incorrect, fix it.
 
-This also mirrors the latest changes in the qcom_q6v5_mss driver.
-
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250128-pas-singlepd-v1-2-85d9ae4b0093@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/edac/ie31200_edac.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 97c4bdd9222a8..78484ed9b6c85 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -501,16 +501,16 @@ static int adsp_pds_attach(struct device *dev, struct device **devs,
- 	if (!pd_names)
- 		return 0;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 92714dd88b3f6..56be8ef40f376 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -617,7 +617,7 @@ static int __init ie31200_init(void)
  
-+	while (pd_names[num_pds])
-+		num_pds++;
+ 	pci_rc = pci_register_driver(&ie31200_driver);
+ 	if (pci_rc < 0)
+-		goto fail0;
++		return pci_rc;
+ 
+ 	if (!mci_pdev) {
+ 		ie31200_registered = 0;
+@@ -628,11 +628,13 @@ static int __init ie31200_init(void)
+ 			if (mci_pdev)
+ 				break;
+ 		}
 +
- 	/* Handle single power domain */
--	if (dev->pm_domain) {
-+	if (num_pds == 1 && dev->pm_domain) {
- 		devs[0] = dev;
- 		pm_runtime_enable(dev);
- 		return 1;
+ 		if (!mci_pdev) {
+ 			edac_dbg(0, "ie31200 pci_get_device fail\n");
+ 			pci_rc = -ENODEV;
+-			goto fail1;
++			goto fail0;
+ 		}
++
+ 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
+ 		if (pci_rc < 0) {
+ 			edac_dbg(0, "ie31200 init fail\n");
+@@ -640,12 +642,12 @@ static int __init ie31200_init(void)
+ 			goto fail1;
+ 		}
  	}
+-	return 0;
  
--	while (pd_names[num_pds])
--		num_pds++;
--
- 	for (i = 0; i < num_pds; i++) {
- 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
- 		if (IS_ERR_OR_NULL(devs[i])) {
-@@ -535,7 +535,7 @@ static void adsp_pds_detach(struct qcom_adsp *adsp, struct device **pds,
- 	int i;
++	return 0;
+ fail1:
+-	pci_unregister_driver(&ie31200_driver);
+-fail0:
+ 	pci_dev_put(mci_pdev);
++fail0:
++	pci_unregister_driver(&ie31200_driver);
  
- 	/* Handle single power domain */
--	if (dev->pm_domain && pd_count) {
-+	if (pd_count == 1 && dev->pm_domain) {
- 		pm_runtime_disable(dev);
- 		return;
- 	}
+ 	return pci_rc;
+ }
 -- 
 2.39.5
 
