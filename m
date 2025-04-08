@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B375A7FECE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10128A7FEE1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0275169D6A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:09:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6735189B541
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137652698AE;
-	Tue,  8 Apr 2025 11:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534B9269B11;
+	Tue,  8 Apr 2025 11:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnSf9Ui1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGSOXABR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9A224F6;
-	Tue,  8 Apr 2025 11:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F802269B0B;
+	Tue,  8 Apr 2025 11:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110535; cv=none; b=l2zLRd5NSvMabdGSxxWnJqbZ0r4lPcXjr3IIf/NLs3V5F0jSDOgXQbkD2dR7R1orQr+X7XBWLifq4qoxD9dfunxdFVcwFFGBT7gdq3QPOifkxmPAo77LvxenpZhn0EaCsnZnsRiOiPs7oqnofYSynr7cpSCqZGWz/8bhE5O9PAU=
+	t=1744110541; cv=none; b=ghfPI4VoO09nqnypvjSMyXoacw4DGLYAUZuh4cx4gsR9ETRtxCcRTvRZO6WX0H4WLGS7zuaX3gW+01hF4Y1TtSjXRD3xEJe1O+ixjd7QDHCCw89cNPsbyvg9Efx0MlClvnOuJLxf1Hb4rZuvZTthX+Eag0kcKBeQhkVDF3/j3uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110535; c=relaxed/simple;
-	bh=XiTpEJS3EpBRktuSE5ctxITdOJMnRIXPZBELooJLMzg=;
+	s=arc-20240116; t=1744110541; c=relaxed/simple;
+	bh=I3Qx66PwBYkoBzvK9p+CGJRMfdwPe1YAJKtwmIyBZRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F26MmsBlzlFy3H5bO0gOTOS2Dq1Dzi6tRj9H8wnZ/+9k4eni/dT1KavIapuwGLIyf+VVLZwG/CV3F9NoMvUKoAP4z1KOANwjAiFd1fJe0HjueZVrTIpq3JArvC5Iai8+a2zkkPaH9j4HlpdkJqFDglyiMgDSCzQrVr+Ap65Z0x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnSf9Ui1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5362DC4CEE5;
-	Tue,  8 Apr 2025 11:08:55 +0000 (UTC)
+	 MIME-Version; b=dJbU1mzbopOViRpyz95bVFW6/lCyQ6BGXeq+ICJrYqJ+22ZtmZMoziBF1otdNKzt9EY5kZMq/xxbZ8StACCcGfVTwg6uiNorerLTRUdk5GjXr8UFbDRi1qwGmu673zOkMFpOTv1y9J3CzGdSRmEKyC1ipVjFIvvwv8pej5YGP6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGSOXABR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D80C4CEE5;
+	Tue,  8 Apr 2025 11:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110535;
-	bh=XiTpEJS3EpBRktuSE5ctxITdOJMnRIXPZBELooJLMzg=;
+	s=korg; t=1744110540;
+	bh=I3Qx66PwBYkoBzvK9p+CGJRMfdwPe1YAJKtwmIyBZRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnSf9Ui1z9JoodgHIXuZGTpb/jYTWZ1uJwaSRHBryOXhQeup1P6QQvE+X/RpF6WkO
-	 kQcQNSQORWowKRjJ+e6DoRI3jmWRwruO9w6nIrKOTCZhGSxr9mxWUP2vzW/fiz7d53
-	 UA28wDiYXb9eBJ3TvLMxIw3K9Mpik+tl54bsvoY0=
+	b=tGSOXABRqVmbSWC6Rj38e+YdBd/NhuAVzuYtt5vSRv+WHB6k8NhousuQCrMNFOQXp
+	 4mMw8tD9TfO2smm89Iy+ODgIQLgF8dNvB72w/AwD0fZAjjM5PR3PiqNhtha6RLCZ6N
+	 F0Oqw/qH5C3lkXOgKOaP3Yf5qBtc9B/V2OJRrDyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 101/731] firmware: arm_ffa: Refactor addition of partition information into XArray
-Date: Tue,  8 Apr 2025 12:39:58 +0200
-Message-ID: <20250408104916.619658899@linuxfoundation.org>
+Subject: [PATCH 6.14 102/731] firmware: arm_ffa: Unregister the FF-A devices when cleaning up the partitions
+Date: Tue,  8 Apr 2025 12:39:59 +0200
+Message-ID: <20250408104916.642531142@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,100 +66,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 3c3d6767466ea316869c9f2bdd976aec8ce44545 ]
+[ Upstream commit 46dcd68aaccac0812c12ec3f4e59c8963e2760ad ]
 
-Move the common code handling addition of the FF-A partition information
-into the XArray as a new routine. No functional change.
+Both the FF-A core and the bus were in a single module before the
+commit 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules").
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Message-Id: <20250217-ffa_updates-v3-6-bd1d9de615e7@arm.com>
+The arm_ffa_bus_exit() takes care of unregistering all the FF-A devices.
+Now that there are 2 distinct modules, if the core driver is unloaded and
+reloaded, it will end up adding duplicate FF-A devices as the previously
+registered devices weren't unregistered when we cleaned up the modules.
+
+Fix the same by unregistering all the FF-A devices on the FF-A bus during
+the cleaning up of the partitions and hence the cleanup of the module.
+
+Fixes: 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules")
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-8-bd1d9de615e7@arm.com>
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Stable-dep-of: 46dcd68aacca ("firmware: arm_ffa: Unregister the FF-A devices when cleaning up the partitions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 47 +++++++++++++++----------------
- 1 file changed, 22 insertions(+), 25 deletions(-)
+ drivers/firmware/arm_ffa/bus.c    | 3 ++-
+ drivers/firmware/arm_ffa/driver.c | 7 ++++---
+ include/linux/arm_ffa.h           | 3 +++
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index dfda5ffc14db7..fa09a82b44921 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -160,11 +160,12 @@ static int __ffa_devices_unregister(struct device *dev, void *data)
+ 	return 0;
+ }
+ 
+-static void ffa_devices_unregister(void)
++void ffa_devices_unregister(void)
+ {
+ 	bus_for_each_dev(&ffa_bus_type, NULL, NULL,
+ 			 __ffa_devices_unregister);
+ }
++EXPORT_SYMBOL_GPL(ffa_devices_unregister);
+ 
+ bool ffa_device_is_valid(struct ffa_device *ffa_dev)
+ {
 diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 2c2ec3c35f156..353900c33eee3 100644
+index 353900c33eee3..8aa05bbab5c8d 100644
 --- a/drivers/firmware/arm_ffa/driver.c
 +++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1384,11 +1384,30 @@ static struct notifier_block ffa_bus_nb = {
- 	.notifier_call = ffa_bus_notifier,
- };
- 
-+static int ffa_xa_add_partition_info(int vm_id)
-+{
-+	struct ffa_dev_part_info *info;
-+	int ret;
-+
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	rwlock_init(&info->rw_lock);
-+	ret = xa_insert(&drv_info->partition_info, vm_id, info, GFP_KERNEL);
-+	if (ret) {
-+		pr_err("%s: failed to save partition ID 0x%x - ret:%d. Abort.\n",
-+		       __func__, vm_id, ret);
-+		kfree(info);
-+	}
-+
-+	return ret;
-+}
-+
- static int ffa_setup_partitions(void)
- {
- 	int count, idx, ret;
- 	struct ffa_device *ffa_dev;
--	struct ffa_dev_part_info *info;
- 	struct ffa_partition_info *pbuf, *tpbuf;
- 
- 	if (drv_info->version == FFA_VERSION_1_0) {
-@@ -1422,39 +1441,17 @@ static int ffa_setup_partitions(void)
- 		    !(tpbuf->properties & FFA_PARTITION_AARCH64_EXEC))
- 			ffa_mode_32bit_set(ffa_dev);
- 
--		info = kzalloc(sizeof(*info), GFP_KERNEL);
--		if (!info) {
-+		if (ffa_xa_add_partition_info(ffa_dev->vm_id)) {
- 			ffa_device_unregister(ffa_dev);
- 			continue;
- 		}
--		rwlock_init(&info->rw_lock);
--		ret = xa_insert(&drv_info->partition_info, tpbuf->id,
--				info, GFP_KERNEL);
--		if (ret) {
--			pr_err("%s: failed to save partition ID 0x%x - ret:%d\n",
--			       __func__, tpbuf->id, ret);
--			ffa_device_unregister(ffa_dev);
--			kfree(info);
--		}
- 	}
- 
- 	kfree(pbuf);
+@@ -1451,10 +1451,8 @@ static int ffa_setup_partitions(void)
  
  	/* Allocate for the host */
--	info = kzalloc(sizeof(*info), GFP_KERNEL);
--	if (!info) {
+ 	ret = ffa_xa_add_partition_info(drv_info->vm_id);
+-	if (ret) {
 -		/* Already registered devices are freed on bus_exit */
--		ffa_partitions_cleanup();
--		return -ENOMEM;
--	}
--
--	rwlock_init(&info->rw_lock);
--	ret = xa_insert(&drv_info->partition_info, drv_info->vm_id,
--			info, GFP_KERNEL);
-+	ret = ffa_xa_add_partition_info(drv_info->vm_id);
- 	if (ret) {
--		pr_err("%s: failed to save Host partition ID 0x%x - ret:%d. Abort.\n",
--		       __func__, drv_info->vm_id, ret);
--		kfree(info);
- 		/* Already registered devices are freed on bus_exit */
++	if (ret)
  		ffa_partitions_cleanup();
- 	}
+-	}
+ 
+ 	return ret;
+ }
+@@ -1464,6 +1462,9 @@ static void ffa_partitions_cleanup(void)
+ 	struct ffa_dev_part_info *info;
+ 	unsigned long idx;
+ 
++	/* Clean up/free all registered devices */
++	ffa_devices_unregister();
++
+ 	xa_for_each(&drv_info->partition_info, idx, info) {
+ 		xa_erase(&drv_info->partition_info, idx);
+ 		kfree(info);
+diff --git a/include/linux/arm_ffa.h b/include/linux/arm_ffa.h
+index 74169dd0f6594..53f2837ce7df4 100644
+--- a/include/linux/arm_ffa.h
++++ b/include/linux/arm_ffa.h
+@@ -176,6 +176,7 @@ void ffa_device_unregister(struct ffa_device *ffa_dev);
+ int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
+ 			const char *mod_name);
+ void ffa_driver_unregister(struct ffa_driver *driver);
++void ffa_devices_unregister(void);
+ bool ffa_device_is_valid(struct ffa_device *ffa_dev);
+ 
+ #else
+@@ -188,6 +189,8 @@ ffa_device_register(const struct ffa_partition_info *part_info,
+ 
+ static inline void ffa_device_unregister(struct ffa_device *dev) {}
+ 
++static inline void ffa_devices_unregister(void) {}
++
+ static inline int
+ ffa_driver_register(struct ffa_driver *driver, struct module *owner,
+ 		    const char *mod_name)
 -- 
 2.39.5
 
