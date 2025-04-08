@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-129656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CB7A800AE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBB7A7FD38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5F02188C4B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 325611685C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BB226A08A;
-	Tue,  8 Apr 2025 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88939268C55;
+	Tue,  8 Apr 2025 10:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs9wzrxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZqGQWH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34494263C90;
-	Tue,  8 Apr 2025 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C4B266EFE;
+	Tue,  8 Apr 2025 10:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111628; cv=none; b=ripGa6PqHqA5qHWfQQ0xmLAu0lh4OzWYZLS8w+ymMb4hF0lYfYwYlOTTFEkW2rwL0C7pZyueSXP7mKyfYRj0KKe3JbLbN4I+YroJk1Id20t6DJ+Bm15hc6QXh5L0qGIUKb4scBnYtKyW382IWuU5Pl8o5z7zxmHcppCi5zWflTQ=
+	t=1744109691; cv=none; b=r20h1ffkHS1Z8Zef7fyzYp+kqJj6PfL9/q4BDKWRWLV83T/AqKuntNZtH6PJyYxqXCiGaXKaDd/scaYuLXdkzCBj5sudjPZU5ACFFpTHPttsyWeIRVbXdBqIXytiPcnhVAp/NLW0QjZcFzR32vebSvCNZdQ2oEmTFGXvb7ym9GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111628; c=relaxed/simple;
-	bh=ONVbwcyHMs9gnXNYekYKgwdOcF1EWZtGzug7C256cA0=;
+	s=arc-20240116; t=1744109691; c=relaxed/simple;
+	bh=k26pDkyDFeDbbZESzv1+l8KFrWPOu9fKS0GtRYT+Vu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU/1/HHw4z5majBU1YSRrWW/++ExpFmiTZpE4yq+hnHE+eR9lhijfSXWKQX3jwUwcKbh99LOrWjOETxWNO894mZjG0MoRRoSvW5eAs7TGV2EVc/LPvGUrOmQw+JWD7YrPtBminMthbF0iZvdaA9+vlozc+hngBC8SfQr8W3oY50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs9wzrxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9608C4CEE7;
-	Tue,  8 Apr 2025 11:27:07 +0000 (UTC)
+	 MIME-Version; b=jgC5HL8PJswAFYz09r9Qf+FIsWE8jpWpsJ6EwsFzJxB9a+j2dZ7cdNQE622T6UGkePzr2sJB0+leASRBBw6L0SZKhgl1Q03CnwNS2RzsqXmNCia4XbT1VUG5DFau00cbc9ZZBYkKdw6g2NuT2sq0okR5ESYa2ZuL9tCYggTDm0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZqGQWH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8B5C4CEE5;
+	Tue,  8 Apr 2025 10:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111628;
-	bh=ONVbwcyHMs9gnXNYekYKgwdOcF1EWZtGzug7C256cA0=;
+	s=korg; t=1744109690;
+	bh=k26pDkyDFeDbbZESzv1+l8KFrWPOu9fKS0GtRYT+Vu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qs9wzrxGuMTNfATLhptBDIh3+Ugvx+bc+MOYvjIKUwUAn3V592Ce6Kzn6XkqOnBGK
-	 QePk6KKJEcFCCpeP15tZctuOKRkI7YDjVy/YRfiEfeMYaWVZ9GFn2lBfWAtZE6jNGd
-	 HTxvRs/9Q/AwdS3pfXdJSG1VrpcZAtQL/M/XWBvc=
+	b=0ZqGQWH8Sn0ESt6O30XFLJljCZXro4EeOwsWCDHXefKKw8noVypTa6DpwpuxTsRQt
+	 twR8aPOzkNvtJ3QdD2CbUQxv2MTP2/JHhAx1w8kv3EnJXMpwSZ8CPsGRqUK/SF6nmj
+	 Wp0CQFjXT5huJ5kuvDQOXXsflePTFPx5lQDDj6pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 499/731] perf evsel: tp_format accessing improvements
+Subject: [PATCH 5.10 018/227] net_sched: Prevent creation of classes with TC_H_ROOT
 Date: Tue,  8 Apr 2025 12:46:36 +0200
-Message-ID: <20250408104925.881220681@linuxfoundation.org>
+Message-ID: <20250408104820.941520037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit eb7e83a7ca2dba01671c711e1711705e1a15626d ]
+[ Upstream commit 0c3057a5a04d07120b3d0ec9c79568fceb9c921e ]
 
-Ensure evsel__clone copies the tp_sys and tp_name variables.
-In evsel__tp_format, if tp_sys isn't set, use the config value to find
-the tp_format. This succeeds in python code where pyrf__tracepoint has
-already found the format.
+The function qdisc_tree_reduce_backlog() uses TC_H_ROOT as a termination
+condition when traversing up the qdisc tree to update parent backlog
+counters. However, if a class is created with classid TC_H_ROOT, the
+traversal terminates prematurely at this class instead of reaching the
+actual root qdisc, causing parent statistics to be incorrectly maintained.
+In case of DRR, this could lead to a crash as reported by Mingi Cho.
 
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250228222308.626803-4-irogers@google.com
-Fixes: 6c8310e8380d472c ("perf evsel: Allow evsel__newtp without libtraceevent")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Prevent the creation of any Qdisc class with classid TC_H_ROOT
+(0xFFFFFFFF) across all qdisc types, as suggested by Jamal.
+
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Link: https://patch.msgid.link/20250306232355.93864-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ net/sched/sch_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index bc144388f8929..9cd78cdee6282 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -511,6 +511,16 @@ struct evsel *evsel__clone(struct evsel *dest, struct evsel *orig)
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 238ae7b0ca5ba..b8fb94bfa9606 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -2169,6 +2169,12 @@ static int tc_ctl_tclass(struct sk_buff *skb, struct nlmsghdr *n,
+ 		return -EOPNOTSUPP;
  	}
- 	evsel->cgrp = cgroup__get(orig->cgrp);
- #ifdef HAVE_LIBTRACEEVENT
-+	if (orig->tp_sys) {
-+		evsel->tp_sys = strdup(orig->tp_sys);
-+		if (evsel->tp_sys == NULL)
-+			goto out_err;
-+	}
-+	if (orig->tp_name) {
-+		evsel->tp_name = strdup(orig->tp_name);
-+		if (evsel->tp_name == NULL)
-+			goto out_err;
-+	}
- 	evsel->tp_format = orig->tp_format;
- #endif
- 	evsel->handler = orig->handler;
-@@ -634,7 +644,11 @@ struct tep_event *evsel__tp_format(struct evsel *evsel)
- 	if (evsel->core.attr.type != PERF_TYPE_TRACEPOINT)
- 		return NULL;
  
--	tp_format = trace_event__tp_format(evsel->tp_sys, evsel->tp_name);
-+	if (!evsel->tp_sys)
-+		tp_format = trace_event__tp_format_id(evsel->core.attr.config);
-+	else
-+		tp_format = trace_event__tp_format(evsel->tp_sys, evsel->tp_name);
++	/* Prevent creation of traffic classes with classid TC_H_ROOT */
++	if (clid == TC_H_ROOT) {
++		NL_SET_ERR_MSG(extack, "Cannot create traffic class with classid TC_H_ROOT");
++		return -EINVAL;
++	}
 +
- 	if (IS_ERR(tp_format)) {
- 		int err = -PTR_ERR(evsel->tp_format);
- 
+ 	new_cl = cl;
+ 	err = -EOPNOTSUPP;
+ 	if (cops->change)
 -- 
 2.39.5
 
