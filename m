@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-129860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1176EA801DC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F71A7FE54
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C41460872
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 875AA179E65
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD6268C61;
-	Tue,  8 Apr 2025 11:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665D9269D08;
+	Tue,  8 Apr 2025 11:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g93ZuKHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6B0Jzrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC34227BB6;
-	Tue,  8 Apr 2025 11:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17325269CF0;
+	Tue,  8 Apr 2025 11:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112171; cv=none; b=TBgloI5pgF08ON8+lD/dT921C2nJKm5a5hk8UY2ZDhb4a8UvDhlA18P2LN+kG+uASh7ks0r/+VfIIb6DPtBOTLF6FEwhhJwYhu+/TVKggArCXe0Oj3sBjn3JviyiUHboYW9cBc9lNQNUPHWO6OyGyR6o5Fz1W67jltMUPaPUyLY=
+	t=1744110244; cv=none; b=LQSURtsHjlpzQv/yaHMqH+ksXxNb2/6bGajNz0zIitHZUG7FwgooYWiLH3n/TI5GFaRYyRQpSoLtRePXUmEnhfkgEVDPBpsmzQzYeY5PwbdBPl3iAZeVqVckX5ibifSuM4pAdiJ0E1/JAfz3MAPOKs2ntMTQA7eiVEUrjEe/4F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112171; c=relaxed/simple;
-	bh=6XRXn9FjuoSf86RbOuaVS9Jfr5xIsQULPVPZR7F+iIg=;
+	s=arc-20240116; t=1744110244; c=relaxed/simple;
+	bh=eF8ykuB3zv9H36H3ho5AqA1fkqlQywk4736N5EJ2uVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qe4GDfsYeMqFNRexxhHJ4Y96Y5QkpLfZJKIO1kOpFtTvapbrFdm4PL3K4M+aeuQgjsF5BAzJqi4o0rR28LMwrwlJrKVMeHtqiGCCScJKio7e2igZazA4LrOroIBokwYr+BIGj+1gOQNT3ow0y8/w37OmoIA0hWx7xXf8GPDT2yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g93ZuKHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078B1C4CEEB;
-	Tue,  8 Apr 2025 11:36:10 +0000 (UTC)
+	 MIME-Version; b=kc7p19yv2Xyqna2zbYqfUxhn+WiDjk/XGN+0iMjFUss3qcdOdOTlazjgPstfwkch+v8jRRQz4+gqHGxZfROMFM1zYbjbhNrpxW2+I6acF07lHVtK1YEA7FLRPivx21vOELov2Me1g6KjNGRiFdEsoD8c1iUNyZuskO/JmavgrZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6B0Jzrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C8CC4CEE5;
+	Tue,  8 Apr 2025 11:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112171;
-	bh=6XRXn9FjuoSf86RbOuaVS9Jfr5xIsQULPVPZR7F+iIg=;
+	s=korg; t=1744110243;
+	bh=eF8ykuB3zv9H36H3ho5AqA1fkqlQywk4736N5EJ2uVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g93ZuKHJi7UkRrnc775PvGBdkP4Dgd9povjI2wwN9T6o/2qU2VB4+5A3BIc+CghSE
-	 psmMD66XWcnft3jiTfWkay9ZXuTLyEzQsoa9i23hPMJQXkKyxdGj7XMP/38/W03ONU
-	 pY684fWJ8HsDHlukzMuu9eR8PjiQM+7bdwEofCEI=
+	b=h6B0JzrjLdW1aaQX/sBoTjFHeefoXkJPG4hutp3k721udh3TBJhqYBFzc875BzTWA
+	 P7sGWFJwVqY2W4jJtK9tkh+0FAJxl6i2pTo/4d7M1NdMyYuhCbCMKy0fg3T5b826jd
+	 f63A1xgZ6P1gNJIJ8vEQx/lydT29LEUpNQ4C1Ox4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 702/731] ksmbd: fix overflow in dacloffset bounds check
+	Jakub Acs <acsjakub@amazon.de>,
+	Theodore Tso <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mahmoud Adam <mngyadam@amazon.com>,
+	security@kernel.org
+Subject: [PATCH 5.10 221/227] ext4: fix OOB read when checking dotdot dir
 Date: Tue,  8 Apr 2025 12:49:59 +0200
-Message-ID: <20250408104930.597476084@linuxfoundation.org>
+Message-ID: <20250408104826.925865160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Acs, Jakub <acsjakub@amazon.de>
 
-commit beff0bc9d69bc8e733f9bca28e2d3df5b3e10e42 upstream.
+commit d5e206778e96e8667d3bde695ad372c296dc9353 upstream.
 
-The dacloffset field was originally typed as int and used in an
-unchecked addition, which could overflow and bypass the existing
-bounds check in both smb_check_perm_dacl() and smb_inherit_dacl().
+Mounting a corrupted filesystem with directory which contains '.' dir
+entry with rec_len == block size results in out-of-bounds read (later
+on, when the corrupted directory is removed).
 
-This could result in out-of-bounds memory access and a kernel crash
-when dereferencing the DACL pointer.
+ext4_empty_dir() assumes every ext4 directory contains at least '.'
+and '..' as directory entries in the first data block. It first loads
+the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()
+and then uses its rec_len member to compute the location of '..' dir
+entry (in ext4_next_entry). It assumes the '..' dir entry fits into the
+same data block.
 
-This patch converts dacloffset to unsigned int and uses
-check_add_overflow() to validate access to the DACL.
+If the rec_len of '.' is precisely one block (4KB), it slips through the
+sanity checks (it is considered the last directory entry in the data
+block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the
+memory slot allocated to the data block. The following call to
+ext4_check_dir_entry() on new value of de then dereferences this pointer
+which results in out-of-bounds mem access.
 
+Fix this by extending __ext4_check_dir_entry() to check for '.' dir
+entries that reach the end of data block. Make sure to ignore the phony
+dir entries for checksum (by checking name_len for non-zero).
+
+Note: This is reported by KASAN as use-after-free in case another
+structure was recently freed from the slot past the bound, but it is
+really an OOB read.
+
+This issue was found by syzkaller tool.
+
+Call Trace:
+[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x67e/0x710
+[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor/5375
+[   38.595158]
+[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.0-rc7 #1
+[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   38.595304] Call Trace:
+[   38.595308]  <TASK>
+[   38.595311]  dump_stack_lvl+0xa7/0xd0
+[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0
+[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595349]  print_report+0xaa/0x250
+[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595368]  ? kasan_addr_to_slab+0x9/0x90
+[   38.595378]  kasan_report+0xab/0xe0
+[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595400]  __ext4_check_dir_entry+0x67e/0x710
+[   38.595410]  ext4_empty_dir+0x465/0x990
+[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10
+[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10
+[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0
+[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10
+[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10
+[   38.595478]  ? down_write+0xdb/0x140
+[   38.595487]  ? __pfx_down_write+0x10/0x10
+[   38.595497]  ext4_rmdir+0xee/0x140
+[   38.595506]  vfs_rmdir+0x209/0x670
+[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190
+[   38.595529]  do_rmdir+0x363/0x3c0
+[   38.595537]  ? __pfx_do_rmdir+0x10/0x10
+[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0
+[   38.595561]  __x64_sys_unlinkat+0xf0/0x130
+[   38.595570]  do_syscall_64+0x5b/0x180
+[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Mahmoud Adam <mngyadam@amazon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: security@kernel.org
+Link: https://patch.msgid.link/b3ae36a6794c4a01944c7d70b403db5b@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/ext4/dir.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1026,7 +1026,9 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	struct dentry *parent = path->dentry->d_parent;
- 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
- 	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
--	int rc = 0, dacloffset, pntsd_type, pntsd_size, acl_len, aces_size;
-+	int rc = 0, pntsd_type, pntsd_size, acl_len, aces_size;
-+	unsigned int dacloffset;
-+	size_t dacl_struct_end;
- 	u16 num_aces, ace_cnt = 0;
- 	char *aces_base;
- 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
-@@ -1035,8 +1037,11 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 					    parent, &parent_pntsd);
- 	if (pntsd_size <= 0)
- 		return -ENOENT;
-+
- 	dacloffset = le32_to_cpu(parent_pntsd->dacloffset);
--	if (!dacloffset || (dacloffset + sizeof(struct smb_acl) > pntsd_size)) {
-+	if (!dacloffset ||
-+	    check_add_overflow(dacloffset, sizeof(struct smb_acl), &dacl_struct_end) ||
-+	    dacl_struct_end > (size_t)pntsd_size) {
- 		rc = -EINVAL;
- 		goto free_parent_pntsd;
- 	}
-@@ -1240,7 +1245,9 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	struct smb_ntsd *pntsd = NULL;
- 	struct smb_acl *pdacl;
- 	struct posix_acl *posix_acls;
--	int rc = 0, pntsd_size, acl_size, aces_size, pdacl_size, dacl_offset;
-+	int rc = 0, pntsd_size, acl_size, aces_size, pdacl_size;
-+	unsigned int dacl_offset;
-+	size_t dacl_struct_end;
- 	struct smb_sid sid;
- 	int granted = le32_to_cpu(*pdaccess & ~FILE_MAXIMAL_ACCESS_LE);
- 	struct smb_ace *ace;
-@@ -1259,7 +1266,8 @@ int smb_check_perm_dacl(struct ksmbd_con
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -88,6 +88,9 @@ int __ext4_check_dir_entry(const char *f
+ 	else if (unlikely(le32_to_cpu(de->inode) >
+ 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
+ 		error_msg = "inode out of bounds";
++	else if (unlikely(next_offset == size && de->name_len == 1 &&
++			  de->name[0] == '.'))
++		error_msg = "'.' directory cannot be the last in data block";
+ 	else
+ 		return 0;
  
- 	dacl_offset = le32_to_cpu(pntsd->dacloffset);
- 	if (!dacl_offset ||
--	    (dacl_offset + sizeof(struct smb_acl) > pntsd_size))
-+	    check_add_overflow(dacl_offset, sizeof(struct smb_acl), &dacl_struct_end) ||
-+	    dacl_struct_end > (size_t)pntsd_size)
- 		goto err_out;
- 
- 	pdacl = (struct smb_acl *)((char *)pntsd + le32_to_cpu(pntsd->dacloffset));
 
 
 
