@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-130567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CB7A80563
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E0DA80781
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9E6422A74
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FF761BA016A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB25726989E;
-	Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B234B268FD0;
+	Tue,  8 Apr 2025 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es4M0XLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEPGOqw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DD226981A;
-	Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E448266F17;
+	Tue,  8 Apr 2025 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114057; cv=none; b=UCWweYFwXyGYFw8tDuBYcj+dPEUuzL/VzPUzWSDo/YcjWXjyS9eXu+5BNo2CUeX0lrXybD+1Iu9gqVL2GMRV/BJSDSLFiS2Bl9qjtJ8Ycp7UPwwIx5/srZw4bBdpkC/XphmPZ/9CjHNvYKo/9h3/CYZ6wNbfddAmXTcSTgYSyow=
+	t=1744115378; cv=none; b=DLKuAxGa94M99P/QEDJB20v6J/DA8ow1RJ+oCkKZX7QaJ4DrH76j25wDb9wsQClUnJGsy+LbhDRAtOcW/H5eKDc+YH4jlKcn43r4AvoHp4XbinMR0X5oYFb0tDLKuOHTydxulsVR5LBHZlOsakbkqvHFEnO76KKLyI4QrDhcnt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114057; c=relaxed/simple;
-	bh=wH6+vwWFOaWUB2/kmQY/luY+3wAtQVTnrAgkgLu6gTA=;
+	s=arc-20240116; t=1744115378; c=relaxed/simple;
+	bh=qYskY8Sm75Y61lX7uOR1Ww0Xv19+OcqWfVtbdxigl+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Snbp9tuVnuvQdFIJlFA66RAOvQooABm8SimL/KQVBTT2l4zHxFR1ayezXLnrpKBpkjm4c3ejCZeT6tIRAYKBLiKcQEgOGE5nLXItwhJ3Q1QqlxxMSgm8GRgjlumFLlDZnLNcxuyiqON1UQUS7YUZ3AFCpIiqHpkvS/OIG2rsKKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es4M0XLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E9CC4CEE5;
-	Tue,  8 Apr 2025 12:07:36 +0000 (UTC)
+	 MIME-Version; b=qHdu8O+vJbwK71THkIjHBoTi+8vJ+v88gp4Kr9OYo/+BNMQYg9+OHiuT3AUycWWKBWGN5aEksXG5TfqY8ECyyNP/vapQu4V1f6StQG2Sk/qGH/vMJ92Nb3ZyvDUdms64K7mbh2XEo8IJlSd87QaR0nam1IWUa5YgUGd1CUtltgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEPGOqw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EEEC4CEE5;
+	Tue,  8 Apr 2025 12:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114057;
-	bh=wH6+vwWFOaWUB2/kmQY/luY+3wAtQVTnrAgkgLu6gTA=;
+	s=korg; t=1744115378;
+	bh=qYskY8Sm75Y61lX7uOR1Ww0Xv19+OcqWfVtbdxigl+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=es4M0XLUPOLyzaLmK+KoUExfknxgc64BQ4+h+eEd9EItB7ZZYGzhu6nuUn4VSLNdl
-	 6jXbf/PcQqwrGQG3QzRjixfEK2kXI5QUATRgZ0I+VAmFzdQNWNuvcNmZ89DxHZD4o5
-	 lcIaH6pHCXN+Y2RuE5L1HMVFIZ8C+heCJ6Rn7/r4=
+	b=KEPGOqw+uf6RvXqtx17DTkY6TzD331lFKv+dp/jNuXSLO+Reqk+mhYijEWqbBph7l
+	 z9ZhTS5su3sVb+lVij81wH2zEhEWGPbxURBHHW+5RW9kR69IswSOiif9dF9Bg5SBJA
+	 hNL9nmzlVxm1huoorKfmjYzMBY9WkCC8EUFRIork=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 121/154] perf python: Fixup description of sample.id event member
-Date: Tue,  8 Apr 2025 12:51:02 +0200
-Message-ID: <20250408104819.193308301@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: [PATCH 6.13 451/499] uprobes/x86: Harden uretprobe syscall trampoline check
+Date: Tue,  8 Apr 2025 12:51:03 +0200
+Message-ID: <20250408104902.479958396@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +68,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
+commit fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0 upstream.
 
-Some old cut'n'paste error, its "ip", so the description should be
-"event ip", not "event type".
+Jann reported a possible issue when trampoline_check_ip returns
+address near the bottom of the address space that is allowed to
+call into the syscall if uretprobes are not set up:
 
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+
+Though the mmap minimum address restrictions will typically prevent
+creating mappings there, let's make sure uretprobe syscall checks
+for that.
+
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/python.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/uprobes.c |   14 +++++++++-----
+ include/linux/uprobes.h   |    2 ++
+ kernel/events/uprobes.c   |    2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 02460362256d1..2ff87ad8d7e88 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -110,7 +110,7 @@ struct pyrf_event {
- };
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned lo
+ 	return &insn;
+ }
  
- #define sample_members \
--	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
-+	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
- 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
- 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
- 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
--- 
-2.39.5
-
+-static unsigned long trampoline_check_ip(void)
++static unsigned long trampoline_check_ip(unsigned long tramp)
+ {
+-	unsigned long tramp = uprobe_get_trampoline_vaddr();
+-
+ 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+ }
+ 
+ SYSCALL_DEFINE0(uretprobe)
+ {
+ 	struct pt_regs *regs = task_pt_regs(current);
+-	unsigned long err, ip, sp, r11_cx_ax[3];
++	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++
++	/* If there's no trampoline, we are called from wrong place. */
++	tramp = uprobe_get_trampoline_vaddr();
++	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
++		goto sigill;
+ 
+-	if (regs->ip != trampoline_check_ip())
++	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
++	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+ 		goto sigill;
+ 
+ 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -38,6 +38,8 @@ struct page;
+ 
+ #define MAX_URETPROBE_DEPTH		64
+ 
++#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
++
+ struct uprobe_consumer {
+ 	/*
+ 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2118,8 +2118,8 @@ void uprobe_copy_process(struct task_str
+  */
+ unsigned long uprobe_get_trampoline_vaddr(void)
+ {
++	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+ 	struct xol_area *area;
+-	unsigned long trampoline_vaddr = -1;
+ 
+ 	/* Pairs with xol_add_vma() smp_store_release() */
+ 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
 
 
 
