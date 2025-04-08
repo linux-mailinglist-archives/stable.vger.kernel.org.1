@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC0A8083C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D958A804F4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF461BA023E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1912E88384F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DCC268FDE;
-	Tue,  8 Apr 2025 12:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F191268C51;
+	Tue,  8 Apr 2025 12:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czIvA324"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3/sd88M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1204926FA7B;
-	Tue,  8 Apr 2025 12:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEEEA94A;
+	Tue,  8 Apr 2025 12:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115662; cv=none; b=V7UYAwZF6bc22cIuDaP8Oq69lghzkpRwqodhI0EuLhQIkaemaXleSU5aSlwDZb3vsjTv2X6L0b8pO62KhJwacYxz8rZLT6KDwqSwseUh6a5XnuZ5WUllFERj5EDlXtVAMBNdFN5IsN4CXoiiRCsCvVOeu0rKQKUdN+4nUAqgWPM=
+	t=1744113858; cv=none; b=r32kCQn3IlC04x1kM5b5Hp1LcAfhqyWNvEcgDtDNEnElc/0Wu7PCPDAPeT5OLqWuu1FDklkBKVO1JKZnU8WImhfD9BR7zhw/BN3QG7aCkqsg9S//yyOt3P371zWCmfFqhEGdospxJMYXNkIeXXiFb9HT6VJIw9db1DbV95iGBnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115662; c=relaxed/simple;
-	bh=fJA1ndHsYKKxBF21ymgURaceU575IcyS73eAkC11x8E=;
+	s=arc-20240116; t=1744113858; c=relaxed/simple;
+	bh=BusHMXEzY6/ciIvI8vX48KUFIV/E9sNHhv1awQKubVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U84BDiLgXBK+C8YDeRMpXiPTV+GXhqvMOlfujDFn/Xw2R+zYux02K8Dh0gITu8OyenYTBoK+CoY3lQQ6hcEeIH8di0Ns46x9gzdsqChCmu7WjIHnTC0LjMyAmt6i+09bT0+tmBKl4Y0QYtGakFljK9JL9vjAJENtiSWQEZAOdrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czIvA324; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD56C4CEE5;
-	Tue,  8 Apr 2025 12:34:21 +0000 (UTC)
+	 MIME-Version; b=jn6iaSbKO8vMQVZRHiiVeKYn+vT25nMPPR8T/Rm5LqOBjhGCg13YBC7sr/rgt/Bk7nk16hVZ+HJ6BORgO0XDX1SG5TGZ+zkbrLlr1PXRul96K3xmxH3z+l09r97BQuRviv67suMGRX/iWHGa3SqPRUgqgsnmmxTNrNXdsPyQ9ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3/sd88M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D2DC4CEE5;
+	Tue,  8 Apr 2025 12:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115661;
-	bh=fJA1ndHsYKKxBF21ymgURaceU575IcyS73eAkC11x8E=;
+	s=korg; t=1744113858;
+	bh=BusHMXEzY6/ciIvI8vX48KUFIV/E9sNHhv1awQKubVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czIvA324bG7fShPdUiGr14uOPBRf+tdjppSQGLbu/Lw6h+HOm0ZmL7pbg3mMAmWg2
-	 mw9tPq6a/oJO8kukq9+J1g/6gWhDBwHK3S+HkVcnQuHzNN2UqMSPc40MEQk8Bn4x2U
-	 zFhdVoAqA9kADGS5pCRr/AZ5aZXZnsrq0NjVOYxc=
+	b=J3/sd88MCRFVOMUmAZhJzbWUNJYwmBiYdGZpMw2i7xoSWQMyZ++3N6c/hfkp4r8Oo
+	 Vf+etxoQnElvyL9AC5VzzlvD1kM7Bo87xneQaS+Ezl/eeR2rFWS9FQJtyYJTuwT9VP
+	 dJTcWVBlV+e9rUzzlmMt0u5tn8U9j6qZOMaVXPAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/204] libbpf: Fix hypothetical STT_SECTION extern NULL deref case
+Subject: [PATCH 5.4 046/154] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
 Date: Tue,  8 Apr 2025 12:49:47 +0200
-Message-ID: <20250408104822.018944603@linuxfoundation.org>
+Message-ID: <20250408104816.751080359@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit e0525cd72b5979d8089fe524a071ea93fd011dc9 ]
+[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
 
-Fix theoretical NULL dereference in linker when resolving *extern*
-STT_SECTION symbol against not-yet-existing ELF section. Not sure if
-it's possible in practice for valid ELF object files (this would require
-embedded assembly manipulations, at which point BTF will be missing),
-but fix the s/dst_sym/dst_sec/ typo guarding this condition anyways.
+Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
+pci_gfx_root in the mid_get_vbt_data().
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Fixes: a46349227cd8 ("libbpf: Add linker extern resolution support for functions and global variables")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250220002821.834400-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This change is similar to the checks implemented in mid_get_fuse_settings()
+and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
+("gma500: Final enables for Oaktrail") as "additional minor
+bulletproofing".
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 5a99bf6af445b..752ef88c9fd97 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -1962,7 +1962,7 @@ static int linker_append_elf_sym(struct bpf_linker *linker, struct src_obj *obj,
+diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
+index 8ab44fec4bfa4..b76b86278e0e3 100644
+--- a/drivers/gpu/drm/gma500/mid_bios.c
++++ b/drivers/gpu/drm/gma500/mid_bios.c
+@@ -277,6 +277,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
+ 					    0, PCI_DEVFN(2, 0));
+ 	int ret = -1;
  
- 	obj->sym_map[src_sym_idx] = dst_sym_idx;
- 
--	if (sym_type == STT_SECTION && dst_sym) {
-+	if (sym_type == STT_SECTION && dst_sec) {
- 		dst_sec->sec_sym_idx = dst_sym_idx;
- 		dst_sym->st_value = 0;
- 	}
++	if (pci_gfx_root == NULL) {
++		WARN_ON(1);
++		return;
++	}
++
+ 	/* Get the address of the platform config vbt */
+ 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
+ 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
