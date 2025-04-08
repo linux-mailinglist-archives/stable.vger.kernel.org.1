@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1CCA80993
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE8CA805E8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8482E1BA7461
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1263E7AF30D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAF6269892;
-	Tue,  8 Apr 2025 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCD726A0C4;
+	Tue,  8 Apr 2025 12:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+aNlj19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY8+H06s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487D82673B7;
-	Tue,  8 Apr 2025 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C9267F5B;
+	Tue,  8 Apr 2025 12:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116297; cv=none; b=frxpovqLzZcHnlii0FeaS7YX0B7fNdma4urjzFAS+20r01ExpnDfK1nFs9+gjDtjwDaYf/y5eCvv9sMT9Amwa7g0ZCHT33XDzmPToFhBElUaMKq5wyaqG1nbCrbeinFNmRa/ndl4PRyBi5D/uewH4dTQ5wwCleAAf3b+zSqkV0M=
+	t=1744114695; cv=none; b=SANa5Vf5osvtwvD+sIRqMCt3h5iKnXcQoFVcLVrjo3tbbJ7feti2DwDxHJO38fABTR6bFc+xVHDRv/ddhJrCWAXqzOuAhiudniU+gs7a6gckxR68lnixDa9W2Jb1loeKaDVREXz+c9DLMruyXU/LftKo/beUfnLkhGxq9AMVmXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116297; c=relaxed/simple;
-	bh=sfagerDnsFTPtoUNaALpxu9K6jX3aJRxgXHChO3S1bM=;
+	s=arc-20240116; t=1744114695; c=relaxed/simple;
+	bh=ucQTgKOIFCoJRN8wfKCbnTxhTUpPkBjeeCsY85QRoL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH3s9I4Cd4lHMHVIcofp4yv7mPNY6oit9Cn9dFY7+0wksRXwNdR12nJC5r9tFZNLwM1YxiB6ChqUT/ojbjpwOdArC4OHj5mUNfTW4FReQDAueSBkTdpP/xOUMcUpHoGR5WCJrBltmQ+d+muzo47ue854Zpc/MbnY85oZ1sjDrZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+aNlj19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF80C4CEE5;
-	Tue,  8 Apr 2025 12:44:56 +0000 (UTC)
+	 MIME-Version; b=ndM0/rrmbp1um63WyH9ql/3mcYJUx8/zbHaxYIfPsG3dTMHpJ0Mh9Q/BZpHpqa6vc5No/FkBg3bwr6CA4MHQhdXEjt7ffAkWlRmNevMj7Idl2DUXwN7i5BpXhZWeCCiqmFElmLY1KachcL2Q80tBZC+iE+nu4Jk2JVJPQT1iESQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY8+H06s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE959C4CEE5;
+	Tue,  8 Apr 2025 12:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116297;
-	bh=sfagerDnsFTPtoUNaALpxu9K6jX3aJRxgXHChO3S1bM=;
+	s=korg; t=1744114695;
+	bh=ucQTgKOIFCoJRN8wfKCbnTxhTUpPkBjeeCsY85QRoL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+aNlj19kPz56+ROtAqHcZVXWe77ofmJzhiDsJevB1pZ9uWuIPTsdkh/qPlqJpl1n
-	 5sikPGxgNKV5tyPwf423IqmAo4Wf54CJ+2Jq6wzjCUqbOXlBIAp/PH0xVrPJqq5zfi
-	 +g8gtj3SU+rHannpNP3e3NC9cq9I3TwU2z/m6jRA=
+	b=JY8+H06saYeRYaZju+3vU2M78utoIJjibzOXnKc3ow+770qSuQaEfop2LwfBR5VZW
+	 E70xQVds8q4OoNyl8CIs9/8lwpSuS6v1oM3ci7yJU4GJCvrYEZrU0Ijp2FhE8gjp7H
+	 1U014uYDZeJnSJ24T0DsKuqdu+4m9IXnVEHEHP9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Christoph Winklhofer <cj.winklhofer@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/423] drm/mediatek: dp: drm_err => dev_err in HPD path to avoid NULL ptr
+Subject: [PATCH 6.13 200/499] w1: fix NULL pointer dereference in probe
 Date: Tue,  8 Apr 2025 12:46:52 +0200
-Message-ID: <20250408104847.744478314@linuxfoundation.org>
+Message-ID: <20250408104856.184501903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 106a6de46cf4887d535018185ec528ce822d6d84 ]
+[ Upstream commit 0dd6770a72f138dabea9eae87f3da6ffa68f0d06 ]
 
-The function mtk_dp_wait_hpd_asserted() may be called before the
-`mtk_dp->drm_dev` pointer is assigned in mtk_dp_bridge_attach().
-Specifically it can be called via this callpath:
- - mtk_edp_wait_hpd_asserted
- - [panel probe]
- - dp_aux_ep_probe
+The w1_uart_probe() function calls w1_uart_serdev_open() (which includes
+devm_serdev_device_open()) before setting the client ops via
+serdev_device_set_client_ops(). This ordering can trigger a NULL pointer
+dereference in the serdev controller's receive_buf handler, as it assumes
+serdev->ops is valid when SERPORT_ACTIVE is set.
 
-Using "drm" level prints anywhere in this callpath causes a NULL
-pointer dereference. Change the error message directly in
-mtk_dp_wait_hpd_asserted() to dev_err() to avoid this. Also change the
-error messages in mtk_dp_parse_capabilities(), which is called by
-mtk_dp_wait_hpd_asserted().
+This is similar to the issue fixed in commit 5e700b384ec1
+("platform/chrome: cros_ec_uart: properly fix race condition") where
+devm_serdev_device_open() was called before fully initializing the
+device.
 
-While touching these prints, also add the error code to them to make
-future debugging easier.
+Fix the race by ensuring client ops are set before enabling the port via
+w1_uart_serdev_open().
 
-Fixes: 7eacba9a083b ("drm/mediatek: dp: Add .wait_hpd_asserted() for AUX bus")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250116094249.1.I29b0b621abb613ddc70ab4996426a3909e1aa75f@changeid/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: a3c08804364e ("w1: add UART w1 bus driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Christoph Winklhofer <cj.winklhofer@gmail.com>
+Link: https://lore.kernel.org/r/20250111181803.2283611-1-chenyuan0y@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/w1/masters/w1-uart.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index cad65ea851edc..4979d49ae25a6 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -1746,7 +1746,7 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
+diff --git a/drivers/w1/masters/w1-uart.c b/drivers/w1/masters/w1-uart.c
+index a31782e56ba75..c87eea3478067 100644
+--- a/drivers/w1/masters/w1-uart.c
++++ b/drivers/w1/masters/w1-uart.c
+@@ -372,11 +372,11 @@ static int w1_uart_probe(struct serdev_device *serdev)
+ 	init_completion(&w1dev->rx_byte_received);
+ 	mutex_init(&w1dev->rx_mutex);
  
- 	ret = drm_dp_dpcd_readb(&mtk_dp->aux, DP_MSTM_CAP, &val);
- 	if (ret < 1) {
--		drm_err(mtk_dp->drm_dev, "Read mstm cap failed\n");
-+		dev_err(mtk_dp->dev, "Read mstm cap failed: %zd\n", ret);
- 		return ret == 0 ? -EIO : ret;
- 	}
- 
-@@ -1756,7 +1756,7 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
- 					DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
- 					&val);
- 		if (ret < 1) {
--			drm_err(mtk_dp->drm_dev, "Read irq vector failed\n");
-+			dev_err(mtk_dp->dev, "Read irq vector failed: %zd\n", ret);
- 			return ret == 0 ? -EIO : ret;
- 		}
- 
-@@ -2039,7 +2039,7 @@ static int mtk_dp_wait_hpd_asserted(struct drm_dp_aux *mtk_aux, unsigned long wa
- 
- 	ret = mtk_dp_parse_capabilities(mtk_dp);
- 	if (ret) {
--		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
-+		dev_err(mtk_dp->dev, "Can't parse capabilities: %d\n", ret);
++	serdev_device_set_drvdata(serdev, w1dev);
++	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
+ 	ret = w1_uart_serdev_open(w1dev);
+ 	if (ret < 0)
  		return ret;
- 	}
+-	serdev_device_set_drvdata(serdev, w1dev);
+-	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
  
+ 	return w1_add_master_device(&w1dev->bus);
+ }
 -- 
 2.39.5
 
