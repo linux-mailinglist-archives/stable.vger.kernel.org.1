@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388C3A80538
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD359A8081B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CA3F3A7230
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73BD17AD928
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4F52698BE;
-	Tue,  8 Apr 2025 12:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1DB224AEB;
+	Tue,  8 Apr 2025 12:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+SRBSPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lsv+oJLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AD3268C72;
-	Tue,  8 Apr 2025 12:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6B22063FD;
+	Tue,  8 Apr 2025 12:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114038; cv=none; b=FPeUNiLhDd42/EY1dbOGy5tGMIeYqMJlcqdD8F+0ro5zW0YeChfFWXkQHWbulcmbwyS87lvCw+SQwHIT5Q1jhTxfssIUyUy3bX0WHFgHpnPUKuEFtOJ6xTE2lMOO7fCJA8lvicElaG2WYrGtCHFN2Ded1RZHdFXIz+VzRsaJxpI=
+	t=1744115731; cv=none; b=seyvAumUhpSwbG/8CwBuNxQ5zrRWKIejoiIzr9QtpmWxHUGzDYwugYyuWzxKZosqs6GfGmYfdadJxqJiZhUFmHCa4woMOR4LdT91U6a9dtV60XyIzk9JtiqIC8jrgDldirh+x044N8P20LmTM6bj4VADi4jSOYOd9EoWghhtAik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114038; c=relaxed/simple;
-	bh=BsvamZ0vTokLb1AaBkzR5ol3GAjhWD65i8u1pqPP32k=;
+	s=arc-20240116; t=1744115731; c=relaxed/simple;
+	bh=7wvbVQFvsqUUIKym0niK9B0p7SbDhssgx3qNzxd7IIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzE7RB1Euk5i9y369IdWis5o8aYeS2cRhzORKLbGlW1K5uBnreb6Ot8DNkAgOZ4gqKlo3x3VCtjzzz7ubRNutRdkUNTTH3ukDNleH1sZkGGZLJCSgFZ6VldVoz8iUd6AjYRrtVd0dLcxoystezFTKlWCpdBZPGc/e7B3x4HX4Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+SRBSPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8DCC4CEE5;
-	Tue,  8 Apr 2025 12:07:17 +0000 (UTC)
+	 MIME-Version; b=kykCzZ/ecfEnvcPjEpMHubfkov1dsq9LZ8sihg+nDUj5bOjWtj1gnTxyy1G0PuP+Cyn9D0bBzQQ2NnLxspnAZj1ZFCiOy0GoN0IxkPhgjYxKIAZ29WCXIv6MVDtvuEouhQ0r6mjuVn1X+Hx13dRX24fxjUfkzpb4IDBWOXDL/sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lsv+oJLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D9CC4CEE5;
+	Tue,  8 Apr 2025 12:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114038;
-	bh=BsvamZ0vTokLb1AaBkzR5ol3GAjhWD65i8u1pqPP32k=;
+	s=korg; t=1744115730;
+	bh=7wvbVQFvsqUUIKym0niK9B0p7SbDhssgx3qNzxd7IIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+SRBSPKgY0mhujbNdnqHvSEPCWFVqk2dwLgtlzb3mpM2wX3fW5zP/TTrfaL7FNzd
-	 /IBRKpEKc8fvHijp2cmU57e5zgQdyipwG3WTiFWLQXQMQ1sHTnT78ZzuGEO/3nGsTv
-	 fSgmkC2G6N+k1IW9RD3jaW+Ig5xGp/1ftM2jinlY=
+	b=Lsv+oJLbfr03ELi4loJefvkPwdfnLGoexu1gi118XcG814C7vrXNoYbRgrcgVrk1x
+	 k+h52bVfCwEcnVwUx0LtuW5AKjkv8QzjKUaLnyVkabMCOKredaHVChL3Q7cJWXGRzM
+	 cmqvs9hOwy4bJ+1OpcCja4BwTVPe1T7LN100y9Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 5.4 073/154] counter: stm32-lptimer-cnt: fix error handling when enabling
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/204] crypto: hisilicon/sec2 - fix for aead auth key length
 Date: Tue,  8 Apr 2025 12:50:14 +0200
-Message-ID: <20250408104817.646441761@linuxfoundation.org>
+Message-ID: <20250408104822.822104994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
+[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
 
-In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
-a timeout error is raised, by regmap_read_poll_timeout. It may happen,
-when the lptimer runs on a slow clock, and the clock is gated only
-few times during the polling.
+According to the HMAC RFC, the authentication key
+can be 0 bytes, and the hardware can handle this
+scenario. Therefore, remove the incorrect validation
+for this case.
 
-Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
-So the 'enable' state in sysfs wrongly lies on the counter being
-correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
-
-To fix both issues:
-- enable the clock before writing CMP, ARR and polling ISR bits. It will
-avoid the possible timeout error.
-- clear the ENABLE bit in CR and disable the clock in the error path.
-
-Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
- 		return 0;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 3de8715aad39d..292ab0ff2b07c 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -1094,11 +1094,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
+ 	int blocksize, digestsize, ret;
+ 
+-	if (!keys->authkeylen) {
+-		pr_err("hisi_sec2: aead auth key error!\n");
+-		return -EINVAL;
+-	}
+-
+ 	blocksize = crypto_shash_blocksize(hash_tfm);
+ 	digestsize = crypto_shash_digestsize(hash_tfm);
+ 	if (keys->authkeylen > blocksize) {
+@@ -1110,7 +1105,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 		}
+ 		ctx->a_key_len = digestsize;
+ 	} else {
+-		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
++		if (keys->authkeylen)
++			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
+ 		ctx->a_key_len = keys->authkeylen;
  	}
  
-+	ret = clk_enable(priv->clk);
-+	if (ret)
-+		goto disable_cnt;
-+
- 	/* LP timer must be enabled before writing CMP & ARR */
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
- 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
- 			   STM32_LPTIM_CMPOKCF_ARROKCF);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
--	ret = clk_enable(priv->clk);
--	if (ret) {
--		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
--		return ret;
--	}
- 	priv->enabled = true;
- 
- 	/* Start LP timer in continuous mode */
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
- 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
-+
-+disable_clk:
-+	clk_disable(priv->clk);
-+disable_cnt:
-+	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
-+
-+	return ret;
- }
- 
- static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
+-- 
+2.39.5
+
 
 
 
