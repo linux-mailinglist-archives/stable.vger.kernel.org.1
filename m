@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C254A808A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE1DA80B12
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94C281BA432B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976BC1BC0228
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DC8269825;
-	Tue,  8 Apr 2025 12:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F14F281512;
+	Tue,  8 Apr 2025 12:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4ELw/1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnDcNJjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156DA26461E;
-	Tue,  8 Apr 2025 12:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF50B28150B;
+	Tue,  8 Apr 2025 12:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115830; cv=none; b=EW/hrtltfSmwQBUHkvHxc0R1FFhsiaPynnptr+qwkbznyMg0IpHI4o5dHgo4VNkDc7CAXvlU9vl2NkluUajp603RjkUN9rkfzvPiMfDCBgYzC3etumHiE5Rt2S1Cdqzu4N1wuYjs5GsUwr04js7+abwFldGETp9IHFZz8mwvXxI=
+	t=1744116833; cv=none; b=e5nwgFNWCaBEkktUxHG0XVUPbFYJwMUPltQx/frQc2ofNnElrGGShs8jp8TV+XNNFxd/7oyPi+3sQNoEJOILRlmsiys9HowEMS4bwyl9B2be5N9YLvOt/dRf8XehF9R1lnV2NFqMSjvOx+eyZDAzkmNqQZGLE2+wNvCEQOs75zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115830; c=relaxed/simple;
-	bh=btU7V0hX+7OCDLi9BG/Hf35idVd6VVMstgFEjIwzGBg=;
+	s=arc-20240116; t=1744116833; c=relaxed/simple;
+	bh=aG3MEQF5qtrjOoQykXxuLJ1phokKcEBfQBUsSjlE5Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV3Ja9XNnh5K5IKuiGHC8U/FceMoS/+S/eCrm68OKXNMbg9Hyc7LM0rpKkMvXfQ1cniry7ET2MTUFvEt3vhShjq06AkUnVmmQqTjWKA8jZLoXsNiwv+3I5HZYEj6R7X7OBAGcJMAdKfFC9uLpqg71fhtdD6MMm+r0K7Qb7W3cnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4ELw/1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254FDC4CEE5;
-	Tue,  8 Apr 2025 12:37:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EsXoPGahRBrO+Su4AdBdoM4uY2zb4oTqr48oe24LV5AFhUfRbpdU8XTnH7NETDBeP0UFZyAfGZisIX5Vbpr/Zy9By0kUHqcl6485w/FTGrO5jPDMYwT8ICEgV4qRXzX2+YF1tObfoO4fgzQ/YHKXH6qFof6p2QQBJwyHBBfpfv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnDcNJjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CBBC4CEE5;
+	Tue,  8 Apr 2025 12:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115829;
-	bh=btU7V0hX+7OCDLi9BG/Hf35idVd6VVMstgFEjIwzGBg=;
+	s=korg; t=1744116832;
+	bh=aG3MEQF5qtrjOoQykXxuLJ1phokKcEBfQBUsSjlE5Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4ELw/1iSBxRMuYOWYYzVcY0Drb6B3nfEnyLWAzjJGd4f9qOdeTCQUdLZbDEYD5Uq
-	 cdlK43p732BNdSahDdi8jys4J+eCDIeKkCoMGfFvP6C1NgSQOmghs1hy+DC7M6ljX5
-	 UXxa6Grrp2Kg+MarSxvGMxn76g/bRCvgj3XO97fU=
+	b=XnDcNJjRYj+yUhyLkF11MABCcWHaO1pdKzugCnqW81G5jMuYfL/22T6DlWmWO6aho
+	 YmuY07yUA2zDoCV+59fF6sjgV4dFqTQnS44Dba3qwVIpkAOfjw/u6uzNriuV05d06j
+	 sqJa9Poku3HDl0T4NkkcPTDxw2JBBcyLVG1gCK8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/204] RDMA/mlx5: Fix mlx5_poll_one() cur_qp update flow
-Date: Tue,  8 Apr 2025 12:50:10 +0200
-Message-ID: <20250408104822.709141390@linuxfoundation.org>
+Subject: [PATCH 6.12 285/423] ASoC: codecs: wsa884x: report temps to hwmon in millidegree of Celsius
+Date: Tue,  8 Apr 2025 12:50:11 +0200
+Message-ID: <20250408104852.414953686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 5ed3b0cb3f827072e93b4c5b6e2b8106fd7cccbd ]
+[ Upstream commit d776f016d24816f15033169dcd081f077b6c10f4 ]
 
-When cur_qp isn't NULL, in order to avoid fetching the QP from
-the radix tree again we check if the next cqe QP is identical to
-the one we already have.
+Temperatures are reported in units of Celsius however hwmon expects
+values to be in millidegree of Celsius. Userspace tools observe values
+close to zero and report it as "Not available" or incorrect values like
+0C or 1C. Add a simple conversion to fix that.
 
-The bug however is that we are checking if the QP is identical by
-checking the QP number inside the CQE against the QP number inside the
-mlx5_ib_qp, but that's wrong since the QP number from the CQE is from
-FW so it should be matched against mlx5_core_qp which is our FW QP
-number.
+Before the change:
 
-Otherwise we could use the wrong QP when handling a CQE which could
-cause the kernel trace below.
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:         +0.0°C
+--
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:         +0.0°C
 
-This issue is mainly noticeable over QPs 0 & 1, since for now they are
-the only QPs in our driver whereas the QP number inside mlx5_ib_qp
-doesn't match the QP number inside mlx5_core_qp.
+Also reported as N/A before first amplifier power on.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000012
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP
- CPU: 0 UID: 0 PID: 7927 Comm: kworker/u62:1 Not tainted 6.14.0-rc3+ #189
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
- Workqueue: ib-comp-unb-wq ib_cq_poll_work [ib_core]
- RIP: 0010:mlx5_ib_poll_cq+0x4c7/0xd90 [mlx5_ib]
- Code: 03 00 00 8d 58 ff 21 cb 66 39 d3 74 39 48 c7 c7 3c 89 6e a0 0f b7 db e8 b7 d2 b3 e0 49 8b 86 60 03 00 00 48 c7 c7 4a 89 6e a0 <0f> b7 5c 98 02 e8 9f d2 b3 e0 41 0f b7 86 78 03 00 00 83 e8 01 21
- RSP: 0018:ffff88810511bd60 EFLAGS: 00010046
- RAX: 0000000000000010 RBX: 0000000000000000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffff88885fa1b3c0 RDI: ffffffffa06e894a
- RBP: 00000000000000b0 R08: 0000000000000000 R09: ffff88810511bc10
- R10: 0000000000000001 R11: 0000000000000001 R12: ffff88810d593000
- R13: ffff88810e579108 R14: ffff888105146000 R15: 00000000000000b0
- FS:  0000000000000000(0000) GS:ffff88885fa00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000012 CR3: 00000001077e6001 CR4: 0000000000370eb0
- Call Trace:
-  <TASK>
-  ? __die+0x20/0x60
-  ? page_fault_oops+0x150/0x3e0
-  ? exc_page_fault+0x74/0x130
-  ? asm_exc_page_fault+0x22/0x30
-  ? mlx5_ib_poll_cq+0x4c7/0xd90 [mlx5_ib]
-  __ib_process_cq+0x5a/0x150 [ib_core]
-  ib_cq_poll_work+0x31/0x90 [ib_core]
-  process_one_work+0x169/0x320
-  worker_thread+0x288/0x3a0
-  ? work_busy+0xb0/0xb0
-  kthread+0xd7/0x1f0
-  ? kthreads_online_cpu+0x130/0x130
-  ? kthreads_online_cpu+0x130/0x130
-  ret_from_fork+0x2d/0x50
-  ? kthreads_online_cpu+0x130/0x130
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
+After this change and initial wsa884x power on:
 
-Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/4ada09d41f1e36db62c44a9b25c209ea5f054316.1741875692.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:        +39.0°C
+--
+wsa884x-virtual-0
+Adapter: Virtual device
+temp1:        +37.0°C
+
+Tested on sm8550 only.
+
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250221044024.1207921-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/cq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wsa884x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
-index be189e0525de6..a34bbe27bb76a 100644
---- a/drivers/infiniband/hw/mlx5/cq.c
-+++ b/drivers/infiniband/hw/mlx5/cq.c
-@@ -484,7 +484,7 @@ static int mlx5_poll_one(struct mlx5_ib_cq *cq,
+diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
+index 86df5152c547b..560a2c04b6955 100644
+--- a/sound/soc/codecs/wsa884x.c
++++ b/sound/soc/codecs/wsa884x.c
+@@ -1875,7 +1875,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
+ 		 * Reading temperature is possible only when Power Amplifier is
+ 		 * off. Report last cached data.
+ 		 */
+-		*temp = wsa884x->temperature;
++		*temp = wsa884x->temperature * 1000;
+ 		return 0;
  	}
  
- 	qpn = ntohl(cqe64->sop_drop_qpn) & 0xffffff;
--	if (!*cur_qp || (qpn != (*cur_qp)->ibqp.qp_num)) {
-+	if (!*cur_qp || (qpn != (*cur_qp)->trans_qp.base.mqp.qpn)) {
- 		/* We do not have to take the QP table lock here,
- 		 * because CQs will be locked while QPs are removed
- 		 * from the table.
+@@ -1934,7 +1934,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
+ 	if ((val > WSA884X_LOW_TEMP_THRESHOLD) &&
+ 	    (val < WSA884X_HIGH_TEMP_THRESHOLD)) {
+ 		wsa884x->temperature = val;
+-		*temp = val;
++		*temp = val * 1000;
+ 		ret = 0;
+ 	} else {
+ 		ret = -EAGAIN;
 -- 
 2.39.5
 
