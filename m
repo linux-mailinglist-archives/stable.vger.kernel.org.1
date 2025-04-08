@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-130449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A414A8049E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C0BA80830
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAA3D1B64700
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98F474C7120
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E113264A67;
-	Tue,  8 Apr 2025 12:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B53C26A1A9;
+	Tue,  8 Apr 2025 12:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoa78UJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEt0qH5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5FC21B185;
-	Tue,  8 Apr 2025 12:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570DF26A0A6;
+	Tue,  8 Apr 2025 12:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113740; cv=none; b=cvRJlkdbuY7vCm4/TLdQMJaq0F6y3Su7gTPeyloaTkD9DJBfl2Ac6XSbPZL31IYs+7rrUgBIlCmunMZmEyb5vURH8QusaXbiUTPEfEK0DZMcjN9IF6yHjoi4ZPE7V/FeKdfrrzS45Qj+8A/uo/kDT93etVukKWdQbMGTf7pHoSc=
+	t=1744115338; cv=none; b=WRwc9n8xmPRQxM20tk1zO4EYSUe2GqRdFfeZLAANGUofnpg8VN+arkDjRS1t17xWf4V0HBcr+JFYTyjiBP4HDRbfSefsl3mje3gKKzM0DgNQoIndG5KTQOAeNn1GVewJLbbbJu8Z6bdPweL5fdVXxb2zErFdHWXFlH+9jNFNDgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113740; c=relaxed/simple;
-	bh=TlgupLfNoTgPX3V1750VtMiwfGHptmUwxwoAlNWPKSo=;
+	s=arc-20240116; t=1744115338; c=relaxed/simple;
+	bh=Grg0P4P6Dv2sZhHjz6XCbkEU+KT8ebFZkqcI7NgCZBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oxtrRKhtfF24gNtXUlwKCNwPndF0ErC+rv/6NHJXVd6wnVRvmGwnrDJuRavPdLaWTk5b5qA3ZqSyaK7u+4HCVawE1G+gbF7aN/Sbw8eQhE02LyJmfI4FauSx9gIhGArKuLUDdIBRp8yV2ehXr8VaBWJ5HBR8n2Ghlje4szTWRxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoa78UJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FFC4CEE5;
-	Tue,  8 Apr 2025 12:02:19 +0000 (UTC)
+	 MIME-Version; b=upEz8i4wlZ32WSSJjWF8Znn6LrUO/S2GSf1V14Yp/PycDfFcOy0YY3wP2x90wwuwhyHKvlWFnTz3XZyLdEy09bB4vgKyoC8DPvaQKdIRuLM/hufnEZ7RNLjNUeZ/x86LGV29k2B0wxEkifZY4Z7AVwjMnRi6y8SsyhIsKfIw1vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEt0qH5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8868C4CEE5;
+	Tue,  8 Apr 2025 12:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113739;
-	bh=TlgupLfNoTgPX3V1750VtMiwfGHptmUwxwoAlNWPKSo=;
+	s=korg; t=1744115338;
+	bh=Grg0P4P6Dv2sZhHjz6XCbkEU+KT8ebFZkqcI7NgCZBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uoa78UJRYyKToPvx8P8M2KAMsbeZIeJ95/o+0wwwKGpj82TODp0JzHP2uMfyQW543
-	 E/G66FVxvzKyX9xUdEqhyCTerlpiqvZO12kWP1aw6Wdo0b2xpzp5EObuVmOIQBhRsl
-	 sV3QvgctFCDJ5uekw+kj3i2xuND0U8L4LYc0BiI8=
+	b=FEt0qH5Fz4QqWiQEXuyOZ84RLvYkhdtN7e7OwKpcW9QqEXI7Hm1X6kEgUs0vK1nQ4
+	 dzbnpJwMA0NEZCbP8eZdZAI3A029lwATaK+1UEvEJczQtV0OeWJ1wvyu/VVu3rMbA6
+	 bxs4XnHliR0W4BIa6UbRkZVn5ce/dKxP3EEjY7to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.6 239/268] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.13 438/499] LoongArch: BPF: Dont override subprogs return value
 Date: Tue,  8 Apr 2025 12:50:50 +0200
-Message-ID: <20250408104835.031986189@linuxfoundation.org>
+Message-ID: <20250408104902.152263515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
+commit 60f3caff1492e5b8616b9578c4bedb5c0a88ed14 upstream.
 
-The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
-The same call was immediately triggered by a subsequent goto statement.
-Thus avoid such a call repetition.
+The verifier test `calls: div by 0 in subprog` triggers a panic at the
+ld.bu instruction. The ld.bu insn is trying to load byte from memory
+address returned by the subprog. The subprog actually set the correct
+address at the a5 register (dedicated register for BPF return values).
+But at commit 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
+we also sign extended a5 to the a0 register (return value in LoongArch).
+For function call insn, we later propagate the a0 register back to a5
+register. This is right for native calls but wrong for bpf2bpf calls
+which expect zero-extended return value in a5 register. So only move a0
+to a5 for native calls (i.e. non-BPF_PSEUDO_CALL).
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/test/ntb_perf.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/loongarch/net/bpf_jit.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
- 	dma_set_unmap(tx, unmap);
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -907,7 +907,10 @@ static int build_insn(const struct bpf_i
  
- 	ret = dma_submit_error(dmaengine_submit(tx));
--	if (ret) {
--		dmaengine_unmap_put(unmap);
-+	if (ret)
- 		goto err_free_resource;
--	}
+ 		move_addr(ctx, t1, func_addr);
+ 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
+-		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
++
++		if (insn->src_reg != BPF_PSEUDO_CALL)
++			move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
++
+ 		break;
  
- 	dmaengine_unmap_put(unmap);
- 
+ 	/* tail call */
 
 
 
