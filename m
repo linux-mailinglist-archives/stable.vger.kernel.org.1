@@ -1,166 +1,111 @@
-Return-Path: <stable+bounces-131242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3D6A80913
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0163A80AC1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4BF4C5C62
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75AC84E83FA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048CA26FA46;
-	Tue,  8 Apr 2025 12:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C39269B11;
+	Tue,  8 Apr 2025 12:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lF/V9+Bw"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="U2UatSbe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0982026F47B;
-	Tue,  8 Apr 2025 12:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97563269B1E;
+	Tue,  8 Apr 2025 12:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115871; cv=none; b=iENnp1CJiHoiqz020YJXJInicBrSpC3+sO7fOe1ZYr/f+lU4gXp2O8T7b3yvcdIqs6hOuLQqzsLHx+cCkNPV9c+yKvlV9/xejZObnIaSY808eQPX+xGXVj6XTSAkTQGRcuAg491pHkwJaySRjeVOv75gj8llOalbXZj/Bh4xBJw=
+	t=1744116637; cv=none; b=d98uxpZRnWg7BgjUcCs0OsdJKU7FjCkoeBIsuXnqo8NVLxqLGzRVDtSnldqePD56P1XJME7pjNowtlYNRtsiKAmWVgNFt94bC6G3xGefI292kMUfiriB3vkQZc84LB/AJHwy9UxD46bmM/tSuYEa+kyznFhCu3m2HnOa8BDADAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115871; c=relaxed/simple;
-	bh=n5yY3c/M7DGrAou208VOkwvsGsTS780Xs0GL0+1p0Rk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=px5KRGZs5AO3AThCgL27vJUQr/Zthi83/gLRdXUIlNsigjxho6Y9n5Bg/ScFW395oaXqAGRKKeW1yfU9QVcMt/TOwUG9jFmrlE/h18bMuy4gQwH50huuP7KW/eAPupxCcpM6p8Ksebcye0OQtd5Tb394IObORclc5Xji6prN+4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lF/V9+Bw; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abf3d64849dso926631766b.3;
-        Tue, 08 Apr 2025 05:37:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744115868; x=1744720668; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3XDdHAFVrIm9VYmfrBSLGHN4jyk7mQe9dLRJj0l1S2A=;
-        b=lF/V9+BwRAOFAsIhJ2sIxEGKRozk+mIVrIByvlPskSAM2CNejjJsr+5FsfH1tm6L+F
-         fyh5nTTPvlBoFZeh3a1Jcxs8Twben75KA91Xc+AicyTGj18GePv4ckyi+6ELGpaM7hsm
-         gpmeD0G0dKXA1pMT3RYDv0U9SQR+SWVRS6sRzmVekaWqAloDWzjhTLRAFHff37MG4HzP
-         u98kxmyCKgEpf3kt8KRRCQ69Ng3AmSgLW3AJfHAwYKHKVYT1HNDhiaeCBb8nlawN7fMb
-         UqPE+GNB3wdpPDA9h7oxyNKLUIoU1RCb6O7kzLLOwikefgz8WRmlXLYQmysYH7lk4bTI
-         42Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744115868; x=1744720668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3XDdHAFVrIm9VYmfrBSLGHN4jyk7mQe9dLRJj0l1S2A=;
-        b=hsWdf/AmFMNAI1N1GffhirBhBSnzyP2N1yyHGdO/H/OKHGdBuRm+ZLj1NL8G+nLnz9
-         eSM9IalwwsV3zKDO9n9Glq7e6SZEyPS73gWROj79ZspetZwvP4RHah3Gc976yLRLhi1a
-         SMWXn3V7Xyf8WFd/R2WSwpMUuCVWHr3JPfHRTT0zMVLqt/6+lwcvJYTmJKXkF6kz/e4w
-         0VFAHoSRtmJ/w2snogTM2j4GwdaZjaZVUhxnM76kumlrhX6nJhEDiLiIbTL16AdCknEu
-         I/l7s+Faq1+S7/eL+fYhe3e629WEpAZzOKzfRqm2Ops58BhGw9VE96aKeSh4zFq9alfc
-         H9fA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKB8gd1xlrPBDJER4Ooac+kLkd941cFjf+iyhHtOKX+/aknzZwLvqo1YjMI8IIJG1W81JulOyk@vger.kernel.org, AJvYcCXoDunpni8meECEYMAJVIuj77pH8ZU2Aasmjuy4ZgwAiqB2a8mkZKGtd0l6ZSl3dNai05VVjcs2/2w7OuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBo/ghPk7tUrYiTbypkHYzYzdL+E/nRIt3qBs9U2XgFihMbGku
-	vyx5KgOLCEUEx2hprbCW+VB24lnvFi17jw7azQ9yU9jiKy1UJD3PcMyCLk2UHs74VigCT4ayE8y
-	gExuryjoWeQJDxxvao83B119Ie70=
-X-Gm-Gg: ASbGncsoDgY5xH9TPfXQ0Rf+IvOt/NH+ktsvX47BVaWt+jK9lRqefMP/8VsT0dpTE7Y
-	+82HrnxjSIEeu4LPd+4J79St7dp77OT5wnxlQt5oG3ml4Y7TUkvygQ0x6us7F/c3FAJ1MawimU6
-	9T4KKOhBFoj2zx1ExI1YCAzVXV1KKQ800lo9vPXQ==
-X-Google-Smtp-Source: AGHT+IFnh++FCRpnlhvrWegLUR+La0yffyAijO55u8NHyZxWVOF15mHkPKXDFhuFgNXjtR3SujjYNEfhlW/FnTHrSHE=
-X-Received: by 2002:a17:907:3d87:b0:abf:6aa4:924c with SMTP id
- a640c23a62f3a-ac7d17747cfmr1453840866b.17.1744115868044; Tue, 08 Apr 2025
- 05:37:48 -0700 (PDT)
+	s=arc-20240116; t=1744116637; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cUkOd0WCcA3xe57hxCbyRoV8sFskQw6u8FqYFdSHV2JPbBowENXkFMtoJHa69ytDhK+IPrnEoEl46lGaUU//34S1VSEl1skRnD9ZKI4xkPj3JcvCtUaS4X+H1BKWu3w/obPxaDz8Gzi1Oh90A1y51bNQK5VBbA5FKjqapm2D3G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=U2UatSbe; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1744116631; x=1744721431; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=U2UatSbe1Hy6DFfCAh/CY0A9PceCPB35ErwrORwogeHGildVg0kpphy3dlwRr+GH
+	 YQfRG/C4z7kPEcLTrnHu15CjZKPKH4ClbiF/6v+KOael3A62VielibVWmjUI3JP9C
+	 4AmUuInCKiGM8ihdgB+hGjXBV5zxgQFeJwTZJmhqMEJ5SpLMTtn7tozVYogox2kEX
+	 ksSSaR70UiFR3iYmTw8sP0493Xwpdn5i33GhkESZeRn1WrheXYLL5USm+TM8mkO63
+	 OKpS+49X2TIo6gDUU5MBS0J7qNHTxipYarPqF+bXfD3GYbIBnyqqW1DotdaVkHThP
+	 kgoLroZH6QyT3i8M6Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.88]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeCpb-1tSFYe09gt-00dVy9; Tue, 08
+ Apr 2025 14:50:31 +0200
+Message-ID: <9dc80361-6dd8-4311-bdfe-0ad278bbd48a@gmx.de>
+Date: Tue, 8 Apr 2025 14:50:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402092500.514305-1-chenhuacai@loongson.cn>
- <87jz81uty3.ffs@tglx> <CAAhV-H5sO0x1EkWks5QZ8ah-stB7JbDk6eFFeeonXD6JT9fHAw@mail.gmail.com>
- <87bjt9wq3b.ffs@tglx> <CAAhV-H6r_iiKauPB=7eWhyTetvsTvxt5O9HtmmKb72y62yvXnA@mail.gmail.com>
- <875xjhwewg.ffs@tglx>
-In-Reply-To: <875xjhwewg.ffs@tglx>
-From: Huacai Chen <chenhuacai@gmail.com>
-Date: Tue, 8 Apr 2025 20:37:36 +0800
-X-Gm-Features: ATxdqUFI9fVaIwXUxf1Igx0gCLAe6stGaO29HAebgaBrjAmfEMADUOm1aVbUZ1k
-Message-ID: <CAAhV-H6tUvwN9UejTRf0zKXdhGG4o5X4ZOppE+1oQhL-rADFHg@mail.gmail.com>
-Subject: Re: [PATCH] irqchip/loongson-liointc: Support to set IRQ_TYPE_EDGE_BOTH
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
-	Yinbo Zhu <zhuyinbo@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/731] 6.14.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250408104914.247897328@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:hC4gs/azVC3N3QfqVLeGulXhBPdDYSk8bn94rzY3dzpqSyJZ3lM
+ +cJRIrnYjj/S9jQuR/FwLsWNO/qLibvCzVlIIfCnHsituG/YWU9CXkftrXXE2GNn4T9hOSJ
+ B3jLtISzTQJ4igqySodeeXZcm+MBVlMgJziICNa/9hEc23lzTaG8OEyf12VlcO2pl5tBKEG
+ GXujxNiSonfDbzblcPLTQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Lm7ps4cw5Mw=;1yASkq9uypofrRo4Ub41wmjLkxr
+ a81/N31rjED7UaZ8IEfAFRLVkVO16nFRUigZ3CYkhipRvmSLHgJsT5HlAlqwQgloQdJ9cOxGp
+ iMyyd6F1RVdkY9YcVXRta1E5y+HplLUDXYZIpIL/b2oGwpS07vr2GDM3uZIUfLPDObRzoaG7V
+ bgES12SFbVky5pR9KzgZkEIXxHp7gwBS1RbNwlEINR9+KHAKQNVVEp2lZteEVOE79LkSsXr0Y
+ kmoVp07ReQzD+LJBmRSu1529zsPREuYEVU92Wfv45pIjtODzHAb+vMFCkPi6i83I+8iN1HEM4
+ 44jvvdxdl6tYk/BN3Vvo5GlAxY6it380FFUfn5nq1GuMVVpB2kCt88jJo5fZ7u5K7tbEI/5fs
+ +7CSJNjLVb8HV3yiTS02BK6iygKa7kFPYz8fGWi1ItKUOgA/zAJ3S7hLaeNPORlTx5ESY0l6z
+ BgDXaC9Q1QVKgGqwyXzE1qrMza5xaPE0tTc26sly8txEFr4gI9etraLyp5ncaG1GmiEhPQY0z
+ 32MFGxPRcJiueFTFQtE5y0xfOiGmXeIAtBZAg9Hm+0s/+szZHt+AhnefxHnMh+Ni3N0dhR0wZ
+ yp4B0R/waOioIrkdkqQLpT/odIWBYgevGwsyeNqS7ABvjiCXs/3RYiBqV8HzdljiPOa8Tv/7+
+ BBlUvaPGqdsPtQ/gBkMx6fR+rGTJGbIkaymfyLh9LA64Mb5DTHpLLATztxwEUkvxbKvwel5Ez
+ b4QhBLpFD1sqnUQAFk2XCyI2nhUhlbWOKdcawlpZH1dgqF775TeyK1J4iHrPwngzj23+fKaSV
+ PLGKGxFdVyPEW/apfpFzDOFn/BSiyP13CYU0R5CEvJu9x54nDdYAvBciRYmHQWf74gOxXqKoZ
+ wtD5vsydQqxSwGb3rLt6F3X/vT7k0gO0V5EGAHEEih8h2YjbRobXzWK71vkk9V4Mk0XZ2fOYo
+ M1+e/O6yVIgHYddh8vh3v3VBVuzwXpGufUen/3Ps3pJdxL4EsGtZXf5HcpsR3iGP0h/uJg1s+
+ GaieNf6HmDYNtNGbZ28WaQMSPzqmcHt519jCI8673vVQohcEZRZMJ2OaUZgFqTVxQzTBz3X4U
+ XZyeyogIiBOrWj3DrsxRLTaqgd/jUCDIgIuhmXGPfc96wH0ql2e3wY3/oXhsEjJq4/qpSHKOA
+ Fww3FnEWzK1YygefDwyFq1VME2ONo0hvcMrc2lXFsXeOrntm/IGVha6V/m6yXTkUrggWcsar3
+ b1/YztZ+d93f1tIavBN8owVBnYfj/o1pgnvE0VD0M4S7ipMapEdKEyHZzPlcMITAmjsmVmuj4
+ RC+20xZTHmNxQxZyopVosd201Es8R7CqVFsgAs6sRnUgW3pQvGZqke9mRypS3LkpwFnS+Jdy1
+ FY03XDKgRLFSuFwvcmUG4dmSowMx+9j64+u1RkF0zC4mRC4j5CKmnPlm3LETh0s2rBQ3Kwhss
+ uo1LsHwoSTHwtd0O2fvRFyKBTSZI=
 
-On Sun, Apr 6, 2025 at 10:20=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de=
-> wrote:
->
-> On Sun, Apr 06 2025 at 20:46, Huacai Chen wrote:
-> > On Sun, Apr 6, 2025 at 6:18=E2=80=AFPM Thomas Gleixner <tglx@linutronix=
-.de> wrote:
-> >> On Sun, Apr 06 2025 at 17:46, Huacai Chen wrote:
-> >> > On Thu, Apr 3, 2025 at 11:48=E2=80=AFPM Thomas Gleixner <tglx@linutr=
-onix.de> wrote:
-> >> >> But it won't trigger on both. So no, you cannot claim that this fix=
-es
-> >> >> anything.
-> >> > Yes, it won't trigger on both (not perfect), but it allows drivers
-> >> > that request "both" work (better than fail to request), and there ar=
-e
-> >>
-> >> By some definition of 'work'. There is probably a good technical reaso=
-n
-> >> why those drivers expect EDGE_BOTH to work correctly and otherwise fai=
-l
-> >> to load.
-> > The real problem we encounter is the MMC driver. In
-> > drivers/mmc/core/slot-gpio.c there is
-> > devm_request_threaded_irq(host->parent, irq,
-> >                         NULL, ctx->cd_gpio_isr,
-> >                         IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING |
-> > IRQF_ONESHOT,
-> >                         ctx->cd_label, host);
-> >
-> > "IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING" is an alias of
-> > "IRQ_TYPE_EDGE_RISING | IRQ_TYPE_EDGE_FALLING", and
-> > "IRQ_TYPE_EDGE_RISING | IRQ_TYPE_EDGE_FALLING" is
-> > "IRQ_TYPE_EDGE_BOTH".
->
-> I know that.
->
-> > Except MMC, "grep IRQ_TYPE_EDGE_BOTH drivers" can give some more exampl=
-es.
->
-> Sure, but you still do not explain why this works even when the driver
-> is obviously depending on EDGE_BOTH. If it does not then the driver is
-> bogus.
->
-> Looking at it, there is obviously a reason for this particular driver to
-> request BOTH. Why?
->
-> This is the card change detection and it uses a GPIO. Insert raises one
-> edge and remove the opposite one.
->
-> Which means whatever edge you chose randomly the detection will only
-> work in one direction. Please don't tell me that this is correct by any
-> meaning of correct. It's not.
-From experiments, either setting to EDGE_RISING or EDGE_FALLING, card
-detection (inserting and removing) works. Maybe the driver request
-"BOTH", but it really need "ANY"? I've searched git log, but I haven't
-get any useful information.
+Hi Greg
 
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Huacai
+Thanks
 
->
-> The driver is perfectly fine, when the request fails. It then does the
-> obvious right thing to poll the card detection pin.
->
-> So your change makes it worse as it screws up the detection mechanism.
->
-> What are you actually making "work"?
->
-> Thanks,
->
->         tglx
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
