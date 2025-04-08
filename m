@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9205A8029D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401AFA8039B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADA8319E30EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE20D1884992
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF1D268C72;
-	Tue,  8 Apr 2025 11:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE06E269B0E;
+	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sXE7JQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeMiso2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1AA268685;
-	Tue,  8 Apr 2025 11:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69622257E;
+	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112711; cv=none; b=IW11s7qcVeAELADVpuUl6v3/f7o5q7l+gKXtMjJi3pbTpFd3jqcDfVVPzozYN/7UTT68xGqSQxEdamg5X2D2NvU94C+dw45I27on5+Qol9Z4KpCkhOK9vv2UCICRaYE2LvFtURkAOxGTHFZhz36GZzdidsJRWrcfaXVCGxj6T9c=
+	t=1744113289; cv=none; b=F2bmvtd3Hxv/m5nTaldQYge1DBat2Vqs/csoeEHJ2WiYEBy58DmpbLr+L5UxokiSOFYet8XAlD7wFjn4coQ8b2iW97sNU8C99vtVEDrrbvuGjDt9RBHgJqszvCk7ud4wnd5T1BMjVl56X2gBTH1notI3eapT5hpUb9C8nOwczCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112711; c=relaxed/simple;
-	bh=tJBui0EFcxjuWZvq19v84UK2+peoa5bSAL0dRKU/iqo=;
+	s=arc-20240116; t=1744113289; c=relaxed/simple;
+	bh=bmABz+QCx6vIzpL/nvanaIFQjd/WxTBrbpZxbJKANk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d73KNbhxqtaQeuFnHZ6RfIve7/Fxq4J4h2XmhOyYI0zMfIaEhbGEwYHLZLuy8WmJMG3E/WHQJgjtTd7ifxpdWmtzzjQV3euJnnDaL61bVYNYh2ymColI4ZdfPTplMhFoIsBYT4BxixAB4rC2b1fMCn5n6rEgjceC7xJcLxde4j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sXE7JQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72029C4AF09;
-	Tue,  8 Apr 2025 11:45:10 +0000 (UTC)
+	 MIME-Version; b=djGKSVp7zrNmA9o7GM45vZ2bBR0Lq3zrPt+7ORCKDe7XT+y5qWayFDgiVZOBasWaaBhwARU3Er4CzOlCz/3NMBPR86j4uQ90NIyX+0TaPm2WE+224WHkwCWB6QoHShE2UUzHNnFGxjgNrM0fwXeC80mX9Tq1BHBh+4Q8iXtXNeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeMiso2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDABC4CEE5;
+	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112710;
-	bh=tJBui0EFcxjuWZvq19v84UK2+peoa5bSAL0dRKU/iqo=;
+	s=korg; t=1744113289;
+	bh=bmABz+QCx6vIzpL/nvanaIFQjd/WxTBrbpZxbJKANk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sXE7JQvRvntI5v6opssTB4h6HLPUgq5Iu5B7EA+7nVC7EfNdwNeI1JTt+Wm2Edpa
-	 ap16nFB7Zw5OZ85HU4GcPF6Kip8imGvRD4pfRUpdfDys7inTfzSCS7JwOiq73+6in1
-	 Obc6tKZJuHJuwm1ELw05NUAfeMzhQTUG+3TDEaBI=
+	b=yeMiso2tdCfVufjjmm5vWXZMXRRRUxproXbR10oKl0KU0PJJ0gqciym3fP9MNiQOX
+	 Z0/FbhpbxGLy+co5LQiEDSbj98DECnLfHFhuc6aHF2TOIRWxPvAABbzekxsVqR6gOU
+	 vm/HbMEpNhPAQIcDDnVgVTYztxkalVLrU8bq6ofw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zuoqian <zuoqian113@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/279] cpufreq: scpi: compare kHz instead of Hz
-Date: Tue,  8 Apr 2025 12:48:33 +0200
-Message-ID: <20250408104829.850109234@linuxfoundation.org>
+Subject: [PATCH 6.6 103/268] perf stat: Fix find_stat for mixed legacy/non-legacy events
+Date: Tue,  8 Apr 2025 12:48:34 +0200
+Message-ID: <20250408104831.272567172@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zuoqian <zuoqian113@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
+[ Upstream commit 8ce0d2da14d3fb62844dd0e95982c194326b1a5f ]
 
-The CPU rate from clk_get_rate() may not be divisible by 1000
-(e.g., 133333333). But the rate calculated from frequency(kHz) is
-always divisible by 1000 (e.g., 133333000).
-Comparing the rate causes a warning during CPU scaling:
-"cpufreq: __target_index: Failed to change cpu frequency: -5".
-When we choose to compare kHz here, the issue does not occur.
+Legacy events typically don't have a PMU when added leading to
+mismatched legacy/non-legacy cases in find_stat. Use evsel__find_pmu
+to make sure the evsel PMU is looked up. Update the evsel__find_pmu
+code to look for the PMU using the extended config type or, for legacy
+hardware/hw_cache events on non-hybrid systems, just use the core PMU.
 
-Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
-Signed-off-by: zuoqian <zuoqian113@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Before:
+```
+$ perf stat -e cycles,cpu/instructions/ -a sleep 1
+ Performance counter stats for 'system wide':
+
+       215,309,764      cycles
+        44,326,491      cpu/instructions/
+
+       1.002555314 seconds time elapsed
+```
+After:
+```
+$ perf stat -e cycles,cpu/instructions/ -a sleep 1
+
+ Performance counter stats for 'system wide':
+
+       990,676,332      cycles
+     1,235,762,487      cpu/instructions/                #    1.25  insn per cycle
+
+       1.002667198 seconds time elapsed
+```
+
+Fixes: 3612ca8e2935 ("perf stat: Fix the hard-coded metrics calculation on the hybrid")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Tested-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20250109222109.567031-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scpi-cpufreq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/perf/util/pmus.c        | 20 +++++++++++++++++---
+ tools/perf/util/stat-shadow.c |  3 ++-
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index 763692e327b18..35b20c74dbfc7 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -47,8 +47,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
- static int
- scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
+index f0577aa7eca88..dda5ba9c73fd9 100644
+--- a/tools/perf/util/pmus.c
++++ b/tools/perf/util/pmus.c
+@@ -587,11 +587,25 @@ char *perf_pmus__default_pmu_name(void)
+ struct perf_pmu *evsel__find_pmu(const struct evsel *evsel)
  {
--	u64 rate = policy->freq_table[index].frequency * 1000;
-+	unsigned long freq_khz = policy->freq_table[index].frequency;
- 	struct scpi_data *priv = policy->driver_data;
-+	unsigned long rate = freq_khz * 1000;
- 	int ret;
+ 	struct perf_pmu *pmu = evsel->pmu;
++	bool legacy_core_type;
  
- 	ret = clk_set_rate(priv->clk, rate);
-@@ -56,7 +57,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
- 	if (ret)
- 		return ret;
+-	if (!pmu) {
+-		pmu = perf_pmus__find_by_type(evsel->core.attr.type);
+-		((struct evsel *)evsel)->pmu = pmu;
++	if (pmu)
++		return pmu;
++
++	pmu = perf_pmus__find_by_type(evsel->core.attr.type);
++	legacy_core_type =
++		evsel->core.attr.type == PERF_TYPE_HARDWARE ||
++		evsel->core.attr.type == PERF_TYPE_HW_CACHE;
++	if (!pmu && legacy_core_type) {
++		if (perf_pmus__supports_extended_type()) {
++			u32 type = evsel->core.attr.config >> PERF_PMU_TYPE_SHIFT;
++
++			pmu = perf_pmus__find_by_type(type);
++		} else {
++			pmu = perf_pmus__find_core_pmu();
++		}
+ 	}
++	((struct evsel *)evsel)->pmu = pmu;
+ 	return pmu;
+ }
  
--	if (clk_get_rate(priv->clk) != rate)
-+	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
- 		return -EIO;
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 2affa4d45aa21..56b186d307453 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -154,6 +154,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
+ {
+ 	const struct evsel *cur;
+ 	int evsel_ctx = evsel_context(evsel);
++	struct perf_pmu *evsel_pmu = evsel__find_pmu(evsel);
  
- 	return 0;
+ 	evlist__for_each_entry(evsel->evlist, cur) {
+ 		struct perf_stat_aggr *aggr;
+@@ -180,7 +181,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
+ 		 * Except the SW CLOCK events,
+ 		 * ignore if not the PMU we're looking for.
+ 		 */
+-		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
++		if ((type != STAT_NSECS) && (evsel_pmu != evsel__find_pmu(cur)))
+ 			continue;
+ 
+ 		aggr = &cur->stats->aggr[aggr_idx];
 -- 
 2.39.5
 
