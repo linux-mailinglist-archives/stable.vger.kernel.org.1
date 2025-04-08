@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-130025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D244AA8026C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F81A7FDF7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED1C1892457
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0AEA3A5FD0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956E4266EFB;
-	Tue,  8 Apr 2025 11:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84216267F6D;
+	Tue,  8 Apr 2025 11:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLxsYXgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaH+On52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5305B227EBD;
-	Tue,  8 Apr 2025 11:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404FA26AAB5;
+	Tue,  8 Apr 2025 11:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112613; cv=none; b=sa+9LZffmtIJpDHzo6DMg6vtlGuV7arsrLCY5gLUB2HJ6SDSHGWe+qMu31BRIkU5F1JSTVxUb45aQZByGsxgGqR3gNXEtAUdHZxhurF7ufTh8jy0gndpzo/l6ie6zF3Ke7mLY3wSmkv3GSH3rmqFed202vuTdR4765qAzJE/Kls=
+	t=1744110018; cv=none; b=D6HswyHwMYeC2Stg8jwanAX/oFjrgiKWHY855jfGqnIfn/+DgAdupLzD0dYYfLKv1P0qbYX9fN2KTsmMlkQN05vLL7qgZlbESUv7HA4b9V9V507qS+fswCt4oYrC/iPj/E+MT3gHvFwe+rhXQx8GoJBa5vOKLRITi4sflrhMos0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112613; c=relaxed/simple;
-	bh=ZewiOQJBgIOHgEuDVVjUbc/MK21jDn/la3EEHbFiFDA=;
+	s=arc-20240116; t=1744110018; c=relaxed/simple;
+	bh=sk4tnJ4Qtt+ubnffXSEtDnZWirwdyOu2P9hcLuUXRZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbG7QhOFr/p3c9YFLkZVkwhz+j0msxweLaCCYH9HuT9nscwKCHiSMS5sbY4ZHSWgZgVwZo/1hrT8Gb6PhvICtUWQfI83/myxadgCW/mDTJ/Wjq2Z9D5Q3JZBQmfGMtwxIZt4p4j7UzjxxIw2p8Qn2gL1YWDqoY6ovGaqkszX0dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLxsYXgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5A4C4CEE5;
-	Tue,  8 Apr 2025 11:43:32 +0000 (UTC)
+	 MIME-Version; b=McJxW0qOdpbuYF/975+dkMG31wqUpHP6X5LbZ6h2u3DFPqdbiOgvWZ2kUxmWHwSxrCswIwh3BbKSS7qseinCg2JKPCVJQY40TKi1tKVs8PyrhJCVuOPlVyCTfBQJsGofTvVTBprF7E+8vKr/J+GSBtJpk8x+8pEIXkfx+cwsmIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaH+On52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B1BC4CEE5;
+	Tue,  8 Apr 2025 11:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112613;
-	bh=ZewiOQJBgIOHgEuDVVjUbc/MK21jDn/la3EEHbFiFDA=;
+	s=korg; t=1744110018;
+	bh=sk4tnJ4Qtt+ubnffXSEtDnZWirwdyOu2P9hcLuUXRZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLxsYXgbrYSF0g/0l2innypOkmmdcQWzb+72AO0RtjZkHQhF2wyX5WDAqOvMyf9Dy
-	 8gWnNLukJRfhyMDgSzaLlJLbHAKDNBMN2+qhSra/0Z+JCtsJOr2pFK14q8R9YzpYrz
-	 hv6Hn8bKCleFaKfoc0Q7leroO5+k35pOKftpMKys=
+	b=YaH+On52fbi5rvw4dREKf1M4WjHw/drlTdvuc2yFbIApUxTvU+hWsFyfuZqQAiY+h
+	 G1oTFnIPLP5n3oADhHX+gnOLN2r1DJSKvE2OFz9+NCGp1DzeSFL4KiqDDNYFYiOK4K
+	 tErjkg0SdC4ciZ2bnz8Nsr/b+BbG3Dkv9lnnxlf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/279] PM: sleep: Adjust check before setting power.must_resume
+Subject: [PATCH 5.10 139/227] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
 Date: Tue,  8 Apr 2025 12:48:37 +0200
-Message-ID: <20250408104829.958001180@linuxfoundation.org>
+Message-ID: <20250408104824.476586163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit eeb87d17aceab7803a5a5bcb6cf2817b745157cf ]
+[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
 
-The check before setting power.must_resume in device_suspend_noirq()
-does not take power.child_count into account, but it should do that, so
-use pm_runtime_need_not_resume() in it for this purpose and adjust the
-comment next to it accordingly.
+There is a type bug because the return statement:
 
-Fixes: 107d47b2b95e ("PM: sleep: core: Simplify the SMART_SUSPEND flag handling")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3353728.44csPzL39Z@rjwysocki.net
+        return ret < 0 ? ret : recv_cnt;
+
+The issue is that ret is an int, recv_cnt is a u32 and the function
+returns ssize_t, which is a signed long.  The way that the type promotion
+works is that the negative error codes are first cast to u32 and then
+to signed long.  The error codes end up being positive instead of
+negative and the callers treat them as success.
+
+Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c    | 13 ++++++-------
- drivers/base/power/runtime.c |  2 +-
- include/linux/pm_runtime.h   |  2 ++
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 185ea0d93a5e5..8586651320901 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -1239,14 +1239,13 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
- 	dev->power.is_noirq_suspended = true;
- 
- 	/*
--	 * Skipping the resume of devices that were in use right before the
--	 * system suspend (as indicated by their PM-runtime usage counters)
--	 * would be suboptimal.  Also resume them if doing that is not allowed
--	 * to be skipped.
-+	 * Devices must be resumed unless they are explicitly allowed to be left
-+	 * in suspend, but even in that case skipping the resume of devices that
-+	 * were in use right before the system suspend (as indicated by their
-+	 * runtime PM usage counters and child counters) would be suboptimal.
- 	 */
--	if (atomic_read(&dev->power.usage_count) > 1 ||
--	    !(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
--	      dev->power.may_skip_resume))
-+	if (!(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
-+	      dev->power.may_skip_resume) || !pm_runtime_need_not_resume(dev))
- 		dev->power.must_resume = true;
- 
- 	if (dev->power.must_resume)
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 6699096ff2fa6..edee7f1af1cec 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1809,7 +1809,7 @@ void pm_runtime_drop_link(struct device_link *link)
- 	pm_request_idle(link->supplier);
- }
- 
--static bool pm_runtime_need_not_resume(struct device *dev)
-+bool pm_runtime_need_not_resume(struct device *dev)
+diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
+index 17d45f06cedf3..3fa22af13f745 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dsi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
+@@ -920,12 +920,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
+ 				     const struct mipi_dsi_msg *msg)
  {
- 	return atomic_read(&dev->power.usage_count) <= 1 &&
- 		(atomic_read(&dev->power.child_count) == 0 ||
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 9a10b6bac4a71..ed01ae76e2fa5 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -46,6 +46,7 @@ static inline bool queue_pm_work(struct work_struct *work)
+ 	struct mtk_dsi *dsi = host_to_dsi(host);
+-	u32 recv_cnt, i;
++	ssize_t recv_cnt;
+ 	u8 read_data[16];
+ 	void *src_addr;
+ 	u8 irq_flag = CMD_DONE_INT_FLAG;
+ 	u32 dsi_mode;
+-	int ret;
++	int ret, i;
  
- extern int pm_generic_runtime_suspend(struct device *dev);
- extern int pm_generic_runtime_resume(struct device *dev);
-+extern bool pm_runtime_need_not_resume(struct device *dev);
- extern int pm_runtime_force_suspend(struct device *dev);
- extern int pm_runtime_force_resume(struct device *dev);
+ 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
+ 	if (dsi_mode & MODE) {
+@@ -974,7 +974,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
+ 	if (recv_cnt)
+ 		memcpy(msg->rx_buf, src_addr, recv_cnt);
  
-@@ -234,6 +235,7 @@ static inline bool queue_pm_work(struct work_struct *work) { return false; }
+-	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
++	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
+ 		 recv_cnt, *((u8 *)(msg->tx_buf)));
  
- static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
- static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
-+static inline bool pm_runtime_need_not_resume(struct device *dev) {return true; }
- static inline int pm_runtime_force_suspend(struct device *dev) { return 0; }
- static inline int pm_runtime_force_resume(struct device *dev) { return 0; }
- 
+ restore_dsi_mode:
 -- 
 2.39.5
 
