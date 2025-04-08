@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDB0A8078A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D5CA804D3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13454C5041
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B3ED8820A0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3756A26B949;
-	Tue,  8 Apr 2025 12:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF42326A0E0;
+	Tue,  8 Apr 2025 12:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moqeSf7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7Rdacds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37C7268FE4;
-	Tue,  8 Apr 2025 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCBD264FB0;
+	Tue,  8 Apr 2025 12:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115365; cv=none; b=mKRmPl6O31RKAE7aLw2ZO7ZsjucgvTWIQcCtq98yTj99SpiQBm8m+rOGh4qD/rjgjT8gq0BPtS2C9lDTY8r6QkMs3oyYJOcex18NPDKM02OaJDotZ+pq5kDZMjXE9nJwDrFZfFCgY2OWLvVOekOU3FYZLQtNU/IG3l1oFQyEATs=
+	t=1744113674; cv=none; b=fjwQoE0aIewlO218RXMV21TCngI76Z1dHBu2JUjS3jE9NUeEFbpf0Uh9YkV1PNLO786cjWJVWFSuw7mdtUoHUHYe1udF+Dh1NiibTnt6bgz8q5VAmffCNcdSoOXgyzsuEy74Zlneh8q0JvO30kfJUj9mnB7x9elsRT8B/HWGquI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115365; c=relaxed/simple;
-	bh=rNNAY9q0sQG8CZSwAoKYeWCXp5rr7fG/dsv7XYQLx3w=;
+	s=arc-20240116; t=1744113674; c=relaxed/simple;
+	bh=2g9PrQ/WAo/hU2j2wf5claVW8X/NqcoW+YPjWYqTbKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZNI8ovI4ThazTIK/2R+R0M/ECYiVOn3Y8mYqiVeQfKFs/UGWYtXlKWgJTkOdvmIOww08MaCqXSauNGA+LiWVTiBRWtI83YsZg44XoFutpgBLRWx8h8fiWKLSdir46zKGoFXSYS/IkcFrwTBZsgx36rKb6WKC/AQn+OOUcgFUda0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moqeSf7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76329C4CEE5;
-	Tue,  8 Apr 2025 12:29:24 +0000 (UTC)
+	 MIME-Version; b=hHdkP/YV/8J7GUCdPIAf0Py1BThyXm/YermSWoTVj2K0+i4r4a6UaqVqxEk1NGIYRW3SK04XKpVhtkn0mfXmP6tFhkpVyXzr0u152T4rlh2+4wpHY6K252cn8M6fElSaGKMDewZLqEVP1ErBKdPQQq+FM7r4q/MoNudP6VZAmwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7Rdacds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDA8C4CEE5;
+	Tue,  8 Apr 2025 12:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115364;
-	bh=rNNAY9q0sQG8CZSwAoKYeWCXp5rr7fG/dsv7XYQLx3w=;
+	s=korg; t=1744113674;
+	bh=2g9PrQ/WAo/hU2j2wf5claVW8X/NqcoW+YPjWYqTbKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moqeSf7kdgMXDLg3SRTjDc1uaRm444AJPR4KQTXmRVonGMrMHXEHr1fw+2NjTdYV0
-	 6xtj3XFcGBJrfSdDfkR2+fWRWFSSd0LG8FQ1+xgg0BoxQuxhWdWFyTh7+pYAls8TG5
-	 dh29CaY0SohvpHDthfN5gBVcsNeVmjkFO5FmROrc=
+	b=z7Rdacds04gUGUKRE4BSgFIm2oPppqN8Ls0c13pzAdcgZmcveaZ6h1bhAOkPVBqcu
+	 AJC7f77ymUqgCWtgQxwFIL2wFtYhDnDWY7WbPIB5T8dgAvXHogqaW7u7bmpbCM3c/M
+	 4aNexFy5FfYH7cgAZ5mvcf4wTCphJiZrobfon7t0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.13 447/499] platform/x86: ISST: Correct command storage data length
+	Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 248/268] mmc: omap: Fix memory leak in mmc_omap_new_slot
 Date: Tue,  8 Apr 2025 12:50:59 +0200
-Message-ID: <20250408104902.377296324@linuxfoundation.org>
+Message-ID: <20250408104835.277123864@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 9462e74c5c983cce34019bfb27f734552bebe59f upstream.
+commit 3834a759afb817e23a7a2f09c2c9911b0ce5c588 upstream.
 
-After resume/online turbo limit ratio (TRL) is restored partially if
-the admin explicitly changed TRL from user space.
+Add err_free_host label to properly pair mmc_alloc_host() with
+mmc_free_host() in GPIO error paths. The allocated host memory was
+leaked when GPIO lookups failed.
 
-A hash table is used to store SST mail box and MSR settings when modified
-to restore those settings after resume or online. This uses a struct
-isst_cmd field "data" to store these settings. This is a 64 bit field.
-But isst_store_new_cmd() is only assigning as u32. This results in
-truncation of 32 bits.
-
-Change the argument to u64 from u32.
-
-Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250318140226.19650-1-linmq006@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/omap.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -84,7 +84,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
- static DEFINE_MUTEX(isst_hash_lock);
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1276,19 +1276,25 @@ static int mmc_omap_new_slot(struct mmc_
+ 	/* Check for some optional GPIO controls */
+ 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vsd))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
++	if (IS_ERR(slot->vsd)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
+ 				     "error looking up VSD GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vio))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
++	if (IS_ERR(slot->vio)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
+ 				     "error looking up VIO GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
+ 						    id, GPIOD_IN);
+-	if (IS_ERR(slot->cover))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
++	if (IS_ERR(slot->cover)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
+ 				     "error looking up cover switch GPIO\n");
++		goto err_free_host;
++	}
  
- static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
--			      u32 data)
-+			      u64 data)
- {
- 	struct isst_cmd *sst_cmd;
+ 	host->slots[id] = slot;
  
+@@ -1348,6 +1354,7 @@ err_remove_slot_name:
+ 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
+ err_remove_host:
+ 	mmc_remove_host(mmc);
++err_free_host:
+ 	mmc_free_host(mmc);
+ 	return r;
+ }
 
 
 
