@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-129906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A35A801C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D100A7FDD4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 907041896B93
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 582853B3CAD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D88227BAA;
-	Tue,  8 Apr 2025 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFA7268C72;
+	Tue,  8 Apr 2025 10:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlbOP1PP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9uxFXih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309AF219301;
-	Tue,  8 Apr 2025 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294BB227EBD;
+	Tue,  8 Apr 2025 10:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112294; cv=none; b=USJpWSH5unAvPfewge75BwZrm2PZwMXI08oDyzPpS4ghSWZ+MzHXxgJ//UEKXgAfiIrNALa2OhlMVgEtGLto47LITB/P6s9Gt/y6Bw0AeNctB5grSpYG1Zpb0iY+btE63sq93OPZULOlTvQFmzcblMaE7M1CbUbZMp5RQkvN7W0=
+	t=1744109702; cv=none; b=PLaRj6/XA1+qnHbIWoPJte6kew+foQfgpiuZXeMgBenRWoKN6dq4+niw9iJEb5xjQBeVPkA75p/Ut8nGzpM1DenqQGcsTtuhLHuxsJCe0IL9anqU0b/856bbG1QcUgWBWJyyDeLkEdonVx98020KS4dnfa19T1XssPYslOquYZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112294; c=relaxed/simple;
-	bh=VxTiyk6YH1aUhQDxWlG4tSC1kDH9IaPdpklZf3b/MyU=;
+	s=arc-20240116; t=1744109702; c=relaxed/simple;
+	bh=/Juwqdk+TLQcwBIzc7a0YbbBuFBTOhORg2iVqUqnSrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fy07LLWDoMSDUTo1S7CcRVTJYAZ0jXws5HLoErgm1L5vvF0FMibgEGl7lpT0XamSfqiQCLZn1wyYAx/rVlZfHecpAMKPzhR3jdLFjrvXdNa3cHf8J0NXQ7NytRPgUQ5t1njrcaVILYUY5Tpvdd8IbSojPrd50oDfcmXcVT0qyoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlbOP1PP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A68C4CEE5;
-	Tue,  8 Apr 2025 11:38:13 +0000 (UTC)
+	 MIME-Version; b=WznemfJIdnbhlANGARdsFPEOeM8QSexoHYaNmhXDDzu3J/pfT82AiOcg0nxTzOeiboOprXB7VDGB/GOqmVz8JH0jX69n6EiJ1+mCfSDiaUgKxz3dBV8IB4ZNS0VxwHVQmMTmrvRgrDXbyH5BT60ItgfpMvVk3oCD5SeB1iIRdxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9uxFXih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E839C4CEE5;
+	Tue,  8 Apr 2025 10:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112294;
-	bh=VxTiyk6YH1aUhQDxWlG4tSC1kDH9IaPdpklZf3b/MyU=;
+	s=korg; t=1744109701;
+	bh=/Juwqdk+TLQcwBIzc7a0YbbBuFBTOhORg2iVqUqnSrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlbOP1PPmR0IPUO4dyMD4R0DE2X4T3aEl3Qo59omMZD8fgXZOyCiytr94ureAYZRD
-	 AcIqjWpHYj9R40kkEHdnK+EB0O+HyoynJK1QVSWnnAWoS7smtqs/gj3YFQSVtZQeSa
-	 QreTCF56HHZEUP+mhuiWuz7ADQNcVGlWADm4BPfY=
+	b=s9uxFXihorSLjPMRAwPNo9ucHVOT8GFOYk9D+J4g70/GPYoRozAmD7gHARpYl5Vqq
+	 WPtsoFePdMmPsLcdSO+o6ew/UOrQF2fUPo+4rk3m43Eh9chZvUKtwP4x6Q2F+PN9gd
+	 umNJYV8eBkHd5mCuY7TE13u6qz0FNsO1a7RYnL9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kashavkin <akashavkin@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/279] netfilter: nft_exthdr: fix offset with ipv4_find_option()
+Subject: [PATCH 5.10 021/227] nvme-fc: go straight to connecting state when initializing
 Date: Tue,  8 Apr 2025 12:46:39 +0200
-Message-ID: <20250408104826.819515614@linuxfoundation.org>
+Message-ID: <20250408104821.030643441@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kashavkin <akashavkin@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 6edd78af9506bb182518da7f6feebd75655d9a0e ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-There is an incorrect calculation in the offset variable which causes
-the nft_skb_copy_to_reg() function to always return -EFAULT. Adding the
-start variable is redundant. In the __ip_options_compile() function the
-correct offset is specified when finding the function. There is no need
-to add the size of the iphdr structure to the offset.
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
-Signed-off-by: Alexey Kashavkin <akashavkin@gmail.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
+
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index d1dcf5b2e92e1..7c2931e024bb0 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -85,7 +85,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	unsigned char optbuf[sizeof(struct ip_options) + 40];
- 	struct ip_options *opt = (struct ip_options *)optbuf;
- 	struct iphdr *iph, _iph;
--	unsigned int start;
- 	bool found = false;
- 	__be32 info;
- 	int optlen;
-@@ -93,7 +92,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	iph = skb_header_pointer(skb, 0, sizeof(_iph), &_iph);
- 	if (!iph)
- 		return -EBADMSG;
--	start = sizeof(struct iphdr);
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 8e05239073ef2..f49e98c2e31db 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3536,8 +3536,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
- 	optlen = iph->ihl * 4 - (int)sizeof(struct iphdr);
- 	if (optlen <= 0)
-@@ -103,7 +101,7 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	/* Copy the options since __ip_options_compile() modifies
- 	 * the options.
- 	 */
--	if (skb_copy_bits(skb, start, opt->__data, optlen))
-+	if (skb_copy_bits(skb, sizeof(struct iphdr), opt->__data, optlen))
- 		return -EBADMSG;
- 	opt->optlen = optlen;
- 
-@@ -118,18 +116,18 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 		found = target == IPOPT_SSRR ? opt->is_strictroute :
- 					       !opt->is_strictroute;
- 		if (found)
--			*offset = opt->srr + start;
-+			*offset = opt->srr;
- 		break;
- 	case IPOPT_RR:
- 		if (!opt->rr)
- 			break;
--		*offset = opt->rr + start;
-+		*offset = opt->rr;
- 		found = true;
- 		break;
- 	case IPOPT_RA:
- 		if (!opt->router_alert)
- 			break;
--		*offset = opt->router_alert + start;
-+		*offset = opt->router_alert;
- 		found = true;
- 		break;
- 	default:
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
