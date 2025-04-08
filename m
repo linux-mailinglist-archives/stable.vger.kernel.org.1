@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-129287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDB2A7FF2B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:19:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D062A7FEAD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B5119E5C75
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601414458E2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BD2268691;
-	Tue,  8 Apr 2025 11:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7025268C60;
+	Tue,  8 Apr 2025 11:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRJxTM9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MopvyAlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFB3224F6;
-	Tue,  8 Apr 2025 11:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C591FBCB2;
+	Tue,  8 Apr 2025 11:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110619; cv=none; b=W3A1ngvyrsKC+0ZCWlEsr4CIwdOn7OyiHv4gpBw54SAmRUWzpKBgE5Mw3Ja695Rex1SGDCQxhSWTXOBFJLQP/hagdFsatlPogMDaEN6XMgMCQObdQsbLrJmfGozPWwuZv3MNprcslnDKRbW3tpEtK6mXF3LbQa6zc2MqEg0yWJw=
+	t=1744110509; cv=none; b=O79tYes9TM70EKdj80WwBGBXJgAK360n+wy5QKA6a9hwybOkuTQ4Zac8d3LM44g/UaTxktIXVSgLmSd74bDVgzCvKXKB5scl0ZVqL/afQOKPemGPm98dk5eFHFDWeFQIdaHyGgEnFqV8+8ur6GUH38NjAHgXD/3l/MesOsIyC0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110619; c=relaxed/simple;
-	bh=7qwIDPpdKr+/+asdDalQJ+Dvzsc00ZnZWe/hqaaLdLs=;
+	s=arc-20240116; t=1744110509; c=relaxed/simple;
+	bh=neGZtTNVDTQ6rg7YTRhFusYgoYCHKAi6ILyJD2zmuVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOsBqlJqWMRbCzNHSPgawClJiA85pCPYF6rw503S/1BMsxbo5qa9HFjF5rl4y5rVKfLqB1JMu3S23DPPsMsHq5EB0F47fskBE7MLCvn2W5CWJuijG43SWOynp8jdDWP2cKvxZ7ayvH/otmsEV48v3SmhvXvy8knePGt9vdOxZtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRJxTM9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04A3C4CEE5;
-	Tue,  8 Apr 2025 11:10:18 +0000 (UTC)
+	 MIME-Version; b=Gx2A7xRxiVUCi2G5Aoiop7Ocu4AVhYvCW3kjQ/jG/tt00uk8RWBuWy6M/3HIUZYtshpfuucRc3VXiUT+MRmpIKM1CuG6RBRS2uyNthAQAuFX+ufgMeHPTsjMgZo3oczwUT4N6WXWSjmhiUvL7pdgAmz5tsRKt4qtNzRH7mlVyog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MopvyAlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C8EC4CEE5;
+	Tue,  8 Apr 2025 11:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110619;
-	bh=7qwIDPpdKr+/+asdDalQJ+Dvzsc00ZnZWe/hqaaLdLs=;
+	s=korg; t=1744110508;
+	bh=neGZtTNVDTQ6rg7YTRhFusYgoYCHKAi6ILyJD2zmuVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRJxTM9ECr+gPrnUb7CMEypAjJeCzLHWJf5xdMJz1S9TAYAHs0r9iBV9VDQQMhO2F
-	 gWQVR16xVsxmb6Iar5wLB0qlYoVPb+zuT1PdCBXB1qw7qqBcGW9XV4CpnYVa8So8H9
-	 YypKHifjcZPky4ozAbvNvF3N5J+F4fm/1JM/Izk0=
+	b=MopvyAlVjeZbqTr8sgiQFQkSC10JYAY8Mvs8e4eH5K9+Heqx4p3N4a0acKG2e3zAQ
+	 loWESxuy7HeIFm5HStqz7NAuy2+/IoFMbhTXqoGCdGMrTdNwIhrrJM3hN0/q3Ri88u
+	 90KyO+eQGaMmPq5O8kHa8Ixkm4zuCeuk83a9C+40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Eddie Huang <eddie.huang@mediatek.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 082/731] arm64: dts: mediatek: mt8173-elm: Drop pmics #address-cells and #size-cells
-Date: Tue,  8 Apr 2025 12:39:39 +0200
-Message-ID: <20250408104916.177909998@linuxfoundation.org>
+Subject: [PATCH 6.14 083/731] arm64: dts: mediatek: mt8173: Fix some node names
+Date: Tue,  8 Apr 2025 12:39:40 +0200
+Message-ID: <20250408104916.201108650@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -69,41 +70,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit aaa0b40e157c65aaa5e0ad903675f245333381bb ]
+[ Upstream commit be035e4a26edf8fdcbc4fe95d16c28deade13bb0 ]
 
-The PMIC has child nodes for each of its functions. It is not an actual
-bus and no addressing is involved.
+Some node names are incorrect, causing DT validations due to mismatches.
 
-Dropping the bogus properties fixes a DT validation error:
-
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pmic: '#address-cells', '#size-cells' do not match any of the regexes: 'pinctrl-[0-9]+'
-            from schema $id: http://devicetree.org/schemas/mfd/mediatek,mt6397.yaml#
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412212322.JTFpRD7X-lkp@intel.com/
-Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
+Fixes: b3a372484157 ("arm64: dts: Add mediatek MT8173 SoC and evaluation board dts and Makefile")
+Fixes: f2ce70149568 ("arm64: dts: mt8173: Add clock controller device nodes")
+Cc: Eddie Huang <eddie.huang@mediatek.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-1-wenst@chromium.org
+Link: https://lore.kernel.org/r/20250108083424.2732375-3-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-index b5d4b5baf4785..0d995b342d463 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-@@ -925,8 +925,6 @@
- &pwrap {
- 	pmic: pmic {
- 		compatible = "mediatek,mt6397";
--		#address-cells = <1>;
--		#size-cells = <1>;
- 		interrupts-extended = <&pio 11 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173.dtsi b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+index 3458be7f7f611..0ca63e8c4e16c 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -352,14 +352,14 @@
+ 			#clock-cells = <1>;
+ 		};
+ 
+-		infracfg: power-controller@10001000 {
++		infracfg: clock-controller@10001000 {
+ 			compatible = "mediatek,mt8173-infracfg", "syscon";
+ 			reg = <0 0x10001000 0 0x1000>;
+ 			#clock-cells = <1>;
+ 			#reset-cells = <1>;
+ 		};
+ 
+-		pericfg: power-controller@10003000 {
++		pericfg: clock-controller@10003000 {
+ 			compatible = "mediatek,mt8173-pericfg", "syscon";
+ 			reg = <0 0x10003000 0 0x1000>;
+ 			#clock-cells = <1>;
+@@ -564,7 +564,7 @@
+ 			memory-region = <&vpu_dma_reserved>;
+ 		};
+ 
+-		sysirq: intpol-controller@10200620 {
++		sysirq: interrupt-controller@10200620 {
+ 			compatible = "mediatek,mt8173-sysirq",
+ 				     "mediatek,mt6577-sysirq";
+ 			interrupt-controller;
 -- 
 2.39.5
 
