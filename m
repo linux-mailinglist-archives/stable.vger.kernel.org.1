@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0069A802D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAC0A7FE3F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDD016E4E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BBB19E356D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC5D267F6E;
-	Tue,  8 Apr 2025 11:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD9026A0C7;
+	Tue,  8 Apr 2025 11:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0MOE9yp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN79sCCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD1265602;
-	Tue,  8 Apr 2025 11:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168E126A0D4;
+	Tue,  8 Apr 2025 11:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112697; cv=none; b=U5KJ02bECE6TLccbZYzp/BrUys2BBhuTmIWA1Jt+H4zBt7fpoMKptHu033ArYn0dtojE2HbU975WoI4FW02p2AS3Jngn2cxyE6px4oIShk/is+FxSvlp34QVvSzlZaMp3B1JWP6p252Z3POsM1ydckGD/dbhK8TkXML9On9lhZg=
+	t=1744110121; cv=none; b=BK/aSAa/0vCMFNKru9usDhAV4CA6VJzdMlMC1bhs5/LlIepItIZjiHAqWKMurBc1ZftCmf2dWd2BXqd9lgRiAaBtG/QWCcs+niBOI/6GKnWYBwQzTuFaBb2V/Ue9bRUzA51sqF618CyFhDRAwBTuQrN5OgIktwlPQMQAHcla01k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112697; c=relaxed/simple;
-	bh=lU82SEjUDhCxFgkytCRCF9GbIMn6odaKKepHxHDVc18=;
+	s=arc-20240116; t=1744110121; c=relaxed/simple;
+	bh=Qa1GVGLQeX7JUdtrXmWCeNHxnHAal3/B98KQfn+lXlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q1R9Nf/+7BoXVh+hyH0ZcSqYFr4oqw6Ytgto9t9olAfkfc/yQgON2rfpfenbMKDC2WAhRybQpvHp9mQFAOkUuUUoz9V22T/w17ffkzfChNqg4y5T5joM5eCRpjWFiuxLzTtWpPj/YwnUcPz6gDvrnaxj78DsmzkmVGmmm9crsDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0MOE9yp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C252CC4CEE5;
-	Tue,  8 Apr 2025 11:44:56 +0000 (UTC)
+	 MIME-Version; b=Rn05oaR1EXGPSrv6JVhkUjoODpBKfvu+sF5EwcuoiCbZjilwF23hDjx4hjNOqjTDXFc8IXmHgZ+DhjeqH8jzAvJZsuieTVLHT7xnPqr4L478VmVh7YBDVHDs5g9W4CYP8L/KZotpIazytAc0MLN/hl2GK0RpPPSSxvENRhBAOdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN79sCCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B328C4CEE7;
+	Tue,  8 Apr 2025 11:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112697;
-	bh=lU82SEjUDhCxFgkytCRCF9GbIMn6odaKKepHxHDVc18=;
+	s=korg; t=1744110121;
+	bh=Qa1GVGLQeX7JUdtrXmWCeNHxnHAal3/B98KQfn+lXlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0MOE9ypvM+6FYddl+wzf+zlGujAPi+8qr/kiglKq4tl1AYzxzzfuOFVKVo4Kz4if
-	 9XH4yCyl66kMh6DZEiCEbn7sZeqwhZr36ZG7e7u2VXswGGfSiuDRoiIFAtUjFGu/qz
-	 h7bQbduvRO7m/Qvn1GM/olLvIkC/ge/Wwc0aQXxg=
+	b=kN79sCCdqEhhE6I2AG1oa/UL+YGUfSBSeqrFwRTV4XOlPWA0smKuy6WY+pXC4UhUm
+	 5Z07w2tIKtGPOSYS8UjPWscYvZJhzVMSai4Im+q1vXgR9AjT18nS+b9BEey0RVbIUn
+	 LmwpNm0I4Ut/OtdG/HKw/CkMRkPpFjOc8tCusEVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/279] PCI: pciehp: Dont enable HPIE when resuming in poll mode
-Date: Tue,  8 Apr 2025 12:49:05 +0200
-Message-ID: <20250408104830.708814448@linuxfoundation.org>
+Subject: [PATCH 5.10 168/227] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
+Date: Tue,  8 Apr 2025 12:49:06 +0200
+Message-ID: <20250408104825.358128054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
+[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
 
-PCIe hotplug can operate in poll mode without interrupt handlers using a
-polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
-interrupt during suspend") failed to consider that and enables HPIE
-(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
+The amount of looping through the list of delegations is occasionally
+leading to soft lockups. Avoid at least some loops by not requiring the
+NFSv4 state manager to scan for delegations that are marked for
+return-on-close. Instead, either mark them for immediate return (if
+possible) or else leave it up to nfs4_inode_return_delegation_on_close()
+to return them once the file is closed by the application.
 
-Only set HPIE if non-poll mode is in use. This makes
-pcie_enable_interrupt() match how pcie_enable_notification() already
-handles HPIE.
-
-Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
-Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index 7773009b8b32e..6647ade09f054 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -840,7 +840,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
- {
- 	u16 mask;
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 02d9af026ad15..dbed8d44d8053 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -552,17 +552,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
  
--	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
-+	mask = PCI_EXP_SLTCTL_DLLSCE;
-+	if (!pciehp_poll_mode)
-+		mask |= PCI_EXP_SLTCTL_HPIE;
- 	pcie_write_cmd(ctrl, mask, mask);
+ 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
+ 		ret = true;
+-	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
+-		struct inode *inode;
+-
+-		spin_lock(&delegation->lock);
+-		inode = delegation->inode;
+-		if (inode && list_empty(&NFS_I(inode)->open_files))
+-			ret = true;
+-		spin_unlock(&delegation->lock);
+-	}
+-	if (ret)
+-		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+ 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
+@@ -800,11 +789,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
+ 	return nfs4_inode_return_delegation(inode);
  }
  
+-static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
+-		struct nfs_delegation *delegation)
++static void
++nfs_mark_return_if_closed_delegation(struct nfs_server *server,
++				     struct nfs_delegation *delegation)
+ {
+-	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+-	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
++	struct inode *inode;
++
++	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
++	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
++		return;
++	spin_lock(&delegation->lock);
++	inode = delegation->inode;
++	if (!inode)
++		goto out;
++	if (list_empty(&NFS_I(inode)->open_files))
++		nfs_mark_return_delegation(server, delegation);
++	else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out:
++	spin_unlock(&delegation->lock);
+ }
+ 
+ static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
 -- 
 2.39.5
 
