@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3267A802DE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82C8A801B5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1607462886
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75548447D2E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB896268681;
-	Tue,  8 Apr 2025 11:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E030269830;
+	Tue,  8 Apr 2025 11:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmSSalty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBgtzZWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8406267B8C;
-	Tue,  8 Apr 2025 11:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC96268C79;
+	Tue,  8 Apr 2025 11:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112705; cv=none; b=I8c685H8/SORJ/PhHFJlilq2b3JBY+BZqYjBOmCp1J3tx4iEhYvLmbN5bHkl2w+uCy5B4CC8bbDU4vY9icSiwBj9r9pR54NvBMjZTaJ2vyoPBqixRkMcOfTJbYuS2oiZZVfLnqu32F84GU/WH0Lmby2Vb8bBPD0QCvJXJ9glcNc=
+	t=1744111935; cv=none; b=qNXgc5vBETG3bFM6n+vkCOg73P1aFzmbavQkOUT7oGEtvEkeG50aMhXQOQi7RfLS/0Mr0pcjDNs/qJP/YgQShbmwIlBBnXuhs10eon7veN4B8K9NVk2NRrQAZ/eBL0Ek9mDyCz963y+aCVxxKaRbf6IenRwIML1h/BAhPx1iEQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112705; c=relaxed/simple;
-	bh=X0XZHSMT4B6zfS/LiZ8W/zZhFPEBWz9es78udZUxWss=;
+	s=arc-20240116; t=1744111935; c=relaxed/simple;
+	bh=IiYJJ0ltO25jL5ssbkxBv0CVwQpyUPo3fXTzgV3In0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIhCuAI38wlpyNOhq12YKwYibT/kzr2ogSlZdFpdnvcTeutO7WmdJCa7dEl/c65r/wgIcS8LeLZzUk2aAxC3cwTGudhmTlDv+yJU9fRB/Gl/UYL1imrHDaV4f8zb8qLVbREmJqsZqRrF6VOwY+8D6sY2uMymv7LcuRD4X8jHLq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmSSalty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048EFC4CEE5;
-	Tue,  8 Apr 2025 11:45:04 +0000 (UTC)
+	 MIME-Version; b=nbLph00CWNmSov9/C9Khp4c/PQ65HeY6flanWd/+naN2s0ezjd7KbzCPzUd9+9AdhtNAvmy4vIMbmWL1mnVrd/lJLA1wFKm4NxMlS5qgf+HWu4wNDu3s9e1Diq4F4Ms3pwc3Xpv41/lsSmvWQ7IFHFU8Iu1DP7Hoq4udrqRVgTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBgtzZWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8924C4CEE5;
+	Tue,  8 Apr 2025 11:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112705;
-	bh=X0XZHSMT4B6zfS/LiZ8W/zZhFPEBWz9es78udZUxWss=;
+	s=korg; t=1744111935;
+	bh=IiYJJ0ltO25jL5ssbkxBv0CVwQpyUPo3fXTzgV3In0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmSSaltywlUwvGxPT5nnRWecxZMYe8xpzPTy0+Ze2RVbr6R8TPAlVVsq8372qaAj7
-	 fQ46gvMGYKOpgIf43bOl/IjCqfc+COSGvVzjH1AaoCSa2MQ86wN4CmmvzPCgXn9qrz
-	 WG44QpZ4ID/roVzxL6YS9syidS5f/7a6CqDiRlzU=
+	b=OBgtzZWNc3BtyRkkEr3x7FwEYV4jPA/xeaq62OtOW9HL5jKRkdwMyZHVknxebqTde
+	 I1DstWB9gUVaOhbqmWkz9v9ttvN2btnxjFliti4CVpa4QmWkEUQdCxFkGkPN9AgteN
+	 l/YSzR7wkP80vCM5EVKr4tT1HMzMBgRfeSeUB/Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Zdenek Bouska <zdenek.bouska@siemens.com>,
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/279] watch_queue: fix pipe accounting mismatch
+Subject: [PATCH 6.14 614/731] igc: Fix TX drops in XDP ZC
 Date: Tue,  8 Apr 2025 12:48:31 +0200
-Message-ID: <20250408104829.796967858@linuxfoundation.org>
+Message-ID: <20250408104928.554022017@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Zdenek Bouska <zdenek.bouska@siemens.com>
 
-[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
+[ Upstream commit d931cf9b38da0f533cacfe51c863a9912e67822f ]
 
-Currently, watch_queue_set_size() modifies the pipe buffers charged to
-user->pipe_bufs without updating the pipe->nr_accounted on the pipe
-itself, due to the if (!pipe_has_watch_queue()) test in
-pipe_resize_ring(). This means that when the pipe is ultimately freed,
-we decrement user->pipe_bufs by something other than what than we had
-charged to it, potentially leading to an underflow. This in turn can
-cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
+Fixes TX frame drops in AF_XDP zero copy mode when budget < 4.
+xsk_tx_peek_desc() consumed TX frame and it was ignored because of
+low budget. Not even AF_XDP completion was done for dropped frames.
 
-To remedy this, explicitly account for the pipe usage in
-watch_queue_set_size() to match the number set via account_pipe_buffers()
+It can be reproduced on i226 by sending 100000x 60 B frames with
+launch time set to minimal IPG (672 ns between starts of frames)
+on 1Gbit/s. Always 1026 frames are not sent and are missing a
+completion.
 
-(It's unclear why watch_queue_set_size() does not update nr_accounted;
-it may be due to intentional overprovisioning in watch_queue_set_size()?)
-
-Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 9acf59a752d4c ("igc: Enable TX via AF_XDP zero-copy")
+Signed-off-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+Reviewed-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watch_queue.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index ae31bf8d2feb1..6ed37bc95cb7b 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -274,6 +274,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
- 	if (ret < 0)
- 		goto error;
- 
-+	/*
-+	 * pipe_resize_ring() does not update nr_accounted for watch_queue
-+	 * pipes, because the above vastly overprovisions. Set nr_accounted on
-+	 * and max_usage this pipe to the number that was actually charged to
-+	 * the user above via account_pipe_buffers.
-+	 */
-+	pipe->max_usage = nr_pages;
-+	pipe->nr_accounted = nr_pages;
-+
- 	ret = -ENOMEM;
- 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
- 	if (!pages)
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 3044392e8ded8..706dd26d4dde2 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -3041,7 +3041,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
+ 	 * descriptors. Therefore, to be safe, we always ensure we have at least
+ 	 * 4 descriptors available.
+ 	 */
+-	while (xsk_tx_peek_desc(pool, &xdp_desc) && budget >= 4) {
++	while (budget >= 4 && xsk_tx_peek_desc(pool, &xdp_desc)) {
+ 		struct igc_metadata_request meta_req;
+ 		struct xsk_tx_metadata *meta = NULL;
+ 		struct igc_tx_buffer *bi;
 -- 
 2.39.5
 
