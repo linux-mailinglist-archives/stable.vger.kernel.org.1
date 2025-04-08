@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239C3A8087C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA17A80867
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CACB78A4347
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5497B077D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CE126F461;
-	Tue,  8 Apr 2025 12:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DC726F460;
+	Tue,  8 Apr 2025 12:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRJA9ntA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv30i83h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5867A26F45E;
-	Tue,  8 Apr 2025 12:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CDB268FED;
+	Tue,  8 Apr 2025 12:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115501; cv=none; b=cR8mSUU2PpMuDsgeK0oFau2Sy71rCD+oc95pxYCPBFApeKUPxZ+EFWKNaqf9a1itXDs7U1P7L0cQYDd+g/Cp+wTPPbXlF/OSa4ezsr5geJeaBZFc8INejX+PfnH/87J8M54uLjx1SDWNync6QXrGeMzpr9arYB5DNZjwm6prcWI=
+	t=1744115992; cv=none; b=e7jv/9rGe/ZJZ8HVW252XZCvYFIoltUPuTPRWf76NWtQyV+W/dgjXSpy6e2+32Xvau4Afm3eB7Nfi4HaschQQygSKMCUqJ5jEmmEjW8FwrlrXtDznXrRra0TweSBZbQFcpOvEGPTDB7V3RFq/kdRlkdSWhs9X+YRIQDybV25grg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115501; c=relaxed/simple;
-	bh=gWe62c0v78AOeYwJ4CyISnM490CYKgLYao9RlUqTnLk=;
+	s=arc-20240116; t=1744115992; c=relaxed/simple;
+	bh=XVQsyBlG4apCEXVSKbPSRqp0Cna+fhTBrazq9RovssY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIaNtj1pu5gXWY9IzsNSHYoFdVTQnyXqaubqH3VwMps3kRMKcet3NFrd6dsGRS8ny1S8QO1lV5ILOilQwFyKDqFLkOaGN1H+G67GeoMm4ZyLzDG8bfFPicNDkpVMeIpr+cM/otlt30akOwDWuuFitQdfQ0SQeYfmyc0Os64Q26s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRJA9ntA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB10C4CEE7;
-	Tue,  8 Apr 2025 12:31:40 +0000 (UTC)
+	 MIME-Version; b=rnTHJM4k1YMy0opWUUYFh6iREuN7/Q+S2cfLIduVlc6vpXJJB/bbozt2s30zaUKnm9B9Ltn3MgTybimZoIikR22KeKMJurm8/7MC1LOUfeALw3r6qD38UXdijno/E5n2xtlscqtTMrvhDOOU+8tQmD1yAlxx+UHNBJKC4u2IrPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv30i83h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CC5C4CEE5;
+	Tue,  8 Apr 2025 12:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115501;
-	bh=gWe62c0v78AOeYwJ4CyISnM490CYKgLYao9RlUqTnLk=;
+	s=korg; t=1744115991;
+	bh=XVQsyBlG4apCEXVSKbPSRqp0Cna+fhTBrazq9RovssY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRJA9ntAkuEbbjogeDna+QVP+vo3aNUWwLv1r/k20C36tI8oZ2ZVHjsiaW76KsMkt
-	 lfHaqAn0S07aN527iIQnafFx1zFqT4lneEuT6BQSH0nhMNkKiC4mMxFBb8KFgHpeeS
-	 hwcahljhK21UfuR1rGxSun0SUahOdWFBJm86BJDI=
+	b=zv30i83hD58fGejCo8Z+3MRBBu+Z2PJu2sjSlt0tsZF8rypfWj5Pr9twIc3kvC/oF
+	 JpM61KwouOsqxYD++5SwNXQuhwtaxJL4Su+jG3aEEz6lz7ndo08ezpJlQY6p07glf4
+	 ms4yCt8+2aF7egbVZTIqu8doQMu016RnhoW3lZHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 497/499] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
-Date: Tue,  8 Apr 2025 12:51:49 +0200
-Message-ID: <20250408104903.757083746@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 6.1 180/204] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
+Date: Tue,  8 Apr 2025 12:51:50 +0200
+Message-ID: <20250408104825.601177430@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
+commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
 
-NFSD sends CB_RECALL_ANY to clients when the server is low on
-memory or that client has a large number of delegations outstanding.
+The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
+intel_pmu_save_and_restart_reload() is triggered, when sampling read
+topdown events.
 
-We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
-to disconnected clients, and gets confused. These calls never go
-anywhere if a backchannel transport to the target client isn't
-available. Before the server can send any backchannel operation, the
-client has to connect first and then do a BIND_CONN_TO_SESSION.
+In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
+the status of core PMU. The generic pmu->pmu_disable_count, updated in
+the perf_pmu_disable/enable pair, is not touched.
+However, the perf_pmu_disable/enable pair is invoked when sampling read
+in a NMI handler. The cpuc->enabled is mistakenly set by the
+perf_pmu_enable().
 
-This patch doesn't address the root cause of the confusion, but
-there's no need to queue up these optional operations if they can't
-go anywhere.
+Avoid disabling PMU if the core PMU is already disabled.
+Merge the logic together.
 
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
+ arch/x86/events/intel/ds.c   |   11 +----------
+ arch/x86/events/perf_event.h |    2 +-
+ 3 files changed, 25 insertions(+), 29 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6721,14 +6721,19 @@ deleg_reaper(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_state != NFSD4_ACTIVE ||
--			list_empty(&clp->cl_delegations) ||
--			atomic_read(&clp->cl_delegs_in_recall) ||
--			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
--			(ktime_get_boottime_seconds() -
--				clp->cl_ra_time < 5)) {
-+
-+		if (clp->cl_state != NFSD4_ACTIVE)
-+			continue;
-+		if (list_empty(&clp->cl_delegations))
-+			continue;
-+		if (atomic_read(&clp->cl_delegs_in_recall))
-+			continue;
-+		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
-+			continue;
-+		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
-+			continue;
-+		if (clp->cl_cb_state != NFSD4_CB_UP)
- 			continue;
--		}
- 		list_add(&clp->cl_ra_cblist, &cblist);
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2689,28 +2689,33 @@ static u64 adl_update_topdown_event(stru
  
- 		/* release in nfsd4_cb_recall_any_release */
+ DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
+ 
+-static void intel_pmu_read_topdown_event(struct perf_event *event)
++static void intel_pmu_read_event(struct perf_event *event)
+ {
+-	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
++	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
++		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
++		bool pmu_enabled = cpuc->enabled;
++
++		/* Only need to call update_topdown_event() once for group read. */
++		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
++			return;
++
++		cpuc->enabled = 0;
++		if (pmu_enabled)
++			intel_pmu_disable_all();
++
++		if (is_topdown_event(event))
++			static_call(intel_pmu_update_topdown_event)(event);
++		else
++			intel_pmu_drain_pebs_buffer();
++
++		cpuc->enabled = pmu_enabled;
++		if (pmu_enabled)
++			intel_pmu_enable_all(0);
+ 
+-	/* Only need to call update_topdown_event() once for group read. */
+-	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
+-	    !is_slots_event(event))
+ 		return;
++	}
+ 
+-	perf_pmu_disable(event->pmu);
+-	static_call(intel_pmu_update_topdown_event)(event);
+-	perf_pmu_enable(event->pmu);
+-}
+-
+-static void intel_pmu_read_event(struct perf_event *event)
+-{
+-	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
+-		intel_pmu_auto_reload_read(event);
+-	else if (is_topdown_count(event))
+-		intel_pmu_read_topdown_event(event);
+-	else
+-		x86_perf_event_update(event);
++	x86_perf_event_update(event);
+ }
+ 
+ static void intel_pmu_enable_fixed(struct perf_event *event)
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -789,7 +789,7 @@ unlock:
+ 	return 1;
+ }
+ 
+-static inline void intel_pmu_drain_pebs_buffer(void)
++void intel_pmu_drain_pebs_buffer(void)
+ {
+ 	struct perf_sample_data data;
+ 
+@@ -1902,15 +1902,6 @@ get_next_pebs_record_by_bit(void *base,
+ 	return NULL;
+ }
+ 
+-void intel_pmu_auto_reload_read(struct perf_event *event)
+-{
+-	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
+-
+-	perf_pmu_disable(event->pmu);
+-	intel_pmu_drain_pebs_buffer();
+-	perf_pmu_enable(event->pmu);
+-}
+-
+ /*
+  * Special variant of intel_pmu_save_and_restart() for auto-reload.
+  */
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1536,7 +1536,7 @@ void intel_pmu_pebs_disable_all(void);
+ 
+ void intel_pmu_pebs_sched_task(struct perf_event_context *ctx, bool sched_in);
+ 
+-void intel_pmu_auto_reload_read(struct perf_event *event);
++void intel_pmu_drain_pebs_buffer(void);
+ 
+ void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
+ 
 
 
 
