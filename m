@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-129127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369B9A7FE81
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61805A80163
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A3E3BD727
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE59A7A7FBA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CEA268690;
-	Tue,  8 Apr 2025 11:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8356224AEB;
+	Tue,  8 Apr 2025 11:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFDwGfrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGrnsQYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3AF268685;
-	Tue,  8 Apr 2025 11:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AC0227EBD;
+	Tue,  8 Apr 2025 11:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110188; cv=none; b=T0YSI0gaimWu1KhAOp3MiteweA8XY/9DWCcjVGFa0ha0MFSMVg0E8DrvbsdfPHsyiqfsRugGXFJV0Sa0sYNst2OJ0SFq2qs9K0KHdx4mEuJGlRzaRxKhTzTiTwYjTcT9sGwmMUDTPOVdrC2LjdQBnRYih5qCt5i21cN3s7c9xH8=
+	t=1744112213; cv=none; b=d08hgyuBI1MIL4hpvtivk6WBuOgsx2eCsfeABmSrDWqrhi+BuTdfyP8psZJRehNRXle+8R0umXyNt+9l95V7WIXzO9ccD+HA6ZQT77mnpOzVUzbQbpD8PRnzPsX1H7PleW0eqm45A7U9kRNfxYsF8vMBAuRGu3v9Off4ViIXYNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110188; c=relaxed/simple;
-	bh=P0cZ1pGOFBOh5iW7vTxzgk6OYs+hndCGiJKta8iXwMs=;
+	s=arc-20240116; t=1744112213; c=relaxed/simple;
+	bh=a4nIaeQ8Kep0mS7vPnZwwVXXqEzQAGQd1UMxO9adHJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vtxb2cbjLN6OyE/mUuuH5YyOP6ahd0SHc1CbjZncVUKiG6Euae9ghH6QAZ0cVq0hdP/JQcYT0k6EVHR6H3Q+j7hTcvQPNG2O6iMu+mXDjKSu507CVwhPyHwERvwrjjT1WStmQd72m4Sw/4/qzk5NoUZh7dXGE09VbkPcfWs6M2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFDwGfrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2375C4CEE5;
-	Tue,  8 Apr 2025 11:03:07 +0000 (UTC)
+	 MIME-Version; b=czDz+TYa5rR1R/fAxUqeK4B5xbtOD17AnmIJIoWAs58r51NptHrKEOUP38wQSgIndFk/UQPgqkhVQ/O4K5aVaM3K2NWvXnwwvHODM6kwc8t32+3smBl7ufdvPmMgGOaBQ3PfkUJDFQ8v7gPvoY7/ehLPd6fQYOURGQVkSZEjOIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGrnsQYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C416C4CEE5;
+	Tue,  8 Apr 2025 11:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110188;
-	bh=P0cZ1pGOFBOh5iW7vTxzgk6OYs+hndCGiJKta8iXwMs=;
+	s=korg; t=1744112213;
+	bh=a4nIaeQ8Kep0mS7vPnZwwVXXqEzQAGQd1UMxO9adHJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFDwGfrllakAyxZhZipuLkepQE0Xbtj2DGl/s/t/SkH9Gy+I/OHfIVLkASY/O9Ilg
-	 W3YHigy7wcKU4Q/vzCB5SGP5Tfsk2MbzQiSnrlmWHSV5CLIc5IToeic4xxUaG3auiu
-	 bZRSkzZ0zhQtwv2Ys3f3q9q+53eUZ3nz3wvFzdXI=
+	b=VGrnsQYf5ogwz1GujJsQJxdaTEvUArtWhfWSiHy6U0a/vCrZx77d0giFxuR81SaQC
+	 Aj7FnpmwXgCgPnYaoudbtliGCyqxcGSaNHwu8yfatd+Cv3ewGBfYhoUxfWYHFc17Du
+	 uhEDKXzty9iSjfTMv8w/6VgxSeWAjcKAdn5cr9+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/227] vsock: avoid timeout during connect() if the socket is closing
+	Jann Horn <jannh@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: [PATCH 6.14 680/731] uprobes/x86: Harden uretprobe syscall trampoline check
 Date: Tue,  8 Apr 2025 12:49:37 +0200
-Message-ID: <20250408104826.271273950@linuxfoundation.org>
+Message-ID: <20250408104930.084971030@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +68,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
+commit fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0 upstream.
 
-When a peer attempts to establish a connection, vsock_connect() contains
-a loop that waits for the state to be TCP_ESTABLISHED. However, the
-other peer can be fast enough to accept the connection and close it
-immediately, thus moving the state to TCP_CLOSING.
+Jann reported a possible issue when trampoline_check_ip returns
+address near the bottom of the address space that is allowed to
+call into the syscall if uretprobes are not set up:
 
-When this happens, the peer in the vsock_connect() is properly woken up,
-but since the state is not TCP_ESTABLISHED, it goes back to sleep
-until the timeout expires, returning -ETIMEDOUT.
+   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
 
-If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
-vsock_connect() can return immediately without errors or delay since the
-connection actually happened. The socket will be in a closing state,
-but this is not an issue, and subsequent calls will fail as expected.
+Though the mmap minimum address restrictions will typically prevent
+creating mappings there, let's make sure uretprobe syscall checks
+for that.
 
-We discovered this issue while developing a test that accepts and
-immediately closes connections to stress the transport switch between
-two connect() calls, where the first one was interrupted by a signal
-(see Closes link).
-
-Reported-by: Luigi Leonardi <leonardi@redhat.com>
-Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/uprobes.c |   14 +++++++++-----
+ include/linux/uprobes.h   |    2 ++
+ kernel/events/uprobes.c   |    2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index d7395601a0e30..fc0306ba2d43e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1382,7 +1382,11 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
- 	timeout = vsk->connect_timeout;
- 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned lo
+ 	return &insn;
+ }
  
--	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
-+	/* If the socket is already closing or it is in an error state, there
-+	 * is no point in waiting.
-+	 */
-+	while (sk->sk_state != TCP_ESTABLISHED &&
-+	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
- 		if (flags & O_NONBLOCK) {
- 			/* If we're not going to block, we schedule a timeout
- 			 * function to generate a timeout on the connection
--- 
-2.39.5
-
+-static unsigned long trampoline_check_ip(void)
++static unsigned long trampoline_check_ip(unsigned long tramp)
+ {
+-	unsigned long tramp = uprobe_get_trampoline_vaddr();
+-
+ 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+ }
+ 
+ SYSCALL_DEFINE0(uretprobe)
+ {
+ 	struct pt_regs *regs = task_pt_regs(current);
+-	unsigned long err, ip, sp, r11_cx_ax[3];
++	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++
++	/* If there's no trampoline, we are called from wrong place. */
++	tramp = uprobe_get_trampoline_vaddr();
++	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
++		goto sigill;
+ 
+-	if (regs->ip != trampoline_check_ip())
++	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
++	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+ 		goto sigill;
+ 
+ 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -39,6 +39,8 @@ struct page;
+ 
+ #define MAX_URETPROBE_DEPTH		64
+ 
++#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
++
+ struct uprobe_consumer {
+ 	/*
+ 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2180,8 +2180,8 @@ void uprobe_copy_process(struct task_str
+  */
+ unsigned long uprobe_get_trampoline_vaddr(void)
+ {
++	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+ 	struct xol_area *area;
+-	unsigned long trampoline_vaddr = -1;
+ 
+ 	/* Pairs with xol_add_vma() smp_store_release() */
+ 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
 
 
 
