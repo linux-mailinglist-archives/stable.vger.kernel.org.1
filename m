@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-130829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54818A80712
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99850A80609
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05598861D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A80617AF774
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57624269820;
-	Tue,  8 Apr 2025 12:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C8426B972;
+	Tue,  8 Apr 2025 12:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7mI6Y4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ41bbUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCA826656B;
-	Tue,  8 Apr 2025 12:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DC626B96C;
+	Tue,  8 Apr 2025 12:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114763; cv=none; b=hMFj75eL16O4TP4h7Keap5x9ADCpCqt8v2TKaRWf9KQ5rOdeISwdqLn0aGPDVZx+SMkxfSUAlslWqiQAqdyF51ApU0mjaF82VJPJ7LNHW1Gmcl+vQBdG7qKXTSh1uNf3+3DedudplDqGvEGvBfvg1a4NIUb1+z4fa4dYfY7iVEk=
+	t=1744114768; cv=none; b=WHDEfH4Z09g8KBR95M7aUxNuUb9Q09gelcPBXCZBGQJwVjHTibp/3dg89Xm30zqlTQV27KbZl0N2hSbwUxRvdrFAimSt4Azun+LNCw9v9/zdKl20+/wbV8maMisZvebCnVcUaxmXsb+LDMwt51ARk16KeDz0SQNoib/eq+XaXkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114763; c=relaxed/simple;
-	bh=fPWDPiDTyzrt7bUi83bei1WeaBnzS8ctJlmyxnpJ8XI=;
+	s=arc-20240116; t=1744114768; c=relaxed/simple;
+	bh=ZLlLgi87CxXLjt6lIgkFA40s7D2kPhVCJF+4y6DFcUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlIx3o7DwE6XxFcW0jzK4hD71ZXjMF+imsA6Ik4R6xq0aadcf+cBJRhV/WE39D/WMfQRHO//kKDpEwZr2TEYpAMqbO5PIruY3tx5WqBupGT5BKhWKLO+W1D5YTGPVvk5YpIH69FoS+l1J2Wh1NTQj76X9E7GcZ66nfkE+rxA8qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7mI6Y4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D536C4CEE5;
-	Tue,  8 Apr 2025 12:19:22 +0000 (UTC)
+	 MIME-Version; b=jjKgYm/l5kkeHtxLr4kN8HSU0la1xfRMCV1QJ800F76BixPWVNK0H28ponGApsJxlauA4FdBU4dY3ajnyajsJ2O2pwqEiTJLCVzRUzBHRL+TYE5CpSUngibcdWKc4Opw9RiAS+Sc40Ss4wLGRSg2fkJ7lG4CKzY7HUoHRlo0R4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ41bbUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A838C4CEE5;
+	Tue,  8 Apr 2025 12:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114762;
-	bh=fPWDPiDTyzrt7bUi83bei1WeaBnzS8ctJlmyxnpJ8XI=;
+	s=korg; t=1744114767;
+	bh=ZLlLgi87CxXLjt6lIgkFA40s7D2kPhVCJF+4y6DFcUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7mI6Y4psBEqR9dgDD/Fd5y4V3ur6TJugP5eigDGxTCib9GUt936HRYXSP4xtbe1q
-	 +kpFmZsigcvFEvZboZagcwsU5qJTrer/v8YqNm1dJYqyJsNTv9pjgOrgOKfDd4hS4s
-	 obYmUNeWY3FIZBZSMWmiEnXfQlEUFTPpBcb7G6rU=
+	b=NZ41bbUF+CILIn4mQT9Gdvd5bG7HNCnf6htBE2XAnBHWLmGueKFuwisN5K0VuHuhG
+	 imsokKGrsWStQECHJgHgcsZJBo+Cv/DuSE45URMKYOvzMq/j/IKBhuHrBKuCXbqKFq
+	 LXGArLp5ftHND0xWJ9PTYlyO1OG7cJR3tK5krV2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 227/499] fs/ntfs3: Fix a couple integer overflows on 32bit systems
-Date: Tue,  8 Apr 2025 12:47:19 +0200
-Message-ID: <20250408104856.873022741@linuxfoundation.org>
+Subject: [PATCH 6.13 228/499] fs/ntfs3: Prevent integer overflow in hdr_first_de()
+Date: Tue,  8 Apr 2025 12:47:20 +0200
+Message-ID: <20250408104856.899189425@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -68,41 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 5ad414f4df2294b28836b5b7b69787659d6aa708 ]
+[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
 
-On 32bit systems the "off + sizeof(struct NTFS_DE)" addition can
-have an integer wrapping issue.  Fix it by using size_add().
+The "de_off" and "used" variables come from the disk so they both need to
+check.  The problem is that on 32bit systems if they're both greater than
+UINT_MAX - 16 then the check does work as intended because of an integer
+overflow.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/ntfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 7eb9fae22f8da..78d20e4baa2c9 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -618,7 +618,7 @@ static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
- 	u32 off = le32_to_cpu(hdr->de_off);
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index 241f2ffdd9201..1ff13b6f96132 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
+ 	struct NTFS_DE *e;
+ 	u16 esize;
  
- 	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
--	    off + sizeof(struct NTFS_DE) > end) {
-+	    size_add(off, sizeof(struct NTFS_DE)) > end) {
- 		/* incorrect index buffer. */
- 		return false;
- 	}
-@@ -736,7 +736,7 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
- 	if (end > total)
+-	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
++	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
  		return NULL;
  
--	if (off + sizeof(struct NTFS_DE) > end)
-+	if (size_add(off, sizeof(struct NTFS_DE)) > end)
- 		return NULL;
- 
- 	e = Add2Ptr(hdr, off);
+ 	e = Add2Ptr(hdr, de_off);
 -- 
 2.39.5
 
