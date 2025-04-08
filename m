@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C022EA802C8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4072EA80229
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35E8A7A7608
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFAFE3AD1FF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826CA265602;
-	Tue,  8 Apr 2025 11:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461B0263C8A;
+	Tue,  8 Apr 2025 11:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPmO2xa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba75M3Md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5B122257E;
-	Tue,  8 Apr 2025 11:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177E224AEF;
+	Tue,  8 Apr 2025 11:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112897; cv=none; b=nzmxJhFfndZnZ+PXLNcvO6jR8xILpjVAseYmQnSfMR0zmFp6B9ROykVRq7EXbGRZWSUku5Zpe+DlQua9CLLvL8KP9xl04F6PBuBoOZSa4w4ovAcjVS7LVlzJ85s64hnMdMExl4utlfC7KG5t3KCoT7r8lgkmsaZ3OqmGLYqowNM=
+	t=1744112259; cv=none; b=QdP4CWs6mvXWZZy8IiPfHdu7TtimS1igxd4x8f5TvEx8ILSMLL4YCXOvoU/Tpo1DpV8vEO+Va0+vbICOEKGulYHGC5HuaObmGF8eBTCkYxjKEwrEYF4tmolRcdVt8MP92OXa11oH8DZNm0v8U/M5aBLvYYyImFxJELySAsjhgAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112897; c=relaxed/simple;
-	bh=f8t2uEnrf7jAIkU3JzH+TgnKzcKQs02sUVoVU4rfMi8=;
+	s=arc-20240116; t=1744112259; c=relaxed/simple;
+	bh=rK+dW1mEQ8+3c8kgSDGwcvL4rRqWp+ydwt9MDLqXCEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nogr+1kg17z27xXt87SgPRL/J1oE6pNUQiVSA0sCLFNUPuGKrth3TjVH+TWXp6nxHKmwopMNZ3e+xYvOGsQrvzYAKsMkiXwDURQvlh03kesDde95j1tsTrZ/ahjTg+R3ZWpAtwwUN9Vw3XIXg+IWVd+BKqToYFqjjxjZwxYjJhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPmO2xa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C21C4CEE5;
-	Tue,  8 Apr 2025 11:48:16 +0000 (UTC)
+	 MIME-Version; b=pE9Z7JnxD9ZLl0RnFTDSEMTgOLGloh3IIstKm6qnglCR1gzGryMG/Et3Itp+P6qSMCUvbw3lze1P/lK9ZGI40XYIfrfj4aV6y76u61HCyRlx9+H6DOF2njBdNsHZ0CTN2Smt39jvgwO5Bdszm6exTvmEMkPYs9Lw1bLwLT+733s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba75M3Md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85314C4CEE5;
+	Tue,  8 Apr 2025 11:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112897;
-	bh=f8t2uEnrf7jAIkU3JzH+TgnKzcKQs02sUVoVU4rfMi8=;
+	s=korg; t=1744112258;
+	bh=rK+dW1mEQ8+3c8kgSDGwcvL4rRqWp+ydwt9MDLqXCEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPmO2xa/A3NkTOdb99HwkO6EPEkZCxLpJ3/i+L9/ib9O2/bYWP6qOMCGXaPREEgR9
-	 4EARhKJmpfYscBy4KjLtZeGXnbNk344daJujEQhx4vLOh9COmytwsTU+AY+CPVia7P
-	 UTEsq0Vv3t3N1acOVfJOfaEi09u4Rx37E3e4jLe4=
+	b=Ba75M3MdzIIgXWc8KF3I988EHrhaexV5LI+dWW0P/I5eJH5JkGPTc/E4LkYgjXsWT
+	 3dhvP3SjhnlXIcX6xrvoiSfLbqV4RgKv6TnkPT319jEHLuXK/xoytt0a5KrpMr3XtA
+	 wwVYbUGK/QGzOQRh3l2BIqr31eR+u5D9IthTk2/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juhan Jin <juhan.jin@foxmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/279] riscv: ftrace: Add parentheses in macro definitions of make_call_t0 and make_call_ra
-Date: Tue,  8 Apr 2025 12:50:20 +0200
-Message-ID: <20250408104832.780438548@linuxfoundation.org>
+	syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.14 724/731] nfsd: dont ignore the return code of svc_proc_register()
+Date: Tue,  8 Apr 2025 12:50:21 +0200
+Message-ID: <20250408104931.114928956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juhan Jin <juhan.jin@foxmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 5f1a58ed91a040d4625d854f9bb3dd4995919202 ]
+commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b upstream.
 
-This patch adds parentheses to parameters caller and callee of macros
-make_call_t0 and make_call_ra. Every existing invocation of these two
-macros uses a single variable for each argument, so the absence of the
-parentheses seems okay. However, future invocations might use more
-complex expressions as arguments. For example, a future invocation might
-look like this: make_call_t0(a - b, c, call). Without parentheses in the
-macro definition, the macro invocation expands to:
+Currently, nfsd_proc_stat_init() ignores the return value of
+svc_proc_register(). If the procfile creation fails, then the kernel
+will WARN when it tries to remove the entry later.
 
-...
-unsigned int offset = (unsigned long) c - (unsigned long) a - b;
-...
+Fix nfsd_proc_stat_init() to return the same type of pointer as
+svc_proc_register(), and fix up nfsd_net_init() to check that and fail
+the nfsd_net construction if it occurs.
 
-which is clearly wrong.
+svc_proc_register() can fail if the dentry can't be allocated, or if an
+identical dentry already exists. The second case is pretty unlikely in
+the nfsd_net construction codepath, so if this happens, return -ENOMEM.
 
-The use of parentheses ensures arguments are correctly evaluated and
-potentially saves future users of make_call_t0 and make_call_ra debugging
-trouble.
-
-Fixes: 6724a76cff85 ("riscv: ftrace: Reduce the detour code size to half")
-Signed-off-by: Juhan Jin <juhan.jin@foxmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/tencent_AE90AA59903A628E87E9F80E563DA5BA5508@qq.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-nfs/67a47501.050a0220.19061f.05f9.GAE@google.com/
+Cc: stable@vger.kernel.org # v6.9
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/ftrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfsctl.c |    9 ++++++++-
+ fs/nfsd/stats.c  |    4 ++--
+ fs/nfsd/stats.h  |    2 +-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index d47d87c2d7e3d..195f4ebd71f2c 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -77,7 +77,7 @@ struct dyn_arch_ftrace {
- #define make_call_t0(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_t0(offset);					\
- 	call[1] = to_jalr_t0(offset);					\
- } while (0)
-@@ -93,7 +93,7 @@ do {									\
- #define make_call_ra(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_ra(offset);					\
- 	call[1] = to_jalr_ra(offset);					\
- } while (0)
--- 
-2.39.5
-
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -2204,8 +2204,14 @@ static __net_init int nfsd_net_init(stru
+ 					  NFSD_STATS_COUNTERS_NUM);
+ 	if (retval)
+ 		goto out_repcache_error;
++
+ 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
+ 	nn->nfsd_svcstats.program = &nfsd_programs[0];
++	if (!nfsd_proc_stat_init(net)) {
++		retval = -ENOMEM;
++		goto out_proc_error;
++	}
++
+ 	for (i = 0; i < sizeof(nn->nfsd_versions); i++)
+ 		nn->nfsd_versions[i] = nfsd_support_version(i);
+ 	for (i = 0; i < sizeof(nn->nfsd4_minorversions); i++)
+@@ -2215,13 +2221,14 @@ static __net_init int nfsd_net_init(stru
+ 	nfsd4_init_leases_net(nn);
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
+-	nfsd_proc_stat_init(net);
+ #if IS_ENABLED(CONFIG_NFS_LOCALIO)
+ 	spin_lock_init(&nn->local_clients_lock);
+ 	INIT_LIST_HEAD(&nn->local_clients);
+ #endif
+ 	return 0;
+ 
++out_proc_error:
++	percpu_counter_destroy_many(nn->counter, NFSD_STATS_COUNTERS_NUM);
+ out_repcache_error:
+ 	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -73,11 +73,11 @@ static int nfsd_show(struct seq_file *se
+ 
+ DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
+ 
+-void nfsd_proc_stat_init(struct net *net)
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
+ {
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
+-	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
++	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ }
+ 
+ void nfsd_proc_stat_shutdown(struct net *net)
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -10,7 +10,7 @@
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
+ 
+-void nfsd_proc_stat_init(struct net *net);
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
+ void nfsd_proc_stat_shutdown(struct net *net);
+ 
+ static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
 
 
 
