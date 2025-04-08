@@ -1,115 +1,201 @@
-Return-Path: <stable+bounces-128846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE947A7F8FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF35A7F922
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C462D1676BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 09:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0434A1650C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 09:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6244326462D;
-	Tue,  8 Apr 2025 09:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D30F21ADC3;
+	Tue,  8 Apr 2025 09:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAXM18RF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuZSaA3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181E026159C
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE3F14AD29
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744103276; cv=none; b=RI/cVNGEiSRt3IOfB3wBElm+zkWSA6Y6pd4MdWQvFDeG637I7lEuIsQbXD8LiiM18oVIpigwsqZkcmGEK68AghIccpFexXPuENgjN9PPJ3exUtrgP/vT5J6PHMsEnT/mUDM0kEq7Zg8XpgqsSG6YGB10W71KJj1zLrWDV6e0xbc=
+	t=1744103737; cv=none; b=PCzvkCNm1ypKI7w1th0jRGUWWo1+4ghY+a2bJw6mFPY5Hk0ainQcgjUbJZP/rgG6GQEESxV6XFIb8JftXu3AFjuNHRRta26WCrthpxecLt8ginZfnsNa45XuJ1u2GDcKVyilaBLc4vSZww7NyY8vniVZVEfF4Qyl7rCmmOsUovU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744103276; c=relaxed/simple;
-	bh=21yDSWrTWmTmYJcf09cV8sZWJscX7IffFCn4r+16gLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CIMWLfXFe/Isp9ls6LixeIE6iq33vyGhKPZUO5OHJPTEyA0blwzQynf20WdFvvE/o50CEovxpNb/ZANi8mUl1EYpJNrQbFfRbUSkByVb27xxzpl8KFr3b6k1YVDIzoQeRneBi0MGdF1LOZWdA7IAzyKmdJq9VTIB7LJCO6EJhgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAXM18RF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB534C4CEE5;
-	Tue,  8 Apr 2025 09:07:53 +0000 (UTC)
+	s=arc-20240116; t=1744103737; c=relaxed/simple;
+	bh=Rr/4GaY22kzPdzwUM2PMjPXVaCJ1hriqnVnQFHNr8Wo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LpfKfmk10qBZpFD3pF5e8zK5Hlq67HbgkG+E1K+Nf3lq6F4oiPkVAWo5bAFL9IyykbawWctjRk/BcjzJA4gFBM+nhOpbPOHu7Jn0zw22IZ+0Gc+rjO/f2dWVC5k0HVeTrEL2kMybbV02VEJsjtiZgnl4X8JAX8mwNDGiffiGbFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuZSaA3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2866BC4CEE5;
+	Tue,  8 Apr 2025 09:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744103274;
-	bh=21yDSWrTWmTmYJcf09cV8sZWJscX7IffFCn4r+16gLs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CAXM18RFGAcwMtIY5JMqcOhjJ3sI4iWQZmVVahlv82RB9RHNT0RAxtVp6cxr4eVI+
-	 eKnV5Fx8Xnnl34BaPlGIdPLuUX+/i6HzFmB0pCg6tGUMoPM4y2ke1NfEAds9Ayv/sx
-	 r7BN1dxZl2wgAPF2MsHeQkVQ+jaL+PuBCEZrCTT4=
-Date: Tue, 8 Apr 2025 11:06:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kang Wenlin <wenlin.kang@windriver.com>
-Cc: stable@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	ebiederm@xmission.com, keescook@chromium.org,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH 6.6.y 0/6] Backported patches to fix selftest tpdir2
-Message-ID: <2025040819-unabashed-maximum-8fc8@gregkh>
-References: <20250402082656.4177277-1-wenlin.kang@windriver.com>
- <2025040344-coma-strict-4e8f@gregkh>
- <17b170ac-aa20-4c36-a045-25d2f82e66d0@windriver.com>
+	s=korg; t=1744103736;
+	bh=Rr/4GaY22kzPdzwUM2PMjPXVaCJ1hriqnVnQFHNr8Wo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=iuZSaA3yvkaJT3Lujl+3tDmMI9GshhTcgtvYnnBC+2WAT2IxBZlryZPhqQJqV/FWU
+	 jfmI1i4rGB3uS5uX4xyp9aRbUfXUv0oQwHkgOBvCmOtX84jcB+VwUzr7dMd+xhbU3b
+	 32GRrk078S1QL2NnqriO1xessdWMgoVyQjdhxAYc=
+Subject: FAILED: patch "[PATCH] ACPI: platform-profile: Fix CFI violation when accessing" failed to apply to 6.13-stable tree
+To: nathan@kernel.org,gregkh@linuxfoundation.org,lkml@johnrowley.me,mpearson-lenovo@squebb.ca,rafael.j.wysocki@intel.com,samitolvanen@google.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 08 Apr 2025 11:14:03 +0200
+Message-ID: <2025040803-womb-decorated-10be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17b170ac-aa20-4c36-a045-25d2f82e66d0@windriver.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 04, 2025 at 03:58:36PM +0800, Kang Wenlin wrote:
-> Hi Greg
-> 
-> Thanks for your response.
-> 
-> 
-> On 4/3/2025 22:52, Greg KH wrote:
-> > CAUTION: This email comes from a non Wind River email account!
-> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> > 
-> > On Wed, Apr 02, 2025 at 04:26:50PM +0800, Kang Wenlin wrote:
-> > > From: Wenlin Kang <wenlin.kang@windriver.com>
-> > > 
-> > > The selftest tpdir2 terminated with a 'Segmentation fault' during loading.
-> > > 
-> > > root@localhost:~# cd linux-kenel/tools/testing/selftests/arm64/abi && make
-> > > root@localhost:~/linux-kernel/tools/testing/selftests/arm64/abi# ./tpidr2
-> > > Segmentation fault
-> > > 
-> > > The cause of this is the __arch_clear_user() failure.
-> > > 
-> > > load_elf_binary() [fs/binfmt_elf.c]
-> > >    -> if (likely(elf_bss != elf_brk) && unlikely(padzero(elf_bes)))
-> > >      -> padzero()
-> > >        -> clear_user() [arch/arm64/include/asm/uaccess.h]
-> > >          -> __arch_clear_user() [arch/arm64/lib/clear_user.S]
-> > > 
-> > > For more details, please see:
-> > > https://lore.kernel.org/lkml/1d0342f3-0474-482b-b6db-81ca7820a462@t-8ch.de/T/
-> > This is just a userspace issue (i.e. don't do that, and if you do want
-> > to do that, use a new kernel!)
-> > 
-> > Why do these changes need to be backported, do you have real users that
-> > are crashing in this way to require these changes?
-> 
-> 
-> This issue was identified during our internal testing, and I found
-> similar cases discussed in the link above. Upon reviewing the kernel
-> code, I noticed that a patch series already accepted into mainline
-> addresses this problem. Since these patches are already upstream
-> and effectively resolve the issue, I decided to backport them.
-> We believe this provides a more robust and maintainable solution
-> compared to relying on users to avoid the triggering behavior.
 
-Fixing something just to get the selftests to pass is fine, but do you
-actually know of a real-world case where this is a problem that needs to
-be resolved?  That's what I'm asking here, do you have users that have
-run into this issue?  I ask as it's not a regression from what I can
-determine, but rather a new "feature".
+The patch below does not apply to the 6.13-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
+git checkout FETCH_HEAD
+git cherry-pick -x dd4f730b557ce701a2cd4f604bf1e57667bd8b6e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040803-womb-decorated-10be@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From dd4f730b557ce701a2cd4f604bf1e57667bd8b6e Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 10 Feb 2025 21:28:25 -0500
+Subject: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
+
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be of the same type as the callbacks in 'struct kobj_attribute'.
+
+However, ->show() and ->store() in the platform_profile driver are
+defined for struct device_attribute with the help of DEVICE_ATTR_RO()
+and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
+platform_profile or platform_profile_choices under /sys/firmware/acpi
+because the types do not match:
+
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
+
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to
+match, which resolves the CFI violation.
+
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index fc92e43d0fe9..1b6317f759f9 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -260,14 +260,14 @@ static int _aggregate_choices(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_choices_show - Show the available profile choices for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					     struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					     struct kobj_attribute *attr,
+ 					     char *buf)
+ {
+ 	unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -333,14 +333,14 @@ static int _store_and_notify(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_show - Show the current profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_show(struct device *dev,
+-				     struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++				     struct kobj_attribute *attr,
+ 				     char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+@@ -362,15 +362,15 @@ static ssize_t platform_profile_show(struct device *dev,
+ 
+ /**
+  * platform_profile_store - Set the profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to read from
+  * @count: The number of bytes to read
+  *
+  * Return: The number of bytes read
+  */
+-static ssize_t platform_profile_store(struct device *dev,
+-				      struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++				      struct kobj_attribute *attr,
+ 				      const char *buf, size_t count)
+ {
+ 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -401,12 +401,12 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
+
 
