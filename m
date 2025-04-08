@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-131632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2FCA80A9C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5B5A80742
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B4057B1CB3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90C407B0CE8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5468227BF63;
-	Tue,  8 Apr 2025 12:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CE126A08C;
+	Tue,  8 Apr 2025 12:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8xcnVTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCdOMOxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203D279352;
-	Tue,  8 Apr 2025 12:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DAF26A087;
+	Tue,  8 Apr 2025 12:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116921; cv=none; b=uvnEcL0d+grfK7y7c44n+jBtn4MVebRfcSSXEjOyVU6du3/x4BcoPmQcHWRX6x7Xv7wpMpZzhYIXNFtynx7//vWvgNVCl2puSK417GqbaGOK1mIINg31upZXBbm2XHrfqblgajcKFZWrbqRybwj7XpDylcqtlRSNKm7OLDPuNwM=
+	t=1744115324; cv=none; b=KbUdg8FSd4xTgBwc84PCyoZ0i/VOVA7nmf0rQZEYmTYeo2dJj6Gewv2vypInbh1ICOLyGDFBR0cPd3eqoBT4ZPgxy9kyfsLWCMH4y6u+9NWRGrDLBzs7iKpnkVr1Wo2UvB9bpk7PFxk61BfoMTZ8UVTsLk6pPkG1Z2t4+TugMsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116921; c=relaxed/simple;
-	bh=T1zb3Kt5ZYiBzymyZNaakm/nFntKIUkUuf2hOAuQbuc=;
+	s=arc-20240116; t=1744115324; c=relaxed/simple;
+	bh=0U5SLMSp005Ncnaby2ZmEqfAhHLNlit/Hn7ODydw8Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHAGJYYiIdlJkyDzDzIZb8VfppC8gym66dBnFebBR/mCHIkIPSf60axqCVNsPHxULwgm/XaOcLA2nrRU/f5iBGA/p2xVHka1B5iQsKjRHPblNwX4mH1bcuitpVceX6x12mbQb7MKS+s6uNMeatwqyH2q9HudvTqlme0vHeHJ+vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8xcnVTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAE5C4CEE5;
-	Tue,  8 Apr 2025 12:55:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NPr182M7d9XLzhz3wNp5raj/HNbmuD19a2gpARj2IBfiva3abd70uQTHUaxUATTIma1aUszKwudZjqXJhIxxPsKiQmekCN/CtRvZOdXET3xL8Dc11vN9t5Ir7aQHd0FJlLPkb0ZQdOFupjfGtYp0EWyyktCXju6xgYqM2rNcjvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCdOMOxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F94C4CEE5;
+	Tue,  8 Apr 2025 12:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116920;
-	bh=T1zb3Kt5ZYiBzymyZNaakm/nFntKIUkUuf2hOAuQbuc=;
+	s=korg; t=1744115324;
+	bh=0U5SLMSp005Ncnaby2ZmEqfAhHLNlit/Hn7ODydw8Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8xcnVTMBBC6wEzCY2TFegEsZU74Lrc0gAWjJYJ3gAuAhiJfHFakiJcSk7jM00kvT
-	 X5zWTZ7nNQyVF35bE2xTJsPnMbMuaQLD/BNNlNLEZuqGEHjEK9Y4D5dKnS2d71fE1c
-	 Lml9qgBbSVuuQMlsknV/xJDA3Xjeh4saURmywMCA=
+	b=hCdOMOxRmA8ATf2z7umqVqSyjhYZ+/VAsUNvn0QXpd9zuUcgC2TfoPCNtqtgxca+E
+	 mKOpb6igKI/xpAjCtF2O0wNSUDRvArzJaHi31LUqA160NhDorPwab65UgA4SkJot0m
+	 7oSICX+MfI6oF0XiTMKQJIzS0aSvo18MCCitW2Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/423] nvme/ioctl: dont warn on vectorized uring_cmd with fixed buffer
+	Ying Lu <luying1@xiaomi.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 433/499] usbnet:fix NPE during rx_complete
 Date: Tue,  8 Apr 2025 12:50:45 +0200
-Message-ID: <20250408104853.244333228@linuxfoundation.org>
+Message-ID: <20250408104902.027412367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Ying Lu <luying1@xiaomi.com>
 
-[ Upstream commit eada75467fca0b016b9b22212637c07216135c20 ]
+commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
 
-The vectorized io_uring NVMe passthru opcodes don't yet support fixed
-buffers. But since userspace can trigger this condition based on the
-io_uring SQE parameters, it shouldn't cause a kernel warning.
+Missing usbnet_going_away Check in Critical Path.
+The usb_submit_urb function lacks a usbnet_going_away
+validation, whereas __usbnet_queue_skb includes this check.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Fixes: 23fd22e55b76 ("nvme: wire up fixed buffer support for nvme passthrough")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This inconsistency creates a race condition where:
+A URB request may succeed, but the corresponding SKB data
+fails to be queued.
+
+Subsequent processes:
+(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
+attempt to access skb->next, triggering a NULL pointer
+dereference (Kernel Panic).
+
+Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ying Lu <luying1@xiaomi.com>
+Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/usbnet.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index e4daac9c24401..a1b3c538a4bd2 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -141,7 +141,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		struct iov_iter iter;
- 
- 		/* fixedbufs is only for non-vectored io */
--		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
-+		if (flags & NVME_IOCTL_VEC) {
- 			ret = -EINVAL;
- 			goto out;
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
+ 	    netif_device_present (dev->net) &&
+ 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
+ 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
+-	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
++	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
++	    !usbnet_going_away(dev)) {
+ 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
+ 		case -EPIPE:
+ 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
+@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
+ 			tasklet_schedule (&dev->bh);
+ 			break;
+ 		case 0:
+-			if (!usbnet_going_away(dev))
+-				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
++			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
  		}
--- 
-2.39.5
-
+ 	} else {
+ 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
 
 
 
