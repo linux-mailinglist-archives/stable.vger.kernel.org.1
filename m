@@ -1,63 +1,54 @@
-Return-Path: <stable+bounces-131688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2273A80BBD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3396FA808ED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90BC88A72E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D121B8827F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A8726F470;
-	Tue,  8 Apr 2025 12:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282EF270ED7;
+	Tue,  8 Apr 2025 12:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0c63NnJ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5XnWO0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D487C27C865;
-	Tue,  8 Apr 2025 12:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D970926656B;
+	Tue,  8 Apr 2025 12:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117066; cv=none; b=mvQUWHWuqVuDjPRNj7mtCl3CDEsDPFctxBwOxDzZungXx9ChwqTcd3VoUWQ6omjjM7VWF14BA7roFIQ7rWk5HPLSHKbV+N3Jq8Qon5TA3SoD0SIgzaugQSH9u3hzKeG269Ma7jSHhauGpXALvo3DjnOdczVgcthBuIzMXEJ5ucE=
+	t=1744115959; cv=none; b=Vn3XSvNDC5bG2xRnYB7z6MnC+iib1p2+ryKmF9mQmoOCEoHyww+7lhFOXyDnOyR6Zuu9eAT4B9mGetriurOI2f+Ag0DUl766fjd7ixwds9VauRL611l7PZPYY26Qlryjo06AExdZqx+LIynuq++llagjNckIrau8Hr6J6I+DCXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117066; c=relaxed/simple;
-	bh=ry4uMFKk6Eb/x9GyW01UiENsXsmR3XkY9g39OhBFPxc=;
+	s=arc-20240116; t=1744115959; c=relaxed/simple;
+	bh=ljqYJxyEV7le+IKkbL/mhjUyDS6TAlQoQgpTpN08ac4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3y5FX8ik7iPWgzjgQK2Aj8YB/mg4BWQnh0pzmdA4X3jdKMMj1VmZS+kNg/4bYttl5I0nbCIVlWmyUMgb4wCRroMgKw7iEapj1sf4e8iv06Tsc86W9qPmH6W+oOP0z5BxbEJ0dItIn+1m3zaa2N8OU13z/l7LdL7val9SsdO25s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0c63NnJ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4CEC4CEE5;
-	Tue,  8 Apr 2025 12:57:46 +0000 (UTC)
+	 MIME-Version; b=WQh+3e3CnosHM3hMdI6MRkKeMbugKLOwAmCiqGM6PzZTix4tkKhGbkAPhMlRgpfUqyhHVKmXLxDwelqtaa92DromaRSU6tVTx3qWxJhtQaZNYj+QXnR5BhmiYGu2xISF5YISbVeVVHG/0tyq+q2olCcsr9YNurxxWv1pkH2dby8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5XnWO0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5B8C4CEE5;
+	Tue,  8 Apr 2025 12:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117066;
-	bh=ry4uMFKk6Eb/x9GyW01UiENsXsmR3XkY9g39OhBFPxc=;
+	s=korg; t=1744115959;
+	bh=ljqYJxyEV7le+IKkbL/mhjUyDS6TAlQoQgpTpN08ac4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0c63NnJ4p9thX8DScDsHrmiN9gPkix7v8GdT7mEaGvVOKr94PzVTXwmptU80v2x68
-	 GvXjMkJwzUpd/sVXV4slgE3sDq/62heI9bMX710s7sz1YGuG3QIkaYZiMQPQCo78/6
-	 /vVSbXptc0GoPypiAQMfWLVDJcygpA18/PZ4mqtc=
+	b=p5XnWO0yYY1itoZOq/GKMNmpSfhOsBnMyHtLhIL9HOmNoni7QGoWiFouGKu/+BRTE
+	 4aSV/Q/HCy8vrNn4hP2c9Ry6Oc2UE7KGkMmAXJ3FK9n96hhcWutuj6/JLvozsRfo89
+	 1o0ztuJbuoGIwX8gTgTmPxR56vtmqBhbKISzr+8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Annapurve <vannapurve@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ryan Afranji <afranji@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH 6.12 372/423] x86/tdx: Fix arch_safe_halt() execution for TDX VMs
-Date: Tue,  8 Apr 2025 12:51:38 +0200
-Message-ID: <20250408104854.535203190@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 169/204] io_uring/filetable: ensure node switch is always done, if needed
+Date: Tue,  8 Apr 2025 12:51:39 +0200
+Message-ID: <20250408104825.279264124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,164 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Annapurve <vannapurve@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 9f98a4f4e7216dbe366010b4cdcab6b220f229c4 upstream.
+No upstream patch exists for this issue, as it was introduced by
+a stable backport.
 
-Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-to hypervisor via TDCALL. If HLT is executed in STI-shadow, resulting #VE
-handler will enable interrupts before TDCALL is routed to hypervisor
-leading to missed wakeup events, as current TDX spec doesn't expose
-interruptibility state information to allow #VE handler to selectively
-enable interrupts.
+A previous backport relied on other code changes in the io_uring file
+table and resource node handling, which means that sometimes a resource
+node switch can get missed. For 6.1-stable, that code is still in
+io_install_fixed_file(), so ensure we fall-through to that case for the
+success path too.
 
-Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-prevented the idle routines from executing HLT instruction in STI-shadow.
-But it missed the paravirt routine which can be reached via this path
-as an example:
-
-	kvm_wait()       =>
-        safe_halt()      =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-        irq.safe_halt()  =>
-        pv_native_safe_halt()
-
-To reliably handle arch_safe_halt() for TDX VMs, introduce explicit
-dependency on CONFIG_PARAVIRT and override paravirt halt()/safe_halt()
-routines with TDX-safe versions that execute direct TDCALL and needed
-interrupt flag updates. Executing direct TDCALL brings in additional
-benefit of avoiding HLT related #VEs altogether.
-
-As tested by Ryan Afranji:
-
-  "Tested with the specjbb2015 benchmark. It has heavy lock contention which leads
-   to many halt calls. TDX VMs suffered a poor score before this patchset.
-
-   Verified the major performance improvement with this patchset applied."
-
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Tested-by: Ryan Afranji <afranji@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250228014416.3925664-3-vannapurve@google.com
+Fixes: a3812a47a320 ("io_uring: drop any code related to SCM_RIGHTS")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig           |    1 +
- arch/x86/coco/tdx/tdx.c    |   26 +++++++++++++++++++++++++-
- arch/x86/include/asm/tdx.h |    4 ++--
- arch/x86/kernel/process.c  |    2 +-
- 4 files changed, 29 insertions(+), 4 deletions(-)
+ io_uring/filetable.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -894,6 +894,7 @@ config INTEL_TDX_GUEST
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
- 	depends on EFI_STUB
-+	depends on PARAVIRT
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/ia32.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-+#include <asm/paravirt_types.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
- #include <asm/traps.h>
-@@ -359,7 +360,7 @@ static int handle_halt(struct ve_info *v
- 	return ve_instr_len(ve);
- }
- 
--void __cpuidle tdx_safe_halt(void)
-+void __cpuidle tdx_halt(void)
- {
- 	const bool irq_disabled = false;
- 
-@@ -370,6 +371,16 @@ void __cpuidle tdx_safe_halt(void)
- 		WARN_ONCE(1, "HLT instruction emulation failed\n");
- }
- 
-+static void __cpuidle tdx_safe_halt(void)
-+{
-+	tdx_halt();
-+	/*
-+	 * "__cpuidle" section doesn't support instrumentation, so stick
-+	 * with raw_* variant that avoids tracing hooks.
-+	 */
-+	raw_local_irq_enable();
-+}
-+
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
-@@ -1057,6 +1068,19 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
- 
- 	/*
-+	 * Avoid "sti;hlt" execution in TDX guests as HLT induces a #VE that
-+	 * will enable interrupts before HLT TDCALL invocation if executed
-+	 * in STI-shadow, possibly resulting in missed wakeup events.
-+	 *
-+	 * Modify all possible HLT execution paths to use TDX specific routines
-+	 * that directly execute TDCALL and toggle the interrupt state as
-+	 * needed after TDCALL completion. This also reduces HLT related #VEs
-+	 * in addition to having a reliable halt logic execution.
-+	 */
-+	pv_ops.irq.safe_halt = tdx_safe_halt;
-+	pv_ops.irq.halt = tdx_halt;
-+
-+	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
- 	 * there.
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve)
- 
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
- 
--void tdx_safe_halt(void);
-+void tdx_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-@@ -69,7 +69,7 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t
- #else
- 
- static inline void tdx_early_init(void) { };
--static inline void tdx_safe_halt(void) { };
-+static inline void tdx_halt(void) { };
- 
- static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -938,7 +938,7 @@ void __init select_idle_routine(void)
- 		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		static_call_update(x86_idle, tdx_safe_halt);
-+		static_call_update(x86_idle, tdx_halt);
- 	} else {
- 		static_call_update(x86_idle, default_idle);
- 	}
+--- a/io_uring/filetable.c
++++ b/io_uring/filetable.c
+@@ -98,7 +98,7 @@ static int io_install_fixed_file(struct
+ 	*io_get_tag_slot(ctx->file_data, slot_index) = 0;
+ 	io_fixed_file_set(file_slot, file);
+ 	io_file_bitmap_set(&ctx->file_table, slot_index);
+-	return 0;
++	ret = 0;
+ err:
+ 	if (needs_switch)
+ 		io_rsrc_node_switch(ctx, ctx->file_data);
 
 
 
