@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10362A80A9A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EA3A803EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9DDE1BA4CFB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A577F426460
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48F5270EB2;
-	Tue,  8 Apr 2025 12:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA133AC1C;
+	Tue,  8 Apr 2025 11:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffJvrvhO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDPKjWV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED1A270EAC;
-	Tue,  8 Apr 2025 12:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42994268FE7;
+	Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116607; cv=none; b=oJLfA8bufACKaCPWic7/hENDaOoTOqRB0PZTWV8e2Rf8gA7aC7EtVzIeNl6WGzMWsBCSpg8i5oFvllsPd8I+yKqo3bGGfj2oyhq6n0L/HAkgAZq79l5xUOZYTN6JQxlTAQlRe5NNicMGw2xYGUdc7yGuzb+IwvB8QKvRv10ZmyE=
+	t=1744113322; cv=none; b=K75sZrg5N0IMVAM2Dn/z9P6sbVR4aDBgPmSo6x6dwbJHWPza/dZn3GaMYN6kLecsBKfmPQhhf7frD33POVI+32omNsCzfOvX+zdk+1iCarbs9/F7epnsPaZWDez2PU6FdoIk8+jy4c+Ni1jxfWaiJ6h8XYb3X8i0wcSn7HqjMes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116607; c=relaxed/simple;
-	bh=obuebCR3VBR/fNd95I777PVRU2nw/yv8ixsVLJ5VYh8=;
+	s=arc-20240116; t=1744113322; c=relaxed/simple;
+	bh=ZuIWmZJTDq1mcGB7Y4+gpBjS3oHydLC0x+NNfQYbDtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsOFPJpmDwCsdcusTI6HrdD9dSuNu88xx4suFkKOX/xMphGoJdVNQrSWotls82Qin7Wekyh/js3fUECyAn5cQj9b2aSc2B1MBuqUdno6EZLzcNTs0NLtdq2pb8WCDy+OyxqRdLLpfMwvaogijp3s2y3zxLdniQyhi1g9Q86AfVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffJvrvhO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2084AC4CEE5;
-	Tue,  8 Apr 2025 12:50:06 +0000 (UTC)
+	 MIME-Version; b=aPLzdSNNwd9j5270RZdnabPcF7vr56KWiXdrZu46v4hyBX/2SUSDSAxDO96agDQooIYYBotw5aZYvhBOf3c8zXTFa0jBCGUI04ex1SC95paDfyjZwg5ks2gMhiSP5eAGlbi6WvCVt0vb1DzJHuc+O/9SX5dhI4D+X5Lymc9mk+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDPKjWV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECF2C4CEE5;
+	Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116607;
-	bh=obuebCR3VBR/fNd95I777PVRU2nw/yv8ixsVLJ5VYh8=;
+	s=korg; t=1744113321;
+	bh=ZuIWmZJTDq1mcGB7Y4+gpBjS3oHydLC0x+NNfQYbDtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ffJvrvhO1OtTG2oydIb0tx3AIhw96mUy3MX3O9STKQQezBBYbUSl+rebW2a9hy6MF
-	 H1IiuOh23o2vgYW1F6S9RKBdIas/cWO/VUVI75pKxWvATNrP1GsCCZUicraHg3rK9b
-	 flU2ksQwhPm8Z3rn5buWYe58bzoNGVcOacQt+oO4=
+	b=GDPKjWV89iAEFeK50I8DYUcZs5t6HiNFGcOgdCLYZ6C0XLX6oowWhbrGnpocf4Tbm
+	 oNRf5CgSci8gklQrg5qJv2xchDWcziwsGq/CWD55639OqxV7LUgfjrhFTEOEd+ieKI
+	 j5bso6aUsjgab6K5UxF7jfmjbqIe4Hnnvg//B0fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/423] NFSv4: Avoid unnecessary scans of filesystems for expired delegations
+Subject: [PATCH 6.6 117/268] fs/ntfs3: Prevent integer overflow in hdr_first_de()
 Date: Tue,  8 Apr 2025 12:48:48 +0200
-Message-ID: <20250408104850.441625645@linuxfoundation.org>
+Message-ID: <20250408104831.653210128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f163aa81a799e2d46d7f8f0b42a0e7770eaa0d06 ]
+[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups.  If the state manager was asked to reap the
-expired delegations, it should scan only those filesystems that hold
-delegations that need to be reaped.
+The "de_off" and "used" variables come from the disk so they both need to
+check.  The problem is that on 32bit systems if they're both greater than
+UINT_MAX - 16 then the check does work as intended because of an integer
+overflow.
 
-Fixes: 7f156ef0bf45 ("NFSv4: Clean up nfs_delegation_reap_expired()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 7 +++++++
- include/linux/nfs_fs_sb.h | 1 +
- 2 files changed, 8 insertions(+)
+ fs/ntfs3/ntfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index d1f5e497729c3..abd952cc47e4b 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -1284,6 +1284,7 @@ static void nfs_mark_test_expired_delegation(struct nfs_server *server,
- 		return;
- 	clear_bit(NFS_DELEGATION_NEED_RECLAIM, &delegation->flags);
- 	set_bit(NFS_DELEGATION_TEST_EXPIRED, &delegation->flags);
-+	set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
- 	set_bit(NFS4CLNT_DELEGATION_EXPIRED, &server->nfs_client->cl_state);
- }
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index 964e27c7b9016..c1d1c4a7cf4d6 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
+ 	struct NTFS_DE *e;
+ 	u16 esize;
  
-@@ -1362,6 +1363,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 	nfs4_stateid stateid;
- 	unsigned long gen = ++server->delegation_gen;
+-	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
++	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
+ 		return NULL;
  
-+	if (!test_and_clear_bit(NFS4SERV_DELEGATION_EXPIRED,
-+				&server->delegation_flags))
-+		return 0;
- restart:
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
-@@ -1391,6 +1395,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 			goto restart;
- 		}
- 		nfs_inode_mark_test_expired_delegation(server,inode);
-+		set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
-+		set_bit(NFS4CLNT_DELEGATION_EXPIRED,
-+			&server->nfs_client->cl_state);
- 		iput(inode);
- 		return -EAGAIN;
- 	}
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 98fc10ee0b869..f4cb1f4850a0c 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -253,6 +253,7 @@ struct nfs_server {
- 
- 	unsigned long		delegation_flags;
- #define NFS4SERV_DELEGRETURN		(1)
-+#define NFS4SERV_DELEGATION_EXPIRED	(2)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
+ 	e = Add2Ptr(hdr, de_off);
 -- 
 2.39.5
 
