@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-130302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33821A803B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA2A7FE1E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122B21888A98
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFEAA1893BBE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE4226981C;
-	Tue,  8 Apr 2025 11:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C452269B0E;
+	Tue,  8 Apr 2025 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNt8W8ik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hx/8br1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E22267F68;
-	Tue,  8 Apr 2025 11:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49369269AE3;
+	Tue,  8 Apr 2025 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113356; cv=none; b=u5DtKxx1tM68UBcockggT/2XO3SKtIQEOFYaQnR1r3RAvadaWlIEgDYIfG/gA/lY/Cz5n1g7Requz7IgjmS2HfPlacylruvwM5q/pfEXI5M+PISMB1SXOFT04UE7Nvmymk+/FUTIGuvHLYx9gBiYhhPup+fHB8H8D6mrKQxSp3Q=
+	t=1744110087; cv=none; b=Ha1B/GuxYAeKi5yYHZXQ4gJ16NidILWrDZ5GaC6iwbNFy7+YqLaWC5Vgr4qidboybUmeh32giy4Kx12JX1g7s1JuuztJTYTIQqba259M9v5fcf5wlpaxQo/TeP4KxiAfinGHKmLGNCXwcetu2lr+3c8rvpcP/stZIglP9KQYAHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113356; c=relaxed/simple;
-	bh=SMUl3jO8L24J1lJnGgn4MEios2PeqYOSvETTy2eFWMI=;
+	s=arc-20240116; t=1744110087; c=relaxed/simple;
+	bh=lFXvcsV1fLKgw5fDytfIWfheA3rBU/MuDQveQc90QTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTF9awfL36KPWuDcHCrIfbfzXWfaMPhZoLPQYSvt8KEvRpKFXpA1J0ZUR3DeWcg2v14EXV7Jpc8SaKceXsxw5Z+8N/Is7QHD2o5VJlp0AdAmtzhWQlrBofTj68iz2iX3nDacGhvGWLYUIJGYhY5zrB9JKhjTWUw3z6U0OEujxtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNt8W8ik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6B0C4CEE5;
-	Tue,  8 Apr 2025 11:55:55 +0000 (UTC)
+	 MIME-Version; b=tK1kP48k96U5CEpCkeNABJKER6ycmdb/cvhBqNxuwypX9Lku8EUqTPV5LxNmfsowtQISxlwRV/MKVVcQX4D/ZV3Qyxn8vDWVDjEcIArKA/5vqe6hrNe8HdRMH91Lg7PCFoI4nhyMPbWq/tB5n07ZYdm6K8cwN333PGQTaZ2AbA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hx/8br1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCABC4CEE5;
+	Tue,  8 Apr 2025 11:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113356;
-	bh=SMUl3jO8L24J1lJnGgn4MEios2PeqYOSvETTy2eFWMI=;
+	s=korg; t=1744110087;
+	bh=lFXvcsV1fLKgw5fDytfIWfheA3rBU/MuDQveQc90QTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNt8W8ik7PWG9YtaaCNR6Q2EhYx5sWuONdmkmr8UraRUS7VAbZwHzMB1zeDpBmX+C
-	 mJSy4mbkhjw/kHWUkETgCz/V8szkGxumQ1sGBivab98N4KCTdaqOo8q0SeAmwvCbUK
-	 klkdFWkgGfqae01Jp8RzDYivi2UVUtruYDddIJPQ=
+	b=hx/8br1+RKpioMNck4mtozGoXUB5YfgTCnHRGzayFnw8Sw/ibpZBcosj2RszGIU44
+	 oPsFbHhaF8eLrbCl1ya7W8nKq/Vw7VPw/zHvDOcyFYGzRRIddj4VFJsJEvdkE5ugPs
+	 Sv/CAy8M7NZFltI+9fEvbKjyQiA+KWhhKsjXNBqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyan Yang <cyan.yang@sifive.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	David Hildenbrand <david@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/268] selftests/mm/cow: fix the incorrect error handling
+Subject: [PATCH 5.10 162/227] isofs: fix KMSAN uninit-value bug in do_isofs_readdir()
 Date: Tue,  8 Apr 2025 12:49:00 +0200
-Message-ID: <20250408104831.985814995@linuxfoundation.org>
+Message-ID: <20250408104825.177808485@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,43 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyan Yang <cyan.yang@sifive.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit f841ad9ca5007167c02de143980c9dc703f90b3d ]
+[ Upstream commit 81a82e8f33880793029cd6f8a766fb13b737e6a7 ]
 
-Error handling doesn't check the correct return value.  This patch will
-fix it.
+In do_isofs_readdir() when assigning the variable
+"struct iso_directory_record *de" the b_data field of the buffer_head
+is accessed and an offset is added to it, the size of b_data is 2048
+and the offset size is 2047, meaning
+"de = (struct iso_directory_record *) (bh->b_data + offset);"
+yields the final byte of the 2048 sized b_data block.
 
-Link: https://lkml.kernel.org/r/20250312043840.71799-1-cyan.yang@sifive.com
-Fixes: f4b5fd6946e2 ("selftests/vm: anon_cow: THP tests")
-Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The first byte of the directory record (de_len) is then read and
+found to be 31, meaning the directory record size is 31 bytes long.
+The directory record is defined by the structure:
+
+	struct iso_directory_record {
+		__u8 length;                     // 1 byte
+		__u8 ext_attr_length;            // 1 byte
+		__u8 extent[8];                  // 8 bytes
+		__u8 size[8];                    // 8 bytes
+		__u8 date[7];                    // 7 bytes
+		__u8 flags;                      // 1 byte
+		__u8 file_unit_size;             // 1 byte
+		__u8 interleave;                 // 1 byte
+		__u8 volume_sequence_number[4];  // 4 bytes
+		__u8 name_len;                   // 1 byte
+		char name[];                     // variable size
+	} __attribute__((packed));
+
+The fixed portion of this structure occupies 33 bytes. Therefore, a
+valid directory record must be at least 33 bytes long
+(even without considering the variable-length name field).
+Since de_len is only 31, it is insufficient to contain
+the complete fixed header.
+
+The code later hits the following sanity check that
+compares de_len against the sum of de->name_len and
+sizeof(struct iso_directory_record):
+
+	if (de_len < de->name_len[0] + sizeof(struct iso_directory_record)) {
+		...
+	}
+
+Since the fixed portion of the structure is
+33 bytes (up to and including name_len member),
+a valid record should have de_len of at least 33 bytes;
+here, however, de_len is too short, and the field de->name_len
+(located at offset 32) is accessed even though it lies beyond
+the available 31 bytes.
+
+This access on the corrupted isofs data triggers a KASAN uninitialized
+memory warning. The fix would be to first verify that de_len is at least
+sizeof(struct iso_directory_record) before accessing any
+fields like de->name_len.
+
+Reported-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
+Tested-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=812641c6c3d7586a1613
+Fixes: 2deb1acc653c ("isofs: fix access to unallocated memory when reading corrupted filesystem")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250211195900.42406-1-qasdev00@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/cow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/isofs/dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index 6f2f839904416..76d37904172db 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -812,7 +812,7 @@ static void do_run_with_thp(test_fn fn, enum thp_run thp_run)
- 		mremap_size = thpsize / 2;
- 		mremap_mem = mmap(NULL, mremap_size, PROT_NONE,
- 				  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
--		if (mem == MAP_FAILED) {
-+		if (mremap_mem == MAP_FAILED) {
- 			ksft_test_result_fail("mmap() failed\n");
- 			goto munmap;
+diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
+index b9e6a7ec78be4..23c73bb56d821 100644
+--- a/fs/isofs/dir.c
++++ b/fs/isofs/dir.c
+@@ -147,7 +147,8 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
+ 			de = tmpde;
  		}
+ 		/* Basic sanity check, whether name doesn't exceed dir entry */
+-		if (de_len < de->name_len[0] +
++		if (de_len < sizeof(struct iso_directory_record) ||
++		    de_len < de->name_len[0] +
+ 					sizeof(struct iso_directory_record)) {
+ 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
+ 			       " in block %lu of inode %lu\n", block,
 -- 
 2.39.5
 
