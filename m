@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-131709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E4DA80C2B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9861EA8051C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7358A4D38
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE048822D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C2A27CB3E;
-	Tue,  8 Apr 2025 12:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A6526A0FC;
+	Tue,  8 Apr 2025 12:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwWlMvNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGscrmsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3BE27CB30;
-	Tue,  8 Apr 2025 12:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6696F26773A;
+	Tue,  8 Apr 2025 12:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117125; cv=none; b=WVUKr5CKZyGbHFmDMghSiE3Dyj5un8aXdsQG4kWHdAmZixKgQYTz7NyepURg4+pWsBsO3EIeSlipjZicM3CG4RprjI0SosBJfNrXZ6gwVJB5mV0Zd1ewKfhZy1mbw3gWH6z2aHfNmTx9kZngNNaXU/orpbeWHU7kSn3YL1RL4Vk=
+	t=1744113706; cv=none; b=StGmHkEU4xb8gNphlsqfA4YST7bcXhUQsWvjjFX/N8xj6cNd27BlJWkgS0W5ppa1bU7+Fo99Ds2rMbdg0a8Vfz4LJx03tvZKYBuy52+GSW3aMbjRKtReBmo/DdWYQCmn/rsONRJRJeaUZNdW5UQJoQv6Lqy5jv1nLEKwrSoX/9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117125; c=relaxed/simple;
-	bh=VRtOwV5SaCg0zODgwCp++KLWOa5bG8xrzVA8bE3ok60=;
+	s=arc-20240116; t=1744113706; c=relaxed/simple;
+	bh=CVe2TbOXlPU6sogzCKLeECZ3HVtXOCUwR38J7a2DiYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ8y5YD6acjbz51a6vZ7SvPYwFhRFnKO21G9VEgHlugCbHoZ4rkrdTVvO9vFH8dEWx/0QEJRRgYCOK6deXtUNfjtLVzjigIII7AJSePxTyH9DOoMVCvFAGSWcMzRZzNqzhiU7wE6GSD/5ytliYVY+4KCz55uJlJJ8HTepNln3NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwWlMvNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDFFC4CEE5;
-	Tue,  8 Apr 2025 12:58:44 +0000 (UTC)
+	 MIME-Version; b=k90NDhRdbofRvBot+RyUtztu76XYZL50jjCrE4umgiTizMeH4RJ6ey8a4K3g0h2exJn44wvDxgN58W/sVgJ5gXk4EX/xn5f2OYGvLa+cxn+58/LRLRxhM+9GZ20tnQjhN72UHXMAekNBoHloJwHvczoY+31whUzfXIjK2uDad9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGscrmsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E237FC4CEE5;
+	Tue,  8 Apr 2025 12:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117125;
-	bh=VRtOwV5SaCg0zODgwCp++KLWOa5bG8xrzVA8bE3ok60=;
+	s=korg; t=1744113706;
+	bh=CVe2TbOXlPU6sogzCKLeECZ3HVtXOCUwR38J7a2DiYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwWlMvNdRvgX/GFPo/hynsp18aSCAWoGD39irlVgL8GSLHjqsh8pwrRjoeFy/nyXR
-	 LZfa8OlNYnm/vis3/LUysbB3cBO/AI7CLlfrf0A8w2uBT5gXhjhAJWkbaRDqBZ1ykh
-	 5HsAywnY6bX7BpSVcs1JM9KIEr3lqaysjf8scSbQ=
+	b=sGscrmsXbVdfbTazWyeyGPkoJ3A8Q2bHp4Kanj0aatHz8TyEJ21neUNbPSUsziLZd
+	 aeeSPXinSJr00qjf0Znl+s3b9WKhuYRaQLH5fiNvYuTbd3i2xv9xvLfhr86lNsIlt2
+	 xlQrk5ngPPeZwPsBiC4M2EZV4K72DoP08R7+ran4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Marquardt <davemarq@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 344/423] net: ibmveth: make veth_pool_store stop hanging
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 259/268] tracing/osnoise: Fix possible recursive locking for cpus_read_lock()
 Date: Tue,  8 Apr 2025 12:51:10 +0200
-Message-ID: <20250408104853.852681202@linuxfoundation.org>
+Message-ID: <20250408104835.565793224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,216 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Marquardt <davemarq@linux.ibm.com>
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-[ Upstream commit 053f3ff67d7feefc75797863f3d84b47ad47086f ]
+commit 7e6b3fcc9c5294aeafed0dbe1a09a1bc899bd0f2 upstream.
 
-v2:
-- Created a single error handling unlock and exit in veth_pool_store
-- Greatly expanded commit message with previous explanatory-only text
+Lockdep reports this deadlock log:
 
-Summary: Use rtnl_mutex to synchronize veth_pool_store with itself,
-ibmveth_close and ibmveth_open, preventing multiple calls in a row to
-napi_disable.
+osnoise: could not start sampling thread
+============================================
+WARNING: possible recursive locking detected
+--------------------------------------------
+       CPU0
+       ----
+  lock(cpu_hotplug_lock);
+  lock(cpu_hotplug_lock);
 
-Background: Two (or more) threads could call veth_pool_store through
-writing to /sys/devices/vio/30000002/pool*/*. You can do this easily
-with a little shell script. This causes a hang.
+ Call Trace:
+  <TASK>
+  print_deadlock_bug+0x282/0x3c0
+  __lock_acquire+0x1610/0x29a0
+  lock_acquire+0xcb/0x2d0
+  cpus_read_lock+0x49/0x120
+  stop_per_cpu_kthreads+0x7/0x60
+  start_kthread+0x103/0x120
+  osnoise_hotplug_workfn+0x5e/0x90
+  process_one_work+0x44f/0xb30
+  worker_thread+0x33e/0x5e0
+  kthread+0x206/0x3b0
+  ret_from_fork+0x31/0x50
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
 
-I configured LOCKDEP, compiled ibmveth.c with DEBUG, and built a new
-kernel. I ran this test again and saw:
+This is the deadlock scenario:
+osnoise_hotplug_workfn()
+  guard(cpus_read_lock)();      // first lock call
+  start_kthread(cpu)
+    if (IS_ERR(kthread)) {
+      stop_per_cpu_kthreads(); {
+        cpus_read_lock();      // second lock call. Cause the AA deadlock
+      }
+    }
 
-    Setting pool0/active to 0
-    Setting pool1/active to 1
-    [   73.911067][ T4365] ibmveth 30000002 eth0: close starting
-    Setting pool1/active to 1
-    Setting pool1/active to 0
-    [   73.911367][ T4366] ibmveth 30000002 eth0: close starting
-    [   73.916056][ T4365] ibmveth 30000002 eth0: close complete
-    [   73.916064][ T4365] ibmveth 30000002 eth0: open starting
-    [  110.808564][  T712] systemd-journald[712]: Sent WATCHDOG=1 notification.
-    [  230.808495][  T712] systemd-journald[712]: Sent WATCHDOG=1 notification.
-    [  243.683786][  T123] INFO: task stress.sh:4365 blocked for more than 122 seconds.
-    [  243.683827][  T123]       Not tainted 6.14.0-01103-g2df0c02dab82-dirty #8
-    [  243.683833][  T123] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-    [  243.683838][  T123] task:stress.sh       state:D stack:28096 pid:4365  tgid:4365  ppid:4364   task_flags:0x400040 flags:0x00042000
-    [  243.683852][  T123] Call Trace:
-    [  243.683857][  T123] [c00000000c38f690] [0000000000000001] 0x1 (unreliable)
-    [  243.683868][  T123] [c00000000c38f840] [c00000000001f908] __switch_to+0x318/0x4e0
-    [  243.683878][  T123] [c00000000c38f8a0] [c000000001549a70] __schedule+0x500/0x12a0
-    [  243.683888][  T123] [c00000000c38f9a0] [c00000000154a878] schedule+0x68/0x210
-    [  243.683896][  T123] [c00000000c38f9d0] [c00000000154ac80] schedule_preempt_disabled+0x30/0x50
-    [  243.683904][  T123] [c00000000c38fa00] [c00000000154dbb0] __mutex_lock+0x730/0x10f0
-    [  243.683913][  T123] [c00000000c38fb10] [c000000001154d40] napi_enable+0x30/0x60
-    [  243.683921][  T123] [c00000000c38fb40] [c000000000f4ae94] ibmveth_open+0x68/0x5dc
-    [  243.683928][  T123] [c00000000c38fbe0] [c000000000f4aa20] veth_pool_store+0x220/0x270
-    [  243.683936][  T123] [c00000000c38fc70] [c000000000826278] sysfs_kf_write+0x68/0xb0
-    [  243.683944][  T123] [c00000000c38fcb0] [c0000000008240b8] kernfs_fop_write_iter+0x198/0x2d0
-    [  243.683951][  T123] [c00000000c38fd00] [c00000000071b9ac] vfs_write+0x34c/0x650
-    [  243.683958][  T123] [c00000000c38fdc0] [c00000000071bea8] ksys_write+0x88/0x150
-    [  243.683966][  T123] [c00000000c38fe10] [c0000000000317f4] system_call_exception+0x124/0x340
-    [  243.683973][  T123] [c00000000c38fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-    ...
-    [  243.684087][  T123] Showing all locks held in the system:
-    [  243.684095][  T123] 1 lock held by khungtaskd/123:
-    [  243.684099][  T123]  #0: c00000000278e370 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x50/0x248
-    [  243.684114][  T123] 4 locks held by stress.sh/4365:
-    [  243.684119][  T123]  #0: c00000003a4cd3f8 (sb_writers#3){.+.+}-{0:0}, at: ksys_write+0x88/0x150
-    [  243.684132][  T123]  #1: c000000041aea888 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x154/0x2d0
-    [  243.684143][  T123]  #2: c0000000366fb9a8 (kn->active#64){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x160/0x2d0
-    [  243.684155][  T123]  #3: c000000035ff4cb8 (&dev->lock){+.+.}-{3:3}, at: napi_enable+0x30/0x60
-    [  243.684166][  T123] 5 locks held by stress.sh/4366:
-    [  243.684170][  T123]  #0: c00000003a4cd3f8 (sb_writers#3){.+.+}-{0:0}, at: ksys_write+0x88/0x150
-    [  243.684183][  T123]  #1: c00000000aee2288 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x154/0x2d0
-    [  243.684194][  T123]  #2: c0000000366f4ba8 (kn->active#64){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x160/0x2d0
-    [  243.684205][  T123]  #3: c000000035ff4cb8 (&dev->lock){+.+.}-{3:3}, at: napi_disable+0x30/0x60
-    [  243.684216][  T123]  #4: c0000003ff9bbf18 (&rq->__lock){-.-.}-{2:2}, at: __schedule+0x138/0x12a0
+It is not necessary to call stop_per_cpu_kthreads() which stops osnoise
+kthread for every other CPUs in the system if a failure occurs during
+hotplug of a certain CPU.
+For start_per_cpu_kthreads(), if the start_kthread() call fails,
+this function calls stop_per_cpu_kthreads() to handle the error.
+Therefore, similarly, there is no need to call stop_per_cpu_kthreads()
+again within start_kthread().
+So just remove stop_per_cpu_kthreads() from start_kthread to solve this issue.
 
->From the ibmveth debug, two threads are calling veth_pool_store, which
-calls ibmveth_close and ibmveth_open. Here's the sequence:
-
-  T4365             T4366
-  ----------------- ----------------- ---------
-  veth_pool_store   veth_pool_store
-                    ibmveth_close
-  ibmveth_close
-  napi_disable
-                    napi_disable
-  ibmveth_open
-  napi_enable                         <- HANG
-
-ibmveth_close calls napi_disable at the top and ibmveth_open calls
-napi_enable at the top.
-
-https://docs.kernel.org/networking/napi.html]] says
-
-  The control APIs are not idempotent. Control API calls are safe
-  against concurrent use of datapath APIs but an incorrect sequence of
-  control API calls may result in crashes, deadlocks, or race
-  conditions. For example, calling napi_disable() multiple times in a
-  row will deadlock.
-
-In the normal open and close paths, rtnl_mutex is acquired to prevent
-other callers. This is missing from veth_pool_store. Use rtnl_mutex in
-veth_pool_store fixes these hangs.
-
-Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
-Fixes: 860f242eb534 ("[PATCH] ibmveth change buffer pools dynamically")
-Reviewed-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250402154403.386744-1-davemarq@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250321095249.2739397-1-ranxiaokai627@163.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 39 +++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 12 deletions(-)
+ kernel/trace/trace_osnoise.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index b619a3ec245b2..04192190bebab 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1802,18 +1802,22 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
- 	long value = simple_strtol(buf, NULL, 10);
- 	long rc;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2038,7 +2038,6 @@ static int start_kthread(unsigned int cp
  
-+	rtnl_lock();
-+
- 	if (attr == &veth_active_attr) {
- 		if (value && !pool->active) {
- 			if (netif_running(netdev)) {
- 				if (ibmveth_alloc_buffer_pool(pool)) {
- 					netdev_err(netdev,
- 						   "unable to alloc pool\n");
--					return -ENOMEM;
-+					rc = -ENOMEM;
-+					goto unlock_err;
- 				}
- 				pool->active = 1;
- 				ibmveth_close(netdev);
--				if ((rc = ibmveth_open(netdev)))
--					return rc;
-+				rc = ibmveth_open(netdev);
-+				if (rc)
-+					goto unlock_err;
- 			} else {
- 				pool->active = 1;
- 			}
-@@ -1833,48 +1837,59 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
- 
- 			if (i == IBMVETH_NUM_BUFF_POOLS) {
- 				netdev_err(netdev, "no active pool >= MTU\n");
--				return -EPERM;
-+				rc = -EPERM;
-+				goto unlock_err;
- 			}
- 
- 			if (netif_running(netdev)) {
- 				ibmveth_close(netdev);
- 				pool->active = 0;
--				if ((rc = ibmveth_open(netdev)))
--					return rc;
-+				rc = ibmveth_open(netdev);
-+				if (rc)
-+					goto unlock_err;
- 			}
- 			pool->active = 0;
- 		}
- 	} else if (attr == &veth_num_attr) {
- 		if (value <= 0 || value > IBMVETH_MAX_POOL_COUNT) {
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto unlock_err;
- 		} else {
- 			if (netif_running(netdev)) {
- 				ibmveth_close(netdev);
- 				pool->size = value;
--				if ((rc = ibmveth_open(netdev)))
--					return rc;
-+				rc = ibmveth_open(netdev);
-+				if (rc)
-+					goto unlock_err;
- 			} else {
- 				pool->size = value;
- 			}
- 		}
- 	} else if (attr == &veth_size_attr) {
- 		if (value <= IBMVETH_BUFF_OH || value > IBMVETH_MAX_BUF_SIZE) {
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto unlock_err;
- 		} else {
- 			if (netif_running(netdev)) {
- 				ibmveth_close(netdev);
- 				pool->buff_size = value;
--				if ((rc = ibmveth_open(netdev)))
--					return rc;
-+				rc = ibmveth_open(netdev);
-+				if (rc)
-+					goto unlock_err;
- 			} else {
- 				pool->buff_size = value;
- 			}
- 		}
+ 	if (IS_ERR(kthread)) {
+ 		pr_err(BANNER "could not start sampling thread\n");
+-		stop_per_cpu_kthreads();
+ 		return -ENOMEM;
  	}
-+	rtnl_unlock();
  
- 	/* kick the interrupt handler to allocate/deallocate pools */
- 	ibmveth_interrupt(netdev->irq, netdev);
- 	return count;
-+
-+unlock_err:
-+	rtnl_unlock();
-+	return rc;
- }
- 
- 
--- 
-2.39.5
-
 
 
 
