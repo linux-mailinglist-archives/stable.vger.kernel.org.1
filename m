@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238BFA8095D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE794A8067C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C735C1BA4433
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D66E3BD7A0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DA326B94E;
-	Tue,  8 Apr 2025 12:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468E4269D17;
+	Tue,  8 Apr 2025 12:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkOOK8m9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zse7D89X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD6126B0BE;
-	Tue,  8 Apr 2025 12:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010B8267B96;
+	Tue,  8 Apr 2025 12:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116114; cv=none; b=fE4RLD9y4CeYJAhOVQiWb2lvrfnngkCY/OivNHe5Mlx+6A24elPEzRFo5h5T3tAZ3k/48P5yweDv4YT3ikiHPU/TqsPe36JC5Ov1fRh4G13xauLfLCG3JCF8HOzuP4wM1OoAjRlsgugR7+p46qz6r3lsAWRIpxnK9OWFqdUK88g=
+	t=1744114512; cv=none; b=EH4ZErntKRJyQsKkCiCj9GwNu9VKY+j6UfaOvy+Cj+C/oK/u7BAVTCmCBTSLPjNsSmC/fGjmoDYAz0YeuJGRdYvo/Gi0KPslDdFuh+g9jHkVhjcjb3+4NLetY9mdekD2bYbsPrxFx15hjJ1gQS1WmrITkft0H2ih8G3bey+OXYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116114; c=relaxed/simple;
-	bh=92fl+h5ZwjM65tT+QHG5razljnoMSvAlhUyTV/qqRGk=;
+	s=arc-20240116; t=1744114512; c=relaxed/simple;
+	bh=g+tAUg1dtx0s3b6ffK98VJuRPHJ/Dc2I7QkCAh+5Y9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nseO3VjTppUuHkFfcmznuM0kYV4Y3PoarbOARvLfGZi/kBUyCE7GzcRje2yWmVxWzadGE9fXTvpSQO8VEpjOAjOh08juaJTTNicYtANvTFSwviSQxIFjdspK17Zgu96ikszjKGx8TO3eoBiytRA45Qk0cvlxmzI/MYeBifGtXSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkOOK8m9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F30CC4CEE5;
-	Tue,  8 Apr 2025 12:41:53 +0000 (UTC)
+	 MIME-Version; b=uzlJJfQOW9UnT2Q0+LxiZbl8qxXmehexhWFXATFuVHLe9Rr8HmqFtziMhAaqlWRkPIDB5SYSPJdjgbBypqEp4W8L/AXOfCcwAJJPcuGWhVfBsf+zzEJiKf9c3efsckFChK9PvVxX7FDdYjcAlX8rtV0kqlv8fLV8DX5FLFqEV1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zse7D89X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783C9C4CEE5;
+	Tue,  8 Apr 2025 12:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116113;
-	bh=92fl+h5ZwjM65tT+QHG5razljnoMSvAlhUyTV/qqRGk=;
+	s=korg; t=1744114511;
+	bh=g+tAUg1dtx0s3b6ffK98VJuRPHJ/Dc2I7QkCAh+5Y9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkOOK8m95i5hJJneWvmtqVlEWdtWnS5+nnhxsGpFURYe9x3HHyljQngh2YMTsMSUc
-	 KowYl0uvxE5BEFcEf/+3OiegyBUT1J6wjl/ccAsmf15471rxWWAs79g2EyymKZRN75
-	 hDFrkOTBOTzfp7Jqjkc8ryiX5J0w1kI6vZsXSbM8=
+	b=zse7D89XvI1Qmzf2zUPXivwtz0woNqvcJmAPXAQbFCv9c5TTxTyQcL7m31nUoGIgg
+	 svikohJwZVzQPDjohPJukkghOEHjP4m21JL0/IM8AFZ0o0XZSwQjvVuT8htUzPk0LN
+	 KmWE7zAudro2wH2fBH53M3Xh3c/dNs8mwo02XfGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/423] EDAC/ie31200: Fix the size of EDAC_MC_LAYER_CHIP_SELECT layer
+Subject: [PATCH 6.13 135/499] pinctrl: renesas: rzg2l: Suppress binding attributes
 Date: Tue,  8 Apr 2025 12:45:47 +0200
-Message-ID: <20250408104846.237564065@linuxfoundation.org>
+Message-ID: <20250408104854.558301415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit d59d844e319d97682c8de29b88d2d60922a683b3 ]
+[ Upstream commit ea4065345643f3163e812e58ed8add2c75c3ee46 ]
 
-The EDAC_MC_LAYER_CHIP_SELECT layer pertains to the rank, not the DIMM.
-Fix its size to reflect the number of ranks instead of the number of DIMMs.
-Also delete the unused macros IE31200_{DIMMS,RANKS}.
+Suppress binding attributes for the rzg2l pinctrl driver, as it is an
+essential block for Renesas SoCs.  Unbinding the driver leads to
+warnings from __device_links_no_driver() and can eventually render the
+system inaccessible.
 
-Fixes: 7ee40b897d18 ("ie31200_edac: Introduce the driver")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-2-qiuxu.zhuo@intel.com
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250215131235.228274-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 9ef13570f2e54..98d74c604d726 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -91,8 +91,6 @@
- 	 (((did) & PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK) ==                 \
- 	  PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK))
- 
--#define IE31200_DIMMS			4
--#define IE31200_RANKS			8
- #define IE31200_RANKS_PER_CHANNEL	4
- #define IE31200_DIMMS_PER_CHANNEL	2
- #define IE31200_CHANNELS		2
-@@ -426,7 +424,7 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 
- 	nr_channels = how_many_channels(pdev);
- 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
--	layers[0].size = IE31200_DIMMS;
-+	layers[0].size = IE31200_RANKS_PER_CHANNEL;
- 	layers[0].is_virt_csrow = true;
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = nr_channels;
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 515c38de445a9..3501535f5818f 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -3210,6 +3210,7 @@ static struct platform_driver rzg2l_pinctrl_driver = {
+ 		.name = DRV_NAME,
+ 		.of_match_table = of_match_ptr(rzg2l_pinctrl_of_table),
+ 		.pm = pm_sleep_ptr(&rzg2l_pinctrl_pm_ops),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = rzg2l_pinctrl_probe,
+ };
 -- 
 2.39.5
 
