@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE346A801B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8CFA803B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B834445BC3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F634421C13
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582352690FA;
-	Tue,  8 Apr 2025 11:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F4F264FB0;
+	Tue,  8 Apr 2025 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYso/xY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnXwjtfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13722268C41;
-	Tue,  8 Apr 2025 11:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5C22257E;
+	Tue,  8 Apr 2025 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111873; cv=none; b=VxeOoqrDJcMia7qhyZdAVLTO5Aurx+57j56GqwNVg4s3dKdefz4sw0dm+bNOE/CTSUqeoBDKmyfxLq4oWkYdcnY1VwNHLy/iMS1WFc61nXkRqIMeAYaBZo+5msKFyEB0sCbiInEMM5T3DG/sUAN5FoocYC3XUg4bD439y/tWiOQ=
+	t=1744113212; cv=none; b=A07ulir6d7qmeQ1udUOssqrXDnhw4C2esh+Voy8mWeyKA9iVWom8VoftDgj5Rxz2Vd1St1FAQUjIOgNLWI64pubqXPnHFLmoS+/9fLKg/1UagM3t1mGJLG+3deY4xzhg/lgIwifmWf6UPzKrZYJo4ojcAY3WU8zYX8oGXN9KVfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111873; c=relaxed/simple;
-	bh=6nCCFiD3CJ9ZWI3G+D1aYokP2+qcoWgQmkvLAHzIxwc=;
+	s=arc-20240116; t=1744113212; c=relaxed/simple;
+	bh=sg5jmqKCWvPWeQ3tL1GxgKNfdvi9HZuaKDn6538NoHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7NbVQFqzTvb9c7mZHoiqumdAqD3+xLoarAdgKWLKeSqHz0Oy11zDuDzFCznsl5KG78x/R3v/viK9R7AMlWMy84bus1WUJXGdYxMpc3RQLrKqHhYSMRQzrydPNtQzA3D2bBr8VC4UJBvMq8YLqgJ3+klMZgfSbPe2lWsed33IYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYso/xY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CDEC4CEE5;
-	Tue,  8 Apr 2025 11:31:12 +0000 (UTC)
+	 MIME-Version; b=YKb5N1nEa+og3aN60nA6uyKp0QBKG9HWJtd6/jNAXVIdU7fwBBssyiT/8msjjy/jD/6egshJNoSmYBrpSuMwnaZBZMLw+0MFpPlkspqvtabkULO5yHFpFqdfkenwGSLj9dJEdZv84zu7svzaGEZmAZ2CREZHTA9sRwO/1iH79to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnXwjtfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1487BC4CEEA;
+	Tue,  8 Apr 2025 11:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111872;
-	bh=6nCCFiD3CJ9ZWI3G+D1aYokP2+qcoWgQmkvLAHzIxwc=;
+	s=korg; t=1744113212;
+	bh=sg5jmqKCWvPWeQ3tL1GxgKNfdvi9HZuaKDn6538NoHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYso/xY1pZdzXnxDV1AosBr9gKTB03rr7BFQO1IJoVpqjo5X9lvJSXE4ES/ej7SxH
-	 WUSvOxQh3Shp5UiDHQu0rjpLQkAoXazjsyQ3Q4k2zxVxbpRWrWi4VGeOWfP/LgA13g
-	 V3mg2lt+1cPLIQP4OOTXMI//2Iqaj3qkup6OiJ6s=
+	b=qnXwjtfRHqGGyfxkxfXOPDNcBIBgxoWKVm+HLGESvkIDpy0HOZNzaL8kemH0ZxSPn
+	 MLUZqW4+PjgTuuGFlZoSRDP74JQQxArpo9EC/vfhH55QQjORYFsHtth0gRwCYLv2XI
+	 8R6zPmNBsySDd9Tb/DgSjJQopJcTqQjKloqFLAyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 589/731] riscv: Fix riscv_online_cpu_vec
-Date: Tue,  8 Apr 2025 12:48:06 +0200
-Message-ID: <20250408104927.975337976@linuxfoundation.org>
+Subject: [PATCH 6.6 076/268] lib: 842: Improve error handling in sw842_compress()
+Date: Tue,  8 Apr 2025 12:48:07 +0200
+Message-ID: <20250408104830.547779253@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-[ Upstream commit 5af72a818612332a11171b16f27a62ec0a0f91d7 ]
+[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
 
-We shouldn't probe when we already know vector is unsupported and
-we should probe when we see we don't yet know whether it's supported.
-Furthermore, we should ensure we've set the access type to
-unsupported when we don't have vector at all.
+The static code analysis tool "Coverity Scan" pointed the following
+implementation details out for further development considerations:
+CID 1309755: Unused value
+In sw842_compress: A value assigned to a variable is never used. (CWE-563)
+returned_value: Assigning value from add_repeat_template(p, repeat_count)
+to ret here, but that stored value is overwritten before it can be used.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250304120014.143628-12-ajones@ventanamicro.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Conclusion:
+Add error handling for the return value from an add_repeat_template()
+call.
+
+Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/842/842_compress.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 85c868a8cee63..2e41b42498c76 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -370,10 +370,12 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 
- static int riscv_online_cpu_vec(unsigned int cpu)
- {
--	if (!has_vector())
-+	if (!has_vector()) {
-+		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
- 		return 0;
-+	}
- 
--	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED)
-+	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
- 		return 0;
- 
- 	check_vector_unaligned_access_emulated(NULL);
+diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
+index c02baa4168e16..055356508d97c 100644
+--- a/lib/842/842_compress.c
++++ b/lib/842/842_compress.c
+@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
+ 		}
+ 		if (repeat_count) {
+ 			ret = add_repeat_template(p, repeat_count);
++			if (ret)
++				return ret;
+ 			repeat_count = 0;
+ 			if (next == last) /* reached max repeat bits */
+ 				goto repeat;
 -- 
 2.39.5
 
