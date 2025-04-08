@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AFDA802DD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B58A801A7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7E146172E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3CB288030B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3766267F57;
-	Tue,  8 Apr 2025 11:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CBB269D0D;
+	Tue,  8 Apr 2025 11:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoF1TsFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0MpapQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A2626773A;
-	Tue,  8 Apr 2025 11:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC97227BB6;
+	Tue,  8 Apr 2025 11:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112686; cv=none; b=Txm1JLVs0LTVdiey5OYgXA+Vuk6rspU/sPw4pn39EfbrDLl2yBXeLJoP4F/YLl1nLZbDcQrGidi+pbmGMX7nla7f10Fvxye13CBqQhzZd+F+olxPp0XkEB9lBxvGETC8O9TtK+eS/A1XW4+SBDsSQurGX4FJo/5+vblsf7H+iYY=
+	t=1744112016; cv=none; b=snRycPWsuVQslKTunwbVdWSUezL04R1AHovH7/G4wPRlh2aJpMMaeJm6K666SYPRWTHmPzA+A5KFHKY0rbtHqRIaMV4TTVe4Gya4fPkyOwRyNaKXWH2qJFbMJ4/Glby//RdZMp8qpeY3/mgT6FId35CDip7K2tOSvRA+k/WI1ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112686; c=relaxed/simple;
-	bh=mVo6PEmIgSZ1pZo1hDXS5senkLFLCWPGL8Wa9uExo8c=;
+	s=arc-20240116; t=1744112016; c=relaxed/simple;
+	bh=r6+CIXGW7jcICQWkyiP8aKSMvgpWiXWnOvuvBqvcQfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUJ44uwUg31sRgmgTMPqFYqi/x6Ma4s4sxfKneYtsUZvAeNzeGad2+4g1HRcN+rC/4RmwGlm+KY3myp8U49/Gmur+PEhXF7o2nPcrqeW14al80lFTiCMuKcV83FW0qekPa373LlGYYWSNQh/Jek5Ew84QjbKbPNBaHurvesDT6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoF1TsFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EA5C4CEE5;
-	Tue,  8 Apr 2025 11:44:45 +0000 (UTC)
+	 MIME-Version; b=N6w6uv4Jf7P8QQsQak7VVNmmHpKVcUS4ptAQb4oAMllxmRGLAxNV/y6LiWuuGrvKykAJ6533ltPZ24rfn2GSVe/S6FUA+Eoi/p+DH4vIZ4o4PDBafpJnDIqE7bqDv+2R/tFrt2pC97VjcDHu9ssrNmUFK2odEQitrtTPxWSUeU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0MpapQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D413C4CEE5;
+	Tue,  8 Apr 2025 11:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112686;
-	bh=mVo6PEmIgSZ1pZo1hDXS5senkLFLCWPGL8Wa9uExo8c=;
+	s=korg; t=1744112015;
+	bh=r6+CIXGW7jcICQWkyiP8aKSMvgpWiXWnOvuvBqvcQfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoF1TsFLUCvXHVlfVHTv0rgVI2qpSz2415hCp8H/naRpNdBJdUn3FroI6yJGCk7pV
-	 wZGAei9ava7rift25APS5zX4X+nYbdwYeuRctwp3mX2St76GGbSe7blfu+w96GpZ5p
-	 TdSQcrJShSk6R+pA0UBlhoicD3L/3UZOx/lBfTPs=
+	b=T0MpapQoVPOpmBxvs07sG28P3XZpplZrpJtZygfO2iOd3j4RlF5GeBERhUwOOkhXd
+	 Px9zQduO3SuJ7JrP/DIWT/CvZY1IDSqWubVPW8ZuYu9DgtQKtCqzlf0NW6m2P6hoiv
+	 eHiuxCM9KSMeycIxKv3xct55rTS6S0D7pQGggUtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/279] PCI: Remove stray put_device() in pci_register_host_bridge()
+Subject: [PATCH 6.14 645/731] kbuild: deb-pkg: dont set KBUILD_BUILD_VERSION unconditionally
 Date: Tue,  8 Apr 2025 12:49:02 +0200
-Message-ID: <20250408104830.627697251@linuxfoundation.org>
+Message-ID: <20250408104929.268918819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
 
-[ Upstream commit 6e8d06e5096c80cbf41313b4a204f43071ca42be ]
+[ Upstream commit 62604063621fb075c7966286bdddcb057d883fa8 ]
 
-This put_device() was accidentally left over from when we changed the code
-from using device_register() to calling device_add().  Delete it.
+In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
+the kernel package. This does not have a dash in the name or version.
+This is built by editing ".version" before a build, and setting
+EXTRAVERSION="+hp" and KDEB_PKGVERSION make variables:
 
-Link: https://lore.kernel.org/r/55b24870-89fb-4c91-b85d-744e35db53c2@stanley.mountain
-Fixes: 9885440b16b8 ("PCI: Fix pci_host_bridge struct device release/free handling")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+    echo 68 > .version
+    make -j<n> EXTRAVERSION="+hp" bindeb-pkg KDEB_PKGVERSION=6.12.2+hp69
+
+    .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
+
+Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
+scripts/package/deb-build-option to debian/rules"), this no longer
+works. The deb build logic changed, even though, the commit message
+implies that the logic should be unmodified.
+
+Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
+not contain a dash. After the change KBUILD_BUILD_VERSION is always
+set to KDEB_PKGVERSION. Since this determines UTS_VERSION, the uname
+output to look off:
+
+    (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
+    (expected) uname -a: version 6.12.2+hp ... #69
+
+Update the debian/rules logic to restore the original behavior.
+
+Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-option to debian/rules")
+Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/package/debian/rules | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index dd2134c7c4192..51615e4d28f41 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -926,10 +926,9 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 		goto free;
+diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
+index ca07243bd5cdf..2b3f9a0bd6c40 100755
+--- a/scripts/package/debian/rules
++++ b/scripts/package/debian/rules
+@@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
+     endif
+ endif
  
- 	err = device_add(&bridge->dev);
--	if (err) {
--		put_device(&bridge->dev);
-+	if (err)
- 		goto free;
--	}
-+
- 	bus->bridge = get_device(&bridge->dev);
- 	device_enable_async_suspend(bus->bridge);
- 	pci_set_bus_of_node(bus);
+-revision = $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version)))
++revision = $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
+ CROSS_COMPILE ?= $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYPE)-)
+-make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) KBUILD_BUILD_VERSION=$(revision) $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
++make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) \
++    $(addprefix KBUILD_BUILD_VERSION=,$(revision)) \
++    $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
+ 
+ binary-targets := $(addprefix binary-, image image-dbg headers libc-dev)
+ 
 -- 
 2.39.5
 
