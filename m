@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A06A807D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD26DA804A5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10494885C1B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF221884B9A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B50E26A1B7;
-	Tue,  8 Apr 2025 12:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263C4269CEB;
+	Tue,  8 Apr 2025 12:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOGDfSBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvWfxv8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9BF26A1B2;
-	Tue,  8 Apr 2025 12:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7836269B12;
+	Tue,  8 Apr 2025 12:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115174; cv=none; b=mFo0bMs5pj4iVUJyk3iH+dHEOdGBMFG91eWb1do3p/t3K0nRBBSDIALYe22MCfZQ8ckvErCf9gp+IEshXLN1I8X1DWpI3E7Q0RkEKREHX9kBumOoT3E1M1tEUAf0gAkNs/hy5h+2W8nluDSCNbQ7tRRs6buQW1gGWFiskvpBjYs=
+	t=1744113761; cv=none; b=F1E0TM6GxnxEjapMOTiXJQXDauUCHeMv3lWEdh26+PER/DV4qgKc0ZKuXrQW+yYV+SyqPNIGn5KeV5r+MRcLkxsyONk7TRfDnASTftMHq/IThNNo/ViVjbfASkUb8yPejS90Mn0rnylLY7DQu9w3y4KfyLPV+/bRXSpfVBXatj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115174; c=relaxed/simple;
-	bh=0m81tj4MJpTy2wBfEmnSmqSKeG7f8jULPgtRjLer/pE=;
+	s=arc-20240116; t=1744113761; c=relaxed/simple;
+	bh=Yxby4OngIaRfNtiDO+r7WJlGLM+IXp2MygFTb4oS2HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTL4xu2IuaZvbS5IV2DhOZT0TGIda5zzBlj+Mh6XqwEI2pzEMuhcqh/c9sSgJPr35FsYd30NwchH9PnfWa3DLSqpWvR9seGz+b94nn/HVkXCRQM4stlV5y/7Jb9Q1r+av0+2yDOuUaVMOe/4Ek/FfCuUYGC7OnC0woHbWoqCoiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOGDfSBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49349C4CEED;
-	Tue,  8 Apr 2025 12:26:14 +0000 (UTC)
+	 MIME-Version; b=bu3aNbMjTZVmqabmKQIfFQauwpj8K3HcTieR8/gFmxm2jqjoXf8ptyAru2NOwC12azAjmI0hgBG9drLDkM3w6tRhi+F34UuNxXBbs9WtkCJHkd5XnftXDK+Ilp1E4uemkatj6CyZuxp7jUQPBJLJLsdfAXkA5R3tbV8rG1QHXfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvWfxv8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3433C4CEE5;
+	Tue,  8 Apr 2025 12:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115174;
-	bh=0m81tj4MJpTy2wBfEmnSmqSKeG7f8jULPgtRjLer/pE=;
+	s=korg; t=1744113761;
+	bh=Yxby4OngIaRfNtiDO+r7WJlGLM+IXp2MygFTb4oS2HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOGDfSBGJb5PN6QPSYg1vp2/s4dsccj6WaG+sCX72WVhbggAF7eDw3oD3nXowRzok
-	 vNDNHwMquEK0swiGGMv7Z6xrRImb0esYHqN9ylXlnN4o1XngvQ2XErqQfofFjxk3gj
-	 DSHMEZ8Y62ryHfI7rDeScsFH0I5WbWKjPr4hFzqU=
+	b=BvWfxv8jxJ59nD8syk67SqH7Vg0U9/rdN+xHbxFhe/f5K0Bd/3ysEkRIufcV5+zsp
+	 4R/ZNzxnTw9XqjiwNhpRl56gKfkC0KYKGNYmpoE8/GT7FVg1yEwIl+WhJBHHNw5fOY
+	 t2DJpHA0EHqjAbgwVBzbLP44yZ2D27GSztNckJ1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 340/499] drm/xe/guc_pc: Retry and wait longer for GuC PC start
+Subject: [PATCH 5.4 011/154] netpoll: move netpoll_send_skb() out of line
 Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104859.702438268@linuxfoundation.org>
+Message-ID: <20250408104815.649819770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,185 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c605acb53f449f6289f042790307d7dc9e62d03d ]
+[ Upstream commit fb1eee476b0d3be3e58dac1a3a96f726c6278bed ]
 
-In a rare situation of thermal limit during resume, GuC can
-be slow and run into delays like this:
+There is no need to inline this helper, as we intend to add more
+code in this function.
 
-xe 0000:00:02.0: [drm] GT1: excessive init time: 667ms! \
-   		 [status = 0x8002F034, timeouts = 0]
-xe 0000:00:02.0: [drm] GT1: excessive init time: \
-   		 [freq = 100MHz (req = 800MHz), before = 100MHz, \
-   		 perf_limit_reasons = 0x1C001000]
-xe 0000:00:02.0: [drm] *ERROR* GT1: GuC PC Start failed
-------------[ cut here ]------------
-xe 0000:00:02.0: [drm] GT1: Failed to start GuC PC: -EIO
-
-When this happens, it will block entirely the GPU to be used.
-So, let's try and with a huge timeout in the hope it comes back.
-
-Also, let's collect some information on how long it is usually
-taking on situations like this, so perhaps the time can be tuned
-later.
-
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250307160307.1093391-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit b4b05e53b550a886b4754b87fd0dd2b304579e85)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 53 +++++++++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+ include/linux/netpoll.h |  9 +--------
+ net/core/netpoll.c      | 13 +++++++++++--
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index e8b9faeaef645..467d8a2879ecb 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -6,6 +6,7 @@
- #include "xe_guc_pc.h"
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index f5202a59c0274..2db513437d2c0 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -63,14 +63,7 @@ int netpoll_setup(struct netpoll *np);
+ void __netpoll_cleanup(struct netpoll *np);
+ void __netpoll_free(struct netpoll *np);
+ void netpoll_cleanup(struct netpoll *np);
+-void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
+-static inline void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+-{
+-	unsigned long flags;
+-	local_irq_save(flags);
+-	__netpoll_send_skb(np, skb);
+-	local_irq_restore(flags);
+-}
++void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
  
- #include <linux/delay.h>
-+#include <linux/ktime.h>
- 
- #include <drm/drm_managed.h>
- #include <generated/xe_wa_oob.h>
-@@ -19,6 +20,7 @@
- #include "xe_gt.h"
- #include "xe_gt_idle.h"
- #include "xe_gt_printk.h"
-+#include "xe_gt_throttle.h"
- #include "xe_gt_types.h"
- #include "xe_guc.h"
- #include "xe_guc_ct.h"
-@@ -48,6 +50,9 @@
- #define LNL_MERT_FREQ_CAP	800
- #define BMG_MERT_FREQ_CAP	2133
- 
-+#define SLPC_RESET_TIMEOUT_MS 5 /* roughly 5ms, but no need for precision */
-+#define SLPC_RESET_EXTENDED_TIMEOUT_MS 1000 /* To be used only at pc_start */
-+
- /**
-  * DOC: GuC Power Conservation (PC)
-  *
-@@ -112,9 +117,10 @@ static struct iosys_map *pc_to_maps(struct xe_guc_pc *pc)
- 	 FIELD_PREP(HOST2GUC_PC_SLPC_REQUEST_MSG_1_EVENT_ARGC, count))
- 
- static int wait_for_pc_state(struct xe_guc_pc *pc,
--			     enum slpc_global_state state)
-+			     enum slpc_global_state state,
-+			     int timeout_ms)
- {
--	int timeout_us = 5000; /* rought 5ms, but no need for precision */
-+	int timeout_us = 1000 * timeout_ms;
- 	int slept, wait = 10;
- 
- 	xe_device_assert_mem_access(pc_to_xe(pc));
-@@ -163,7 +169,8 @@ static int pc_action_query_task_state(struct xe_guc_pc *pc)
- 	};
- 	int ret;
- 
--	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
-+	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
-+			      SLPC_RESET_TIMEOUT_MS))
- 		return -EAGAIN;
- 
- 	/* Blocking here to ensure the results are ready before reading them */
-@@ -186,7 +193,8 @@ static int pc_action_set_param(struct xe_guc_pc *pc, u8 id, u32 value)
- 	};
- 	int ret;
- 
--	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
-+	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
-+			      SLPC_RESET_TIMEOUT_MS))
- 		return -EAGAIN;
- 
- 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
-@@ -207,7 +215,8 @@ static int pc_action_unset_param(struct xe_guc_pc *pc, u8 id)
- 	struct xe_guc_ct *ct = &pc_to_guc(pc)->ct;
- 	int ret;
- 
--	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
-+	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
-+			      SLPC_RESET_TIMEOUT_MS))
- 		return -EAGAIN;
- 
- 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
-@@ -404,6 +413,15 @@ u32 xe_guc_pc_get_act_freq(struct xe_guc_pc *pc)
- 	return freq;
+ #ifdef CONFIG_NETPOLL
+ static inline void *netpoll_poll_lock(struct napi_struct *napi)
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 69f80b531a1c3..5eefbb2e145a4 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -323,7 +323,7 @@ static int netpoll_owner_active(struct net_device *dev)
  }
  
-+static u32 get_cur_freq(struct xe_gt *gt)
+ /* call with IRQ disabled */
+-void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
++static void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	netdev_tx_t status = NETDEV_TX_BUSY;
+ 	struct net_device *dev;
+@@ -378,7 +378,16 @@ void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 		schedule_delayed_work(&npinfo->tx_work,0);
+ 	}
+ }
+-EXPORT_SYMBOL(__netpoll_send_skb);
++
++void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
 +{
-+	u32 freq;
++	unsigned long flags;
 +
-+	freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
-+	freq = REG_FIELD_GET(REQ_RATIO_MASK, freq);
-+	return decode_freq(freq);
++	local_irq_save(flags);
++	__netpoll_send_skb(np, skb);
++	local_irq_restore(flags);
 +}
-+
- /**
-  * xe_guc_pc_get_cur_freq - Get Current requested frequency
-  * @pc: The GuC PC
-@@ -427,10 +445,7 @@ int xe_guc_pc_get_cur_freq(struct xe_guc_pc *pc, u32 *freq)
- 		return -ETIMEDOUT;
- 	}
++EXPORT_SYMBOL(netpoll_send_skb);
  
--	*freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
--
--	*freq = REG_FIELD_GET(REQ_RATIO_MASK, *freq);
--	*freq = decode_freq(*freq);
-+	*freq = get_cur_freq(gt);
- 
- 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
- 	return 0;
-@@ -965,6 +980,7 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
- 	struct xe_gt *gt = pc_to_gt(pc);
- 	u32 size = PAGE_ALIGN(sizeof(struct slpc_shared_data));
- 	unsigned int fw_ref;
-+	ktime_t earlier;
- 	int ret;
- 
- 	xe_gt_assert(gt, xe_device_uc_enabled(xe));
-@@ -989,14 +1005,25 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
- 	memset(pc->bo->vmap.vaddr, 0, size);
- 	slpc_shared_data_write(pc, header.size, size);
- 
-+	earlier = ktime_get();
- 	ret = pc_action_reset(pc);
- 	if (ret)
- 		goto out;
- 
--	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING)) {
--		xe_gt_err(gt, "GuC PC Start failed\n");
--		ret = -EIO;
--		goto out;
-+	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
-+			      SLPC_RESET_TIMEOUT_MS)) {
-+		xe_gt_warn(gt, "GuC PC start taking longer than normal [freq = %dMHz (req = %dMHz), perf_limit_reasons = 0x%08X]\n",
-+			   xe_guc_pc_get_act_freq(pc), get_cur_freq(gt),
-+			   xe_gt_throttle_get_limit_reasons(gt));
-+
-+		if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
-+				      SLPC_RESET_EXTENDED_TIMEOUT_MS)) {
-+			xe_gt_err(gt, "GuC PC Start failed: Dynamic GT frequency control and GT sleep states are now disabled.\n");
-+			goto out;
-+		}
-+
-+		xe_gt_warn(gt, "GuC PC excessive start time: %lldms",
-+			   ktime_ms_delta(ktime_get(), earlier));
- 	}
- 
- 	ret = pc_init_freqs(pc);
+ void netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ {
 -- 
 2.39.5
 
