@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6A1A80B56
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1941A8090E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DABF94E74C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27794C2E7A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91787268C62;
-	Tue,  8 Apr 2025 12:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CFA269CE6;
+	Tue,  8 Apr 2025 12:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiWJbPWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkDUxs/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF12265633;
-	Tue,  8 Apr 2025 12:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC7A20330;
+	Tue,  8 Apr 2025 12:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116707; cv=none; b=bCs6pXACzgWEIgw8z8nxT76Rv8LxtT5KUQ+QXiSRxuT0uW9SRisuxo07POAywNJo/1b7R5uFaBmT6DCFDXHhvWnpi9fcWgQIWu2gs60n1JQc+fJYg4a2pd5jC9NkSD6mfip3oNVEzMlL4BFqmUS3vsJtlG3IacLi/sdP0436oEk=
+	t=1744115709; cv=none; b=PiB+Qjxn89JjuB00FiD2LLrww42we/JS/2DRKEDJywEYFcexl0pZk+QDGyNv7T5MZeBqYi/Bx5sfRNMCtvhtbg2NgWk8/kDjDPwSsD62kYVWVyTMFVkVdObjHeEUMERwdH9Z1/knpIWlDQ0dqaVPaYFKWGiQpLLCYzQGnA69bXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116707; c=relaxed/simple;
-	bh=70DxCgvHgFEWOw7GsR4fPONm/WbSjh40zkYMZVrK0Xk=;
+	s=arc-20240116; t=1744115709; c=relaxed/simple;
+	bh=MF5XEjWlW3x2Clze/6InWw9Wk9l1ldAxicvl7byLJb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ltzr6Iw9+beV8RftDwepsggCBtbRZbfau0zaX6FCDgFfwzZgRhl1PFDX5eo0LBI2McH8QbaIDfUmx8dh/PU3I6Ma22wBUgB3quOTZDzSuv4C53IcZ0tSs9RjZcFBELNS4syz9GHTorhH5hlJjfr75W9J+Q0EJYL0LrUIXm7WNEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiWJbPWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D256FC4CEE5;
-	Tue,  8 Apr 2025 12:51:46 +0000 (UTC)
+	 MIME-Version; b=XGNJyOOfsi+JhhWBpmSFwJNAwarfKTsXlTdZxshxxeZ/gAYHbKzPaoQ7xI7pm5hGRBrN7Ft+4zd64AfspkC4a7ep8sx0qhBQs53pBFRbcicqsulRLgvb403oJg2ZaUZcXzz9QlCgqEHBA0BfYUNV7UwxFEhAA88gzdfsBENzScM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkDUxs/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BD5C4CEE5;
+	Tue,  8 Apr 2025 12:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116707;
-	bh=70DxCgvHgFEWOw7GsR4fPONm/WbSjh40zkYMZVrK0Xk=;
+	s=korg; t=1744115709;
+	bh=MF5XEjWlW3x2Clze/6InWw9Wk9l1ldAxicvl7byLJb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiWJbPWm1JlWEjdcggBBCx6qZpUJPGSDxIavvBzQRO7X/7ay3OIKR7wGMST6xPzmL
-	 /nOR5sGYKZvsPKvD1XA4fILmkUHbf7vIovDOzE7B4P2+H1UFnNkwKarZZPYHWDTwqo
-	 R9d62L5ynq/cUnSa8QqgG7uuWNCRCWi0rl5yaRtY=
+	b=DkDUxs/bYG0eWj/JO13NT3za5BpxlRG8+tnCyiYLTzXY5EtvRSciNfpotTT1rmheq
+	 12IRMqTOTXrqtvJ/YSWY6tHRLOxuDtKIL8b/vXepP3i79//I1V8WI1cOLrY6x6C49d
+	 2luzTGPsmG47ubJJRZ2Zc7pJtP774ltdLyBvHvh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/423] objtool: Fix segfault in ignore_unreachable_insn()
-Date: Tue,  8 Apr 2025 12:49:25 +0200
-Message-ID: <20250408104851.293910943@linuxfoundation.org>
+Subject: [PATCH 6.1 036/204] drm/msm/dsi: Set PHY usescase (and mode) before registering DSI host
+Date: Tue,  8 Apr 2025 12:49:26 +0200
+Message-ID: <20250408104821.399660842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 69d41d6dafff0967565b971d950bd10443e4076c ]
+[ Upstream commit 660c396c98c061f9696bebacc178b74072e80054 ]
 
-Check 'prev_insn' before dereferencing it.
+Ordering issues here cause an uninitialized (default STANDALONE)
+usecase to be programmed (which appears to be a MUX) in some cases
+when msm_dsi_host_register() is called, leading to the slave PLL in
+bonded-DSI mode to source from a clock parent (dsi1vco) that is off.
 
-Fixes: bd841d6154f5 ("objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/5df4ff89c9e4b9e788b77b0531234ffa7ba03e9e.1743136205.git.jpoimboe@kernel.org
+This should seemingly not be a problem as the actual dispcc clocks from
+DSI1 that are muxed in the clock tree of DSI0 are way further down, this
+bit still seems to have an effect on them somehow and causes the right
+side of the panel controlled by DSI1 to not function.
 
-Closes: https://lore.kernel.org/d86b4cc6-0b97-4095-8793-a7384410b8ab@app.fastmail.com
-Closes: https://lore.kernel.org/Z-V_rruKY0-36pqA@gmail.com
+In an ideal world this code is refactored to no longer have such
+error-prone calls "across subsystems", and instead model the "PLL src"
+register field as a regular mux so that changing the clock parents
+programmatically or in DTS via `assigned-clock-parents` has the
+desired effect.
+But for the avid reader, the clocks that we *are* muxing into DSI0's
+tree are way further down, so if this bit turns out to be a simple mux
+between dsiXvco and out_div, that shouldn't have any effect as this
+whole tree is off anyway.
+
+Fixes: 57bf43389337 ("drm/msm/dsi: Pass down use case to PHY")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/637650/
+Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-2-913100d6103f@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_manager.c | 32 ++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 24a1adca30dbc..4030412637ad0 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4153,7 +4153,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 	 * It may also insert a UD2 after calling a __noreturn function.
- 	 */
- 	prev_insn = prev_insn_same_sec(file, insn);
--	if (prev_insn->dead_end &&
-+	if (prev_insn && prev_insn->dead_end &&
- 	    (insn->type == INSN_BUG ||
- 	     (insn->type == INSN_JUMP_UNCONDITIONAL &&
- 	      insn->jump_dest && insn->jump_dest->type == INSN_BUG)))
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_manager.c b/drivers/gpu/drm/msm/dsi/dsi_manager.c
+index 3a14173972832..f9e6cbd9e2d20 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
+@@ -100,17 +100,35 @@ static int dsi_mgr_setup_components(int id)
+ 	int ret;
+ 
+ 	if (!IS_BONDED_DSI()) {
++		/*
++		 * Set the usecase before calling msm_dsi_host_register(), which would
++		 * already program the PLL source mux based on a default usecase.
++		 */
++		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
++		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
++
+ 		ret = msm_dsi_host_register(msm_dsi->host);
+ 		if (ret)
+ 			return ret;
+-
+-		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
+-		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
+ 	} else if (other_dsi) {
+ 		struct msm_dsi *master_link_dsi = IS_MASTER_DSI_LINK(id) ?
+ 							msm_dsi : other_dsi;
+ 		struct msm_dsi *slave_link_dsi = IS_MASTER_DSI_LINK(id) ?
+ 							other_dsi : msm_dsi;
++
++		/*
++		 * PLL0 is to drive both DSI link clocks in bonded DSI mode.
++		 *
++		 * Set the usecase before calling msm_dsi_host_register(), which would
++		 * already program the PLL source mux based on a default usecase.
++		 */
++		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
++					MSM_DSI_PHY_MASTER);
++		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
++					MSM_DSI_PHY_SLAVE);
++		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
++		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
++
+ 		/* Register slave host first, so that slave DSI device
+ 		 * has a chance to probe, and do not block the master
+ 		 * DSI device's probe.
+@@ -124,14 +142,6 @@ static int dsi_mgr_setup_components(int id)
+ 		ret = msm_dsi_host_register(master_link_dsi->host);
+ 		if (ret)
+ 			return ret;
+-
+-		/* PLL0 is to drive both 2 DSI link clocks in bonded DSI mode. */
+-		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
+-					MSM_DSI_PHY_MASTER);
+-		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
+-					MSM_DSI_PHY_SLAVE);
+-		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
+-		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
