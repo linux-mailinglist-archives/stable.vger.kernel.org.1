@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96EBA80470
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F62FA807DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F68E1B630EE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A054B8A64B1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FB326B2D1;
-	Tue,  8 Apr 2025 12:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E612726A0BA;
+	Tue,  8 Apr 2025 12:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH9965Ig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT0EA2JT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46ED26A0A8;
-	Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39EC2676CF;
+	Tue,  8 Apr 2025 12:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113655; cv=none; b=eY/u9Oijilv/cibUcnVkBOlL/HW8dosOHwyyPdP9Z7TaGt0t3J9SVBYwkO2gZEqW8YU9aX4vVPQdQIu2va4H3cnawOpfW5Hy1MavLfBwsDle+j+v/+1Wkwol5WX0YPblR4GdTqOq4m0D9Xcm9H97shXU+Fo58ZxVmGuvoCNu5xo=
+	t=1744115237; cv=none; b=XaoA92MA+1WQM2wcHAvNuibw3nhAQyK2rr45jcOfo3VDJ0N6XBpNlci62O+Qyg1wuz5K22Z3UW5D63yLkSKqn2+fmDEd1x28yMc0goh/EH+ZTg51mweKqfXwiJMx9Qm1HblIt2hzBcDSvg21pC5JNZbgjXnr30RJB8Ep0vKrxRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113655; c=relaxed/simple;
-	bh=gVEK7Qpr2Xd59IaP9ANU/Geg2Cug4meAq3VVzlZvCyk=;
+	s=arc-20240116; t=1744115237; c=relaxed/simple;
+	bh=tRGyMxBAxDmj9YYBhnpDdZnvyi7jihiRsb+t69g3UkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vC7ou7pfNG0R/PkYZDHfoIMol61N7iRNccmwURHqd5LmBbPzscGgtxBaWualT9SmvOzjX2wymqg76JfWvp/mvIP9jcBAxCD30tdYVFH/1mOWYpYZgQUfjnKu5fcwOi5EVSo2nZ9kQiRuU0roW7cEt+pBz4fvCkxf8USNneYePMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH9965Ig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB26C4CEE5;
-	Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
+	 MIME-Version; b=aplvheprMVhWeT90lfV6t+QuPx5GO1aE6KcfUfyLdOzNfDt/f+iWcsChi5PCsQjxU0Oe19hTPfTpDm3Z9zyVX76mh7rgmimBsv3WAa8uWo6X0ZgbIXft7NqulHSf9jGqtoMtpYK89UVrc3sUUtEyT2UnYXZIgj9pxg404TQ6Big=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT0EA2JT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAE2C4CEE5;
+	Tue,  8 Apr 2025 12:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113655;
-	bh=gVEK7Qpr2Xd59IaP9ANU/Geg2Cug4meAq3VVzlZvCyk=;
+	s=korg; t=1744115237;
+	bh=tRGyMxBAxDmj9YYBhnpDdZnvyi7jihiRsb+t69g3UkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xH9965Ig8fL84BZYLCiCU4AKrRVfMBi1PUeiicWcqcAJhlFPyFlTJnVBSdTVHjL+l
-	 Ja1fENSKD0a9XD4sJ6nYpEiDkukntJE05VDk+PxlpEE2FZrcoMFRtw/1aTSVdEes6e
-	 gSWbdUugDWXI0IO6afj/7QQ8fvdk4cUeYST22P2E=
+	b=HT0EA2JTfwWOJvE9+XsshDBVDk5Duh0gb7rb8wSjnMsqkqDdqObjarxzieWpo1qoH
+	 MmfRssJHfwUWyBZaQae5ZtCsYypEQEE+v5RDJdIxC/Hzxxo0BEgCOZ9nyYjXkOPtp7
+	 UmU5EvQlODqSWPl9NZVJdHAPDStxNq2mmGMED83I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Mark Brown <broonie@kernel.org>,
+	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/268] ASoC: codecs: rt5665: Fix some error handling paths in rt5665_probe()
+Subject: [PATCH 6.13 400/499] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
 Date: Tue,  8 Apr 2025 12:50:12 +0200
-Message-ID: <20250408104833.976343369@linuxfoundation.org>
+Message-ID: <20250408104901.200801302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 
-[ Upstream commit 1ebd4944266e86a7ce274f197847f5a6399651e8 ]
+[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
 
-Should an error occur after a successful regulator_bulk_enable() call,
-regulator_bulk_disable() should be called, as already done in the remove
-function.
+The mv88e6xxx has an internal PPU that polls PHY state. If we want to
+access the internal PHYs, we need to disable the PPU first. Because
+that is a slow operation, a 10ms timer is used to re-enable it,
+canceled with every access, so bulk operations effectively only
+disable it once and re-enable it some 10ms after the last access.
 
-Instead of adding an error handling path in the probe, switch from
-devm_regulator_bulk_get() to devm_regulator_bulk_get_enable() and
-simplify the remove function and some other places accordingly.
+If a PHY is accessed and then the mv88e6xxx module is removed before
+the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
 
-Finally, add a missing const when defining rt5665_supply_names to please
-checkpatch and constify a few bytes.
+This especially affects probing during bootup. The MDIO bus and PHY
+registration may succeed, but registration with the DSA framework
+may fail later on (e.g. because the CPU port depends on another,
+very slow device that isn't done probing yet, returning -EPROBE_DEFER).
+In this case, probe() fails, but the MDIO subsystem may already have
+accessed the MIDO bus or PHYs, arming the timer.
 
-Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/e3c2aa1b2fdfa646752d94f4af968630c0d58248.1742629525.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is fixed as follows:
+ - If probe fails after mv88e6xxx_phy_init(), make sure we also call
+   mv88e6xxx_phy_destroy() before returning
+ - In mv88e6xxx_remove(), make sure we do the teardown in the correct
+   order, calling mv88e6xxx_phy_destroy() after unregistering the
+   switch device.
+ - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
+   that the timer might schedule, synchronously waiting in case one of
+   the callbacks already fired and destroying the timer first, before
+   waiting for the work item.
+ - Access to the PPU is guarded by a mutex, the worker acquires it
+   with a mutex_trylock(), not proceeding with the expensive shutdown
+   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
+   sure the slow PPU shutdown is already done or won't even enter, when
+   we wait for the work item.
+
+Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
+Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5665.c | 24 ++++--------------------
- 1 file changed, 4 insertions(+), 20 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
+ drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
-index a39de4a7df002..532d1d6958af3 100644
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -31,9 +31,7 @@
- #include "rl6231.h"
- #include "rt5665.h"
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index d6e8398c07608..99279b7198765 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7304,13 +7304,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	err = mv88e6xxx_switch_reset(chip);
+ 	mv88e6xxx_reg_unlock(chip);
+ 	if (err)
+-		goto out;
++		goto out_phy;
  
--#define RT5665_NUM_SUPPLIES 3
--
--static const char *rt5665_supply_names[RT5665_NUM_SUPPLIES] = {
-+static const char * const rt5665_supply_names[] = {
- 	"AVDD",
- 	"MICVDD",
- 	"VBAT",
-@@ -46,7 +44,6 @@ struct rt5665_priv {
- 	struct gpio_desc *gpiod_ldo1_en;
- 	struct gpio_desc *gpiod_reset;
- 	struct snd_soc_jack *hs_jack;
--	struct regulator_bulk_data supplies[RT5665_NUM_SUPPLIES];
- 	struct delayed_work jack_detect_work;
- 	struct delayed_work calibrate_work;
- 	struct delayed_work jd_check_work;
-@@ -4471,8 +4468,6 @@ static void rt5665_remove(struct snd_soc_component *component)
- 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
- 
- 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
--
--	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
- }
- 
- #ifdef CONFIG_PM
-@@ -4758,7 +4753,7 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
- {
- 	struct rt5665_platform_data *pdata = dev_get_platdata(&i2c->dev);
- 	struct rt5665_priv *rt5665;
--	int i, ret;
-+	int ret;
- 	unsigned int val;
- 
- 	rt5665 = devm_kzalloc(&i2c->dev, sizeof(struct rt5665_priv),
-@@ -4774,24 +4769,13 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
- 	else
- 		rt5665_parse_dt(rt5665, &i2c->dev);
- 
--	for (i = 0; i < ARRAY_SIZE(rt5665->supplies); i++)
--		rt5665->supplies[i].supply = rt5665_supply_names[i];
--
--	ret = devm_regulator_bulk_get(&i2c->dev, ARRAY_SIZE(rt5665->supplies),
--				      rt5665->supplies);
-+	ret = devm_regulator_bulk_get_enable(&i2c->dev, ARRAY_SIZE(rt5665_supply_names),
-+					     rt5665_supply_names);
- 	if (ret != 0) {
- 		dev_err(&i2c->dev, "Failed to request supplies: %d\n", ret);
- 		return ret;
+ 	if (np) {
+ 		chip->irq = of_irq_get(np, 0);
+ 		if (chip->irq == -EPROBE_DEFER) {
+ 			err = chip->irq;
+-			goto out;
++			goto out_phy;
+ 		}
  	}
  
--	ret = regulator_bulk_enable(ARRAY_SIZE(rt5665->supplies),
--				    rt5665->supplies);
--	if (ret != 0) {
--		dev_err(&i2c->dev, "Failed to enable supplies: %d\n", ret);
--		return ret;
--	}
--
--
- 	rt5665->gpiod_ldo1_en = devm_gpiod_get_optional(&i2c->dev,
- 							"realtek,ldo1-en",
- 							GPIOD_OUT_HIGH);
+@@ -7329,7 +7329,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	if (err)
+-		goto out;
++		goto out_phy;
+ 
+ 	if (chip->info->g2_irqs > 0) {
+ 		err = mv88e6xxx_g2_irq_setup(chip);
+@@ -7363,6 +7363,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++out_phy:
++	mv88e6xxx_phy_destroy(chip);
+ out:
+ 	if (pdata)
+ 		dev_put(pdata->netdev);
+@@ -7385,7 +7387,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_ptp_free(chip);
+ 	}
+ 
+-	mv88e6xxx_phy_destroy(chip);
+ 	mv88e6xxx_unregister_switch(chip);
+ 
+ 	mv88e6xxx_g1_vtu_prob_irq_free(chip);
+@@ -7398,6 +7399,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
+ 		mv88e6xxx_g1_irq_free(chip);
+ 	else
+ 		mv88e6xxx_irq_poll_free(chip);
++
++	mv88e6xxx_phy_destroy(chip);
+ }
+ 
+ static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
+diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
+index 8bb88b3d900db..ee9e5d7e52770 100644
+--- a/drivers/net/dsa/mv88e6xxx/phy.c
++++ b/drivers/net/dsa/mv88e6xxx/phy.c
+@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
+ 
+ static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
+ {
++	mutex_lock(&chip->ppu_mutex);
+ 	del_timer_sync(&chip->ppu_timer);
++	cancel_work_sync(&chip->ppu_work);
++	mutex_unlock(&chip->ppu_mutex);
+ }
+ 
+ int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
 -- 
 2.39.5
 
