@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA782A806B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0239A80986
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A901B81373
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 076BA7B276D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0221269825;
-	Tue,  8 Apr 2025 12:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B252698BE;
+	Tue,  8 Apr 2025 12:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHm8XSFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYXrLCeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D99D2686BC;
-	Tue,  8 Apr 2025 12:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A592D2690EB;
+	Tue,  8 Apr 2025 12:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114955; cv=none; b=FzdQsselV2DPFP+XuTBIJW4YgyOsJCDWtrBFPx6wMwWropXwVjCOgCU7lb7KBZPxxOTGMq6hxIZqOd0kA+ci0JKnyuZU8gO+6OVH8LZNHPzDI4ykvXNe+Mr2Yl4biMnIHfWhupDlcRZaq6WEijkmJCf3NvTAaQ0Xn9lZ1vywTeY=
+	t=1744116445; cv=none; b=Buc03NSPfxCqtbuwD12kP3JeHkS4YFJYlBDxZhdvXmwXLTQEo34i1EPNEIC/oVCyhoTVhl+9sp1CkI5MIJKqWOiVASCCssA4jAxqhQt0zGeQPJkpwlrwZP5Sj77kLgEbK5S+zvqDPuBVLaxHjpCtREBIvSHmK6TMdtEQP1yigxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114955; c=relaxed/simple;
-	bh=M567oYxO7T98xYffFIW9+MVjP1f9SPjYNpMM4Jyychw=;
+	s=arc-20240116; t=1744116445; c=relaxed/simple;
+	bh=1MIMfGdD3CqNQvCNJzOkt+XNPU9IaqgU3IfHPPiZUmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8lcoDEpFaeq6iz5u9qMimJu+HUqN/ctDAixi7BFN7RIUpy4xUM7yfuqzBe0T+6apEnEWfAHGg4f9GetFF7L1Cdi3ZskB8+oH2AqOMk5gozO7duEnWjJY/Huvv+iW8CizzurGeHFc6b+BLTdC+VwqH7iPv6f5V9XXHWCH/UTrfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHm8XSFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B5C4CEE5;
-	Tue,  8 Apr 2025 12:22:34 +0000 (UTC)
+	 MIME-Version; b=VVx3TnP+2qzRu9R3iKV12R0I+WptLLQ8p9LBkejhKlhpbUd8ukT6D6JX+5HWOnEdEkRMkJ7gLSn+MQ2lAWighE4FmwT4OZod1ef3Y1Bo5MxtUw8dm/3YFVplKAK5yuxkvqp+JBUkAz0t/A2K7LLAaCG5xuDO5JsMZ/jzYAQQlsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYXrLCeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA74C4CEE5;
+	Tue,  8 Apr 2025 12:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114955;
-	bh=M567oYxO7T98xYffFIW9+MVjP1f9SPjYNpMM4Jyychw=;
+	s=korg; t=1744116445;
+	bh=1MIMfGdD3CqNQvCNJzOkt+XNPU9IaqgU3IfHPPiZUmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHm8XSFdqu5D8i8Sl6YUshGwdKVg346muuQXZJDyr0hYTERmLo3lwAfoT8FT6OhjL
-	 HrkJTkUnEb6VY9pypDB79Q+gnshsopSRWyQsgKdW/R4c65yVGJEHHwfrTGTZEVZuao
-	 MzjwAm9/G4Z7HMQk/Xg2ws1aN7ySjg4rQV56pJUI=
+	b=dYXrLCeJmc9mFaeUGlVz0F6PWQO9nGo1g8/4xwag2HmFTmDD12R3BJB4mXO41RytH
+	 7OzZFbHVC2HcxFnh8XoUay/YR7e2EPVF95103EcoJlExLjYAS6iiQ5Z8eu7dW48zHy
+	 6kajAaARbmAKhcJcxUL7XiNjGtaw8eOiAgOQWmPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 257/499] perf python: Decrement the refcount of just created event on failure
-Date: Tue,  8 Apr 2025 12:47:49 +0200
-Message-ID: <20250408104857.619966265@linuxfoundation.org>
+Subject: [PATCH 6.12 144/423] pinctrl: npcm8xx: Fix incorrect struct npcm8xx_pincfg assignment
+Date: Tue,  8 Apr 2025 12:47:50 +0200
+Message-ID: <20250408104849.086659495@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
+[ Upstream commit 113ec87b0f26a17b02c58aa2714a9b8f1020eed9 ]
 
-To avoid a leak if we have the python object but then something happens
-and we need to return the operation, decrement the offset of the newly
-created object.
+Sparse is not happy about implementation of the NPCM8XX_PINCFG()
 
-Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+ pinctrl-npcm8xx.c:1314:9: warning: obsolete array initializer, use C99 syntax
+ pinctrl-npcm8xx.c:1315:9: warning: obsolete array initializer, use C99 syntax
+ ...
+ pinctrl-npcm8xx.c:1412:9: warning: obsolete array initializer, use C99 syntax
+ pinctrl-npcm8xx.c:1413:9: warning: too many warnings
+
+which uses index-based assignment in a wrong way, i.e. it missed
+the equal sign and hence the index is simply ignored, while the
+entries are indexed naturally. This is not a problem as the pin
+numbering repeats the natural order, but it might be in case of
+shuffling the entries. Fix this by adding missed equal sign and
+reformat a bit for better readability.
+
+Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250318105932.2090926-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 14d7347ac0f38..88404e5c462f6 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -1011,6 +1011,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+index 17825bbe14213..f6a1e684a3864 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+@@ -1290,12 +1290,14 @@ static struct npcm8xx_func npcm8xx_funcs[] = {
+ };
  
- 		evsel = evlist__event2evsel(evlist, event);
- 		if (!evsel) {
-+			Py_DECREF(pyevent);
- 			Py_INCREF(Py_None);
- 			return Py_None;
- 		}
-@@ -1022,9 +1023,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
- 		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
+ #define NPCM8XX_PINCFG(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q) \
+-	[a] { .fn0 = fn_ ## b, .reg0 = NPCM8XX_GCR_ ## c, .bit0 = d, \
++	[a] = {								  \
++			.flag = q,					  \
++			.fn0 = fn_ ## b, .reg0 = NPCM8XX_GCR_ ## c, .bit0 = d, \
+ 			.fn1 = fn_ ## e, .reg1 = NPCM8XX_GCR_ ## f, .bit1 = g, \
+ 			.fn2 = fn_ ## h, .reg2 = NPCM8XX_GCR_ ## i, .bit2 = j, \
+ 			.fn3 = fn_ ## k, .reg3 = NPCM8XX_GCR_ ## l, .bit3 = m, \
+ 			.fn4 = fn_ ## n, .reg4 = NPCM8XX_GCR_ ## o, .bit4 = p, \
+-			.flag = q }
++	}
  
--		if (err)
-+		if (err) {
-+			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
- 					    "perf: can't parse sample, err=%d", err);
-+		}
-+
- 		return pyevent;
- 	}
- end:
+ /* Drive strength controlled by NPCM8XX_GP_N_ODSC */
+ #define DRIVE_STRENGTH_LO_SHIFT		8
 -- 
 2.39.5
 
