@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-129521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770B4A80011
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:27:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37451A7FFF5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93E33AC3B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F5D18950B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62352686AB;
-	Tue,  8 Apr 2025 11:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62382267F65;
+	Tue,  8 Apr 2025 11:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxCTosFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11OBIB70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60823224F6;
-	Tue,  8 Apr 2025 11:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E120224F6;
+	Tue,  8 Apr 2025 11:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111254; cv=none; b=Lph8WMpVbqG8dQ9nmGqTuRy10M/vY7f5nUjjV7FGXQSQs45nt9Z12KLtWjfezmuAgxT2Y05Sj/QdsA7UbgYxNh47173tmBhlDqL9NLf+jxAXoBBtW4QBps7TinER+2Oe//iIX6z8H+zVbh8AcgLtir1Ufup1Wp/a8ez5+Yx7HQM=
+	t=1744111261; cv=none; b=Ft4H0MV5i5ZUlMTvdalnMY9hPvUuqqZbx5UoaIR3MgVCj+5q489KCNvxvx/+G6v/lUajKJfbTdjlGmq6filAHc+80B+SvR9A4lpgJXrp+wdWmvEflrVMYlwnHkDm8bGDKQrwNIM3nx4pYn/K90znb/pXf6zr4HFJyjuSx6miSzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111254; c=relaxed/simple;
-	bh=GGon4WWpdV18zSnIuN682l04Y1Zc95DFonULJ7aJKjc=;
+	s=arc-20240116; t=1744111261; c=relaxed/simple;
+	bh=KKwT68bJTtGoWfela8J2SvoFe7Wjd8AD1kmDfJbMIpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdD7T8Wk6MbO0aNh45xGY9dmZjubw0c/91tKIcmX7o2tyJH2ZGI/1c2CKVClvTzpofYecfboGb6F/YSKGIJ2awQzgok7X/qc6kpDxoL16obdD7gUtBoB9Hf7abHU72TI9+g4cj3Q1nUR92acvJXp1sTTXNYjN9YCOR/z4J5OxSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxCTosFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0283C4CEE5;
-	Tue,  8 Apr 2025 11:20:53 +0000 (UTC)
+	 MIME-Version; b=GeO6s5duARFwjMD75YYB0hzA5KIJxIX7RSND5UUjhDH4+0v+UKnJGs36El1flPcF11gARXMQuPBVgclcgvqR4W6PsV+At+buQEEMlxql2IjGfsPfS4/N+1ZJWbGnLVibTcVLIwX2zyNQq8CNL5QsxLMwd5yYOuf2iL9kRQ1uOdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11OBIB70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30D1C4CEE5;
+	Tue,  8 Apr 2025 11:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111254;
-	bh=GGon4WWpdV18zSnIuN682l04Y1Zc95DFonULJ7aJKjc=;
+	s=korg; t=1744111261;
+	bh=KKwT68bJTtGoWfela8J2SvoFe7Wjd8AD1kmDfJbMIpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxCTosFfVXw7pB1zDD1mndfvjgRDLc12TUaM0h1MBl/HJa7CiSCvRQdKzJfU1N+qG
-	 q9phHMMHa1s3giP6F4vaCg7w/593ebFdRj+Dxujgg9CZRpoNPQcGjJoEs+5+mBJ4yX
-	 abqa7/KofknVMotSqJ3Vxvy4B9+uMYiewDb2uwh4=
+	b=11OBIB70PxcPD/y1kNPBa+voES41H/ZzpCIzxHWc2IXS3CE5tF9KSI08CfNJPtk3u
+	 3PHBfNsruGeTgK8iY0vAog04IaRx1kG+rbAXFW2AOjZ8jwDH44ZQX3jWTL1DTc9BEB
+	 MIy6IIT62qUOwRUzaLNYd1/fg3BeJ1lq72Lj/ftA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 365/731] of: property: Increase NR_FWNODE_REFERENCE_ARGS
-Date: Tue,  8 Apr 2025 12:44:22 +0200
-Message-ID: <20250408104922.766047781@linuxfoundation.org>
+Subject: [PATCH 6.14 366/731] pinctrl: renesas: rzg2l: Suppress binding attributes
+Date: Tue,  8 Apr 2025 12:44:23 +0200
+Message-ID: <20250408104922.789222178@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,50 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
+[ Upstream commit ea4065345643f3163e812e58ed8add2c75c3ee46 ]
 
-Currently, the following two macros have different values:
+Suppress binding attributes for the rzg2l pinctrl driver, as it is an
+essential block for Renesas SoCs.  Unbinding the driver leads to
+warnings from __device_links_no_driver() and can eventually render the
+system inaccessible.
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
-
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
-
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
-
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
-Will align both macros later to avoid such inconsistency.
-
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250215131235.228274-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0731994b9d7c8..6fa0a268d5382 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -91,7 +91,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
- 
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
- 
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index ce4a07a3df49a..5f006a059d9c2 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -3386,6 +3386,7 @@ static struct platform_driver rzg2l_pinctrl_driver = {
+ 		.name = DRV_NAME,
+ 		.of_match_table = of_match_ptr(rzg2l_pinctrl_of_table),
+ 		.pm = pm_sleep_ptr(&rzg2l_pinctrl_pm_ops),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = rzg2l_pinctrl_probe,
+ };
 -- 
 2.39.5
 
