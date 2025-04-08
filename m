@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902CCA80359
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0AEA8024C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4A219E0AB6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9223B98E3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72AC2690C4;
-	Tue,  8 Apr 2025 11:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FD12192F2;
+	Tue,  8 Apr 2025 11:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4znpxtZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF/Qc+5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BE5264FB0;
-	Tue,  8 Apr 2025 11:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F326A19AD5C;
+	Tue,  8 Apr 2025 11:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113118; cv=none; b=M2FzMB3qYAxmSYcSkk1tINDnAagJlyJVpdCrnfkSsL68TvW+rkKYY7JvvpOIjySTR9HnSAgBxqy7NDIQxsOJdudIxFNcMSCV3bSxx1QEcgstcn9f/JYwh54dLtfrSQk9iEirdg+3o9ccrQCAQZ0stlA/qpn/o/ZuXbF1GJuwyKg=
+	t=1744112442; cv=none; b=rCStOcmkzftSoICzuXCzFHIg+B8gxQO/VeTKFV14elhl93SzmyqycmFvVoNzkpC0JyqdowZbKMLAzBSmMnwUGfhFJQWnRvCMvjx38GrkujHv+muS9UIPTSpVxMN4qvT7wjVVEs/xEqVAv8aSsMZNQlc4OZkdoG+Gz/PHiMa1gKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113118; c=relaxed/simple;
-	bh=Rx4moDJLxLb5QybH9J9eFaDtpyUMka+TuMm/rk8ywcc=;
+	s=arc-20240116; t=1744112442; c=relaxed/simple;
+	bh=g0PKZ+7E2n3Dy0faO/0pB6XO93E8pIzdbE66A9B8JbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gw4fyJNgMAz+OKqcE/xs8pNxKSRU8Se26Slxxj1EPoIJZX/ldGtOu5Gt9FbV72s1vSOejJ8ncLTC11n5Rndmji/KdW0PBmBvWqdSVqCKmCT7s5Srb79er3xwjwz6z3XSh8rp3n7G8ESSo66yRrleybQMuI2QpI+HPooygoC4Das=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4znpxtZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C7C4CEE5;
-	Tue,  8 Apr 2025 11:51:57 +0000 (UTC)
+	 MIME-Version; b=T0SZCqxevaCJIE0FWuSiQ+H8dhDVIn6Pww6Cqm5Rs4R1zHFnOs7acAY3FYasZlAgDkNU1SVxnOk6mKpBDC7XA9Rx/hKHcw3KKf5d/ygUP1qLLPwKj3pmaWgy2i85OKzcnBFlUsG5DMH+Ei6W13/7yNZk7F2ZzVBC2g3+zZWBhNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF/Qc+5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AD1C4CEE5;
+	Tue,  8 Apr 2025 11:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113118;
-	bh=Rx4moDJLxLb5QybH9J9eFaDtpyUMka+TuMm/rk8ywcc=;
+	s=korg; t=1744112441;
+	bh=g0PKZ+7E2n3Dy0faO/0pB6XO93E8pIzdbE66A9B8JbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4znpxtZd6n7bunMh1Qa5jS7JHMgOjViJgHKcV284jbqwtZvWLDKeO2HM9Uw2Ft2D
-	 p2d/x/1h7l1KqRIdXOgHfaJDMwhGNd1ujtR45LljpJwSt5EnBMvBHtgwOTjMzSZKEw
-	 FQDvxmZhe9iT8ytmCCGcMXqm6YlVWqTH83FScR0M=
+	b=YF/Qc+5c4UHFzw7X2qG77m/rh8YMd8BhFbeojK7ZKGjrz2IsbAxVonFJ6NCSH/+KF
+	 TOY+oY6Xy1sdnOYaikaW274cPgxAtm7fIT9gYXsHSpvjVLXEh+2Y84/QxWe6xXpbRW
+	 57/GXcTfujdTCXoQlGY1dKJdDPiYr98T+WVHEzvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/268] drm/msm/dpu: dont use active in atomic_check()
+Subject: [PATCH 5.15 069/279] cifs: Fix integer overflow while processing acdirmax mount option
 Date: Tue,  8 Apr 2025 12:47:32 +0200
-Message-ID: <20250408104829.613190193@linuxfoundation.org>
+Message-ID: <20250408104828.204477006@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 25b4614843bcc56ba150f7c99905125a019e656c ]
+[ Upstream commit 5b29891f91dfb8758baf1e2217bef4b16b2b165b ]
 
-The driver isn't supposed to consult crtc_state->active/active_check for
-resource allocation. Instead all resources should be allocated if
-crtc_state->enabled is set. Stop consulting active / active_changed in
-order to determine whether the hardware resources should be
-(re)allocated.
+User-provided mount parameter acdirmax of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
-Reported-by: Simona Vetter <simona.vetter@ffwll.ch>
-Closes: https://lore.kernel.org/dri-devel/ZtW_S0j5AEr4g0QW@phenom.ffwll.local/
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/633393/
-Link: https://lore.kernel.org/r/20250123-drm-dirty-modeset-v2-1-bbfd3a6cd1a4@linaro.org
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 4c9f948142a5 ("cifs: Add new mount parameter "acdirmax" to allow caching directory metadata")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    | 4 ----
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 3 +--
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ fs/cifs/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index ad57368dc13f0..2df1e6293062d 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1210,10 +1210,6 @@ static int dpu_crtc_atomic_check(struct drm_crtc *crtc,
- 
- 	DRM_DEBUG_ATOMIC("%s: check\n", dpu_crtc->name);
- 
--	/* force a full mode set if active state changed */
--	if (crtc_state->active_changed)
--		crtc_state->mode_changed = true;
--
- 	if (cstate->num_mixers) {
- 		rc = _dpu_crtc_check_and_setup_lm_bounds(crtc, crtc_state);
- 		if (rc)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 35cf9080168b1..99cccde5d2216 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -669,12 +669,11 @@ static int dpu_encoder_virt_atomic_check(
- 
- 	/*
- 	 * Release and Allocate resources on every modeset
--	 * Dont allocate when active is false.
- 	 */
- 	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
- 		dpu_rm_release(global_state, drm_enc);
- 
--		if (!crtc_state->active_changed || crtc_state->enable)
-+		if (crtc_state->enable)
- 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
- 					drm_enc, crtc_state, topology);
- 	}
+diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
+index d86cbed997fdd..9b1c0e0dfc63b 100644
+--- a/fs/cifs/fs_context.c
++++ b/fs/cifs/fs_context.c
+@@ -1062,11 +1062,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_acdirmax:
+-		ctx->acdirmax = HZ * result.uint_32;
+-		if (ctx->acdirmax > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "acdirmax too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->acdirmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_actimeo:
+ 		if (HZ * result.uint_32 > CIFS_MAX_ACTIMEO) {
 -- 
 2.39.5
 
