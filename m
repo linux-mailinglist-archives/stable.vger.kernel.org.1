@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-128965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4135A7FD71
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4322BA8038D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7977818896CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0008B3BDC19
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CCB269813;
-	Tue,  8 Apr 2025 10:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E86269AF3;
+	Tue,  8 Apr 2025 11:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9LHVB9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0osEg1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16346266B4B;
-	Tue,  8 Apr 2025 10:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7826981C;
+	Tue,  8 Apr 2025 11:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109755; cv=none; b=S36crt3DjSzZ5dEBD1n5RgMMZRsA4ujWemKYEB7onsp4cGZO/2j9SwuOgWHeuIWGQUuDkrg5qL1YQiDbPihvLR9NVqsAak4EVCkGS2nXiD16kxojLfN99xuIRBtaXlhm47QUZ4RrBSYUGAa4vcE+aDQ6avAI9ta8pbLK2tGyx14=
+	t=1744113079; cv=none; b=NCz6Bu+PCHu9GtA67bppD2eGybOww9Owz2c4+lRtXdROSW1ALzEmWdmYo/6x736IotNAcrDmvi9H51mm2WcZo8dK6itxYiyAWNeZjrGBtLC7xOrh1LDx8kGfkbT4VP9EtO2CA5tiswQdyk0drlW6g5F+NwTXY+0JDCAgebjLiS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109755; c=relaxed/simple;
-	bh=VDROGf3s4+wg4+4AMGVtU3ScVAGU6wJQtUgPm5uqFLs=;
+	s=arc-20240116; t=1744113079; c=relaxed/simple;
+	bh=dv8RmClQFZkzfzaPbh5EyvP7PBI3/l3mp51fmm682ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPCBygIzC+HLHYutZcGVMH7eAIFKATbWoojyE8CIXF8ZFICyZfT7weblG2YgOH9Zv6dHtg+GH9H/nSgxlWxaU+1m1STGxH0N4e0FDc1OIP3CDZw756eLOdM2igLVAEXG1+RCa3W+0jYFjdtgqes4Akf77l2gBU2LnK3pF5ROHbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9LHVB9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAD4C4CEE5;
-	Tue,  8 Apr 2025 10:55:54 +0000 (UTC)
+	 MIME-Version; b=jeOaa5DbZgGLyW9zpSSzSz4SG6V2se7ZwLGhY/aaKmBdjL5syH2sgw5/+WEwHoVhjuikX//gak/5fsjD6M8wON/zdvtFzKbMgL8zmwt2YEjvPwSNhqCJuWkMoMyymIDOlcZctGEV7tUIUYNXzSy+9NKNHaMIG7vzDhjlsFPV2Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0osEg1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A7C4CEE5;
+	Tue,  8 Apr 2025 11:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109754;
-	bh=VDROGf3s4+wg4+4AMGVtU3ScVAGU6wJQtUgPm5uqFLs=;
+	s=korg; t=1744113079;
+	bh=dv8RmClQFZkzfzaPbh5EyvP7PBI3/l3mp51fmm682ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9LHVB9NidGmcecdMBV4nI8wNFAzUHOtgxwGW8tznzA8v+LchTcbf0IB/kYB4csGj
-	 dTKG6rLP/UqDBmyLVPwS4oYFJkJsVmk+u2Q1ZmMp2Gar0rMdCB3BdWuqFcuZ4YbK1s
-	 nf4BTGG0lTxsZRecJQjW96XaO4I3uHIpkQrzhHh4=
+	b=G0osEg1pbh41pqf+TT6B1ihSqH8dLqay66DYrqvdRtgrKOKNstkXHKR7sxbYj+A5m
+	 JgQxb0z2+8vJHXkrYL4WoHMQUfZBJL7NS33rrc/feU2tuyw0RgqUuvgMvrCDWGl9cm
+	 XVhNgSN+A4L/tIa5KWbPRU0LQsVxSvxKUaXn98ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	Stanislav Spassov <stanspas@amazon.de>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/227] ASoC: tas2770: Fix volume scale
-Date: Tue,  8 Apr 2025 12:46:57 +0200
-Message-ID: <20250408104821.580631256@linuxfoundation.org>
+Subject: [PATCH 6.6 007/268] x86/fpu: Fix guest FPU state buffer allocation size
+Date: Tue,  8 Apr 2025 12:46:58 +0200
+Message-ID: <20250408104828.703616026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Stanislav Spassov <stanspas@amazon.de>
 
-[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
+[ Upstream commit 1937e18cc3cf27e2b3ef70e8c161437051ab7608 ]
 
-The scale starts at -100dB, not -128dB.
+Ongoing work on an optimization to batch-preallocate vCPU state buffers
+for KVM revealed a mismatch between the allocation sizes used in
+fpu_alloc_guest_fpstate() and fpstate_realloc(). While the former
+allocates a buffer sized to fit the default set of XSAVE features
+in UABI form (as per fpu_user_cfg), the latter uses its ksize argument
+derived (for the requested set of features) in the same way as the sizes
+found in fpu_kernel_cfg, i.e. using the compacted in-kernel
+representation.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The correct size to use for guest FPU state should indeed be the
+kernel one as seen in fpstate_realloc(). The original issue likely
+went unnoticed through a combination of UABI size typically being
+larger than or equal to kernel size, and/or both amounting to the
+same number of allocated 4K pages.
+
+Fixes: 69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
+Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250218141045.85201-1-stanspas@amazon.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2770.c | 2 +-
+ arch/x86/kernel/fpu/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index c213c8096142b..1928c1616a52d 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
- }
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 4b414b0ab0692..db200990b5569 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -220,7 +220,7 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	struct fpstate *fpstate;
+ 	unsigned int size;
  
- static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
--static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
-+static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
- 
- static const struct snd_kcontrol_new tas2770_snd_controls[] = {
- 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
+-	size = fpu_user_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
++	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
+ 	fpstate = vzalloc(size);
+ 	if (!fpstate)
+ 		return false;
 -- 
 2.39.5
 
