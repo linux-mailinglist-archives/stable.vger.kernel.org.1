@@ -1,122 +1,124 @@
-Return-Path: <stable+bounces-131860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51566A81854
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 00:15:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56568A81853
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 00:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9CBA3B963C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 22:14:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469CF1BA6434
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 22:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B48255229;
-	Tue,  8 Apr 2025 22:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7C0255222;
+	Tue,  8 Apr 2025 22:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=infradead.org header.i=@infradead.org header.b="G5Cr5lfe"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="k1RRUXIn"
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E547158553;
-	Tue,  8 Apr 2025 22:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF7D21129A;
+	Tue,  8 Apr 2025 22:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744150466; cv=none; b=jsUm/fvIIn92Lo4LQVV+nmXxDxWn4DElTLZGV7c4rvlh3zRvMoE5TNdpACorkYHI0IAsp8iPiyxbD8hbhMexf2+QGfIMqrudaTqlN4tE3HMBCn0jo6P3ow9frTZ8Yrp0qi8RyjRFbfFvPwVcvzaCftZezZ17IywlZWUf4/b5zg8=
+	t=1744150504; cv=none; b=ZkDNCxLnfgqlkmkr3zg74EvEb4wFDfXL/2emcyLd7xAr2L0puv7lYGMIpQla/4llz1IrIlfvjqEp/sFbHj4UWYuGaVvVVGVRxqhrn4Iw09zFwIr5vromTbimsik6h65s+PxinBlkCiTPX42P6jvaoLVAiWaNO1iCnllWfu0L4Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744150466; c=relaxed/simple;
-	bh=h6OUWfH9bkEVenvzKXPsteivr+5vcS2pdno177S4AFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DEmC57+oqJ2YG8d/7y2HqUM17VV+am2Lvz8GXin+Nj0G4ONeK1xIP9PyvG/9lApTku65pJDqd6pwOiYtwylJ2ALKjFvBiC3wsM8ehqhtApTFLWy262/rBk2HSCI8UEeCjwo8SA/jCvJ7GffsaNrwJ4L1DY19zhTtWJhJiShAXwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=evilplan.org; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=fail (0-bit key) header.d=infradead.org header.i=@infradead.org header.b=G5Cr5lfe reason="key not found in DNS"; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=evilplan.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JJTPoSkqNHMtiX/zYtvMS3ntWOB/PD2FIjNm5ror4bg=; b=G5Cr5lfeQaUHq+CuFjulR5ofdq
-	bkEJl7G4QcuJY1CLEz4bUAA/8VZfaVRTAU9AsF/BL9Q8jP5OSsZ55v2luwpuacvNYIch+toMNhohH
-	0Od+7jglB3FFl8P19arusEFYHbBscJjfFBueZD3BFzX2witSdxd4ZiWJBa3dUQPGj3wZHqSpgrnkJ
-	cbsmsryos5AYvuY4jqv7ZXyQeCHHrt//39Z5zKQdIxkfwMAV+Vy0J/x0qsFYaqyTfJw0kXX9dzVhL
-	JTg5HYU98BdAT7igch3CSIUJQcsKGhN9Xu32BDFUNW5zWJwbAXRhq0Kdqwg3lmQiv3ZD9MLtR3ofd
-	ZYevz/ZA==;
-Received: from jlbec by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2HD1-00000002ZwH-24Sj;
-	Tue, 08 Apr 2025 22:14:19 +0000
-Date: Tue, 8 Apr 2025 15:14:16 -0700
-From: Joel Becker <jlbec@evilplan.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] configfs: Do not override creating attribute file
- failure in populate_attrs()
-Message-ID: <Z_WfuMDl2IIxYEOd@google.com>
-Mail-Followup-To: Zijun Hu <zijun_hu@icloud.com>,
-	Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-References: <20250408-fix_configfs-v1-0-5a4c88805df7@quicinc.com>
- <20250408-fix_configfs-v1-2-5a4c88805df7@quicinc.com>
+	s=arc-20240116; t=1744150504; c=relaxed/simple;
+	bh=yNPMLWXMXg/oHCO7t+Q51JUSk9n9yr8NF3EteyZegt4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U3xbc+JB9GdWBlNXiqj6HtxVtB0m+tlSmYNKitQy/0zoU3Rdoz/3ShrxsFNwoi80P7M/23/AmX98oyDD2se/uvft9/yh4RBGucyiwyvJc8i+pLaMgw+ekCmltsO8QKqz2LZji/2+ZCOTTt3vg0jYS2QBkTZZfS+eGzX4pXIlsSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=k1RRUXIn; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43edb40f357so34610245e9.0;
+        Tue, 08 Apr 2025 15:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1744150501; x=1744755301; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sRS1OGyHhHpYmNn9iGJIxuZ7ViF3cufNEb6RfYV7hCI=;
+        b=k1RRUXIn4LqWipP5Kom6DrWFXqH6ruQn0D60JCBGFB9wzdRplhS3KLhgg/hG2hIoDh
+         YCIwQCxJSvT/uUavkQYbxrdReYzf41wD8l4SIWnzvywl7tmeneg/R0AI2xzqrJ0bh6sM
+         KVwOT9iqEPiVXjzXsP63v5sSEs8j9IhmysRfwAOiWKiVYFr85FC3L2VPr2UeazNlFNeL
+         g1rGvbK11lvFLvIU9yfytDUzv4BrrUxacSotKBP/DxeI8/luUtJ+YCPo0uH/SkCqkLYc
+         HhwtdGcyVVvyWwgVgkXkUpUyXfgNdNeiQzoM4xYlK4vEwpXTMQ+1irGbyQtvINjT+u6P
+         hUEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744150501; x=1744755301;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sRS1OGyHhHpYmNn9iGJIxuZ7ViF3cufNEb6RfYV7hCI=;
+        b=EuwBgwdwKee5GMI+GaoWtlWjSdcHaMjhPSu5sli0TaC1SgpdE7ikKuoaQgaCMYBXdN
+         JAEuBvn/Bw9nANdEThiVgcff5+kLeoTsuleazhfLYPNp3CFJ/smHWx/axKvnwO7dihd4
+         E5zn2GRRphZLrtI3IjgXP1vP4hREr/HZLriSWfdYmDcbeclG8fX74RRUdKkHtaguTUt2
+         UqvjsSYiFzqLNTr6pZy+Hf1xqHkSeAbbvgJ7+HP9Ow5MubHiQoLj4uOnQgIMUk3du5a1
+         iM7zVaRD2PBEPjnPlRp4dCWtFHiYUk3L73lgnM7MXitn4lxU7mWjVJ0pACs7kJYB2Ibx
+         LpLA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8iue8g9xAhZOW4nIN2e4ngtKjNwAvvwNklsL30/ivIw7Z7DiYC3EIJb3+vnC0flXvW8GwN/sM@vger.kernel.org, AJvYcCWE1FxGxD9DcoHgG/Jgtjma/GBX2QqiGopzX6K0iyKjG5wd3N6j1uhlCELDorS2+n4vlU/RjsIuZsXVePw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlJ1hdPTxMHnvslH8CcAnLHXfmgH1/3ktNclf4bJIpbV4j2VIQ
+	LuXPh7xNVuD5k9IIk/6bJlYXI8KBcoAhVmceG697uTFgLIEcpNk=
+X-Gm-Gg: ASbGncvuLiTQIZqKeLP49XlLfuqdUfuJRGLL+0EUg2He/GGMJCgXZzqBfwX2mnUTvzo
+	NC0cuzC5giz1bR7Te0pcK4Wwkx2XoaDvy2DMch76X+YZ341KXI6eJ//9isfWt+DPNZmQNm1ATkg
+	6XS9uEhTITel2frs/e7O/ZCDs83xPq+8hhhcKL9SlCzRsBN2fXgSPA567n6qLR4vWBLUS6uubpZ
+	HN5pK86R+VJ6na3fjyZKT/M5nMlfPSY9MCis+Vz2KbvbzlZ+Gjnig7mek9BG1BxesYyAxpVcVXX
+	veOVRbP7ppm+jPKqWz/WkpUUPbp5MrkZFLHhk0P5grMRk6AnIb52K/e60BFbYZ9RnzqBG9WdfoE
+	FVUnsQikIlBQ9mXN4EBDfKQ==
+X-Google-Smtp-Source: AGHT+IGiGB6OFuUz7sIb4TOmtR7pqHQogU2eZskpSuMvx8vOED/K8195tN+6oJZzL9Xyd5/yh6XqzA==
+X-Received: by 2002:a5d:584b:0:b0:39c:1258:2dca with SMTP id ffacd0b85a97d-39d87ce27dfmr564354f8f.59.1744150500685;
+        Tue, 08 Apr 2025 15:15:00 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057de8.dip0.t-ipconnect.de. [91.5.125.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec34ae0c5sm172129695e9.15.2025.04.08.15.14.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 15:14:59 -0700 (PDT)
+Message-ID: <e76b8661-7825-4497-97fd-cd673a242459@googlemail.com>
+Date: Wed, 9 Apr 2025 00:14:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250408-fix_configfs-v1-2-5a4c88805df7@quicinc.com>
-X-Burt-Line: Trees are cool.
-X-Red-Smith: Ninety feet between bases is perhaps as close as man has ever
- come to perfection.
-Sender: Joel Becker <jlbec@ftp.linux.org.uk>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/204] 6.1.134-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250408104820.266892317@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 08, 2025 at 09:26:08PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> populate_attrs() may override failure for creating attribute files
-> by success for creating subsequent bin attribute files, and have
-> wrong return value.
-> 
-> Fix by creating bin attribute files under successfully creating
-> attribute files.
-> 
-> Fixes: 03607ace807b ("configfs: implement binary attributes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Am 08.04.2025 um 12:48 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.134 release.
+> There are 204 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-> ---
->  fs/configfs/dir.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-> index 0a011bdad98c492227859ff328d61aeed2071e24..64272d3946cc40757dca063190829958517eceb3 100644
-> --- a/fs/configfs/dir.c
-> +++ b/fs/configfs/dir.c
-> @@ -619,7 +619,7 @@ static int populate_attrs(struct config_item *item)
->  				break;
->  		}
->  	}
-> -	if (t->ct_bin_attrs) {
-> +	if (!error && t->ct_bin_attrs) {
->  		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
->  			if (ops && ops->is_bin_visible && !ops->is_bin_visible(item, bin_attr, i))
->  				continue;
-> 
-> -- 
-> 2.34.1
-> 
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
 
 -- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-Life's Little Instruction Book #511
-
-	"Call your mother."
-
-			http://www.jlbec.org/
-			jlbec@evilplan.org
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
