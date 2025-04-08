@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67388A803FB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1063BA80944
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446BE19E4A7C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E5054E2AC3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7136426988C;
-	Tue,  8 Apr 2025 11:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFD726AA85;
+	Tue,  8 Apr 2025 12:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRem2dfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpUS9Pnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F443269CF4;
-	Tue,  8 Apr 2025 11:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA9026982F;
+	Tue,  8 Apr 2025 12:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113575; cv=none; b=Fm+opIGkBt0N2asg/jEqIcvHxMBuBknK8TA11L1qnPPai6+3oTGSxLWA/1lWpDDaBzYmb5L1FFgBuzXvyrg5jidmmZerL6yyqxTQTX63vO9SBmkL8CUONVDefX2V7IcXRkuLh8cm8Bws8+9rawLiQ/0hxLgOkfU5XcUAcDRJGvg=
+	t=1744115755; cv=none; b=r6pHGEU/UmubIB0hDfgaEYM6b5p5+xVX8DkD2g3Ps5KbPjadvkTdW1hTRrtG71uydPsOY4u7qRs79zrnC4JRdM9LsdNpNzXlMTIAWNEwvQBQf+GTOVKqSHh7DkQvqe9d082ooym1GynQ0d/dPedt/ljyZH9NMqL0xbItHq4k/rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113575; c=relaxed/simple;
-	bh=dZWw0vKN4vgWJDI4S0Xz2EiSBgAFtOZYYGAuP1KSvMM=;
+	s=arc-20240116; t=1744115755; c=relaxed/simple;
+	bh=Wu2lyMYOeFGiAyAE4iwTZzIyI6ZbMmXUH/iRsW1vMfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7xG8lHk+3ogsrEzxqo8imjyU+RYPN+d9Ii661Llw8NUwlQh893XVZlTpntvsKRBFNwvEJybTX94CMYPIY/rTR5T57AFx/UoqR5JXbLLL+5vI9JtO4P2gIdzUneJhxJR853fXrBMLjnridb8JM3DJgpxQ772u5ZnOJgwaHkuM7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRem2dfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BC0C4CEEA;
-	Tue,  8 Apr 2025 11:59:34 +0000 (UTC)
+	 MIME-Version; b=Or8i7cd6OuWyxV7UuY5WJaWw9r4Liwy5QXa9zFAyYRhrIHF9S00HfVPEEaa1R2dVSDfJ8wu7jEYHJfhxf9UGBwmTOQw4nmZsf66inyqFotcru/0lDHFi+7c+QhIiYUxIa/yFQaoLts9DT3kvU/uWvNS7Z7nJLSCW3YEN1UnLnr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpUS9Pnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2BFC4CEE7;
+	Tue,  8 Apr 2025 12:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113575;
-	bh=dZWw0vKN4vgWJDI4S0Xz2EiSBgAFtOZYYGAuP1KSvMM=;
+	s=korg; t=1744115755;
+	bh=Wu2lyMYOeFGiAyAE4iwTZzIyI6ZbMmXUH/iRsW1vMfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRem2dfMwt3oYy3fh+1zycanxhg+IPBybuiGX76ui2w9Vfm16IuB9PCn37WNNAKrE
-	 j9ccN5jP9PHGs9iaX9sokNBg5IzrkvKIqAelpO3820V11lWag2womVpf3IFyKQ0Yy3
-	 YfiNDNyUWjEJnKAFRDO8fBUHjqGSB7Zt+qOI2w8s=
+	b=qpUS9PnkO8iAHczytNEAGjkf0AZZOa8o+jVNSfiY9c1XaAdMyQwtchwpdjEikPHa/
+	 vKTaGl8FgNQGItCWvGcllMZpqwiqLWzfMiq/ee/0iuAy142PXycC5IFcYG/BC8ITsm
+	 TEEN+pSFvs5GsBgBqIipmzJBZakRtAwETTEj9wkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/268] vsock: avoid timeout during connect() if the socket is closing
+Subject: [PATCH 6.1 092/204] usb: xhci: correct debug message page size calculation
 Date: Tue,  8 Apr 2025 12:50:22 +0200
-Message-ID: <20250408104834.273403064@linuxfoundation.org>
+Message-ID: <20250408104823.043275343@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
+[ Upstream commit 55741c723318905e6d5161bf1e12749020b161e3 ]
 
-When a peer attempts to establish a connection, vsock_connect() contains
-a loop that waits for the state to be TCP_ESTABLISHED. However, the
-other peer can be fast enough to accept the connection and close it
-immediately, thus moving the state to TCP_CLOSING.
+The ffs() function returns the index of the first set bit, starting from 1.
+If no bits are set, it returns zero. This behavior causes an off-by-one
+page size in the debug message, as the page size calculation [1]
+is zero-based, while ffs() is one-based.
 
-When this happens, the peer in the vsock_connect() is properly woken up,
-but since the state is not TCP_ESTABLISHED, it goes back to sleep
-until the timeout expires, returning -ETIMEDOUT.
+Fix this by subtracting one from the result of ffs(). Note that since
+variable 'val' is unsigned, subtracting one from zero will result in the
+maximum unsigned integer value. Consequently, the condition 'if (val < 16)'
+will still function correctly.
 
-If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
-vsock_connect() can return immediately without errors or delay since the
-connection actually happened. The socket will be in a closing state,
-but this is not an issue, and subsequent calls will fail as expected.
+[1], Page size: (2^(n+12)), where 'n' is the set page size bit.
 
-We discovered this issue while developing a test that accepts and
-immediately closes connections to stress the transport switch between
-two connect() calls, where the first one was interrupted by a signal
-(see Closes link).
-
-Reported-by: Luigi Leonardi <leonardi@redhat.com>
-Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 81720ec5320c ("usb: host: xhci: use ffs() in xhci_mem_init()")
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-9-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-mem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 622875a6f787c..f8f1a49689da6 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1485,7 +1485,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 	timeout = vsk->connect_timeout;
- 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 
--	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
-+	/* If the socket is already closing or it is in an error state, there
-+	 * is no point in waiting.
-+	 */
-+	while (sk->sk_state != TCP_ESTABLISHED &&
-+	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
- 		if (flags & O_NONBLOCK) {
- 			/* If we're not going to block, we schedule a timeout
- 			 * function to generate a timeout on the connection
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 27c924ddb68e6..09e7eabdb73f4 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2342,10 +2342,10 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+ 	page_size = readl(&xhci->op_regs->page_size);
+ 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+ 			"Supported page size register = 0x%x", page_size);
+-	i = ffs(page_size);
+-	if (i < 16)
++	val = ffs(page_size) - 1;
++	if (val < 16)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+-			"Supported page size of %iK", (1 << (i+12)) / 1024);
++			"Supported page size of %iK", (1 << (val + 12)) / 1024);
+ 	else
+ 		xhci_warn(xhci, "WARN: no supported page size\n");
+ 	/* Use 4K pages, since that's common and the minimum the HC supports */
 -- 
 2.39.5
 
