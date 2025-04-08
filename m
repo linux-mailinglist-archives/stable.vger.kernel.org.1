@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-129854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5DAA8017B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56009A8031D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD7861893EE9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D604450B5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB52622424C;
-	Tue,  8 Apr 2025 11:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CB3267F57;
+	Tue,  8 Apr 2025 11:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Weo+ebNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJeqOsci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674BF19AD5C;
-	Tue,  8 Apr 2025 11:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBA42641CC;
+	Tue,  8 Apr 2025 11:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112155; cv=none; b=ZunAQ+/4e3p4PFNNsH8tZtou2PhTkpiXpigSnW5vakFJ+DcxzWJJC6ds+0E/ww00l4+aPOKBH1W1bngoRfA8X0VGTsc072TJLKTmFbtFdQHOM0UrXMIxcBs2Fl3LlqrFIY2Dj/hmWalV+nzCSgG/D1QLiwPJ+GFZE3s0DQWglu0=
+	t=1744112929; cv=none; b=GVbkxEPjYHnngQWYMePTZWcS1LLL6rMoIvc+r7zIkBsCOGX7n6xgJ6uJ6ha2W/mJBbkjlDyqdaXQxGM+G9Y4BDqg2W79tDzThxJ4G5PCcmno396jmhGMT/Il7J4dW3c1JRqAjZEGrTggKsXDCQ7vc0wcKcuov1mHo4TcpTeiTsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112155; c=relaxed/simple;
-	bh=jAzLeX0I3LT6SFCgr2ccHA+W91UjI2X39zu3QrJvgC4=;
+	s=arc-20240116; t=1744112929; c=relaxed/simple;
+	bh=QtF2gQleksfSfCBAIkkQYJ+envF16Fc5qHORn1cJd+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuwT2fM8cypULZWnJSQgf40K+sttudeyhEVg1hxXbOvC1b8/UjJS8CLB6teHTmzgIURB88xhGbQ0qlfGU4m2jBAtImBdkoSAr+e4lP0vX+7h+Z/UNfrvKyv3u/FGrbo+da4esQI3SA8COXjTxOOOG0Q+b+43aM3vlnAMtqpV9rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Weo+ebNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB6CC4CEE5;
-	Tue,  8 Apr 2025 11:35:54 +0000 (UTC)
+	 MIME-Version; b=u/ro2em59Ww2TpbIIsrlA7n/9sznIx/NC4eUAf8nK0c5pobIYIb9iJLqqx8mhC5WUNpkaV12H2wNs3HhKR0J6UA8IvuLewk5IH4zr3idylcQGQOXwkmkhMKogxKW3c3gqBDWJxma2z21/Bat9npUFd2TiXEGGbLRvNESQmIqKDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJeqOsci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E1EC4CEE5;
+	Tue,  8 Apr 2025 11:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112155;
-	bh=jAzLeX0I3LT6SFCgr2ccHA+W91UjI2X39zu3QrJvgC4=;
+	s=korg; t=1744112929;
+	bh=QtF2gQleksfSfCBAIkkQYJ+envF16Fc5qHORn1cJd+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Weo+ebNUwBzi0nHx3ARPMIwWu6xo592rwqQm2RBnLzOTVpuqhLrq4V69meKfASq+o
-	 MMN3Zxh6RHFWjGuDhZahayhK10e4Mm35wfTCCXI8djKHv0yZldVcq4HxsKfXmq2L7y
-	 pkZY72Ahcm1kqSwb9yxKedoEAdsbFBH/IsG+6Iyg=
+	b=DJeqOsciK0AmYWSwBoATqouMHp8BTy7Rzm9DhMWy50SV9FyBc8gRNTXTsGWIRTbzc
+	 vLY5m3qNFE3Qk/S/L3Tw5eHXYJOTLLpRBlVKDb2WfwFQ4oxvVXIl0hjVLjv2Evr8zX
+	 11UjgmWP78C6EiNtX/UkJLME7oE8G+ElouEXZStM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Owens <daowens01@gmail.com>,
-	Romain Naour <romain.naour@smile.fr>,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.14 696/731] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
-Date: Tue,  8 Apr 2025 12:49:53 +0200
-Message-ID: <20250408104930.456136261@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 211/279] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Date: Tue,  8 Apr 2025 12:49:54 +0200
+Message-ID: <20250408104832.041308102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 49d162635151d0dd04935070d7cf67137ab863aa upstream.
+[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
 
-We have received reports about cards can become corrupt related to the
-aggressive PM support. Let's make a partial revert of the change that
-enabled the feature.
+If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
+is a divide-by-zero.  Prevent that from happening.
 
-Reported-by: David Owens <daowens01@gmail.com>
-Reported-by: Romain Naour <romain.naour@smile.fr>
-Reported-by: Robert Nelson <robertcnelson@gmail.com>
-Tested-by: Robert Nelson <robertcnelson@gmail.com>
-Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250312121712.1168007-1-ulf.hansson@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes the following warning with an UBSAN kernel:
+
+  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
+
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/dib8000.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
- 	/* R1B responses is required to properly manage HW busy detection. */
- 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
+index 02cb48223dc67..a28cbbd9e475c 100644
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
+ 	u8 ratio;
  
--	/* Allow card power off and runtime PM for eMMC/SD card devices */
--	mmc->caps |= MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
-+	/*  Enable SDIO card power off. */
-+	mmc->caps |= MMC_CAP_POWER_OFF_CARD;
- 
- 	ret = sdhci_setup_host(host);
- 	if (ret)
+ 	if (state->revision == 0x8090) {
++		u32 internal = dib8000_read32(state, 23) / 1000;
++
+ 		ratio = 4;
+-		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
++
++		unit_khz_dds_val = (1<<26) / (internal ?: 1);
+ 		if (offset_khz < 0)
+ 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
+ 		else
+-- 
+2.39.5
+
 
 
 
