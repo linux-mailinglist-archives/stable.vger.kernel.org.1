@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66A9A80340
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:55:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC6EA80219
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 460C31762FA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43CFA188B514
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C1D2690CC;
-	Tue,  8 Apr 2025 11:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD4B227EBD;
+	Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgLcTm/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0oSdAX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D2268C66;
-	Tue,  8 Apr 2025 11:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF2719AD5C;
+	Tue,  8 Apr 2025 11:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113039; cv=none; b=mD/bK5ehmZlYcb6rL3I6J16hWQueOoaPbUGTNDdDEt08FlnWHxM6pQvPSS7+29chBiaz3ZqBHwgfzO6n77yggmkraWR4VTyECEuAoz+OeCJtwfONqK6DbYLwVLqZdnA/c3qmFX1oD5IWlR7C41FPQDmMVerCz3tOMc6sv5ybI2M=
+	t=1744112469; cv=none; b=o/CtVoDKYBXdh8hBkAoiEaKLR+Z5E4+ScgLiZV66t0KJan3pof8fI0xXFeG3ENlF5LIBSb0CSZKsjnmjriSfdrtuY0Rk6YdFROJ4IBmwnb05l5kUArikdteZ3C4RBmgRc2/VkH+9AFVO7FUCobvPehbpbWfqECWvawTH77IhpfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113039; c=relaxed/simple;
-	bh=R2sj8AhwOLEzSpJNXxEDyJ/ozIJd3hOjPS/lEsIpud4=;
+	s=arc-20240116; t=1744112469; c=relaxed/simple;
+	bh=OflOBp/R/2DumMj+MHzbcZMpi4UEx96MXmb+wKM2UNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlmUIaE5+dcG6Qz3Hth0fmyKQu/hKkdocYYi2O7AGvNITkoJ3aVUc70DJQiGglFXgjPjVIIXrqjiPEHeCRdCwdle78cPBj/OPCWN3foKgbH9R6MIiOH7wU0X3ZbZZi5tvJQiRp+YZ2uGTNrEY3ZwzERYoUVKf/D3DyGMVg1mOxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgLcTm/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72514C4CEE5;
-	Tue,  8 Apr 2025 11:50:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NXLBk7PrTDtmCyV66jXUCegx0pQ0nqnA4ZvcNrhhTp7quoFAYnslEVn9bMYkNMIha1N0glAXA7O3gKIKAK+grXvMQUis7kYsOhirX+dHNVAmwRya8FKrn9QizDNqf0HcsabMEy3B+P76hyJU69b+JV69J2IB1QBKHE76XlIpM2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0oSdAX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992DC4CEEA;
+	Tue,  8 Apr 2025 11:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113038;
-	bh=R2sj8AhwOLEzSpJNXxEDyJ/ozIJd3hOjPS/lEsIpud4=;
+	s=korg; t=1744112469;
+	bh=OflOBp/R/2DumMj+MHzbcZMpi4UEx96MXmb+wKM2UNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgLcTm/9jK4E+9sglSKCHx5tagF1mYmYfL9oSjy852wKVak5Kf7H2wAfxYxScseQS
-	 ji+DikjW+4m07nYqszd9EORLxOO2ZVYCqkRBYq/Orj1RKKHmYulTQ4kh5Yx1yyJ5eB
-	 BL5clgFShL5aa7pWl82I+I+RsLrf1z6MuUcLDYAo=
+	b=a0oSdAX4ICLP/nnjXPdTreQKusELnUPNkuaxbgdMGcf84RVhMsYOjdKA9w42Qh0p+
+	 iK8C/9d4jUoXoWRKFJhITzhpxc9Jarm+mppTJ0qrIsAmUQWV16cc+EUQ1TA4TU0cX2
+	 YTk0y5FPpxjxmIj7CbOY2frsX7E2uzRyuVVa3vzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Terry Cheong <htcheong@chromium.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Johny Lin <lpg76627@gmail.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/268] PM: sleep: Adjust check before setting power.must_resume
+Subject: [PATCH 5.15 040/279] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
 Date: Tue,  8 Apr 2025 12:47:03 +0200
-Message-ID: <20250408104828.840989323@linuxfoundation.org>
+Message-ID: <20250408104827.462895734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Terry Cheong <htcheong@chromium.org>
 
-[ Upstream commit eeb87d17aceab7803a5a5bcb6cf2817b745157cf ]
+[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
 
-The check before setting power.must_resume in device_suspend_noirq()
-does not take power.child_count into account, but it should do that, so
-use pm_runtime_need_not_resume() in it for this purpose and adjust the
-comment next to it accordingly.
+In enviornment without KMOD requesting module may fail to load
+snd-hda-codec-hdmi, resulting in HDMI audio not usable.
+Add softdep to loading HDMI codec module first to ensure we can load it
+correctly.
 
-Fixes: 107d47b2b95e ("PM: sleep: core: Simplify the SMART_SUSPEND flag handling")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3353728.44csPzL39Z@rjwysocki.net
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Johny Lin <lpg76627@gmail.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c    | 13 ++++++-------
- drivers/base/power/runtime.c |  2 +-
- include/linux/pm_runtime.h   |  2 ++
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ sound/soc/sof/intel/hda-codec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 9c5a5f4dba5a6..49728cb628c19 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -1236,14 +1236,13 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
- 	dev->power.is_noirq_suspended = true;
- 
- 	/*
--	 * Skipping the resume of devices that were in use right before the
--	 * system suspend (as indicated by their PM-runtime usage counters)
--	 * would be suboptimal.  Also resume them if doing that is not allowed
--	 * to be skipped.
-+	 * Devices must be resumed unless they are explicitly allowed to be left
-+	 * in suspend, but even in that case skipping the resume of devices that
-+	 * were in use right before the system suspend (as indicated by their
-+	 * runtime PM usage counters and child counters) would be suboptimal.
- 	 */
--	if (atomic_read(&dev->power.usage_count) > 1 ||
--	    !(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
--	      dev->power.may_skip_resume))
-+	if (!(dev_pm_test_driver_flags(dev, DPM_FLAG_MAY_SKIP_RESUME) &&
-+	      dev->power.may_skip_resume) || !pm_runtime_need_not_resume(dev))
- 		dev->power.must_resume = true;
- 
- 	if (dev->power.must_resume)
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 4545669cb9735..0af26cf8c0059 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1841,7 +1841,7 @@ void pm_runtime_drop_link(struct device_link *link)
- 	pm_request_idle(link->supplier);
+diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
+index 6744318de612e..0449e7a2669ff 100644
+--- a/sound/soc/sof/intel/hda-codec.c
++++ b/sound/soc/sof/intel/hda-codec.c
+@@ -258,6 +258,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
  }
+ EXPORT_SYMBOL_NS(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
  
--static bool pm_runtime_need_not_resume(struct device *dev)
-+bool pm_runtime_need_not_resume(struct device *dev)
- {
- 	return atomic_read(&dev->power.usage_count) <= 1 &&
- 		(atomic_read(&dev->power.child_count) == 0 ||
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 7c9b354485634..406855d73901a 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -66,6 +66,7 @@ static inline bool queue_pm_work(struct work_struct *work)
++MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
+ #endif
  
- extern int pm_generic_runtime_suspend(struct device *dev);
- extern int pm_generic_runtime_resume(struct device *dev);
-+extern bool pm_runtime_need_not_resume(struct device *dev);
- extern int pm_runtime_force_suspend(struct device *dev);
- extern int pm_runtime_force_resume(struct device *dev);
- 
-@@ -252,6 +253,7 @@ static inline bool queue_pm_work(struct work_struct *work) { return false; }
- 
- static inline int pm_generic_runtime_suspend(struct device *dev) { return 0; }
- static inline int pm_generic_runtime_resume(struct device *dev) { return 0; }
-+static inline bool pm_runtime_need_not_resume(struct device *dev) {return true; }
- static inline int pm_runtime_force_suspend(struct device *dev) { return 0; }
- static inline int pm_runtime_force_resume(struct device *dev) { return 0; }
- 
+ MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.39.5
 
