@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7773A80216
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7157EA80313
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E3646103F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E472C17B64C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6ED268FE7;
-	Tue,  8 Apr 2025 11:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E0A2676DE;
+	Tue,  8 Apr 2025 11:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yML4odwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLRsnHvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A6268FD5;
-	Tue,  8 Apr 2025 11:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5364C2641CC;
+	Tue,  8 Apr 2025 11:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112251; cv=none; b=UaXGJWQWtntMtUBmU9MGlvNiQD0/LrDGhc7Ek1/0AzlYoFthF8O2cp2n6Kd+z2uRI0FY7/qeunv6NmE7eaK3nlUhNRNYIiseGBTzdAKsq1yxhsxlPKnyobg4ciINLEGPuaXc8DU3lAHeBSXi/O4syLkJfBib7/4Wm+1Pq23JCbo=
+	t=1744112889; cv=none; b=UZFjewAW2ASCEX6PVD2fC6C+NEi1JBGEHavO2ue2bUWlj5GxQVl44ujXZn6p+Q/0WTsvGC50ctkN64nsk+YRsEvNa/r8j5vqT0Ql6/HI4MGY1ASr6kpIbD7vpi03mKrcHz6E/9vptxLWj+NKjI5zKJOB0lFR+xuAkFqYG92U7ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112251; c=relaxed/simple;
-	bh=/eqPrk0l1/q6z+QHMfleydlp+sTRFl6TohciS+cEWqs=;
+	s=arc-20240116; t=1744112889; c=relaxed/simple;
+	bh=+ke/sdlulmwT2eljjKvKfathajamL2aDsH7OVTZ8zTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmtqS98Eo9a7NmWVFzBjXfjKo8Hos5PD91yLM/Cas/K5TyDMHVe+SKo0q5NvEwwtekzR/zjXqqVq8yMetNkdEySPOAZt96OZPeZ4cQPAROrekeAaoEgn6nAEa5XnjULq4WKbMMr6f8hVccT11oSg0JKb0wiSX8F4omfhZo8puD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yML4odwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90141C4CEE7;
-	Tue,  8 Apr 2025 11:37:30 +0000 (UTC)
+	 MIME-Version; b=HnGasiOIxR46vwcfLiOdg6WT/eAlX0uL/PoTJWmwZWIQrpzFoi6arjPofvO2HQFeDsxuWW947XfWnMFLUSwR3c0qt4RQ/9VgtuEf7oX52rJpqkx4vo6GGIZkb6OjVXsuC8RxqaJ3KYBqfD9rm4O7DarAtr3A2qMQ8TG1qJ8LFKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLRsnHvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B8CC4CEE5;
+	Tue,  8 Apr 2025 11:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112250;
-	bh=/eqPrk0l1/q6z+QHMfleydlp+sTRFl6TohciS+cEWqs=;
+	s=korg; t=1744112889;
+	bh=+ke/sdlulmwT2eljjKvKfathajamL2aDsH7OVTZ8zTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yML4odwU6IrLl8OywgERHJGViaF5sE9AyMUh7DFDndKGMtdAN8d0UwISRQnHn9KqW
-	 dysMX/ElraCW4QdF7670kbkvMY7Wd0k8XqbDRyuvkS9ILYOD5+ef5RRGHdZj22nJqY
-	 WR0vr35PUq/OV+e8thUTtfJcOIWke8d5lSJZr2WE=
+	b=pLRsnHvFIvGrfpPFyDFvZAgKmAL/+IVKRASow/EcZlctcwMFmKK4P2MbSUUieW2Vl
+	 EIO4vJxxtyoWpvguJnwttvzDkfp0w56LgxyhgsOC9DjkUd6b3sLec9CoVhMXt5nSwQ
+	 EksRjyLxNW53WYrCVWrxCx1YEpMgnKYwZQFfaPQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1c486d0b62032c82a968@syzkaller.appspotmail.com,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.14 721/731] exec: fix the racy usage of fs_struct->in_exec
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 235/279] spufs: fix a leak on spufs_new_file() failure
 Date: Tue,  8 Apr 2025 12:50:18 +0200
-Message-ID: <20250408104931.045028901@linuxfoundation.org>
+Message-ID: <20250408104832.722426068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit af7bb0d2ca459f15cb5ca604dab5d9af103643f0 upstream.
+[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
 
-check_unsafe_exec() sets fs->in_exec under cred_guard_mutex, then execve()
-paths clear fs->in_exec lockless. This is fine if exec succeeds, but if it
-fails we have the following race:
+It's called from spufs_fill_dir(), and caller of that will do
+spufs_rmdir() in case of failure.  That does remove everything
+we'd managed to create, but... the problem dentry is still
+negative.  IOW, it needs to be explicitly dropped.
 
-	T1 sets fs->in_exec = 1, fails, drops cred_guard_mutex
-
-	T2 sets fs->in_exec = 1
-
-	T1 clears fs->in_exec
-
-	T2 continues with fs->in_exec == 0
-
-Change fs/exec.c to clear fs->in_exec with cred_guard_mutex held.
-
-Reported-by: syzbot+1c486d0b62032c82a968@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001f.GAE@google.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250324160003.GA8878@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1229,13 +1229,12 @@ int begin_new_exec(struct linux_binprm *
- 	 */
- 	bprm->point_of_no_return = true;
- 
--	/*
--	 * Make this the only thread in the thread group.
--	 */
-+	/* Make this the only thread in the thread group */
- 	retval = de_thread(me);
- 	if (retval)
- 		goto out;
--
-+	/* see the comment in check_unsafe_exec() */
-+	current->fs->in_exec = 0;
- 	/*
- 	 * Cancel any io_uring activity across execve
- 	 */
-@@ -1497,6 +1496,8 @@ static void free_bprm(struct linux_binpr
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index ed37a93bf858a..1095be5186ebf 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -190,8 +190,10 @@ static int spufs_fill_dir(struct dentry *dir,
+ 			return -ENOMEM;
+ 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
+ 					files->mode & mode, files->size, ctx);
+-		if (ret)
++		if (ret) {
++			dput(dentry);
+ 			return ret;
++		}
+ 		files++;
  	}
- 	free_arg_pages(bprm);
- 	if (bprm->cred) {
-+		/* in case exec fails before de_thread() succeeds */
-+		current->fs->in_exec = 0;
- 		mutex_unlock(&current->signal->cred_guard_mutex);
- 		abort_creds(bprm->cred);
- 	}
-@@ -1618,6 +1619,10 @@ static void check_unsafe_exec(struct lin
- 	 * suid exec because the differently privileged task
- 	 * will be able to manipulate the current directory, etc.
- 	 * It would be nice to force an unshare instead...
-+	 *
-+	 * Otherwise we set fs->in_exec = 1 to deny clone(CLONE_FS)
-+	 * from another sub-thread until de_thread() succeeds, this
-+	 * state is protected by cred_guard_mutex we hold.
- 	 */
- 	n_fs = 1;
- 	spin_lock(&p->fs->lock);
-@@ -1862,7 +1867,6 @@ static int bprm_execve(struct linux_binp
- 
- 	sched_mm_cid_after_execve(current);
- 	/* execve succeeded */
--	current->fs->in_exec = 0;
- 	current->in_execve = 0;
- 	rseq_execve(current);
- 	user_events_execve(current);
-@@ -1881,7 +1885,6 @@ out:
- 		force_fatal_sig(SIGSEGV);
- 
- 	sched_mm_cid_after_execve(current);
--	current->fs->in_exec = 0;
- 	current->in_execve = 0;
- 
- 	return retval;
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
