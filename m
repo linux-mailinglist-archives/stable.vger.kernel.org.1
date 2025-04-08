@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-131306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7C6A809BF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297CFA80948
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C276A4A5FAF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8082C1BA5919
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A011026A1C9;
-	Tue,  8 Apr 2025 12:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A55269AE8;
+	Tue,  8 Apr 2025 12:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrqYNmLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zscXn4o3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9AC26A1C1;
-	Tue,  8 Apr 2025 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D29278152;
+	Tue,  8 Apr 2025 12:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116040; cv=none; b=MgqszvxLjtV5yktvebw4ZUIshpwsdpmHbtBzLmWbIOQXmwln/bWTx9a1Fnw2gCWL1jiGc3yFEeYdb5jgZRxMUOQQZ5lqZQP15vlCiFxDkXtSoDJrYqiz38ng0kaDtO0Y1Khhh9eFhXK0AC61LtWDo/CAa/RuXo8MgUT6Va5T5RQ=
+	t=1744116051; cv=none; b=UdGMV1bjSuNHzKIfI05tigS9P5PZudM+vUowo/hs9z3Ih2h93V+zZ441QmjvbVR4JwJoauNA29sS4iD68Afy0gVWypYE0nFgnRka/7DtUZpmvquGVXPBCbneJrXJg4gwdUzsXO6BLkWsuJdauIXGDxqwC1B4I2sqnzYXA9Aqfe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116040; c=relaxed/simple;
-	bh=NH2mklRI2GqmNKa9+98h6YwL9bduR4RfERRRD38FS/8=;
+	s=arc-20240116; t=1744116051; c=relaxed/simple;
+	bh=5/vu/btAw0p/XAfqCBRA6kO4V9c1hbV+D+d/tOFbP7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5dyjH3ikFCrQ8+NIgz48TmHKqB71j0VVCVIfe+H/oNXEk+vCNeMuix99pVPNaCrodcAwBO7Nb7Nv8hU2Ua+odpJdyhici1+l3ffuwsI+OFQ7a6SPrqeUF3GPUGToGl5hRg506kke9KXAD6mbX38r6T0LpmINV0zaFla2uMQv6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrqYNmLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C70C4CEE7;
-	Tue,  8 Apr 2025 12:40:39 +0000 (UTC)
+	 MIME-Version; b=O3ceR+BQ3uZExAH34BiislrJubDCPjk3L/quv26pYHCMuqowQIQI8AIexaQP2TK8MuivDianA7HQdDJGn+Ku5UMBVKQK6Pc213rAtOP+3hs7gt3ZWXIKphPUcxsJlCZz5xw/+GMiJ4hBtOwwtPKLnEnwLdzDjMzLbDVSzF0/j1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zscXn4o3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D48DC4CEEB;
+	Tue,  8 Apr 2025 12:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116039;
-	bh=NH2mklRI2GqmNKa9+98h6YwL9bduR4RfERRRD38FS/8=;
+	s=korg; t=1744116050;
+	bh=5/vu/btAw0p/XAfqCBRA6kO4V9c1hbV+D+d/tOFbP7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrqYNmLLL1iRQnmTIUzBm+ixy1mNyiln9qO3uNKcyTGXoZjpgwm9tM6QBVLOuA5Ls
-	 qh8S/4VPxLY8YPP7866hMbgRNSK2kA95Wc+3+K7b6YqrbM2wHYrI6CgFTRw2EGrgQ1
-	 4lUf58W2/aDZ9zduK0Py4lqckXJCMIbYGRF8fi6I=
+	b=zscXn4o375b4DB57roPy4h+p8jmTwIu42l7JvvV1ofwT39L8yto0Ez9W6VQwQmSii
+	 sHuzIhtfHT8Y/SjAIfATLXIpbb//H08DHTF5CRU6FMCDMFxoZB7sDkCJeqd8RF+KN8
+	 EPc6qh/qeusovrCuIwOgWiEl8HdpPYS5FPkB3ysg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lin Ma <linma@zju.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/204] tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().
-Date: Tue,  8 Apr 2025 12:51:31 +0200
-Message-ID: <20250408104825.040260541@linuxfoundation.org>
+Subject: [PATCH 6.1 162/204] netfilter: nft_tunnel: fix geneve_opt type confusion addition
+Date: Tue,  8 Apr 2025 12:51:32 +0200
+Message-ID: <20250408104825.068671364@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
 References: <20250408104820.266892317@linuxfoundation.org>
@@ -68,81 +66,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 8930424777e43257f5bf6f0f0f53defd0d30415c ]
+[ Upstream commit 1b755d8eb1ace3870789d48fbd94f386ad6e30be ]
 
-Because skb_tunnel_check_pmtu() doesn't handle PACKET_HOST packets,
-commit 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper
-pmtud support.") forced skb->pkt_type to PACKET_OUTGOING for
-openvswitch packets that are sent using the OVS_ACTION_ATTR_OUTPUT
-action. This allowed such packets to invoke the
-iptunnel_pmtud_check_icmp() or iptunnel_pmtud_check_icmpv6() helpers
-and thus trigger PMTU update on the input device.
+When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
+parsing logic should place every geneve_opt structure one by one
+compactly. Hence, when deciding the next geneve_opt position, the
+pointer addition should be in units of char *.
 
-However, this also broke other parts of PMTU discovery. Since these
-packets don't have the PACKET_HOST type anymore, they won't trigger the
-sending of ICMP Fragmentation Needed or Packet Too Big messages to
-remote hosts when oversized (see the skb_in->pkt_type condition in
-__icmp_send() for example).
+However, the current implementation erroneously does type conversion
+before the addition, which will lead to heap out-of-bounds write.
 
-These two skb->pkt_type checks are therefore incompatible as one
-requires skb->pkt_type to be PACKET_HOST, while the other requires it
-to be anything but PACKET_HOST.
+[    6.989857] ==================================================================
+[    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
+[    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
+[    6.991162]
+[    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
+[    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[    6.992281] Call Trace:
+[    6.992423]  <TASK>
+[    6.992586]  dump_stack_lvl+0x44/0x5c
+[    6.992801]  print_report+0x184/0x4be
+[    6.993790]  kasan_report+0xc5/0x100
+[    6.994252]  kasan_check_range+0xf3/0x1a0
+[    6.994486]  memcpy+0x38/0x60
+[    6.994692]  nft_tunnel_obj_init+0x977/0xa70
+[    6.995677]  nft_obj_init+0x10c/0x1b0
+[    6.995891]  nf_tables_newobj+0x585/0x950
+[    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
+[    6.998997]  nfnetlink_rcv+0x1df/0x220
+[    6.999537]  netlink_unicast+0x395/0x530
+[    7.000771]  netlink_sendmsg+0x3d0/0x6d0
+[    7.001462]  __sock_sendmsg+0x99/0xa0
+[    7.001707]  ____sys_sendmsg+0x409/0x450
+[    7.002391]  ___sys_sendmsg+0xfd/0x170
+[    7.003145]  __sys_sendmsg+0xea/0x170
+[    7.004359]  do_syscall_64+0x5e/0x90
+[    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[    7.006127] RIP: 0033:0x7ec756d4e407
+[    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+[    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
+[    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
+[    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
+[    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+[    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
 
-It makes sense to not trigger ICMP messages for non-PACKET_HOST packets
-as these messages should be generated only for incoming l2-unicast
-packets. However there doesn't seem to be any reason for
-skb_tunnel_check_pmtu() to ignore PACKET_HOST packets.
+Fix this bug with correct pointer addition and conversion in parse
+and dump code.
 
-Allow both cases to work by allowing skb_tunnel_check_pmtu() to work on
-PACKET_HOST packets and not overriding skb->pkt_type in openvswitch
-anymore.
-
-Fixes: 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper pmtud support.")
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Tested-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/eac941652b86fddf8909df9b3bf0d97bc9444793.1743208264.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 2 +-
- net/openvswitch/actions.c | 6 ------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ net/netfilter/nft_tunnel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 80ccd6661aa32..fda08e2c72899 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -415,7 +415,7 @@ int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index efb505445eac1..01ce65dd2078e 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -339,7 +339,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+ 				      struct nft_tunnel_opts *opts)
+ {
+-	struct geneve_opt *opt = (struct geneve_opt *)opts->u.data + opts->len;
++	struct geneve_opt *opt = (struct geneve_opt *)(opts->u.data + opts->len);
+ 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
+ 	int err, data_len;
  
- 	skb_dst_update_pmtu_no_confirm(skb, mtu);
- 
--	if (!reply || skb->pkt_type == PACKET_HOST)
-+	if (!reply)
- 		return 0;
- 
- 	if (skb->protocol == htons(ETH_P_IP))
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 18d360aaf09bc..c517b24b30931 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -926,12 +926,6 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
- 
--		/* Need to set the pkt_type to involve the routing layer.  The
--		 * packet movement through the OVS datapath doesn't generally
--		 * use routing, but this is needed for tunnel cases.
--		 */
--		skb->pkt_type = PACKET_OUTGOING;
--
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
+@@ -621,7 +621,7 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 		if (!inner)
+ 			goto failure;
+ 		while (opts->len > offset) {
+-			opt = (struct geneve_opt *)opts->u.data + offset;
++			opt = (struct geneve_opt *)(opts->u.data + offset);
+ 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
+ 					 opt->opt_class) ||
+ 			    nla_put_u8(skb, NFTA_TUNNEL_KEY_GENEVE_TYPE,
 -- 
 2.39.5
 
