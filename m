@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79A9A80666
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F861A80901
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21F951B67855
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56AF07B27D5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B488726B2C1;
-	Tue,  8 Apr 2025 12:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0342926B2BE;
+	Tue,  8 Apr 2025 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHf/qGyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJXEXtmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7AD26B2BE;
-	Tue,  8 Apr 2025 12:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EA6269839;
+	Tue,  8 Apr 2025 12:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114711; cv=none; b=T8ncHBFuUW2hV3GB4SQJo8KcJC9+EqcU4vWqiO+a4F5TO8WGBb5+msDU9P+YhsiL4+3pewFI3WrVTjc46Bgi0CVVO5jHlgfYqF6axqFlBepAW9c+SAU7mgJHbXpKpBFpvGaIzFe29RH+ADiwuAAVWCw/68EzwXaCf1yFKloTPuI=
+	t=1744116211; cv=none; b=scp/MbCcVkdd7yPxwBpgeFRZWNDH8CdPTp4UkmAME7PG8i/Ftd/IHjzSs/8jnrAiPizHugHapL9bDj9cB/MXQgQCrY51aVsSqojsiaZpaiIj5hY+cQp9tmQT8ACgnB6hr7sJf26sfaInpoLkj5HOp7kLvVzHmUCP7uyMusr70cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114711; c=relaxed/simple;
-	bh=WLNPAMBC/fWp1qCmGASdZvgPfnP+x3npQEVg+1WGSt4=;
+	s=arc-20240116; t=1744116211; c=relaxed/simple;
+	bh=tRvWhDehmHDb+k8pOLRx0GYLVn5jPwTV+yM0rw6k3wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spYEC94pR4eU1T9wLCKL4hSFhYdJ4mF1zCPWqrhYpMz/qjvhcxBlwHkejXokD5RD43EBv2Nu5crEbfFhp+1q8+dkY3ZUjxohkl6gBetIbU2Tz3Xku9TVpZImec7H0V08UE1Dhu5xbPWekiQhUhBtuTfmfrB/DGAoT+O5RYeEwKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHf/qGyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9230C4CEE5;
-	Tue,  8 Apr 2025 12:18:30 +0000 (UTC)
+	 MIME-Version; b=hBDBfuCMQHQO4gGEwQ2N0SoaCOkro+2FquC69fw6l0vPStKu9t00zPhmAIhGpi+sG5T5KUONMykaC3QW89cEqb7XayxZPhzspALz5bqe8kVBvUwQs3FzjhSrXmBXo+bojc+Ikv/BiCdreNYotuF+ftAmVb+y0NWX47wnbEmKzKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJXEXtmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4571DC4CEE5;
+	Tue,  8 Apr 2025 12:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114711;
-	bh=WLNPAMBC/fWp1qCmGASdZvgPfnP+x3npQEVg+1WGSt4=;
+	s=korg; t=1744116211;
+	bh=tRvWhDehmHDb+k8pOLRx0GYLVn5jPwTV+yM0rw6k3wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHf/qGyksuM2gV12WshMtWvQIMgGEltSn3oCBK0Xq4mWUZm2SBi2E62L0AV0/sB9s
-	 VYQ18sI+dFTjpwlbAhRWcrV9cKO6TVStNRgeSZwk5cpvJKka/vP6L9Trjj7k58YLg8
-	 u/+fmkpUsX1Tygxcbqhw0xGbRS97Cvar50KKpQTA=
+	b=EJXEXtmpYzal3jkHei2n7ki9LaP1bgaBovxBzAR9eCj8rILfdTeMXLcxO2O6hOqPt
+	 tDASUHQH89yl23aa6mCOsuFRLvnJA8g0MRkfdL7F5MXEz1t6MzIjMTr3xt3Hdx0ZwN
+	 oK0QEKIMm+nNDmQhtcRBTn/zHYWmsZfPgyCdtoBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	kernel test robot <lkp@intel.com>,
+	Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lang Yu <Lang.Yu@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 170/499] clk: amlogic: g12b: fix cluster A parent data
-Date: Tue,  8 Apr 2025 12:46:22 +0200
-Message-ID: <20250408104855.416681642@linuxfoundation.org>
+Subject: [PATCH 6.12 057/423] drm/amdgpu/umsch: fix ucode check
+Date: Tue,  8 Apr 2025 12:46:23 +0200
+Message-ID: <20250408104847.077130737@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8995f8f108c3ac5ad52b12a6cfbbc7b3b32e9a58 ]
+[ Upstream commit c917e39cbdcd9fff421184db6cc461cc58d52c17 ]
 
-Several clocks used by both g12a and g12b use the g12a cpu A clock hw
-pointer as clock parent. This is incorrect on g12b since the parents of
-cluster A cpu clock are different. Also the hw clock provided as parent to
-these children is not even registered clock on g12b.
+Return an error if the IP version doesn't match otherwise
+we end up passing a NULL string to amdgpu_ucode_request.
+We should never hit this in practice today since we only
+enable the umsch code on the supported IP versions, but
+add a check to be safe.
 
-Fix the problem by reverting to the global namespace and let CCF pick
-the appropriate, as it is already done for other clocks, such as
-cpu_clk_trace_div.
-
-Fixes: 25e682a02d91 ("clk: meson: g12a: migrate to the new parent description method")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-cpua-parent-fix-v1-1-d8c0f41865fe@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502130406.iWQ0eBug-lkp@intel.com/
+Fixes: 020620424b27 ("drm/amd: Use a constant format string for amdgpu_ucode_request")
+Reviewed-by: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Lang Yu <Lang.Yu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index cfffd434e998e..563759c51f747 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -1137,8 +1137,18 @@ static struct clk_regmap g12a_cpu_clk_div16_en = {
- 	.hw.init = &(struct clk_init_data) {
- 		.name = "cpu_clk_div16_en",
- 		.ops = &clk_regmap_gate_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) {
--			&g12a_cpu_clk.hw
-+		.parent_data = &(const struct clk_parent_data) {
-+			/*
-+			 * Note:
-+			 * G12A and G12B have different cpu clocks (with
-+			 * different struct clk_hw). We fallback to the global
-+			 * naming string mechanism so this clock picks
-+			 * up the appropriate one. Same goes for the other
-+			 * clock using cpu cluster A clock output and present
-+			 * on both G12 variant.
-+			 */
-+			.name = "cpu_clk",
-+			.index = -1,
- 		},
- 		.num_parents = 1,
- 		/*
-@@ -1203,7 +1213,10 @@ static struct clk_regmap g12a_cpu_clk_apb_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_apb_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1237,7 +1250,10 @@ static struct clk_regmap g12a_cpu_clk_atb_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_atb_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1271,7 +1287,10 @@ static struct clk_regmap g12a_cpu_clk_axi_div = {
- 	.hw.init = &(struct clk_init_data){
- 		.name = "cpu_clk_axi_div",
- 		.ops = &clk_regmap_divider_ro_ops,
--		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.name = "cpu_clk",
-+			.index = -1,
-+		},
- 		.num_parents = 1,
- 	},
- };
-@@ -1306,13 +1325,6 @@ static struct clk_regmap g12a_cpu_clk_trace_div = {
- 		.name = "cpu_clk_trace_div",
- 		.ops = &clk_regmap_divider_ro_ops,
- 		.parent_data = &(const struct clk_parent_data) {
--			/*
--			 * Note:
--			 * G12A and G12B have different cpu_clks (with
--			 * different struct clk_hw). We fallback to the global
--			 * naming string mechanism so cpu_clk_trace_div picks
--			 * up the appropriate one.
--			 */
- 			.name = "cpu_clk",
- 			.index = -1,
- 		},
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
+index 6162582d0aa27..d5125523bfa7b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_umsch_mm.c
+@@ -584,7 +584,7 @@ int amdgpu_umsch_mm_init_microcode(struct amdgpu_umsch_mm *umsch)
+ 		fw_name = "amdgpu/umsch_mm_4_0_0.bin";
+ 		break;
+ 	default:
+-		break;
++		return -EINVAL;
+ 	}
+ 
+ 	r = amdgpu_ucode_request(adev, &adev->umsch_mm.fw, "%s", fw_name);
 -- 
 2.39.5
 
