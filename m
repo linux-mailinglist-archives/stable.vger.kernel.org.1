@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C693DA807DC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D971A806D2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976141B80F17
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949881B62FA6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B733263C8A;
-	Tue,  8 Apr 2025 12:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297F426A1B4;
+	Tue,  8 Apr 2025 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlgGCDvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8VhRFnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E888626982F;
-	Tue,  8 Apr 2025 12:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92782698B9;
+	Tue,  8 Apr 2025 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115592; cv=none; b=a5i2Py89jzxpHu46B7T4sJ64c6ppvKFz0b2V+Wf9Ps6jUAMoCia9g95+6tgbU7vBKwHv9J3rFYKXJtBy9HBXxJy8h6rBUq7MSB4BPTO+rrPlVyXeX+/Cfh0EbJ6H+UCyWEel5/HqJBNqNx4sSRqGLCO5MTKbERW6Ht2DwqaBF4Q=
+	t=1744115026; cv=none; b=EeTC800AI+8aGpsMQghFPdvJHhZmKMxrA7EZ46YvYXKgINCr7LS18lPKInXxproFcslp7kA2WBLlNL7Nex4rQ9tagYRxmTC0fEYGk/1QZzFaWHVI/aBAId2kjfWeDCYt2W8aKQlFsXU21uTf77XtsuiCfkIINrYT4/gJY17DP6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115592; c=relaxed/simple;
-	bh=xH6Vn5uHBdfPHrnkDUuJKMW1yFRYLd4XLW5JQAiRWoo=;
+	s=arc-20240116; t=1744115026; c=relaxed/simple;
+	bh=lfZsdqRESkfgNa5u9gSb4bOj9/66Gn/YchxXxePno34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swmqdXvjD1ZItmC/ZG84b6ykY8BYNV/559fW07yFG80Er4sjHgQabVOsfplgrHC+kTG66DLgXRxjhqg4cF7rOv6jK9Uo3FgUF56wv7VEOg/HXowTmiTWkS07Ws7OXkS9qexliGfT5fDFUh7v7osGP+GDwT0p3Ey5KjnYvPorgMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlgGCDvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5DFC4CEE5;
-	Tue,  8 Apr 2025 12:33:11 +0000 (UTC)
+	 MIME-Version; b=dCUzNu/JhUcmVf4aWDq6RtnsMghwfM6YqsT8Y+/pUp0Y2mfp4y0g8oqjY5qq68JGyPeqi8Yl0mFIPjwLV+OnJbXFszg7xZMKPbaDaWV7wIjmXORIJysmOaKMd60ayjqwr7klLdusFYUHige8YvTEMTXj0HXtTHOoeajo5QZ8BXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8VhRFnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69313C4CEE5;
+	Tue,  8 Apr 2025 12:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115591;
-	bh=xH6Vn5uHBdfPHrnkDUuJKMW1yFRYLd4XLW5JQAiRWoo=;
+	s=korg; t=1744115026;
+	bh=lfZsdqRESkfgNa5u9gSb4bOj9/66Gn/YchxXxePno34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlgGCDvq52oXckSzp/3grQat6slaO5bnfXpu3O3XMXqSu6YxRmsL06h+/581IfPTo
-	 65HFuvSiU40SdGI+NHEE5alODNMK1F7/nDVbz8iWLplJE6TPi0+iH1AS8joywb561a
-	 dhQnYBcS3U3/gJjS120O6GZo5hbIvoYkpgTfEAEU=
+	b=E8VhRFnKfB0Yho/DZKkXN61N9uxwD5z3+vuhtlp/wuB8fqU+jiAiU7JwQUsfj2BzC
+	 pAKFrYUOij5lTDyu/WV2vhDysiEBhfKEBrW9g1pWSmG7JxqY30qQQB6fo1LK7vxvzo
+	 Rya+s4oq2/tpAhBvj/nnimIoGwUF1iGp9cYk2RuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/204] smack: dont compile ipv6 code unless ipv6 is configured
+Subject: [PATCH 6.13 322/499] exfat: add a check for invalid data size
 Date: Tue,  8 Apr 2025 12:48:54 +0200
-Message-ID: <20250408104820.411913754@linuxfoundation.org>
+Message-ID: <20250408104859.254564903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit bfcf4004bcbce2cb674b4e8dbd31ce0891766bac ]
+[ Upstream commit 13940cef95491472760ca261b6713692ece9b946 ]
 
-I want to be sure that ipv6-specific code
-is not compiled in kernel binaries
-if ipv6 is not configured.
+Add a check for invalid data size to avoid corrupted filesystem
+from being further corrupted.
 
-[1] was getting rid of "unused variable" warning, but,
-with that, it also mandated compilation of a handful ipv6-
-specific functions in ipv4-only kernel configurations:
-
-smk_ipv6_localhost, smack_ipv6host_label, smk_ipv6_check.
-
-Their compiled bodies are likely to be removed by compiler
-from the resulting binary, but, to be on the safe side,
-I remove them from the compiler view.
-
-[1]
-Fixes: 00720f0e7f28 ("smack: avoid unused 'sip' variable warning")
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack.h     |  6 ++++++
- security/smack/smack_lsm.c | 10 +++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ fs/exfat/namei.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/security/smack/smack.h b/security/smack/smack.h
-index aa15ff56ed6e7..eb22090f3bb85 100644
---- a/security/smack/smack.h
-+++ b/security/smack/smack.h
-@@ -152,6 +152,7 @@ struct smk_net4addr {
- 	struct smack_known	*smk_label;	/* label */
- };
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index 9996ca61c85b7..a8f9db2fcb491 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -651,6 +651,11 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
+ 	info->valid_size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.size);
  
-+#if IS_ENABLED(CONFIG_IPV6)
- /*
-  * An entry in the table identifying IPv6 hosts.
-  */
-@@ -162,7 +163,9 @@ struct smk_net6addr {
- 	int			smk_masks;	/* mask size */
- 	struct smack_known	*smk_label;	/* label */
- };
-+#endif /* CONFIG_IPV6 */
- 
-+#ifdef SMACK_IPV6_PORT_LABELING
- /*
-  * An entry in the table identifying ports.
-  */
-@@ -175,6 +178,7 @@ struct smk_port_label {
- 	short			smk_sock_type;	/* Socket type */
- 	short			smk_can_reuse;
- };
-+#endif /* SMACK_IPV6_PORT_LABELING */
- 
- struct smack_known_list_elem {
- 	struct list_head	list;
-@@ -314,7 +318,9 @@ extern struct smack_known smack_known_web;
- extern struct mutex	smack_known_lock;
- extern struct list_head smack_known_list;
- extern struct list_head smk_net4addr_list;
-+#if IS_ENABLED(CONFIG_IPV6)
- extern struct list_head smk_net6addr_list;
-+#endif /* CONFIG_IPV6 */
- 
- extern struct mutex     smack_onlycap_lock;
- extern struct list_head smack_onlycap_list;
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 25995df15e82d..285103ffc75c6 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2405,6 +2405,7 @@ static struct smack_known *smack_ipv4host_label(struct sockaddr_in *sip)
- 	return NULL;
- }
- 
-+#if IS_ENABLED(CONFIG_IPV6)
- /*
-  * smk_ipv6_localhost - Check for local ipv6 host address
-  * @sip: the address
-@@ -2472,6 +2473,7 @@ static struct smack_known *smack_ipv6host_label(struct sockaddr_in6 *sip)
- 
- 	return NULL;
- }
-+#endif /* CONFIG_IPV6 */
- 
- /**
-  * smack_netlbl_add - Set the secattr on a socket
-@@ -2575,6 +2577,7 @@ static int smk_ipv4_check(struct sock *sk, struct sockaddr_in *sap)
- 	return rc;
- }
- 
-+#if IS_ENABLED(CONFIG_IPV6)
- /**
-  * smk_ipv6_check - check Smack access
-  * @subject: subject Smack label
-@@ -2607,6 +2610,7 @@ static int smk_ipv6_check(struct smack_known *subject,
- 	rc = smk_bu_note("IPv6 check", subject, object, MAY_WRITE, rc);
- 	return rc;
- }
-+#endif /* CONFIG_IPV6 */
- 
- #ifdef SMACK_IPV6_PORT_LABELING
- /**
-@@ -2939,7 +2943,9 @@ static int smack_socket_connect(struct socket *sock, struct sockaddr *sap,
- 		return 0;
- 	if (addrlen < offsetofend(struct sockaddr, sa_family))
- 		return 0;
--	if (IS_ENABLED(CONFIG_IPV6) && sap->sa_family == AF_INET6) {
++	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
++		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
++		return -EIO;
++	}
 +
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sap->sa_family == AF_INET6) {
- 		struct sockaddr_in6 *sip = (struct sockaddr_in6 *)sap;
- 		struct smack_known *rsp = NULL;
- 
-@@ -2959,6 +2965,8 @@ static int smack_socket_connect(struct socket *sock, struct sockaddr *sap,
- 
- 		return rc;
- 	}
-+#endif /* CONFIG_IPV6 */
-+
- 	if (sap->sa_family != AF_INET || addrlen < sizeof(struct sockaddr_in))
- 		return 0;
- 	rc = smk_ipv4_check(sock->sk, (struct sockaddr_in *)sap);
+ 	info->start_clu = le32_to_cpu(ep2->dentry.stream.start_clu);
+ 	if (!is_valid_cluster(sbi, info->start_clu) && info->size) {
+ 		exfat_warn(sb, "start_clu is invalid cluster(0x%x)",
 -- 
 2.39.5
 
