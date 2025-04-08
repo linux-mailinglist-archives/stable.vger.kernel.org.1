@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E11FA80489
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C54AA80823
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC3B42466C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E54767A8422
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED3F269D08;
-	Tue,  8 Apr 2025 12:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD64E26B0B8;
+	Tue,  8 Apr 2025 12:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItfuW2kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohk9TT2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E123226981C;
-	Tue,  8 Apr 2025 12:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0221B87CF;
+	Tue,  8 Apr 2025 12:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113642; cv=none; b=ZSf4+Toacqfq9ecjSqEMx2XWqj7LykdpHyCWtr37aNlxN8ggopOgZXMnHurz5GHreqZvHOM7WW6sGFXmiVLjrBfUM1OKOcA4kICBRpYLrzgPr6PR6w9QH92V57ucGz73SIE/vqJh6CtScD73GFiKWjA99vzI3mfFFeTOfpCjFqs=
+	t=1744115819; cv=none; b=XvI6aJxCswjMl7leR0xV1XshNpfjpAcdXVXr6LgNwLSx/IpCAQ3+CgG7SgNWpa4ikKduDydRDCGLpbQJW30iIS37VnM+qPcOPyxemdZSpuIABJ7u3YXKwj6YRJifgOT3/BmQGEq1G2FQ/Tc3ScX++AmjebcaMMrysF7p1YHN3/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113642; c=relaxed/simple;
-	bh=vlkOnUG9sajosmLA4vPkl5Aqq8hSuHLz78YZAleIXOE=;
+	s=arc-20240116; t=1744115819; c=relaxed/simple;
+	bh=uu8OD0TeuO7WfRBgvlZSD8TslnE0M4oVFmubUxik8Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4BpquXTHs7eJCEdDLUFQh7AeXyC1NIsTLUw6KBlDCQazVeE1k3Ahi6i3odc1FYVBPtabHpDJiofsX2Z50bN2dj2+KDWTt4aBVa7z22ls7eHT4EXZd8gRiac6dUOgl2GLtk3kectn5vXYrRg7hatWkgbiK2WxaSKiaRIuO7/D8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItfuW2kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A41C4CEE5;
-	Tue,  8 Apr 2025 12:00:41 +0000 (UTC)
+	 MIME-Version; b=E0oT1gI/tLZQAsrXtBZphXcCih/osIHJTEBY7gxTX107Db4rhCzKAvRjvNgkczvGJoUn1qTCKGHI0xr3caGlQcPxGWg37xiHZy9zSzaxVMgWYrTSnVo/R5jQlf4YirRFs5JZa8KVYjRL1NnlgAdAyULvlv3dH5ReHISxFSTyNhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohk9TT2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD1FC4CEE5;
+	Tue,  8 Apr 2025 12:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113641;
-	bh=vlkOnUG9sajosmLA4vPkl5Aqq8hSuHLz78YZAleIXOE=;
+	s=korg; t=1744115819;
+	bh=uu8OD0TeuO7WfRBgvlZSD8TslnE0M4oVFmubUxik8Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItfuW2kn/qrKq35RmEku4xmcwmFMrtgrh8UbolmAIUshu/X3CElKbuJdyvmenQCyO
-	 Qt9eVwCGVjfi/yZTQbDbcaK7HK/wzS3SgaC5OASWXCiaEOYy6vmOewahXHmD3k0jTf
-	 3HhcudBZ3dV2rAfEchTIJZb5s18knCI59S62afRg=
+	b=ohk9TT2RxV8+lFtA8suMYykmHnRdVEsKNNlU/qEHO2VoYCll9iWx6+2kRiWUYSDBw
+	 VFO89txI7CQ8j91SqrrMUR/yUAfcQei1GTlpvKp/bUPkcJbu8L0CSPmMlG2XXjMDte
+	 XuqxveKj1+0vucuH5n5HjVDfYGGpEP9MK99Y515Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 233/268] LoongArch: BPF: Dont override subprogs return value
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/204] rndis_host: Flag RNDIS modems as WWAN devices
 Date: Tue,  8 Apr 2025 12:50:44 +0200
-Message-ID: <20250408104834.872684630@linuxfoundation.org>
+Message-ID: <20250408104823.666505361@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-commit 60f3caff1492e5b8616b9578c4bedb5c0a88ed14 upstream.
+[ Upstream commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8 ]
 
-The verifier test `calls: div by 0 in subprog` triggers a panic at the
-ld.bu instruction. The ld.bu insn is trying to load byte from memory
-address returned by the subprog. The subprog actually set the correct
-address at the a5 register (dedicated register for BPF return values).
-But at commit 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
-we also sign extended a5 to the a0 register (return value in LoongArch).
-For function call insn, we later propagate the a0 register back to a5
-register. This is right for native calls but wrong for bpf2bpf calls
-which expect zero-extended return value in a5 register. So only move a0
-to a5 for native calls (i.e. non-BPF_PSEUDO_CALL).
+Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+Broadband Modems, as opposed to regular Ethernet adapters.
 
-Cc: stable@vger.kernel.org
-Fixes: 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Otherwise NetworkManager gets confused, misjudges the device type,
+and wouldn't know it should connect a modem to get the device to work.
+What would be the result depends on ModemManager version -- older
+ModemManager would end up disconnecting a device after an unsuccessful
+probe attempt (if it connected without needing to unlock a SIM), while
+a newer one might spawn a separate PPP connection over a tty interface
+instead, resulting in a general confusion and no end of chaos.
+
+The only way to get this work reliably is to fix the device type
+and have good enough version ModemManager (or equivalent).
+
+Fixes: 63ba395cd7a5 ("rndis_host: support Novatel Verizon USB730L")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://patch.msgid.link/20250325095842.1567999-1-lkundrak@v3.sk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -844,7 +844,10 @@ static int build_insn(const struct bpf_i
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 7b3739b29c8f7..bb0bf14158727 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info = {
+ 	.tx_fixup =	rndis_tx_fixup,
+ };
  
- 		move_addr(ctx, t1, func_addr);
- 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
--		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
++static const struct driver_info	wwan_rndis_info = {
++	.description =	"Mobile Broadband RNDIS device",
++	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
++	.bind =		rndis_bind,
++	.unbind =	rndis_unbind,
++	.status =	rndis_status,
++	.rx_fixup =	rndis_rx_fixup,
++	.tx_fixup =	rndis_tx_fixup,
++};
 +
-+		if (insn->src_reg != BPF_PSEUDO_CALL)
-+			move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
-+
- 		break;
+ /*-------------------------------------------------------------------------*/
  
- 	/* tail call */
+ static const struct usb_device_id	products [] = {
+@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] = {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Novatel Verizon USB730L */
++	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
++	 * Telit FN990A (RNDIS)
++	 */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long) &rndis_info,
++	.driver_info = (unsigned long)&wwan_rndis_info,
+ },
+ 	{ },		// END
+ };
+-- 
+2.39.5
+
 
 
 
