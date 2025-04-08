@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC74A80AB6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68EFA807A1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035A94E2901
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9ECE883C7D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E763126FD84;
-	Tue,  8 Apr 2025 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7B2063FD;
+	Tue,  8 Apr 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4dzVHz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTPLEuRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFCA26FD83;
-	Tue,  8 Apr 2025 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B182207E14;
+	Tue,  8 Apr 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116572; cv=none; b=l3h6SLXYgV+gG7jkPY4goYPsFhVL74KzxyWPFjT2k69xxxVWVT68H+NCQiqWmTiJNLHZVj1PH7SYgK4g2/nGAYf1CLfxqLqVcdK1f5KjOpU1WZ22w2qK82gGLCIMo2Qx9NOCSAjq2vbxT79r945UE6vLdFNjK8uJO4P/963Mwic=
+	t=1744114977; cv=none; b=m3wZvlo+TQiCa1g1JhfVIGbyhfqXEQOmtl3AqcPBPzvRMuMIqDER6/ZtZnp7ojFmaIcP2VBjVjG7uo5lc7eAQmvRHWXAd8Qvft3CoDtMrv16XqoVGgvb/jUE2TeGPQMSxKfBpf9cvFIqGw9rRfIY1IeYqiBrOXHW/VT3WcPKb8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116572; c=relaxed/simple;
-	bh=Bm+BLw0bjvEb0D7exc5H9yBEH7Pc7GYjn8XrmGtfnag=;
+	s=arc-20240116; t=1744114977; c=relaxed/simple;
+	bh=rBPzGWPwgfe1GsnR6H9OLTKUJPvxa0R28Ro0jMOWqxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u7ALtJpsQAfBYoXW9rjtflk4lubPZ5TV1uSzbYveJaLmqQoxMiupqWVJTpTwY+NOnoQZ7x84zOsbWjT/ScWb4hjlfe9MCgFgyJLrGhas4Xn+3yZhw79GH+MEPPOsfgzcuo9YLwfoe/DPwXqZcFfPeqUTU5NqVTWgY+YnEb4a2cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4dzVHz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB42C4CEE5;
-	Tue,  8 Apr 2025 12:49:31 +0000 (UTC)
+	 MIME-Version; b=Kjl4rotmbscI090JOSos0V5LZQj7bxTBNCUyzFlxUJyWYgHMGF2jafUdSyWQfr43A8yV9aFalLIF+t5aCimhat/WmJ/E+TNe56r4Qn9Z2UOiRWP3757Ue4EH1xbV8p4WMruzj5Yb8noQPChoe626BfAZ9b1H1zV0LQhE/bOmD3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTPLEuRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B44C4CEE5;
+	Tue,  8 Apr 2025 12:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116572;
-	bh=Bm+BLw0bjvEb0D7exc5H9yBEH7Pc7GYjn8XrmGtfnag=;
+	s=korg; t=1744114976;
+	bh=rBPzGWPwgfe1GsnR6H9OLTKUJPvxa0R28Ro0jMOWqxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4dzVHz2E3xT+ZNXQmVxwies9UQzFwvqWH4m1VsJmPQp7yzYKf6hfVXslq7V514go
-	 WiXdaXBszZSS7Jbk1OObM6r7UQkutrSW34pxJpjs5cStcCqr9j4JMJDdpTf6H3Y49C
-	 in8I2rpyNzNZyjnKfzCINbSfHYb6RZ1jVhysH8oo=
+	b=eTPLEuRq+ZwmrhKs94n0eK5jrCEfylYxYUhX3b2edbmRwfIWkKtgmK7xUjteBfPTr
+	 YkyC6UlAfoMbTg2caQMHZwGLqfjVIYO5Zg43R9tlzXNapD2+/m9Z2ADn3bhPXJzJtK
+	 79DYkO3QkACBo0ti71MiukODaZX74s1ipPUk+pFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zhang Guanghui <zhang.guanghui@cestc.cn>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/423] iio: adc: ad7173: Fix comparison of channel configs
-Date: Tue,  8 Apr 2025 12:48:36 +0200
-Message-ID: <20250408104850.163860834@linuxfoundation.org>
+Subject: [PATCH 6.13 305/499] nvme-tcp: fix possible UAF in nvme_tcp_poll
+Date: Tue,  8 Apr 2025 12:48:37 +0200
+Message-ID: <20250408104858.823074975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 7b6033ed5a9e1a369a9cf58018388ae4c5f17e41 ]
+[ Upstream commit 8c1624b63a7d24142a2bbc3a5ee7e95f004ea36e ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+nvme_tcp_poll() may race with the send path error handler because
+it may complete the request while it is actively being polled for
+completion, resulting in a UAF panic [1]:
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+We should make sure to stop polling when we see an error when
+trying to read from the socket. Hence make sure to propagate the
+error so that the block layer breaks the polling cycle.
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad7173_channel_config::config_props is expanded, the comparison
-is adapted, too.
+[1]:
+--
+[35665.692310] nvme nvme2: failed to send request -13
+[35665.702265] nvme nvme2: unsupported pdu type (3)
+[35665.702272] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[35665.702542] nvme nvme2: queue 1 receive failed:  -22
+[35665.703209] #PF: supervisor write access in kernel mode
+[35665.703213] #PF: error_code(0x0002) - not-present page
+[35665.703214] PGD 8000003801cce067 P4D 8000003801cce067 PUD 37e6f79067 PMD 0
+[35665.703220] Oops: 0002 [#1] SMP PTI
+[35665.703658] nvme nvme2: starting error recovery
+[35665.705809] Hardware name: Inspur aaabbb/YZMB-00882-104, BIOS 4.1.26 09/22/2022
+[35665.705812] Workqueue: kblockd blk_mq_requeue_work
+[35665.709172] RIP: 0010:_raw_spin_lock+0xc/0x30
+[35665.715788] Call Trace:
+[35665.716201]  <TASK>
+[35665.716613]  ? show_trace_log_lvl+0x1c1/0x2d9
+[35665.717049]  ? show_trace_log_lvl+0x1c1/0x2d9
+[35665.717457]  ? blk_mq_request_bypass_insert+0x2c/0xb0
+[35665.717950]  ? __die_body.cold+0x8/0xd
+[35665.718361]  ? page_fault_oops+0xac/0x140
+[35665.718749]  ? blk_mq_start_request+0x30/0xf0
+[35665.719144]  ? nvme_tcp_queue_rq+0xc7/0x170 [nvme_tcp]
+[35665.719547]  ? exc_page_fault+0x62/0x130
+[35665.719938]  ? asm_exc_page_fault+0x22/0x30
+[35665.720333]  ? _raw_spin_lock+0xc/0x30
+[35665.720723]  blk_mq_request_bypass_insert+0x2c/0xb0
+[35665.721101]  blk_mq_requeue_work+0xa5/0x180
+[35665.721451]  process_one_work+0x1e8/0x390
+[35665.721809]  worker_thread+0x53/0x3d0
+[35665.722159]  ? process_one_work+0x390/0x390
+[35665.722501]  kthread+0x124/0x150
+[35665.722849]  ? set_kthread_struct+0x50/0x50
+[35665.723182]  ret_from_fork+0x1f/0x30
 
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
-
-Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-14-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: Zhang Guanghui <zhang.guanghui@cestc.cn>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7173.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/nvme/host/tcp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 5a65be00dd190..2eebc6f761a63 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -181,7 +181,11 @@ struct ad7173_channel_config {
- 	u8 cfg_slot;
- 	bool live;
- 
--	/* Following fields are used to compare equality. */
-+	/*
-+	 * Following fields are used to compare equality. If you
-+	 * make adaptations in it, you most likely also have to adapt
-+	 * ad7173_find_live_config(), too.
-+	 */
- 	struct_group(config_props,
- 		bool bipolar;
- 		bool input_buf;
-@@ -582,15 +586,28 @@ static struct ad7173_channel_config *
- ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 65347fed42370..327f3f2f5399c 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -2725,6 +2725,7 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
  {
- 	struct ad7173_channel_config *cfg_aux;
--	ptrdiff_t cmp_size;
- 	int i;
+ 	struct nvme_tcp_queue *queue = hctx->driver_data;
+ 	struct sock *sk = queue->sock->sk;
++	int ret;
  
--	cmp_size = sizeof_field(struct ad7173_channel_config, config_props);
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad7173_channel_config was changed.
-+	 */
-+	static_assert(sizeof_field(struct ad7173_channel_config, config_props) ==
-+		      sizeof(struct {
-+				     bool bipolar;
-+				     bool input_buf;
-+				     u8 odr;
-+				     u8 ref_sel;
-+			     }));
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
+ 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
+ 		return 0;
+@@ -2732,9 +2733,9 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+ 	set_bit(NVME_TCP_Q_POLLING, &queue->flags);
+ 	if (sk_can_busy_loop(sk) && skb_queue_empty_lockless(&sk->sk_receive_queue))
+ 		sk_busy_loop(sk, true);
+-	nvme_tcp_try_recv(queue);
++	ret = nvme_tcp_try_recv(queue);
+ 	clear_bit(NVME_TCP_Q_POLLING, &queue->flags);
+-	return queue->nr_cqe;
++	return ret < 0 ? ret : queue->nr_cqe;
+ }
  
- 		if (cfg_aux->live &&
--		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
-+		    cfg->bipolar == cfg_aux->bipolar &&
-+		    cfg->input_buf == cfg_aux->input_buf &&
-+		    cfg->odr == cfg_aux->odr &&
-+		    cfg->ref_sel == cfg_aux->ref_sel)
- 			return cfg_aux;
- 	}
- 	return NULL;
+ static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
 -- 
 2.39.5
 
