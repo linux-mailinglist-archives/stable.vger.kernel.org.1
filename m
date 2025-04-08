@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DC2A80520
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B48A8079A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7CC4A38D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 503537AA7F4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EAF2690EB;
-	Tue,  8 Apr 2025 12:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1099E26E16F;
+	Tue,  8 Apr 2025 12:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbBITOSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWuE/wlA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A952698AE;
-	Tue,  8 Apr 2025 12:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32E626E16B;
+	Tue,  8 Apr 2025 12:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113731; cv=none; b=u1AHNkyVmjrtoSz07Jmh6XYWGnos+v6+9nELwcmr/JtmwsX7GTceb9Xq7+VY0zaJ9MY0bJUg/ns24ccsERieA6k2N8/09LYUNslTDISQCbDruDKKGn88x7CFo17S0bnBprrybIYHMcjWCjbxzV6nkVyVSSzZpkcT9iHfQZCF+JE=
+	t=1744115509; cv=none; b=o+3WNHqPTEfH1/NMXsVVaqqf7QDFvnDEpG+gQ6xkv0UU8F0r4iBscWtoFEQCmSFdlu+KHhJraheCNwJeAUusXlSg44z8giz6iz/RWNtlyu6up1db6YCuHF2s9orKI94WHkW49smbnEyAvpBFJAZuThmV1lZjfo7QmyiughnzzvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113731; c=relaxed/simple;
-	bh=1GW5evtOVi+VdbfzLCB/Q5jBkoxfrODoJAL0LyRsP1o=;
+	s=arc-20240116; t=1744115509; c=relaxed/simple;
+	bh=rp+J/JkaeYH/p/bYOY4p23Grz0T7P3QGeI1253lizsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnILuxLlyXsyCzUPgp43oKDHdxZYiLOI7UMohiecRCwfuTYrEzSkZpY7H+UWiBNglZcBS0UkcXgoM40QPsYv8qAn4+6qv4guvKUdNfBPGkat00seYVFfcFoC+1kLJaWBSchQRWUcX8ZPdXzv0wuifNY0nPdGJsXBfnOrkCm8Qos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbBITOSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64ADBC4CEE5;
-	Tue,  8 Apr 2025 12:02:11 +0000 (UTC)
+	 MIME-Version; b=qj+5NbEf/PlYiddndUsilW6UidXiV2o4ZPuZRwexmqw1GfwHai0ZAlrTSj2jJXK2wzlt+F20qf0OfNLyUtDpv49hbv/g6bBrtb1eV0Act1ey01hsuJlzNnygGhOeTnLxnaicIOYAeHPJvKuluhVyiMgfL1oGu12W6F7nDI+aZck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWuE/wlA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE27C4CEE5;
+	Tue,  8 Apr 2025 12:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113731;
-	bh=1GW5evtOVi+VdbfzLCB/Q5jBkoxfrODoJAL0LyRsP1o=;
+	s=korg; t=1744115509;
+	bh=rp+J/JkaeYH/p/bYOY4p23Grz0T7P3QGeI1253lizsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbBITOSFk0E+9lid1Aaf0iQ27GsfThDmPHaY5ZISiEe9/QRvqyu13HQ6cVl0fllxP
-	 GwAfdQyBdyIqmF+X7C1iKHjZmyUzNYPDBZQWCkHaNlSjGt6OghKXr+nxtc7JAxDfEZ
-	 3EV7XmwjoC/6apj25FZD22I/4wa0bugPQFkOrg+g=
+	b=CWuE/wlAN+JVCXOieQGcrANUIT7O7Rv++3p2LP+Qi/IG+w20Gv4oVZ22JMqi3Pu6e
+	 n7bqvUY4rp+6rcT1P92iJusLrJQB80pVyccMsy8ugs0iM//nso4sWxl1OSucSXK5o0
+	 xe3V8qFpN3pJwhgG5YjAVvMCToXMlici/iJJlP3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 267/268] nfsd: put dl_stid if fail to queue dl_recall
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 466/499] ksmbd: add bounds check for durable handle context
 Date: Tue,  8 Apr 2025 12:51:18 +0200
-Message-ID: <20250408104835.776902127@linuxfoundation.org>
+Message-ID: <20250408104902.862421359@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 230ca758453c63bd38e4d9f4a21db698f7abada8 upstream.
+commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
 
-Before calling nfsd4_run_cb to queue dl_recall to the callback_wq, we
-increment the reference count of dl_stid.
-We expect that after the corresponding work_struct is processed, the
-reference count of dl_stid will be decremented through the callback
-function nfsd4_cb_recall_release.
-However, if the call to nfsd4_run_cb fails, the incremented reference
-count of dl_stid will not be decremented correspondingly, leading to the
-following nfs4_stid leak:
-unreferenced object 0xffff88812067b578 (size 344):
-  comm "nfsd", pid 2761, jiffies 4295044002 (age 5541.241s)
-  hex dump (first 32 bytes):
-    01 00 00 00 6b 6b 6b 6b b8 02 c0 e2 81 88 ff ff  ....kkkk........
-    00 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 ad 4e ad de  .kkkkkkk.....N..
-  backtrace:
-    kmem_cache_alloc+0x4b9/0x700
-    nfsd4_process_open1+0x34/0x300
-    nfsd4_open+0x2d1/0x9d0
-    nfsd4_proc_compound+0x7a2/0xe30
-    nfsd_dispatch+0x241/0x3e0
-    svc_process_common+0x5d3/0xcc0
-    svc_process+0x2a3/0x320
-    nfsd+0x180/0x2e0
-    kthread+0x199/0x1d0
-    ret_from_fork+0x30/0x50
-    ret_from_fork_asm+0x1b/0x30
-unreferenced object 0xffff8881499f4d28 (size 368):
-  comm "nfsd", pid 2761, jiffies 4295044005 (age 5541.239s)
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 30 4d 9f 49 81 88 ff ff  ........0M.I....
-    30 4d 9f 49 81 88 ff ff 20 00 00 00 01 00 00 00  0M.I.... .......
-  backtrace:
-    kmem_cache_alloc+0x4b9/0x700
-    nfs4_alloc_stid+0x29/0x210
-    alloc_init_deleg+0x92/0x2e0
-    nfs4_set_delegation+0x284/0xc00
-    nfs4_open_delegation+0x216/0x3f0
-    nfsd4_process_open2+0x2b3/0xee0
-    nfsd4_open+0x770/0x9d0
-    nfsd4_proc_compound+0x7a2/0xe30
-    nfsd_dispatch+0x241/0x3e0
-    svc_process_common+0x5d3/0xcc0
-    svc_process+0x2a3/0x320
-    nfsd+0x180/0x2e0
-    kthread+0x199/0x1d0
-    ret_from_fork+0x30/0x50
-    ret_from_fork_asm+0x1b/0x30
-Fix it by checking the result of nfsd4_run_cb and call nfs4_put_stid if
-fail to queue dl_recall.
+Add missing bounds check for durable handle context.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1066,6 +1066,12 @@ static struct nfs4_ol_stateid * nfs4_all
- 	return openlockstateid(stid);
- }
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2703,6 +2703,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
  
-+/*
-+ * As the sc_free callback of deleg, this may be called by nfs4_put_stid
-+ * in nfsd_break_one_deleg.
-+ * Considering nfsd_break_one_deleg is called with the flc->flc_lock held,
-+ * this function mustn't ever sleep.
-+ */
- static void nfs4_free_deleg(struct nfs4_stid *stid)
- {
- 	struct nfs4_delegation *dp = delegstateid(stid);
-@@ -4920,6 +4926,7 @@ static const struct nfsd4_callback_ops n
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_v2_req)) {
++				err = -EINVAL;
++				goto out;
++			}
++
+ 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
+ 			persistent_id = recon_v2->Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2736,6 +2743,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
  
- static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- {
-+	bool queued;
- 	/*
- 	 * We're assuming the state code never drops its reference
- 	 * without first removing the lease.  Since we're in this lease
-@@ -4928,7 +4935,10 @@ static void nfsd_break_one_deleg(struct
- 	 * we know it's safe to take a reference.
- 	 */
- 	refcount_inc(&dp->dl_stid.sc_count);
--	WARN_ON_ONCE(!nfsd4_run_cb(&dp->dl_recall));
-+	queued = nfsd4_run_cb(&dp->dl_recall);
-+	WARN_ON_ONCE(!queued);
-+	if (!queued)
-+		nfs4_put_stid(&dp->dl_stid);
- }
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_req)) {
++				err = -EINVAL;
++				goto out;
++			}
++
+ 			recon = (struct create_durable_reconn_req *)context;
+ 			persistent_id = recon->Data.Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2760,6 +2774,13 @@ static int parse_durable_handle_context(
+ 				err = -EINVAL;
+ 				goto out;
+ 			}
++
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_req_v2)) {
++				err = -EINVAL;
++				goto out;
++			}
  
- /* Called from break_lease() with flc_lock held. */
+ 			durable_v2_blob =
+ 				(struct create_durable_req_v2 *)context;
 
 
 
