@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D9DA803BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75600A7FDD0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68BB81603BA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6B0178074
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69D9268FE7;
-	Tue,  8 Apr 2025 11:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490B026982A;
+	Tue,  8 Apr 2025 10:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBv8pqmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcWulR0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CB0267F68;
-	Tue,  8 Apr 2025 11:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04739269820;
+	Tue,  8 Apr 2025 10:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113228; cv=none; b=HbrrgF83XS+ftgAxq69Kd+CHbIZ/gz7oTiT9mi55uyWhj6XfBPDE4Sb9yfX1pADRjN+clmLpkHmqTiJ4nwEukvujA1obnIFWGdz+5wjj63sYZM+GzbHWQsDkx4q+EQOxisHD+bcuDF2n0fe2xWHpkow26jjT7zLHU9tHfTibP7Q=
+	t=1744109959; cv=none; b=FVbejz4B6L5VYzUHQZGZAHTAdU+RGwYNFDYu7qd5dNIL/q8P3vUVfuHuIqkM7X3f/fplnGJ54RF04lP5haLjxPh1ww0ydeXVBMKKYcf2mcYIfpL5YloRpqpb078iudAWT4d6mQlZj6fUOks2rzF6/o+ndRAQUiS4QpjsM9uyJJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113228; c=relaxed/simple;
-	bh=W3SLRmmi9FW3+tTIWyZSEDD6iNEDYDRt+Xf/zahTI+Y=;
+	s=arc-20240116; t=1744109959; c=relaxed/simple;
+	bh=PNEBhU3N9LZMOtI8/lnDnfxHhkkYt5FlSump3nqFHtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaqpCO2jTg81P6ll0pENdaRednHCMZco39knZqcrHEFt3faFmtK8KjdDXd0tHA6iWTlRjhRwkzRg3neO3Zbs+4yBaqkpHakaQohbs7knt7pmDR5XlmBYF4LvtKwq54/cgBwq+WR2mRNq7brGGb3CDaU4QqoVaH4RhX+WpDnYnfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBv8pqmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12189C4CEE5;
-	Tue,  8 Apr 2025 11:53:47 +0000 (UTC)
+	 MIME-Version; b=KxDSTXdabfYgWjiaVi+nbxUv4IKB5kue9gx6k3JzK9oIhLbeTs5aiKT25Nc50pR8xdvJhSnlIfXESH1Atxq8kwqqpbgRutV/bBYu5JGypZBv5Nz63nGVbweYZYPqHH+Mbnm4mxNiJdF4vTvIsRMTB3i69gztN5YVTPz534f5L1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcWulR0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C704C4CEE7;
+	Tue,  8 Apr 2025 10:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113228;
-	bh=W3SLRmmi9FW3+tTIWyZSEDD6iNEDYDRt+Xf/zahTI+Y=;
+	s=korg; t=1744109958;
+	bh=PNEBhU3N9LZMOtI8/lnDnfxHhkkYt5FlSump3nqFHtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBv8pqmrwVW4vNoYC2MV8/43nv2RozIpHUGNR5gj8BymQumOwZA/nUTqoFtQcsKkf
-	 AhPFjQhunJmcB/PfeZItLBjvx9fgiOcQFNdp5WG0OJcNM3tNRFnItTHLYyGzD7Mhbx
-	 cwvfOBnQBKX7frT3WiI0CE3Aqq1mbV0AdBqiybo0=
+	b=rcWulR0M+AW9D74Nju/GrenALZt+68uVqvzLHFoMiKKhERvwVnWOB/Qn1Ocn1Ijiz
+	 rNaXeJ0Tdp7SddbG60Ggv2h7eX9uGN8F7nah8aYhrTvL7pWIgIEn+BPkYIaU39ur7m
+	 7JEvP1s+tPkk2kn+ErNQsIjAaaPTXbLCmXE45cuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/268] RDMA/erdma: Prevent use-after-free in erdma_accept_newconn()
+Subject: [PATCH 5.10 115/227] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
 Date: Tue,  8 Apr 2025 12:48:13 +0200
-Message-ID: <20250408104830.708163563@linuxfoundation.org>
+Message-ID: <20250408104823.792859556@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Xu <chengyou@linux.alibaba.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 83437689249e6a17b25e27712fbee292e42e7855 ]
+[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
 
-After the erdma_cep_put(new_cep) being called, new_cep will be freed,
-and the following dereference will cause a UAF problem. Fix this issue.
+The init_task instance of struct task_struct is statically allocated and
+may not contain the full FP state for userspace. As such, limit the copy
+to the valid area of both init_task and 'dst' and ensure all memory is
+initialized.
 
-Fixes: 920d93eac8b9 ("RDMA/erdma: Add connection management (CM) support")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Note that the FP state is only needed for userspace, and as such it is
+entirely reasonable for init_task to not contain parts of it.
+
+Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
+----
+
+v2:
+- Fix code if arch_task_struct_size < sizeof(init_task) by using
+  memcpy_and_pad.
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/erdma/erdma_cm.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/process.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_cm.c b/drivers/infiniband/hw/erdma/erdma_cm.c
-index 771059a8eb7d7..e349e8d2fb50a 100644
---- a/drivers/infiniband/hw/erdma/erdma_cm.c
-+++ b/drivers/infiniband/hw/erdma/erdma_cm.c
-@@ -705,7 +705,6 @@ static void erdma_accept_newconn(struct erdma_cep *cep)
- 		erdma_cancel_mpatimer(new_cep);
- 
- 		erdma_cep_put(new_cep);
--		new_cep->sock = NULL;
- 	}
- 
- 	if (new_s) {
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 4f731981d3267..38c517a786f4b 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -88,7 +88,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
+  */
+ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ {
+-	memcpy(dst, src, arch_task_struct_size);
++	/* init_task is not dynamically sized (incomplete FPU state) */
++	if (unlikely(src == &init_task))
++		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
++	else
++		memcpy(dst, src, arch_task_struct_size);
++
+ #ifdef CONFIG_VM86
+ 	dst->thread.vm86 = NULL;
+ #endif
 -- 
 2.39.5
 
