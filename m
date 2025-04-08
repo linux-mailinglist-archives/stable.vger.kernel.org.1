@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBD3A7FE05
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B41BA8017A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B86189640C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA09882586
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D2D2676CF;
-	Tue,  8 Apr 2025 11:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E525226D03;
+	Tue,  8 Apr 2025 11:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek+14xqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K72Mg+XW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A93267B8C;
-	Tue,  8 Apr 2025 11:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C51F224AEB;
+	Tue,  8 Apr 2025 11:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110015; cv=none; b=B3u0RbnnS1j1FyxL0h0FPAy9sCaCdNDwALh5WW/Q1FllX4vOytg1CAFXzWTNo1UW6henJbHLYns5uKS9a+vssBLV3uvIhCRTgGgn12d4WVpgOqPAjMdHTORoeSyJGxc6MfN0hrPuDVT0pOfk8EnipitpO/BRM1aGbbf7J4cuuY4=
+	t=1744111951; cv=none; b=AotEIsU1WG/HXnrRvQqzCHUWJ70nvspbgn+MNvHac6+zt2HFWaswlsVfnCZVQCg1qVCtAaghvrEgxNqzhFWyIu14ddWtndK536PWSg7WKu0hqn8Rg6JwbQYE0yieut5UYXoZ/NSScfHhjrh0hOMgOylGSdGm/kw2jffofFj5ZZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110015; c=relaxed/simple;
-	bh=Lg82GD9R6lbnD/ofQNj8+WT9ru2yaypEGYMa2UsC29s=;
+	s=arc-20240116; t=1744111951; c=relaxed/simple;
+	bh=de6keMD4i5yrNSKba+8jiIA2pE9q/CKMOkfo7Q/fs/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VnrOJmrAbfuAsbMwFfhgEHFdsVyl7B0ZbsEU8p/WGtgfJX9idIfa6vtY5JVhPqadQ7eaX68dW7qE8w2HvRb8rkv+eXVm/FLWjGXa7oaYFnEjCDbWmVRUPXQ4tuZWnVe9ojHYOGYQd15QFeGafYThijG+WCCT/9mZ1S1x0dW0S1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek+14xqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0596FC4CEE7;
-	Tue,  8 Apr 2025 11:00:14 +0000 (UTC)
+	 MIME-Version; b=C/dGQu2oFWaAf/3DfYuWNe7cz3w3mZKKqKO51LnsRLVK8ae46Guh9qy2ZXPjinacDGYb9DW0Mw0aDkmaIeSXGWATGVihoz88iWdD8rGz6z3XviOQT74kMSKluAz0WZALqlJlV6T4ixuA4HkLtjDCURlPjjujw4xnXX78V7myIkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K72Mg+XW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2541C4CEE5;
+	Tue,  8 Apr 2025 11:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110015;
-	bh=Lg82GD9R6lbnD/ofQNj8+WT9ru2yaypEGYMa2UsC29s=;
+	s=korg; t=1744111951;
+	bh=de6keMD4i5yrNSKba+8jiIA2pE9q/CKMOkfo7Q/fs/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ek+14xqQvqWI/UpwjHct0vC3wfkEYMdO5/ieLM1D2WoPa1orFe9ZJONEPhRazLvb4
-	 YoabxPPh1o33sxfy8lREhb6MMJUMYSqaLrXNCdNetZXSsSvc1cLJtkK01taCgcObDr
-	 rj5IMZaSgt1pIc07Ut3EG5AOu5JjJkCMlEyMQXjg=
+	b=K72Mg+XWsdvEVWJ1ztkXKKTfLHGz4rnN10L54Cu5F0VXsAL1jCGdS7NtRduYoZkYr
+	 BxoocXPGptQO0wQdvq5J/OCl+MZH2Vuva0+eEpAKPPnP+WPtJ4HWTNX48Ga3zJ2OED
+	 ZASXvgvU0e6bSEln3/ix8bM1PEtkVu3PqUXsWnl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Debin Zhu <mowenroot@163.com>,
+	Bitao Ouyang <1985755126@qq.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/227] PCI: xilinx-cpm: Fix IRQ domain leak in error path of probe
-Date: Tue,  8 Apr 2025 12:48:36 +0200
-Message-ID: <20250408104824.448989249@linuxfoundation.org>
+Subject: [PATCH 6.14 620/731] netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets
+Date: Tue,  8 Apr 2025 12:48:37 +0200
+Message-ID: <20250408104928.694363316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
+From: Debin Zhu <mowenroot@163.com>
 
-[ Upstream commit 57b0302240741e73fe51f88404b3866e0d2933ad ]
+[ Upstream commit 078aabd567de3d63d37d7673f714e309d369e6e2 ]
 
-The IRQ domain allocated for the PCIe controller is not freed if
-resource_list_first_type() returns NULL, leading to a resource leak.
+When calling netlbl_conn_setattr(), addr->sa_family is used
+to determine the function behavior. If sk is an IPv4 socket,
+but the connect function is called with an IPv6 address,
+the function calipso_sock_setattr() is triggered.
+Inside this function, the following code is executed:
 
-This fix ensures properly cleaning up the allocated IRQ domain in
-the error path.
+sk_fullsock(__sk) ? inet_sk(__sk)->pinet6 : NULL;
 
-Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
-Signed-off-by: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
-[kwilczynski: added missing Fixes: tag, refactored to use one of the goto labels]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Link: https://lore.kernel.org/r/20250224155025.782179-2-thippeswamy.havalige@amd.com
+Since sk is an IPv4 socket, pinet6 is NULL, leading to a
+null pointer dereference.
+
+This patch fixes the issue by checking if inet6_sk(sk)
+returns a NULL pointer before accessing pinet6.
+
+Signed-off-by: Debin Zhu <mowenroot@163.com>
+Signed-off-by: Bitao Ouyang <1985755126@qq.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Link: https://patch.msgid.link/20250401124018.4763-1-mowenroot@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-xilinx-cpm.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/ipv6/calipso.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-xilinx-cpm.c b/drivers/pci/controller/pcie-xilinx-cpm.c
-index 67937facd90cd..1b8366fa9f783 100644
---- a/drivers/pci/controller/pcie-xilinx-cpm.c
-+++ b/drivers/pci/controller/pcie-xilinx-cpm.c
-@@ -556,13 +556,15 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
- 		return err;
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index dbcea9fee6262..62618a058b8fa 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1072,8 +1072,13 @@ static int calipso_sock_getattr(struct sock *sk,
+ 	struct ipv6_opt_hdr *hop;
+ 	int opt_len, len, ret_val = -ENOMSG, offset;
+ 	unsigned char *opt;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
- 	bus = resource_list_first_type(&bridge->windows, IORESOURCE_BUS);
--	if (!bus)
--		return -ENODEV;
-+	if (!bus) {
-+		err = -ENODEV;
-+		goto err_free_irq_domains;
-+	}
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
  
- 	err = xilinx_cpm_pcie_parse_dt(port, bus->res);
- 	if (err) {
- 		dev_err(dev, "Parsing DT failed\n");
--		goto err_parse_dt;
-+		goto err_free_irq_domains;
- 	}
+@@ -1125,8 +1130,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ {
+ 	int ret_val;
+ 	struct ipv6_opt_hdr *old, *new;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return -EAFNOSUPPORT;
  
- 	xilinx_cpm_pcie_init_port(port);
-@@ -586,7 +588,7 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
- 	xilinx_cpm_free_interrupts(port);
- err_setup_irq:
- 	pci_ecam_free(port->cfg);
--err_parse_dt:
-+err_free_irq_domains:
- 	xilinx_cpm_free_irq_domains(port);
- 	return err;
- }
++	txopts = txopt_get(pinfo);
+ 	old = NULL;
+ 	if (txopts)
+ 		old = txopts->hopopt;
+@@ -1153,8 +1163,13 @@ static int calipso_sock_setattr(struct sock *sk,
+ static void calipso_sock_delattr(struct sock *sk)
+ {
+ 	struct ipv6_opt_hdr *new_hop;
+-	struct ipv6_txoptions *txopts = txopt_get(inet6_sk(sk));
++	struct ipv6_pinfo *pinfo = inet6_sk(sk);
++	struct ipv6_txoptions *txopts;
++
++	if (!pinfo)
++		return;
+ 
++	txopts = txopt_get(pinfo);
+ 	if (!txopts || !txopts->hopopt)
+ 		goto done;
+ 
 -- 
 2.39.5
 
