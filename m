@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1A6A8037A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:58:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEC7A8021C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A9B3ABCAD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAFED1892842
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14174268C72;
-	Tue,  8 Apr 2025 11:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E19207E14;
+	Tue,  8 Apr 2025 11:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vwy5aaYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tcfcfc7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750B267B89;
-	Tue,  8 Apr 2025 11:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50372192F2;
+	Tue,  8 Apr 2025 11:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113044; cv=none; b=o3EdrDNYksCcq0jLmWpkam36hcYk73NOdlrPuUiBoefJUVWJ8u+TbQJ7CvzNbOvAB69EFSozu40FvYRpb6cZlPI+5YlYKvQ03cOqfzh/zeeA6Q/2YvIse1tqoMCTBXU6rY1vbzaJ1+gYwZhAOmYs87izw+D9MzoQk1ArnF0bFRk=
+	t=1744112474; cv=none; b=jmJGN0Yhu3yoDuuZB53StYeoWxpL/IXJCW8TekItJDZkqrHVgaI13gatrJ625GLWj4954wbuE25NOHhJH+F7998M7X+7ex3H4WrXVhu/LjohLmwRcqpiVuY+s5IzID5hmrElTmb1q7C0F4AQzjxnjVNZReITRDKARkGrm8I9C2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113044; c=relaxed/simple;
-	bh=eg0VsIdB+G8O8kARkaCq4k4unAuuGCUwlO0s9JdGc8U=;
+	s=arc-20240116; t=1744112474; c=relaxed/simple;
+	bh=7gR7IyVC3KKt2Ensv7xiB5iTBpq5RzOHtMhb3Tvy/Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOkKDSAG8M7HVlyqgSNi0Iv97fFrY5wDqfQ+xoEW3w4gLacghtd6S204tC1EOcwbJLgOfJyruEKOAcypE+mPHL5vpWK7CAFtmlP+jEx/SBtAzmy2la5uZNwsXlTgG+7uZeLWZhxByGhCBrbBVWIgO6Emprn+BZMhrS6mfhnPYS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vwy5aaYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB26C4CEE5;
-	Tue,  8 Apr 2025 11:50:43 +0000 (UTC)
+	 MIME-Version; b=YOHH/aXL0tf/yqd+Fc8dv9IjK4FS3XIuqGh1kZ6VJO1rWtzIReklmq3AKHNSNONt0luyf9tApoLFFXZ+sTSJLVGpd/ufSjYqFjQq9Lm0BXbNpf7Z3wzQrIDNK9HzSNaleAAtF0SsT57B/iBENnLHyvRJDk9YXBdg8LCZmIlM56w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tcfcfc7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370C1C4CEE5;
+	Tue,  8 Apr 2025 11:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113044;
-	bh=eg0VsIdB+G8O8kARkaCq4k4unAuuGCUwlO0s9JdGc8U=;
+	s=korg; t=1744112474;
+	bh=7gR7IyVC3KKt2Ensv7xiB5iTBpq5RzOHtMhb3Tvy/Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vwy5aaYjB/qX+W6Dt0m4WwcZ2+KiSA9EemM3qBjsLdspOQcNKl7/nckjgrPQJEGhQ
-	 aShgeSbtAZVHZx7mEAdSd2irfcPXo6alUsoQgOX5I1lfJACSQx7e6x1CRPTx2AtNg2
-	 FZwLGlaFEvgYLUkeTcJxVe5DlmvJcXvzGTleRALc=
+	b=Tcfcfc7oygcnwT3wGXxueK+pB6+3F11ShptFWsLNxN5eZ3HBichQeIuT3ZFdwFg4e
+	 6b27F/6vAeRjvQVEjk5fN9ONJAdGceii/iYsivJUSXEaKjz6xzS3Tz/Oi1whdf+ozf
+	 FNpg3bfjo0cYg4z8qXtAo9w7szP6wyH1zqZzRFu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <tim.schumacher1@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Ruozhu Li <david.li@jaguarmicro.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/268] selinux: Chain up tool resolving errors in install_policy.sh
+Subject: [PATCH 5.15 042/279] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
 Date: Tue,  8 Apr 2025 12:47:05 +0200
-Message-ID: <20250408104828.896185335@linuxfoundation.org>
+Message-ID: <20250408104827.516490546@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <tim.schumacher1@huawei.com>
+From: Ruozhu Li <david.li@jaguarmicro.com>
 
-[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
+[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+The queue state checking in nvmet_rdma_recv_done is not in queue state
+lock.Queue state can transfer to LIVE in cm establish handler between
+state checking and state lock here, cause a silent drop of nvme connect
+cmd.
+Recheck queue state whether in LIVE state in state lock to prevent this
+issue.
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
-
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 24086793b0d8d..db40237e60ce7 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 9561ba3d43138..3b4b2d134cf81 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -996,6 +996,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
+ 	nvmet_req_complete(&cmd->req, status);
+ }
  
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
++static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
++		struct nvmet_rdma_rsp *rsp)
++{
++	unsigned long flags;
++	bool ret = true;
++
++	spin_lock_irqsave(&queue->state_lock, flags);
++	/*
++	 * recheck queue state is not live to prevent a race condition
++	 * with RDMA_CM_EVENT_ESTABLISHED handler.
++	 */
++	if (queue->state == NVMET_RDMA_Q_LIVE)
++		ret = false;
++	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
++		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
++	else
++		nvmet_rdma_put_rsp(rsp);
++	spin_unlock_irqrestore(&queue->state_lock, flags);
++	return ret;
 +}
++
+ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ {
+ 	struct nvmet_rdma_cmd *cmd =
+@@ -1037,17 +1058,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	rsp->req.port = queue->port;
+ 	rsp->n_rdma = 0;
  
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
+-	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&queue->state_lock, flags);
+-		if (queue->state == NVMET_RDMA_Q_CONNECTING)
+-			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
+-		else
+-			nvmet_rdma_put_rsp(rsp);
+-		spin_unlock_irqrestore(&queue->state_lock, flags);
++	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
++	    nvmet_rdma_recv_not_live(queue, rsp))
+ 		return;
+-	}
  
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
- 
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ 	nvmet_rdma_handle_command(queue, rsp);
+ }
 -- 
 2.39.5
 
