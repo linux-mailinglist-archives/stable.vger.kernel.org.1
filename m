@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995FAA8028D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D96A800E6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC413AA8C9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 650737A858A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973FA2288CB;
-	Tue,  8 Apr 2025 11:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98DB26A0A6;
+	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04tx01zl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2uz1Uil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A6265602;
-	Tue,  8 Apr 2025 11:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74EA263899;
+	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112543; cv=none; b=Na8oH4Aa5mEUoE5aXucrBP/UgDuiF5amFzeaVoUvSRtTiXTsj7YATMcy8FFOpuolYcUSf5IjeY+YnlBddH1yL1n5Sp3Gmcn8HLS0CvWKDvdzrKDHUvqr5XESx76bU7r0D2vVL7ascVD1+dOC+0f0rE4iBI3ozaiCAzDg/j9f6LQ=
+	t=1744111897; cv=none; b=IkPsFBi2mDCtjFPxgtJba0l+twddNH1QolBnzNwgTzMbHIPz/d6HMYNIL5aCfUStKIsD3c2dj5xLXcN8ovPKpvmkucMeDwDtqbP8CkLsgBfPfd4RgxNqXvnpaPLCQxA5WKwtP9FPbwlXWfKrMtx6TeXrziEWvnCKImdcybRpvxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112543; c=relaxed/simple;
-	bh=XbS8tdEbhm08vNwYVjNGzTEpXeF56wr27FRZCW3XbcM=;
+	s=arc-20240116; t=1744111897; c=relaxed/simple;
+	bh=jbV1YXwBkrkqaHgWdltcepCTc90qE+lUZJhnwgTDFbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSgS+xblyVLB1g5nSTHABlUG5WV34gf658ycH9WiVt4w7AxjEx8xBmFuU6TcIBZ4L70qQB3o63gz0kdZqvgP3iVbcRlK/5lMg4G+KcyGGhsvLIbQTDBkhmzBp5Ibry12+/Ole4c4czW+llXlluod7UFRf7c7C1e/O2uV+EZ7Fag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04tx01zl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D666DC4CEE5;
-	Tue,  8 Apr 2025 11:42:22 +0000 (UTC)
+	 MIME-Version; b=UP0/LrPdcwZ3bLr4k4hxKNiagK9ziGuaBJBFfq8YR9jDYTLtIwU92tvjMtloGmMKqVb/H/BspS3ebHV48Yj+qqu91WJgc4p5z323yMLk/CclHdAYOZnS/nq0xhUfXdKG5sDGy8wKQqhdXzdWJLyMHNs189T4wZ2QudRX/TosKLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2uz1Uil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36720C4CEE5;
+	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112543;
-	bh=XbS8tdEbhm08vNwYVjNGzTEpXeF56wr27FRZCW3XbcM=;
+	s=korg; t=1744111897;
+	bh=jbV1YXwBkrkqaHgWdltcepCTc90qE+lUZJhnwgTDFbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04tx01zlD+FEbpHYnDTAUa3+64Nt1Si2IhQzNv8ya2l4GnSdR93I0bvh+b2CdYnDY
-	 10uTmzWuD1rhkswMpRwot6KaugOFfstyRicm5SbzvP+DlEuiO05vWBGQ+wa54qbC2x
-	 3wEV4+4KxXAj/VFUZq+fqvFAqhXUGhF1k1gmJJjo=
+	b=o2uz1UilLtW8rhdCtLHTk1zL2qljRF56hmhNahpR0qz8LtypNP+yzXfXCie8ae8Y1
+	 +TlIh8ddS2a666BCJ+PMwphYPfs5pvAp3S7gc1mmuk47qzg2bOXRjv/WJFq7VnBFJq
+	 U4SkLHQdKyrFw2nIy4k6A+RP5kokRKFjMdvb6X5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Klaassen <justin@tidylabs.net>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 5.15 107/279] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 593/731] riscv: Fix set up of vector cpu hotplug callback
 Date: Tue,  8 Apr 2025 12:48:10 +0200
-Message-ID: <20250408104829.232928339@linuxfoundation.org>
+Message-ID: <20250408104928.068852890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Klaassen <justin@tidylabs.net>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-commit 38f4aa34a5f737ea8588dac320d884cc2e762c03 upstream.
+[ Upstream commit 2744ec472de31141ad354907ff98843dd6040917 ]
 
-The u2phy1_host should always have the same status as usb_host1_ehci
-and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
-initialized for a disabled usb port.
+Whether or not we have RISCV_PROBE_VECTOR_UNALIGNED_ACCESS we need to
+set up a cpu hotplug callback to check if we have vector at all,
+since, when we don't have vector, we need to set
+vector_misaligned_access to unsupported rather than leave it the
+default of unknown.
 
-Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
-the vdd_5v regulator.
-
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Klaassen <justin@tidylabs.net>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250225170420.3898-1-justin@tidylabs.net
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-16-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/unaligned_access_speed.c | 31 +++++++++++-----------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-@@ -117,7 +117,7 @@
- };
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 84694a44f3da4..a42115fbdeb89 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -359,6 +359,20 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ 	__free_pages(page, MISALIGNED_BUFFER_ORDER);
+ }
  
- &u2phy1_host {
--	status = "disabled";
-+	phy-supply = <&vdd_5v>;
- };
++/* Measure unaligned access speed on all CPUs present at boot in parallel. */
++static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
++{
++	schedule_on_each_cpu(check_vector_unaligned_access);
++
++	return 0;
++}
++#else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
++static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
++{
++	return 0;
++}
++#endif
++
+ static int riscv_online_cpu_vec(unsigned int cpu)
+ {
+ 	if (!has_vector()) {
+@@ -366,27 +380,16 @@ static int riscv_online_cpu_vec(unsigned int cpu)
+ 		return 0;
+ 	}
  
- &uart0 {
++#ifdef CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS
+ 	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
+ 		return 0;
+ 
+ 	check_vector_unaligned_access_emulated(NULL);
+ 	check_vector_unaligned_access(NULL);
+-	return 0;
+-}
+-
+-/* Measure unaligned access speed on all CPUs present at boot in parallel. */
+-static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+-{
+-	schedule_on_each_cpu(check_vector_unaligned_access);
++#endif
+ 
+ 	return 0;
+ }
+-#else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
+-static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ static int __init check_unaligned_access_all_cpus(void)
+ {
+@@ -412,10 +415,8 @@ static int __init check_unaligned_access_all_cpus(void)
+ 	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
+ 				  riscv_online_cpu, riscv_offline_cpu);
+ #endif
+-#ifdef CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS
+ 	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
+ 				  riscv_online_cpu_vec, NULL);
+-#endif
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
