@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67309A807CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8B9A808B5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67A68A7578
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A2B8C3A9C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15AF26AAB5;
-	Tue,  8 Apr 2025 12:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D4A26B08E;
+	Tue,  8 Apr 2025 12:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnIdPorL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOv1MSxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F00B26A0AF;
-	Tue,  8 Apr 2025 12:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3133326AAB7;
+	Tue,  8 Apr 2025 12:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115402; cv=none; b=cQbFcrN4dCtI7S3P7Y0dAI1ycpfvlb+QbEZiRtKa5Xap7AbcqEn789AHH5pEM6xeeQao2++yFarG2iAM+BOVS5Jkih+eCP8F6yRGShy1o1MAysgPuniQ4rJj+cBum1r7Gmx0Q0tr9h0LJcBIvwgtOenSBRZyrJk7JjRy47lbzfI=
+	t=1744115795; cv=none; b=dBSlFyk3SrLDQEgQvC0eoHkA6bFo+gHeGk8SxYzI5IvaXJ22VxhLez04opRM51ZzqYpTQSy0/74gLLPPAJBuFH3YBkGstzLQ70+sLNezjGk/To7d65uiH60n7nRW0J7FXw6mzWMOkphqQ01IYB01Aj4vQUQdZS3fa5x0qDeME24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115402; c=relaxed/simple;
-	bh=/LjU+KVNLWWuquN89CIRahC1yIJymVGnQoW9OpgjN2o=;
+	s=arc-20240116; t=1744115795; c=relaxed/simple;
+	bh=SFQf2ez3VWGxc8L+SMxT0tQD/2lGHZORDsBTPZpJas0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQf1gYz/+JCP9OAgQxTYikZRLWEjyOca8IL1Ek6zdfFeFBbRDtUvMEufVAddjaNeur69Yiz4Uctac/h4es4N6IW40Tn1Dzaa+jQbrVp07hY2+DVn093C+TwrjizAKreE4OQwWHVim+mUsGOz04tZK7V4sXih0B37msjs+1hSacI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnIdPorL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED42FC4CEE5;
-	Tue,  8 Apr 2025 12:30:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=czVQ10aWjsqKJeZU01lfLKukN5mA76+RUHYW1laVHtuGvOXIIxvieHHG84WxbOdkf7ChofJUxlKkUTo2vf5TeAE7/PyOoyZoz1TA7r3FJ8ABqiiafBEP6R8onL9xkF+GE9ayVxQj6URqSwkaE9fHv2VQSlCqRX5Xd+TQb++GZto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOv1MSxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8943C4CEE5;
+	Tue,  8 Apr 2025 12:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115402;
-	bh=/LjU+KVNLWWuquN89CIRahC1yIJymVGnQoW9OpgjN2o=;
+	s=korg; t=1744115795;
+	bh=SFQf2ez3VWGxc8L+SMxT0tQD/2lGHZORDsBTPZpJas0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnIdPorLizChiLdJ5lQz1Kdg8G3yXnlpDY/mNJLn+MTZ7rWp5Fm3cfAsqG8udWS9v
-	 0erzhW6I/cCmIUbWDDqe4YRfJFQ27oI2lyiUi/QDA0hOKd8SzRqg8oDdEnkhiubTos
-	 Axc/8gCFUGHXfVu/Wh0JHluvLuQZlDXm70esiaOI=
+	b=LOv1MSxE8wD7pXrheJVxIDv1zXm/+tdc47q3xcy2mTNWibHquHJpqodXiMO7X16h0
+	 ydr4iom+NL1X8eljWqCRw9HyzdI3jg4eiNoIYG3IPgZG/YfhT2S/a33lV7d2fYgBSm
+	 5R5SpHWOfuKhK2ZkLwnXO8aR0I/01y/Pl5IqIbog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dave Penkler <dpenkler@gmail.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 424/499] staging: gpib: Add missing mutex unlock in agilent usb driver
+Subject: [PATCH 6.1 106/204] perf python: Dont keep a raw_data pointer to consumed ring buffer space
 Date: Tue,  8 Apr 2025 12:50:36 +0200
-Message-ID: <20250408104901.801273362@linuxfoundation.org>
+Message-ID: <20250408104823.443569106@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 55eb3c3a6388420afda1374b353717de32ae9573 ]
+[ Upstream commit f3fed3ae34d606819d87a63d970cc3092a5be7ab ]
 
-When no matching product id was found in the attach function the driver
-returned without unlocking the agilent_82357a_hotplug_lock mutex.
+When processing tracepoints the perf python binding was parsing the
+event before calling perf_mmap__consume(&md->core) in
+pyrf_evlist__read_on_cpu().
 
-Add the unlock call.
+But part of this event parsing was to set the perf_sample->raw_data
+pointer to the payload of the event, which then could be overwritten by
+other event before tracepoint fields were asked for via event.prev_comm
+in a python program, for instance.
 
-This was detected by smatch:
-smatch warnings:
-drivers/staging/gpib/agilent_82357a/agilent_82357a.c:1381 agilent_82357a_attach() warn: inconsistent returns 'global &agilent_82357a_hotplug_lock'.
+This also happened with other fields, but strings were were problems
+were surfacing, as there is UTF-8 validation for the potentially garbled
+data.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202412210143.WJhYzXfD-lkp@intel.com/
-Fixes: 4c41fe886a56 ("staging: gpib: Add Agilent/Keysight 82357x USB GPIB driver")
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250111161457.27556-1-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8491e73a5223 ("staging: gpib: Fix Oops after disconnect in agilent usb")
+This ended up showing up as (with some added debugging messages):
+
+  ( field 'prev_comm' ret=0x7f7c31f65110, raw_size=68 )  ( field 'prev_pid' ret=0x7f7c23b1bed0, raw_size=68 )  ( field 'prev_prio' ret=0x7f7c239c0030, raw_size=68 )  ( field 'prev_state' ret=0x7f7c239c0250, raw_size=68 ) time 14771421785867 prev_comm= prev_pid=1919907691 prev_prio=796026219 prev_state=0x303a32313175 ==>
+  ( XXX '��' len=16, raw_size=68)  ( field 'next_comm' ret=(nil), raw_size=68 ) Traceback (most recent call last):
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 51, in <module>
+     main()
+   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 46, in main
+     event.next_comm,
+     ^^^^^^^^^^^^^^^
+  AttributeError: 'perf.sample_event' object has no attribute 'next_comm'
+
+When event.next_comm was asked for, the PyUnicode_FromString() python
+API would fail and that tracepoint field wouldn't be available, stopping
+the tools/perf/python/tracepoint.py test tool.
+
+But, since we already do a copy of the whole event in pyrf_event__new,
+just use it and while at it remove what was done in in e8968e654191390a
+("perf python: Fix pyrf_evlist__read_on_cpu event consuming") because we
+don't really need to wait for parsing the sample before declaring the
+event as consumed.
+
+This copy is questionable as is now, as it limits the maximum event +
+sample_type and tracepoint payload to sizeof(union perf_event), this all
+has been "working" because 'struct perf_event_mmap2', the largest entry
+in 'union perf_event' is:
+
+  $ pahole -C perf_event ~/bin/perf | grep mmap2
+	struct perf_record_mmap2   mmap2;              /*     0  4168 */
+  $
+
+Fixes: bae57e3825a3dded ("perf python: Add support to resolve tracepoint fields")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-6-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/agilent_82357a/agilent_82357a.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/python.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-index 261fb6d2e9916..942ab663e4001 100644
---- a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-+++ b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
-@@ -1365,6 +1365,7 @@ static int agilent_82357a_attach(gpib_board_t *board, const gpib_board_config_t
- 		break;
- 	default:
- 		dev_err(&usb_dev->dev, "bug, unhandled product_id in switch?\n");
-+		mutex_unlock(&agilent_82357a_hotplug_lock);
- 		return -EIO;
- 	}
- #ifdef RESET_USB_CONFIG
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 894a9966599fd..efc8f88db5cff 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1116,11 +1116,9 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 
+ 		pevent->evsel = evsel;
+ 
+-		err = evsel__parse_sample(evsel, event, &pevent->sample);
+-
+-		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
+ 
++		err = evsel__parse_sample(evsel, &pevent->event, &pevent->sample);
+ 		if (err) {
+ 			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
 -- 
 2.39.5
 
