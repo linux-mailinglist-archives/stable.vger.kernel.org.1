@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D0AA8024F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A6AA7FD85
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9650A88035E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271F8189759B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49037263C78;
-	Tue,  8 Apr 2025 11:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A60C2698BE;
+	Tue,  8 Apr 2025 10:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX5pk1/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SU/qcB/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0381119AD5C;
-	Tue,  8 Apr 2025 11:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AA2269839;
+	Tue,  8 Apr 2025 10:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112402; cv=none; b=sjoYdCm2JVrnqUmZHO1dPO/46PcDt1EY9hlU7v7yXTEwYeSpGuN5Z2GYe6xqwbbV6RQ1OOjc8y9l3XgYWZcjfpJwAlCqi0XBE4VearveLPv1zNSvVpN2pM8+qiHLzMa2fpVK5z7tWIqmofeNmHief3N0VNH0g48v5o6kD3hUF5s=
+	t=1744109808; cv=none; b=hx3ocwaBs3xrEYvILmPHT7Gw7D54oyaX6Ap5lJXgrMNN4A7Vd3a+gpFD6sevDsVkSSSpzd3S2Sh7WZZsbRR3NoJK7UaN25ZZgrSIM41Sm8pkPAPP5OL+UDo4MbnRjXJ9cvkeIfl7YU9FYibN42gfW/efWnvM62z+7SJ3DcyDIuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112402; c=relaxed/simple;
-	bh=uG3F2C6eSbS7yqe8jFUeMqtpr6yxy8QQsOwqDbcNuLo=;
+	s=arc-20240116; t=1744109808; c=relaxed/simple;
+	bh=NZIhC/6fMcwXemsRn0/sLNImuCfzZxicQJFgjsi89mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8rMFndzWxREWK3Xe2+9CIAO67jFTFVQWjorLwNWA902pIcbvgPWVINy5Y0/kSjS9V1qNIkFHkI1jI8M/UymnLFFw2meg8KjsvMcb5v5khttL9fN48KcP2AP5D0vCGLi/w0z/TSLAEXEnO1UpeH287bxhg68LwGxVgVkuE01XbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX5pk1/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86491C4CEE5;
-	Tue,  8 Apr 2025 11:40:01 +0000 (UTC)
+	 MIME-Version; b=naB0IvFRWZurQvRkeFQidsHKh56F93MZZVEMBq4DLNfF5mCks+oqZUA8JDs7SLYmRxjcjJvq2jTo2UgVjLB0dCP42Ak6tXCS4JdehWlJRUzIu8sldhpYBn6ArH1t5y5RDSaNj1SkJUkQT+FUWeUeKRqclQ48vmW6ZVyOVUjuZvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SU/qcB/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B1AC4CEE5;
+	Tue,  8 Apr 2025 10:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112401;
-	bh=uG3F2C6eSbS7yqe8jFUeMqtpr6yxy8QQsOwqDbcNuLo=;
+	s=korg; t=1744109807;
+	bh=NZIhC/6fMcwXemsRn0/sLNImuCfzZxicQJFgjsi89mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX5pk1/FiW6Zd0JfnKjRSA8w2+u0kPaMpn8PV8PbNDAIbrIj2ZAgrxjaKsXL0lS7j
-	 rm3KLjm4n81BYvTTuhvVi5WXmSiecmTNFxFMcrl091+bAWNCLckbL0H2BagebFB9mY
-	 PGkbEMbKnrXm3rhnAtDoP8569l1OtYTciVHoc/wU=
+	b=SU/qcB/2SyCNyYXtD7T2pEEf2xR1KyazCCaYw433hqCOra3n2iIxVfZy4o1HGOsTW
+	 d/ue9hIt7qUpPk7V8yYHGayQv88ia9mIWHJEr9bEWeCwIenoftr5ShFleRrC/+hhGZ
+	 nkg8EvxRgl4WGoD1XHTVRJ1Nc8h2KvcZp0+Qq/o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 055/279] USB: serial: option: fix Telit Cinterion FE990A name
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 060/227] i2c: sis630: Fix an error handling path in sis630_probe()
 Date: Tue,  8 Apr 2025 12:47:18 +0200
-Message-ID: <20250408104827.844191508@linuxfoundation.org>
+Message-ID: <20250408104822.205801046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 6232f0d8e100a26275bbd773fc56a60af2c95322 upstream.
+[ Upstream commit 2b22459792fcb4def9f0936d64575ac11a95a58d ]
 
-The correct name for FE990 is FE990A so use it in order to avoid
-confusion with FE990B.
+If i2c_add_adapter() fails, the request_region() call in sis630_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/3d607601f2c38e896b10207963c6ab499ca5c307.1741033587.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-sis630.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1368,13 +1368,13 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
+diff --git a/drivers/i2c/busses/i2c-sis630.c b/drivers/i2c/busses/i2c-sis630.c
+index cfb8e04a2a831..6befa6ff83f26 100644
+--- a/drivers/i2c/busses/i2c-sis630.c
++++ b/drivers/i2c/busses/i2c-sis630.c
+@@ -509,6 +509,8 @@ MODULE_DEVICE_TABLE(pci, sis630_ids);
+ 
+ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (sis630_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"SIS630 compatible bus not detected, "
+@@ -522,7 +524,15 @@ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	snprintf(sis630_adapter.name, sizeof(sis630_adapter.name),
+ 		 "SMBus SIS630 adapter at %04x", smbus_base + SMB_STS);
+ 
+-	return i2c_add_adapter(&sis630_adapter);
++	ret = i2c_add_adapter(&sis630_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(smbus_base + SMB_STS, SIS630_SMB_IOREGION);
++	return ret;
+ }
+ 
+ static void sis630_remove(struct pci_dev *dev)
+-- 
+2.39.5
+
 
 
 
