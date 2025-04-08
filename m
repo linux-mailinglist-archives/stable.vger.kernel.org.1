@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-130333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA35A8040A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171E4A804DC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C310427468
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21A51B656D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B5E269820;
-	Tue,  8 Apr 2025 11:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26293269B02;
+	Tue,  8 Apr 2025 12:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/yF9jDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqWkVwom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED2820CCD8;
-	Tue,  8 Apr 2025 11:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D727C264627;
+	Tue,  8 Apr 2025 12:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113442; cv=none; b=ZIYBFO5DNkpxvc7vsFgD+I3w2BD7fDJRqamiYkW3TQpUVhTfSsPL+HQUcE8s9BmrQ9NjNxt+Ue8BAHWe770fvg5YO1mMFFDXUuNEhkFj08le61A+rL6k3fG1t45hfUeKq6/HYI1m4ISJV2hLXLOjmuf3ZrArcR61bud1kiiDdvU=
+	t=1744113921; cv=none; b=NUWhl53LscPVMdrsCatlrlVy23CQv5K+73Bo5wiuX+4DfInvl4vqdkM3fdImq23G1zUy5ApA3TZQOtPQevPNQmrvpdiHLwN4pTf73y6bjKzCx+4QOIcmi7YLVDqlWdApkCZeq+vcKN7TLw26XQTZ9YKbI4a8e4BDPGekGBb6ryg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113442; c=relaxed/simple;
-	bh=6k8BLI5CgFS3o4UBCTMgboXADAiar8WyggyzenaYyQM=;
+	s=arc-20240116; t=1744113921; c=relaxed/simple;
+	bh=oJ+KJWYBeGxYqPvSceX7mpHi8VZUm6taJYKhc5f6vt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsD33muZpBLj0qzQufz2x5iBw1n1Rrjtc1iGjj+0je8Msl4+EEQjuZqGwwfiIimFhuGBu4aWxgvnGGAW/Z8zsQbK60Xvml/CKMYysn45dPdv+qI3s6KfVNbu6RTZ7xQ9SLIItn8O8fTEAGAgHQsKqg2DzSKj7XrcPXfYDbd5+TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/yF9jDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBC8C4CEE5;
-	Tue,  8 Apr 2025 11:57:20 +0000 (UTC)
+	 MIME-Version; b=pPL52ihrrqCaUygunof4NEb2aWtiWpYp6WKab3B5K7BuKEz2gtoR6b8AdfZUWxZpEuSQk7whz6ObI09JhiGhINUfKbdaCsyRK4Uur1nvcMCilOiGK9IxOo4YcQpoTgjoQpquLvFDu3Ksj3mzb0xC6TJJFMZ1m8+L+qae0Kwq+ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqWkVwom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C5AC4CEE5;
+	Tue,  8 Apr 2025 12:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113441;
-	bh=6k8BLI5CgFS3o4UBCTMgboXADAiar8WyggyzenaYyQM=;
+	s=korg; t=1744113921;
+	bh=oJ+KJWYBeGxYqPvSceX7mpHi8VZUm6taJYKhc5f6vt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/yF9jDBz1jqocskAaR4lEkHuHB95QsklITtdJ0JbPcMLWFtOjwOfIW0+MrNKRRR5
-	 qteYd1wH60NEkeJZWuaAEaUJgqDr2vQ8mLgZOGjl4chfCWB1QFKPQ1ZPAoG6Ds2WEl
-	 YlCOVKakbN9e1HQn1bbJoWpTR8V4rAjbWMaQ+/0o=
+	b=kqWkVwomc7qUSYeguNGHmeediO7+hSFa+QzlS+14QBKwZoRHHOXrAdD8BDu41C0aJ
+	 rp1IFsgG0l+PTgbBtrGFi1QIKF/kK6LCaXEKcsPeoxjTDRxJeEyrxJp5a2X1UfnG8W
+	 +iA0k4pi4rxfs3++QBfEA9Wp2AXgiEnQ8Skb0EQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ruozhu Li <david.li@jaguarmicro.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/268] rcu-tasks: Always inline rcu_irq_work_resched()
+Subject: [PATCH 5.4 031/154] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
 Date: Tue,  8 Apr 2025 12:49:32 +0200
-Message-ID: <20250408104832.890615390@linuxfoundation.org>
+Message-ID: <20250408104816.253606959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Ruozhu Li <david.li@jaguarmicro.com>
 
-[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
+[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
 
-Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
-generated out of line.  rcu_irq_work_resched() can be called from
-noinstr code, so make sure it's always inlined.
+The queue state checking in nvmet_rdma_recv_done is not in queue state
+lock.Queue state can transfer to LIVE in cm establish handler between
+state checking and state lock here, cause a silent drop of nvme connect
+cmd.
+Recheck queue state whether in LIVE state in state lock to prevent this
+issue.
 
-Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 7602d1f8a9ecb..72da69cc5764f 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -142,7 +142,7 @@ static inline void rcu_sysrq_end(void) { }
- #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
- void rcu_irq_work_resched(void);
- #else
--static inline void rcu_irq_work_resched(void) { }
-+static __always_inline void rcu_irq_work_resched(void) { }
- #endif
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index ae41b6001c7e2..b6d84b6493e14 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -777,6 +777,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
+ 	nvmet_req_complete(&cmd->req, status);
+ }
  
- #ifdef CONFIG_RCU_NOCB_CPU
++static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
++		struct nvmet_rdma_rsp *rsp)
++{
++	unsigned long flags;
++	bool ret = true;
++
++	spin_lock_irqsave(&queue->state_lock, flags);
++	/*
++	 * recheck queue state is not live to prevent a race condition
++	 * with RDMA_CM_EVENT_ESTABLISHED handler.
++	 */
++	if (queue->state == NVMET_RDMA_Q_LIVE)
++		ret = false;
++	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
++		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
++	else
++		nvmet_rdma_put_rsp(rsp);
++	spin_unlock_irqrestore(&queue->state_lock, flags);
++	return ret;
++}
++
+ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ {
+ 	struct nvmet_rdma_cmd *cmd =
+@@ -818,17 +839,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	rsp->req.port = queue->port;
+ 	rsp->n_rdma = 0;
+ 
+-	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&queue->state_lock, flags);
+-		if (queue->state == NVMET_RDMA_Q_CONNECTING)
+-			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
+-		else
+-			nvmet_rdma_put_rsp(rsp);
+-		spin_unlock_irqrestore(&queue->state_lock, flags);
++	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
++	    nvmet_rdma_recv_not_live(queue, rsp))
+ 		return;
+-	}
+ 
+ 	nvmet_rdma_handle_command(queue, rsp);
+ }
 -- 
 2.39.5
 
