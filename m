@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-131671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D19A80AC5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640E9A80546
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F9797AA017
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8411676F0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EA427C842;
-	Tue,  8 Apr 2025 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3198B26982F;
+	Tue,  8 Apr 2025 12:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkaIIGtt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loqssiTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B828227C17B;
-	Tue,  8 Apr 2025 12:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47AF227BA4;
+	Tue,  8 Apr 2025 12:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117023; cv=none; b=XtXjUlblWU+JmFGQLdD2QVc1id7+CUPbUdUa7WttRA+1i+s3COhifrevM8VQB3B9SmHqENbTrAkThS2hmnJT0mi7HkfPbxrrMrbGt0zXkeO4BlYfd2dZZxjrI5lck5pA9+w+VCACG34MDB4xzNNPEBGQnLcoD1QkbPjelWgl72s=
+	t=1744114119; cv=none; b=VIXkDtX9PLReribQMxBGFCeKKCqB/3yWIJi+X762p5wkQXyIo4bsihbiMAwzxab2RvRfjMNpaNxTlCO38JV7uQJqf1LyzWXh/wkLQl06Ni6exJWPS3eH3eLl/3iD+FZ15kabU9MgMKtrqXZcDU6+ByXsXBYyMhs/zNd9FQTrfGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117023; c=relaxed/simple;
-	bh=t0BNLTy/nHFvEspOsPziD+ir4NqVmBS2N2NIzi/d6mA=;
+	s=arc-20240116; t=1744114119; c=relaxed/simple;
+	bh=1HzEKMxLyJj1MXfo8p6W778mH3arsg4V2RKX4xXIl8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoL+HybmuO2ofcJlhrEI3lvgz+Fhr+Yqorjy0hFabg5xJjUDT/cSurKKGUSgjbh0m6/q9MjYn1dirkTQ8AKaQVv7OtwSzlxOJ2mm0F8FOdPy2z5HgzIUvcomWNcHHXLYXPz9ft+nNv3JBZtw2an9Z3kAagcB8ipROfJ47HFxBQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkaIIGtt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46628C4CEE5;
-	Tue,  8 Apr 2025 12:57:03 +0000 (UTC)
+	 MIME-Version; b=WxUth3bdJvXMqvWlHiZ+MrT+bH5POntrdOVhGCqOFdRYFmeC+8ax41wu7alFNZNTp8I4Hj6rGxoYVwVsE7sosoYKG0uKOiUFtLorQ0BfWA6PV/mU655XljMDKwE44zNYw126sua6olGJTW4HoOBdIJsBXC1O4uyfYg8Ya/y7ixs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loqssiTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7301DC4CEE5;
+	Tue,  8 Apr 2025 12:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117023;
-	bh=t0BNLTy/nHFvEspOsPziD+ir4NqVmBS2N2NIzi/d6mA=;
+	s=korg; t=1744114118;
+	bh=1HzEKMxLyJj1MXfo8p6W778mH3arsg4V2RKX4xXIl8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkaIIGttnZU8js5yp5+4y0lOHzoMMUXLgng/VB1qCZJsaPw1MyIJuGWyLng39VWGA
-	 +w90vu4jVzaKSEPpxVnSoyUiacgXyUBE9b2gxvLOOoQnJcnibA/Eq+oA3Uq3m/UoAm
-	 xEXU2vAQpr+mbVAdfDG7n2FwmWis9QyX4G/C9Xdw=
+	b=loqssiTp8QTqbNkl5E0sdJEBPtbZvqZ1IHhtBdeSpkVtOyKbtlqkcEWi5oFfSy/6a
+	 96aNuA2is9/v/K4Gl8dSKRNk4M78QGr4wfbCyWPMBHv120IiUwiSCvHZ7HA7dAkswk
+	 eYz0/LLAlRgqbtLuIFu+ugfSDYQIcAbME8i21WD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Sun <sherry.sun@nxp.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/423] tty: serial: fsl_lpuart: Use u32 and u8 for register variables
+Subject: [PATCH 5.4 142/154] vsock: avoid timeout during connect() if the socket is closing
 Date: Tue,  8 Apr 2025 12:51:23 +0200
-Message-ID: <20250408104854.167615489@linuxfoundation.org>
+Message-ID: <20250408104819.863587602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,409 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit b6a8f6ab2c53e5ea3c7f2a3978db378a89bb7595 ]
+[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
 
-Use u32 and u8 rather than unsigned long or unsigned char for register
-variables for clarity and consistency.
+When a peer attempts to establish a connection, vsock_connect() contains
+a loop that waits for the state to be TCP_ESTABLISHED. However, the
+other peer can be fast enough to accept the connection and close it
+immediately, thus moving the state to TCP_CLOSING.
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20250312023904.1343351-2-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e98ab45ec518 ("tty: serial: lpuart: only disable CTS instead of overwriting the whole UARTMODIR register")
+When this happens, the peer in the vsock_connect() is properly woken up,
+but since the state is not TCP_ESTABLISHED, it goes back to sleep
+until the timeout expires, returning -ETIMEDOUT.
+
+If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
+vsock_connect() can return immediately without errors or delay since the
+connection actually happened. The socket will be in a closing state,
+but this is not an issue, and subsequent calls will fail as expected.
+
+We discovered this issue while developing a test that accepts and
+immediately closes connections to stress the transport switch between
+two connect() calls, where the first one was interrupted by a signal
+(see Closes link).
+
+Reported-by: Luigi Leonardi <leonardi@redhat.com>
+Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 93 ++++++++++++++++-----------------
- 1 file changed, 46 insertions(+), 47 deletions(-)
+ net/vmw_vsock/af_vsock.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 9f9fc733eb2c1..e86fb9c60f1c3 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -440,7 +440,7 @@ static unsigned int lpuart_get_baud_clk_rate(struct lpuart_port *sport)
- 
- static void lpuart_stop_tx(struct uart_port *port)
- {
--	unsigned char temp;
-+	u8 temp;
- 
- 	temp = readb(port->membase + UARTCR2);
- 	temp &= ~(UARTCR2_TIE | UARTCR2_TCIE);
-@@ -449,7 +449,7 @@ static void lpuart_stop_tx(struct uart_port *port)
- 
- static void lpuart32_stop_tx(struct uart_port *port)
- {
--	unsigned long temp;
-+	u32 temp;
- 
- 	temp = lpuart32_read(port, UARTCTRL);
- 	temp &= ~(UARTCTRL_TIE | UARTCTRL_TCIE);
-@@ -458,7 +458,7 @@ static void lpuart32_stop_tx(struct uart_port *port)
- 
- static void lpuart_stop_rx(struct uart_port *port)
- {
--	unsigned char temp;
-+	u8 temp;
- 
- 	temp = readb(port->membase + UARTCR2);
- 	writeb(temp & ~UARTCR2_RE, port->membase + UARTCR2);
-@@ -466,7 +466,7 @@ static void lpuart_stop_rx(struct uart_port *port)
- 
- static void lpuart32_stop_rx(struct uart_port *port)
- {
--	unsigned long temp;
-+	u32 temp;
- 
- 	temp = lpuart32_read(port, UARTCTRL);
- 	lpuart32_write(port, temp & ~UARTCTRL_RE, UARTCTRL);
-@@ -641,7 +641,7 @@ static int lpuart_poll_init(struct uart_port *port)
- 	struct lpuart_port *sport = container_of(port,
- 					struct lpuart_port, port);
- 	unsigned long flags;
--	unsigned char temp;
-+	u8 temp;
- 
- 	sport->port.fifosize = 0;
- 
-@@ -751,7 +751,7 @@ static inline void lpuart_transmit_buffer(struct lpuart_port *sport)
- static inline void lpuart32_transmit_buffer(struct lpuart_port *sport)
- {
- 	struct tty_port *tport = &sport->port.state->port;
--	unsigned long txcnt;
-+	u32 txcnt;
- 	unsigned char c;
- 
- 	if (sport->port.x_char) {
-@@ -788,7 +788,7 @@ static void lpuart_start_tx(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port,
- 			struct lpuart_port, port);
--	unsigned char temp;
-+	u8 temp;
- 
- 	temp = readb(port->membase + UARTCR2);
- 	writeb(temp | UARTCR2_TIE, port->membase + UARTCR2);
-@@ -805,7 +805,7 @@ static void lpuart_start_tx(struct uart_port *port)
- static void lpuart32_start_tx(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
--	unsigned long temp;
-+	u32 temp;
- 
- 	if (sport->lpuart_dma_tx_use) {
- 		if (!lpuart_stopped_or_empty(port))
-@@ -838,8 +838,8 @@ static unsigned int lpuart_tx_empty(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port,
- 			struct lpuart_port, port);
--	unsigned char sr1 = readb(port->membase + UARTSR1);
--	unsigned char sfifo = readb(port->membase + UARTSFIFO);
-+	u8 sr1 = readb(port->membase + UARTSR1);
-+	u8 sfifo = readb(port->membase + UARTSFIFO);
- 
- 	if (sport->dma_tx_in_progress)
- 		return 0;
-@@ -854,9 +854,9 @@ static unsigned int lpuart32_tx_empty(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port,
- 			struct lpuart_port, port);
--	unsigned long stat = lpuart32_read(port, UARTSTAT);
--	unsigned long sfifo = lpuart32_read(port, UARTFIFO);
--	unsigned long ctrl = lpuart32_read(port, UARTCTRL);
-+	u32 stat = lpuart32_read(port, UARTSTAT);
-+	u32 sfifo = lpuart32_read(port, UARTFIFO);
-+	u32 ctrl = lpuart32_read(port, UARTCTRL);
- 
- 	if (sport->dma_tx_in_progress)
- 		return 0;
-@@ -883,7 +883,7 @@ static void lpuart_rxint(struct lpuart_port *sport)
- {
- 	unsigned int flg, ignored = 0, overrun = 0;
- 	struct tty_port *port = &sport->port.state->port;
--	unsigned char rx, sr;
-+	u8 rx, sr;
- 
- 	uart_port_lock(&sport->port);
- 
-@@ -960,7 +960,7 @@ static void lpuart32_rxint(struct lpuart_port *sport)
- {
- 	unsigned int flg, ignored = 0;
- 	struct tty_port *port = &sport->port.state->port;
--	unsigned long rx, sr;
-+	u32 rx, sr;
- 	bool is_break;
- 
- 	uart_port_lock(&sport->port);
-@@ -1038,7 +1038,7 @@ static void lpuart32_rxint(struct lpuart_port *sport)
- static irqreturn_t lpuart_int(int irq, void *dev_id)
- {
- 	struct lpuart_port *sport = dev_id;
--	unsigned char sts;
-+	u8 sts;
- 
- 	sts = readb(sport->port.membase + UARTSR1);
- 
-@@ -1112,7 +1112,7 @@ static void lpuart_copy_rx_to_tty(struct lpuart_port *sport)
- 	int count, copied;
- 
- 	if (lpuart_is_32(sport)) {
--		unsigned long sr = lpuart32_read(&sport->port, UARTSTAT);
-+		u32 sr = lpuart32_read(&sport->port, UARTSTAT);
- 
- 		if (sr & (UARTSTAT_PE | UARTSTAT_FE)) {
- 			/* Clear the error flags */
-@@ -1124,10 +1124,10 @@ static void lpuart_copy_rx_to_tty(struct lpuart_port *sport)
- 				sport->port.icount.frame++;
- 		}
- 	} else {
--		unsigned char sr = readb(sport->port.membase + UARTSR1);
-+		u8 sr = readb(sport->port.membase + UARTSR1);
- 
- 		if (sr & (UARTSR1_PE | UARTSR1_FE)) {
--			unsigned char cr2;
-+			u8 cr2;
- 
- 			/* Disable receiver during this operation... */
- 			cr2 = readb(sport->port.membase + UARTCR2);
-@@ -1278,7 +1278,7 @@ static void lpuart32_dma_idleint(struct lpuart_port *sport)
- static irqreturn_t lpuart32_int(int irq, void *dev_id)
- {
- 	struct lpuart_port *sport = dev_id;
--	unsigned long sts, rxcount;
-+	u32 sts, rxcount;
- 
- 	sts = lpuart32_read(&sport->port, UARTSTAT);
- 	rxcount = lpuart32_read(&sport->port, UARTWATER);
-@@ -1410,12 +1410,12 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	dma_async_issue_pending(chan);
- 
- 	if (lpuart_is_32(sport)) {
--		unsigned long temp = lpuart32_read(&sport->port, UARTBAUD);
-+		u32 temp = lpuart32_read(&sport->port, UARTBAUD);
- 
- 		lpuart32_write(&sport->port, temp | UARTBAUD_RDMAE, UARTBAUD);
- 
- 		if (sport->dma_idle_int) {
--			unsigned long ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+			u32 ctrl = lpuart32_read(&sport->port, UARTCTRL);
- 
- 			lpuart32_write(&sport->port, ctrl | UARTCTRL_ILIE, UARTCTRL);
- 		}
-@@ -1481,7 +1481,7 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 	struct lpuart_port *sport = container_of(port,
- 			struct lpuart_port, port);
- 
--	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
-+	u32 modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
- 	u32 ctrl;
- 
-@@ -1576,7 +1576,7 @@ static void lpuart32_set_mctrl(struct uart_port *port, unsigned int mctrl)
- 
- static void lpuart_break_ctl(struct uart_port *port, int break_state)
- {
--	unsigned char temp;
-+	u8 temp;
- 
- 	temp = readb(port->membase + UARTCR2) & ~UARTCR2_SBK;
- 
-@@ -1588,7 +1588,7 @@ static void lpuart_break_ctl(struct uart_port *port, int break_state)
- 
- static void lpuart32_break_ctl(struct uart_port *port, int break_state)
- {
--	unsigned long temp;
-+	u32 temp;
- 
- 	temp = lpuart32_read(port, UARTCTRL);
- 
-@@ -1622,8 +1622,7 @@ static void lpuart32_break_ctl(struct uart_port *port, int break_state)
- 
- static void lpuart_setup_watermark(struct lpuart_port *sport)
- {
--	unsigned char val, cr2;
--	unsigned char cr2_saved;
-+	u8 val, cr2, cr2_saved;
- 
- 	cr2 = readb(sport->port.membase + UARTCR2);
- 	cr2_saved = cr2;
-@@ -1656,7 +1655,7 @@ static void lpuart_setup_watermark(struct lpuart_port *sport)
- 
- static void lpuart_setup_watermark_enable(struct lpuart_port *sport)
- {
--	unsigned char cr2;
-+	u8 cr2;
- 
- 	lpuart_setup_watermark(sport);
- 
-@@ -1667,8 +1666,7 @@ static void lpuart_setup_watermark_enable(struct lpuart_port *sport)
- 
- static void lpuart32_setup_watermark(struct lpuart_port *sport)
- {
--	unsigned long val, ctrl;
--	unsigned long ctrl_saved;
-+	u32 val, ctrl, ctrl_saved;
- 
- 	ctrl = lpuart32_read(&sport->port, UARTCTRL);
- 	ctrl_saved = ctrl;
-@@ -1777,7 +1775,7 @@ static void lpuart_tx_dma_startup(struct lpuart_port *sport)
- static void lpuart_rx_dma_startup(struct lpuart_port *sport)
- {
- 	int ret;
--	unsigned char cr3;
-+	u8 cr3;
- 
- 	if (uart_console(&sport->port))
- 		goto err;
-@@ -1827,7 +1825,7 @@ static void lpuart_hw_setup(struct lpuart_port *sport)
- static int lpuart_startup(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
--	unsigned char temp;
-+	u8 temp;
- 
- 	/* determine FIFO size and enable FIFO mode */
- 	temp = readb(sport->port.membase + UARTPFIFO);
-@@ -1847,7 +1845,7 @@ static int lpuart_startup(struct uart_port *port)
- 
- static void lpuart32_hw_disable(struct lpuart_port *sport)
- {
--	unsigned long temp;
-+	u32 temp;
- 
- 	temp = lpuart32_read(&sport->port, UARTCTRL);
- 	temp &= ~(UARTCTRL_RIE | UARTCTRL_ILIE | UARTCTRL_RE |
-@@ -1857,7 +1855,7 @@ static void lpuart32_hw_disable(struct lpuart_port *sport)
- 
- static void lpuart32_configure(struct lpuart_port *sport)
- {
--	unsigned long temp;
-+	u32 temp;
- 
- 	temp = lpuart32_read(&sport->port, UARTCTRL);
- 	if (!sport->lpuart_dma_rx_use)
-@@ -1887,7 +1885,7 @@ static void lpuart32_hw_setup(struct lpuart_port *sport)
- static int lpuart32_startup(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
--	unsigned long temp;
-+	u32 temp;
- 
- 	/* determine FIFO size */
- 	temp = lpuart32_read(&sport->port, UARTFIFO);
-@@ -1941,7 +1939,7 @@ static void lpuart_dma_shutdown(struct lpuart_port *sport)
- static void lpuart_shutdown(struct uart_port *port)
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
--	unsigned char temp;
-+	u8 temp;
- 	unsigned long flags;
- 
- 	uart_port_lock_irqsave(port, &flags);
-@@ -1961,7 +1959,7 @@ static void lpuart32_shutdown(struct uart_port *port)
- {
- 	struct lpuart_port *sport =
- 		container_of(port, struct lpuart_port, port);
--	unsigned long temp;
-+	u32 temp;
- 	unsigned long flags;
- 
- 	uart_port_lock_irqsave(port, &flags);
-@@ -1992,7 +1990,7 @@ lpuart_set_termios(struct uart_port *port, struct ktermios *termios,
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
- 	unsigned long flags;
--	unsigned char cr1, old_cr1, old_cr2, cr3, cr4, bdh, modem;
-+	u8 cr1, old_cr1, old_cr2, cr3, cr4, bdh, modem;
- 	unsigned int  baud;
- 	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
- 	unsigned int sbr, brfa;
-@@ -2230,7 +2228,7 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
- {
- 	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
- 	unsigned long flags;
--	unsigned long ctrl, old_ctrl, bd, modem;
-+	u32 ctrl, old_ctrl, bd, modem;
- 	unsigned int  baud;
- 	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
- 
-@@ -2487,7 +2485,7 @@ static void
- lpuart_console_write(struct console *co, const char *s, unsigned int count)
- {
- 	struct lpuart_port *sport = lpuart_ports[co->index];
--	unsigned char  old_cr2, cr2;
-+	u8  old_cr2, cr2;
- 	unsigned long flags;
- 	int locked = 1;
- 
-@@ -2517,7 +2515,7 @@ static void
- lpuart32_console_write(struct console *co, const char *s, unsigned int count)
- {
- 	struct lpuart_port *sport = lpuart_ports[co->index];
--	unsigned long  old_cr, cr;
-+	u32 old_cr, cr;
- 	unsigned long flags;
- 	int locked = 1;
- 
-@@ -2551,7 +2549,7 @@ static void __init
- lpuart_console_get_options(struct lpuart_port *sport, int *baud,
- 			   int *parity, int *bits)
- {
--	unsigned char cr, bdh, bdl, brfa;
-+	u8 cr, bdh, bdl, brfa;
- 	unsigned int sbr, uartclk, baud_raw;
- 
- 	cr = readb(sport->port.membase + UARTCR2);
-@@ -2600,7 +2598,7 @@ static void __init
- lpuart32_console_get_options(struct lpuart_port *sport, int *baud,
- 			   int *parity, int *bits)
- {
--	unsigned long cr, bd;
-+	u32 cr, bd;
- 	unsigned int sbr, uartclk, baud_raw;
- 
- 	cr = lpuart32_read(&sport->port, UARTCTRL);
-@@ -2806,7 +2804,7 @@ static int lpuart_global_reset(struct lpuart_port *sport)
- {
- 	struct uart_port *port = &sport->port;
- 	void __iomem *global_addr;
--	unsigned long ctrl, bd;
-+	u32 ctrl, bd;
- 	unsigned int val = 0;
- 	int ret;
- 
-@@ -3012,7 +3010,7 @@ static int lpuart_runtime_resume(struct device *dev)
- 
- static void serial_lpuart_enable_wakeup(struct lpuart_port *sport, bool on)
- {
--	unsigned int val, baud;
-+	u32 val, baud;
- 
- 	if (lpuart_is_32(sport)) {
- 		val = lpuart32_read(&sport->port, UARTCTRL);
-@@ -3077,7 +3075,7 @@ static int lpuart_suspend_noirq(struct device *dev)
- static int lpuart_resume_noirq(struct device *dev)
- {
- 	struct lpuart_port *sport = dev_get_drvdata(dev);
--	unsigned int val;
-+	u32 val;
- 
- 	pinctrl_pm_select_default_state(dev);
- 
-@@ -3097,7 +3095,8 @@ static int lpuart_resume_noirq(struct device *dev)
- static int lpuart_suspend(struct device *dev)
- {
- 	struct lpuart_port *sport = dev_get_drvdata(dev);
--	unsigned long temp, flags;
-+	u32 temp;
-+	unsigned long flags;
- 
- 	uart_suspend_port(&lpuart_reg, &sport->port);
- 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 5d490633a7f11..7877515a6962e 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1204,7 +1204,11 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
+ 	timeout = vsk->connect_timeout;
+ 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 
+-	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
++	/* If the socket is already closing or it is in an error state, there
++	 * is no point in waiting.
++	 */
++	while (sk->sk_state != TCP_ESTABLISHED &&
++	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
+ 		if (flags & O_NONBLOCK) {
+ 			/* If we're not going to block, we schedule a timeout
+ 			 * function to generate a timeout on the connection
 -- 
 2.39.5
 
