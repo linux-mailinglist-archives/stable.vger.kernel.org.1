@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-131051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D748FA80770
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0FCA80890
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736711B88355
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C150F1B61887
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FB726B94A;
-	Tue,  8 Apr 2025 12:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2743E26B2DE;
+	Tue,  8 Apr 2025 12:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxbUyjY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSE/o8Pw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED8426A087;
-	Tue,  8 Apr 2025 12:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D753F26461E;
+	Tue,  8 Apr 2025 12:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115357; cv=none; b=X3utzGj7QBHw8frgVU8his6tku4IW7AV/EMJRrcLB1d1VaA6STZh57VfomTpiXyMLQPxCJH58XcIwyNzWK/gS70yYvMxEGitv3GJ+R6toDeJ8HHwy9cCEl1ilmUInbisFbiwusyHP7BJsWubxz6VxiRUgS2vMm5C58hk59vVsXM=
+	t=1744115842; cv=none; b=iVuQinFEseFNHy+ubjGrB8oZ4N+Ucqe3XnTrwu27/w2i+cw2StBafGW5qyJTBAcw2P8lOlKoF8xSSespmsgLOA4OjB4zqCuauJ8IZ4rZ5Xyu/4cRusNkeDXgb8IVWJgW6IFO+jIAryPEc4xwKnZMywkh4EChJB6qSv4Uk/9bw38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115357; c=relaxed/simple;
-	bh=uxEFkujzuKQXrMWACXw7YKXuJHPWRam/QFNKKW3gaTI=;
+	s=arc-20240116; t=1744115842; c=relaxed/simple;
+	bh=jC5zqoAMwYlJiMnZCEW7JKFPNLdZtuzP0AzfhP8/Nw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaO64v2kEGAdr0oW6KjWFIaLaqpB438cV2Vw+YgtsMRFtP3X/DneoC+3XATF6jeNjlvkQJ36PfEI/d6AxSDctrG/psu/qtRsyqD5vZYFA5Xv1XBAd1/XfncfApLE1CNjKiQPmaCRpPeb/cbIDgM6x0CiArf5gn1DaCT/31F7mT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxbUyjY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8037DC4CEE5;
-	Tue,  8 Apr 2025 12:29:16 +0000 (UTC)
+	 MIME-Version; b=sp5kgof100Tn9qFwpPwCcuKHa2F7cUqMkq9DoFUJ34ZWVRPaZsR8otbn6szo9QOCr5SpJy5CbEUtg6S5AWBsF4ZfFP2cuMS9OR5v/RN1rIrZSF0nXixtIdOPnLKjtwGj7SewZaWfh14XStAU+RIBxT1645D7jQ6neJman2zphjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSE/o8Pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68916C4CEE5;
+	Tue,  8 Apr 2025 12:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115356;
-	bh=uxEFkujzuKQXrMWACXw7YKXuJHPWRam/QFNKKW3gaTI=;
+	s=korg; t=1744115842;
+	bh=jC5zqoAMwYlJiMnZCEW7JKFPNLdZtuzP0AzfhP8/Nw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxbUyjY8BAIohsncs6m/r9bqFKJUOpp8ST/yLwx4PO7krx+lByotloZxQub5Vl3HC
-	 vEQlHf+Sni4KjZS+ZETPXSR3J7YPg7AEZ27/Z5LuppdpoXyfQFqHCgWrZfuD8k2Ocv
-	 4rzSGWMG5XGp1Ck+r8G02FO+peCS4z1Um6HbKP3I=
+	b=ZSE/o8PwhgKzPqZHVjKlM20Kb84yNEu0AK6sATtriRcdXZJYJToacZrctSKElfMkA
+	 WOLb0mA5Zfs3aOrHu1ev3AZjsIyY0XvCRv6SbjV7iOzTvbnX62q7wwKw4iSKOlIWF2
+	 9qO4U9z8TA88iesrho3MJ7UViPtbX3oXMckBqcJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Annapurve <vannapurve@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ryan Afranji <afranji@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH 6.13 444/499] x86/tdx: Fix arch_safe_halt() execution for TDX VMs
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/204] wifi: iwlwifi: fw: allocate chained SG tables for dump
 Date: Tue,  8 Apr 2025 12:50:56 +0200
-Message-ID: <20250408104902.301772019@linuxfoundation.org>
+Message-ID: <20250408104824.004212044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,164 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Annapurve <vannapurve@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 9f98a4f4e7216dbe366010b4cdcab6b220f229c4 upstream.
+[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
 
-Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-to hypervisor via TDCALL. If HLT is executed in STI-shadow, resulting #VE
-handler will enable interrupts before TDCALL is routed to hypervisor
-leading to missed wakeup events, as current TDX spec doesn't expose
-interruptibility state information to allow #VE handler to selectively
-enable interrupts.
+The firmware dumps can be pretty big, and since we use single
+pages for each SG table entry, even the table itself may end
+up being an order-5 allocation. Build chained tables so that
+we need not allocate a higher-order table here.
 
-Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-prevented the idle routines from executing HLT instruction in STI-shadow.
-But it missed the paravirt routine which can be reached via this path
-as an example:
+This could be improved and cleaned up, e.g. by using the SG
+pool code or simply kvmalloc(), but all of that would require
+also updating the devcoredump first since that frees it all,
+so we need to be more careful. SG pool might also run against
+the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
+here.
 
-	kvm_wait()       =>
-        safe_halt()      =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-        irq.safe_halt()  =>
-        pv_native_safe_halt()
+Also use _devcd_free_sgtable() for the error paths now, much
+simpler especially since it's in two places now.
 
-To reliably handle arch_safe_halt() for TDX VMs, introduce explicit
-dependency on CONFIG_PARAVIRT and override paravirt halt()/safe_halt()
-routines with TDX-safe versions that execute direct TDCALL and needed
-interrupt flag updates. Executing direct TDCALL brings in additional
-benefit of avoiding HLT related #VEs altogether.
-
-As tested by Ryan Afranji:
-
-  "Tested with the specjbb2015 benchmark. It has heavy lock contention which leads
-   to many halt calls. TDX VMs suffered a poor score before this patchset.
-
-   Verified the major performance improvement with this patchset applied."
-
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Tested-by: Ryan Afranji <afranji@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250228014416.3925664-3-vannapurve@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig           |    1 +
- arch/x86/coco/tdx/tdx.c    |   26 +++++++++++++++++++++++++-
- arch/x86/include/asm/tdx.h |    4 ++--
- arch/x86/kernel/process.c  |    2 +-
- 4 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
+ 1 file changed, 58 insertions(+), 28 deletions(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -897,6 +897,7 @@ config INTEL_TDX_GUEST
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
- 	depends on EFI_STUB
-+	depends on PARAVIRT
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/ia32.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-+#include <asm/paravirt_types.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
- #include <asm/traps.h>
-@@ -386,7 +387,7 @@ static int handle_halt(struct ve_info *v
- 	return ve_instr_len(ve);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 7fadaec777cea..4c5dbd8248e7b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -559,41 +559,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
  }
  
--void __cpuidle tdx_safe_halt(void)
-+void __cpuidle tdx_halt(void)
+ /*
+- * alloc_sgtable - allocates scallerlist table in the given size,
+- * fills it with pages and returns it
++ * alloc_sgtable - allocates (chained) scatterlist in the given size,
++ *	fills it with pages and returns it
+  * @size: the size (in bytes) of the table
+-*/
+-static struct scatterlist *alloc_sgtable(int size)
++ */
++static struct scatterlist *alloc_sgtable(ssize_t size)
  {
- 	const bool irq_disabled = false;
+-	int alloc_size, nents, i;
+-	struct page *new_page;
+-	struct scatterlist *iter;
+-	struct scatterlist *table;
++	struct scatterlist *result = NULL, *prev;
++	int nents, i, n_prev;
  
-@@ -397,6 +398,16 @@ void __cpuidle tdx_safe_halt(void)
- 		WARN_ONCE(1, "HLT instruction emulation failed\n");
- }
- 
-+static void __cpuidle tdx_safe_halt(void)
-+{
-+	tdx_halt();
-+	/*
-+	 * "__cpuidle" section doesn't support instrumentation, so stick
-+	 * with raw_* variant that avoids tracing hooks.
-+	 */
-+	raw_local_irq_enable();
-+}
+ 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
+-	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
+-	if (!table)
+-		return NULL;
+-	sg_init_table(table, nents);
+-	iter = table;
+-	for_each_sg(table, iter, sg_nents(table), i) {
+-		new_page = alloc_page(GFP_KERNEL);
+-		if (!new_page) {
+-			/* release all previous allocated pages in the table */
+-			iter = table;
+-			for_each_sg(table, iter, sg_nents(table), i) {
+-				new_page = sg_page(iter);
+-				if (new_page)
+-					__free_page(new_page);
+-			}
+-			kfree(table);
 +
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
-@@ -1084,6 +1095,19 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
- 
- 	/*
-+	 * Avoid "sti;hlt" execution in TDX guests as HLT induces a #VE that
-+	 * will enable interrupts before HLT TDCALL invocation if executed
-+	 * in STI-shadow, possibly resulting in missed wakeup events.
-+	 *
-+	 * Modify all possible HLT execution paths to use TDX specific routines
-+	 * that directly execute TDCALL and toggle the interrupt state as
-+	 * needed after TDCALL completion. This also reduces HLT related #VEs
-+	 * in addition to having a reliable halt logic execution.
-+	 */
-+	pv_ops.irq.safe_halt = tdx_safe_halt;
-+	pv_ops.irq.halt = tdx_halt;
-+
++#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
 +	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
- 	 * there.
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve)
- 
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
- 
--void tdx_safe_halt(void);
-+void tdx_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-@@ -69,7 +69,7 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t
- #else
- 
- static inline void tdx_early_init(void) { };
--static inline void tdx_safe_halt(void) { };
-+static inline void tdx_halt(void) { };
- 
- static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -938,7 +938,7 @@ void __init select_idle_routine(void)
- 		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		static_call_update(x86_idle, tdx_safe_halt);
-+		static_call_update(x86_idle, tdx_halt);
- 	} else {
- 		static_call_update(x86_idle, default_idle);
++	 * We need an additional entry for table chaining,
++	 * this ensures the loop can finish i.e. we can
++	 * fit at least two entries per page (obviously,
++	 * many more really fit.)
++	 */
++	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
++
++	while (nents > 0) {
++		struct scatterlist *new, *iter;
++		int n_fill, n_alloc;
++
++		if (nents <= N_ENTRIES_PER_PAGE) {
++			/* last needed table */
++			n_fill = nents;
++			n_alloc = nents;
++			nents = 0;
++		} else {
++			/* fill a page with entries */
++			n_alloc = N_ENTRIES_PER_PAGE;
++			/* reserve one for chaining */
++			n_fill = n_alloc - 1;
++			nents -= n_fill;
++		}
++
++		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
++		if (!new) {
++			if (result)
++				_devcd_free_sgtable(result);
+ 			return NULL;
+ 		}
+-		alloc_size = min_t(int, size, PAGE_SIZE);
+-		size -= PAGE_SIZE;
+-		sg_set_page(iter, new_page, alloc_size, 0);
++		sg_init_table(new, n_alloc);
++
++		if (!result)
++			result = new;
++		else
++			sg_chain(prev, n_prev, new);
++		prev = new;
++		n_prev = n_alloc;
++
++		for_each_sg(new, iter, n_fill, i) {
++			struct page *new_page = alloc_page(GFP_KERNEL);
++
++			if (!new_page) {
++				_devcd_free_sgtable(result);
++				return NULL;
++			}
++
++			sg_set_page(iter, new_page, PAGE_SIZE, 0);
++		}
  	}
+-	return table;
++
++	return result;
+ }
+ 
+ static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
+-- 
+2.39.5
+
 
 
 
