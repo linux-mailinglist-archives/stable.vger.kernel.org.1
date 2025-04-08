@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC57DA80714
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA3BA80AA5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED2A424735
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399C98A1EFA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C0726B2A8;
-	Tue,  8 Apr 2025 12:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5DC27604D;
+	Tue,  8 Apr 2025 12:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP/RRvCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8ejFl+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5E826A0E0;
-	Tue,  8 Apr 2025 12:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121926A1DE;
+	Tue,  8 Apr 2025 12:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114709; cv=none; b=Qwe5GVgD+TtGJqz1Nqu/8wsN5HustqxrvYsKjcPzgQdzHeFH4HupoWZYtb+WXvLzbpW2anM3Xi14E61iZq+HtkEPgFnEKeQ7wegSSBlX8TLPJBzvCLUH36L5IlwATuMdMBgO2DnPoCMH3zXgv5sOi+oPmzDu2x6egxyBMA7Ww38=
+	t=1744116380; cv=none; b=OZdu984ykbsvF0q1GtcOCc9RMj3cmF041G2emudLLlDYVQI09dYjufbPVPRfZejlhkNP7StTWW9uMYCyeaShsCdDjRPo0aOqJ3srt5m0+BF37R3njJfqYPZqs66/4eoB6mx+xU1Pnl/anxMSNzaaHPNZuZ81ASLCs/XjtZ5Mk1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114709; c=relaxed/simple;
-	bh=kToPqLyL8Pym2IajDhDK7eE8Tz7VZBQiFzGVRGf1A3Q=;
+	s=arc-20240116; t=1744116380; c=relaxed/simple;
+	bh=NKbogLMnXPlnzwcBjOrTHzb2IxnNQS4bCcgcE9IkKUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEfHmgxoQcZr6ocQQrvlF7eSlIUH7ETnD7xe02YdgY7l4xzlcu5HOxnnQYTywNnOceqFxfiaN1UHdtwo4gWxDD7Dfnkb5DZvs49QX34E8EF6VTGWxMd0mvY/RQ4ihVPrjVVF09llpqMi3YR9QAYOXUpQy7rwWT6Qo3mlE++qnn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP/RRvCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487FFC4CEE5;
-	Tue,  8 Apr 2025 12:18:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JeE45KGHSOa7CJBARqQTwWKp9TVnC8fB6ltSEtjWBTG72TaGmvLZuy+vcagNUNlHOX41rBV0Afe1ZR8CzNntqpzxTGe8fSSmreeOBSDGgqbqu2R0KcN3zWMEpdN/y1cy6HqZTXQ83PJKZ0iqkl4GLJya+Z+fzwI8iVbkuarqo1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8ejFl+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36979C4CEE5;
+	Tue,  8 Apr 2025 12:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114708;
-	bh=kToPqLyL8Pym2IajDhDK7eE8Tz7VZBQiFzGVRGf1A3Q=;
+	s=korg; t=1744116380;
+	bh=NKbogLMnXPlnzwcBjOrTHzb2IxnNQS4bCcgcE9IkKUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dP/RRvCd89S1AuSWOlY+wcMKV5nP1uluegSjv3AVKsPREndxNo6c71GjD1urJVTWE
-	 6ion0pp29urF7kg+fFw2TfpPiRGsiAW+bM8FDG1MJ8xHr2sbMTCoA962RfZ7bwotAH
-	 UoHKLE1x2LDQsh58ykFXA4mRh/QKdB/OAIM3lQjc=
+	b=k8ejFl+w0hSiu66UEXw86wf+GdnwcR67uB0U9DiFcaZkdht5+e/XsTJjaPHU02En3
+	 TX6nzY109O7sr+A68OugAMsqk4m/Pn4LMET6CTd0dY7YafmwCoQ2C0uTS/Xhwl8bf3
+	 Ik5n1pna1s9Eh2NeJSVmraRYhX5WZFmpRKhWinLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Kun Hu <huk23@m.fudan.edu.cn>
-Subject: [PATCH 6.13 205/499] fs/ntfs3: Update inode->i_mapping->a_ops on compression state
-Date: Tue,  8 Apr 2025 12:46:57 +0200
-Message-ID: <20250408104856.315228411@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 092/423] PCI: pciehp: Dont enable HPIE when resuming in poll mode
+Date: Tue,  8 Apr 2025 12:46:58 +0200
+Message-ID: <20250408104847.884375604@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit b432163ebd15a0fb74051949cb61456d6c55ccbd ]
+[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
 
-Update inode->i_mapping->a_ops when the compression state changes to
-ensure correct address space operations.
-Clear ATTR_FLAG_SPARSED/FILE_ATTRIBUTE_SPARSE_FILE when enabling
-compression to prevent flag conflicts.
+PCIe hotplug can operate in poll mode without interrupt handlers using a
+polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
+interrupt during suspend") failed to consider that and enables HPIE
+(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
 
-v2:
-Additionally, ensure that all dirty pages are flushed and concurrent access
-to the page cache is blocked.
+Only set HPIE if non-poll mode is in use. This makes
+pcie_enable_interrupt() match how pcie_enable_notification() already
+handles HPIE.
 
-Fixes: 6b39bfaeec44 ("fs/ntfs3: Add support for the compression attribute")
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
+Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrib.c  |  3 ++-
- fs/ntfs3/file.c    | 22 ++++++++++++++++++++--
- fs/ntfs3/frecord.c |  6 ++++--
- 3 files changed, 26 insertions(+), 5 deletions(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index af94e3737470d..e946f75eb5406 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -2664,8 +2664,9 @@ int attr_set_compress(struct ntfs_inode *ni, bool compr)
- 		attr->nres.run_off = cpu_to_le16(run_off);
- 	}
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index 736ad8baa2a55..8f3e4c7de961f 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -842,7 +842,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
+ {
+ 	u16 mask;
  
--	/* Update data attribute flags. */
-+	/* Update attribute flags. */
- 	if (compr) {
-+		attr->flags &= ~ATTR_FLAG_SPARSED;
- 		attr->flags |= ATTR_FLAG_COMPRESSED;
- 		attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 	} else {
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 3f96a11804c90..e9f701f884e72 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -101,8 +101,26 @@ int ntfs_fileattr_set(struct mnt_idmap *idmap, struct dentry *dentry,
- 	/* Allowed to change compression for empty files and for directories only. */
- 	if (!is_dedup(ni) && !is_encrypted(ni) &&
- 	    (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode))) {
--		/* Change compress state. */
--		int err = ni_set_compress(inode, flags & FS_COMPR_FL);
-+		int err = 0;
-+		struct address_space *mapping = inode->i_mapping;
-+
-+		/* write out all data and wait. */
-+		filemap_invalidate_lock(mapping);
-+		err = filemap_write_and_wait(mapping);
-+
-+		if (err >= 0) {
-+			/* Change compress state. */
-+			bool compr = flags & FS_COMPR_FL;
-+			err = ni_set_compress(inode, compr);
-+
-+			/* For files change a_ops too. */
-+			if (!err)
-+				mapping->a_ops = compr ? &ntfs_aops_cmpr :
-+							 &ntfs_aops;
-+		}
-+
-+		filemap_invalidate_unlock(mapping);
-+
- 		if (err)
- 			return err;
- 	}
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index f66186dbeda9d..b95d85432493c 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -3433,10 +3433,12 @@ int ni_set_compress(struct inode *inode, bool compr)
- 	}
+-	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
++	mask = PCI_EXP_SLTCTL_DLLSCE;
++	if (!pciehp_poll_mode)
++		mask |= PCI_EXP_SLTCTL_HPIE;
+ 	pcie_write_cmd(ctrl, mask, mask);
+ }
  
- 	ni->std_fa = std->fa;
--	if (compr)
-+	if (compr) {
-+		std->fa &= ~FILE_ATTRIBUTE_SPARSE_FILE;
- 		std->fa |= FILE_ATTRIBUTE_COMPRESSED;
--	else
-+	} else {
- 		std->fa &= ~FILE_ATTRIBUTE_COMPRESSED;
-+	}
- 
- 	if (ni->std_fa != std->fa) {
- 		ni->std_fa = std->fa;
 -- 
 2.39.5
 
