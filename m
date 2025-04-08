@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4396A80B04
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC88EA807C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3421E4E4BE0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C8E4C1A80
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEA426A1C4;
-	Tue,  8 Apr 2025 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1509526A1CD;
+	Tue,  8 Apr 2025 12:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9BYW2rx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQdOebH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C44B1EA65;
-	Tue,  8 Apr 2025 12:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7610263F4D;
+	Tue,  8 Apr 2025 12:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116678; cv=none; b=CjhCvXpfQ7CKCHXBonk38CPwy/OnW8yA3pyyzV5ZtA9ESPtdUkeqA1TCrgkg7bl6eG3EsgaBpFvoQflprYFJManSec4wko8+0icllMAjNGpU5dxUY9WcFpBRBm1+cqw/cAA0XPA/fEslozFCmzt4MDDi+gGnGyBITOtTJC3xTLE=
+	t=1744115190; cv=none; b=FARAUYdDCsz4GmsUeM+Fkuy/kdnKzUaFURDyWefC2+Q8lvqLKKbzoQTFVtbqz4UAs5ZgLP0hPiAhgccYarSR3FjWTc+HVtTQKymYKfndDHyKITAMgQo/V+Fp4X+hpd1eDXbjwsW5O4MHsh/bgQoTDXQptmzAnZIxNOIog64Wud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116678; c=relaxed/simple;
-	bh=bv2LOopFjEgQQlD6nx9yAEnHgmJorNqgYoO2Rsql7mg=;
+	s=arc-20240116; t=1744115190; c=relaxed/simple;
+	bh=O5c4FFOv3dRprQ2rwx91uoTRLFaHqzQKZvfWe2SQ/WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hr4II4J/+5yBFZQGN18r6S1oUOVWQNHUMcNDhHluexi8Wu2lrpCwdyjBJFCU0s+oLlS6ZipHEm5gvw62Zlwsmo5c5Mzkm5Gsw2quwdoD+7I4qeHMQSFsZMOLEPp/EK//EyZqyA1VAe+lw1jfYjMonrfC1z4tpwYOHI8oJCTdmoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9BYW2rx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284BCC4CEE5;
-	Tue,  8 Apr 2025 12:51:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oT0f5a6jfB+7xRkmvbzwLzGqxZ5c5ilObuNA0QRoOdPHln4A8Y2slMatm/VpZgctyOdUjwqLIk2K9rKYEXxM2c+i1MP5eSjCNBugwooBVo4ZpjbawG5R1iSPI9MqSpZnjaRxB3zYclOBhtT7O5PSlmSsa5Vfuk58gtR3qLuMJOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQdOebH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597B3C4CEE5;
+	Tue,  8 Apr 2025 12:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116677;
-	bh=bv2LOopFjEgQQlD6nx9yAEnHgmJorNqgYoO2Rsql7mg=;
+	s=korg; t=1744115190;
+	bh=O5c4FFOv3dRprQ2rwx91uoTRLFaHqzQKZvfWe2SQ/WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9BYW2rx5TXe7E6lcVsom0De7qKmOqIiLsDUmV9NkQLB0q7FKxhmZbaKl0BmXbsdb
-	 HGz7efAh2L03wYx/cmbTtGL7oAszLGHTBqdjLlvjyVlHAD3bSUqm2fGfX6WzDRz8lH
-	 A4Z338oHBGbi+uici+VIDL6k2uCCUfkHu/DQnBz8=
+	b=QQdOebH/eOCHJruAMVZ5iEr6Fh6gilGHNQwSuSjGGPr9HfwrckDmcWiATnRaL5HuW
+	 ErD2kzTFdj9DseW622Ew56sOdk8t9ngBFIva6UXVnu7zsXQF7A9B82eCwwTUMz0Bb9
+	 aJEV6rIcjqMn1+3jLPjRTiJVY2qYrNuDLHsqT4Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	Steve French <stfrench@microsoft.com>,
+	Lukas Hetzenecker <lukas@hetzenecker.me>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/423] smb: client: Fix netns refcount imbalance causing leaks and use-after-free
-Date: Tue,  8 Apr 2025 12:49:15 +0200
-Message-ID: <20250408104851.060376972@linuxfoundation.org>
+Subject: [PATCH 6.13 344/499] platform/surface: aggregator_registry: Add Support for Surface Pro 11
+Date: Tue,  8 Apr 2025 12:49:16 +0200
+Message-ID: <20250408104859.803564402@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,177 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Lukas Hetzenecker <lukas@hetzenecker.me>
 
-[ Upstream commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef ]
+[ Upstream commit a05507cef0ee6a0af402c0d7e994115033ff746b ]
 
-Commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
-namespace.") attempted to fix a netns use-after-free issue by manually
-adjusting reference counts via sk->sk_net_refcnt and sock_inuse_add().
+Add SAM client device nodes for the Surface Pro 11 (Intel).
+Like with the Surface Pro 10 already, the node group
+is compatible, so it can be reused.
 
-However, a later commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock
-after rmmod") pointed out that the approach of manually setting
-sk->sk_net_refcnt in the first commit was technically incorrect, as
-sk->sk_net_refcnt should only be set for user sockets. It led to issues
-like TCP timers not being cleared properly on close. The second commit
-moved to a model of just holding an extra netns reference for
-server->ssocket using get_net(), and dropping it when the server is torn
-down.
-
-But there remain some gaps in the get_net()/put_net() balancing added by
-these commits. The incomplete reference handling in these fixes results
-in two issues:
-
-1. Netns refcount leaks[1]
-
-The problem process is as follows:
-
-```
-mount.cifs                        cifsd
-
-cifs_do_mount
-  cifs_mount
-    cifs_mount_get_session
-      cifs_get_tcp_session
-        get_net()  /* First get net. */
-        ip_connect
-          generic_ip_connect /* Try port 445 */
-            get_net()
-            ->connect() /* Failed */
-            put_net()
-          generic_ip_connect /* Try port 139 */
-            get_net() /* Missing matching put_net() for this get_net().*/
-      cifs_get_smb_ses
-        cifs_negotiate_protocol
-          smb2_negotiate
-            SMB2_negotiate
-              cifs_send_recv
-                wait_for_response
-                                 cifs_demultiplex_thread
-                                   cifs_read_from_socket
-                                     cifs_readv_from_socket
-                                       cifs_reconnect
-                                         cifs_abort_connection
-                                           sock_release();
-                                           server->ssocket = NULL;
-                                           /* Missing put_net() here. */
-                                           generic_ip_connect
-                                             get_net()
-                                             ->connect() /* Failed */
-                                             put_net()
-                                             sock_release();
-                                             server->ssocket = NULL;
-          free_rsp_buf
-    ...
-                                   clean_demultiplex_info
-                                     /* It's only called once here. */
-                                     put_net()
-```
-
-When cifs_reconnect() is triggered, the server->ssocket is released
-without a corresponding put_net() for the reference acquired in
-generic_ip_connect() before. it ends up calling generic_ip_connect()
-again to retry get_net(). After that, server->ssocket is set to NULL
-in the error path of generic_ip_connect(), and the net count cannot be
-released in the final clean_demultiplex_info() function.
-
-2. Potential use-after-free
-
-The current refcounting scheme can lead to a potential use-after-free issue
-in the following scenario:
-
-```
- cifs_do_mount
-   cifs_mount
-     cifs_mount_get_session
-       cifs_get_tcp_session
-         get_net()  /* First get net */
-           ip_connect
-             generic_ip_connect
-               get_net()
-               bind_socket
-	         kernel_bind /* failed */
-               put_net()
-         /* after out_err_crypto_release label */
-         put_net()
-         /* after out_err label */
-         put_net()
-```
-
-In the exception handling process where binding the socket fails, the
-get_net() and put_net() calls are unbalanced, which may cause the
-server->net reference count to drop to zero and be prematurely released.
-
-To address both issues, this patch ties the netns reference counting to
-the server->ssocket and server lifecycles. The extra reference is now
-acquired when the server or socket is created, and released when the
-socket is destroyed or the server is torn down.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=219792
-
-Fixes: ef7134c7fc48 ("smb: client: Fix use-after-free of network namespace.")
-Fixes: e9f2517a3e18 ("smb: client: fix TCP timers deadlock after rmmod")
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Lukas Hetzenecker <lukas@hetzenecker.me>
+Link: https://lore.kernel.org/r/20250310232803.23691-1-lukas@hetzenecker.me
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/platform/surface/surface_aggregator_registry.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index d327f31b317db..8b8475b4e2627 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -316,6 +316,7 @@ cifs_abort_connection(struct TCP_Server_Info *server)
- 			 server->ssocket->flags);
- 		sock_release(server->ssocket);
- 		server->ssocket = NULL;
-+		put_net(cifs_net_ns(server));
- 	}
- 	server->sequence_number = 0;
- 	server->session_estab = false;
-@@ -3138,8 +3139,12 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 		/*
- 		 * Grab netns reference for the socket.
- 		 *
--		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
--		 * teardown.
-+		 * This reference will be released in several situations:
-+		 * - In the failure path before the cifsd thread is started.
-+		 * - In the all place where server->socket is released, it is
-+		 *   also set to NULL.
-+		 * - Ultimately in clean_demultiplex_info(), during the final
-+		 *   teardown.
- 		 */
- 		get_net(net);
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index d4f32ad665305..a594d5fcfcfd1 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -371,7 +371,7 @@ static const struct software_node *ssam_node_group_sp8[] = {
+ 	NULL,
+ };
  
-@@ -3155,10 +3160,8 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 	}
+-/* Devices for Surface Pro 9 (Intel/x86) and 10 */
++/* Devices for Surface Pro 9, 10 and 11 (Intel/x86) */
+ static const struct software_node *ssam_node_group_sp9[] = {
+ 	&ssam_node_root,
+ 	&ssam_node_hub_kip,
+@@ -430,6 +430,9 @@ static const struct acpi_device_id ssam_platform_hub_acpi_match[] = {
+ 	/* Surface Pro 10 */
+ 	{ "MSHW0510", (unsigned long)ssam_node_group_sp9 },
  
- 	rc = bind_socket(server);
--	if (rc < 0) {
--		put_net(cifs_net_ns(server));
-+	if (rc < 0)
- 		return rc;
--	}
- 
- 	/*
- 	 * Eventually check for other socket options to change from
-@@ -3204,9 +3207,6 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 	if (sport == htons(RFC1001_PORT))
- 		rc = ip_rfc1001_connect(server);
- 
--	if (rc < 0)
--		put_net(cifs_net_ns(server));
--
- 	return rc;
- }
++	/* Surface Pro 11 */
++	{ "MSHW0583", (unsigned long)ssam_node_group_sp9 },
++
+ 	/* Surface Book 2 */
+ 	{ "MSHW0107", (unsigned long)ssam_node_group_gen5 },
  
 -- 
 2.39.5
