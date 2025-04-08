@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A854A8025A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C97A7FDC2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B337618953B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F04118950B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0CA263C78;
-	Tue,  8 Apr 2025 11:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FE1269895;
+	Tue,  8 Apr 2025 10:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmwXe/nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeJeGDd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE532264A76;
-	Tue,  8 Apr 2025 11:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903E7268691;
+	Tue,  8 Apr 2025 10:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112564; cv=none; b=ARB+nI851bBy3GVBbi+eEKhs29D3VriZln5+5Z2jKSyNU3l7VrFh8jg36YDeHevoWTYdc3YbPf677NOGN0bd8yVCWoBSouJkC/iFwRrrgPIjzPasZAuG+yQ5HZ6GqEFhGix7VFcq35HJwTN3JtjlvAULXUKDd+i8Aw7qfGUsAfY=
+	t=1744109969; cv=none; b=t+/frCs9R9uGhpkI6FoiENLQ+o7+QxKbLc9wgJhFsgARCHymCLGFxCdtMYgeg2ijfeLTDpyZpN3XmmJ9tDVpLxxtzLuDJXjxcosdCDetVsTWrkIleel6+ZQyGPjx0aVmBedKZOu0crTaE04rZjiyPgPqJSB2xHJ78GiVEdJa9Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112564; c=relaxed/simple;
-	bh=JLReWo/SgiNv5PhaYWUKzE9k7M3iMSIrodZJE6GRNBs=;
+	s=arc-20240116; t=1744109969; c=relaxed/simple;
+	bh=bmMDKX0ZXoCH6MTwKCaPcBpgGJzNOw/F+5ZAwWDRV1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMJM4W2CIvb+KgeyEPNruxiJKuLMsdpFbsw98LGtK4y3FfhglIqXJi7oNsmGeoIlD5M+F2eeg6kZWVvDBNmxsm9SMlrPSFZGzqnhsFG485gl1VUw1o5jgXBM47MzvPGzucaVLXc/tIWTvOb2Hblk1LV5TvJifHmAEdh3OWtsT/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmwXe/nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C220C4CEE5;
-	Tue,  8 Apr 2025 11:42:44 +0000 (UTC)
+	 MIME-Version; b=ajH+W4x31CpgZotq9PoNEDexk9sB7FUK3dMk7kXrk0pJCW8eF4xihiZnjoINYWOH62/fqII/ojcMHrszP2xzLSGuod759GdOCHE/7zHONzcX+M+7Cx/+ef/yI312j40zkI133lW9a+uRS7nkohZsnK1pV2yeqTSr/LBDKTrjXKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeJeGDd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20441C4CEE5;
+	Tue,  8 Apr 2025 10:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112564;
-	bh=JLReWo/SgiNv5PhaYWUKzE9k7M3iMSIrodZJE6GRNBs=;
+	s=korg; t=1744109969;
+	bh=bmMDKX0ZXoCH6MTwKCaPcBpgGJzNOw/F+5ZAwWDRV1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmwXe/nhqhTcNUrM01Ikjh9znp/IqbHiz7vq4KaVFnjgK5szHQw1KiaX9VECD9xPm
-	 xONkNix3QEUs1uxQ2NOtUAhYePiQuVT7Z2Am/Oj6lsT313tlylgse3aNVr98nz8PMS
-	 NTpH+8txB2e8K0xBh0xD14xkiEC/WCk+Ua1vPTvE=
+	b=aeJeGDd3sBVcTLZZbyue/YiQkyGUs/oRFoeR3Svxe8IsoE3NPSi+6NFEl/9l8x3Zc
+	 gl9XFVyJ2aZ7Ll/7x8rKXBXF87R8M0KsbNyyF2P0qAZmiQbx3rWX2FXHAXWHXJf2j6
+	 UYU4kxlKOIiRdcMB3fbceV1qEehrWEfxpxg4iFd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.15 114/279] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 119/227] EDAC/ie31200: Fix the size of EDAC_MC_LAYER_CHIP_SELECT layer
 Date: Tue,  8 Apr 2025 12:48:17 +0200
-Message-ID: <20250408104829.423635953@linuxfoundation.org>
+Message-ID: <20250408104823.909341420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,38 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
+[ Upstream commit d59d844e319d97682c8de29b88d2d60922a683b3 ]
 
-The common pattern in arm is to emit a "8<--- cut here ---" line for
-faults, but it was missing for do_PrefetchAbort(). Add it.
+The EDAC_MC_LAYER_CHIP_SELECT layer pertains to the rank, not the DIMM.
+Fix its size to reflect the number of ranks instead of the number of DIMMs.
+Also delete the unused macros IE31200_{DIMMS,RANKS}.
 
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ee40b897d18 ("ie31200_edac: Introduce the driver")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-2-qiuxu.zhuo@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/ie31200_edac.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -559,6 +559,7 @@ do_PrefetchAbort(unsigned long addr, uns
- 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
- 		return;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index c47963240b659..662a79dda74eb 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -83,8 +83,6 @@
+ 	 (((did) & PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK) ==                 \
+ 	  PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK))
  
-+	pr_alert("8<--- cut here ---\n");
- 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
- 		inf->name, ifsr, addr);
+-#define IE31200_DIMMS			4
+-#define IE31200_RANKS			8
+ #define IE31200_RANKS_PER_CHANNEL	4
+ #define IE31200_DIMMS_PER_CHANNEL	2
+ #define IE31200_CHANNELS		2
+@@ -419,7 +417,7 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
  
+ 	nr_channels = how_many_channels(pdev);
+ 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+-	layers[0].size = IE31200_DIMMS;
++	layers[0].size = IE31200_RANKS_PER_CHANNEL;
+ 	layers[0].is_virt_csrow = true;
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = nr_channels;
+-- 
+2.39.5
+
 
 
 
