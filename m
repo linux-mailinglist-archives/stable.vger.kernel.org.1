@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-130364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CF8A8042F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6FAA80720
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DC13BD5B2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967304A165C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F38B269892;
-	Tue,  8 Apr 2025 11:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28DA26A0EA;
+	Tue,  8 Apr 2025 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQHypo8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j94qYsOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A0A264FA0;
-	Tue,  8 Apr 2025 11:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83229267731;
+	Tue,  8 Apr 2025 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113522; cv=none; b=Y3USj26UTHlAaHyTCsS6v238lkzzXVjoKTQLrOGAthPJZAUu/lC6zyOsvwrIJ9fOlZog4lCVHl7LaTMzjVWCp5zHApGpBP8ggq3NyYA30UOxOEiSKw3kdd0nHAPcDMnFfivWaYQw6gsD25zCSKfZXTMYel67dO9KDj51QirdfKM=
+	t=1744115105; cv=none; b=bpPAJTdBtJ1T1++Z5s4LS1c+115jDdnCFapf2ybg3DwQrx12qPKkDVEg5dJt+pshb5LHOKRaDPpbQhOl/Lp37VE7p0xqGw01e+n1IFzVKO1Slf+r2rTv8CnlPM0GprAb88S9uWFHtjvRDEquZIcePR3JH2qKLdf802K7RTSLc7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113522; c=relaxed/simple;
-	bh=QrI4z0mD59KYfGC/FCw3nqroxQ7XR3r4LsWqIwDM5gU=;
+	s=arc-20240116; t=1744115105; c=relaxed/simple;
+	bh=MmSOLvM57cs66zF7GDOE16R+Jtk+WxqFDLA0BeqJifI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QI/KZxahDB3fuVyfSfoPo0btNsulLW4jBIQ8WMqRHwH+tlbGWWCumlDcSOrPRMdbgQA6k+8ywyXPc0iNveuI9P4eD0/fgUUWyOlc+AHDNspLfoWipE0RYPaOWGNeHFhmL27r0IIFbYNRpJZDzRhDoyoQwKUfZZ/V3a9nFJDZCNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQHypo8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51B9C4CEE7;
-	Tue,  8 Apr 2025 11:58:40 +0000 (UTC)
+	 MIME-Version; b=XMAFR6pIQHUkJBVxM/gEhgtwud0DgLhwLnu/Vg1GFPVe3FcoYT03R2V6SzePZXt6R3/MhBDX91cRK37x4qk4mqzsujeV3XyYxxeOk7rqmudQ1caCQJLsGoO3tGKO7RfSNdojd3+xaBJUTs+VS6YCgI1IlwP6dUbBd+0CDrKGPJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j94qYsOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76705C4CEE5;
+	Tue,  8 Apr 2025 12:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113521;
-	bh=QrI4z0mD59KYfGC/FCw3nqroxQ7XR3r4LsWqIwDM5gU=;
+	s=korg; t=1744115105;
+	bh=MmSOLvM57cs66zF7GDOE16R+Jtk+WxqFDLA0BeqJifI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQHypo8qpo4NS0TdrZU7CaUqpeZ4I7JiKh9Jg5IcHAUFdO7xGA+442sgzO+WnBg3q
-	 8vMCIwSa0HHFgEDvIbgmCaT9WjLvdDWdoIcuVfyGnypKhF88n3MULw0eD9kSp1XAYV
-	 6E41v6KM6vef6ry069pKcUzY0vg/YUpiCUitAOAQ=
+	b=j94qYsOKukYDosGYTY/WNfTzBJq17QKxFd0QWekGIyDBXBpjhPyHCyOqTbQC8M9iy
+	 Qi2GYaV2MsWwiPoLoS2f08uGPXGO/SeJAcvFFhZ08qV3umbVhZlNSOqqaqKe906REb
+	 u9dLvatTx/InapWGjsjftHJSCyVWvwHyIunZ6fnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/268] LoongArch: Fix help text of CMDLINE_EXTEND in Kconfig
+Subject: [PATCH 6.13 352/499] netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
 Date: Tue,  8 Apr 2025 12:49:24 +0200
-Message-ID: <20250408104832.666131526@linuxfoundation.org>
+Message-ID: <20250408104900.007715615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +67,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit be216cbc1ddf99a51915414ce147311c0dfd50a2 ]
+[ Upstream commit 07c574eb53d4cc9aa7b985bc8bfcb302e5dc4694 ]
 
-It is the built-in command line appended to the bootloader command line,
-not the bootloader command line appended to the built-in command line.
+Fix netfs_unbuffered_read() to return an ssize_t rather than an int as
+netfs_wait_for_read() returns ssize_t and this gets implicitly truncated.
 
-Fixes: fa96b57c1490 ("LoongArch: Add build infrastructure")
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20250314164201.1993231-5-dhowells@redhat.com
+Acked-by: "Paulo Alcantara (Red Hat)" <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/netfs/direct_read.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 9fd8644a9a4c6..623cf80639dec 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -356,8 +356,8 @@ config CMDLINE_BOOTLOADER
- config CMDLINE_EXTEND
- 	bool "Use built-in to extend bootloader kernel arguments"
- 	help
--	  The command-line arguments provided during boot will be
--	  appended to the built-in command line. This is useful in
-+	  The built-in command line will be appended to the command-
-+	  line arguments provided during boot. This is useful in
- 	  cases where the provided arguments are insufficient and
- 	  you don't want to or cannot modify them.
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index b1a66a6e6bc2d..917b7edc34ef5 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -108,9 +108,9 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+  * Perform a read to an application buffer, bypassing the pagecache and the
+  * local disk cache.
+  */
+-static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
++static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ {
+-	int ret;
++	ssize_t ret;
+ 
+ 	_enter("R=%x %llx-%llx",
+ 	       rreq->debug_id, rreq->start, rreq->start + rreq->len - 1);
+@@ -149,7 +149,7 @@ static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 	}
+ 
+ out:
+-	_leave(" = %d", ret);
++	_leave(" = %zd", ret);
+ 	return ret;
+ }
  
 -- 
 2.39.5
