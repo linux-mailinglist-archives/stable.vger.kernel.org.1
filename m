@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-130971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7562A80705
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34725A804A3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A08AA1B85171
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84B2719E4239
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87191269808;
-	Tue,  8 Apr 2025 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB347269B1E;
+	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0p3MShnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnlc5+BC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441562686A5;
-	Tue,  8 Apr 2025 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51A4269CE6;
+	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115145; cv=none; b=BP8Wz8aJleI46q6TlIfi+2oPwKQxOgBh9ylkdUDe8SIhbntBuSw6ld3SU53Zyb2Azg335/sFRoB5hPVzAXU742aFkIE4aKwrni9zreDruuB6yR8afNMZQKeD6N2J7SOVPwv2oMat+qOWFFeArVD4UPuuxm7qyyomqlDbZcPu6NQ=
+	t=1744113758; cv=none; b=Dv1wON6OU0KxtCULkOOoj0N/jURgXLX278csOzIG9qhDOEiiigmZq1dShmCb8BeEwB4He5mQzkteeFtNjO9qu8VtPSpc0Fs6SmikAjcATF9O+rTXIJWdTsHztuC1ifSxjViYkl6NAY1MvofTuOLhlRajSKc62dwCujkJg3owniw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115145; c=relaxed/simple;
-	bh=WAYdlSY3tg9zhob5uewiLvxDQGh6GBlgAGAwKABraMg=;
+	s=arc-20240116; t=1744113758; c=relaxed/simple;
+	bh=QJfrwfsp/cQlzMKWXPz0b0MRe7vQb2I2WMVz1xCF9ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3aMJNmrb24x7ZLCeyR49XcGAkjbgcL9g6a31YiaGzP4q1dOUDC8+5bsphD5pTwruw8j6j73NzbJZZr2ROC2/OLUCJSfDjirnk/b1kmJtUynDSVSa3HuxKG8hG7tjA/mKzzGh1/87eIdYMv6NisBtldGdOtbFujazHbSKEfZAyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p3MShnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FD2C4CEE5;
-	Tue,  8 Apr 2025 12:25:44 +0000 (UTC)
+	 MIME-Version; b=INS5jPlJJqI6DtGinKw7IcwtB7EYxb8kwxdxbnG5totp15Ce/m6cfjYkM6Vzd9gKfZLYJT+NU/P2gSYZond/qmt5GCwDCoXxAkoNe9WBs+h0hEFW7lE9RWSEec/QF6/SDscytAwa0OtMZKOEVGy3CmVe3Nt49DMAJc9mfDlHypU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnlc5+BC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36205C4CEE5;
+	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115145;
-	bh=WAYdlSY3tg9zhob5uewiLvxDQGh6GBlgAGAwKABraMg=;
+	s=korg; t=1744113758;
+	bh=QJfrwfsp/cQlzMKWXPz0b0MRe7vQb2I2WMVz1xCF9ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0p3MShnXezH0+rYVar4jcuCkBs7yXwrrtLTn0VZBauz/qYLf6O1wclrBzmz4x9TuO
-	 PBCj3QfYf7UtAAe68RH2WJBQufPTNZi57RMuNvtHMKHapFTUyBqUsXNmgX5BaopavF
-	 eXxL+td/GFgfq1F/Uo9Hf6P74VWWvMI0LG7SlGHg=
+	b=Lnlc5+BCg+m3R7NJvKBVfxNdWtVocEzxfjkPS5Qz4rcCUmTrqSI+o7/Q5GYQlTcy3
+	 DjgZEIJ4lQQ9IyswhkjokCdCD7khM7izT4UqNAWlhPmMrjjFNe75yS+kEiNPaynRYg
+	 jZN85BENXQCGTdmjViVhKiocatv1xmSzSW1dzW/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 339/499] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
+Subject: [PATCH 5.4 010/154] netpoll: remove dev argument from netpoll_send_skb_on_dev()
 Date: Tue,  8 Apr 2025 12:49:11 +0200
-Message-ID: <20250408104859.677638787@linuxfoundation.org>
+Message-ID: <20250408104815.618149071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladis Dronov <vdronov@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+[ Upstream commit 307f660d056b5eb8f5bb2328fac3915ab75b5007 ]
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+netpoll_send_skb_on_dev() can get the device pointer directly from np->dev
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
+Rename it to __netpoll_send_skb()
 
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
+Following patch will move netpoll_send_skb() out-of-line.
 
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
-
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
-
-Related links:
-
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/linux/netpoll.h |  5 ++---
+ net/core/netpoll.c      | 10 ++++++----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index 22b65a5f5ec6c..7f8d1e11dbee2 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
- 	int ret;
- 
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
- 
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
- 
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
- 
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
- 
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
- 
- 	return 0;
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 3ff0303672842..f5202a59c0274 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -63,13 +63,12 @@ int netpoll_setup(struct netpoll *np);
+ void __netpoll_cleanup(struct netpoll *np);
+ void __netpoll_free(struct netpoll *np);
+ void netpoll_cleanup(struct netpoll *np);
+-void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
+-			     struct net_device *dev);
++void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
+ static inline void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	unsigned long flags;
+ 	local_irq_save(flags);
+-	netpoll_send_skb_on_dev(np, skb, np->dev);
++	__netpoll_send_skb(np, skb);
+ 	local_irq_restore(flags);
  }
+ 
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 35a3277ee3567..69f80b531a1c3 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -323,17 +323,19 @@ static int netpoll_owner_active(struct net_device *dev)
+ }
+ 
+ /* call with IRQ disabled */
+-void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
+-			     struct net_device *dev)
++void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	netdev_tx_t status = NETDEV_TX_BUSY;
++	struct net_device *dev;
+ 	unsigned long tries;
+ 	/* It is up to the caller to keep npinfo alive. */
+ 	struct netpoll_info *npinfo;
+ 
+ 	lockdep_assert_irqs_disabled();
+ 
+-	npinfo = rcu_dereference_bh(np->dev->npinfo);
++	dev = np->dev;
++	npinfo = rcu_dereference_bh(dev->npinfo);
++
+ 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
+ 		dev_kfree_skb_irq(skb);
+ 		return;
+@@ -376,7 +378,7 @@ void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
+ 		schedule_delayed_work(&npinfo->tx_work,0);
+ 	}
+ }
+-EXPORT_SYMBOL(netpoll_send_skb_on_dev);
++EXPORT_SYMBOL(__netpoll_send_skb);
+ 
+ void netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ {
 -- 
 2.39.5
 
