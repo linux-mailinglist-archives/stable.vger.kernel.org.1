@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-131216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16261A8097F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C55A804B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31BF8C3B20
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48514A1901
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CC126B09F;
-	Tue,  8 Apr 2025 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F717269811;
+	Tue,  8 Apr 2025 12:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+46J0wD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X03+OOKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D0326B087;
-	Tue,  8 Apr 2025 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7F93AC1C;
+	Tue,  8 Apr 2025 12:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115800; cv=none; b=Ekm8ilG7Wwq4st5iL7QUkK5NqTB89hYnzjsXCyeM+8EO6UR3HvjfcSfKAjVoGlk995uWckiZqEXbBTG+OOQqATJp0tTlxfqjyM1biG3CypdMGHFNNvaRVltGgFcwtuicv18CQ+NlH0Qt6zOQEyj8rwXw5xrwoYJnNyuJTUqhAL4=
+	t=1744113623; cv=none; b=dOEGHgE0nmJBxz4YNygADl9flEJLeccuDJ/zhKJT2VMfclqkA9Ajz7fWMsQHghfyoNHUEPd7f3U47dQ0nfG3ZsyfGzL2tqyR03yfCEM/HCjh3A/LvsmTN9M1BDosgI60MLNXGLdYwIFDvE8P4qIcGgCyivhlev+X6T4aZS4Xp54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115800; c=relaxed/simple;
-	bh=ehsXiEZtnulUdkDrwhbpkqovKFmquMSThMQQEGjPy8c=;
+	s=arc-20240116; t=1744113623; c=relaxed/simple;
+	bh=lKcHf/NJ1JBKHQsohFQrhwbBcx2MT9sea6R9kl37gOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HNCxIhL6GWfMxY9hd/ERHu1kXVnCbBtMomLhenGj0G9APAXI8/3mRZIrmY1dSuAyOLA9ct6rWMqGdc9UZBcUMHXxWsD8kAaCxYnzPIWpoL/wy7HVU3ZkKttaMrUrrCh4tvmHynbkiiApDvmbdkcZPPh+j3lh0414G+IoW5Qz8l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+46J0wD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F73C4CEE5;
-	Tue,  8 Apr 2025 12:36:39 +0000 (UTC)
+	 MIME-Version; b=fRGAn59Q9749xOQJp5E1+SUJd1OiOgMEJoRVR3W1q6D7dP6V06uXjNb6ZNP6M4njPVLS6wyO+MlVVsFJddml1x4LvxRM0nMmxB9ZC1xE/raXXbFBoQ4HM3V4ZurhH7AUopIcj5yKwCyKucmXY39FIyjnTFyzNh5GYpuLpn7fU+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X03+OOKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C437EC4CEEA;
+	Tue,  8 Apr 2025 12:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115800;
-	bh=ehsXiEZtnulUdkDrwhbpkqovKFmquMSThMQQEGjPy8c=;
+	s=korg; t=1744113623;
+	bh=lKcHf/NJ1JBKHQsohFQrhwbBcx2MT9sea6R9kl37gOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+46J0wDlvF4eepW2G5+9zMe/XAfmJB28IBLGN7Zqar58ow04ZfuQcKWDM+xgNHX+
-	 FhoT6IWhHHv+7JyinRo6VL75qD8CSk+cSq3C/I8ka+Vic+X1BSdhAzSEwM1o8Rh1VC
-	 I2csJ3jOGuT6hnrBu56LVo557GTBwZVe8VHijzdU=
+	b=X03+OOKSm3W4uOq3RUYUkwgkRk+phuhaAQ9/P6fTUMiSKgviGzUTVORN7RIy0sOhI
+	 UGig7CpcGK1Vn3wmOgeWC9hSbXNCsd8VR00hwLlV3l+Ia3oIOegF08LkeujJS0rh1s
+	 N67NZKBUAs7g+Cbfji+M/XF/POgkj6BytJfpnYug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/204] staging: rtl8723bs: select CONFIG_CRYPTO_LIB_AES
+Subject: [PATCH 6.6 227/268] tracing/hist: Support POLLPRI event for poll on histogram
 Date: Tue,  8 Apr 2025 12:50:38 +0200
-Message-ID: <20250408104823.502226080@linuxfoundation.org>
+Message-ID: <20250408104834.710267575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b2a9a6a26b7e954297e51822e396572026480bad ]
+[ Upstream commit 66fc6f521a0b91051ce6968a216a30bc52267bf8 ]
 
-This fixes the following issue:
-ERROR: modpost: "aes_expandkey" [drivers/staging/rtl8723bs/r8723bs.ko]
-undefined!
-ERROR: modpost: "aes_encrypt" [drivers/staging/rtl8723bs/r8723bs.ko]
-undefined!
+Since POLLIN will not be flushed until the hist file is read, the user
+needs to repeatedly read() and poll() on the hist file for monitoring the
+event continuously. But the read() is somewhat redundant when the user is
+only monitoring for event updates.
 
-Fixes: 7d40753d8820 ("staging: rtl8723bs: use in-kernel aes encryption in OMAC1 routines")
-Fixes: 3d3a170f6d80 ("staging: rtl8723bs: use in-kernel aes encryption")
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/tencent_0BDDF3A721708D16A2E7C3DAFF0FEC79A105@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add POLLPRI poll event on the hist file so the event returns when a
+histogram is updated after open(), poll() or read(). Thus it is possible
+to wait for the next event without having to issue a read().
+
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/173527248770.464571.2536902137325258133.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_events_hist.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/Kconfig b/drivers/staging/rtl8723bs/Kconfig
-index f23e29b679fb5..14afcbbd61045 100644
---- a/drivers/staging/rtl8723bs/Kconfig
-+++ b/drivers/staging/rtl8723bs/Kconfig
-@@ -5,6 +5,7 @@ config RTL8723BS
- 	depends on m
- 	select CFG80211_WEXT
- 	select CRYPTO
-+	select CRYPTO_LIB_AES
- 	select CRYPTO_LIB_ARC4
- 	help
- 	This option enables support for RTL8723BS SDIO drivers, such as
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 49b7811dec9f8..08cc6405b8837 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5606,6 +5606,7 @@ static void hist_trigger_show(struct seq_file *m,
+ struct hist_file_data {
+ 	struct file *file;
+ 	u64 last_read;
++	u64 last_act;
+ };
+ 
+ static u64 get_hist_hit_count(struct trace_event_file *event_file)
+@@ -5641,6 +5642,11 @@ static int hist_show(struct seq_file *m, void *v)
+ 			hist_trigger_show(m, data, n++);
+ 	}
+ 	hist_file->last_read = get_hist_hit_count(event_file);
++	/*
++	 * Update last_act too so that poll()/POLLPRI can wait for the next
++	 * event after any syscall on hist file.
++	 */
++	hist_file->last_act = hist_file->last_read;
+ 
+ 	return 0;
+ }
+@@ -5650,6 +5656,8 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+ 	struct trace_event_file *event_file;
+ 	struct seq_file *m = file->private_data;
+ 	struct hist_file_data *hist_file = m->private;
++	__poll_t ret = 0;
++	u64 cnt;
+ 
+ 	guard(mutex)(&event_mutex);
+ 
+@@ -5659,10 +5667,15 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+ 
+ 	hist_poll_wait(file, wait);
+ 
+-	if (hist_file->last_read != get_hist_hit_count(event_file))
+-		return EPOLLIN | EPOLLRDNORM;
++	cnt = get_hist_hit_count(event_file);
++	if (hist_file->last_read != cnt)
++		ret |= EPOLLIN | EPOLLRDNORM;
++	if (hist_file->last_act != cnt) {
++		hist_file->last_act = cnt;
++		ret |= EPOLLPRI;
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int event_hist_release(struct inode *inode, struct file *file)
+@@ -5676,6 +5689,7 @@ static int event_hist_release(struct inode *inode, struct file *file)
+ 
+ static int event_hist_open(struct inode *inode, struct file *file)
+ {
++	struct trace_event_file *event_file;
+ 	struct hist_file_data *hist_file;
+ 	int ret;
+ 
+@@ -5683,16 +5697,25 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ 	if (ret)
+ 		return ret;
+ 
++	guard(mutex)(&event_mutex);
++
++	event_file = event_file_data(file);
++	if (!event_file)
++		return -ENODEV;
++
+ 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
+ 	if (!hist_file)
+ 		return -ENOMEM;
++
+ 	hist_file->file = file;
++	hist_file->last_act = get_hist_hit_count(event_file);
+ 
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+ 	ret = single_open(file, hist_show, hist_file);
+ 	if (ret)
+ 		kfree(hist_file);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
