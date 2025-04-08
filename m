@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E75BA8088D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C759FA80B0A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D32251BA3EBD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE8F1BC054C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AEE26AA8C;
-	Tue,  8 Apr 2025 12:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889A4278141;
+	Tue,  8 Apr 2025 12:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IP32I3J0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cc2G/ALW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB46626A0C5;
-	Tue,  8 Apr 2025 12:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4556327781F;
+	Tue,  8 Apr 2025 12:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115760; cv=none; b=c6DyS+LhzJ1ncmg5GLbKNM1ufue1nvHQ3keZH6vU8XkgQ+wV5bvbHY7/S8Az1oQvzWCSJjGPlvuCXcT9MnppIHGLzOP4BwHoIf+h3TSw/FfJ/HlENCSJvVK8ucVbUjxF1hgKB7bUJM3bmOuA4HyqvC9VzF3yGe1eEJ0ATqGJLWE=
+	t=1744116870; cv=none; b=qUqlDTo+NzIgAvtrFcxwL9kqz9m231f18hZSKDNQBbKRp1Y8x++nP4guqXlBNRUcmLMzb5BIXg8OO1IrGk6m6R7/rnt0t+oUSMKkcRGTfhxmGZlIYyvVFdj3rtufvAGA+T32GOUrOUxvn772VK9C6vxAePwlyoYttbxlp+8zP3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115760; c=relaxed/simple;
-	bh=JmGDbQgX2I2UyC6v71b/F5MiO2sNmBpyesDmn14Ot7M=;
+	s=arc-20240116; t=1744116870; c=relaxed/simple;
+	bh=gWqKD8MOgjmwMy0IzsARSE1MbJ5chrOZctWUBvZ4ssQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZMYr+Q+IKNVUmPJ9CvZQX7lJELtNaZVOCAexKdyXrOsD5OhowRcBdWef6ZthOuSRqBxYM1u0Tu5LgzWEK/y6cgCL6dExPA3hOm1db/Ldg1xO0zNawdoi+/Q6CsmyUMPazSAcGN225rOyvtdZSwfVIMzwntA0NSwwn9PwI4tiqCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IP32I3J0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50412C4CEEB;
-	Tue,  8 Apr 2025 12:36:00 +0000 (UTC)
+	 MIME-Version; b=m4l5fydZU5XyNa+038lY2BRYeya/kOWYfD6kQH6yQPE76jzHXPWJFTyOPKSMVmpbuXuQxK9qkKH1y04EuuGdoomkr41gGhl2IxG4DycX3YRc04/Np4rvSC01LzacUGMv72MolR+BkhBYK0xl2Eh8/pCsOj+anomIKXhnrC8GpiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cc2G/ALW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBE3C4CEE5;
+	Tue,  8 Apr 2025 12:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115760;
-	bh=JmGDbQgX2I2UyC6v71b/F5MiO2sNmBpyesDmn14Ot7M=;
+	s=korg; t=1744116870;
+	bh=gWqKD8MOgjmwMy0IzsARSE1MbJ5chrOZctWUBvZ4ssQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IP32I3J0oK6OhzKvBOY31cbhnHBBTeYNg1qqpS18mfKIhgH13WkfGXIXtNJZ3TBAt
-	 +Fiv3bwi2iL2ax5YPdrwvrM1CG7eH8JgpDBFqqFuEVKAl7LjFcWhSYupFyupXjKXh+
-	 13rxWiLZYwFzSBmtvztoskYaPlmLc/FUtA82DlJE=
+	b=cc2G/ALWM2E3+Y+1ZVyaeUwHEXtx+XQTm5zz1mzEFb0w/fhhZefyPvc790X1DcD3U
+	 6+sdtrLKipaovzVv+J6Xy66aDg6oHSgKzJpjdg7dkDXSqGPP4Isi55LOAYewfmWl8f
+	 hs85VhyFC+Rg9tw/YbeBAWyDi2YjvhFFts/7SYT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/204] iio: adc: ad7124: Fix comparison of channel configs
+Subject: [PATCH 6.12 298/423] memory: omap-gpmc: drop no compatible check
 Date: Tue,  8 Apr 2025 12:50:24 +0200
-Message-ID: <20250408104823.100413720@linuxfoundation.org>
+Message-ID: <20250408104852.731121355@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 05a5d874f7327b75e9bc4359618017e047cc129c ]
+[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+We are no longer depending on legacy device trees so
+drop the no compatible check for NAND and OneNAND
+nodes.
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
-
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad7124_channel_config::config_props is expanded, the comparison
-is adapted, too.
-
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-13-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Suggested-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 35 +++++++++++++++++++++++++++++++----
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ drivers/memory/omap-gpmc.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 5d4abe81d2a2b..307a607bf56c7 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -146,7 +146,11 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	/* Following fields are used to compare equality. */
-+	/*
-+	 * Following fields are used to compare for equality. If you
-+	 * make adaptations in it, you most likely also have to adapt
-+	 * ad7124_find_similar_live_cfg(), too.
-+	 */
- 	struct_group(config_props,
- 		enum ad7124_ref_sel refsel;
- 		bool bipolar;
-@@ -333,15 +337,38 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
- 								  struct ad7124_channel_config *cfg)
- {
- 	struct ad7124_channel_config *cfg_aux;
--	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad7124_channel_config was changed.
-+	 */
-+	static_assert(sizeof_field(struct ad7124_channel_config, config_props) ==
-+		      sizeof(struct {
-+				     enum ad7124_ref_sel refsel;
-+				     bool bipolar;
-+				     bool buf_positive;
-+				     bool buf_negative;
-+				     unsigned int vref_mv;
-+				     unsigned int pga_bits;
-+				     unsigned int odr;
-+				     unsigned int odr_sel_bits;
-+				     unsigned int filter_type;
-+			     }));
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
- 		if (cfg_aux->live &&
--		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
-+		    cfg->refsel == cfg_aux->refsel &&
-+		    cfg->bipolar == cfg_aux->bipolar &&
-+		    cfg->buf_positive == cfg_aux->buf_positive &&
-+		    cfg->buf_negative == cfg_aux->buf_negative &&
-+		    cfg->vref_mv == cfg_aux->vref_mv &&
-+		    cfg->pga_bits == cfg_aux->pga_bits &&
-+		    cfg->odr == cfg_aux->odr &&
-+		    cfg->odr_sel_bits == cfg_aux->odr_sel_bits &&
-+		    cfg->filter_type == cfg_aux->filter_type)
- 			return cfg_aux;
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index c8a0d82f9c27d..719225c09a4d6 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -2245,26 +2245,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ 		goto err;
  	}
  
+-	if (of_node_name_eq(child, "nand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible NAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+-	if (of_node_name_eq(child, "onenand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible OneNAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+ 	if (of_match_node(omap_nand_ids, child)) {
+ 		/* NAND specific setup */
+ 		val = 8;
 -- 
 2.39.5
 
