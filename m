@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD275A7FDA0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23CAA8033F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6503316E964
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFBF11736AF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B9726A1A4;
-	Tue,  8 Apr 2025 10:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AB7266F17;
+	Tue,  8 Apr 2025 11:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqlfa6dN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY0S2toD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814DD269894;
-	Tue,  8 Apr 2025 10:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42969268C66;
+	Tue,  8 Apr 2025 11:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109864; cv=none; b=iiAuN4oOTXKa+jYG7fXNNdFzm4fh4JQusyLh+i0deDHOIblXuZbu/JK4PXQ1y1nsLYSSBufnh8m4trz4D/EhOlnK/WeoTpFf8r7vA98DyS7c/Dsic+XmAukEcnSiSXeYMN0E4bKqaeQaWMNu4jWc0XgkDFZ1EG3DKzHbIJqPS84=
+	t=1744113036; cv=none; b=L1j/91VfV7/meXWPoD//PsUTiNNcIhb3TZy3TkJ0udGkuZ9Qrjv9oRPZJveupFT+toBn5poojUVBte4W9hnsNdR4KPI9s0sha5eg583Px7i2C6G14IAyrINchXCypyoT/+91COlvPNzcnYS6YOl4RYl6jRPIL3Yk3KHhYvPqGIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109864; c=relaxed/simple;
-	bh=bH5iIdobNNUDFIvXeNOMJM6WmN/vkFFiEvQAdPmSmuY=;
+	s=arc-20240116; t=1744113036; c=relaxed/simple;
+	bh=G/J3rCHE3LXa10/hv8YCUTq7XIlC5SpCtKZN4iUbSQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3WxjULajtpgADZsZp7pqRn5PrhQPpBy0N5ke4sbp3YD0j9u7x7YaqKmKi7lul2frZ4nXV76u6sGNmG5pQyCeZNT6v7ZecQaWlj9GluGQj9UODSRUOdZuDaXyzEfam27qaIk0v+TgYIRilQRGn5EDObzGd4ihvg25tUj/g3RCjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqlfa6dN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA14C4CEE5;
-	Tue,  8 Apr 2025 10:57:43 +0000 (UTC)
+	 MIME-Version; b=kptw3avTI2tQhisvPCQzP/7qG7ZFPjMfVDCi7uvPB7jks66SuJR/UIplaDarM3Wlhhba97NCf9BJN/+bFJmwiBOO0BkOZu04f42q+UmGjb9qvq5x3ZSSGe5eYo9AAHVQMOygaGHHIsy2VEspz9h0Npe8WyDHIOARAoQH2Kue2VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY0S2toD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A73C4CEE5;
+	Tue,  8 Apr 2025 11:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109864;
-	bh=bH5iIdobNNUDFIvXeNOMJM6WmN/vkFFiEvQAdPmSmuY=;
+	s=korg; t=1744113036;
+	bh=G/J3rCHE3LXa10/hv8YCUTq7XIlC5SpCtKZN4iUbSQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqlfa6dN+smntDZ5ai1RtKgPSF0cw/eCrK5MfOidDvcYvK97xbwNErMvMFq7v/5go
-	 2aolFabMNeOZPwWlPVtwXnYpH4LaUECweswfB7CUSvUjo98iQFKry4i6D6KHPM6YbL
-	 dqdChT2vSfaYJOXaXY/HWO09ua/csAFndggIQMiU=
+	b=AY0S2toDAEw2EXhJl7AAq0ILYGEpMz6t9mqYRO0HM4BhAUpzX9/eYZ+T95OzrXP9w
+	 Gy+aHE/KOmmi9rfqsf7ZlqTWIqwqZP43OE6WkKSHx82crXA3LsH6KizttGSIoPJyXg
+	 VOqaaA7AVisXLudxKN0NakXaoG2gizEtjJFrVLkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/227] mptcp: safety check before fallback
+Subject: [PATCH 6.6 011/268] lockdep/mm: Fix might_fault() lockdep check of current->mm->mmap_lock
 Date: Tue,  8 Apr 2025 12:47:02 +0200
-Message-ID: <20250408104821.722442509@linuxfoundation.org>
+Message-ID: <20250408104828.814816979@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
+[ Upstream commit a1b65f3f7c6f7f0a08a7dba8be458c6415236487 ]
 
-Recently, some fallback have been initiated, while the connection was
-not supposed to fallback.
+Turns out that this commit, about 10 years ago:
 
-Add a safety check with a warning to detect when an wrong attempt to
-fallback is being done. This should help detecting any future issues
-quicker.
+  9ec23531fd48 ("sched/preempt, mm/fault: Trigger might_sleep() in might_fault() with disabled pagefaults")
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+... accidentally (and unnessecarily) put the lockdep part of
+__might_fault() under CONFIG_DEBUG_ATOMIC_SLEEP=y.
+
+This is potentially notable because large distributions such as
+Ubuntu are running with !CONFIG_DEBUG_ATOMIC_SLEEP.
+
+Restore the debug check.
+
+[ mingo: Update changelog. ]
+
+Fixes: 9ec23531fd48 ("sched/preempt, mm/fault: Trigger might_sleep() in might_fault() with disabled pagefaults")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241104135517.536628371@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/memory.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 2330140d6b1cc..f5aeb3061408a 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -530,6 +530,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
- 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+diff --git a/mm/memory.c b/mm/memory.c
+index 65f1865cb461e..c39a45481c443 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5945,10 +5945,8 @@ void __might_fault(const char *file, int line)
+ 	if (pagefault_disabled())
  		return;
- 	}
-+	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
-+		return;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+ 	__might_sleep(file, line);
+-#if defined(CONFIG_DEBUG_ATOMIC_SLEEP)
+ 	if (current->mm)
+ 		might_lock_read(&current->mm->mmap_lock);
+-#endif
  }
- 
+ EXPORT_SYMBOL(__might_fault);
+ #endif
 -- 
 2.39.5
 
