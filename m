@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-128953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6FBA7FD43
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8A8A80233
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72C4A17EC4A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0DED3AA814
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528B4268FEF;
-	Tue,  8 Apr 2025 10:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B306835973;
+	Tue,  8 Apr 2025 11:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrBK6ZxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACHrr1QF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE2B268FED;
-	Tue,  8 Apr 2025 10:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7025019AD5C;
+	Tue,  8 Apr 2025 11:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109722; cv=none; b=GDtGnBO9y+uSjQlB+ZZX7STCahaN1xeI9xB9902/xUMR4CQTuh1M035KAkSgOzbpF9FtZO2IF0uyRYh6LtbnBoaB7c+ZPRUAAEKD453Drp66GryOX9uuNHDzy1RDm/31dQMvMaaog59kcRPPWD+eTz3l3lEBs1m//B5yp7RrLzo=
+	t=1744112315; cv=none; b=rsVK7i4ArTUmDdGmo5aax4vsidPPTxz+iCPjGn4e2TlEz/50yC+B6gAD1kEyUhHAX6YSDiAq7PP2lwonlUBMLQ3I7YcNXu5dEYByhS0r/dh6rh0VaF7NZRsbbi8KIG+UvScVxirAwCR1Tb4OG2MyhZsJE9aV8K4tyiXuXzz4p3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109722; c=relaxed/simple;
-	bh=75A7YswmAk2Iiq72FrnqaU9XSBmKBsVKP25G5XLsOvU=;
+	s=arc-20240116; t=1744112315; c=relaxed/simple;
+	bh=2MunAfwOxLnevAVCz/hz/dhszkubZJJ+HXpvZiERjlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ScZfbkgX4qONRD8i82AxwGxwlu4Zn9CSWMDRAX8TJm97OpERIEwLadjwg9Kqv85SksA6XIsUXJV7E7pK1sEWX4bpupbsPe5fbIghywm7FwfFfYTALDLW0p/xYWFkT2GcHLhFb3cw8t9CU9uaBO65AHCaq9VTJnkA+wpOJcsBCeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrBK6ZxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FC7C4CEE5;
-	Tue,  8 Apr 2025 10:55:20 +0000 (UTC)
+	 MIME-Version; b=sBFI9/j0NqsudqyKSKOpXKUQgBinB4r61zmwOU8mog2oIwwuFnkQDZrJmR4C9a+D6DKndlX0nv69kOeXYptPD4J12QegSj6dM0VAjUuAGXOiUQpMwg6i4IYTTHFqZnS7YrsLqZB8eQ+ReqPNGD/FlRpusg3pxMKvZh+BpVAikqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACHrr1QF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2824C4CEE5;
+	Tue,  8 Apr 2025 11:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109721;
-	bh=75A7YswmAk2Iiq72FrnqaU9XSBmKBsVKP25G5XLsOvU=;
+	s=korg; t=1744112315;
+	bh=2MunAfwOxLnevAVCz/hz/dhszkubZJJ+HXpvZiERjlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrBK6ZxIoDtRc4dYooe5HGYm2bGMY+2a3pHL+epKzm/T/YHZJvTcsAP5fXkgl5Vwq
-	 syhKaBqDgQjcBTLCkYg0Zen3HJcporXpyi+/ZxEMB4PPwccNzsDQ9TdtvXE6/YD4Vd
-	 SRHh8Ckf5xFe4tCP24eDgpyujJprrGXyVyHtJ/Nk=
+	b=ACHrr1QFq7LLNBH3x5xvyzmXX6Y+aqpxfcs4IzyZP07GUyj/ixM9JRwFOrcL54bF5
+	 ZU0YHWdwjxJVsBk/ncZBHyiPY3j8htTiga8rGLioL+5jmYg5MTWhC0F6xed3lLxWrh
+	 B3WILbvNWQZR7Jg02+uUAPqraSVVKVTLuk4L/Ak4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/227] vboxsf: fix building with GCC 15
+Subject: [PATCH 5.15 023/279] net/mlx5e: Prevent bridge link show failure for non-eswitch-allowed devices
 Date: Tue,  8 Apr 2025 12:46:46 +0200
-Message-ID: <20250408104821.245190694@linuxfoundation.org>
+Message-ID: <20250408104827.009886269@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
+[ Upstream commit e92df790d07a8eea873efcb84776e7b71f81c7d5 ]
 
-Building with GCC 15 results in build error
-fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
-   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-      |                                                      ^~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+mlx5_eswitch_get_vepa returns -EPERM if the device lacks
+eswitch_manager capability, blocking mlx5e_bridge_getlink from
+retrieving VEPA mode. Since mlx5e_bridge_getlink implements
+ndo_bridge_getlink, returning -EPERM causes bridge link show to fail
+instead of skipping devices without this capability.
 
-Due to GCC having enabled -Werror=unterminated-string-initialization[0]
-by default. Separately initializing each array element of
-VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
-and fixing the build error.
+To avoid this, return -EOPNOTSUPP from mlx5e_bridge_getlink when
+mlx5_eswitch_get_vepa fails, ensuring the command continues processing
+other devices while ignoring those without the necessary capability.
 
-[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-7-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
-index f11bcbac77278..4a77a5a3109ee 100644
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -21,7 +21,8 @@
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index a0870da414538..321441e6ad328 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4186,11 +4186,9 @@ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 mode, setting;
+-	int err;
  
- #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
- 
--static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-+static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
-+						       '\375' };
- 
- static int follow_symlinks;
- module_param(follow_symlinks, int, 0444);
+-	err = mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting);
+-	if (err)
+-		return err;
++	if (mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting))
++		return -EOPNOTSUPP;
+ 	mode = setting ? BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode,
 -- 
 2.39.5
 
