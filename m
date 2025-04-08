@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-129741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F143A800D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833C8A7FDAB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C7CB7A2AAB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3253019E28D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73526A083;
-	Tue,  8 Apr 2025 11:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8959C268C44;
+	Tue,  8 Apr 2025 10:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiSgwYFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIuwG+kv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1352A269CFD;
-	Tue,  8 Apr 2025 11:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA07268C65;
+	Tue,  8 Apr 2025 10:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111853; cv=none; b=A76nTgA40idrujY5uJ9xqRS71Jfk2eI6SMxkTFwYGXGqf5CPox40AUSq7MSWjefz72bO0zqAsQW9zgNi7dqaqV4JH9B8OTtzfCukakwyrQ1OplTv5JJ4iAKnmHi9VP13BF5rqSiNljTTafhpgB9cj9nWDONEHbbBmnoiqDp2ijM=
+	t=1744109921; cv=none; b=Z1gDN/ZZnzU2qD6vjtkS7bwSCJv9j6I1oCa2238Iypk8CLFti0jgNydcKFnR08TcMb4z/nnsIVpcag3usKAZEkLemTw48oH59cDsWooSHuKEJnWTOtNcrbL2S6QLKcR5TxN/7M4NYTc4evFUFuhtgfuAj0LcQmD2FhzXW3QtKM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111853; c=relaxed/simple;
-	bh=GjOgOGb5ohY8X0O8eKDg9ZQiF3551C20ZU8wIPKNtko=;
+	s=arc-20240116; t=1744109921; c=relaxed/simple;
+	bh=+AoJiFncLAZLwWYk8LqU4zCWWNX2p989PNx6Terqrxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5GtHuZ5Vnr0tiqg/K51PRYVPI4VRso2GYY2xqAYCzeTsdwjU+iwDDnTxt0ZtHR2nvYoQeCVNoWd/OkHKjmTkp/dBSvJFn0znb8SqBETOo6G56p3P1XJMPpFiGpeKOSBroqJDa1mUPwwomVCW5CYjTP/k0qwfrhN9Y6lyRxYDbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiSgwYFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2A1C4CEE5;
-	Tue,  8 Apr 2025 11:30:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WdF1im++QRRoFl1cTU7keioG1ooUs6jpUByuc2HoRuD5qRQhXRSoCVExMWYq7uds702zVLSTc/XFiBjwqj8Pj7eqtXQbleei4tkOpxYtB9zDxrQuDlnlWEtFvtAeC3B2S1t/NSTbZQ+Y76Rs+ytVH7n7qhxeS/iaX1cTltN5V1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIuwG+kv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF927C4CEE5;
+	Tue,  8 Apr 2025 10:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111852;
-	bh=GjOgOGb5ohY8X0O8eKDg9ZQiF3551C20ZU8wIPKNtko=;
+	s=korg; t=1744109921;
+	bh=+AoJiFncLAZLwWYk8LqU4zCWWNX2p989PNx6Terqrxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiSgwYFQSegVvgP5bF0ul2N1+4U/lyf20cEDZUCIP3ApZnTSlv1Vp2jXT69kYp8tl
-	 U7ulH/SjYiPsGU/4OyDXWwPDNpulIR21j9vEtsjK3mg+ktpn25bBHXswYsmzCj0lhh
-	 p/qMy/Sev5DVUvsDlAiXukXf5UPmXmiFJn+9vPWY=
+	b=kIuwG+kvUgawuzoHHqHj0+BP1ElpAL91DcFBzMuUgtl5MNhVgr4WKNbPAc3OqVmM5
+	 xdH3vaKYeO0sLxaQoYDoaosUl8PJzhd4mcyoKk8u8Lxwd9WnqJb3CcS4alYNizs5w+
+	 wxilBvLosQtKCFLwX4qKho48CYw48x/BudE1pSvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 583/731] riscv: Fix missing __free_pages() in check_vector_unaligned_access()
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 5.10 102/227] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
 Date: Tue,  8 Apr 2025 12:48:00 +0200
-Message-ID: <20250408104927.833752515@linuxfoundation.org>
+Message-ID: <20250408104823.422550615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: William Breathitt Gray <wbg@kernel.org>
 
-[ Upstream commit 33981b1c4e499021421686dcfa7b3d23a430d00e ]
+commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
 
-The locally allocated pages are never freed up, so add the corresponding
-__free_pages().
+Hardware initialize of the timer counter channel does not occur on probe
+thus leaving the Count in an undefined state until the first
+function_write() callback is executed. Fix this by performing the proper
+hardware initialization during probe.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Link: https://lore.kernel.org/r/20250228090613.345309-1-alexghiti@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Reported-by: Csókás Bence <csokas.bence@prolan.hu>
+Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
+Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 91f189cf16113..074ac4abd023e 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -349,7 +349,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 		pr_warn("cpu%d: rdtime lacks granularity needed to measure unaligned vector access speed\n",
- 			cpu);
- 
--		return;
-+		goto free;
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -377,6 +377,25 @@ static int mchp_tc_probe(struct platform
+ 			channel);
  	}
  
- 	if (word_cycles < byte_cycles)
-@@ -363,6 +363,9 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 		(speed ==  RISCV_HWPROBE_MISALIGNED_VECTOR_FAST) ? "fast" : "slow");
- 
- 	per_cpu(vector_misaligned_access, cpu) = speed;
++	/* Disable Quadrature Decoder and position measure */
++	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
++	if (ret)
++		return ret;
 +
-+free:
-+	__free_pages(page, MISALIGNED_BUFFER_ORDER);
- }
- 
- static int riscv_online_cpu_vec(unsigned int cpu)
--- 
-2.39.5
-
++	/* Setup the period capture mode */
++	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
++				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
++				 ATMEL_TC_TCCLKS,
++				 ATMEL_TC_CMR_MASK);
++	if (ret)
++		return ret;
++
++	/* Enable clock and trigger counter */
++	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
++			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
++	if (ret)
++		return ret;
++
+ 	priv->tc_cfg = tcb_config;
+ 	priv->regmap = regmap;
+ 	priv->counter.name = dev_name(&pdev->dev);
 
 
 
