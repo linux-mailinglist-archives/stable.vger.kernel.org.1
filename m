@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-129774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1D3A80158
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE1BA7FE03
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9FFA88250F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237DA1896333
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08171269899;
-	Tue,  8 Apr 2025 11:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8846267F5F;
+	Tue,  8 Apr 2025 11:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLHiGIo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfjaWLBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70A4268FD5;
-	Tue,  8 Apr 2025 11:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EC7267F51;
+	Tue,  8 Apr 2025 11:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111943; cv=none; b=TdJNOnC4f8Eek/8STt94KfyFDAHKFBWOH3eNg/C10zWKnlLsTj+UlYcFvcxbK+FxABjiFm6vhpohlJTCTpXHrvY2vVU3YFZj+uIYF9aBeVgVuyahSCPT7HKH4fA82lmTPhm3l4z/LjZC49a5RTWSXW9D1OpvhLB2QElbU6RZGdE=
+	t=1744110011; cv=none; b=Ret751xPiiqS/m0IgDhSMY+8yeFHqAcYlKm+pIosWW8XnkV0oAccSrlY00DfsumlmmaMrQ0eZDo7k3tgOZ+lHnmWttJftDzz4Z/Tl0R0bleLwGhqqKs5lOlRUFPXVEF1nlLLY8U4yhnbqTRMj0jNOlYXptCJ1b6ajKURWhdfIZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111943; c=relaxed/simple;
-	bh=2rGuU3KcU8J1ipqojYrcl6wbECeDwXGgyPgAs/9eL/A=;
+	s=arc-20240116; t=1744110011; c=relaxed/simple;
+	bh=j5s14519z16s+b81jsP7B0IjF0hf8pMWBrgRgb4fWXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSwXm2J3JU61E0xWzj71/ASTgWDFJbmN2C6n8TmtRUDvK6uXSK2ygjdvKsM+17FguIWyZopth+NqylMI6f5BdzJYDP2tPv690FaGxw6rWjU76A6fGzTN7PL/ietWmCD/sRAvZnyLZ2F8xdZJsJLZvPMdrv6IFrtnTC1IJw7Adu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLHiGIo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C964FC4CEE5;
-	Tue,  8 Apr 2025 11:32:22 +0000 (UTC)
+	 MIME-Version; b=SqCyNWczqME3q0/7itdyPe/613C53hfUG/hVjtBGx7QmcszqOTDgnNq4M2d/lYNn/rKYBtXUJ9xPN+gZVn+8s+j+lmvUQLZ55US726nErH2UMCh/NzXNDBkAt/IJBbszAnhlXMAA8lEv8ONsTZHss+7COt5bFu5X9m55nt3lW3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfjaWLBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5CCC4CEE5;
+	Tue,  8 Apr 2025 11:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111943;
-	bh=2rGuU3KcU8J1ipqojYrcl6wbECeDwXGgyPgAs/9eL/A=;
+	s=korg; t=1744110009;
+	bh=j5s14519z16s+b81jsP7B0IjF0hf8pMWBrgRgb4fWXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLHiGIo1vHpvnIHD0Mw7ZJ61p5af6Ha5zlDIZTiwac41zMYGarqjppoCVnuSgKx9a
-	 ++4U0Rq58IHKIIjji5rBhzf4n6ObVLnmxUgOo/OXfjuXWkNUNGPkIGZIC9mJyDffhO
-	 8XiduGHS8EXH9x76NteDJbGSQp0bqG8cpLV6jM3c=
+	b=yfjaWLBSRyDhb7L+Q7mXB3YnSSHszmky8eRrQxXIjOxZ9mU1g/i4TIR72cb9qBRRi
+	 gZt+7CsUUTpdW9y8EkGJZ31FyukajW1D+JM3AdNyW9/evP0N1ZuRn35LpoPL/iWQkD
+	 XEa7doUzqP1h7Onps5crUr1NsjTgaFDDslp/Z4h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuying Ma <yuma@redhat.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 617/731] idpf: fix adapter NULL pointer dereference on reboot
+Subject: [PATCH 5.10 136/227] drm/amd/display: fix type mismatch in CalculateDynamicMetadataParameters()
 Date: Tue,  8 Apr 2025 12:48:34 +0200
-Message-ID: <20250408104928.622160723@linuxfoundation.org>
+Message-ID: <20250408104824.394096133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 4c9106f4906a85f6b13542d862e423bcdc118cc3 ]
+[ Upstream commit c3c584c18c90a024a54716229809ba36424f9660 ]
 
-With SRIOV enabled, idpf ends up calling into idpf_remove() twice.
-First via idpf_shutdown() and then again when idpf_remove() calls into
-sriov_disable(), because the VF devices use the idpf driver, hence the
-same remove routine. When that happens, it is possible for the adapter
-to be NULL from the first call to idpf_remove(), leading to a NULL
-pointer dereference.
+There is a type mismatch between what CalculateDynamicMetadataParameters()
+takes and what is passed to it. Currently this function accepts several
+args as signed long but it's called with unsigned integers and integer. On
+some systems where long is 32 bits and one of these unsigned int params is
+greater than INT_MAX it may cause passing input params as negative values.
 
-echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
-reboot
+Fix this by changing these argument types from long to unsigned int and to
+int respectively. Also this will align the function's definition with
+similar functions in other dcn* drivers.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-...
-RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
-...
-? idpf_remove+0x22/0x1f0 [idpf]
-? idpf_remove+0x1e4/0x1f0 [idpf]
-pci_device_remove+0x3f/0xb0
-device_release_driver_internal+0x19f/0x200
-pci_stop_bus_device+0x6d/0x90
-pci_stop_and_remove_bus_device+0x12/0x20
-pci_iov_remove_virtfn+0xbe/0x120
-sriov_disable+0x34/0xe0
-idpf_sriov_configure+0x58/0x140 [idpf]
-idpf_remove+0x1b9/0x1f0 [idpf]
-idpf_shutdown+0x12/0x30 [idpf]
-pci_device_shutdown+0x35/0x60
-device_shutdown+0x156/0x200
-...
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Replace the direct idpf_remove() call in idpf_shutdown() with
-idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
-the bulk of the cleanup, such as stopping the init task, freeing IRQs,
-destroying the vports and freeing the mailbox. This avoids the calls to
-sriov_disable() in addition to a small netdev cleanup, and destroying
-workqueues, which don't seem to be required on shutdown.
-
-Reported-by: Yuying Ma <yuma@redhat.com>
-Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 6725a88f88a7 ("drm/amd/display: Add DCN3 DML")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../amd/display/dc/dml/dcn30/display_mode_vba_30.c   | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index b6c515d14cbf0..bec4a02c53733 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
-  */
- static void idpf_shutdown(struct pci_dev *pdev)
- {
--	idpf_remove(pdev);
-+	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
-+
-+	cancel_delayed_work_sync(&adapter->vc_event_task);
-+	idpf_vc_core_deinit(adapter);
-+	idpf_deinit_dflt_mbx(adapter);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
+index e5b1002d7f3f0..ed4e7f3728ab3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
+@@ -283,10 +283,10 @@ static void CalculateDynamicMetadataParameters(
+ 		double DISPCLK,
+ 		double DCFClkDeepSleep,
+ 		double PixelClock,
+-		long HTotal,
+-		long VBlank,
+-		long DynamicMetadataTransmittedBytes,
+-		long DynamicMetadataLinesBeforeActiveRequired,
++		unsigned int HTotal,
++		unsigned int VBlank,
++		unsigned int DynamicMetadataTransmittedBytes,
++		int DynamicMetadataLinesBeforeActiveRequired,
+ 		int InterlaceEnable,
+ 		bool ProgressiveToInterlaceUnitInOPP,
+ 		double *Tsetup,
+@@ -3373,8 +3373,8 @@ static double CalculateWriteBackDelay(
  
- 	if (system_state == SYSTEM_POWER_OFF)
- 		pci_set_power_state(pdev, PCI_D3hot);
+ 
+ static void CalculateDynamicMetadataParameters(int MaxInterDCNTileRepeaters, double DPPCLK, double DISPCLK,
+-		double DCFClkDeepSleep, double PixelClock, long HTotal, long VBlank, long DynamicMetadataTransmittedBytes,
+-		long DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
++		double DCFClkDeepSleep, double PixelClock, unsigned int HTotal, unsigned int VBlank, unsigned int DynamicMetadataTransmittedBytes,
++		int DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
+ 		double *Tsetup, double *Tdmbf, double *Tdmec, double *Tdmsks)
+ {
+ 	double TotalRepeaterDelayTime = 0;
 -- 
 2.39.5
 
