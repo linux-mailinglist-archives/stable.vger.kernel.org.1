@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E06A80464
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42C3A80B06
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ED6D466A02
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54C614C5DB5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABB1269CF6;
-	Tue,  8 Apr 2025 11:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4432D27701B;
+	Tue,  8 Apr 2025 12:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW09kevV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHpWkFHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11E20CCD8;
-	Tue,  8 Apr 2025 11:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8526A0CF;
+	Tue,  8 Apr 2025 12:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113468; cv=none; b=GQLpeIMmqKiKwjfCl3NyR5ZqqcBYTVPEvsdGmMy9BecHwxZHttueAT+QWv6BMJGkDX8PyxhSv4IrPnqtNjrctSo12F1yk2Yy2DmZ18YuL8X4p1BlnY/qGCAqYpLpMecCEx/IJeYWY5cOsYW8ruH0AC2AMX9PzyEYUIXb0N0AZAg=
+	t=1744116753; cv=none; b=Mc+8d458BuSoqkg4X+HE3ZGfAi9Hue4G4fiZK7PQKOYKG2KYaI6bfTLHsiNjTJ9NrwO5QJyqBuFUHfCNn89Nj5xQ9dEScJwps9B/is26YzV1qUpxMekKlDn+sGsXGCH8gMke2ZlK1f8F5TH4zcWYVFvB0puGyVUyKoscUJvUumY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113468; c=relaxed/simple;
-	bh=hQD5J2epS8Pp48oPY0ubJ41ZJkGReYem+i4QjiZKh1o=;
+	s=arc-20240116; t=1744116753; c=relaxed/simple;
+	bh=qY/bvLEp0v18NHpRh9dHqboFlHBTUfzIcXxiicKpAb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhAxGKvWuSNul6Q5uZATJe1J41F2q4FWTdmmI51yM3FqEUuuF/43XH39up5eMZ/cdxIBYy6wCHlppyYNj5AAimv4/RKrsO/8K/vYvQ9NpEV67/7sn8k5EBrCWLKbYlnJXDfsqoMbHLzRmMbhfdqcnE3RrahsBuASnxBre+Du46Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW09kevV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79378C4CEEA;
-	Tue,  8 Apr 2025 11:57:47 +0000 (UTC)
+	 MIME-Version; b=JiVNrR2orKV22oo0/SAmCkyaDyxel8dBiMhNX4Rzz/TGnEMSs89cqNyk3PL4wifpwAR9RCTD8oST9CnMt72yzaKhOJMIIN0xnZuoQhO1Pk3Hu74OPtoE6CAt2YHCZAkThLh3SqCkyyb3HvtHciVIy6cLyJ6ZM+MhEokWdVUGwiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHpWkFHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E7AC4CEE5;
+	Tue,  8 Apr 2025 12:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113467;
-	bh=hQD5J2epS8Pp48oPY0ubJ41ZJkGReYem+i4QjiZKh1o=;
+	s=korg; t=1744116752;
+	bh=qY/bvLEp0v18NHpRh9dHqboFlHBTUfzIcXxiicKpAb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xW09kevV2zqlbwZ6vAI+OHOYS4Vj1rdoL+lbVhTePDG/X4kWXYFx/bSNdClr/UvMz
-	 x7vXEbKu5UYh0Qt6jiU7M19MYiCksv3xiTbc6BEb+xn2G3vRfBlKkxvV1vBbmuMaMI
-	 5JmaD+Uys5qllv0lALt5X/EVpM8GvGxpXyWEBEm4=
+	b=tHpWkFHxSGceP2cSEM7o4kQ/Zh0S9lPyrPuo40erOGmJauKaoj1+Y/3nIALQTUztG
+	 y1mOCoBwdDDAM4S2ouV8YHWUXpNNE/Mv9yuzpCJMQXlIHDq86GnpVy4u8Y8raxG6DE
+	 E98qZ2wh/dyKYpFLKsJ2QVwKlbZMJdbOb5kvpfes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Gospodnetich <me@kylegospodneti.ch>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/268] ALSA: hda/realtek: Fix Asus Z13 2025 audio
+Subject: [PATCH 6.12 255/423] wifi: iwlwifi: fw: allocate chained SG tables for dump
 Date: Tue,  8 Apr 2025 12:49:41 +0200
-Message-ID: <20250408104833.133854290@linuxfoundation.org>
+Message-ID: <20250408104851.682914979@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 12784ca33b62fd327631749e6a0cd2a10110a56c ]
+[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
 
-Use the basic quirk for this type of amplifier. Sound works in speakers,
-headphones, and microphone. Whereas none worked before.
+The firmware dumps can be pretty big, and since we use single
+pages for each SG table entry, even the table itself may end
+up being an order-5 allocation. Build chained tables so that
+we need not allocate a higher-order table here.
 
-Tested-by: Kyle Gospodnetich <me@kylegospodneti.ch>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://patch.msgid.link/20250227175107.33432-3-lkml@antheas.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This could be improved and cleaned up, e.g. by using the SG
+pool code or simply kvmalloc(), but all of that would require
+also updating the devcoredump first since that frees it all,
+so we need to be more careful. SG pool might also run against
+the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
+here.
+
+Also use _devcd_free_sgtable() for the error paths now, much
+simpler especially since it's in two places now.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
+ 1 file changed, 58 insertions(+), 28 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 81ebf59898a10..7a40f66f8fd88 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10236,6 +10236,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
-+	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index fb2ea38e89aca..6594216f873c4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -558,41 +558,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
+ }
+ 
+ /*
+- * alloc_sgtable - allocates scallerlist table in the given size,
+- * fills it with pages and returns it
++ * alloc_sgtable - allocates (chained) scatterlist in the given size,
++ *	fills it with pages and returns it
+  * @size: the size (in bytes) of the table
+-*/
+-static struct scatterlist *alloc_sgtable(int size)
++ */
++static struct scatterlist *alloc_sgtable(ssize_t size)
+ {
+-	int alloc_size, nents, i;
+-	struct page *new_page;
+-	struct scatterlist *iter;
+-	struct scatterlist *table;
++	struct scatterlist *result = NULL, *prev;
++	int nents, i, n_prev;
+ 
+ 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
+-	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
+-	if (!table)
+-		return NULL;
+-	sg_init_table(table, nents);
+-	iter = table;
+-	for_each_sg(table, iter, sg_nents(table), i) {
+-		new_page = alloc_page(GFP_KERNEL);
+-		if (!new_page) {
+-			/* release all previous allocated pages in the table */
+-			iter = table;
+-			for_each_sg(table, iter, sg_nents(table), i) {
+-				new_page = sg_page(iter);
+-				if (new_page)
+-					__free_page(new_page);
+-			}
+-			kfree(table);
++
++#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
++	/*
++	 * We need an additional entry for table chaining,
++	 * this ensures the loop can finish i.e. we can
++	 * fit at least two entries per page (obviously,
++	 * many more really fit.)
++	 */
++	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
++
++	while (nents > 0) {
++		struct scatterlist *new, *iter;
++		int n_fill, n_alloc;
++
++		if (nents <= N_ENTRIES_PER_PAGE) {
++			/* last needed table */
++			n_fill = nents;
++			n_alloc = nents;
++			nents = 0;
++		} else {
++			/* fill a page with entries */
++			n_alloc = N_ENTRIES_PER_PAGE;
++			/* reserve one for chaining */
++			n_fill = n_alloc - 1;
++			nents -= n_fill;
++		}
++
++		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
++		if (!new) {
++			if (result)
++				_devcd_free_sgtable(result);
+ 			return NULL;
+ 		}
+-		alloc_size = min_t(int, size, PAGE_SIZE);
+-		size -= PAGE_SIZE;
+-		sg_set_page(iter, new_page, alloc_size, 0);
++		sg_init_table(new, n_alloc);
++
++		if (!result)
++			result = new;
++		else
++			sg_chain(prev, n_prev, new);
++		prev = new;
++		n_prev = n_alloc;
++
++		for_each_sg(new, iter, n_fill, i) {
++			struct page *new_page = alloc_page(GFP_KERNEL);
++
++			if (!new_page) {
++				_devcd_free_sgtable(result);
++				return NULL;
++			}
++
++			sg_set_page(iter, new_page, PAGE_SIZE, 0);
++		}
+ 	}
+-	return table;
++
++	return result;
+ }
+ 
+ static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
 -- 
 2.39.5
 
