@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-130850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F11A80632
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2676EA809CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA357AA12A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0271BA3649
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB8126A0AC;
-	Tue,  8 Apr 2025 12:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99B126AABF;
+	Tue,  8 Apr 2025 12:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diecdTqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOQTEqLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678E72673B7;
-	Tue,  8 Apr 2025 12:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915E219DF6A;
+	Tue,  8 Apr 2025 12:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114821; cv=none; b=fFAR05xe+k8h2/xt3iOcs4CZjSDvGe4S7VzvbtJm8CxliTV1qCqTxzU60ZHyz56dvhLm/NXZDijUvbmS9+ZjSKl7W4VFOMLEK4D393KlSzCIYs0vm+I30g5SRmDNDPaRZBhADbj/1RgV8psi/Jhqp+fD1fWWmGtFGmXs1YDXPL8=
+	t=1744116434; cv=none; b=G2Dj5pExUHPCZyHyAsSnxu783X2FIqTZWMPP6xNi7fNPWCzm9ScrsnCvHETL1SsBW8jp8Jmh5j29Gu7LRJmfJP7JVpWCcGj2F2uTx5TtQDyI6mY5WkQ1abRDeUlcqYFKpnD16p3cZFF9N9f/91oKKgqTOI+hiut+ocfuau3/osU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114821; c=relaxed/simple;
-	bh=oBqLLNzmKETf4l85E9sAtnxrOODF8Pn0v4vU/XQQPZw=;
+	s=arc-20240116; t=1744116434; c=relaxed/simple;
+	bh=lVKBnExVPLHyOhfr8k4QV80GXVye7BYkGvRSkydPhlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwRXPJ3RSzsX2/+Iz3kRozq0eSo4rdHa6pe2xZ7zZDiGWDsxF843QmtnCAO8VUQQ5Wm2lXsWamJkaDU3vpyThU+iwBbNG0y3PX5u8jPlWQooDZquMrluBhqCxvgrx7PAVZyiH8HlfFxw6C6aOpH7iPertQeaxL47fFQMSeMi6IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diecdTqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE579C4CEE5;
-	Tue,  8 Apr 2025 12:20:20 +0000 (UTC)
+	 MIME-Version; b=T9NSN/nmLe6uJrgYnyDsRYncrpFNKpRg+WJToGQ6NYtfrs93UsVncTDEo0w5y0EnRhht63Yr9bOT5lOUqa7BipjmCSiEUIDos828FNV2Fi4XJHAnzZuUTIUds4l4S0+C8Yqz64AC8GDGUTmxHzgCFVjfGdDYzL664Knd83bG/Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOQTEqLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210FBC4CEE5;
+	Tue,  8 Apr 2025 12:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114821;
-	bh=oBqLLNzmKETf4l85E9sAtnxrOODF8Pn0v4vU/XQQPZw=;
+	s=korg; t=1744116434;
+	bh=lVKBnExVPLHyOhfr8k4QV80GXVye7BYkGvRSkydPhlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diecdTqcxBIxK9QUadm5OnzyXoUFf0MaVwSqgVSA2Qd57FbJVGm4L9z4kKRQW2n5d
-	 N//SimvvV6CZLXWTudsJao/nhRhBHHWd8SyDziMsMYaGwPtz2kUxNcld7bsXLAYVA5
-	 fJosarfNf6TspH5klY6fDM7n1OuuN6AmMF0eWBGE=
+	b=mOQTEqLQusQyrXaPX5sIYW4AnA6oMb2SkjWUpMO/Wd15xJEW6qvIwpbWGoB6qAVd0
+	 qfHsHCiJAT02MgJC8uFbGpDbsO25Pf1Kk37Jb7LyR8cxlKU3M72G+nrWbAcFRv4hyU
+	 qrkI5iUn3pzJ3r8l/t29I5K4mCxMlu2emPZagmys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Parav Pandit <parav@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 246/499] NFSv4: Avoid unnecessary scans of filesystems for returning delegations
+Subject: [PATCH 6.12 132/423] RDMA/core: Dont expose hw_counters outside of init net namespace
 Date: Tue,  8 Apr 2025 12:47:38 +0200
-Message-ID: <20250408104857.349753965@linuxfoundation.org>
+Message-ID: <20250408104848.801683040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +67,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-[ Upstream commit 35a566a24e58f1b5f89737edf60b77de58719ed0 ]
+[ Upstream commit a1ecb30f90856b0be4168ad51b8875148e285c1f ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. If the state manager was asked to return
-delegations asynchronously, it should only scan those filesystems that
-hold delegations that need to be returned.
+Commit 467f432a521a ("RDMA/core: Split port and device counter sysfs
+attributes") accidentally almost exposed hw counters to non-init net
+namespaces. It didn't expose them fully, as an attempt to read any of
+those counters leads to a crash like this one:
 
-Fixes: af3b61bf6131 ("NFSv4: Clean up nfs_client_return_marked_delegations()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[42021.807566] BUG: kernel NULL pointer dereference, address: 0000000000000028
+[42021.814463] #PF: supervisor read access in kernel mode
+[42021.819549] #PF: error_code(0x0000) - not-present page
+[42021.824636] PGD 0 P4D 0
+[42021.827145] Oops: 0000 [#1] SMP PTI
+[42021.830598] CPU: 82 PID: 2843922 Comm: switchto-defaul Kdump: loaded Tainted: G S      W I        XXX
+[42021.841697] Hardware name: XXX
+[42021.849619] RIP: 0010:hw_stat_device_show+0x1e/0x40 [ib_core]
+[42021.855362] Code: 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 49 89 d0 4c 8b 5e 20 48 8b 8f b8 04 00 00 48 81 c7 f0 fa ff ff <48> 8b 41 28 48 29 ce 48 83 c6 d0 48 c1 ee 04 69 d6 ab aa aa aa 48
+[42021.873931] RSP: 0018:ffff97fe90f03da0 EFLAGS: 00010287
+[42021.879108] RAX: ffff9406988a8c60 RBX: ffff940e1072d438 RCX: 0000000000000000
+[42021.886169] RDX: ffff94085f1aa000 RSI: ffff93c6cbbdbcb0 RDI: ffff940c7517aef0
+[42021.893230] RBP: ffff97fe90f03e70 R08: ffff94085f1aa000 R09: 0000000000000000
+[42021.900294] R10: ffff94085f1aa000 R11: ffffffffc0775680 R12: ffffffff87ca2530
+[42021.907355] R13: ffff940651602840 R14: ffff93c6cbbdbcb0 R15: ffff94085f1aa000
+[42021.914418] FS:  00007fda1a3b9700(0000) GS:ffff94453fb80000(0000) knlGS:0000000000000000
+[42021.922423] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[42021.928130] CR2: 0000000000000028 CR3: 00000042dcfb8003 CR4: 00000000003726f0
+[42021.935194] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[42021.942257] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[42021.949324] Call Trace:
+[42021.951756]  <TASK>
+[42021.953842]  [<ffffffff86c58674>] ? show_regs+0x64/0x70
+[42021.959030]  [<ffffffff86c58468>] ? __die+0x78/0xc0
+[42021.963874]  [<ffffffff86c9ef75>] ? page_fault_oops+0x2b5/0x3b0
+[42021.969749]  [<ffffffff87674b92>] ? exc_page_fault+0x1a2/0x3c0
+[42021.975549]  [<ffffffff87801326>] ? asm_exc_page_fault+0x26/0x30
+[42021.981517]  [<ffffffffc0775680>] ? __pfx_show_hw_stats+0x10/0x10 [ib_core]
+[42021.988482]  [<ffffffffc077564e>] ? hw_stat_device_show+0x1e/0x40 [ib_core]
+[42021.995438]  [<ffffffff86ac7f8e>] dev_attr_show+0x1e/0x50
+[42022.000803]  [<ffffffff86a3eeb1>] sysfs_kf_seq_show+0x81/0xe0
+[42022.006508]  [<ffffffff86a11134>] seq_read_iter+0xf4/0x410
+[42022.011954]  [<ffffffff869f4b2e>] vfs_read+0x16e/0x2f0
+[42022.017058]  [<ffffffff869f50ee>] ksys_read+0x6e/0xe0
+[42022.022073]  [<ffffffff8766f1ca>] do_syscall_64+0x6a/0xa0
+[42022.027441]  [<ffffffff8780013b>] entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+The problem can be reproduced using the following steps:
+  ip netns add foo
+  ip netns exec foo bash
+  cat /sys/class/infiniband/mlx4_0/hw_counters/*
+
+The panic occurs because of casting the device pointer into an
+ib_device pointer using container_of() in hw_stat_device_show() is
+wrong and leads to a memory corruption.
+
+However the real problem is that hw counters should never been exposed
+outside of the non-init net namespace.
+
+Fix this by saving the index of the corresponding attribute group
+(it might be 1 or 2 depending on the presence of driver-specific
+attributes) and zeroing the pointer to hw_counters group for compat
+devices during the initialization.
+
+With this fix applied hw_counters are not available in a non-init
+net namespace:
+  find /sys/class/infiniband/mlx4_0/ -name hw_counters
+    /sys/class/infiniband/mlx4_0/ports/1/hw_counters
+    /sys/class/infiniband/mlx4_0/ports/2/hw_counters
+    /sys/class/infiniband/mlx4_0/hw_counters
+
+  ip netns add foo
+  ip netns exec foo bash
+  find /sys/class/infiniband/mlx4_0/ -name hw_counters
+
+Fixes: 467f432a521a ("RDMA/core: Split port and device counter sysfs attributes")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Maher Sanalla <msanalla@nvidia.com>
+Cc: linux-rdma@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Link: https://patch.msgid.link/20250227165420.3430301-1-roman.gushchin@linux.dev
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 5 +++++
- include/linux/nfs_fs_sb.h | 2 ++
- 2 files changed, 7 insertions(+)
+ drivers/infiniband/core/device.c | 9 +++++++++
+ drivers/infiniband/core/sysfs.c  | 1 +
+ include/rdma/ib_verbs.h          | 1 +
+ 3 files changed, 11 insertions(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index df77d68d9ff99..d1f5e497729c3 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -79,6 +79,7 @@ static void nfs_mark_return_delegation(struct nfs_server *server,
- 				       struct nfs_delegation *delegation)
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index e029401b56805..9de3236873429 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -544,6 +544,8 @@ static struct class ib_class = {
+ static void rdma_init_coredev(struct ib_core_device *coredev,
+ 			      struct ib_device *dev, struct net *net)
  {
- 	set_bit(NFS_DELEGATION_RETURN, &delegation->flags);
-+	set_bit(NFS4SERV_DELEGRETURN, &server->delegation_flags);
- 	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
- }
++	bool is_full_dev = &dev->coredev == coredev;
++
+ 	/* This BUILD_BUG_ON is intended to catch layout change
+ 	 * of union of ib_core_device and device.
+ 	 * dev must be the first element as ib_core and providers
+@@ -555,6 +557,13 @@ static void rdma_init_coredev(struct ib_core_device *coredev,
  
-@@ -608,6 +609,9 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
- 	struct nfs_delegation *place_holder_deleg = NULL;
- 	int err = 0;
+ 	coredev->dev.class = &ib_class;
+ 	coredev->dev.groups = dev->groups;
++
++	/*
++	 * Don't expose hw counters outside of the init namespace.
++	 */
++	if (!is_full_dev && dev->hw_stats_attr_index)
++		coredev->dev.groups[dev->hw_stats_attr_index] = NULL;
++
+ 	device_initialize(&coredev->dev);
+ 	coredev->owner = dev;
+ 	INIT_LIST_HEAD(&coredev->port_list);
+diff --git a/drivers/infiniband/core/sysfs.c b/drivers/infiniband/core/sysfs.c
+index 9f97bef021497..210092b9bf17d 100644
+--- a/drivers/infiniband/core/sysfs.c
++++ b/drivers/infiniband/core/sysfs.c
+@@ -988,6 +988,7 @@ int ib_setup_device_attrs(struct ib_device *ibdev)
+ 	for (i = 0; i != ARRAY_SIZE(ibdev->groups); i++)
+ 		if (!ibdev->groups[i]) {
+ 			ibdev->groups[i] = &data->group;
++			ibdev->hw_stats_attr_index = i;
+ 			return 0;
+ 		}
+ 	WARN(true, "struct ib_device->groups is too small");
+diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
+index 67551133b5228..c2b5de75daf25 100644
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2737,6 +2737,7 @@ struct ib_device {
+ 	 * It is a NULL terminated array.
+ 	 */
+ 	const struct attribute_group	*groups[4];
++	u8				hw_stats_attr_index;
  
-+	if (!test_and_clear_bit(NFS4SERV_DELEGRETURN,
-+				&server->delegation_flags))
-+		return 0;
- restart:
- 	/*
- 	 * To avoid quadratic looping we hold a reference
-@@ -659,6 +663,7 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
- 		cond_resched();
- 		if (!err)
- 			goto restart;
-+		set_bit(NFS4SERV_DELEGRETURN, &server->delegation_flags);
- 		set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
- 		goto out;
- 	}
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index b804346a97419..98fc10ee0b869 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -251,6 +251,8 @@ struct nfs_server {
- 	struct list_head	ss_copies;
- 	struct list_head	ss_src_copies;
+ 	u64			     uverbs_cmd_mask;
  
-+	unsigned long		delegation_flags;
-+#define NFS4SERV_DELEGRETURN		(1)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
 -- 
 2.39.5
 
