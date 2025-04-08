@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10A3A8083E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A93A808D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1D54C7723
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71474E3A06
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A672E26E171;
-	Tue,  8 Apr 2025 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D7126FA60;
+	Tue,  8 Apr 2025 12:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Grjfvzmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjqsYYHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6436026B961;
-	Tue,  8 Apr 2025 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107A226A1A3;
+	Tue,  8 Apr 2025 12:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115394; cv=none; b=lc0BLv435+gnjg0codJFfLi25GgL2HsjQdPqqXeHRap49SoOHEPZqwwcGUFzrxBTfZzKs73eOiILuvjQnK5ImeM6MNHm6jbAQFSaM1yLbFygtmbHGvSNwZxCa59D9D/DMYhQow8s+CMybFNgEq+M9n9zIacnH9bYOdIGSWc+X9k=
+	t=1744115882; cv=none; b=RzMJQXrp7EgRTljVwib26S9GFeAsgyjYKga5AD+t989JYdOhouUkXHV3hYC+IBGkMkRTrMCu8xFfIkcix3QBLGiNnfsevMaHfrVmXBhETPWcY5HZ3gmjpL/GAHKYQSclP0hLl28ti3A2dvzZclh1qmYCDmsITI18LbowE0SVLYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115394; c=relaxed/simple;
-	bh=dhrEz6aagFxjCMoQhLExh0Yrms+BYWAgHehYW/xrX/U=;
+	s=arc-20240116; t=1744115882; c=relaxed/simple;
+	bh=JHS9Bwsk1HYywvBlYt08VFVwEfV5Xm/7Ozp22Q5Ipkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MWbBdV2A+hvGeiBXfsb4OCdojHuL0caBYEZJPQtbwYlUNFieCJEKIhWseA4DIf65bL8vh0MlXQzZoy0XRL/8NeKN0oAeM5DbggL8Sge7yUpOZ2hF9L+DT4gyeMw8WDs7EYkVqwdF29j4RHO91vk5yB75CqCoBtled+Y5Yda1vvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grjfvzmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBAFC4CEEA;
-	Tue,  8 Apr 2025 12:29:53 +0000 (UTC)
+	 MIME-Version; b=myEAzJ8XRd+OR43bDi67A8h7XlMCjucVaVVgs1E14yMo81BFmzF6lnifXn6mqiKOfUw3Btl9fyEiLqPwqZDoIi54Ue6do/3waFUvreU0heHh6f/u9yVuFHtkKeTII+x1AF+Ef2FwUbVrZ0JX/4dHYPtth6SfaBJGOf5e0bDU/Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjqsYYHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93062C4CEE7;
+	Tue,  8 Apr 2025 12:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115394;
-	bh=dhrEz6aagFxjCMoQhLExh0Yrms+BYWAgHehYW/xrX/U=;
+	s=korg; t=1744115881;
+	bh=JHS9Bwsk1HYywvBlYt08VFVwEfV5Xm/7Ozp22Q5Ipkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Grjfvzmvw0AJy94sefAfLWgjgYBB0qW42OF3eZguuIaXRX5bxMHFEneD2EKcUvRtQ
-	 TeAjGWhaGkwOYA2Ch+kmaINXhigx9jNxYJ02lb9m2arrg8h0OBnWTjerivkzZbJpXu
-	 4liXEiuJA/dWFhfA7Act2MUYr8GDuXmRdEEO+64Q=
+	b=zjqsYYHRKFdkz0wosvKYMU5dv/bku3oBcUYCH5tCYjDkcy/oFLhOliuUyyXV2RTwx
+	 lI8BRVfghRJXDFdsMbHxN5T3wwpqY+e4rO6f8LALWKAYCb0+4ni541s1+eOcFwODt8
+	 RDZh59Z5h6r8Gfyqk7Rnsz65Pj1Rq0EO35Rh6zao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Anton Shyndin <mrcold.il@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.13 457/499] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/204] ALSA: hda/realtek: Add support for ASUS Zenbook UM3406KA Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:51:09 +0200
-Message-ID: <20250408104902.632900341@linuxfoundation.org>
+Message-ID: <20250408104824.373757260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
+[ Upstream commit 8463d2adbe1901247937fcdfe4b525130f6db10b ]
 
-Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
-X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
-the kernel overrides to EdgeHigh breaking the keyboard.
+Laptop uses 2 CS35L41 Amps with HDA, using External boost with I2C
 
-    $ sudo dmidecode
-    […]
-    System Information
-            Manufacturer: ASUSTeK COMPUTER INC.
-            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
-    […]
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                 IRQ (Level, ActiveLow, Exclusive, )
-                     {1}
-
-Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Anton Shyndin <mrcold.il@gmail.com>
-Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-8-sbinding@opensource.cirrus.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1404VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
-+		},
-+	},
-+	{
- 		/* Asus Vivobook X1504VAP */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 841338c82e807..66238f7e35bd3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10004,6 +10004,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+-- 
+2.39.5
+
 
 
 
