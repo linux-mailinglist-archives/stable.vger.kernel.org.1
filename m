@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7BEA804B2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC27A80866
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA24447604
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C588A5AA7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B65269CF1;
-	Tue,  8 Apr 2025 12:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C1F26B2B3;
+	Tue,  8 Apr 2025 12:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYlqMI/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVubU3eI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA826869D;
-	Tue,  8 Apr 2025 12:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BF126FDA1;
+	Tue,  8 Apr 2025 12:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113791; cv=none; b=JrDoDi2BUAUTIqLd/qd6DLbTOXGfpelaoZuuPb2qgQTRhUztGWi7IKwzw0IF2QS/kGFjFUeh7tjsl5lYjTtw4lBQoYGjPifo4WNfzcGgaZzDB/TxwLmkTJFo4l7HHaAxNVti+0XHOcmziAdzXGbXXbyy41drqOt6n3O9uOUxhsI=
+	t=1744115670; cv=none; b=TU8eaNAh6aq+awwHeQFeJ0qKREhAAmVVNj+IMF2QS6+QhUyDUXW29Au/LDV9UaxvgQzXWuvz3XbWM2qr8+52y2g2Lm4QtznWH1Fzl3+UCk7BeqnkQhxkIGLfIJ/1kuvNDWiBvfSSlUUbOtVaSAOdFO8vuTpf5iR1oUjzsW6+C8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113791; c=relaxed/simple;
-	bh=6cDrRPRemTCw2vTcZOLy063WBlViY9W2tJYi6fb7KHQ=;
+	s=arc-20240116; t=1744115670; c=relaxed/simple;
+	bh=8vWvP1U13txb3M4GaCmQAcvchhJoP0k84r++teccdBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ly/v7o654JsaMjXZ4S3CiOtVayhlLhkhby0dAfDRKBoOIytFlexz6jWDSI+X9TsJeBv6BsE3KL4nFkBuOhyBQO+KoCBb4TGXxKg07OAbuo16lwtlFhyHg6UPeZiLs5O8+HBGxeek0TEXSQmnpFp+/1YYupzXmjWMdaV+llIwBk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYlqMI/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D13FC4CEE5;
-	Tue,  8 Apr 2025 12:03:10 +0000 (UTC)
+	 MIME-Version; b=K37ms83EcidYB2yTYo9hlELY1wXIb/nyL/YJLj+cJj3W+m6atJqQ0VMWVKwiH5F8mF1e/zuhs/FGCms91FYRBsLYSxcRpRK0qPQGGoPYTv9JJLVPVNPfJJ6wr+FzDMdG7LHiTF0oHOh4PjSiUkhrNULyNccw0lXBRUa5HjyJXxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVubU3eI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9CEC4CEE5;
+	Tue,  8 Apr 2025 12:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113791;
-	bh=6cDrRPRemTCw2vTcZOLy063WBlViY9W2tJYi6fb7KHQ=;
+	s=korg; t=1744115669;
+	bh=8vWvP1U13txb3M4GaCmQAcvchhJoP0k84r++teccdBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYlqMI/3XR4XFnN3QGYWYumhwGcYcvJfniJdXBjNs9Ii2CntO9qwqR8L3mAofn0Tz
-	 kZYpzKWHcgs5MxMN6JG5XLgpvlQC63C2qLzjjqmrU0ljVp22YVci5rmYkx1WMHFp+H
-	 qUKngYbxm8KKi6nVGldzDyOLRuH3u3zy7pVajdGw=
+	b=zVubU3eIEDwxe7pdgxqYQ3Nz/KqbnIxKMoE0Zom/aydnzsUqX+IFU2wGQY+WLCpab
+	 4RhKfZ2V9wL70H/Rn3Q2yzeHpiZGN5JB7QFmPtMBP81QgtLcxwgS4Pg+GwqQYmbwkm
+	 sd7Okfv8Kv4dRgSSRMIm69X5TrMfFCJ1pHh9f6F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 021/154] nvme-fc: go straight to connecting state when initializing
-Date: Tue,  8 Apr 2025 12:49:22 +0200
-Message-ID: <20250408104815.957484845@linuxfoundation.org>
+Subject: [PATCH 6.1 033/204] drm/mediatek: mtk_hdmi: Unregister audio platform device on failure
+Date: Tue,  8 Apr 2025 12:49:23 +0200
+Message-ID: <20250408104821.305299297@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
+[ Upstream commit 0be123cafc06eed0fd1227166a66e786434b0c50 ]
 
-The initial controller initialization mimiks the reconnect loop
-behavior by switching from NEW to RESETTING and then to CONNECTING.
+The probe function of this driver may fail after registering the
+audio platform device: in that case, the state is not getting
+cleaned up, leaving this device registered.
 
-The transition from NEW to CONNECTING is a valid transition, so there is
-no point entering the RESETTING state. TCP and RDMA also transition
-directly to CONNECTING state.
+Adding up to the mix, should the probe function of this driver
+return a probe deferral for N times, we're registering up to N
+audio platform devices and, again, never freeing them up.
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+To fix this, add a pointer to the audio platform device in the
+mtk_hdmi structure, and add a devm action to unregister it upon
+driver removal or probe failure.
+
+Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-18-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 0d2c22cf12a08..f3c0bff714eba 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3164,8 +3164,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
- 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
- 	spin_unlock_irqrestore(&rport->lock, flags);
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index 6e8f99554f548..465f6fe93e998 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -173,6 +173,7 @@ struct mtk_hdmi {
+ 	unsigned int sys_offset;
+ 	void __iomem *regs;
+ 	enum hdmi_colorspace csp;
++	struct platform_device *audio_pdev;
+ 	struct hdmi_audio_param aud_param;
+ 	bool audio_enable;
+ 	bool powered;
+@@ -1666,6 +1667,11 @@ static const struct hdmi_codec_ops mtk_hdmi_audio_codec_ops = {
+ 	.no_capture_mute = 1,
+ };
  
--	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
--	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
-+	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
- 		dev_err(ctrl->ctrl.device,
- 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
- 		goto fail_ctrl;
++static void mtk_hdmi_unregister_audio_driver(void *data)
++{
++	platform_device_unregister(data);
++}
++
+ static int mtk_hdmi_register_audio_driver(struct device *dev)
+ {
+ 	struct mtk_hdmi *hdmi = dev_get_drvdata(dev);
+@@ -1675,13 +1681,20 @@ static int mtk_hdmi_register_audio_driver(struct device *dev)
+ 		.i2s = 1,
+ 		.data = hdmi,
+ 	};
+-	struct platform_device *pdev;
++	int ret;
+ 
+-	pdev = platform_device_register_data(dev, HDMI_CODEC_DRV_NAME,
+-					     PLATFORM_DEVID_AUTO, &codec_data,
+-					     sizeof(codec_data));
+-	if (IS_ERR(pdev))
+-		return PTR_ERR(pdev);
++	hdmi->audio_pdev = platform_device_register_data(dev,
++							 HDMI_CODEC_DRV_NAME,
++							 PLATFORM_DEVID_AUTO,
++							 &codec_data,
++							 sizeof(codec_data));
++	if (IS_ERR(hdmi->audio_pdev))
++		return PTR_ERR(hdmi->audio_pdev);
++
++	ret = devm_add_action_or_reset(dev, mtk_hdmi_unregister_audio_driver,
++				       hdmi->audio_pdev);
++	if (ret)
++		return ret;
+ 
+ 	DRM_INFO("%s driver bound to HDMI\n", HDMI_CODEC_DRV_NAME);
+ 	return 0;
 -- 
 2.39.5
 
