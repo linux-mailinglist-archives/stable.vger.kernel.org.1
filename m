@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E4AA80396
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9741A8026F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A063C7AC86D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60E2D1899569
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FEA268FFA;
-	Tue,  8 Apr 2025 11:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F8264A76;
+	Tue,  8 Apr 2025 11:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8Exj7hJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmlZ4MCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77EB22257E;
-	Tue,  8 Apr 2025 11:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228CE227EBD;
+	Tue,  8 Apr 2025 11:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113348; cv=none; b=fwr+eUMl19YGnIHfwu7TRjK1B76US0ufSRT0CvrMMr6mZ/cR8nHRfu+ESlV8QtBfMNnyrvTAWty7LNHnvv75KyJ2MalKXdekOtm07/y/2xHtkBUZZujLes7ATflAQJ320cCmKKArkxjHSM9bpTq8/ubFnmWsnGlifsG+rPhmMSg=
+	t=1744112624; cv=none; b=p+HnbLgUr6vjn8lhiEfa8Phriu26nNOiIUGaiMOcMaIslaVHLTVVG3aWVoHE2snt2X0DszN8vS9PwZBhH8srsUOPorIacwmwAd47JyZCb+rF2eGZVrwprM1T6ZzUNSVnxttKvg+Qd746HGT+lXjBZT8p8knjqWGv5eeBHkAp6wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113348; c=relaxed/simple;
-	bh=LPvGWfY93q9LbEgMKO5QXleBSmTgVcgk6pnGeFZun8U=;
+	s=arc-20240116; t=1744112624; c=relaxed/simple;
+	bh=SAnlpREnCpEN7fLoQ4ZqC851Rz1wrU4QTBGgm92Onhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvL7gD1cvEMxBYkBwdF6SpvueSjHKfJ3XxPOHyzs0Dwuz4a1oBczCYD5BWRh9wW1aGBEy7WnmcPJ82jlAQn9SwJ9DapXtXfZUZoOXR+kkH0gmYkY6mNmBUa9MgABOMpAfqUc5EJbvVzTY34FI0/wlGZsbkJtOEGysFViNyNCVsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8Exj7hJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F554C4CEE5;
-	Tue,  8 Apr 2025 11:55:47 +0000 (UTC)
+	 MIME-Version; b=pnJGO4DaBbt21/ZJSXYZieq+4xy1A1wSacMT+8gxQCKqlrvjC5icRXRkLEruXY+LU3GwiXphgO32dypajGjvpSqyLRGGMfKGGa5CqC670XFrhKCrSXM+KRUqLGid8ConA9tfM2l4BHFTelTmnjPM8ID40BcKJF0yqUCt/LAUxFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmlZ4MCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6859C4CEE5;
+	Tue,  8 Apr 2025 11:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113348;
-	bh=LPvGWfY93q9LbEgMKO5QXleBSmTgVcgk6pnGeFZun8U=;
+	s=korg; t=1744112624;
+	bh=SAnlpREnCpEN7fLoQ4ZqC851Rz1wrU4QTBGgm92Onhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8Exj7hJfUOtgF5PLz7Lfn8074qntehQavCOCc5ADtJR1BVCwVag9v3MFBZbvGIzc
-	 5LHeQMDYMO419NbXyVQbxyyHog+lFLfZtF2EFQIdOry8zzAsFZCZjF3lngWD/Hdoww
-	 XRw48gRBTUwwibsFq0HYZs5TyO5MjtAlzr5e19qg=
+	b=JmlZ4MCPEwjx8VpVlw+c24w6nBeyMuBcoL7RlKf2N1vtHhY/bLcr8J68lvyuljTFn
+	 kAbHChcbKlOz6ht21c1ksx5EaqaYFd2xXPgnIA8XJFN3hxbUm+y723Ng7GY0Qm7U7l
+	 aYRubf0L7goxSuEi2i2Xi8fmSlDsRdeA0xxuPgo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/268] perf pmu: Dont double count common sysfs and json events
-Date: Tue,  8 Apr 2025 12:48:40 +0200
-Message-ID: <20250408104831.440296395@linuxfoundation.org>
+Subject: [PATCH 5.15 138/279] EDAC/ie31200: Fix the error path order of ie31200_init()
+Date: Tue,  8 Apr 2025 12:48:41 +0200
+Message-ID: <20250408104830.066394822@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit c9d699e10fa6c0cdabcddcf991e7ff42af6b2503 ]
+[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
 
-After pmu_add_cpu_aliases() is called, perf_pmu__num_events() returns an
-incorrect value that double counts common events and doesn't match the
-actual count of events in the alias list. This is because after
-'cpu_aliases_added == true', the number of events returned is
-'sysfs_aliases + cpu_json_aliases'. But when adding 'case
-EVENT_SRC_SYSFS' events, 'sysfs_aliases' and 'cpu_json_aliases' are both
-incremented together, failing to account that these ones overlap and
-only add a single item to the list. Fix it by adding another counter for
-overlapping events which doesn't influence 'cpu_json_aliases'.
+The error path order of ie31200_init() is incorrect, fix it.
 
-There doesn't seem to be a current issue because it's used in perf list
-before pmu_add_cpu_aliases() so the correct value is returned. Other
-uses in tests may also miss it for other reasons like only looking at
-uncore events. However it's marked as a fixes commit in case any new fix
-with new uses of perf_pmu__num_events() is backported.
-
-Fixes: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250226104111.564443-3-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 7 ++++---
- tools/perf/util/pmu.h | 5 +++++
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/edac/ie31200_edac.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 27393e4327922..2587c4b463fa8 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -597,7 +597,7 @@ static int perf_pmu__new_alias(struct perf_pmu *pmu, const char *name,
- 			};
- 			if (pmu_events_table__find_event(pmu->events_table, pmu, name,
- 							 update_alias, &data) == 0)
--				pmu->cpu_json_aliases++;
-+				pmu->cpu_common_json_aliases++;
- 		}
- 		pmu->sysfs_aliases++;
- 		break;
-@@ -1680,9 +1680,10 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
- 	if (pmu->cpu_aliases_added)
- 		 nr += pmu->cpu_json_aliases;
- 	else if (pmu->events_table)
--		nr += pmu_events_table__num_events(pmu->events_table, pmu) - pmu->cpu_json_aliases;
-+		nr += pmu_events_table__num_events(pmu->events_table, pmu) -
-+			pmu->cpu_common_json_aliases;
- 	else
--		assert(pmu->cpu_json_aliases == 0);
-+		assert(pmu->cpu_json_aliases == 0 && pmu->cpu_common_json_aliases == 0);
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index ead3646294b68..acb011cfd8c4f 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -607,7 +607,7 @@ static int __init ie31200_init(void)
  
- 	return pmu->selectable ? nr + 1 : nr;
+ 	pci_rc = pci_register_driver(&ie31200_driver);
+ 	if (pci_rc < 0)
+-		goto fail0;
++		return pci_rc;
+ 
+ 	if (!mci_pdev) {
+ 		ie31200_registered = 0;
+@@ -618,11 +618,13 @@ static int __init ie31200_init(void)
+ 			if (mci_pdev)
+ 				break;
+ 		}
++
+ 		if (!mci_pdev) {
+ 			edac_dbg(0, "ie31200 pci_get_device fail\n");
+ 			pci_rc = -ENODEV;
+-			goto fail1;
++			goto fail0;
+ 		}
++
+ 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
+ 		if (pci_rc < 0) {
+ 			edac_dbg(0, "ie31200 init fail\n");
+@@ -630,12 +632,12 @@ static int __init ie31200_init(void)
+ 			goto fail1;
+ 		}
+ 	}
+-	return 0;
+ 
++	return 0;
+ fail1:
+-	pci_unregister_driver(&ie31200_driver);
+-fail0:
+ 	pci_dev_put(mci_pdev);
++fail0:
++	pci_unregister_driver(&ie31200_driver);
+ 
+ 	return pci_rc;
  }
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index aca4238f06a65..5a03c361cb04c 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -124,6 +124,11 @@ struct perf_pmu {
- 	uint32_t cpu_json_aliases;
- 	/** @sys_json_aliases: Number of json event aliases loaded matching the PMU's identifier. */
- 	uint32_t sys_json_aliases;
-+	/**
-+	 * @cpu_common_json_aliases: Number of json events that overlapped with sysfs when
-+	 * loading all sysfs events.
-+	 */
-+	uint32_t cpu_common_json_aliases;
- 	/** @sysfs_aliases_loaded: Are sysfs aliases loaded from disk? */
- 	bool sysfs_aliases_loaded;
- 	/**
 -- 
 2.39.5
 
