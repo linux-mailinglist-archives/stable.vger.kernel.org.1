@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-130042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915ECA802C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C01CA7FE90
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790EF3A5633
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A83D424043
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A27264A76;
-	Tue,  8 Apr 2025 11:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901EA2690FA;
+	Tue,  8 Apr 2025 11:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Djn0bOPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIF87zSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E99B263C6D;
-	Tue,  8 Apr 2025 11:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8BF268C72;
+	Tue,  8 Apr 2025 11:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112659; cv=none; b=di4N6wZnfhSdpr2Sn8ewMM3BFypher0hcKdi3SDqNWgHYrgeWD69mPhjNRR1XJXx5gLQsix4k7Z/hYKtTUot1Chs43NA+cirdVBEQ2eT0EzsiOu72Zc4SimQMjXk77wpLPuQp7iuhZDJre6l9+aPlim2uCiWq2ZVFtaUcOf+ZCU=
+	t=1744110071; cv=none; b=PGbmpctqtOStMEuuaesi3XPx+G0uA0FyJICax79+9Dx54VMVmH7xE67j8JdKI7gzuSfsPIXEvRSkaXI0AyqP0Q1vCmhRNy7Am5kBmX9CMsKynwjQmIlhEUzfyZ8pt7O3cqsYB+1JdJ275hqbg9C7BVn0sOT57/HMlYB73S49jRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112659; c=relaxed/simple;
-	bh=qDl+LyqvBo3MQ3tq9fYNXHJYNpXB7Tjf0M6Ftvk5lNI=;
+	s=arc-20240116; t=1744110071; c=relaxed/simple;
+	bh=U2y0wVIBEgpCeydVtDPs44QQmB2gZVtu/lPYBdeiQQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uTLKuxR+hsOvvduXNq/5pyaQGbfODVBs22bVkIO64n0Os4arUjg/UbwBOb8ek2SWPUueAlqmVkbXO5DtdZaQ7ga+mu7miReLDNwwXpvFpb0qlDoDlKI9FHM/WK/j7eVtoF8XIi+PMOkP7s0xo3MYs6zUJhbUSHZNZSgWFJ1oghc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Djn0bOPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B97C4CEE5;
-	Tue,  8 Apr 2025 11:44:18 +0000 (UTC)
+	 MIME-Version; b=iCTc1PkYD+FOYCkZe9FXK7k41gpCPxcqT2pN+PnWOhHA1+0zVWaMcA+4/NNcgMSE+AXF2nq5UfhrOHWUv4v4QX5tS9zGqpI254Uokwpnsr8y6ZHOPUU1u+VbvrZwxR/mQQnLcpcvqzSjUW0g7CpO+mOMAKfkIUviNKAghW90TLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIF87zSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A967C4CEE5;
+	Tue,  8 Apr 2025 11:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112659;
-	bh=qDl+LyqvBo3MQ3tq9fYNXHJYNpXB7Tjf0M6Ftvk5lNI=;
+	s=korg; t=1744110070;
+	bh=U2y0wVIBEgpCeydVtDPs44QQmB2gZVtu/lPYBdeiQQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Djn0bOPG9ZSH0ClfT3j5f7K3I+z+vmxIUWMtr0xRrHwKmECMaeSTrYx4DumCQ3X/B
-	 5QLn9bY9fSLwuiCscRpLaz3vB/W/MsAfYwA0voJ9O9aB3z6/2CBr1GjjXOjkkwya+R
-	 ebto6GpMDrFuzSF2Lu07fV0pAyTt5vvlIibag4BA=
+	b=sIF87zSadl7ZSWrUfLTWn9QbX9EdQK97S57X/KBSwVj8n26oL9KqtkiFg2LChzzGZ
+	 t2igztv8a1CFG+AphYVQf7dIO2ImaTTvtktfeR7G0NUiche5OrhNAztzo2FWOa6exV
+	 mCkaXPQtvOjrFszusWr3ZsKD5HQ/Uy8ALfeI2EHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Thomas Zimmermann <tzimmremann@suse.de>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/279] drm/vkms: Fix use after free and double free on init error
-Date: Tue,  8 Apr 2025 12:48:53 +0200
-Message-ID: <20250408104830.383858801@linuxfoundation.org>
+Subject: [PATCH 5.10 156/227] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
+Date: Tue,  8 Apr 2025 12:48:54 +0200
+Message-ID: <20250408104824.996267896@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +68,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit ed15511a773df86205bda66c37193569575ae828 ]
+[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
 
-If the driver initialization fails, the vkms_exit() function might
-access an uninitialized or freed default_config pointer and it might
-double free it.
+PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
+initially start with a UNWIND_HINT_FUNC ORC state.
 
-Fix both possible errors by initializing default_config only when the
-driver initialization succeeded.
+However, save_ret=1 means that we clobber the helper function's return
+address (and then later restore the return address further down on the
+stack); after that point, the only thing on the stack we can unwind through
+is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
+pt_regs frame.
 
-Reported-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Closes: https://lore.kernel.org/all/Z5uDHcCmAwiTsGte@louis-chauvet-laptop/
-Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmremann@suse.de>
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212084912.3196-1-jose.exposito89@gmail.com
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+( An alternate approach would be to move the pt_regs->di overwrite down
+  such that it is the final step of pt_regs setup; but I don't want to
+  rearrange entry code just to make unwinding a tiny bit more elegant. )
+
+Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_drv.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/x86/entry/calling.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
-index f716c5796f5fc..09025ff3b1961 100644
---- a/drivers/gpu/drm/vkms/vkms_drv.c
-+++ b/drivers/gpu/drm/vkms/vkms_drv.c
-@@ -226,17 +226,19 @@ static int __init vkms_init(void)
- 	if (!config)
- 		return -ENOMEM;
- 
--	default_config = config;
--
- 	config->cursor = enable_cursor;
- 	config->writeback = enable_writeback;
- 	config->overlay = enable_overlay;
- 
- 	ret = vkms_create(config);
--	if (ret)
-+	if (ret) {
- 		kfree(config);
-+		return ret;
-+	}
- 
--	return ret;
-+	default_config = config;
-+
-+	return 0;
- }
- 
- static void vkms_destroy(struct vkms_config *config)
-@@ -260,9 +262,10 @@ static void vkms_destroy(struct vkms_config *config)
- 
- static void __exit vkms_exit(void)
- {
--	if (default_config->dev)
--		vkms_destroy(default_config);
-+	if (!default_config)
-+		return;
- 
-+	vkms_destroy(default_config);
- 	kfree(default_config);
- }
- 
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index a4b357e5bbfe9..b6715c835f9fd 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -104,6 +104,8 @@ For 32-bit we have the following conventions - kernel is built with
+ 	pushq	%rsi		/* pt_regs->si */
+ 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
+ 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
++	/* We just clobbered the return address - use the IRET frame for unwinding: */
++	UNWIND_HINT_IRET_REGS offset=3*8
+ 	.else
+ 	pushq   %rdi		/* pt_regs->di */
+ 	pushq   %rsi		/* pt_regs->si */
 -- 
 2.39.5
 
