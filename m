@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-129153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B4CA7FE58
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E6BA80192
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB1617B4EC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAACF18999AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3C92698A0;
-	Tue,  8 Apr 2025 11:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEE735973;
+	Tue,  8 Apr 2025 11:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IhZCG3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffiFDfKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0AF2135CD;
-	Tue,  8 Apr 2025 11:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20EA267391;
+	Tue,  8 Apr 2025 11:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110261; cv=none; b=mrV7cetohohYIoJxjX9556F8Ik1CrOVC0+UA2mpchvOTkQEfUoOK4e1NYyyZGIXzFhILyTbQFyIxoXP3oPUoB5N2KxrxCu5Kj8oxVyHXIYYAZzHuUgZBL7htahwNgUyz70ZnZgTx7F8XhH4E9kdwKoLOXYGoWQsJ3wVLDyN0kJk=
+	t=1744112192; cv=none; b=Q3oG4oMZVTW5rU0PThAha2dzauK1SL3MOWX5D9i2GVFv0SlCR0TFv7sym+gVW73gagkRmQmB8mUlw85vI5J+mGnr6JCnfoQzArLvQbHnfRVGpaHs5fEwxyrgGOTJHuUk1pikFRLCJZGV/NYcd6z5e4o5OTYGO5qD+IJQ1ZTcULE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110261; c=relaxed/simple;
-	bh=mCCqlhv0Yv/fua2W1DhTUxAILhWNeedyYA9rUx9bpU0=;
+	s=arc-20240116; t=1744112192; c=relaxed/simple;
+	bh=siKLQgIglk+h3m2ZTwqcntl1oCY4UhObFMlkr5Zd8Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q92ZsjL/pgj1UwR+JMYKY/n1jEwQYMjHFlj0CxjWKTYDWmkZJctPtnIEA/PPeR/o4m2N7tORYlWYOdRfte5Uq/UbPtWG65xnXoBvRav6i79Gm8UNJgUzySXC7er9UkRo6SLIgfMMtJIw5d9T6Kxiq2p/yiovcVyYjnbBZbseLKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IhZCG3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F9FC4CEE5;
-	Tue,  8 Apr 2025 11:04:18 +0000 (UTC)
+	 MIME-Version; b=rKoLUdNM0Sj7lC1bOZ79pKIuAt6PZmTJ5SdjWwgrWyke4B0Z4amUar5LX7LLPIw7jkLnCMrwlKfGzV39NEMVLIqIWIPvdONQNI4wHz5eU4q+4m3upZqZL7rtESC8ieLTQTT2oKEKKw2etVhhEgzqd0pMw8Wr/zvWWHLxFGTUKic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffiFDfKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B62C4CEE5;
+	Tue,  8 Apr 2025 11:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110259;
-	bh=mCCqlhv0Yv/fua2W1DhTUxAILhWNeedyYA9rUx9bpU0=;
+	s=korg; t=1744112191;
+	bh=siKLQgIglk+h3m2ZTwqcntl1oCY4UhObFMlkr5Zd8Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IhZCG3Sj2Skrm7cRC5ieL6q0/sK3mxf087QikCR+lojw5HSAK4bLwO2eEJnx4Fbx
-	 bSOJLRbDjISChriUq29EqDGN6YjZw03MWh8cp5LXqoU8vCkQh15wPpGNso3YJbLeuy
-	 tAqXSXbys05Oj0q4abQd8bkQKkT5bde7FGaHKnO8=
+	b=ffiFDfKEGcX1Qmv9/UfHT3TV+GOFY77YHQevOnh7MVjp4vgG687sSg80ksyZvcsO/
+	 QUO5IMCP4Z7aOe50QYFXbSi8J/tGqr5FZLxXerl/iiznEW7D84DoIqkFWZDJgs5day
+	 2O0F0m1mU9VKFi+k2DR54GB5ym0l6lK6t+0HyT9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Baoquan He <bhe@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	stable@kernel.org
-Subject: [PATCH 5.10 227/227] x86/kexec: Fix double-free of elf header buffer
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 708/731] tracing: Ensure module defining synth event cannot be unloaded while tracing
 Date: Tue,  8 Apr 2025 12:50:05 +0200
-Message-ID: <20250408104827.083970034@linuxfoundation.org>
+Message-ID: <20250408104930.740570814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Douglas Raillard <douglas.raillard@arm.com>
 
-commit d00dd2f2645dca04cf399d8fc692f3f69b6dd996 upstream.
+commit 21581dd4e7ff6c07d0ab577e3c32b13a74b31522 upstream.
 
-After
+Currently, using synth_event_delete() will fail if the event is being
+used (tracing in progress), but that is normally done in the module exit
+function. At that stage, failing is problematic as returning a non-zero
+status means the module will become locked (impossible to unload or
+reload again).
 
-  b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer"),
+Instead, ensure the module exit function does not get called in the
+first place by increasing the module refcnt when the event is enabled.
 
-freeing image->elf_headers in the error path of crash_load_segments()
-is not needed because kimage_file_post_load_cleanup() will take
-care of that later. And not clearing it could result in a double-free.
-
-Drop the superfluous vfree() call at the error path of
-crash_load_segments().
-
-Fixes: b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Baoquan He <bhe@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20221122115122.13937-1-tiwai@suse.de
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 35ca5207c2d11 ("tracing: Add synthetic event command generation functions")
+Link: https://lore.kernel.org/20250318180906.226841-1-douglas.raillard@arm.com
+Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/crash.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/trace/trace_events_synth.c |   30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -399,10 +399,8 @@ int crash_load_segments(struct kimage *i
- 	kbuf.buf_align = ELF_CORE_HEADER_ALIGN;
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 	ret = kexec_add_buffer(&kbuf);
--	if (ret) {
--		vfree((void *)image->arch.elf_headers);
-+	if (ret)
- 		return ret;
--	}
- 	image->arch.elf_load_addr = kbuf.mem;
- 	pr_debug("Loaded ELF headers at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
- 		 image->arch.elf_load_addr, kbuf.bufsz, kbuf.bufsz);
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -852,6 +852,34 @@ static struct trace_event_fields synth_e
+ 	{}
+ };
+ 
++static int synth_event_reg(struct trace_event_call *call,
++		    enum trace_reg type, void *data)
++{
++	struct synth_event *event = container_of(call, struct synth_event, call);
++
++	switch (type) {
++	case TRACE_REG_REGISTER:
++	case TRACE_REG_PERF_REGISTER:
++		if (!try_module_get(event->mod))
++			return -EBUSY;
++		break;
++	default:
++		break;
++	}
++
++	int ret = trace_event_reg(call, type, data);
++
++	switch (type) {
++	case TRACE_REG_UNREGISTER:
++	case TRACE_REG_PERF_UNREGISTER:
++		module_put(event->mod);
++		break;
++	default:
++		break;
++	}
++	return ret;
++}
++
+ static int register_synth_event(struct synth_event *event)
+ {
+ 	struct trace_event_call *call = &event->call;
+@@ -881,7 +909,7 @@ static int register_synth_event(struct s
+ 		goto out;
+ 	}
+ 	call->flags = TRACE_EVENT_FL_TRACEPOINT;
+-	call->class->reg = trace_event_reg;
++	call->class->reg = synth_event_reg;
+ 	call->class->probe = trace_event_raw_event_synth;
+ 	call->data = event;
+ 	call->tp = event->tp;
 
 
 
