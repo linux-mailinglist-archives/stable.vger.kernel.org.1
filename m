@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA17A80867
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A88FA80AE3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5497B077D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B499A7B55D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DC726F460;
-	Tue,  8 Apr 2025 12:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4AA27CB24;
+	Tue,  8 Apr 2025 12:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv30i83h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3vA9el0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CDB268FED;
-	Tue,  8 Apr 2025 12:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1B327CB21;
+	Tue,  8 Apr 2025 12:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115992; cv=none; b=e7jv/9rGe/ZJZ8HVW252XZCvYFIoltUPuTPRWf76NWtQyV+W/dgjXSpy6e2+32Xvau4Afm3eB7Nfi4HaschQQygSKMCUqJ5jEmmEjW8FwrlrXtDznXrRra0TweSBZbQFcpOvEGPTDB7V3RFq/kdRlkdSWhs9X+YRIQDybV25grg=
+	t=1744117106; cv=none; b=FfkEPGml0Oy2f98I2PkAcVpI7kmkfau3LRea2n19OsL9Uo7T4TK6nFdns3cQCV6+v6pBs3IIuDK+uKjGxNMoPy14GmviIXsTY233LqP6Yw+gP5QhPp+TYVBfROSWQyEQwk5/wsEOzYVFIRFuhOSD2hVIAwwoaruHhRPNL2OiqdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115992; c=relaxed/simple;
-	bh=XVQsyBlG4apCEXVSKbPSRqp0Cna+fhTBrazq9RovssY=;
+	s=arc-20240116; t=1744117106; c=relaxed/simple;
+	bh=OMKBcjZRu8RYnWbIwKjbM9gAHAhkmN2tk8IIJ1jzI3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnTHJM4k1YMy0opWUUYFh6iREuN7/Q+S2cfLIduVlc6vpXJJB/bbozt2s30zaUKnm9B9Ltn3MgTybimZoIikR22KeKMJurm8/7MC1LOUfeALw3r6qD38UXdijno/E5n2xtlscqtTMrvhDOOU+8tQmD1yAlxx+UHNBJKC4u2IrPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv30i83h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CC5C4CEE5;
-	Tue,  8 Apr 2025 12:39:51 +0000 (UTC)
+	 MIME-Version; b=DgAIFXSM4G7liiQcgIZYJeCoF4skJmrPvphBz9IbgXKdm4IgVVaO4G2tdsppZ/ZC6/SQiTdKjBZKMzAZh5Ufn5ayADSTgqybHZDn8ZwQ2jmx8Y0Lm19xe1fBo+KAB5s9xUOpcJXNlIzg8mPloybe928rKRcfzkyzfdRe961nDxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3vA9el0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E6BC4CEE5;
+	Tue,  8 Apr 2025 12:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115991;
-	bh=XVQsyBlG4apCEXVSKbPSRqp0Cna+fhTBrazq9RovssY=;
+	s=korg; t=1744117106;
+	bh=OMKBcjZRu8RYnWbIwKjbM9gAHAhkmN2tk8IIJ1jzI3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zv30i83hD58fGejCo8Z+3MRBBu+Z2PJu2sjSlt0tsZF8rypfWj5Pr9twIc3kvC/oF
-	 JpM61KwouOsqxYD++5SwNXQuhwtaxJL4Su+jG3aEEz6lz7ndo08ezpJlQY6p07glf4
-	 ms4yCt8+2aF7egbVZTIqu8doQMu016RnhoW3lZHQ=
+	b=U3vA9el0MMk9ojmBSwv7Mfi2dacwNG7HTQqPjst8vYfmmArLBKw++jOMpU6Y6L1AF
+	 nBe+E5ZGizt9a6Rf2rfXdyDMeda7GtlJNsQcn1UZvitW4ztWBuiM+6rjcdiaxx+SxY
+	 uYWOMzt1+jEmiD5Jyw/24aL7r1uomHwO/LmfBICk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.1 180/204] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 384/423] wifi: mt76: mt7925: remove unused acpi function for clc
 Date: Tue,  8 Apr 2025 12:51:50 +0200
-Message-ID: <20250408104825.601177430@linuxfoundation.org>
+Message-ID: <20250408104854.829176001@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
+commit b4ea6fdfc08375aae59c7e7059653b9877171fe4 upstream.
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+The code for handling ACPI configuration in CLC was copied from the mt7921
+driver but is not utilized in the mt7925 implementation. So removes the
+unused functionality to clean up the codebase.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
-
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
-
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250304113649.867387-4-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   |   11 +----------
- arch/x86/events/perf_event.h |    2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2689,28 +2689,33 @@ static u64 adl_update_topdown_event(stru
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3117,7 +3117,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
  
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
-+
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
-+
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
-+
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
- 
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
- 		return;
-+	}
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
--
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -789,7 +789,7 @@ unlock:
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -1902,15 +1902,6 @@ get_next_pebs_record_by_bit(void *base,
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1536,7 +1536,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_context *ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+ 		.idx = idx,
+ 		.env = env_cap,
+-		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
+ 	};
+ 	int ret, valid_cnt = 0;
+ 	u8 i, *pos;
 
 
 
