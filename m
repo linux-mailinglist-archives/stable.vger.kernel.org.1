@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3051AA800F9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F835A8016F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECF90188CD06
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EEA8805C0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F725266583;
-	Tue,  8 Apr 2025 11:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBAC268C62;
+	Tue,  8 Apr 2025 11:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sciEBaMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBsnvdsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC32267F4F;
-	Tue,  8 Apr 2025 11:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA8F26658B;
+	Tue,  8 Apr 2025 11:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111879; cv=none; b=fesZnougahh6jKxsYPTZEm1np4Hv6+BwXPAx61veMDuGwACyHV1ISV6rl+jEg9UyHYgQ7Iv9ojMj01FmF/PsI0eEL5rKWyOXASYtbURNAPwk++o96GoRFHBzJKEY2QGqXQwaJHYV3sISEYwmLYVxeosDObGOjsFAhrT2/jIj+Ww=
+	t=1744112007; cv=none; b=H4QaYGbVPAXDKZGN691+oHWZ7S/l5NvIbipR+f96ylQ9Jg46vPevCNSa4LNyqWiioy/UkvRUc0yl/64TIwAYZIAJqt/EgWwPu/8CXhqn9GonD0ECsttiALqCdA8sa94Acju8HRLWQDi1V6pEKOr2JVQKGYzHVi8cDCKBCblTRxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111879; c=relaxed/simple;
-	bh=tOQDrMJABZnEoYeNCGhPB0HWx76PKhPJX0yltLpgDow=;
+	s=arc-20240116; t=1744112007; c=relaxed/simple;
+	bh=8KdIjk0H07HsKq/xX7yUK2OWB95AeiMd+upGe54dlGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hPqrBSg32knLuc3M7+ku0loDOli0vLKEmpGmXJmmkiBTPyhEiDIk2DXH5P4cfp73PlAoOgeRzr0NrgOQAH/v2aVVVHo2O8rRSfNldWYQ22sip72IgGRHybvwwMN6+LxO4D7A5zBRxLX6rjIDzFl0wtz9V4aO3D6+tQGhTYMPs68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sciEBaMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5212EC4CEE5;
-	Tue,  8 Apr 2025 11:31:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iXBQa4stjrwpujynZTWh4iFkXKzQ2cyuDpJ7htkMzX13udCJRMDyH2sIbcxYYCMKDIBZGGmI3Cv8L3WBh43Pkhk7SBOBm1SMPHvn9/uZ8R5lIro7chqFqEHRDB6xLmxAww4JLAPwg9pPJhOKe73s0voDuYY8i+3AKogllfFjC6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBsnvdsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515ABC4CEE5;
+	Tue,  8 Apr 2025 11:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111878;
-	bh=tOQDrMJABZnEoYeNCGhPB0HWx76PKhPJX0yltLpgDow=;
+	s=korg; t=1744112007;
+	bh=8KdIjk0H07HsKq/xX7yUK2OWB95AeiMd+upGe54dlGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sciEBaMbB3wUqzCjozR44vtyap1KQMfwvs+fdS0MukrZoMedR5ITaxZYDasNIP6TL
-	 g4ADYVkA188ErzBU9KaJR4t6eavUdlnSgeQ2GHHzZzuq8TZ6W/y6bpRku6cacILTen
-	 lwv+SDRqrBDONSfN5L0b3EgmMq07PFicHd6lwnGI=
+	b=TBsnvdscaLQISv13wx0Ga5/k2asdMuzNpZPLZkNjqezJd8lKZuk79kkHc1ncZdRGu
+	 8YBSowTTLlmu9QfiBeMYPPKlGo7Rs9fSl2zy+77z5p2CBhXizbT2nuO/PHKZP0g7O5
+	 x7Af3Yet0dMoCflU0sYTMo6ZQv29KT3HQxzq+IP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 591/731] riscv: Change check_unaligned_access_speed_all_cpus to void
-Date: Tue,  8 Apr 2025 12:48:08 +0200
-Message-ID: <20250408104928.021306701@linuxfoundation.org>
+Subject: [PATCH 6.14 592/731] riscv: Fix set up of cpu hotplug callbacks
+Date: Tue,  8 Apr 2025 12:48:09 +0200
+Message-ID: <20250408104928.045213355@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -70,80 +70,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 813d39baee3229d31420af61460b97f4fafdd352 ]
+[ Upstream commit 05ee21f0fcb8ca29bf42bd6cbce109f2e49c167f ]
 
-The return value of check_unaligned_access_speed_all_cpus() is always
-zero, so make the function void so we don't need to concern ourselves
-with it. The change also allows us to tidy up
-check_unaligned_access_all_cpus() a bit.
+CPU hotplug callbacks should be set up even if we detected all
+current cpus emulate misaligned accesses, since we want to
+ensure our expectations of all cpus emulating is maintained.
 
+Fixes: 6e5ce7f2eae3 ("riscv: Decouple emulated unaligned accesses from access speed")
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
 Reviewed-by: Clément Léger <cleger@rivosinc.com>
 Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250304120014.143628-14-ajones@ventanamicro.com
+Link: https://lore.kernel.org/r/20250304120014.143628-15-ajones@ventanamicro.com
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Stable-dep-of: 05ee21f0fcb8 ("riscv: Fix set up of cpu hotplug callbacks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ arch/riscv/kernel/unaligned_access_speed.c | 27 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 78ab4cb2ab050..bca798153e37d 100644
+index bca798153e37d..84694a44f3da4 100644
 --- a/arch/riscv/kernel/unaligned_access_speed.c
 +++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -218,7 +218,7 @@ static int riscv_offline_cpu(unsigned int cpu)
- }
+@@ -247,13 +247,6 @@ static void __init check_unaligned_access_speed_all_cpus(void)
+ 	/* Check core 0. */
+ 	smp_call_on_cpu(0, check_unaligned_access, bufs[0], true);
  
- /* Measure unaligned access speed on all CPUs present at boot in parallel. */
--static int __init check_unaligned_access_speed_all_cpus(void)
-+static void __init check_unaligned_access_speed_all_cpus(void)
+-	/*
+-	 * Setup hotplug callbacks for any new CPUs that come online or go
+-	 * offline.
+-	 */
+-	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
+-				  riscv_online_cpu, riscv_offline_cpu);
+-
+ out:
+ 	for_each_cpu(cpu, cpu_online_mask) {
+ 		if (bufs[cpu])
+@@ -386,13 +379,6 @@ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __alway
  {
- 	unsigned int cpu;
- 	unsigned int cpu_count = num_possible_cpus();
-@@ -226,7 +226,7 @@ static int __init check_unaligned_access_speed_all_cpus(void)
+ 	schedule_on_each_cpu(check_vector_unaligned_access);
  
- 	if (!bufs) {
- 		pr_warn("Allocation failure, not measuring misaligned performance\n");
--		return 0;
-+		return;
- 	}
- 
- 	/*
-@@ -261,12 +261,10 @@ static int __init check_unaligned_access_speed_all_cpus(void)
- 	}
- 
- 	kfree(bufs);
--	return 0;
+-	/*
+-	 * Setup hotplug callbacks for any new CPUs that come online or go
+-	 * offline.
+-	 */
+-	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
+-				  riscv_online_cpu_vec, NULL);
+-
+ 	return 0;
  }
- #else /* CONFIG_RISCV_PROBE_UNALIGNED_ACCESS */
--static int __init check_unaligned_access_speed_all_cpus(void)
-+static void __init check_unaligned_access_speed_all_cpus(void)
- {
--	return 0;
- }
- #endif
- 
-@@ -406,10 +404,10 @@ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __alway
- 
- static int __init check_unaligned_access_all_cpus(void)
- {
--	bool all_cpus_emulated;
- 	int cpu;
- 
--	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
-+	if (!check_unaligned_access_emulated_all_cpus())
-+		check_unaligned_access_speed_all_cpus();
- 
- 	if (!has_vector()) {
- 		for_each_online_cpu(cpu)
-@@ -420,9 +418,6 @@ static int __init check_unaligned_access_all_cpus(void)
+ #else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
+@@ -418,6 +404,19 @@ static int __init check_unaligned_access_all_cpus(void)
  			    NULL, "vec_check_unaligned_access_speed_all_cpus");
  	}
  
--	if (!all_cpus_emulated)
--		return check_unaligned_access_speed_all_cpus();
--
++	/*
++	 * Setup hotplug callbacks for any new CPUs that come online or go
++	 * offline.
++	 */
++#ifdef CONFIG_RISCV_PROBE_UNALIGNED_ACCESS
++	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
++				  riscv_online_cpu, riscv_offline_cpu);
++#endif
++#ifdef CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS
++	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
++				  riscv_online_cpu_vec, NULL);
++#endif
++
  	return 0;
  }
  
