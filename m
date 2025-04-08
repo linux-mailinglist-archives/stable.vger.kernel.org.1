@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F246A804E1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61237A807C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C23188E3C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C738873AB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33E0268FEB;
-	Tue,  8 Apr 2025 12:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C58C26B2DB;
+	Tue,  8 Apr 2025 12:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k44ODJd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpWlaRd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A135820CCD8;
-	Tue,  8 Apr 2025 12:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEEE268685;
+	Tue,  8 Apr 2025 12:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113932; cv=none; b=GpunDCVcEGkC3jMKq1Wrs4yCb0gF2GjVpFEFzxrIDJq+V+fxIYT8+ZBnlaa1Sx/v/TkNDv2rOR9x4k7hFvMsrUMweWfY1rJlvwmoKtiTUBfML86wk37oVfLiub6b6lgS6h6qfeM/X73jc9ZlXnBLbHYDoXc8mpXuput2h48gMrU=
+	t=1744115140; cv=none; b=PSCgtMX81KR/fimc+OG6xKnWz08cCX5LrLDb2/fm6GayW6umLdeE8BED0xkTsYY9CrwXr09BF69L32MgKHv34NAl8VQLtTU/WFLHMMWYNgTcJS+Hz2eT1IUGFV+tJ/aPGd/ov/FB7KgyI6F40Mc1Hk1LRJ5SwJxi0UqnR5jQz40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113932; c=relaxed/simple;
-	bh=OX6qR3L/NKSwsIc6OKCubasMoBWHqNhlPZ4B53rpJjo=;
+	s=arc-20240116; t=1744115140; c=relaxed/simple;
+	bh=zZr5pehIhnsanQQsjURM03T1XLd2yA0fxnvyj/btWQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAZjQl1EJgJFZZkRG+sdEpS8Ki1SGziA+yNl9cKup6ivW51B3OU5rAdgcrbOalfS6B3DGCCjph9/tyjehCjuofiMiBfkqT/+5Ja4dyzPvm0osA6MXGLLadFiQxKZRExc3wZe32GNVAUNF4+qJwTQINQlD2evAsC0mjLsMicpIV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k44ODJd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17FEC4CEE5;
-	Tue,  8 Apr 2025 12:05:31 +0000 (UTC)
+	 MIME-Version; b=RLD16m0amnLtq/tfXyjUjP+WaxLyVu6CvvoYsFVZsVwomb/gWunzjU2q0t+BOFVgb32UPAHK2HGz01U8QjawtAxOMoPfJ2VJQU/4ROuW/hQvJmNr7ZXAhsAmyoC/gdbc7WdbaeEP9df7TLbrCYdPjaLoFJFTuG1Rs1VvAlV2pMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpWlaRd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB68C4CEE5;
+	Tue,  8 Apr 2025 12:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113932;
-	bh=OX6qR3L/NKSwsIc6OKCubasMoBWHqNhlPZ4B53rpJjo=;
+	s=korg; t=1744115139;
+	bh=zZr5pehIhnsanQQsjURM03T1XLd2yA0fxnvyj/btWQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k44ODJd//Wlg8IHs7EVkDjx8eE9hUixWvpDS7rYi3X+xd3vhAr0TwJNSyt1YLIRqy
-	 kEKs18prBNs640KlMs97tUM9TlhOivJd+xj3aUWG6lbNoAnbisizkPHJifN1XOR3hD
-	 pvnbJmQjaiOvZWg3aljpfAMDYot9Rx0W7nY49lAc=
+	b=LpWlaRd2U1epp24w1MsemwKqeN9KszJvT3mvG18RytxT7YRlQukrMnzk+6gqk6PLd
+	 5qyQId0WuNzsBKOBlrRfzmNuT8GAHjSUbKubAGJ30t3XxbsoaprQyuCGLGlJ6Ogw8s
+	 NG4e5kVSUD/Gx9rsVYmV+Ql93hoR4vWqiI+ri/og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/154] x86/irq: Define trace events conditionally
+Subject: [PATCH 6.13 364/499] riscv: Fix riscv_online_cpu_vec
 Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104816.386663167@linuxfoundation.org>
+Message-ID: <20250408104900.307694640@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
+[ Upstream commit 5af72a818612332a11171b16f27a62ec0a0f91d7 ]
 
-When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
-the irq tracing produces a W=1 build warning for the tracing
-definitions:
+We shouldn't probe when we already know vector is unsupported and
+we should probe when we see we don't yet know whether it's supported.
+Furthermore, we should ensure we've set the access type to
+unsupported when we don't have vector at all.
 
-  In file included from include/trace/trace_events.h:27,
-                 from include/trace/define_trace.h:113,
-                 from arch/x86/include/asm/trace/irq_vectors.h:383,
-                 from arch/x86/kernel/irq.c:29:
-  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
-
-Make the tracepoints conditional on the same symbosl that guard
-their usage.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-12-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/irq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/kernel/unaligned_access_speed.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 7dfd0185767cc..76600d8f69376 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -20,8 +20,10 @@
- #include <asm/hw_irq.h>
- #include <asm/desc.h>
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 85c868a8cee63..2e41b42498c76 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -370,10 +370,12 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
  
-+#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
- #define CREATE_TRACE_POINTS
- #include <asm/trace/irq_vectors.h>
-+#endif
+ static int riscv_online_cpu_vec(unsigned int cpu)
+ {
+-	if (!has_vector())
++	if (!has_vector()) {
++		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
+ 		return 0;
++	}
  
- DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
- EXPORT_PER_CPU_SYMBOL(irq_stat);
+-	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED)
++	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
+ 		return 0;
+ 
+ 	check_vector_unaligned_access_emulated(NULL);
 -- 
 2.39.5
 
