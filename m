@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D09A80A81
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106F0A8052F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45CA27B3C56
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2FF4A49ED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB6C278162;
-	Tue,  8 Apr 2025 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D664526A1BA;
+	Tue,  8 Apr 2025 12:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7vFRLys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woE3h+/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7DA26A1A7;
-	Tue,  8 Apr 2025 12:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941AD26A1AB;
+	Tue,  8 Apr 2025 12:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116891; cv=none; b=M/DiAZJv6crbX+4l9ZKzh6BYWzdBK0j8HD5XEFIbl4xp/Dwfu415zmgZKpQU5ecYQbcVGeTC31U8mXFNq55XIocdomb/jDYFkuwIKFE6WAS+d39LbI4kg0wK1c7fx0RF3y3nc29PjOnfdBIQibb+2mjsV00LboxF3ebKg8pjh1M=
+	t=1744113879; cv=none; b=cIk7wY3IBwFN4NjlXsfoNk10BNdma1lWqZbnrV6KAPMp4Iv9qXi2hqDwiddkMvpD+Zp75FspOyH/kCZnxm29RKpJSLyDKg9mpupUl2ENZPNLiuILQOzTbTrxBTEt8a2/SOiay22WoPeFpwhVir55Elr2jAwkDJzCUL2guktAKME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116891; c=relaxed/simple;
-	bh=atHY5jlwUd64cVBrkA4z5dUbAL3LqtIoa8cYEuBeKk4=;
+	s=arc-20240116; t=1744113879; c=relaxed/simple;
+	bh=aND2NqkBZo4/TN7oa5lAFcZPy0/nk6xQb9GFfnTaxPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVdpjUWoxa1EIGWKH8oht3yN1vvv9ueOysQYL8gTE5eLTJbBbLkEcC136wkU2cyMYCVjC0iN6pXAFE7/O/Ni9VSjGPwhUTq60Wd200uVJ55gvfU45K2TXIlHyxcnzbaCa+BVMwHhya/FiN8ybeKhhlVlchoPH/cvTR9cLPYd5Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7vFRLys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5232FC4CEE5;
-	Tue,  8 Apr 2025 12:54:51 +0000 (UTC)
+	 MIME-Version; b=CCKBbdlcIPaGJPpbv0tru/KFuJdMmuwr/+KneF6qU0RxR9S+R1JAg7jqg9l7uit/eXAm+Vw5X+lvfukhPzUSkIBJ38I/r1WFBfq2z6EhxzShkyX8VG/PEzduabhX/Z1FUWvxuN4DO8OqFC7I4SaWF9wnV+dNLHMDewwROoF5BfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woE3h+/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F70EC4CEE5;
+	Tue,  8 Apr 2025 12:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116891;
-	bh=atHY5jlwUd64cVBrkA4z5dUbAL3LqtIoa8cYEuBeKk4=;
+	s=korg; t=1744113879;
+	bh=aND2NqkBZo4/TN7oa5lAFcZPy0/nk6xQb9GFfnTaxPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7vFRLysVlcmi1B6yzh7m6NB4EY7WPzZ7Dh2eYhALvEtIhBlBdFdV5dbnmeQ4KYD7
-	 Tt/J14th2svDrtVLgc6L5hk6CU8xciRyaYBb0i38GLqN3/ttp+JHjxqX/s45GyceQd
-	 pl+EmBhUS20jMov8MW2RjJ4k/Iab2cIU6jyKTqC8=
+	b=woE3h+/+8c39nbhiY77yDB32fnxulGRRJ7MH2uoTgaHV8e5v6Pn1HAR1G0kBcCKvN
+	 6n3sYE8BvGPzlWBkJFIrvhv5/tvnWjX8O+yIo+7Y77zldP1x63KfoSjNLU59rYGUze
+	 Ms7IjwPXm1kEGkAcTWQ/jhXBZF4EfdOBw9ODE2XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 268/423] cifs: fix incorrect validation for num_aces field of smb_acl
-Date: Tue,  8 Apr 2025 12:49:54 +0200
-Message-ID: <20250408104851.997702782@linuxfoundation.org>
+Subject: [PATCH 5.4 054/154] RDMA/hns: Fix wrong value of max_sge_rd
+Date: Tue,  8 Apr 2025 12:49:55 +0200
+Message-ID: <20250408104817.017074854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit aa2a739a75ab6f24ef72fb3fdb9192c081eacf06 ]
+[ Upstream commit 6b5e41a8b51fce520bb09bd651a29ef495e990de ]
 
-parse_dcal() validate num_aces to allocate ace array.
+There is no difference between the sge of READ and non-READ
+operations in hns RoCE. Set max_sge_rd to the same value as
+max_send_sge.
 
-f (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
-
-It is an incorrect validation that we can create an array of size ULONG_MAX.
-smb_acl has ->size field to calculate actual number of aces in response buffer
-size. Use this to check invalid num_aces.
-
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-8-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index 1f036169fb582..e36f0e2d7d21e 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -778,7 +778,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	}
- 
- 	/* validate that we do not go past end of acl */
--	if (end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
-+	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
-+	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
- 		cifs_dbg(VFS, "ACL too small to parse DACL\n");
- 		return;
- 	}
-@@ -799,8 +800,11 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
- 
--		if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
-+		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
-+				(offsetof(struct smb_ace, sid) +
-+				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
- 			return;
-+
- 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
- 				      GFP_KERNEL);
- 		if (!ppace)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 70991649dc693..4c5179e45dadc 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -198,7 +198,7 @@ static int hns_roce_query_device(struct ib_device *ib_dev,
+ 				  IB_DEVICE_RC_RNR_NAK_GEN;
+ 	props->max_send_sge = hr_dev->caps.max_sq_sg;
+ 	props->max_recv_sge = hr_dev->caps.max_rq_sg;
+-	props->max_sge_rd = 1;
++	props->max_sge_rd = hr_dev->caps.max_sq_sg;
+ 	props->max_cq = hr_dev->caps.num_cqs;
+ 	props->max_cqe = hr_dev->caps.max_cqes;
+ 	props->max_mr = hr_dev->caps.num_mtpts;
 -- 
 2.39.5
 
