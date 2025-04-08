@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AEDA808E9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59872A80506
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9AD1B63E2F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19CD81B63188
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B8226E143;
-	Tue,  8 Apr 2025 12:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15DF26A1D7;
+	Tue,  8 Apr 2025 12:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceEYFHQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glEZHvRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03F526B2C7;
-	Tue,  8 Apr 2025 12:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E31C26A0E4;
+	Tue,  8 Apr 2025 12:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115928; cv=none; b=bf/Km8H4wR1jy4IVdCmKQUmmNuPY5Xdl84QUYpEk0DCRkv4khMeqF/R0QjGDJ4NGVdJArHdZ/cfjhyQmqTZzGgfHBfuWcRs3183QRLfdGZ16aSdyXIh7GIgCg0ARkPp8GUozOmByVbFf6qkIr50XJjpjlAmlqcYDC1CiTMvMlk4=
+	t=1744114030; cv=none; b=bmuPDrkj/rVYRszrqBOU4hcii8HPgeytZN0VAtHIF405AfgIr+Sz8tmHo98+MvkHVSmi1+ANsi7tUOXjMT75pjDnBO41Pi8bcyaqm3nRJ7xHpSfoR5N2QDqHERdypsjI+gwjUwRso6VoS7BJkgymNGpHWk1ZJ3rE4TzVW0GF5KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115928; c=relaxed/simple;
-	bh=NJeMUQzMqx62RGRtz2xbxvXr9yr6cGMUfg7QZEqKI+o=;
+	s=arc-20240116; t=1744114030; c=relaxed/simple;
+	bh=QQJqE4fSl7G/mHseXpC1uw7xcUtdZfiyi8Zyt1IsQcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QtP/Jcgw1tK4QUQf0uerA5fuMK995og5IWm/LJa4vzy1DKGRD2/e614H3yHnZ6AVaLFWo7cVrSloFdED2GMdO7NBK1ldngVtBSKSAR75DemSI7DeLp6JPftxqE0QtqYXv3w3KuIPpipGlnwme2oTVIntAWtEE3rDFZ/5CiMByHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceEYFHQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFBFC4CEEA;
-	Tue,  8 Apr 2025 12:38:47 +0000 (UTC)
+	 MIME-Version; b=G29Dgal8x7fXP/t2V17q110NIm2bNC05DDPw1Ey24JlsZ0YA6oVHhF4nm4ErIllNTMvQjUT9T1/bbX+kCa6f6YmVndTZH9pL7IQZmCCfPTBAA8u3G+gtq90nqb6a3TxI+NxJeAGlvJkztcfaUXw8QrgtjO8YCWyH1G2Xx/hJBJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glEZHvRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39E0C4CEE5;
+	Tue,  8 Apr 2025 12:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115927;
-	bh=NJeMUQzMqx62RGRtz2xbxvXr9yr6cGMUfg7QZEqKI+o=;
+	s=korg; t=1744114030;
+	bh=QQJqE4fSl7G/mHseXpC1uw7xcUtdZfiyi8Zyt1IsQcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ceEYFHQiC9VjZVVnhS3BRhW7JwOznRTyvhTIYAoSs2ddi8QhziZTrjle6rqQwDBTs
-	 qff1se5ZSg149xrBMbbQS3F79aP2pSY8fpymrSy2yBWIhpDqqdGuSKbYa5IFKQkHs2
-	 skG91T1rACUDphfQxNVIdQHwXl/TJMGZ6w/AUJtA=
+	b=glEZHvRqDoHedJr7XhXbI440bw9zrixVwxWxcFgPlaD1L6zWTck7/lyKkn+Eh/rA6
+	 VNljpatKS4fhjzby5v+/296yQJoW1Bp1Akj0KGACSVL5jsK+ukC4+iTKjlRlldpnzY
+	 xACyT4gQEXyeXzqge8+AWKKmy4t2W7Qt71X/mDIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/204] LoongArch: Fix help text of CMDLINE_EXTEND in Kconfig
+Subject: [PATCH 5.4 108/154] clk: amlogic: gxbb: drop non existing 32k clock parent
 Date: Tue,  8 Apr 2025 12:50:49 +0200
-Message-ID: <20250408104823.805410058@linuxfoundation.org>
+Message-ID: <20250408104818.799933105@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit be216cbc1ddf99a51915414ce147311c0dfd50a2 ]
+[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
 
-It is the built-in command line appended to the bootloader command line,
-not the bootloader command line appended to the built-in command line.
+The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
+that this clock should be provided by AO controller.
 
-Fixes: fa96b57c1490 ("LoongArch: Add build infrastructure")
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+The HW probably has this clock but it does not exist at the moment in
+any controller implementation. Furthermore, referencing clock by the global
+name should be avoided whenever possible.
+
+There is no reason to keep this hack around, at least for now.
+
+Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/meson/gxbb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index f4ba3638b76a8..0166d357069d9 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -310,8 +310,8 @@ config CMDLINE_BOOTLOADER
- config CMDLINE_EXTEND
- 	bool "Use built-in to extend bootloader kernel arguments"
- 	help
--	  The command-line arguments provided during boot will be
--	  appended to the built-in command line. This is useful in
-+	  The built-in command line will be appended to the command-
-+	  line arguments provided during boot. This is useful in
- 	  cases where the provided arguments are insufficient and
- 	  you don't want to or cannot modify them.
+diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
+index f37b763f7c48b..c541fb085351f 100644
+--- a/drivers/clk/meson/gxbb.c
++++ b/drivers/clk/meson/gxbb.c
+@@ -1265,14 +1265,13 @@ static struct clk_regmap gxbb_cts_i958 = {
+ 	},
+ };
  
++/*
++ * This table skips a clock named 'cts_slow_oscin' in the documentation
++ * This clock does not exist yet in this controller or the AO one
++ */
++static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
+ static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
+ 	{ .fw_name = "xtal", },
+-	/*
+-	 * FIXME: This clock is provided by the ao clock controller but the
+-	 * clock is not yet part of the binding of this controller, so string
+-	 * name must be use to set this parent.
+-	 */
+-	{ .name = "cts_slow_oscin", .index = -1 },
+ 	{ .hw = &gxbb_fclk_div3.hw },
+ 	{ .hw = &gxbb_fclk_div5.hw },
+ };
+@@ -1282,6 +1281,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
+ 		.offset = HHI_32K_CLK_CNTL,
+ 		.mask = 0x3,
+ 		.shift = 16,
++		.table = gxbb_32k_clk_parents_val_table,
+ 		},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "32k_clk_sel",
 -- 
 2.39.5
 
