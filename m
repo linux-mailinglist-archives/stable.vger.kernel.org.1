@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8721AA802D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91178A801D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FB4188BE2E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B982880D5F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7680F268C6B;
-	Tue,  8 Apr 2025 11:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5F1268FE4;
+	Tue,  8 Apr 2025 11:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct4UyMKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ohh/OEti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B9266EEA;
-	Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79506267F6C;
+	Tue,  8 Apr 2025 11:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112770; cv=none; b=tMtGNdJshtgHvvefdTAbVxEASwprzy0KimMzFbaJAZGbrinEF1fBrp6/2BGjSmQ5QPnWXnwyPlXbsO2ZbzI8a77yGc87nam75Q2nHLbmWRPfDk/N4ezDddOGM6WytEC4xD6FfKMjraPhCNHdQILrNQSPKxRl8oiSewT+aDZELmg=
+	t=1744112123; cv=none; b=mPYcioM06lhxT/plvBV1ZpKiXm5SoYZG1o+7V2MkgKdb8q005urbKCx1yejO1IfMc+JH4ejuUJmPRhGM0oowOJplh82zuLcVLiNftCu6q9IMcsbmQQee7zlJ/mde4FACh/RX6BUChzMlT9S5fnPvbWwE02InVYXGDjwcYig8jDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112770; c=relaxed/simple;
-	bh=Su69aC9kt0+5FMVCr1SqUw80vJjKb7e5JR82TZCyrQ8=;
+	s=arc-20240116; t=1744112123; c=relaxed/simple;
+	bh=MyjsErwoVHcF8aG01ws1fcEOfE+uSO5JJRAkZoFF0UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTWOM1rd3M29hDxlJDOdnH65s5BRm51nV5ZoWogflfMQwa/g7NUDQfjeeVMIM+L2yVvhIgc86lHg9Ud70485cqCA89fN89UNh1sS7z9l9b7EMF55QCxyyUgZuJamIeUqy9tu4oZjIeyB4MpkBJPZW7hkA1ySlMEC2Dttjc0XK0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct4UyMKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6BC4CEE5;
-	Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aBsTpOjJzhoB4HLtARJ8GZR5BMS73IyE0S10ufjqzXzcXoJFZA6W4AX+WzkMYButwkUxoaJY61lw2HiXeYpriaDgO9UulcEzilsGx+CH8e6yUw5Q3viZG0l/aM8TgBR3eeigwEEpZ35q4vIsyVyoZF/9H0pVBfhIYIMmHguLuk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ohh/OEti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B4AC4CEE5;
+	Tue,  8 Apr 2025 11:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112769;
-	bh=Su69aC9kt0+5FMVCr1SqUw80vJjKb7e5JR82TZCyrQ8=;
+	s=korg; t=1744112123;
+	bh=MyjsErwoVHcF8aG01ws1fcEOfE+uSO5JJRAkZoFF0UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ct4UyMKdpEi+lqMJKa6G92OZfgx0mVyrwATGMiH+2eXwofssg4v9DdEmMxMN6pSHu
-	 08EeAj583HJPL9XRP2qlgDWNE0Vs+0aYooxwJc9KIzRrpJ0NRZGfIMfwtB6LbG4EWK
-	 gG7Xoc1+io7sq1ZnXOd0v7DJJ9xSM+ErVJxiX1uY=
+	b=Ohh/OEtiZmtMO5/8yDC9qVEfAL9s3x+1EHbBEJfHDPWt212J9t9RNmHtdU/sfh3hX
+	 KaASs7nE9xJ7GCWPZSxaTd0DHXiNstNGgsWrDUJu5Hw99d5mF3dmvZBtcLtsFkBwgj
+	 h6cdHb5Gn4eiWZ/cHSqH7ATj0Vng/yciPJsXooSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/279] x86/dumpstack: Fix inaccurate unwinding from exception stacks due to misplaced assignment
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.14 677/731] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
 Date: Tue,  8 Apr 2025 12:49:34 +0200
-Message-ID: <20250408104831.495225949@linuxfoundation.org>
+Message-ID: <20250408104930.014256585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 2c118f50d7fd4d9aefc4533a26f83338b2906b7a ]
+commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
 
-Commit:
+The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
+The same call was immediately triggered by a subsequent goto statement.
+Thus avoid such a call repetition.
 
-  2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+This issue was detected by using the Coccinelle software.
 
-was intended to ensure alignment of the stack pointer; but it also moved
-the initialization of the "stack" variable down into the loop header.
-
-This was likely intended as a no-op cleanup, since the commit
-message does not mention it; however, this caused a behavioral change
-because the value of "regs" is different between the two places.
-
-Originally, get_stack_pointer() used the regs provided by the caller; after
-that commit, get_stack_pointer() instead uses the regs at the top of the
-stack frame the unwinder is looking at. Often, there are no such regs at
-all, and "regs" is NULL, causing get_stack_pointer() to fall back to the
-task's current stack pointer, which is not what we want here, but probably
-happens to mostly work. Other times, the original regs will point to
-another regs frame - in that case, the linear guess unwind logic in
-show_trace_log_lvl() will start unwinding too far up the stack, causing the
-first frame found by the proper unwinder to never be visited, resulting in
-a stack trace consisting purely of guess lines.
-
-Fix it by moving the "stack = " assignment back where it belongs.
-
-Fixes: 2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-2-acd774364768@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/dumpstack.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/ntb/test/ntb_perf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 92b33c7eaf3f9..8a8660074284f 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -195,6 +195,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
- 	printk("%sCall Trace:\n", log_lvl);
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
+ 	dma_set_unmap(tx, unmap);
  
- 	unwind_start(&state, task, regs, stack);
-+	stack = stack ?: get_stack_pointer(task, regs);
- 	regs = unwind_get_entry_regs(&state, &partial);
+ 	ret = dma_submit_error(dmaengine_submit(tx));
+-	if (ret) {
+-		dmaengine_unmap_put(unmap);
++	if (ret)
+ 		goto err_free_resource;
+-	}
  
- 	/*
-@@ -213,9 +214,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
- 	 * - hardirq stack
- 	 * - entry stack
- 	 */
--	for (stack = stack ?: get_stack_pointer(task, regs);
--	     stack;
--	     stack = stack_info.next_sp) {
-+	for (; stack; stack = stack_info.next_sp) {
- 		const char *stack_name;
+ 	dmaengine_unmap_put(unmap);
  
- 		stack = PTR_ALIGN(stack, sizeof(long));
--- 
-2.39.5
-
 
 
 
