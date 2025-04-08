@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-128891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6785EA7FB0E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D68A7FB2F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6712D4418D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB99421BFE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADDA26773F;
-	Tue,  8 Apr 2025 10:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539FB264F90;
+	Tue,  8 Apr 2025 10:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxOMxC6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uccYrgHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A913B266F06
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B298488
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106576; cv=none; b=d2ZOBtqloy/ojZHOk9bMqI8s3FkRMUQLx71ioBgpDLVB/OE/poGMEkFhZjooX+r6efwzLRYA5J3mLsG2duomng6LS2EtmkekBoWCLZOkMQwlLOZGzA23o7BhVV2aOuSYvySSBmlm8pC1LzJTciWGcC97Pw6jbPqlrxBEZ3zQmM8=
+	t=1744106756; cv=none; b=asuMsl/ImrAFZprWlmZ1eKgaCdT2zAsXK0pl7OUvDlu52AbO7WHzg3ECuD/w0mcs/dJyfpZMrA+PU+EmjKK3AYUxpUfzsvqFUeFAigYCMDOgjFMgiR4EVdJrFKTil4bxHpCu0ypN5pVqYsx7HxJoOFnlPGnXum3+zpf1nabqT0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106576; c=relaxed/simple;
-	bh=/uN1OWG7NSWRRdY7ZJ8fDlWlTtCYl8dukkRTfKhSuWc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ENhxvpxPTCZUpj02bQYCyD7C1v04UVdCiz8MbmN6IzsgQdN4sxhsqCKbxSlZH9wvVu8mFrvGXI6kGZwN3PRHhxhOQ4viEYtT2Z79LYQWK3zGDFqUgMP6q2p7uKdRtbtBgyiCCVAcTw8DfxkKb6pF/Nd7DDmhP6E8nGXO4CoKBaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxOMxC6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D983CC4CEE5;
-	Tue,  8 Apr 2025 10:02:55 +0000 (UTC)
+	s=arc-20240116; t=1744106756; c=relaxed/simple;
+	bh=aGJRq8pbqoLaP/ahTYuw/OraiMfDo08IW8EAaNA4t2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VtbpEBmZ02xSMsliz/x8vh+PLoldbQEomV7wIlGIhDjCVD4a/ZSCU4wGgUq2bHiUrgp/Tup8tme9+DOTNbLR2EME0a9Q3AkDw/MPRbACwHlxYc+BwbT8OHtm+XMIp9gqfQLyy3JrqjR7+gV1NBaYe1SaWFYpQsZve1n9p94NVLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uccYrgHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CCBC4CEE5;
+	Tue,  8 Apr 2025 10:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744106576;
-	bh=/uN1OWG7NSWRRdY7ZJ8fDlWlTtCYl8dukkRTfKhSuWc=;
+	s=korg; t=1744106755;
+	bh=aGJRq8pbqoLaP/ahTYuw/OraiMfDo08IW8EAaNA4t2s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RxOMxC6sOc/oq2yVLo/YLsCGvgLF6OEJGv1npDuZ0+UJW6FjczstWpV2AjusnQtHL
-	 02uRMHOf9XXiYYKykcItkwxNs3AqsjXfEj4NVSNhswPxW24jCTW2kf1JxPNKoB39Ia
-	 YGEZTnZNF2y5YeRVJ41/5xeMap5F92cLTzxBHTBM=
-Subject: FAILED: patch "[PATCH] tracing: Verify event formats that have "%*p.."" failed to apply to 5.15-stable tree
-To: rostedt@goodmis.org,libo.chen@oracle.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
+	b=uccYrgHEsP6IVxngLSQEG/jDh9jynN4RySXoWcKBjR3wsUg3C2XANd224lhYutPsp
+	 8aWJWf65PQhudPh8H58s0Ug/XI74cm5UOAXeZ2uaiX1Xp6dobFQGZS8pX7s5fl5cmn
+	 EnkbQm17smC360DPtf/PC3S09rpsQwxaNtyKPDvA=
+Subject: FAILED: patch "[PATCH] ext4: don't over-report free space or inodes in statvfs" failed to apply to 5.4-stable tree
+To: tytso@mit.edu,djwong@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Apr 2025 12:01:13 +0200
-Message-ID: <2025040813-truffle-chitchat-1344@gregkh>
+Date: Tue, 08 Apr 2025 12:04:22 +0200
+Message-ID: <2025040822-saline-starring-eabe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea8d7647f9ddf1f81e2027ed305299797299aa03
+git cherry-pick -x f87d3af7419307ae26e705a2b2db36140db367a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040813-truffle-chitchat-1344@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040822-saline-starring-eabe@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,86 +77,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea8d7647f9ddf1f81e2027ed305299797299aa03 Mon Sep 17 00:00:00 2001
-From: Steven Rostedt <rostedt@goodmis.org>
-Date: Thu, 27 Mar 2025 19:53:11 -0400
-Subject: [PATCH] tracing: Verify event formats that have "%*p.."
+From f87d3af7419307ae26e705a2b2db36140db367a2 Mon Sep 17 00:00:00 2001
+From: Theodore Ts'o <tytso@mit.edu>
+Date: Fri, 14 Mar 2025 00:38:42 -0400
+Subject: [PATCH] ext4: don't over-report free space or inodes in statvfs
 
-The trace event verifier checks the formats of trace events to make sure
-that they do not point at memory that is not in the trace event itself or
-in data that will never be freed. If an event references data that was
-allocated when the event triggered and that same data is freed before the
-event is read, then the kernel can crash by reading freed memory.
+This fixes an analogus bug that was fixed in xfs in commit
+4b8d867ca6e2 ("xfs: don't over-report free space or inodes in
+statvfs") where statfs can report misleading / incorrect information
+where project quota is enabled, and the free space is less than the
+remaining quota.
 
-The verifier runs at boot up (or module load) and scans the print formats
-of the events and checks their arguments to make sure that dereferenced
-pointers are safe. If the format uses "%*p.." the verifier will ignore it,
-and that could be dangerous. Cover this case as well.
+This commit will resolve a test failure in generic/762 which tests for
+this bug.
 
-Also add to the sample code a use case of "%*pbl".
+Cc: stable@kernel.org
+Fixes: 689c958cbe6b ("ext4: add project quota support")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
-Link: https://lore.kernel.org/all/bcba4d76-2c3f-4d11-baf0-02905db953dd@oracle.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Link: https://lore.kernel.org/20250327195311.2d89ec66@gandalf.local.home
-Reported-by: Libo Chen <libo.chen@oracle.com>
-Reviewed-by: Libo Chen <libo.chen@oracle.com>
-Tested-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 8638b7f7ff85..069e92856bda 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -470,6 +470,7 @@ static void test_event_printk(struct trace_event_call *call)
- 			case '%':
- 				continue;
- 			case 'p':
-+ do_pointer:
- 				/* Find dereferencing fields */
- 				switch (fmt[i + 1]) {
- 				case 'B': case 'R': case 'r':
-@@ -498,6 +499,12 @@ static void test_event_printk(struct trace_event_call *call)
- 						continue;
- 					if (fmt[i + j] == '*') {
- 						star = true;
-+						/* Handle %*pbl case */
-+						if (!j && fmt[i + 1] == 'p') {
-+							arg++;
-+							i++;
-+							goto do_pointer;
-+						}
- 						continue;
- 					}
- 					if ((fmt[i + j] == 's')) {
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 999f78d380ae..1a05fc153353 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -319,7 +319,8 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 4768770715ca..8cafcd3e9f5f 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6820,22 +6820,29 @@ static int ext4_statfs_project(struct super_block *sb,
+ 			     dquot->dq_dqb.dqb_bhardlimit);
+ 	limit >>= sb->s_blocksize_bits;
  
--	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
-+		  __entry->foo, __entry->bar,
+-	if (limit && buf->f_blocks > limit) {
++	if (limit) {
++		uint64_t	remaining = 0;
++
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
+ 	}
  
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -370,7 +371,10 @@ TRACE_EVENT(foo_bar,
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 			     dquot->dq_dqb.dqb_ihardlimit);
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
  
- 		  __get_str(str), __get_str(lstr),
- 		  __get_bitmask(cpus), __get_cpumask(cpum),
--		  __get_str(vstr))
-+		  __get_str(vstr),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array(cpus))
- );
- 
- /*
+ 	spin_unlock(&dquot->dq_dqb_lock);
 
 
