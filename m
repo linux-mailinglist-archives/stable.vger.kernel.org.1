@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616A8A801D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA7BA7FD9F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6DC37A674F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8EB216EA20
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D8D227EBD;
-	Tue,  8 Apr 2025 11:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BEB26A1A1;
+	Tue,  8 Apr 2025 10:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANC4kpgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksasht1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30C3207E14;
-	Tue,  8 Apr 2025 11:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7790269B13;
+	Tue,  8 Apr 2025 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112463; cv=none; b=LzolSedOe8JbcEjCW+TfhZvlrJCCluXp7iFjE060qCLgJ9kn8rYaT8E15Arc6Y54SM0wSgN/bdmi9fPtP/u+4QLBBAapzZzPa5FmVEpx7nySwTfzCwptDyPFUTFAjfKisyGTWrwPdiPK9/eqkXBHdr/23T632cHsimIRiY+f/44=
+	t=1744109870; cv=none; b=SaVOV4WazASK/FXFjY90j7g18tSg+zUt+l1xG5ZiB0pxQs4EP4K0ZlyD3M+4kKz+OPGfj5JP9LoaUcJREhaN/IYUNUdYpPMmPwUH95fH57U5zaRh81e5/+GEiDbyt+MpMXJ8QcNSTim6Fe4C4ajo/BkhZn4L59Zd1hQ6VM0U38s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112463; c=relaxed/simple;
-	bh=5an+s9gKEOdi7GVR9gH0q6vyqQ6EYTy5QZ81mhVYIEk=;
+	s=arc-20240116; t=1744109870; c=relaxed/simple;
+	bh=Qbvvfoq2D5dr0ZkZqbHe0OMCj8bg/LYXhVMmpH+krWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEVWQbALqRU5683atGWXj6GohlwSoPUX83ZCO356p3/O9ZuQrjXu/gfJyWrSVgGjiiOw29R5/hsAABb/z64Bc46Q9SkhB8BHTVmMG1a6e6PNXTwfaLJXxhKaKA9/9JPtLeUcMC7YoSnoiR6ZT3OT8WFFfAnPbcvF7NF0B6YyiAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANC4kpgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52266C4CEE5;
-	Tue,  8 Apr 2025 11:41:03 +0000 (UTC)
+	 MIME-Version; b=B1AO1Ge8PWy3qe7/OIputDZubbjBRjeCffyIHNzTY2JRYzbLJgXvgGNTtrMONcyd0IEgdSZKT98R27a3TmBt0bVRhO5s95l4CaRLM1u01ulbupCWzItfEm2PlAXbxQUsFPZD0Ga3rQWn7ZM4+0Ug3bFayol7Nrhl4EJIIhILrfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksasht1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73711C4CEE5;
+	Tue,  8 Apr 2025 10:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112463;
-	bh=5an+s9gKEOdi7GVR9gH0q6vyqQ6EYTy5QZ81mhVYIEk=;
+	s=korg; t=1744109869;
+	bh=Qbvvfoq2D5dr0ZkZqbHe0OMCj8bg/LYXhVMmpH+krWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANC4kpgiAvmYBnCDCsI+XOFG+lIbmTypi1D2vMD2Xagbyykq6Me76IB6E0Wwin1HB
-	 ZYAlM4o7omB0VFb0YpItuglKSf6VHIj3cs69Zj+8y4526vvJw0Gn0GDyPRmSilS7gE
-	 N1TBYvh0EmDqumLw7IQGOSKUOEYe50gEz6GiFzWg=
+	b=ksasht1bb9l43lU0hEk26Qaot5dbPrwuqhE/oVhZlGKIEAVka6nEhaU9gdVLQuDVZ
+	 mbCTo09MWKOzz+R5xj/lb16riVp/FUceorxDBDFt/fZFfcmRX8sSUqUwb5Z83THS28
+	 e1lYT6PbM7f5zrSXoJg/yGcmco6I+TQJrqpJBfgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/279] drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params
+	stable@kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Nishanth Menon <nm@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 081/227] i2c: omap: fix IRQ storms
 Date: Tue,  8 Apr 2025 12:47:39 +0200
-Message-ID: <20250408104828.397190936@linuxfoundation.org>
+Message-ID: <20250408104822.818998915@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 374c9faac5a763a05bc3f68ad9f73dab3c6aec90 ]
+commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
 
-Null pointer dereference issue could occur when pipe_ctx->plane_state
-is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
-null before accessing. This prevents a null pointer dereference.
+On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+storms because NACK IRQs are enabled and therefore triggered but not
+acked.
 
-Found by code review.
+Sending a reset command to the gyroscope by
+i2cset 1 0x69 0x14 0xb6
+with an additional debug print in the ISR (not the thread) itself
+causes
 
-Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to plane_state")
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 63e6a77ccf239337baa9b1e7787cde9fa0462092)
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+repeating till infinity
+[...]
+(0x2 = NACK, 0x100 = Bus free, which is not enabled)
+Apparently no other IRQ bit gets set, so this stalls.
+
+Do not ignore enabled interrupts and make sure they are acked.
+If the NACK IRQ is not needed, it should simply not enabled, but
+according to the above log, caring about it is necessary unless
+the Bus free IRQ is enabled and handled. The assumption that is
+will always come with a ARDY IRQ, which was the idea behind
+ignoring it, proves wrong.
+It is true for simple reads from an unused address.
+
+To still avoid the i2cdetect trouble which is the reason for
+commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+avoid doing much about NACK in omap_i2c_xfer_data() which is used
+by both IRQ mode and polling mode, so also the false detection fix
+is extended to polling usage and IRQ storms are avoided.
+
+By changing this, the hardirq handler is not needed anymore to filter
+stuff.
+
+The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+hanging the system.
+
+Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+CC: stable@kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index de5192ee2b022..a84280b65821b 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1026,7 +1026,8 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
- 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
+ 	return 0;
+ }
  
- 	/* Invalid input */
--	if (!plane_state->dst_rect.width ||
-+	if (!plane_state ||
-+			!plane_state->dst_rect.width ||
- 			!plane_state->dst_rect.height ||
- 			!plane_state->src_rect.width ||
- 			!plane_state->src_rect.height) {
--- 
-2.39.5
-
+-static irqreturn_t
+-omap_i2c_isr(int irq, void *dev_id)
+-{
+-	struct omap_i2c_dev *omap = dev_id;
+-	irqreturn_t ret = IRQ_HANDLED;
+-	u16 mask;
+-	u16 stat;
+-
+-	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+-
+-	if (stat & mask)
+-		ret = IRQ_WAKE_THREAD;
+-
+-	return ret;
+-}
+-
+ static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
+ {
+ 	u16 bits;
+@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_NACK) {
+-			err |= OMAP_I2C_STAT_NACK;
++			omap->cmd_err |= OMAP_I2C_STAT_NACK;
+ 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
++
++			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
++				err = -EAGAIN;
++				break;
++			}
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_AL) {
+@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
+ 				IRQF_NO_SUSPEND, pdev->name, omap);
+ 	else
+ 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
+-				omap_i2c_isr, omap_i2c_isr_thread,
++				NULL, omap_i2c_isr_thread,
+ 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 				pdev->name, omap);
+ 
 
 
 
