@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34725A804A3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B830DA80ADE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84B2719E4239
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DB8D1BC1A4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB347269B1E;
-	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9DD281350;
+	Tue,  8 Apr 2025 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnlc5+BC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaT3Ntk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51A4269CE6;
-	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A226A0E3;
+	Tue,  8 Apr 2025 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113758; cv=none; b=Dv1wON6OU0KxtCULkOOoj0N/jURgXLX278csOzIG9qhDOEiiigmZq1dShmCb8BeEwB4He5mQzkteeFtNjO9qu8VtPSpc0Fs6SmikAjcATF9O+rTXIJWdTsHztuC1ifSxjViYkl6NAY1MvofTuOLhlRajSKc62dwCujkJg3owniw=
+	t=1744116777; cv=none; b=OzkSPOcNbFDHzxjooZIOZ8+BLeu1/RdUWpfIesT99iW9QboN80eqNADgle0wRxOP/yQ1ALfTdpHiMG+cF+h6ApH+/lk7Idsw6ZbphdIge94mifr32NwSJTyCtY93GsU7Ccfh0eaQrMlYcUDw6t0DYYDryeZsk0x99INq/knV4FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113758; c=relaxed/simple;
-	bh=QJfrwfsp/cQlzMKWXPz0b0MRe7vQb2I2WMVz1xCF9ds=;
+	s=arc-20240116; t=1744116777; c=relaxed/simple;
+	bh=SIIvROhcrXFbnPvat55SNav/pODBWVx5/01AVrUgths=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INS5jPlJJqI6DtGinKw7IcwtB7EYxb8kwxdxbnG5totp15Ce/m6cfjYkM6Vzd9gKfZLYJT+NU/P2gSYZond/qmt5GCwDCoXxAkoNe9WBs+h0hEFW7lE9RWSEec/QF6/SDscytAwa0OtMZKOEVGy3CmVe3Nt49DMAJc9mfDlHypU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnlc5+BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36205C4CEE5;
-	Tue,  8 Apr 2025 12:02:38 +0000 (UTC)
+	 MIME-Version; b=CtoRsLj0/Pmmsz2M9WpoQFlndt3sxaq9n6QRwMrwPznq+QR8YiraGhBGtlRzDz4MPVSTIhiPxGWEuWS4Y8/kDKCaYxvb/p/voAGdW+k1F1bIRdl3rN2xr6gzoOsR3OuOMffYkGeKHr0FQMKHASAHG1z56kwkA4imga5L/flPjMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaT3Ntk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3652C4CEE5;
+	Tue,  8 Apr 2025 12:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113758;
-	bh=QJfrwfsp/cQlzMKWXPz0b0MRe7vQb2I2WMVz1xCF9ds=;
+	s=korg; t=1744116777;
+	bh=SIIvROhcrXFbnPvat55SNav/pODBWVx5/01AVrUgths=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lnlc5+BCg+m3R7NJvKBVfxNdWtVocEzxfjkPS5Qz4rcCUmTrqSI+o7/Q5GYQlTcy3
-	 DjgZEIJ4lQQ9IyswhkjokCdCD7khM7izT4UqNAWlhPmMrjjFNe75yS+kEiNPaynRYg
-	 jZN85BENXQCGTdmjViVhKiocatv1xmSzSW1dzW/o=
+	b=TaT3Ntk+PFPVP4MiEcVncJNkVA10VOet9BGqjZIVZaykbv2SeUOMNVkDuM8jmULtQ
+	 TGWHTixz+iOwEnhFPWsW+nq24q8FlagNWKXDeWcV4gXFUDVFNW2Sq0jgrQqqbO/3pw
+	 V4NRmh7jh/IAWWKibVaz2IHXM5MW0B982C/YFiTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	xueqin Luo <luoxueqin@kylinos.cn>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/154] netpoll: remove dev argument from netpoll_send_skb_on_dev()
+Subject: [PATCH 6.12 225/423] thermal: core: Remove duplicate struct declaration
 Date: Tue,  8 Apr 2025 12:49:11 +0200
-Message-ID: <20250408104815.618149071@linuxfoundation.org>
+Message-ID: <20250408104850.965184446@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-[ Upstream commit 307f660d056b5eb8f5bb2328fac3915ab75b5007 ]
+[ Upstream commit 9e6ec8cf64e2973f0ec74f09023988cabd218426 ]
 
-netpoll_send_skb_on_dev() can get the device pointer directly from np->dev
+The struct thermal_zone_device is already declared on line 32, so the
+duplicate declaration has been removed.
 
-Rename it to __netpoll_send_skb()
-
-Following patch will move netpoll_send_skb() out-of-line.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
+Fixes: b1ae92dcfa8e ("thermal: core: Make struct thermal_zone_device definition internal")
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://lore.kernel.org/r/20250206081436.51785-1-luoxueqin@kylinos.cn
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netpoll.h |  5 ++---
- net/core/netpoll.c      | 10 ++++++----
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ include/linux/thermal.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 3ff0303672842..f5202a59c0274 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -63,13 +63,12 @@ int netpoll_setup(struct netpoll *np);
- void __netpoll_cleanup(struct netpoll *np);
- void __netpoll_free(struct netpoll *np);
- void netpoll_cleanup(struct netpoll *np);
--void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
--			     struct net_device *dev);
-+void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
- static inline void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
- 	unsigned long flags;
- 	local_irq_save(flags);
--	netpoll_send_skb_on_dev(np, skb, np->dev);
-+	__netpoll_send_skb(np, skb);
- 	local_irq_restore(flags);
- }
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index 25ea8fe2313e6..0da2c257e32cf 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -83,8 +83,6 @@ struct thermal_trip {
+ #define THERMAL_TRIP_PRIV_TO_INT(_val_)	(uintptr_t)(_val_)
+ #define THERMAL_INT_TO_TRIP_PRIV(_val_)	(void *)(uintptr_t)(_val_)
  
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 35a3277ee3567..69f80b531a1c3 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -323,17 +323,19 @@ static int netpoll_owner_active(struct net_device *dev)
- }
- 
- /* call with IRQ disabled */
--void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
--			     struct net_device *dev)
-+void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
- 	netdev_tx_t status = NETDEV_TX_BUSY;
-+	struct net_device *dev;
- 	unsigned long tries;
- 	/* It is up to the caller to keep npinfo alive. */
- 	struct netpoll_info *npinfo;
- 
- 	lockdep_assert_irqs_disabled();
- 
--	npinfo = rcu_dereference_bh(np->dev->npinfo);
-+	dev = np->dev;
-+	npinfo = rcu_dereference_bh(dev->npinfo);
-+
- 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
- 		dev_kfree_skb_irq(skb);
- 		return;
-@@ -376,7 +378,7 @@ void netpoll_send_skb_on_dev(struct netpoll *np, struct sk_buff *skb,
- 		schedule_delayed_work(&npinfo->tx_work,0);
- 	}
- }
--EXPORT_SYMBOL(netpoll_send_skb_on_dev);
-+EXPORT_SYMBOL(__netpoll_send_skb);
- 
- void netpoll_send_udp(struct netpoll *np, const char *msg, int len)
- {
+-struct thermal_zone_device;
+-
+ struct cooling_spec {
+ 	unsigned long upper;	/* Highest cooling state  */
+ 	unsigned long lower;	/* Lowest cooling state  */
 -- 
 2.39.5
 
