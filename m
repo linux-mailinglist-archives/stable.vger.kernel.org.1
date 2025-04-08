@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4322BA8038D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BF9A80237
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0008B3BDC19
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353651887AD7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E86269AF3;
-	Tue,  8 Apr 2025 11:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B08C266583;
+	Tue,  8 Apr 2025 11:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0osEg1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUzdo8ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7826981C;
-	Tue,  8 Apr 2025 11:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2C32192F2;
+	Tue,  8 Apr 2025 11:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113079; cv=none; b=NCz6Bu+PCHu9GtA67bppD2eGybOww9Owz2c4+lRtXdROSW1ALzEmWdmYo/6x736IotNAcrDmvi9H51mm2WcZo8dK6itxYiyAWNeZjrGBtLC7xOrh1LDx8kGfkbT4VP9EtO2CA5tiswQdyk0drlW6g5F+NwTXY+0JDCAgebjLiS0=
+	t=1744112483; cv=none; b=reNRt2+CETRb+AN44UgDotodetR8W22lQYQxmyLc2vtWtECH3F8i1MBy6QIAAnoXyTs+XJTwtGQkxjGBYrH1cEkP0++03aVGM2rTmSA1hysqL3qDbGP2XhGeIczvXHb7hemvLjJehAFQt8IYhRElqMqcB/sTeQC00+4atoBFiwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113079; c=relaxed/simple;
-	bh=dv8RmClQFZkzfzaPbh5EyvP7PBI3/l3mp51fmm682ME=;
+	s=arc-20240116; t=1744112483; c=relaxed/simple;
+	bh=pMMe9b2y7/yXZu2T9WO2ACP86Vbs7Bfbos+pQOpxz+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeOaa5DbZgGLyW9zpSSzSz4SG6V2se7ZwLGhY/aaKmBdjL5syH2sgw5/+WEwHoVhjuikX//gak/5fsjD6M8wON/zdvtFzKbMgL8zmwt2YEjvPwSNhqCJuWkMoMyymIDOlcZctGEV7tUIUYNXzSy+9NKNHaMIG7vzDhjlsFPV2Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0osEg1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A7C4CEE5;
-	Tue,  8 Apr 2025 11:51:18 +0000 (UTC)
+	 MIME-Version; b=heytFPEOsJnxDA2iF3eSAPp3fpiJLojVkul1B215gXLzHfX5nM+LQNefwN1LH3f6XvP1w9eegXXDtyo06hne8rM4XFBWoIgIUja0PoAjGZpiRCTyCkQEQuxg/ycwreLAUqXUOxKwk6UIUFuwBBlWWZH1ppkj1i8OC9kIrioxLqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUzdo8ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44286C4CEE5;
+	Tue,  8 Apr 2025 11:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113079;
-	bh=dv8RmClQFZkzfzaPbh5EyvP7PBI3/l3mp51fmm682ME=;
+	s=korg; t=1744112482;
+	bh=pMMe9b2y7/yXZu2T9WO2ACP86Vbs7Bfbos+pQOpxz+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0osEg1pbh41pqf+TT6B1ihSqH8dLqay66DYrqvdRtgrKOKNstkXHKR7sxbYj+A5m
-	 JgQxb0z2+8vJHXkrYL4WoHMQUfZBJL7NS33rrc/feU2tuyw0RgqUuvgMvrCDWGl9cm
-	 XVhNgSN+A4L/tIa5KWbPRU0LQsVxSvxKUaXn98ys=
+	b=bUzdo8MEIlfk1g0ybbl9oDXr5bXJBaXEZgvKmok7FMEmLwLJvax+c9wUrGPN6OMIW
+	 ME3eIIgdiHUoHklhYf+HZXpbJSY+sKMithmewjZpVYmJexLiaM3/KKeZfwtov2wcXz
+	 UxfrVLMpcSk1D1mOMUIxRDrYjhzlvUoB857dGPQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Spassov <stanspas@amazon.de>,
-	Ingo Molnar <mingo@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/268] x86/fpu: Fix guest FPU state buffer allocation size
+Subject: [PATCH 5.15 035/279] sched: Clarify wake_up_q()s write to task->wake_q.next
 Date: Tue,  8 Apr 2025 12:46:58 +0200
-Message-ID: <20250408104828.703616026@linuxfoundation.org>
+Message-ID: <20250408104827.329163293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Spassov <stanspas@amazon.de>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 1937e18cc3cf27e2b3ef70e8c161437051ab7608 ]
+[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
 
-Ongoing work on an optimization to batch-preallocate vCPU state buffers
-for KVM revealed a mismatch between the allocation sizes used in
-fpu_alloc_guest_fpstate() and fpstate_realloc(). While the former
-allocates a buffer sized to fit the default set of XSAVE features
-in UABI form (as per fpu_user_cfg), the latter uses its ksize argument
-derived (for the requested set of features) in the same way as the sizes
-found in fpu_kernel_cfg, i.e. using the compacted in-kernel
-representation.
+Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
+which a concurrent __wake_q_add() can immediately overwrite
+task->wake_q.next again.
 
-The correct size to use for guest FPU state should indeed be the
-kernel one as seen in fpstate_realloc(). The original issue likely
-went unnoticed through a combination of UABI size typically being
-larger than or equal to kernel size, and/or both amounting to the
-same number of allocated 4K pages.
-
-Fixes: 69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
-Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250218141045.85201-1-stanspas@amazon.de
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 4b414b0ab0692..db200990b5569 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -220,7 +220,7 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
- 	struct fpstate *fpstate;
- 	unsigned int size;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 70a7cf563f01e..380938831b130 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -941,9 +941,10 @@ void wake_up_q(struct wake_q_head *head)
+ 		struct task_struct *task;
  
--	size = fpu_user_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
-+	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
- 	fpstate = vzalloc(size);
- 	if (!fpstate)
- 		return false;
+ 		task = container_of(node, struct task_struct, wake_q);
+-		/* Task can safely be re-inserted now: */
+ 		node = node->next;
+-		task->wake_q.next = NULL;
++		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
++		WRITE_ONCE(task->wake_q.next, NULL);
++		/* Task can safely be re-inserted now. */
+ 
+ 		/*
+ 		 * wake_up_process() executes a full barrier, which pairs with
 -- 
 2.39.5
 
