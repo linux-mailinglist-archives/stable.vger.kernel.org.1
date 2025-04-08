@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57ACA803BD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49359A802AC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59099420EF8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2013046225E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC60267F5F;
-	Tue,  8 Apr 2025 11:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD14268681;
+	Tue,  8 Apr 2025 11:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhMMwiJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLccFvi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E044322257E;
-	Tue,  8 Apr 2025 11:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B25925FA13;
+	Tue,  8 Apr 2025 11:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113202; cv=none; b=EaHymyLT4RbrODMlvYK4SOte9C9STLc/wVDD4Ff0Ez69bC+mobFWlBz5+EEY1IxhH0EdUFvJWAM1whrAug6CFMYxFhfu3IuhiXGoNYC0ryjYSRQdLCaKKiQiaKtZfOYGCUCAwXWyXoTqtsKt27MqkffmcOWdZVau+606f+V1Ffk=
+	t=1744112412; cv=none; b=oJcTDCfrC2PNoSpKQ6b5Hh9zwr7j6kvnCk40S5VjS86x2Tc/H6K3zngHvw1xK1GbZ/MDOebnI8g4mF7XcSozxBjchxJAIeJjRBGTjGB+6mDQJlrr4RlIfNiEw5icJJh+IdJUCXLgbNFLMVSqymA75SCRHfHVg0M2TH+2KX2FbYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113202; c=relaxed/simple;
-	bh=3/Eq/uGgXYi2v8OJlyfLb8FLL3QTqy8SWNRwtAzs81Y=;
+	s=arc-20240116; t=1744112412; c=relaxed/simple;
+	bh=1Y68D0vMYuzQNgr7ul9er/8oMOqG/qQnqSdYIJytpNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jit8uCeDhkJhjmOBpKWKwXMxFvLLTWwN076sLPEks7FAGDn22rZHIuRjvLh8k/zZXxLWDmcCeB9xOpUaWeaJOYV/1PSecTC+I4UIahumh+AY7APCUlHq/xt+Ea2KToWosrLKhStqkKdtTdDxXmpPupUZ5U65n7PKXyH1St3Nkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhMMwiJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D2CC4CEE5;
-	Tue,  8 Apr 2025 11:53:21 +0000 (UTC)
+	 MIME-Version; b=f8rxcJjzt1Rs42IYjTT1HPcVxtSzsKUoCBKfFVU/SuDd1zBoTm1+4aZvFhfiVilUYTVggoheDz3LNkQH1qgWWROJmiISVHZkM7LB6lL533eWaYB+K1GzQ7Np5qIIpb6nddI8G8e58RvDDpkmVxEjM3sfQJTGKTnLTK3EdeZ6jLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLccFvi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBADC4CEE7;
+	Tue,  8 Apr 2025 11:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113201;
-	bh=3/Eq/uGgXYi2v8OJlyfLb8FLL3QTqy8SWNRwtAzs81Y=;
+	s=korg; t=1744112412;
+	bh=1Y68D0vMYuzQNgr7ul9er/8oMOqG/qQnqSdYIJytpNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhMMwiJn/AhJw6YI7IwEqiPE1Lpz+aMmY2MNi6Qpw732XB8qRbKYwbNyhbwD5QsEB
-	 iEWXxh2oe0/mjRbxdz3uvB0SC/0lsRCV/hqHQxOLYbzD58ZZvAXT9uosp1VU4y7q5j
-	 EvusRJrqpeoWe/ia1JZj+/y619O/FemyZX6lNEew=
+	b=rLccFvi/OcUFn+ReL5xiEXUP/kiqlhsvKvZLMAC+lfU/0aAGgeIGK3bZN1iPkrCFD
+	 VLpeYUem5L669pe+Q1WTSV/kVQj7LMEVOFKJS89suLFdBZ218/FKYTBAGuckB30riU
+	 n/iZjNTn1w+vLgnUxzAJc0xj6h9ubPFXkRaNXXgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/268] ASoC: ti: j721e-evm: Fix clock configuration for ti,j7200-cpb-audio compatible
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 059/279] drm/amd/display: Restore correct backlight brightness after a GPU reset
 Date: Tue,  8 Apr 2025 12:47:22 +0200
-Message-ID: <20250408104829.342067112@linuxfoundation.org>
+Message-ID: <20250408104827.946741039@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 45ff65e30deb919604e68faed156ad96ce7474d9 ]
+commit 5760388d9681ac743038b846b9082b9023969551 upstream.
 
-For 'ti,j7200-cpb-audio' compatible, there is support for only one PLL for
-48k. For 11025, 22050, 44100 and 88200 sampling rates, due to absence of
-J721E_CLK_PARENT_44100, we get EINVAL while running any audio application.
-Add support for these rates by using the 48k parent clock and adjusting
-the clock for these rates later in j721e_configure_refclk.
+[Why]
+GPU reset will attempt to restore cached state, but brightness doesn't
+get restored. It will come back at 100% brightness, but userspace thinks
+it's the previous value.
 
-Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM (CPB and IVI)")
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Link: https://patch.msgid.link/20250318113524.57100-1-j-choudhary@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+When running resume sequence if GPU is in reset restore brightness
+to previous value.
+
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e19e2b57b6bb640d68dfc7991e1e182922cf867)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/ti/j721e-evm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
-index 6a969874c9270..5e0bdbd34a837 100644
---- a/sound/soc/ti/j721e-evm.c
-+++ b/sound/soc/ti/j721e-evm.c
-@@ -182,6 +182,8 @@ static int j721e_configure_refclk(struct j721e_priv *priv,
- 		clk_id = J721E_CLK_PARENT_48000;
- 	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_44100])
- 		clk_id = J721E_CLK_PARENT_44100;
-+	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_48000])
-+		clk_id = J721E_CLK_PARENT_48000;
- 	else
- 		return ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -218,6 +218,10 @@ amd_get_format_info(const struct drm_mod
  
--- 
-2.39.5
-
+ static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector);
+ 
++static void amdgpu_dm_backlight_set_level(struct amdgpu_display_manager *dm,
++					 int bl_idx,
++					 u32 user_brightness);
++
+ static bool
+ is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
+ 				 struct drm_crtc_state *new_crtc_state);
+@@ -2698,6 +2702,12 @@ static int dm_resume(void *handle)
+ 
+ 		mutex_unlock(&dm->dc_lock);
+ 
++		/* set the backlight after a reset */
++		for (i = 0; i < dm->num_of_edps; i++) {
++			if (dm->backlight_dev[i])
++				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
++		}
++
+ 		return 0;
+ 	}
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
 
 
 
