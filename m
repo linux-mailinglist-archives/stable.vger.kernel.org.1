@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F24FA80211
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6C5A800FC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B12F188A2F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A6D1888216
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6F7263C6D;
-	Tue,  8 Apr 2025 11:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B192686A5;
+	Tue,  8 Apr 2025 11:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeWrhmTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqncQGKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B4025FA13;
-	Tue,  8 Apr 2025 11:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D7263899;
+	Tue,  8 Apr 2025 11:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112447; cv=none; b=O3wwYyZ0YxqxQdajFoWK/WhgxrusjX6TvfE8EralqjTHgHOUTTDXMbouWGF+EaAPYl+jd1IbZATfsyxMrInal+VvOxYY2UwTVyVk5X3VG7N0OoH32kwMTFkhTlnTydNGpbTAHpgp5ILx7qLajk2LDkcap5cZgOagDBAGP4EPhkc=
+	t=1744111889; cv=none; b=VTLamwPVu4yR/Nx6rFK+KhSckhmDDM2XbJTB5USt++OxABPXidovJnmgwQ+H4rIILwwgeW+ti5LWhK1BVlPZHzcXC/5z9B4XegP91+HvS+jUd0KAwULkQukhvWuDOoi8Dd6jSeMb/qQVDPZzp2OmEssvbxJoPXHheYguZVHR/ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112447; c=relaxed/simple;
-	bh=Ht+dT6khLKm7gtd3b46P4JwLg97Jw37Ms+C06tQM5to=;
+	s=arc-20240116; t=1744111889; c=relaxed/simple;
+	bh=J9z8d1eu7g55tSgYHNRT2/me1e/fjVM7UDhTgwvTFqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJmdqgLOgwIxWxG8IPGid4IgVSKLjq0iJ4X4xho6A7/vD70ImVX3sZk8Br5vblSUqbkSGkC59ea/yaVX931k432/kTwljQCoBtsQvPw639inw5smqPXsFXkqy/xJ+ycIkp83OyKYKgCN52fVovb0cjSQ3vY7e+Sx7GNu0YyrVMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeWrhmTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA545C4CEEE;
-	Tue,  8 Apr 2025 11:40:46 +0000 (UTC)
+	 MIME-Version; b=RDt5QMSoOgCEZJT1saX8S4TNrJvIlTznbizEgKRsZlwATy3hQ0klR7RStAepTBEI+dLr2ckH9Nk6ai31/UAYOqsW/Ut7HHhGM+l+LL/iK/zccQgtspPBqv+aadgFgQV0pRQ5JllM/EKV1zq9+g5hssZFHhvbYONfWQxv+ceTGG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqncQGKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FC9C4CEE7;
+	Tue,  8 Apr 2025 11:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112447;
-	bh=Ht+dT6khLKm7gtd3b46P4JwLg97Jw37Ms+C06tQM5to=;
+	s=korg; t=1744111889;
+	bh=J9z8d1eu7g55tSgYHNRT2/me1e/fjVM7UDhTgwvTFqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qeWrhmTJccQdSFSg+dHWsx6yaz6VjQ9cb7o2yyYu79ERfkJ7/N53dLDjplmtnk9Dg
-	 N2gg/2nXUMmzlqijcQPFkpMtO+q+/QNI4nrM21SJ8XZiE24wE3lBqISf5GsBKqDa/O
-	 U4I+c+ceYKD9G+kvxJ9rqIWmtZjSrMuz6D4SDRBw=
+	b=xqncQGKL6E+5+dxteyPEaKDceLRroc4EJqwj8/OvQsKcSrlhGRvixRfyk0ZH0d/Fr
+	 g4iWsqjhpd/q8mlAeJkTRf9QifdA5sjtVv2wbSOTgmq2+e1iwnd96e+rE/H0leL/NA
+	 PRtSZYH/G+6ZlizRF2sZJGkhRio1tOwRdq3w6y7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/279] cifs: Fix integer overflow while processing closetimeo mount option
+Subject: [PATCH 6.14 557/731] ksmbd: use aead_request_free to match aead_request_alloc
 Date: Tue,  8 Apr 2025 12:47:34 +0200
-Message-ID: <20250408104828.257529636@linuxfoundation.org>
+Message-ID: <20250408104927.232232649@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit d5a30fddfe2f2e540f6c43b59cf701809995faef ]
+[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
 
-User-provided mount parameter closetimeo of type u32 is intended to have
-an upper limit, but before it is validated, the value is converted from
-seconds to jiffies which can lead to an integer overflow.
+Use aead_request_free() instead of kfree() to properly free memory
+allocated by aead_request_alloc(). This ensures sensitive crypto data
+is zeroed before being freed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5efdd9122eff ("smb3: allow deferred close timeout to be configurable")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/fs_context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
-index f45a29a51700b..24c42043a2271 100644
---- a/fs/cifs/fs_context.c
-+++ b/fs/cifs/fs_context.c
-@@ -1081,11 +1081,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 		ctx->acdirmax = ctx->acregmax = HZ * result.uint_32;
- 		break;
- 	case Opt_closetimeo:
--		ctx->closetimeo = HZ * result.uint_32;
--		if (ctx->closetimeo > SMB3_MAX_DCLOSETIMEO) {
-+		if (result.uint_32 > SMB3_MAX_DCLOSETIMEO / HZ) {
- 			cifs_errorf(fc, "closetimeo too large\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		ctx->closetimeo = HZ * result.uint_32;
- 		break;
- 	case Opt_echo_interval:
- 		ctx->echo_interval = result.uint_32;
+diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
+index 2a5b4a96bf993..00b31cf864627 100644
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -1218,7 +1218,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ free_sg:
+ 	kfree(sg);
+ free_req:
+-	kfree(req);
++	aead_request_free(req);
+ free_ctx:
+ 	ksmbd_release_crypto_ctx(ctx);
+ 	return rc;
 -- 
 2.39.5
 
