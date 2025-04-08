@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFB2A7FE16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB63A8022F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6FD16D90A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFE5460A36
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443EC26A0C1;
-	Tue,  8 Apr 2025 11:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54DB266EFB;
+	Tue,  8 Apr 2025 11:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzfNyz5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsFe1ylB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEAB26A0B0;
-	Tue,  8 Apr 2025 11:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7233C268683;
+	Tue,  8 Apr 2025 11:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110127; cv=none; b=qXFUx2j8mEZEAQQvb2oa/wPPWVl/I0K8mZGNKPOfr99rWn2qLEvwc41xtbfJ4m9F0Z6Wu+NfVmScBxronxA+vGHctQ5QUmGRYHZB+YeEalvvojn7vQmp3xdtA7IuGtIilK7yB9EG41/nfThSKeGNys3u9N34ONYxmEuoxNkL0JQ=
+	t=1744112056; cv=none; b=Q01dKVjzaPSJJOwavyfOLhA0Dnjmf5h1qFwgUZwZbT2YH23k9m/Es6p4qaxUvhAfSnugkbcPFzeGMS/lwUhi0Kx1NEBt7rcItRSUJANjOmIDzBK+WjJHDk1EurtdClBhuTXeyUT/1SSm5C0u3Snn4vXXW50GYC9Ua0EjT/Fbie4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110127; c=relaxed/simple;
-	bh=p2oLZ+rKFl48JIRVQrhK9pWjsiIxlHt9Gs6UdEnsTGA=;
+	s=arc-20240116; t=1744112056; c=relaxed/simple;
+	bh=KbSbE2Cf9/ez9221n6Ra2lNJTIf0GjGfXePaLvWahQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckNGIoW9wqS+H9HlcQePTJHv2b1hz7C9zGULPxuQkK8T+5rZM2o9YlHU2/tS9XP3Tg38mCZebCdziYUzt2TtqcxJ2Df6oU7iWqFoDjEHaq1X4Dy+iD4w8pbyrxOJE7fM5Z1+eUptesrwjPvj9wppkDutKArS0RhGOMTavpUKJd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzfNyz5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C64EC4CEE5;
-	Tue,  8 Apr 2025 11:02:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NdELx9BXk1XmNpEKRH0r8QYD+xDQ6nciVhV12caSD6KLBlFwTiRlgj5lze/E3Fjq/wkZpY7EnxaJV7gPJvI834ETSy8JEkm9zPAV59UfteFri3ZTuw8pvwFpTyjiE1PevqE0kqFRwIMS6vaNYl7cmtS108zsSNoi717eRFrfdvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsFe1ylB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0333DC4CEE5;
+	Tue,  8 Apr 2025 11:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110126;
-	bh=p2oLZ+rKFl48JIRVQrhK9pWjsiIxlHt9Gs6UdEnsTGA=;
+	s=korg; t=1744112056;
+	bh=KbSbE2Cf9/ez9221n6Ra2lNJTIf0GjGfXePaLvWahQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzfNyz5esdcr1wqDo8tnjqvOKlkTB0kneTwC0wv6HqfMkVpqz1Qx7EROm3BE+aqND
-	 ofq7MD+A/tLw0b3hnMkJpGv7ZyHU4SAh3FJTssTUcIXAOTV1givzqwlQxzcN+B74PN
-	 YJCTkZaCRACXIv/B+2A7SQ24B4a+6aNJfbWJCTXo=
+	b=OsFe1ylBl4EDBDptm4cgliKLBJTUEeMCMDPkrJ4bwf/K2LXh+tnOyVFmuZZX2grYn
+	 XJ5igt7XNcyZ/hSYTYnVHH6siKrTX1koR0KPQh2cTl3GoAxm81JLcfFn0TDh1m5jfS
+	 vP0QzBpRzbfewJRRxuBxoDy/awZaRvcFQ24qK2B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Gherdovich <ggherdovich@suse.cz>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/227] ACPI: processor: idle: Return an error if both P_LVL{2,3} idle states are invalid
+	Ying Lu <luying1@xiaomi.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 659/731] usbnet:fix NPE during rx_complete
 Date: Tue,  8 Apr 2025 12:49:16 +0200
-Message-ID: <20250408104825.655545706@linuxfoundation.org>
+Message-ID: <20250408104929.596478768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Gherdovich <ggherdovich@suse.cz>
+From: Ying Lu <luying1@xiaomi.com>
 
-[ Upstream commit 9e9b893404d43894d69a18dd2fc8fcf1c36abb7e ]
+commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
 
-Prior to commit 496121c02127 ("ACPI: processor: idle: Allow probing on
-platforms with one ACPI C-state"), the acpi_idle driver wouldn't load on
-systems without a valid C-State at least as deep as C2.
+Missing usbnet_going_away Check in Critical Path.
+The usb_submit_urb function lacks a usbnet_going_away
+validation, whereas __usbnet_queue_skb includes this check.
 
-The behavior was desirable for guests on hypervisors such as VMWare
-ESXi, which by default don't have the _CST ACPI method, and set the C2
-and C3 latencies to 101 and 1001 microseconds respectively via the FADT,
-to signify they're unsupported.
+This inconsistency creates a race condition where:
+A URB request may succeed, but the corresponding SKB data
+fails to be queued.
 
-Since the above change though, these virtualized deployments end up
-loading acpi_idle, and thus entering the default C1 C-State set by
-acpi_processor_get_power_info_default(); this is undesirable for a
-system that's communicating to the OS it doesn't want C-States (missing
-_CST, and invalid C2/C3 in FADT).
+Subsequent processes:
+(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
+attempt to access skb->next, triggering a NULL pointer
+dereference (Kernel Panic).
 
-Make acpi_processor_get_power_info_fadt() return -ENODEV in that case,
-so that acpi_processor_get_cstate_info() exits early and doesn't set
-pr->flags.power = 1.
-
-Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250328143040.9348-1-ggherdovich@suse.cz
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ying Lu <luying1@xiaomi.com>
+Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_idle.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/usbnet.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index ae07927910ca0..42c7bdb352d20 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -270,6 +270,10 @@ static int acpi_processor_get_power_info_fadt(struct acpi_processor *pr)
- 			 ACPI_CX_DESC_LEN, "ACPI P_LVL3 IOPORT 0x%x",
- 			 pr->power.states[ACPI_STATE_C3].address);
- 
-+	if (!pr->power.states[ACPI_STATE_C2].address &&
-+	    !pr->power.states[ACPI_STATE_C3].address)
-+		return -ENODEV;
-+
- 	return 0;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
+ 	    netif_device_present (dev->net) &&
+ 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
+ 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
+-	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
++	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
++	    !usbnet_going_away(dev)) {
+ 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
+ 		case -EPIPE:
+ 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
+@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
+ 			tasklet_schedule (&dev->bh);
+ 			break;
+ 		case 0:
+-			if (!usbnet_going_away(dev))
+-				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
++			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+ 		}
+ 	} else {
+ 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
 
 
 
