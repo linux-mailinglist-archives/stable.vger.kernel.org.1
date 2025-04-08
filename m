@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7686DA804A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1F0A8072B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE17B1B609D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181F61B61A8E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BB9269823;
-	Tue,  8 Apr 2025 12:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AE826A1D7;
+	Tue,  8 Apr 2025 12:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTJuR8s3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TABv+sUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65B3268FEB;
-	Tue,  8 Apr 2025 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23659267F4F;
+	Tue,  8 Apr 2025 12:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113770; cv=none; b=L80das9dtVfH6hKn2CdT+r96Y252IoCJcDhAf1Hsj54o0PYjnzYgztjre2UuBlSw+hHVaSb34DxTJUxujeVb6KMMnS0973Tz7hvyL8Cf76A3MehwQcYfOve0uJUjd74qHrLDtvtHbQpjdVhgUYfjIp41Ets+GT+RjRxq0STGhzI=
+	t=1744115188; cv=none; b=ZWOqhIekIUc55ov0t0V5K5YB70dj5kuyzwqMlHpuNQd5S+c36WZSFekeuPDk+5qaJa90LVA0hefqmVcBBtGl6rrASw15TSpMkCAh/7fVBhQbV8gyaVapYd84hXjU+PdhBMZz8JqxLidLe7mSn69I2yNzM4qMTZ77Yov/0iK4dNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113770; c=relaxed/simple;
-	bh=y8qIPJ5i0iNtyg6CgE86vbYp4U+0YkVw2PBZlKSl8wk=;
+	s=arc-20240116; t=1744115188; c=relaxed/simple;
+	bh=yfBB0wx4R1r62REePHe4+LwT2e4Zwl2M/fgqfCuFwks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCCF25suoUbIiqHEuQij8jmQ/mM+hJSt/YZrYadrFWOQLic0PEUuY6ab9Tr4YkCv7dbnmnGq7C74aFyaHevxV7CdTfEqggEmambeuQtWXmowZA8cUYUdP4rpmZ3CUqWrVMUc2lyxP82J8VvXmgMf0xCxDr6gk1OnRgiz1vvLhLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTJuR8s3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20296C4CEE5;
-	Tue,  8 Apr 2025 12:02:48 +0000 (UTC)
+	 MIME-Version; b=mN3swFr/gjMksTt3jcwCiiKOfTenKbX8V/c97Ga5Jg0W3tnYV0e408kVj626ZnjJo5bYXRl2Kpv4z+ob+K6aDl87uMsgzFk5LnYSMVKkYDq7hP8jHY6VANQAZC7wO2cXnHkJHc3R5Qq3eCHhruCYYPczPhdlSVcOas+kuOe8vn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TABv+sUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93C8C4CEE5;
+	Tue,  8 Apr 2025 12:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113769;
-	bh=y8qIPJ5i0iNtyg6CgE86vbYp4U+0YkVw2PBZlKSl8wk=;
+	s=korg; t=1744115188;
+	bh=yfBB0wx4R1r62REePHe4+LwT2e4Zwl2M/fgqfCuFwks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BTJuR8s3ay98RblDBUZ0MTJNO0AJEITR3TcBh8xTQEVhOJLh3lQN4nvJjEBuJ0Dio
-	 oAuu2OM6QU5ELLQ95tk6Y/nHVXmR6xGQ5Lu9pM4w2VLfxNxSMByS8ESJVM9HQUz/NA
-	 wdUPrbBJ7D6ME3oR2bF/yI6pN9+6sQQbPdynKHJA=
+	b=TABv+sUqAJZ0EEfwYreMCZOejm4wI/5ARznj34Lcn1SPvsyY+SHGwVEh8Ns8SrIHm
+	 3KdDv8myhxWeY15eJvdY1nH60y5cl3zNQX1HtLOsyXH5ZYrWmBNxCU5ifNsEnDe7ni
+	 TqaevrY1tVMynKWLgOfOTBR+dKNFU2dLahqQ1CiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dbueso@suse.de>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/154] drivers/hv: Replace binary semaphore with mutex
+Subject: [PATCH 6.13 343/499] net: devmem: do not WARN conditionally after netdev_rx_queue_restart()
 Date: Tue,  8 Apr 2025 12:49:15 +0200
-Message-ID: <20250408104815.744556485@linuxfoundation.org>
+Message-ID: <20250408104859.778349245@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit 8aea7f82153d6f292add3eb4bd7ba8edcae5c7f7 ]
+[ Upstream commit a70f891e0fa0435379ad4950e156a15a4ef88b4d ]
 
-At a slight footprint cost (24 vs 32 bytes), mutexes are more optimal
-than semaphores; it's also a nicer interface for mutual exclusion,
-which is why they are encouraged over binary semaphores, when possible.
+When devmem socket is closed, netdev_rx_queue_restart() is called to
+reset queue by the net_devmem_unbind_dmabuf(). But callback may return
+-ENETDOWN if the interface is down because queues are already freed
+when the interface is down so queue reset is not needed.
+So, it should not warn if the return value is -ENETDOWN.
 
-Replace the hyperv_mmio_lock, its semantics implies traditional lock
-ownership; that is, the lock owner is the same for both lock/unlock
-operations. Therefore it is safe to convert.
-
-Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Stable-dep-of: 73fe9073c0cc ("Drivers: hv: vmbus: Don't release fb_mmio resource in vmbus_free_mmio()")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250309134219.91670-8-ap420073@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/core/devmem.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 01a2eeb2ec961..488ea7810ad99 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -107,7 +107,7 @@ static struct notifier_block hyperv_panic_block = {
- static const char *fb_mmio_name = "fb_range";
- static struct resource *fb_mmio;
- static struct resource *hyperv_mmio;
--static DEFINE_SEMAPHORE(hyperv_mmio_lock);
-+static DEFINE_MUTEX(hyperv_mmio_lock);
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 11b91c12ee113..17f8a83a5ee74 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -108,6 +108,7 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ 	struct netdev_rx_queue *rxq;
+ 	unsigned long xa_idx;
+ 	unsigned int rxq_idx;
++	int err;
  
- static int vmbus_exists(void)
- {
-@@ -2082,7 +2082,7 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
- 	int retval;
+ 	if (binding->list.next)
+ 		list_del(&binding->list);
+@@ -119,7 +120,8 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
  
- 	retval = -ENXIO;
--	down(&hyperv_mmio_lock);
-+	mutex_lock(&hyperv_mmio_lock);
+ 		rxq_idx = get_netdev_rx_queue_index(rxq);
  
- 	/*
- 	 * If overlaps with frame buffers are allowed, then first attempt to
-@@ -2137,7 +2137,7 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
+-		WARN_ON(netdev_rx_queue_restart(binding->dev, rxq_idx));
++		err = netdev_rx_queue_restart(binding->dev, rxq_idx);
++		WARN_ON(err && err != -ENETDOWN);
  	}
  
- exit:
--	up(&hyperv_mmio_lock);
-+	mutex_unlock(&hyperv_mmio_lock);
- 	return retval;
- }
- EXPORT_SYMBOL_GPL(vmbus_allocate_mmio);
-@@ -2154,7 +2154,7 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- {
- 	struct resource *iter;
- 
--	down(&hyperv_mmio_lock);
-+	mutex_lock(&hyperv_mmio_lock);
- 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
- 		if ((iter->start >= start + size) || (iter->end <= start))
- 			continue;
-@@ -2162,7 +2162,7 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- 		__release_region(iter, start, size);
- 	}
- 	release_mem_region(start, size);
--	up(&hyperv_mmio_lock);
-+	mutex_unlock(&hyperv_mmio_lock);
- 
- }
- EXPORT_SYMBOL_GPL(vmbus_free_mmio);
+ 	xa_erase(&net_devmem_dmabuf_bindings, binding->id);
 -- 
 2.39.5
 
