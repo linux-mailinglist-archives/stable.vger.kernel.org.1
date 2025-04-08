@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-129299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32C2A7FEF5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3F4A7FF0E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17BC9446548
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8504469CC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63C7264FB6;
-	Tue,  8 Apr 2025 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A840266583;
+	Tue,  8 Apr 2025 11:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0etUkh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddNiKv9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A0D224F6;
-	Tue,  8 Apr 2025 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7412267F6C;
+	Tue,  8 Apr 2025 11:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110652; cv=none; b=tzQRntrc7Y3gAZDPcuDecpp0bPfUpxhNcPK+/wv6IGllMn31tYzlCa9ACHc2tJsQJcD7SaQZk1EW141xztvm4ow5ADKyGZ+KrVNsddi04dVY6sOxLZXuUVD01bfy5/fPCz0WzIgOTm9YOVMc45zEkiFpvNqhdtLqKc8afkuuijs=
+	t=1744110682; cv=none; b=tSYs3Vmg0LdalCeXqQ/22N+vOOb9raSJzyFzfjIp3gL6Ewdfruj+HHN3t6kUym8iJuknidMeT3hfXYXM07jhg9Zr2m/fcmbEGBDrRTUt+jWN7zAkTek2qjXFnyBLQhZ5PKVHmHY1m3uSK/OTkoV8NUJF616ta/qo/+B5SDJpnRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110652; c=relaxed/simple;
-	bh=7nmYopXUPj+azu868nkjha7U1b25aNr2O/WZFDgbIi8=;
+	s=arc-20240116; t=1744110682; c=relaxed/simple;
+	bh=Q+qxuiFV6aqvWEuL33zTh6Jkz3/H/3twnTNEFnJOw5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=calXsSEawTvG8FudQ2n5fqyHBTehlzj8hrmuadBADPUsN+k0f9wlodkpnzURUx/BV+jUWY83/EMRMrPW/Tpm7Lr7eDw4jkk6eUfowIkMubaReqLLZYn4VIygo8DSjauxspgF5s2hBWafddwP4J0gESzs9wLxR4Sj6w6domD9MbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0etUkh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22681C4CEE5;
-	Tue,  8 Apr 2025 11:10:51 +0000 (UTC)
+	 MIME-Version; b=tIYt1vVNrU8JFp7dvMNgLjiQ3E+prW3KO92HTmWKDE6lDwJALJdU5njSUAFDm9CPOeCn3Atv3ZZ+1K1uv1uD5Z5W52Xw28cJKyZYwy6y+RunLJqDTU/MRfHM95S3nnX1bFkAgwBEDeRAAAv/ksXZ9omrzqtZ1lMxmreaYLOIdro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddNiKv9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8AEC4CEE5;
+	Tue,  8 Apr 2025 11:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110652;
-	bh=7nmYopXUPj+azu868nkjha7U1b25aNr2O/WZFDgbIi8=;
+	s=korg; t=1744110682;
+	bh=Q+qxuiFV6aqvWEuL33zTh6Jkz3/H/3twnTNEFnJOw5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0etUkh4SxKgcRWREGD7S0Nw56kDML1oIeRyYGrsml2tcWIgX7UfXo7KdFfraKiqa
-	 yE6pmDC862OjWLDXnv7vdBkCZG1fCEbw8eMpp/4IuVhU71RTNvhgHoFOFZrCKFZJa5
-	 3Lp7rBk8gaBh6xIzy7OsuBwVkfHsIH3uN/J48Dtw=
+	b=ddNiKv9p84lLk9qkxKLlI0rds8gsz98/Qca77HkaPb5klfVzs6auTSWuX3ra1QrK3
+	 /KGAejo42BfU/O5plKggdMqRcbPkHZH0xFNa+QEPoJ224b1X3pc4fEDZffntZbqwbe
+	 TsUasdBF0QaEjIl4qWVhQwW3piYD9u9J0ezGTDu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Yohan Joung <yohan.joung@sk.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 126/731] wifi: ath12k: Clear affinity hint before calling ath12k_pci_free_irq() in error path
-Date: Tue,  8 Apr 2025 12:40:23 +0200
-Message-ID: <20250408104917.209860885@linuxfoundation.org>
+Subject: [PATCH 6.14 127/731] f2fs: fix to set .discard_granularity correctly
+Date: Tue,  8 Apr 2025 12:40:24 +0200
+Message-ID: <20250408104917.234032613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,52 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b43b1e2c52db77c872bd60d30cdcc72c47df70c7 ]
+[ Upstream commit 1b60b23975d6d81703826e3797738e471c3009c6 ]
 
-If a shared IRQ is used by the driver due to platform limitation, then the
-IRQ affinity hint is set right after the allocation of IRQ vectors in
-ath12k_pci_msi_alloc(). This does no harm unless one of the functions
-requesting the IRQ fails and attempt to free the IRQ.
+commit 4f993264fe29 ("f2fs: introduce discard_unit mount option") introduced
+a bug, when we enable discard_unit=section option, it will set
+.discard_granularity to BLKS_PER_SEC(), however discard granularity only
+supports [1, 512], once section size is not equal to segment size, it will
+cause issue_discard_thread() in DPOLICY_BG mode will not select discard entry
+w/ any granularity to issue.
 
-This may end up with a warning from the IRQ core that is expecting the
-affinity hint to be cleared before freeing the IRQ:
-
-kernel/irq/manage.c:
-
-	/* make sure affinity_hint is cleaned up */
-	if (WARN_ON_ONCE(desc->affinity_hint))
-		desc->affinity_hint = NULL;
-
-So to fix this issue, clear the IRQ affinity hint before calling
-ath12k_pci_free_irq() in the error path. The affinity will be cleared once
-again further down the error path due to code organization, but that does
-no harm.
-
-Fixes: a3012f206d07 ("wifi: ath12k: set IRQ affinity to CPU0 in case of one MSI vector")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250225053447.16824-3-manivannan.sadhasivam@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 4f993264fe29 ("f2fs: introduce discard_unit mount option")
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Yohan Joung <yohan.joung@sk.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/segment.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 06cff3849ab8d..2851f6944b864 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1689,6 +1689,8 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
- 	return 0;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 6ebe25eafafa5..2b415926641f0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2320,10 +2320,9 @@ static int create_discard_cmd_control(struct f2fs_sb_info *sbi)
+ 	dcc->discard_granularity = DEFAULT_DISCARD_GRANULARITY;
+ 	dcc->max_ordered_discard = DEFAULT_MAX_ORDERED_DISCARD_GRANULARITY;
+ 	dcc->discard_io_aware = DPOLICY_IO_AWARE_ENABLE;
+-	if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SEGMENT)
++	if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SEGMENT ||
++		F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SECTION)
+ 		dcc->discard_granularity = BLKS_PER_SEG(sbi);
+-	else if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SECTION)
+-		dcc->discard_granularity = BLKS_PER_SEC(sbi);
  
- err_free_irq:
-+	/* __free_irq() expects the caller to have cleared the affinity hint */
-+	ath12k_pci_set_irq_affinity_hint(ab_pci, NULL);
- 	ath12k_pci_free_irq(ab);
- 
- err_ce_free:
+ 	INIT_LIST_HEAD(&dcc->entry_list);
+ 	for (i = 0; i < MAX_PLIST_NUM; i++)
 -- 
 2.39.5
 
