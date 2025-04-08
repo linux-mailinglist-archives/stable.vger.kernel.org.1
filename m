@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A283A80688
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD280A809DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42BAA1B85533
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5796D1BA5820
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F8D26A1BB;
-	Tue,  8 Apr 2025 12:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62F026B0AD;
+	Tue,  8 Apr 2025 12:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNK4qtOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATkFRXho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2636526A1B1;
-	Tue,  8 Apr 2025 12:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8342326B0B6;
+	Tue,  8 Apr 2025 12:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114824; cv=none; b=BsMT5htJITl8HP0DQSAfYL9JeWSi83nthRPI1GPQOszgtTa0V6//gWqlFsfprWYgsqhWNCg4BwVWcV6NiI0JOl0wlYDhrQuKJO9r8BtpOXW2fCpXejnQnL4XDePbmFsH+syPaU2Zd99GjZT1rkUzvLPq5C8K1x1OdHpNdZwyjOg=
+	t=1744116465; cv=none; b=goHe06pe49L4UnyTReEFH1cZON6DJZqyoG/c2Kzs1F2MdzsLQ530D2iFdu7focwINFJJI4QXsvzWLpgQKli0OHjJW2vo9ZzKYfa7D+NCZhnvH3SFfpSuQVUDsIFeMXgwFOZ/B0vWI6zynVnACvQNuHynLCMaKpIAdSXniIcI7KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114824; c=relaxed/simple;
-	bh=ymsqHOsvKgFbrMJyXKESy3NfE743dpgRGA1ZkfW0ALI=;
+	s=arc-20240116; t=1744116465; c=relaxed/simple;
+	bh=cd8JW0ew1/nWwhZzby8YYQftE5kiH/mmQtseAzxUyik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIs1LnyUuEpGRR00HY8T0HxH0X2KfbJTDWWuo6mbCwZmrOhzy6L+NMcdH0gORHGL0dh79TPx211IVDyfYmnkHXNW/WdeXO9U0cFHxqqDXSFY+1VrzNCmAa5CAHi4Vzk2vn1nmPolYFJArxhKSUZ9ue3iWJs66H/N9yO8OuP3C4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNK4qtOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AABC4CEE5;
-	Tue,  8 Apr 2025 12:20:23 +0000 (UTC)
+	 MIME-Version; b=N5Vo3cu0xMxgOPMk9+xORewHVSQ/8QtBwTnSkQJuMSjM2Sh6+X/JqHqjqlTKATeAL6EljiQgVdDNAXvbnJogRVNW6lIs9L95qr5lpl+pjmRTPfxBP70AIV/hRNL1tLABY8bPerssQjwfjnI/xFvdv3aA/bL5LZZEek8Tre+D2aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATkFRXho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3633C4CEE5;
+	Tue,  8 Apr 2025 12:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114824;
-	bh=ymsqHOsvKgFbrMJyXKESy3NfE743dpgRGA1ZkfW0ALI=;
+	s=korg; t=1744116465;
+	bh=cd8JW0ew1/nWwhZzby8YYQftE5kiH/mmQtseAzxUyik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNK4qtOjswOFmOVAWJVGvEKJuEc4ldOfndvDa167vBz3IeP6EEuW7PA41QcWXkfBl
-	 bVjrc4ghDrIojtrI/VuYgJdu1kmEoGh2nh9gFlO7BzvY7VRgJoxkVaBSZWa/LO+bEV
-	 3n/OF+DmSJnP6CvvDEZFCLZF4I4Y1fIVnws9MpQ4=
+	b=ATkFRXhoC1328GIbem2NRtzaURGsGjoI7zJBlmaAAdD2M+hgtP564o/rDGwcEJDZd
+	 cnDG6wt7iurCgDXKkvJ4qp6hM2w0pBWyZXrMYoDhShAXAjfjjoS1z3gqYxpPySBHX/
+	 3IRX2obIjNQPgM6m5BKXVm8tfD2It7BJ7bmKNQJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 247/499] NFSv4: Avoid unnecessary scans of filesystems for expired delegations
+Subject: [PATCH 6.12 133/423] RDMA/mlx5: Fix calculation of total invalidated pages
 Date: Tue,  8 Apr 2025 12:47:39 +0200
-Message-ID: <20250408104857.372954009@linuxfoundation.org>
+Message-ID: <20250408104848.824975397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit f163aa81a799e2d46d7f8f0b42a0e7770eaa0d06 ]
+[ Upstream commit 79195147644653ebffadece31a42181e4c48c07d ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups.  If the state manager was asked to reap the
-expired delegations, it should scan only those filesystems that hold
-delegations that need to be reaped.
+When invalidating an address range in mlx5, there is an optimization to
+do UMR operations in chunks.
+Previously, the invalidation counter was incorrectly updated for the
+same indexes within a chunk. Now, the invalidation counter is updated
+only when a chunk is complete and mlx5r_umr_update_xlt() is called.
+This ensures that the counter accurately represents the number of pages
+invalidated using UMR.
 
-Fixes: 7f156ef0bf45 ("NFSv4: Clean up nfs_delegation_reap_expired()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: a3de94e3d61e ("IB/mlx5: Introduce ODP diagnostic counters")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/560deb2433318e5947282b070c915f3c81fef77f.1741875692.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 7 +++++++
- include/linux/nfs_fs_sb.h | 1 +
- 2 files changed, 8 insertions(+)
+ drivers/infiniband/hw/mlx5/odp.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index d1f5e497729c3..abd952cc47e4b 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -1284,6 +1284,7 @@ static void nfs_mark_test_expired_delegation(struct nfs_server *server,
- 		return;
- 	clear_bit(NFS_DELEGATION_NEED_RECLAIM, &delegation->flags);
- 	set_bit(NFS_DELEGATION_TEST_EXPIRED, &delegation->flags);
-+	set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
- 	set_bit(NFS4CLNT_DELEGATION_EXPIRED, &server->nfs_client->cl_state);
- }
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index b4e2a6f9cb9c3..e158d5b1ab17b 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -309,9 +309,6 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
+ 				blk_start_idx = idx;
+ 				in_block = 1;
+ 			}
+-
+-			/* Count page invalidations */
+-			invalidations += idx - blk_start_idx + 1;
+ 		} else {
+ 			u64 umr_offset = idx & umr_block_mask;
  
-@@ -1362,6 +1363,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 	nfs4_stateid stateid;
- 	unsigned long gen = ++server->delegation_gen;
- 
-+	if (!test_and_clear_bit(NFS4SERV_DELEGATION_EXPIRED,
-+				&server->delegation_flags))
-+		return 0;
- restart:
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
-@@ -1391,6 +1395,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
- 			goto restart;
+@@ -321,14 +318,19 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
+ 						     MLX5_IB_UPD_XLT_ZAP |
+ 						     MLX5_IB_UPD_XLT_ATOMIC);
+ 				in_block = 0;
++				/* Count page invalidations */
++				invalidations += idx - blk_start_idx + 1;
+ 			}
  		}
- 		nfs_inode_mark_test_expired_delegation(server,inode);
-+		set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
-+		set_bit(NFS4CLNT_DELEGATION_EXPIRED,
-+			&server->nfs_client->cl_state);
- 		iput(inode);
- 		return -EAGAIN;
  	}
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 98fc10ee0b869..f4cb1f4850a0c 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -253,6 +253,7 @@ struct nfs_server {
+-	if (in_block)
++	if (in_block) {
+ 		mlx5r_umr_update_xlt(mr, blk_start_idx,
+ 				     idx - blk_start_idx + 1, 0,
+ 				     MLX5_IB_UPD_XLT_ZAP |
+ 				     MLX5_IB_UPD_XLT_ATOMIC);
++		/* Count page invalidations */
++		invalidations += idx - blk_start_idx + 1;
++	}
  
- 	unsigned long		delegation_flags;
- #define NFS4SERV_DELEGRETURN		(1)
-+#define NFS4SERV_DELEGATION_EXPIRED	(2)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
+ 	mlx5_update_odp_stats(mr, invalidations, invalidations);
+ 
 -- 
 2.39.5
 
