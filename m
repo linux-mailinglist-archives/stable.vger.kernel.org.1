@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-131356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D67A80968
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F1A809F7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64591B87C4C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 179944E5CB3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0892236FC;
-	Tue,  8 Apr 2025 12:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9038D26E169;
+	Tue,  8 Apr 2025 12:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpCZnrUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCe1r5dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC61126E15F;
-	Tue,  8 Apr 2025 12:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E40E26E15A;
+	Tue,  8 Apr 2025 12:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116177; cv=none; b=V1QumqJAjOkmp41si7eij+hHxbNopEJ6JSn7BPGfaY5EJaTRZVZIUjUUa+P4YDL8/X6a47eO3W+zHyRwc6vJWejL0U4dKnZox1aPhOJGnzaswLL8zqXTzJQx5d8VrXTfXa51LXN455BmlvVLui7fLwYLUax68E7HwD2xWzCO1ww=
+	t=1744116182; cv=none; b=eru6NQZRdElndXNystU4bj5DiFtA8tgx73v6VxSSa/DqCeyN49TzkWvos+Ovb1j0kyWJLIXgilBHhn8DLXoKMX/9DVKQBBfzwYWJw9NuPbSREvrD14X2L9NjdQkfq/xmsuJAsB4jr+zCs2D73I1OrwsSlJzViPiKrNvOR9KrVuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116177; c=relaxed/simple;
-	bh=8/K527tOIoM8hXTJYpWkA9BUB2TYxwwfAU1fvIUyWNQ=;
+	s=arc-20240116; t=1744116182; c=relaxed/simple;
+	bh=GOBgzOv45ptNLDLgbKf1eWjGneoBRM/6PgvuF1BvunM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaQe+aTBEfiaaYrFdieyXB7uSv6ZGrc6OFzNmmN4OmbcFqQxy8m8kvrIdDWxqV+5Wzyd8cFF0wq8BzELLsM6PxAdmRzjHOGZmRJ0ORKaXBONi8oIB0aSgqJj+J8pxiXafZc/H7i04a+8+IeCQzI7drSCrzys6h2Eq2LWef1eMw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpCZnrUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C903C4CEE5;
-	Tue,  8 Apr 2025 12:42:56 +0000 (UTC)
+	 MIME-Version; b=oUpU7WumyLLZoqRseciqEgl4xiQzTXtslArOL9DJwZy2r9X3CUG/3P3jFELc/r4t/AVYbrmgljUBtPG/UniY69CaJEH0QOhpAQKnja0dEzXFCPNdztyceZ1afyU9No0CrWiZxmJBAbP+eTbgDAupQeW5E5W0kCjBJena5s20Rkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCe1r5dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A4CC4CEE5;
+	Tue,  8 Apr 2025 12:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116176;
-	bh=8/K527tOIoM8hXTJYpWkA9BUB2TYxwwfAU1fvIUyWNQ=;
+	s=korg; t=1744116182;
+	bh=GOBgzOv45ptNLDLgbKf1eWjGneoBRM/6PgvuF1BvunM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpCZnrUcB5tFRwZ1xavO/JZKW5Z99LuPd/ncYV6LQykolkqX3kE3ZW1cJCWYOK9Xp
-	 BYJrC3lFIVoUuPfjkve3q+DtMQyvepSO/YNda2uIJr2sJn+NbzOjc9DiLExs376Gtp
-	 e8w9PaevnPgGF7N2ObHPu8egJNVnDsGFNQ+zX73I=
+	b=xCe1r5dXXxd6YUrfdIA9Hlkl04gk4GH0dLsSGt7XJ6u4jKuqzS9mgPWsdMPPDbfRW
+	 otMU6Tgs8fenipKwSRNQ9dpY89efnNVDABIihJTSwTFMn2brQ6HrZ9BS1EU9lXOZ76
+	 dOOxf5HaAhggTzRnQ7gTNU9FTedXSpVqKf6fohnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/423] HID: remove superfluous (and wrong) Makefile entry for CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
-Date: Tue,  8 Apr 2025 12:46:08 +0200
-Message-ID: <20250408104846.729669332@linuxfoundation.org>
+Subject: [PATCH 6.12 043/423] dt-bindings: vendor-prefixes: add GOcontroll
+Date: Tue,  8 Apr 2025 12:46:09 +0200
+Message-ID: <20250408104846.752910895@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -67,41 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-[ Upstream commit fe0fb58325e519008e2606a5aa2cff7ad23e212d ]
+[ Upstream commit 5f0d2de417166698c8eba433b696037ce04730da ]
 
-The line
+GOcontroll produces embedded linux systems and IO modules to use in
+these systems, add its prefix.
 
-	obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)   += intel-ish-hid/
-
-in top-level HID Makefile is both superfluous (as CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
-depends on CONFIG_INTEL_ISH_HID, which contains intel-ish-hid/ already) and wrong (as it's
-missing the CONFIG_ prefix).
-
-Just remove it.
-
-Fixes: 91b228107da3e ("HID: intel-ish-hid: ISH firmware loader client driver")
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Link: https://patch.msgid.link/20250226-initial_display-v2-2-23fafa130817@gocontroll.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Makefile | 1 -
- 1 file changed, 1 deletion(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
-index 496dab54c73a8..f2900ee2ef858 100644
---- a/drivers/hid/Makefile
-+++ b/drivers/hid/Makefile
-@@ -165,7 +165,6 @@ obj-$(CONFIG_USB_KBD)		+= usbhid/
- obj-$(CONFIG_I2C_HID_CORE)	+= i2c-hid/
- 
- obj-$(CONFIG_INTEL_ISH_HID)	+= intel-ish-hid/
--obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)	+= intel-ish-hid/
- 
- obj-$(CONFIG_AMD_SFH_HID)       += amd-sfh-hid/
- 
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index fbfce9b4ae6b8..71a1a399e1e1f 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -581,6 +581,8 @@ patternProperties:
+     description: GlobalTop Technology, Inc.
+   "^gmt,.*":
+     description: Global Mixed-mode Technology, Inc.
++  "^gocontroll,.*":
++    description: GOcontroll Modular Embedded Electronics B.V.
+   "^goldelico,.*":
+     description: Golden Delicious Computers GmbH & Co. KG
+   "^goodix,.*":
 -- 
 2.39.5
 
