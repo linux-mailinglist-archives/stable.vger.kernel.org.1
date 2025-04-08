@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C13A80ABE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CBBA80898
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E5A27B2029
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61231B814B3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DB527C170;
-	Tue,  8 Apr 2025 12:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324B926AAB9;
+	Tue,  8 Apr 2025 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfn1e+z4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cStclAe0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3524826988C;
-	Tue,  8 Apr 2025 12:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AF21AAA32;
+	Tue,  8 Apr 2025 12:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117002; cv=none; b=r+wDAGIDFLB5LJ4k1UdaDQs+0fo1LEXbt3j3V7ZlRwKhvJoRhT1Rq16g2FuZQPuVw/7ZS5ddZTZbKxZWpt9SHZ0wccKCDZtDKb0EXKbOdZIaXyCD+BhVImWlSpdOMkiJ7uS4/yKDWyThe8YoqAMmQMWUjXu/w9YvTVBtXF5OWH0=
+	t=1744115790; cv=none; b=h5acrdMJ7XmQFUIgYvDs+eTlj+mw0dfbZSpPSFIDV5uowidmXelWty1Ef+5HHoNJ/nsPIVHnPHDbmmBvHccGZJ5+dkgaUp2ubpW14t4PKeQBw9YQBCbeioKHxrwuS3QM6dzYM5py98HY9iUvJDtCK6n+TwnWYQztbJcbL0UI0oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117002; c=relaxed/simple;
-	bh=cyG994foBt5zP9HLpYcOcLGrJOwgfsQhKvANz0evN2I=;
+	s=arc-20240116; t=1744115790; c=relaxed/simple;
+	bh=f/lNBnP38XS/u/yQmFZzIgL1fJSnVC3D9KsyXQlkXzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJ0MLnJFyIJ4RoVZq+NmW/4bkCER5AzzO4DaOaTJNVfoA2uixpplxD8ozIpR/Dqos3cln0Z4Vt5CL2UIlObF5ZMR7wkHEdmSy1ahwfmQZ6V4JIyG6HScAt1yroj0d6u7hqlh23X26nWQElmxLpHsSmYiVJvay1ybIRaQPv+qn5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfn1e+z4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A5C4CEE5;
-	Tue,  8 Apr 2025 12:56:41 +0000 (UTC)
+	 MIME-Version; b=slque0WVMFlW4SeINtZr+R891S9EfUW/FJ9vtrypTTOI2SroizeaFjUkYHWO3YeBSFuYM6TDvvFDUSkQCERYBkwKBVVCDodWvewlgWoUJLuB5TNtvWmslWz9klj/+EX5uCWjUNJ1FXMjd12zL+4CStjKgzEBrXz/kSR4xF44iII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cStclAe0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D13C4CEE5;
+	Tue,  8 Apr 2025 12:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117002;
-	bh=cyG994foBt5zP9HLpYcOcLGrJOwgfsQhKvANz0evN2I=;
+	s=korg; t=1744115789;
+	bh=f/lNBnP38XS/u/yQmFZzIgL1fJSnVC3D9KsyXQlkXzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yfn1e+z412k9Lb8V2k62BnpgFYH0yYv73jWizvyEmd2avapvcxlpc1CoaydUKw3VI
-	 5jjTf1RWwDSmqeciYXLnAOrUXVDiPrUW2m3yzCfm+ozRTQRgWaJy3BTzI5Gupwext7
-	 pgmtaQclIudQIhFObtUux7hUG/RKrkr0dVYRAntg=
+	b=cStclAe0Iaw3fjbCkLCyyPT2gCkb2WuCPdnkxeLzZWe5Df43Kn6ZnGyPVeiSW39ac
+	 27eifEmFVn0jlhtr2dK1AXN207mk1CgxX83b8DPbQCXaa3FyjsQ9fMfc2DuQoWh0FW
+	 zRlMs+oN6IPemJG1/f7PZjRVMAOVK2wcMGmiRkh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 308/423] firmware: cs_dsp: Ensure cs_dsp_load[_coeff]() returns 0 on success
+Subject: [PATCH 6.1 104/204] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104852.974915792@linuxfoundation.org>
+Message-ID: <20250408104823.387341969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 2593f7e0dc93a898a84220b3fb180d86f1ca8c60 ]
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-Set ret = 0 on successful completion of the processing loop in
-cs_dsp_load() and cs_dsp_load_coeff() to ensure that the function
-returns 0 on success.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-All normal firmware files will have at least one data block, and
-processing this block will set ret == 0, from the result of either
-regmap_raw_write() or cs_dsp_parse_coeff().
-
-The kunit tests create a dummy firmware file that contains only the
-header, without any data blocks. This gives cs_dsp a file to "load"
-that will not cause any side-effects. As there aren't any data blocks,
-the processing loop will not set ret == 0.
-
-Originally there was a line after the processing loop:
-
-    ret = regmap_async_complete(regmap);
-
-which would set ret == 0 before the function returned.
-
-Commit fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-changed the regmap write to a normal sync write, so the call to
-regmap_async_complete() wasn't necessary and was removed. It was
-overlooked that the ret here wasn't only to check the result of
-regmap_async_complete(), it also set the final return value of the
-function.
-
-Fixes: fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250323170529.197205-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index bd1ea99c3b475..ea452f1908542 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1631,6 +1631,7 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 5be5fa2391de2..9ae5ffea91b48 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -181,7 +181,7 @@ struct pyrf_event {
+ };
  
- 	cs_dsp_debugfs_save_wmfwname(dsp, file);
- 
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
- 
-@@ -2338,6 +2339,7 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 
- 	cs_dsp_debugfs_save_binname(dsp, file);
- 
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
- 
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
 -- 
 2.39.5
 
