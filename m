@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-130429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FDCA80482
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBEBEA809B8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8611B63915
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53A0887652
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F5E26A0ED;
-	Tue,  8 Apr 2025 12:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F223126F475;
+	Tue,  8 Apr 2025 12:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok6wLYUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/+TL0Tw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D126A0EA;
-	Tue,  8 Apr 2025 12:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF94826F471;
+	Tue,  8 Apr 2025 12:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113690; cv=none; b=mM6yLsSw0JJFCWJqejAuKL4mdcL2FAfKXpf5bSuuW7CME3VdmjVUQ/d1XGacfgkfMlf/uUOBpIWZ+sn89lEd6ZDhY6y039MpMlIGMm7hoSnFPCoAQBr5VVUIh87DLuVsOCLhJOjIBxf/KQLgIsqxkHJp/qhvzHBQQTZ6MrDyzlk=
+	t=1744115868; cv=none; b=ly2MTIA95Zx0k9GsBWhiaTAnAst09xXGw6wHx6BE6mC53+w55qxGaO//v5qZBmP/yUqgt/NHKJ1KbA1MdxfJDi+Z2LgSPy7idXXqLHpDSUx4vm9sRq8u3hRtq+eagj/fbXxFOChiZqwQX1z56a7h3OznYN2069KHeTuhNQaBFec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113690; c=relaxed/simple;
-	bh=TACpO9qeZTnGK2Oe8POEFrFi7e4ftCWCKR2iRfysiLU=;
+	s=arc-20240116; t=1744115868; c=relaxed/simple;
+	bh=8L2jviRZbOJgV7QB/p7V2ONdh/meuJldiZBZMnF3dPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mI+/X/pemn9MPCeVLSC+c9SExu4CDNxb6mRQPY+dgvs4acXrTiibMLnxCKDYrFTfAL4tyFEE+uQJsq0fOC5JG7qvZUBiO7P1BxmSe+ZCYhAmBMNQ+85bv7zwQXu8+at+2JCtOpGs2c9G3LpTXPnL/127FmM4M9IfYInJ7glRE2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok6wLYUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A91C4CEE5;
-	Tue,  8 Apr 2025 12:01:29 +0000 (UTC)
+	 MIME-Version; b=Qd0ij7/yO/PkcUaLS7u3wqXIvFw3tDwNvRDcs/hXe8Nd1QYA7WtwkhRhwLu5GBZioVdF/62l1dCWKJiVIlC16xO7eQgI9Qt/rYaij2Ut0ITW61/0HrnNMIxvwHez3vFDe6sJuKd1RB5pf1bU8rqkyyG+Lsm57PSRNpj0pf8zt98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/+TL0Tw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D611C4CEE7;
+	Tue,  8 Apr 2025 12:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113690;
-	bh=TACpO9qeZTnGK2Oe8POEFrFi7e4ftCWCKR2iRfysiLU=;
+	s=korg; t=1744115868;
+	bh=8L2jviRZbOJgV7QB/p7V2ONdh/meuJldiZBZMnF3dPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ok6wLYUA9wxe0XfcEL5RFp3J1dkQEBMuDC4gQrwtTXHkaQT3avn3wT3wslJ4QSz1p
-	 3y9sXwVnDWG4RNU3PalLL1n8uajWuAHR7/zu5zZDwjysigoCfoL/4cf+jCiGmiuPl4
-	 OmtcP2K1PwEJ4goJ3osBimYaZXvgZumSeCLbnXdQ=
+	b=u/+TL0TwGe4ucsBN94sGKbkFDJSCpHRr2+S9RgUJsK87DSxuy3t6gVJ18xjZqsY86
+	 f7C90paaZPYkf2Vd+6enRMQ9kMRAe2wxe5zqtYQpXFa3EU3TxycP4r8OZK4+zKY9+b
+	 a7cd9inMnf2mRaNsYZLvSHrpgf/h3GtjuzrdEUnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 236/268] x86/microcode/AMD: Fix __apply_microcode_amd()s return value
+	Lama Kayal <lkayal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 117/204] net/mlx5e: SHAMPO, Make reserved size independent of page size
 Date: Tue,  8 Apr 2025 12:50:47 +0200
-Message-ID: <20250408104834.953239608@linuxfoundation.org>
+Message-ID: <20250408104823.751151026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+From: Lama Kayal <lkayal@nvidia.com>
 
-commit 31ab12df723543047c3fc19cb8f8c4498ec6267f upstream.
+[ Upstream commit fab05835688526f9de123d1e98e4d1f838da4e22 ]
 
-When verify_sha256_digest() fails, __apply_microcode_amd() should propagate
-the failure by returning false (and not -1 which is promoted to true).
+When hw-gro is enabled, the maximum number of header entries that are
+needed per wqe (hd_per_wqe) is calculated based on the size of the
+reservations among other parameters.
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250327230503.1850368-2-boris.ostrovsky@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Miscalculation of the size of reservations leads to incorrect
+calculation of hd_per_wqe as 0, particularly in the case of large page
+size like in aarch64, this prevents the SHAMPO header from being
+correctly initialized in the device, ultimately causing the following
+cqe err that indicates a violation of PD.
+
+ mlx5_core 0000:00:08.0 eth2: ERR CQE on RQ: 0x1180
+ mlx5_core 0000:00:08.0 eth2: Error cqe on cqn 0x510, ci 0x0, qn 0x1180, opcode 0xe, syndrome  0x4, vendor syndrome 0x32
+ 00000000: 00 00 00 00 04 4a 00 00 00 00 00 00 20 00 93 32
+ 00000010: 55 00 00 00 fb cc 00 00 00 00 00 00 07 18 00 00
+ 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 4a
+ 00000030: 00 00 00 9a 93 00 32 04 00 00 00 00 00 00 da e1
+
+Use the correct formula for calculating the size of reservations,
+precisely it shouldn't be dependent on page size, instead use the
+correct multiply of MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE.
+
+Fixes: e5ca8fb08ab2 ("net/mlx5e: Add control path for SHAMPO feature")
+Signed-off-by: Lama Kayal <lkayal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1742732906-166564-1-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -603,7 +603,7 @@ static bool __apply_microcode_amd(struct
- 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index be7302aa6f864..33cc53f221e0b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -390,7 +390,7 @@ u8 mlx5e_shampo_get_log_pkt_per_rsrv(struct mlx5_core_dev *mdev,
+ 				     struct mlx5e_params *params)
+ {
+ 	u32 resrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
+-			 PAGE_SIZE;
++			 MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
  
- 	if (!verify_sha256_digest(mc->hdr.patch_id, *cur_rev, (const u8 *)p_addr, psize))
--		return -1;
-+		return false;
- 
- 	native_wrmsrl(MSR_AMD64_PATCH_LOADER, p_addr);
- 
+ 	return order_base_2(DIV_ROUND_UP(resrv_size, params->sw_mtu));
+ }
+@@ -818,7 +818,8 @@ static u32 mlx5e_shampo_get_log_cq_size(struct mlx5_core_dev *mdev,
+ 					struct mlx5e_params *params,
+ 					struct mlx5e_xsk_param *xsk)
+ {
+-	int rsrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) * PAGE_SIZE;
++	int rsrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
++		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
+ 	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, xsk));
+ 	int pkt_per_rsrv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
+ 	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, xsk);
+@@ -1027,7 +1028,8 @@ u32 mlx5e_shampo_hd_per_wqe(struct mlx5_core_dev *mdev,
+ 			    struct mlx5e_params *params,
+ 			    struct mlx5e_rq_param *rq_param)
+ {
+-	int resv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) * PAGE_SIZE;
++	int resv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
++		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
+ 	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, NULL));
+ 	int pkt_per_resv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
+ 	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, NULL);
+-- 
+2.39.5
+
 
 
 
