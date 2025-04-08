@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C00A804B0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E574A8041F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ADA71885BFC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99725427163
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0541626A091;
-	Tue,  8 Apr 2025 12:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37D3269AFB;
+	Tue,  8 Apr 2025 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLm81HMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7n9uaG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B754F26A08C;
-	Tue,  8 Apr 2025 12:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE96269B02;
+	Tue,  8 Apr 2025 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113817; cv=none; b=iaDpqJa///sbG7k6fbbnKCaVCmnW/W3Y390030TLGXJd397hqws80v6ozbboXmeUC/O3tFkXb0QjjPbn//74oXgAjUlNZbPdQjmwtViapXYtT80drSNtcpD1ewULsN8MfBwXp798qw/yMODa2uV3CmZ1bBj1aQWg+okGYSCppjM=
+	t=1744113383; cv=none; b=p4yCUbMnIrhEByIAlJSqFHsoR5mbYMuuRYmvW7bRgmeHtFpa0VBy97seFGJHL6+3wdf/wfAwnjT6PxtF4sGuxlK1eTjEvikOcVgLxmpCqlNXQy71RWGLzv5UfIgBVOFght+/2RnDdUjXB5vEubsbbH4Cg0EaAul3subprnzyAJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113817; c=relaxed/simple;
-	bh=6ylfuBi72S+4scnb1ZhoaSwqPjKlsz9RDRB5S5aLv58=;
+	s=arc-20240116; t=1744113383; c=relaxed/simple;
+	bh=shdMEJKm+QyQEwG3HsaIGEMFkg9PLAYbNx//C52xcf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jq5Xg8c9CBODeqQjh1a296IkJGOFAP1hfy459A6lrnB1/ZtVfyL9IVOCzGnEf0on5wV0C2IKJrYjuVKhuh2K6WYYPmFuxCjbtaUFAVSfVTOgGPMiRa+VzmdmgX5H7zao4R0tbSSxdF9lUgX3Ze9A37HfxVDrLJG8Rubc0JKSkcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLm81HMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435EFC4CEE5;
-	Tue,  8 Apr 2025 12:03:37 +0000 (UTC)
+	 MIME-Version; b=DVAZ5+Ivl7330QYIf/f6KfEhgVj3OMzbCtUeXWQ632XdDzuADAbu/PYC8BENPMegO+bn8ZmWshGQOp/vPfApmnL3HFZZpcib4aa2UMwaEPlClulDk8D5oF+z8CAeVECj2+DppnKGvUxIEKwbM0UxECTKi1D7pNKhfHQKt7GbLd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7n9uaG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEFEC4CEE5;
+	Tue,  8 Apr 2025 11:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113817;
-	bh=6ylfuBi72S+4scnb1ZhoaSwqPjKlsz9RDRB5S5aLv58=;
+	s=korg; t=1744113383;
+	bh=shdMEJKm+QyQEwG3HsaIGEMFkg9PLAYbNx//C52xcf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLm81HMNpfwNlYK+zrTeEy4+ryIAFjhayubw14NPaUk3TYQiRBBAJZi8lpKc7gu6F
-	 jsF74zvhNb5L0gUjUE58tVqrV02S8Cx6bV50IXjt2CVqNjNljBzeW70qsxUwyy3s4e
-	 4bS5S/N32JRpaOpZThD4BndbezoNbivUb5orQJcI=
+	b=Q7n9uaG5BHycdBnIb9f5PYvBXCPXhntGRku+G3prUM6CVLPdzh8fKo+AbJru5Fhxv
+	 uOJ8u/gotrnCabuO9+dl26N830qW/fwkPER8p+FMkQxPDiXfkxYPCdamLoFtQ/trgs
+	 Qc8iqPFO/1E0SalEsrlqfcEtGFTbJFopFgTg4F6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/154] pinctrl: bcm281xx: Fix incorrect regmap max_registers value
+Subject: [PATCH 6.6 138/268] tty: n_tty: use uint for space returned by tty_write_room()
 Date: Tue,  8 Apr 2025 12:49:09 +0200
-Message-ID: <20250408104815.557745416@linuxfoundation.org>
+Message-ID: <20250408104832.243664674@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 68283c1cb573143c0b7515e93206f3503616bc10 ]
+[ Upstream commit d97aa066678bd1e2951ee93db9690835dfe57ab6 ]
 
-The max_registers value does not take into consideration the stride;
-currently, it's set to the number of the last pin, but this does not
-accurately represent the final register.
+tty_write_room() returns an "unsigned int". So in case some insane
+driver (like my tty test driver) returns (legitimate) UINT_MAX from its
+tty_operations::write_room(), n_tty is confused on several places.
 
-Fix this by multiplying the current value by 4.
+For example, in process_output_block(), the result of tty_write_room()
+is stored into (signed) "int". So this UINT_MAX suddenly becomes -1. And
+that is extended to ssize_t and returned from process_output_block().
+This causes a write() to such a node to receive -EPERM (which is -1).
 
-Fixes: 54b1aa5a5b16 ("ARM: pinctrl: Add Broadcom Capri pinctrl driver")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/20250207-bcm21664-pinctrl-v1-2-e7cfac9b2d3b@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fix that by using proper "unsigned int" and proper "== 0" test. And
+return 0 constant directly in that "if", so that it is immediately clear
+what is returned ("space" equals to 0 at that point).
+
+Similarly for process_output() and __process_echoes().
+
+Note this does not fix any in-tree driver as of now.
+
+If you want "Fixes: something", it would be commit 03b3b1a2405c ("tty:
+make tty_operations::write_room return uint"). I intentionally do not
+mark this patch by a real tag below.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250317070046.24386-6-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/n_tty.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-index bc3b232a727a5..3452005342ad6 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-@@ -981,7 +981,7 @@ static const struct regmap_config bcm281xx_pinctrl_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.max_register = BCM281XX_PIN_VC_CAM3_SDA,
-+	.max_register = BCM281XX_PIN_VC_CAM3_SDA * 4,
- };
+diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
+index e05341b85c599..788035f0c1ab2 100644
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -491,7 +491,8 @@ static int do_output_char(u8 c, struct tty_struct *tty, int space)
+ static int process_output(u8 c, struct tty_struct *tty)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space, retval;
++	unsigned int space;
++	int retval;
  
- static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
+ 	mutex_lock(&ldata->output_lock);
+ 
+@@ -527,16 +528,16 @@ static ssize_t process_output_block(struct tty_struct *tty,
+ 				    const u8 *buf, unsigned int nr)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space;
+-	int	i;
++	unsigned int space;
++	int i;
+ 	const u8 *cp;
+ 
+ 	mutex_lock(&ldata->output_lock);
+ 
+ 	space = tty_write_room(tty);
+-	if (space <= 0) {
++	if (space == 0) {
+ 		mutex_unlock(&ldata->output_lock);
+-		return space;
++		return 0;
+ 	}
+ 	if (nr > space)
+ 		nr = space;
+@@ -701,7 +702,7 @@ static int n_tty_process_echo_ops(struct tty_struct *tty, size_t *tail,
+ static size_t __process_echoes(struct tty_struct *tty)
+ {
+ 	struct n_tty_data *ldata = tty->disc_data;
+-	int	space, old_space;
++	unsigned int space, old_space;
+ 	size_t tail;
+ 	u8 c;
+ 
 -- 
 2.39.5
 
