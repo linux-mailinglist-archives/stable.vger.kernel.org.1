@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD8EA800E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1A6A8037A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991533AEB06
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A9B3ABCAD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D7F26A1BC;
-	Tue,  8 Apr 2025 11:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14174268C72;
+	Tue,  8 Apr 2025 11:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sh8awW0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vwy5aaYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76210267F4F;
-	Tue,  8 Apr 2025 11:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750B267B89;
+	Tue,  8 Apr 2025 11:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111700; cv=none; b=ki6lp+dsiYpuuXJ5/+3DSk66pqleUPuN2bGFppe2BtRL2SNIObSy5iJuVnlq48WsyU0OdLGSBW1SzjzSnx5LKt9eM2asxcNavk2+KEgVPpE8bPDZ/RZD2gUE1pBV/AsNjC44iKLMohMk+YYW9OjfQSGixb0lRcJAjhs2zf8nmYA=
+	t=1744113044; cv=none; b=o3EdrDNYksCcq0jLmWpkam36hcYk73NOdlrPuUiBoefJUVWJ8u+TbQJ7CvzNbOvAB69EFSozu40FvYRpb6cZlPI+5YlYKvQ03cOqfzh/zeeA6Q/2YvIse1tqoMCTBXU6rY1vbzaJ1+gYwZhAOmYs87izw+D9MzoQk1ArnF0bFRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111700; c=relaxed/simple;
-	bh=qibAHURy7fwYi2MNonSv7E+A4cVKl1yTXQ9Ez6ZhHTc=;
+	s=arc-20240116; t=1744113044; c=relaxed/simple;
+	bh=eg0VsIdB+G8O8kARkaCq4k4unAuuGCUwlO0s9JdGc8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaDZViwhGPJskg8/mDZsoTRiH3x2+sSa9O3NEM62jCFOfP2QVa+JUj970qWO354Ci01ooeb9zSLSI53CZ7I6U1Q2Fs8YvKQ8VxLTWXwZ9O5SCBBiG8eP3w/5VqghEyjrT6+ByCmGoB6HNULxbULXI3Vq6jWa5UAcZhdSUEP5eVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sh8awW0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AEFC4CEE5;
-	Tue,  8 Apr 2025 11:28:19 +0000 (UTC)
+	 MIME-Version; b=WOkKDSAG8M7HVlyqgSNi0Iv97fFrY5wDqfQ+xoEW3w4gLacghtd6S204tC1EOcwbJLgOfJyruEKOAcypE+mPHL5vpWK7CAFtmlP+jEx/SBtAzmy2la5uZNwsXlTgG+7uZeLWZhxByGhCBrbBVWIgO6Emprn+BZMhrS6mfhnPYS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vwy5aaYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB26C4CEE5;
+	Tue,  8 Apr 2025 11:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111700;
-	bh=qibAHURy7fwYi2MNonSv7E+A4cVKl1yTXQ9Ez6ZhHTc=;
+	s=korg; t=1744113044;
+	bh=eg0VsIdB+G8O8kARkaCq4k4unAuuGCUwlO0s9JdGc8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sh8awW0t+yayUNR5LHWdOHt3YgiJTsV+zEFzqIW07ShtJg3aIrNcKejDammJK5bFF
-	 Vw2cxAEBXd7AMWqBZz+/+DSRpBzvgjkTeEHfZkHhRHH6HAD5infT/DdpJRPRb0VjM7
-	 k0nyz6o3kRtkMopOfdzDO67braTzAs26nsBar3zo=
+	b=Vwy5aaYjB/qX+W6Dt0m4WwcZ2+KiSA9EemM3qBjsLdspOQcNKl7/nckjgrPQJEGhQ
+	 aShgeSbtAZVHZx7mEAdSd2irfcPXo6alUsoQgOX5I1lfJACSQx7e6x1CRPTx2AtNg2
+	 FZwLGlaFEvgYLUkeTcJxVe5DlmvJcXvzGTleRALc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Tim Schumacher <tim.schumacher1@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 527/731] perf python: Decrement the refcount of just created event on failure
-Date: Tue,  8 Apr 2025 12:47:04 +0200
-Message-ID: <20250408104926.530802369@linuxfoundation.org>
+Subject: [PATCH 6.6 014/268] selinux: Chain up tool resolving errors in install_policy.sh
+Date: Tue,  8 Apr 2025 12:47:05 +0200
+Message-ID: <20250408104828.896185335@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Tim Schumacher <tim.schumacher1@huawei.com>
 
-[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
+[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
 
-To avoid a leak if we have the python object but then something happens
-and we need to return the operation, decrement the offset of the newly
-created object.
+Subshell evaluations are not exempt from errexit, so if a command is
+not available, `which` will fail and exit the script as a whole.
+This causes the helpful error messages to not be printed if they are
+tacked on using a `$?` comparison.
 
-Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Resolve the issue by using chains of logical operators, which are not
+subject to the effects of errexit.
+
+Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
+Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ scripts/selinux/install_policy.sh | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index ae6bcd39a2001..5370fff2525f5 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -984,6 +984,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
+index 24086793b0d8d..db40237e60ce7 100755
+--- a/scripts/selinux/install_policy.sh
++++ b/scripts/selinux/install_policy.sh
+@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
+ 	exit 1
+ fi
  
- 		evsel = evlist__event2evsel(evlist, event);
- 		if (!evsel) {
-+			Py_DECREF(pyevent);
- 			Py_INCREF(Py_None);
- 			return Py_None;
- 		}
-@@ -995,9 +996,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
- 		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
+-SF=`which setfiles`
+-if [ $? -eq 1 ]; then
++SF=`which setfiles` || {
+ 	echo "Could not find setfiles"
+ 	echo "Do you have policycoreutils installed?"
+ 	exit 1
+-fi
++}
  
--		if (err)
-+		if (err) {
-+			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
- 					    "perf: can't parse sample, err=%d", err);
-+		}
-+
- 		return pyevent;
- 	}
- end:
+-CP=`which checkpolicy`
+-if [ $? -eq 1 ]; then
++CP=`which checkpolicy` || {
+ 	echo "Could not find checkpolicy"
+ 	echo "Do you have checkpolicy installed?"
+ 	exit 1
+-fi
++}
+ VERS=`$CP -V | awk '{print $1}'`
+ 
+-ENABLED=`which selinuxenabled`
+-if [ $? -eq 1 ]; then
++ENABLED=`which selinuxenabled` || {
+ 	echo "Could not find selinuxenabled"
+ 	echo "Do you have libselinux-utils installed?"
+ 	exit 1
+-fi
++}
+ 
+ if selinuxenabled; then
+     echo "SELinux is already enabled"
 -- 
 2.39.5
 
