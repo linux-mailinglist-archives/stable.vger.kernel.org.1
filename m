@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F558A7FDCC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC14A80185
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96058166608
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA73445B16
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CAE268FC9;
-	Tue,  8 Apr 2025 10:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A0269D1B;
+	Tue,  8 Apr 2025 11:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcLYitaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQcjHty6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3B5268688;
-	Tue,  8 Apr 2025 10:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184126A087;
+	Tue,  8 Apr 2025 11:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109923; cv=none; b=hT4zBiDqvZsbK8i4PocfziLlI1+QjHHYLx1h4fS2A3t7uUXQCsC+1KPX74L4H4gMcfbDkNn1yYjRXJpzw0iHfVktzDC7ACMQEa13FZNYH0Tl/3w7xH8egW0bhNTp9k4O7hdHik9e8RrVZeSvBmfg/STU6RqnzccMjklDz+NaN1o=
+	t=1744111855; cv=none; b=oDbbzrFTF17bEODGshpOxtQwd/T28S1O12g/xJCtUBqJ9S8/Z6QdzSGkBkEfDRmx+0zm+WD/edyMxp8hh8O07nHbTk6KrgWSjyn70q8Hx0O2TdAOPkttr1KGKAdob+1gpiLJj+VQ3H1D4u3Mt3jxJ3Hn45qGd+2V+W7JEuWxPdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109923; c=relaxed/simple;
-	bh=K2Rr9ksECkpA5wpuWOp3qRDd61MlNKzY//5vnabaAm8=;
+	s=arc-20240116; t=1744111855; c=relaxed/simple;
+	bh=wJkuE2Z9ix5rp1Bdr6n4ztJU0zhT7Ix8octq+08gHMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lranXUdL4vFvSAQXe0zq66xdndAaMusiwy9TWAWNgSOsK31iXt4D4jJfxb3kHtnb2j5GQBXK84pON3ZFF+BQUeOyYfbo4HyhILZA/+gv7crIExKRuaiR19A0E0RP5t4HPssIbczHAUAXPsjLkc0YJVqP3i0y3+2yYU25Kk3Dsls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcLYitaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5FFC4CEE5;
-	Tue,  8 Apr 2025 10:58:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UpUx9y8EESXzHCacm5FqRdLIkhb3fRHAZkAiehKv6tVhSC/CXt3DBPZP+A3lYjSgjzk9qMj7ynVxd1ih7g5UJhkAdOGyavK9zhz/6sGGBANfjCHqMt1K04WgUTXOKtsqNrSQ0dD9D0ca0AiXCFZmm2+i+VrQLc6uBjLltyu3EWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQcjHty6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C4C4CEE5;
+	Tue,  8 Apr 2025 11:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109923;
-	bh=K2Rr9ksECkpA5wpuWOp3qRDd61MlNKzY//5vnabaAm8=;
+	s=korg; t=1744111855;
+	bh=wJkuE2Z9ix5rp1Bdr6n4ztJU0zhT7Ix8octq+08gHMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcLYitaOYcHUcR/o2FST0dOiZEj/JYaXgXZKRUTiKqj6GdzL44dfPkRZ0+TOeJJah
-	 J1kjaufg+Q1lvkfmjPIfagWE1w+Zbcc5SlMpoHw2gOsUlElee/Z4ET/C2clAI75xRM
-	 Vydpwi3MusHTnLDNHV7hW2Eauk0Uo3WH2DWb+fJ4=
+	b=HQcjHty6wg5NJ58kcgL0i4V2Jf73iWwbePlSRmFqapFfGdA6W629zatcGfzPRzPKG
+	 jwYWRB5b3qFN1rQXEpu1pUwKSyPIr2BshU1sE0fyPxBb6/VvZtYQZo07HyKWT/kzFM
+	 9rD5XcizlIfJzGLpigJ3aZh0D2E0FiTxbNdQHmKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 5.10 103/227] tty: serial: 8250: Add some more device IDs
+	kernel test robot <lkp@intel.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 584/731] riscv: fgraph: Select HAVE_FUNCTION_GRAPH_TRACER depends on HAVE_DYNAMIC_FTRACE_WITH_ARGS
 Date: Tue,  8 Apr 2025 12:48:01 +0200
-Message-ID: <20250408104823.450321874@linuxfoundation.org>
+Message-ID: <20250408104927.858067320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Pu Lehui <pulehui@huawei.com>
 
-commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
+[ Upstream commit e8eb8e1bdae94b9e003f5909519fd311d0936890 ]
 
-These card IDs got missed the first time around.
+Currently, fgraph on riscv relies on the infrastructure of
+DYNAMIC_FTRACE_WITH_ARGS. However, DYNAMIC_FTRACE_WITH_ARGS may be
+turned off on riscv, which will cause the enabled fgraph to be abnormal.
+Therefore, let's select HAVE_FUNCTION_GRAPH_TRACER depends on
+HAVE_DYNAMIC_FTRACE_WITH_ARGS.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503160820.dvqMpH0g-lkp@intel.com/
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250317031214.4138436-1-pulehui@huaweicloud.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/riscv/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5160,6 +5160,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
- 	/*
- 	 * Brainboxes UC-235/246
- 	 */
-@@ -5340,6 +5348,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
- 	/*
- 	 * Brainboxes UC-420
- 	 */
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 7612c52e9b1e3..5d63abc499ce7 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -149,7 +149,7 @@ config RISCV
+ 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS if HAVE_DYNAMIC_FTRACE
+ 	select HAVE_FTRACE_GRAPH_FUNC
+ 	select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
+-	select HAVE_FUNCTION_GRAPH_TRACER
++	select HAVE_FUNCTION_GRAPH_TRACER if HAVE_DYNAMIC_FTRACE_WITH_ARGS
+ 	select HAVE_FUNCTION_GRAPH_FREGS
+ 	select HAVE_FUNCTION_TRACER if !XIP_KERNEL && !PREEMPTION
+ 	select HAVE_EBPF_JIT if MMU
+-- 
+2.39.5
+
 
 
 
