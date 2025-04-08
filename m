@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84462A7FD69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865E4A8022C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2597189679F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F675881BF4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17FE267F7F;
-	Tue,  8 Apr 2025 10:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F43227BB6;
+	Tue,  8 Apr 2025 11:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwRxX0Q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFUa/x6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD51263C71;
-	Tue,  8 Apr 2025 10:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14A23AC1C;
+	Tue,  8 Apr 2025 11:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109704; cv=none; b=R+2pg2DWUJxDFGurYWThRR3o4zdBTKddkS1PjnkI4ZX/8YhOF72/ZtYDTEJ8FvkyGFhh1slOox5IuLxKTTQgJ2FeQUbfo/xCtS8aGdu1CtwqAx5kM0ReQuBpMBS4Fz64QF9m8J8I8We7NrqHWj3nzK5X/CB7IHUdPnHrOm6YW+4=
+	t=1744112296; cv=none; b=ZMmlVh+eoK2rflLjjDB7xwHOVSSbJyfChAm+l1MRsk56QA3oO2eNp7e04qUW9SSflYBrvNLlRmlmKd/Hg8NCXwVXybcB8gLko6acCQQhMEyVX6tt3vItO50KOlEg8OTfJYuP1a9H8EHvgJ388fgurTg2zNuLfOcmq2GvVwRHIv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109704; c=relaxed/simple;
-	bh=KevFOGu/93n+pleLgF694JexCnIb36KuT3FBIZoHVb0=;
+	s=arc-20240116; t=1744112296; c=relaxed/simple;
+	bh=YxONtPkJCO6hL1KWwoEQvnaw1GOZcdq9rpZGdGqpWqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIwVRDR1DQSPrMJ9Mr4qY5RCA9h8siopekTormNACcxQUYFnODa5HGNF1aV8gbXtdEeEPPwbnbBCU0YPvv2GqUC87Z4YEok1C6r1C5kud8BhMA3vupEKqJLAsOHNdjnp5kNlMq2y4xDEBPakUODIato1zVdm6NlM850MNw5FYgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwRxX0Q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89C9C4CEE5;
-	Tue,  8 Apr 2025 10:55:03 +0000 (UTC)
+	 MIME-Version; b=mh4OFJfu6kA09QLQ3RcbZ5y+1aDzx/4JX5OR83d59b+hELXOjYaT/yRFdmHLX/W85zMTTKQq4ZNbNHAXq2GWc1kQAQa1Dqe/3pI2zUOMOS34fQg5qhK3WT6rmKYSFAcLmzoVCzfbEeWCkfix19UQAhQvOq6I8kELXbfm9VTet0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFUa/x6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63366C4CEE5;
+	Tue,  8 Apr 2025 11:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109704;
-	bh=KevFOGu/93n+pleLgF694JexCnIb36KuT3FBIZoHVb0=;
+	s=korg; t=1744112296;
+	bh=YxONtPkJCO6hL1KWwoEQvnaw1GOZcdq9rpZGdGqpWqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwRxX0Q3VDyztdrVdetI4yfHFLi/HzyP5/w9BK7lhNvDiMu9HRuA+7QkcJdw4uHsY
-	 2fnPZxYtE7QW+Izv/RnaZu6ZOo3/luTppqysyboWeLf829a4kyGE8qLmPhIgg8y75d
-	 C4JyIRABlj/XzGQbSTBj2WrSzNk13KQHulJE0GX0=
+	b=uFUa/x6hkRpnFuHccr4hKAf5YyOA0e1FiK6pFVxQ4YYDEfpb1tAxpocqTkh4lk660
+	 5X8ajo2SEckPzY6soQK3x478NBNG7+kYAEIBkiDS5ES+ItBjYjp7cUbYo0kd8hN2vp
+	 89I8wrgm+Hpds40ZovwfhA3Gz+SP/KH8bmUSHXfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/227] hrtimers: Mark is_migration_base() with __always_inline
+Subject: [PATCH 5.15 017/279] gre: Fix IPv6 link-local address generation.
 Date: Tue,  8 Apr 2025 12:46:40 +0200
-Message-ID: <20250408104821.059416792@linuxfoundation.org>
+Message-ID: <20250408104826.846929376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
+[ Upstream commit 183185a18ff96751db52a46ccf93fff3a1f42815 ]
 
-When is_migration_base() is unused, it prevents kernel builds
-with clang, `make W=1` and CONFIG_WERROR=y:
+Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
+devices in most cases and fall back to using add_v4_addrs() only in
+case the GRE configuration is incompatible with addrconf_addr_gen().
 
-kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
-  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
-      |                    ^~~~~~~~~~~~~~~~~
+GRE used to use addrconf_addr_gen() until commit e5dd729460ca
+("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
+address") restricted this use to gretap and ip6gretap devices, and
+created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
 
-Fix this by marking it with __always_inline.
+The original problem came when commit 9af28511be10 ("addrconf: refuse
+isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
+addr parameter was 0. The commit says that this would create an invalid
+address, however, I couldn't find any RFC saying that the generated
+interface identifier would be wrong. Anyway, since gre over IPv4
+devices pass their local tunnel address to __ipv6_isatap_ifid(), that
+commit broke their IPv6 link-local address generation when the local
+address was unspecified.
 
-[ tglx: Use __always_inline instead of __maybe_unused and move it into the
-  	usage sites conditional ]
+Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
+interfaces when computing v6LL address") tried to fix that case by
+defining add_v4_addrs() and calling it to generate the IPv6 link-local
+address instead of using addrconf_addr_gen() (apart for gretap and
+ip6gretap devices, which would still use the regular
+addrconf_addr_gen(), since they have a MAC address).
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
+That broke several use cases because add_v4_addrs() isn't properly
+integrated into the rest of IPv6 Neighbor Discovery code. Several of
+these shortcomings have been fixed over time, but add_v4_addrs()
+remains broken on several aspects. In particular, it doesn't send any
+Router Sollicitations, so the SLAAC process doesn't start until the
+interface receives a Router Advertisement. Also, add_v4_addrs() mostly
+ignores the address generation mode of the interface
+(/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
+IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
+
+Fix the situation by using add_v4_addrs() only in the specific scenario
+where the normal method would fail. That is, for interfaces that have
+all of the following characteristics:
+
+  * run over IPv4,
+  * transport IP packets directly, not Ethernet (that is, not gretap
+    interfaces),
+  * tunnel endpoint is INADDR_ANY (that is, 0),
+  * device address generation mode is EUI64.
+
+In all other cases, revert back to the regular addrconf_addr_gen().
+
+Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
+since ip6gre devices now always use addrconf_addr_gen() instead.
+
+Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ net/ipv6/addrconf.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 7f9f2fc183fe3..c202488695c46 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -144,11 +144,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 932a10f64adcb..f5cca40b71610 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3145,16 +3145,13 @@ static void add_v4_addrs(struct inet6_dev *idev)
+ 	struct in6_addr addr;
+ 	struct net_device *dev;
+ 	struct net *net = dev_net(idev->dev);
+-	int scope, plen, offset = 0;
++	int scope, plen;
+ 	u32 pflags = 0;
  
- #define migration_base	migration_cpu_base.clock_base[0]
+ 	ASSERT_RTNL();
  
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return base == &migration_base;
--}
--
- /*
-  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
-  * means that all timers which are tied to this base via timer->base are
-@@ -273,11 +268,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 	memset(&addr, 0, sizeof(struct in6_addr));
+-	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
+-	if (idev->dev->addr_len == sizeof(struct in6_addr))
+-		offset = sizeof(struct in6_addr) - 4;
+-	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
++	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
  
- #else /* CONFIG_SMP */
- 
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return false;
--}
--
- static inline struct hrtimer_clock_base *
- lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
- {
-@@ -1275,6 +1265,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+ 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
+ 		scope = IPV6_ADDR_COMPATv4;
+@@ -3462,7 +3459,13 @@ static void addrconf_gre_config(struct net_device *dev)
+ 		return;
  	}
- }
  
-+#ifdef CONFIG_SMP
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return base == &migration_base;
-+}
-+#else
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * This function is called on PREEMPT_RT kernels when the fast path
-  * deletion of a timer failed because the timer callback function was
+-	if (dev->type == ARPHRD_ETHER) {
++	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
++	 * unless we have an IPv4 GRE device not bound to an IP address and
++	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
++	 * case). Such devices fall back to add_v4_addrs() instead.
++	 */
++	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
++	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
+ 		addrconf_addr_gen(idev, true);
+ 		return;
+ 	}
 -- 
 2.39.5
 
