@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BBAA80524
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282FBA80934
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E03466989
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 272988A4754
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7A3269836;
-	Tue,  8 Apr 2025 12:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB48426A0EE;
+	Tue,  8 Apr 2025 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS7xzQOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1YVZX61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665B1264627;
-	Tue,  8 Apr 2025 12:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7625E26981F;
+	Tue,  8 Apr 2025 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113924; cv=none; b=co8hrLi6MHf+KXd/L7C0divIb2WWl7TbtP6G2oulkuqcnIZd5OSU1GH+82fo5bvNh1y7HQQ6Ei5DVw31saMzvV5sy+M8XZRNAuFDk+9cMe2uqThGcUust2O3iS1NdLr91b75P5jNcmeHZBC9UBGDzHoXR4gsbdJgqj2OC4XQiCg=
+	t=1744115624; cv=none; b=P1aG3HNcslA1eBZ3znyrHX+O6NMdJ6QfpFBPbZNXJqlDbupnkMfB4DVpQDiGTkJ/LA6n2NKM81j/TgBu65qnlpNWPBDa4B05cPArojJTP4zd0PmLG6XoIwkSDH6eI6uG7vsb1PgLxwNccaxuNk4GvBbIQ2ZrQ/sEieq40YAaPd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113924; c=relaxed/simple;
-	bh=fWPPogGVH0sNXwG21E07agZCJJkOfVJFPDzUbQI/VbE=;
+	s=arc-20240116; t=1744115624; c=relaxed/simple;
+	bh=b5hebK4CsfZyjZ47rxFr6TtbHnP5ICDUrKaBTOpAV64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpGHlM43vwIBbcsDtinp/02IMYHyE5oSHuB+KJ/K+bPDnbsEej4bO9vfYWE/SBf/koy8e5w96Vv09qSJT0FWayVSozNmkol5Wzg6qJmgpGxB0icOY1pl2aS63YV0Vdryxr/D/9LhkvQiihw9E9sX2JaoDKvIIc8zSn1ZuRlZz0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS7xzQOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC240C4CEE7;
-	Tue,  8 Apr 2025 12:05:23 +0000 (UTC)
+	 MIME-Version; b=ssOldvyZ3gGaSFQJe+e2FbmlBA/smtAONGBu6QXXQBcz/hGYM0SqnwKp0p/4hLCCOxlGuTRbisiZ2uaBhtS01HPz9okpxmFPFVisw5SGlsRapfeB6xEcyn8oYVVSDBFNnN49A2t2W5eE9ss50mm7FZaQXT99AruOnSNrhTG6oM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1YVZX61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEB6C4CEE5;
+	Tue,  8 Apr 2025 12:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113924;
-	bh=fWPPogGVH0sNXwG21E07agZCJJkOfVJFPDzUbQI/VbE=;
+	s=korg; t=1744115624;
+	bh=b5hebK4CsfZyjZ47rxFr6TtbHnP5ICDUrKaBTOpAV64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JS7xzQOoqDLqgNlsoaDkSXkZ6hDRoVwXdiHcODIr2cGioX8Ovc+XuvlExEG3IppnQ
-	 4sLYkBTvAYr4J4lEV9rOKVIUndT7F+nXhiW670ZcPiPMCLKqxhsWDj5oxxZ/cgDL/E
-	 /6J7wsLO1vVQZVPeaZ26ZMAYrP43+dSi0OH4yARs=
+	b=M1YVZX61I0GTxIWP4VZQRUQQP5dKpZvAzw6LTR522a5dZntBV0fx4GEd+ebduDqLl
+	 BAQFxbihgxN3KUyU/w3vfUVj1HFCR6TIu5Mk0kZjCcztMRecuBzAethRTyTBwvvAJf
+	 lKdT17aQYES+QCCm1aS/3PpH3wqzCPstiahERgqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/154] sctp: Fix undefined behavior in left shift operation
-Date: Tue,  8 Apr 2025 12:49:33 +0200
-Message-ID: <20250408104816.288444281@linuxfoundation.org>
+Subject: [PATCH 6.1 044/204] PCI: Remove stray put_device() in pci_register_host_bridge()
+Date: Tue,  8 Apr 2025 12:49:34 +0200
+Message-ID: <20250408104821.640293185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
+[ Upstream commit 6e8d06e5096c80cbf41313b4a204f43071ca42be ]
 
-According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
-"If E1 has a signed type and E1 x 2^E2 is not representable in the result
-type, the behavior is undefined."
+This put_device() was accidentally left over from when we changed the code
+from using device_register() to calling device_add().  Delete it.
 
-Shifting 1 << 31 causes signed integer overflow, which leads to undefined
-behavior.
-
-Fix this by explicitly using '1U << 31' to ensure the shift operates on
-an unsigned type, avoiding undefined behavior.
-
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/55b24870-89fb-4c91-b85d-744e35db53c2@stanley.mountain
+Fixes: 9885440b16b8 ("PCI: Fix pci_host_bridge struct device release/free handling")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/probe.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index ca8fdc9abca5f..08cd06078fab1 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -736,7 +736,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
- 	 *     value SHOULD be the smallest TSN not acknowledged by the
- 	 *     receiver of the request plus 2^31.
- 	 */
--	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
-+	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
- 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
- 			 init_tsn, GFP_ATOMIC);
- 
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 5c1ab9ee65eb3..bd35327648778 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -926,10 +926,9 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 	/* Temporarily move resources off the list */
+ 	list_splice_init(&bridge->windows, &resources);
+ 	err = device_add(&bridge->dev);
+-	if (err) {
+-		put_device(&bridge->dev);
++	if (err)
+ 		goto free;
+-	}
++
+ 	bus->bridge = get_device(&bridge->dev);
+ 	device_enable_async_suspend(bus->bridge);
+ 	pci_set_bus_of_node(bus);
 -- 
 2.39.5
 
