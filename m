@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89BEA804CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A098A8086C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34A5189B1FF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0147B1BA32A4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8202926A1C1;
-	Tue,  8 Apr 2025 12:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70726F46C;
+	Tue,  8 Apr 2025 12:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcA64aa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ/h6ufW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23A26A0FF;
-	Tue,  8 Apr 2025 12:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA0E268FED;
+	Tue,  8 Apr 2025 12:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113882; cv=none; b=qv1Dqqfp/Ah8UvORT+LfsvH08cdxakRrvdtLp5WL6iWDdag0lpljFt9RQMmi+l+fkGQjE+Z7sxsMwxxnFOcIV7LzahOCL+r2Xsmq/XM0Wq473gf0sugiSpQRXZ1nm/inBJdAKL0ds0vQUMmRqtUMndv+8VcieV6Hw578PouanE0=
+	t=1744115691; cv=none; b=PCp6jN3uNSxaCX4YcQdNoH6IqYZF9tV9U6X98FcxdDgRloDT0Gxh661OG+pEe5vuoWAE3P6yzkatCy1jRZ9xiSj4v5z+I5rYGiGAbXGu4U5/PQmSnZzco5Q1qts8dCcQrsq2xACLRUjonoYMV8xx8gKykmLjskcpmFP9GcQQt1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113882; c=relaxed/simple;
-	bh=Lr2Ybn2E8byvIOHvATVonyI59TIoY+ab0aMCbwuvJ8w=;
+	s=arc-20240116; t=1744115691; c=relaxed/simple;
+	bh=exINIggIh+T/u0yM/FvwqOIa8NxVewEToXpNnxDuyWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWXacChkwHkoPZeSpOyLfNDSveNSmd/+jbkNCoeNkBB12EUzjX/P9146DZ1/RjKMGO0GudRwgi+Hw3ZGRSLSRbnZ+BlazcOsUJQEemWpzVgDTrswga/xkeuE7jmid/VLaopSQgaSfrrFKDj74htPSEIncAS4bu2XHq2C4nISACo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcA64aa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46E1C4CEE5;
-	Tue,  8 Apr 2025 12:04:41 +0000 (UTC)
+	 MIME-Version; b=RC1hQl7yF9pXv7uW0oOB/pjDDc+Npe1DukX+FpUiOYhIKYFkgW9loX3TyQhsnGNTz948+ldYkXLBqTI/MoW8JKQ+rUwXgjdPoa1TgcVcf1cBqp74UkisB4tQH9FgwhMEcuax4eRHphHwdyXTU+j4EHJWlv37bdLiQcQeDpBs04M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ/h6ufW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCBFC4CEE5;
+	Tue,  8 Apr 2025 12:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113882;
-	bh=Lr2Ybn2E8byvIOHvATVonyI59TIoY+ab0aMCbwuvJ8w=;
+	s=korg; t=1744115691;
+	bh=exINIggIh+T/u0yM/FvwqOIa8NxVewEToXpNnxDuyWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcA64aa4k99uw/KF4CHIgcuJLJdwaywECVZK1CirbEnE0f4jk7ZSx4HV2ciRAzcs6
-	 DxTLAGhjpN6VOkct19GhBd8CRR8QEXGbf0nPS0mwVj/sZqRhlxYT/C1qe7zo89XUKd
-	 uMkyGCyjRhS6Sp25mgF30jfQjshc4zqiLSxyNW8I=
+	b=bZ/h6ufWWsJwKhOHOW7rDKn4QPg0BW+HL3GhIVQWuwutBYMVZgtZHTb35+08IxOXC
+	 aoEYKlNDJCcTE88YTDFpSLsRID9XdCNSInDOZsNP/oPyK5jn5UxdnJt3sMGSe03km5
+	 cprtzb+BTC4pac4CzBrp2z3vRtaDItjOL2HAOIx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/154] Bluetooth: Fix error code in chan_alloc_skb_cb()
-Date: Tue,  8 Apr 2025 12:49:56 +0200
-Message-ID: <20250408104817.049362776@linuxfoundation.org>
+Subject: [PATCH 6.1 067/204] RDMA/mlx5: Fix calculation of total invalidated pages
+Date: Tue,  8 Apr 2025 12:49:57 +0200
+Message-ID: <20250408104822.328884926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
+[ Upstream commit 79195147644653ebffadece31a42181e4c48c07d ]
 
-The chan_alloc_skb_cb() function is supposed to return error pointers on
-error.  Returning NULL will lead to a NULL dereference.
+When invalidating an address range in mlx5, there is an optimization to
+do UMR operations in chunks.
+Previously, the invalidation counter was incorrectly updated for the
+same indexes within a chunk. Now, the invalidation counter is updated
+only when a chunk is complete and mlx5r_umr_update_xlt() is called.
+This ensures that the counter accurately represents the number of pages
+invalidated using UMR.
 
-Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a3de94e3d61e ("IB/mlx5: Introduce ODP diagnostic counters")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/560deb2433318e5947282b070c915f3c81fef77f.1741875692.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/odp.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index bccad8c048dad..12052b7664414 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -847,11 +847,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
- 					 unsigned long hdr_len,
- 					 unsigned long len, int nb)
- {
-+	struct sk_buff *skb;
-+
- 	/* Note that we must allocate using GFP_ATOMIC here as
- 	 * this function is called originally from netdev hard xmit
- 	 * function in atomic context.
- 	 */
--	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+	return skb;
- }
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 87fbee8061003..89682fe0747ff 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -275,9 +275,6 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
+ 				blk_start_idx = idx;
+ 				in_block = 1;
+ 			}
+-
+-			/* Count page invalidations */
+-			invalidations += idx - blk_start_idx + 1;
+ 		} else {
+ 			u64 umr_offset = idx & umr_block_mask;
  
- static void chan_suspend_cb(struct l2cap_chan *chan)
+@@ -287,14 +284,19 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
+ 						     MLX5_IB_UPD_XLT_ZAP |
+ 						     MLX5_IB_UPD_XLT_ATOMIC);
+ 				in_block = 0;
++				/* Count page invalidations */
++				invalidations += idx - blk_start_idx + 1;
+ 			}
+ 		}
+ 	}
+-	if (in_block)
++	if (in_block) {
+ 		mlx5r_umr_update_xlt(mr, blk_start_idx,
+ 				     idx - blk_start_idx + 1, 0,
+ 				     MLX5_IB_UPD_XLT_ZAP |
+ 				     MLX5_IB_UPD_XLT_ATOMIC);
++		/* Count page invalidations */
++		invalidations += idx - blk_start_idx + 1;
++	}
+ 
+ 	mlx5_update_odp_stats(mr, invalidations, invalidations);
+ 
 -- 
 2.39.5
 
