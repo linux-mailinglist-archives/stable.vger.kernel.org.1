@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-129057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CECA7FDE4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4C2A8012A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 572CB3BB7AD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FC93BDBE4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A767D267B77;
-	Tue,  8 Apr 2025 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE7C26869D;
+	Tue,  8 Apr 2025 11:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbcLHm5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3B4DRXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A84826988E;
-	Tue,  8 Apr 2025 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8A62288CB;
+	Tue,  8 Apr 2025 11:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109996; cv=none; b=nvX+2uV+KQ7qGQcVDp14pZBLDNZ2zqcn60xNH74JzLODeUWWt1ePkSpNnIGCmSfa+FF1Btdex9ujhmwRHv6zDpJNDnktiCe4m+qKxo5u01uNGbJZosQhViP9PW9jKF7Q9zKJhpuWMk336+r4XEUUfrRqupPJzUGeIrtqrk3aGbc=
+	t=1744111821; cv=none; b=k+S4ux2aKieeNHCgKXnPuivfoQ9kzzxXnF7IhE60aeOxIzGEI6omYvCdwOueOh3QhHM1ZPLE/u+3ISJC5x2j1k2KW26MQjDrys98NoIoqqdBdBuIkowgMPzHqLUsVC21TxU4v3NTsXHG/KinRvNpiG+ldfT8O2k6cXwWFntrNi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109996; c=relaxed/simple;
-	bh=0XqiDKtUX86Uc7AVzII8QG5zq7JVt9Gyd6c9OMceSdU=;
+	s=arc-20240116; t=1744111821; c=relaxed/simple;
+	bh=tckK6qF/pEy/4Zz9Zo/XLhzAueQDxUSCRUdXWOHQIbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YA1DlQQ3xaLrA49xGpHfPnTH90bwaaplCSn2LS48pNtfMTXgH5frS+WFCcos2y6yelZsXn8BIvcrCxwTELMIfSoI7xCSv73t6f0XLFJ2NOP0GGo5q+nRN2PclYO4Xrz0teHZ4B0g0FSL3WABylobOH+i26+kuBCg64TN/6w1otY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbcLHm5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8417C4CEE5;
-	Tue,  8 Apr 2025 10:59:55 +0000 (UTC)
+	 MIME-Version; b=InQciCBs50dhIV90Fpi7YtP+Ed608/Ou4F0CZVxzehAtxebXeLCkZtt8cup8EH9imdV+Yi9oc0e82mOe5gZMFFfrvcuiRrCZcz5pz1J9prgHZErFZLs7XlN5aldlyvC3aa454Fb3Mv6cqvYaV0jVByCa99JsrR0VnPQrmxwzHxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3B4DRXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5971EC4CEE5;
+	Tue,  8 Apr 2025 11:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109996;
-	bh=0XqiDKtUX86Uc7AVzII8QG5zq7JVt9Gyd6c9OMceSdU=;
+	s=korg; t=1744111820;
+	bh=tckK6qF/pEy/4Zz9Zo/XLhzAueQDxUSCRUdXWOHQIbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbcLHm5R4Ca3im1q6kUNcOX75xEmMNKfDFhMfdYZpO/6GoOf+fGS+WMqL5IbIHaV0
-	 V1H6rHPTu4tZmnoal7ioXomSovPFnk0iHraDr5OdZKt6hzUJj7zQSPrJCQwN6X86pS
-	 jVkJX1c6++mmFXqEhslKL+dw01y9QV9vRaCQIVnA=
+	b=v3B4DRXIPH6+tvVeKfFeFhYwCRKgm0OES+mmcs+mBotlw0bUeYcxoBz2srSJzVH9K
+	 Mkscv7Ao7I7wVajNBE2cVRNHajOA2uIx2aTK3rp5wYi2suw2nLup+eVM9WZ8q2loHv
+	 OJEtbv5Ok26Ug0GEgPhTBVBtaisTw1jFiDg5VjJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Saranya R <quic_sarar@quicinc.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 091/227] soc: qcom: pdr: Fix the potential deadlock
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 572/731] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
 Date: Tue,  8 Apr 2025 12:47:49 +0200
-Message-ID: <20250408104823.103521994@linuxfoundation.org>
+Message-ID: <20250408104927.578428732@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saranya R <quic_sarar@quicinc.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 2eeb03ad9f42dfece63051be2400af487ddb96d2 upstream.
+[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
 
-When some client process A call pdr_add_lookup() to add the look up for
-the service and does schedule locator work, later a process B got a new
-server packet indicating locator is up and call pdr_locator_new_server()
-which eventually sets pdr->locator_init_complete to true which process A
-sees and takes list lock and queries domain list but it will timeout due
-to deadlock as the response will queued to the same qmi->wq and it is
-ordered workqueue and process B is not able to complete new server
-request work due to deadlock on list lock.
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  These can be called from noinstr code, so make
+sure they're always inlined.
 
-Fix it by removing the unnecessary list iteration as the list iteration
-is already being done inside locator work, so avoid it here and just
-call schedule_work() here.
+Fixes the following warnings:
 
-       Process A                        Process B
+  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
 
-                                     process_scheduled_works()
-pdr_add_lookup()                      qmi_data_ready_work()
- process_scheduled_works()             pdr_locator_new_server()
-                                         pdr->locator_init_complete=true;
-   pdr_locator_work()
-    mutex_lock(&pdr->list_lock);
-
-     pdr_locate_service()                  mutex_lock(&pdr->list_lock);
-
-      pdr_get_domain_list()
-       pr_err("PDR: %s get domain list
-               txn wait failed: %d\n",
-               req->service_name,
-               ret);
-
-Timeout error log due to deadlock:
-
-"
- PDR: tms/servreg get domain list txn wait failed: -110
- PDR: service lookup for msm/adsp/sensor_pd:tms/servreg failed: -110
-"
-
-Thanks to Bjorn and Johan for letting me know that this commit also fixes
-an audio regression when using the in-kernel pd-mapper as that makes it
-easier to hit this race. [1]
-
-Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/ # [1]
-Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-CC: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Saranya R <quic_sarar@quicinc.com>
-Co-developed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_interface.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ include/linux/context_tracking_irq.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/soc/qcom/pdr_interface.c
-+++ b/drivers/soc/qcom/pdr_interface.c
-@@ -74,7 +74,6 @@ static int pdr_locator_new_server(struct
- {
- 	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
- 					      locator_hdl);
--	struct pdr_service *pds;
+diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
+index c50b5670c4a52..197916ee91a4b 100644
+--- a/include/linux/context_tracking_irq.h
++++ b/include/linux/context_tracking_irq.h
+@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
+ void ct_nmi_enter(void);
+ void ct_nmi_exit(void);
+ #else
+-static inline void ct_irq_enter(void) { }
+-static inline void ct_irq_exit(void) { }
++static __always_inline void ct_irq_enter(void) { }
++static __always_inline void ct_irq_exit(void) { }
+ static inline void ct_irq_enter_irqson(void) { }
+ static inline void ct_irq_exit_irqson(void) { }
+-static inline void ct_nmi_enter(void) { }
+-static inline void ct_nmi_exit(void) { }
++static __always_inline void ct_nmi_enter(void) { }
++static __always_inline void ct_nmi_exit(void) { }
+ #endif
  
- 	mutex_lock(&pdr->lock);
- 	/* Create a local client port for QMI communication */
-@@ -86,12 +85,7 @@ static int pdr_locator_new_server(struct
- 	mutex_unlock(&pdr->lock);
- 
- 	/* Service pending lookup requests */
--	mutex_lock(&pdr->list_lock);
--	list_for_each_entry(pds, &pdr->lookups, node) {
--		if (pds->need_locator_lookup)
--			schedule_work(&pdr->locator_work);
--	}
--	mutex_unlock(&pdr->list_lock);
-+	schedule_work(&pdr->locator_work);
- 
- 	return 0;
- }
+ #endif
+-- 
+2.39.5
+
 
 
 
