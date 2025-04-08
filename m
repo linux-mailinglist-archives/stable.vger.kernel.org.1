@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-131370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C226A80977
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D55A80665
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B736F1BA673F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5961B82C73
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A560E26A1AF;
-	Tue,  8 Apr 2025 12:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0293D26B2BA;
+	Tue,  8 Apr 2025 12:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJaXUXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXvupzvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8731E489;
-	Tue,  8 Apr 2025 12:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3222206F18;
+	Tue,  8 Apr 2025 12:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116214; cv=none; b=BGTuZ6dYwCveMfAfrm98uslERPQ0laTjXyKqstATVF1pjV+eKFDmcPKAZnIpOJq8LdlCn5xBgwbuUG8mPI1whxjx16qslGLJoH8h9ZV2NeSSaoMLTIS3SYcfizXme4ET47iR402pq+ASMfPv4xtrL9ddaw1MfENpHEMnrKMOvlI=
+	t=1744114722; cv=none; b=BR+WejcTceT2wCn7fMFm140RV1RVYYkCKyuBfGFt1/eYLEmMjm6Q9y8G/es2bJOIhOh8vjxjtbc9f5mXIOcRhA0mJz3yo8iA5rhOYIvSLz/6THsMRUhOnIW16VJfNZ70743JB5BNkDNjCH2dHfM6+ywRpv0UGH5Ldnlr26jcXBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116214; c=relaxed/simple;
-	bh=EgVmbBidQ5T3Qwhjzw76nO9QEjEQIZOh2BGry3Bbxgc=;
+	s=arc-20240116; t=1744114722; c=relaxed/simple;
+	bh=DLhIMbW7J2r+BJE1zAdezXPzmXi2sgKuodt36dVNt7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QE8iNr68OhfgSyXWXYaegr0GAUiFYZyfHegEu7Hp7+r3Hlyl6v0STn/CTnErSpspiIN5D6XXmuMFjUaVKEcvBnJ+5jn4EqT4L1GSpQuJz+Dw32ALyHzhmzv1mVqZZvOEA+kYeBI3lgkF0lAN9+/r5mzxN6soQi+y7+sfwRdRFbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJaXUXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDFAC4CEE5;
-	Tue,  8 Apr 2025 12:43:33 +0000 (UTC)
+	 MIME-Version; b=JY9YfXOF0evN/kaQm9YNtTrZfpFcyaEJCTKkTppr35kxALG01lMxT3Yl7eu4XyWr4FtiiHLxR3Gf2zS1DnLlftq0RKJvGxb8vuDqlZHh9nVKHGoapRMnq+88JDHvOnx8dhEZad6Tlxm9hat+K6pv1UCQaZJerNwfZPevzIySnpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXvupzvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB51C4CEE5;
+	Tue,  8 Apr 2025 12:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116214;
-	bh=EgVmbBidQ5T3Qwhjzw76nO9QEjEQIZOh2BGry3Bbxgc=;
+	s=korg; t=1744114722;
+	bh=DLhIMbW7J2r+BJE1zAdezXPzmXi2sgKuodt36dVNt7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJJaXUXN+1mzh//4gj1Dbg4qSvgm87AKlFRba5QRrAGBq6SqlUfY5LNbuJiNHeDHI
-	 RHjrH7H58blJeyZW8DyaZPhdHsQfsxzx0DM6Z4sjV4aE/87EAafVR5qgpKztbm5CEY
-	 LoUeDJXq7zWre9arM6hlDV0T1Kfw54KI8SkxhLmk=
+	b=VXvupzvvg5VljQKEyyyyYqEI88ltN2KWqlFfrzk7bpYCXu+e2xw1FjfdHVlWSdMFL
+	 zPYSKus8L/pKXs4ndrZ/Y9v//uGMKFTPJA32+3/x0ePdjcES1XVFsXTORcayFX1tvk
+	 jVj2IpenfUV0pu72gslsize+jZRpdE3AOeCtswL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Carol Soto <csoto@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Chris Chiu <chris.chiu@canonical.com>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/423] PCI: Use downstream bridges for distributing resources
+Subject: [PATCH 6.13 172/499] selftests/bpf: Select NUMA_NO_NODE to create map
 Date: Tue,  8 Apr 2025 12:46:24 +0200
-Message-ID: <20250408104847.099093652@linuxfoundation.org>
+Message-ID: <20250408104855.465365075@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 1a596ad00ffe9b37fc60a93cbdd4daead3bf95f3 ]
+[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
 
-7180c1d08639 ("PCI: Distribute available resources for root buses, too")
-breaks BAR assignment on some devices:
+On powerpc, a CPU does not necessarily originate from NUMA node 0.
+This contrasts with architectures like x86, where CPU 0 is not
+hot-pluggable, making NUMA node 0 a consistently valid node.
+This discrepancy can lead to failures when creating a map on NUMA
+node 0, which is initialized by default, if no CPUs are allocated
+from NUMA node 0.
 
-  pci 0006:03:00.0: BAR 0 [mem 0x6300c0000000-0x6300c1ffffff 64bit pref]: assigned
-  pci 0006:03:00.1: BAR 0 [mem 0x6300c2000000-0x6300c3ffffff 64bit pref]: assigned
-  pci 0006:03:00.2: BAR 0 [mem size 0x00800000 64bit pref]: can't assign; no space
-  pci 0006:03:00.0: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
-  pci 0006:03:00.1: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
+This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
+creation for this selftest.
 
-The apertures of domain 0006 before 7180c1d08639:
-
-  6300c0000000-63ffffffffff : PCI Bus 0006:00
-    6300c0000000-6300c9ffffff : PCI Bus 0006:01
-      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
-        6300c0000000-6300c8ffffff : PCI Bus 0006:03      #   144MB
-          6300c0000000-6300c1ffffff : 0006:03:00.0       #     32MB
-          6300c2000000-6300c3ffffff : 0006:03:00.1       #     32MB
-          6300c4000000-6300c47fffff : 0006:03:00.2       #      8MB
-          6300c4800000-6300c67fffff : 0006:03:00.0       #     32MB
-          6300c6800000-6300c87fffff : 0006:03:00.1       #     32MB
-        6300c9000000-6300c9bfffff : PCI Bus 0006:04      #    12MB
-          6300c9000000-6300c9bfffff : PCI Bus 0006:05    #    12MB
-            6300c9000000-6300c91fffff : PCI Bus 0006:06  #      2MB
-            6300c9200000-6300c93fffff : PCI Bus 0006:07  #      2MB
-            6300c9400000-6300c95fffff : PCI Bus 0006:08  #      2MB
-            6300c9600000-6300c97fffff : PCI Bus 0006:09  #      2MB
-
-After 7180c1d08639:
-
-  6300c0000000-63ffffffffff : PCI Bus 0006:00
-    6300c0000000-6300c9ffffff : PCI Bus 0006:01
-      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
-        6300c0000000-6300c43fffff : PCI Bus 0006:03      #    68MB
-          6300c0000000-6300c1ffffff : 0006:03:00.0       #      32MB
-          6300c2000000-6300c3ffffff : 0006:03:00.1       #      32MB
-              --- no space ---      : 0006:03:00.2       #       8MB
-              --- no space ---      : 0006:03:00.0       #      32MB
-              --- no space ---      : 0006:03:00.1       #      32MB
-        6300c4400000-6300c4dfffff : PCI Bus 0006:04      #    10MB
-          6300c4400000-6300c4dfffff : PCI Bus 0006:05    #      10MB
-            6300c4400000-6300c45fffff : PCI Bus 0006:06  #        2MB
-            6300c4600000-6300c47fffff : PCI Bus 0006:07  #        2MB
-            6300c4800000-6300c49fffff : PCI Bus 0006:08  #        2MB
-            6300c4a00000-6300c4bfffff : PCI Bus 0006:09  #        2MB
-
-We can see that the window to 0006:03 gets shrunken too much and 0006:04
-eats away the window for 0006:03:00.2.
-
-The offending commit distributes the upstream bridge's resources multiple
-times to every downstream bridge, hence makes the aperture smaller than
-desired because calculation of io_per_b, mmio_per_b and mmio_pref_per_b
-becomes incorrect.
-
-Instead, distribute downstream bridges' own resources to resolve the issue.
-
-Link: https://lore.kernel.org/r/20241204022457.51322-1-kaihengf@nvidia.com
-Fixes: 7180c1d08639 ("PCI: Distribute available resources for root buses, too")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219540
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Carol Soto <csoto@nvidia.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Chris Chiu <chris.chiu@canonical.com>
+Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 23082bc0ca37a..a6e653a4f5b1a 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -2105,8 +2105,7 @@ pci_root_bus_distribute_available_resources(struct pci_bus *bus,
- 		 * in case of root bus.
- 		 */
- 		if (bridge && pci_bridge_resources_not_assigned(dev))
--			pci_bridge_distribute_available_resources(bridge,
--								  add_list);
-+			pci_bridge_distribute_available_resources(dev, add_list);
- 		else
- 			pci_root_bus_distribute_available_resources(b, add_list);
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+index cc184e4420f6e..67557cda22083 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+@@ -6,6 +6,10 @@
+ #include <test_progs.h>
+ #include "bloom_filter_map.skel.h"
+ 
++#ifndef NUMA_NO_NODE
++#define NUMA_NO_NODE	(-1)
++#endif
++
+ static void test_fail_cases(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts);
+@@ -69,6 +73,7 @@ static void test_success_cases(void)
+ 
+ 	/* Create a map */
+ 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
++	opts.numa_node = NUMA_NO_NODE;
+ 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
+ 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
+ 		return;
 -- 
 2.39.5
 
