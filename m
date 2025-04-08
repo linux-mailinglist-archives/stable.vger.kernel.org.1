@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616FCA8044F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C5DA808FF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B73466C12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188ED8A638C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124E2268C72;
-	Tue,  8 Apr 2025 11:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52930269819;
+	Tue,  8 Apr 2025 12:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsG2zcOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S680vD1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EAC224234;
-	Tue,  8 Apr 2025 11:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109F62690D6;
+	Tue,  8 Apr 2025 12:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113486; cv=none; b=U/GcZyEaeE/+jEtDYNk1MLrIDZDInwBJMuEtEdtYXdt9eMY5bii7/WVb6qESMc3hYX1BPLwhM2h1tsqrBToIwb2vTvYwqZ1RF4gy0fXyU+Xxi44IcBB1RPJcK+erFrigsv7hEw6fKPml8ynwc0ceoS9CJCZUHCZNMosI9OabW8U=
+	t=1744115665; cv=none; b=M34PgrZ3cTLKvhST/tTvV6sfuM8VeccVed93Nj5ngOxfOmBS/CvqpG7TypscCKyxkmUhI8Lw6TKx1kRKX+ljTBpqxcY4cfp78kLIxY8MoirztI6XtrfvwLvK83bau3t50aSrhC2vJCX9QsXsNQX+K3acGPVkYYR6s3kv/oBKjR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113486; c=relaxed/simple;
-	bh=XTeZ7Vp3mv8BS7qPxp54d1N6zcZ76bQV5l3HyXOjrvA=;
+	s=arc-20240116; t=1744115665; c=relaxed/simple;
+	bh=O7iCenGcirn5VttB0ydhIJuAb/SqUmptQgKkpBo7XO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyiVp6bLLD3SOZoyKHdiBLzt/5eDeBRE4LaLhYS25SiFntjYxJ8iQPtBmx5RjOotvK/nxMBIgH0CSoiVcTsi7A6C2ugSIi+PB+rmmu7TfuObNikcHxvp9u5rnQVbUKWV3SDlig/ZfefAKZGaS6MjK9OT4GEGWPg/W+IhIUviMcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsG2zcOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52396C4CEE5;
-	Tue,  8 Apr 2025 11:58:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OYxVYIVRBfkrLAOQ7YRkRi3cqYtY+qSYwZ7/GCFPGKflyBVdEojSwbZm90xhKBxOEKzHV6ZPMdW07LshPn4Vy3rbmbpLMuSRvQ5wePVmZBJPRy27kwGifQy9DaiZnT9KpXqk5HwzT5Z5ji8QIrAoq2cgeClLaKI6A86GuMB+21Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S680vD1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361BEC4CEE7;
+	Tue,  8 Apr 2025 12:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113486;
-	bh=XTeZ7Vp3mv8BS7qPxp54d1N6zcZ76bQV5l3HyXOjrvA=;
+	s=korg; t=1744115664;
+	bh=O7iCenGcirn5VttB0ydhIJuAb/SqUmptQgKkpBo7XO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsG2zcOptZt6d6EUEHYMmh6xrz5evqIcMpSmDiKtDHoMgfVwNPOIsAuZ9xX5Z+kFv
-	 G8aNSUJzzEPmnoaAArFEFhUcgVcG9A86gN9BhJccOY5Vp9qV7XfVMhpQWYlNRRirNw
-	 tE3AJUerKJFkHQ52OC+EOVbBtxm9U3miziBudFiA=
+	b=S680vD1PlUyVR481QkxKXMxQXRnD+8LEjgucULYeI2tyypD4LBsTsP7f/B9tZTz4T
+	 D1kpK95HYhWjuqNB6CARZHqkUJ1rTC4TO8AI/8DGhRNttH7wKniBmz0Ds+qegPB/+H
+	 u1mJTkbSfabaqihPq7M6YajMaqNO/vZtwD9XgYps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Viktor Malik <vmalik@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/268] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 058/204] selftests/bpf: Fix string read in strncmp benchmark
 Date: Tue,  8 Apr 2025 12:49:48 +0200
-Message-ID: <20250408104833.318314550@linuxfoundation.org>
+Message-ID: <20250408104822.051182622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
+[ Upstream commit de07b182899227d5fd1ca7a1a7d495ecd453d49c ]
 
-Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
+The strncmp benchmark uses the bpf_strncmp helper and a hand-written
+loop to compare two strings. The values of the strings are filled from
+userspace. One of the strings is non-const (in .bss) while the other is
+const (in .rodata) since that is the requirement of bpf_strncmp.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+The problem is that in the hand-written loop, Clang optimizes the reads
+from the const string to always return 0 which breaks the benchmark.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
+Use barrier_var to prevent the optimization.
+
+The effect can be seen on the strncmp-no-helper variant.
+
+Before this change:
+
+    # ./bench strncmp-no-helper
+    Setting up benchmark 'strncmp-no-helper'...
+    Benchmark 'strncmp-no-helper' started.
+    Iter   0 (112.309us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   1 (-23.238us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   2 ( 58.994us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   3 (-30.466us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   4 ( 29.996us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   5 ( 16.949us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Iter   6 (-60.035us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
+    Summary: hits    0.000 ± 0.000M/s (  0.000M/prod), drops    0.000 ± 0.000M/s, total operations    0.000 ± 0.000M/s
+
+After this change:
+
+    # ./bench strncmp-no-helper
+    Setting up benchmark 'strncmp-no-helper'...
+    Benchmark 'strncmp-no-helper' started.
+    Iter   0 ( 77.711us): hits    5.534M/s (  5.534M/prod), drops    0.000M/s, total operations    5.534M/s
+    Iter   1 ( 11.215us): hits    6.006M/s (  6.006M/prod), drops    0.000M/s, total operations    6.006M/s
+    Iter   2 (-14.253us): hits    5.931M/s (  5.931M/prod), drops    0.000M/s, total operations    5.931M/s
+    Iter   3 ( 59.087us): hits    6.005M/s (  6.005M/prod), drops    0.000M/s, total operations    6.005M/s
+    Iter   4 (-21.379us): hits    6.010M/s (  6.010M/prod), drops    0.000M/s, total operations    6.010M/s
+    Iter   5 (-20.310us): hits    5.861M/s (  5.861M/prod), drops    0.000M/s, total operations    5.861M/s
+    Iter   6 ( 53.937us): hits    6.004M/s (  6.004M/prod), drops    0.000M/s, total operations    6.004M/s
+    Summary: hits    5.969 ± 0.061M/s (  5.969M/prod), drops    0.000 ± 0.000M/s, total operations    5.969 ± 0.061M/s
+
+Fixes: 9c42652f8be3 ("selftests/bpf: Add benchmark for bpf_strncmp() helper")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/bpf/20250313122852.1365202-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/progs/strncmp_bench.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 77fa07f0a8455..9f6ee6489d943 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10152,7 +10152,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
-+	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/tools/testing/selftests/bpf/progs/strncmp_bench.c b/tools/testing/selftests/bpf/progs/strncmp_bench.c
+index 18373a7df76e6..f47bf88f8d2a7 100644
+--- a/tools/testing/selftests/bpf/progs/strncmp_bench.c
++++ b/tools/testing/selftests/bpf/progs/strncmp_bench.c
+@@ -35,7 +35,10 @@ static __always_inline int local_strncmp(const char *s1, unsigned int sz,
+ SEC("tp/syscalls/sys_enter_getpgid")
+ int strncmp_no_helper(void *ctx)
+ {
+-	if (local_strncmp(str, cmp_str_len + 1, target) < 0)
++	const char *target_str = target;
++
++	barrier_var(target_str);
++	if (local_strncmp(str, cmp_str_len + 1, target_str) < 0)
+ 		__sync_add_and_fetch(&hits, 1);
+ 	return 0;
+ }
 -- 
 2.39.5
 
