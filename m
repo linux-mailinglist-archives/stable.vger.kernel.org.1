@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D28DA80843
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE266A80B39
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 293207A87DB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B281BA7251
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF33026FD9F;
-	Tue,  8 Apr 2025 12:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837E227BF64;
+	Tue,  8 Apr 2025 12:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyHgb3/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYuFZ8pr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5C826FD9D;
-	Tue,  8 Apr 2025 12:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42535267B89;
+	Tue,  8 Apr 2025 12:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115898; cv=none; b=eIzQPGZCkZJK9yEpzhYH5ka4On/tcFraSSsVV8fwRWG8hoLWYTOveXn7OgCKuV1bfWMIyF0XPs+kpqA2M++mxJRGgpG3rhaNAMlBmp7VbezMOOssps3vIGzNheYKVmKBImvv6bKFxA411G20+X3jW0zvKB2ygNPWI2Z+nj7jQVU=
+	t=1744116935; cv=none; b=BA07GjXDlgjOM2RX/L5DR5h/I4/9Lx+hPitEPXB3qyaEwt6MmI1nIvOB7iVhroRitCB5aj1VZXWBTIUC9uwyEcfBdu7C3XTeAega05e3l4r+VT4gzXHQyDgi4//8Ot8QxVmLxXH59sNpi7aDMfqp1rrQV85oRbvRLop1NBUWg4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115898; c=relaxed/simple;
-	bh=SHbAXG9I5008hFeGmdcnumdikHlxG4Xf5PpvOo36XeY=;
+	s=arc-20240116; t=1744116935; c=relaxed/simple;
+	bh=x2EPWrgiYuGZXRQfnsSHW+0x+4P6DFlBuaM/QmRqe7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXf7bMPNUmVsxNeRQU5Zz5Kr0s9zHgA/TK9MmrolGdfBXItBGM7WWb2+ytCLBkjmxheNEj6173i9Hj3YRLVrrBJAeRTc07glYBff+zQhga2jgmQCEzOw1isUSJQducHYt/QSGLOG4vMebFYL+7/uoKUz8mYb4BVn08R20zmLLvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyHgb3/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C931C4CEE5;
-	Tue,  8 Apr 2025 12:38:17 +0000 (UTC)
+	 MIME-Version; b=pwaDftpmRUSsu0D4rRPB2qCa7zdmxAsqfedutWFjhMDwQzOpLc8r+ZL6TAaVMimF2oBXSAcdauqcmaPx/WmQE0i5oBY1dRhUHAVLx4fTv21AN8+BtonBos8k6fik/6MAM5GkxEdcmI41AFHbmn9kAXhDRhU3Br9mhVRaez1cu7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYuFZ8pr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627F4C4CEE5;
+	Tue,  8 Apr 2025 12:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115898;
-	bh=SHbAXG9I5008hFeGmdcnumdikHlxG4Xf5PpvOo36XeY=;
+	s=korg; t=1744116934;
+	bh=x2EPWrgiYuGZXRQfnsSHW+0x+4P6DFlBuaM/QmRqe7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyHgb3/2AkFb3KgAy5EGHucYVilFWv4+TyDj3oU+OsgLPuXVlN0HamOOG+LAHSbaf
-	 7jd70G94ro7SKB6gT8YRTXGCaJhxs05ZxZrPw+ncWA5JWkAQTeKG8V6/wD90MEgLLN
-	 N0UYc2V0ZNfHT59SeXXLLPouDMGH+09XK8ojk+KY=
+	b=fYuFZ8prY9IoOrvY2HtpfU2fS0Z61VTnKE/neUl1u4/4LKRXuvvHe6HgoJYJB7knT
+	 4xVRlwBn+EHD+TVVEgstZhMA5mazxC0Rjsli3/YGvpjcyHEyp604vzIUOjZRt4ujMc
+	 /rjObDG3WALuYrBteayRXfgZqUyIsg5Veh1oIW/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Yang <yangfeng@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/204] ring-buffer: Fix bytes_dropped calculation issue
-Date: Tue,  8 Apr 2025 12:50:48 +0200
-Message-ID: <20250408104823.779156903@linuxfoundation.org>
+Subject: [PATCH 6.12 323/423] spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent
+Date: Tue,  8 Apr 2025 12:50:49 +0200
+Message-ID: <20250408104853.338391196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Yang <yangfeng@kylinos.cn>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit c73f0b69648501978e8b3e8fa7eef7f4197d0481 ]
+[ Upstream commit e19c1272c80a5ecce387c1b0c3b995f4edf9c525 ]
 
-The calculation of bytes-dropped and bytes_dropped_nested is reversed.
-Although it does not affect the final calculation of total_dropped,
-it should still be modified.
+The lookup table forces the use of the "pinctrl-bcm2835" GPIO chip
+provider and essentially assumes that there is going to be such a
+provider, and if not, we will fail to set-up the SPI device.
 
-Link: https://lore.kernel.org/20250223070106.6781-1-yangfeng59949@163.com
-Fixes: 6c43e554a2a5 ("ring-buffer: Add ring buffer startup selftest")
-Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+While this is true on Raspberry Pi based systems (2835/36/37, 2711,
+2712), this is not true on 7712/77122 Broadcom STB systems which use the
+SPI driver, but not the GPIO driver.
+
+There used to be an early check:
+
+       chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
+       if (!chip)
+               return 0;
+
+which would accomplish that nicely, bring something similar back by
+checking for the compatible strings matched by the pinctrl-bcm2835.c
+driver, if there is no Device Tree node matching those compatible
+strings, then we won't find any GPIO provider registered by the
+"pinctrl-bcm2835" driver.
+
+Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250401233603.2938955-1-florian.fainelli@broadcom.com
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm2835.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 0093fc56ab3ac..21b7d044797e3 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5994,9 +5994,9 @@ static __init int rb_write_something(struct rb_test_data *data, bool nested)
- 		/* Ignore dropped events before test starts. */
- 		if (started) {
- 			if (nested)
--				data->bytes_dropped += len;
--			else
- 				data->bytes_dropped_nested += len;
-+			else
-+				data->bytes_dropped += len;
- 		}
- 		return len;
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index a5d621b94d5e3..5926e004d9a65 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1226,7 +1226,12 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+ 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
+ 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
+-	int ret;
++	const char *pinctrl_compats[] = {
++		"brcm,bcm2835-gpio",
++		"brcm,bcm2711-gpio",
++		"brcm,bcm7211-gpio",
++	};
++	int ret, i;
+ 	u32 cs;
+ 
+ 	if (!target) {
+@@ -1291,6 +1296,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		goto err_cleanup;
  	}
+ 
++	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
++		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
++			break;
++	}
++
++	if (i == ARRAY_SIZE(pinctrl_compats))
++		return 0;
++
+ 	/*
+ 	 * TODO: The code below is a slightly better alternative to the utter
+ 	 * abuse of the GPIO API that I found here before. It creates a
 -- 
 2.39.5
 
