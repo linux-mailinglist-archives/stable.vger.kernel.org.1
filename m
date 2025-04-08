@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D22A7FE84
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5ED7A803CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 405504258C8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3650919E4AD6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E649C26A1AB;
-	Tue,  8 Apr 2025 11:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36276269819;
+	Tue,  8 Apr 2025 11:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Z+R7Nh1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3/PfiJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A315925FA29;
-	Tue,  8 Apr 2025 11:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A0B20CCD8;
+	Tue,  8 Apr 2025 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110166; cv=none; b=Q+SXv8hopN+w47pPvu0Km6TXoloRuE+D/kZpJ9nhjVEGh//3bO7gyFSKYTy3BeG95pwyecMQ7t/Yw3c2AC5jdB9sIsY0i5cHJ1EzSg+RX/cXfQ9H0hvx75Gf3b8o3xtCoCHvvu9PLatFjeZobIoCSAio2Zh5C5AXk9eEGyN7/hk=
+	t=1744113436; cv=none; b=F4W79bvM689Yubapyxi7AVIOghzE+YHxFffrMewPQZE2R04yagq8FfEplxYrq9TS72Z6GdUQhYQWU15jqEiNdruJUrnQmtInQOuxzW/xYrlhAvMRyxlGbPqD9atOQgbwOjx/8PJ7Vl6S/WLpfTJGsdYxKCu2sjUNo2HzanEQjmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110166; c=relaxed/simple;
-	bh=INwxR2cwufWk5O/Kbuou8irUEedZoO3EH58nekDVqmE=;
+	s=arc-20240116; t=1744113436; c=relaxed/simple;
+	bh=3zEmpOKXv69onhUWWoMM54uMOcRtYaZhVX9KeUXrCrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoyDeGUhjQAySm+rVYjoN1KFnHjDN6UA/LQfp6Z4c/AWRpSqAhngXQ/Cm3Qoh5C2eoI7Cv8ChITLpd+AmvnAeOFU/yIPHzd6YNOV8AJWU1Hu5+1Ja3+5+HOGuwstVeIOYMoLeNLHoBoXju5hiYIbNmjvIDHG+9Mn0SJ15thluj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Z+R7Nh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F96C4CEE5;
-	Tue,  8 Apr 2025 11:02:46 +0000 (UTC)
+	 MIME-Version; b=qHysdiCezaAMZ/UrtGkCIn2562zZ/CgHxdXGLcp0yzTbozXcO39p4Wll3CbXTWwvuopHVvfMfJ0AwZfzGc8I4akHK2BoS4WUoA+2HGjI2ygrFTWY0l5RhPW2l8kCIawzLvHAr2mPRKUJ2MbxoLBE7Pklj1ysDj0L4GBY+CzN9Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3/PfiJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79812C4CEE5;
+	Tue,  8 Apr 2025 11:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110166;
-	bh=INwxR2cwufWk5O/Kbuou8irUEedZoO3EH58nekDVqmE=;
+	s=korg; t=1744113435;
+	bh=3zEmpOKXv69onhUWWoMM54uMOcRtYaZhVX9KeUXrCrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Z+R7Nh1gInufzQRuWnU6tY4w26AQVLRxd8l1NtkxQICXs7n9XURn/cAnWisYMVVm
-	 pwEhaA4JAJrBh0Qw0+vW4qH9d1G9Y+uuT28fUWJUumjfl56SoQBt2LDdY/deIF7RTw
-	 JfRK2C8T77+A9TqpQnjQE9CUT0x+vbryEW7x5FcE=
+	b=g3/PfiJVrGJVEgGm8v4hW2O3vMoGqr7XaPJ4pLQ2mrEEQD3UDtEakgvlWRd15yqDR
+	 /pt9xEVAeYjHJGkzuVFGwqCB5GmZOF1pozSEozkzV5WHgy1Hm1hnTUYwoxolX0cUJx
+	 5fYqJjd5l22DCK4POhx2H0waIuQLTUrOy1luUMVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 192/227] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+Subject: [PATCH 6.6 159/268] sched/smt: Always inline sched_smt_active()
 Date: Tue,  8 Apr 2025 12:49:30 +0200
-Message-ID: <20250408104826.058118415@linuxfoundation.org>
+Message-ID: <20250408104832.837994897@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
+[ Upstream commit 09f37f2d7b21ff35b8b533f9ab8cfad2fe8f72f6 ]
 
-pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
-NCT6776_PWM_MODE_MASK only contain 6 values.
+sched_smt_active() can be called from noinstr code, so it should always
+be inlined.  The CONFIG_SCHED_SMT version already has __always_inline.
+Do the same for its !CONFIG_SCHED_SMT counterpart.
 
-Fix this by adding another 0 to the end of each array.
+Fixes the following warning:
 
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  vmlinux.o: error: objtool: intel_idle_ibrs+0x13: call to sched_smt_active() leaves .noinstr.text section
+
+Fixes: 321a874a7ef8 ("sched/smt: Expose sched_smt_present static key")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/1d03907b0a247cf7fb5c1d518de378864f603060.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503311434.lyw2Tveh-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/sched/smt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index 3645a19cdaf4d..71cfc1c5bd12e 100644
---- a/drivers/hwmon/nct6775.c
-+++ b/drivers/hwmon/nct6775.c
-@@ -420,8 +420,8 @@ static const s8 NCT6776_BEEP_BITS[] = {
- static const u16 NCT6776_REG_TOLERANCE_H[] = {
- 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
+diff --git a/include/linux/sched/smt.h b/include/linux/sched/smt.h
+index 59d3736c454cf..737b50f40137b 100644
+--- a/include/linux/sched/smt.h
++++ b/include/linux/sched/smt.h
+@@ -12,7 +12,7 @@ static __always_inline bool sched_smt_active(void)
+ 	return static_branch_likely(&sched_smt_present);
+ }
+ #else
+-static inline bool sched_smt_active(void) { return false; }
++static __always_inline bool sched_smt_active(void) { return false; }
+ #endif
  
--static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
--static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
- 
- static const u16 NCT6776_REG_FAN_MIN[] = {
- 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
+ void arch_smt_update(void);
 -- 
 2.39.5
 
