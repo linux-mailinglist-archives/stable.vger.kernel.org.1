@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-130893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCEEA80667
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0DDA80A77
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26B347AFA9B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C021BC0507
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAE2267B65;
-	Tue,  8 Apr 2025 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F0B26FA58;
+	Tue,  8 Apr 2025 12:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDfjA4M/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0vqfquo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19280206F18;
-	Tue,  8 Apr 2025 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0E1280A38;
+	Tue,  8 Apr 2025 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114937; cv=none; b=Qqlb2MwmLYGDcgchGvAtMY52OD+/Il2bOLshCGfUFsdgOnpYGT95ag37KLZi3a0jcf1s7AfWxapghytRjwAy9T5sQWxNCqO8FvqMMFMxxyQbd9x1XzL+OzY4I7E7z/xsbVmtkxcSmSp32mJF0aXxijG4rv6zg+dym0Sj+Vujqvo=
+	t=1744116554; cv=none; b=eJqbCztusaaEi1gNsmrN137IcXrYVV8/OgtMgJdjgzAj7t2JozGCdGIYM76CtmxRKpxOCt0NkhAiRZ9c6epArUGEWmEKOZoQVk8CDvhlyE9W3OE7kk5DNrXnkDO2fAhxL2ZhXs1Cx0okaUSPdLJLD1dIXvxM9G1C63PFApdHUAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114937; c=relaxed/simple;
-	bh=K9inVwYrVV9IF533pB4r85Q270iX2LjwzaUXgrrZ5OI=;
+	s=arc-20240116; t=1744116554; c=relaxed/simple;
+	bh=YSeMnkedyaVBcsbendMJ4lhcaJ7WyURa3B7rbvHxliE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBRrQJc1vu+CrVcHhnhMKYSAeSrQFvPtrOoL0jwVCPWWPLilEqCrM7ppPkZF3509OPcdXE96QIJU/2HHshH8TaQAt8CRQxAz8IluyFkjZ3prrpzDUbgYEMo0nHSgjQFY3OZVR46Cj5c4S9NiXAYKaiz8L3CtjyLMqKDzhrGG0xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDfjA4M/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1674C4CEE5;
-	Tue,  8 Apr 2025 12:22:16 +0000 (UTC)
+	 MIME-Version; b=tvLfntecTlfPgBa+ciqTDEWCZarfARI6QE1pDmE4W969yx/xDpPx7BhVroqbNrgNqJb5Y+0KZcO+n7ugKqsj0Ik8r4vM6V0ooa35nzAQ9AAfU9TRo8N2X7/I7OqaXUJwImJc7jcUfb2s3/OQH3R+gBjPkysNCJGrQOSOPSSR+M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0vqfquo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F118C4CEEB;
+	Tue,  8 Apr 2025 12:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114937;
-	bh=K9inVwYrVV9IF533pB4r85Q270iX2LjwzaUXgrrZ5OI=;
+	s=korg; t=1744116553;
+	bh=YSeMnkedyaVBcsbendMJ4lhcaJ7WyURa3B7rbvHxliE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDfjA4M/naDV5BnSGIRgPOJP1koCSOitZjv7MVDdU/6RKujDQUsnhZxkHuTZHxt2f
-	 xqM/IuX4xzTuQAQJWV1KlI4pLDcWD+3pA976zQYM+wF9BeHxaYYyHPGu1nzjPAavgr
-	 dyC9714N65hOPDuyxKKdhZEU74OPfh7g9cnsesGU=
+	b=w0vqfquo/VcDkKiKbhyej4iPfBQKn6rACePWFLllinHGL/g9B7imfJ7R4lOBFbgGj
+	 39/xnwR2wRkoG2X6DUiYZJfP7j8wjxUIZkCnbujW5MjgrpDTqPDDt11yRT5/eI8vdP
+	 6laY7KvpBkTEiA/UwFnIbvE9f+Gt5VekWklGkuVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Winston Wen <wentao@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Ian Rogers <irogers@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 289/499] LoongArch: Rework the arch_kgdb_breakpoint() implementation
+Subject: [PATCH 6.12 175/423] tools/x86: Fix linux/unaligned.h include path in lib/insn.c
 Date: Tue,  8 Apr 2025 12:48:21 +0200
-Message-ID: <20250408104858.424055380@linuxfoundation.org>
+Message-ID: <20250408104849.822387389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 29c92a41c6d2879c1f62220fe4758dce191bb38f ]
+[ Upstream commit fad07a5c0f07ad0884e1cb4362fe28c083b5b811 ]
 
-The arch_kgdb_breakpoint() function defines the kgdb_breakinst symbol
-using inline assembly.
+tools/arch/x86/include/linux doesn't exist but building is working by
+virtue of a -I. Building using bazel this fails. Use angle brackets to
+include unaligned.h so there isn't an invalid relative include.
 
-1. There's a potential issue where the compiler might inline
-arch_kgdb_breakpoint(), which would then define the kgdb_breakinst
-symbol multiple times, leading to a linker error.
-
-To prevent this, declare arch_kgdb_breakpoint() as noinline.
-
-Fix follow error with LLVM-19 *only* when LTO_CLANG_FULL:
-    LD      vmlinux.o
-  ld.lld-19: error: ld-temp.o <inline asm>:3:1: symbol 'kgdb_breakinst' is already defined
-  kgdb_breakinst: break 2
-  ^
-
-2. Remove "nop" in the inline assembly because it's meaningless for
-LoongArch here.
-
-3. Add "STACK_FRAME_NON_STANDARD" for arch_kgdb_breakpoint() to avoid
-the objtool warning.
-
-Fixes: e14dd076964e ("LoongArch: Add basic KGDB & KDB support")
-Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Co-developed-by: Winston Wen <wentao@uniontech.com>
-Signed-off-by: Winston Wen <wentao@uniontech.com>
-Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 5f60d5f6bbc1 ("move asm/unaligned.h to linux/unaligned.h")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/r/20250225193600.90037-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/kgdb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/arch/x86/lib/insn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/kgdb.c b/arch/loongarch/kernel/kgdb.c
-index 445c452d72a79..7be5b4c0c9002 100644
---- a/arch/loongarch/kernel/kgdb.c
-+++ b/arch/loongarch/kernel/kgdb.c
-@@ -8,6 +8,7 @@
- #include <linux/hw_breakpoint.h>
- #include <linux/kdebug.h>
- #include <linux/kgdb.h>
-+#include <linux/objtool.h>
- #include <linux/processor.h>
- #include <linux/ptrace.h>
- #include <linux/sched.h>
-@@ -224,13 +225,13 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- 	regs->csr_era = pc;
- }
+diff --git a/tools/arch/x86/lib/insn.c b/tools/arch/x86/lib/insn.c
+index ab5cdc3337dac..e91d4c4e1c162 100644
+--- a/tools/arch/x86/lib/insn.c
++++ b/tools/arch/x86/lib/insn.c
+@@ -13,7 +13,7 @@
+ #endif
+ #include "../include/asm/inat.h" /* __ignore_sync_check__ */
+ #include "../include/asm/insn.h" /* __ignore_sync_check__ */
+-#include "../include/linux/unaligned.h" /* __ignore_sync_check__ */
++#include <linux/unaligned.h> /* __ignore_sync_check__ */
  
--void arch_kgdb_breakpoint(void)
-+noinline void arch_kgdb_breakpoint(void)
- {
- 	__asm__ __volatile__ (			\
- 		".globl kgdb_breakinst\n\t"	\
--		"nop\n"				\
- 		"kgdb_breakinst:\tbreak 2\n\t"); /* BRK_KDB = 2 */
- }
-+STACK_FRAME_NON_STANDARD(arch_kgdb_breakpoint);
- 
- /*
-  * Calls linux_debug_hook before the kernel dies. If KGDB is enabled,
+ #include <linux/errno.h>
+ #include <linux/kconfig.h>
 -- 
 2.39.5
 
