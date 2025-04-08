@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247A9A8073C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADC1A80B5C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF7C4C6063
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276EF505374
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4610265CD3;
-	Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57326B94F;
+	Tue,  8 Apr 2025 12:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZHkhbaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeWlCDkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BDC224AEB;
-	Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9CF26B95F;
+	Tue,  8 Apr 2025 12:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115209; cv=none; b=N2XPnrgLPzrVsbU3T10OE9DEgGBoyhnuolnIefQ4eK8FBbGpD1SKyMKkzkicebwEFFKMadafxP2N6MmoPrqTNfM2MM5PE52ql47gvJYshZuT36hnv/5LtsNW8VqTocalX5TdLGGUAVkDtK2dl6CK5BLj16m1FxW/h6z/MdffYjc=
+	t=1744116811; cv=none; b=R3OStm8B93Yf20Rso7BIW4Z/thXf+5PLBiw8LLVrhpU4Qh8mxrZZ33Vmx38m7dKz0DyoWa7HT4JOkrVyNHzkOW2BqnwkmVughPPTFM7syMXBYW1Kh8TVdul9V00cRCzr7CFv3lnyUKNd9J4afQmvw0Xt+x0ZijH0ZRoc9vaeJUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115209; c=relaxed/simple;
-	bh=cY8dfX2R136xV9P8erkA2dxmYvS8hviMkfl1G7CggB4=;
+	s=arc-20240116; t=1744116811; c=relaxed/simple;
+	bh=nTEi8E/iqDU6S4KzkKHHJpfB2utk5a8hbGYaQ9gTN08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gD84izRP5Q+4fLaF/mVemSvUWpsba8N1duf5BUHBfsfCbnOQ/Xaje7zCTjd+G71/lNFBr5lkIiyowW4KERkBKbBY+12kFR3cSUfMtj4+sFqQuODkFkm1VAdlIf3nGsaZCdhnxhDz4mx/NsD2PhMErDh0Fhw14S+udWaw7BHKGUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZHkhbaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8690C4CEE5;
-	Tue,  8 Apr 2025 12:26:48 +0000 (UTC)
+	 MIME-Version; b=oAaTS5XzDLsyLjZPWR5sHE32rU4M5v55QlqUHO6GsxH6x6gxP5Q+QLnlglQeJSV/fUG3noK9+3S3U4cvRosQoPuGUcBN5zbDhwChtbpcZyz9F6JR8WYHiVIsNHQKpfNxiKBuG1qa2yz90gsJGCHxtYSc4+ivbU2ENhVfjrjDIzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeWlCDkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF887C4CEEB;
+	Tue,  8 Apr 2025 12:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115209;
-	bh=cY8dfX2R136xV9P8erkA2dxmYvS8hviMkfl1G7CggB4=;
+	s=korg; t=1744116811;
+	bh=nTEi8E/iqDU6S4KzkKHHJpfB2utk5a8hbGYaQ9gTN08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZHkhbaCQtR+Qn/6M0/ZQ1MOrSDijapqNd3u1YodGAhZZFo/OgzosxBxt6vErxRMd
-	 GiJO6KtNEbu5JwIagVu7mf5UjjEyKJslPliinsjsokJY1lDZ6EmHoK1h5I8UmdN3I+
-	 QwtRi+BDkTuDIJvdmaLGoJJJ/1m7MIpGNNRxHwGs=
+	b=SeWlCDkLHjde3TrMv700mfYcEjWUZjrQFRWnoMK5vFJUswrizry/w5zUimAFBzjlg
+	 1b8r08Ce2WCLeF7y2ZBAU+4FRLi2e2d9ZfytYPKgPOlAHs20QKMRG81rt1qN9ywHJo
+	 GxuxEYs4c5y1aOu7hOGVgl6z3XJlQX3Y5ThT7L2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 391/499] rtnetlink: Use register_pernet_subsys() in rtnl_net_debug_init().
-Date: Tue,  8 Apr 2025 12:50:03 +0200
-Message-ID: <20250408104900.980483015@linuxfoundation.org>
+Subject: [PATCH 6.12 278/423] ALSA: hda/realtek: Add support for ASUS ROG Strix G614 Laptops using CS35L41 HDA
+Date: Tue,  8 Apr 2025 12:50:04 +0200
+Message-ID: <20250408104852.246666972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 1b7fdc702c031134c619b74c4f311c590e50ca3d ]
+[ Upstream commit 9120b2b4ad0dad2f6bbb6bcacd0456f806fda62d ]
 
-rtnl_net_debug_init() registers rtnl_net_debug_net_ops by
-register_pernet_device() but calls unregister_pernet_subsys()
-in case register_netdevice_notifier() fails.
+Add support for ASUS G614PH/PM/PP and G614FH/FM/FP.
 
-It corrupts pernet_list because first_device is updated in
-register_pernet_device() but not unregister_pernet_subsys().
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
 
-Let's fix it by calling register_pernet_subsys() instead.
-
-The _subsys() one fits better for the use case because it keeps
-the notifier alive until default_device_exit_net(), giving it
-more chance to test NETDEV_UNREGISTER.
-
-Fixes: 03fa53485659 ("rtnetlink: Add ASSERT_RTNL_NET() placeholder for netdev notifier.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250401190716.70437-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-4-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnl_net_debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/rtnl_net_debug.c b/net/core/rtnl_net_debug.c
-index f406045cbd0e6..b348c14b1d395 100644
---- a/net/core/rtnl_net_debug.c
-+++ b/net/core/rtnl_net_debug.c
-@@ -111,7 +111,7 @@ static int __init rtnl_net_debug_init(void)
- {
- 	int ret;
- 
--	ret = register_pernet_device(&rtnl_net_debug_net_ops);
-+	ret = register_pernet_subsys(&rtnl_net_debug_net_ops);
- 	if (ret)
- 		return ret;
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a960ef29a7036..6117aad97ba37 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10620,7 +10620,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
++	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x10a4, "ASUS TP3407SA", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
 -- 
 2.39.5
 
