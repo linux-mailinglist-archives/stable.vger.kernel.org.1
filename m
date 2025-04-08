@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D96A800E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1F7A7FDC5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 650737A858A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4189D4218D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98DB26A0A6;
-	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D489268FE9;
+	Tue,  8 Apr 2025 10:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2uz1Uil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aScM3jfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74EA263899;
-	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9941DDA0C;
+	Tue,  8 Apr 2025 10:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111897; cv=none; b=IkPsFBi2mDCtjFPxgtJba0l+twddNH1QolBnzNwgTzMbHIPz/d6HMYNIL5aCfUStKIsD3c2dj5xLXcN8ovPKpvmkucMeDwDtqbP8CkLsgBfPfd4RgxNqXvnpaPLCQxA5WKwtP9FPbwlXWfKrMtx6TeXrziEWvnCKImdcybRpvxc=
+	t=1744109951; cv=none; b=ah3ik71cLhqHPsnUdB4DQQ7LUJYv08mBJYCufHVrnC03PWqVQ2HFFMf052NKQfJIWTtUS+KDEDwsyLK4tw0HdgLrgS9gunruIvld+cIj3c9ZDtbO1w2go1OC/+xuKZFZmpy4wOvhgDThSgDMEP02Xb4A+1z19jaiMPmiQBEaEDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111897; c=relaxed/simple;
-	bh=jbV1YXwBkrkqaHgWdltcepCTc90qE+lUZJhnwgTDFbc=;
+	s=arc-20240116; t=1744109951; c=relaxed/simple;
+	bh=qncx81VHWz2I++RThpwNIhRr3rSoDho4/oadcDb6ySM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UP0/LrPdcwZ3bLr4k4hxKNiagK9ziGuaBJBFfq8YR9jDYTLtIwU92tvjMtloGmMKqVb/H/BspS3ebHV48Yj+qqu91WJgc4p5z323yMLk/CclHdAYOZnS/nq0xhUfXdKG5sDGy8wKQqhdXzdWJLyMHNs189T4wZ2QudRX/TosKLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2uz1Uil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36720C4CEE5;
-	Tue,  8 Apr 2025 11:31:37 +0000 (UTC)
+	 MIME-Version; b=mqL4XNcw9cGJSMdvSBgHVnR6sFc6klz8B88xRnEeQ8GUvhXjRSc6KNtuSDNnIl+j19mu4KomROw68UwMHjqH94xh1bWTuBvUDnpyUtNLTvi2Z16y6WDrij5Yqwi84EiKXVL+6P5+wPIMVpaJOBj7L2XMJ6YpvkbLjbzGMRoAeyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aScM3jfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C28CC4CEE5;
+	Tue,  8 Apr 2025 10:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111897;
-	bh=jbV1YXwBkrkqaHgWdltcepCTc90qE+lUZJhnwgTDFbc=;
+	s=korg; t=1744109950;
+	bh=qncx81VHWz2I++RThpwNIhRr3rSoDho4/oadcDb6ySM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2uz1UilLtW8rhdCtLHTk1zL2qljRF56hmhNahpR0qz8LtypNP+yzXfXCie8ae8Y1
-	 +TlIh8ddS2a666BCJ+PMwphYPfs5pvAp3S7gc1mmuk47qzg2bOXRjv/WJFq7VnBFJq
-	 U4SkLHQdKyrFw2nIy4k6A+RP5kokRKFjMdvb6X5U=
+	b=aScM3jfE5fGy3jJ5ZoPfYZmoqPbwvVJfATLAm1/B77z7RvKefQ8w3W7u8HmMH7o2y
+	 WEfj5IjDVxKBy4yxSJqERsvwPohWfim48EuQ8mNfws6THhnrGMzybotdi6yb0tgFZk
+	 dQcz2O+yg6CbdPwoixy7bkB6j7Y7/4Tv/z09hWBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 593/731] riscv: Fix set up of vector cpu hotplug callback
+Subject: [PATCH 5.10 112/227] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
 Date: Tue,  8 Apr 2025 12:48:10 +0200
-Message-ID: <20250408104928.068852890@linuxfoundation.org>
+Message-ID: <20250408104823.709698474@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 2744ec472de31141ad354907ff98843dd6040917 ]
+[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
 
-Whether or not we have RISCV_PROBE_VECTOR_UNALIGNED_ACCESS we need to
-set up a cpu hotplug callback to check if we have vector at all,
-since, when we don't have vector, we need to set
-vector_misaligned_access to unsupported rather than leave it the
-default of unknown.
+The CPA_ARRAY test always uses len[1] as numpages argument to
+change_page_attr_set() although the addresses array is different each
+iteration of the test loop.
 
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250304120014.143628-16-ajones@ventanamicro.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Replace len[1] with len[i] to have numpages matching the addresses array.
+
+Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
+Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/unaligned_access_speed.c | 31 +++++++++++-----------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ arch/x86/mm/pat/cpa-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 84694a44f3da4..a42115fbdeb89 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -359,6 +359,20 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- 	__free_pages(page, MISALIGNED_BUFFER_ORDER);
- }
+diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
+index 0612a73638a81..7641cff719bd0 100644
+--- a/arch/x86/mm/pat/cpa-test.c
++++ b/arch/x86/mm/pat/cpa-test.c
+@@ -183,7 +183,7 @@ static int pageattr_test(void)
+ 			break;
  
-+/* Measure unaligned access speed on all CPUs present at boot in parallel. */
-+static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
-+{
-+	schedule_on_each_cpu(check_vector_unaligned_access);
-+
-+	return 0;
-+}
-+#else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
-+static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
-+{
-+	return 0;
-+}
-+#endif
-+
- static int riscv_online_cpu_vec(unsigned int cpu)
- {
- 	if (!has_vector()) {
-@@ -366,27 +380,16 @@ static int riscv_online_cpu_vec(unsigned int cpu)
- 		return 0;
- 	}
+ 		case 1:
+-			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
++			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
+ 			break;
  
-+#ifdef CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS
- 	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
- 		return 0;
- 
- 	check_vector_unaligned_access_emulated(NULL);
- 	check_vector_unaligned_access(NULL);
--	return 0;
--}
--
--/* Measure unaligned access speed on all CPUs present at boot in parallel. */
--static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
--{
--	schedule_on_each_cpu(check_vector_unaligned_access);
-+#endif
- 
- 	return 0;
- }
--#else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
--static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
--{
--	return 0;
--}
--#endif
- 
- static int __init check_unaligned_access_all_cpus(void)
- {
-@@ -412,10 +415,8 @@ static int __init check_unaligned_access_all_cpus(void)
- 	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
- 				  riscv_online_cpu, riscv_offline_cpu);
- #endif
--#ifdef CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS
- 	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:online",
- 				  riscv_online_cpu_vec, NULL);
--#endif
- 
- 	return 0;
- }
+ 		case 2:
 -- 
 2.39.5
 
