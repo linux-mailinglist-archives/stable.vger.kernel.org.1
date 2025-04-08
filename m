@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FA9A8044E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58DDA80AEE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6B8466BC0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 726811BA7CE4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE34267F67;
-	Tue,  8 Apr 2025 11:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83BF26B954;
+	Tue,  8 Apr 2025 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6PCBB1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0iICWtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89290224234;
-	Tue,  8 Apr 2025 11:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726CA26A0FD;
+	Tue,  8 Apr 2025 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113484; cv=none; b=ohkJJNC1rhCR/pA7KYSbC8pz5Ttw3uI3vy33tnwEIOjjrM3qV2KYFbz9jIH/iHIKOAg+vXGDq0zvTZsRq0WfT8mZtLW2dEJTSSU4CzyNeF5V5qkmUUq/poVjqptfDKYGb8pTACk+z/VVQDW8u+mKh/3syyWp4RGmGTPmMq3l3UI=
+	t=1744116814; cv=none; b=FCP56nnk9unDFmgAmcmrPFImcXOsoYv4B3osI7lihfMb9NSJkfznstTLu5x6MBYgIe4SRIuaN1q2JV/tMdegDOh7KSWX0gzTqyP5JwQvf5Ssne4tD3xSTQTAx6HhK04+Ru/fQTDVKTM52CU0WpGza2LHYLzXVHucWW3Y+CUmK0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113484; c=relaxed/simple;
-	bh=8dXNQZr4F1EkAwuGXokH+1JGJPE7uDGVcepTqdkuEOM=;
+	s=arc-20240116; t=1744116814; c=relaxed/simple;
+	bh=f7wskdm+n99mqEq5DliwmV7Rnw4q0rnyPWoXEaIwY5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2nmkPjCWWEbSKLSmdg+AYEN/+Ho1NCzLLT7MbWPPFl1T4OlCpGlIpZyk/Lz6o7T1IP11qsD2Tj1gEljhTocV3ggonmOcyl7trIn4eGG4/xwbXcCNjrULjWfZuA4KBUWTxIsa9fI7ps+EFjU+pPIPtYvn5rnQ8x9eoScJ4o2qdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6PCBB1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CA9C4CEE5;
-	Tue,  8 Apr 2025 11:58:03 +0000 (UTC)
+	 MIME-Version; b=FACr5Mk0DvMRBeC6apZeiLqm2cQTsDT+P2XqOIn+TftW68xCuBdIcoKy8KhPpb2I7CFvcirrRYH7ZzSHCL+E2X9fXJ+uO3bTOKx6nh6akXtRSvIihW/LQWcouhNTlfywEuZ/29csiruCWeWI6+NfEQVapo0DwQPLQGr1s0U4R7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0iICWtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4BAC4CEE5;
+	Tue,  8 Apr 2025 12:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113484;
-	bh=8dXNQZr4F1EkAwuGXokH+1JGJPE7uDGVcepTqdkuEOM=;
+	s=korg; t=1744116814;
+	bh=f7wskdm+n99mqEq5DliwmV7Rnw4q0rnyPWoXEaIwY5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6PCBB1VduEd9icrEfBAkbztmg6GTsk/gj6WWwa+yIirF5Oz1YQpUBeM6NL5dce1t
-	 7t2abwg5lr+FlT1VvTeiIdlvti6Mn1fi01gQZ1cM55IIWfq+jS9Ww8Mk3DLEsAh5zr
-	 mnXESuatyyXl1B0V6dX36cvXiI4Pe8kLyVgyT/kM=
+	b=c0iICWtchEfFMu4mxvP3cW0mRp3+eERlbtsZk+WiXGZGnqy8Zoboo2Ws55sVM8u6C
+	 OSeUOoBRLlhKtIeVlLCynO7BRC8XbMuPTlA7Prcf8lR3ku87t5gWy+F/3YKLGdkDNV
+	 uKdmoxa9uq0wchH3GkieNbsYxF9EWVHUCjeQR6vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Matthias Proske <email@matthias-proske.de>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/268] HID: i2c-hid: improve i2c_hid_get_report error message
+Subject: [PATCH 6.12 261/423] wifi: brcmfmac: keep power during suspend if board requires it
 Date: Tue,  8 Apr 2025 12:49:47 +0200
-Message-ID: <20250408104833.291422893@linuxfoundation.org>
+Message-ID: <20250408104851.825654315@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Matthias Proske <email@matthias-proske.de>
 
-[ Upstream commit 723aa55c08c9d1e0734e39a815fd41272eac8269 ]
+[ Upstream commit 8c3170628a9ce24a59647bd24f897e666af919b8 ]
 
-We have two places to print "failed to set a report to ...",
-use "get a report from" instead of "set a report to", it makes
-people who knows less about the module to know where the error
-happened.
+After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
+unless WOWL is used"), the wifi adapter by default is turned off on
+suspend and then re-probed on resume.
 
-Before:
-i2c_hid_acpi i2c-FTSC1000:00: failed to set a report to device: -11
+This conflicts with some embedded boards that require to remain powered.
+They will fail on resume with:
 
-After:
-i2c_hid_acpi i2c-FTSC1000:00: failed to get a report from device: -11
+brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
+ieee80211 phy1: brcmf_bus_started: failed: -110
+ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
+brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
 
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This commit checks for the Device Tree property 'cap-power-off-cards'.
+If this property is not set, it means that we do not have the capability
+to power off and should therefore remain powered.
+
+Signed-off-by: Matthias Proske <email@matthias-proske.de>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250212185941.146958-2-email@matthias-proske.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 045db6f0fb4c4..3dcdd3368b463 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -258,7 +258,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
- 			     ihid->rawbuf, recv_len + sizeof(__le16));
- 	if (error) {
- 		dev_err(&ihid->client->dev,
--			"failed to set a report to device: %d\n", error);
-+			"failed to get a report from device: %d\n", error);
- 		return error;
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 8a1e337642448..cfdd92564060a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -1167,6 +1167,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	struct brcmf_bus *bus_if;
+ 	struct brcmf_sdio_dev *sdiodev;
+ 	mmc_pm_flag_t sdio_flags;
++	bool cap_power_off;
+ 	int ret = 0;
  
+ 	func = container_of(dev, struct sdio_func, dev);
+@@ -1174,19 +1175,23 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	if (func->num != 1)
+ 		return 0;
+ 
++	cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 
+ 	bus_if = dev_get_drvdata(dev);
+ 	sdiodev = bus_if->bus_priv.sdio;
+ 
+-	if (sdiodev->wowl_enabled) {
++	if (sdiodev->wowl_enabled || !cap_power_off) {
+ 		brcmf_sdiod_freezer_on(sdiodev);
+ 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+ 
+ 		sdio_flags = MMC_PM_KEEP_POWER;
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
+-			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+-		else
+-			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++
++		if (sdiodev->wowl_enabled) {
++			if (sdiodev->settings->bus.sdio.oob_irq_supported)
++				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
++			else
++				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++		}
+ 
+ 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
+ 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+@@ -1208,18 +1213,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
+ 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+ 	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
+ 	int ret = 0;
++	bool cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 
+ 	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
+ 	if (func->num != 2)
+ 		return 0;
+ 
+-	if (!sdiodev->wowl_enabled) {
++	if (!sdiodev->wowl_enabled && cap_power_off) {
+ 		/* bus was powered off and device removed, probe again */
+ 		ret = brcmf_sdiod_probe(sdiodev);
+ 		if (ret)
+ 			brcmf_err("Failed to probe device on resume\n");
+ 	} else {
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
++		if (sdiodev->wowl_enabled && sdiodev->settings->bus.sdio.oob_irq_supported)
+ 			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+ 
+ 		brcmf_sdiod_freezer_off(sdiodev);
 -- 
 2.39.5
 
