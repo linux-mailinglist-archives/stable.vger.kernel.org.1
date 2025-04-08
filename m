@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB30A8011E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C272EA7FE1D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908B07A8C20
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B389E16A503
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79019224234;
-	Tue,  8 Apr 2025 11:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3774226A0E3;
+	Tue,  8 Apr 2025 11:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXZ+rpY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3GT68XW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC6268FD2;
-	Tue,  8 Apr 2025 11:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F15267B7F;
+	Tue,  8 Apr 2025 11:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112072; cv=none; b=EYi+r/vC1/ReFwK3N7Qmg8wARKJVTC8duMmApZx8figT30/aw8ZbEzyDO+hWxNwiCswvWdu+64xU1faLPPLN9huJ50dAxRrQywoYqzBEi475Nhjl1WOgLKC8GYi6M41mD4TzHMaVMn99pSivUzejFTwYCfMw4gHV8rtRkUQKHxA=
+	t=1744110140; cv=none; b=YtpjmqP/XuGr2Y/27aIpkIx3B4B69E39diAXHY2zvp+qj+4cBwl0bZ9O7b35SGl0q4Mjx6H9/ppgwGIKSAcBorWGyjd5m7o605RvH+0ZiHBW9/p1eaVedqPQ6j+mbPfEXLSnUOGlo9HlKPnxRasS4Sf6joRKnuS8CTLP59RPN9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112072; c=relaxed/simple;
-	bh=MJlqyszdqfmj423nCLSVV+kshOwRACU4NPiXuzwpyWE=;
+	s=arc-20240116; t=1744110140; c=relaxed/simple;
+	bh=bpKYVpNIh4DkLI6b42QBpQi6f/xnP0Xy41jKcawWy84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdlImgZltJz+MPGqaPr1blV2ra7Ay8RxwbzlobE17c5/i0ONSrjbR8GRkCiZDpzOf4y0u2qsdpsy62uCobmpU2yunXlAe/Ve+tbwVRJ0rYo2AETQtCe0AAjbFAtSd/OglV6tflNJl9mIqWmhPooWLOWvivtElXIJ2edVz19yng0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXZ+rpY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95C9C4CEE5;
-	Tue,  8 Apr 2025 11:34:31 +0000 (UTC)
+	 MIME-Version; b=oOZzIiS1cPqsqLD93R1KSFdPg++HbjbvvycoXPHsqX8O6ax2bii/Ks8aO9C3i0xiU+44VxWwL8xEcd26oRFdIcsANEURXmXZPo3u1UILT/k02aZVSnEw6yw9/EfR58kQO9KSyVNO7ia94ZxNDer3JPRFT9Dv2Z3UUdKQJSzHiVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3GT68XW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FA0C4CEE5;
+	Tue,  8 Apr 2025 11:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112072;
-	bh=MJlqyszdqfmj423nCLSVV+kshOwRACU4NPiXuzwpyWE=;
+	s=korg; t=1744110139;
+	bh=bpKYVpNIh4DkLI6b42QBpQi6f/xnP0Xy41jKcawWy84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXZ+rpY93Na/HuC8bYcIw1CuyNEIunEOe0jyhHTDdenoPXqnGe6b6Vq1xzqGEbo5w
-	 EA1s8qwZdZnEyuEpd9DUGzk8ZuvQ2EoBnyL2BkJXhoQMzfDZMKuUT/MW2v5vrsziRA
-	 D2vlqiR8AvPBaYfDHhuqOfQDkPWt61dmQ8Zq0oaI=
+	b=F3GT68XW0zdmNbBT70M85J5sCjgk389q3bU2J/rdwt1stWS+uMLBFiCGPs139n2vy
+	 zcjrBO98s45hm5gPSkbFqDOBZN/TkQPZG3PZKdaOZrZdqZGlVFkmKo9hw2i8Fw4O4E
+	 rnIHR2/H4wcZo3QmlY2uVKlx40By0rrkfTNbAEZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <baimingcong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 664/731] LoongArch: Increase MAX_IO_PICS up to 8
+	Icenowy Zheng <uwu@icenowy.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 183/227] nvme-pci: clean up CMBMSC when registering CMB fails
 Date: Tue,  8 Apr 2025 12:49:21 +0200
-Message-ID: <20250408104929.711942701@linuxfoundation.org>
+Message-ID: <20250408104825.798571989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-commit ec105cadff5d8c0a029a3dc1084cae46cf3f799d upstream.
+[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
 
-Begin with Loongson-3C6000, the number of PCI host can be as many as
-8 for multi-chip machines, and this number should be the same for I/O
-interrupt controllers. To support these machines we also increase the
-MAX_IO_PICS up to 8.
+CMB decoding should get disabled when the CMB block isn't successfully
+registered to P2P DMA subsystem.
 
-Cc: stable@vger.kernel.org
-Tested-by: Mingcong Bai <baimingcong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Clean up the CMBMSC register in this error handling codepath to disable
+CMB decoding (and CMBLOC/CMBSZ registers).
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/irq.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/loongarch/include/asm/irq.h
-+++ b/arch/loongarch/include/asm/irq.h
-@@ -53,7 +53,7 @@ void spurious_interrupt(void);
- #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
- void arch_trigger_cpumask_backtrace(const struct cpumask *mask, int exclude_cpu);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index ae04bdce560a1..7993acdfd3185 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1888,6 +1888,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
++		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
+ 		return;
+ 	}
  
--#define MAX_IO_PICS 2
-+#define MAX_IO_PICS 8
- #define NR_IRQS	(64 + NR_VECTORS * (NR_CPUS + MAX_IO_PICS))
- 
- struct acpi_vector_group {
+-- 
+2.39.5
+
 
 
 
