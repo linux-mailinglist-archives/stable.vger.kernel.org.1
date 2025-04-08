@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15C4A8059B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851D1A8075F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DD8E8848B8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8786A1B66873
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88211268C51;
-	Tue,  8 Apr 2025 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3A269CE8;
+	Tue,  8 Apr 2025 12:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nme5Uvrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS3x6cC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F4CA94A;
-	Tue,  8 Apr 2025 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1B022488E;
+	Tue,  8 Apr 2025 12:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114007; cv=none; b=V2A0atmsxxbV89t8u51T7o0B9cOmd6TyTo9NJX6iPg5iHKPspBz4zBh11u1D1bBkX7a3v/gVRj1Qr8baZnyxjUMvymJ2rK9JJB5L0U6KOtZRW9RX5OohappeIqv2BP5P1Fq1lkRo9RAMQQUpoHQK7zHZ2Q52HQbIDZybvPCoWCw=
+	t=1744115319; cv=none; b=Ktw7tC+b6eIpZMdob9w8V7G5NuVZHVt/yuxOGPgIo45fMC1+/aB6HbjV3DbWra648UzMJdgWehDygGPjsqPIyklEAAzwxFv9UezTVTIRgQK64LBxPnkDmvIe/t6qwr2Vy306afVeDNhfvsdQknguhZ1WBIG4z9yqqpeb7LgZMUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114007; c=relaxed/simple;
-	bh=FoWxCH7f05QcfmqNCZ7WLczYGqX5EowUPH74MWiYRJ8=;
+	s=arc-20240116; t=1744115319; c=relaxed/simple;
+	bh=SD6Six/t8viTd3pVD1u/q2rbMNrFrfBT8J4b1eIUBh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqL0B6khTslfBkdQ0l+EzOZoxhqCUn0gk/mx+M8/VNIw5vle2So8Dp5tX+ZBjAI03PJOyx0bkYoeZFiYFEVTHYwNu5eeIzP835+bkPXIfR9sqEjlxLLrXPfbwBfPi0069jPQDzj9ybzJceRtfO+bKFMVf3bud9L3bELTOe/qKBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nme5Uvrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DB3C4CEE5;
-	Tue,  8 Apr 2025 12:06:46 +0000 (UTC)
+	 MIME-Version; b=YO1M+mA80inVYhg0EO29PZRxOhmyHuEo+BgpWfatnfGFDBoLLgh6JIz5S00YudRMuZGWLcQKlQrRkUuwY+Kxm7yAxM6HyZVGSp1gdfDbnVJT1A1qWDQuCu5VjGbVCzNj3KuRoML60QYF4fz5DWDe8bVt0lXehLoFXWcsBamoqhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS3x6cC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA94C4CEE5;
+	Tue,  8 Apr 2025 12:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114007;
-	bh=FoWxCH7f05QcfmqNCZ7WLczYGqX5EowUPH74MWiYRJ8=;
+	s=korg; t=1744115319;
+	bh=SD6Six/t8viTd3pVD1u/q2rbMNrFrfBT8J4b1eIUBh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nme5Uvrs9TmdsLL/LvfsZxAKDIB777He4f6jWXo5Av1SJNW6Cx50drpJabJtMyuQY
-	 DlUu8/lfixlxnTvofRH5VXzMz737Rd86a7aY6Lkd3r4pi3g5OC5G9SocRsNL7RkM0x
-	 kce4RX9tscy6oVKA/qGwptS3EztaKJnxpRU6EFkU=
+	b=JS3x6cC/onfmRB9UqhxMVbCDs92HaMBVkumrrlmI3Fsg7gxwjH+z4anwJ8pW2Oycq
+	 Uvo08eHX/Aun2wHbcL7Um9r8ZNn8lfxMjsowYBzJkRdcR46wdh+wjF9syYqpoayzFA
+	 5SqmsbDzf+cben1o91kunzW3hnmeSlE6anb9f3jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/154] clk: amlogic: gxbb: drop incorrect flag on 32k clock
-Date: Tue,  8 Apr 2025 12:50:42 +0200
-Message-ID: <20250408104818.567389343@linuxfoundation.org>
+Subject: [PATCH 6.13 431/499] tty: serial: lpuart: only disable CTS instead of overwriting the whole UARTMODIR register
+Date: Tue,  8 Apr 2025 12:50:43 +0200
+Message-ID: <20250408104901.978199796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit f38f7fe4830c5cb4eac138249225f119e7939965 ]
+[ Upstream commit e98ab45ec5182605d2e00114cba3bbf46b0ea27f ]
 
-gxbb_32k_clk_div sets CLK_DIVIDER_ROUND_CLOSEST in the init_data flag which
-is incorrect. This is field is not where the divider flags belong.
+No need to overwrite the whole UARTMODIR register before waiting the
+transmit engine complete, actually our target here is only to disable
+CTS flow control to avoid the dirty data in TX FIFO may block the
+transmit engine complete.
+Also delete the following duplicate CTS disable configuration.
 
-Thankfully, CLK_DIVIDER_ROUND_CLOSEST maps to bit 4 which is an unused
-clock flag, so there is no unintended consequence to this error.
-
-Effectively, the clock has been used without CLK_DIVIDER_ROUND_CLOSEST
-so far, so just drop it.
-
-Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-1-baca56ecf2db@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: d5a2e0834364 ("tty: serial: lpuart: disable flow control while waiting for the transmit engine to complete")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20250307065446.1122482-1-sherry.sun@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/gxbb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/fsl_lpuart.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
-index e8e36ec70b27f..f37b763f7c48b 100644
---- a/drivers/clk/meson/gxbb.c
-+++ b/drivers/clk/meson/gxbb.c
-@@ -1305,7 +1305,7 @@ static struct clk_regmap gxbb_32k_clk_div = {
- 			&gxbb_32k_clk_sel.hw
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT | CLK_DIVIDER_ROUND_CLOSEST,
-+		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 2971de64f6a3d..ca5beb0831153 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2341,15 +2341,19 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	/* update the per-port timeout */
+ 	uart_update_timeout(port, termios->c_cflag, baud);
  
++	/*
++	 * disable CTS to ensure the transmit engine is not blocked by the flow
++	 * control when there is dirty data in TX FIFO
++	 */
++	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++
+ 	/*
+ 	 * LPUART Transmission Complete Flag may never be set while queuing a break
+ 	 * character, so skip waiting for transmission complete when UARTCTRL_SBK is
+ 	 * asserted.
+ 	 */
+-	if (!(old_ctrl & UARTCTRL_SBK)) {
+-		lpuart32_write(port, 0, UARTMODIR);
++	if (!(old_ctrl & UARTCTRL_SBK))
+ 		lpuart32_wait_bit_set(port, UARTSTAT, UARTSTAT_TC);
+-	}
+ 
+ 	/* disable transmit and receive */
+ 	lpuart32_write(port, old_ctrl & ~(UARTCTRL_TE | UARTCTRL_RE),
+@@ -2357,8 +2361,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	lpuart32_write(port, bd, UARTBAUD);
+ 	lpuart32_serial_setbrg(sport, baud);
+-	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
+-	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+ 	/* restore control register */
+ 	lpuart32_write(port, ctrl, UARTCTRL);
+ 	/* re-enable the CTS if needed */
 -- 
 2.39.5
 
