@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-130360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919BDA8047B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2661A807D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5680466ED2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 678AE468499
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8272E268FEB;
-	Tue,  8 Apr 2025 11:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D064F26B2C3;
+	Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDMVinbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHVKLVu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404D1263C83;
-	Tue,  8 Apr 2025 11:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E55126B2BE;
+	Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113511; cv=none; b=fZJOEQg3AIUKx0R6PZJTnpoViwcOT4GAAFFVQtOl3nJ0Gn0ESp/G1mpOiGk/kjf05o8OEXn0nU0kzAmcsHQQSOBSbhq45WHClJkmqR/qLsRyR4afUk5Tci1IRLPhsZ/31Tup84Se6AjG2TFA7yRic7fAd2cywX2Z6yt5JVqdbD4=
+	t=1744115300; cv=none; b=T13iCcPovly6ZPtQZQAYqgkva9wDF4jlx7ymZc9ULE2DypzFLPE17BKCZM2qCRYCp8Pd5+xrJhEV0r0Vbgasc32T0fpMCbpuO2jQp53BD1YUB54FDUoFj7J56OAVdl9YXAYETcx21kR8H3hnEvXkL8I6U1ISYd9MRPv7EjIixUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113511; c=relaxed/simple;
-	bh=YjKeJR248Z5MNCpgzFDUVhP7sKpEgjFbU1MgUDtkNCU=;
+	s=arc-20240116; t=1744115300; c=relaxed/simple;
+	bh=OSyR8Acx84E5zi0P2jChqN4R/RLiuqMTzFH6ugcc4xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tV1QorwdXP0g3+87dFW+mO5PW2fL4ablRaUrCloB3lTw59Fmd2hohgZ/ysjUzdNPAy58SspVI0FMQeXEEt9mVdgl6RVU446Rfblr8/+LtRlC5q4ZdUCF8drwNRs7pAF4Ff1vJbA1FxSzv0KSuhyl7IadclKBFdBZ8PZ/ZNna9wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDMVinbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACE4C4CEE5;
-	Tue,  8 Apr 2025 11:58:30 +0000 (UTC)
+	 MIME-Version; b=uUtgwFeXefS8IAulkw48UG2k8EUQgPlt6YBxbP6MKKACRHNN2PH1SHqnypWZKwtx75tq9JVXQXoKsLiHa4kXl3RL3BkwJmttQg4Xn2FVuS1nHRzgbjqnoYGlghMSH3MOe8UOHlK0HmX4pBOiTBnrplmXpDAV2EZULe4o/m4/Y9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHVKLVu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B498C4CEE5;
+	Tue,  8 Apr 2025 12:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113510;
-	bh=YjKeJR248Z5MNCpgzFDUVhP7sKpEgjFbU1MgUDtkNCU=;
+	s=korg; t=1744115300;
+	bh=OSyR8Acx84E5zi0P2jChqN4R/RLiuqMTzFH6ugcc4xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDMVinbmt3Z61/Oub1Oz+FDaq+vtTGThyHOSvPqrcyrXs9ZQBByfBaIunjz4OWWq6
-	 WAZ1+8rgutizGZMSVrPHsGi9poD3BWiCbtRvyg0Iv3BVLFkzDa3cS7xct9bTSCQ0bS
-	 89nB9BOpUz4UtwJpAVnLOj95qbd2YbXQgHrwPAeQ=
+	b=VHVKLVu+hk0ILXf54FwxowXQ6/jcRpMszzk0X165LEsHt2DmLbm3VJwIIgzNhmZMA
+	 PC2z5wgQFWq37gWjV2GdhwLjKqXRuDDc/G602i0tveoezSmAAbo9xWcoPDGXY4eYl9
+	 nYCqVdQrlXnqo9CWlscdhAeDhAnop6OJMuk5lzjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Yuying Ma <yuma@redhat.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/268] nvme-pci: fix stuck reset on concurrent DPC and HP
+Subject: [PATCH 6.13 384/499] idpf: fix adapter NULL pointer dereference on reboot
 Date: Tue,  8 Apr 2025 12:49:56 +0200
-Message-ID: <20250408104833.541049259@linuxfoundation.org>
+Message-ID: <20250408104900.806142619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 3f674e7b670b7b7d9261935820e4eba3c059f835 ]
+[ Upstream commit 4c9106f4906a85f6b13542d862e423bcdc118cc3 ]
 
-The PCIe error handling has the nvme driver quiesce the device, attempt
-to restart it, then wait for that restart to complete.
+With SRIOV enabled, idpf ends up calling into idpf_remove() twice.
+First via idpf_shutdown() and then again when idpf_remove() calls into
+sriov_disable(), because the VF devices use the idpf driver, hence the
+same remove routine. When that happens, it is possible for the adapter
+to be NULL from the first call to idpf_remove(), leading to a NULL
+pointer dereference.
 
-A PCIe DPC event also toggles the PCIe link. If the slot doesn't have
-out-of-band presence detection, this will trigger a pciehp
-re-enumeration.
+echo 1 > /sys/class/net/<netif>/device/sriov_numvfs
+reboot
 
-The error handling that calls nvme_error_resume is holding the device
-lock while this happens. This lock blocks pciehp's request to disconnect
-the driver from proceeding.
+BUG: kernel NULL pointer dereference, address: 0000000000000020
+...
+RIP: 0010:idpf_remove+0x22/0x1f0 [idpf]
+...
+? idpf_remove+0x22/0x1f0 [idpf]
+? idpf_remove+0x1e4/0x1f0 [idpf]
+pci_device_remove+0x3f/0xb0
+device_release_driver_internal+0x19f/0x200
+pci_stop_bus_device+0x6d/0x90
+pci_stop_and_remove_bus_device+0x12/0x20
+pci_iov_remove_virtfn+0xbe/0x120
+sriov_disable+0x34/0xe0
+idpf_sriov_configure+0x58/0x140 [idpf]
+idpf_remove+0x1b9/0x1f0 [idpf]
+idpf_shutdown+0x12/0x30 [idpf]
+pci_device_shutdown+0x35/0x60
+device_shutdown+0x156/0x200
+...
 
-Meanwhile the nvme's reset can't make forward progress because its
-device isn't there anymore with outstanding IO, and the timeout handler
-won't do anything to fix it because the device is undergoing error
-handling.
+Replace the direct idpf_remove() call in idpf_shutdown() with
+idpf_vc_core_deinit() and idpf_deinit_dflt_mbx(), which perform
+the bulk of the cleanup, such as stopping the init task, freeing IRQs,
+destroying the vports and freeing the mailbox. This avoids the calls to
+sriov_disable() in addition to a small netdev cleanup, and destroying
+workqueues, which don't seem to be required on shutdown.
 
-End result: deadlocked.
-
-Fix this by having the timeout handler short cut the disabling for a
-disconnected PCIe device. The downside is that we're relying on an IO
-timeout to clean up this mess, which could be a minute by default.
-
-Tested-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: Yuying Ma <yuma@redhat.com>
+Fixes: e850efed5e15 ("idpf: add module register and probe functionality")
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 5265be835a4ce..a763df0200ab4 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1282,8 +1282,19 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	struct nvme_dev *dev = nvmeq->dev;
- 	struct request *abort_req;
- 	struct nvme_command cmd = { };
-+	struct pci_dev *pdev = to_pci_dev(dev->dev);
- 	u32 csts = readl(dev->bar + NVME_REG_CSTS);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index b6c515d14cbf0..bec4a02c53733 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -87,7 +87,11 @@ static void idpf_remove(struct pci_dev *pdev)
+  */
+ static void idpf_shutdown(struct pci_dev *pdev)
+ {
+-	idpf_remove(pdev);
++	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
++
++	cancel_delayed_work_sync(&adapter->vc_event_task);
++	idpf_vc_core_deinit(adapter);
++	idpf_deinit_dflt_mbx(adapter);
  
-+	/*
-+	 * Shutdown the device immediately if we see it is disconnected. This
-+	 * unblocks PCIe error handling if the nvme driver is waiting in
-+	 * error_resume for a device that has been removed. We can't unbind the
-+	 * driver while the driver's error callback is waiting to complete, so
-+	 * we're relying on a timeout to break that deadlock if a removal
-+	 * occurs while reset work is running.
-+	 */
-+	if (pci_dev_is_disconnected(pdev))
-+		nvme_change_ctrl_state(&dev->ctrl, NVME_CTRL_DELETING);
- 	if (nvme_state_terminal(&dev->ctrl))
- 		goto disable;
- 
-@@ -1291,7 +1302,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	 * the recovery mechanism will surely fail.
- 	 */
- 	mb();
--	if (pci_channel_offline(to_pci_dev(dev->dev)))
-+	if (pci_channel_offline(pdev))
- 		return BLK_EH_RESET_TIMER;
- 
- 	/*
+ 	if (system_state == SYSTEM_POWER_OFF)
+ 		pci_set_power_state(pdev, PCI_D3hot);
 -- 
 2.39.5
 
