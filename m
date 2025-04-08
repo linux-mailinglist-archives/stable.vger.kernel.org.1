@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-129761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF13A80102
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E753BA803D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 540691896184
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D65D17115E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA6326A0AF;
-	Tue,  8 Apr 2025 11:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B52269895;
+	Tue,  8 Apr 2025 11:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXevPqz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJR5hiRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D0D26982F;
-	Tue,  8 Apr 2025 11:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DCE268C66;
+	Tue,  8 Apr 2025 11:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111908; cv=none; b=nVEk0ilWhoboi5G5qj955E2pb88DLKP+/CIAQTMjmHHOEh5wfCb8hKLgxSyx86TMryBdZgkgsF0o7RCLcSL7iJRkdOqfwuN5CekZoeG3UZxy6BUOXtaLqjXLoxbZxZongE2ZqXdLuqRI78Z5JlMtlCAWYpeUxxDvD9RgM56+qKg=
+	t=1744113255; cv=none; b=bA/Cxtcjk/+EbDwRvCMtd66qqbu6FqsFl3Ng7qa67QbtTDOkuqVGfeLP/4Y9imNYNiErzIl97zm+cB8lVr4GfVEnkRMsBCBxEZfgxx2CSoHJfiklOnD1BMF90BngqwqByN3GVmwcQzmC3UD/yOq4MWzFQ+3gV5szTeXRkBhc5r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111908; c=relaxed/simple;
-	bh=AZ0AHA7/s2QCHYYOMLd/8EbJTV4x/S9UY+X7n++ixRI=;
+	s=arc-20240116; t=1744113255; c=relaxed/simple;
+	bh=OXGwtP3YozQehmU9muQd7ONm7XioBPE+KMIAhpRK3BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuPhgGgcBYwqwSsl239WR5FidosOZ1+X+r5HY9xY/eYa9+P4jHYijhO+MlXn8xHOimpBqB3dhuyNO+jh/Qz2TCMwrjEV+vSUejUPXgKvlLZscEJBL2mM9OPn4Yw387ocRpzUKobBiCLwuMXXpoaTQ4sCSNxNbH/Fe7y1znO4FD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXevPqz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA107C4CEE5;
-	Tue,  8 Apr 2025 11:31:47 +0000 (UTC)
+	 MIME-Version; b=CEJC5OeL1ZagaA3+8/drDaBQe1L8bvAvwHnWOBEko3sDqbUM2bQYzVfjPB9JPWBCFUt+sbc2gOnb1ifNwCs20LCl1VK7vlJyEpcA0PojGmiCphVOHpkdklq67f4SZwg1EosBcow8ZlCTYSOls3atxGMCxZwiU3mSuuLIPVB51po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJR5hiRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895CDC4CEE7;
+	Tue,  8 Apr 2025 11:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111908;
-	bh=AZ0AHA7/s2QCHYYOMLd/8EbJTV4x/S9UY+X7n++ixRI=;
+	s=korg; t=1744113254;
+	bh=OXGwtP3YozQehmU9muQd7ONm7XioBPE+KMIAhpRK3BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXevPqz3R8czrI/MJBT+HYk5IAw2hkK9l4FAgLclYBLqvo4jcpgnaIHydMur6CMqN
-	 +GiFhlCwn5Oqvg5+G3ZwG4bDiDn68Z7WE8ezs/1HOBOh5l8R3sq0y1hA3jkRWtbNBR
-	 DrNlEYb000dHxtYYIJ053re6BKB0ttt+HOQauTB8=
+	b=gJR5hiRpkkr/0fPvdgKUYvBcVwzNtr4gdud4zhvBgk3RXmIl2ebTNcbgfZ+ruVO8q
+	 2BD0pHnFBFU6la+yWHPDhy4FYNNtkWbPtNut7AWDN1aCZtnt8/pQmaGvuYEdXVJoBl
+	 WAn0AV0Ebl5jadZ/XVquHoZpREviIaMAsHTkBv4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 605/731] nvme/ioctl: dont warn on vectorized uring_cmd with fixed buffer
+Subject: [PATCH 6.6 091/268] clk: amlogic: g12a: fix mmc A peripheral clock
 Date: Tue,  8 Apr 2025 12:48:22 +0200
-Message-ID: <20250408104928.346042146@linuxfoundation.org>
+Message-ID: <20250408104830.946085637@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit eada75467fca0b016b9b22212637c07216135c20 ]
+[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
 
-The vectorized io_uring NVMe passthru opcodes don't yet support fixed
-buffers. But since userspace can trigger this condition based on the
-io_uring SQE parameters, it shouldn't cause a kernel warning.
+The bit index of the peripheral clock for mmc A is wrong
+This was probably not a problem for mmc A as the peripheral is likely left
+enabled by the bootloader.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Fixes: 23fd22e55b76 ("nvme: wire up fixed buffer support for nvme passthrough")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+No issues has been reported so far but it could be a problem, most likely
+some form of conflict between the ethernet and mmc A clock, breaking
+ethernet on init.
+
+Use the value provided by the documentation for mmc A before this
+becomes an actual problem.
+
+Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 2 +-
+ drivers/clk/meson/g12a.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 24e2c702da7a2..fed6b29098ad3 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -141,7 +141,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		struct iov_iter iter;
- 
- 		/* fixedbufs is only for non-vectored io */
--		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
-+		if (flags & NVME_IOCTL_VEC) {
- 			ret = -EINVAL;
- 			goto out;
- 		}
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index faaf33a82721d..233ce4a4c1c2f 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -4201,7 +4201,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
+ static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
+ static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
+ static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
+-static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
++static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
+ static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
+ static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
+ static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
 -- 
 2.39.5
 
