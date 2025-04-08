@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B71A80471
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C44DA807D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29412423330
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3968A6991
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC92826A0EE;
-	Tue,  8 Apr 2025 11:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE6D269820;
+	Tue,  8 Apr 2025 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuX6osgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTPuFgxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FF326A0E8;
-	Tue,  8 Apr 2025 11:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682A82690D6;
+	Tue,  8 Apr 2025 12:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113588; cv=none; b=b+UnmUleCDG12WeVcFZMJjFjnv+AX8ZNiBylXfgG+ZMyNXSZh24lwULypKmXOnzwk4JcH9yYWBCviVBzRfAF5iESzXWH8joR/GKLSfU7IBqVN7RDPD2/cuFiyDBJzONQS0TWJRyaWZG729V20dv+A3jPY0jNuxiblwiLcWeXhvo=
+	t=1744115282; cv=none; b=ldY3JKTGuTE7ltnCeJ2io6TANMzIpxGXoLx/03i/GW1k5OiK427+xeRCbRnOGB7F9M2dPm/3adq8vIqtsx5AN/kTE4prpPSZysGTMUrfQ8+18HoPhmNykwKtPhZRzfIZnNA32hTFAU9/e2sJe0Iym10JbYgSi8l2PUF8JTnfd7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113588; c=relaxed/simple;
-	bh=gr4jgN5UeIHjaWwkgrgOhE9iqaSYIuP39Im5A+fIoXY=;
+	s=arc-20240116; t=1744115282; c=relaxed/simple;
+	bh=HmWO8BCrJCKOLIbRtn5qXn6NXCry7NAa7wYvr70eOvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOYly8Z63r73ZR2VmS4hmttkihfJgF1ZHrAaR8GV5kjlDIaCMP+gZqSd6dCXW3tg8HymAzOnE03w4f56wpsrvsdeRpE6+zEGnEJIWJNq50E5WSVYT0tngq5Bn0xrqGz32WCeIZhdFJBkhwK89Ep6U+JNjE1K1wyTDbllAcX7xaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuX6osgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED48EC4CEE7;
-	Tue,  8 Apr 2025 11:59:47 +0000 (UTC)
+	 MIME-Version; b=Z0dSNBiNs9OfOFiDgAfaipRrh8qGpPLlFnb6Xe4E+MGD7YMZjdfU58S0zlzWy9RfkVRcycAx2wdqV/AmZh14IaWGIQ22LOF2aeS0m1uYsDcIlZUhV/5f6mlwJhm31H4qX0heniyWS7PIItqiPqDm4fHJStFKzXGAUS7OOALFQuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTPuFgxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857C3C4CEE5;
+	Tue,  8 Apr 2025 12:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113588;
-	bh=gr4jgN5UeIHjaWwkgrgOhE9iqaSYIuP39Im5A+fIoXY=;
+	s=korg; t=1744115281;
+	bh=HmWO8BCrJCKOLIbRtn5qXn6NXCry7NAa7wYvr70eOvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuX6osgldEWqykdynzk1RhN2Pkh/c9jpY4NrC+O6fmuuIpY5iEqrJXN+cx+IQmE3G
-	 AJPwauGEkBKhn4WvecRJk9CmOMRQjgDsjHUX24vjeBtoffMMpUb1vMjOyHr3SQSsUe
-	 LG6vwnuX1vPy3aDdemHyTIwguDIArxKWT9sCC64I=
+	b=yTPuFgxZ7E5SWecQdXovdyUIkzjCx3CItofaMrWIMOA7nD2DV5G37NW4itqlNqsJf
+	 chdh6X2WTVLvCeoW08l4EeTowPGWOTVgqd/BnV+aBbuurdtLyVQMEKMPQVi0xMqtay
+	 f4opAlHe0DI72H9Hg1kkNF1zi3AkMsLwAWWgxJDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/268] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
-Date: Tue,  8 Apr 2025 12:50:26 +0200
-Message-ID: <20250408104834.378875903@linuxfoundation.org>
+Subject: [PATCH 6.13 415/499] tracing/hist: Support POLLPRI event for poll on histogram
+Date: Tue,  8 Apr 2025 12:50:27 +0200
+Message-ID: <20250408104901.576292199@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <ffmancera@riseup.net>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
+[ Upstream commit 66fc6f521a0b91051ce6968a216a30bc52267bf8 ]
 
-Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
-netlink attributes on link dump. This causes issues on userspace tools,
-e.g iproute2 is not rendering address generation mode as it should due
-to missing netlink attribute.
+Since POLLIN will not be flushed until the hist file is read, the user
+needs to repeatedly read() and poll() on the hist file for monitoring the
+event continuously. But the read() is somewhat redundant when the user is
+only monitoring for event updates.
 
-Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
-helper function guarded by a flag check to avoid hitting the same
-situation in the future.
+Add POLLPRI poll event on the hist file so the event returns when a
+histogram is updated after open(), poll() or read(). Thus it is possible
+to wait for the next event without having to issue a read().
 
-Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
-Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/173527248770.464571.2536902137325258133.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ kernel/trace/trace_events_hist.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 8360939acf85a..bb9add46e382a 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5750,6 +5750,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index a98753475a3fe..ad7419e240556 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5595,6 +5595,7 @@ static void hist_trigger_show(struct seq_file *m,
+ struct hist_file_data {
+ 	struct file *file;
+ 	u64 last_read;
++	u64 last_act;
+ };
+ 
+ static u64 get_hist_hit_count(struct trace_event_file *event_file)
+@@ -5630,6 +5631,11 @@ static int hist_show(struct seq_file *m, void *v)
+ 			hist_trigger_show(m, data, n++);
  	}
+ 	hist_file->last_read = get_hist_hit_count(event_file);
++	/*
++	 * Update last_act too so that poll()/POLLPRI can wait for the next
++	 * event after any syscall on hist file.
++	 */
++	hist_file->last_act = hist_file->last_read;
+ 
+ 	return 0;
  }
+@@ -5639,6 +5645,8 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+ 	struct trace_event_file *event_file;
+ 	struct seq_file *m = file->private_data;
+ 	struct hist_file_data *hist_file = m->private;
++	__poll_t ret = 0;
++	u64 cnt;
  
-+static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
-+					struct inet6_dev *idev)
-+{
-+	struct nlattr *nla;
-+
-+	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
-+	if (!nla)
-+		goto nla_put_failure;
-+	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
-+
-+	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
-+	if (!nla)
-+		goto nla_put_failure;
-+	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
-+
-+	return 0;
-+
-+nla_put_failure:
-+	return -EMSGSIZE;
-+}
-+
- static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
- 				  u32 ext_filter_mask)
- {
-@@ -5771,18 +5792,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 	guard(mutex)(&event_mutex);
  
- 	/* XXX - MC not implemented */
+@@ -5648,10 +5656,15 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
  
--	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
--		return 0;
--
--	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
--	if (!nla)
--		goto nla_put_failure;
--	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
--
--	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
--	if (!nla)
--		goto nla_put_failure;
--	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
-+	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
-+		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
-+			goto nla_put_failure;
+ 	hist_poll_wait(file, wait);
+ 
+-	if (hist_file->last_read != get_hist_hit_count(event_file))
+-		return EPOLLIN | EPOLLRDNORM;
++	cnt = get_hist_hit_count(event_file);
++	if (hist_file->last_read != cnt)
++		ret |= EPOLLIN | EPOLLRDNORM;
++	if (hist_file->last_act != cnt) {
++		hist_file->last_act = cnt;
++		ret |= EPOLLPRI;
 +	}
  
- 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
- 	if (!nla)
+-	return 0;
++	return ret;
+ }
+ 
+ static int event_hist_release(struct inode *inode, struct file *file)
+@@ -5665,6 +5678,7 @@ static int event_hist_release(struct inode *inode, struct file *file)
+ 
+ static int event_hist_open(struct inode *inode, struct file *file)
+ {
++	struct trace_event_file *event_file;
+ 	struct hist_file_data *hist_file;
+ 	int ret;
+ 
+@@ -5672,16 +5686,25 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ 	if (ret)
+ 		return ret;
+ 
++	guard(mutex)(&event_mutex);
++
++	event_file = event_file_data(file);
++	if (!event_file)
++		return -ENODEV;
++
+ 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
+ 	if (!hist_file)
+ 		return -ENOMEM;
++
+ 	hist_file->file = file;
++	hist_file->last_act = get_hist_hit_count(event_file);
+ 
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+ 	ret = single_open(file, hist_show, hist_file);
+ 	if (ret)
+ 		kfree(hist_file);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
