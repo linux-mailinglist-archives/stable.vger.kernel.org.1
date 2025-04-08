@@ -1,45 +1,62 @@
-Return-Path: <stable+bounces-131817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DDEA81262
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D4DA812D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89A4885D4D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:27:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F56F17E025
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DDC22ACDC;
-	Tue,  8 Apr 2025 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB8323024C;
+	Tue,  8 Apr 2025 16:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q33ff+Sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B255C158DD8
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6922422B5AC;
+	Tue,  8 Apr 2025 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744129648; cv=none; b=dAUgkFsB/gkTM784OHdr7zvpMRHLxoWO4pRN9W5BNqPQ+VcBKxXpK1O4f+y7incVID0UgbyPZZs2ENreogxRt7/xRfWZ8luzojfHWQl8RLhqMh8Or93JIUeRqOCaM7ACAJGRlQPExGJ80uwhhXJqMEKRUfIw8RQW3yXWGAhb1m4=
+	t=1744130975; cv=none; b=Uadem+aiEkwxEJpESfIBeA5b6YQGUuFfW03eDJrmn+U5YLMcdRKZXgXP5LMTV/j1zfhmyRh57Y0sQKqlWzlbRl1hyWHXdKx/2zMeprVmI3kU1VG2/WjfCX1hTukn6uc+jQFfuykz2+4r3HVqqKJVm9eDleH4bSwHIZkuuehHdhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744129648; c=relaxed/simple;
-	bh=jraddQt3yagLvV8BWrff5xJ1EkB7n97hinVVXFIVI4M=;
+	s=arc-20240116; t=1744130975; c=relaxed/simple;
+	bh=+jZsPvQTIMoF2l2DyJq1cw3AEzqCD7vE7q8SNeELS6o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2yiA11toWihkoa5Gkj0pbLTkIjd2jEkzp01N42klCLkKychmRl30ZxnGrXP18y9IO+zvmUKkbA8XkijRC22ddVuBcbLUmMG4ywOcgfe8SSflGy6S3t3ejobZxdzYmwx/1gD3+zgre0k2LcjaLOFqg6BWijmMKBFazdmfKEi2kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1789CC4CEE5;
-	Tue,  8 Apr 2025 16:27:26 +0000 (UTC)
-Date: Tue, 8 Apr 2025 17:27:24 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	will@kernel.org, robh@kernel.org, mark.rutland@arm.com
-Subject: Re: [PATCH 6.13.y 0/7] arm64/boot: Enable EL2 requirements for
- FEAT_PMUv3p9
-Message-ID: <Z_VObETYYOHdym9N@arm.com>
-References: <20250408093859.1205615-1-anshuman.khandual@arm.com>
- <2025040816-frequent-unbundle-7415@gregkh>
- <d3a5589f-a231-4d60-9d70-5e0f01dff125@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=imc7rbW2UR1d/Duuciigy0s87tF1oZyYdJCI2QtpVtD57UK9tqk+lYOhUcWT7sRP8ceJFTEDr/XVmX4LXZljol94tAK/VTvLTBOsBlJ65KFgXxpC0uJAAVKjhhWGWC9NOmTznN1NPNb++GrVzZPWkJ5efAjgvQxlYbklo+Cm2Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q33ff+Sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A22C4CEE5;
+	Tue,  8 Apr 2025 16:49:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744130974;
+	bh=+jZsPvQTIMoF2l2DyJq1cw3AEzqCD7vE7q8SNeELS6o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q33ff+SkaKH1AGj8srqndNhCTJLNWqj0GaNNNDlEb1jyZ7zWYO9P4VEOeM47NsUak
+	 ym646T4k11Urv9dcA8Rs3XLguz66PPeCn7pEC4jVn1ndM4LE6I1uYFlAqzkgxK7sjg
+	 APTpIrJsWqoXLi54hof22fpErOU73zOvtH5nSFHsFnSx476PRwRSp8ybmZIgR7yixi
+	 8ZbTWnivZWlekWJp7ofr9vL3RCrikk9nxBL/bNImLJvurzwNUnNguYbUqixCsa5qdC
+	 ik+pNTFUXU5DQrTPL6ca24L7VHVh+q5f97eA0h5UdDcGjZyibktJmai2lYo80NMoTb
+	 M/RWJciJuJmgg==
+Date: Tue, 8 Apr 2025 17:49:30 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] mptcp: only inc MPJoinAckHMacFailure for HMAC
+ failures
+Message-ID: <20250408164930.GF395307@horms.kernel.org>
+References: <20250407-net-mptcp-hmac-failure-mib-v1-0-3c9ecd0a3a50@kernel.org>
+ <20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,37 +65,22 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d3a5589f-a231-4d60-9d70-5e0f01dff125@arm.com>
+In-Reply-To: <20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org>
 
-On Tue, Apr 08, 2025 at 03:34:51PM +0530, Anshuman Khandual wrote:
-> On 4/8/25 15:23, Greg KH wrote:
-> > On Tue, Apr 08, 2025 at 03:08:52PM +0530, Anshuman Khandual wrote:
-> >> This series adds fine grained trap control in EL2 required for FEAT_PMUv3p9
-> >> registers like PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 which are already
-> >> being used in the kernel. This is required to prevent their EL1 access trap
-> >> into EL2.
-> >>
-> >> The following commits that enabled access into FEAT_PMUv3p9 registers have
-> >> already been merged upstream from 6.13 onwards.
-> >>
-> >> d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
-> >> 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
-> >>
-> >> The sysreg patches in this series are required for the final patch which
-> >> fixes the actual problem.
-> > 
-> > But you aren't going to fix the 6.14.y tree?  We can't take patches that
-> > skip newer stable releases for obvious reasons.
-> > 
-> > And 6.13.y is only going to be alive for a few more days, is there some
-> > specific reason this is needed now for 6.13.y?
+On Mon, Apr 07, 2025 at 08:26:32PM +0200, Matthieu Baerts (NGI0) wrote:
+> Recently, during a debugging session using local MPTCP connections, I
+> noticed MPJoinAckHMacFailure was not zero on the server side. The
+> counter was in fact incremented when the PM rejected new subflows,
+> because the 'subflow' limit was reached.
 > 
-> I have also sent same series for 6.14 stable version as well. It will be
-> great to have these patches applied both on 6.13 as well 6.14. Thank you.
+> The fix is easy, simply dissociating the two cases: only the HMAC
+> validation check should increase MPTCP_MIB_JOINACKMAC counter.
+> 
+> Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-TBH, 6.13 is end of life soon, so not sure it's worth carrying those
-patches. Do you have a reason for this Anshuman?
+Reviewed-by: Simon Horman <horms@kernel.org>
 
--- 
-Catalin
 
