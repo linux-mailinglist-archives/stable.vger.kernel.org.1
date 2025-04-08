@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A38A80873
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A052A80507
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8C91BA36D9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3E91B6652E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB630269D17;
-	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC2326A0E4;
+	Tue,  8 Apr 2025 12:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDoQhtnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccV3OIqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A887B269D15;
-	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8837C2690EB;
+	Tue,  8 Apr 2025 12:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115733; cv=none; b=V1cIq5a6JeLaTemc+7EPNsNrKlxIcQOiE2mF+Z2h/xHHy4TvI150n6d4p2UkWnMXUxY7oMp7hYIxD8bRTVkoOvDciylY69tdL176gE2J3iGSEnTLq0PRJ13a7GtwbNoR1I4bnV658qLgwkPRiST3YSZq62XFusHtLzV4hbKZM/E=
+	t=1744114041; cv=none; b=jj3FKd5OyanCXTL/Q6nAPdKWt+GOSH9lkqY3jQBmb8L8YKFvB6OCdUVgACw69ki8kOeoewkR5wEZNIRe4IUke5CNVHvHMC1Mc9gv9Je8QtgJWLZ0e17es35ofDFr5PJ1ubXcbiDlVQUIKIDonq+wpJ1RsvOIw4Q8Cbz0LYd9aVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115733; c=relaxed/simple;
-	bh=rlTTTY02Ig6LLu6+Lsgpwgu6DvUzcRcq+3kn010W1XU=;
+	s=arc-20240116; t=1744114041; c=relaxed/simple;
+	bh=Kmxb2RMimlN8jiRTxK1ckedzpmGzBybFr71oRt0HyRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oghmCF7BBZL0MMFuOTXAePJd5LGNK6Nxk8LfuUNGEp/Jqdk+5vI0imWR8oaecD2bAt7yE/qU/Rp6wpcAtLhNQ8ixhmYcdzbMV8tEdyYmw/WTmaEAtDmx459MHIhzmEZvznqJLJjrLva10atdUGZxXF5+mSlHRl49G2BzwS4/nZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDoQhtnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3335AC4CEEA;
-	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
+	 MIME-Version; b=P57HtQNpoN1UfhWVDB3LQSNf1SGzuMkoZGBWAUdfG8Cpz7K1UOulHOh1svr+RPsV9HqSFc7ZAQcJeBHdD3lIbNyNCgVLUCp8BOJ+1uZsnZyhPdy2mNTTLW3EDFyRIZGD52bG5uJW6hrSMEJwOlf6F7xbtBILm9/lHVvE98qOpiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccV3OIqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA24C4CEE5;
+	Tue,  8 Apr 2025 12:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115733;
-	bh=rlTTTY02Ig6LLu6+Lsgpwgu6DvUzcRcq+3kn010W1XU=;
+	s=korg; t=1744114041;
+	bh=Kmxb2RMimlN8jiRTxK1ckedzpmGzBybFr71oRt0HyRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDoQhtnWDt5ZObBgnzeA2w5Ja6txT39Bo7Hzrzhv+b6tD7bA2yc6ULGaUMD7HJvKU
-	 3IIIC/eqWWKmujGmqtygV0x3KsVtnMNMT7iSNWvMLgHGXCzpboFVj+4tMStc4DC5uU
-	 KegeB7uqKxhAQ5G11d5hpHUO+UBoEr3r6g8hpHdA=
+	b=ccV3OIqZRSzLuHLleotVHw6ewP4j6r2vTaKnQXM0zIG6scPa484dy8TV8l+a0Bzld
+	 3FNrbu/XeuEaP2xzFXxuUbccch4pkbOHnoZfwBcv/qGpfSpChkCWVXkX/EHtlKximG
+	 clykUFz+/gNoXAKFpp9NaKEJmDNUcWhDW8fPDivU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/204] clk: qcom: mmcc-sdm660: fix stuck video_subcore0 clock
+	stable <stable@kernel.org>,
+	Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.4 074/154] tty: serial: 8250: Add some more device IDs
 Date: Tue,  8 Apr 2025 12:50:15 +0200
-Message-ID: <20250408104822.851905422@linuxfoundation.org>
+Message-ID: <20250408104817.679083694@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 000cbe3896c56bf5c625e286ff096533a6b27657 ]
+commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
 
-This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
-GDSC is under HW control so it can be turned off at any moment.
-Instead of checking the dependent clock we can just vote for it to
-enable later when GDSC gets turned on.
+These card IDs got missed the first time around.
 
-Fixes: 5db3ae8b33de6 ("clk: qcom: Add SDM660 Multimedia Clock Controller (MMCC) driver")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20250315-clock-fix-v1-1-2efdc4920dda@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/mmcc-sdm660.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
-index bc19a23e13f8a..4d187d6aba734 100644
---- a/drivers/clk/qcom/mmcc-sdm660.c
-+++ b/drivers/clk/qcom/mmcc-sdm660.c
-@@ -2544,7 +2544,7 @@ static struct clk_branch video_core_clk = {
- 
- static struct clk_branch video_subcore0_clk = {
- 	.halt_reg = 0x1048,
--	.halt_check = BRANCH_HALT,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x1048,
- 		.enable_mask = BIT(0),
--- 
-2.39.5
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5132,6 +5132,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
+ 	/*
+ 	 * Brainboxes UC-235/246
+ 	 */
+@@ -5312,6 +5320,14 @@ static const struct pci_device_id serial
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_4_115200 },
+ 	/*
+ 	 * Brainboxes UC-420
+ 	 */
 
 
 
