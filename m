@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-131135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E456A80807
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9F8A80AB0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F4851BA16A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7821BC0C80
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216D026A1AA;
-	Tue,  8 Apr 2025 12:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8518270EDE;
+	Tue,  8 Apr 2025 12:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T92MMTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k91+kOif"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262C268FE7;
-	Tue,  8 Apr 2025 12:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950D8C148;
+	Tue,  8 Apr 2025 12:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115583; cv=none; b=CW5/wy6wm+e8ZEPT3K0yJtBHkNEQc0fTgP82uJqSp6lXkd0sUpR0t2IqxCzPV80ciyLLDZhGOMJgEO0pYPpgmSVQzUq72O2A0E5n84YaOG/WTr+SP0Zp7ROW3w/B/zzCVAhbMYdvrLI8h4XGK0g6CN1mj+0cXwjzsJ/+l/muKZM=
+	t=1744116686; cv=none; b=pVLOUZ7kI2XZxeXqZD+U1ulndJk8xPwd/vnZJcUvq+TcKCd63sJ4EVQCdadSmxsQ1NOW5QdOv8YG3sBdPWCJ5oAAWIHrrf0Hk5k+Ep455GNS74qG0TNbpzlZGAYFAx2TDJM4DOI1PiElgI4B2my2AATrCWK4biRqNeEaxJNUSTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115583; c=relaxed/simple;
-	bh=Cangev6ZxXdYDUno4mObBHEpdHTdg+1uJYT7p03/o1M=;
+	s=arc-20240116; t=1744116686; c=relaxed/simple;
+	bh=YFPTHSLEqT7oipPDhIvWg4C4tb3eAlfi7NiSkRBtaDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E+ZUFa1o2Oiu8o6cudz8ZnVxgofLSwz8e/QO5A2JzHy3EgClD6nWB1b5BgG/7I3EmiRUQfZuL9zwrwvvZKcwkktxEsQRRHWCXVdkLgDzt3vXGDlX6DrEk04krQ7AIVGU6wZZvh+fBD3puqUtii0vmrS+jhPcpE2tLiRwGInNyQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T92MMTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DBCC4CEED;
-	Tue,  8 Apr 2025 12:33:03 +0000 (UTC)
+	 MIME-Version; b=qkWEorww44Up7ovRBDIfEpf80ctbd4mf9xq73d2vOicG8HPqJTekSXFnYWdB0/LDk+B3RKoeZj2hZAw6h4wPYzvJYOZUyAdJoRcFFGYaHhP+VKyYdiFr7GKXDoA0qvBw7nk8XIe72Gg1C2JAkYoqBZOvMdfggkbvkxQgQ2p0OZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k91+kOif; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848CCC4AF1D;
+	Tue,  8 Apr 2025 12:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115583;
-	bh=Cangev6ZxXdYDUno4mObBHEpdHTdg+1uJYT7p03/o1M=;
+	s=korg; t=1744116686;
+	bh=YFPTHSLEqT7oipPDhIvWg4C4tb3eAlfi7NiSkRBtaDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0T92MMTXdcC8Tq0TINza9wZsrW3e4jB8Ut/Gg8M2pnH+8+6HCwIb1cWpJ62QDT31d
-	 DyNaXFV5DnCJTmxRT6jrzYJPf9Fs3CmG+NfzEpwKBb7JlEl0czYjAR5uLOdrXP0+Nt
-	 AWMrZNOw9dgxFTLTw/LyIP/J6MFES51yVaxeOydI=
+	b=k91+kOifM/3usOCUg5kRQR5FYlUfkCXTMrEn0CrS+KzJaCiuE/ZxL1qdDHrnU+zln
+	 8Fqjm12eJpe9RhBUaj9nmdhXHkt+3h2kRXJl1IE6yZ4RZs20S95k7dOkt8Kpdim/1g
+	 h+2dMijMrCF5X3FMAEk4j4laUwM0Tw5O8T+lTF9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Harry Wentland <hwentlan@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/204] drm/dp_mst: Fix drm RAD print
+Subject: [PATCH 6.12 232/423] rtnetlink: Allocate vfinfo size for VF GUIDs when supported
 Date: Tue,  8 Apr 2025 12:49:18 +0200
-Message-ID: <20250408104821.149574387@linuxfoundation.org>
+Message-ID: <20250408104851.130154137@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 6bbce873a9c97cb12f5455c497be279ac58e707f ]
+[ Upstream commit 23f00807619d15063d676218f36c5dfeda1eb420 ]
 
-[Why]
-The RAD of sideband message printed today is incorrect.
-For RAD stored within MST branch
-- If MST branch LCT is 1, it's RAD array is untouched and remained as 0.
-- If MST branch LCT is larger than 1, use nibble to store the up facing
-  port number in cascaded sequence as illustrated below:
+Commit 30aad41721e0 ("net/core: Add support for getting VF GUIDs")
+added support for getting VF port and node GUIDs in netlink ifinfo
+messages, but their size was not taken into consideration in the
+function that allocates the netlink message, causing the following
+warning when a netlink message is filled with many VF port and node
+GUIDs:
+ # echo 64 > /sys/bus/pci/devices/0000\:08\:00.0/sriov_numvfs
+ # ip link show dev ib0
+ RTNETLINK answers: Message too long
+ Cannot send link get request: Message too long
 
-  u8 RAD[0] = (LCT_2_UFP << 4) | LCT_3_UFP
-     RAD[1] = (LCT_4_UFP << 4) | LCT_5_UFP
-     ...
+Kernel warning:
 
-In drm_dp_mst_rad_to_str(), it wrongly to use BIT_MASK(4) to fetch the port
-number of one nibble.
+ ------------[ cut here ]------------
+ WARNING: CPU: 2 PID: 1930 at net/core/rtnetlink.c:4151 rtnl_getlink+0x586/0x5a0
+ Modules linked in: xt_conntrack xt_MASQUERADE nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter overlay mlx5_ib macsec mlx5_core tls rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm iw_cm ib_ipoib fuse ib_cm ib_core
+ CPU: 2 UID: 0 PID: 1930 Comm: ip Not tainted 6.14.0-rc2+ #1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:rtnl_getlink+0x586/0x5a0
+ Code: cb 82 e8 3d af 0a 00 4d 85 ff 0f 84 08 ff ff ff 4c 89 ff 41 be ea ff ff ff e8 66 63 5b ff 49 c7 07 80 4f cb 82 e9 36 fc ff ff <0f> 0b e9 16 fe ff ff e8 de a0 56 00 66 66 2e 0f 1f 84 00 00 00 00
+ RSP: 0018:ffff888113557348 EFLAGS: 00010246
+ RAX: 00000000ffffffa6 RBX: ffff88817e87aa34 RCX: dffffc0000000000
+ RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff88817e87afb8
+ RBP: 0000000000000009 R08: ffffffff821f44aa R09: 0000000000000000
+ R10: ffff8881260f79a8 R11: ffff88817e87af00 R12: ffff88817e87aa00
+ R13: ffffffff8563d300 R14: 00000000ffffffa6 R15: 00000000ffffffff
+ FS:  00007f63a5dbf280(0000) GS:ffff88881ee00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f63a5ba4493 CR3: 00000001700fe002 CR4: 0000000000772eb0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ? __warn+0xa5/0x230
+  ? rtnl_getlink+0x586/0x5a0
+  ? report_bug+0x22d/0x240
+  ? handle_bug+0x53/0xa0
+  ? exc_invalid_op+0x14/0x50
+  ? asm_exc_invalid_op+0x16/0x20
+  ? skb_trim+0x6a/0x80
+  ? rtnl_getlink+0x586/0x5a0
+  ? __pfx_rtnl_getlink+0x10/0x10
+  ? rtnetlink_rcv_msg+0x1e5/0x860
+  ? __pfx___mutex_lock+0x10/0x10
+  ? rcu_is_watching+0x34/0x60
+  ? __pfx_lock_acquire+0x10/0x10
+  ? stack_trace_save+0x90/0xd0
+  ? filter_irq_stacks+0x1d/0x70
+  ? kasan_save_stack+0x30/0x40
+  ? kasan_save_stack+0x20/0x40
+  ? kasan_save_track+0x10/0x30
+  rtnetlink_rcv_msg+0x21c/0x860
+  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+  ? arch_stack_walk+0x9e/0xf0
+  ? rcu_is_watching+0x34/0x60
+  ? lock_acquire+0xd5/0x410
+  ? rcu_is_watching+0x34/0x60
+  netlink_rcv_skb+0xe0/0x210
+  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+  ? __pfx_netlink_rcv_skb+0x10/0x10
+  ? rcu_is_watching+0x34/0x60
+  ? __pfx___netlink_lookup+0x10/0x10
+  ? lock_release+0x62/0x200
+  ? netlink_deliver_tap+0xfd/0x290
+  ? rcu_is_watching+0x34/0x60
+  ? lock_release+0x62/0x200
+  ? netlink_deliver_tap+0x95/0x290
+  netlink_unicast+0x31f/0x480
+  ? __pfx_netlink_unicast+0x10/0x10
+  ? rcu_is_watching+0x34/0x60
+  ? lock_acquire+0xd5/0x410
+  netlink_sendmsg+0x369/0x660
+  ? lock_release+0x62/0x200
+  ? __pfx_netlink_sendmsg+0x10/0x10
+  ? import_ubuf+0xb9/0xf0
+  ? __import_iovec+0x254/0x2b0
+  ? lock_release+0x62/0x200
+  ? __pfx_netlink_sendmsg+0x10/0x10
+  ____sys_sendmsg+0x559/0x5a0
+  ? __pfx_____sys_sendmsg+0x10/0x10
+  ? __pfx_copy_msghdr_from_user+0x10/0x10
+  ? rcu_is_watching+0x34/0x60
+  ? do_read_fault+0x213/0x4a0
+  ? rcu_is_watching+0x34/0x60
+  ___sys_sendmsg+0xe4/0x150
+  ? __pfx____sys_sendmsg+0x10/0x10
+  ? do_fault+0x2cc/0x6f0
+  ? handle_pte_fault+0x2e3/0x3d0
+  ? __pfx_handle_pte_fault+0x10/0x10
+  ? preempt_count_sub+0x14/0xc0
+  ? __down_read_trylock+0x150/0x270
+  ? __handle_mm_fault+0x404/0x8e0
+  ? __pfx___handle_mm_fault+0x10/0x10
+  ? lock_release+0x62/0x200
+  ? __rcu_read_unlock+0x65/0x90
+  ? rcu_is_watching+0x34/0x60
+  __sys_sendmsg+0xd5/0x150
+  ? __pfx___sys_sendmsg+0x10/0x10
+  ? __up_read+0x192/0x480
+  ? lock_release+0x62/0x200
+  ? __rcu_read_unlock+0x65/0x90
+  ? rcu_is_watching+0x34/0x60
+  do_syscall_64+0x6d/0x140
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f63a5b13367
+ Code: 0e 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b9 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
+ RSP: 002b:00007fff8c726bc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000000067b687c2 RCX: 00007f63a5b13367
+ RDX: 0000000000000000 RSI: 00007fff8c726c30 RDI: 0000000000000004
+ RBP: 00007fff8c726cb8 R08: 0000000000000000 R09: 0000000000000034
+ R10: 00007fff8c726c7c R11: 0000000000000246 R12: 0000000000000001
+ R13: 0000000000000000 R14: 00007fff8c726cd0 R15: 00007fff8c726cd0
+  </TASK>
+ irq event stamp: 0
+ hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+ hardirqs last disabled at (0): [<ffffffff813f9e58>] copy_process+0xd08/0x2830
+ softirqs last  enabled at (0): [<ffffffff813f9e58>] copy_process+0xd08/0x2830
+ softirqs last disabled at (0): [<0000000000000000>] 0x0
+ ---[ end trace 0000000000000000 ]---
 
-[How]
-Adjust the code by:
-- RAD array items are valuable only for LCT >= 1.
-- Use 0xF as the mask to replace BIT_MASK(4)
+Thus, when calculating ifinfo message size, take VF GUIDs sizes into
+account when supported.
 
-V2:
-- Document how RAD is constructed (Imre)
-
-V3:
-- Adjust the comment for rad[] so kdoc formats it properly (Lyude)
-
-Fixes: 2f015ec6eab6 ("drm/dp_mst: Add sideband down request tracing + selftests")
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Harry Wentland <hwentlan@amd.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113091100.3314533-2-Wayne.Lin@amd.com
+Fixes: 30aad41721e0 ("net/core: Add support for getting VF GUIDs")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250325090226.749730-1-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 8 ++++----
- include/drm/display/drm_dp_mst_helper.h       | 7 +++++++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ net/core/rtnetlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index 6f41c752844b0..a4d84a2c8b4ec 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -178,13 +178,13 @@ static int
- drm_dp_mst_rad_to_str(const u8 rad[8], u8 lct, char *out, size_t len)
- {
- 	int i;
--	u8 unpacked_rad[16];
-+	u8 unpacked_rad[16] = {};
- 
--	for (i = 0; i < lct; i++) {
-+	for (i = 1; i < lct; i++) {
- 		if (i % 2)
--			unpacked_rad[i] = rad[i / 2] >> 4;
-+			unpacked_rad[i] = rad[(i - 1) / 2] >> 4;
- 		else
--			unpacked_rad[i] = rad[i / 2] & BIT_MASK(4);
-+			unpacked_rad[i] = rad[(i - 1) / 2] & 0xF;
- 	}
- 
- 	/* TODO: Eventually add something to printk so we can format the rad
-diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
-index 68074b13837b5..642995704b69c 100644
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -220,6 +220,13 @@ struct drm_dp_mst_branch {
- 	 */
- 	struct list_head destroy_next;
- 
-+	/**
-+	 * @rad: Relative Address of the MST branch.
-+	 * For &drm_dp_mst_topology_mgr.mst_primary, it's rad[8] are all 0,
-+	 * unset and unused. For MST branches connected after mst_primary,
-+	 * in each element of rad[] the nibbles are ordered by the most
-+	 * signifcant 4 bits first and the least significant 4 bits second.
-+	 */
- 	u8 rad[8];
- 	u8 lct;
- 	int num_ports;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 2ba5cd965d3fa..4d0ee1c9002aa 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1005,6 +1005,9 @@ static inline int rtnl_vfinfo_size(const struct net_device *dev,
+ 				 /* IFLA_VF_STATS_TX_DROPPED */
+ 				 nla_total_size_64bit(sizeof(__u64)));
+ 		}
++		if (dev->netdev_ops->ndo_get_vf_guid)
++			size += num_vfs * 2 *
++				nla_total_size(sizeof(struct ifla_vf_guid));
+ 		return size;
+ 	} else
+ 		return 0;
 -- 
 2.39.5
 
