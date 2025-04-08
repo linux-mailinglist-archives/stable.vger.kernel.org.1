@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A74BA80404
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24477A80BB5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C733A7ABF99
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035568C1BAE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D2F20CCD8;
-	Tue,  8 Apr 2025 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E4226A1CC;
+	Tue,  8 Apr 2025 12:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPiE/jXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjzdKcVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E76A267B9C;
-	Tue,  8 Apr 2025 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E471CC148;
+	Tue,  8 Apr 2025 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113783; cv=none; b=aM046QAencP3vuC+wH3lkkA8RR3BTSSn0/kJqRoKbV/oBFjBe1BLXp9C3w+fUYCnkB/ZULDq+JIZXykfwcjmYKfqrAQzlGyNXVpkRTg1BsjvxZa4u++HPfs+MTwJ35Uva20nbG5g+OhlIBfRpJ1sEE+tXUQqiklvxrdBv6ckhqc=
+	t=1744116692; cv=none; b=pbg0nZNDFTKaXQRI3DlgxgQmeIVIYOpeg/5n9ETxG/cEqaJ3ww+6+i+4yWh+szuVb17btOJSHA4M/287chpAjteaG0BvbYVTt2rJlyb1rn4chEVKge7xLH7JHRoEKxd7gPWYure3ZOvyw93vK3DSXaJeKgcI4sWA3v78GFMM6B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113783; c=relaxed/simple;
-	bh=BOLTJjWAjdZAc9KOsMu/u/r3LR5MoeO1bi8R021/ABk=;
+	s=arc-20240116; t=1744116692; c=relaxed/simple;
+	bh=NG/8mxazQVWPibNvyV/KO3Y0/HPO4+abcNSLLthMlEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0VkFDpIHr7znxOpjOI6UI+341Epzu74wQGrgFlDOHUGp12frBL8DC434RSAcXn/4swRpfjjh0QJGfXcdObrgTG/fLguN0TBTRjorukvammuFRT+zKy1aIaBMGikwPmAFwPGWey3548SsL+lO/SZEvXgKFvsGquGM93Xa33KsQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPiE/jXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA45BC4CEE5;
-	Tue,  8 Apr 2025 12:03:02 +0000 (UTC)
+	 MIME-Version; b=d8FGOg89GlOsGHPQecAgjtj+zK2abZNAn4sWk+d2eakwdaMYtqKEwNRhM6oYUyXf+BTZxjeuUkaUPs2Rtra2pbD5ycswVXlF7tB03/YQt8l+znw8Ica4fd7YHLMweh1G2B4GN7wUSA0SbD4urTugu+lK6oscBrNmQ88R1sDgK4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjzdKcVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBF4C4CEE5;
+	Tue,  8 Apr 2025 12:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113783;
-	bh=BOLTJjWAjdZAc9KOsMu/u/r3LR5MoeO1bi8R021/ABk=;
+	s=korg; t=1744116691;
+	bh=NG/8mxazQVWPibNvyV/KO3Y0/HPO4+abcNSLLthMlEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPiE/jXFsL2K+LtFx8VamiGz4gQljNgFO0ejHBgBa1xs2MZlPL86YRoAJDi7FsJ3v
-	 9ZfM8oQMeTTNXBKC+P8Ync1wI0qDtTLOvtjVP+jp0by0TQoGJO28b7Eu4uYCufeBLI
-	 A1Ngz1FXF7Xzj2iqcLUL79StgcSj0d5UkNXGr8hw=
+	b=JjzdKcVfLssx43Wq/n+IBxNNG3a3QPSnjfyIu08bCfDcqXpKCyfMOlcMJnaYX+iZA
+	 TmoYeHA9zHMWaW9S1pAPJtOBJxcGeQQhIagtoQ8d42rQa1PWoalzshvB/LYD0WEwtr
+	 rQ1a9c9W83kib0otfvbEHCIkV+LlIoOwrpeavwMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kashavkin <akashavkin@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/154] netfilter: nft_exthdr: fix offset with ipv4_find_option()
+Subject: [PATCH 6.12 234/423] ksmbd: use aead_request_free to match aead_request_alloc
 Date: Tue,  8 Apr 2025 12:49:20 +0200
-Message-ID: <20250408104815.896841353@linuxfoundation.org>
+Message-ID: <20250408104851.178011868@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kashavkin <akashavkin@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 6edd78af9506bb182518da7f6feebd75655d9a0e ]
+[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
 
-There is an incorrect calculation in the offset variable which causes
-the nft_skb_copy_to_reg() function to always return -EFAULT. Adding the
-start variable is redundant. In the __ip_options_compile() function the
-correct offset is specified when finding the function. There is no need
-to add the size of the iphdr structure to the offset.
+Use aead_request_free() instead of kfree() to properly free memory
+allocated by aead_request_alloc(). This ensures sensitive crypto data
+is zeroed before being freed.
 
-Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
-Signed-off-by: Alexey Kashavkin <akashavkin@gmail.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/smb/server/auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index ca268293cfa12..de43abf6d1191 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -83,7 +83,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	unsigned char optbuf[sizeof(struct ip_options) + 40];
- 	struct ip_options *opt = (struct ip_options *)optbuf;
- 	struct iphdr *iph, _iph;
--	unsigned int start;
- 	bool found = false;
- 	__be32 info;
- 	int optlen;
-@@ -91,7 +90,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	iph = skb_header_pointer(skb, 0, sizeof(_iph), &_iph);
- 	if (!iph)
- 		return -EBADMSG;
--	start = sizeof(struct iphdr);
- 
- 	optlen = iph->ihl * 4 - (int)sizeof(struct iphdr);
- 	if (optlen <= 0)
-@@ -101,7 +99,7 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	/* Copy the options since __ip_options_compile() modifies
- 	 * the options.
- 	 */
--	if (skb_copy_bits(skb, start, opt->__data, optlen))
-+	if (skb_copy_bits(skb, sizeof(struct iphdr), opt->__data, optlen))
- 		return -EBADMSG;
- 	opt->optlen = optlen;
- 
-@@ -116,18 +114,18 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 		found = target == IPOPT_SSRR ? opt->is_strictroute :
- 					       !opt->is_strictroute;
- 		if (found)
--			*offset = opt->srr + start;
-+			*offset = opt->srr;
- 		break;
- 	case IPOPT_RR:
- 		if (!opt->rr)
- 			break;
--		*offset = opt->rr + start;
-+		*offset = opt->rr;
- 		found = true;
- 		break;
- 	case IPOPT_RA:
- 		if (!opt->router_alert)
- 			break;
--		*offset = opt->router_alert + start;
-+		*offset = opt->router_alert;
- 		found = true;
- 		break;
- 	default:
+diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
+index 8892177e500f1..0d458742b7074 100644
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -1217,7 +1217,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ free_sg:
+ 	kfree(sg);
+ free_req:
+-	kfree(req);
++	aead_request_free(req);
+ free_ctx:
+ 	ksmbd_release_crypto_ctx(ctx);
+ 	return rc;
 -- 
 2.39.5
 
