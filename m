@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DD1A8090C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D809EA80B54
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748F41BA0BB4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB9C1BC4A0B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AAF276049;
-	Tue,  8 Apr 2025 12:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2218B27C87B;
+	Tue,  8 Apr 2025 12:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqWgPxqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmnDJqpt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55248276055;
-	Tue,  8 Apr 2025 12:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC3127C875;
+	Tue,  8 Apr 2025 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115965; cv=none; b=Lu435t5Sm9gfrtU1vjbfpghasZ4yceqXIWPm5XWlj+zGopmMe65a0F0x/hoeDj52jJFqBUNoSr1fyLmNvDHEsH7lTXAT5Vkpf4xDOUuLYL+Ml5fsDv7TOiljfO26XLiHwvt7e1RlrdMlKuh7GDUFO92nVjHEcmip74BxvlN7xxA=
+	t=1744117077; cv=none; b=LCt++PBNYiJWvMT8E+CR98nRZUtJGOTUeiGdc45pBfhJdwfWBGqEUbStPhrMk4gnuUna3RP3T/Q2yrnH9Sg5teoc54YdLrIJFXK2vW1ewPM1xIrkdhx09AIcRoYKcGLxAU7DkpIuOAAzWOfdOF5jpHYOYc2XZdx2YbXRzi0Z6tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115965; c=relaxed/simple;
-	bh=vRuSmH+sJ0ETlkjwTFc4GmLkA0+bgB8yrq+7epwz4fQ=;
+	s=arc-20240116; t=1744117077; c=relaxed/simple;
+	bh=TvD/3vQ4Xez903AUj/5tUWGpKlH85dxceb4Ptlg0hd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SHzzSADYslbC5HCgESZu4bZTw4psLpDRn70MEcuJH+Vfr21b1gP/HLyANYkGZiiW4fL2sQj8WgeRqkerbpjqox2vTYb1oy6I50lJIRHVI1x1PiO8twLpxk3Ury2jgKcvIZtAx/abMtFI2HDVu/oLFD2YqhTnamzZlN3upvyWqac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqWgPxqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B163DC4CEE5;
-	Tue,  8 Apr 2025 12:39:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=diofYJIT0JtdqGVwr0DNnhYBpPArKJuC/40BboWFVoCFNFoxfQcXBRx9xiiEircaIz7QgOiXIYZwIyMIqHBwsEgdKbuDm1Z/+dsiN/v6zmBf4DKropU1nbm/ZO3FS+WxP1/iQDSPTvGUUAlv8+ivKViTs6QNbYkO0kinyXR/Ez8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmnDJqpt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B15C4CEE5;
+	Tue,  8 Apr 2025 12:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115965;
-	bh=vRuSmH+sJ0ETlkjwTFc4GmLkA0+bgB8yrq+7epwz4fQ=;
+	s=korg; t=1744117077;
+	bh=TvD/3vQ4Xez903AUj/5tUWGpKlH85dxceb4Ptlg0hd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqWgPxqLKMKiRUYICQCNZcj1PAp9seGc4LSxXhJ6b1gHBo2a0UrydyWV+JHNy2Nt+
-	 +j3WrfndvRtOdA7mi6FqJiXMVRWaBiK6sa5ebMpia3mlJm9MNA/XTuKosYnSEj+9IO
-	 XpJq7AgV2gDTemMqCreYdCvdNiHo2ZnoO4/XoFBo=
+	b=XmnDJqptHBnhcan2XQ/p/32gBoAWnZq2r0tkExesoCItlfi2M6bIM0bN/8D2GPmuq
+	 poZKPpg+tgWHAUrtFTNp2bzDmTZpkiqe9T7r8tm1ZdjyMFi00Cg+Bb+URxGvWT6K3F
+	 SUsVdjzzAREvLGVt08ZnakoYUeu+ej2rfjok1UPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/204] tty: serial: fsl_lpuart: use UARTMODIR register bits for lpuart32 platform
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 375/423] platform/x86: ISST: Correct command storage data length
 Date: Tue,  8 Apr 2025 12:51:41 +0200
-Message-ID: <20250408104825.336696150@linuxfoundation.org>
+Message-ID: <20250408104854.605258073@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit d57d56e4dddfb5c92cd81abf8922055bf0fb85a4 ]
+commit 9462e74c5c983cce34019bfb27f734552bebe59f upstream.
 
-For lpuart32 platforms, UARTMODIR register is used instead of UARTMODEM.
-So here should configure the corresponding UARTMODIR register bits to
-avoid confusion.
+After resume/online turbo limit ratio (TRL) is restored partially if
+the admin explicitly changed TRL from user space.
 
+A hash table is used to store SST mail box and MSR settings when modified
+to restore those settings after resume or online. This uses a struct
+isst_cmd field "data" to store these settings. This is a 64 bit field.
+But isst_store_new_cmd() is only assigning as u32. This results in
+truncation of 32 bits.
+
+Change the argument to u64 from u32.
+
+Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20230414022111.20896-1-sherry.sun@nxp.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f5cb528d6441 ("tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index f94c782638686..e96354edff6e9 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1394,12 +1394,12 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 			struct lpuart_port, port);
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -84,7 +84,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+ static DEFINE_MUTEX(isst_hash_lock);
  
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
--				& ~(UARTMODEM_TXRTSPOL | UARTMODEM_TXRTSE);
-+				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+-			      u32 data)
++			      u64 data)
+ {
+ 	struct isst_cmd *sst_cmd;
  
- 	if (rs485->flags & SER_RS485_ENABLED) {
- 		/* Enable auto RS-485 RTS mode */
--		modem |= UARTMODEM_TXRTSE;
-+		modem |= UARTMODIR_TXRTSE;
- 
- 		/*
- 		 * The hardware defaults to RTS logic HIGH while transfer.
-@@ -1408,9 +1408,9 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 		 * Note: UART is assumed to be active high.
- 		 */
- 		if (rs485->flags & SER_RS485_RTS_ON_SEND)
--			modem |= UARTMODEM_TXRTSPOL;
-+			modem |= UARTMODIR_TXRTSPOL;
- 		else if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
--			modem &= ~UARTMODEM_TXRTSPOL;
-+			modem &= ~UARTMODIR_TXRTSPOL;
- 	}
- 
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
--- 
-2.39.5
-
 
 
 
