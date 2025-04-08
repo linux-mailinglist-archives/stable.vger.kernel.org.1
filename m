@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-129619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13033A80085
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:32:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0433AA8003B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBC1189042A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:28:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A1A17A7423
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4389E2690DB;
-	Tue,  8 Apr 2025 11:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7B426AAAE;
+	Tue,  8 Apr 2025 11:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsogl6H5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGVvzMp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7F26A1C3;
-	Tue,  8 Apr 2025 11:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC8926AA9D;
+	Tue,  8 Apr 2025 11:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111528; cv=none; b=QdG6uvO9UQv6syNF3ZScuRHmL1Y7Yrz1eMoSmgCJL1umrDAXBx8N6QJW9lgZhWzGstAcPf6at3+sdVmv56QcQZJxXchz19+167ttF2RoBZt0LmDng60urqR45Xr2HGdIy1zF6q2w3OrsdG9pzTWMxhUGxejWNFM54q7lNrlgg3w=
+	t=1744111535; cv=none; b=NVeIoQPyD1y057B4eF2uQeEaYM7ZHT2sKAjFfwM5XYIuLkaOpN+ep6ZfXzvBeXF683tqi6meCvx4n6VWULsZKEtrVHmHMc3p0JSCJVD/Tv4Fl/+w70XIUb6lc2zUk53XHWtdam1wvLjVlsRjO/DbzC7zHARBWEbdUD20jvP53w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111528; c=relaxed/simple;
-	bh=kgOwGHJU80Wm+hxrGY8nH/gort+K7UXfd2bzjzTrciM=;
+	s=arc-20240116; t=1744111535; c=relaxed/simple;
+	bh=H2eKwQjP7/sJ6sgqfNqaLpk0ogUzaH72OEPk5Jn+Rb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcHJk+1RsZ/bOiyeO4vCXKzWP5ZbL0a0Jpy1Cjmz/+TYkpNHoiguUiNBkzKVWtrMc+9IHyUFhI7/467L3ean7gLBrMEUC7WPdpnb9czkZd3piZ8TZNlM98S5ueXRVXncCINmFkHiC0yv2dNS8Jzzx7ox4l+PAKi7PFrZr33CASs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsogl6H5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A857AC4CEE5;
-	Tue,  8 Apr 2025 11:25:25 +0000 (UTC)
+	 MIME-Version; b=hqx/yvxcPCZNm8a6kLZ9W7FvxxlKqMqPKyvToD1r0TbBFp5myuWHMUAXhCeCUYRsiuvk7MxiUYUM8DzT17gplyaRhd0gjl26x5pfju9ltvOsmmOJUMUt1uvQIu3M1fwn5XDqkkudmpIvuWgGWwFLYCjDP9+PXnKFEcH9FbC0FZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGVvzMp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3BBC4CEE7;
+	Tue,  8 Apr 2025 11:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111527;
-	bh=kgOwGHJU80Wm+hxrGY8nH/gort+K7UXfd2bzjzTrciM=;
+	s=korg; t=1744111535;
+	bh=H2eKwQjP7/sJ6sgqfNqaLpk0ogUzaH72OEPk5Jn+Rb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsogl6H5I3DkpLp4u52MP7RKiq9shLv2lsW2mr/984xp/7FwsVtkglL7stANWpIJG
-	 /v7slqFsiRfPBDYPQhqHnAbcdbbUTpkrrMK7DsXN3qllrAQFxrWZ8xBBfs6nZd60Z7
-	 fmd89SE52s+bDuKY7j6of7yWX6wQkJe8W33YntKM=
+	b=AGVvzMp0yVaC33CJhScBWDjVfVTNAGjYf01ZlehWmiYbe/pf0Wk0qoSOvQstuijzN
+	 NgzNVcJik7eLmczZKYOmU2W2K8WhlKi7J1Wryghy690spKEFDJr2UCTlMSac3Pf0ei
+	 +Pl7qYoc/gv3pWbFzIAaSB/qnb63ZvtPlg15VBLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 426/731] leds: Fix LED_OFF brightness race
-Date: Tue,  8 Apr 2025 12:45:23 +0200
-Message-ID: <20250408104924.183575414@linuxfoundation.org>
+Subject: [PATCH 6.14 427/731] x86/dumpstack: Fix inaccurate unwinding from exception stacks due to misplaced assignment
+Date: Tue,  8 Apr 2025 12:45:24 +0200
+Message-ID: <20250408104924.206369832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,106 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 2c70953b6f535f7698ccbf22c1f5ba26cb6c2816 ]
+[ Upstream commit 2c118f50d7fd4d9aefc4533a26f83338b2906b7a ]
 
-While commit fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-successfully forces led_set_brightness() to be called with LED_OFF at
-least once when switching from blinking to LED on state so that
-hw-blinking can be disabled, another race remains. Indeed in
-led_set_brightness(LED_OFF) followed by led_set_brightness(any)
-scenario the following CPU scheduling can happen:
+Commit:
 
-    CPU0                                     CPU1
-    ----                                     ----
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-                                         led_set_brightness(LED_OFF) {
-                                           set_bit(BRIGHTNESS_OFF)
-					   queue_work()
-                                         }
-                                         led_set_brightness(any) {
-                                           set_bit(BRIGHTNESS)
-					   queue_work() //already queued
-                                         }
-   test_and_clear_bit(BRIGHTNESS)
-     /* LED set with brightness any */
- }
+  2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
 
- /* From previous CPU1 queue_work() */
- set_brightness_delayed() {
-   test_and_clear_bit(BRIGHTNESS_OFF)
-     /* LED turned off */
-   test_and_clear_bit(BRIGHTNESS)
-     /* Clear from previous run, LED remains off */
+was intended to ensure alignment of the stack pointer; but it also moved
+the initialization of the "stack" variable down into the loop header.
 
-In that case the led_set_brightness(LED_OFF)/led_set_brightness(any)
-sequence will be effectively executed in reverse order and LED will
-remain off.
+This was likely intended as a no-op cleanup, since the commit
+message does not mention it; however, this caused a behavioral change
+because the value of "regs" is different between the two places.
 
-With the introduction of commit 32360bf6a5d4 ("leds: Introduce ordered
-workqueue for LEDs events instead of system_wq") the race is easier to
-trigger as sysfs brightness configuration does not wait for
-set_brightness_delayed() work to finish (flush_work() removal).
+Originally, get_stack_pointer() used the regs provided by the caller; after
+that commit, get_stack_pointer() instead uses the regs at the top of the
+stack frame the unwinder is looking at. Often, there are no such regs at
+all, and "regs" is NULL, causing get_stack_pointer() to fall back to the
+task's current stack pointer, which is not what we want here, but probably
+happens to mostly work. Other times, the original regs will point to
+another regs frame - in that case, the linear guess unwind logic in
+show_trace_log_lvl() will start unwinding too far up the stack, causing the
+first frame found by the proper unwinder to never be visited, resulting in
+a stack trace consisting purely of guess lines.
 
-Use delayed_set_value to optionnally re-configure brightness after a
-LED_OFF. That way a LED state could be configured more that once but
-final state will always be as expected. Ensure that delayed_set_value
-modification is seen before set_bit() using smp_mb__before_atomic().
+Fix it by moving the "stack = " assignment back where it belongs.
 
-Fixes: fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/19c81177059dab7b656c42063958011a8e4d1a66.1740050412.git.repk@triplefau.lt
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-2-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-core.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/x86/kernel/dumpstack.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
-index f6c46d2e5276b..e3d8ddcff5670 100644
---- a/drivers/leds/led-core.c
-+++ b/drivers/leds/led-core.c
-@@ -159,8 +159,19 @@ static void set_brightness_delayed(struct work_struct *ws)
- 	 * before this work item runs once. To make sure this works properly
- 	 * handle LED_SET_BRIGHTNESS_OFF first.
- 	 */
--	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags))
-+	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags)) {
- 		set_brightness_delayed_set_brightness(led_cdev, LED_OFF);
-+		/*
-+		 * The consecutives led_set_brightness(LED_OFF),
-+		 * led_set_brightness(LED_FULL) could have been executed out of
-+		 * order (LED_FULL first), if the work_flags has been set
-+		 * between LED_SET_BRIGHTNESS_OFF and LED_SET_BRIGHTNESS of this
-+		 * work. To avoid ending with the LED turned off, turn the LED
-+		 * on again.
-+		 */
-+		if (led_cdev->delayed_set_value != LED_OFF)
-+			set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
-+	}
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index a7d562697e50e..b2b118a8c09be 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -195,6 +195,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	printk("%sCall Trace:\n", log_lvl);
  
- 	if (test_and_clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags))
- 		set_brightness_delayed_set_brightness(led_cdev, led_cdev->delayed_set_value);
-@@ -331,10 +342,13 @@ void led_set_brightness_nopm(struct led_classdev *led_cdev, unsigned int value)
- 	 * change is done immediately afterwards (before the work runs),
- 	 * it uses a separate work_flag.
+ 	unwind_start(&state, task, regs, stack);
++	stack = stack ?: get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
+ 
+ 	/*
+@@ -213,9 +214,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	 * - hardirq stack
+ 	 * - entry stack
  	 */
--	if (value) {
--		led_cdev->delayed_set_value = value;
-+	led_cdev->delayed_set_value = value;
-+	/* Ensure delayed_set_value is seen before work_flags modification */
-+	smp_mb__before_atomic();
-+
-+	if (value)
- 		set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
--	} else {
-+	else {
- 		clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
- 		clear_bit(LED_SET_BLINK, &led_cdev->work_flags);
- 		set_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags);
+-	for (stack = stack ?: get_stack_pointer(task, regs);
+-	     stack;
+-	     stack = stack_info.next_sp) {
++	for (; stack; stack = stack_info.next_sp) {
+ 		const char *stack_name;
+ 
+ 		stack = PTR_ALIGN(stack, sizeof(long));
 -- 
 2.39.5
 
