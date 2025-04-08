@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67702A802D5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBB0A7FE53
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7F80179F55
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916D13BAF8F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8518C268C43;
-	Tue,  8 Apr 2025 11:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E472E26A0EB;
+	Tue,  8 Apr 2025 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqrjn6lV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLzL4b9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CE8267F6E;
-	Tue,  8 Apr 2025 11:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E37266583;
+	Tue,  8 Apr 2025 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112716; cv=none; b=J4TKq3vnsdsQLnvO+kpoTpkfULBhcGuzDQk34Qq28HXh6Ov9op99yBCLf+k01g7xI8z3+QmS1ooW86Qv8RHzvvv1fl7SQGNOCpOVIhQ6XExG6XP4c6x+n6Cj1pscS2g/PNI4XLU+i+NwNz/HfQ5/Roho9lkVmm+v2jEC+zliRfk=
+	t=1744110150; cv=none; b=miQDp2zTA1fe0jHqpglSpBvDBWfFDoOHNLReXGrxVQlM7vvkIi2aaTE5Q8+dRVE+JwxIkn7R2Oy6iE+46wHvup/F0ay1zMRH8ywaBNcxsEeUk6q59d8XhPHzpWjyjZ/ENlehkQiIbdMr3YkurkckIua447EP2X/68RZsqwQnH8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112716; c=relaxed/simple;
-	bh=0c94LUTM+W6kQ4JXZcXJVFFx5KEdaIz3z8lYqS0HUeM=;
+	s=arc-20240116; t=1744110150; c=relaxed/simple;
+	bh=CPa9kdYkXdIwvl3GcTPxPNuba86TNciOQ+036aQKqYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsrAy3Rav52a8FXVLI1tbm27Ko7I8TuduxZf45/nzvdP1ml9qSgnWHg2RJtR3KuOGFRA0JAZEQxNDU3LmlgijlbLcDeQwUR7lG++Tv3j4s+lfG940RRCF+aU+kaDiOY80jddQe78QYK21/EnQl6mq08FxGs/GMIV6vdlkFAXk9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqrjn6lV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D3AC4CEE5;
-	Tue,  8 Apr 2025 11:45:15 +0000 (UTC)
+	 MIME-Version; b=YsG7ECNSpPHd1ZfW4w82onhCaW/4lF+KtgvacAbaWclIAeB2kmJCFG8VCrZ9ArGVhVcOdfrfPpdXX7orbERwlqIqMARqqCr16dmp0d1tG0ypX6tuzq5D26VG8GqRgCzOuPVMR0h3tUnmQZvsOadotmJvDpBXkuKg29fWNK6sOYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLzL4b9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF3EC4CEE5;
+	Tue,  8 Apr 2025 11:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112716;
-	bh=0c94LUTM+W6kQ4JXZcXJVFFx5KEdaIz3z8lYqS0HUeM=;
+	s=korg; t=1744110150;
+	bh=CPa9kdYkXdIwvl3GcTPxPNuba86TNciOQ+036aQKqYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqrjn6lVfKmtHqne6Vf6vsiD6LAHbYMcu6ZlGuuxe62/PxZHwgEqP7DoTsajax6oP
-	 l+fL5holW+YqStfOFvZtU+kYtQwsuWe2JFBvl2SnbfmWJyIyaSmQ1di6dFgAnu3Ne4
-	 0GKjshLd0At6iUjPQSqnIan3TaXgUs/+LTh/Pc3s=
+	b=dLzL4b9Dxo3AuKaF30bH/tHS3Ra6wJecrr61crSOMuhZBDKvxFmMMYJDyHBIz7LD6
+	 P1X1GtRNiZDfoIF7ocmSgKx9Q5/28LjdgoU6cr9za4tJ80nnEYc8sTKcJ71GSYRs4/
+	 oQeF6DgithFUPay4KnFxScYbXyFlwZrO4oA5kD4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/279] mdacon: rework dependency list
+Subject: [PATCH 5.10 169/227] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:49:07 +0200
-Message-ID: <20250408104830.760950737@linuxfoundation.org>
+Message-ID: <20250408104825.386022794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-mdacon has roughly the same dependencies as vgacon but expresses them
-as a negative list instead of a positive list, with the only practical
-difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
-is also used because MDA/Hercules-only systems should be using vgacon
-instead, so just change the list to enforce that directly for simplicity.
-
-The probing was broken from 2002 to 2008, this improves on the fix
-that was added then: If vgacon is a loadable module, then mdacon
-cannot be built-in now, and the list of systems that support vgacon
-is carried over.
-
-Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/Kconfig | 2 +-
+ tools/perf/util/python.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index fcc46380e7c91..390280ce7ea3e 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -23,7 +23,7 @@ config VGA_CONSOLE
- 	  Say Y.
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index ae8edde7c50ef..51679d8d40b1b 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -131,7 +131,7 @@ struct pyrf_event {
+ };
  
- config MDA_CONSOLE
--	depends on !M68K && !PARISC && ISA
-+	depends on VGA_CONSOLE && ISA
- 	tristate "MDA text console (dual-headed)"
- 	help
- 	  Say Y here if you have an old MDA or monochrome Hercules graphics
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
 -- 
 2.39.5
 
