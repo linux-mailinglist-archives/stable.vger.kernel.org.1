@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A906A8014C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 153ADA7FDC1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE7A881BD7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FC373BDC24
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F632268FED;
-	Tue,  8 Apr 2025 11:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B59267F77;
+	Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4zuD4Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0mK0d6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD7C263C90;
-	Tue,  8 Apr 2025 11:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D48E22171A;
+	Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111837; cv=none; b=MtG2gEGqbwRzQ7LxteWBsLNFwHpIEtTzVWdSkC8xlqJ0dsFgXSAMlyOoZPSl0ESkzLQBCAmQZPLA3gGr8ycH6ZbLkqzLn29FT3NvdNcIIvzynF9FSSqfMSLo/LgEJufEq9LlhTp0TWxMLAtMBX3YKtgmGsu4n4g0s/TiJI/5NxI=
+	t=1744109905; cv=none; b=mDM7kIvOnTGAHsK5Ckxsc/fO2YoB+zIN3bs1j9BqhhFzlDkbdtPHlyeXsTkBTTAd3fpxQjxK/uHWHhYXeHjv+6A3HNcHH53/KGbyuriz+X8Gnw+J3qyZM7JtRlRC2Jj/3z3CuZsQEE3FDn2Wj7XGclRREOFwMz+sTLNYUreZPMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111837; c=relaxed/simple;
-	bh=YGlN5+LPqxKvZpou4VN7YlVsh2YumDmMAAOVascCSew=;
+	s=arc-20240116; t=1744109905; c=relaxed/simple;
+	bh=2dXaRaSVF3MOXMor/ZA49nW7VYYnM8YxTKw2RmdENSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5nOT+WmdeqjyUctewCz1siKuSsN17z0h6PghSYbxxDPYRLEfuFr81xB+J6q+lvNzU3Yg57rcnZitTuM7AK62sT6fUv3cRIdhDG6nAj7Qp7+2z7j4SjquA4oQhS0qP8P9xWOTKSimpRvNuGLwTODmPM+Ue6SMLLPuybF5VjDncU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4zuD4Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FCEC4CEE5;
-	Tue,  8 Apr 2025 11:30:36 +0000 (UTC)
+	 MIME-Version; b=fC1EB5o7Tu1aM7cTF+6mDdWt5GJvLYXU4VEjd+EBvLpsCJAgvTID9qhras/RTTcXL85R6/Q3RX2Mg3J0PWos7WWnh+EmOgGTfZ/FI5OMaZAc1S9WBHeAoqWf0ir1HI8IVt1h6eK8C+oGs1O3/mSenUleknPOp57qtxQCQ9t/8OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0mK0d6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD16C4CEE5;
+	Tue,  8 Apr 2025 10:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111836;
-	bh=YGlN5+LPqxKvZpou4VN7YlVsh2YumDmMAAOVascCSew=;
+	s=korg; t=1744109905;
+	bh=2dXaRaSVF3MOXMor/ZA49nW7VYYnM8YxTKw2RmdENSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4zuD4Lo3F7k2QsEuqXzpv/ioRQctXcWMuQbirlxy/uR4Xtx2ZRBZ2m/A+TnJBcDH
-	 kciX5pGeDHoi4q/zeppUrzKvhphZNQNH2bpMcDZtHUN8U161CA+T3YTkewBTSSeDFo
-	 VmPwTTErIGl2PNGpR6igAfOBC0OmPJmU0BNX6l8I=
+	b=i0mK0d6GlFUYA6LkyIZ867AzatLTZLlaq0L2b8PaVsDe1yFFxN+/d5Krr4mKsn/w6
+	 gad4kVc+BG8JEncQHMJn4d+oqW2TzA2pTvTr61sGu7pS4xYYaHJTPr0DOTDbIPdAL+
+	 lGYP2oZCo0H47Pa5sbA4wGuEtI6nWVBEQ+NOLXdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 578/731] spufs: fix gang directory lifetimes
+	Wang Kefeng <wangkefeng.wang@huawei.com>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 5.10 097/227] ARM: 9351/1: fault: Add "cut here" line for prefetch aborts
 Date: Tue,  8 Apr 2025 12:47:55 +0200
-Message-ID: <20250408104927.718462316@linuxfoundation.org>
+Message-ID: <20250408104823.273574164@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,200 +65,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit c134deabf4784e155d360744d4a6a835b9de4dd4 ]
+commit 8f09b8b4fa58e99cbfd9a650b31d65cdbd8e4276 upstream.
 
-prior to "[POWERPC] spufs: Fix gang destroy leaks" we used to have
-a problem with gang lifetimes - creation of a gang returns opened
-gang directory, which normally gets removed when that gets closed,
-but if somebody has created a context belonging to that gang and
-kept it alive until the gang got closed, removal failed and we
-ended up with a leak.
+The common pattern in arm is to emit a "8<--- cut here ---" line for
+faults, but it was missing for do_PrefetchAbort(). Add it.
 
-Unfortunately, it had been fixed the wrong way.  Dentry of gang
-directory was no longer pinned, and rmdir on close was gone.
-One problem was that failure of open kept calling simple_rmdir()
-as cleanup, which meant an unbalanced dput().  Another bug was
-in the success case - gang creation incremented link count on
-root directory, but that was no longer undone when gang got
-destroyed.
-
-Fix consists of
-	* reverting the commit in question
-	* adding a counter to gang, protected by ->i_rwsem
-of gang directory inode.
-	* having it set to 1 at creation time, dropped
-in both spufs_dir_close() and spufs_gang_close() and bumped
-in spufs_create_context(), provided that it's not 0.
-	* using simple_recursive_removal() to take the gang
-directory out when counter reaches zero.
-
-Fixes: 877907d37da9 "[POWERPC] spufs: Fix gang destroy leaks"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/cell/spufs/gang.c  |  1 +
- arch/powerpc/platforms/cell/spufs/inode.c | 54 +++++++++++++++++++----
- arch/powerpc/platforms/cell/spufs/spufs.h |  2 +
- 3 files changed, 49 insertions(+), 8 deletions(-)
+ arch/arm/mm/fault.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/gang.c b/arch/powerpc/platforms/cell/spufs/gang.c
-index 827d338deaf4c..2c2999de6bfa2 100644
---- a/arch/powerpc/platforms/cell/spufs/gang.c
-+++ b/arch/powerpc/platforms/cell/spufs/gang.c
-@@ -25,6 +25,7 @@ struct spu_gang *alloc_spu_gang(void)
- 	mutex_init(&gang->aff_mutex);
- 	INIT_LIST_HEAD(&gang->list);
- 	INIT_LIST_HEAD(&gang->aff_list_head);
-+	gang->alive = 1;
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -559,6 +559,7 @@ do_PrefetchAbort(unsigned long addr, uns
+ 	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
+ 		return;
  
- out:
- 	return gang;
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 793c005607cf0..c566e7997f2c1 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -201,6 +201,23 @@ static int spufs_fill_dir(struct dentry *dir,
- 	return 0;
- }
++	pr_alert("8<--- cut here ---\n");
+ 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
+ 		inf->name, ifsr, addr);
  
-+static void unuse_gang(struct dentry *dir)
-+{
-+	struct inode *inode = dir->d_inode;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
-+
-+	if (gang) {
-+		bool dead;
-+
-+		inode_lock(inode); // exclusion with spufs_create_context()
-+		dead = !--gang->alive;
-+		inode_unlock(inode);
-+
-+		if (dead)
-+			simple_recursive_removal(dir, NULL);
-+	}
-+}
-+
- static int spufs_dir_close(struct inode *inode, struct file *file)
- {
- 	struct inode *parent;
-@@ -215,6 +232,7 @@ static int spufs_dir_close(struct inode *inode, struct file *file)
- 	inode_unlock(parent);
- 	WARN_ON(ret);
- 
-+	unuse_gang(dir->d_parent);
- 	return dcache_dir_close(inode, file);
- }
- 
-@@ -407,7 +425,7 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- {
- 	int ret;
- 	int affinity;
--	struct spu_gang *gang;
-+	struct spu_gang *gang = SPUFS_I(inode)->i_gang;
- 	struct spu_context *neighbor;
- 	struct path path = {.mnt = mnt, .dentry = dentry};
- 
-@@ -422,11 +440,15 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	if ((flags & SPU_CREATE_ISOLATE) && !isolated_loader)
- 		return -ENODEV;
- 
--	gang = NULL;
-+	if (gang) {
-+		if (!gang->alive)
-+			return -ENOENT;
-+		gang->alive++;
-+	}
-+
- 	neighbor = NULL;
- 	affinity = flags & (SPU_CREATE_AFFINITY_MEM | SPU_CREATE_AFFINITY_SPU);
- 	if (affinity) {
--		gang = SPUFS_I(inode)->i_gang;
- 		if (!gang)
- 			return -EINVAL;
- 		mutex_lock(&gang->aff_mutex);
-@@ -455,6 +477,8 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- out_aff_unlock:
- 	if (affinity)
- 		mutex_unlock(&gang->aff_mutex);
-+	if (ret && gang)
-+		gang->alive--; // can't reach 0
- 	return ret;
- }
- 
-@@ -484,6 +508,7 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode->i_fop = &simple_dir_operations;
- 
- 	d_instantiate(dentry, inode);
-+	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(d_inode(dentry));
- 	return ret;
-@@ -494,6 +519,21 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	return ret;
- }
- 
-+static int spufs_gang_close(struct inode *inode, struct file *file)
-+{
-+	unuse_gang(file->f_path.dentry);
-+	return dcache_dir_close(inode, file);
-+}
-+
-+static const struct file_operations spufs_gang_fops = {
-+	.open		= dcache_dir_open,
-+	.release	= spufs_gang_close,
-+	.llseek		= dcache_dir_lseek,
-+	.read		= generic_read_dir,
-+	.iterate_shared	= dcache_readdir,
-+	.fsync		= noop_fsync,
-+};
-+
- static int spufs_gang_open(const struct path *path)
- {
- 	int ret;
-@@ -513,7 +553,7 @@ static int spufs_gang_open(const struct path *path)
- 		return PTR_ERR(filp);
- 	}
- 
--	filp->f_op = &simple_dir_operations;
-+	filp->f_op = &spufs_gang_fops;
- 	fd_install(ret, filp);
- 	return ret;
- }
-@@ -528,10 +568,8 @@ static int spufs_create_gang(struct inode *inode,
- 	ret = spufs_mkgang(inode, dentry, mode & 0777);
- 	if (!ret) {
- 		ret = spufs_gang_open(&path);
--		if (ret < 0) {
--			int err = simple_rmdir(inode, dentry);
--			WARN_ON(err);
--		}
-+		if (ret < 0)
-+			unuse_gang(dentry);
- 	}
- 	return ret;
- }
-diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
-index 84958487f696a..d33787c57c39a 100644
---- a/arch/powerpc/platforms/cell/spufs/spufs.h
-+++ b/arch/powerpc/platforms/cell/spufs/spufs.h
-@@ -151,6 +151,8 @@ struct spu_gang {
- 	int aff_flags;
- 	struct spu *aff_ref_spu;
- 	atomic_t aff_sched_count;
-+
-+	int alive;
- };
- 
- /* Flag bits for spu_gang aff_flags */
--- 
-2.39.5
-
 
 
 
