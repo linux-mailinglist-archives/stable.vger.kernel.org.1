@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E9FA8058E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB442A8048E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A773B0369
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648CA4A1067
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45D626A0A8;
-	Tue,  8 Apr 2025 12:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AFF2638B8;
+	Tue,  8 Apr 2025 11:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCPBpVtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLWlXCMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DC42135CD;
-	Tue,  8 Apr 2025 12:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31026A0D9;
+	Tue,  8 Apr 2025 11:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113964; cv=none; b=BDsJ/VIWiSt88HsRcMgLJ/vChBa18NMpwVl5ybsbJ7/a8AAVpTERGyUliIBDJavvw78xXe/2VArLZWH/75OHuTdCe38T597g6LjtdRTwPVxy4vEwvrLOeKTcroLhPfBWg/+kvpyPB/AlyMVK4MQi0twFlBwjbXAPxAfd4LtmKcY=
+	t=1744113596; cv=none; b=XS+Sl78Nv033mdlQM6GRZ6b3xcmq/XZgrPAfNu3mG8T90ZxTbw3xHqHDL5dJmk/n6gm1HRPs3ZZX00nk1KA4oMTZigoZX4OJbFizXnw2uU1vKiBnuVYCvP5CEKUJF+AXqwoNEf7dhWeJHOFrK8T2A6XFWE6869GCaFTkHuQcCSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113964; c=relaxed/simple;
-	bh=DmNz35AsAaym69/FfxwNnufQS4evPocroWGRUjfplO8=;
+	s=arc-20240116; t=1744113596; c=relaxed/simple;
+	bh=J93CPAupLBbfdQhP1ztGY25Aw2vjyJbVoCCff5C02xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIGKYPrPzs01A5Af9HcKPrMh+Rtynb+GFOYKcLsV8Jjo5qnMHjvGB9u5SiNWwb+o7u+KBOC8w9Fxdq8qOMygrAiQTaZSyyWFq3sDeW3C+Ig0OOJ9i2cRhn5v0nxorXqr8zeXC2/zTtquYHK5SKZ04lr8QACwa8q07faNXKQq36A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCPBpVtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5022C4CEE5;
-	Tue,  8 Apr 2025 12:06:03 +0000 (UTC)
+	 MIME-Version; b=hOsSLEVNoB9fbcJlIOh4RhzcEjEI8RSJTlFTO7VcjsOHadwE0hUc61RZUryBmwunuk9W+/+GOqD80fWdtRInP8Iz6/dsTEmkhwi7mcQwEu48w8B3iwdrpQB1fTRDQY57L8rT6ooY5EKJilkgStk0LUOzYlKmP+CPH0B5oD4EC64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLWlXCMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E316EC4CEE5;
+	Tue,  8 Apr 2025 11:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113964;
-	bh=DmNz35AsAaym69/FfxwNnufQS4evPocroWGRUjfplO8=;
+	s=korg; t=1744113596;
+	bh=J93CPAupLBbfdQhP1ztGY25Aw2vjyJbVoCCff5C02xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCPBpVtcdpZp8Y6FiWp4ecQhNxtIjVUH6fWXUdJeT30QrDJwRy+2ByYIc3i6p4QET
-	 4PmjQZA8phvCrOugZ4qJd5D8JIRJy7UPnzbc83NIak9qx55rXXCdHnhGvR9fcHp7kH
-	 YepgUR0RUp9K5UQhN22H0JCUYVqvU2Cmi2gqpJfM=
+	b=cLWlXCMD8oS383vKs+3tNifowLD8XJNS22EjPQR4//9HAZ22hO9+wLCR0YJ/U6rtb
+	 EQFK0wBbY6jSVC4JCFgv3OEze0Zx8aKlNNc01mNVg97rHHye6LsqkjG4Ux3sufgCi8
+	 9BY3r0IXGs/fMpG71g4JH7Ck3TVswezVJe1dpqj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/154] EDAC/ie31200: Fix the error path order of ie31200_init()
-Date: Tue,  8 Apr 2025 12:50:28 +0200
-Message-ID: <20250408104818.104365230@linuxfoundation.org>
+Subject: [PATCH 6.6 218/268] ipv6: Start path selection from the first nexthop
+Date: Tue,  8 Apr 2025 12:50:29 +0200
+Message-ID: <20250408104834.463565510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
+[ Upstream commit 4d0ab3a6885e3e9040310a8d8f54503366083626 ]
 
-The error path order of ie31200_init() is incorrect, fix it.
+Cited commit transitioned IPv6 path selection to use hash-threshold
+instead of modulo-N. With hash-threshold, each nexthop is assigned a
+region boundary in the multipath hash function's output space and a
+nexthop is chosen if the calculated hash is smaller than the nexthop's
+region boundary.
 
-Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
+Hash-threshold does not work correctly if path selection does not start
+with the first nexthop. For example, if fib6_select_path() is always
+passed the last nexthop in the group, then it will always be chosen
+because its region boundary covers the entire hash function's output
+space.
+
+Fix this by starting the selection process from the first nexthop and do
+not consider nexthops for which rt6_score_route() provided a negative
+score.
+
+Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
+Reported-by: Stanislav Fomichev <stfomichev@gmail.com>
+Closes: https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250402114224.293392-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/ipv6/route.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 0fc78a922e3f3..d3d9916b1ba3f 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -611,7 +611,7 @@ static int __init ie31200_init(void)
- 
- 	pci_rc = pci_register_driver(&ie31200_driver);
- 	if (pci_rc < 0)
--		goto fail0;
-+		return pci_rc;
- 
- 	if (!mci_pdev) {
- 		ie31200_registered = 0;
-@@ -622,11 +622,13 @@ static int __init ie31200_init(void)
- 			if (mci_pdev)
- 				break;
- 		}
-+
- 		if (!mci_pdev) {
- 			edac_dbg(0, "ie31200 pci_get_device fail\n");
- 			pci_rc = -ENODEV;
--			goto fail1;
-+			goto fail0;
- 		}
-+
- 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
- 		if (pci_rc < 0) {
- 			edac_dbg(0, "ie31200 init fail\n");
-@@ -634,12 +636,12 @@ static int __init ie31200_init(void)
- 			goto fail1;
- 		}
- 	}
--	return 0;
- 
-+	return 0;
- fail1:
--	pci_unregister_driver(&ie31200_driver);
--fail0:
- 	pci_dev_put(mci_pdev);
-+fail0:
-+	pci_unregister_driver(&ie31200_driver);
- 
- 	return pci_rc;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 3ab5ea55ff8c3..8f8a6970b9b7a 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -414,11 +414,35 @@ static bool rt6_check_expired(const struct rt6_info *rt)
+ 	return false;
  }
+ 
++static struct fib6_info *
++rt6_multipath_first_sibling_rcu(const struct fib6_info *rt)
++{
++	struct fib6_info *iter;
++	struct fib6_node *fn;
++
++	fn = rcu_dereference(rt->fib6_node);
++	if (!fn)
++		goto out;
++	iter = rcu_dereference(fn->leaf);
++	if (!iter)
++		goto out;
++
++	while (iter) {
++		if (iter->fib6_metric == rt->fib6_metric &&
++		    rt6_qualify_for_ecmp(iter))
++			return iter;
++		iter = rcu_dereference(iter->fib6_next);
++	}
++
++out:
++	return NULL;
++}
++
+ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		      struct flowi6 *fl6, int oif, bool have_oif_match,
+ 		      const struct sk_buff *skb, int strict)
+ {
+-	struct fib6_info *match = res->f6i;
++	struct fib6_info *first, *match = res->f6i;
+ 	struct fib6_info *sibling;
+ 
+ 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
+@@ -442,10 +466,18 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		return;
+ 	}
+ 
+-	if (fl6->mp_hash <= atomic_read(&match->fib6_nh->fib_nh_upper_bound))
++	first = rt6_multipath_first_sibling_rcu(match);
++	if (!first)
+ 		goto out;
+ 
+-	list_for_each_entry_rcu(sibling, &match->fib6_siblings,
++	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
++	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
++			    strict) >= 0) {
++		match = first;
++		goto out;
++	}
++
++	list_for_each_entry_rcu(sibling, &first->fib6_siblings,
+ 				fib6_siblings) {
+ 		const struct fib6_nh *nh = sibling->fib6_nh;
+ 		int nh_upper_bound;
 -- 
 2.39.5
 
