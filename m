@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FFFA7FE7A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D80A802AE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF52F423EB6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 305693A3901
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6DA267F48;
-	Tue,  8 Apr 2025 11:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28442266EEA;
+	Tue,  8 Apr 2025 11:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQ3hjxqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnxuYwek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE2421ADAE;
-	Tue,  8 Apr 2025 11:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D3A25FA13;
+	Tue,  8 Apr 2025 11:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110027; cv=none; b=o+OGK6+NCHB6sE/dYgZPXlZZexp97Sn6Ea3ZbOinjPLnFIS8leuRfO4MKtAMeFUG2bgF40TKHMyjref61EkKfWgXwHlrYF1zxQ+bTacmajX3exmPpm99ylliIn/dtaXq+cY5+q95TYBKhiT5KACJtDwOJbOfJrgAwPgOtJglXgs=
+	t=1744112621; cv=none; b=gIhYap7n/K01FuczgQuPvfCkhiRPo5L/rbhusroP9sGp03hL8l2IyGHXjLOP7IcjCg5JBlI3L/8usjUCHJZ2cnfoSrsKdiFVdjA+WYfHO23hTz8xKAZ3mJKgkl44uyxhqUjnKNpkwHGeyVWf0UzdDwjfigMO4s22CrOjyZ1z9D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110027; c=relaxed/simple;
-	bh=gpTgFq/p3fX6mwvGLzxfhMy9C78cXUEJiTf9L/6siHc=;
+	s=arc-20240116; t=1744112621; c=relaxed/simple;
+	bh=6NtuvQLk9zBdBpoTnG+BWjJF//oB7+7kwkdoXooRt8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2KGo6T53CtYXKKh8djv+bWuxfRLHmeVG/3g+8X3MJw0oEv5axYXY1EeZi6clZQyVTv6VJZoEWx2uE0p4xuHGfZPAi9l7deu1dHE4y2ThrIneInhAj6Sv3hsGUzv9G42985PqGP/MI2WUKRzOmIBDoqJS1iNSv3ZF8gsGMbomp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQ3hjxqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E47C4CEE5;
-	Tue,  8 Apr 2025 11:00:25 +0000 (UTC)
+	 MIME-Version; b=F6b8+FxUor61JCo8+Tie92ayBjL1YdsOJpHSeziWIvoi5BLtwdR8NYC3Pkty1DVzKJaR/tgitaJO//aHWEPxwgx+FjIF4o3xXKwo/zn723XIk/vFml42dqsPfi0SsdxXzq5D+LwAtwhAbO5sJiHjlj9u2Lza99lwahIhJvTPDpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnxuYwek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DEFC4CEE5;
+	Tue,  8 Apr 2025 11:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110026;
-	bh=gpTgFq/p3fX6mwvGLzxfhMy9C78cXUEJiTf9L/6siHc=;
+	s=korg; t=1744112621;
+	bh=6NtuvQLk9zBdBpoTnG+BWjJF//oB7+7kwkdoXooRt8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQ3hjxqEGIlNLDjzlo8otqKIrNg7p0qCNenKgVDZwsNsY8pwU8InpZep/AzR+doph
-	 Vs3OM3Y8oK8VBNIkWEUgEDz831x2kA9B3SwER/NS4e242kNTD3VX5NkCPahakzNyV9
-	 LqbwUZhfKVPyHbamrPA78ELfgzAH+xlAVYZluLLE=
+	b=bnxuYwekXoztAjcR8B9eAGI1/4RYUdTqtDT1VZQHjKV/HJEN3vRbfI6GlEQrQc4SA
+	 DE0O+07dhNtXhJz1oROXDaaNoGqYKHTRjk/33Ox5GlBxK88aITIf9vJEc4obcZ5N6T
+	 XHTv5rMzrEGW4ZKwOiPneYpVUdtdTVREQLf1UEpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/227] mdacon: rework dependency list
+Subject: [PATCH 5.15 137/279] EDAC/ie31200: Fix the DIMM size mask for several SoCs
 Date: Tue,  8 Apr 2025 12:48:40 +0200
-Message-ID: <20250408104824.563991670@linuxfoundation.org>
+Message-ID: <20250408104830.039775814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
+[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
 
-mdacon has roughly the same dependencies as vgacon but expresses them
-as a negative list instead of a positive list, with the only practical
-difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
+The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
+but bits{5:0}. Fix it.
 
-The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
-is also used because MDA/Hercules-only systems should be using vgacon
-instead, so just change the list to enforce that directly for simplicity.
-
-The probing was broken from 2002 to 2008, this improves on the fix
-that was added then: If vgacon is a loadable module, then mdacon
-cannot be built-in now, and the list of systems that support vgacon
-is carried over.
-
-Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index 47c4939577725..67aeb4e6494b6 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -23,7 +23,7 @@ config VGA_CONSOLE
- 	  Say Y.
- 
- config MDA_CONSOLE
--	depends on !M68K && !PARISC && ISA
-+	depends on VGA_CONSOLE && ISA
- 	tristate "MDA text console (dual-headed)"
- 	help
- 	  Say Y here if you have an old MDA or monochrome Hercules graphics
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index de89df8ff06ee..ead3646294b68 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -154,6 +154,7 @@
+ #define IE31200_MAD_DIMM_0_OFFSET		0x5004
+ #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
+ #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
++#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
+ #define IE31200_MAD_DIMM_A_RANK			BIT(17)
+ #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
+ #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
+@@ -367,7 +368,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
+ static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
+ 				     int chan)
+ {
+-	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
++	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
+ 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
+ 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
+ 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
 -- 
 2.39.5
 
