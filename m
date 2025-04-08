@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AC7A8065A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381E1A80B08
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 677367AF5CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF52A8A41C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475FA26A0D6;
-	Tue,  8 Apr 2025 12:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788926A0A5;
+	Tue,  8 Apr 2025 12:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXa6UglG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnS/yRXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B1F2676E1;
-	Tue,  8 Apr 2025 12:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A477127F4C9;
+	Tue,  8 Apr 2025 12:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114913; cv=none; b=pC+EGuYiXcapGWlkGT2rFFdKawAghUrW9ZUEcGhnSKfCVs0CcmL/My85QGKgsEdMG0uCu6pLel4TDKD/EtVpiJViNIpzZ9aLcEIPIGJh4e5zfjWLh9zIq91vjwec443IKTY3WtLbiMzjM3F8hBgHMJJTa4fVYlSVcmNZ0JNYQG0=
+	t=1744116548; cv=none; b=QTx7GG7/+O1AK1JuEhbKmotkiej1rLJ2WmBOKpRfNnsRJDV2yx1EjfNBFSMECoxZ9D+f52qX4s/QyXRDlsi4NpQQ73I+2xDrXMhENQfsDP4g1dzLIs7f9kbYgAWfN4TMlAGvTG6mjdPxuT3/cpFpsX4hmtWXKfC/KuzSxY8FpuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114913; c=relaxed/simple;
-	bh=V59iCkCdN6WRoqLtfIIPq9liEhqISxRZ6t6R4bEbd1w=;
+	s=arc-20240116; t=1744116548; c=relaxed/simple;
+	bh=f7mVgqT1dtj/XXItOfjruM3+JVSzOH3/L+HPIcCC2+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCkGoETGLMKqCDRkLp09gjwUWWKvodgPqFaR1JLRXJGnCOtfQGKoUEUVlVkTyDm7f3E+M3qntzxUP61aXk9LCUgGLdGPmozG1ctWXI7U5tmvTrrDtDajAZ0rl//0EoVV/PeBCh0Gu9blmUzW+1N64nVP5PmvjcSCuPKhVK8ev2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXa6UglG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24834C4CEE5;
-	Tue,  8 Apr 2025 12:21:51 +0000 (UTC)
+	 MIME-Version; b=A2wx1l8AAxb82D5kjnrLbboM6x8UypGg6zX3pKpAtOobg95dfSvZ2blXbhXFr1VO3wYcDSNjvpO4hEF7zeISvsFsWt47xxb326HYSlNvO2Mf+6J9dx3/5GQcqDOnD4B3X9wbcp3tF5hpJl/Y1nh2sOyZCHcvHZ1YUKOcvRee6ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnS/yRXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7B6C4CEE7;
+	Tue,  8 Apr 2025 12:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114912;
-	bh=V59iCkCdN6WRoqLtfIIPq9liEhqISxRZ6t6R4bEbd1w=;
+	s=korg; t=1744116548;
+	bh=f7mVgqT1dtj/XXItOfjruM3+JVSzOH3/L+HPIcCC2+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXa6UglG9PEectPc0F8HM7e7WqFb61Q+KLt8dJ3f5L0Sz2FhRScVULtkgbJKb8RRh
-	 TENK9GS26jQVfumgfP/IeZ43u9wHGMyDO7fOnUzAMlYizAu0Azu74sxAEplhBXS9Lf
-	 cfsrfvQIg/gym1STUhPTAzui3AJaRINbnUoUMMMY=
+	b=tnS/yRXn76JfZys8mvQmgxpY6WFkkNutLnwhQvCxxyOyaAu8DPwSvvk6S2QaK1yOJ
+	 5DH9sL9FzuLBVoCV8n8EzjFBci/ymAtVAJh6wOMw69z06nNUnxSkZlf7SFXH0aSDNI
+	 Nx12NgEI7tmphUYXCHo4I4hlmmsR0byTIW+iF+Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 254/499] um: hostfs: avoid issues on inode number reuse by host
+Subject: [PATCH 6.12 140/423] clk: amlogic: g12b: fix cluster A parent data
 Date: Tue,  8 Apr 2025 12:47:46 +0200
-Message-ID: <20250408104857.550090435@linuxfoundation.org>
+Message-ID: <20250408104848.990634114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,174 +60,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 0bc754d1e31f40f4a343b692096d9e092ccc0370 ]
+[ Upstream commit 8995f8f108c3ac5ad52b12a6cfbbc7b3b32e9a58 ]
 
-Some file systems (e.g. ext4) may reuse inode numbers once the inode is
-not in use anymore. Usually hostfs will keep an FD open for each inode,
-but this is not always the case. In the case of sockets, this cannot
-even be done properly.
+Several clocks used by both g12a and g12b use the g12a cpu A clock hw
+pointer as clock parent. This is incorrect on g12b since the parents of
+cluster A cpu clock are different. Also the hw clock provided as parent to
+these children is not even registered clock on g12b.
 
-As such, the following sequence of events was possible:
- * application creates and deletes a socket
- * hostfs creates/deletes the socket on the host
- * inode is still in the hostfs cache
- * hostfs creates a new file
- * ext4 on the outside reuses the inode number
- * hostfs finds the socket inode for the newly created file
- * application receives -ENXIO when opening the file
+Fix the problem by reverting to the global namespace and let CCF pick
+the appropriate, as it is already done for other clocks, such as
+cpu_clk_trace_div.
 
-As mentioned, this can only happen if the deleted file is a special file
-that is never opened on the host (i.e. no .open fop).
-
-As such, to prevent issues, it is sufficient to check that the inode
-has the expected type. That said, also add a check for the inode birth
-time, just to be on the safe side.
-
-Fixes: 74ce793bcbde ("hostfs: Fix ephemeral inodes")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Mickaël Salaün <mic@digikod.net>
-Tested-by: Mickaël Salaün <mic@digikod.net>
-Link: https://patch.msgid.link/20250214092822.1241575-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 25e682a02d91 ("clk: meson: g12a: migrate to the new parent description method")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-cpua-parent-fix-v1-1-d8c0f41865fe@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs.h      |  2 +-
- fs/hostfs/hostfs_kern.c |  7 ++++-
- fs/hostfs/hostfs_user.c | 59 ++++++++++++++++++++++++-----------------
- 3 files changed, 41 insertions(+), 27 deletions(-)
+ drivers/clk/meson/g12a.c | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/fs/hostfs/hostfs.h b/fs/hostfs/hostfs.h
-index 8b39c15c408cc..15b2f094d36ef 100644
---- a/fs/hostfs/hostfs.h
-+++ b/fs/hostfs/hostfs.h
-@@ -60,7 +60,7 @@ struct hostfs_stat {
- 	unsigned int uid;
- 	unsigned int gid;
- 	unsigned long long size;
--	struct hostfs_timespec atime, mtime, ctime;
-+	struct hostfs_timespec atime, mtime, ctime, btime;
- 	unsigned int blksize;
- 	unsigned long long blocks;
- 	struct {
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index bd6503b731426..217ce0d424618 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -33,6 +33,7 @@ struct hostfs_inode_info {
- 	struct inode vfs_inode;
- 	struct mutex open_mutex;
- 	dev_t dev;
-+	struct hostfs_timespec btime;
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 02dda57105b10..06929e1940ef1 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -1139,8 +1139,18 @@ static struct clk_regmap g12a_cpu_clk_div16_en = {
+ 	.hw.init = &(struct clk_init_data) {
+ 		.name = "cpu_clk_div16_en",
+ 		.ops = &clk_regmap_gate_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) {
+-			&g12a_cpu_clk.hw
++		.parent_data = &(const struct clk_parent_data) {
++			/*
++			 * Note:
++			 * G12A and G12B have different cpu clocks (with
++			 * different struct clk_hw). We fallback to the global
++			 * naming string mechanism so this clock picks
++			 * up the appropriate one. Same goes for the other
++			 * clock using cpu cluster A clock output and present
++			 * on both G12 variant.
++			 */
++			.name = "cpu_clk",
++			.index = -1,
+ 		},
+ 		.num_parents = 1,
+ 		/*
+@@ -1205,7 +1215,10 @@ static struct clk_regmap g12a_cpu_clk_apb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_apb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
  };
- 
- static inline struct hostfs_inode_info *HOSTFS_I(struct inode *inode)
-@@ -551,6 +552,7 @@ static int hostfs_inode_set(struct inode *ino, void *data)
- 	}
- 
- 	HOSTFS_I(ino)->dev = dev;
-+	HOSTFS_I(ino)->btime = st->btime;
- 	ino->i_ino = st->ino;
- 	ino->i_mode = st->mode;
- 	return hostfs_inode_update(ino, st);
-@@ -561,7 +563,10 @@ static int hostfs_inode_test(struct inode *inode, void *data)
- 	const struct hostfs_stat *st = data;
- 	dev_t dev = MKDEV(st->dev.maj, st->dev.min);
- 
--	return inode->i_ino == st->ino && HOSTFS_I(inode)->dev == dev;
-+	return inode->i_ino == st->ino && HOSTFS_I(inode)->dev == dev &&
-+	       (inode->i_mode & S_IFMT) == (st->mode & S_IFMT) &&
-+	       HOSTFS_I(inode)->btime.tv_sec == st->btime.tv_sec &&
-+	       HOSTFS_I(inode)->btime.tv_nsec == st->btime.tv_nsec;
- }
- 
- static struct inode *hostfs_iget(struct super_block *sb, char *name)
-diff --git a/fs/hostfs/hostfs_user.c b/fs/hostfs/hostfs_user.c
-index 97e9c40a94488..3bcd9f35e70b2 100644
---- a/fs/hostfs/hostfs_user.c
-+++ b/fs/hostfs/hostfs_user.c
-@@ -18,39 +18,48 @@
- #include "hostfs.h"
- #include <utime.h>
- 
--static void stat64_to_hostfs(const struct stat64 *buf, struct hostfs_stat *p)
-+static void statx_to_hostfs(const struct statx *buf, struct hostfs_stat *p)
- {
--	p->ino = buf->st_ino;
--	p->mode = buf->st_mode;
--	p->nlink = buf->st_nlink;
--	p->uid = buf->st_uid;
--	p->gid = buf->st_gid;
--	p->size = buf->st_size;
--	p->atime.tv_sec = buf->st_atime;
--	p->atime.tv_nsec = 0;
--	p->ctime.tv_sec = buf->st_ctime;
--	p->ctime.tv_nsec = 0;
--	p->mtime.tv_sec = buf->st_mtime;
--	p->mtime.tv_nsec = 0;
--	p->blksize = buf->st_blksize;
--	p->blocks = buf->st_blocks;
--	p->rdev.maj = os_major(buf->st_rdev);
--	p->rdev.min = os_minor(buf->st_rdev);
--	p->dev.maj = os_major(buf->st_dev);
--	p->dev.min = os_minor(buf->st_dev);
-+	p->ino = buf->stx_ino;
-+	p->mode = buf->stx_mode;
-+	p->nlink = buf->stx_nlink;
-+	p->uid = buf->stx_uid;
-+	p->gid = buf->stx_gid;
-+	p->size = buf->stx_size;
-+	p->atime.tv_sec = buf->stx_atime.tv_sec;
-+	p->atime.tv_nsec = buf->stx_atime.tv_nsec;
-+	p->ctime.tv_sec = buf->stx_ctime.tv_sec;
-+	p->ctime.tv_nsec = buf->stx_ctime.tv_nsec;
-+	p->mtime.tv_sec = buf->stx_mtime.tv_sec;
-+	p->mtime.tv_nsec = buf->stx_mtime.tv_nsec;
-+	if (buf->stx_mask & STATX_BTIME) {
-+		p->btime.tv_sec = buf->stx_btime.tv_sec;
-+		p->btime.tv_nsec = buf->stx_btime.tv_nsec;
-+	} else {
-+		memset(&p->btime, 0, sizeof(p->btime));
-+	}
-+	p->blksize = buf->stx_blksize;
-+	p->blocks = buf->stx_blocks;
-+	p->rdev.maj = buf->stx_rdev_major;
-+	p->rdev.min = buf->stx_rdev_minor;
-+	p->dev.maj = buf->stx_dev_major;
-+	p->dev.min = buf->stx_dev_minor;
- }
- 
- int stat_file(const char *path, struct hostfs_stat *p, int fd)
- {
--	struct stat64 buf;
-+	struct statx buf;
-+	int flags = AT_SYMLINK_NOFOLLOW;
- 
- 	if (fd >= 0) {
--		if (fstat64(fd, &buf) < 0)
--			return -errno;
--	} else if (lstat64(path, &buf) < 0) {
--		return -errno;
-+		flags |= AT_EMPTY_PATH;
-+		path = "";
- 	}
--	stat64_to_hostfs(&buf, p);
-+
-+	if ((statx(fd, path, flags, STATX_BASIC_STATS | STATX_BTIME, &buf)) < 0)
-+		return -errno;
-+
-+	statx_to_hostfs(&buf, p);
- 	return 0;
- }
- 
+@@ -1239,7 +1252,10 @@ static struct clk_regmap g12a_cpu_clk_atb_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_atb_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1273,7 +1289,10 @@ static struct clk_regmap g12a_cpu_clk_axi_div = {
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "cpu_clk_axi_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+-		.parent_hws = (const struct clk_hw *[]) { &g12a_cpu_clk.hw },
++		.parent_data = &(const struct clk_parent_data) {
++			.name = "cpu_clk",
++			.index = -1,
++		},
+ 		.num_parents = 1,
+ 	},
+ };
+@@ -1308,13 +1327,6 @@ static struct clk_regmap g12a_cpu_clk_trace_div = {
+ 		.name = "cpu_clk_trace_div",
+ 		.ops = &clk_regmap_divider_ro_ops,
+ 		.parent_data = &(const struct clk_parent_data) {
+-			/*
+-			 * Note:
+-			 * G12A and G12B have different cpu_clks (with
+-			 * different struct clk_hw). We fallback to the global
+-			 * naming string mechanism so cpu_clk_trace_div picks
+-			 * up the appropriate one.
+-			 */
+ 			.name = "cpu_clk",
+ 			.index = -1,
+ 		},
 -- 
 2.39.5
 
