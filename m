@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F37EA7FF0B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9976A7FF55
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D881C16E2C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:10:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C3E63B25C4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A100269CE6;
-	Tue,  8 Apr 2025 11:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46326269CEB;
+	Tue,  8 Apr 2025 11:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPPgMjfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4lGkbkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46537264614;
-	Tue,  8 Apr 2025 11:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E7E268C70;
+	Tue,  8 Apr 2025 11:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110581; cv=none; b=JKdizJXl0jiiB+14cyZ6BCJtSALyfOTW/C20d9hYleRWA8u1iePK6a4Pen7xv2udOtauZjXLtJ3xMv0PIG3aQI73b8VLb/R+28TfjNJ9IzfscOo5+eaUABFH9DPbrybEIiICEmeLWtp2aESfJIJanczugH3fube4DkfN1MH4cKo=
+	t=1744110584; cv=none; b=ipCzCYvOyFLFNgOloD+2x454gTcn5Xi7oLMXS1fXPOf9rAUXRA2mg31hrKQZhek+SXGa9XF2X/6iabjRrejOU3Xn2sMjKJAhXzURVFj2TFFv9aEl9B5yO427HA1DF+DVPW6TB1LzEMnoO2jjm8CpE41fe8HUrTnVoyJ4UX/977k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110581; c=relaxed/simple;
-	bh=l5y8zi8bOBY8I8yZVBxxTUJhcQcWpg2/wTSHTgtHBvw=;
+	s=arc-20240116; t=1744110584; c=relaxed/simple;
+	bh=b3CFFbMca/9AD/UdcKGY6VqnwrqONDmTRWmFQIAv5x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtZ/5gYt4qVpQfXiZ2U9+sqZmgi8+b0f2qdDkf4yfo4sePWkkprO6eg19NG54EOJAmz/2cLiGITWPEyamI0dhmoyLRYYevpq6hhGzSpRR+cZBTgylQBLcqFIR8F7HfKhzlllDU0UXsSuyx5VZ0amScfzfg3tVRd5C7mbWgek3cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPPgMjfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF58C4CEE5;
-	Tue,  8 Apr 2025 11:09:40 +0000 (UTC)
+	 MIME-Version; b=edjcIy9eMvwZyqAgBGthZzLSg32tAWnuvO3pKJeTNJeYAmn4WwNechYHS+SXOy3yhAmOpPEuEIDLuZllUvejy7hrR3JlD9Y42OAC6JvSR9xunXbnJiHYxhTFutbrfNZa00avXKxxJmkAH3UVIXlVjxJSJtlo5rcrcMDaBPvnM1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4lGkbkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FE3C4CEE5;
+	Tue,  8 Apr 2025 11:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110581;
-	bh=l5y8zi8bOBY8I8yZVBxxTUJhcQcWpg2/wTSHTgtHBvw=;
+	s=korg; t=1744110583;
+	bh=b3CFFbMca/9AD/UdcKGY6VqnwrqONDmTRWmFQIAv5x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPPgMjfZnWLCbjRa5oMSOD6hy+lkmKoa545ecn5yznB5tNsBHxMB1+rx0KA/2HmVB
-	 BC/pQPQwU4n7YG7wtl82JqumH1vjCnHjfpG9qkoIPAGHM2dRo8zW2sK68RcIZtBlsD
-	 D2Bf77O5Wh9MvG91LtHQ8ld9k71OaKg7/A1WORgY=
+	b=j4lGkbkmrEDRoXaU1T8kmZUrPncVB8Xfw1hiaMVn2yfFyTN30OZG/84F+5JZlCjkM
+	 H6COeO3z4LDlWxL9D/f/zNS+4Sz4Bo3WmGdqgy4TxGxSefQ+3SFXQL6nI40xPHSuZW
+	 2RAZXzNTJ0Qe7SzGrm8QNEjxX4wynyVExIqXcgo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Renesas Test Team via Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 116/731] arm64: dts: renesas: r8a774c0: Re-add voltages to OPP table
-Date: Tue,  8 Apr 2025 12:40:13 +0200
-Message-ID: <20250408104916.975814286@linuxfoundation.org>
+Subject: [PATCH 6.14 117/731] arm64: dts: renesas: r8a77990: Re-add voltages to OPP table
+Date: Tue,  8 Apr 2025 12:40:14 +0200
+Message-ID: <20250408104916.998501213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit ea34dd0f029f4a30c055ddb6daaf7a6f3bee21ed ]
+[ Upstream commit c193f877770291f30d1e00bc6f2bb0757fe7a532 ]
 
 When CONFIG_ENERGY_MODEL=y:
 
@@ -86,18 +86,18 @@ same efficiency, and the energy model always picks the one with the
 highest clock rate.
 
 Reported-by: Renesas Test Team via Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Fixes: 554edc3e9239bb81 ("arm64: dts: renesas: r8a774c0: Remove bogus voltages from OPP table")
+Fixes: fb76b0fae3ca8803 ("arm64: dts: renesas: r8a77990: Remove bogus voltages from OPP table")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/2046da75f3db95b62f86c0482063c4d04c2b47d5.1728377971.git.geert+renesas@glider.be
+Link: https://lore.kernel.org/80890bc244670bc3e8d6fc89fb2c3cb23e7025f5.1728377971.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a774c0.dtsi | 4 ++++
+ arch/arm64/boot/dts/renesas/r8a77990.dtsi | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
-index 7655d5e3a0341..522e20924e94a 100644
---- a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
+diff --git a/arch/arm64/boot/dts/renesas/r8a77990.dtsi b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
+index 233af3081e84a..50fbf7251665a 100644
+--- a/arch/arm64/boot/dts/renesas/r8a77990.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
 @@ -47,16 +47,20 @@
  	cluster1_opp: opp-table-1 {
  		compatible = "operating-points-v2";
