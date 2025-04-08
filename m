@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72686A807DF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B865A80AAB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5361C8A710D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B1E67AC62A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992B026A087;
-	Tue,  8 Apr 2025 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA527C143;
+	Tue,  8 Apr 2025 12:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcvGb2BS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un5u5FcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54748268FE4;
-	Tue,  8 Apr 2025 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375227C149;
+	Tue,  8 Apr 2025 12:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115362; cv=none; b=Zf5r3Ou2Ms7uCPuXHZL7fNzOCBy5gefGzjC70CndgE0qsREd2tlXQINi4z4W4kqIWEN4xV+amFn5X3ToXwnr6Waxf+4sCStqyd7wxgaorqqXrop7GZM/S/4ry7T42hsMGmFBieWqrj2BrT0ReCcdvrUKQZYuHtLAhEt4NJ+K6n4=
+	t=1744116962; cv=none; b=j8h6KStQYmSJ/NOGBihVdWNTq7So5ZP3iIPCoJyCO6cknI62n7Yd7F4LBw3ILiNgqM0BEQGTCYvbzvTskuLWUSjINvotyKvbmO+Ja2UzoUsRNA6+Wtnpr1+v1dbcz0lNZgHw6S1bldrQuGCQpEAAiTWdBs1+xszMcI4asRJQui0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115362; c=relaxed/simple;
-	bh=B7yiKDI99ekNcfizjk0sSYZiQD4e39dm36gLGHPLrio=;
+	s=arc-20240116; t=1744116962; c=relaxed/simple;
+	bh=4WXPYN6O5JpqWP9hGOl7W39oj5ed8EBsixsMEcNzpqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y/afGegWZWHN9BsE421tYMYdYSPrVqr0Pmc5hYXvJgK9k24lcRNFthb9pZvYMP1uRX6E8mwcooNgHzyP44Io0FMnej9toqBvoDHqoBCWVZTB8oXivVpPq7Edu/jUC+0PLYNi+NP4elSRVJsZ9hLoTejXh3424P1gcxUNaIYsjbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcvGb2BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5EDC4CEE5;
-	Tue,  8 Apr 2025 12:29:21 +0000 (UTC)
+	 MIME-Version; b=m+Qow9+NvGQFkby4qGn67jfSHHwsvnRRkv2yKz6j3aGJVQtMwpkYvqZS0cz34CkbQSZ41tGXdDbGnmnlGOpARyCx4czhcpkQV6N+z3C6JWALcQFIAMQfmszcK5Oi5WAgqw6ZV/uMqxry2v2ij29fTpK3aaTSwRpoUHzDCFSm1Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un5u5FcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B440EC4CEEE;
+	Tue,  8 Apr 2025 12:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115362;
-	bh=B7yiKDI99ekNcfizjk0sSYZiQD4e39dm36gLGHPLrio=;
+	s=korg; t=1744116962;
+	bh=4WXPYN6O5JpqWP9hGOl7W39oj5ed8EBsixsMEcNzpqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jcvGb2BS8ion/JExm7USys2XHgB8YBHhgSv/++L1btk+0aeD5cP11TU1aznzsgkbp
-	 O4oFZ0u2T4kstZi42937bDIsbEwxRjAAUayXpgy+z1ophRSaQOSr5Csy09MJew+1/R
-	 YwV0P9ppwjPejiFdbNev5CXpvSWJyWDzGV2Csv2s=
+	b=Un5u5FcEbEvbgoqP0rdPRPPslzdpaeggddWgBQLuvvVeuoqyDgUcp+OehE06rGm4P
+	 t+RUpLAxnk+8cFT2rFbGMFhNhkuzleGB/qRrR1zLf8+w1Ytc3u2SofrFXbU6oNttAa
+	 hbpoG6JqgsbTBabY7IVAsYukwCta93+0BPDc+mNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Holer <vlastimil.holer@gmail.com>,
-	Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>,
-	Seyediman Seyedarab <ImanDevel@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.13 446/499] platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 332/423] udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
 Date: Tue,  8 Apr 2025 12:50:58 +0200
-Message-ID: <20250408104902.352948627@linuxfoundation.org>
+Message-ID: <20250408104853.564360654@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +61,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 2b9f84e7dc863afd63357b867cea246aeedda036 upstream.
+[ Upstream commit 5a465a0da13ee9fbd7d3cd0b2893309b0fe4b7e3 ]
 
-T495, T495s, and E560 laptops have the FANG+FANW ACPI methods
-(therefore fang_handle and fanw_handle are not NULL) but they do not
-actually work, which results in a "No such device or address" error.
-The DSDT table code for the FANG+FANW methods doesn't seem to do
-anything special regarding the fan being secondary. The bug was
-introduced in commit 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add
-Thinkpad Edge E531 fan support"), which added a new fan control method
-via the FANG+FANW ACPI methods.
+__udp_enqueue_schedule_skb() has the following condition:
 
-Add a quirk for T495, T495s, and E560 to avoid the FANG+FANW methods.
-Fan access and control is restored after forcing the legacy non-ACPI
-fan control method by setting both fang_handle and fanw_handle to NULL.
+  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+          goto drop;
 
-Reported-by: Vlastimil Holer <vlastimil.holer@gmail.com>
-Fixes: 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219643
-Cc: stable@vger.kernel.org
-Tested-by: Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>
-Reviewed-by: Kurt Borja <kuurtb@gmail.com>
-Signed-off-by: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Co-developed-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Link: https://lore.kernel.org/r/20250324152442.106113-1-ImanDevel@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sk->sk_rcvbuf is initialised by net.core.rmem_default and later can
+be configured by SO_RCVBUF, which is limited by net.core.rmem_max,
+or SO_RCVBUFFORCE.
+
+If we set INT_MAX to sk->sk_rcvbuf, the condition is always false
+as sk->sk_rmem_alloc is also signed int.
+
+Then, the size of the incoming skb is added to sk->sk_rmem_alloc
+unconditionally.
+
+This results in integer overflow (possibly multiple times) on
+sk->sk_rmem_alloc and allows a single socket to have skb up to
+net.core.udp_mem[1].
+
+For example, if we set a large value to udp_mem[1] and INT_MAX to
+sk->sk_rcvbuf and flood packets to the socket, we can see multiple
+overflows:
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 7956736  <-- (7956736 << 12) bytes > INT_MAX * 15
+                                             ^- PAGE_SHIFT
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -1757018048 ...    <-- flipping the sign repeatedly
+         skmem:(r2537949248,rb2147483646,t0,tb212992,f1984,w0,o0,bl0,d0)
+
+Previously, we had a boundary check for INT_MAX, which was removed by
+commit 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc").
+
+A complete fix would be to revert it and cap the right operand by
+INT_MAX:
+
+  rmem = atomic_add_return(size, &sk->sk_rmem_alloc);
+  if (rmem > min(size + (unsigned int)sk->sk_rcvbuf, INT_MAX))
+          goto uncharge_drop;
+
+but we do not want to add the expensive atomic_add_return() back just
+for the corner case.
+
+Casting rmem to unsigned int prevents multiple wraparounds, but we still
+allow a single wraparound.
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> 12
+
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -2147482816 ...   <-- INT_MAX + 831 bytes
+         skmem:(r2147484480,rb2147483646,t0,tb212992,f3264,w0,o0,bl0,d14468947)
+
+So, let's define rmem and rcvbuf as unsigned int and check skb->truesize
+only when rcvbuf is large enough to lower the overflow possibility.
+
+Note that we still have a small chance to see overflow if multiple skbs
+to the same socket are processed on different core at the same time and
+each size does not exceed the limit but the total size does.
+
+Note also that we must ignore skb->truesize for a small buffer as
+explained in commit 363dc73acacb ("udp: be less conservative with
+sock rmem accounting").
+
+Fixes: 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250401184501.67377-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/ipv4/udp.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -8795,6 +8795,7 @@ static const struct attribute_group fan_
- #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
- #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
- #define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
-+#define TPACPI_FAN_NOACPI	0x0080		/* Don't use ACPI methods even if detected */
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 8da74dc63061c..4f52d220f4d0c 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1570,17 +1570,25 @@ static int udp_rmem_schedule(struct sock *sk, int size)
+ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct sk_buff_head *list = &sk->sk_receive_queue;
+-	int rmem, err = -ENOMEM;
++	unsigned int rmem, rcvbuf;
+ 	spinlock_t *busy = NULL;
+-	int size, rcvbuf;
++	int size, err = -ENOMEM;
  
- static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
-@@ -8825,6 +8826,9 @@ static const struct tpacpi_quirk fan_qui
- 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
- 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
- 	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
-+	TPACPI_Q_LNV3('R', '0', '0', TPACPI_FAN_NOACPI),/* E560 */
-+	TPACPI_Q_LNV3('R', '1', '2', TPACPI_FAN_NOACPI),/* T495 */
-+	TPACPI_Q_LNV3('R', '1', '3', TPACPI_FAN_NOACPI),/* T495s */
- };
- 
- static int __init fan_init(struct ibm_init_struct *iibm)
-@@ -8876,6 +8880,13 @@ static int __init fan_init(struct ibm_in
- 		tp_features.fan_ctrl_status_undef = 1;
- 	}
- 
-+	if (quirks & TPACPI_FAN_NOACPI) {
-+		/* E560, T495, T495s */
-+		pr_info("Ignoring buggy ACPI fan access method\n");
-+		fang_handle = NULL;
-+		fanw_handle = NULL;
-+	}
+-	/* Immediately drop when the receive queue is full.
+-	 * Always allow at least one packet.
+-	 */
+ 	rmem = atomic_read(&sk->sk_rmem_alloc);
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+-	if (rmem > rcvbuf)
+-		goto drop;
++	size = skb->truesize;
 +
- 	if (gfan_handle) {
- 		/* 570, 600e/x, 770e, 770x */
- 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
++	/* Immediately drop when the receive queue is full.
++	 * Cast to unsigned int performs the boundary check for INT_MAX.
++	 */
++	if (rmem + size > rcvbuf) {
++		if (rcvbuf > INT_MAX >> 1)
++			goto drop;
++
++		/* Always allow at least one packet for small buffer. */
++		if (rmem > rcvbuf)
++			goto drop;
++	}
+ 
+ 	/* Under mem pressure, it might be helpful to help udp_recvmsg()
+ 	 * having linear skbs :
+@@ -1590,10 +1598,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 	if (rmem > (rcvbuf >> 1)) {
+ 		skb_condense(skb);
+-
++		size = skb->truesize;
+ 		busy = busylock_acquire(sk);
+ 	}
+-	size = skb->truesize;
++
+ 	udp_set_dev_scratch(skb);
+ 
+ 	atomic_add(size, &sk->sk_rmem_alloc);
+-- 
+2.39.5
+
 
 
 
