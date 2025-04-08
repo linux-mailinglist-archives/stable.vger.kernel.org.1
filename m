@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-129885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1013A80179
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7773A80216
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F1C7A6339
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E3646103F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F3F216E30;
-	Tue,  8 Apr 2025 11:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6ED268FE7;
+	Tue,  8 Apr 2025 11:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRUDi0g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yML4odwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548FF224239;
-	Tue,  8 Apr 2025 11:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A6268FD5;
+	Tue,  8 Apr 2025 11:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112240; cv=none; b=dFiY8pcApjfPtlsUceZgYGyo5Gme08cWDYgvHxGm1RJWMipUNIJFdgS3SWPhWvhO4H6MLK4HXpnBYvxDglYAhYBhetNNN/8/zPBdeTszDtuXdb0FHJoEs+SymHFnz8RNLDy/Yy9GuvEdzCsaQj4GbTzDwfGTFmxLK3T6BPG40Sc=
+	t=1744112251; cv=none; b=UaXGJWQWtntMtUBmU9MGlvNiQD0/LrDGhc7Ek1/0AzlYoFthF8O2cp2n6Kd+z2uRI0FY7/qeunv6NmE7eaK3nlUhNRNYIiseGBTzdAKsq1yxhsxlPKnyobg4ciINLEGPuaXc8DU3lAHeBSXi/O4syLkJfBib7/4Wm+1Pq23JCbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112240; c=relaxed/simple;
-	bh=JmqMYSJ3z+CuZ8O46RNQh6jAe5HT2emys/sTaECRZQ0=;
+	s=arc-20240116; t=1744112251; c=relaxed/simple;
+	bh=/eqPrk0l1/q6z+QHMfleydlp+sTRFl6TohciS+cEWqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEZyuYmlZRBGNFvxB7/ncDl7ooVQ3M7QuHMeqGN7Q+M/9w+V8MCEPWEOhMYPy7y1C+yWX3u5QFIVbXiCUibgaCTRSrns7GzIsk9r2ukstKODxNmpRkxoITc+3Me9IjLLmzUR1hDxaVdBJWbD6qrckYVN9sTQF/oliPb+Sh7D1yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRUDi0g3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8E1C4CEE5;
-	Tue,  8 Apr 2025 11:37:19 +0000 (UTC)
+	 MIME-Version; b=DmtqS98Eo9a7NmWVFzBjXfjKo8Hos5PD91yLM/Cas/K5TyDMHVe+SKo0q5NvEwwtekzR/zjXqqVq8yMetNkdEySPOAZt96OZPeZ4cQPAROrekeAaoEgn6nAEa5XnjULq4WKbMMr6f8hVccT11oSg0JKb0wiSX8F4omfhZo8puD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yML4odwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90141C4CEE7;
+	Tue,  8 Apr 2025 11:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112240;
-	bh=JmqMYSJ3z+CuZ8O46RNQh6jAe5HT2emys/sTaECRZQ0=;
+	s=korg; t=1744112250;
+	bh=/eqPrk0l1/q6z+QHMfleydlp+sTRFl6TohciS+cEWqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRUDi0g3+TxaLj+bjLlnrYOzL6dLH2WnQNaYmgFeUv4KcTwLozlDSFgxe7KBBugOI
-	 a0v6XEQ9alfL1JTAz0ZaKg0JbY0487Ri6fAVARWzbwyji7TLehxavR7zQia8GZJl8i
-	 yhjREcDqsN7XuAhVNM+7/++f/QVmJVeAmaEGb/us=
+	b=yML4odwU6IrLl8OywgERHJGViaF5sE9AyMUh7DFDndKGMtdAN8d0UwISRQnHn9KqW
+	 dysMX/ElraCW4QdF7670kbkvMY7Wd0k8XqbDRyuvkS9ILYOD5+ef5RRGHdZj22nJqY
+	 WR0vr35PUq/OV+e8thUTtfJcOIWke8d5lSJZr2WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Murphy <lists@colorremedies.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 720/731] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
-Date: Tue,  8 Apr 2025 12:50:17 +0200
-Message-ID: <20250408104931.022669355@linuxfoundation.org>
+	syzbot+1c486d0b62032c82a968@syzkaller.appspotmail.com,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.14 721/731] exec: fix the racy usage of fs_struct->in_exec
+Date: Tue,  8 Apr 2025 12:50:18 +0200
+Message-ID: <20250408104931.045028901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -73,118 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit c11bcbc0a517acf69282c8225059b2a8ac5fe628 upstream.
+commit af7bb0d2ca459f15cb5ca604dab5d9af103643f0 upstream.
 
-Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
-the per-CPU acomp_ctx mutex.  crypto_free_acomp() then holds scomp_lock
-(through crypto_exit_scomp_ops_async()).
+check_unsafe_exec() sets fs->in_exec under cred_guard_mutex, then execve()
+paths clear fs->in_exec lockless. This is fine if exec succeeds, but if it
+fails we have the following race:
 
-On the other hand, crypto_alloc_acomp_node() holds the scomp_lock (through
-crypto_scomp_init_tfm()), and then allocates memory.  If the allocation
-results in reclaim, we may attempt to hold the per-CPU acomp_ctx mutex.
+	T1 sets fs->in_exec = 1, fails, drops cred_guard_mutex
 
-The above dependencies can cause an ABBA deadlock.  For example in the
-following scenario:
+	T2 sets fs->in_exec = 1
 
-(1) Task A running on CPU #1:
-    crypto_alloc_acomp_node()
-      Holds scomp_lock
-      Enters reclaim
-      Reads per_cpu_ptr(pool->acomp_ctx, 1)
+	T1 clears fs->in_exec
 
-(2) Task A is descheduled
+	T2 continues with fs->in_exec == 0
 
-(3) CPU #1 goes offline
-    zswap_cpu_comp_dead(CPU #1)
-      Holds per_cpu_ptr(pool->acomp_ctx, 1))
-      Calls crypto_free_acomp()
-      Waits for scomp_lock
+Change fs/exec.c to clear fs->in_exec with cred_guard_mutex held.
 
-(4) Task A running on CPU #2:
-      Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
-      DEADLOCK
-
-Since there is no requirement to call crypto_free_acomp() with the per-CPU
-acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the mutex is
-unlocked.  Also move the acomp_request_free() and kfree() calls for
-consistency and to avoid any potential sublte locking dependencies in the
-future.
-
-With this, only setting acomp_ctx fields to NULL occurs with the mutex
-held.  This is similar to how zswap_cpu_comp_prepare() only initializes
-acomp_ctx fields with the mutex held, after performing all allocations
-before holding the mutex.
-
-Opportunistically, move the NULL check on acomp_ctx so that it takes place
-before the mutex dereference.
-
-Link: https://lkml.kernel.org/r/20250226185625.2672936-1-yosry.ahmed@linux.dev
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@google.com/
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Tested-by: Nhat Pham <nphamcs@gmail.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Chris Murphy <lists@colorremedies.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+1c486d0b62032c82a968@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001f.GAE@google.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250324160003.GA8878@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zswap.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ fs/exec.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -881,18 +881,32 @@ static int zswap_cpu_comp_dead(unsigned
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
-+	struct acomp_req *req;
-+	struct crypto_acomp *acomp;
-+	u8 *buffer;
-+
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return 0;
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1229,13 +1229,12 @@ int begin_new_exec(struct linux_binprm *
+ 	 */
+ 	bprm->point_of_no_return = true;
  
- 	mutex_lock(&acomp_ctx->mutex);
--	if (!IS_ERR_OR_NULL(acomp_ctx)) {
--		if (!IS_ERR_OR_NULL(acomp_ctx->req))
--			acomp_request_free(acomp_ctx->req);
--		acomp_ctx->req = NULL;
--		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
--			crypto_free_acomp(acomp_ctx->acomp);
--		kfree(acomp_ctx->buffer);
--	}
-+	req = acomp_ctx->req;
-+	acomp = acomp_ctx->acomp;
-+	buffer = acomp_ctx->buffer;
-+	acomp_ctx->req = NULL;
-+	acomp_ctx->acomp = NULL;
-+	acomp_ctx->buffer = NULL;
- 	mutex_unlock(&acomp_ctx->mutex);
+-	/*
+-	 * Make this the only thread in the thread group.
+-	 */
++	/* Make this the only thread in the thread group */
+ 	retval = de_thread(me);
+ 	if (retval)
+ 		goto out;
+-
++	/* see the comment in check_unsafe_exec() */
++	current->fs->in_exec = 0;
+ 	/*
+ 	 * Cancel any io_uring activity across execve
+ 	 */
+@@ -1497,6 +1496,8 @@ static void free_bprm(struct linux_binpr
+ 	}
+ 	free_arg_pages(bprm);
+ 	if (bprm->cred) {
++		/* in case exec fails before de_thread() succeeds */
++		current->fs->in_exec = 0;
+ 		mutex_unlock(&current->signal->cred_guard_mutex);
+ 		abort_creds(bprm->cred);
+ 	}
+@@ -1618,6 +1619,10 @@ static void check_unsafe_exec(struct lin
+ 	 * suid exec because the differently privileged task
+ 	 * will be able to manipulate the current directory, etc.
+ 	 * It would be nice to force an unshare instead...
++	 *
++	 * Otherwise we set fs->in_exec = 1 to deny clone(CLONE_FS)
++	 * from another sub-thread until de_thread() succeeds, this
++	 * state is protected by cred_guard_mutex we hold.
+ 	 */
+ 	n_fs = 1;
+ 	spin_lock(&p->fs->lock);
+@@ -1862,7 +1867,6 @@ static int bprm_execve(struct linux_binp
  
-+	/*
-+	 * Do the actual freeing after releasing the mutex to avoid subtle
-+	 * locking dependencies causing deadlocks.
-+	 */
-+	if (!IS_ERR_OR_NULL(req))
-+		acomp_request_free(req);
-+	if (!IS_ERR_OR_NULL(acomp))
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
-+
- 	return 0;
- }
+ 	sched_mm_cid_after_execve(current);
+ 	/* execve succeeded */
+-	current->fs->in_exec = 0;
+ 	current->in_execve = 0;
+ 	rseq_execve(current);
+ 	user_events_execve(current);
+@@ -1881,7 +1885,6 @@ out:
+ 		force_fatal_sig(SIGSEGV);
  
+ 	sched_mm_cid_after_execve(current);
+-	current->fs->in_exec = 0;
+ 	current->in_execve = 0;
+ 
+ 	return retval;
 
 
 
