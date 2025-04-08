@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FA4A80180
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E054A8030B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1101188C2A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD6319E32D6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A592676CF;
-	Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB98267F5B;
+	Tue,  8 Apr 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzpDoLpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f291vyEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEC19AD5C;
-	Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3907C26461D;
+	Tue,  8 Apr 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112166; cv=none; b=ayuOdV1d8b5qw3DrVSYCuksZFOSNVpLVI0PJ+iZTHTF1fk9LWARt848FsMFWy7cRudda/uoF72qAwcXf2SH2CjLO7jCZ6PzF+SM5VDsQTtv+rmiYEfgtFBxzR/zuCPD6QycR6iRL65VSINVlVULAucMs0QXX+orkTeThtEOTImE=
+	t=1744112937; cv=none; b=Ji0WYAlZpg6Rcaesrm6b8rJG01jh9KxupdOoiEGSoe/aNmnjTGbH8CXY/OYwwiBVjc0J7vzYOIkULOyVnoxseJiDvIdsa0zuX97l8cZOvbo3VaXj9sYnB2W+iGER33aRxJH2F8VsByD8wO45rB1gy6asO15W3HthxIVBlWBenu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112166; c=relaxed/simple;
-	bh=AMrZ2NS+erbzvc3i50a9Iyo+lELJzryjDnzp5Dn02QQ=;
+	s=arc-20240116; t=1744112937; c=relaxed/simple;
+	bh=KyPFHBOrZau6qMhoQ5CvglrY3e8udmZPd4kT5p1FgJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHMTKti6RBUvzeZDieVszQMhoBCDYPsAotctty5HufS6ZFzfxH0fOzWV/+w1johwDiJ9EIIRVSDf6aYN/k2daZ+oMpJ4WPsRYah1xz8dRqr/era5m3/YG1pndRQW8hK0d0OXOui6yLRPdZ1Ktu9XAok62c/noaU4gz/MtoGv1nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzpDoLpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9425BC4CEE7;
-	Tue,  8 Apr 2025 11:36:05 +0000 (UTC)
+	 MIME-Version; b=dKdiBgA26E+yhwiCGlKe/Ke93JrYz2Y5p8kle8kKz4DV0rTLowYF9hz3eZZEweYiRZuoJsGbPvYjZRqqwV927yeHU8B3fsRxa5ipagojQR5jH7Bx01mFq52FyXnQj4QuBx2APw+VaxIjXiGtKNUYbFGWLNl/gv0KrZ/+R+NYJ/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f291vyEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC78FC4CEEB;
+	Tue,  8 Apr 2025 11:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112165;
-	bh=AMrZ2NS+erbzvc3i50a9Iyo+lELJzryjDnzp5Dn02QQ=;
+	s=korg; t=1744112937;
+	bh=KyPFHBOrZau6qMhoQ5CvglrY3e8udmZPd4kT5p1FgJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzpDoLpxN0kNA7NUVwXE6L+Lm8VSaosWm+U/S5Rd9DPj1x46FLo+AlrKPOgDVEv+B
-	 C7YyVQC1kdf5rIF4KICyWlqBi/QkQrKVbeOdoP1pW+8JGrDLIx4u7b+uoWYX0Ron1I
-	 ok0dtBRIPKqKf/S0/UCu2ONaJMUdmHWTj/yltqcY=
+	b=f291vyEc5tIlnXFPjyel6WRac2ZgAs6Y26gqXX659DH5ZcGZ88TdA/aDQk1VgyXR7
+	 FbarLFUAGoh/2BHxl1OGWAN8KiYsl5ZefF40uf552GDRf7EvtFNH0xZQULlxnklung
+	 A9jmQGSpfwV4Hkl8d8xE1N713DT7BU1Lgujha9HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 700/731] ksmbd: fix use-after-free in ksmbd_sessions_deregister()
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 214/279] ksmbd: use aead_request_free to match aead_request_alloc
 Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104930.550813284@linuxfoundation.org>
+Message-ID: <20250408104832.127476630@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 15a9605f8d69dc85005b1a00c31a050b8625e1aa upstream.
+[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
 
-In multichannel mode, UAF issue can occur in session_deregister
-when the second channel sets up a session through the connection of
-the first channel. session that is freed through the global session
-table can be accessed again through ->sessions of connection.
+Use aead_request_free() instead of kfree() to properly free memory
+allocated by aead_request_alloc(). This ensures sensitive crypto data
+is zeroed before being freed.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -230,6 +230,9 @@ void ksmbd_sessions_deregister(struct ks
- 			if (!ksmbd_chann_del(conn, sess) &&
- 			    xa_empty(&sess->ksmbd_chann_list)) {
- 				hash_del(&sess->hlist);
-+				down_write(&conn->session_lock);
-+				xa_erase(&conn->sessions, sess->id);
-+				up_write(&conn->session_lock);
- 				ksmbd_session_destroy(sess);
- 			}
- 		}
+diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
+index 3b776b5de7db6..647692ca78a28 100644
+--- a/fs/ksmbd/auth.c
++++ b/fs/ksmbd/auth.c
+@@ -1211,7 +1211,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ free_sg:
+ 	kfree(sg);
+ free_req:
+-	kfree(req);
++	aead_request_free(req);
+ free_ctx:
+ 	ksmbd_release_crypto_ctx(ctx);
+ 	return rc;
+-- 
+2.39.5
+
 
 
 
