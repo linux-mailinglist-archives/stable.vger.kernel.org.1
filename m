@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-129223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A26A7FEA2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443C6A7FF16
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3A05444087
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBEB3A5CED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09037268FEF;
-	Tue,  8 Apr 2025 11:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C797268FE9;
+	Tue,  8 Apr 2025 11:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXwyKIqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnHy2+eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB614268FE9;
-	Tue,  8 Apr 2025 11:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F672135CD;
+	Tue,  8 Apr 2025 11:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110450; cv=none; b=rzjCYUrisQuGDXCU6alTy6ozg+GlaoVz093lLhVqU9R6kJwt8HAipLMDfxcCScSZKU6a6Yec+a1hi47aMTpSkGHHeOFSh1YscDMsS1cTHxii6zDtUmPn6TgIMVRULaICN/zSPvgT4l5xmV6bDOZDKJJoL7qWp4kQ1CsqDTgMl80=
+	t=1744110456; cv=none; b=pmab+ntyIslKt+ltWNtD5vCuWvdJNmOXZ1kqqQ1qUf1NDrrxOOWb/Mhb3ojwOwIAg5bcIGwtJm96rpFa1H8oySjN2CC4/3sKW8Cwka2Ev/ppebGOnJl2hHBCf7uwjCxyPPmg4I+13/aVJoBNaEhEeYuqwUJc4CCKOpG6enhKzR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110450; c=relaxed/simple;
-	bh=uJfWc63nVws9rW32hfRGy1IRHNqdUGORuacrqi3GJB0=;
+	s=arc-20240116; t=1744110456; c=relaxed/simple;
+	bh=2z4IIA0dd3s1LhqIAzYeC5YsM6CQ5BkPuoMqRpzA/WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqpbuJ/P4YEy4E5ZXjwxXm4rlaXzHt6tjNCv/IMQByrragLM3QRfaYM8KDqKgqxQ9r0EY12JeeB3u8Q88gFE2Y0d3XyKVoJYMq5tNybnM2HsUfrvIGioWGFJHKoCNa2UCubc5s5DkOxFhcxqCtudIWHDbfRfI/RW0l2/1x3B8fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXwyKIqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA82C4CEE5;
-	Tue,  8 Apr 2025 11:07:29 +0000 (UTC)
+	 MIME-Version; b=Z2GuGJ+rDb4pf0iGTCGZ5eJj69Ur1kPtxyBgaSAIxJ38W8HwKdELqvXOuMo5/it4jK7AQ3GMiOuvePqPg2VvrkqItP5n92QjjNqGy3iZJWD+gCU02NtC5jzpWpyg9w3jwUeS/D1NxTS3ZOS6KKxnClxS56b4p/PHOTf60l21Rro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnHy2+eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4092FC4CEE5;
+	Tue,  8 Apr 2025 11:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110450;
-	bh=uJfWc63nVws9rW32hfRGy1IRHNqdUGORuacrqi3GJB0=;
+	s=korg; t=1744110455;
+	bh=2z4IIA0dd3s1LhqIAzYeC5YsM6CQ5BkPuoMqRpzA/WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXwyKIqhLoj0Ewnj/jzYklfm5eckiJtRsFJE38+QiNr8oBlns8pHwpy7GqEKp9LUi
-	 bwUYfBJ7imVC6i5PSzpYIdP66jbjwssB0yh3wn4SWSkehW2M8cHEJDovIAPkjY30VJ
-	 DUh8jRIiVm6q4zbZafov+NErAUNwHLX4LURYwIHc=
+	b=DnHy2+eUSFGBhA6gcMoiEAwEi+0B90BQkrGEiqRVyAogojkKErHT6+ghALl2AasGn
+	 XTOQfqvbWEg4i98z9Jn5ZbIQyh3WVRt4WByEYZXoFjbLO1W4zkFgHAWd4x2QqA0zjl
+	 K1gt+PqA2Fdgzak6+xrmhlmTo+UUJ9rxWh5+fyV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Maud Spierings <maudspierings@gocontroll.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 068/731] ASoC: simple-card-utils: Dont use __free(device_node) at graph_util_parse_dai()
-Date: Tue,  8 Apr 2025 12:39:25 +0200
-Message-ID: <20250408104915.854167967@linuxfoundation.org>
+Subject: [PATCH 6.14 069/731] dt-bindings: vendor-prefixes: add GOcontroll
+Date: Tue,  8 Apr 2025 12:39:26 +0200
+Message-ID: <20250408104915.876890641@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,62 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-[ Upstream commit de74ec718e0788e1998eb7289ad07970e27cae27 ]
+[ Upstream commit 5f0d2de417166698c8eba433b696037ce04730da ]
 
-commit 419d1918105e ("ASoC: simple-card-utils: use __free(device_node) for
-device node") uses __free(device_node) for dlc->of_node, but we need to
-keep it while driver is in use.
+GOcontroll produces embedded linux systems and IO modules to use in
+these systems, add its prefix.
 
-Don't use __free(device_node) in graph_util_parse_dai().
-
-Fixes: 419d1918105e ("ASoC: simple-card-utils: use __free(device_node) for device node")
-Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Reported-by: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Tested-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
-Link: https://patch.msgid.link/87eczisyhh.wl-kuninori.morimoto.gx@renesas.com
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Link: https://patch.msgid.link/20250226-initial_display-v2-2-23fafa130817@gocontroll.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/generic/simple-card-utils.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index c2445c5ccd84c..32efb30c55d69 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1077,6 +1077,7 @@ static int graph_get_dai_id(struct device_node *ep)
- int graph_util_parse_dai(struct device *dev, struct device_node *ep,
- 			 struct snd_soc_dai_link_component *dlc, int *is_single_link)
- {
-+	struct device_node *node;
- 	struct of_phandle_args args = {};
- 	struct snd_soc_dai *dai;
- 	int ret;
-@@ -1084,7 +1085,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
- 	if (!ep)
- 		return 0;
- 
--	struct device_node *node __free(device_node) = of_graph_get_port_parent(ep);
-+	node = of_graph_get_port_parent(ep);
- 
- 	/*
- 	 * Try to find from DAI node
-@@ -1126,8 +1127,10 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
- 	 *    if he unbinded CPU or Codec.
- 	 */
- 	ret = snd_soc_get_dlc(&args, dlc);
--	if (ret < 0)
-+	if (ret < 0) {
-+		of_node_put(node);
- 		return ret;
-+	}
- 
- parse_dai_end:
- 	if (is_single_link)
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 5079ca6ce1d1e..b5979832ddce6 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -593,6 +593,8 @@ patternProperties:
+     description: GlobalTop Technology, Inc.
+   "^gmt,.*":
+     description: Global Mixed-mode Technology, Inc.
++  "^gocontroll,.*":
++    description: GOcontroll Modular Embedded Electronics B.V.
+   "^goldelico,.*":
+     description: Golden Delicious Computers GmbH & Co. KG
+   "^goodix,.*":
 -- 
 2.39.5
 
