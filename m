@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52ECEA809B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58956A80B42
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F174E463C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5BB500A7D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C27276058;
-	Tue,  8 Apr 2025 12:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F71B27CB0C;
+	Tue,  8 Apr 2025 12:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozwghHeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1MEjdAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03643276028;
-	Tue,  8 Apr 2025 12:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D111527CB03;
+	Tue,  8 Apr 2025 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115971; cv=none; b=NKi55GUEflhFqCsTFRLI7uy9mSrS5IiLoiu9kNu0L9ylifO/6BYVlz1Z12Bq0otyCYaQMpTDmSyKzVxOTbGPR/eeCwTFi18EYVAp3uO52ysumnYjtO4Q67qTw4AGyiO1ko9jLMivBoQxpQ1y8PtXeRa+3im5UbY2h43ldXse5iQ=
+	t=1744117082; cv=none; b=hVodDooECozLScjMeKGV2Tf10bY+F9VPkNpZpPGVzPd+i7sOiGOXhamM7ZsKRzs/srxIMsB8MxvgiaHRgBbl1hydwCAiJhkf91s1oi2lN0xzVRXJmcFPjQ1Suyi5cDrdXMrx0+H0njxAewxSTmzBdSPApoAdWu4NxZ0opb06QU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115971; c=relaxed/simple;
-	bh=OE9Bs42ipV6JGaHfuEczIFUwpVMDYnEzXRgQRiQpkc0=;
+	s=arc-20240116; t=1744117082; c=relaxed/simple;
+	bh=EtL9DX/aBwpaSf1iYIOhiAyPpq+Jb2I8SDk5GZJVKEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dt0/WFv8KtbN05HLmJR0aFm/QLhjFbw6gVOch1UABwbi5M1ofUJywBLub+/dEgbVpaN9j5ZGN4Bkj4bTYnn+nY4wlngdS1FLb2fk0ZFrw/3UeUg7ycWxOerknwC8uXglR2wIcKZSUHV3qOInjD9oJpsvfeOu+o+rYdjXg+8r2Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozwghHeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2619FC4CEE5;
-	Tue,  8 Apr 2025 12:39:29 +0000 (UTC)
+	 MIME-Version; b=OfAqSlCdmJdevFV0maQ/IRwKyXFQx+fkoQhzJqCS63w28RR7Z34RkbUDlTgWw+o8DLN0hvREDISpvL1E8cQkAJSXWN0MNwZ34gOeh8p6XcubGPCr36GCty7PB3gwFdKDGHpSXTAI8p+1ehcZtPFE/772vREU3dXGcYbccxkRqYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1MEjdAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62198C4CEE5;
+	Tue,  8 Apr 2025 12:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115970;
-	bh=OE9Bs42ipV6JGaHfuEczIFUwpVMDYnEzXRgQRiQpkc0=;
+	s=korg; t=1744117082;
+	bh=EtL9DX/aBwpaSf1iYIOhiAyPpq+Jb2I8SDk5GZJVKEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozwghHegmO1vJ4CRH4ejEigHPYYKM1IkleGbYsr1PS7+Z+zvS1899kRmU7Do82E88
-	 /GgRi5P04XORcfkeLJfhUyLTxM/wGJiYP3/pIGaciJsCTqy/NPP1Yj8YAN9b4Ym83B
-	 iGPJ0oo3jiig91fqEJBFJlT5lgAwbyvKOtQHoxWY=
+	b=z1MEjdAcx1cyalKu/dg9hl6uJcMAJzgYNHSG3MKbcHs27hmMkTDCqwyp6RjGWcJV5
+	 zLGQkzNFOAWNSVoG8l/mWNeBHK1+oe/8StV7oz3K7EKA8rgCnI49Lw3LoPgZDnJP3s
+	 Kn/2mqWVoJaWraoUiNOt29mKZfrZpGOd7XumAJow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Lu <luying1@xiaomi.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 173/204] usbnet:fix NPE during rx_complete
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 6.12 377/423] perf/x86/intel: Apply static call for drain_pebs
 Date: Tue,  8 Apr 2025 12:51:43 +0200
-Message-ID: <20250408104825.391861875@linuxfoundation.org>
+Message-ID: <20250408104854.658452177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Lu <luying1@xiaomi.com>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
+commit 314dfe10576912e1d786b13c5d4eee8c51b63caa upstream.
 
-Missing usbnet_going_away Check in Critical Path.
-The usb_submit_urb function lacks a usbnet_going_away
-validation, whereas __usbnet_queue_skb includes this check.
+The x86_pmu_drain_pebs static call was introduced in commit 7c9903c9bf71
+("x86/perf, static_call: Optimize x86_pmu methods"), but it's not really
+used to replace the old method.
 
-This inconsistency creates a race condition where:
-A URB request may succeed, but the corresponding SKB data
-fails to be queued.
+Apply the static call for drain_pebs.
 
-Subsequent processes:
-(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
-attempt to access skb->next, triggering a NULL pointer
-dereference (Kernel Panic).
-
-Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
+Fixes: 7c9903c9bf71 ("x86/perf, static_call: Optimize x86_pmu methods")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ying Lu <luying1@xiaomi.com>
-Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20250121152303.3128733-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/core.c |    2 +-
+ arch/x86/events/intel/ds.c   |    2 +-
+ arch/x86/events/perf_event.h |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
- 	    netif_device_present (dev->net) &&
- 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
- 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
--	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
-+	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
-+	    !usbnet_going_away(dev)) {
- 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
- 		case -EPIPE:
- 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
-@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
- 			tasklet_schedule (&dev->bh);
- 			break;
- 		case 0:
--			if (!usbnet_going_away(dev))
--				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
-+			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
- 		}
- 	} else {
- 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3067,7 +3067,7 @@ static int handle_pmi_common(struct pt_r
+ 
+ 		handled++;
+ 		x86_pmu_handle_guest_pebs(regs, &data);
+-		x86_pmu.drain_pebs(regs, &data);
++		static_call(x86_pmu_drain_pebs)(regs, &data);
+ 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 		/*
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -936,7 +936,7 @@ static inline void intel_pmu_drain_pebs_
+ {
+ 	struct perf_sample_data data;
+ 
+-	x86_pmu.drain_pebs(NULL, &data);
++	static_call(x86_pmu_drain_pebs)(NULL, &data);
+ }
+ 
+ /*
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1092,6 +1092,7 @@ extern struct x86_pmu x86_pmu __read_mos
+ 
+ DECLARE_STATIC_CALL(x86_pmu_set_period, *x86_pmu.set_period);
+ DECLARE_STATIC_CALL(x86_pmu_update,     *x86_pmu.update);
++DECLARE_STATIC_CALL(x86_pmu_drain_pebs,	*x86_pmu.drain_pebs);
+ 
+ static __always_inline struct x86_perf_task_context_opt *task_context_opt(void *ctx)
+ {
 
 
 
