@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-131643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC23DA80B2A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8B6A804A1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 217811BC2AD9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8E44A2959
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F7527BF8B;
-	Tue,  8 Apr 2025 12:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153C5263F3B;
+	Tue,  8 Apr 2025 12:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nILxoX9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIX0PTUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113D71E489;
-	Tue,  8 Apr 2025 12:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41B526B94F;
+	Tue,  8 Apr 2025 12:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116951; cv=none; b=Y9kO3oqIUPV3toRSJmqDmhUb0NmVl3G0hD2Eln9fPDn5VDu7luoTEOyr2yCwxSzQlFH/pvWrP0Tai+VPYoS8GdvROx73nCtiKkdEhlaY3LXO9iYt4BsAFH2XeG93po8RO26DJFCASS3ztGhxEycp74+C1JYoa/fbX1TibaAzrEk=
+	t=1744113663; cv=none; b=tp43dSSIiD5+83mH8HN0GalE9hlYaN9HWbrD6ds5l81idjn6gMES3W9mIuGBHenSZKGyxCBd1y0+MdBX/fEOV1ylge9Ffbs3Vv5/YWCXIhXzZnj1mB3YQrb0/4k6+L2i4pcIfCWDJ5VcaYh78aGLE/KDdm8s9s56ZgC1xJ2VZaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116951; c=relaxed/simple;
-	bh=gTmRlB6JScOkG6+Fivsv9v+xxyo3YWQjeoaNTri/Tlg=;
+	s=arc-20240116; t=1744113663; c=relaxed/simple;
+	bh=mwkUAiOsN1y+wN75zexzs8IfghpS6S//VcorZYQLaZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMyxxuXOOWN7ZQfpR++ykhAc/XezcFeHdBShwKon+P6iOXtxKe8zoHxQklbvtA45QTJsQfcY7B6HIAakcTdKdqvPL/ztSqD+V5030pweCEySp4d65IJva8e+zfVXdkAsc9Y3nCHClEjk+BM2DutKrRnD387h6sdupRNObkqnndM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nILxoX9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB03C4CEE5;
-	Tue,  8 Apr 2025 12:55:50 +0000 (UTC)
+	 MIME-Version; b=gr3UoWvV/n6AYCrHOmVG1CtGwfIhzIKN3HNS+dvRVow74Ky6omZv7Sb3Wl/SSWgVzBX2b+rYtPG9VJrPdg26hTmpVAzPd7qelXttmAqte8rXLBoQfi0tsoUsueu3qd1kn0i7Fdg0SmukTyZCzkNxY6sfDAdAt4IL+/W5aLjidNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIX0PTUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D085C4CEEA;
+	Tue,  8 Apr 2025 12:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116950;
-	bh=gTmRlB6JScOkG6+Fivsv9v+xxyo3YWQjeoaNTri/Tlg=;
+	s=korg; t=1744113663;
+	bh=mwkUAiOsN1y+wN75zexzs8IfghpS6S//VcorZYQLaZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nILxoX9pgO+yO8B7RY/b6vPGmMYWBK/ofjDR2HBb+Hstobu1VblZJi9LBy3j7SYx9
-	 Kz14LWTQQz9WkYu8AyJcqCzLwoVNbedgAd3W1yNFRjRciO0reZngQag1VC2/khcY6i
-	 q6y39w7lsrYv9kewAfAYvbJzqQuKhIHonmPXYW/c=
+	b=mIX0PTUKOtoze7OlJwHirVPPKjDTYaT8ZFFg8VJhQyhMwVqr1MaZz3eCiVzs69D+/
+	 jJTexqYB0sU/7s+ufjA7h9l2zIR7htlK5CRzB9NHwV7ARgwwdGozSPB3DoKo46znqU
+	 9C3/h++bMQ+TMCWEzqs+MolxfZ8TIUBJS2LH70P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
-	Nishanth Devarajan <ndev2021@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/423] net_sched: skbprio: Remove overly strict queue assertions
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6 244/268] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
 Date: Tue,  8 Apr 2025 12:50:55 +0200
-Message-ID: <20250408104853.487092383@linuxfoundation.org>
+Message-ID: <20250408104835.166368873@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
+commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
 
-In the current implementation, skbprio enqueue/dequeue contains an assertion
-that fails under certain conditions when SKBPRIO is used as a child qdisc under
-TBF with specific parameters. The failure occurs because TBF sometimes peeks at
-packets in the child qdisc without actually dequeuing them when tokens are
-unavailable.
+TSC could be reset in deep ACPI sleep states, even with invariant TSC.
 
-This peek operation creates a discrepancy between the parent and child qdisc
-queue length counters. When TBF later receives a high-priority packet,
-SKBPRIO's queue length may show a different value than what's reflected in its
-internal priority queue tracking, triggering the assertion.
+That's the reason we have sched_clock() save/restore functions, to deal
+with this situation. But what happens is that such functions are guarded
+with a check for the stability of sched_clock - if not considered stable,
+the save/restore routines aren't executed.
 
-The fix removes this overly strict assertions in SKBPRIO, they are not
-necessary at all.
+On top of that, we have a clear comment in native_sched_clock() saying
+that *even* with TSC unstable, we continue using TSC for sched_clock due
+to its speed.
 
-Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
-Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
-Cc: Nishanth Devarajan <ndev2021@gmail.com>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In other words, if we have a situation of TSC getting detected as unstable,
+it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
+could bring bogus sched_clock values due to the lack of the save/restore
+mechanism, causing warnings like this:
+
+  [22.954918] ------------[ cut here ]------------
+  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
+  [22.954923] If you just came from a suspend/resume,
+  [22.954923] please switch to the trace global clock:
+  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
+  [22.954923] or add trace_clock=global to the kernel command line
+  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
+
+Notice that the above was reproduced even with "trace_clock=global".
+
+The fix for that is to _always_ save/restore the sched_clock on suspend
+cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
+the sched_clock_stable() check becomes relevant to save/restore the
+sched_clock.
+
+Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_skbprio.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/kernel/tsc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
-index 20ff7386b74bd..f485f62ab721a 100644
---- a/net/sched/sch_skbprio.c
-+++ b/net/sched/sch_skbprio.c
-@@ -123,8 +123,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	/* Check to update highest and lowest priorities. */
- 	if (skb_queue_empty(lp_qdisc)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			/* The incoming packet is the only packet in queue. */
--			BUG_ON(sch->q.qlen != 1);
- 			q->lowest_prio = prio;
- 			q->highest_prio = prio;
- 		} else {
-@@ -156,7 +154,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
- 	/* Update highest priority field. */
- 	if (skb_queue_empty(hpq)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			BUG_ON(sch->q.qlen);
- 			q->highest_prio = 0;
- 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
- 		} else {
--- 
-2.39.5
-
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -955,7 +955,7 @@ static unsigned long long cyc2ns_suspend
+ 
+ void tsc_save_sched_clock_state(void)
+ {
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
+ 
+ 	cyc2ns_suspend = sched_clock();
+@@ -975,7 +975,7 @@ void tsc_restore_sched_clock_state(void)
+ 	unsigned long flags;
+ 	int cpu;
+ 
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
+ 
+ 	local_irq_save(flags);
 
 
 
