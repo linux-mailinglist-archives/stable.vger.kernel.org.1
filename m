@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23632A803B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7818BA801F9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B49F7AA309
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DE88462C5C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD90026773A;
-	Tue,  8 Apr 2025 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527CE268C43;
+	Tue,  8 Apr 2025 11:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJNSjvDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjZWzLUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1E7265626;
-	Tue,  8 Apr 2025 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F249268685;
+	Tue,  8 Apr 2025 11:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113553; cv=none; b=mQ70WmQ9uWivR027xHYwDpqmAf0CGWhfot2kx9PqP6dlGfFgr323iu6OfHm+E+4eMsOrrrAo+pxpTTJsZDmLjWE1DCwAUQ7SMyxvSEw2yRuFmlA9z5dYAKQEOzH6hbiOLJoqNBGlkO0Ktm7C4qa7XrKCHReRTGpIlLi4EKAvwwg=
+	t=1744112219; cv=none; b=uM2J9miWmBZCtIGqylUQtl4e4KuALsQjuv4OnqGGe0DfxGnHxfiHicp+VH48aM1oQste5EydGUao2sVAygIlex2MR+L4wi25/Mat3+0UL59A/M3anJdiz05n4bnHs7k4cUpl8O4+PZizF+gSmpiFf2QWziI4qdtk5LT3/DmcAQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113553; c=relaxed/simple;
-	bh=Lsvbxw6YbNBOdoWgDRkHo2mvBLxm6d7/F2WjO/WqpIQ=;
+	s=arc-20240116; t=1744112219; c=relaxed/simple;
+	bh=4DgITDyIKJ5wU3JeV6o4FXSOTXeZvWu+rYIyqk3WSdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2lflTZvdJDBuMvyaBgt2Fn8XUft0XSM6+oAMrD5RBQWcHb+LQeic5HmnY3M40NcjJPydJKWfmuKondE6vVFF2SK0CfiCIAgd/ZoOpByCOH7x1LUF/G+CkaPR5UtNcrnDcnQQ8/6h/4NlCUDYA1yC11nBOT/vjb2Tk0TksRm1Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJNSjvDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDEAC4CEE5;
-	Tue,  8 Apr 2025 11:59:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RSw3gdqyMOEizs5R5xhmyq+ecwUYrUFtswwFvKScSpZWq/hbLu31g6xT9DX5mVQQFIQTMi7ZiR0HlsTgL8BtHA10oCYDI9n2bgIX6tpsjxgSpmmdZXoBesDKcmZnbjeFTYaZwyDXxBIac96wtgF92vKczG54i8zcnOm7CESur/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjZWzLUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFFBC4CEE5;
+	Tue,  8 Apr 2025 11:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113553;
-	bh=Lsvbxw6YbNBOdoWgDRkHo2mvBLxm6d7/F2WjO/WqpIQ=;
+	s=korg; t=1744112218;
+	bh=4DgITDyIKJ5wU3JeV6o4FXSOTXeZvWu+rYIyqk3WSdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJNSjvDnj8dntwONm7ON3pv6u+E45MCK1P4PiJDgN42uojvUVXrcGYKn62rx/NAXd
-	 d8KUvicOPv6kPajmcCfs+9r9rjnrMKrmf3czbiPk/KE8l/4jjtdP5+zhEBwv1HBC7q
-	 vGXXRyvKBx75LpUJfnotOu6tCZzOoM/NosJGl91M=
+	b=PjZWzLUI7vTDPVLYKWoClisGrFno264m8qxPi9uog+CUzPH7aN8lz8OExq0u9InPY
+	 OMyONzCmp0XX6HA/YpSIMpl7aXrb6x/UGHjgD/V4bVgYFp3AYUpCsNwxMz0J0+hoEm
+	 KnzaYiu1rAii6oejuEhUWRc60Nw5rxzM5s0K7YHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/268] ASoC: imx-card: Add NULL check in imx_card_probe()
+	Wouter Bijlsma <wouter@wouterbijlsma.nl>,
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.14 717/731] PCI/bwctrl: Fix NULL pointer dereference on bus number exhaustion
 Date: Tue,  8 Apr 2025 12:50:14 +0200
-Message-ID: <20250408104834.039802809@linuxfoundation.org>
+Message-ID: <20250408104930.952804357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
+commit 667f053b05f00a007738cd7ed6fa1901de19dc7e upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-imx_card_probe() does not check for this case, which results in a NULL
-pointer dereference.
+When BIOS neglects to assign bus numbers to PCI bridges, the kernel
+attempts to correct that during PCI device enumeration.  If it runs out
+of bus numbers, no pci_bus is allocated and the "subordinate" pointer in
+the bridge's pci_dev remains NULL.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+The PCIe bandwidth controller erroneously does not check for a NULL
+subordinate pointer and dereferences it on probe.
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Bandwidth control of unusable devices below the bridge is of questionable
+utility, so simply error out instead.  This mirrors what PCIe hotplug does
+since commit 62e4492c3063 ("PCI: Prevent NULL dereference during pciehp
+probe").
+
+The PCI core emits a message with KERN_INFO severity if it has run out of
+bus numbers.  PCIe hotplug emits an additional message with KERN_ERR
+severity to inform the user that hotplug functionality is disabled at the
+bridge.  A similar message for bandwidth control does not seem merited,
+given that its only purpose so far is to expose an up-to-date link speed
+in sysfs and throttle the link speed on certain laptops with limited
+Thermal Design Power.  So error out silently.
+
+User-visible messages:
+
+  pci 0000:16:02.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+  [...]
+  pci_bus 0000:45: busn_res: [bus 45-74] end is updated to 74
+  pci 0000:16:02.0: devices behind bridge are unusable because [bus 45-74] cannot be assigned for them
+  [...]
+  pcieport 0000:16:02.0: pciehp: Hotplug bridge without secondary bus, ignoring
+  [...]
+  BUG: kernel NULL pointer dereference
+  RIP: pcie_update_link_speed
+  pcie_bwnotif_enable
+  pcie_bwnotif_probe
+  pcie_port_probe_service
+  really_probe
+
+Fixes: 665745f27487 ("PCI/bwctrl: Re-add BW notification portdrv as PCIe BW controller")
+Reported-by: Wouter Bijlsma <wouter@wouterbijlsma.nl>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219906
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Tested-by: Wouter Bijlsma <wouter@wouterbijlsma.nl>
+Cc: stable@vger.kernel.org # v6.13+
+Link: https://lore.kernel.org/r/3b6c8d973aedc48860640a9d75d20528336f1f3c.1742669372.git.lukas@wunner.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/imx-card.c | 4 ++++
+ drivers/pci/pcie/bwctrl.c |    4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index f8144bf4c90d3..7128bcf3a743e 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -742,6 +742,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].sink =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Playback");
-+				if (!data->dapm_routes[i].sink)
-+					return -ENOMEM;
- 				data->dapm_routes[i].source = "CPU-Playback";
- 			}
- 		}
-@@ -759,6 +761,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].source =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Capture");
-+				if (!data->dapm_routes[i].source)
-+					return -ENOMEM;
- 				data->dapm_routes[i].sink = "CPU-Capture";
- 			}
- 		}
--- 
-2.39.5
-
+--- a/drivers/pci/pcie/bwctrl.c
++++ b/drivers/pci/pcie/bwctrl.c
+@@ -294,6 +294,10 @@ static int pcie_bwnotif_probe(struct pci
+ 	struct pci_dev *port = srv->port;
+ 	int ret;
+ 
++	/* Can happen if we run out of bus numbers during enumeration. */
++	if (!port->subordinate)
++		return -ENODEV;
++
+ 	struct pcie_bwctrl_data *data = devm_kzalloc(&srv->device,
+ 						     sizeof(*data), GFP_KERNEL);
+ 	if (!data)
 
 
 
