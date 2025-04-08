@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6ADA80796
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0574DA80A7A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE832427EF3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B70A21BA67AB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B355C26AAB9;
-	Tue,  8 Apr 2025 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACC426FA73;
+	Tue,  8 Apr 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Q4XDUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz47DSJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAC4267731;
-	Tue,  8 Apr 2025 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346E526FA6F;
+	Tue,  8 Apr 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115078; cv=none; b=ZXigXCgPXHvQJeO4lP+1Yf3VQ1nruQvw71JNnC5d1jHSsrv8ZNc3RZoH9nyv3cj4y0MGtb0z3nSF3lIfK1WsSVrtT6K/Ncu6Kpfnk9vnFGx+IAqBjV05jeV2ztiot1XqehVm3S0kF9l7euymY0PJhGaoAVUlNBmgE6ENdGPuJ+E=
+	t=1744116567; cv=none; b=OO4KEyhpcXu9h4+JT2hJD8IdmMsP0iwA9zsBrm+3iLELuoVPRBPRz122HhHmeqrGgGzXFVoLzb1emdVHo+ItOU3sTHFanMOYIqCJhbY1xhsKthup4eb/f4IyHJtI24Tg0PwGcZ2Mjw5WVKlcvJT9DSynWV5EQ0r8KJ0X6vpKvb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115078; c=relaxed/simple;
-	bh=sKJyOS9pBsfeeCX64xYu5ItD5R1Ec/QbVfmkLAImncc=;
+	s=arc-20240116; t=1744116567; c=relaxed/simple;
+	bh=Ptyl4+ISPh845D6FkzHdyfQUrYcq75nRCtR1OIFJl9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIIKBVF7jgokI/uRa/rb3fvOBHhKwi0EeLKkLtpX9sjQTpLOngNZiQj1Nv1hgWIb/j8fQbTToG8d8qz7HmSgiF6DzAVw5d6c+ym5FD1IFYS53FlpdaLTKsyn2Fqhz499hfcPiaZrRS+ltXgnV6oTbGs+oX/FkBH5htRSjTbmPec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4Q4XDUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BF2C4CEE5;
-	Tue,  8 Apr 2025 12:24:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YEbNoyKElhL3ityLPmCY55B4P5IXajThQt5ovb7eHgddlAO+jeaezrJhxDr3UYqxPrT3ZRzv5I08ZvQRE7ao7XkXJYaA3rKO0pDCun/pVBPZpv6LiggbYF8IiW43rMweRROazKMIkFHE3ScukrBXTbgx4uCcScIr7X3N1aJo0C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz47DSJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC934C4CEEB;
+	Tue,  8 Apr 2025 12:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115078;
-	bh=sKJyOS9pBsfeeCX64xYu5ItD5R1Ec/QbVfmkLAImncc=;
+	s=korg; t=1744116567;
+	bh=Ptyl4+ISPh845D6FkzHdyfQUrYcq75nRCtR1OIFJl9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4Q4XDUABYQGXgJ0SKYKNbbTwE5HUx3ydG/NRf3MMM7xmdKVgdVwQ9uu0fQ6z3CuS
-	 /E+ahD57vyqxiLA9eMs1MKJ3+iJVeCPS6wxOJJu0UpNP5L43XSTcGZUMzCzSjbZgj4
-	 hJhbE163hqquBTjwS1O6j3TdtXqtNimtZyT00np8=
+	b=Xz47DSJltZ2jo9oY+9L0QfP2foEO1KhGSfI+pqtIJdU62C9ul/3TI6+kvV5BVSlrd
+	 /4PrpnQ/SviENYZj0/K60ASyFVzVJxOpCuElfP6hTu5lgFLG7U4ff4t7zMDJM4qV24
+	 G1hbGuiqzB6piKDS/0j3t7DgTJBvDjhw3HXNJz60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 301/499] wifi: mac80211: remove debugfs dir for virtual monitor
-Date: Tue,  8 Apr 2025 12:48:33 +0200
-Message-ID: <20250408104858.723713436@linuxfoundation.org>
+Subject: [PATCH 6.12 188/423] iio: adc: ad4130: Fix comparison of channel setups
+Date: Tue,  8 Apr 2025 12:48:34 +0200
+Message-ID: <20250408104850.119050443@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +60,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 646262c71aca87bb66945933abe4e620796d6c5a ]
+[ Upstream commit 280acb19824663d55a3f4d09087c76fabe86fa3c ]
 
-Don't call ieee80211_debugfs_recreate_netdev() for virtual monitor
-interface when deleting it.
+Checking the binary representation of two structs (of the same type)
+for equality doesn't have the same semantic as comparing all members for
+equality. The former might find a difference where the latter doesn't in
+the presence of padding or when ambiguous types like float or bool are
+involved. (Floats typically have different representations for single
+values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
+at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
+true, but memcmp finds a difference.)
 
-The virtual monitor interface shouldn't have debugfs entries and trying
-to update them will *create* them on deletion.
+When searching for a channel that already has the configuration we need,
+the comparison by member is the one that is needed.
 
-And when the virtual monitor interface is created/destroyed multiple
-times we'll get warnings about debugfs name conflicts.
+Convert the comparison accordingly to compare the members one after
+another. Also add a static_assert guard to (somewhat) ensure that when
+struct ad4130_setup_info is expanded, the comparison is adapted, too.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://patch.msgid.link/20250204164240.370153-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This issue is somewhat theoretic, but using memcmp() on a struct is a
+bad pattern that is worth fixing.
+
+Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250303114659.1672695-12-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.c | 10 ++++++++--
- net/mac80211/iface.c      | 11 ++++++-----
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ad4130.c | 41 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index 299d38e9e8630..2fc60e1e77a55 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -116,8 +116,14 @@ void drv_remove_interface(struct ieee80211_local *local,
+diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
+index de32cc9d18c5e..712f95f53c9ec 100644
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -223,6 +223,10 @@ enum ad4130_pin_function {
+ 	AD4130_PIN_FN_VBIAS = BIT(3),
+ };
  
- 	sdata->flags &= ~IEEE80211_SDATA_IN_DRIVER;
- 
--	/* Remove driver debugfs entries */
--	ieee80211_debugfs_recreate_netdev(sdata, sdata->vif.valid_links);
-+	/*
-+	 * Remove driver debugfs entries.
-+	 * The virtual monitor interface doesn't get a debugfs
-+	 * entry, so it's exempt here.
-+	 */
-+	if (sdata != local->monitor_sdata)
-+		ieee80211_debugfs_recreate_netdev(sdata,
-+						  sdata->vif.valid_links);
- 
- 	trace_drv_remove_interface(local, sdata);
- 	local->ops->remove_interface(&local->hw, &sdata->vif);
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 806dffa48ef92..04b3626387309 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1212,16 +1212,17 @@ void ieee80211_del_virtual_monitor(struct ieee80211_local *local)
- 		return;
- 	}
- 
--	RCU_INIT_POINTER(local->monitor_sdata, NULL);
--	mutex_unlock(&local->iflist_mtx);
--
--	synchronize_net();
--
-+	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
- 	ieee80211_link_release_channel(&sdata->deflink);
- 
- 	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
- 		drv_remove_interface(local, sdata);
- 
-+	RCU_INIT_POINTER(local->monitor_sdata, NULL);
-+	mutex_unlock(&local->iflist_mtx);
-+
-+	synchronize_net();
-+
- 	kfree(sdata);
++/*
++ * If you make adaptations in this struct, you most likely also have to adapt
++ * ad4130_setup_info_eq(), too.
++ */
+ struct ad4130_setup_info {
+ 	unsigned int			iout0_val;
+ 	unsigned int			iout1_val;
+@@ -591,6 +595,40 @@ static irqreturn_t ad4130_irq_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
  }
  
++static bool ad4130_setup_info_eq(struct ad4130_setup_info *a,
++				 struct ad4130_setup_info *b)
++{
++	/*
++	 * This is just to make sure that the comparison is adapted after
++	 * struct ad4130_setup_info was changed.
++	 */
++	static_assert(sizeof(*a) ==
++		      sizeof(struct {
++				     unsigned int iout0_val;
++				     unsigned int iout1_val;
++				     unsigned int burnout;
++				     unsigned int pga;
++				     unsigned int fs;
++				     u32 ref_sel;
++				     enum ad4130_filter_mode filter_mode;
++				     bool ref_bufp;
++				     bool ref_bufm;
++			     }));
++
++	if (a->iout0_val != b->iout0_val ||
++	    a->iout1_val != b->iout1_val ||
++	    a->burnout != b->burnout ||
++	    a->pga != b->pga ||
++	    a->fs != b->fs ||
++	    a->ref_sel != b->ref_sel ||
++	    a->filter_mode != b->filter_mode ||
++	    a->ref_bufp != b->ref_bufp ||
++	    a->ref_bufm != b->ref_bufm)
++		return false;
++
++	return true;
++}
++
+ static int ad4130_find_slot(struct ad4130_state *st,
+ 			    struct ad4130_setup_info *target_setup_info,
+ 			    unsigned int *slot, bool *overwrite)
+@@ -604,8 +642,7 @@ static int ad4130_find_slot(struct ad4130_state *st,
+ 		struct ad4130_slot_info *slot_info = &st->slots_info[i];
+ 
+ 		/* Immediately accept a matching setup info. */
+-		if (!memcmp(target_setup_info, &slot_info->setup,
+-			    sizeof(*target_setup_info))) {
++		if (ad4130_setup_info_eq(target_setup_info, &slot_info->setup)) {
+ 			*slot = i;
+ 			return 0;
+ 		}
 -- 
 2.39.5
 
