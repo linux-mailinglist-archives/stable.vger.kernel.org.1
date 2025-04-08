@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB82A806F9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8A9A80A38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA63167086
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02E38C584E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A6B26A0CF;
-	Tue,  8 Apr 2025 12:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49FC26E149;
+	Tue,  8 Apr 2025 12:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEGaBU03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR6+75P5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEB52676E1;
-	Tue,  8 Apr 2025 12:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EF7269AF5;
+	Tue,  8 Apr 2025 12:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114893; cv=none; b=UTz0++a9wO8Yr2XjiYwKf8G6W/FPpoQaHB5WlVpuIUHmbjELTOcTjhKv6C626xLgN2fpO8YOwmt3x99ZERjrc18PYpado4+L89G4cbBBVBEeXnP38HvJNvFWT5i1uYAz5cuIU6KfK5RrOlu8W6M6B64VkExGam01zL9lOM1KxlA=
+	t=1744116494; cv=none; b=ttDlVt3CJuzwgGXHSPVjwmL/Yt3Ij/l2woRkC5X6vtnZhYjnGq+WT6h02isAjj/i0DIusJ5wk4/8ckuQm+29IrR0cy4P+g5IJiiq55GAJxgRHy7BuovwA1inbvlsTTK32POqT+lVAdtWTO/r+A9rVPaamNFE4fvvNvZSoNgMPqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114893; c=relaxed/simple;
-	bh=Vi9H5ik+XHA904uJuvffo0493WrzmsA6YPDdOoyOr4E=;
+	s=arc-20240116; t=1744116494; c=relaxed/simple;
+	bh=hgu9JVcXpQr0+Mpz97cHCeKOFAacsD2qR4ZzU8wp7yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mcpjb1lfbyxo0D3bPqqGyXvlrGJ+hU/s4gsdNzd3HeoKT9pVwwP/ODquqYW7nj5h96AEW/13zd8kvhmzSi1RkpWozV9eQ472vvqwb3IxD7TycD/q27o64zF/HLY5b/TxpOz6tPrf+cWa8OnsFoFl1O/AaCHIbI6Y690QYSnMKKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEGaBU03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5238AC4CEE5;
-	Tue,  8 Apr 2025 12:21:33 +0000 (UTC)
+	 MIME-Version; b=utoGzHpzuOo0aKCRR/n0A9eW4lfdxjwl48z5oE+PpV7l91yXsSNCX9/rZZsyArcsx4bxdlV6cMqfI9mWp/CvL5kw4o8kiSXZCda34GemPy4JLHzCzMj+IW8WUcXykDIZKnx1ojctOnPnMPHCjd+dXOaYsnFRhAW7B6kSOlw3PmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR6+75P5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CCEC4CEE7;
+	Tue,  8 Apr 2025 12:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114893;
-	bh=Vi9H5ik+XHA904uJuvffo0493WrzmsA6YPDdOoyOr4E=;
+	s=korg; t=1744116494;
+	bh=hgu9JVcXpQr0+Mpz97cHCeKOFAacsD2qR4ZzU8wp7yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEGaBU03Yce/xZR3CIWBsFRorTxKgROVA+AJq5ovUaiAjxf2AO5IUAalbJEbvMUlF
-	 HAPhtIdm5h1wky43fk6XCNUfBjPSWDnUwoZZAJ3weDVw75YV9acqBKY9hIW6Tb1xzz
-	 Eyyka5+S9mtQCjukJAIVAmAfwpUUJ8GJFOros+Wc=
+	b=SR6+75P5+wKflzqUf4bYz8nmVahZgbIwXC2Gs1OzitJn0+Uqx+eqLLDHFTpqrSBGm
+	 V3FRqSNJg+mJ9BErh4nJyyUn63fIdtIe9pHX9f8m1zpBd5aWyxnTI1wrY0TEUzRhLT
+	 Xuj+be31OpPkzFf/tQHeLZoXIOYC+1mLi/S0umWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Alexis GUILLEMET <alexis.guillemet@dunasys.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 274/499] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Subject: [PATCH 6.12 160/423] pinctrl: intel: Fix wrong bypass assignment in intel_pinctrl_probe_pwm()
 Date: Tue,  8 Apr 2025 12:48:06 +0200
-Message-ID: <20250408104858.049571103@linuxfoundation.org>
+Message-ID: <20250408104849.466339392@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
+[ Upstream commit 0eee258cdf172763502f142d85e967f27a573be0 ]
 
-If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
-is a divide-by-zero.  Prevent that from happening.
+When instantiating PWM, the bypass should be set to false. The field
+is used for the selected Intel SoCs that do not have PWM feature enabled
+in their pin control IPs.
 
-Fixes the following warning with an UBSAN kernel:
-
-  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
-
-Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
+Fixes: eb78d3604d6b ("pinctrl: intel: Enumerate PWM device when community has a capability")
+Reported-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Alexis GUILLEMET <alexis.guillemet@dunasys.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib8000.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/intel/pinctrl-intel.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
-index 2f5165918163d..cfe59c3255f70 100644
---- a/drivers/media/dvb-frontends/dib8000.c
-+++ b/drivers/media/dvb-frontends/dib8000.c
-@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
- 	u8 ratio;
+diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
+index 928607a21d36d..f8abc69a39d16 100644
+--- a/drivers/pinctrl/intel/pinctrl-intel.c
++++ b/drivers/pinctrl/intel/pinctrl-intel.c
+@@ -1531,7 +1531,6 @@ static int intel_pinctrl_probe_pwm(struct intel_pinctrl *pctrl,
+ 		.clk_rate = 19200000,
+ 		.npwm = 1,
+ 		.base_unit_bits = 22,
+-		.bypass = true,
+ 	};
+ 	struct pwm_chip *chip;
  
- 	if (state->revision == 0x8090) {
-+		u32 internal = dib8000_read32(state, 23) / 1000;
-+
- 		ratio = 4;
--		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
-+
-+		unit_khz_dds_val = (1<<26) / (internal ?: 1);
- 		if (offset_khz < 0)
- 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
- 		else
 -- 
 2.39.5
 
