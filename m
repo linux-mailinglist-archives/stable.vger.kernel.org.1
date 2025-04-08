@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB03A8068E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB55A80A09
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A7E94C2928
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2D28C7D71
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5A426B965;
-	Tue,  8 Apr 2025 12:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB546270ED9;
+	Tue,  8 Apr 2025 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJEutM86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twu8l9co"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6990126B94A;
-	Tue,  8 Apr 2025 12:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997F62690FB;
+	Tue,  8 Apr 2025 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114746; cv=none; b=o06kWCp1aWQ1seL/wsJAIXW0QnJw4O5E1oDbfYh5TjOwv3knmiGLKspcMuV9cYRKiA0qQYU4U2vjvTSgeraCsQ/JyHKmFbPJjLIpdrhutHvt+PESAJMlXfJuWpyYihwlhOgPFlmWjtawJ6b5O/0YtbV9cWI2jywK9pjJ7D4J11s=
+	t=1744116345; cv=none; b=j19tpueks55D3qmBfuR1Ew9AaHZvLsuWNmYt9xLy6VRKFg31ME+AdRHKKr/CBW5umARBpBGFQRkwRXb7QwPd2A9C2Gmw9vTwyDg5jC9ZrYtSJd+/O+wtNIJU4UYKEdvoGuFGXmZ17odg6deTMncIJJvDml4t33+ScMXM5cR2HH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114746; c=relaxed/simple;
-	bh=KxPB2JSV/jDAmeBu1U/ivrt12JUjX1Mj30uzezqIaqo=;
+	s=arc-20240116; t=1744116345; c=relaxed/simple;
+	bh=vEYLbb6Jp3cr+J0SY+0wXT2MnZo9jpW43Chz+7dP9oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vhsr0NqAT8359OXnwXTYFkhM+Xg/2/nuATTpeCreMBHnVgX0n9a/GgK33m8V6QhNm8dahDNr9Hz9hXpNeTRy4bvND3X+do1y5lsVWnecqT46OAzJcEoBWI0LPcGYF131tLMR+V3SfXUQf3O7GTUR7uc6l+DYDZgFPpvvfJcNIGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJEutM86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7D2C4CEE5;
-	Tue,  8 Apr 2025 12:19:05 +0000 (UTC)
+	 MIME-Version; b=Fx6Rqxn6pciBOYyU0kyUsWZv7SO3q52LFteYjqykjJZ8sVaT2JJXT1dcozsg2FnUkK2JzDo3IalzloH5Md4R71EVQgahW3beJW1+bAXWEujZMevz3C4Oqlh+9p2dkxeiyOePpI1O+DCjhe0qhVttusW1yQ9qgRHV1kn0V0/u2us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twu8l9co; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39BAC4CEE5;
+	Tue,  8 Apr 2025 12:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114746;
-	bh=KxPB2JSV/jDAmeBu1U/ivrt12JUjX1Mj30uzezqIaqo=;
+	s=korg; t=1744116345;
+	bh=vEYLbb6Jp3cr+J0SY+0wXT2MnZo9jpW43Chz+7dP9oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJEutM86tulbqdNN6eM9XIzxvWZDWnvTPJ0Aui+viaL9tBkUAR3Xbv5iuB244LhCl
-	 2A5wdGGYt/5qwjQTOwMvFRXk/IwCnmxpWLwmVtgHSskaJXrw26AutnT3ySsdh7lRT6
-	 zmgVv20bHQty65md6Vmze9WtoyZ7g5hZoUhaFfa4=
+	b=twu8l9cohlpCHLbUYLAOYzNxj/kWZJ/I1k7x896k1Hh9JTIuTnrLP7x9uwAtUP9Gm
+	 lpcFZl/0bMLu+f/5J9z6c338S0kiR/m3DUf0aorO3W8Faut6qGyNN949ekt7S1aQFp
+	 aG9jBnfk2JhcvNmVI4nxWibPSXZ/wuHILQEua2vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 221/499] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
+Subject: [PATCH 6.12 107/423] remoteproc: core: Clear table_sz when rproc_shutdown
 Date: Tue,  8 Apr 2025 12:47:13 +0200
-Message-ID: <20250408104856.721283943@linuxfoundation.org>
+Message-ID: <20250408104848.227352016@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
+[ Upstream commit efdde3d73ab25cef4ff2d06783b0aad8b093c0e4 ]
 
-If a match was not found, then the write_raw() callback would return
-the odr index, not an error. Return -EINVAL if this occurs.
-To avoid similar issues in future, introduce j, a new indexing variable
-rather than using ret for this purpose.
+There is case as below could trigger kernel dump:
+Use U-Boot to start remote processor(rproc) with resource table
+published to a fixed address by rproc. After Kernel boots up,
+stop the rproc, load a new firmware which doesn't have resource table
+,and start rproc.
 
-Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+When starting rproc with a firmware not have resource table,
+`memcpy(loaded_table, rproc->cached_table, rproc->table_sz)` will
+trigger dump, because rproc->cache_table is set to NULL during the last
+stop operation, but rproc->table_sz is still valid.
+
+This issue is found on i.MX8MP and i.MX9.
+
+Dump as below:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010af63000
+[0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 2 UID: 0 PID: 1060 Comm: sh Not tainted 6.14.0-rc7-next-20250317-dirty #38
+Hardware name: NXP i.MX8MPlus EVK board (DT)
+pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __pi_memcpy_generic+0x110/0x22c
+lr : rproc_start+0x88/0x1e0
+Call trace:
+ __pi_memcpy_generic+0x110/0x22c (P)
+ rproc_boot+0x198/0x57c
+ state_store+0x40/0x104
+ dev_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x120/0x1cc
+ vfs_write+0x240/0x378
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x30/0xcc
+ el0t_64_sync_handler+0x10c/0x138
+ el0t_64_sync+0x198/0x19c
+
+Clear rproc->table_sz to address the issue.
+
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250319100106.3622619-1-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mma8452.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/remoteproc/remoteproc_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 962d289065ab7..1b2014c4c4b46 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -712,7 +712,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
- {
- 	struct mma8452_data *data = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, ret;
- 
- 	ret = iio_device_claim_direct_mode(indio_dev);
- 	if (ret)
-@@ -772,14 +772,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 		break;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		ret = mma8452_get_odr_index(data);
-+		j = mma8452_get_odr_index(data);
- 
- 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
--			if (mma8452_os_ratio[i][ret] == val) {
-+			if (mma8452_os_ratio[i][j] == val) {
- 				ret = mma8452_set_power_mode(data, i);
- 				break;
- 			}
- 		}
-+		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		break;
- 	default:
- 		ret = -EINVAL;
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index ef6febe356330..d2308c2f97eb9 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2025,6 +2025,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	kfree(rproc->cached_table);
+ 	rproc->cached_table = NULL;
+ 	rproc->table_ptr = NULL;
++	rproc->table_sz = 0;
+ out:
+ 	mutex_unlock(&rproc->lock);
+ 	return ret;
 -- 
 2.39.5
 
