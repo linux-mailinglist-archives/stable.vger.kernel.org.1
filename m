@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-131402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5770A80999
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38EAA805EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC7DA1BA4F9C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 992117AE96F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11F4270EBB;
-	Tue,  8 Apr 2025 12:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D3926B0A2;
+	Tue,  8 Apr 2025 12:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+dwf71Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nPXWi14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0DD2676C9;
-	Tue,  8 Apr 2025 12:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A39267F5B;
+	Tue,  8 Apr 2025 12:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116300; cv=none; b=dPmxDqIbQh3UEzLWbkqDjia3MX1K1L5xtrzZMdNPt7BLBnMeM3AAd0EfNM9FS5Bo5Gdn5DT88uT9h+qOKVZOXYdrmL5oYVheyngLKyHikXx3p4sCFVU8fIJJcrYB+jUoim8Hs6ZziR4fvTCI0n3TPrmcLT2IaRgcLnbJgqNLqRM=
+	t=1744114698; cv=none; b=XyYGtzscu0QPhvNd2Ou3QQzx/vjMX8hkYPMBIQkdE+vmaSXd/4xc6QNz1hyVxrO596C7rupyIq3H5THJ53zPQewQRfd3f6uaqzpeyfE0nfijCLcKS0aDEcFhwkM/fnLVSHprJ8KNXTBTgxzxOxaDYctNCCCpCVBGEocKXw9k0xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116300; c=relaxed/simple;
-	bh=jlZwS7bbyuROMf6R3gZCdobk18sUhFuoi28GumsgAsU=;
+	s=arc-20240116; t=1744114698; c=relaxed/simple;
+	bh=buZIeWh+GGECXZOVLxGjC/J99Q2gTHfLdzA8/oEW82Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+1wsrOPoBbNkD1oL38NZz5GGHf3niwaUT/rWxnIA6wR7to2Rob/nyskl7HIXqhjzTi5NmzBbO8TuwQimRHPvKN2eGW5w/Ns+PekkHQS7V1xnDG14LGNOV48UFejKrsLbEKgbMQOA0hVQj2yS8YW71Ma50W7MEEKasi6Z4yfmUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+dwf71Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850EDC4CEE5;
-	Tue,  8 Apr 2025 12:44:59 +0000 (UTC)
+	 MIME-Version; b=QByJhornA0PbNqZW0HgJCJXMBaP3abDzHZxOdL2UkW7wj0PI58bL8u3ltZEHIi0TmHIJGNsOCiGy+725shX2boAf6VeCXm0Iz5yQvyVKv5x0t+sSbbg375GYI4FfHGbqs/Tm2dAuiXjkf1uuFDlR9U06rm6LlQGziS0mm0qe6PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nPXWi14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7718C4CEE5;
+	Tue,  8 Apr 2025 12:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116299;
-	bh=jlZwS7bbyuROMf6R3gZCdobk18sUhFuoi28GumsgAsU=;
+	s=korg; t=1744114698;
+	bh=buZIeWh+GGECXZOVLxGjC/J99Q2gTHfLdzA8/oEW82Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+dwf71ZHNR+tDQKkyRPLGd5Clsn0EPNZApO3mG2ZJKpjMmNMiwii7SZ+ROos3J58
-	 68xCRurzgj04JpT4m4Xby8Hulg8TQP96jU60WsUBjoM8IIR/dfZqEYqh9IYM4X84a0
-	 24XGPNBFKU31Vm0AM3J02gsEeviYBAC5ujqr9nj4=
+	b=1nPXWi14RyFdEiX6srGm1O9wBPC3CEaxzj2GXv5HkPIDgGZ4IAEPkVwu5UXwh7pSZ
+	 OJcuHo4ZdGZqD7gaT1pWcdWOvtrmiyuGnfnS0zHy7AtbnAZbBsw911ypMQEaNlsYtf
+	 Mku8S+O4uF4haNwQxGbYwfdXWGZBaZtiJ0Y1I1mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/423] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
+Subject: [PATCH 6.13 201/499] staging: gpib: Fix pr_err format warning
 Date: Tue,  8 Apr 2025 12:46:53 +0200
-Message-ID: <20250408104847.767310993@linuxfoundation.org>
+Message-ID: <20250408104856.211511681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
+[ Upstream commit 03ec050c437bb4e7c5d215bbeedaa93932f13b35 ]
 
-There is a type bug because the return statement:
+This patch fixes the following compile warning:
 
-        return ret < 0 ? ret : recv_cnt;
+drivers/staging/gpib/hp_82341/hp_82341.c: In function 'hp_82341_attach':
+./include/linux/kern_levels.h:5:25: warning: format '%lx' expects argument of type 'long unsigned int', but argument 2 has type 'u32' {aka 'unsigned int'} [-Wformat=]
 
-The issue is that ret is an int, recv_cnt is a u32 and the function
-returns ssize_t, which is a signed long.  The way that the type promotion
-works is that the negative error codes are first cast to u32 and then
-to signed long.  The error codes end up being positive instead of
-negative and the callers treat them as success.
+It was introduced in
 
-Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+commit baf8855c9160 ("staging: gpib: fix address space mixup")
+
+but was not detected as the build of the driver depended on BROKEN.
+
+Fixes: baf8855c9160 ("staging: gpib: fix address space mixup")
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250124105900.27592-2-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/staging/gpib/hp_82341/hp_82341.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
-index b9b7fd08b7d7e..88f3dfeb4731d 100644
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -1108,12 +1108,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 				     const struct mipi_dsi_msg *msg)
- {
- 	struct mtk_dsi *dsi = host_to_dsi(host);
--	u32 recv_cnt, i;
-+	ssize_t recv_cnt;
- 	u8 read_data[16];
- 	void *src_addr;
- 	u8 irq_flag = CMD_DONE_INT_FLAG;
- 	u32 dsi_mode;
--	int ret;
-+	int ret, i;
- 
- 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
- 	if (dsi_mode & MODE) {
-@@ -1162,7 +1162,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 	if (recv_cnt)
- 		memcpy(msg->rx_buf, src_addr, recv_cnt);
- 
--	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
-+	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
- 		 recv_cnt, *((u8 *)(msg->tx_buf)));
- 
- restore_dsi_mode:
+diff --git a/drivers/staging/gpib/hp_82341/hp_82341.c b/drivers/staging/gpib/hp_82341/hp_82341.c
+index 71d481e88bd96..6ec010965652e 100644
+--- a/drivers/staging/gpib/hp_82341/hp_82341.c
++++ b/drivers/staging/gpib/hp_82341/hp_82341.c
+@@ -718,7 +718,7 @@ int hp_82341_attach(gpib_board_t *board, const gpib_board_config_t *config)
+ 	for (i = 0; i < hp_82341_num_io_regions; ++i) {
+ 		start_addr = iobase + i * hp_priv->io_region_offset;
+ 		if (!request_region(start_addr, hp_82341_region_iosize, "hp_82341")) {
+-			pr_err("hp_82341: failed to allocate io ports 0x%lx-0x%lx\n",
++			pr_err("hp_82341: failed to allocate io ports 0x%x-0x%x\n",
+ 			       start_addr,
+ 			       start_addr + hp_82341_region_iosize - 1);
+ 			return -EIO;
 -- 
 2.39.5
 
