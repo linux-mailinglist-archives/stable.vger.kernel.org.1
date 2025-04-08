@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-130423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D5CA804D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE02A80AAD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B3ED8820A0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDC8B7ACA57
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF42326A0E0;
-	Tue,  8 Apr 2025 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5507C27C14A;
+	Tue,  8 Apr 2025 12:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7Rdacds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaKNiCMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCBD264FB0;
-	Tue,  8 Apr 2025 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DF627BF9E;
+	Tue,  8 Apr 2025 12:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113674; cv=none; b=fjwQoE0aIewlO218RXMV21TCngI76Z1dHBu2JUjS3jE9NUeEFbpf0Uh9YkV1PNLO786cjWJVWFSuw7mdtUoHUHYe1udF+Dh1NiibTnt6bgz8q5VAmffCNcdSoOXgyzsuEy74Zlneh8q0JvO30kfJUj9mnB7x9elsRT8B/HWGquI=
+	t=1744116965; cv=none; b=BvSY1uAlYsy75EsvXjGi0vw/qhI33szIPFeiPCaA/ss40ZR2N+XcygpmpTvpfOkvb+17N6fXGfHiS0ujnrZ2Y75ZjBzyfzHxb6o0DRG2nwW255036RxgehheNXe4R49pavqruJj6uEGdvAi8t7nIf9w843n7jJVMt7UwH+rA+YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113674; c=relaxed/simple;
-	bh=2g9PrQ/WAo/hU2j2wf5claVW8X/NqcoW+YPjWYqTbKk=;
+	s=arc-20240116; t=1744116965; c=relaxed/simple;
+	bh=y/QBRUi04y1pBsHSzb0I0FtTtv8+35JIhofS9wCTLN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHdkP/YV/8J7GUCdPIAf0Py1BThyXm/YermSWoTVj2K0+i4r4a6UaqVqxEk1NGIYRW3SK04XKpVhtkn0mfXmP6tFhkpVyXzr0u152T4rlh2+4wpHY6K252cn8M6fElSaGKMDewZLqEVP1ErBKdPQQq+FM7r4q/MoNudP6VZAmwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7Rdacds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDA8C4CEE5;
-	Tue,  8 Apr 2025 12:01:13 +0000 (UTC)
+	 MIME-Version; b=Gch0nyDUNdDve2FGmnDwgAakNijb6OvcdxFYYtK8Dhw4PIUtXlxiUIwnFO0cmb2ymeyBNdRBsdFaR/OtV87Pswmd8oVKGxdortQEaaT5FPjTF1l3tT8EnN2vO2donG630b0UuCWkhrDPUG7vBN65xNKjtpL1wX+Ycy+n5iu4zyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaKNiCMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EF2C4CEE5;
+	Tue,  8 Apr 2025 12:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113674;
-	bh=2g9PrQ/WAo/hU2j2wf5claVW8X/NqcoW+YPjWYqTbKk=;
+	s=korg; t=1744116964;
+	bh=y/QBRUi04y1pBsHSzb0I0FtTtv8+35JIhofS9wCTLN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7Rdacds04gUGUKRE4BSgFIm2oPppqN8Ls0c13pzAdcgZmcveaZ6h1bhAOkPVBqcu
-	 AJC7f77ymUqgCWtgQxwFIL2wFtYhDnDWY7WbPIB5T8dgAvXHogqaW7u7bmpbCM3c/M
-	 4aNexFy5FfYH7cgAZ5mvcf4wTCphJiZrobfon7t0=
+	b=IaKNiCMV/cfQW+ymXFqzrhqqkpKz00Jldx4KmEdqkKd2TUSuYWT8lRo3Kkma5Bs5K
+	 rM8KqLniKRZYHmGV+9FS5meBFbYVmcjF10tyY0uIAfgVmmLpAjXd3bNStG4EcRWhu9
+	 vao/LHQmKw2NzKoMuRATVrqLn1NQg3dWtGfKzymA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 248/268] mmc: omap: Fix memory leak in mmc_omap_new_slot
+	Matt Dowling <madowlin@amazon.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 333/423] udp: Fix memory accounting leak.
 Date: Tue,  8 Apr 2025 12:50:59 +0200
-Message-ID: <20250408104835.277123864@linuxfoundation.org>
+Message-ID: <20250408104853.588927340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 3834a759afb817e23a7a2f09c2c9911b0ce5c588 upstream.
+[ Upstream commit df207de9d9e7a4d92f8567e2c539d9c8c12fd99d ]
 
-Add err_free_host label to properly pair mmc_alloc_host() with
-mmc_free_host() in GPIO error paths. The allocated host memory was
-leaked when GPIO lookups failed.
+Matt Dowling reported a weird UDP memory usage issue.
 
-Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318140226.19650-1-linmq006@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Under normal operation, the UDP memory usage reported in /proc/net/sockstat
+remains close to zero.  However, it occasionally spiked to 524,288 pages
+and never dropped.  Moreover, the value doubled when the application was
+terminated.  Finally, it caused intermittent packet drops.
+
+We can reproduce the issue with the script below [0]:
+
+  1. /proc/net/sockstat reports 0 pages
+
+    # cat /proc/net/sockstat | grep UDP:
+    UDP: inuse 1 mem 0
+
+  2. Run the script till the report reaches 524,288
+
+    # python3 test.py & sleep 5
+    # cat /proc/net/sockstat | grep UDP:
+    UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> PAGE_SHIFT
+
+  3. Kill the socket and confirm the number never drops
+
+    # pkill python3 && sleep 5
+    # cat /proc/net/sockstat | grep UDP:
+    UDP: inuse 1 mem 524288
+
+  4. (necessary since v6.0) Trigger proto_memory_pcpu_drain()
+
+    # python3 test.py & sleep 1 && pkill python3
+
+  5. The number doubles
+
+    # cat /proc/net/sockstat | grep UDP:
+    UDP: inuse 1 mem 1048577
+
+The application set INT_MAX to SO_RCVBUF, which triggered an integer
+overflow in udp_rmem_release().
+
+When a socket is close()d, udp_destruct_common() purges its receive
+queue and sums up skb->truesize in the queue.  This total is calculated
+and stored in a local unsigned integer variable.
+
+The total size is then passed to udp_rmem_release() to adjust memory
+accounting.  However, because the function takes a signed integer
+argument, the total size can wrap around, causing an overflow.
+
+Then, the released amount is calculated as follows:
+
+  1) Add size to sk->sk_forward_alloc.
+  2) Round down sk->sk_forward_alloc to the nearest lower multiple of
+      PAGE_SIZE and assign it to amount.
+  3) Subtract amount from sk->sk_forward_alloc.
+  4) Pass amount >> PAGE_SHIFT to __sk_mem_reduce_allocated().
+
+When the issue occurred, the total in udp_destruct_common() was 2147484480
+(INT_MAX + 833), which was cast to -2147482816 in udp_rmem_release().
+
+At 1) sk->sk_forward_alloc is changed from 3264 to -2147479552, and
+2) sets -2147479552 to amount.  3) reverts the wraparound, so we don't
+see a warning in inet_sock_destruct().  However, udp_memory_allocated
+ends up doubling at 4).
+
+Since commit 3cd3399dd7a8 ("net: implement per-cpu reserves for
+memory_allocated"), memory usage no longer doubles immediately after
+a socket is close()d because __sk_mem_reduce_allocated() caches the
+amount in udp_memory_per_cpu_fw_alloc.  However, the next time a UDP
+socket receives a packet, the subtraction takes effect, causing UDP
+memory usage to double.
+
+This issue makes further memory allocation fail once the socket's
+sk->sk_rmem_alloc exceeds net.ipv4.udp_rmem_min, resulting in packet
+drops.
+
+To prevent this issue, let's use unsigned int for the calculation and
+call sk_forward_alloc_add() only once for the small delta.
+
+Note that first_packet_length() also potentially has the same problem.
+
+[0]:
+from socket import *
+
+SO_RCVBUFFORCE = 33
+INT_MAX = (2 ** 31) - 1
+
+s = socket(AF_INET, SOCK_DGRAM)
+s.bind(('', 0))
+s.setsockopt(SOL_SOCKET, SO_RCVBUFFORCE, INT_MAX)
+
+c = socket(AF_INET, SOCK_DGRAM)
+c.connect(s.getsockname())
+
+data = b'a' * 100
+
+while True:
+    c.send(data)
+
+Fixes: f970bd9e3a06 ("udp: implement memory accounting helpers")
+Reported-by: Matt Dowling <madowlin@amazon.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250401184501.67377-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/omap.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ net/ipv4/udp.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1276,19 +1276,25 @@ static int mmc_omap_new_slot(struct mmc_
- 	/* Check for some optional GPIO controls */
- 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vsd))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
-+	if (IS_ERR(slot->vsd)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
- 				     "error looking up VSD GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vio))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
-+	if (IS_ERR(slot->vio)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
- 				     "error looking up VIO GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
- 						    id, GPIOD_IN);
--	if (IS_ERR(slot->cover))
--		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
-+	if (IS_ERR(slot->cover)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
- 				     "error looking up cover switch GPIO\n");
-+		goto err_free_host;
-+	}
- 
- 	host->slots[id] = slot;
- 
-@@ -1348,6 +1354,7 @@ err_remove_slot_name:
- 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
- err_remove_host:
- 	mmc_remove_host(mmc);
-+err_free_host:
- 	mmc_free_host(mmc);
- 	return r;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 4f52d220f4d0c..f4e24fc878fab 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1470,12 +1470,12 @@ static bool udp_skb_has_head_state(struct sk_buff *skb)
  }
+ 
+ /* fully reclaim rmem/fwd memory allocated for skb */
+-static void udp_rmem_release(struct sock *sk, int size, int partial,
+-			     bool rx_queue_lock_held)
++static void udp_rmem_release(struct sock *sk, unsigned int size,
++			     int partial, bool rx_queue_lock_held)
+ {
+ 	struct udp_sock *up = udp_sk(sk);
+ 	struct sk_buff_head *sk_queue;
+-	int amt;
++	unsigned int amt;
+ 
+ 	if (likely(partial)) {
+ 		up->forward_deficit += size;
+@@ -1495,10 +1495,8 @@ static void udp_rmem_release(struct sock *sk, int size, int partial,
+ 	if (!rx_queue_lock_held)
+ 		spin_lock(&sk_queue->lock);
+ 
+-
+-	sk_forward_alloc_add(sk, size);
+-	amt = (sk->sk_forward_alloc - partial) & ~(PAGE_SIZE - 1);
+-	sk_forward_alloc_add(sk, -amt);
++	amt = (size + sk->sk_forward_alloc - partial) & ~(PAGE_SIZE - 1);
++	sk_forward_alloc_add(sk, size - amt);
+ 
+ 	if (amt)
+ 		__sk_mem_reduce_allocated(sk, amt >> PAGE_SHIFT);
+@@ -1688,7 +1686,7 @@ EXPORT_SYMBOL_GPL(skb_consume_udp);
+ 
+ static struct sk_buff *__first_packet_length(struct sock *sk,
+ 					     struct sk_buff_head *rcvq,
+-					     int *total)
++					     unsigned int *total)
+ {
+ 	struct sk_buff *skb;
+ 
+@@ -1721,8 +1719,8 @@ static int first_packet_length(struct sock *sk)
+ {
+ 	struct sk_buff_head *rcvq = &udp_sk(sk)->reader_queue;
+ 	struct sk_buff_head *sk_queue = &sk->sk_receive_queue;
++	unsigned int total = 0;
+ 	struct sk_buff *skb;
+-	int total = 0;
+ 	int res;
+ 
+ 	spin_lock_bh(&rcvq->lock);
+-- 
+2.39.5
+
 
 
 
