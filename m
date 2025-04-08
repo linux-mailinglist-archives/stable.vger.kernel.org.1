@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF03AA8089F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C13A80ABE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B338A700A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E5A27B2029
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CA426B2DC;
-	Tue,  8 Apr 2025 12:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DB527C170;
+	Tue,  8 Apr 2025 12:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcvgaNuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfn1e+z4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344926A0EC;
-	Tue,  8 Apr 2025 12:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3524826988C;
+	Tue,  8 Apr 2025 12:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115343; cv=none; b=VNtiyT85B5MvBzENjweua1bh+EFG9csdDNPRgF6kqDtSNT1+rLgiR6pahhY9GqG3pzo8RRoOT8nz8EGJh34kZxGQzyJ4baQg7YWc8wufM54cIsOBRQWHBkkkWkgc5XJ4/rSitIn2lA8UTnpD8HVWi43tzdyFGX9nTIVlSjt1jNk=
+	t=1744117002; cv=none; b=r+wDAGIDFLB5LJ4k1UdaDQs+0fo1LEXbt3j3V7ZlRwKhvJoRhT1Rq16g2FuZQPuVw/7ZS5ddZTZbKxZWpt9SHZ0wccKCDZtDKb0EXKbOdZIaXyCD+BhVImWlSpdOMkiJ7uS4/yKDWyThe8YoqAMmQMWUjXu/w9YvTVBtXF5OWH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115343; c=relaxed/simple;
-	bh=Ol7Om3V9k5yFEZuXj1Rmw87xNrZ122+kkihDsKDnvqU=;
+	s=arc-20240116; t=1744117002; c=relaxed/simple;
+	bh=cyG994foBt5zP9HLpYcOcLGrJOwgfsQhKvANz0evN2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhf3XRMvgpXmtu7yoMMlAErNXrDxZ1YbbnxbVe86F8mSkttvjyUz/hvmK53h3LWW0Tq3snUx0cU+9q7FzJvewKG6BfvHPY70WgansaR8rspMmP/5iAxWoPPdbDRNtehbAROJ7JPvWuBmfl5xqb7ooVpUFnP3gloinAWYLjGi+Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcvgaNuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405CDC4CEE5;
-	Tue,  8 Apr 2025 12:29:03 +0000 (UTC)
+	 MIME-Version; b=uJ0MLnJFyIJ4RoVZq+NmW/4bkCER5AzzO4DaOaTJNVfoA2uixpplxD8ozIpR/Dqos3cln0Z4Vt5CL2UIlObF5ZMR7wkHEdmSy1ahwfmQZ6V4JIyG6HScAt1yroj0d6u7hqlh23X26nWQElmxLpHsSmYiVJvay1ybIRaQPv+qn5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfn1e+z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A5C4CEE5;
+	Tue,  8 Apr 2025 12:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115343;
-	bh=Ol7Om3V9k5yFEZuXj1Rmw87xNrZ122+kkihDsKDnvqU=;
+	s=korg; t=1744117002;
+	bh=cyG994foBt5zP9HLpYcOcLGrJOwgfsQhKvANz0evN2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcvgaNuTT3I+Ho8ixsb7EG+vzyY6i5B/fy42oJ7YqRCPBLOT6U6NvRkHJ5D/BMoVv
-	 RaXPBPy1IYqhIj1LgUJVV+kf0uH3mCV+dGr7+oBWX7s16QY1wGM9kxbmxu0RcXYkCj
-	 xtMIwU8lD6M2bd6kRfMz08mQCKFUU6L0Nl+rzqg0=
+	b=yfn1e+z412k9Lb8V2k62BnpgFYH0yYv73jWizvyEmd2avapvcxlpc1CoaydUKw3VI
+	 5jjTf1RWwDSmqeciYXLnAOrUXVDiPrUW2m3yzCfm+ozRTQRgWaJy3BTzI5Gupwext7
+	 pgmtaQclIudQIhFObtUux7hUG/RKrkr0dVYRAntg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dave Penkler <dpenkler@gmail.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 422/499] staging: gpib: Fix Oops after disconnect in ni_usb
+Subject: [PATCH 6.12 308/423] firmware: cs_dsp: Ensure cs_dsp_load[_coeff]() returns 0 on success
 Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104901.752249053@linuxfoundation.org>
+Message-ID: <20250408104852.974915792@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,362 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit a239c6e91b665f1837cf57b97fe638ef1baf2e78 ]
+[ Upstream commit 2593f7e0dc93a898a84220b3fb180d86f1ca8c60 ]
 
-If the usb dongle is disconnected subsequent calls to the
-driver cause a NULL dereference Oops as the bus_interface
-is set to NULL on disconnect.
+Set ret = 0 on successful completion of the processing loop in
+cs_dsp_load() and cs_dsp_load_coeff() to ensure that the function
+returns 0 on success.
 
-This problem was introduced by setting usb_dev from the bus_interface
-for dev_xxx messages.
+All normal firmware files will have at least one data block, and
+processing this block will set ret == 0, from the result of either
+regmap_raw_write() or cs_dsp_parse_coeff().
 
-Previously bus_interface was checked for NULL only in the the functions
-directly calling usb_fill_bulk_urb or usb_control_msg.
+The kunit tests create a dummy firmware file that contains only the
+header, without any data blocks. This gives cs_dsp a file to "load"
+that will not cause any side-effects. As there aren't any data blocks,
+the processing loop will not set ret == 0.
 
-Check for valid bus_interface on all interface entry points
-and return -ENODEV if it is NULL.
+Originally there was a line after the processing loop:
 
-Fixes: 4934b98bb243 ("staging: gpib: Update messaging and usb_device refs in ni_usb")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250222165817.12856-1-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ret = regmap_async_complete(regmap);
+
+which would set ret == 0 before the function returned.
+
+Commit fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
+changed the regmap write to a normal sync write, so the call to
+regmap_async_complete() wasn't necessary and was removed. It was
+overlooked that the ret here wasn't only to check the result of
+regmap_async_complete(), it also set the final return value of the
+function.
+
+Fixes: fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250323170529.197205-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 93 ++++++++++++++++++-----
- 1 file changed, 73 insertions(+), 20 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-index b6c28a28ee25d..7faae29b66e61 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-@@ -592,7 +592,7 @@ static int ni_usb_read(gpib_board_t *board, uint8_t *buffer, size_t length,
- {
- 	int retval, parse_retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x20;
- 	int in_data_length;
-@@ -605,8 +605,11 @@ static int ni_usb_read(gpib_board_t *board, uint8_t *buffer, size_t length,
- 	struct ni_usb_register reg;
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index bd1ea99c3b475..ea452f1908542 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1631,6 +1631,7 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
  
- 	*bytes_read = 0;
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
- 	if (length > max_read_length)
- 		return -EINVAL;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
- 		return -ENOMEM;
-@@ -719,7 +722,7 @@ static int ni_usb_write(gpib_board_t *board, uint8_t *buffer, size_t length,
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	int out_data_length;
- 	static const int in_data_length = 0x10;
-@@ -729,9 +732,11 @@ static int ni_usb_write(gpib_board_t *board, uint8_t *buffer, size_t length,
- 	struct ni_usb_status_block status;
- 	static const int max_write_length = 0xffff;
+ 	cs_dsp_debugfs_save_wmfwname(dsp, file);
  
--	*bytes_written = 0;
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
- 	if (length > max_write_length)
- 		return -EINVAL;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data_length = length + 0x10;
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
-@@ -818,7 +823,7 @@ static int ni_usb_command_chunk(gpib_board_t *board, uint8_t *buffer, size_t len
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	int out_data_length;
- 	static const int in_data_length = 0x10;
-@@ -830,8 +835,11 @@ static int ni_usb_command_chunk(gpib_board_t *board, uint8_t *buffer, size_t len
- 	static const int max_command_length = 0x10;
++	ret = 0;
+ out_fw:
+ 	cs_dsp_buf_free(&buf_list);
  
- 	*command_bytes_written = 0;
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
- 	if (length > max_command_length)
- 		length = max_command_length;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data_length = length + 0x10;
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
-@@ -924,7 +932,7 @@ static int ni_usb_take_control(gpib_board_t *board, int synchronous)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x10;
- 	static const int  in_data_length = 0x10;
-@@ -932,6 +940,9 @@ static int ni_usb_take_control(gpib_board_t *board, int synchronous)
- 	int i = 0;
- 	struct ni_usb_status_block status;
+@@ -2338,6 +2339,7 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
  
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
- 		return -ENOMEM;
-@@ -982,7 +993,7 @@ static int ni_usb_go_to_standby(gpib_board_t *board)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x10;
- 	static const int  in_data_length = 0x20;
-@@ -990,6 +1001,9 @@ static int ni_usb_go_to_standby(gpib_board_t *board)
- 	int i = 0;
- 	struct ni_usb_status_block status;
+ 	cs_dsp_debugfs_save_binname(dsp, file);
  
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
- 		return -ENOMEM;
-@@ -1038,11 +1052,14 @@ static void ni_usb_request_system_control(gpib_board_t *board, int request_contr
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[4];
- 	unsigned int ibsta;
++	ret = 0;
+ out_fw:
+ 	cs_dsp_buf_free(&buf_list);
  
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	if (request_control) {
- 		writes[i].device = NIUSB_SUBDEV_TNT4882;
- 		writes[i].address = CMDR;
-@@ -1086,7 +1103,7 @@ static void ni_usb_interface_clear(gpib_board_t *board, int assert)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x10;
- 	static const int  in_data_length = 0x10;
-@@ -1094,7 +1111,10 @@ static void ni_usb_interface_clear(gpib_board_t *board, int assert)
- 	int i = 0;
- 	struct ni_usb_status_block status;
- 
--	// FIXME: we are going to pulse when assert is true, and ignore otherwise
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+// FIXME: we are going to pulse when assert is true, and ignore otherwise
- 	if (assert == 0)
- 		return;
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
-@@ -1132,10 +1152,13 @@ static void ni_usb_remote_enable(gpib_board_t *board, int enable)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	struct ni_usb_register reg;
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	reg.device = NIUSB_SUBDEV_TNT4882;
- 	reg.address = nec7210_to_tnt4882_offset(AUXMR);
- 	if (enable)
-@@ -1179,11 +1202,14 @@ static unsigned int ni_usb_update_status(gpib_board_t *board, unsigned int clear
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	static const int buffer_length = 8;
- 	u8 *buffer;
- 	struct ni_usb_status_block status;
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	buffer = kmalloc(buffer_length, GFP_KERNEL);
- 	if (!buffer)
- 		return board->status;
-@@ -1231,11 +1257,14 @@ static int ni_usb_primary_address(gpib_board_t *board, unsigned int address)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[2];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	writes[i].device = NIUSB_SUBDEV_TNT4882;
- 	writes[i].address = nec7210_to_tnt4882_offset(ADR);
- 	writes[i].value = address;
-@@ -1286,11 +1315,14 @@ static int ni_usb_secondary_address(gpib_board_t *board, unsigned int address, i
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[3];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	i += ni_usb_write_sad(writes, address, enable);
- 	retval = ni_usb_write_registers(ni_priv, writes, i, &ibsta);
- 	if (retval < 0) {
-@@ -1305,7 +1337,7 @@ static int ni_usb_parallel_poll(gpib_board_t *board, uint8_t *result)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x10;
- 	static const int  in_data_length = 0x20;
-@@ -1314,6 +1346,9 @@ static int ni_usb_parallel_poll(gpib_board_t *board, uint8_t *result)
- 	int j = 0;
- 	struct ni_usb_status_block status;
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
- 		return -ENOMEM;
-@@ -1357,11 +1392,14 @@ static void ni_usb_parallel_poll_configure(gpib_board_t *board, uint8_t config)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[1];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	writes[i].device = NIUSB_SUBDEV_TNT4882;
- 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
- 	writes[i].value = PPR | config;
-@@ -1379,11 +1417,14 @@ static void ni_usb_parallel_poll_response(gpib_board_t *board, int ist)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[1];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	writes[i].device = NIUSB_SUBDEV_TNT4882;
- 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
- 	if (ist)
-@@ -1404,11 +1445,14 @@ static void ni_usb_serial_poll_response(gpib_board_t *board, u8 status)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[1];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	writes[i].device = NIUSB_SUBDEV_TNT4882;
- 	writes[i].address = nec7210_to_tnt4882_offset(SPMR);
- 	writes[i].value = status;
-@@ -1431,11 +1475,14 @@ static void ni_usb_return_to_local(gpib_board_t *board)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	int i = 0;
- 	struct ni_usb_register writes[1];
- 	unsigned int ibsta;
- 
-+	if (!ni_priv->bus_interface)
-+		return; // -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	writes[i].device = NIUSB_SUBDEV_TNT4882;
- 	writes[i].address = nec7210_to_tnt4882_offset(AUXMR);
- 	writes[i].value = AUX_RTL;
-@@ -1453,7 +1500,7 @@ static int ni_usb_line_status(const gpib_board_t *board)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	u8 *out_data, *in_data;
- 	static const int out_data_length = 0x20;
- 	static const int  in_data_length = 0x20;
-@@ -1463,6 +1510,9 @@ static int ni_usb_line_status(const gpib_board_t *board)
- 	int line_status = ValidALL;
- 	// NI windows driver reads 0xd(HSSEL), 0xc (ARD0), 0x1f (BSR)
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_data = kmalloc(out_data_length, GFP_KERNEL);
- 	if (!out_data)
- 		return -ENOMEM;
-@@ -1569,12 +1619,15 @@ static unsigned int ni_usb_t1_delay(gpib_board_t *board, unsigned int nano_sec)
- {
- 	int retval;
- 	struct ni_usb_priv *ni_priv = board->private_data;
--	struct usb_device *usb_dev = interface_to_usbdev(ni_priv->bus_interface);
-+	struct usb_device *usb_dev;
- 	struct ni_usb_register writes[3];
- 	unsigned int ibsta;
- 	unsigned int actual_ns;
- 	int i;
- 
-+	if (!ni_priv->bus_interface)
-+		return -ENODEV;
-+	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	i = ni_usb_setup_t1_delay(writes, nano_sec, &actual_ns);
- 	retval = ni_usb_write_registers(ni_priv, writes, i, &ibsta);
- 	if (retval < 0) {
 -- 
 2.39.5
 
