@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEC6A80937
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BBAA80524
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B484279DC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E03466989
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4849726B0A2;
-	Tue,  8 Apr 2025 12:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7A3269836;
+	Tue,  8 Apr 2025 12:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxXrzNI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS7xzQOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E0526B098;
-	Tue,  8 Apr 2025 12:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665B1264627;
+	Tue,  8 Apr 2025 12:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115622; cv=none; b=k+svSWsFd9/nEuqj6MsxB1QKPOrjFda1hp4jG6Rdz6g9Q53YhdxyLnS9lWsztPmwioHQDUd5vjb1PQHPKpYQEWrab3TnaU+aHrh5ww+M2Dk/jq4kl9B+VIpzgQOmB0OCUluQ4dxOdRcRraPOlMbkGML23WvpVCCSthkgG1oLZtQ=
+	t=1744113924; cv=none; b=co8hrLi6MHf+KXd/L7C0divIb2WWl7TbtP6G2oulkuqcnIZd5OSU1GH+82fo5bvNh1y7HQQ6Ei5DVw31saMzvV5sy+M8XZRNAuFDk+9cMe2uqThGcUust2O3iS1NdLr91b75P5jNcmeHZBC9UBGDzHoXR4gsbdJgqj2OC4XQiCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115622; c=relaxed/simple;
-	bh=6yg+WlKSH2nT4xuTSfe+dJwInjQTwAKf82ASh5GhcqI=;
+	s=arc-20240116; t=1744113924; c=relaxed/simple;
+	bh=fWPPogGVH0sNXwG21E07agZCJJkOfVJFPDzUbQI/VbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIIGyWuNPQoOEZQG2W1T2U4CbEQz4AeiSlNEbBI5rOFWwG5VLaVCYU8lJJR7/pNS9GCYCXzmpQ2MPR86QzUsYJVdXkWISy4Clfleb7VB2zb8oJFH1MzL3YNRsyYAfEPK/mKc96X0vkJ+K+HA4GhU77znLwfyTbBxrLzw0YC71Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxXrzNI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F5FC4CEE5;
-	Tue,  8 Apr 2025 12:33:41 +0000 (UTC)
+	 MIME-Version; b=fpGHlM43vwIBbcsDtinp/02IMYHyE5oSHuB+KJ/K+bPDnbsEej4bO9vfYWE/SBf/koy8e5w96Vv09qSJT0FWayVSozNmkol5Wzg6qJmgpGxB0icOY1pl2aS63YV0Vdryxr/D/9LhkvQiihw9E9sX2JaoDKvIIc8zSn1ZuRlZz0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS7xzQOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC240C4CEE7;
+	Tue,  8 Apr 2025 12:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115621;
-	bh=6yg+WlKSH2nT4xuTSfe+dJwInjQTwAKf82ASh5GhcqI=;
+	s=korg; t=1744113924;
+	bh=fWPPogGVH0sNXwG21E07agZCJJkOfVJFPDzUbQI/VbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxXrzNI/spM4CNFmKx6cS0P29Zt1cKs0nb9+ZEpU0bXGyZe6bQvNzyrdxF7kyIyqy
-	 aJd27kkM8JMg6CMufmLK6ZuDNYfArPrBV3MzDtxeBcMB1wTARIeLN0CSKnd9DTpCtG
-	 RvU54b+XrAdkhOosoh7oBJLM6l7W8jFH3IacJCRg=
+	b=JS7xzQOoqDLqgNlsoaDkSXkZ6hDRoVwXdiHcODIr2cGioX8Ovc+XuvlExEG3IppnQ
+	 4sLYkBTvAYr4J4lEV9rOKVIUndT7F+nXhiW670ZcPiPMCLKqxhsWDj5oxxZ/cgDL/E
+	 /6J7wsLO1vVQZVPeaZ26ZMAYrP43+dSi0OH4yARs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/204] drm/amd/display: fix type mismatch in CalculateDynamicMetadataParameters()
+Subject: [PATCH 5.4 032/154] sctp: Fix undefined behavior in left shift operation
 Date: Tue,  8 Apr 2025 12:49:33 +0200
-Message-ID: <20250408104821.609529249@linuxfoundation.org>
+Message-ID: <20250408104816.288444281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit c3c584c18c90a024a54716229809ba36424f9660 ]
+[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
 
-There is a type mismatch between what CalculateDynamicMetadataParameters()
-takes and what is passed to it. Currently this function accepts several
-args as signed long but it's called with unsigned integers and integer. On
-some systems where long is 32 bits and one of these unsigned int params is
-greater than INT_MAX it may cause passing input params as negative values.
+According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
+"If E1 has a signed type and E1 x 2^E2 is not representable in the result
+type, the behavior is undefined."
 
-Fix this by changing these argument types from long to unsigned int and to
-int respectively. Also this will align the function's definition with
-similar functions in other dcn* drivers.
+Shifting 1 << 31 causes signed integer overflow, which leads to undefined
+behavior.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Fix this by explicitly using '1U << 31' to ensure the shift operates on
+an unsigned type, avoiding undefined behavior.
 
-Fixes: 6725a88f88a7 ("drm/amd/display: Add DCN3 DML")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml/dcn30/display_mode_vba_30.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-index 861f32b3248e7..69521368ddb61 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-@@ -283,10 +283,10 @@ static void CalculateDynamicMetadataParameters(
- 		double DISPCLK,
- 		double DCFClkDeepSleep,
- 		double PixelClock,
--		long HTotal,
--		long VBlank,
--		long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired,
-+		unsigned int HTotal,
-+		unsigned int VBlank,
-+		unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired,
- 		int InterlaceEnable,
- 		bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup,
-@@ -3280,8 +3280,8 @@ static double CalculateWriteBackDelay(
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index ca8fdc9abca5f..08cd06078fab1 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -736,7 +736,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
+ 	 *     value SHOULD be the smallest TSN not acknowledged by the
+ 	 *     receiver of the request plus 2^31.
+ 	 */
+-	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
++	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
+ 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
+ 			 init_tsn, GFP_ATOMIC);
  
- 
- static void CalculateDynamicMetadataParameters(int MaxInterDCNTileRepeaters, double DPPCLK, double DISPCLK,
--		double DCFClkDeepSleep, double PixelClock, long HTotal, long VBlank, long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
-+		double DCFClkDeepSleep, double PixelClock, unsigned int HTotal, unsigned int VBlank, unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup, double *Tdmbf, double *Tdmec, double *Tdmsks)
- {
- 	double TotalRepeaterDelayTime = 0;
 -- 
 2.39.5
 
