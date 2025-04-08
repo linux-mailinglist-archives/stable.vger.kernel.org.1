@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329D5A8050E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D1CA80BBF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4AF4A5537
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4AB4E4C89
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A4726A0AF;
-	Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B09C26F454;
+	Tue,  8 Apr 2025 12:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnL4CuKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSmih8so"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6D826A0B3;
-	Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E675C26988C;
+	Tue,  8 Apr 2025 12:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113980; cv=none; b=h7LBUE4LUu9lf0Kj6SiD71uHVL4ERbVULBnp3O6q0MBFDr7RTYB7CUtfuixCHgf/4phNOZp8DDq9shFQ7FMoaBbtxkJ5WQmsV6FMaVd1Ebe7MWlzI5Lb6hcnE7t/xli5FF6GHyfBT+K7+2QpWMRaybsX0WQk7RCBO0GtTCImwwc=
+	t=1744117000; cv=none; b=qChfGY1pKvggpHnYIUu/ZHVxsd9zqBAKcRf7BnSE/wfhQul+3UfKabnnFQuc1rI9uXmXl8Soutsw9AXTOSa3zDmYoShhue/TTSqHfyIj7AcjHqgTi3BSZPm0wO9+V+qpopp7eY28RTHvDwtNFH+9wT5wPOKz6+qchzr5GpOVYn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113980; c=relaxed/simple;
-	bh=Q+6q9soffcI2bjry5z74yPePfVMJaOBSHo3P1Z2WQxY=;
+	s=arc-20240116; t=1744117000; c=relaxed/simple;
+	bh=BCkeWY8hXwX4y/XKnbLE6EyDq/LXc+swQ7uMvinZhLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqbPe0Kw9hNLOp1NkZe8adyfPUWiRlZamBGzna74MkrEUGA4OXetCirgmD4q11iHrfVkEGk1Ax0m0DOzhmF/Detqjwm7dA7Z/IMM/JnabbC1so+TyhaRXkem9Lw819uZ9D3sIAU7pCoVtN4c+EmMgNTDHz9W0aONssWYunOGCqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnL4CuKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CEBC4CEE5;
-	Tue,  8 Apr 2025 12:06:19 +0000 (UTC)
+	 MIME-Version; b=VkSaRoC16QflQxBEKUYEzjWAZe4DoU4w1o13T7l+W4elQTBbm5pLaHmbb5vjv9Vi2aIn7Kt2AXdTioo61OezaHgyUR+rbvMyOenan9QS2HvmX4VP71J9YDZOFlfiC7zH3f2CU4eGs1GNpg+M7Rl3ZKWhyGmnMVQeg/3MgZlUnsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSmih8so; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DAEC4CEE5;
+	Tue,  8 Apr 2025 12:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113980;
-	bh=Q+6q9soffcI2bjry5z74yPePfVMJaOBSHo3P1Z2WQxY=;
+	s=korg; t=1744116999;
+	bh=BCkeWY8hXwX4y/XKnbLE6EyDq/LXc+swQ7uMvinZhLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnL4CuKTdmBe48tSfKHI6SMOXP2ZpGSgKckkxFJPVRqTB2XMQZ5J04b5kPb7cmnC2
-	 J/ozh7c1BmWkRX3sYPJYoA2I7JGYMMMjO8O0dilYAVGGOvdpPAB5qJvMSgxWJsCyDT
-	 rYjFB8MhiW/Tmob3Z34ECssCPtxpc21jfVrcxSu8=
+	b=iSmih8soNEGMOekJ4ax3/7krvfR9snwuW3k/3wl0OyGcDfOP5rkJisMIC3GEeFKPD
+	 Fvoc6gkB92YirUtpUqxIxTlTjnQ/Ik3xFbQL5YwLogOB0KCQ0/JgV7+Jn6Eyy9juTA
+	 xnwITV76KcBI5Ut098gwm2a+nzOa2Tkx0Nrpm9DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Oleg Gorobets <oleg.goro@gmail.com>
-Subject: [PATCH 5.4 092/154] ALSA: hda/realtek: Always honor no_shutup_pins
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 307/423] ntb: intel: Fix using link status DBs
 Date: Tue,  8 Apr 2025 12:50:33 +0200
-Message-ID: <20250408104818.271815833@linuxfoundation.org>
+Message-ID: <20250408104852.949834595@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-[ Upstream commit 5a0c72c1da3cbc0cd4940a95d1be2830104c6edf ]
+[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
 
-The workaround for Dell machines to skip the pin-shutup for mic pins
-introduced alc_headset_mic_no_shutup() that is replaced from the
-generic snd_hda_shutup_pins() for certain codecs.  The problem is that
-the call is done unconditionally even if spec->no_shutup_pins is set.
-This seems causing problems on other platforms like Lenovo.
+Make sure we are not using DB's which were remapped for link status.
 
-This patch corrects the behavior and the driver honors always
-spec->no_shutup_pins flag and skips alc_headset_mic_no_shutup() if
-it's set.
-
-Fixes: dad3197da7a3 ("ALSA: hda/realtek - Fixup headphone noise via runtime suspend")
-Reported-and-tested-by: Oleg Gorobets <oleg.goro@gmail.com>
-Link: https://patch.msgid.link/20250315143020.27184-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 93bb7c5922e78..2e7b45f5f8b18 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -519,6 +519,9 @@ static void alc_shutup_pins(struct hda_codec *codec)
- {
- 	struct alc_spec *spec = codec->spec;
- 
-+	if (spec->no_shutup_pins)
-+		return;
-+
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-@@ -534,8 +537,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 		alc_headset_mic_no_shutup(codec);
- 		break;
- 	default:
--		if (!spec->no_shutup_pins)
--			snd_hda_shutup_pins(codec);
-+		snd_hda_shutup_pins(codec);
- 		break;
+diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
+index ffcfc3e02c353..a5aa96a31f4a6 100644
+--- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
++++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
+@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
  	}
- }
+ 
+ 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
++	/* Make sure we are not using DB's used for link status */
++	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
++		ndev->db_valid_mask &= ~ndev->db_link_mask;
+ 
+ 	ndev->reg->db_iowrite(ndev->db_valid_mask,
+ 			      ndev->self_mmio +
 -- 
 2.39.5
 
