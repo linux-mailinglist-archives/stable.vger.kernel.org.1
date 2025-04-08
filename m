@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AA0A806E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E92AA80A19
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8AFE4C4A00
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 955C34E7DB4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2560326B94F;
-	Tue,  8 Apr 2025 12:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F482676CF;
+	Tue,  8 Apr 2025 12:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZDy/GcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URVORyoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513326B94A;
-	Tue,  8 Apr 2025 12:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68DC1B87CF;
+	Tue,  8 Apr 2025 12:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114963; cv=none; b=uOMT8YAJUp7BXjbxGpckIM5rU03q3qDemNd+6izsaZTbuQMTww5GMF6OsjmpINgRZuNqtZ9Cob3lVdH4q/mTkoReUvVnW3N9/6anUg/Y4qlR6CvSYt7lHZFgdlsxqy+wkUjfTWWpOpJF63z4UeSRaEfA+yFN5US33snOuOGQFw8=
+	t=1744116454; cv=none; b=tkzrl9i7IdlXRcqpuhTFD6GZ9x7qHAhxxuaB6y6Va4FO3Vhzd8ivfmf0pkx13/czxNkQn7W/DQxijzv8TmX3BpeUhth5VURsWIEv1lDKVw4Td5E9qlXgdTF7DNmoXJJdyZv4BrpyjrPEw+x+5lRbq1vVbRPmKLJi7K/UVEWjsX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114963; c=relaxed/simple;
-	bh=u7VoE2v8f43/zdy7Yvc2jwJi0wu9vpHf9ecTEt2nV3g=;
+	s=arc-20240116; t=1744116454; c=relaxed/simple;
+	bh=M+CVrh/ccRR6ADaqHX7uWvl2eS32t3QmLiJVWxsv5yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaLl9zOlChFkmw37m81ErlO5fo0HVb6n7glwRBc1m51zW66lhvySAW4nuKfpcSI2dYPoHZiQxony2YradDFtL/UrptvgWa67wzLqAGndOrtnTwun7GkBBAUUsWo/lgX6F++HTFFzmvd9kVOjk1ywSpjqZmC1jGUcRqyQahES7G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZDy/GcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534ADC4CEE5;
-	Tue,  8 Apr 2025 12:22:43 +0000 (UTC)
+	 MIME-Version; b=MtUqWfX7JLj90uiQ01jiThKkz787f9YOx0+iggSdMl/ayvOX2g6Bi8pfs6xPCsDK53C0PBbAniY92MwZyOMiQl4pNF+4DOm2LNIQhuIAz/L+E6B/a4+9frX2LT6OoHXpUVZVkfIGdJMQZtkNyFiJshz1nqHsq4CxZOwhRa0hFIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URVORyoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2D3C4CEEE;
+	Tue,  8 Apr 2025 12:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114963;
-	bh=u7VoE2v8f43/zdy7Yvc2jwJi0wu9vpHf9ecTEt2nV3g=;
+	s=korg; t=1744116453;
+	bh=M+CVrh/ccRR6ADaqHX7uWvl2eS32t3QmLiJVWxsv5yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZDy/GcEUNLgvqD5dcExFV0N2Vf2AqHG0vyKKAn+Ne/SpRTk3zClGtxC0OH/NWxNP
-	 ReBqizAysnLKbxBCMbkmM+yG92kDPgEFGOyXJuBui2Ra82XTLCTA1xissSwVUw103P
-	 rtyNaBRyZnV8SPpe88uqOU+ekKVHwgxlr8x86qq0=
+	b=URVORyoA5GDsfbjkCvaGfMhK9pbxmo51xco6ZqfyayJPo2RlmRma7v51whNUetkuR
+	 YlaKErktungnDd4mZ34ahzzSBnCcOW7e+7may9WmoAsshxoMrqGeBR5ig/zoohZcLS
+	 PMkHaDhmGp+T0L1p76cCNifowTf73BYqyEpaJfaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 260/499] perf dso: fix dso__is_kallsyms() check
-Date: Tue,  8 Apr 2025 12:47:52 +0200
-Message-ID: <20250408104857.696379930@linuxfoundation.org>
+Subject: [PATCH 6.12 147/423] clk: amlogic: g12a: fix mmc A peripheral clock
+Date: Tue,  8 Apr 2025 12:47:53 +0200
+Message-ID: <20250408104849.153738762@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit ebf0b332732dcc64239119e554faa946562b0b93 ]
+[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
 
-Kernel modules for which we cannot find a file on-disk will have a
-dso->long_name that looks like "[module_name]". Prior to the commit
-listed in the fixes, the dso->kernel field would be zero (for user
-space), so dso__is_kallsyms() would return false. After the commit,
-kernel module DSOs are correctly labeled, but the result is that
-dso__is_kallsyms() erroneously returns true for those modules without a
-filesystem path.
+The bit index of the peripheral clock for mmc A is wrong
+This was probably not a problem for mmc A as the peripheral is likely left
+enabled by the bootloader.
 
-Later, build_id_cache__add() consults this value of is_kallsyms, and
-when true, it copies /proc/kallsyms into the cache. Users with many
-kernel modules without a filesystem path (e.g. ksplice or possibly
-kernel live patch modules) have reported excessive disk space usage in
-the build ID cache directory due to this behavior.
+No issues has been reported so far but it could be a problem, most likely
+some form of conflict between the ethernet and mmc A clock, breaking
+ethernet on init.
 
-To reproduce the issue, it's enough to build a trivial out-of-tree hello
-world kernel module, load it using insmod, and then use:
+Use the value provided by the documentation for mmc A before this
+becomes an actual problem.
 
-   perf record -ag -- sleep 1
-
-In the build ID directory, there will be a directory for your module
-name containing a kallsyms file.
-
-Fix this up by changing dso__is_kallsyms() to consult the
-dso_binary_type enumeration, which is also symmetric to the above checks
-for dso__is_vmlinux() and dso__is_kcore(). With this change, kallsyms is
-not cached in the build-id cache for out-of-tree modules.
-
-Fixes: 02213cec64bbe ("perf maps: Mark module DSOs with kernel type")
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250318230012.2038790-1-stephen.s.brennan@oracle.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/dso.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-index bb8e8f444054d..c0472a41147c3 100644
---- a/tools/perf/util/dso.h
-+++ b/tools/perf/util/dso.h
-@@ -808,7 +808,9 @@ static inline bool dso__is_kcore(const struct dso *dso)
- 
- static inline bool dso__is_kallsyms(const struct dso *dso)
- {
--	return RC_CHK_ACCESS(dso)->kernel && RC_CHK_ACCESS(dso)->long_name[0] != '/';
-+	enum dso_binary_type bt = dso__binary_type(dso);
-+
-+	return bt == DSO_BINARY_TYPE__KALLSYMS || bt == DSO_BINARY_TYPE__GUEST_KALLSYMS;
- }
- 
- bool dso__is_object_file(const struct dso *dso);
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 06929e1940ef1..4f92b83965d5a 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -4329,7 +4329,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
+ static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
+ static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
+ static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
+-static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
++static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
+ static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
+ static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
+ static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
 -- 
 2.39.5
 
