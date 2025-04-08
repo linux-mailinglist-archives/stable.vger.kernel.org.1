@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DE1A803F3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD3DA807D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E26242655E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 427FF4E023B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AA6269D0D;
-	Tue,  8 Apr 2025 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B4C269AFB;
+	Tue,  8 Apr 2025 12:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jx2BmdJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yod1SiC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F002686B9;
-	Tue,  8 Apr 2025 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EBF206F18;
+	Tue,  8 Apr 2025 12:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113329; cv=none; b=bktG+RCF9/O5EWmLnCL0D8PA0OGSPgEoyQdEMwXJ1OoKd4X1GWSO/u1Nco0XeqgOM4AVtKM5QH/mO9fy9DSmwafHYVB8vo8OcVgYVLte/eIXiDlrd4+jCmuQxdqmLnysThTJojT8z1HpcWwvSLX/+QeoNcMN+g1YdW8CbhynLXA=
+	t=1744115528; cv=none; b=Q/wi9CWUe5upUHZWyqR5oKeNqiCa6VjjG1ui4wEcNyCjlBCdqFf4DSbaCwr+8KGP5Y5QdLBvLlWwcFJuilbasQ9xkKYC6nSzkeUA/q85r2O0A02Tx1OjrQlpazCe8/E6dSD43WnSV6jfVOlEH3K1L6rArCQsZrJb9T/pSQ8z2+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113329; c=relaxed/simple;
-	bh=lcftNEpUQ8VD/W1EwWr7EzURIgZS/R8HFF7wqvvvbug=;
+	s=arc-20240116; t=1744115528; c=relaxed/simple;
+	bh=zazv+dU2dB1iLQuLb1FjBrl89eWqzDkkOO39AamGbuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I270WDLF5kqpFcuQsMuu9klhF3Lv60EnQJyymzVuM5phO7VEjWCvLquK4ytyt8meKZG1hpsssSwoxkZ7EmFjH6391wNKKeuw00vD5m8ESqtECo3jsjIaHUJcSowxKePRNUVJ0LwfJuYNurOl2jKbTVp6GQeO8JngrKlntZsvc4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jx2BmdJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34325C4CEE5;
-	Tue,  8 Apr 2025 11:55:29 +0000 (UTC)
+	 MIME-Version; b=vC4/4m3vBK20kEjLuuql+62np6iB3guSMIDQV6LKUweyr5abrRW+gnhIZWO/5MdpxGYNkwchr5zqF294/wvASjY3mJJoDNgAf6bGxsDUln5a7da3f5aVHW4+ME+HEdrU5VvA9pOVjwHdQColUvqnD+mU2pZfr0Tj5RhZ0BrNdiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yod1SiC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3432C4CEE5;
+	Tue,  8 Apr 2025 12:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113329;
-	bh=lcftNEpUQ8VD/W1EwWr7EzURIgZS/R8HFF7wqvvvbug=;
+	s=korg; t=1744115528;
+	bh=zazv+dU2dB1iLQuLb1FjBrl89eWqzDkkOO39AamGbuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jx2BmdJMHHAODntwYBWJ9xyinyuBaN5VI+7bI88Rto3sLQ/WI8y70+rwYSD03p//s
-	 t9n8C7M8x+SPH3PcuK4tERK0gxCNZbN+P141lIUvUV90gkj7bLaBJhknK4i+nUQOzh
-	 I8ehjEqBkl/kvY1xeqhbUP7+AgJnt06XNHh7cnX4=
+	b=yod1SiC4q19rdHNXFXuznf8/kzQBUkcntKAEctds++GUlBFoABf74XK6f0q2Sko+R
+	 LGspQT/hCVywPk6ltAZE7ZKRc7UWGF+bYPuegtsdZmSMJl7o1h+n+AkFNLUNd5y4vt
+	 BoIfzBVdjUhFi5e3XlQovDCv4zCJVC47D5Vm8644=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/268] iio: adc: ad7124: Fix comparison of channel configs
+Subject: [PATCH 6.1 001/204] watch_queue: fix pipe accounting mismatch
 Date: Tue,  8 Apr 2025 12:48:51 +0200
-Message-ID: <20250408104831.735186298@linuxfoundation.org>
+Message-ID: <20250408104820.319109869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 05a5d874f7327b75e9bc4359618017e047cc129c ]
+[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+Currently, watch_queue_set_size() modifies the pipe buffers charged to
+user->pipe_bufs without updating the pipe->nr_accounted on the pipe
+itself, due to the if (!pipe_has_watch_queue()) test in
+pipe_resize_ring(). This means that when the pipe is ultimately freed,
+we decrement user->pipe_bufs by something other than what than we had
+charged to it, potentially leading to an underflow. This in turn can
+cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+To remedy this, explicitly account for the pipe usage in
+watch_queue_set_size() to match the number set via account_pipe_buffers()
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad7124_channel_config::config_props is expanded, the comparison
-is adapted, too.
+(It's unclear why watch_queue_set_size() does not update nr_accounted;
+it may be due to intentional overprovisioning in watch_queue_set_size()?)
 
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-13-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 35 +++++++++++++++++++++++++++++++----
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ kernel/watch_queue.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index d2060d394c8d2..0e6baf017bfd1 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -147,7 +147,11 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	/* Following fields are used to compare equality. */
-+	/*
-+	 * Following fields are used to compare for equality. If you
-+	 * make adaptations in it, you most likely also have to adapt
-+	 * ad7124_find_similar_live_cfg(), too.
-+	 */
- 	struct_group(config_props,
- 		enum ad7124_ref_sel refsel;
- 		bool bipolar;
-@@ -334,15 +338,38 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
- 								  struct ad7124_channel_config *cfg)
- {
- 	struct ad7124_channel_config *cfg_aux;
--	ptrdiff_t cmp_size;
- 	int i;
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index 442bb92212f2a..a72ea1c2f59fe 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -270,6 +270,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
+ 	if (ret < 0)
+ 		goto error;
  
--	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
 +	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad7124_channel_config was changed.
++	 * pipe_resize_ring() does not update nr_accounted for watch_queue
++	 * pipes, because the above vastly overprovisions. Set nr_accounted on
++	 * and max_usage this pipe to the number that was actually charged to
++	 * the user above via account_pipe_buffers.
 +	 */
-+	static_assert(sizeof_field(struct ad7124_channel_config, config_props) ==
-+		      sizeof(struct {
-+				     enum ad7124_ref_sel refsel;
-+				     bool bipolar;
-+				     bool buf_positive;
-+				     bool buf_negative;
-+				     unsigned int vref_mv;
-+				     unsigned int pga_bits;
-+				     unsigned int odr;
-+				     unsigned int odr_sel_bits;
-+				     unsigned int filter_type;
-+			     }));
++	pipe->max_usage = nr_pages;
++	pipe->nr_accounted = nr_pages;
 +
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
- 		if (cfg_aux->live &&
--		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
-+		    cfg->refsel == cfg_aux->refsel &&
-+		    cfg->bipolar == cfg_aux->bipolar &&
-+		    cfg->buf_positive == cfg_aux->buf_positive &&
-+		    cfg->buf_negative == cfg_aux->buf_negative &&
-+		    cfg->vref_mv == cfg_aux->vref_mv &&
-+		    cfg->pga_bits == cfg_aux->pga_bits &&
-+		    cfg->odr == cfg_aux->odr &&
-+		    cfg->odr_sel_bits == cfg_aux->odr_sel_bits &&
-+		    cfg->filter_type == cfg_aux->filter_type)
- 			return cfg_aux;
- 	}
- 
+ 	ret = -ENOMEM;
+ 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
+ 	if (!pages)
 -- 
 2.39.5
 
