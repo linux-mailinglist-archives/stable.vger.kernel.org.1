@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94312A804B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F11A80733
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF781B6108A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7104E4A72BB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9C8268685;
-	Tue,  8 Apr 2025 12:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F0C26AA92;
+	Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsClVpCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuWfR1nH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6623026A086;
-	Tue,  8 Apr 2025 12:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1278D26A1C8;
+	Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113812; cv=none; b=TmOy+y66rOOF4u3kNxqZXmVukzCUjxe2+P37t1Dk4vPVsGUp+QbQCWY2p3jTwbWU512QvdqGI/RCng6300Vz8R4Bek6/1c43cSMR/45mYutZgpXHpkfURV3kLkf1TkYTj/lz/fcbtIZCCuSnFHWD0mpVuoNS8ApIi8yMMxHU/yI=
+	t=1744115196; cv=none; b=dJWVMm9IUVVv2xrSz2syismQY8WQkoazBCKnBbgNejRnfiDQs0kpc4HqgBs+9mumuM6O+8V6MSYegYaeHyuVvq3V1UqOsjEzYiWR1emgQ9M6f0myyA1Y0Hdm+vup1UlDBzuPl1ASeLHRB1qoVUZp6tPM+/oap/YBHvPxdyEFbSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113812; c=relaxed/simple;
-	bh=AVxkrwkHL5lUg31Gwfm5H8RybsTzZpoeo+3+40Mj9Xo=;
+	s=arc-20240116; t=1744115196; c=relaxed/simple;
+	bh=BVsVUO7D8oE3o9PWZIuu0Sw+xCvoQJvBjragxL00gkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmWqFv4Kynw0gZzrBRZR4H31IAQY7HLitMFINU7wFztQ1nt25AM2uqvLYDu8nvsg78dwgGwDFok0EN7zbft5j/BizYjKw4xrmttq52530C/4rZvF7L2t2UCwqv4fw5fKia7HHVkOC7/ggW3Pr5NpAbtzuPAV2PAJqSx02oTcTeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsClVpCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EDFC4CEE7;
-	Tue,  8 Apr 2025 12:03:31 +0000 (UTC)
+	 MIME-Version; b=l4kcrujYwknyIy+CKnxtldigfDjyH4Jzdg+wC5ZI9CZxJkIxO02rkCxfkU533Rs3am8HQ95K1vGqEpo6OQfR/O/fQxzt0sNFY5g0ir4Icq7gc/TNwuoFVrM9tUEU+iZK6faMy2nfHt4dNNMdL13j7S2Kpq8DsTnvwxCfEZhLf8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuWfR1nH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958AAC4CEE5;
+	Tue,  8 Apr 2025 12:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113812;
-	bh=AVxkrwkHL5lUg31Gwfm5H8RybsTzZpoeo+3+40Mj9Xo=;
+	s=korg; t=1744115195;
+	bh=BVsVUO7D8oE3o9PWZIuu0Sw+xCvoQJvBjragxL00gkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsClVpCQXCJ5r/SGaSR0WBam2lkurUPoCqTHCHe4XeK6QySRJSNSja16pzf++3hKh
-	 YOVgUlSfXMrWZ4hl2VUnQQOgMVTmZAHLTrRF6fo0mg+PmunV5Lp6B5jeL439ygv6E+
-	 V1pfOsTRgaWrdiDp5nuFdoQN8AFvwns1hPlcKH+I=
+	b=DuWfR1nH8XahTLWNe9IpI9TMdZPD8ZQSvnMGSOmd8L7/C6v1E/fWIBQUcYRHq3MO/
+	 X8cIf/E2jgvT6QAADfn6aYtv89Is3WU0Norl/EltLwBy3ho04Klh3YbW/RaXnH2lA6
+	 iG8MlLKxrSazL5lq7wceC/wW6Mk3MCGAKHlzknhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Magali Lemes <magali.lemes@canonical.com>
-Subject: [PATCH 5.4 006/154] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
-Date: Tue,  8 Apr 2025 12:49:07 +0200
-Message-ID: <20250408104815.498867069@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 336/499] wifi: mac80211: fix SA Query processing in MLO
+Date: Tue,  8 Apr 2025 12:49:08 +0200
+Message-ID: <20250408104859.602596091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
+[ Upstream commit 9a267ce4a3fca93a34a8881046f97bcf472228c8 ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+When MLO is used and SA Query processing isn't done by
+userspace (e.g. wpa_supplicant w/o CONFIG_OCV), then
+the mac80211 code kicks in but uses the wrong addresses.
+Fix them.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
-
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, as this is the only
-member needed from the 'net' structure, but that would increase the size
-of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
-used.
-
-Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250306123626.bab48bb49061.I9391b22f1360d20ac8c4e92604de23f27696ba8f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/rx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -326,7 +326,8 @@ static int proc_sctp_do_hmac_alg(struct
- 				void __user *buffer, size_t *lenp,
- 				loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net,
-+				       sctp.sctp_hmac_alg);
- 	struct ctl_table tbl;
- 	bool changed = false;
- 	char *none = "none";
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index c4a28ccbd0647..a42959b39bd01 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -6,7 +6,7 @@
+  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2024 Intel Corporation
++ * Copyright (C) 2018-2025 Intel Corporation
+  */
+ 
+ #include <linux/jiffies.h>
+@@ -3330,8 +3330,8 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
+ 		return;
+ 	}
+ 
+-	if (!ether_addr_equal(mgmt->sa, sdata->deflink.u.mgd.bssid) ||
+-	    !ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid)) {
++	if (!ether_addr_equal(mgmt->sa, sdata->vif.cfg.ap_addr) ||
++	    !ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)) {
+ 		/* Not from the current AP or not associated yet. */
+ 		return;
+ 	}
+@@ -3347,9 +3347,9 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
+ 
+ 	skb_reserve(skb, local->hw.extra_tx_headroom);
+ 	resp = skb_put_zero(skb, 24);
+-	memcpy(resp->da, mgmt->sa, ETH_ALEN);
++	memcpy(resp->da, sdata->vif.cfg.ap_addr, ETH_ALEN);
+ 	memcpy(resp->sa, sdata->vif.addr, ETH_ALEN);
+-	memcpy(resp->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
++	memcpy(resp->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
+ 	resp->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+ 					  IEEE80211_STYPE_ACTION);
+ 	skb_put(skb, 1 + sizeof(resp->u.action.u.sa_query));
+-- 
+2.39.5
+
 
 
 
