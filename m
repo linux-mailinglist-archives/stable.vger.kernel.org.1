@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C81A7FDA7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB01A80395
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C83F19E2594
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146891B60670
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC7268C55;
-	Tue,  8 Apr 2025 10:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DAD269AF8;
+	Tue,  8 Apr 2025 11:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsk+5QHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgvWPPVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5938268682;
-	Tue,  8 Apr 2025 10:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B69269AE4;
+	Tue,  8 Apr 2025 11:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109916; cv=none; b=f8e/pg8R0PKdav4oS4sRF+6l0sfbsNAFDiGVBIsxsjV8RO0mJFVGj0awrW1+tRcJCEmaNf3rEYAvexnH4j5MlnDm0mqztkC7nRcU+Vi9cIchY1c4ug9z6+4nLUn2QcGynZqfq42SsadrIXX5fWzs6DUsSmy6Fd1bVrU5U5BO/bQ=
+	t=1744113265; cv=none; b=SFy5wF1QA91lhzrvUtSPMJx0OOyCXpghBF05eQuLXRr6VTZj8nYzGD3DGB5WtsRMLjpblb5suAHdcv17/r9uGEQr7DKiaJ6MnHpFZDy7b0grSRKzm+w2JhVeQVbcZcC8ctFS2xrRMt45mSmCL1wnGXUghYoWeXn+8bjgd4qpI2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109916; c=relaxed/simple;
-	bh=WhuCsP2rVjpc4NSW5UL4asiKArtPMgg/8nKkucB0iEM=;
+	s=arc-20240116; t=1744113265; c=relaxed/simple;
+	bh=4WWF+CUJhHLmrT/n0pio0DB6uy54GHmv0enJMwmNer8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGsCRBjF4Q2SMQiJm8fjR5RG6C+tr+F1Kt/JNUf6nWl9oHaGeHSm9s7nPmr+ic8E8DU+FsSVDhLRZPdoPEM4zxAqRdwpZwaKmuyyUSNSHj+uV4dMxdg/iFirTk+HyDKXtHXlTOIUHiMvQXsTsL7mFbnKO/WNWzaAcDAJXqgWJrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsk+5QHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F76BC4CEE5;
-	Tue,  8 Apr 2025 10:58:35 +0000 (UTC)
+	 MIME-Version; b=I9nBhyf8F1xbJ9dFX/ExR+9u6EbodMiwKTrTb65SCsgodnUJwnz+STx4eZ9xwA8GC//tRLg/dazx6DzqhiAFyUQBtbc3khXdeQBBRJFc+c0Pr0Gvnzofgq98eS539Z/dpJfQZ7A+pmRQJGVRHcQ97YloLBwrzpBeIVcdNfMTsN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgvWPPVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337B3C4CEE5;
+	Tue,  8 Apr 2025 11:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109915;
-	bh=WhuCsP2rVjpc4NSW5UL4asiKArtPMgg/8nKkucB0iEM=;
+	s=korg; t=1744113265;
+	bh=4WWF+CUJhHLmrT/n0pio0DB6uy54GHmv0enJMwmNer8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsk+5QHhxYR44mP1/k8iECqbsKtAAhngxWGovUnRUPn77RuBwSj4YN6pKNQ03WReJ
-	 7xbzXtV2D087Dqgnt9C+ub/UeB6JTZseTHexi1txQvonKSudzkHCEERRiVnXOVeIv4
-	 z0H3NSPZo49GJt/Yb0MnxhcpVAA0M5piir95UkFg=
+	b=sgvWPPVIFTi/k7YLufCCFh3pjI0DbS5CvLBFat6eZ8kUcjg1e3vtHxscpamBc1HiQ
+	 X1Y9Xha3eX9yRSiTbusMx6CCfvprLR9TM/i7Zg0IjucBrhcLeOFi63E9eSuUQr5B70
+	 EECdrrDbqjU+ZcRlG3UXi6XF44oBNvjcDDbiNLs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 5.10 101/227] counter: stm32-lptimer-cnt: fix error handling when enabling
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 068/268] libbpf: Fix hypothetical STT_SECTION extern NULL deref case
 Date: Tue,  8 Apr 2025 12:47:59 +0200
-Message-ID: <20250408104823.394749049@linuxfoundation.org>
+Message-ID: <20250408104830.330568989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
+[ Upstream commit e0525cd72b5979d8089fe524a071ea93fd011dc9 ]
 
-In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
-a timeout error is raised, by regmap_read_poll_timeout. It may happen,
-when the lptimer runs on a slow clock, and the clock is gated only
-few times during the polling.
+Fix theoretical NULL dereference in linker when resolving *extern*
+STT_SECTION symbol against not-yet-existing ELF section. Not sure if
+it's possible in practice for valid ELF object files (this would require
+embedded assembly manipulations, at which point BTF will be missing),
+but fix the s/dst_sym/dst_sec/ typo guarding this condition anyways.
 
-Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
-So the 'enable' state in sysfs wrongly lies on the counter being
-correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
-
-To fix both issues:
-- enable the clock before writing CMP, ARR and polling ISR bits. It will
-avoid the possible timeout error.
-- clear the ENABLE bit in CR and disable the clock in the error path.
-
-Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
+Fixes: a46349227cd8 ("libbpf: Add linker extern resolution support for functions and global variables")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250220002821.834400-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ tools/lib/bpf/linker.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
- 		return 0;
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 736ebceea233f..a3a190d13db8a 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -1974,7 +1974,7 @@ static int linker_append_elf_sym(struct bpf_linker *linker, struct src_obj *obj,
+ 
+ 	obj->sym_map[src_sym_idx] = dst_sym_idx;
+ 
+-	if (sym_type == STT_SECTION && dst_sym) {
++	if (sym_type == STT_SECTION && dst_sec) {
+ 		dst_sec->sec_sym_idx = dst_sym_idx;
+ 		dst_sym->st_value = 0;
  	}
- 
-+	ret = clk_enable(priv->clk);
-+	if (ret)
-+		goto disable_cnt;
-+
- 	/* LP timer must be enabled before writing CMP & ARR */
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
- 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
- 			   STM32_LPTIM_CMPOKCF_ARROKCF);
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
--	ret = clk_enable(priv->clk);
--	if (ret) {
--		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
--		return ret;
--	}
- 	priv->enabled = true;
- 
- 	/* Start LP timer in continuous mode */
- 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
- 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
-+
-+disable_clk:
-+	clk_disable(priv->clk);
-+disable_cnt:
-+	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
-+
-+	return ret;
- }
- 
- static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
+-- 
+2.39.5
+
 
 
 
