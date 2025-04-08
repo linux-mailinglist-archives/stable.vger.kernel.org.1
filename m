@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7819BA806BB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F309A809C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A52684A40DF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 867571BA5503
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9E9269CF7;
-	Tue,  8 Apr 2025 12:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22A26AA86;
+	Tue,  8 Apr 2025 12:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLU6BHvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQ//eDxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECA72638B8;
-	Tue,  8 Apr 2025 12:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F19315B554;
+	Tue,  8 Apr 2025 12:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114850; cv=none; b=uY9A1ESuFPztsfz4ZDS6Ku4NvpSrT/OQKx9Wy7kjzIxdUMCojgXNep8rrzfKtQFejvl8QFqopcWwgMw3g5NiRcXpm9JTF3qmhESBGotUVig1/LkinUJZEXYm8Ef43nSO9UaWpM3DSDCyZSCbIkeOqzusce77T4U+z4j/q5Cn3dQ=
+	t=1744116418; cv=none; b=tPyzvozXmYPTrBkrBaRAIaS0ovmWrqzL37H49H/GJ45xfLG87FqvqZakt4IB2Qr3zulKciwpNWGhaAofyjmPZnv31nY/Itd6yb9y6zHITNE2UIcwgquC5DU5Zg5lhxleX7zUBCPfffhWK+zXwWjmXBpJxKWBxDULaYxjZ0TdMQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114850; c=relaxed/simple;
-	bh=K48aohParSZaUM9Ce8QeJ1vEqfDmmu4jjvbeWfN7QrA=;
+	s=arc-20240116; t=1744116418; c=relaxed/simple;
+	bh=HkfHrKbvGhwUaSTzk4saCTfrXDBLNKAlnD/FPCh0xeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKwvM1TFHWcbkh+6ztcYX2n4vMyXgUD8DvXsQ0Zfwe57LZcKBtZQ9C53Q4wXb1Jxrz9YF8GiC8VKMi305jIyCNJdgtdUrmm78V3G+RjWgzhEEsqGEJFfH78Gwiq8qps0yyY5jX3q/X97h3B6BDr0OIdGA7v1OYgCB/Esdf0On3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLU6BHvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5034EC4CEE5;
-	Tue,  8 Apr 2025 12:20:50 +0000 (UTC)
+	 MIME-Version; b=Zjl0MsTVgdN+Dj56NUiQcN2K5qb2yXa1J2QJy453SgQexzpIbeJAtmZmWppGkSmhQSE6VbGo2Bu0RgGzZQr3pvy9SghLW5uGJqUzE+75sDxGgp1ezhfRsKFj1FuTDapvQP4Ynrbxars+sKAVF6qg+31olp9X4sG9/hQmfZLUslo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQ//eDxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F042C4CEE5;
+	Tue,  8 Apr 2025 12:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114850;
-	bh=K48aohParSZaUM9Ce8QeJ1vEqfDmmu4jjvbeWfN7QrA=;
+	s=korg; t=1744116418;
+	bh=HkfHrKbvGhwUaSTzk4saCTfrXDBLNKAlnD/FPCh0xeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLU6BHvcjOUsVrPvCZ2KC70Nif+l5Z92H/u2NyaUTPDVwn8s+3/VwYZjeRyWYxTvZ
-	 s5NUQxwQKDdhj8UYWbWjCCmY+m7HiH9ORKhm8oTreDVf/guFbXl8QhnM8LJOgKxiz/
-	 Bk4Sn/uaGrkGsjVD7T9issmJBs96/uTK7E6L5fk4=
+	b=iQ//eDxLx0Be5I47DQ9zQleB05IVpAlU9Is++/zqCRHmL2eoEjroV6GKuvLm2q5Qt
+	 0wnfxjomwGU0rKmFdjz4k7Dv+jwPmr1oVJBoVRCzY24nUNQXsfK05EjUgdCWFN6Rhi
+	 VwLUt5WNcg6Z3wf0xPVNkCp/H6JX8SBSblQkQrJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 208/499] isofs: fix KMSAN uninit-value bug in do_isofs_readdir()
+Subject: [PATCH 6.12 094/423] dummycon: fix default rows/cols
 Date: Tue,  8 Apr 2025 12:47:00 +0200
-Message-ID: <20250408104856.395503195@linuxfoundation.org>
+Message-ID: <20250408104847.929920557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 81a82e8f33880793029cd6f8a766fb13b737e6a7 ]
+[ Upstream commit beefaba1978c04ea2950d34236f58fe6cf6a7f58 ]
 
-In do_isofs_readdir() when assigning the variable
-"struct iso_directory_record *de" the b_data field of the buffer_head
-is accessed and an offset is added to it, the size of b_data is 2048
-and the offset size is 2047, meaning
-"de = (struct iso_directory_record *) (bh->b_data + offset);"
-yields the final byte of the 2048 sized b_data block.
+dummycon fails to build on ARM/footbridge when the VGA console is
+disabled, since I got the dependencies slightly wrong in a previous
+patch:
 
-The first byte of the directory record (de_len) is then read and
-found to be 31, meaning the directory record size is 31 bytes long.
-The directory record is defined by the structure:
+drivers/video/console/dummycon.c: In function 'dummycon_init':
+drivers/video/console/dummycon.c:27:25: error: 'CONFIG_DUMMY_CONSOLE_COLUMNS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
+   27 | #define DUMMY_COLUMNS   CONFIG_DUMMY_CONSOLE_COLUMNS
+drivers/video/console/dummycon.c:28:25: error: 'CONFIG_DUMMY_CONSOLE_ROWS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
+   28 | #define DUMMY_ROWS      CONFIG_DUMMY_CONSOLE_ROWS
 
-	struct iso_directory_record {
-		__u8 length;                     // 1 byte
-		__u8 ext_attr_length;            // 1 byte
-		__u8 extent[8];                  // 8 bytes
-		__u8 size[8];                    // 8 bytes
-		__u8 date[7];                    // 7 bytes
-		__u8 flags;                      // 1 byte
-		__u8 file_unit_size;             // 1 byte
-		__u8 interleave;                 // 1 byte
-		__u8 volume_sequence_number[4];  // 4 bytes
-		__u8 name_len;                   // 1 byte
-		char name[];                     // variable size
-	} __attribute__((packed));
+This only showed up after many thousand randconfig builds on Arm, and
+doesn't matter in practice, but should still be fixed. Address it by
+using the default row/columns on footbridge after all in that corner
+case.
 
-The fixed portion of this structure occupies 33 bytes. Therefore, a
-valid directory record must be at least 33 bytes long
-(even without considering the variable-length name field).
-Since de_len is only 31, it is insufficient to contain
-the complete fixed header.
-
-The code later hits the following sanity check that
-compares de_len against the sum of de->name_len and
-sizeof(struct iso_directory_record):
-
-	if (de_len < de->name_len[0] + sizeof(struct iso_directory_record)) {
-		...
-	}
-
-Since the fixed portion of the structure is
-33 bytes (up to and including name_len member),
-a valid record should have de_len of at least 33 bytes;
-here, however, de_len is too short, and the field de->name_len
-(located at offset 32) is accessed even though it lies beyond
-the available 31 bytes.
-
-This access on the corrupted isofs data triggers a KASAN uninitialized
-memory warning. The fix would be to first verify that de_len is at least
-sizeof(struct iso_directory_record) before accessing any
-fields like de->name_len.
-
-Reported-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Tested-by: syzbot <syzbot+812641c6c3d7586a1613@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=812641c6c3d7586a1613
-Fixes: 2deb1acc653c ("isofs: fix access to unallocated memory when reading corrupted filesystem")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250211195900.42406-1-qasdev00@gmail.com
+Fixes: 4293b0925149 ("dummycon: limit Arm console size hack to footbridge")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409151512.LML1slol-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/console/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
-index eb2f8273e6f15..09df40b612fbf 100644
---- a/fs/isofs/dir.c
-+++ b/fs/isofs/dir.c
-@@ -147,7 +147,8 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
- 			de = tmpde;
- 		}
- 		/* Basic sanity check, whether name doesn't exceed dir entry */
--		if (de_len < de->name_len[0] +
-+		if (de_len < sizeof(struct iso_directory_record) ||
-+		    de_len < de->name_len[0] +
- 					sizeof(struct iso_directory_record)) {
- 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
- 			       " in block %lu of inode %lu\n", block,
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index bc31db6ef7d26..c4a8f74df2493 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -52,7 +52,7 @@ config DUMMY_CONSOLE
+ 
+ config DUMMY_CONSOLE_COLUMNS
+ 	int "Initial number of console screen columns"
+-	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
++	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
+ 	default 160 if PARISC
+ 	default 80
+ 	help
+@@ -62,7 +62,7 @@ config DUMMY_CONSOLE_COLUMNS
+ 
+ config DUMMY_CONSOLE_ROWS
+ 	int "Initial number of console screen rows"
+-	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
++	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
+ 	default 64 if PARISC
+ 	default 30 if ARM
+ 	default 25
 -- 
 2.39.5
 
