@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-129986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F6A802CA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C81A7FDA7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D81C462B2C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C83F19E2594
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A874267F4F;
-	Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC7268C55;
+	Tue,  8 Apr 2025 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJlQX9nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsk+5QHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36254266EEA;
-	Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5938268682;
+	Tue,  8 Apr 2025 10:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112511; cv=none; b=MXn7GPnccwvV1ftuAH5ZesPypI5cKDGnZb8ggepL+z5hhbjBRDPdlD5kUWok5cCFFqjJaaivzCOAmaPE7FbZy6FaJklITxU3ux5Yk/pmJl35brYDfhWup3M8ltpLvcyvP+ykh3+VGW5R2l6410EhTO9GykyTsBRgddSY/VhLHKI=
+	t=1744109916; cv=none; b=f8e/pg8R0PKdav4oS4sRF+6l0sfbsNAFDiGVBIsxsjV8RO0mJFVGj0awrW1+tRcJCEmaNf3rEYAvexnH4j5MlnDm0mqztkC7nRcU+Vi9cIchY1c4ug9z6+4nLUn2QcGynZqfq42SsadrIXX5fWzs6DUsSmy6Fd1bVrU5U5BO/bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112511; c=relaxed/simple;
-	bh=4/SV511n+o5e2AxtKoSRjw3JIjDIIsU9yUdfqwGc81g=;
+	s=arc-20240116; t=1744109916; c=relaxed/simple;
+	bh=WhuCsP2rVjpc4NSW5UL4asiKArtPMgg/8nKkucB0iEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWEgX8zcWE/9VsexIJxdAmnBEro5guzKoiGv4Tqq1gmt5zrIJEqhHTc+pCnyS9KCzC0clRScnWSfH7wJ6Tqe6Fnm1wfOi/XADs1f+yorbhXjNcuNpffKaUSywPLqLAUepwuHkYmFcSjua/xtDKr5IgWcFhXX++LVPVVPzY/bGpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJlQX9nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F016C4CEE5;
-	Tue,  8 Apr 2025 11:41:50 +0000 (UTC)
+	 MIME-Version; b=uGsCRBjF4Q2SMQiJm8fjR5RG6C+tr+F1Kt/JNUf6nWl9oHaGeHSm9s7nPmr+ic8E8DU+FsSVDhLRZPdoPEM4zxAqRdwpZwaKmuyyUSNSHj+uV4dMxdg/iFirTk+HyDKXtHXlTOIUHiMvQXsTsL7mFbnKO/WNWzaAcDAJXqgWJrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsk+5QHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F76BC4CEE5;
+	Tue,  8 Apr 2025 10:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112511;
-	bh=4/SV511n+o5e2AxtKoSRjw3JIjDIIsU9yUdfqwGc81g=;
+	s=korg; t=1744109915;
+	bh=WhuCsP2rVjpc4NSW5UL4asiKArtPMgg/8nKkucB0iEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJlQX9nxargOdHVonzFxnGaSni1zid0lI11mUoXEdIVY1aRNVN3MrFz+uaPdYtQ3x
-	 rfyeFpRjGoYQP9C+XDN/UOVFe21CIE/v3ZaV+UX4H1COElqifg6UoySPyLwjvGhIVC
-	 oY/FLOgoiXDQ59lssqIVg0r2GIZvpRttzbk0ztAA=
+	b=dsk+5QHhxYR44mP1/k8iECqbsKtAAhngxWGovUnRUPn77RuBwSj4YN6pKNQ03WReJ
+	 7xbzXtV2D087Dqgnt9C+ub/UeB6JTZseTHexi1txQvonKSudzkHCEERRiVnXOVeIv4
+	 z0H3NSPZo49GJt/Yb0MnxhcpVAA0M5piir95UkFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Nishanth Menon <nm@ti.com>,
-	Aniket Limaye <a-limaye@ti.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 096/279] i2c: omap: fix IRQ storms
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 5.10 101/227] counter: stm32-lptimer-cnt: fix error handling when enabling
 Date: Tue,  8 Apr 2025 12:47:59 +0200
-Message-ID: <20250408104828.943880813@linuxfoundation.org>
+Message-ID: <20250408104823.394749049@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
+commit 8744dcd4fc7800de2eb9369410470bb2930d4c14 upstream.
 
-On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-storms because NACK IRQs are enabled and therefore triggered but not
-acked.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-Sending a reset command to the gyroscope by
-i2cset 1 0x69 0x14 0xb6
-with an additional debug print in the ISR (not the thread) itself
-causes
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
 
-[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-repeating till infinity
-[...]
-(0x2 = NACK, 0x100 = Bus free, which is not enabled)
-Apparently no other IRQ bit gets set, so this stalls.
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
 
-Do not ignore enabled interrupts and make sure they are acked.
-If the NACK IRQ is not needed, it should simply not enabled, but
-according to the above log, caring about it is necessary unless
-the Bus free IRQ is enabled and handled. The assumption that is
-will always come with a ARDY IRQ, which was the idea behind
-ignoring it, proves wrong.
-It is true for simple reads from an unused address.
-
-To still avoid the i2cdetect trouble which is the reason for
-commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
-avoid doing much about NACK in omap_i2c_xfer_data() which is used
-by both IRQ mode and polling mode, so also the false detection fix
-is extended to polling usage and IRQ storms are avoided.
-
-By changing this, the hardirq handler is not needed anymore to filter
-stuff.
-
-The mentioned gyro reset now just causes a -ETIMEDOUT instead of
-hanging the system.
-
-Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-CC: stable@kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Aniket Limaye <a-limaye@ti.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250224170657.3368236-1-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
- 	return 0;
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(
+ 		return 0;
+ 	}
+ 
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
++
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
+ 
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
  }
  
--static irqreturn_t
--omap_i2c_isr(int irq, void *dev_id)
--{
--	struct omap_i2c_dev *omap = dev_id;
--	irqreturn_t ret = IRQ_HANDLED;
--	u16 mask;
--	u16 stat;
--
--	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
--
--	if (stat & mask)
--		ret = IRQ_WAKE_THREAD;
--
--	return ret;
--}
--
- static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
- {
- 	u16 bits;
-@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_NACK) {
--			err |= OMAP_I2C_STAT_NACK;
-+			omap->cmd_err |= OMAP_I2C_STAT_NACK;
- 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
-+
-+			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
-+				err = -EAGAIN;
-+				break;
-+			}
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_AL) {
-@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
- 				IRQF_NO_SUSPEND, pdev->name, omap);
- 	else
- 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
--				omap_i2c_isr, omap_i2c_isr_thread,
-+				NULL, omap_i2c_isr_thread,
- 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
- 				pdev->name, omap);
- 
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 
 
 
