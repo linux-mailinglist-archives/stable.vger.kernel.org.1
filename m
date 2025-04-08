@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC42A80A2A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:01:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13999A806EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837B08C23A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C234262E6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FE926FA60;
-	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0341D26AA9E;
+	Tue,  8 Apr 2025 12:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTO1NxeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjiTGAg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7CF26656B;
-	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DB5267B91;
+	Tue,  8 Apr 2025 12:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116259; cv=none; b=TdMxhRYzoWyHUiQnfrPcyYdleEtMs+/WU5HpKeBPvmLDlvK9btXjWo0bHKqMyWdVoqyRdOmHTeVgyfpwwJ2SkBgXN69w87oTwwIF590aN0UUeu2CnFXal5BXcNhCi3CJ613L9Bxz9QPNNEX7ad+glYfRY9j5UrhFX1ag+KaqGlI=
+	t=1744114662; cv=none; b=fIH4mIEbSjcrXeGBktshngcTu8XTtGTItIG2TGq3J0wPJ/PhYuyHXAr8dt68Jqd7K9e3vMmrYb9dbc6vWDlhxoq/+3dSRiMRDlHxkS893DNYFjgrrG1cr3NFLZaSGA50Gl26TVnhFI4DNv5QeouNAJ5OU8T4SRykUTKVranrmCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116259; c=relaxed/simple;
-	bh=r78IIhURiMwWPnxMRMrvtonZ8pMHpizA21GyyEWWPWw=;
+	s=arc-20240116; t=1744114662; c=relaxed/simple;
+	bh=aQAAwMrdqSB+ML6DNrYwntTA/sJxkLA1+HkOERQYox8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dhLoJ2CKYRM0XLuww4+eRPVu+txBPESTfSEIspfTdlGhCrmGtWyjAcaozsonimir4TPr+nenLkqSOVQN/XHnj8qdFFopnaTw076+oRYIFh9KUf9M9voLcuwV5nZPk/yhNObSlZzwXng5DPCZn9KeD4myXfj+NWLREhIKNlJfC2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTO1NxeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB6DC4CEE5;
-	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gwxLlxlYrne43dKH20R+Eyq4yVEywS0R3hyqyHGwO4eVMYBvbT3SnGido3JOzaJLndSLPRy1VtNtXI9yccrcQge4W5UVvsPcuDDj+JGTjftZP5wlKWMY9+LzmXL8JPTQqoL/EKJ272Nie6ms9w2zEfvu6OZR8OwJym9Ti6o2MvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjiTGAg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F48C4CEE5;
+	Tue,  8 Apr 2025 12:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116259;
-	bh=r78IIhURiMwWPnxMRMrvtonZ8pMHpizA21GyyEWWPWw=;
+	s=korg; t=1744114662;
+	bh=aQAAwMrdqSB+ML6DNrYwntTA/sJxkLA1+HkOERQYox8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTO1NxeRJelNxWnc358nLKznv2Iki3hz3hTuTMUqnSoSXy0+mJJGxXLCApt6lM7ko
-	 OeYGIcbos9mpn+irCSAi0SgfMRe3w0IsIoBDqIjnI2c5alnZintwol/YmWdJ7pxFWW
-	 5BQ3XWb+Kgjsrs/lx2Xn9XGOkUnF6lG1YcTswjtk=
+	b=jjiTGAg05anohV1WkVDi/GEehN19MPNhIghFDAFfIYic90SAHEzRe67syZleSTyu9
+	 aD7S8rcy47BCx4WjUtsU4jmnXuZKNBevrf46nrOm8IKRegnJ950Y/SHROqCJB4k6At
+	 Y3bpasNMblBcxohdfrdsSrOuQd+a/kSO9RkxiLkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/423] PCI: brcmstb: Fix error path after a call to regulator_bulk_get()
-Date: Tue,  8 Apr 2025 12:46:40 +0200
-Message-ID: <20250408104847.470243965@linuxfoundation.org>
+Subject: [PATCH 6.13 189/499] clk: qcom: ipq5424: fix software and hardware flow control error of UART
+Date: Tue,  8 Apr 2025 12:46:41 +0200
+Message-ID: <20250408104855.892993563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
 
-[ Upstream commit 3651ad5249c51cf7eee078e12612557040a6bdb4 ]
+[ Upstream commit 4b28beb882a0a1af0ce47a8a87e7877a3ae6ad36 ]
 
-If the regulator_bulk_get() returns an error and no regulators
-are created, we need to set their number to zero.
+The UART’s software and hardware flow control are currently not
+functioning correctly.
 
-If we don't do this and the PCIe link up fails, a call to the
-regulator_bulk_free() will result in a kernel panic.
+For software flow control, the following error is encountered:
+qcom_geni_serial 1a80000.serial: Couldn't find suitable
+clock rate for 56000000, 3500000, 2500000, 1152000, 921600, 19200
 
-While at it, print the error value, as we cannot return an error
-upwards as the kernel will WARN() on an error from add_bus().
+During hardware flow control testing, a “Retry 0: Got ZCAN error” is
+observed.
 
-Fixes: 9e6be018b263 ("PCI: brcmstb: Enable child bus device regulators from DT")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250214173944.47506-5-james.quinlan@broadcom.com
-[kwilczynski: commit log, use comma in the message to match style with
-other similar messages]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+To address these issues, update the UART frequency table to include all
+supported frequencies according to the frequency plan.
+
+Fixes: 21b5d5a4a311 ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5424 SoC")
+Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+Link: https://lore.kernel.org/r/20250124060914.1564681-1-quic_mmanikan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq5424.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 3bb35f096b45b..31778b5a949d7 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1368,7 +1368,8 @@ static int brcm_pcie_add_bus(struct pci_bus *bus)
+diff --git a/drivers/clk/qcom/gcc-ipq5424.c b/drivers/clk/qcom/gcc-ipq5424.c
+index 6b76d909597ec..0fec8188f3b06 100644
+--- a/drivers/clk/qcom/gcc-ipq5424.c
++++ b/drivers/clk/qcom/gcc-ipq5424.c
+@@ -572,13 +572,19 @@ static struct clk_rcg2 gcc_qupv3_spi1_clk_src = {
+ };
  
- 		ret = regulator_bulk_get(dev, sr->num_supplies, sr->supplies);
- 		if (ret) {
--			dev_info(dev, "No regulators for downstream device\n");
-+			dev_info(dev, "Did not get regulators, err=%d\n", ret);
-+			pcie->sr = NULL;
- 			goto no_regulators;
- 		}
- 
+ static const struct freq_tbl ftbl_gcc_qupv3_uart0_clk_src[] = {
+-	F(960000, P_XO, 10, 2, 5),
+-	F(4800000, P_XO, 5, 0, 0),
+-	F(9600000, P_XO, 2, 4, 5),
+-	F(16000000, P_GPLL0_OUT_MAIN, 10, 1, 5),
++	F(3686400,  P_GCC_GPLL0_OUT_MAIN_DIV_CLK_SRC, 1, 144, 15625),
++	F(7372800,  P_GCC_GPLL0_OUT_MAIN_DIV_CLK_SRC, 1, 288, 15625),
++	F(14745600, P_GCC_GPLL0_OUT_MAIN_DIV_CLK_SRC, 1, 576, 15625),
+ 	F(24000000, P_XO, 1, 0, 0),
+ 	F(25000000, P_GPLL0_OUT_MAIN, 16, 1, 2),
+-	F(50000000, P_GPLL0_OUT_MAIN, 16, 0, 0),
++	F(32000000, P_GPLL0_OUT_MAIN, 1, 1, 25),
++	F(40000000, P_GPLL0_OUT_MAIN, 1, 1, 20),
++	F(46400000, P_GPLL0_OUT_MAIN, 1, 29, 500),
++	F(48000000, P_GPLL0_OUT_MAIN, 1, 3, 50),
++	F(51200000, P_GPLL0_OUT_MAIN, 1, 8, 125),
++	F(56000000, P_GPLL0_OUT_MAIN, 1, 7, 100),
++	F(58982400, P_GPLL0_OUT_MAIN, 1, 1152, 15625),
++	F(60000000, P_GPLL0_OUT_MAIN, 1, 3, 40),
+ 	F(64000000, P_GPLL0_OUT_MAIN, 12.5, 0, 0),
+ 	{ }
+ };
 -- 
 2.39.5
 
