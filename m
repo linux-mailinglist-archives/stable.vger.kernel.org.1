@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89A4A7FE22
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF646A80128
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E778C16AE8C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC5CF7A917E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D4126A0F9;
-	Tue,  8 Apr 2025 11:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F18126983B;
+	Tue,  8 Apr 2025 11:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEVfZnR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLtdBGj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5414826659C;
-	Tue,  8 Apr 2025 11:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F64268FEB;
+	Tue,  8 Apr 2025 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110153; cv=none; b=EKx3QGHaU7Cfzc57/2bJHsTs3jZx2jqXkJ+tjt/LeSzNQ7HhIIanku9bSP4CXPRQEncCM35+foT/nI9CtTdFX1M0d4jCHy1cz/N47NN/TI2GnXGUuTVmLH5GajFs0UiaHk7Z0tdoTMgV79TfyrF7O1AnPFcF5MUSVkKP7NJbcI8=
+	t=1744112082; cv=none; b=hza5bJ89ASKl8/+PbQNEcMpFf9VG7QqjT3gIeQHn7ajKImihNhvfEACfrWv5R7+7r9VR5NVcdbEeBt+nHfGpU2f3EsJolN99TtmP/Fg/rwUCRpMRNFiEJbKtDHTLXtcFGuSbaptxQCWhZiurpqFRUcHJQl3XB5TNnky3OoV6LCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110153; c=relaxed/simple;
-	bh=tkdtkppInQ3yanHezVdwuAWSxf4GO82hARqnWVPfxgo=;
+	s=arc-20240116; t=1744112082; c=relaxed/simple;
+	bh=c2ivwaaHJuSXJ8gUruGXLB9kHMhB86n1N/SwBhgHqWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fYnAAN5DBWIPoEukn+VyR1DhxALeybhQlwPo3atndIhapI0kKFdt5rEOiwWBSEklPAPmBRNAm/MNU9NoskXpb0WKmNjf2d1blXdk7Zmb6q0rPEDlweP29kLMVPf4s87DQoLNdhF8jM8u88ultcucCufkTvcfdYrZPtKkW4KnSuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEVfZnR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A34C4CEE5;
-	Tue,  8 Apr 2025 11:02:32 +0000 (UTC)
+	 MIME-Version; b=Wwh7ZqWdGffzeFYsq0vp/UpAGaUVXDVyP9tVg57vnGP7Q5DejkJFXF47vVncHY3XbwHomP9oc9mAsUhdcQGfncVbVv1Sc2x0l7Cj26tX2piR76TZ90XVeRgCr/3kdKkw03Wq9qI0G7Fd931oZeILSiYLaUfLHf15CHpm3ZHK+O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLtdBGj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5031BC4CEE5;
+	Tue,  8 Apr 2025 11:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110153;
-	bh=tkdtkppInQ3yanHezVdwuAWSxf4GO82hARqnWVPfxgo=;
+	s=korg; t=1744112082;
+	bh=c2ivwaaHJuSXJ8gUruGXLB9kHMhB86n1N/SwBhgHqWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEVfZnR/rMYv8O2RwRscAJtPotxxJdCEelCZpKkO32qR4qY/oXPbB83pst/g2ArY6
-	 BpINnPHaYYQ2jRZ+wlKqVYWcmWKWqS+x8PSPU/5a954urB7iq4DZ3D3zlCS0gtFuf/
-	 THQJ+M880MMbzaUFX8ssCe+XlzRQe4BKAfNIAyQo=
+	b=fLtdBGj4B4hB1P086WwGBNsyg4VuvEwfRa+x2cLUPl+gC/3wLdKn/vLd8sQ9rtk6d
+	 ZgRhhPdL7/hCxyTai1dWDQZ9r4MVFKi20MhYpm7egfo4Uj2mQ73pul+yXHZ69R2+H2
+	 BXe56duhMGU0G1hW4Hic18QSO+66SGkaV0kYNXPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Panchenko <dmitry@d-systems.ee>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/227] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
+	Tianyu Lan <tiala@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.14 668/731] x86/hyperv: Fix check of return value from snp_set_vmsa()
 Date: Tue,  8 Apr 2025 12:49:25 +0200
-Message-ID: <20250408104825.914318238@linuxfoundation.org>
+Message-ID: <20250408104929.804161976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Panchenko <dmitry@d-systems.ee>
+From: Tianyu Lan <tiala@microsoft.com>
 
-[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
+commit e792d843aa3c9d039074cdce728d5803262e57a7 upstream.
 
-Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
-Add Surface Go 4 DMI match to button_array_table to fix this.
+snp_set_vmsa() returns 0 as success result and so fix it.
 
-Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
+Signed-off-by: Tianyu Lan <tiala@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250313085217.45483-1-ltykernel@gmail.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250313085217.45483-1-ltykernel@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel-hid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/hyperv/ivm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel-hid.c b/drivers/platform/x86/intel-hid.c
-index 0b0602fc43601..9bc2652b15e71 100644
---- a/drivers/platform/x86/intel-hid.c
-+++ b/drivers/platform/x86/intel-hid.c
-@@ -100,6 +100,13 @@ static const struct dmi_system_id button_array_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
- 		},
- 	},
-+	{
-+		.ident = "Microsoft Surface Go 4",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
-+		},
-+	},
- 	{ }
- };
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -338,7 +338,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned lon
+ 	vmsa->sev_features = sev_status >> 2;
  
--- 
-2.39.5
-
+ 	ret = snp_set_vmsa(vmsa, true);
+-	if (!ret) {
++	if (ret) {
+ 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
+ 		free_page((u64)vmsa);
+ 		return ret;
 
 
 
