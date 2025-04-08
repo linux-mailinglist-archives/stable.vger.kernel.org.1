@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A26A80319
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD51A7FEE3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F031617FE89
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D30C3B54D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51A26461D;
-	Tue,  8 Apr 2025 11:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E2126A0A7;
+	Tue,  8 Apr 2025 11:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmuxZl5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kURHm4Vi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652ED2641CC;
-	Tue,  8 Apr 2025 11:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B952135CD;
+	Tue,  8 Apr 2025 11:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112921; cv=none; b=I6hvBQIPvUYX/agQAnIuW0XlfmkN1iD4lDckGEEJV0W8BR5HNpSsx0JYSwMSja7vdsXw0TiYavH+HAraQgb9/U+gVIUEg93G4E2al0DAhZAzLKNlxkM81spiRqETBqCPFPV/uhJT17YC3M68B8hHg0qU5iwjEK6I4F47jI0Gpig=
+	t=1744110270; cv=none; b=JiKmVtriOsI/u8d62or+Mo44SofnmxGQE+tg4kI8ruDVFUU/YiO4UmsYLPc83I7+v8Qz+TGFImn8h+ECKlse8x0Uhw0xp3w/iCLsCV5FgYwCPVJpoPojIeyfshCurcZ0Csq752iCxHJti5ydxf4UHm3GjDf2xATB1E4Xy3O92As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112921; c=relaxed/simple;
-	bh=Da+1M8F/Y/0XUZ7E9h8LM1Z1AAgO+idBTe1Oc/LOHcU=;
+	s=arc-20240116; t=1744110270; c=relaxed/simple;
+	bh=vUdglqaOfkAFVq7M+LvBpqplIG85PfB955v1KQYrY2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0bkNhVUOj7PXsmAia8WZ6FCYhTpdGeo8YdjAIhoD6dn+BU1ywd1B5G7Ad6vGpKDRF8uitW4QjeFcRUGAGxPERYmwU1CsvAtOzgcOiw/V8p71gSaIxpqBLiK/X39wI2QpLadNqIHhU3SfiOnAGgCAPMvQNnGvhntgq0FgHKW5L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmuxZl5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC742C4CEE5;
-	Tue,  8 Apr 2025 11:48:40 +0000 (UTC)
+	 MIME-Version; b=KabkjfKGa+SPrU5SOoJbaoZGOhKqq0SNuPIKobr8Vt1CPY1O5pB6f4agOVKbIqW+fbkhZ/0ChWH2cUSVg033a+GtVf+Pccdb0diLvn02dpLU/iaPhcA7z3N/XZXxFBbIywAFDs/JBSU6oZneguzmkL6UlnohECq+237yICwsYAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kURHm4Vi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E48C4CEE5;
+	Tue,  8 Apr 2025 11:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112921;
-	bh=Da+1M8F/Y/0XUZ7E9h8LM1Z1AAgO+idBTe1Oc/LOHcU=;
+	s=korg; t=1744110270;
+	bh=vUdglqaOfkAFVq7M+LvBpqplIG85PfB955v1KQYrY2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmuxZl5rDanXMKumgqktid6Sfg3GyVGXYL2U/WKE7ZJi0to/z7/DfW2/EBinTUNMt
-	 ZlQWhuIh5IV8PDEWBsfacgukzWbTLTiNOsYYS4P9vZG5os/jxasGuXFEsUFMwjPPy0
-	 O15VP3kv8EDhAC5vHu6OiEZY4f8In9tvQ43NhJqs=
+	b=kURHm4Vi6vbRI/81anuRuotR5Enm1P5ry7HOgsf+6p3t7N5PHJur0O9xm0FqqtPXx
+	 DQrySieNzScFsyGXE9/tMxPhwmFBIuyrGJxYzg7DzzRBcvKL2MNkWr8QL6h3GCBjW8
+	 NTG2kpscw9fkshSLYKQwMXsaeiyi/MS2hsigDRxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/279] fs/procfs: fix the comment above proc_pid_wchan()
+	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 5.10 215/227] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
 Date: Tue,  8 Apr 2025 12:49:53 +0200
-Message-ID: <20250408104832.012484227@linuxfoundation.org>
+Message-ID: <20250408104826.759494594@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
+commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
 
-proc_pid_wchan() used to report kernel addresses to user space but that is
-no longer the case today.  Bring the comment above proc_pid_wchan() in
-sync with the implementation.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
-Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Furthermore, it is best to return EINVAL immediately upon seeing the
+invalid user input.  The WARNING is insufficient to prevent further
+undefined behavior based on other invalid user input.
+
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
+
+[iweiny: update commit message]
+
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/base.c | 2 +-
+ drivers/acpi/nfit/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index d0414e566d30a..3405005199b61 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -416,7 +416,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
- #ifdef CONFIG_KALLSYMS
- /*
-  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
-- * Returns the resolved symbol.  If that fails, simply return the address.
-+ * Returns the resolved symbol to user space.
-  */
- static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
- 			  struct pid *pid, struct task_struct *task)
--- 
-2.39.5
-
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -484,7 +484,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
 
 
 
