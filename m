@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3738AA7FDEB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266F9A80175
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470AC1892441
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C048444180
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9A826A0DB;
-	Tue,  8 Apr 2025 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DC7267F57;
+	Tue,  8 Apr 2025 11:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01BGXSTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZwWHkFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BAD26A0BD;
-	Tue,  8 Apr 2025 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17CB224239;
+	Tue,  8 Apr 2025 11:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109988; cv=none; b=Pez22hUb+c4z9TqjMzdG3jByQClAwwQ3QEDXoDJ5pHsoLt8Ck4tdupsC8IcHEsuLM7RtqB5zBQLlmOGcjhPXZ0BCqSstuDrHL12EOoO1OSuLaos+3zPLLdLUnQive/J1SxjtTNDKurD7zfuKGEIQsz/5xMLdyHd5qWr0056+BzA=
+	t=1744111812; cv=none; b=ep220B4U6g1c50vbBMXUw/Kad2SrRnPJovjDGBZz5Flp+H2hBwLvd5/44DBpjXze2VOJNl3uSF/vb7d/haehc1yKb4BVhGcNdt1fEwtSXqOqHUWxmsTBY1y7GlY8kXRarNl4YLQiEK3N/rw17Ly5uJfPu25HJFUANz+x1xNMrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109988; c=relaxed/simple;
-	bh=/y70B390EbCbJIt1Ro/3jecALTHGOJrR/8lhVFuTLNc=;
+	s=arc-20240116; t=1744111812; c=relaxed/simple;
+	bh=xyvui6/+LFIz9mRKw133xeHG8SCovq8Tu0JQ5RabA5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZY6KteoL4rPBE9LNfp3baCUNsyH592T9OyETfHvsjRyTp+yIxTC74Imbv9okPpCSUhUdjvbSZB7dtGiFw+JyWZxmt4vCd+AhUQOM6RCdt8RSCTPtyKJHcDB0fuqXT2N6rb3riLktMaPnZhIe8G3AiV1z2uNqtvgbKBs5dahcrTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01BGXSTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67BFC4CEE5;
-	Tue,  8 Apr 2025 10:59:47 +0000 (UTC)
+	 MIME-Version; b=JOJTp+a9tl5mnj1qK4QgsaBQDgb3neRS00ApWRHPwKF13a2htnJY0CyXdewIm4FYnVjougRb2ztZUYNYSaQkmpGDlygERRMPspLvcEAxjoEJ5wUAVepLzAo/2LgANR2QNeKii8j3sSUIR0qGCdW01uhYbftUnLtJ9wQtY9t5wl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZwWHkFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4221EC4CEE5;
+	Tue,  8 Apr 2025 11:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109988;
-	bh=/y70B390EbCbJIt1Ro/3jecALTHGOJrR/8lhVFuTLNc=;
+	s=korg; t=1744111812;
+	bh=xyvui6/+LFIz9mRKw133xeHG8SCovq8Tu0JQ5RabA5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01BGXSTuzwulihLwG3qA3ysitgVfKda6Vb0tl0Gte82ZHdzu8fKhOSyni87JZbQEA
-	 aYi4/yluo41Vz5rZTQaM16YXXoLKB9KKL0dE4SWX8/QNgWr5ejodAj0RaSZZNOgi0j
-	 Nig6v/YZVN+lXnfSSNd6V+Q3PQ37dMMrKaT9Bcjc=
+	b=zZwWHkFSl6xjNa2huz8/YSbNbD9CfmUrovUlISAANybc8310MnhVATGf/S3D6JZIm
+	 Hjjr83AZQveb9CFbPxgdOpq9hb1MT6n/EyJDi3Rr4nOjLpOsp5VcKSUI9BxPoo25IY
+	 vEBAoaV3fzFC9neS34yk/3K7c3gqdgJofidjz/0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 088/227] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 569/731] octeontx2-af: Free NIX_AF_INT_VEC_GEN irq
 Date: Tue,  8 Apr 2025 12:47:46 +0200
-Message-ID: <20250408104823.013270172@linuxfoundation.org>
+Message-ID: <20250408104927.508506726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+[ Upstream commit 323d6db6dc7decb06f2545efb9496259ddacd4f4 ]
 
-This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-("Bluetooth: Always request for user confirmation for Just Works")
-always request user confirmation with confirm_hint set since the
-likes of bluetoothd have dedicated policy around JUST_WORKS method
-(e.g. main.conf:JustWorksRepairing).
+Due to the incorrect initial vector number in
+rvu_nix_unregister_interrupts(), NIX_AF_INT_VEC_GEN is not
+geeting free. Fix the vector number to include NIX_AF_INT_VEC_GEN
+irq.
 
-CVE: CVE-2024-8805
-Cc: stable@vger.kernel.org
-Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327094054.2312-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4751,19 +4751,16 @@ static void hci_user_confirm_request_evt
- 		goto unlock;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index dab4deca893f5..27c3a2daaaa95 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -207,7 +207,7 @@ static void rvu_nix_unregister_interrupts(struct rvu *rvu)
+ 		rvu->irq_allocated[offs + NIX_AF_INT_VEC_RVU] = false;
  	}
  
--	/* If no side requires MITM protection; auto-accept */
-+	/* If no side requires MITM protection; use JUST_CFM method */
- 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
- 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
- 
--		/* If we're not the initiators request authorization to
--		 * proceed from user space (mgmt_user_confirm with
--		 * confirm_hint set to 1). The exception is if neither
--		 * side had MITM or if the local IO capability is
--		 * NoInputNoOutput, in which case we do auto-accept
-+		/* If we're not the initiator of request authorization and the
-+		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
-+		 * method (mgmt_user_confirm with confirm_hint set to 1).
- 		 */
- 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
--		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
--		    (loc_mitm || rem_mitm)) {
-+		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
- 			BT_DBG("Confirming auto-accept as acceptor");
- 			confirm_hint = 1;
- 			goto confirm;
+-	for (i = NIX_AF_INT_VEC_AF_ERR; i < NIX_AF_INT_VEC_CNT; i++)
++	for (i = NIX_AF_INT_VEC_GEN; i < NIX_AF_INT_VEC_CNT; i++)
+ 		if (rvu->irq_allocated[offs + i]) {
+ 			free_irq(pci_irq_vector(rvu->pdev, offs + i), rvu_dl);
+ 			rvu->irq_allocated[offs + i] = false;
+-- 
+2.39.5
+
 
 
 
