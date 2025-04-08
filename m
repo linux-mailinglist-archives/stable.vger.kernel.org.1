@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-129987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A50FA80249
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F143A800D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCD021891D43
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C7CB7A2AAB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB5B267F55;
-	Tue,  8 Apr 2025 11:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73526A083;
+	Tue,  8 Apr 2025 11:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muqMfMMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiSgwYFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC11227EBD;
-	Tue,  8 Apr 2025 11:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1352A269CFD;
+	Tue,  8 Apr 2025 11:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112514; cv=none; b=AZCU63wOfUGaVF6l2tl26NdplTJFmysRt5f68w79DvhBUc+SM8bfLgNX/Z7oEaXN+7i0zDzg+rh8/2CdqfYkgY4bwjmQBVRiybBuUs20r7fJa/zKH0A9+C3QX2SHOomtzk1HKkK3FNK5iF6p1XF6Awso4EpbKeadJBHk0+V3i6M=
+	t=1744111853; cv=none; b=A76nTgA40idrujY5uJ9xqRS71Jfk2eI6SMxkTFwYGXGqf5CPox40AUSq7MSWjefz72bO0zqAsQW9zgNi7dqaqV4JH9B8OTtzfCukakwyrQ1OplTv5JJ4iAKnmHi9VP13BF5rqSiNljTTafhpgB9cj9nWDONEHbbBmnoiqDp2ijM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112514; c=relaxed/simple;
-	bh=m4KqytdaOC5p5qOkvtLRVQxQPQ5XP0IYABzrX9G9iA8=;
+	s=arc-20240116; t=1744111853; c=relaxed/simple;
+	bh=GjOgOGb5ohY8X0O8eKDg9ZQiF3551C20ZU8wIPKNtko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qvKj39Lw87flzMCyRTlY1vxN6vKzFjU4t10kosix/0Y9nbayR4hKteCmDQmzH3FmAYkoV+8eI+Rc585fE64aGXwL9LJsgc8bEext/JD/adrXOk9Mv9chMw0KFpymKzGV+kpaYQZin8tyui0YMXIIDTbYzeJ7VjWU89PMU2yPwgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muqMfMMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677C2C4CEE5;
-	Tue,  8 Apr 2025 11:41:53 +0000 (UTC)
+	 MIME-Version; b=T5GtHuZ5Vnr0tiqg/K51PRYVPI4VRso2GYY2xqAYCzeTsdwjU+iwDDnTxt0ZtHR2nvYoQeCVNoWd/OkHKjmTkp/dBSvJFn0znb8SqBETOo6G56p3P1XJMPpFiGpeKOSBroqJDa1mUPwwomVCW5CYjTP/k0qwfrhN9Y6lyRxYDbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiSgwYFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2A1C4CEE5;
+	Tue,  8 Apr 2025 11:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112513;
-	bh=m4KqytdaOC5p5qOkvtLRVQxQPQ5XP0IYABzrX9G9iA8=;
+	s=korg; t=1744111852;
+	bh=GjOgOGb5ohY8X0O8eKDg9ZQiF3551C20ZU8wIPKNtko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muqMfMMbWfA3howdHG0ve0e38/4u3bUm7T8m/JkNR4/mqy5bZeuzza+RCDlJdCVe/
-	 0q7ntEU3OqaH5/3GIgZcQHSwj2Xi5Xzbe42irf88RHCPXFn8pehTQBLkKyjSHKZouK
-	 WWP241Z0g0jOpwDq7tZHK1Bdy9euZaZDEqQQfh9Q=
+	b=HiSgwYFQSegVvgP5bF0ul2N1+4U/lyf20cEDZUCIP3ApZnTSlv1Vp2jXT69kYp8tl
+	 U7ulH/SjYiPsGU/4OyDXWwPDNpulIR21j9vEtsjK3mg+ktpn25bBHXswYsmzCj0lhh
+	 p/qMy/Sev5DVUvsDlAiXukXf5UPmXmiFJn+9vPWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 5.15 097/279] drm/v3d: Dont run jobs that have errors flagged in its fence
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 583/731] riscv: Fix missing __free_pages() in check_vector_unaligned_access()
 Date: Tue,  8 Apr 2025 12:48:00 +0200
-Message-ID: <20250408104828.971227479@linuxfoundation.org>
+Message-ID: <20250408104927.833752515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
+[ Upstream commit 33981b1c4e499021421686dcfa7b3d23a430d00e ]
 
-The V3D driver still relies on `drm_sched_increase_karma()` and
-`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
-The function `drm_sched_increase_karma()` marks the job as guilty, while
-`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
-that guilty job.
+The locally allocated pages are never freed up, so add the corresponding
+__free_pages().
 
-Because of this, we must check whether the job’s DMA fence has been
-flagged with an error before executing the job. Otherwise, the same guilty
-job may be resubmitted indefinitely, causing repeated GPU resets.
-
-This patch adds a check for an error on the job's fence to prevent running
-a guilty job that was previously flagged when the GPU timed out.
-
-Note that the CPU and CACHE_CLEAN queues do not require this check, as
-their jobs are executed synchronously once the DRM scheduler starts them.
-
-Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Link: https://lore.kernel.org/r/20250228090613.345309-1-alexghiti@rivosinc.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/unaligned_access_speed.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -202,11 +202,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 91f189cf16113..074ac4abd023e 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -349,7 +349,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ 		pr_warn("cpu%d: rdtime lacks granularity needed to measure unaligned vector access speed\n",
+ 			cpu);
  
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
+-		return;
++		goto free;
+ 	}
+ 
+ 	if (word_cycles < byte_cycles)
+@@ -363,6 +363,9 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ 		(speed ==  RISCV_HWPROBE_MISALIGNED_VECTOR_FAST) ? "fast" : "slow");
+ 
+ 	per_cpu(vector_misaligned_access, cpu) = speed;
 +
-+	v3d->tfu_job = job;
-+
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
- 		return NULL;
++free:
++	__free_pages(page, MISALIGNED_BUFFER_ORDER);
+ }
  
--	v3d->tfu_job = job;
- 	if (job->base.irq_fence)
- 		dma_fence_put(job->base.irq_fence);
- 	job->base.irq_fence = dma_fence_get(fence);
-@@ -240,6 +244,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
- 	struct dma_fence *fence;
- 	int i;
- 
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
- 	v3d->csd_job = job;
- 
- 	v3d_invalidate_caches(v3d);
+ static int riscv_online_cpu_vec(unsigned int cpu)
+-- 
+2.39.5
+
 
 
 
