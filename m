@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D11EA80B51
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31EAA803F8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4731BC1305
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 612BE7ABAE2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F9D27CB2B;
-	Tue,  8 Apr 2025 12:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8866226B968;
+	Tue,  8 Apr 2025 12:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LtuPJfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1Xj6m7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622C427CB27;
-	Tue,  8 Apr 2025 12:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4378426AA82;
+	Tue,  8 Apr 2025 12:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117111; cv=none; b=PGO0tFZ+nA3rhhBnPi3uI/Y8/6UGKXJR4tmoTUcvv9zcOrl5VrxwKg00m+1o50nIE761VXR6baKSWAbGeOMzKAR/6Tk+/tFCGrBe7ZN0E57BvFJJ09lCa6EHPl7YQSRaf3FFXowhpaURbbRHcfmLsd69Jp5BBgcpLjR1rJJe/ro=
+	t=1744113724; cv=none; b=huhBxp/MkydJjl1RWyKx9jYRPF6NC41grGs7jVJ4ft8fHcDvU0xsRG6wKJdo6rhsTz5Ivi3rHTA9OZA2MWpQa2sDnYJz70CaI2Il9JNGXj60Nvw/Z/ekioXi7HcyK6Not5eJ4WdguUvT2UBUhC33Wft3PehH0auIMWsbe3BCmt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117111; c=relaxed/simple;
-	bh=7PNoV5JwLInBTusELkX/rsfgHI5rxH0g4MD3pFvCSiI=;
+	s=arc-20240116; t=1744113724; c=relaxed/simple;
+	bh=pNHcuT30TTlEjg7iPsnLvwHNkDHIaT3BAfGb0gKhXCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnSjX/C2TxctTYr4VzLdU87MLUIEO1BF7PMfDm68JTnkDiCIO7GAdyxApq3i90zRLziAfs71dVLBfGerXPvgH5RUouB3zRBW0e/bjZiW7jD3e6ufNb+pR0Xq7VhxHajq2QGXBGZRgmm65XUcqsP4fYKHGWRvMjiQffEvIfl18Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LtuPJfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73C0C4CEE5;
-	Tue,  8 Apr 2025 12:58:30 +0000 (UTC)
+	 MIME-Version; b=DlKSl2gWMUC1l1SNNXtbQdzbA+Hfcu1T7HEitffKVO5FAY2B047Tj+uGajnRLfH0vUR/emZ7zYlZYuC6gESR+7xX5y6qOmEI+mSypPPizawUcpOEkMPVyOpjx24jFaQ4Jfejdd++PEmFC+7x2X2toTC42JmDE+kGVTeZx5QNwlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1Xj6m7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C281C4CEE5;
+	Tue,  8 Apr 2025 12:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117111;
-	bh=7PNoV5JwLInBTusELkX/rsfgHI5rxH0g4MD3pFvCSiI=;
+	s=korg; t=1744113723;
+	bh=pNHcuT30TTlEjg7iPsnLvwHNkDHIaT3BAfGb0gKhXCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LtuPJfMuZ8o7RgBHEx/A0cuo2elAZAnK81F/WC0Kuv5+RK3bXLfRDgj3o9L8ucnu
-	 3b6ToMss9Ne7STpEoiupavHZ/DYKTW2RtEYeviWNpevMvNU4v4ky7XpiuF0cD95GOw
-	 kY1E9emEljco7Zn2OQpVPq7rslxjMaGcyUni5Ggo=
+	b=J1Xj6m7ezLcQrnOkFC6w3Up3xp2d3VROtGfxz2tqXjK+ZaTaQg9XSvHFpBI618Ucd
+	 7VyiXRV7EP10lFwjELz6eFt8EaQ+jjPVILi1yJIQNcRpJgOu5+8Zvuz3SX8NenZ464
+	 el9fc6r1N126hlZJMgQdS8kqxWSiiCcu1pwAszgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 349/423] tools/power turbostat: report CoreThr per measurement interval
+	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 6.6 264/268] jfs: add index corruption check to DT_GETPAGE()
 Date: Tue,  8 Apr 2025 12:51:15 +0200
-Message-ID: <20250408104853.971197013@linuxfoundation.org>
+Message-ID: <20250408104835.698881541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit f729775f79a9c942c6c82ed6b44bd030afe10423 ]
+commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
 
-The CoreThr column displays total thermal throttling events
-since boot time.
+If the file system is corrupted, the header.stblindex variable
+may become greater than 127. Because of this, an array access out
+of bounds may occur:
 
-Change it to report events during the measurement interval.
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
+index 237 is out of range for type 'struct dtslot[128]'
+CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
+ dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
+ jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
+ wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
+ iterate_dir+0x571/0x800 fs/readdir.c:108
+ __do_sys_getdents64 fs/readdir.c:403 [inline]
+ __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+---[ end trace ]---
 
-This is more useful for showing a user the current conditions.
-Total events since boot time are still available to the user via
-/sys/devices/system/cpu/cpu*/thermal_throttle/*
+Add a stblindex check for corruption.
 
-Document CoreThr on turbostat.8
-
-Fixes: eae97e053fe30 ("turbostat: Support thermal throttle count print")
-Reported-by: Arjan van de Ven <arjan@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Cc: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.8 | 2 ++
- tools/power/x86/turbostat/turbostat.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dtree.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index 56c7ff6efcdab..a3cf1d17163ae 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -168,6 +168,8 @@ The system configuration dump (if --quiet is not used) is followed by statistics
- .PP
- \fBPkgTmp\fP Degrees Celsius reported by the per-package Package Thermal Monitor.
- .PP
-+\fBCoreThr\fP Core Thermal Throttling events during the measurement interval.  Note that events since boot can be find in /sys/devices/system/cpu/cpu*/thermal_throttle/*
-+.PP
- \fBGFX%rc6\fP The percentage of time the GPU is in the "render C6" state, rc6, during the measurement interval. From /sys/class/drm/card0/power/rc6_residency_ms or /sys/class/drm/card0/gt/gt0/rc6_residency_ms or /sys/class/drm/card0/device/tile0/gtN/gtidle/idle_residency_ms depending on the graphics driver being used.
- .PP
- \fBGFXMHz\fP Instantaneous snapshot of what sysfs presents at the end of the measurement interval. From /sys/class/graphics/fb0/device/drm/card0/gt_cur_freq_mhz or /sys/class/drm/card0/gt_cur_freq_mhz or /sys/class/drm/card0/gt/gt0/rps_cur_freq_mhz or /sys/class/drm/card0/device/tile0/gtN/freq0/cur_freq depending on the graphics driver being used.
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 235e82fe7d0a5..77ef60980ee58 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -3242,7 +3242,7 @@ void delta_core(struct core_data *new, struct core_data *old)
- 	old->c6 = new->c6 - old->c6;
- 	old->c7 = new->c7 - old->c7;
- 	old->core_temp_c = new->core_temp_c;
--	old->core_throt_cnt = new->core_throt_cnt;
-+	old->core_throt_cnt = new->core_throt_cnt - old->core_throt_cnt;
- 	old->mc6_us = new->mc6_us - old->mc6_us;
- 
- 	DELTA_WRAP32(new->core_energy.raw_value, old->core_energy.raw_value);
--- 
-2.39.5
-
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -117,7 +117,8 @@ do {									\
+ 	if (!(RC)) {							\
+ 		if (((P)->header.nextindex >				\
+ 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
+-		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
++		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
++		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
+ 			BT_PUTPAGE(MP);					\
+ 			jfs_error((IP)->i_sb,				\
+ 				  "DT_GETPAGE: dtree page corrupt\n");	\
 
 
 
