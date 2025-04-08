@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-129532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A04A80061
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:30:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481DEA80063
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E45A6442042
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE1F44214E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EA626869D;
-	Tue,  8 Apr 2025 11:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CC42676C9;
+	Tue,  8 Apr 2025 11:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQQVaVSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScutrL0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B34207E14;
-	Tue,  8 Apr 2025 11:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7DF266EFC;
+	Tue,  8 Apr 2025 11:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111285; cv=none; b=HbdaJg+SY/WLGhnP2X/NenOHO73XK4EIghd1DsEGq/VszHq53lKKF56sG8gL7mUKLGTlOgsEim1D5an8qMly8MpMsuQHeM5XiC7Oc+bZypMQTBOnbFowixEuFym4oinLMNoNUF6mSI3iiG2IOXTfOpvqVIlrAy+YKT08Wx5jJqA=
+	t=1744111290; cv=none; b=hi5TWrLWhKn+vBeoh4DT0wrBsNqgQ31dA3yCt5Lf2pKAKbEPD7S7BZLw0/CnTvbma7choDKtnWidrIcC1m7LvLeYK6lRErZ+T1LI14LXZZvLlumC05Xm4fC54MjHYdY30xslMY26yqUC3XpBSgiFVUR873vz9kzmGFy47p/3eyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111285; c=relaxed/simple;
-	bh=whPFb9kLyAnE9YBx2/vo3p6QMOzSYOl/5wpBx9oPscc=;
+	s=arc-20240116; t=1744111290; c=relaxed/simple;
+	bh=yFj/6Aq8iQ0RTnGQEYgIqjvP+s4Ph/rOFS3Tlmvd2XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7xPudoad/4McSfg7wchJR1t23Xrffk6zDv9EApLC9BhgcDwlvDlPSaYXCKz8giXC07bE4itQXRxRo4SSxq65rJaue9m9WANJSDWGPOEKGSAyhYbB3lWJGECcKAbU2wC2JN34/rhxzJW1kUqJeoRRBa1HJO5ULckRLEeeYnqYeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQQVaVSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1364C4CEE5;
-	Tue,  8 Apr 2025 11:21:24 +0000 (UTC)
+	 MIME-Version; b=H2T+kMIgHDelvXviLhbuULQr6xj7qvopUa3EirscRmrYf1FL84EsuFc8i4RN+u1JKYJXNujR4TRZr7uXKct1q3jtje+hZKVF7+f1p8wRFyG4Zo+6XbhnpHiRRBOS3STjqe8R9okES4LrfMJwwc2SEXqmogpObCTUYNa8sfiypkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScutrL0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC74C4CEE5;
+	Tue,  8 Apr 2025 11:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111285;
-	bh=whPFb9kLyAnE9YBx2/vo3p6QMOzSYOl/5wpBx9oPscc=;
+	s=korg; t=1744111290;
+	bh=yFj/6Aq8iQ0RTnGQEYgIqjvP+s4Ph/rOFS3Tlmvd2XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQQVaVSZhz731C7Rv5RGjkqBsQLm7KVE7QicBYU+8dnc0ZZr3s51mFfUCKKWzUHyW
-	 FzwavFt8M8fk5OQjtAxMNtcNvF32GZi43D16OGXe8uiB/PfAlzCqwHl6TyF1EVlWVk
-	 pn7WEGSRgu0fLD4esJvUfK7DrxQVaFGjS96sD1Uk=
+	b=ScutrL0QeWHqlH7pV4oEekloif8/2fBroWz1YBmcs30wUADi1CEsWWw5WYxxeSbRL
+	 jrnvCSrlW6NXl9QvtpLg1S0C7SuXOGEjeGTiEuDfp1pQgu3+XQpt6Yfbwaa7MSShYu
+	 lbt375uDzQCBIwc5e5T1LixOv5Ya3lb433rrUh70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 375/731] pinctrl: nuvoton: npcm8xx: Fix error handling in npcm8xx_gpio_fw()
-Date: Tue,  8 Apr 2025 12:44:32 +0200
-Message-ID: <20250408104922.999065137@linuxfoundation.org>
+Subject: [PATCH 6.14 376/731] crypto: tegra - Fix CMAC intermediate result handling
+Date: Tue,  8 Apr 2025 12:44:33 +0200
+Message-ID: <20250408104923.023058613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,37 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit d6c6fd77e5816e3f6689a2767cdd777797506f24 ]
+[ Upstream commit ce390d6c2675d2e24d798169a1a0e3cdbc076907 ]
 
-fwnode_irq_get() was changed to not return 0, fix this by checking
-for negative error, also update the error log.
+Saving and restoring of the intermediate results are needed if there is
+context switch caused by another ongoing request on the same engine.
+This is therefore not only to support import/export functionality.
+Hence, save and restore the intermediate result for every non-first task.
 
-Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/20250118031334.243324-1-yuehaibing@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-index d09a5e9b2eca5..17825bbe14213 100644
---- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-@@ -2361,8 +2361,8 @@ static int npcm8xx_gpio_fw(struct npcm8xx_pinctrl *pctrl)
- 			return dev_err_probe(dev, ret, "gpio-ranges fail for GPIO bank %u\n", id);
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index 5d8237cda58f0..cdcf05e235cad 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -1541,9 +1541,8 @@ static int tegra_cmac_do_update(struct ahash_request *req)
+ 	rctx->residue.size = nresidue;
  
- 		ret = fwnode_irq_get(child, 0);
--		if (!ret)
--			return dev_err_probe(dev, ret, "No IRQ for GPIO bank %u\n", id);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to retrieve IRQ for bank %u\n", id);
+ 	/*
+-	 * If this is not the first 'update' call, paste the previous copied
++	 * If this is not the first task, paste the previous copied
+ 	 * intermediate results to the registers so that it gets picked up.
+-	 * This is to support the import/export functionality.
+ 	 */
+ 	if (!(rctx->task & SHA_FIRST))
+ 		tegra_cmac_paste_result(ctx->se, rctx);
+@@ -1551,13 +1550,7 @@ static int tegra_cmac_do_update(struct ahash_request *req)
+ 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
+ 	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
  
- 		pctrl->gpio_bank[id].irq = ret;
- 		pctrl->gpio_bank[id].irq_chip = npcmgpio_irqchip;
+-	/*
+-	 * If this is not the final update, copy the intermediate results
+-	 * from the registers so that it can be used in the next 'update'
+-	 * call. This is to support the import/export functionality.
+-	 */
+-	if (!(rctx->task & SHA_FINAL))
+-		tegra_cmac_copy_result(ctx->se, rctx);
++	tegra_cmac_copy_result(ctx->se, rctx);
+ 
+ 	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
+ 			  rctx->datbuf.buf, rctx->datbuf.addr);
+@@ -1594,6 +1587,13 @@ static int tegra_cmac_do_final(struct ahash_request *req)
+ 	rctx->total_len += rctx->residue.size;
+ 	rctx->config = tegra234_aes_cfg(SE_ALG_CMAC, 0);
+ 
++	/*
++	 * If this is not the first task, paste the previous copied
++	 * intermediate results to the registers so that it gets picked up.
++	 */
++	if (!(rctx->task & SHA_FIRST))
++		tegra_cmac_paste_result(ctx->se, rctx);
++
+ 	/* Prepare command and submit */
+ 	cmdlen = tegra_cmac_prep_cmd(ctx, rctx);
+ 	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
 -- 
 2.39.5
 
