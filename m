@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-129469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7F8A7FFB7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:23:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3055CA7FFEA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9075E1889B88
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBD13A9265
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9948265630;
-	Tue,  8 Apr 2025 11:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D152676C9;
+	Tue,  8 Apr 2025 11:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rwpc99qG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3JxLcG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972C4224F6;
-	Tue,  8 Apr 2025 11:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EF9224F6;
+	Tue,  8 Apr 2025 11:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111113; cv=none; b=PFILFTPij2OnFtg0R2d9urqYUlV0dekV60xYcU2ize9gf7oqG1PFIMRp4hbzX8tvCuWt1dYcAkgoTtyE54I4Np9lEnyuwWI1uXxaxZRTuAhO2HI8OGQg/w65y8rNgB8+1MOLZeNNmGM3wYtLMvWgil0GMgu40dQ+AzAQdtyx37I=
+	t=1744111143; cv=none; b=dWhJ58m2iX7ja/JSHoGq7vGVM7ZZKrYp76FzakhX738jU1DPr+Rc/RojEnZmQAYSltj6Pw+NPFVfaa6gb+xULRuYoMwE+l9LymMwCL+O8PNgtbOhj2bPtDf6+JuKTE0x9wo6B2WrmmEtNu8X1EFcVprLd8jEwgkC/aY1Zb2rbxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111113; c=relaxed/simple;
-	bh=SEW8QxJqbtV8dp9reXVrMIUcDGGxcytsPe+YAjvU35g=;
+	s=arc-20240116; t=1744111143; c=relaxed/simple;
+	bh=8q3ZTP6ZI8c75kK6aWGWHDLsJiyRo5ZZhSa3BcxLr/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cz8ftrJfkGOWcwdfNlrVSiLe2PIUYFCHWWZwgssSC/i8VeOVaxa9dWRbywafwc0T2G6nOfN6pUzX8cMELJkoLrMuMlapuYpOl4jxL4Nm+5PKiFbCnaqAul/jZVnJHmJbSh4ydQbsJnOiCUoy9hYvTTK7mFHgSzeyq1Jnq8dDW+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rwpc99qG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24713C4CEE5;
-	Tue,  8 Apr 2025 11:18:32 +0000 (UTC)
+	 MIME-Version; b=sluglxN/WQUO73/v5Lc7MdT8FO8mv16fUoSW7T0q/yAFGClC1OStBCk/ddySNSWnQfal7p3sRB1X1xWrB6Kjo3bM9UpsfnuFm5NaTGXXI+3+IlgCIMMkWAr625y8cFAXC+1mPH1+FrLBjfWD0c0oByJSFSVpIjVAbZaf5GRATRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3JxLcG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D362C4CEE5;
+	Tue,  8 Apr 2025 11:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111113;
-	bh=SEW8QxJqbtV8dp9reXVrMIUcDGGxcytsPe+YAjvU35g=;
+	s=korg; t=1744111143;
+	bh=8q3ZTP6ZI8c75kK6aWGWHDLsJiyRo5ZZhSa3BcxLr/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rwpc99qGHPhRnUA3fLYI+ijVHy4Rdeoz5DUGncGKBUoK1hfoJWKYk0XVsy2PP1EdP
-	 4DJM2S/F6+jfbaZAIG/xV+WTWcgK+H6hmOKB5cO7N1AIZv5cyrROfdI/XyHhRgDvwD
-	 woqyVrk5z9MBHqzW3dGQzszDGWpe0x+7lc6CtE/I=
+	b=e3JxLcG6bJGFX5XePxt55ElLznPu20NY/nsx7hHZ19EVZB37u6jO7RXXWdOHyUpdN
+	 Lf6x+PVVB1N0cWiQ0ybYj7CZGXgTqjBBq7uxw39TJlknjBeDd/OciwCIxlmRQbnMc0
+	 FWJNzIt50w/U7aXL2b1QfXUH/HxniXMUb4P+RnIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 296/731] drm/msm/dpu: dont use active in atomic_check()
-Date: Tue,  8 Apr 2025 12:43:13 +0200
-Message-ID: <20250408104921.163003996@linuxfoundation.org>
+Subject: [PATCH 6.14 297/731] drm/msm/dsi/phy: Program clock inverters in correct register
+Date: Tue,  8 Apr 2025 12:43:14 +0200
+Message-ID: <20250408104921.185028416@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,63 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 25b4614843bcc56ba150f7c99905125a019e656c ]
+[ Upstream commit baf49072877726616c7f5943a6b45eb86bfeca0a ]
 
-The driver isn't supposed to consult crtc_state->active/active_check for
-resource allocation. Instead all resources should be allocated if
-crtc_state->enabled is set. Stop consulting active / active_changed in
-order to determine whether the hardware resources should be
-(re)allocated.
+Since SM8250 all downstream sources program clock inverters in
+PLL_CLOCK_INVERTERS_1 register and leave the PLL_CLOCK_INVERTERS as
+reset value (0x0).  The most recent Hardware Programming Guide for 3 nm,
+4 nm, 5 nm and 7 nm PHYs also mention PLL_CLOCK_INVERTERS_1.
 
-Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
-Reported-by: Simona Vetter <simona.vetter@ffwll.ch>
-Closes: https://lore.kernel.org/dri-devel/ZtW_S0j5AEr4g0QW@phenom.ffwll.local/
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 1ef7c99d145c ("drm/msm/dsi: add support for 7nm DSI PHY/PLL")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reported-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/634489/
+Link: https://lore.kernel.org/r/20250129115504.40080-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/633393/
-Link: https://lore.kernel.org/r/20250123-drm-dirty-modeset-v2-1-bbfd3a6cd1a4@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    | 4 ----
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 3 +--
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index e5dcd41a361f4..29485e76f531f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1262,10 +1262,6 @@ static int dpu_crtc_atomic_check(struct drm_crtc *crtc,
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 798168180c1ab..a2c87c84aa05b 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -305,7 +305,7 @@ static void dsi_pll_commit(struct dsi_pll_7nm *pll, struct dsi_pll_config *confi
+ 	writel(pll->phy->cphy_mode ? 0x00 : 0x10,
+ 	       base + REG_DSI_7nm_PHY_PLL_CMODE_1);
+ 	writel(config->pll_clock_inverters,
+-	       base + REG_DSI_7nm_PHY_PLL_CLOCK_INVERTERS);
++	       base + REG_DSI_7nm_PHY_PLL_CLOCK_INVERTERS_1);
+ }
  
- 	DRM_DEBUG_ATOMIC("%s: check\n", dpu_crtc->name);
- 
--	/* force a full mode set if active state changed */
--	if (crtc_state->active_changed)
--		crtc_state->mode_changed = true;
--
- 	if (cstate->num_mixers) {
- 		rc = _dpu_crtc_check_and_setup_lm_bounds(crtc, crtc_state);
- 		if (rc)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 48e6e8d74c855..ee7dacf8a1cb6 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -793,12 +793,11 @@ static int dpu_encoder_virt_atomic_check(
- 		crtc_state->mode_changed = true;
- 	/*
- 	 * Release and Allocate resources on every modeset
--	 * Dont allocate when active is false.
- 	 */
- 	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
- 		dpu_rm_release(global_state, drm_enc);
- 
--		if (!crtc_state->active_changed || crtc_state->enable)
-+		if (crtc_state->enable)
- 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
- 					drm_enc, crtc_state, &topology);
- 		if (!ret)
+ static int dsi_pll_7nm_vco_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
