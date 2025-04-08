@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-129140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50220A7FEA7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:15:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD5AA802EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030703BB597
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0831894062
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7EA269819;
-	Tue,  8 Apr 2025 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472DD267B89;
+	Tue,  8 Apr 2025 11:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5RZM90P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9xYAlrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD6268691;
-	Tue,  8 Apr 2025 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0271D1AAA0F;
+	Tue,  8 Apr 2025 11:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110223; cv=none; b=JwWE2pU+P7TRqcaEIUBq9ZYRUzhTsdfYH9TMesulE413fRamHDBcHj5k0TiCWcowcphVtK1I8HzX9Kn+SEOtqOnpSA6MhIED8lPkkvG8Gfn7w1j7v5u+bPD82CYccxz3lg3GwjZ62OGdPgbY3C/Bh29j61e7xcbZ9wGDkq6HHKE=
+	t=1744112817; cv=none; b=Q6NxvZ9+YbWTPh6mtmth/FQyJsdQ4ELYbRpECYkqaCIvW2Jm4rt1tQU9trFwkxdk7h3RZ+FknoDfhO7wNFcw2YSBI7KcdcEQ+uwra/EXXyEq084H+Xdyq26516DLgQX0WpU0sgo1wtVZayTYun/lN+7Ykso9KSBKmrhxOjFsdcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110223; c=relaxed/simple;
-	bh=v4w6duPkLl0byoCi/rVfX3o9uGV4rGwxextmcTQdRfs=;
+	s=arc-20240116; t=1744112817; c=relaxed/simple;
+	bh=B9EhJMGi7aeRP8HE/DoWl1gF4/kocOzcRqW72cJcKJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fhs6rHHS/BUp7geZUZsX3CD1j2sL5/m5sSiclYG2csJUR5KDwUvIBYtDi/S6KHO7CCQMJLHIUshF8yExWYGTddic6ID4YVOxP3DJ+xihZllilb3QbX3sX7XRh1xOUt51+fRGa4bu0xlpRftNCSE9X+Kd3Hv+Y1jQ3cQadJ/LIfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5RZM90P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D472BC4CEE7;
-	Tue,  8 Apr 2025 11:03:42 +0000 (UTC)
+	 MIME-Version; b=e3G85zfjwC3ts/Xgi14mP9TRiF638S7ldlXPbomxvf7J1XokbGj2QeLUgC5swfDNlW1w9fcRp11hKAd4DJCvBKFqNQ8RSsC/Z7sa/jQ3xZkIM6k6h87v/OjkwXJgdNT78tM/lHDqwgImFygC7ODS8gjfrxh3vgtIWSpc6wpfO9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9xYAlrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878FEC4CEE5;
+	Tue,  8 Apr 2025 11:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110223;
-	bh=v4w6duPkLl0byoCi/rVfX3o9uGV4rGwxextmcTQdRfs=;
+	s=korg; t=1744112816;
+	bh=B9EhJMGi7aeRP8HE/DoWl1gF4/kocOzcRqW72cJcKJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5RZM90PzhF9htaGe/8Wj+bWKNBhBMpjxEWwB2ON0MybZmw8bMlPqYezlcYW6In/o
-	 v+pIyjlq1p3GRI8CfYQvpRhCWtL+2RZsUiE+9vrE9oPhHuLMJkBZ9sLaqzPU50IJF7
-	 ssyXlTmZ5WJqQUNuunZFgorXbjTWXP2TDUjrJzr0=
+	b=b9xYAlrAAo1vcwSxUkLWusUXOzPYQXOlPNfjikhIJVqPklFxT+bwxI7Iu72lchpiy
+	 kzlZZHWULTqdkU8+rrogKjJgw2eeLs7G1JiGuPL2z2Z8XjOcW2qoerm+Ji7MX0wHC9
+	 GP8+0gzcMnrwsHeS6/4rmP7o7TOEIqzjGhpVYzBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/227] fs/procfs: fix the comment above proc_pid_wchan()
+Subject: [PATCH 5.15 168/279] remoteproc: core: Clear table_sz when rproc_shutdown
 Date: Tue,  8 Apr 2025 12:49:11 +0200
-Message-ID: <20250408104825.504162613@linuxfoundation.org>
+Message-ID: <20250408104830.864935959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
+[ Upstream commit efdde3d73ab25cef4ff2d06783b0aad8b093c0e4 ]
 
-proc_pid_wchan() used to report kernel addresses to user space but that is
-no longer the case today.  Bring the comment above proc_pid_wchan() in
-sync with the implementation.
+There is case as below could trigger kernel dump:
+Use U-Boot to start remote processor(rproc) with resource table
+published to a fixed address by rproc. After Kernel boots up,
+stop the rproc, load a new firmware which doesn't have resource table
+,and start rproc.
 
-Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
-Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+When starting rproc with a firmware not have resource table,
+`memcpy(loaded_table, rproc->cached_table, rproc->table_sz)` will
+trigger dump, because rproc->cache_table is set to NULL during the last
+stop operation, but rproc->table_sz is still valid.
+
+This issue is found on i.MX8MP and i.MX9.
+
+Dump as below:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010af63000
+[0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 2 UID: 0 PID: 1060 Comm: sh Not tainted 6.14.0-rc7-next-20250317-dirty #38
+Hardware name: NXP i.MX8MPlus EVK board (DT)
+pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __pi_memcpy_generic+0x110/0x22c
+lr : rproc_start+0x88/0x1e0
+Call trace:
+ __pi_memcpy_generic+0x110/0x22c (P)
+ rproc_boot+0x198/0x57c
+ state_store+0x40/0x104
+ dev_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x120/0x1cc
+ vfs_write+0x240/0x378
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x30/0xcc
+ el0t_64_sync_handler+0x10c/0x138
+ el0t_64_sync+0x198/0x19c
+
+Clear rproc->table_sz to address the issue.
+
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250319100106.3622619-1-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/remoteproc_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index b955ba5db72cb..b09cc9e6d5914 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -415,7 +415,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
- #ifdef CONFIG_KALLSYMS
- /*
-  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
-- * Returns the resolved symbol.  If that fails, simply return the address.
-+ * Returns the resolved symbol to user space.
-  */
- static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
- 			  struct pid *pid, struct task_struct *task)
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 97e59f7461261..9e6d0dda64a99 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2102,6 +2102,7 @@ void rproc_shutdown(struct rproc *rproc)
+ 	kfree(rproc->cached_table);
+ 	rproc->cached_table = NULL;
+ 	rproc->table_ptr = NULL;
++	rproc->table_sz = 0;
+ out:
+ 	mutex_unlock(&rproc->lock);
+ }
 -- 
 2.39.5
 
