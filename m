@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CEEA8041A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CCAA80AD3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6913B1E02
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D286504CD6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3771F268C6B;
-	Tue,  8 Apr 2025 11:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8661526B08B;
+	Tue,  8 Apr 2025 12:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgRzlrOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNR1zehX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E993D20CCD8;
-	Tue,  8 Apr 2025 11:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4433B269D03;
+	Tue,  8 Apr 2025 12:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113452; cv=none; b=BMdB/OllKtwbj3VuUkIzjmAMxJerExwEA610+NYcwlx+SSN2CFIcndVqPiABq3L9W/x2egP2qOTLKD0FVB0TCWBABn7mIni5HyKxqTrKAYyYdO6tYoG0OFOGc4ah80Ka4Eh3zR5GFOHSZsa33yxh1oRiAJz4D9G6vJxX+dW8RHg=
+	t=1744116742; cv=none; b=PYf3aCB3EzU+IUzz6A9W5NWiPnmtvrrXqmmgFGZX2sgC4CkoT2XL2CMQJye4lpBgVZvGgehfh8Fh5BVpCE5f0BUgYPFF68REJVjuzf7ayfNkfptXgA/OHu4tNS+4XyAQlJuk8ItxZwKZN2kXMxAy2SBCPaIn0MHVMANRkW0Zaqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113452; c=relaxed/simple;
-	bh=47/Pe+QopSXPyoTaqzQefiDVHLStEz837C6eSgcIzQw=;
+	s=arc-20240116; t=1744116742; c=relaxed/simple;
+	bh=5Ovo2ivKI0MVqwdXB0rqK1mXRhcOUO2Yf9BBh5xCjAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vtq38fRmkAZLJoy4/LF+zN+fwGRIG6Y9Uw5UOVpsQn5Wj5dEMKoUsStYrzC3ApnHKkKOk9xPRNBZBxGt+5edf+w1ccVk8ompel42fR1FEodhBuoLTgH/daKjsso8klnbBv1eBaA9XMOR8nWWPRaKTl6PGTCksf4ir69fEgP+rvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgRzlrOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC6FC4CEE5;
-	Tue,  8 Apr 2025 11:57:31 +0000 (UTC)
+	 MIME-Version; b=OqwcG3FnyL02+qzLMWHFI6RXFUqTTeLyUhaf7JJg5jv4UBAF1L3dBtNIm+riQqTvyiNt+yJ5hj7QvuREWWdcZ0weOAF2cHVox4bHw00zAY9bg1ARcnOSacekyjUR7lbqgq8RYQtGIkf8fPCh7MEk4WUTNyR8QdfhIIdk4zUB1qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNR1zehX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9E1C4CEE5;
+	Tue,  8 Apr 2025 12:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113451;
-	bh=47/Pe+QopSXPyoTaqzQefiDVHLStEz837C6eSgcIzQw=;
+	s=korg; t=1744116742;
+	bh=5Ovo2ivKI0MVqwdXB0rqK1mXRhcOUO2Yf9BBh5xCjAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgRzlrOphA3XPOKZ8XeNOq4mrxDmtjOqeT0k1B1IX/pWejkZ2uDlZEivyheDLpswg
-	 LDNM5Vz731oq+EWWyq7wN84R4Po09JEw6gsWE48esYCDC9gpU++Y9qhuHUD3q2QVi0
-	 p3QZCLW8WEI58TpukNs7aPEf3ht6WYXrc3gj1WtA=
+	b=JNR1zehXLYJUrprNbbX8iywVLxY3qNHYC8Ev0GZXAiB46ERWXfowm89XYJ7Gw+G2z
+	 WT3kAr6vbOhPXXwb7wf7iJ0a0ri+D8VpGHkw8AwUEDlZo3c+YjwwZA4rci4+p76W0T
+	 a+wB1r1R9iXO/IaivA5ftFo50XdgiRgqJFAjltKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/268] nvme-pci: clean up CMBMSC when registering CMB fails
-Date: Tue,  8 Apr 2025 12:49:36 +0200
-Message-ID: <20250408104833.001381061@linuxfoundation.org>
+Subject: [PATCH 6.12 251/423] objtool/loongarch: Add unwind hints in prepare_frametrace()
+Date: Tue,  8 Apr 2025 12:49:37 +0200
+Message-ID: <20250408104851.584258286@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
+[ Upstream commit 7c977393b8277ed319e92e4b598b26598c9d30c0 ]
 
-CMB decoding should get disabled when the CMB block isn't successfully
-registered to P2P DMA subsystem.
+If 'regs' points to a local stack variable, prepare_frametrace() stores
+all registers to the stack.  This confuses objtool as it expects them to
+be restored from the stack later.
 
-Clean up the CMBMSC register in this error handling codepath to disable
-CMB decoding (and CMBLOC/CMBSZ registers).
+The stores don't affect stack tracing, so use unwind hints to hide them
+from objtool.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes the following warnings:
+
+  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[22]=-1+0 reg2[22]=-2-160
+  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[23]=-1+0 reg2[23]=-2-152
+
+Fixes: cb8a2ef0848c ("LoongArch: Add ORC stack unwinder support")
+Reported-by: kernel test robot <lkp@intel.com>
+Tested-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/270cadd8040dda74db2307f23497bb68e65db98d.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503280703.OARM8SrY-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/stacktrace.h   |  3 +++
+ arch/loongarch/include/asm/unwind_hints.h | 10 +++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index a36ec6df6624b..3cc00d5a10065 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1871,6 +1871,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
-+		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
- 		return;
- 	}
+diff --git a/arch/loongarch/include/asm/stacktrace.h b/arch/loongarch/include/asm/stacktrace.h
+index f23adb15f418f..fc8b64773794a 100644
+--- a/arch/loongarch/include/asm/stacktrace.h
++++ b/arch/loongarch/include/asm/stacktrace.h
+@@ -8,6 +8,7 @@
+ #include <asm/asm.h>
+ #include <asm/ptrace.h>
+ #include <asm/loongarch.h>
++#include <asm/unwind_hints.h>
+ #include <linux/stringify.h>
  
+ enum stack_type {
+@@ -43,6 +44,7 @@ int get_stack_info(unsigned long stack, struct task_struct *task, struct stack_i
+ static __always_inline void prepare_frametrace(struct pt_regs *regs)
+ {
+ 	__asm__ __volatile__(
++		UNWIND_HINT_SAVE
+ 		/* Save $ra */
+ 		STORE_ONE_REG(1)
+ 		/* Use $ra to save PC */
+@@ -80,6 +82,7 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
+ 		STORE_ONE_REG(29)
+ 		STORE_ONE_REG(30)
+ 		STORE_ONE_REG(31)
++		UNWIND_HINT_RESTORE
+ 		: "=m" (regs->csr_era)
+ 		: "r" (regs->regs)
+ 		: "memory");
+diff --git a/arch/loongarch/include/asm/unwind_hints.h b/arch/loongarch/include/asm/unwind_hints.h
+index a01086ad9ddea..2c68bc72736c9 100644
+--- a/arch/loongarch/include/asm/unwind_hints.h
++++ b/arch/loongarch/include/asm/unwind_hints.h
+@@ -23,6 +23,14 @@
+ 	UNWIND_HINT sp_reg=ORC_REG_SP type=UNWIND_HINT_TYPE_CALL
+ .endm
+ 
+-#endif /* __ASSEMBLY__ */
++#else /* !__ASSEMBLY__ */
++
++#define UNWIND_HINT_SAVE \
++	UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
++
++#define UNWIND_HINT_RESTORE \
++	UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
++
++#endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _ASM_LOONGARCH_UNWIND_HINTS_H */
 -- 
 2.39.5
 
