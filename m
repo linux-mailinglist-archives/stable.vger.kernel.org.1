@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3805CA80BD0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF9A80784
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73EC38C7389
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEB28860D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EC926A0AC;
-	Tue,  8 Apr 2025 12:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A8A269B08;
+	Tue,  8 Apr 2025 12:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTIQ3htE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v08GDe0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CA626A0ED;
-	Tue,  8 Apr 2025 12:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0114B265CD3;
+	Tue,  8 Apr 2025 12:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116647; cv=none; b=Tp1T7DowOVTiaBhPZgX6ysQBzIzUc95vYckNHATCxUrFsBKv9NzQvQY0ktk+GhQ29Z05LQ//LvJ+nysztHq/rE38iYkDxmQwX8Xw4mnzS6aZ+MDsCE3A3IgX+r7h9O3k66OCHSpEXm96cXppA/N+MFFdAU2SJDdS+NZ0KeegQ/I=
+	t=1744115049; cv=none; b=juK9AFkfnidiyO6dqsjsyxQk8+HCSKfWzsTXWGCYjT0Eg7HXg05JXF5tCokAU0oK54hfETNXECEHXx4lvuJL6XlWkU9612rqoikPbZoVMd0OUhZNoWbXYHs4ClFfQUTUIEVuFJDM+t5b8jbp+7MAuAJBh06Ei0TPrakwhNi2bfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116647; c=relaxed/simple;
-	bh=hoRrW04nBPegKEcZKSq9KuIuj54TE3n8Ul5rietBj1I=;
+	s=arc-20240116; t=1744115049; c=relaxed/simple;
+	bh=vR+qOKqzwlm8Yj/tKSwf2FjP17i7RjdtaPOvJTV64dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSg/1DkFsi/qGecBdztI+hsgxPPVlFE2tmYDPMYSdjcEFtc1R8mFq0yosAsRrr7kRS2hiSdVbJUEViQn41JLPnwhr+W57kldKD5obYSBSZZSugIWGN91WSS1MLQBtnGETF9btb12JMV/iXYfwcHZwUWu5TBGUGaWtD4ns6Me24w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTIQ3htE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEEDC4CEE7;
-	Tue,  8 Apr 2025 12:50:47 +0000 (UTC)
+	 MIME-Version; b=DOhk4a2iuXqpZHw5JXki/9ZFJiVxBLiWgBQRcqA91q8f1JV+g9HeS3BUndmtUi483DV2SQpmY4zZW4PTPFWpn+gqPBbLgEPSAcSlRO4HkiBIEGfaWlFgBRJfAblm8bow5fpTGMgmZQz/Z30G2G9m5hfGxQBUmMixse21DhTkOe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v08GDe0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85729C4CEE5;
+	Tue,  8 Apr 2025 12:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116647;
-	bh=hoRrW04nBPegKEcZKSq9KuIuj54TE3n8Ul5rietBj1I=;
+	s=korg; t=1744115048;
+	bh=vR+qOKqzwlm8Yj/tKSwf2FjP17i7RjdtaPOvJTV64dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTIQ3htE47X8BmL3BHCzxVjVKdJztc4qxmQ8FFKd1aQCNhvC2sI5AGgMmbuyOGaNC
-	 7Cjn4+CQ6ayGSBGc7rt8hlgaZWP6cXXnR79wsbi3Gwtsh9KUwv3bIYSayB1HyPw4/I
-	 stghKE63Aq7XBB33LfqKv0nq81z3DrW6p3Z5jE6s=
+	b=v08GDe0jSEve0AGMVk6aMf7ViEWnf/XSpQwQ5KJUTdIB/avOnL4Cw89kd4it7CLvg
+	 zu/YEXeXRHgXBM9AIf5LmVVwOLdRgcs3tCI2y96lKs6u6GwCEiBA1oGGuFvOT0n8Rl
+	 ULJHZj/rIqBC5Oy5w1EzTpzRwlClwmiPCUenyGa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/423] perf dso: fix dso__is_kallsyms() check
+Subject: [PATCH 6.13 329/499] ALSA: hda/realtek: Add support for ASUS Zenbook UM3406KA Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:49:01 +0200
-Message-ID: <20250408104850.738290122@linuxfoundation.org>
+Message-ID: <20250408104859.430631000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit ebf0b332732dcc64239119e554faa946562b0b93 ]
+[ Upstream commit 8463d2adbe1901247937fcdfe4b525130f6db10b ]
 
-Kernel modules for which we cannot find a file on-disk will have a
-dso->long_name that looks like "[module_name]". Prior to the commit
-listed in the fixes, the dso->kernel field would be zero (for user
-space), so dso__is_kallsyms() would return false. After the commit,
-kernel module DSOs are correctly labeled, but the result is that
-dso__is_kallsyms() erroneously returns true for those modules without a
-filesystem path.
+Laptop uses 2 CS35L41 Amps with HDA, using External boost with I2C
 
-Later, build_id_cache__add() consults this value of is_kallsyms, and
-when true, it copies /proc/kallsyms into the cache. Users with many
-kernel modules without a filesystem path (e.g. ksplice or possibly
-kernel live patch modules) have reported excessive disk space usage in
-the build ID cache directory due to this behavior.
-
-To reproduce the issue, it's enough to build a trivial out-of-tree hello
-world kernel module, load it using insmod, and then use:
-
-   perf record -ag -- sleep 1
-
-In the build ID directory, there will be a directory for your module
-name containing a kallsyms file.
-
-Fix this up by changing dso__is_kallsyms() to consult the
-dso_binary_type enumeration, which is also symmetric to the above checks
-for dso__is_vmlinux() and dso__is_kcore(). With this change, kallsyms is
-not cached in the build-id cache for out-of-tree modules.
-
-Fixes: 02213cec64bbe ("perf maps: Mark module DSOs with kernel type")
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250318230012.2038790-1-stephen.s.brennan@oracle.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-8-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/dso.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-index bb8e8f444054d..c0472a41147c3 100644
---- a/tools/perf/util/dso.h
-+++ b/tools/perf/util/dso.h
-@@ -808,7 +808,9 @@ static inline bool dso__is_kcore(const struct dso *dso)
- 
- static inline bool dso__is_kallsyms(const struct dso *dso)
- {
--	return RC_CHK_ACCESS(dso)->kernel && RC_CHK_ACCESS(dso)->long_name[0] != '/';
-+	enum dso_binary_type bt = dso__binary_type(dso);
-+
-+	return bt == DSO_BINARY_TYPE__KALLSYMS || bt == DSO_BINARY_TYPE__GUEST_KALLSYMS;
- }
- 
- bool dso__is_object_file(const struct dso *dso);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 248e30c3a22d0..503fb6654289b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10661,6 +10661,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1154, "ASUS TP3607SH", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
 -- 
 2.39.5
 
