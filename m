@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C28DA8033D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:55:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028B1A80187
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5CBD3B32F9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C1FF7A5335
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC58266EEA;
-	Tue,  8 Apr 2025 11:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2417A264A70;
+	Tue,  8 Apr 2025 11:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpyWjTG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re8sQ7BT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC21A94A;
-	Tue,  8 Apr 2025 11:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43EB224AEB;
+	Tue,  8 Apr 2025 11:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112902; cv=none; b=il4e6u8C8q6lYfRY++mb9ypuzCVrUxjRXCsHME3U+1TOSYr7mzpk04CW7wu3khAOp0Fy4Z2+KuEKzSH6NqplqaRU7guNpC1YoJIWgnDyRn49t31LdDwIUtqGbgn+vY1n6lQd4bAD9p2nZLxs2DsTzjQTXOuaum/R61bQmX2OS3I=
+	t=1744112261; cv=none; b=Wppu+JfLqiq2GscervYo59yG9I8HNKmsUjwxny7EfwH76NyJlfDVIfv2k7k+eaKLwO5Nqul2OVtaV3KIpq6L1zYNCX+4jXwrVYEm5U+1Nj4BjHEqzCvWCuV1Pjw+n7ypxcfw4jMCjH4TH532rA0azf7whTvoxa+487zkTPs7hZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112902; c=relaxed/simple;
-	bh=HRzaQXydfC+kJhfXoFNcRtk3odnlKOOwiVFfQ0Jtxqk=;
+	s=arc-20240116; t=1744112261; c=relaxed/simple;
+	bh=131sPnFaX7psi/CGU4PDDV/MOf1ZAGz9fNGGm5APxFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bU2aSzew2I2O0hIP7CjeqzNErL9KLNOdP1UuA3hnrW5kuCOLRB4FIFnX2u4pwvNBsNPxrVM6K2l+7hepqW30H79BNooGo7sLCsPmrTdhHmDrbmkm+2NSfZIQn3SNdmF4xctVG4G1+up+qD8qpuIn/YCMWdfryYaVqar89Q6p7RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpyWjTG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28952C4CEE7;
-	Tue,  8 Apr 2025 11:48:21 +0000 (UTC)
+	 MIME-Version; b=LYG4SXOTgmfcN0dl6bGWI6Lh3WKGRkrrOSnhoJLXP+xJGngqg56UXG8TZoncPZF8S+iGCAufyDrakf/tL4/6rt1M8+pD7ojCbUwZSTkOerYDiuyWXjlnWHV7uT5HGb9X9UWfG2XMahGeu+Jsw4YXlNPceG8PSrd6lhzh0D+FkIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re8sQ7BT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D91C4CEE5;
+	Tue,  8 Apr 2025 11:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112902;
-	bh=HRzaQXydfC+kJhfXoFNcRtk3odnlKOOwiVFfQ0Jtxqk=;
+	s=korg; t=1744112261;
+	bh=131sPnFaX7psi/CGU4PDDV/MOf1ZAGz9fNGGm5APxFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpyWjTG1HZXStM8VaFNIfGqWw/j83m2v0Y8QqoOeBE7znXxwVzr4cVLYCh8j9bDfn
-	 f8/a55ZhflgSa6LKB6hLobv1TMXRAsN5qv+q/SO7d48NZg4MdeX6iwhaXT0rO8BScu
-	 uaqX/r+ITZl6YriF/eqvGlB7GdhLqbm4Bpe+9F+M=
+	b=re8sQ7BTRTCE46JDk86us4XK+xanrqOxd9cFJ2eqnFYziem4G1P+Oia6EniZmHxwS
+	 misNvVdLz8OTIqOyQoyfVFIphK1UEyBUb/Qk2hrjBVakYQwG1TQ3q7mcVKNVXbYLJC
+	 HmgWM4xtgsTKuyicVi95YJtIgSkk/xWrN1Z1Gedw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/279] ntb: intel: Fix using link status DBs
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.14 725/731] nfsd: allow SC_STATUS_FREEABLE when searching via nfs4_lookup_stateid()
 Date: Tue,  8 Apr 2025 12:50:22 +0200
-Message-ID: <20250408104832.837457193@linuxfoundation.org>
+Message-ID: <20250408104931.137920511@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
+commit d1bc15b147d35b4cb7ca99a9a7d79d41ca342c13 upstream.
 
-Make sure we are not using DB's which were remapped for link status.
+The pynfs DELEG8 test fails when run against nfsd. It acquires a
+delegation and then lets the lease time out. It then tries to use the
+deleg stateid and expects to see NFS4ERR_DELEG_REVOKED, but it gets
+bad NFS4ERR_BAD_STATEID instead.
 
-Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a delegation is revoked, it's initially marked with
+SC_STATUS_REVOKED, or SC_STATUS_ADMIN_REVOKED and later, it's marked
+with the SC_STATUS_FREEABLE flag, which denotes that it is waiting for
+s FREE_STATEID call.
+
+nfs4_lookup_stateid() accepts a statusmask that includes the status
+flags that a found stateid is allowed to have. Currently, that mask
+never includes SC_STATUS_FREEABLE, which means that revoked delegations
+are (almost) never found.
+
+Add SC_STATUS_FREEABLE to the always-allowed status flags, and remove it
+from nfsd4_delegreturn() since it's now always implied.
+
+Fixes: 8dd91e8d31fe ("nfsd: fix race between laundromat and free_stateid")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4state.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-index ffcfc3e02c353..a5aa96a31f4a6 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
- 	}
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7051,7 +7051,7 @@ nfsd4_lookup_stateid(struct nfsd4_compou
+ 		 */
+ 		statusmask |= SC_STATUS_REVOKED;
  
- 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
-+	/* Make sure we are not using DB's used for link status */
-+	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
-+		ndev->db_valid_mask &= ~ndev->db_link_mask;
+-	statusmask |= SC_STATUS_ADMIN_REVOKED;
++	statusmask |= SC_STATUS_ADMIN_REVOKED | SC_STATUS_FREEABLE;
  
- 	ndev->reg->db_iowrite(ndev->db_valid_mask,
- 			      ndev->self_mmio +
--- 
-2.39.5
-
+ 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
+ 		CLOSE_STATEID(stateid))
+@@ -7706,9 +7706,7 @@ nfsd4_delegreturn(struct svc_rqst *rqstp
+ 	if ((status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)))
+ 		return status;
+ 
+-	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG,
+-				      SC_STATUS_REVOKED | SC_STATUS_FREEABLE,
+-				      &s, nn);
++	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, SC_STATUS_REVOKED, &s, nn);
+ 	if (status)
+ 		goto out;
+ 	dp = delegstateid(s);
 
 
 
