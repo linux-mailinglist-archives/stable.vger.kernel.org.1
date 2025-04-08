@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFD5A80850
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3B3A8078C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C71A1B6738B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE0A4C2BD4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD8226FDBD;
-	Tue,  8 Apr 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C0026A1DE;
+	Tue,  8 Apr 2025 12:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgSL11pg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvSfJNuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B38826FDBF;
-	Tue,  8 Apr 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B753926A0A2;
+	Tue,  8 Apr 2025 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115672; cv=none; b=aUtD8Wy+uEfmGKq7SH97euVr5DfE2MUg7GeCyrBfs6+nlElgpZAU21zOxOo+0le/MNND6vXnW68S9OaawhKclFtJAtd3/kVW93+hNYpIQU3Jqk+0gNIwEThF8+wDNFWvlFwW/v7qCsARBuezLCs+SfbXAMcBJp8JfdypG/h8hpQ=
+	t=1744115198; cv=none; b=dcryKCW1OkZ1SUnYgQwGFRV6kr2zxpxNLoOfhK/8UciXHjrhxsF8vxFjyx0G9XEo0vb00XlSVu5WnApuk3ILdvxTV0VLt1xAwdGMnOFjjbLGDVREWVz3FIsmFXhxHfLVeT9WydnADXppxv/8B15mLbCWUTGG9q9Q7+P/F0zyyUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115672; c=relaxed/simple;
-	bh=BGSr4fQ++AZaSsOHkS38+OkxNJbgXQmuvMb+pwoVDbY=;
+	s=arc-20240116; t=1744115198; c=relaxed/simple;
+	bh=uf5rkHmYsKy/R29qfyuA3DG6t1YYX72S8tEAIInabWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HolxtnXzdUtXt03nD3sedUqS4zNS3qpE4ye9e2DNz5H9OJjS8CrRX5m3C8WxuFsCzhAdp5jZM8OPNwt58OzxjI//FJ0LqP37zJX8zZzALxYmcfheUucdsKMiyzP/TMqG73kcVAE4tYSBXrDu2y56E5b5VtoEe7AqEjVFjRpCtYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgSL11pg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24897C4CEEA;
-	Tue,  8 Apr 2025 12:34:31 +0000 (UTC)
+	 MIME-Version; b=tQ4uGdpljZVVTDYHuH0AgAIejv/Sfg3OtYs6JePj4InGXamWcI+WuNNpaWwaNrHvmBKfC47HhFX9pD3sQbYDwkInn1abodzOwDjkoQOkPoGRncYBErQVCxxiOpSSon0NjXVxEqLqrerz6ZancdqmE5xpqOextWN7V9WhKEciChQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvSfJNuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D5EC4CEE5;
+	Tue,  8 Apr 2025 12:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115672;
-	bh=BGSr4fQ++AZaSsOHkS38+OkxNJbgXQmuvMb+pwoVDbY=;
+	s=korg; t=1744115198;
+	bh=uf5rkHmYsKy/R29qfyuA3DG6t1YYX72S8tEAIInabWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgSL11pgwTrNNjtk9E5khcImWD1m6ekuZVSo/HaOCXWUlI7Jo5Tyh5HgZ98Wz8gSM
-	 /vtbbER+JNYlVINieei2dXd6Vb+sotOjpkDdmeL7mqjfTY2CzB1xrAsCeGEBNAM43b
-	 fKMD6smHMcUsA8SunorCT8Nor6L/L2x5h6Td8uco=
+	b=cvSfJNukbUm5Go5uRLgqVKR1GdjnGGeanPL5uryPx/IMteGcgjVCoW331c0zSaTg8
+	 RFZtr54qkMGxcQ0T73DrZvQY3Lgsvd1GfmHS0kvcYXPvQgHxbspwae7pELT/7j5+mn
+	 WmTeYzvY6YDW2y0EH7Ld/Xr96FyY/KYP02kwPA3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/204] clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock
-Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104822.114432631@linuxfoundation.org>
+Subject: [PATCH 6.13 379/499] ASoC: imx-card: Add NULL check in imx_card_probe()
+Date: Tue,  8 Apr 2025 12:49:51 +0200
+Message-ID: <20250408104900.684094393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit cdc59600bccf2cb4c483645438a97d4ec55f326b ]
+[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
 
-This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
-GDSC is under HW control so it can be turned off at any moment.
-Instead of checking the dependent clock we can just vote for it to
-enable later when GDSC gets turned on.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+imx_card_probe() does not check for this case, which results in a NULL
+pointer dereference.
 
-Fixes: 9bb6cfc3c77e6 ("clk: qcom: Add Global Clock Controller driver for MSM8953")
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20250315-clock-fix-v1-2-2efdc4920dda@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add NULL check after devm_kasprintf() to prevent this issue.
+
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-msm8953.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-msm8953.c b/drivers/clk/qcom/gcc-msm8953.c
-index 8aafa6591e845..3b32830f7466a 100644
---- a/drivers/clk/qcom/gcc-msm8953.c
-+++ b/drivers/clk/qcom/gcc-msm8953.c
-@@ -3771,7 +3771,7 @@ static struct clk_branch gcc_venus0_axi_clk = {
- 
- static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
- 	.halt_reg = 0x4c02c,
--	.halt_check = BRANCH_HALT,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x4c02c,
- 		.enable_mask = BIT(0),
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 95a57fda02503..6684a4135b644 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -767,6 +767,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].sink =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Playback");
++				if (!data->dapm_routes[i].sink)
++					return -ENOMEM;
+ 				data->dapm_routes[i].source = "CPU-Playback";
+ 			}
+ 		}
+@@ -784,6 +786,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].source =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Capture");
++				if (!data->dapm_routes[i].source)
++					return -ENOMEM;
+ 				data->dapm_routes[i].sink = "CPU-Capture";
+ 			}
+ 		}
 -- 
 2.39.5
 
