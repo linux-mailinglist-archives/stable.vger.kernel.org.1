@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AF5A80595
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E11A80AFE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1030B88123F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E69D71B86B0B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7297D26A1BA;
-	Tue,  8 Apr 2025 12:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDD126E172;
+	Tue,  8 Apr 2025 12:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EujXNZfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rokN2oV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FB526A1B2;
-	Tue,  8 Apr 2025 12:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA0F26E165;
+	Tue,  8 Apr 2025 12:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114028; cv=none; b=ETUbM0Q44sywnlP1489m9c2uZ50JX7ZAipVIM29UR6leL7zXcZb9i0DLusRJF2npH9kAvH85pTkDxtidrj05jLUXZuGqFCezynQV0StvBmJjx+r1Iec++px547sdes56LOYOu6kA0EPLEDyv6yMHCiu4wgT1AvNbshtwJpkCr0M=
+	t=1744116838; cv=none; b=CcnPH7i4wN0G3XlnkjbEHteCyGpKLGi3eXnINSRsQYNygf+PDYCtlNEIA+E3l9EpM0O+SivQUvfbz9muG6tbZ+KZ6UMI4o4dkFKWrcpxN+q4COIuHgdRPamU3SU/Rq8GACT4iTD/w/ChlPTFj3QmghsgrS2VBq4uGu9ljWUyEWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114028; c=relaxed/simple;
-	bh=HlaGxKP68IMJSyOZ+nxuEfk/b+UyL5cZ6XptVWbXLDs=;
+	s=arc-20240116; t=1744116838; c=relaxed/simple;
+	bh=fNXvy3eA+W2vJm9Jbfn6qFcpLe61f8t4SxZWcWxyXXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOKLkAMC5+OyJdir/oaiR12OS2x2wcQd5vcKMxs1diKm1KNXgSnv+V0USapf3J59uDQuWmqfDhKMlKyeeqsYyQKr5UXd2CfFdVjyTPTUIiz2/ZouNYvoF9XLRHLEuJyov7fQk1Sc0ixK/zE6pl5KftCNksl0ojDC2thhqjWJahk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EujXNZfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC02C4CEEA;
-	Tue,  8 Apr 2025 12:07:07 +0000 (UTC)
+	 MIME-Version; b=KKd+7dHVwoQqLdpqvfZe8njEZkNp05z1Ta2NNc85wLtSeLUY87Uh3TTyLZ7vYsdngKLYLcsQPP3yXI8/XQC1LwcMuF/tanglTiHpHUF5TsXRQHjgvKG8beUd6FCkIHQyKDv9ctilg3Dn1dSHcNXQikdwsK63B6RhlSQte0Lmebs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rokN2oV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81EAC4CEE5;
+	Tue,  8 Apr 2025 12:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114027;
-	bh=HlaGxKP68IMJSyOZ+nxuEfk/b+UyL5cZ6XptVWbXLDs=;
+	s=korg; t=1744116838;
+	bh=fNXvy3eA+W2vJm9Jbfn6qFcpLe61f8t4SxZWcWxyXXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EujXNZfrNrBDwJYgaWw6Tc9p1gsCnDp47vwpubV/gMj13bX0xcTHWAt+vPvX20awn
-	 DQ+fl5QX5N+2Wh1qxpijaZ7vJBSdMgeI/aRvycDPZ6FT2PehrYd0V7FS6yLCWaiLfj
-	 nkxSh6a8ZhT5obdXyip9vIGLkc0idITNJNnvkSE0=
+	b=1rokN2oVfsY5CygsgIji8lyqV24BfkqD60WHy+K+dLAqPJv6dVjgyzIFFxLn8ljy6
+	 9Urt0Ayk3atCHon5zM9fS24B8XAOmoI4eB5tuF5RYK5BXjkZ9jiboKstsAqlfkUxpS
+	 2eZysuafp/JgeOjFTNo3RTYFMZt0BficBCJmKmE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxim@isovalent.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 072/154] netfilter: socket: Lookup orig tuple for IPv6 SNAT
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 287/423] wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
 Date: Tue,  8 Apr 2025 12:50:13 +0200
-Message-ID: <20250408104817.614659633@linuxfoundation.org>
+Message-ID: <20250408104852.463604757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 932b32ffd7604fb00b5c57e239a3cc4d901ccf6e upstream.
+[ Upstream commit 43e04077170799d0e6289f3e928f727e401b3d79 ]
 
-nf_sk_lookup_slow_v4 does the conntrack lookup for IPv4 packets to
-restore the original 5-tuple in case of SNAT, to be able to find the
-right socket (if any). Then socket_match() can correctly check whether
-the socket was transparent.
+We first want to flush the station to make sure we no longer have any
+frames being Tx by the station before the station is moved to
+un-authorized state. Failing to do that will lead to races: a frame may
+be sent after the station's state has been changed.
 
-However, the IPv6 counterpart (nf_sk_lookup_slow_v6) lacks this
-conntrack lookup, making xt_socket fail to match on the socket when the
-packet was SNATed. Add the same logic to nf_sk_lookup_slow_v6.
+Since the API clearly states that the driver can't fail the sta_state()
+transition down the list of state, we can easily flush the station
+first, and only then call the driver's sta_state().
 
-IPv6 SNAT is used in Kubernetes clusters for pod-to-world packets, as
-pods' addresses are in the fd00::/8 ULA subnet and need to be replaced
-with the node's external address. Cilium leverages Envoy to enforce L7
-policies, and Envoy uses transparent sockets. Cilium inserts an iptables
-prerouting rule that matches on `-m socket --transparent` and redirects
-the packets to localhost, but it fails to match SNATed IPv6 packets due
-to that missing conntrack lookup.
-
-Closes: https://github.com/cilium/cilium/issues/37932
-Fixes: eb31628e37a0 ("netfilter: nf_tables: Add support for IPv6 NAT")
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250306123626.450bc40e8b04.I636ba96843c77f13309c15c9fd6eb0c5a52a7976@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_socket_ipv6.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/mac80211/sta_info.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/net/ipv6/netfilter/nf_socket_ipv6.c
-+++ b/net/ipv6/netfilter/nf_socket_ipv6.c
-@@ -103,6 +103,10 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 	struct sk_buff *data_skb = NULL;
- 	int doff = 0;
- 	int thoff = 0, tproto;
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn const *ct;
-+#endif
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index aa22f09e6d145..49095f19a0f22 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
  
- 	tproto = ipv6_find_hdr(skb, &thoff, -1, NULL, NULL);
- 	if (tproto < 0) {
-@@ -136,6 +140,25 @@ struct sock *nf_sk_lookup_slow_v6(struct
- 		return NULL;
+ #include <linux/module.h>
+@@ -1317,9 +1317,13 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		sta->sta.addr, new_state);
+ 
+ 	/* notify the driver before the actual changes so it can
+-	 * fail the transition
++	 * fail the transition if the state is increasing.
++	 * The driver is required not to fail when the transition
++	 * is decreasing the state, so first, do all the preparation
++	 * work and only then, notify the driver.
+ 	 */
+-	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
++	if (new_state > sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
+ 		int err = drv_sta_state(sta->local, sta->sdata, sta,
+ 					sta->sta_state, new_state);
+ 		if (err)
+@@ -1395,6 +1399,16 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		break;
  	}
  
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	/* Do the lookup with the original socket address in
-+	 * case this is a reply packet of an established
-+	 * SNAT-ted connection.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (ct &&
-+	    ((tproto != IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_ESTABLISHED_REPLY) ||
-+	     (tproto == IPPROTO_ICMPV6 &&
-+	      ctinfo == IP_CT_RELATED_REPLY)) &&
-+	    (ct->status & IPS_SRC_NAT_DONE)) {
-+		daddr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u3.in6;
-+		dport = (tproto == IPPROTO_TCP) ?
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.tcp.port :
-+			ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple.src.u.udp.port;
-+	}
-+#endif
++	if (new_state < sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
++		int err = drv_sta_state(sta->local, sta->sdata, sta,
++					sta->sta_state, new_state);
 +
- 	return nf_socket_get_sock_v6(net, data_skb, doff, tproto, saddr, daddr,
- 				     sport, dport, indev);
- }
++		WARN_ONCE(err,
++			  "Driver is not allowed to fail if the sta_state is transitioning down the list: %d\n",
++			  err);
++	}
++
+ 	sta->sta_state = new_state;
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
