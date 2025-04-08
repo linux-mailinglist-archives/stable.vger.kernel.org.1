@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344DDA80841
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2F3A80AF7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60ACC1BA21BE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8631BA5E9E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6626526A0FA;
-	Tue,  8 Apr 2025 12:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC28281362;
+	Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmqCm9ku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5r5HtbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C0526F44F;
-	Tue,  8 Apr 2025 12:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567F628135C;
+	Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115657; cv=none; b=HCPY+B2noccq6zpYnppgknm1X0yyTjm3wa5gPhKl00ocH5moplKFFQ1CWsBpVXLe5UwQJvgZBpnDRcWtkoifEQ9XWvJ2XnX3bCb53hKSdidLFeGaQUJGatmyaJgBtqg8en3mnQnCJrc8AIkIPBT/Kaubm9HkDV/ttVI7RFQIoLo=
+	t=1744116783; cv=none; b=YRH7PivEiGQFK0s32Cf2RenlmJXiolXVipV6hxlSoQvl8f+W95KYKTB14aAUK+3spwaYik7eFxvaUEw1HaN6+obrIEOcQllCDRtL9Wnal1WgXxTMGKlryXBqVF4rLWtOUybuC8Y060Dfi5Xfp7UnGSCGDQG015LXtD4Art25dsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115657; c=relaxed/simple;
-	bh=GtwB1DRI00RxKU8TNb66YbUuQ/i71mXjxwdYbwTY0yA=;
+	s=arc-20240116; t=1744116783; c=relaxed/simple;
+	bh=dXqMpQIoQZE538p5J1QfHGwBXOD99KUG+QRH0x7LYHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSOBDDg8NE+eB9jUSI5IE0Ny4Hd0WR//MDoJcepKoju9XGLUuPQrdp10rq+PaDrhMq8MJMcx2mTrPho3+vERDkTAeBx3CEacMjZL629vjkcCKZD/fhLUCE6HPDW9Uw52M6eXTgHh5o1/gkmJih6z7jS4neLH1vfSnDISR2gAfkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmqCm9ku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BBEC4CEE7;
-	Tue,  8 Apr 2025 12:34:15 +0000 (UTC)
+	 MIME-Version; b=l/m00VDPO2SkggHWMl6E4nTOZe+ChgjD3/qsR68n9qP4pbp5nvuPTX2uqNdWJqekkOLCnzLZbJoVH9p8hAQjKzJvrSg6bH8GOcYZNpkV7UsTGQFqpwo3dxqgTcKf/12CGwYEp/tCW95MN9DyOIfurVUphbmfb3zreErO91Y0Qe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5r5HtbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94DAC4CEE5;
+	Tue,  8 Apr 2025 12:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115656;
-	bh=GtwB1DRI00RxKU8TNb66YbUuQ/i71mXjxwdYbwTY0yA=;
+	s=korg; t=1744116783;
+	bh=dXqMpQIoQZE538p5J1QfHGwBXOD99KUG+QRH0x7LYHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmqCm9kuvwApsLkJPG+UKfR9xc0RRSMS5yNGbDg8kow6f1tHAPLcb+yr22hCAsnIl
-	 d28NaYRefVTKwZ11jNGU0EKapX2FWCSdyZ2XB3/ZJoGYB7fvcRPlGVVHDLZtRfApbz
-	 +PLTAy/933qH/Ea6yJqSPAn8IiQzoWPO8A86UXm8=
+	b=x5r5HtbHcH+FJZ/tu1bF5X/rck8CRzTJKahQhRfqpQtVvsIcESXMBwXyZdlfo2gLI
+	 0pC5FaNq8s8h7yR9GrDQfp3CYveLX8013xXTk1qf9E65bxGwNEOe33Wf+XD1RM7dYC
+	 /6YfVK8etFq5pq2wrZspjY6a15zYvrtT1bIXNTSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/204] of: property: Increase NR_FWNODE_REFERENCE_ARGS
-Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104821.960266771@linuxfoundation.org>
+Subject: [PATCH 6.12 260/423] nvme-pci: skip CMB blocks incompatible with PCI P2P DMA
+Date: Tue,  8 Apr 2025 12:49:46 +0200
+Message-ID: <20250408104851.802831154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
+[ Upstream commit 56cf7ef0d490b28fad8f8629fc135c5ab7c9f54e ]
 
-Currently, the following two macros have different values:
+The PCI P2PDMA code will register the CMB block to the memory
+hot-plugging subsystem, which have an alignment requirement. Memory
+blocks that do not satisfy this alignment requirement (usually 2MB) will
+lead to a WARNING from memory hotplugging.
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
+Verify the CMB block's address and size against the alignment and only
+try to send CMB blocks compatible with it to prevent this warning.
 
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
+Tested on Intel DC D4502 SSD, which has a 512K CMB block that is too
+small for memory hotplugging (thus PCI P2PDMA).
 
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
-
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
-Will align both macros later to avoid such inconsistency.
-
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 525cc031596b6..7efb4493e51c0 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -83,7 +83,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 84c0611697a9b..833a67b79e13c 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1984,6 +1984,18 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (offset > bar_size)
+ 		return;
  
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
++	/*
++	 * Controllers may support a CMB size larger than their BAR, for
++	 * example, due to being behind a bridge. Reduce the CMB to the
++	 * reported size of the BAR
++	 */
++	size = min(size, bar_size - offset);
++
++	if (!IS_ALIGNED(size, memremap_compat_align()) ||
++	    !IS_ALIGNED(pci_resource_start(pdev, bar),
++			memremap_compat_align()))
++		return;
++
+ 	/*
+ 	 * Tell the controller about the host side address mapping the CMB,
+ 	 * and enable CMB decoding for the NVMe 1.4+ scheme:
+@@ -1994,14 +2006,6 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 			     dev->bar + NVME_REG_CMBMSC);
+ 	}
  
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
+-	/*
+-	 * Controllers may support a CMB size larger than their BAR,
+-	 * for example, due to being behind a bridge. Reduce the CMB to
+-	 * the reported size of the BAR
+-	 */
+-	if (size > bar_size - offset)
+-		size = bar_size - offset;
+-
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
 -- 
 2.39.5
 
