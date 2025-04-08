@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B788DA807AD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1659CA80B83
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA744C39E7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F93F505998
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0C8269811;
-	Tue,  8 Apr 2025 12:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183FD27713;
+	Tue,  8 Apr 2025 12:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9gBNMl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJNii+2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7452686BC;
-	Tue,  8 Apr 2025 12:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA51E26B2CF;
+	Tue,  8 Apr 2025 12:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115295; cv=none; b=KPq71HB6i+uVC23MBZwM6zuSH3X8RvkPI9OjPpYT25aysnHkCETIDtE0SwLLquOIEPuUJkpm005xe98lKYLGKC6Fn1S6dvescyn0PMfjMyvuQyuFpclQa+joU1+ulsXwr7Xb0IRDQn2RX6ZmfxQ+3YmpMpLq1kQ2hBFYVvEAnoU=
+	t=1744116986; cv=none; b=qrhjb7NDTe1QlHWNqi9i1GE8qELhZlf1EdIyoZnFRNbsKaig54uHL5/2SMrxhSyKzto94lj+nLKJ/jYxfO449ubB3WM0JXdbAVc8Ux7/h8gQMhigEDcpbNv0wfXZyUSLglT/pG6bWcXf9SHp9P9tf6xnkL+CO0wWSNAWdmOsn7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115295; c=relaxed/simple;
-	bh=iBlf7nxA1bn3MLcMnWLhMRqW7Ylod0jAUMZG+n8kpNw=;
+	s=arc-20240116; t=1744116986; c=relaxed/simple;
+	bh=6fPL2qnHnjw29Jv4GBJnpEv3ILoSuTKhf7pvKYy5lXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1ToMhBfMB8eiqd/juTMbjgnmy/3WWeQFxfuhRE7NBB/UrVNqEgigxdlmxlYSIZnbnfrrpQvQVkUb8DCZNr4UFIwQ4IQAgKi4/6judGgv8E3Yfcv5Ouz0ma7AM6iNowLGf+bemgiqe4AF0aMzD4vjuppUJQi4t3gWtrKlOmqp74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9gBNMl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2A9C4CEE7;
-	Tue,  8 Apr 2025 12:28:14 +0000 (UTC)
+	 MIME-Version; b=jGqK2iJ0ODZkC0+wvas4nqHTwUFh4IzJqtAtdJYI9oM1r3F6IYZvFLT6VMJdChCUHrCKffxQ5CYI4OvxUimt+ydDaQJG+2SfZM56ti6jO8A1QqTYEi4Qy5IBNTxHIs17BtP9C/PcCSHNTKrlckMOR9TdL4zASRgGGKsCRTZxTAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJNii+2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2164C4CEE5;
+	Tue,  8 Apr 2025 12:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115295;
-	bh=iBlf7nxA1bn3MLcMnWLhMRqW7Ylod0jAUMZG+n8kpNw=;
+	s=korg; t=1744116986;
+	bh=6fPL2qnHnjw29Jv4GBJnpEv3ILoSuTKhf7pvKYy5lXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9gBNMl0MfbhCQ6Iic300A2PzjF6GyBemEcM0rj9nEl3k2HkIlxaNLjOa8/QUhG3b
-	 ojkaLszY5wP3V6AQuwpxDw5r6/l5+CZAoTIQLWIMPH5ZZa2UhXEwJeVABRl69jsli0
-	 wQJeiugHdUeZoSScv7UYGkcSPIINVvPT+0AHEQf4=
+	b=oJNii+2F1NyC0f7XADRDo6gelpmg+8btCHVgGy8wpeSzBoxbXf5MRbH9b86rdIfil
+	 AwMFdgtOoqEXG7P7rJ5Umnwg1O6r+0pJ3LgTkxHzF3mbvvHVRcIS7x56mDLI5TbJxv
+	 FXID1VHUzBv/u4N+vQW787I4sAfz0kDu/tQ6j2+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
+	Juhan Jin <juhan.jin@foxmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 419/499] staging: gpib: Modify gpib_register_driver() to return error if it fails
+Subject: [PATCH 6.12 305/423] riscv: ftrace: Add parentheses in macro definitions of make_call_t0 and make_call_ra
 Date: Tue,  8 Apr 2025 12:50:31 +0200
-Message-ID: <20250408104901.676857095@linuxfoundation.org>
+Message-ID: <20250408104852.900329449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Juhan Jin <juhan.jin@foxmail.com>
 
-[ Upstream commit e999bd2a897e7d70fa1fca6b80873529532322fe ]
+[ Upstream commit 5f1a58ed91a040d4625d854f9bb3dd4995919202 ]
 
-The function gpib_register_driver() can fail if kmalloc() fails,
-but it doesn't return any error if that happens.
+This patch adds parentheses to parameters caller and callee of macros
+make_call_t0 and make_call_ra. Every existing invocation of these two
+macros uses a single variable for each argument, so the absence of the
+parentheses seems okay. However, future invocations might use more
+complex expressions as arguments. For example, a future invocation might
+look like this: make_call_t0(a - b, c, call). Without parentheses in the
+macro definition, the macro invocation expands to:
 
-Modify the function to return error i.e int. Return the appropriate
-error code if it fails. Remove the pr_info() statement.
+...
+unsigned int offset = (unsigned long) c - (unsigned long) a - b;
+...
 
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Link: https://lore.kernel.org/r/20241230185633.175690-2-niharchaithanya@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a239c6e91b66 ("staging: gpib: Fix Oops after disconnect in ni_usb")
+which is clearly wrong.
+
+The use of parentheses ensures arguments are correctly evaluated and
+potentially saves future users of make_call_t0 and make_call_ra debugging
+trouble.
+
+Fixes: 6724a76cff85 ("riscv: ftrace: Reduce the detour code size to half")
+Signed-off-by: Juhan Jin <juhan.jin@foxmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/tencent_AE90AA59903A628E87E9F80E563DA5BA5508@qq.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/common/gpib_os.c | 7 ++++---
- drivers/staging/gpib/include/gpibP.h  | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/ftrace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/gpib/common/gpib_os.c b/drivers/staging/gpib/common/gpib_os.c
-index 0962729d7dfef..982a2fe68cf2a 100644
---- a/drivers/staging/gpib/common/gpib_os.c
-+++ b/drivers/staging/gpib/common/gpib_os.c
-@@ -2044,18 +2044,19 @@ void init_gpib_descriptor(gpib_descriptor_t *desc)
- 	atomic_set(&desc->io_in_progress, 0);
- }
- 
--void gpib_register_driver(gpib_interface_t *interface, struct module *provider_module)
-+int gpib_register_driver(gpib_interface_t *interface, struct module *provider_module)
- {
- 	struct gpib_interface_list_struct *entry;
- 
- 	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
- 	if (!entry)
--		return;
-+		return -ENOMEM;
- 
- 	entry->interface = interface;
- 	entry->module = provider_module;
- 	list_add(&entry->list, &registered_drivers);
--	pr_info("gpib: registered %s interface\n", interface->name);
-+
-+	return 0;
- }
- EXPORT_SYMBOL(gpib_register_driver);
- 
-diff --git a/drivers/staging/gpib/include/gpibP.h b/drivers/staging/gpib/include/gpibP.h
-index b97da577ba332..d35fdd391f7e1 100644
---- a/drivers/staging/gpib/include/gpibP.h
-+++ b/drivers/staging/gpib/include/gpibP.h
-@@ -18,7 +18,7 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- 
--void gpib_register_driver(gpib_interface_t *interface, struct module *mod);
-+int gpib_register_driver(gpib_interface_t *interface, struct module *mod);
- void gpib_unregister_driver(gpib_interface_t *interface);
- struct pci_dev *gpib_pci_get_device(const gpib_board_config_t *config, unsigned int vendor_id,
- 				    unsigned int device_id, struct pci_dev *from);
+diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
+index 2cddd79ff21b1..f253c8dae878e 100644
+--- a/arch/riscv/include/asm/ftrace.h
++++ b/arch/riscv/include/asm/ftrace.h
+@@ -92,7 +92,7 @@ struct dyn_arch_ftrace {
+ #define make_call_t0(caller, callee, call)				\
+ do {									\
+ 	unsigned int offset =						\
+-		(unsigned long) callee - (unsigned long) caller;	\
++		(unsigned long) (callee) - (unsigned long) (caller);	\
+ 	call[0] = to_auipc_t0(offset);					\
+ 	call[1] = to_jalr_t0(offset);					\
+ } while (0)
+@@ -108,7 +108,7 @@ do {									\
+ #define make_call_ra(caller, callee, call)				\
+ do {									\
+ 	unsigned int offset =						\
+-		(unsigned long) callee - (unsigned long) caller;	\
++		(unsigned long) (callee) - (unsigned long) (caller);	\
+ 	call[0] = to_auipc_ra(offset);					\
+ 	call[1] = to_jalr_ra(offset);					\
+ } while (0)
 -- 
 2.39.5
 
