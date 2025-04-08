@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7E5A8037E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C29CEA7FD95
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C81E3BC426
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9616B3BEA6A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56016268FE4;
-	Tue,  8 Apr 2025 11:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A55269D0D;
+	Tue,  8 Apr 2025 10:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOQA2fsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYecd/Xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126A4267B89;
-	Tue,  8 Apr 2025 11:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B12269836;
+	Tue,  8 Apr 2025 10:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113055; cv=none; b=oCnP/gT/6aVVCG0gMOTCY/ZN7TeTwkqMWmfEkhPu95/g/0aTPFWuCoMQcZqas1/kRgaOflIf2JZcKEGvEoAgZ8qqpf5UjHBhxPvDNKLU+TCNVliFo7r4jPzLC/egKaTBli165PtY+bb4xHkUPLq7X/IIXr+hQKShmdEiVASd9sQ=
+	t=1744109781; cv=none; b=oX+nYBNDukvCwYeXIJC9dabXNJ+nOaxEcb7+MQmyJE1wQeWiFWCKK8Zf6O2D/vnD981B2zYwHCyPzWFDz/CfBzT1d8OzZjemx/u/GnYC+CEj3CITOBBjEPqJQ9eRPS6ryz0PQcOKFLnhyoeiVXaltj6Eka07sjZfZVmM2HHfrmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113055; c=relaxed/simple;
-	bh=fpRuSIjcwLc2Gt0xzJ/I5rbitP5dxJgoRRG8Qchko2s=;
+	s=arc-20240116; t=1744109781; c=relaxed/simple;
+	bh=NOn98rQo1eZEwrOmoN/m3r9YsJwdXbTWXfHiK19Qsig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DJ4EBX8z37qyxU8hybvHxt0hMQtnEnvBbgeiTkOF7eVeV2fWiRaTom2rGj88NVRp+whNgMFRS5Umj5yiN1VbdoVV08l5Uz7F6AINgrs4eB3gUIyKng5IXfqXZDnqbDk4Cr33KzsUo1BhejaYRyvX2dnn7c06kGf2ELINYaP9Zw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOQA2fsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96493C4CEE5;
-	Tue,  8 Apr 2025 11:50:54 +0000 (UTC)
+	 MIME-Version; b=kUj3rD5AX5h0l/f73rFI3SL8PokPM8WvwQDavW7h6fV+/Fe7NJ0ywiKQk001eOaPxG9OY3P2jCGLKfwD2CHnaSuc2DeMWG06ef+1JU7YzhHDmC0iI5IOwGouZUTq3a8+euH3qEt+SlXQrStLDSQavkzP2Pr3+Yc+k5nuyP936YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYecd/Xt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ADAC4CEE5;
+	Tue,  8 Apr 2025 10:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113054;
-	bh=fpRuSIjcwLc2Gt0xzJ/I5rbitP5dxJgoRRG8Qchko2s=;
+	s=korg; t=1744109781;
+	bh=NOn98rQo1eZEwrOmoN/m3r9YsJwdXbTWXfHiK19Qsig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOQA2fsvA+Wj2Q341DfoBP+XvJStciDtokNbTPsIUMlqG0XZ02Naq2rbc6ZXFP9YF
-	 cIsmHgtwxCPJ9LjOmzaUPIwhkT7njYJDTRmTgve9F4kGaiVMcRvakHxwIVDf+Lrm37
-	 c+/kmF6g3kJ7JewOY77SIwO39Z+Zp9cFz29bpnI8=
+	b=NYecd/Xt/ZftZI3QS0rFIpA9B/ifPFN9EwKYAs/Bl+ZX3ZKs4fyRnMldeZnMO/+wZ
+	 VFs/FZ9ZHz9ElWdmu+9xPOPOOG8/GPtt8eH8/4QPbA3OsSJMQ/gAxxzAXSCca/tu69
+	 /juErSvHkJbfBXAKuZ78ksyyk4e5YzTiq3gY/Bjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/268] thermal: int340x: Add NULL check for adev
+	Florent Revest <revest@chromium.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 051/227] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
 Date: Tue,  8 Apr 2025 12:47:09 +0200
-Message-ID: <20250408104829.001683902@linuxfoundation.org>
+Message-ID: <20250408104821.929907830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
+commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL.
-This is similar to the commit cd2fd6eab480
-("platform/x86: int3472: Check for adev == NULL").
+Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
+CPU masks and unconditionally accesses per-CPU data for the first CPU of each
+mask.
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in int3402_thermal_probe().
+According to Documentation/admin-guide/mm/numaperf.rst:
 
-Note, under the same directory, int3400_thermal_probe() has such a
-check.
+  "Some memory may share the same node as a CPU, and others are provided as
+  memory only nodes."
 
-Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
-[ rjw: Subject edit, added Fixes: ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
+
+On a machine with far memory (and therefore CPU-less NUMA nodes):
+- cpumask_of_node(nid) is 0
+- cpumask_first(0) is CONFIG_NR_CPUS
+- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
+  index that is 1 out of bounds
+
+This does not have any security implications since flashing microcode is
+a privileged operation but I believe this has reliability implications by
+potentially corrupting memory while flashing a microcode update.
+
+When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
+a microcode update. I get the following splat:
+
+  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
+  index 512 is out of range for type 'unsigned long[512]'
+  [...]
+  Call Trace:
+   dump_stack
+   __ubsan_handle_out_of_bounds
+   load_microcode_amd
+   request_microcode_amd
+   reload_store
+   kernfs_fop_write_iter
+   vfs_write
+   ksys_write
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
+
+Change the loop to go over only NUMA nodes which have CPUs before determining
+whether the first CPU on the respective node needs microcode update.
+
+  [ bp: Massage commit message, fix typo. ]
+
+Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-index 43fa351e2b9ec..b7fdf25bfd237 100644
---- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
- 	struct int3402_thermal_data *d;
- 	int ret;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -862,7 +862,7 @@ static enum ucode_state load_microcode_a
+ 		return ret;
+ 	}
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(adev->handle, "_TMP"))
- 		return -ENODEV;
+-	for_each_node(nid) {
++	for_each_node_with_cpus(nid) {
+ 		cpu = cpumask_first(cpumask_of_node(nid));
+ 		c = &cpu_data(cpu);
  
--- 
-2.39.5
-
 
 
 
