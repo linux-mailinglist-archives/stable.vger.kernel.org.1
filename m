@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-130279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC81A8039D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A50FA80249
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5AC188264C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCD021891D43
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9B6269CF6;
-	Tue,  8 Apr 2025 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB5B267F55;
+	Tue,  8 Apr 2025 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sims8fRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muqMfMMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287C622257E;
-	Tue,  8 Apr 2025 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC11227EBD;
+	Tue,  8 Apr 2025 11:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113295; cv=none; b=BTt1vsmItwdQNRTB9vN6uRbZvYT3FGCjMHFM2LE+fl0tGW2EkER7NprEVI0ebVDIv3I8624U3Q5yqqhMQzZnhqXG8GnNv6yiOM3kjDMVgQ+UdTINtNXFgTuOiA5J3bzoWX6X1Bvg3oGU+ikgPbWoX7ZcRprA7P4Jk5OdXRLVrE0=
+	t=1744112514; cv=none; b=AZCU63wOfUGaVF6l2tl26NdplTJFmysRt5f68w79DvhBUc+SM8bfLgNX/Z7oEaXN+7i0zDzg+rh8/2CdqfYkgY4bwjmQBVRiybBuUs20r7fJa/zKH0A9+C3QX2SHOomtzk1HKkK3FNK5iF6p1XF6Awso4EpbKeadJBHk0+V3i6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113295; c=relaxed/simple;
-	bh=qgHy8JCKEv27O1G5FIy+4GUZR6Gl3aY64H2/H3RA5IA=;
+	s=arc-20240116; t=1744112514; c=relaxed/simple;
+	bh=m4KqytdaOC5p5qOkvtLRVQxQPQ5XP0IYABzrX9G9iA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ph4d0FBJp1QReAaWcFEMRote4hNSKWD4Ni4AiNS1iFRDrloV6ela180N6eKuwJDS6wLnhgbLGuTtlJ++Eer0/5Wibl5h1sOJMroIkOm7sjqDpy7TrHQGyKh/P/kMlKazpfBriG1ol8bzNfUMJNLMzSdsDj3REJ3Fzp5BxSQCY7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sims8fRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEBBC4CEE5;
-	Tue,  8 Apr 2025 11:54:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qvKj39Lw87flzMCyRTlY1vxN6vKzFjU4t10kosix/0Y9nbayR4hKteCmDQmzH3FmAYkoV+8eI+Rc585fE64aGXwL9LJsgc8bEext/JD/adrXOk9Mv9chMw0KFpymKzGV+kpaYQZin8tyui0YMXIIDTbYzeJ7VjWU89PMU2yPwgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muqMfMMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677C2C4CEE5;
+	Tue,  8 Apr 2025 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113295;
-	bh=qgHy8JCKEv27O1G5FIy+4GUZR6Gl3aY64H2/H3RA5IA=;
+	s=korg; t=1744112513;
+	bh=m4KqytdaOC5p5qOkvtLRVQxQPQ5XP0IYABzrX9G9iA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sims8fRw7Ley4N1ysLwInYv7Mqf3nxfoPQn7lLkCa96YC3UL7xhx/VWt9R+X2Trit
-	 cOz5KnWQcCLCwV6UYjXbKMN2cybG/2xJoyqW8I22cNgI0HR09d/MLSbkDh2BzweE5i
-	 /6fMP7HLd/qSSCaqI7k5cXomokGsjTjWi8Stjijs=
+	b=muqMfMMbWfA3howdHG0ve0e38/4u3bUm7T8m/JkNR4/mqy5bZeuzza+RCDlJdCVe/
+	 0q7ntEU3OqaH5/3GIgZcQHSwj2Xi5Xzbe42irf88RHCPXFn8pehTQBLkKyjSHKZouK
+	 WWP241Z0g0jOpwDq7tZHK1Bdy9euZaZDEqQQfh9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Viktor Malik <vmalik@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/268] selftests/bpf: Fix string read in strncmp benchmark
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 5.15 097/279] drm/v3d: Dont run jobs that have errors flagged in its fence
 Date: Tue,  8 Apr 2025 12:48:00 +0200
-Message-ID: <20250408104830.357877504@linuxfoundation.org>
+Message-ID: <20250408104828.971227479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +62,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit de07b182899227d5fd1ca7a1a7d495ecd453d49c ]
+commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
 
-The strncmp benchmark uses the bpf_strncmp helper and a hand-written
-loop to compare two strings. The values of the strings are filled from
-userspace. One of the strings is non-const (in .bss) while the other is
-const (in .rodata) since that is the requirement of bpf_strncmp.
+The V3D driver still relies on `drm_sched_increase_karma()` and
+`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
+The function `drm_sched_increase_karma()` marks the job as guilty, while
+`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
+that guilty job.
 
-The problem is that in the hand-written loop, Clang optimizes the reads
-from the const string to always return 0 which breaks the benchmark.
+Because of this, we must check whether the job’s DMA fence has been
+flagged with an error before executing the job. Otherwise, the same guilty
+job may be resubmitted indefinitely, causing repeated GPU resets.
 
-Use barrier_var to prevent the optimization.
+This patch adds a check for an error on the job's fence to prevent running
+a guilty job that was previously flagged when the GPU timed out.
 
-The effect can be seen on the strncmp-no-helper variant.
+Note that the CPU and CACHE_CLEAN queues do not require this check, as
+their jobs are executed synchronously once the DRM scheduler starts them.
 
-Before this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 (112.309us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   1 (-23.238us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   2 ( 58.994us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   3 (-30.466us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   4 ( 29.996us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   5 ( 16.949us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   6 (-60.035us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Summary: hits    0.000 ± 0.000M/s (  0.000M/prod), drops    0.000 ± 0.000M/s, total operations    0.000 ± 0.000M/s
-
-After this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 ( 77.711us): hits    5.534M/s (  5.534M/prod), drops    0.000M/s, total operations    5.534M/s
-    Iter   1 ( 11.215us): hits    6.006M/s (  6.006M/prod), drops    0.000M/s, total operations    6.006M/s
-    Iter   2 (-14.253us): hits    5.931M/s (  5.931M/prod), drops    0.000M/s, total operations    5.931M/s
-    Iter   3 ( 59.087us): hits    6.005M/s (  6.005M/prod), drops    0.000M/s, total operations    6.005M/s
-    Iter   4 (-21.379us): hits    6.010M/s (  6.010M/prod), drops    0.000M/s, total operations    6.010M/s
-    Iter   5 (-20.310us): hits    5.861M/s (  5.861M/prod), drops    0.000M/s, total operations    5.861M/s
-    Iter   6 ( 53.937us): hits    6.004M/s (  6.004M/prod), drops    0.000M/s, total operations    6.004M/s
-    Summary: hits    5.969 ± 0.061M/s (  5.969M/prod), drops    0.000 ± 0.000M/s, total operations    5.969 ± 0.061M/s
-
-Fixes: 9c42652f8be3 ("selftests/bpf: Add benchmark for bpf_strncmp() helper")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20250313122852.1365202-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/strncmp_bench.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/strncmp_bench.c b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-index 18373a7df76e6..f47bf88f8d2a7 100644
---- a/tools/testing/selftests/bpf/progs/strncmp_bench.c
-+++ b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-@@ -35,7 +35,10 @@ static __always_inline int local_strncmp(const char *s1, unsigned int sz,
- SEC("tp/syscalls/sys_enter_getpgid")
- int strncmp_no_helper(void *ctx)
- {
--	if (local_strncmp(str, cmp_str_len + 1, target) < 0)
-+	const char *target_str = target;
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -202,11 +202,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
 +
-+	barrier_var(target_str);
-+	if (local_strncmp(str, cmp_str_len + 1, target_str) < 0)
- 		__sync_add_and_fetch(&hits, 1);
- 	return 0;
- }
--- 
-2.39.5
-
++	v3d->tfu_job = job;
++
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+ 		return NULL;
+ 
+-	v3d->tfu_job = job;
+ 	if (job->base.irq_fence)
+ 		dma_fence_put(job->base.irq_fence);
+ 	job->base.irq_fence = dma_fence_get(fence);
+@@ -240,6 +244,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
+ 	struct dma_fence *fence;
+ 	int i;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
+ 	v3d->csd_job = job;
+ 
+ 	v3d_invalidate_caches(v3d);
 
 
 
