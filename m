@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8B9A808B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5BEA807A6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A2B8C3A9C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6A40428402
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D4A26B08E;
-	Tue,  8 Apr 2025 12:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B63226B08B;
+	Tue,  8 Apr 2025 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOv1MSxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxcqDXMS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3133326AAB7;
-	Tue,  8 Apr 2025 12:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588AB26B089;
+	Tue,  8 Apr 2025 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115795; cv=none; b=dBSlFyk3SrLDQEgQvC0eoHkA6bFo+gHeGk8SxYzI5IvaXJ22VxhLez04opRM51ZzqYpTQSy0/74gLLPPAJBuFH3YBkGstzLQ70+sLNezjGk/To7d65uiH60n7nRW0J7FXw6mzWMOkphqQ01IYB01Aj4vQUQdZS3fa5x0qDeME24=
+	t=1744115410; cv=none; b=UXLBXrv/EgyD95MWRTwhHbikg6qqyv2lWbfSaEPzVnnR9Rgo//Qc9BZlXRhdF98ssV3ebt3pHkejwkidbvj6PhY+i34fl5v/bTyp49e7OO9Zdr6E6EdgQEhjODd2Sh3psDydHEqEbC7LdmKBJD+CczQ4BUVPbbgvOmy/nBjUjQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115795; c=relaxed/simple;
-	bh=SFQf2ez3VWGxc8L+SMxT0tQD/2lGHZORDsBTPZpJas0=;
+	s=arc-20240116; t=1744115410; c=relaxed/simple;
+	bh=2oZCovXTtu9FpXEdJJbSVbNANcFHaAi+4tMCFZR3jW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=czVQ10aWjsqKJeZU01lfLKukN5mA76+RUHYW1laVHtuGvOXIIxvieHHG84WxbOdkf7ChofJUxlKkUTo2vf5TeAE7/PyOoyZoz1TA7r3FJ8ABqiiafBEP6R8onL9xkF+GE9ayVxQj6URqSwkaE9fHv2VQSlCqRX5Xd+TQb++GZto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOv1MSxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8943C4CEE5;
-	Tue,  8 Apr 2025 12:36:34 +0000 (UTC)
+	 MIME-Version; b=ItKyH+7dD3Hl5idFK5pJFqMMrCyAvN09zYHyXHKz0q2XzYbUMslppJ5+Cg9gHbmEc+GUTB4Vdp2jqgnEJ8gwEKAMt8WjWahE8f5anjTetvhZb3wZYgN4ArG2rnuQol5SI9S+K0xiDOf9837cGcpWBvyIYZtI0gb7gOkPUA6WnXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxcqDXMS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB97C4CEE5;
+	Tue,  8 Apr 2025 12:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115795;
-	bh=SFQf2ez3VWGxc8L+SMxT0tQD/2lGHZORDsBTPZpJas0=;
+	s=korg; t=1744115410;
+	bh=2oZCovXTtu9FpXEdJJbSVbNANcFHaAi+4tMCFZR3jW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOv1MSxE8wD7pXrheJVxIDv1zXm/+tdc47q3xcy2mTNWibHquHJpqodXiMO7X16h0
-	 ydr4iom+NL1X8eljWqCRw9HyzdI3jg4eiNoIYG3IPgZG/YfhT2S/a33lV7d2fYgBSm
-	 5R5SpHWOfuKhK2ZkLwnXO8aR0I/01y/Pl5IqIbog=
+	b=vxcqDXMSXlRgnXlSYRvZ5hexrgH/n0xHZxZy7GY/XobFjKJLTWtAS9h9mlY3fNivy
+	 Dc0aUfwxVhdgBgRCEShyzB+7rzZ/GWBsTHXLZaS41H19QEMHSf0yaXmKZfog8nhIB6
+	 S+k3FT6iyR7eotv4ciK3ziWGP180UV9xLC2rV0fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/204] perf python: Dont keep a raw_data pointer to consumed ring buffer space
-Date: Tue,  8 Apr 2025 12:50:36 +0200
-Message-ID: <20250408104823.443569106@linuxfoundation.org>
+Subject: [PATCH 6.13 425/499] staging: gpib: Fix NULL pointer dereference in detach
+Date: Tue,  8 Apr 2025 12:50:37 +0200
+Message-ID: <20250408104901.826870272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit f3fed3ae34d606819d87a63d970cc3092a5be7ab ]
+[ Upstream commit 6a6c153537f093c3bc79ea9633f3954d3450d0ba ]
 
-When processing tracepoints the perf python binding was parsing the
-event before calling perf_mmap__consume(&md->core) in
-pyrf_evlist__read_on_cpu().
+When the detach function is called after a failed attach
+the usb_dev initialization can cause a NULL pointer
+dereference. This happens when the usb device is not found
+in the attach procedure.
 
-But part of this event parsing was to set the perf_sample->raw_data
-pointer to the payload of the event, which then could be overwritten by
-other event before tracepoint fields were asked for via event.prev_comm
-in a python program, for instance.
+Remove the usb_dev variable and initialization and change the dev
+in the dev_info message from the usb_dev to the gpib_dev.
 
-This also happened with other fields, but strings were were problems
-were surfacing, as there is UTF-8 validation for the potentially garbled
-data.
-
-This ended up showing up as (with some added debugging messages):
-
-  ( field 'prev_comm' ret=0x7f7c31f65110, raw_size=68 )  ( field 'prev_pid' ret=0x7f7c23b1bed0, raw_size=68 )  ( field 'prev_prio' ret=0x7f7c239c0030, raw_size=68 )  ( field 'prev_state' ret=0x7f7c239c0250, raw_size=68 ) time 14771421785867 prev_comm= prev_pid=1919907691 prev_prio=796026219 prev_state=0x303a32313175 ==>
-  ( XXX '��' len=16, raw_size=68)  ( field 'next_comm' ret=(nil), raw_size=68 ) Traceback (most recent call last):
-   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 51, in <module>
-     main()
-   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 46, in main
-     event.next_comm,
-     ^^^^^^^^^^^^^^^
-  AttributeError: 'perf.sample_event' object has no attribute 'next_comm'
-
-When event.next_comm was asked for, the PyUnicode_FromString() python
-API would fail and that tracepoint field wouldn't be available, stopping
-the tools/perf/python/tracepoint.py test tool.
-
-But, since we already do a copy of the whole event in pyrf_event__new,
-just use it and while at it remove what was done in in e8968e654191390a
-("perf python: Fix pyrf_evlist__read_on_cpu event consuming") because we
-don't really need to wait for parsing the sample before declaring the
-event as consumed.
-
-This copy is questionable as is now, as it limits the maximum event +
-sample_type and tracepoint payload to sizeof(union perf_event), this all
-has been "working" because 'struct perf_event_mmap2', the largest entry
-in 'union perf_event' is:
-
-  $ pahole -C perf_event ~/bin/perf | grep mmap2
-	struct perf_record_mmap2   mmap2;              /*     0  4168 */
-  $
-
-Fixes: bae57e3825a3dded ("perf python: Add support to resolve tracepoint fields")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-6-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: fbae7090f30c ("staging: gpib: Update messaging and usb_device refs in agilent_usb")
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250118145046.12181-2-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8491e73a5223 ("staging: gpib: Fix Oops after disconnect in agilent usb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 4 +---
+ drivers/staging/gpib/agilent_82357a/agilent_82357a.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 894a9966599fd..efc8f88db5cff 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -1116,11 +1116,9 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+diff --git a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
+index 942ab663e4001..d072c63651629 100644
+--- a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
++++ b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
+@@ -1442,12 +1442,10 @@ static int agilent_82357a_go_idle(gpib_board_t *board)
+ static void agilent_82357a_detach(gpib_board_t *board)
+ {
+ 	struct agilent_82357a_priv *a_priv;
+-	struct usb_device *usb_dev;
  
- 		pevent->evsel = evsel;
+ 	mutex_lock(&agilent_82357a_hotplug_lock);
  
--		err = evsel__parse_sample(evsel, event, &pevent->sample);
--
--		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
+ 	a_priv = board->private_data;
+-	usb_dev = interface_to_usbdev(a_priv->bus_interface);
+ 	if (a_priv) {
+ 		if (a_priv->bus_interface) {
+ 			agilent_82357a_go_idle(board);
+@@ -1459,7 +1457,7 @@ static void agilent_82357a_detach(gpib_board_t *board)
+ 		agilent_82357a_cleanup_urbs(a_priv);
+ 		agilent_82357a_free_private(a_priv);
+ 	}
+-	dev_info(&usb_dev->dev, "%s: detached\n", __func__);
++	dev_info(board->gpib_dev, "%s: detached\n", __func__);
+ 	mutex_unlock(&agilent_82357a_hotplug_lock);
+ }
  
-+		err = evsel__parse_sample(evsel, &pevent->event, &pevent->sample);
- 		if (err) {
- 			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
 -- 
 2.39.5
 
