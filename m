@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637E0A803F4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0ECA80805
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53A0425FC9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C1A2885D7E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F315E2673B7;
-	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F63926A0AE;
+	Tue,  8 Apr 2025 12:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFE4TNf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="et28LI/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF34B269B12;
-	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1917B267731;
+	Tue,  8 Apr 2025 12:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113281; cv=none; b=aUunw6fAonHuwevTI3URMGP/LMO27bINwsIYH32uUINOlYsCmuQPJgJUAOk7adpJ4tqdJTpb040ZscsD6RIpBGsjFRRI5cXmMgyXbeZECFLMI+J4FWmteyI+HRJiBYRKxIk3YDF4SfBB6uCaH8/ZGl/JuRSojMkdte7E2MpJF1E=
+	t=1744115073; cv=none; b=HjE4J1iDiAcLJi2A+FCbJ/IA1MWcth6cxU+JMsbb+kC5N2+Zdh2TaDL2wRpipqH1eGkffmyZAgqW06qPueJp4/gbxAtniheiiIR6PVclPAwi59Ll5QJg0htVjXWjTSCZeH0Z8nXuo97oXdDsFXK3pgSCcvA09M2lV9BRjMriME4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113281; c=relaxed/simple;
-	bh=fDdZ8j2ogzMGhBoHLMXAzpNOgL3xAQuvLc/bLHhXcRI=;
+	s=arc-20240116; t=1744115073; c=relaxed/simple;
+	bh=col8mfYPAfUmurZMgO1s3rICv1TBTPzLG6OQAJcjGvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKM3Y34uW4mPAZHWtN8c8c9KGPBo/Q1Oybhb8kPtGZ4m2MLQPlmuqFgCJN2aVnlmdh0zlwBH8BsMowoQnbLsPaGmwV31Qp1HIQPxjDavq+R77WV+bsKDLCjpIIGetk0H06xA2IA8M8/s3RdUZ37myQ2spOWd64tfChEh7LBH4W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFE4TNf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38268C4CEE5;
-	Tue,  8 Apr 2025 11:54:41 +0000 (UTC)
+	 MIME-Version; b=o/zwrf6kbvi4d65cER+QzWjlUrY9/FR57W2GQgIEZ7oH/X123YcnJg2kU/LGx8XPUQHkdofc1IQCFAeK/2JUZZCa2fUM5wCzkZqllhftwpvpD9un46ZKyjF6cQDp2RZrfm2quHDIRmUWi7VsvboNUDwzq7aFeFnJ3Q35fztaToM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=et28LI/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C243C4CEE7;
+	Tue,  8 Apr 2025 12:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113281;
-	bh=fDdZ8j2ogzMGhBoHLMXAzpNOgL3xAQuvLc/bLHhXcRI=;
+	s=korg; t=1744115073;
+	bh=col8mfYPAfUmurZMgO1s3rICv1TBTPzLG6OQAJcjGvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFE4TNf4PFkMR5pNBQeTwGVzNkb5qRPPZOqdznpE1KM7sMr5JnrMbTXq9zSR4o9iy
-	 CCCCA71MnRbVRFmjK2VMfWqEYbJLV5yXz1ljTXSgIkNCQ3Uf85KFOm5ywFWzpT9V0C
-	 mB8of4DnqLlnOewa33GCWofMmZfHy+xLrEcklxwg=
+	b=et28LI/WJyXV5DT4zpFCZioA0wSFqfixlT/Ts//IazCNVOmd2LcJuJn8hhJznRM2z
+	 qcKLVOqTbsCpj+M1oaiudtnOWnH5oIaZILnmJoI3muXYOg2F0wiHADUX3LTMkcURxQ
+	 bmCZt1EC9KbLxKCmgxA6cEJaBCx4sTCXZ3rLEYDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/268] crypto: hisilicon/sec2 - fix for aead auth key length
+Subject: [PATCH 6.13 299/499] nfs: Add missing release on error in nfs_lock_and_join_requests()
 Date: Tue,  8 Apr 2025 12:48:31 +0200
-Message-ID: <20250408104831.193967926@linuxfoundation.org>
+Message-ID: <20250408104858.673219733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
+[ Upstream commit 8e5419d6542fdf2dca9a0acdef2b8255f0e4ba69 ]
 
-According to the HMAC RFC, the authentication key
-can be 0 bytes, and the hardware can handle this
-scenario. Therefore, remove the incorrect validation
-for this case.
+Call nfs_release_request() on this error path before returning.
 
-Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c3f2235782c3 ("nfs: fold nfs_folio_find_and_lock_request into nfs_lock_and_join_requests")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/3aaaa3d5-1c8a-41e4-98c7-717801ddd171@stanley.mountain
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ fs/nfs/write.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 789e566b3bf90..d6727b8ff582b 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -1089,11 +1089,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
- 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
- 	int blocksize, digestsize, ret;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 50fa539611f5e..7d71af3265673 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -579,8 +579,10 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
  
--	if (!keys->authkeylen) {
--		pr_err("hisi_sec2: aead auth key error!\n");
--		return -EINVAL;
--	}
--
- 	blocksize = crypto_shash_blocksize(hash_tfm);
- 	digestsize = crypto_shash_digestsize(hash_tfm);
- 	if (keys->authkeylen > blocksize) {
-@@ -1105,7 +1100,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
- 		}
- 		ctx->a_key_len = digestsize;
- 	} else {
--		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
-+		if (keys->authkeylen)
-+			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
- 		ctx->a_key_len = keys->authkeylen;
+ 	while (!nfs_lock_request(head)) {
+ 		ret = nfs_wait_on_request(head);
+-		if (ret < 0)
++		if (ret < 0) {
++			nfs_release_request(head);
+ 			return ERR_PTR(ret);
++		}
  	}
  
+ 	/* Ensure that nobody removed the request before we locked it */
 -- 
 2.39.5
 
