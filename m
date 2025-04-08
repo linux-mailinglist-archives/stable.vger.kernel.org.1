@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A0AA7FF68
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91860A7FFA8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8FF0189324C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:14:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2B13B1DFB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BA3374C4;
-	Tue,  8 Apr 2025 11:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB644268685;
+	Tue,  8 Apr 2025 11:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvV54j6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N40c3lED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91C7207E14;
-	Tue,  8 Apr 2025 11:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BF8374C4;
+	Tue,  8 Apr 2025 11:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110831; cv=none; b=g7+DDYiIHon1Obqm5OWL8Hb6w/rRDcBGMgaEbbZwbzJVBGASWb81M3YXUHk/1OsOJDBqvAFf7QOfPXtqGduqtm2EvMRcRHtIQbplkM10pdHvpcpa1pYsOhjZPTSm+1hXjNlqKE0ddWvLt5XHWQ0vskX/ivAWgmtvukYEXurNCFI=
+	t=1744110964; cv=none; b=YzNQWmIKRW15gldSmGF0IZsRK60zkeKkmQNcA0v40WMH751JSiH/zmO/0SRspTZg42nqFLrGnuTdE3YDmO2QvBazrWF6BRFxuPnMj8XlR+tobqJ1yyDRw4gCjM07/ZXJ9kQXzJCipMywpGQ6Sx6Q9dkj5rPdHMi5h+4K+vVuRLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110831; c=relaxed/simple;
-	bh=6ee6aY0whtvJwVRSXcjvaaQReurjPfUyuJ7MEjc/WUg=;
+	s=arc-20240116; t=1744110964; c=relaxed/simple;
+	bh=dXAVTBaP8A+qvB5y8ddwXhwYuoTDL5wOqoDMVvPQegc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNsJrshvxZrWNptbsQfZYzbYpbTtgniWQcKxys3K2mtjO81yjVV2QXbQxRg8/E9/NzYku452MaNoS5n+yI7ixD9cGa6VZqaD81WU7ZQvkoqak0cxTSceeK/tph8KEAE+JTMdLPHpmgjD7sxibDZheExa6zgqVCGpsZR8JeSZyfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvV54j6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACE6C4CEE5;
-	Tue,  8 Apr 2025 11:13:50 +0000 (UTC)
+	 MIME-Version; b=Hv/XHJkHc/wOAx+VZm7d0aXL0v8uF4FMEQw8+JhekRKcTaV7gOL3GKDjNml3cZbMeaQ/P8s/L+8Ea307+h9v+JKAtHws7BXuPWNtxqDDRmUYgXgdO7+tlcuwFnVVZiiUIOnFz1adZ6wCtqDk/pGnKke5j6cU5bv5hPMZBRHPk2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N40c3lED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25B7C4CEE5;
+	Tue,  8 Apr 2025 11:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110830;
-	bh=6ee6aY0whtvJwVRSXcjvaaQReurjPfUyuJ7MEjc/WUg=;
+	s=korg; t=1744110964;
+	bh=dXAVTBaP8A+qvB5y8ddwXhwYuoTDL5wOqoDMVvPQegc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvV54j6w6LS0POpNbgo8kgLvPMyhYsAUkSaUyJGbOs/NqQH02rpO9hri8EC3WvK6o
-	 9KTjtYhLlmBV+6Fxw8CLAu2e5bYZgiQKo8DtaJ6hP5ixGeFCyf9yAEhbwJufz+7a8e
-	 mpYi3qZ7JilYxmW4iFJio8YrlXO5p1vzfGilTl10=
+	b=N40c3lEDnAQ+jVfM7y5f37yor9xWS2guLNb2vj5W6nwQioCaQJ9K4OC+Ky+8zy6+h
+	 D8vPIYA5FbwE85paWdfRJyfcnkxRd6G8kwJ+GaoIWYAseg4biFV+H7cPuvNfnqhS9l
+	 ZFuJg3R68k4wg96dqkeC7GIRt2JzCCtgdpyYCcwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jan Glaza <jan.glaza@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.14 208/731] ice: fix reservation of resources for RDMA when disabled
-Date: Tue,  8 Apr 2025 12:41:45 +0200
-Message-ID: <20250408104919.120425374@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 209/731] virtchnl: make proto and filter action count unsigned
+Date: Tue,  8 Apr 2025 12:41:46 +0200
+Message-ID: <20250408104919.143484185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -69,47 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+From: Jan Glaza <jan.glaza@intel.com>
 
-[ Upstream commit 7fd71f317288d5150d353ce9d65b1e2abf99a8e2 ]
+[ Upstream commit db5e8ea155fc1d89c87cb81f0e4a681a77b9b03f ]
 
-If the CONFIG_INFINIBAND_IRDMA symbol is not enabled as a module or a
-built-in, then don't let the driver reserve resources for RDMA. The result
-of this change is a large savings in resources for older kernels, and a
-cleaner driver configuration for the IRDMA=n case for old and new kernels.
+The count field in virtchnl_proto_hdrs and virtchnl_filter_action_set
+should never be negative while still being valid. Changing it from
+int to u32 ensures proper handling of values in virtchnl messages in
+driverrs and prevents unintended behavior.
+In its current signed form, a negative count does not trigger
+an error in ice driver but instead results in it being treated as 0.
+This can lead to unexpected outcomes when processing messages.
+By using u32, any invalid values will correctly trigger -EINVAL,
+making error detection more robust.
 
-Implement this by avoiding enabling the RDMA capability when scanning
-hardware capabilities.
-
-Note: Loading the out-of-tree irdma driver in connection to the in-kernel
-ice driver, is not supported, and should not be attempted, especially when
-disabling IRDMA in the kernel config.
-
-Fixes: d25a0fc41c1f ("ice: Initialize RDMA support")
-Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Acked-by: Dave Ertman <david.m.ertman@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Fixes: 1f7ea1cd6a374 ("ice: Enable FDIR Configure for AVF")
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jan Glaza <jan.glaza@intel.com>
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/avf/virtchnl.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 7a2a2e8da8fab..1e801300310e9 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -2271,7 +2271,8 @@ ice_parse_common_caps(struct ice_hw *hw, struct ice_hw_common_caps *caps,
- 			  caps->nvm_unified_update);
- 		break;
- 	case ICE_AQC_CAPS_RDMA:
--		caps->rdma = (number == 1);
-+		if (IS_ENABLED(CONFIG_INFINIBAND_IRDMA))
-+			caps->rdma = (number == 1);
- 		ice_debug(hw, ICE_DBG_INIT, "%s: rdma = %d\n", prefix, caps->rdma);
- 		break;
- 	case ICE_AQC_CAPS_MAX_MTU:
+diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
+index 13a11f3c09b87..aca06f300f833 100644
+--- a/include/linux/avf/virtchnl.h
++++ b/include/linux/avf/virtchnl.h
+@@ -1283,7 +1283,7 @@ struct virtchnl_proto_hdrs {
+ 	 * 2 - from the second inner layer
+ 	 * ....
+ 	 **/
+-	int count; /* the proto layers must < VIRTCHNL_MAX_NUM_PROTO_HDRS */
++	u32 count; /* the proto layers must < VIRTCHNL_MAX_NUM_PROTO_HDRS */
+ 	union {
+ 		struct virtchnl_proto_hdr
+ 			proto_hdr[VIRTCHNL_MAX_NUM_PROTO_HDRS];
+@@ -1335,7 +1335,7 @@ VIRTCHNL_CHECK_STRUCT_LEN(36, virtchnl_filter_action);
+ 
+ struct virtchnl_filter_action_set {
+ 	/* action number must be less then VIRTCHNL_MAX_NUM_ACTIONS */
+-	int count;
++	u32 count;
+ 	struct virtchnl_filter_action actions[VIRTCHNL_MAX_NUM_ACTIONS];
+ };
+ 
 -- 
 2.39.5
 
