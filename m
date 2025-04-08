@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAC0A7FE3F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82C6A8013B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BBB19E356D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8A8189F1E6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD9026A0C7;
-	Tue,  8 Apr 2025 11:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AC1227BB6;
+	Tue,  8 Apr 2025 11:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN79sCCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0LJbwea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168E126A0D4;
-	Tue,  8 Apr 2025 11:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8F0224AEF;
+	Tue,  8 Apr 2025 11:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110121; cv=none; b=BK/aSAa/0vCMFNKru9usDhAV4CA6VJzdMlMC1bhs5/LlIepItIZjiHAqWKMurBc1ZftCmf2dWd2BXqd9lgRiAaBtG/QWCcs+niBOI/6GKnWYBwQzTuFaBb2V/Ue9bRUzA51sqF618CyFhDRAwBTuQrN5OgIktwlPQMQAHcla01k=
+	t=1744112026; cv=none; b=OZQxYj4CN8HDAIaDOBzWtpsgr5V55lzo4sJq+uEczObpQSfCgT5SZOJM0BiGwbCUlNh6zz6YoLfvKYUp533SagnaDeFvwo+HBIplN3vnBH2VDZ6NwgGVGF6s4UFJsrbWf1qwYd38HpTeMx83uyNgFOK0WHL6ADYIwaMnjD8tj9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110121; c=relaxed/simple;
-	bh=Qa1GVGLQeX7JUdtrXmWCeNHxnHAal3/B98KQfn+lXlA=;
+	s=arc-20240116; t=1744112026; c=relaxed/simple;
+	bh=XU3DHvpRC0VGoGLkkmhEfImnhMtQMUAET3GzvI/C1Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rn05oaR1EXGPSrv6JVhkUjoODpBKfvu+sF5EwcuoiCbZjilwF23hDjx4hjNOqjTDXFc8IXmHgZ+DhjeqH8jzAvJZsuieTVLHT7xnPqr4L478VmVh7YBDVHDs5g9W4CYP8L/KZotpIazytAc0MLN/hl2GK0RpPPSSxvENRhBAOdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN79sCCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B328C4CEE7;
-	Tue,  8 Apr 2025 11:02:00 +0000 (UTC)
+	 MIME-Version; b=gnQivuBJuR8qbTyTDAQh256evXJPdxCUeLSMTMiCPTWUyMRXt5nh5Hio19VxAERg0Ju1XYiR3c6VpzF3974/RgB+itBSyA30K/7jjTzJRoXOQi5EAMa6X5S3yV4VquOWFEtElm29EX3/Vg34fOBX+5sN1MA7mT9xiT0+0f0Q4p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0LJbwea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32587C4CEE5;
+	Tue,  8 Apr 2025 11:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110121;
-	bh=Qa1GVGLQeX7JUdtrXmWCeNHxnHAal3/B98KQfn+lXlA=;
+	s=korg; t=1744112026;
+	bh=XU3DHvpRC0VGoGLkkmhEfImnhMtQMUAET3GzvI/C1Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN79sCCdqEhhE6I2AG1oa/UL+YGUfSBSeqrFwRTV4XOlPWA0smKuy6WY+pXC4UhUm
-	 5Z07w2tIKtGPOSYS8UjPWscYvZJhzVMSai4Im+q1vXgR9AjT18nS+b9BEey0RVbIUn
-	 LmwpNm0I4Ut/OtdG/HKw/CkMRkPpFjOc8tCusEVs=
+	b=t0LJbweaa+YJNsgiQH8ezXfo3psiAGNy76cqtQXTL4ww5w5TP0d0sk/6OifZuSOYi
+	 umA00HawQBZvVrFaVRFyYyf3Fgayr/2kmDM32oc32Ld4cvk7VmDVQUWj6qNUABNWTy
+	 Wapb3qv7605pCAYm2JCpJ43wk41J7CIrwxjdQY+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 168/227] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
+Subject: [PATCH 6.14 649/731] perf/core: Fix child_total_time_enabled accounting bug at task exit
 Date: Tue,  8 Apr 2025 12:49:06 +0200
-Message-ID: <20250408104825.358128054@linuxfoundation.org>
+Message-ID: <20250408104929.361774222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +64,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
+[ Upstream commit a3c3c66670cee11eb13aa43905904bf29cb92d32 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. Avoid at least some loops by not requiring the
-NFSv4 state manager to scan for delegations that are marked for
-return-on-close. Instead, either mark them for immediate return (if
-possible) or else leave it up to nfs4_inode_return_delegation_on_close()
-to return them once the file is closed by the application.
+The perf events code fails to account for total_time_enabled of
+inactive events.
 
-Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Here is a failure case for accounting total_time_enabled for
+CPU PMU events:
+
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 2s
+  ...
+
+  armv8_pmuv3_0/event=0x08/: 1138698008 2289429840 2174835740
+  armv8_pmuv3_1/event=0x08/: 1826791390 1950025700 847648440
+                             `          `          `
+                             `          `          > total_time_running with child
+                             `          > total_time_enabled with child
+                             > count with child
+
+  Performance counter stats for 'stress-ng --pthread=2 -t 2s':
+
+       1,138,698,008      armv8_pmuv3_0/event=0x08/                                               (94.99%)
+       1,826,791,390      armv8_pmuv3_1/event=0x08/                                               (43.47%)
+
+The two events above are opened on two different CPU PMUs, for example,
+each event is opened for a cluster in an Arm big.LITTLE system, they
+will never run on the same CPU.  In theory, the total enabled time should
+be same for both events, as two events are opened and closed together.
+
+As the result show, the two events' total enabled time including
+child event is different (2289429840 vs 1950025700).
+
+This is because child events are not accounted properly
+if a event is INACTIVE state when the task exits:
+
+  perf_event_exit_event()
+   `> perf_remove_from_context()
+     `> __perf_remove_from_context()
+       `> perf_child_detach()   -> Accumulate child_total_time_enabled
+         `> list_del_event()    -> Update child event's time
+
+The problem is the time accumulation happens prior to child event's
+time updating. Thus, it misses to account the last period's time when
+the event exits.
+
+The perf core layer follows the rule that timekeeping is tied to state
+change. To address the issue, make __perf_remove_from_context()
+handle the task exit case by passing 'DETACH_EXIT' to it and
+invoke perf_event_state() for state alongside with accounting the time.
+
+Then, perf_child_detach() populates the time into the parent's time metrics.
+
+After this patch, the bug is fixed:
+
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 10s
+  ...
+  armv8_pmuv3_0/event=0x08/: 15396770398 32157963940 21898169000
+  armv8_pmuv3_1/event=0x08/: 22428964974 32157963940 10259794940
+
+   Performance counter stats for 'stress-ng --pthread=2 -t 10s':
+
+      15,396,770,398      armv8_pmuv3_0/event=0x08/                                               (68.10%)
+      22,428,964,974      armv8_pmuv3_1/event=0x08/                                               (31.90%)
+
+[ mingo: Clarified the changelog. ]
+
+Fixes: ef54c1a476aef ("perf: Rework perf_event_exit_event()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250326082003.1630986-1-yeoreum.yun@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ kernel/events/core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 02d9af026ad15..dbed8d44d8053 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -552,17 +552,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 03c27754aef8b..f6cf17929bb98 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2407,6 +2407,7 @@ ctx_time_update_event(struct perf_event_context *ctx, struct perf_event *event)
+ #define DETACH_GROUP	0x01UL
+ #define DETACH_CHILD	0x02UL
+ #define DETACH_DEAD	0x04UL
++#define DETACH_EXIT	0x08UL
  
- 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
- 		ret = true;
--	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
--		struct inode *inode;
--
--		spin_lock(&delegation->lock);
--		inode = delegation->inode;
--		if (inode && list_empty(&NFS_I(inode)->open_files))
--			ret = true;
--		spin_unlock(&delegation->lock);
--	}
--	if (ret)
--		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
- 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
-@@ -800,11 +789,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
- 	return nfs4_inode_return_delegation(inode);
- }
- 
--static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
--		struct nfs_delegation *delegation)
-+static void
-+nfs_mark_return_if_closed_delegation(struct nfs_server *server,
-+				     struct nfs_delegation *delegation)
+ /*
+  * Cross CPU call to remove a performance event
+@@ -2421,6 +2422,7 @@ __perf_remove_from_context(struct perf_event *event,
+ 			   void *info)
  {
--	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
--	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
-+	struct inode *inode;
-+
-+	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
-+	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
-+		return;
-+	spin_lock(&delegation->lock);
-+	inode = delegation->inode;
-+	if (!inode)
-+		goto out;
-+	if (list_empty(&NFS_I(inode)->open_files))
-+		nfs_mark_return_delegation(server, delegation);
-+	else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out:
-+	spin_unlock(&delegation->lock);
- }
+ 	struct perf_event_pmu_context *pmu_ctx = event->pmu_ctx;
++	enum perf_event_state state = PERF_EVENT_STATE_OFF;
+ 	unsigned long flags = (unsigned long)info;
  
- static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
+ 	ctx_time_update(cpuctx, ctx);
+@@ -2429,16 +2431,19 @@ __perf_remove_from_context(struct perf_event *event,
+ 	 * Ensure event_sched_out() switches to OFF, at the very least
+ 	 * this avoids raising perf_pending_task() at this time.
+ 	 */
+-	if (flags & DETACH_DEAD)
++	if (flags & DETACH_EXIT)
++		state = PERF_EVENT_STATE_EXIT;
++	if (flags & DETACH_DEAD) {
+ 		event->pending_disable = 1;
++		state = PERF_EVENT_STATE_DEAD;
++	}
+ 	event_sched_out(event, ctx);
++	perf_event_set_state(event, min(event->state, state));
+ 	if (flags & DETACH_GROUP)
+ 		perf_group_detach(event);
+ 	if (flags & DETACH_CHILD)
+ 		perf_child_detach(event);
+ 	list_del_event(event, ctx);
+-	if (flags & DETACH_DEAD)
+-		event->state = PERF_EVENT_STATE_DEAD;
+ 
+ 	if (!pmu_ctx->nr_events) {
+ 		pmu_ctx->rotate_necessary = 0;
+@@ -13450,12 +13455,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
+ 		mutex_lock(&parent_event->child_mutex);
+ 	}
+ 
+-	perf_remove_from_context(event, detach_flags);
+-
+-	raw_spin_lock_irq(&ctx->lock);
+-	if (event->state > PERF_EVENT_STATE_EXIT)
+-		perf_event_set_state(event, PERF_EVENT_STATE_EXIT);
+-	raw_spin_unlock_irq(&ctx->lock);
++	perf_remove_from_context(event, detach_flags | DETACH_EXIT);
+ 
+ 	/*
+ 	 * Child events can be freed.
 -- 
 2.39.5
 
