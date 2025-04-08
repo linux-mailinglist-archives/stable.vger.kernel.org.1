@@ -1,72 +1,59 @@
-Return-Path: <stable+bounces-130298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE4DA80405
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C91A8082F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5846426992
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D275B4A5C6E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BAF265626;
-	Tue,  8 Apr 2025 11:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3904B26B08B;
+	Tue,  8 Apr 2025 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbrfUVqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbc3trFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22042690F9;
-	Tue,  8 Apr 2025 11:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627126B085;
+	Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113345; cv=none; b=beQ/sbmT3gLKsVwZRQzKV7ZF6DbEU/P6fHiIzZgM9blrgGGLpXRyXxoYXjiJzMfd6sE++gQ0Sap6Wlkeq4ljjka9E0iFCuK4cFeSjdIa0cblRMPLzX+9rkY9zt37qRBUBrjwR9q+Lrayc9PNCuVa9OSOrNIOv3coQR0AXvpvI74=
+	t=1744115600; cv=none; b=BLCLnMr6Au0TJzKuJvHa5VOCBAMBMzjTjQvmx5JAaHAxyzdmjWzbIvjd2hsJqvg01O39qtjmTg3OLpAJuPrMvcCXQ/nGdS2GkpOu9GdLvA001HHAvNqIkMtMGMPu0KOUOS3mC3lszaQpDeo5aLMaOC7Y5iUyQ/h1ZFqrUdIE0sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113345; c=relaxed/simple;
-	bh=EXUnH54XpLyIGGk3zo5tRirKN/OuY0C7+87KdQUmNa8=;
+	s=arc-20240116; t=1744115600; c=relaxed/simple;
+	bh=l1YPDezXzfI8SCCsIZE98u+TV6SbGEdgyhEzxK7QJ3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P637GOsewXnlELMHs3m8VLtYwU7jNA80WM1oRtPhJTknnjzLZoc3YRpqEaYVL0fgE4d+Lewkn35cSww7QhsfFmVocW3iqNSr6ppCRPRICOuMTUcybR01Ybdk1+5PES6ym6eE6lU8xgQluuy/j63O0yRb2u6O5P/FONc4YYGYlao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbrfUVqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37722C4CEE5;
-	Tue,  8 Apr 2025 11:55:45 +0000 (UTC)
+	 MIME-Version; b=BrnK/WTLGE7IiSdwYEtYA7GxQelncq8jPG+o5ZvDAJKrcVteBNF+++L4rFMHOuHC+hu3KiObnLB8AYkqIw/nhKW39gIGbvbxkEK8YJj8Uh53cNaa/IgzsoWohrLDbRPW09Gsbl1KEZRapQJXqqpOy1k8SghsogeAZV0r/ig0hLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbc3trFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F04C4CEE5;
+	Tue,  8 Apr 2025 12:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113345;
-	bh=EXUnH54XpLyIGGk3zo5tRirKN/OuY0C7+87KdQUmNa8=;
+	s=korg; t=1744115599;
+	bh=l1YPDezXzfI8SCCsIZE98u+TV6SbGEdgyhEzxK7QJ3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbrfUVquMwEEBJxy46tQ8VTqFYa4q+lfTlth+Y+CdnYrCw+UlIlRZb8h9iU45q3Z4
-	 /dVBl9dsXRk8BpMHre7wW44m/UL55yf1xJD//WK7lNuCTzRy3zZOshcXquc8Lae7Gs
-	 dHqt7S09S36QHtDFnKP5H/aRRRddJX9T7j1JP/lY=
+	b=bbc3trFVokeWroBm4a6TlaWUPOwqT2ECJ9iwC2Egi5wLRfCxOzYUoZoSOpWMvQNSC
+	 HuDlqCdKjeRnpWmIgEaWFymdfxARXgypcDGx+lQW4WNF6CREMSGPG0F8sTXE7qWWxN
+	 QFpmqLRsEYyftldq48h8dMECDNycljDEwOMiwAsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Steven Price <steven.price@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/268] arch/powerpc: drop GENERIC_PTDUMP from mpc885_ads_defconfig
+Subject: [PATCH 6.1 007/204] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
 Date: Tue,  8 Apr 2025 12:48:57 +0200
-Message-ID: <20250408104831.901193105@linuxfoundation.org>
+Message-ID: <20250408104820.509800270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,54 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 2c5e6ac2db64ace51f66a9f3b3b3ab9553d748e8 ]
+[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
 
-GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be
-dropped off from mpc885_ads_defconfig.  Replace with CONFIG_PTDUMP_DEBUGFS
-instead.
+The init_task instance of struct task_struct is statically allocated and
+may not contain the full FP state for userspace. As such, limit the copy
+to the valid area of both init_task and 'dst' and ensure all memory is
+initialized.
 
-Link: https://lkml.kernel.org/r/20250226122404.1927473-3-anshuman.khandual@arm.com
-Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note that the FP state is only needed for userspace, and as such it is
+entirely reasonable for init_task to not contain parts of it.
+
+Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
+----
+
+v2:
+- Fix code if arch_task_struct_size < sizeof(init_task) by using
+  memcpy_and_pad.
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/mpc885_ads_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/process.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index 56b876e418e91..6b998cb572553 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -78,4 +78,4 @@ CONFIG_DEBUG_VM_PGTABLE=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_BDI_SWITCH=y
- CONFIG_PPC_EARLY_DEBUG=y
--CONFIG_GENERIC_PTDUMP=y
-+CONFIG_PTDUMP_DEBUGFS=y
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index acc83738bf5b4..24c237c571980 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -87,7 +87,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
+  */
+ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ {
+-	memcpy(dst, src, arch_task_struct_size);
++	/* init_task is not dynamically sized (incomplete FPU state) */
++	if (unlikely(src == &init_task))
++		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
++	else
++		memcpy(dst, src, arch_task_struct_size);
++
+ #ifdef CONFIG_VM86
+ 	dst->thread.vm86 = NULL;
+ #endif
 -- 
 2.39.5
 
