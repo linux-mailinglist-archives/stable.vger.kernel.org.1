@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C44A7FEB6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:15:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB551A8013E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DAE3425ACF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACF407A5CA1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B4D268FFA;
-	Tue,  8 Apr 2025 11:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784BA267F6C;
+	Tue,  8 Apr 2025 11:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOclaPZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXfI0XPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DAB268694;
-	Tue,  8 Apr 2025 11:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362052192F2;
+	Tue,  8 Apr 2025 11:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110204; cv=none; b=GxBIpkuQxMOaPfR7d3sbI2hXAS71QMwSuuZv+AVOXJixXy7L9ctwVw6CS2KA7wTzlVlKCHGBNsKow8epgE2uJdRwRJMehp+L3IW1LSi9vcim8Vx4wHBNkDYZuhoSZwlvbeIFt6y9Jy2+/xvL0VaD8dU7NGrAfN+2XKdzWqoE3k4=
+	t=1744112126; cv=none; b=OtzVCAZPJM/4eNpiIixhCqJAk8kvdXKdsADiTW4Yh5HJyjbrGG1qlnlLSgHSg9wrlbeZVrvJox+bUKljtF2MNznGnOTJ6EoSVTY95ahgSDH1UeCv/L+c6YcNCFFxOptVuTBdjEm7vzEMooj1RJQ292Xarcq9nD8C2WGRBZ8HTC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110204; c=relaxed/simple;
-	bh=3Fkc1dhDYyIdeFycN1NQHC45Nvr9yzijMVlGHan1NXQ=;
+	s=arc-20240116; t=1744112126; c=relaxed/simple;
+	bh=mAQj+8RTAkeQktk78uYPcmjWmiB9qNNnuP0ky51tru4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WM7pGjttkybe1Kx9rV1vAh3Xy3Viu6TS1kvqK3YIN5CzgGKU7PJhav9PryaXA2+gcdzsEnV2bsfTzz8yKdrJogbWEu1YlWc7UzD0a9XPLrcP+d3yB7jjEBOvAS2AGtnYSCg9wvzoA5N54UqE9MVREfsexzASsRTwSmBhFU/YPR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOclaPZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03894C4CEE5;
-	Tue,  8 Apr 2025 11:03:23 +0000 (UTC)
+	 MIME-Version; b=BaxGWWszO1shKRxQGoUfBDstz+z2bd5TZYhayhloWUs8Uzfi1pwXmB+X0YRqTUVK6cK2NerHQp2R10HsTXvxVuT4mR65e43kjYyUJZrGW7mSybGtUxyx6P/Q98KR+kNCI4jHs752NWZKicnwTH6lMEtCDeJOFVFhOBO2NgCRB0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXfI0XPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577F3C4CEE5;
+	Tue,  8 Apr 2025 11:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110204;
-	bh=3Fkc1dhDYyIdeFycN1NQHC45Nvr9yzijMVlGHan1NXQ=;
+	s=korg; t=1744112125;
+	bh=mAQj+8RTAkeQktk78uYPcmjWmiB9qNNnuP0ky51tru4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOclaPZeS9FZU3QCUaqPPFiebhs1bmyDSZbz/r3ixEaTqeBK1hcVo0NwEoOHauvw9
-	 nDwJND6VnT30F8aPxS0TS3SE8Pc4aBrJNLC9J5qmXrMCuJN/bkSFJ+cqqI12xmpgVU
-	 OTl4/dlv/Bf2Pv9cm4jusszomQGQsvSsM2lac384=
+	b=WXfI0XPfPZPt+yTY2uCsM+eiHJI0tA5qq72VeGA2yGMjgB02io2dQ7uxkzvZmO6oV
+	 28y2T2iSbxIB6MBLVy2llbl/JuraiJjMYR4q1Zwg4E2XW/z0hzbTVPzeceXSQBsumw
+	 gdzFgbZFx/he6UDKq0COtrjtPF6alkNOH/HQB2z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/227] arcnet: Add NULL check in com20020pci_probe()
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 686/731] wifi: mt76: mt7925: remove unused acpi function for clc
 Date: Tue,  8 Apr 2025 12:49:43 +0200
-Message-ID: <20250408104826.462731283@linuxfoundation.org>
+Message-ID: <20250408104930.223397835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
+commit b4ea6fdfc08375aae59c7e7059653b9877171fe4 upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-com20020pci_probe() does not check for this case, which results in a
-NULL pointer dereference.
+The code for handling ACPI configuration in CLC was copied from the mt7921
+driver but is not utilized in the mt7925 implementation. So removes the
+unused functionality to clean up the codebase.
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensure
-no resources are left allocated.
-
-Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250304113649.867387-4-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 9d9e4200064f9..00a80f0adece4 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -250,18 +250,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-tx",
- 							dev->dev_id, i);
-+			if (!card->tx_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:green:tx:%d-%d",
- 							dev->dev_id, i);
--
-+			if (!card->tx_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.dev = &dev->dev;
- 			card->recon_led.brightness_set = led_recon_set;
- 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-recon",
- 							dev->dev_id, i);
-+			if (!card->recon_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:red:recon:%d-%d",
- 							dev->dev_id, i);
-+			if (!card->recon_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.dev = &dev->dev;
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3155,7 +3155,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
  
- 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
--- 
-2.39.5
-
+ 		.idx = idx,
+ 		.env = env_cap,
+-		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
+ 	};
+ 	int ret, valid_cnt = 0;
+ 	u8 i, *pos;
 
 
 
