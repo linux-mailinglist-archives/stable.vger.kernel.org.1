@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDB0A80738
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A50DA807B8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36734C59FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDAB87B1247
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B4D269801;
-	Tue,  8 Apr 2025 12:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B3A26B0AD;
+	Tue,  8 Apr 2025 12:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ighg/fdE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2Yobc4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA296207E14;
-	Tue,  8 Apr 2025 12:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74E9269B1B;
+	Tue,  8 Apr 2025 12:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115148; cv=none; b=VV9hG8sOs4gZhu5f/r0ZxME0Db24RgmWbJ44L8dXMlvFFFeNGDQ3Xh9PHlmKf3bvL5HHxyKuSLil2CFgLZ7c4oUBKkxUcoWyKd5QX8uEW7oTFuL8wpSY7Kn1/dPkbD91TFwl3Degte4AmA6UdsRQ639lHE4L+SxkD9+Mjmqilrk=
+	t=1744115635; cv=none; b=Q+/0XRBaL3R/WxSaKovfKWMU/gxOxBlz82sGLO4uWliLA/BjATOtgjQCCWv846MCgqn1er7no6x70Ub8gdLo3nfbPuMrRTBV5/uo8Nqs/Z3uKwdnZqsAS5fff016vqjjB0b+pWqTRVwunK8wQ7R2bRVWeFpjJ70Kpth6CBwIy+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115148; c=relaxed/simple;
-	bh=eFsRBsfCTL+8hfkxa2ASBtSPQdwPxOpdFxQ4BMFEAfI=;
+	s=arc-20240116; t=1744115635; c=relaxed/simple;
+	bh=5LiCPfRqCULwJbp6ZyGSsAPQ+qvmk94HSCehCBp1o4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZSSVu+1w6XYTA3PG7k2YP6dc39QZSOxVmsUWktZ4eWZFcyhxSyRHdnkp0+MydSXWHITKZbFi5InSyiSaODwIpI4rO5My9+qescYWFZZM6du2FvCqakZsdwv9StyNBReanF8N20/P+Lglmr5O8DCILbLIkO+HwX0B+5z0aE+tv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ighg/fdE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77000C4CEE5;
-	Tue,  8 Apr 2025 12:25:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tWdqt4uE+f9/+ZSnLc9u2Ap8U9hC4L6IryyLQqgBAA3P4wVRbFw3CtRO1epgKLj86ugdSOmAmwmZ0OETp6n7Lk+t0OYav/Y/V060+mtIkoO+jpHRdgLxbgBr6S+DA24qEijYtP/vtc8klLIhCVJNhHFzsVN8IAiuTLccF8ludxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2Yobc4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7609C4CEE5;
+	Tue,  8 Apr 2025 12:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115147;
-	bh=eFsRBsfCTL+8hfkxa2ASBtSPQdwPxOpdFxQ4BMFEAfI=;
+	s=korg; t=1744115635;
+	bh=5LiCPfRqCULwJbp6ZyGSsAPQ+qvmk94HSCehCBp1o4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ighg/fdEHX3PKgflfJe0GBca54hTVNi//MPvhBG0L6rhfx/GrAQ2Arq1kQt/kQnBj
-	 UcAfjxkGgbxV1fBmTKSoJqUPB+BF7CNmV5qpA6d70RFU8zjbJyuSiNjCYt6XNsQCM/
-	 HUPtAOwIyugdoBfBDtAGwpNHXzIo9D1rLHqy4jcc=
+	b=G2Yobc4FhMg9Yhzb9o207u641w5TTbsMVyw0eHR5449HW58fzZZUVIB6wteudqfQP
+	 oNhbtgRqsRnPw9KcPtVYiEuYfGp3B/kYKj/fjFvXfOKcXlWyFTlFdcOW5teRW35MaC
+	 ZCiHmdxOPj5+QNvq4wl8RFxTjsCzCHcG4zI6CaCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 366/499] firmware: cs_dsp: Ensure cs_dsp_load[_coeff]() returns 0 on success
+Subject: [PATCH 6.1 048/204] PCI: pciehp: Dont enable HPIE when resuming in poll mode
 Date: Tue,  8 Apr 2025 12:49:38 +0200
-Message-ID: <20250408104900.356969727@linuxfoundation.org>
+Message-ID: <20250408104821.755588714@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 2593f7e0dc93a898a84220b3fb180d86f1ca8c60 ]
+[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
 
-Set ret = 0 on successful completion of the processing loop in
-cs_dsp_load() and cs_dsp_load_coeff() to ensure that the function
-returns 0 on success.
+PCIe hotplug can operate in poll mode without interrupt handlers using a
+polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
+interrupt during suspend") failed to consider that and enables HPIE
+(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
 
-All normal firmware files will have at least one data block, and
-processing this block will set ret == 0, from the result of either
-regmap_raw_write() or cs_dsp_parse_coeff().
+Only set HPIE if non-poll mode is in use. This makes
+pcie_enable_interrupt() match how pcie_enable_notification() already
+handles HPIE.
 
-The kunit tests create a dummy firmware file that contains only the
-header, without any data blocks. This gives cs_dsp a file to "load"
-that will not cause any side-effects. As there aren't any data blocks,
-the processing loop will not set ret == 0.
-
-Originally there was a line after the processing loop:
-
-    ret = regmap_async_complete(regmap);
-
-which would set ret == 0 before the function returned.
-
-Commit fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-changed the regmap write to a normal sync write, so the call to
-regmap_async_complete() wasn't necessary and was removed. It was
-overlooked that the ret here wasn't only to check the result of
-regmap_async_complete(), it also set the final return value of the
-function.
-
-Fixes: fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250323170529.197205-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
+Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 42433c19eb308..560724ce21aa3 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1631,6 +1631,7 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index 358f077284cbe..1ee5f7a9c7419 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -840,7 +840,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
+ {
+ 	u16 mask;
  
- 	cs_dsp_debugfs_save_wmfwname(dsp, file);
- 
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
- 
-@@ -2338,6 +2339,7 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 
- 	cs_dsp_debugfs_save_binname(dsp, file);
- 
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
+-	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
++	mask = PCI_EXP_SLTCTL_DLLSCE;
++	if (!pciehp_poll_mode)
++		mask |= PCI_EXP_SLTCTL_HPIE;
+ 	pcie_write_cmd(ctrl, mask, mask);
+ }
  
 -- 
 2.39.5
