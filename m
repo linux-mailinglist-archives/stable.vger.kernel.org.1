@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216E9A8016A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D9DA803BC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E7138802CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68BB81603BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B17B269B0B;
-	Tue,  8 Apr 2025 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69D9268FE7;
+	Tue,  8 Apr 2025 11:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skF+Riyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBv8pqmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3942D268FF0;
-	Tue,  8 Apr 2025 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CB0267F68;
+	Tue,  8 Apr 2025 11:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111986; cv=none; b=F65Rs/kNXq2M0jOGJybMLDtVmyGNDr3q2NZ5Wx24Mxj9druAXj65Pn7k+2+aNliwzjWOaAfdt+XCMciIWxKrvixS7JsFv9Pjxpx2kl+R0cyNsdXum/OFNJkEKIzkiydj87q1jQjO3GsVMBD3mWSiEDqsI4w2+bAHf44xuxkC2ds=
+	t=1744113228; cv=none; b=HbrrgF83XS+ftgAxq69Kd+CHbIZ/gz7oTiT9mi55uyWhj6XfBPDE4Sb9yfX1pADRjN+clmLpkHmqTiJ4nwEukvujA1obnIFWGdz+5wjj63sYZM+GzbHWQsDkx4q+EQOxisHD+bcuDF2n0fe2xWHpkow26jjT7zLHU9tHfTibP7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111986; c=relaxed/simple;
-	bh=d5SQq++tLhUubOTaVu6S0ubOUbUnSDiC81IPRej3z+Y=;
+	s=arc-20240116; t=1744113228; c=relaxed/simple;
+	bh=W3SLRmmi9FW3+tTIWyZSEDD6iNEDYDRt+Xf/zahTI+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNS+jw49UXdut5MyKOuzxmtTtrRDwuaAVoKRyXguoPgrVznc0i55dNXKque+Mcs8HlqfeKVdTb6KEMW558tq0uDLgMkHrMaD0es/m6Y1ozegcwSzQmnk18wi/pDg5q65UifSjb7eJG/A3d4KtfxdlisMvg1Kd40zqNlmVfgXZCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skF+Riyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAA7C4CEE5;
-	Tue,  8 Apr 2025 11:33:05 +0000 (UTC)
+	 MIME-Version; b=oaqpCO2jTg81P6ll0pENdaRednHCMZco39knZqcrHEFt3faFmtK8KjdDXd0tHA6iWTlRjhRwkzRg3neO3Zbs+4yBaqkpHakaQohbs7knt7pmDR5XlmBYF4LvtKwq54/cgBwq+WR2mRNq7brGGb3CDaU4QqoVaH4RhX+WpDnYnfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBv8pqmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12189C4CEE5;
+	Tue,  8 Apr 2025 11:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111986;
-	bh=d5SQq++tLhUubOTaVu6S0ubOUbUnSDiC81IPRej3z+Y=;
+	s=korg; t=1744113228;
+	bh=W3SLRmmi9FW3+tTIWyZSEDD6iNEDYDRt+Xf/zahTI+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skF+RiyrtbW5ZOUQRTywdVYWGqbgGOPqeFe+dY6UQXEKH6V9GhIDEcF9yM/g7Y79M
-	 QPIXN2F/kyXmMuseLYqZD80NUTwuVHZuDB+ZjX+5Wc3SDztefsN5ne8BBCNPp/zi9/
-	 +5wvbEpPKXddOawz9p3DrZIcNvouoPAhkevtE55I=
+	b=LBv8pqmrwVW4vNoYC2MV8/43nv2RozIpHUGNR5gj8BymQumOwZA/nUTqoFtQcsKkf
+	 AhPFjQhunJmcB/PfeZItLBjvx9fgiOcQFNdp5WG0OJcNM3tNRFnItTHLYyGzD7Mhbx
+	 cwvfOBnQBKX7frT3WiI0CE3Aqq1mbV0AdBqiybo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Cheng Xu <chengyou@linux.alibaba.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 596/731] RISC-V: errata: Use medany for relocatable builds
+Subject: [PATCH 6.6 082/268] RDMA/erdma: Prevent use-after-free in erdma_accept_newconn()
 Date: Tue,  8 Apr 2025 12:48:13 +0200
-Message-ID: <20250408104928.137361246@linuxfoundation.org>
+Message-ID: <20250408104830.708163563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Cheng Xu <chengyou@linux.alibaba.com>
 
-[ Upstream commit bb58e1579f431d42469b6aed0f03eff383ba6db5 ]
+[ Upstream commit 83437689249e6a17b25e27712fbee292e42e7855 ]
 
-We're trying to mix non-PIC/PIE objects into the otherwise-PIE
-relocatable kernels, to avoid GOT/PLT references during early boot
-alternative resolution (which happens before the GOT/PLT are set up).
+After the erdma_cep_put(new_cep) being called, new_cep will be freed,
+and the following dereference will cause a UAF problem. Fix this issue.
 
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/sifive/errata.o: relocation R_RISCV_HI20 against `tlb_flush_all_threshold' can not be used when making a shared object; recompile with -fPIC
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/thead/errata.o: relocation R_RISCV_HI20 against `riscv_cbom_block_size' can not be used when making a shared object; recompile with -fPIC
-
-Fixes: 8dc2a7e8027f ("riscv: Fix relocatable kernels with early alternatives using -fno-pie")
-Link: https://lore.kernel.org/r/20250326224506.27165-2-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 920d93eac8b9 ("RDMA/erdma: Add connection management (CM) support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/errata/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/erdma/erdma_cm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
-index f0da9d7b39c37..bc6c77ba837d2 100644
---- a/arch/riscv/errata/Makefile
-+++ b/arch/riscv/errata/Makefile
-@@ -1,5 +1,9 @@
- ifdef CONFIG_RELOCATABLE
--KBUILD_CFLAGS += -fno-pie
-+# We can't use PIC/PIE when handling early-boot errata parsing, as the kernel
-+# doesn't have a GOT setup at that point.  So instead just use medany: it's
-+# usually position-independent, so it should be good enough for the errata
-+# handling.
-+KBUILD_CFLAGS += -fno-pie -mcmodel=medany
- endif
+diff --git a/drivers/infiniband/hw/erdma/erdma_cm.c b/drivers/infiniband/hw/erdma/erdma_cm.c
+index 771059a8eb7d7..e349e8d2fb50a 100644
+--- a/drivers/infiniband/hw/erdma/erdma_cm.c
++++ b/drivers/infiniband/hw/erdma/erdma_cm.c
+@@ -705,7 +705,6 @@ static void erdma_accept_newconn(struct erdma_cep *cep)
+ 		erdma_cancel_mpatimer(new_cep);
  
- ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
+ 		erdma_cep_put(new_cep);
+-		new_cep->sock = NULL;
+ 	}
+ 
+ 	if (new_s) {
 -- 
 2.39.5
 
