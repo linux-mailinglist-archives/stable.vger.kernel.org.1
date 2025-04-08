@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-129988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A486CA8024A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46AAA7FDB6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FFCB1892001
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA621730E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029E0264A76;
-	Tue,  8 Apr 2025 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E926268FDB;
+	Tue,  8 Apr 2025 10:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9wAYQeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4CGxIj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B460819AD5C;
-	Tue,  8 Apr 2025 11:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7F0264FA0;
+	Tue,  8 Apr 2025 10:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112516; cv=none; b=fTUOOt2qxmsQG8jPyyvWLEm3hDmgB0+9mlYVgdHesjKBl6CpM2aQG7QEegI8OMYpZtkhRy64HnxKt42X4VaKICE6CowiOM5trNAfhsYgC4Jgk1L6kYCS5XftZHLwn+81V40jrFDUylIR71rgeq8AdY9QTsTgcZOvf1dLlJi4uUs=
+	t=1744109948; cv=none; b=VRPL9ERpNIfgYXfZ3uPRCtfmZO4icj6e6IWpvB90Badx2wWrrghNBzvlXFPKmQ/7RDZbstntDax+C1zXuSqQ9ZFKSrnQLK3TWPGeiXh2wHYCPkHDABwD0Y4nAQn8SzOvJYwOBJp4BoHEHYeTPFQSWddnyQMd58GMHt9k8mtD9tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112516; c=relaxed/simple;
-	bh=djSNcjgswygU4fGG12XgfJleiGTSbGXFs4yhJejD4Qs=;
+	s=arc-20240116; t=1744109948; c=relaxed/simple;
+	bh=80cnH1+XpjHWXlbMOy1pn2/LfsLmwJNgyg2TZRTiSEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyuow9jecVBUnQAPNCekHjxqD2LnmQ+bYR5o3cx8oVmLBBsOjo+kZYVLaJG+Cvos5mj7ZX8qtJ4XhA657/KsSYelim4V8oTM03K/sh9mUYreYfHPYWYZ+HUWMCzCzlnawF9gufgpy/dnA8xCOHmHXWrjyaDOtMJW8Thr1TlJAko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9wAYQeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1AAC4CEE5;
-	Tue,  8 Apr 2025 11:41:55 +0000 (UTC)
+	 MIME-Version; b=IyjyV90f8zcJF7tThVgDZZskwUlebW0RaCW/WCa1wlTThCM+UQCiIlrk6aS2MyiO48u2CHD+WZw6qKAQQK2YreDDCfQqpEnMTZSL4fFosgminV4o9NVJ1uDClaHPOepsajtE78mmLNINaNLsKOVlcYN3PPO/b3wtFITi+UgMO2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4CGxIj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC085C4CEE5;
+	Tue,  8 Apr 2025 10:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112516;
-	bh=djSNcjgswygU4fGG12XgfJleiGTSbGXFs4yhJejD4Qs=;
+	s=korg; t=1744109948;
+	bh=80cnH1+XpjHWXlbMOy1pn2/LfsLmwJNgyg2TZRTiSEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9wAYQeD5ub6jAECE99RW9NL1y8sYb/WOErdtT22/X37JQpMPZyx3Nyq/bnvZROQv
-	 oy9ZlP7aa/kEGuY+CWsc/A2AWYH2gif9G4gvkL67cf2fyLA1jfJ4XXi0vhvSdzzP8L
-	 Lpm5RW/aca9H85ZruWBzgKLLy5ourZ+uldkNuXIg=
+	b=N4CGxIj05qNzd+xf/QPIwN7hMzKF92jt9bCi/fueXJ2ld5tTLcPoCGig7ottMO62Z
+	 dfQZsyoMuvnZVzIk3rs0IN2JYZRfEjloUee/4doT989atqJfPfgagoFiTb1KzE6Ct0
+	 k8V0MqIlOHwaBAv8HNlR+WMWYQ24ok6tfX0CM9B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/279] xfrm_output: Force software GSO only in tunnel mode
+	Ye Bin <yebin10@huawei.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 085/227] proc: fix UAF in proc_get_inode()
 Date: Tue,  8 Apr 2025 12:47:43 +0200
-Message-ID: <20250408104828.503036841@linuxfoundation.org>
+Message-ID: <20250408104822.933149967@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
+commit 654b33ada4ab5e926cd9c570196fefa7bec7c1df upstream.
 
-The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
-mode. Unfortunately, it is slightly broader than necessary, as it also
-severely affects performance for Geneve + IPSec transport mode over a
-device capable of both HW GSO and IPSec crypto offload. In this case,
-xfrm_output unnecessarily triggers software GSO instead of letting the
-HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
-a back-2-back pair of NICs with MTU 1500, the performance was observed
-to be up to 6x worse when doing software GSO compared to leaving it to
-the hardware.
+Fix race between rmmod and /proc/XXX's inode instantiation.
 
-This commit makes xfrm_output only trigger software GSO in crypto
-offload cases for already encapsulated packets in tunnel mode, as not
-doing so would then cause the inner tunnel skb->inner_networking_header
-to be overwritten and break software GSO for that packet later if the
-device turns out to not be capable of HW GSO.
+The bug is that pde->proc_ops don't belong to /proc, it belongs to a
+module, therefore dereferencing it after /proc entry has been registered
+is a bug unless use_pde/unuse_pde() pair has been used.
 
-Taking a closer look at the conditions for the original bug, to better
-understand the reasons for this change:
-- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
-  inner network header.
-- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
-  network headers.
-- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
-  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
-  network header with the one set in ip_tunnel_xmit before adding the
-  second outer header.
-- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
-  needs to happen based on dev features. In the original bug, the hw
-  couldn't segment the packets, so skb_gso_segment was invoked.
-- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
-  tries to use the wrong inner network header, expecting the one set in
-  iptunnel_handle_offloads but getting the one set by xfrm instead.
-- a bit later, ipv6_gso_segment accesses the wrong memory based on that
-  wrong inner network header.
+use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
+never changes so information necessary for inode instantiation can be
+saved _before_ proc_register() in PDE itself and used later, avoiding
+pde->proc_ops->...  dereference.
 
-With the new change, the original bug (or similar ones) cannot happen
-again, as xfrm will now trigger software GSO before applying a tunnel.
-This concern doesn't exist in packet offload mode, when the HW adds
-encapsulation headers. For the non-offloaded packets (crypto in SW),
-software GSO is still done unconditionally in the else branch.
+      rmmod                         lookup
+sys_delete_module
+                         proc_lookup_de
+			   pde_get(de);
+			   proc_get_inode(dir->i_sb, de);
+  mod->exit()
+    proc_remove
+      remove_proc_subtree
+       proc_entry_rundown(de);
+  free_module(mod);
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+                               if (S_ISREG(inode->i_mode))
+	                         if (de->proc_ops->proc_read_iter)
+                           --> As module is already freed, will trigger UAF
+
+BUG: unable to handle page fault for address: fffffbfff80a702b
+PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+RIP: 0010:proc_get_inode+0x302/0x6e0
+RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
+RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
+RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
+RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
+R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
+R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
+FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ proc_lookup_de+0x11f/0x2e0
+ __lookup_slow+0x188/0x350
+ walk_component+0x2ab/0x4f0
+ path_lookupat+0x120/0x660
+ filename_lookup+0x1ce/0x560
+ vfs_statx+0xac/0x150
+ __do_sys_newstat+0x96/0x110
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
+Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
+Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/generic.c       |   10 +++++++++-
+ fs/proc/inode.c         |    6 +++---
+ fs/proc/internal.h      |   14 ++++++++++++++
+ include/linux/proc_fs.h |    7 +++++--
+ 4 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 4dc4a7bbe51cf..29ce7f6f16a09 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -737,7 +737,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 		skb->encapsulation = 1;
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -563,10 +563,16 @@ struct proc_dir_entry *proc_create_reg(c
+ 	return p;
+ }
  
- 		if (skb_is_gso(skb)) {
--			if (skb->inner_protocol)
-+			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
- 				return xfrm_output_gso(net, sk, skb);
+-static inline void pde_set_flags(struct proc_dir_entry *pde)
++static void pde_set_flags(struct proc_dir_entry *pde)
+ {
+ 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+ 		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (pde->proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (pde->proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
+ }
  
- 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
--- 
-2.39.5
-
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+@@ -630,6 +636,7 @@ struct proc_dir_entry *proc_create_seq_p
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -660,6 +667,7 @@ struct proc_dir_entry *proc_create_singl
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -684,13 +684,13 @@ struct inode *proc_get_inode(struct supe
+ 
+ 	if (S_ISREG(inode->i_mode)) {
+ 		inode->i_op = de->proc_iops;
+-		if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_read_iter(de))
+ 			inode->i_fop = &proc_iter_file_ops;
+ 		else
+ 			inode->i_fop = &proc_reg_file_ops;
+ #ifdef CONFIG_COMPAT
+-		if (de->proc_ops->proc_compat_ioctl) {
+-			if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_compat_ioctl(de)) {
++			if (pde_has_proc_read_iter(de))
+ 				inode->i_fop = &proc_iter_file_ops_compat;
+ 			else
+ 				inode->i_fop = &proc_reg_file_ops_compat;
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -79,6 +79,20 @@ static inline bool pde_is_permanent(cons
+ 	return pde->flags & PROC_ENTRY_PERMANENT;
+ }
+ 
++static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
++{
++	return pde->flags & PROC_ENTRY_proc_read_iter;
++}
++
++static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
++{
++#ifdef CONFIG_COMPAT
++	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
++#else
++	return false;
++#endif
++}
++
+ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
+ 
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -20,10 +20,13 @@ enum {
+ 	 * If in doubt, ignore this flag.
+ 	 */
+ #ifdef MODULE
+-	PROC_ENTRY_PERMANENT = 0U,
++	PROC_ENTRY_PERMANENT		= 0U,
+ #else
+-	PROC_ENTRY_PERMANENT = 1U << 0,
++	PROC_ENTRY_PERMANENT		= 1U << 0,
+ #endif
++
++	PROC_ENTRY_proc_read_iter	= 1U << 1,
++	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
+ };
+ 
+ struct proc_ops {
 
 
 
