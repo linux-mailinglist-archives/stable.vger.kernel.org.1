@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BA4A80A0E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5BFA805F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490724A429E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95864A4773
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5739226B947;
-	Tue,  8 Apr 2025 12:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E80626A090;
+	Tue,  8 Apr 2025 12:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0sDAE1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPTS8hxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1464026B0BE;
-	Tue,  8 Apr 2025 12:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E05269AE4;
+	Tue,  8 Apr 2025 12:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116111; cv=none; b=WEz0ev46WsZa/hcPazWhzSLU9hJ0oE7PA++6A8RBjG1z5Lh56gNk9aPCvLUJf7hVm1Q1yROGAKiY7GdiR7UGPG/3QmLEkOyqbMAuu2X6M94zUdo0L1swzC8t+u+G0/pT8fjQkh8c+Z7p6rz0FxNr+9mSzQ3li1LmDaXJwY3itoM=
+	t=1744114509; cv=none; b=T7BvhO5Bbza1CRh3AgkJNj2fH7gyn7KO7IOQ9HuZs2g9pqbPoapBvPhjTu+3C/A7rQ0Hwx5AAwGPsl3wqDYqEbcOu0r8cVIsRb8F6/1dKfDJ48opCDZ2ujoJXAbLSQQ+xnY72fCD4n/hc7KjuYW437gQNqXCENPA4IJifnaSDQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116111; c=relaxed/simple;
-	bh=bW14u8rPUDDkE4UC9ch5ZhCSjKuTwVXvMoZhvp/rsO4=;
+	s=arc-20240116; t=1744114509; c=relaxed/simple;
+	bh=2Tl0gLiz9g+oxvoNuWWpj6gp2unbJCH9kSx1uJ4UJFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfkrvL9h5IyEbg5zTLRTWYgF9uxnX0NGedoAXbupvv89BKrqKY0mpyF5FIWWx6/kWAF2zXkm1M+4vrHfmIVzNradTjmpqqBYGYl/irMj+JRttOmKX4xC2AT3TTYfmBLG7RIhsPEVUroK1oR2O9bNy006AB7kMiag/DwW6L58KxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0sDAE1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BC1C4CEE5;
-	Tue,  8 Apr 2025 12:41:50 +0000 (UTC)
+	 MIME-Version; b=ATZw+qfrDf7k6EFTWQetm+U2Z+cv/RNYBEQodm45ZtzDpx9pyNNDlntxvkQHrtHvuLViakXN/kykBAIn81OKgjXGgyeBW3F9yR2KTSI5PNdl1NF0MrR42K5IQ9P6rR9JBabndeGA6n3ysoOAevciMv/xfudMdr20/1yB7eKeUcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPTS8hxt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAAEC4CEE5;
+	Tue,  8 Apr 2025 12:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116110;
-	bh=bW14u8rPUDDkE4UC9ch5ZhCSjKuTwVXvMoZhvp/rsO4=;
+	s=korg; t=1744114509;
+	bh=2Tl0gLiz9g+oxvoNuWWpj6gp2unbJCH9kSx1uJ4UJFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0sDAE1zxldQ9LI0MgdbyOIVeF/sXo7+rdUPxo97gIr+4zmfwIoBrSGfPpIwV5Xyy
-	 yoRCmMDnAp7CjTFHG9z56x8S6p2sztiLQSZAG6BIN7yY9bvY5jCjEKfgZ2b2023+Np
-	 IISJyvt/9QVezLr3UoyjwS7COYPytVQkNSKfkva0=
+	b=kPTS8hxt1szyz3vPAhKNpfoSZhE8Dx8XzayPsbVd9qDdIyT7b0AGuvOlnOBqT1LHo
+	 mmoZIDl2jzmj0wI00d61w5vaX2sJyR/t5MuKyjPXSfnbkCufXayQ1yBFHRkClOHjDG
+	 5WNqxmwPSBAD0DLQKAGeoYMHBlvFjAvnlIm6H4Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <tim.schumacher1@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/423] selinux: Chain up tool resolving errors in install_policy.sh
+Subject: [PATCH 6.13 134/499] of: property: Increase NR_FWNODE_REFERENCE_ARGS
 Date: Tue,  8 Apr 2025 12:45:46 +0200
-Message-ID: <20250408104846.211493641@linuxfoundation.org>
+Message-ID: <20250408104854.533403821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <tim.schumacher1@huawei.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
+[ Upstream commit eb50844d728f11e87491f7c7af15a4a737f1159d ]
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+Currently, the following two macros have different values:
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
+// The maximal argument count for firmware node reference
+ #define NR_FWNODE_REFERENCE_ARGS	8
+// The maximal argument count for DT node reference
+ #define MAX_PHANDLE_ARGS 16
 
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+It may cause firmware node reference's argument count out of range if
+directly assign DT node reference's argument count to firmware's.
+
+drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
+assignment, so may cause firmware's argument count @args->nargs got out
+of range, namely, in [9, 16].
+
+Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
+Will align both macros later to avoid such inconsistency.
+
+Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250225-fix_arg_count-v4-1-13cdc519eb31@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ include/linux/fwnode.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 24086793b0d8d..db40237e60ce7 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 0d79070c5a70f..487d4bd9b0c99 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -91,7 +91,7 @@ struct fwnode_endpoint {
+ #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
+ #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
  
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
-+}
+-#define NR_FWNODE_REFERENCE_ARGS	8
++#define NR_FWNODE_REFERENCE_ARGS	16
  
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
- 
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
- 
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ /**
+  * struct fwnode_reference_args - Fwnode reference with additional arguments
 -- 
 2.39.5
 
