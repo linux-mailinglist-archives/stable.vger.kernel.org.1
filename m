@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5E5A80C11
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:25:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52EA8A80862
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68F3A8C7095
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAB227B05BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C2E27CB07;
-	Tue,  8 Apr 2025 12:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8647827605E;
+	Tue,  8 Apr 2025 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA20nHCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjLYKRm3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216326A0FF;
-	Tue,  8 Apr 2025 12:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421C7276048;
+	Tue,  8 Apr 2025 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117085; cv=none; b=sFfH4mhWAvWXdzlhNdX8TNPyHlH1S1Ftda4CCi50bWtHW5Rf+6Y/VdAKKLFEdDma5rmVJigwg+bwnT32WjXAitdqAJO9JQdTJGj/3Q45LS4yUgOgecc4lVc9CaJN1SMyhzF9QSJYL7vcxnW1dmWugKu/O6ldMsVvCZ8ULfIDOP0=
+	t=1744115973; cv=none; b=Nu4Ewk5IbYfDtlE5DOUy8Q7IpxuqIUT01X8eVlbXNbjpnkFvF25tkiQHuzQ2UYCUnqcwGxNVx66X7J4LdjHeyEY2oEbGIieakGVbh70Z9i2i4dtbUHSuOCxXphXlnpRP4zr1ybXYvYmwM1EuZwFL12N3LtO5D2H2rQ2qZAAbhxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117085; c=relaxed/simple;
-	bh=Nnc1dA47Qf1wGfHwVV8O4/W1NISYXDkp6UHLRgjwr8U=;
+	s=arc-20240116; t=1744115973; c=relaxed/simple;
+	bh=RA+okFfYB2KxxGNWUTh+Y7BrBsIVwC5ZqQMTUN+jluU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7KgmoFQo28jwv7ChLTzuQ7LaiIZdXUNj5+M+WGd6cHW605UoN7RWvMkpUXqqxmLtxJKB9dhL/2AHc3Uc5pS56XklzyieG8Tz+qki/CW4BSfVvNYHGR5dYl3ILcDZk1GHIZLPBD4JYVnUqH5yjB6jOo6XhnLPUtkZ10IG1bwNzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA20nHCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F4EC4CEE7;
-	Tue,  8 Apr 2025 12:58:04 +0000 (UTC)
+	 MIME-Version; b=HCr6oE2Ur7iePjeaX6CzSwVDt5VjR/dzZLFBHZVBgjW/cTwqJDv7mmoOl5UrmrYXtHbaNOPWJpcL02gNq8ujAvkDsLpowLJu1laEHC7rub0aP08fJiOWa40ZdaN9pzOx4gnJ4G33XIdHI+qi0HjQZfllx/kV/2eCdrXTzE5lykU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjLYKRm3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69FFC4CEE5;
+	Tue,  8 Apr 2025 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117085;
-	bh=Nnc1dA47Qf1wGfHwVV8O4/W1NISYXDkp6UHLRgjwr8U=;
+	s=korg; t=1744115973;
+	bh=RA+okFfYB2KxxGNWUTh+Y7BrBsIVwC5ZqQMTUN+jluU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NA20nHCMMSNROjpNicqZWDqQ3EQjNxagkuLBrEw+2Z1wVxLLyG2ydYKy9DEX2n2Wa
-	 Oo/2Y2XIZnPMIWQ7xZFYCtXNC7ioq3laO7OmIlO5gyU8tjOcs3qF1joXefdz86VhpM
-	 Rcml3vYaVb7HR5ELMZyq/UiTmueuvL4zbvTbDJbM=
+	b=rjLYKRm3THlMgddVCkFkVTDoCf/3jstrOrT7294/OX4/w9gHZFHjCCnywDbD6yHLX
+	 lL5b8CfUm+UitfBl3OxQBq/7lKnl47njhHWIslfsBx0LP/nsjqVuwsOc8ZMQKCmKZc
+	 keBitnRrNY3hQOgQWmGKIkbQM9GSfjMKg3d4+ubo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.12 378/423] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 174/204] LoongArch: Increase ARCH_DMA_MINALIGN up to 16
 Date: Tue,  8 Apr 2025 12:51:44 +0200
-Message-ID: <20250408104854.682838547@linuxfoundation.org>
+Message-ID: <20250408104825.422040058@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
+commit 4103cfe9dcb88010ae4911d3ff417457d1b6a720 upstream.
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+ARCH_DMA_MINALIGN is 1 by default, but some LoongArch-specific devices
+(such as APBDMA) require 16 bytes alignment. When the data buffer length
+is too small, the hardware may make an error writing cacheline. Thus, it
+is dangerous to allocate a small memory buffer for DMA. It's always safe
+to define ARCH_DMA_MINALIGN as L1_CACHE_BYTES but unnecessary (kmalloc()
+need small memory objects). Therefore, just increase it to 16.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
-
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
-
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   |   11 +----------
- arch/x86/events/perf_event.h |    2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+ arch/loongarch/include/asm/cache.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2779,28 +2779,33 @@ static u64 icl_update_topdown_event(stru
+--- a/arch/loongarch/include/asm/cache.h
++++ b/arch/loongarch/include/asm/cache.h
+@@ -8,6 +8,8 @@
+ #define L1_CACHE_SHIFT		CONFIG_L1_CACHE_SHIFT
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
  
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
++#define ARCH_DMA_MINALIGN	(16)
 +
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
-+
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
-+
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
+ #define __read_mostly __section(".data..read_mostly")
  
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
- 		return;
-+	}
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
--
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -932,7 +932,7 @@ unlock:
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -2079,15 +2079,6 @@ get_next_pebs_record_by_bit(void *base,
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1627,7 +1627,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+ #endif /* _ASM_CACHE_H */
 
 
 
