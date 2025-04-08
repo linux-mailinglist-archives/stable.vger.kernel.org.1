@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801EAA8077B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F0EA804EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60D134A5D76
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 453944A3943
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BD5269D15;
-	Tue,  8 Apr 2025 12:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B072698AE;
+	Tue,  8 Apr 2025 12:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqLe5ZkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcXoiYZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17332063FD;
-	Tue,  8 Apr 2025 12:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCCA21B185;
+	Tue,  8 Apr 2025 12:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115335; cv=none; b=k3LXvgED/QGuMp/HnH75Kc64c4lq58r5isQefSXsEvPXCB6umJlyUjZ6P+vxOiR1bUTHDPC3D7clIJnJfh7Hx+XFedjLuGGt1AF0tWYQ/8mSswSMOJSclq8iF/Co+/rjPe76R59i0vDkrrLi7aPGeU5xMfJlLrFmsPkVgDjMqis=
+	t=1744113737; cv=none; b=gNgmUXmNsUIMjalqpnEYC7jI3E8gQuYzMhlPwa6a9NB1otG4qI7ZsMSRyOoSlKrrv0NvgbjuBqtJ6ZylBFFRZUVg8ZJQztbQGV5aqAY82mubYguDPivvir6UZ1y7XlmwFDI1G5mz2JYxWTld/bfXc57LCRZBGKhESt3GYrkA+pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115335; c=relaxed/simple;
-	bh=ovLb0FbzqAD5ottyPckptA+PgG6iYYK5jwH/jFeaGJk=;
+	s=arc-20240116; t=1744113737; c=relaxed/simple;
+	bh=8j9rOk/5GJd/84Ab+wN55GP3c/1xS2su2ObUZSiOqdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuPoRu6lKyL7Ri97mKg2hHCs+DVuC7EOwxrsoXEDkzV+u3JcqzS/b8XqkS9H6K8kV/0UPHn94Pu5fsWjkt8G9hquLXz0hDLhO+vBaMADry3kHD/NEkW+t5EvcOulHIvMZSqaguf8gtj+P37UBECIje7dasPpSFrQDOQlbBO962Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqLe5ZkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A0EC4CEE5;
-	Tue,  8 Apr 2025 12:28:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XPGr27xAeCr62J0js/35GmEpIb9ZqcY21ezd1rSbEYciAZnUQ8TY1kQEr/wY9xxCchrXQYgZUyAKwXtLkJjBAss48C0XGY7ybbs7kJmHwqV1vSr7d4yo7FYX/3UnAm+IiefKY9t0dl+l4wOXDs39Wz7lIxuP9U9Edu4yJJOo6W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcXoiYZ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD98C4CEE5;
+	Tue,  8 Apr 2025 12:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115335;
-	bh=ovLb0FbzqAD5ottyPckptA+PgG6iYYK5jwH/jFeaGJk=;
+	s=korg; t=1744113737;
+	bh=8j9rOk/5GJd/84Ab+wN55GP3c/1xS2su2ObUZSiOqdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqLe5ZkQnlQaXzqgggjn4PD0eTIzHaOBC+c5iElTglqLsA2GjnXjbhXD9NMO2NckL
-	 z8iynXNZkcfeR8b1n3RVo6b2kjmhjnyKI8PGTtV0s5TtIF4u2pw4Vlf/ggV7QIWrSA
-	 iIb2uVialFVCCStTfvrXyD+bmNfKEWO+pFOEEnWM=
+	b=UcXoiYZ23QNQUubvBXLubcNvQaHUmKpAoDwlwdYQuQ6UmloCVSiuE5PsUYsoK+1Xi
+	 LAFt4SCYkk3cc4hbK6gWcZ7xll924eJft0XyoYsNqbAX4GsE1NMiPmRWF6Nlh8PkR/
+	 d/FM3yuVmtqPmbKPEZcg14lMYu5QeA49N75z64Hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 437/499] LoongArch: BPF: Fix off-by-one error in build_prologue()
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 238/268] platform/x86: ISST: Correct command storage data length
 Date: Tue,  8 Apr 2025 12:50:49 +0200
-Message-ID: <20250408104902.128686717@linuxfoundation.org>
+Message-ID: <20250408104835.007841270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 7e2586991e36663c9bc48c828b83eab180ad30a9 upstream.
+commit 9462e74c5c983cce34019bfb27f734552bebe59f upstream.
 
-Vincent reported that running BPF progs with tailcalls on LoongArch
-causes kernel hard lockup. Debugging the issues shows that the JITed
-image missing a jirl instruction at the end of the epilogue.
+After resume/online turbo limit ratio (TRL) is restored partially if
+the admin explicitly changed TRL from user space.
 
-There are two passes in JIT compiling, the first pass set the flags and
-the second pass generates JIT code based on those flags. With BPF progs
-mixing bpf2bpf and tailcalls, build_prologue() generates N insns in the
-first pass and then generates N+1 insns in the second pass. This makes
-epilogue_offset off by one and we will jump to some unexpected insn and
-cause lockup. Fix this by inserting a nop insn.
+A hash table is used to store SST mail box and MSR settings when modified
+to restore those settings after resume or online. This uses a struct
+isst_cmd field "data" to store these settings. This is a 64 bit field.
+But isst_store_new_cmd() is only assigning as u32. This results in
+truncation of 32 bits.
 
+Change the argument to u64 from u32.
+
+Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
-Reported-by: Vincent Li <vincent.mc.li@gmail.com>
-Tested-by: Vincent Li <vincent.mc.li@gmail.com>
-Closes: https://lore.kernel.org/loongarch/CAK3+h2w6WESdBN3UCr3WKHByD7D6Q_Ve1EDAjotVrnx6Or_c8g@mail.gmail.com/
-Closes: https://lore.kernel.org/bpf/CAK3+h2woEjG_N=-XzqEGaAeCmgu2eTCUc7p6bP4u8Q+DFHm-7g@mail.gmail.com/
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |    2 ++
- arch/loongarch/net/bpf_jit.h |    5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -142,6 +142,8 @@ static void build_prologue(struct jit_ct
- 	 */
- 	if (seen_tail_call(ctx) && seen_call(ctx))
- 		move_reg(ctx, TCC_SAVED, REG_TCC);
-+	else
-+		emit_insn(ctx, nop);
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -84,7 +84,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+ static DEFINE_MUTEX(isst_hash_lock);
  
- 	ctx->stack_size = stack_adjust;
- }
---- a/arch/loongarch/net/bpf_jit.h
-+++ b/arch/loongarch/net/bpf_jit.h
-@@ -27,6 +27,11 @@ struct jit_data {
- 	struct jit_ctx ctx;
- };
+ static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+-			      u32 data)
++			      u64 data)
+ {
+ 	struct isst_cmd *sst_cmd;
  
-+static inline void emit_nop(union loongarch_instruction *insn)
-+{
-+	insn->word = INSN_NOP;
-+}
-+
- #define emit_insn(ctx, func, ...)						\
- do {										\
- 	if (ctx->image != NULL) {						\
 
 
 
