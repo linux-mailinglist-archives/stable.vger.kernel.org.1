@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-130732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F394DA80601
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23CFA805D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EBD31B6819A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456931892CAA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A9F266580;
-	Tue,  8 Apr 2025 12:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B8926B94B;
+	Tue,  8 Apr 2025 12:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WltLmQCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUSFdOGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74927269AED;
-	Tue,  8 Apr 2025 12:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFED26B942;
+	Tue,  8 Apr 2025 12:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114501; cv=none; b=h5XpjWP7Xb0HgFUYEkZlYWarzNHBdNw6B6KCjPe7TfieCc9sLYMmfmKgFFJS3DbNInzBAStvs2ARZx+FgwlwEKf0y1mYd+OJuNiNeEyMtNzjV63MIwZOluiqUVBc5TSA53FkonZowf51VWFz8GIpt8q449CJnLFaa6TKEwms2X8=
+	t=1744114397; cv=none; b=LqT/jFqWrnD+tUAf/d925WEjLTFNmC3L7VriLrJ/XJbR2lWGikS5E1mMYkmP9ar6rNBph6FkREiYuExYd/uk0RG7d+q+v4iDc3mE4wkORx9snkO7eGE/HR5ns7IZPGvCToX9fxuluAMdkJpNzQQbpLoFkd62aSSJlRgj8RVTRVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114501; c=relaxed/simple;
-	bh=l5LCuls4jgTdCvsaV2uxitZKEo1iDhfVxSCgRdmoBEI=;
+	s=arc-20240116; t=1744114397; c=relaxed/simple;
+	bh=qCqiVGKMBS8tupEmk++r4BG9i+WEJPA/fdeEJ8it16Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rnmTKUDblwfh9V3FCd9iQwUWT4GAp1AGHvDJNsNWxRw5CSE6sKJZf1i6NLtf23yzzrLpzwuZjiwuVzorchG7sMjnOzWQQ9iptwWU8r6lAWu3fzHwswuCF498nhxh/+HtRUP+Obua4KxeiNjc+x98fixdJQNJm4tslGn3XcsCA7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WltLmQCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0483FC4CEE5;
-	Tue,  8 Apr 2025 12:15:00 +0000 (UTC)
+	 MIME-Version; b=YKbpHQB/cgD8K0YhYQXWKGOTpMy0O51ntW0ZBbzSqniQen8qVIlyhsqcuEE3fxvFADngo/BWBwM4CrxBCMUMdzwLHBz4GJeZa44UfqqHan8Fo5g9uRE+a2x9ZuMGkWkMt/xgrjOfTkgAw0G0w7iuKSGRzalx82izkIxK0BTgZ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUSFdOGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9350DC4CEE5;
+	Tue,  8 Apr 2025 12:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114501;
-	bh=l5LCuls4jgTdCvsaV2uxitZKEo1iDhfVxSCgRdmoBEI=;
+	s=korg; t=1744114396;
+	bh=qCqiVGKMBS8tupEmk++r4BG9i+WEJPA/fdeEJ8it16Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WltLmQCvB1q5bg84EU4ZDHEZUoUJmNdao9p744nPfbfBLRNubRxcq3drQy/xfWl00
-	 MUbz7A3t8OF1LupgJkAEDHZJXMRHCWHG3ygNOXD21INKg27v/lX30hF6lef4efv/uk
-	 Ly+fFbRcxouL0nmC+eU7gqdQQRQlL+5qzj3knmes=
+	b=SUSFdOGMZO22KhbCYB1Vkw44Vu7TGi8k1R23BpMBKuRp+fwfDjqZXJs6w3DDmA42Q
+	 wd0gZdE/lWAdyP0i4IN8hhNVAn/A0gwc2TNjIlFM85ucvvQohBjsxQCDOwV8OTLSLt
+	 h3aUlU/e0WgsFWgpV4jOH8QdSTDKw0b7zF4LE63s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 091/499] PCI: brcmstb: Fix potential premature regulator disabling
-Date: Tue,  8 Apr 2025 12:45:03 +0200
-Message-ID: <20250408104853.486831175@linuxfoundation.org>
+Subject: [PATCH 6.13 092/499] selftests/pcie_bwctrl: Add set_pcie_speed.sh to TEST_PROGS
+Date: Tue,  8 Apr 2025 12:45:04 +0200
+Message-ID: <20250408104853.511714072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -62,49 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Yi Lai <yi1.lai@intel.com>
 
-[ Upstream commit b7de1b60ecab2f7b6f05d8116e93228a0bbb8563 ]
+[ Upstream commit df6f8c4d72aebaf66aaa8658c723fd360c272e59 ]
 
-The platform supports enabling and disabling regulators only on
-ports below the Root Complex.
+The test shell script "set_pcie_speed.sh" is not installed in INSTALL_PATH.
+Attempting to execute set_pcie_cooling_state.sh shows warning:
 
-Thus, we need to verify this both when adding and removing the bus,
-otherwise regulators may be disabled prematurely when a bus further
-down the topology is removed.
+  ./set_pcie_cooling_state.sh: line 119: ./set_pcie_speed.sh: No such file or directory
 
-Fixes: 9e6be018b263 ("PCI: brcmstb: Enable child bus device regulators from DT")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214173944.47506-6-james.quinlan@broadcom.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Add "set_pcie_speed.sh" to TEST_PROGS.
+
+Link: https://lore.kernel.org/r/Z8FfK8rN30lKzvVV@ly-workstation
+Fixes: 838f12c3d551 ("selftests/pcie_bwctrl: Create selftests")
+Signed-off-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 2 +-
+ tools/testing/selftests/pcie_bwctrl/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 1495d770b4c2c..3d7dbfcd689e3 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1392,7 +1392,7 @@ static void brcm_pcie_remove_bus(struct pci_bus *bus)
- 	struct subdev_regulators *sr = pcie->sr;
- 	struct device *dev = &bus->dev;
- 
--	if (!sr)
-+	if (!sr || !bus->parent || !pci_is_root_bus(bus->parent))
- 		return;
- 
- 	if (regulator_bulk_disable(sr->num_supplies, sr->supplies))
+diff --git a/tools/testing/selftests/pcie_bwctrl/Makefile b/tools/testing/selftests/pcie_bwctrl/Makefile
+index 3e84e26341d1c..48ec048f47afd 100644
+--- a/tools/testing/selftests/pcie_bwctrl/Makefile
++++ b/tools/testing/selftests/pcie_bwctrl/Makefile
+@@ -1,2 +1,2 @@
+-TEST_PROGS = set_pcie_cooling_state.sh
++TEST_PROGS = set_pcie_cooling_state.sh set_pcie_speed.sh
+ include ../lib.mk
 -- 
 2.39.5
 
