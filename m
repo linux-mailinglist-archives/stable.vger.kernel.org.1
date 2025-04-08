@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-131650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9F7A80B3C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4CDA80549
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6A0C1BC4421
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17091B80286
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A7327C150;
-	Tue,  8 Apr 2025 12:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342A726A1C8;
+	Tue,  8 Apr 2025 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vuVK7ly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKb6f/A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569B626B2D1;
-	Tue,  8 Apr 2025 12:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2D26A1C5;
+	Tue,  8 Apr 2025 12:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116970; cv=none; b=DRirMvzumXpA/ZU2tPV06yOlYr1ejK9ZqHbESt7UBxUuD7QanRPG1O8vFNqOgUnRJOhbeFdu8YZ2raJ/Yz6gyYiyCg5NObKrqiUUQzAV9UvA/oAXLOtwhYuNfiKsWcLryH6MPwHSBl8oiq61e1Ws9JXVCdENPGl80cUD1tkVDQI=
+	t=1744114162; cv=none; b=C1Dz2tRs/S6HSCf3N9C32OKZbYtZssrxPAIuTavbxC7G+MNq64qcr8GpNfqn23rRMhadOP72jGFbp8tCoU2TD7b9/50n4xKte7QIhSZVz2aq1zF2120ki2UEODb9ssa8RAEvVMKl+tEpk19zYzEpsw2gFRavU/lsP0Eyo8kQC3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116970; c=relaxed/simple;
-	bh=56DQfpsGKQUCl6PEMfW+TcxcvvlZjzi5mssvoke/mhg=;
+	s=arc-20240116; t=1744114162; c=relaxed/simple;
+	bh=FkxfsM939gZkFydLSIuw7oD2dkLBoSWjiDi/Kokuu0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIg5jeBoGjhUXYLc1dNU/h+m0pelFBRCAp0trusI/GgllsY5WYQR+eQBg3XDEbVlK//hPAXMmhMoZMrth1okuDJjwCS9gfls7S7aRkcPIchfinF5FolSOqJZQwRPwqv4a/fgo+CKQ6LFCOE5VGT8pvbta6K+EulinAWmQqXH89s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vuVK7ly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6BC4CEE5;
-	Tue,  8 Apr 2025 12:56:09 +0000 (UTC)
+	 MIME-Version; b=bHzyDuf0AltPl1jom/0mL0BBUlTBCGRZ4e7YTCSha/knMaqt3dy6kHa3I6SQlKTOJpLJgMkhnR1OLykaOSS/yOArIzZLThY0+WLK3LugJy63ZPpkOB9Gjc8o5YL1Bl+xkrjd7wPLhifGbzGD9GuR/tpeiA7JcN2HB5IH1ohe8ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKb6f/A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C63DC4CEE5;
+	Tue,  8 Apr 2025 12:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116970;
-	bh=56DQfpsGKQUCl6PEMfW+TcxcvvlZjzi5mssvoke/mhg=;
+	s=korg; t=1744114161;
+	bh=FkxfsM939gZkFydLSIuw7oD2dkLBoSWjiDi/Kokuu0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vuVK7ly1cy5H2j7C+Pw/DhFxhGhwGsACsHEnS3TxYHNtLYQpjyo5wjqpx6ZK5oYe
-	 vqQxmocFE0a80CZ4zngQYUKVpKEGzw34RbwotgtjVngxV2BHoWn5dDK/V7prqBK9Kx
-	 f1ZdXtGkvpD8CwsDjfEnhIrdvXt171e8nhPmBaQA=
+	b=PKb6f/A9xOETT64Uw3QCl2go0Zop7zQKm85/awaOY/nTfC1SXdCPmTgYj0jzJoZSw
+	 DEqsOCxh0pyZokquKhK7xG2jQXF3BHbzuPby82lPowRkEqR9Bf8SxaDOENPkP5HwTW
+	 I1PgTVICaumONwzzgcx8tFcO8b/7lXRudOTq79TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Kurt Hackel <kurt.hackel@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 335/423] tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().
+Subject: [PATCH 5.4 120/154] ocfs2: validate l_tree_depth to avoid out-of-bounds access
 Date: Tue,  8 Apr 2025 12:51:01 +0200
-Message-ID: <20250408104853.636933488@linuxfoundation.org>
+Message-ID: <20250408104819.165042379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +70,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 8930424777e43257f5bf6f0f0f53defd0d30415c ]
+[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
 
-Because skb_tunnel_check_pmtu() doesn't handle PACKET_HOST packets,
-commit 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper
-pmtud support.") forced skb->pkt_type to PACKET_OUTGOING for
-openvswitch packets that are sent using the OVS_ACTION_ATTR_OUTPUT
-action. This allowed such packets to invoke the
-iptunnel_pmtud_check_icmp() or iptunnel_pmtud_check_icmpv6() helpers
-and thus trigger PMTU update on the input device.
+The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
+limited to OCFS2_MAX_PATH_DEPTH.
 
-However, this also broke other parts of PMTU discovery. Since these
-packets don't have the PACKET_HOST type anymore, they won't trigger the
-sending of ICMP Fragmentation Needed or Packet Too Big messages to
-remote hosts when oversized (see the skb_in->pkt_type condition in
-__icmp_send() for example).
+Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
+value, which may occur when reading from a corrupted mounted disk [1].
 
-These two skb->pkt_type checks are therefore incompatible as one
-requires skb->pkt_type to be PACKET_HOST, while the other requires it
-to be anything but PACKET_HOST.
-
-It makes sense to not trigger ICMP messages for non-PACKET_HOST packets
-as these messages should be generated only for incoming l2-unicast
-packets. However there doesn't seem to be any reason for
-skb_tunnel_check_pmtu() to ignore PACKET_HOST packets.
-
-Allow both cases to work by allowing skb_tunnel_check_pmtu() to work on
-PACKET_HOST packets and not overriding skb->pkt_type in openvswitch
-anymore.
-
-Fixes: 30a92c9e3d6b ("openvswitch: Set the skbuff pkt_type for proper pmtud support.")
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Tested-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/eac941652b86fddf8909df9b3bf0d97bc9444793.1743208264.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 2 +-
- net/openvswitch/actions.c | 6 ------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ fs/ocfs2/alloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index a3676155be78b..364ea798511ea 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -416,7 +416,7 @@ int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 52ccd8d4ed820..0d2dbf3fded2a 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -1799,6 +1799,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
  
- 	skb_dst_update_pmtu_no_confirm(skb, mtu);
- 
--	if (!reply || skb->pkt_type == PACKET_HOST)
-+	if (!reply)
- 		return 0;
- 
- 	if (skb->protocol == htons(ETH_P_IP))
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 704c858cf2093..61fea7baae5d5 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -947,12 +947,6 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
- 				pskb_trim(skb, ovs_mac_header_len(key));
- 		}
- 
--		/* Need to set the pkt_type to involve the routing layer.  The
--		 * packet movement through the OVS datapath doesn't generally
--		 * use routing, but this is needed for tunnel cases.
--		 */
--		skb->pkt_type = PACKET_OUTGOING;
--
- 		if (likely(!mru ||
- 		           (skb->len <= mru + vport->dev->hard_header_len))) {
- 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
+ 	el = root_el;
+ 	while (el->l_tree_depth) {
++		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
++			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
++				    "Owner %llu has invalid tree depth %u in extent list\n",
++				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
++				    le16_to_cpu(el->l_tree_depth));
++			ret = -EROFS;
++			goto out;
++		}
+ 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
+ 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+ 				    "Owner %llu has empty extent list at depth %u\n",
 -- 
 2.39.5
 
