@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E193CA8014F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64635A7FDE2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62C75880133
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E22ED443401
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A15269894;
-	Tue,  8 Apr 2025 11:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CC826AA9A;
+	Tue,  8 Apr 2025 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2bHYYTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA9dsPVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032CE265602;
-	Tue,  8 Apr 2025 11:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8528926AA8F;
+	Tue,  8 Apr 2025 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111938; cv=none; b=iq5hv2rTvUhZEjlINFpF5ET5NQoDK4NkdHxTPtY5fFZJBuEc6yS+OwlVkZyrK9dFXfhNr3086kslvRdBpDMmfmtheuWr+VhV1GcQKcHlRiN/Qf7i5fylxYu2bBBmUtY1bjaTWp6g1/K/0GjtPs49u59rWy8Ce8kdTnfkkycd68M=
+	t=1744110004; cv=none; b=q7UUXk3fOFipVii2AiEiW7xAup1wQ2W0ips//Q3G81Zq6sxUqsEOkE2dtoQz93n9EGjw+1ico3lFpUhDDeh0kjqy4ro6XdQ/36clPSHKEKySB+/ZIFOgJPRSr4F92pF2es96rzyn13qs8CLfMJYV0zJhL3LCxsMumfIVfwfcbJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111938; c=relaxed/simple;
-	bh=MfvP61HoywvA1zoE00ksgoT1c8LUvRM+2okj9pxfSDQ=;
+	s=arc-20240116; t=1744110004; c=relaxed/simple;
+	bh=VgrjrcNSofOiZlc6Iw0unphutOGlatRzTGK54KoSydU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azyk1ERzmA9lUw3OoF+facUr3NxDQjiXyL+4SmMYA727Arm2ePttekpGSxiPPn2UwGNIefz4IH++LNTUG2MGrwrbqXjl6WwYVf1uw5I8yHjbE+X0b/GxusGRDBI3XFFwawO5pnblgPHm5LCG56zND2fu96yhNBOXogWG0EVCwCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2bHYYTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D3C4CEE5;
-	Tue,  8 Apr 2025 11:32:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LOZFbt3255/yNyI7fYNSPtrESqd4XSugEm2wDmsfiIw5iYMYIT+vC0S6SBaUWKgJEUmk/uslOhQOHnKFkKVRRupG/fwNcijrTJKpImcNbptZIHScylN2R3hcL8G/K1qrWfXeGcEBbxZW6m+pXhmjREBfrmf1ZUaPFlU7mPASegg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA9dsPVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15729C4CEEB;
+	Tue,  8 Apr 2025 11:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111937;
-	bh=MfvP61HoywvA1zoE00ksgoT1c8LUvRM+2okj9pxfSDQ=;
+	s=korg; t=1744110004;
+	bh=VgrjrcNSofOiZlc6Iw0unphutOGlatRzTGK54KoSydU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2bHYYTitmEFjA1WWrR6KhTFEhqrOaWkjENK7Qq4PXTaSB1QkK1W0hZKzy28Y5p+Z
-	 TvUaE4AbDYQlCsaDb0s2nwHOP1GFvjsfqUioajH5QMf9e+9c7TTBEah68QNoVfNDUF
-	 5aegRd1CeJeIeJ4bl+OHVgKJf8pfe31qq/ei3YqY=
+	b=lA9dsPVtVe9WFTPqQ60VZJj/jGRB6bjfLbAr7QmHmCjZXGztNrY4yjgH0umI7VeHW
+	 buS5+aUE/lOYRDyh/ovmViYNEvW8bq23KGV/7EUK5W5wX6L/6l0CZ//5NH6zPdVnvd
+	 1q+hScwpyIZK4kyLOn03XBqTPABnOVKaKUU9A6rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 615/731] e1000e: change k1 configuration on MTP and later platforms
+Subject: [PATCH 5.10 134/227] PCI: brcmstb: Use internal register to change link capability
 Date: Tue,  8 Apr 2025 12:48:32 +0200
-Message-ID: <20250408104928.577999544@linuxfoundation.org>
+Message-ID: <20250408104824.339157742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,182 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-[ Upstream commit efaaf344bc2917cbfa5997633bc18a05d3aed27f ]
+[ Upstream commit 0c97321e11e0e9e18546f828492758f6aaecec59 ]
 
-Starting from Meteor Lake, the Kumeran interface between the integrated
-MAC and the I219 PHY works at a different frequency. This causes sporadic
-MDI errors when accessing the PHY, and in rare circumstances could lead
-to packet corruption.
+The driver has been mistakenly writing to a read-only (RO)
+configuration space register (PCI_EXP_LNKCAP) to change the
+PCIe link capability.
 
-To overcome this, introduce minor changes to the Kumeran idle
-state (K1) parameters during device initialization. Hardware reset
-reverts this configuration, therefore it needs to be applied in a few
-places.
+Although harmless in this case, the proper write destination
+is an internal register that is reflected by PCI_EXP_LNKCAP.
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Thus, fix the brcm_pcie_set_gen() function to correctly update
+the link capability.
+
+Fixes: c0452137034b ("PCI: brcmstb: Add Broadcom STB PCIe host controller driver")
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250214173944.47506-3-james.quinlan@broadcom.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |  3 +
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 80 +++++++++++++++++++--
- drivers/net/ethernet/intel/e1000e/ich8lan.h |  4 ++
- 3 files changed, 82 insertions(+), 5 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
-index 5e2cfa73f8891..8294a7c4f122c 100644
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -803,4 +803,7 @@
- /* SerDes Control */
- #define E1000_GEN_POLL_TIMEOUT          640
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 9c3d2982248d3..be6af5585dd6b 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -402,10 +402,10 @@ static int brcm_pcie_set_ssc(struct brcm_pcie *pcie)
+ static void brcm_pcie_set_gen(struct brcm_pcie *pcie, int gen)
+ {
+ 	u16 lnkctl2 = readw(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
+-	u32 lnkcap = readl(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
++	u32 lnkcap = readl(pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
  
-+#define E1000_FEXTNVM12_PHYPD_CTRL_MASK	0x00C00000
-+#define E1000_FEXTNVM12_PHYPD_CTRL_P1	0x00800000
-+
- #endif /* _E1000_DEFINES_H_ */
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 2f9655cf5dd9e..364378133526a 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -285,6 +285,45 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
- 	}
- }
+ 	lnkcap = (lnkcap & ~PCI_EXP_LNKCAP_SLS) | gen;
+-	writel(lnkcap, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
++	writel(lnkcap, pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
  
-+/**
-+ * e1000_reconfigure_k1_exit_timeout - reconfigure K1 exit timeout to
-+ * align to MTP and later platform requirements.
-+ * @hw: pointer to the HW structure
-+ *
-+ * Context: PHY semaphore must be held by caller.
-+ * Return: 0 on success, negative on failure
-+ */
-+static s32 e1000_reconfigure_k1_exit_timeout(struct e1000_hw *hw)
-+{
-+	u16 phy_timeout;
-+	u32 fextnvm12;
-+	s32 ret_val;
-+
-+	if (hw->mac.type < e1000_pch_mtp)
-+		return 0;
-+
-+	/* Change Kumeran K1 power down state from P0s to P1 */
-+	fextnvm12 = er32(FEXTNVM12);
-+	fextnvm12 &= ~E1000_FEXTNVM12_PHYPD_CTRL_MASK;
-+	fextnvm12 |= E1000_FEXTNVM12_PHYPD_CTRL_P1;
-+	ew32(FEXTNVM12, fextnvm12);
-+
-+	/* Wait for the interface the settle */
-+	usleep_range(1000, 1100);
-+
-+	/* Change K1 exit timeout */
-+	ret_val = e1e_rphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  &phy_timeout);
-+	if (ret_val)
-+		return ret_val;
-+
-+	phy_timeout &= ~I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK;
-+	phy_timeout |= 0xF00;
-+
-+	return e1e_wphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  phy_timeout);
-+}
-+
- /**
-  *  e1000_init_phy_workarounds_pchlan - PHY initialization workarounds
-  *  @hw: pointer to the HW structure
-@@ -327,15 +366,22 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
- 	 */
- 	switch (hw->mac.type) {
-+	case e1000_pch_mtp:
-+	case e1000_pch_lnp:
-+	case e1000_pch_ptp:
-+	case e1000_pch_nvp:
-+		/* At this point the PHY might be inaccessible so don't
-+		 * propagate the failure
-+		 */
-+		if (e1000_reconfigure_k1_exit_timeout(hw))
-+			e_dbg("Failed to reconfigure K1 exit timeout\n");
-+
-+		fallthrough;
- 	case e1000_pch_lpt:
- 	case e1000_pch_spt:
- 	case e1000_pch_cnp:
- 	case e1000_pch_tgp:
- 	case e1000_pch_adp:
--	case e1000_pch_mtp:
--	case e1000_pch_lnp:
--	case e1000_pch_ptp:
--	case e1000_pch_nvp:
- 		if (e1000_phy_is_accessible_pchlan(hw))
- 			break;
- 
-@@ -419,8 +465,20 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		 *  the PHY is in.
- 		 */
- 		ret_val = hw->phy.ops.check_reset_block(hw);
--		if (ret_val)
-+		if (ret_val) {
- 			e_err("ME blocked access to PHY after reset\n");
-+			goto out;
-+		}
-+
-+		if (hw->mac.type >= e1000_pch_mtp) {
-+			ret_val = hw->phy.ops.acquire(hw);
-+			if (ret_val) {
-+				e_err("Failed to reconfigure K1 exit timeout\n");
-+				goto out;
-+			}
-+			ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+			hw->phy.ops.release(hw);
-+		}
- 	}
- 
- out:
-@@ -4888,6 +4946,18 @@ static s32 e1000_init_hw_ich8lan(struct e1000_hw *hw)
- 	u16 i;
- 
- 	e1000_initialize_hw_bits_ich8lan(hw);
-+	if (hw->mac.type >= e1000_pch_mtp) {
-+		ret_val = hw->phy.ops.acquire(hw);
-+		if (ret_val)
-+			return ret_val;
-+
-+		ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+		hw->phy.ops.release(hw);
-+		if (ret_val) {
-+			e_dbg("Error failed to reconfigure K1 exit timeout\n");
-+			return ret_val;
-+		}
-+	}
- 
- 	/* Initialize identification LED */
- 	ret_val = mac->ops.id_led_init(hw);
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.h b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-index 2504b11c3169f..5feb589a9b5ff 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.h
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-@@ -219,6 +219,10 @@
- #define I217_PLL_CLOCK_GATE_REG	PHY_REG(772, 28)
- #define I217_PLL_CLOCK_GATE_MASK	0x07FF
- 
-+/* PHY Timeouts */
-+#define I217_PHY_TIMEOUTS_REG                   PHY_REG(770, 21)
-+#define I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK       0x0FC0
-+
- #define SW_FLAG_TIMEOUT		1000	/* SW Semaphore flag timeout in ms */
- 
- /* Inband Control */
+ 	lnkctl2 = (lnkctl2 & ~0xf) | gen;
+ 	writew(lnkctl2, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
 -- 
 2.39.5
 
