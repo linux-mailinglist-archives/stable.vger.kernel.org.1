@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA2DA80508
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47461A80984
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F310E4A2CF7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B898C47DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1AA26A0CF;
-	Tue,  8 Apr 2025 12:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5767926FA5B;
+	Tue,  8 Apr 2025 12:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJOlTP1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIHYvSVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2956326773A;
-	Tue,  8 Apr 2025 12:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14002269811;
+	Tue,  8 Apr 2025 12:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113693; cv=none; b=YLe3XvzieGwgM/W48sSbhtnMYc/VO30fo9ljZoJB44Kp4XSE2VN0O5ZZOmvXmIoVCtfoa05l6f5QKS7jguEDFcLMKtytujdN/tZ/kn3aY4lsbHIDso57ZMNIhORjIfhDx0E4OpZ4at6O5dLwNCop7t4TB4a+UVnLqmKdJoxxDOw=
+	t=1744115874; cv=none; b=DZZYEWvtWKr0btGMxrFW7BqA3ar26QtcpTT4FBNOyJ44AE8uX0G499ut4Mjji1MKqbYH+Dhsk/V1cyGBDL+9H9slG8g3GAknEkPEVRKM7e1XYqyGyDVcr4sFqJbeQAhe/OEgzJKJ6OoUprVi5975XUuQ8O4JI7Tx4g2ib2LMFsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113693; c=relaxed/simple;
-	bh=aLGcn5ndAKtdagkDqU2NGsmgW0sZcKon07MlDd4gpnY=;
+	s=arc-20240116; t=1744115874; c=relaxed/simple;
+	bh=ZlASRtkmLYNsUvx69MvBYSp1/y1ogNMVPEpMAbqZMyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlmwNa/ReWmbbSEohKsB5XbTGO68hl5X5dzspPxlswcYR3tzjj4cVgeZzj6Iv2qYKcsE2Dt8y2n/ucHv4cBPFITu72fogpNR1dqagf8C4sxY/wKaRpreiLhyV1mUpe1+sArQP+RSGCUrB6mDoXCmQ9bSvCT2tZesy4SCqWYmWfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJOlTP1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC948C4CEE5;
-	Tue,  8 Apr 2025 12:01:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K/hBg6SPhG53nQSVX5j5wjhe2gVGSOBIXtG76kE2w0n8W14NOK22+UONY0Ee4CwzHyWMyzKtQhz+eXBR6vZbFI2jZabXXODTRs1pwAUAsLizPfk2O0LUUOubT0b+euQIOOUJUNAmwjUVzznbRSqy/YvOo9je1n6sgqXY8GnsPik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIHYvSVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96375C4CEE7;
+	Tue,  8 Apr 2025 12:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113693;
-	bh=aLGcn5ndAKtdagkDqU2NGsmgW0sZcKon07MlDd4gpnY=;
+	s=korg; t=1744115873;
+	bh=ZlASRtkmLYNsUvx69MvBYSp1/y1ogNMVPEpMAbqZMyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJOlTP1al1YxmkG6iGRpuNziTzxPAm2rhoRuj1WrAqDTW1t45z9ih8dS7+hIlG9IJ
-	 dwOIzNcD11K9V9XrlwJjj3nd6K5LCLCtUl3YbERBRX7PAbDvIpuMQL7PjnnmvcnwbC
-	 xqmUVyfXIF0Pg4d/mBuZEi8iXaupczyt4TJOjFEg=
+	b=hIHYvSVzUrddBDCiSm5J/oqs01OK9yEdcdBvR7uJtI4oPrfuCK0hB2XjM7gwDAW92
+	 xCtyd4mAqIwq8Iuvk5bs1Dcq8NxWmKnhpQ6OCMQGMv/MBgxhTwuTmC1h70d1DYKbSb
+	 B9wgkCF0mTuInSVskRrwuK5sd+d82WOwFY97Rtps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 254/268] ksmbd: fix session use-after-free in multichannel connection
-Date: Tue,  8 Apr 2025 12:51:05 +0200
-Message-ID: <20250408104835.433856907@linuxfoundation.org>
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/204] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
+Date: Tue,  8 Apr 2025 12:51:06 +0200
+Message-ID: <20250408104824.288262450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,117 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-commit fa4cdb8cbca7d6cb6aa13e4d8d83d1103f6345db upstream.
+[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
 
-There is a race condition between session setup and
-ksmbd_sessions_deregister. The session can be freed before the connection
-is added to channel list of session.
-This patch check reference count of session before freeing it.
+Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
+Add Surface Go 4 DMI match to button_array_table to fix this.
 
-Cc: stable@vger.kernel.org
-Reported-by: Sean Heelan <seanheelan@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c              |    4 ++--
- fs/smb/server/mgmt/user_session.c |   14 ++++++++------
- fs/smb/server/smb2pdu.c           |    7 ++++---
- 3 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/platform/x86/intel/hid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1012,9 +1012,9 @@ static int ksmbd_get_encryption_key(stru
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index b96ef0eb82aff..c13837401c26a 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -109,6 +109,13 @@ static const struct dmi_system_id button_array_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
+ 		},
+ 	},
++	{
++		.ident = "Microsoft Surface Go 4",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
++		},
++	},
+ 	{ }
+ };
  
- 	ses_enc_key = enc ? sess->smb3encryptionkey :
- 		sess->smb3decryptionkey;
--	if (enc)
--		ksmbd_user_session_get(sess);
- 	memcpy(key, ses_enc_key, SMB3_ENC_DEC_KEY_SIZE);
-+	if (!enc)
-+		ksmbd_user_session_put(sess);
- 
- 	return 0;
- }
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -180,7 +180,7 @@ static void ksmbd_expire_session(struct
- 	down_write(&sessions_table_lock);
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
--		if (atomic_read(&sess->refcnt) == 0 &&
-+		if (atomic_read(&sess->refcnt) <= 1 &&
- 		    (sess->state != SMB2_SESSION_VALID ||
- 		     time_after(jiffies,
- 			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
-@@ -232,7 +232,8 @@ void ksmbd_sessions_deregister(struct ks
- 				down_write(&conn->session_lock);
- 				xa_erase(&conn->sessions, sess->id);
- 				up_write(&conn->session_lock);
--				ksmbd_session_destroy(sess);
-+				if (atomic_dec_and_test(&sess->refcnt))
-+					ksmbd_session_destroy(sess);
- 			}
- 		}
- 	}
-@@ -251,7 +252,8 @@ void ksmbd_sessions_deregister(struct ks
- 		if (xa_empty(&sess->ksmbd_chann_list)) {
- 			xa_erase(&conn->sessions, sess->id);
- 			hash_del(&sess->hlist);
--			ksmbd_session_destroy(sess);
-+			if (atomic_dec_and_test(&sess->refcnt))
-+				ksmbd_session_destroy(sess);
- 		}
- 	}
- 	up_write(&conn->session_lock);
-@@ -327,8 +329,8 @@ void ksmbd_user_session_put(struct ksmbd
- 
- 	if (atomic_read(&sess->refcnt) <= 0)
- 		WARN_ON(1);
--	else
--		atomic_dec(&sess->refcnt);
-+	else if (atomic_dec_and_test(&sess->refcnt))
-+		ksmbd_session_destroy(sess);
- }
- 
- struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
-@@ -433,7 +435,7 @@ static struct ksmbd_session *__session_c
- 	xa_init(&sess->rpc_handle_list);
- 	sess->sequence_number = 1;
- 	rwlock_init(&sess->tree_conns_lock);
--	atomic_set(&sess->refcnt, 1);
-+	atomic_set(&sess->refcnt, 2);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2231,13 +2231,14 @@ int smb2_session_logoff(struct ksmbd_wor
- 		return -ENOENT;
- 	}
- 
--	ksmbd_destroy_file_table(&sess->file_table);
- 	down_write(&conn->session_lock);
- 	sess->state = SMB2_SESSION_EXPIRED;
- 	up_write(&conn->session_lock);
- 
--	ksmbd_free_user(sess->user);
--	sess->user = NULL;
-+	if (sess->user) {
-+		ksmbd_free_user(sess->user);
-+		sess->user = NULL;
-+	}
- 	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
- 
- 	rsp->StructureSize = cpu_to_le16(4);
+-- 
+2.39.5
+
 
 
 
