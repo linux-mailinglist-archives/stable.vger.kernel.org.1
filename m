@@ -1,79 +1,57 @@
-Return-Path: <stable+bounces-130845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC47A806CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD78A809C1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE5E8A34B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F417A1BA0F2B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B70269CE8;
-	Tue,  8 Apr 2025 12:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1D920A5C3;
+	Tue,  8 Apr 2025 12:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSVCnukP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIZnvd5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C453926A083;
-	Tue,  8 Apr 2025 12:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A5E1A2860;
+	Tue,  8 Apr 2025 12:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114807; cv=none; b=ICsJeLeLgsjCZL25AkOq8O/Ge2fDDkZFKEb/5TPDqJuu3tKxsgqsJ9fVNCRZMBWv19Ds65/1xYgwTs+6DjGuuVBALvVMs8kWMgb8U6/7DLig9usrSeuMqSL2aifQD8Syawns5qXrl+fCWm+ZE8AX8ucPtwU8OqIuX2fcD+VF/kk=
+	t=1744116405; cv=none; b=R61WGZi1VseE3Plf1JegLGdDD/NG6iwck4gx5zDqYTbx12CmQYW7XxNqv4bVD2fk8dQzLkHhcCNXWDfpG2Q+qQB4OJpPYUAjtqJmJDdDPd0BSZV/pCkDT55zkp3Xepl/xIIp/tlIJd6a3vSW+focPzr8G2zMDA7xdutf+R6xJUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114807; c=relaxed/simple;
-	bh=+VTpk9flG7fYl0NqcpV48wv6sr2KnhDFhntwKWm3Nho=;
+	s=arc-20240116; t=1744116405; c=relaxed/simple;
+	bh=g9gu/wiWY1EXAO+3v7QcuNUGtKNknQLw8l0W18Q3EVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDO1jC7RZgilr/9bxljkfLKhiXqYRYvilPXEew22PbDILF5YUntwXYJzUgRfrr26QUjxpDmFYr8I8An/Z9GHiGghcuGMKNRYXMO3T46lZcOxvCNPbB0s4Yct23N+d98xdDXFGDFxKt/N6yAyBTimgTHO97Wo7n/kBVtkJw0JQf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSVCnukP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9D8C4CEE7;
-	Tue,  8 Apr 2025 12:20:07 +0000 (UTC)
+	 MIME-Version; b=b/h3RhEp4uV7ZkKeCzSEW9dx4zSxRPA/ksI+uBSu+5vVeqjO/HjoX4oU9gUaHXF9lUtR0kHqjIoXGar7hMawlN6nkfG4u5jfjfVtW9pRMcbR+XoRSvLy3KiDZVE6MGGgYsZhGdZGfpFDtJfonTbPeUdX+H910XSNAJcQpPnTHpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIZnvd5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732DAC4CEE5;
+	Tue,  8 Apr 2025 12:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114807;
-	bh=+VTpk9flG7fYl0NqcpV48wv6sr2KnhDFhntwKWm3Nho=;
+	s=korg; t=1744116404;
+	bh=g9gu/wiWY1EXAO+3v7QcuNUGtKNknQLw8l0W18Q3EVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSVCnukPHMTsHh6PNGhMyYg7NfKqcpgO4+1gGpsu9AIIH1Ug9kFogKfejM6/oa1u3
-	 z0GTeoxZ5V0yrQQoEo5Xc2ZrGmqZSBOexrsmihXWl1ukYkLuLt50i+fAvWtBtiTqvm
-	 pnPNI2fzoGw+XIs1U8myodT/PTA27Oezv0Xfsmu8=
+	b=QIZnvd5fYOEagPww7Ikean76wnHWTNTF1gzTV0mGirgpwVoZI5TWxzsZbDRhRecbu
+	 d7XABD5rEvPqJMk7DENpXpk+MSgfRL63d7KLRXmgPFkeWgJ4so37rgYyUs49ELjaJ0
+	 l52ksg8Axw9VkbvP6TUpy7MB/nAGJRz+nABDeadI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Alex Shi <alexs@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Karol Herbst <kherbst@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Lyude <lyude@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Peter Xu <peterx@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 241/499] kernel/events/uprobes: handle device-exclusive entries correctly in __replace_page()
+Subject: [PATCH 6.12 127/423] pinctrl: renesas: rza2: Fix missing of_node_put() call
 Date: Tue,  8 Apr 2025 12:47:33 +0200
-Message-ID: <20250408104857.227376244@linuxfoundation.org>
+Message-ID: <20250408104848.686814559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,100 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit 096cbb80ab3fd85a9035ec17a1312c2a7db8bc8c ]
+[ Upstream commit abcdeb4e299a11ecb5a3ea0cce00e68e8f540375 ]
 
-Ever since commit b756a3b5e7ea ("mm: device exclusive memory access") we
-can return with a device-exclusive entry from page_vma_mapped_walk().
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-__replace_page() is not prepared for that, so teach it about these PFN
-swap PTEs.  Note that device-private entries are so far not applicable on
-that path, because GUP would never have returned such folios (conversion
-to device-private happens by page migration, not in-place conversion of
-the PTE).
+Call into of_node_put() to rectify that.
 
-There is a race between GUP and us locking the folio to look it up using
-page_vma_mapped_walk(), so this is likely a fix (unless something else
-could prevent that race, but it doesn't look like).  pte_pfn() on
-something that is not a present pte could give use garbage, and we'd
-wrongly mess up the mapcount because it was already adjusted by calling
-folio_remove_rmap_pte() when making the entry device-exclusive.
-
-Link: https://lkml.kernel.org/r/20250210193801.781278-9-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-5-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 3c34761c9ae73..5e43a3e3f414f 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -173,6 +173,7 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 	DEFINE_FOLIO_VMA_WALK(pvmw, old_folio, vma, addr, 0);
- 	int err;
- 	struct mmu_notifier_range range;
-+	pte_t pte;
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
- 				addr + PAGE_SIZE);
-@@ -192,6 +193,16 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 	if (!page_vma_mapped_walk(&pvmw))
- 		goto unlock;
- 	VM_BUG_ON_PAGE(addr != pvmw.address, old_page);
-+	pte = ptep_get(pvmw.pte);
-+
-+	/*
-+	 * Handle PFN swap PTES, such as device-exclusive ones, that actually
-+	 * map pages: simply trigger GUP again to fix it up.
-+	 */
-+	if (unlikely(!pte_present(pte))) {
-+		page_vma_mapped_walk_done(&pvmw);
-+		goto unlock;
-+	}
- 
- 	if (new_page) {
- 		folio_get(new_folio);
-@@ -206,7 +217,7 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 		inc_mm_counter(mm, MM_ANONPAGES);
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index af689d7c117f3..773eaf508565b 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -253,6 +253,8 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 		return ret;
  	}
  
--	flush_cache_page(vma, addr, pte_pfn(ptep_get(pvmw.pte)));
-+	flush_cache_page(vma, addr, pte_pfn(pte));
- 	ptep_clear_flush(vma, addr, pvmw.pte);
- 	if (new_page)
- 		set_pte_at(mm, addr, pvmw.pte,
++	of_node_put(of_args.np);
++
+ 	if ((of_args.args[0] != 0) ||
+ 	    (of_args.args[1] != 0) ||
+ 	    (of_args.args[2] != priv->npins)) {
 -- 
 2.39.5
 
