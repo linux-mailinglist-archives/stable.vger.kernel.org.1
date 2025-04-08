@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4762A80829
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B48A808F4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6F34C81AA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CECD01B84BDA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1731FCFF3;
-	Tue,  8 Apr 2025 12:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29FA277005;
+	Tue,  8 Apr 2025 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJKR1nWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcPCJyyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACDB20330;
-	Tue,  8 Apr 2025 12:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEE26B0A2;
+	Tue,  8 Apr 2025 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115493; cv=none; b=YT/yyvnwjmaZUKLAjSYV9C1wgIIjBEyDs/S/bIGuVHTVRV0JyrK0YjISt0E5YgGM0QEhjvIjwTFBcpks4R+hgkMWAUdmkq/15NBVqQ/+lyYm2JmVzwPAfQisOVJb65jHNh+CWTZ3JLxYSyBmZD0xO6GTSCxqAzDQdzRCbAZd2OQ=
+	t=1744115984; cv=none; b=Fs5kDsEls5ACna+gXJ1aFhr+ULcKXn/hCn1V3ayW8ArZK09UWw6ADE7bwIQ1yP9okJkvGpLxwoUNmvwyD59lJaLuPA/j1IyRc7J8sAcxTjx5w/hHrZMUVLvfSotsbUOEqBHyMo92ZNwbvtBSSqDLOIx+EeT2uAfev9rJbqfwQDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115493; c=relaxed/simple;
-	bh=/1GiyDRRZILNrFG50YCZ5F7RRaP+pKitaT5Kw0WiKmI=;
+	s=arc-20240116; t=1744115984; c=relaxed/simple;
+	bh=zZggAXfr+PmCMGLhtXznHb+CAIt4BK2WcPaDKWI3gTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUSkGjYoaJMczMWecVlNuySwOh7ZSqgvC8WQDZj9ezeJqqtT9gcVOG6U/DFKI6KDhYx/kL+LiPTmy9lVSkvHTlXZLVH1tBRPCPzHJOZMxqCYHgNCO/hDiq//J24a1tbyiys25f52ENIh0WFP35HLyQVx3k1lWWUlTjuXlXCLHjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJKR1nWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCBBC4CEE5;
-	Tue,  8 Apr 2025 12:31:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sdR0GBY3lybcN2B3Eb1/36oTTVL1BdUn73BLgC9lmQhwAQkBEo0+N1ZvwDXNrBwzThs+KAxkN41mVRxdFDrCn8MZj3AOTrcT2ZOPKxKf5gnHZeZ6wajL1vZ8XutKmhKoLx/Yjo11e+3ajq/nsE2qYaLxOuqQ74xU5/isDuuKCuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcPCJyyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A99C4CEE5;
+	Tue,  8 Apr 2025 12:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115493;
-	bh=/1GiyDRRZILNrFG50YCZ5F7RRaP+pKitaT5Kw0WiKmI=;
+	s=korg; t=1744115983;
+	bh=zZggAXfr+PmCMGLhtXznHb+CAIt4BK2WcPaDKWI3gTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJKR1nWf1PsImY62I4M0wcQmOYsvNRwXaIBTgX1r5VWf9LvYoGsAhnftN8H7FC9US
-	 vUDp+PWFTVyCV69uleqkuWL/E3ywn5+bgU7SO6LUmtrj0HgQ2XAYqDeO/jLo5FXXFh
-	 f+AT8AZsoOpWVqv5am/AChc4R7TuEKmcHq4jXPro=
+	b=WcPCJyywvg4/bFq/z9qLDIPhTPtSBU3kgVdQ3QP4CzsSn2wEG/tnDFeBpxD+UAjxC
+	 ZBXREg1iPR29hgXpBCE9J1gPJymdOiLtI5ES+dftoGoXNb1iHdNBrer9r+F939wXnL
+	 71qJhljP4atduv8nnQLXFXFVkf2LtVcw40x7LxAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 494/499] nfsd: fix management of listener transports
-Date: Tue,  8 Apr 2025 12:51:46 +0200
-Message-ID: <20250408104903.679052401@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 177/204] platform/x86: ISST: Correct command storage data length
+Date: Tue,  8 Apr 2025 12:51:47 +0200
+Message-ID: <20250408104825.513538357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,140 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit d093c90892607be505e801469d6674459e69ab89 upstream.
+commit 9462e74c5c983cce34019bfb27f734552bebe59f upstream.
 
-Currently, when no active threads are running, a root user using nfsdctl
-command can try to remove a particular listener from the list of previously
-added ones, then start the server by increasing the number of threads,
-it leads to the following problem:
+After resume/online turbo limit ratio (TRL) is restored partially if
+the admin explicitly changed TRL from user space.
 
-[  158.835354] refcount_t: addition on 0; use-after-free.
-[  158.835603] WARNING: CPU: 2 PID: 9145 at lib/refcount.c:25 refcount_warn_saturate+0x160/0x1a0
-[  158.836017] Modules linked in: rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd auth_rpcgss nfs_acl lockd grace overlay isofs uinput snd_seq_dummy snd_hrtimer nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables qrtr sunrpc vfat fat uvcvideo videobuf2_vmalloc videobuf2_memops uvc videobuf2_v4l2 videodev videobuf2_common snd_hda_codec_generic mc e1000e snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_hwdep snd_seq snd_seq_device snd_pcm snd_timer snd soundcore sg loop dm_multipath dm_mod nfnetlink vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs libcrc32c crct10dif_ce ghash_ce vmwgfx sha2_ce sha256_arm64 sr_mod sha1_ce cdrom nvme drm_client_lib drm_ttm_helper ttm nvme_core drm_kms_helper nvme_auth drm fuse
-[  158.840093] CPU: 2 UID: 0 PID: 9145 Comm: nfsd Kdump: loaded Tainted: G    B   W          6.13.0-rc6+ #7
-[  158.840624] Tainted: [B]=BAD_PAGE, [W]=WARN
-[  158.840802] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
-[  158.841220] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  158.841563] pc : refcount_warn_saturate+0x160/0x1a0
-[  158.841780] lr : refcount_warn_saturate+0x160/0x1a0
-[  158.842000] sp : ffff800089be7d80
-[  158.842147] x29: ffff800089be7d80 x28: ffff00008e68c148 x27: ffff00008e68c148
-[  158.842492] x26: ffff0002e3b5c000 x25: ffff600011cd1829 x24: ffff00008653c010
-[  158.842832] x23: ffff00008653c000 x22: 1fffe00011cd1829 x21: ffff00008653c028
-[  158.843175] x20: 0000000000000002 x19: ffff00008653c010 x18: 0000000000000000
-[  158.843505] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[  158.843836] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600050a26493
-[  158.844143] x11: 1fffe00050a26492 x10: ffff600050a26492 x9 : dfff800000000000
-[  158.844475] x8 : 00009fffaf5d9b6e x7 : ffff000285132493 x6 : 0000000000000001
-[  158.844823] x5 : ffff000285132490 x4 : ffff600050a26493 x3 : ffff8000805e72bc
-[  158.845174] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000098588000
-[  158.845528] Call trace:
-[  158.845658]  refcount_warn_saturate+0x160/0x1a0 (P)
-[  158.845894]  svc_recv+0x58c/0x680 [sunrpc]
-[  158.846183]  nfsd+0x1fc/0x348 [nfsd]
-[  158.846390]  kthread+0x274/0x2f8
-[  158.846546]  ret_from_fork+0x10/0x20
-[  158.846714] ---[ end trace 0000000000000000 ]---
+A hash table is used to store SST mail box and MSR settings when modified
+to restore those settings after resume or online. This uses a struct
+isst_cmd field "data" to store these settings. This is a 64 bit field.
+But isst_store_new_cmd() is only assigning as u32. This results in
+truncation of 32 bits.
 
-nfsd_nl_listener_set_doit() would manipulate the list of transports of
-server's sv_permsocks and close the specified listener but the other
-list of transports (server's sp_xprts list) would not be changed leading
-to the problem above.
+Change the argument to u64 from u32.
 
-Instead, determined if the nfsdctl is trying to remove a listener, in
-which case, delete all the existing listener transports and re-create
-all-but-the-removed ones.
-
-Fixes: 16a471177496 ("NFSD: add listener-{set,get} netlink command")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |   44 +++++++++++++++++++++-----------------------
- 1 file changed, 21 insertions(+), 23 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1959,6 +1959,7 @@ int nfsd_nl_listener_set_doit(struct sk_
- 	struct svc_serv *serv;
- 	LIST_HEAD(permsocks);
- 	struct nfsd_net *nn;
-+	bool delete = false;
- 	int err, rem;
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -77,7 +77,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+ static DEFINE_MUTEX(isst_hash_lock);
  
- 	mutex_lock(&nfsd_mutex);
-@@ -2019,34 +2020,28 @@ int nfsd_nl_listener_set_doit(struct sk_
- 		}
- 	}
+ static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+-			      u32 data)
++			      u64 data)
+ {
+ 	struct isst_cmd *sst_cmd;
  
--	/* For now, no removing old sockets while server is running */
--	if (serv->sv_nrthreads && !list_empty(&permsocks)) {
-+	/*
-+	 * If there are listener transports remaining on the permsocks list,
-+	 * it means we were asked to remove a listener.
-+	 */
-+	if (!list_empty(&permsocks)) {
- 		list_splice_init(&permsocks, &serv->sv_permsocks);
--		spin_unlock_bh(&serv->sv_lock);
--		err = -EBUSY;
--		goto out_unlock_mtx;
-+		delete = true;
- 	}
-+	spin_unlock_bh(&serv->sv_lock);
- 
--	/* Close the remaining sockets on the permsocks list */
--	while (!list_empty(&permsocks)) {
--		xprt = list_first_entry(&permsocks, struct svc_xprt, xpt_list);
--		list_move(&xprt->xpt_list, &serv->sv_permsocks);
--
--		/*
--		 * Newly-created sockets are born with the BUSY bit set. Clear
--		 * it if there are no threads, since nothing can pick it up
--		 * in that case.
--		 */
--		if (!serv->sv_nrthreads)
--			clear_bit(XPT_BUSY, &xprt->xpt_flags);
--
--		set_bit(XPT_CLOSE, &xprt->xpt_flags);
--		spin_unlock_bh(&serv->sv_lock);
--		svc_xprt_close(xprt);
--		spin_lock_bh(&serv->sv_lock);
-+	/* Do not remove listeners while there are active threads. */
-+	if (serv->sv_nrthreads) {
-+		err = -EBUSY;
-+		goto out_unlock_mtx;
- 	}
- 
--	spin_unlock_bh(&serv->sv_lock);
-+	/*
-+	 * Since we can't delete an arbitrary llist entry, destroy the
-+	 * remaining listeners and recreate the list.
-+	 */
-+	if (delete)
-+		svc_xprt_destroy_all(serv, net);
- 
- 	/* walk list of addrs again, open any that still don't exist */
- 	nlmsg_for_each_attr(attr, info->nlhdr, GENL_HDRLEN, rem) {
-@@ -2073,6 +2068,9 @@ int nfsd_nl_listener_set_doit(struct sk_
- 
- 		xprt = svc_find_listener(serv, xcl_name, net, sa);
- 		if (xprt) {
-+			if (delete)
-+				WARN_ONCE(1, "Transport type=%s already exists\n",
-+					  xcl_name);
- 			svc_xprt_put(xprt);
- 			continue;
- 		}
 
 
 
