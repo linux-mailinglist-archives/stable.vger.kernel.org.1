@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFDBA806B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E57A80A6F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398D01B812A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0965B428404
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3170F26656B;
-	Tue,  8 Apr 2025 12:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0FF2777E4;
+	Tue,  8 Apr 2025 12:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqiMGYQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+ZPBayh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E235E268681;
-	Tue,  8 Apr 2025 12:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EFB26B085;
+	Tue,  8 Apr 2025 12:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114953; cv=none; b=fOA3SJ9biy0dfNykSJfGlsDPrJ52X0HhTbRShx+RG0k95N8PTTVw/QlHcSrQCya7/rp/Sd9uOAEs3SLg1UP0k+u6/NqdT3C149oMwyqXIwt/Qa7NvkTQetpJA2zN9s9t3BvNtqPwQqh5OENWEFe1Ft3pIxPOoiQcaM411vfPmPw=
+	t=1744116440; cv=none; b=fSXkusmc/Axq/pjzkGfYSDlI7ZCovVzTqq1QpyoNtkFfuzx8t29EQLXL4dgKR2uZY4hycVkH3+ofy0di+MAHGbU65HMdapy/n5YmC6EVk02pu78cdt9wL/+qlYW8aDFyzaf5O8FZIl5xHIcd8vk6hzl37sBoHX8I79Ua4G5kuZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114953; c=relaxed/simple;
-	bh=S6ShDeK055+SBCVnHDW70J7WA8me4LNVLNgToXFJYqM=;
+	s=arc-20240116; t=1744116440; c=relaxed/simple;
+	bh=6Rq+us6pbkI1Da4WewV6FNKxcbdgvwy4OTu07wRovOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohWG/Rl8o5Ekn1dG+iPYKRD2zucqgxGRfD71CjHzmoKscf39HFbyHLTX+rMGTWFJ4xYE1QOmv8my6VTMNrgqKXTwx81ZXMJeMIVYVGq/Drr1rfe+aynuCvhvzyhICnSuc3UiqvCPcWzkZxg/y+yoVrqqdB9/pc1K5y91jOL8CjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqiMGYQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C9AC4CEE5;
-	Tue,  8 Apr 2025 12:22:32 +0000 (UTC)
+	 MIME-Version; b=J3JmL80EDvaKj4CfI0bC01bnD9vDUXhU/JDGP45o0+hAuPPHm2VIhQEfyyDNk8cI21aQVO/nvdcpGMUJ5z38a3wUmQw0icNL23jnL8EaZiYxZ7nyfpsw9H8etmuRcGrgAIAcebq0ufT6E0qUURC5yos78PvkFR2wWR8qUQO4jDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+ZPBayh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DA1C4CEE5;
+	Tue,  8 Apr 2025 12:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114952;
-	bh=S6ShDeK055+SBCVnHDW70J7WA8me4LNVLNgToXFJYqM=;
+	s=korg; t=1744116439;
+	bh=6Rq+us6pbkI1Da4WewV6FNKxcbdgvwy4OTu07wRovOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqiMGYQYKEXGJBU7ST8t6RWZm/PO9zZci/IYr7GZQdsDLB4t1kiSK4DhYAcP11AE2
-	 l3SMYaeFsxfnS3EJmdl9OSHt+OVRge9cjl9v0ulKP0Ocqj19HLnSyOX/Ku+ru/ItdE
-	 1SIh0CcVkcfzsZCaE2Bl5hL8FA6E+bZvYurGhSqU=
+	b=f+ZPBayhiXg5fi4KaCtxPZL5q01w4TzoMdVPIM2P4/9gXzhJFUr5+i5zxZAzBjMwb
+	 EaFEftjS3VGT+CorjucPbifwLu2uuUbzXpBZddh0mpOuu9dklQesnXKyz96aemISbX
+	 QoXkztL0DYBqr3zctbiIQdnfgCgibTSfUyD+gVKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 256/499] perf python: Fixup description of sample.id event member
+Subject: [PATCH 6.12 142/423] selftests/bpf: Select NUMA_NO_NODE to create map
 Date: Tue,  8 Apr 2025 12:47:48 +0200
-Message-ID: <20250408104857.596802558@linuxfoundation.org>
+Message-ID: <20250408104849.037881095@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
+[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
 
-Some old cut'n'paste error, its "ip", so the description should be
-"event ip", not "event type".
+On powerpc, a CPU does not necessarily originate from NUMA node 0.
+This contrasts with architectures like x86, where CPU 0 is not
+hot-pluggable, making NUMA node 0 a consistently valid node.
+This discrepancy can lead to failures when creating a map on NUMA
+node 0, which is initialized by default, if no CPUs are allocated
+from NUMA node 0.
 
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
+creation for this selftest.
+
+Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 2096cdbaa53b4..14d7347ac0f38 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -79,7 +79,7 @@ struct pyrf_event {
- };
+diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+index cc184e4420f6e..67557cda22083 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
+@@ -6,6 +6,10 @@
+ #include <test_progs.h>
+ #include "bloom_filter_map.skel.h"
  
- #define sample_members \
--	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
-+	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
- 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
- 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
- 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
++#ifndef NUMA_NO_NODE
++#define NUMA_NO_NODE	(-1)
++#endif
++
+ static void test_fail_cases(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts);
+@@ -69,6 +73,7 @@ static void test_success_cases(void)
+ 
+ 	/* Create a map */
+ 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
++	opts.numa_node = NUMA_NO_NODE;
+ 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
+ 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
+ 		return;
 -- 
 2.39.5
 
