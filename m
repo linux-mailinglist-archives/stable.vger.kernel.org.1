@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E38AA806B6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D29A809E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8692A4A6AD1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F59E4E11AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A4D26B2CF;
-	Tue,  8 Apr 2025 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1986826A0FF;
+	Tue,  8 Apr 2025 12:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gt+SgmVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gn9OIB7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D15269B0E;
-	Tue,  8 Apr 2025 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA31A26F462;
+	Tue,  8 Apr 2025 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114730; cv=none; b=nSesc0sIfEHCP27yDMYpiYYWUBEi/Gxt7HvHPDabDUQ6QDzaWube/o+OecowfYEi4PTgVhQpse0jiZCqccDCinvTTH97Bg7Pul2OHf9UNgS2pV5dhOFs8U4nyBqADJk15aZNDi7K/HOtuEeAD1WiVOFTnhA56Xiav5jB9ikfMQo=
+	t=1744116222; cv=none; b=PR6VwPz1fu+iA8ny9jSklh76yZ+99WqnVBfc3BaCCIFRIZoAb/AJeLIaTR3OQrtxsorJBT0EHFFvp4iBpZWwgw9Qz7hFaoFlGEbSlhj8eElZ6uUjqMZQ11LN1bk62Z7/iHL2qbQ3DykZXcBZM+sEiBLCgel/BNt8rHa8v3BSzEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114730; c=relaxed/simple;
-	bh=vak1NwZDj172MQejCG5PN20UVStVYJWV/KFRNS3E97g=;
+	s=arc-20240116; t=1744116222; c=relaxed/simple;
+	bh=+/KojMkfQ6jilqEeKiBZ8jO6y2gEJvZ57+Yzmsr77io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XW2Pch86wBrKmjmwgSQyCKY437xIaKgS9bQjVit3zJ6xz0NwFkHfiujtg1L0EaFJn+/YSQ6HjvonzmhbGBkSIjsoZBJLn2AbFcQ0HPn5Qb8Qfj2Vv5q+EQoGg/DSy+TxR4+DKC3C5AsVmX4iAILcmlqzs/6bhYLUCHqOTPfST40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gt+SgmVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F80C4CEE5;
-	Tue,  8 Apr 2025 12:18:49 +0000 (UTC)
+	 MIME-Version; b=YDsyknCrbo1WqeRm7wRAbY4odcZxjYSO1/kH81YvLrmaFoGWjXh9XL6bn/NovxdhZhj7FW8eV0KYhGk955JBWs4MnHJJtyy1HC6kSno+LpPUQk1uYilJDdhfcD4jRDAKFLWKFTsv2j0IQPzQA/0MD9t33AqdFIQ5aJLuQ50jx44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gn9OIB7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010B1C4CEE5;
+	Tue,  8 Apr 2025 12:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114730;
-	bh=vak1NwZDj172MQejCG5PN20UVStVYJWV/KFRNS3E97g=;
+	s=korg; t=1744116222;
+	bh=+/KojMkfQ6jilqEeKiBZ8jO6y2gEJvZ57+Yzmsr77io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gt+SgmVnUsyEB53RETMaD1OYgn/8VeEdJnj2MzG9ccp7M/7TNlhnms5LNg4bsEdob
-	 p4Qa0ENapoiok8TzJM3dsQlKfu2EXT6Qv0ykRdtk7BbB1Ef/Mj0MDRYZjJ4LtDxbL+
-	 tqu0sdTN/ZXwIkW1x5S12GvlE/sKNyioFZ243MfQ=
+	b=gn9OIB7VDLM2Cd8mFt7mvJaiqo/YmVv0OJGcTM7ocvQBPkIu2RKNNiKA3hTAGG2rK
+	 MSEpadP1ppO+UpJc2eWkpeozOq20lrxx5zeSmB45b0cHnAGK273VingbnnDQXXOj7l
+	 XHgBlV8kyq471fesPM7ZdXoCrBPpVCtVRhghz7Lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 175/499] libbpf: Add namespace for errstr making it libbpf_errstr
+Subject: [PATCH 6.12 061/423] drm/mediatek: mtk_hdmi: Fix typo for aud_sampe_size member
 Date: Tue,  8 Apr 2025 12:46:27 +0200
-Message-ID: <20250408104855.539410318@linuxfoundation.org>
+Message-ID: <20250408104847.168933454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 307ef667e94530c2f2f77797bfe9ea85c22bec7d ]
+[ Upstream commit 72fcb88e7bbc053ed4fc74cebb0315b98a0f20c3 ]
 
-When statically linking symbols can be replaced with those from other
-statically linked libraries depending on the link order and the hoped
-for "multiple definition" error may not appear. To avoid conflicts it
-is good practice to namespace symbols, this change renames errstr to
-libbpf_errstr. To avoid churn a #define is used to turn use of
-errstr(err) to libbpf_errstr(err).
+Rename member aud_sampe_size of struct hdmi_audio_param to
+aud_sample_size to fix a typo and enhance readability.
 
-Fixes: 1633a83bf993 ("libbpf: Introduce errstr() for stringifying errno")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250320222439.1350187-1-irogers@google.com
+This commit brings no functional changes.
+
+Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-20-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/str_error.c | 2 +-
- tools/lib/bpf/str_error.h | 7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/lib/bpf/str_error.c b/tools/lib/bpf/str_error.c
-index 8743049e32b7d..9a541762f54c0 100644
---- a/tools/lib/bpf/str_error.c
-+++ b/tools/lib/bpf/str_error.c
-@@ -36,7 +36,7 @@ char *libbpf_strerror_r(int err, char *dst, int len)
- 	return dst;
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index ce808ee82bafb..1aad8e6cf52e7 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -137,7 +137,7 @@ enum hdmi_aud_channel_swap_type {
  
--const char *errstr(int err)
-+const char *libbpf_errstr(int err)
- {
- 	static __thread char buf[12];
+ struct hdmi_audio_param {
+ 	enum hdmi_audio_coding_type aud_codec;
+-	enum hdmi_audio_sample_size aud_sampe_size;
++	enum hdmi_audio_sample_size aud_sample_size;
+ 	enum hdmi_aud_input_type aud_input_type;
+ 	enum hdmi_aud_i2s_fmt aud_i2s_fmt;
+ 	enum hdmi_aud_mclk aud_mclk;
+@@ -1075,7 +1075,7 @@ static int mtk_hdmi_output_init(struct mtk_hdmi *hdmi)
  
-diff --git a/tools/lib/bpf/str_error.h b/tools/lib/bpf/str_error.h
-index 66ffebde0684a..53e7fbffc13ec 100644
---- a/tools/lib/bpf/str_error.h
-+++ b/tools/lib/bpf/str_error.h
-@@ -7,10 +7,13 @@
- char *libbpf_strerror_r(int err, char *dst, int len);
- 
- /**
-- * @brief **errstr()** returns string corresponding to numeric errno
-+ * @brief **libbpf_errstr()** returns string corresponding to numeric errno
-  * @param err negative numeric errno
-  * @return pointer to string representation of the errno, that is invalidated
-  * upon the next call.
-  */
--const char *errstr(int err);
-+const char *libbpf_errstr(int err);
-+
-+#define errstr(err) libbpf_errstr(err)
-+
- #endif /* __LIBBPF_STR_ERROR_H */
+ 	hdmi->csp = HDMI_COLORSPACE_RGB;
+ 	aud_param->aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-	aud_param->aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++	aud_param->aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 	aud_param->aud_input_type = HDMI_AUD_INPUT_I2S;
+ 	aud_param->aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
+ 	aud_param->aud_mclk = HDMI_AUD_MCLK_128FS;
+@@ -1573,14 +1573,14 @@ static int mtk_hdmi_audio_hw_params(struct device *dev, void *data,
+ 	switch (daifmt->fmt) {
+ 	case HDMI_I2S:
+ 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_I2S;
+ 		hdmi_params.aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
+ 		hdmi_params.aud_mclk = HDMI_AUD_MCLK_128FS;
+ 		break;
+ 	case HDMI_SPDIF:
+ 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
+-		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
++		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
+ 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_SPDIF;
+ 		break;
+ 	default:
 -- 
 2.39.5
 
