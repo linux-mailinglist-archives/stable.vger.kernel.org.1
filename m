@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-131550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1952EA80B6E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7BEA804B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2EB0903C93
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA24447604
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DAD26A1D7;
-	Tue,  8 Apr 2025 12:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B65269CF1;
+	Tue,  8 Apr 2025 12:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrBN9b1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYlqMI/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B19C148;
-	Tue,  8 Apr 2025 12:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA826869D;
+	Tue,  8 Apr 2025 12:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116699; cv=none; b=VBFxHsoOBCHKMrSg3oRXcf4aVLxhfOGZ3KIlnsLzOSq1mAQXgAP2hwl9pI1RYbzkVgS4qeqIcv8KMwNM8g58u4X9Diqt47/RQmqh6NOwS/gPPVi541DSyW5JnkQHMzJZN/0MkKU3WgBoFR9roQe9V2VeGdDCl7iHXdsTYlK3b/k=
+	t=1744113791; cv=none; b=JrDoDi2BUAUTIqLd/qd6DLbTOXGfpelaoZuuPb2qgQTRhUztGWi7IKwzw0IF2QS/kGFjFUeh7tjsl5lYjTtw4lBQoYGjPifo4WNfzcGgaZzDB/TxwLmkTJFo4l7HHaAxNVti+0XHOcmziAdzXGbXXbyy41drqOt6n3O9uOUxhsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116699; c=relaxed/simple;
-	bh=eXhJsiKzKEc2jh4zRDaQ41CMpcvHeZ4UonI6O/sranA=;
+	s=arc-20240116; t=1744113791; c=relaxed/simple;
+	bh=6cDrRPRemTCw2vTcZOLy063WBlViY9W2tJYi6fb7KHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmX72N5S8uEP9PYma5Zp7931olB8rPmna6c5wxQSJ8dzmacKMoz6RP21o2ca07dBVVtRiTIDztwr3hPHGvVXGSvK2MaOh1Soag+Joq+TYus1IZAT/F3msMnMg6LDwLVq7ddLuffRCLMRiQpOeqp/+0sU2WcYEViCQqyFHI+BffA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrBN9b1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE67AC4CEE5;
-	Tue,  8 Apr 2025 12:51:38 +0000 (UTC)
+	 MIME-Version; b=ly/v7o654JsaMjXZ4S3CiOtVayhlLhkhby0dAfDRKBoOIytFlexz6jWDSI+X9TsJeBv6BsE3KL4nFkBuOhyBQO+KoCBb4TGXxKg07OAbuo16lwtlFhyHg6UPeZiLs5O8+HBGxeek0TEXSQmnpFp+/1YYupzXmjWMdaV+llIwBk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYlqMI/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D13FC4CEE5;
+	Tue,  8 Apr 2025 12:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116699;
-	bh=eXhJsiKzKEc2jh4zRDaQ41CMpcvHeZ4UonI6O/sranA=;
+	s=korg; t=1744113791;
+	bh=6cDrRPRemTCw2vTcZOLy063WBlViY9W2tJYi6fb7KHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrBN9b1q2kTQoRI3GEE071P54tdQB9kcHz8iKVb/wos/WPglQN8xJ50BF4VdOJ7Kb
-	 aX30s6mjwNXMxwQ1kOZvYxU1Su+Hc0oq4jIe4ICJ5iaINQqpEmhjdokIuagDUi9udP
-	 AjJMmqg/wq3xCyYs7KmZzYf8WZl6iOIT2+oOnP9w=
+	b=MYlqMI/3XR4XFnN3QGYWYumhwGcYcvJfniJdXBjNs9Ii2CntO9qwqR8L3mAofn0Tz
+	 kZYpzKWHcgs5MxMN6JG5XLgpvlQC63C2qLzjjqmrU0ljVp22YVci5rmYkx1WMHFp+H
+	 qUKngYbxm8KKi6nVGldzDyOLRuH3u3zy7pVajdGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/423] ksmbd: fix r_count dec/increment mismatch
+Subject: [PATCH 5.4 021/154] nvme-fc: go straight to connecting state when initializing
 Date: Tue,  8 Apr 2025 12:49:22 +0200
-Message-ID: <20250408104851.222257806@linuxfoundation.org>
+Message-ID: <20250408104815.957484845@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit ddb7ea36ba7129c2ed107e2186591128618864e1 ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-r_count is only increased when there is an oplock break wait,
-so r_count inc/decrement are not paired. This can cause r_count
-to become negative, which can lead to a problem where the ksmbd
-thread does not terminate.
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-Fixes: 3aa660c05924 ("ksmbd: prevent connection release during oplock break notification")
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
+
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 592fe665973a8..304aefecaaaf5 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -724,8 +724,8 @@ static int smb2_oplock_break_noti(struct oplock_info *opinfo)
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 0d2c22cf12a08..f3c0bff714eba 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3164,8 +3164,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
-+	ksmbd_conn_r_count_inc(conn);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
--		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
- 		ksmbd_queue_work(work);
- 
-@@ -833,8 +833,8 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
- 
-+	ksmbd_conn_r_count_inc(conn);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
--		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
- 		wait_for_break_ack(opinfo);
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
