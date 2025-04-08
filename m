@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-130670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E213A805F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 108D6A805CC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7377517F7EC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:15:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 007DF4A370E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70126A08F;
-	Tue,  8 Apr 2025 12:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EEA268FFA;
+	Tue,  8 Apr 2025 12:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXdhrBVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZr1lE+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D3C267B15;
-	Tue,  8 Apr 2025 12:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C526981C;
+	Tue,  8 Apr 2025 12:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114335; cv=none; b=GeKJGpRvGwatBmSK3pMkADI55KDyXPcCCvwT5COVSCjxVYPD4SNOfKr4WFaOGxw+J+p8OSlzovRdZRXhGnecHsw33fWZQvG2AEq1N10fxJVyzqCuULkc1hB/NlH0QvDvbf5S96hKQQZ+2MePtu76DW37BlfPxyVCZErnQJh71ck=
+	t=1744114340; cv=none; b=I3l39GXH6AWowYZxbMsWOd4bDa7z7afvitGN96PefDSu0p66QpHl+ViQfFEo6nqo4QpXhDsvvmsxMLoeCgQ1a9xwq7g6LDLN8lhcFCHiQPA8t6c0WFOuEDkvPhBueIWwQIdRisW1ypzUaZP/8xZ5dX+QskVN0AUU1Vt8VC0mZy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114335; c=relaxed/simple;
-	bh=w5By8VG8A44XicVd6a04MAQU4aWIt2sc+hN/OIV4tXY=;
+	s=arc-20240116; t=1744114340; c=relaxed/simple;
+	bh=W9Eny4Mi8WXvrio2mlYZuHs63c+p8cXt3u9TpxJGScU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqGYv0pmLR6cBs8DqIMQxh5cLpvDLR1qg0UYKzBBOiTbVcibOKV1Lw3lnmO3gHUXJrrUztxqBaQ4xLdlWGVsBC/FRzrf9Or4yTpvr/5cWOXri2YhJVehWN8j6mIMVogQpzAcCgsJP8VJhl39jSLBuISslHHAupgRtiQJFk4sg+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXdhrBVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6362C4CEE5;
-	Tue,  8 Apr 2025 12:12:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eU7PeF3cu76esYzeAHkWeomBXWM/ePxideOfZVoMZzCJt3zS3zfGz+wU0IFiQA9kb62QdSqA5ZyVZyzSt2U4BWXOZfZWeYkyyPfjA62afy3ZebVGMnm67VN7c06noqEDRDeMW8vV2qb1AAA+1YXemKj94Zq7IqBHPm3M1J5zJ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZr1lE+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E04C4CEE5;
+	Tue,  8 Apr 2025 12:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114335;
-	bh=w5By8VG8A44XicVd6a04MAQU4aWIt2sc+hN/OIV4tXY=;
+	s=korg; t=1744114340;
+	bh=W9Eny4Mi8WXvrio2mlYZuHs63c+p8cXt3u9TpxJGScU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXdhrBVf4uHFnZXu1xxTBsBV6KyZw9Gl/zlUYER0kjmVKflSBZmAT40/TVxi4KkyB
-	 rri7BqB+VcZoF5XY2M5HiWP+wd5M7EKmI6seF0N8/SN3jN69XNszQOViNRmmesEZ1X
-	 ere5TodroIMtr6e4Wi6dRDZutsdPUk32H1eXxDlw=
+	b=uZr1lE+M/cqcX46DziiukQdYLdY8TzzvPLprf365rG4jEwZvD3vaqxJteUXPB60WL
+	 +HLRxrlFhN2lRs9RyybSzEyoQO8hc1d+PJieRPZfjYj0bcp/PuaVpiXLrQNwNNRmXj
+	 i8duOdWBXVzEz0FqqqBzu/9fWIHaqcC20GcHB8tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sean Anderson <sean.anderson@seco.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmremann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 068/499] drm: zynqmp_dp: Fix a deadlock in zynqmp_dp_ignore_hpd_set()
-Date: Tue,  8 Apr 2025 12:44:40 +0200
-Message-ID: <20250408104852.925728088@linuxfoundation.org>
+Subject: [PATCH 6.13 069/499] drm/vkms: Fix use after free and double free on init error
+Date: Tue,  8 Apr 2025 12:44:41 +0200
+Message-ID: <20250408104852.949483139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -63,46 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit f887685ee0eb4ef716391355568181230338f6eb ]
+[ Upstream commit ed15511a773df86205bda66c37193569575ae828 ]
 
-Instead of attempting the same mutex twice, lock and unlock it.
+If the driver initialization fails, the vkms_exit() function might
+access an uninitialized or freed default_config pointer and it might
+double free it.
 
-This bug has been detected by the Clang thread-safety analyzer.
+Fix both possible errors by initializing default_config only when the
+driver initialization succeeded.
 
-Cc: Sean Anderson <sean.anderson@linux.dev>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: 28edaacb821c ("drm: zynqmp_dp: Add debugfs interface for compliance testing")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250207162528.1651426-2-sean.anderson@linux.dev
+Reported-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Closes: https://lore.kernel.org/all/Z5uDHcCmAwiTsGte@louis-chauvet-laptop/
+Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmremann@suse.de>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212084912.3196-1-jose.exposito89@gmail.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vkms/vkms_drv.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-index 56a261a40ea3c..c59c4309cd497 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-@@ -2272,7 +2272,7 @@ static int zynqmp_dp_ignore_hpd_set(void *data, u64 val)
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index 2d1e95cb66e5b..cb486ae3e3da1 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -247,17 +247,19 @@ static int __init vkms_init(void)
+ 	if (!config)
+ 		return -ENOMEM;
  
- 	mutex_lock(&dp->lock);
- 	dp->ignore_hpd = val;
--	mutex_lock(&dp->lock);
-+	mutex_unlock(&dp->lock);
- 	return 0;
+-	default_config = config;
+-
+ 	config->cursor = enable_cursor;
+ 	config->writeback = enable_writeback;
+ 	config->overlay = enable_overlay;
+ 
+ 	ret = vkms_create(config);
+-	if (ret)
++	if (ret) {
+ 		kfree(config);
++		return ret;
++	}
+ 
+-	return ret;
++	default_config = config;
++
++	return 0;
+ }
+ 
+ static void vkms_destroy(struct vkms_config *config)
+@@ -281,9 +283,10 @@ static void vkms_destroy(struct vkms_config *config)
+ 
+ static void __exit vkms_exit(void)
+ {
+-	if (default_config->dev)
+-		vkms_destroy(default_config);
++	if (!default_config)
++		return;
+ 
++	vkms_destroy(default_config);
+ 	kfree(default_config);
  }
  
 -- 
