@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E798A80988
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39CEA804AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60A338C3E16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7E017A8C43
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FF026B944;
-	Tue,  8 Apr 2025 12:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFAD269811;
+	Tue,  8 Apr 2025 12:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZ+3ku3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVEHB+At"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B0826461E;
-	Tue,  8 Apr 2025 12:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C25F267B65;
+	Tue,  8 Apr 2025 12:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115845; cv=none; b=isKNBQOWoyneLIrRJol4pu9qDfztta9+ZQlBNoLpV2SdJtp/g1J1SqbOM8eRD9Ay6nP0WR2LARY7XZmIXk9AsdI0K76q23qh5vBaQB/chcnKheMb/4JcjUDKxo/VaAYmt6jc0ON5eJPLJ3kZWDi5MIGBL1ewD1jnN1xjK1zyKZw=
+	t=1744114151; cv=none; b=SMVDCXY0Mp6lCVqYkEF+hvSykGJok+sV+MxwCnSnloh7xGaJcXlSBsd5DSa1dXkgZmjKw0QageD42HFevaWlMcwQkyOGjy1SGlDfDI9sxBZQi+mJmU3S5zrpKf6kCAWLVfU2+/BtbuAtJoaS47QZrJD7yZOdF++sg7N3HzU8SbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115845; c=relaxed/simple;
-	bh=MzQ8qzoHAXByLMg6nJkBOm/FSicGgGJDHBGchc1/Hx4=;
+	s=arc-20240116; t=1744114151; c=relaxed/simple;
+	bh=t8MyNbvLfT9JP76H8wSi8joxPPY5SnOmiMC7cQieJ5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3nF0S5w/N+ryo0bsvMUKsjLwAUy7vxbuAInVqIksfTDzajmNKqyQhornyolmZWOu534NrrRxSVqYLDxN2FFoMuSY9OUqP5aZbxjdtHoR85X0YV5VVgDco4OmHSLlnX5/equKFt+LQ9FSuBbjTAqfDhMXVJMemjbfMI8mK3iEkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZ+3ku3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A0AC4CEE5;
-	Tue,  8 Apr 2025 12:37:24 +0000 (UTC)
+	 MIME-Version; b=ecEvyIxHs7DzMNeYzxD5o3yXP4zGZC9SORJyoJGDYR91QgZzTym904W/w63kdTh0ycWwCAouVltxPJkL4xoaiUKouSD6JvbwN1BXBYm2x5gRJIiUye3mOvBldf3pgfW58jERqrJNQXWFQtDKL3W6yvuJ9yA0goDQ4o4npRMStVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVEHB+At; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEC1C4CEE5;
+	Tue,  8 Apr 2025 12:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115845;
-	bh=MzQ8qzoHAXByLMg6nJkBOm/FSicGgGJDHBGchc1/Hx4=;
+	s=korg; t=1744114150;
+	bh=t8MyNbvLfT9JP76H8wSi8joxPPY5SnOmiMC7cQieJ5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZ+3ku3AJLqylD6exN9cE2+8CejAj320JmWm1Y3GlYhVF3oHQp7/9C9pVda+l0Kir
-	 hhhovm/ulHVJEQPr2BOsa9b+xZTy1VMjt9akn/ShGCAbDz/+v7TQejAI5d6xjt3f/R
-	 cXU92wZCQpK/W1Cweq4QPPuG3MzDOJU1G1vwsNqo=
+	b=ZVEHB+At/48vlq1uLtdVs40nm5kFZRJilmEm2igpqgus7/KYx5ajHQlfcFPNHDrPY
+	 HgaAJ6KGqP29EofgwV9xQYKAiupTrvnI/BCmc0wKkEyP9nvQ9LgP7m0H5wvm9z6dM+
+	 sCc1xzHOSQUsd3Q9HNkKTOmCT9nYUuxvzNpE0nH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/204] wifi: iwlwifi: mvm: use the right version of the rate API
+Subject: [PATCH 5.4 116/154] coresight: catu: Fix number of pages while using 64k pages
 Date: Tue,  8 Apr 2025 12:50:57 +0200
-Message-ID: <20250408104824.032147450@linuxfoundation.org>
+Message-ID: <20250408104819.043889254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit a03e2082e678ea10d0d8bdf3ed933eb05a8ddbb0 ]
+[ Upstream commit 0e14e062f5ff98aa15264dfa87c5f5e924028561 ]
 
-The firmware uses the newer version of the API in recent devices. For
-older devices, we translate the rate to the new format.
-Don't parse the rate with old parsing macros.
+Trying to record a trace on kernel with 64k pages resulted in -ENOMEM.
+This happens due to a bug in calculating the number of table pages, which
+returns zero. Fix the issue by rounding up.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.13d70cdcbb4e.Ic92193bce4013b70a823cfef250ee79c16cf7c17@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+$ perf record --kcore -e cs_etm/@tmc_etr55,cycacc,branch_broadcast/k --per-thread taskset --cpu-list 1 dd if=/dev/zero of=/dev/null
+failed to mmap with 12 (Cannot allocate memory)
+
+Fixes: 8ed536b1e283 ("coresight: catu: Add support for scatter gather tables")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250109215348.5483-1-ilkka@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 105f283b777d2..fce8950007bbb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1272,7 +1272,7 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 16ebf38a9f664..da205738e8c96 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -267,7 +267,7 @@ catu_init_sg_table(struct device *catu_dev, int node,
+ 	 * Each table can address upto 1MB and we can have
+ 	 * CATU_PAGES_PER_SYSPAGE tables in a system page.
  	 */
- 	u8 ru = le32_get_bits(phy_data->d1, IWL_RX_PHY_DATA1_HE_RU_ALLOC_MASK);
- 	u32 rate_n_flags = phy_data->rate_n_flags;
--	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK_V1;
-+	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
- 	u8 offs = 0;
- 
- 	rx_status->bw = RATE_INFO_BW_HE_RU;
-@@ -1327,13 +1327,13 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
- 
- 	if (he_mu)
- 		he_mu->flags2 |=
--			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
-+			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
- 						   rate_n_flags),
- 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW);
--	else if (he_type == RATE_MCS_HE_TYPE_TRIG_V1)
-+	else if (he_type == RATE_MCS_HE_TYPE_TRIG)
- 		he->data6 |=
- 			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_KNOWN) |
--			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
-+			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
- 						   rate_n_flags),
- 					 IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW);
- }
+-	nr_tpages = DIV_ROUND_UP(size, SZ_1M) / CATU_PAGES_PER_SYSPAGE;
++	nr_tpages = DIV_ROUND_UP(size, CATU_PAGES_PER_SYSPAGE * SZ_1M);
+ 	catu_table = tmc_alloc_sg_table(catu_dev, node, nr_tpages,
+ 					size >> PAGE_SHIFT, pages);
+ 	if (IS_ERR(catu_table))
 -- 
 2.39.5
 
