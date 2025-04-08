@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B5FA808FD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A414A8049E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4206A1BA0148
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAA3D1B64700
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D50C270EB4;
-	Tue,  8 Apr 2025 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E113264A67;
+	Tue,  8 Apr 2025 12:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eA+VlmNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoa78UJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45433270EAF;
-	Tue,  8 Apr 2025 12:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5FC21B185;
+	Tue,  8 Apr 2025 12:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115936; cv=none; b=gfDzWQh5ewg8Wows1+knwm9I2QuYlITyEyJ8fMReCH+YbapMaSdJ3BI5JXb5O4uTKoTTV2/6fJU25Uy/Tn/81BfCaCQno/e7KQ8TKjy9UYsmlmjg1cebRzvNuR8wek319Sby0pkkel6HLgEoDV+H0QLWoK3x3HubIWpbYZiCjUY=
+	t=1744113740; cv=none; b=cvRJlkdbuY7vCm4/TLdQMJaq0F6y3Su7gTPeyloaTkD9DJBfl2Ac6XSbPZL31IYs+7rrUgBIlCmunMZmEyb5vURH8QusaXbiUTPEfEK0DZMcjN9IF6yHjoi4ZPE7V/FeKdfrrzS45Qj+8A/uo/kDT93etVukKWdQbMGTf7pHoSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115936; c=relaxed/simple;
-	bh=uAB7dR1puxLApt3hkHI2LzoJhVmfjUB6AtfE6n8UEiw=;
+	s=arc-20240116; t=1744113740; c=relaxed/simple;
+	bh=TlgupLfNoTgPX3V1750VtMiwfGHptmUwxwoAlNWPKSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrZbqgP7/L8sBCU2V+t7lTcwJS3aJEe+aYKGArdKyI/ztzL9WKEVBt8KBZFGsCs1fvny96uqKC+Sp3V2apzT8itKz3AvtyB4Z40bpgjzOwjizfQBsTLtsAXrbdWpgUWqHzBE2CkZysQ+sug/o6K+vP5wYhCIe9VhPpyk4pnvFz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eA+VlmNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2B6C4CEE7;
-	Tue,  8 Apr 2025 12:38:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oxtrRKhtfF24gNtXUlwKCNwPndF0ErC+rv/6NHJXVd6wnVRvmGwnrDJuRavPdLaWTk5b5qA3ZqSyaK7u+4HCVawE1G+gbF7aN/Sbw8eQhE02LyJmfI4FauSx9gIhGArKuLUDdIBRp8yV2ehXr8VaBWJ5HBR8n2Ghlje4szTWRxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoa78UJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FFC4CEE5;
+	Tue,  8 Apr 2025 12:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115935;
-	bh=uAB7dR1puxLApt3hkHI2LzoJhVmfjUB6AtfE6n8UEiw=;
+	s=korg; t=1744113739;
+	bh=TlgupLfNoTgPX3V1750VtMiwfGHptmUwxwoAlNWPKSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eA+VlmNn613vWHCszSSrdIloJaKcUuS2ucQPC1VdAbSN7ZEPIjyIAoWl9DahlIvx7
-	 pGD8HK6nBWtBbTOQWITnELbfF8nXEKv80zXU9Mm6N9SvbhNZkS3iWZyUBgs5lE9pfP
-	 P5KZeaBMNFGGr+LVmYlfQWhq87Vl74g1v2yeK8oo=
+	b=uoa78UJRYyKToPvx8P8M2KAMsbeZIeJ95/o+0wwwKGpj82TODp0JzHP2uMfyQW543
+	 E/G66FVxvzKyX9xUdEqhyCTerlpiqvZO12kWP1aw6Wdo0b2xpzp5EObuVmOIQBhRsl
+	 sV3QvgctFCDJ5uekw+kj3i2xuND0U8L4LYc0BiI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Gherdovich <ggherdovich@suse.cz>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/204] ACPI: processor: idle: Return an error if both P_LVL{2,3} idle states are invalid
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.6 239/268] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
 Date: Tue,  8 Apr 2025 12:50:50 +0200
-Message-ID: <20250408104823.832761353@linuxfoundation.org>
+Message-ID: <20250408104835.031986189@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Gherdovich <ggherdovich@suse.cz>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 9e9b893404d43894d69a18dd2fc8fcf1c36abb7e ]
+commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
 
-Prior to commit 496121c02127 ("ACPI: processor: idle: Allow probing on
-platforms with one ACPI C-state"), the acpi_idle driver wouldn't load on
-systems without a valid C-State at least as deep as C2.
+The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
+The same call was immediately triggered by a subsequent goto statement.
+Thus avoid such a call repetition.
 
-The behavior was desirable for guests on hypervisors such as VMWare
-ESXi, which by default don't have the _CST ACPI method, and set the C2
-and C3 latencies to 101 and 1001 microseconds respectively via the FADT,
-to signify they're unsupported.
+This issue was detected by using the Coccinelle software.
 
-Since the above change though, these virtualized deployments end up
-loading acpi_idle, and thus entering the default C1 C-State set by
-acpi_processor_get_power_info_default(); this is undesirable for a
-system that's communicating to the OS it doesn't want C-States (missing
-_CST, and invalid C2/C3 in FADT).
-
-Make acpi_processor_get_power_info_fadt() return -ENODEV in that case,
-so that acpi_processor_get_cstate_info() exits early and doesn't set
-pr->flags.power = 1.
-
-Fixes: 496121c02127 ("ACPI: processor: idle: Allow probing on platforms with one ACPI C-state")
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250328143040.9348-1-ggherdovich@suse.cz
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_idle.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ntb/test/ntb_perf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 18f4334a96919..3386d01c1f157 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -268,6 +268,10 @@ static int acpi_processor_get_power_info_fadt(struct acpi_processor *pr)
- 			 ACPI_CX_DESC_LEN, "ACPI P_LVL3 IOPORT 0x%x",
- 			 pr->power.states[ACPI_STATE_C3].address);
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
+ 	dma_set_unmap(tx, unmap);
  
-+	if (!pr->power.states[ACPI_STATE_C2].address &&
-+	    !pr->power.states[ACPI_STATE_C3].address)
-+		return -ENODEV;
-+
- 	return 0;
- }
+ 	ret = dma_submit_error(dmaengine_submit(tx));
+-	if (ret) {
+-		dmaengine_unmap_put(unmap);
++	if (ret)
+ 		goto err_free_resource;
+-	}
  
--- 
-2.39.5
-
+ 	dmaengine_unmap_put(unmap);
+ 
 
 
 
