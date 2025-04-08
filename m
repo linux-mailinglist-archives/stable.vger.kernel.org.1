@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E053A7FF26
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09525A7FF09
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 418D14467DB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E1919E395D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BAC268691;
-	Tue,  8 Apr 2025 11:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366E9268C61;
+	Tue,  8 Apr 2025 11:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms9zS/WN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lza1jTSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12C2673B7;
-	Tue,  8 Apr 2025 11:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84432673B7;
+	Tue,  8 Apr 2025 11:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110679; cv=none; b=YesMQsR3NhDmbjjg5cpM7fOV3MoJzE7tH6qGUthlgIWHqNXw50GaBoRSkMOXNP4tpnzvOqBc/pn/GdO8o+bAHTjmCPAgiVMIsFJX4OkzviaGBNu6F2yx/0iOAUHds77NiiBDPri3kjAp/K9+x0uCX4EVkDdE+uQuXSlo5N9nTec=
+	t=1744110685; cv=none; b=cVPtDgyKV/xTEIx5bvmBT8pUADOYIUUC11zFQTnTcaNqFKdnGGex18bADcfm2l6W6WY3H9nMZ6m63yX9ET3+UBy23WBgIbIFk6h6eUiYYFT3mq80CxrDqjZNfq4a5MCjtPd9OKbcQg5t3RQ8y9oW9ifa99g0p0vWHk0e/h/dn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110679; c=relaxed/simple;
-	bh=q7YBVi48GSpzE0uG1DjQ4FAesL/ApjjLufCKXXA4/BE=;
+	s=arc-20240116; t=1744110685; c=relaxed/simple;
+	bh=FngCrHle8/utvD31odbAYD1RmqIVAP8wLsiUtlasIPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=npgsWgoTbJ3CfWmgUL25e9udlLbAMsyBmyV7+CB+smGl2FW++PZvFJ7+bDX8uJLdQvho3rMICDdUn0Gos9lYbmJ9qr3nGETE2YIiv0kRtXLY6xCrDn6pCZ4aUs8n63YJBHd3iejtdKi9HJYTi6SRdeiFlaaMUR5Vz4HBPMGYyZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms9zS/WN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0EBC4CEE7;
-	Tue,  8 Apr 2025 11:11:18 +0000 (UTC)
+	 MIME-Version; b=bO2W+e1yVOnd4DMu5NdlGm2X5yjs7O9pnehDW1K5fXsyt4TcuYwxVcYzW6kG1lan3qP64mUkvk1Tt4YeFH4knmsdP31G6sAqsNRZB8uhTeQmyKwNWaddR2vbRw5YnGmc4wYpXVbdsROc1UB0DF1fCDaV6PbcbJTCGLoyYjLOlng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lza1jTSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C64C4CEE5;
+	Tue,  8 Apr 2025 11:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110679;
-	bh=q7YBVi48GSpzE0uG1DjQ4FAesL/ApjjLufCKXXA4/BE=;
+	s=korg; t=1744110684;
+	bh=FngCrHle8/utvD31odbAYD1RmqIVAP8wLsiUtlasIPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ms9zS/WNEGsW6VHL7fJn0cOuefylFtB0ggw5raVNhQ9KWFIsi90mWoldo6eYCf2Gy
-	 FQW6ZC4Mu/r1kbbb2GYZBlXtxtuCFKsTXzt5MNl0Yq8LcXVtOASgapHAkB48MQ3omp
-	 6nGz2jDsL3wFNWQ0fh1WHLL9s3LrTh7DvrFnmqr8=
+	b=Lza1jTSauz6TeuzK2eAvaS0vNqTWTIFtBuJ9C531zZVT/WWr7jMfd5Q93smVkRYjr
+	 IFQoTHzAmP0dzlXP6DZ+fKsPrjKEkdYuKi/Rv/OsMhGpW65M40e6T+SKDNbxT7GMAt
+	 WI3lYrrTpf85lI6eyj0P4KUuIc04QeOjA6BAw5Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Li Nan <linan122@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Coly Li <colyli@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 153/731] badblocks: return error if any badblock set fails
-Date: Tue,  8 Apr 2025 12:40:50 +0200
-Message-ID: <20250408104917.835340784@linuxfoundation.org>
+Subject: [PATCH 6.14 154/731] badblocks: fix the using of MAX_BADBLOCKS
+Date: Tue,  8 Apr 2025 12:40:51 +0200
+Message-ID: <20250408104917.857989449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -62,7 +63,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
@@ -71,97 +71,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 7f500f0a59b1d7345a05ec4ae703babf34b7e470 ]
+[ Upstream commit 37446680dfbfbba7cbedd680047182f70a0b857b ]
 
-_badblocks_set() returns success if at least one badblock is set
-successfully, even if others fail. This can lead to data inconsistencies
-in raid, where a failed badblock set should trigger the disk to be kicked
-out to prevent future reads from failed write areas.
-
-_badblocks_set() should return error if any badblock set fails. Instead
-of relying on 'rv', directly returning 'sectors' for clearer logic. If all
-badblocks are successfully set, 'sectors' will be 0, otherwise it
-indicates the number of badblocks that have not been set yet, thus
-signaling failure.
-
-By the way, it can also fix an issue: when a newly set unack badblock is
-included in an existing ack badblock, the setting will return an error.
-···
-  echo "0 100" /sys/block/md0/md/dev-loop1/bad_blocks
-  echo "0 100" /sys/block/md0/md/dev-loop1/unacknowledged_bad_blocks
-  -bash: echo: write error: No space left on device
-```
-After fix, it will return success.
+The number of badblocks cannot exceed MAX_BADBLOCKS, but it should be
+allowed to equal MAX_BADBLOCKS.
 
 Fixes: aa511ff8218b ("badblocks: switch to the improved badblock handling code")
+Fixes: c3c6a86e9efc ("badblocks: add helper routines for badblock ranges handling")
 Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
 Reviewed-by: Yu Kuai <yukuai3@huawei.com>
 Acked-by: Coly Li <colyli@kernel.org>
-Link: https://lore.kernel.org/r/20250227075507.151331-6-zhengqixing@huaweicloud.com
+Link: https://lore.kernel.org/r/20250227075507.151331-7-zhengqixing@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/badblocks.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ block/badblocks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/block/badblocks.c b/block/badblocks.c
-index 1c8b8f65f6df4..88f27d4f38563 100644
+index 88f27d4f38563..43430bd3efa7d 100644
 --- a/block/badblocks.c
 +++ b/block/badblocks.c
-@@ -843,7 +843,6 @@ static int _badblocks_set(struct badblocks *bb, sector_t s, int sectors,
- 	struct badblocks_context bad;
- 	int prev = -1, hint = -1;
- 	unsigned long flags;
--	int rv = 0;
- 	u64 *p;
+@@ -700,7 +700,7 @@ static bool can_front_overwrite(struct badblocks *bb, int prev,
+ 			*extra = 2;
+ 	}
  
- 	if (bb->shift < 0)
-@@ -873,10 +872,8 @@ static int _badblocks_set(struct badblocks *bb, sector_t s, int sectors,
- 	bad.len = sectors;
- 	len = 0;
+-	if ((bb->count + (*extra)) >= MAX_BADBLOCKS)
++	if ((bb->count + (*extra)) > MAX_BADBLOCKS)
+ 		return false;
  
--	if (badblocks_full(bb)) {
--		rv = 1;
-+	if (badblocks_full(bb))
- 		goto out;
--	}
- 
- 	if (badblocks_empty(bb)) {
- 		len = insert_at(bb, 0, &bad);
-@@ -916,10 +913,8 @@ static int _badblocks_set(struct badblocks *bb, sector_t s, int sectors,
- 			int extra = 0;
- 
- 			if (!can_front_overwrite(bb, prev, &bad, &extra)) {
--				if (extra > 0) {
--					rv = 1;
-+				if (extra > 0)
- 					goto out;
--				}
- 
- 				len = min_t(sector_t,
- 					    BB_END(p[prev]) - s, sectors);
-@@ -986,10 +981,7 @@ static int _badblocks_set(struct badblocks *bb, sector_t s, int sectors,
- 
- 	write_sequnlock_irqrestore(&bb->lock, flags);
- 
--	if (!added)
--		rv = 1;
--
--	return rv;
-+	return sectors;
- }
- 
- /*
-@@ -1353,7 +1345,8 @@ EXPORT_SYMBOL_GPL(badblocks_check);
-  *
-  * Return:
-  *  0: success
-- *  1: failed to set badblocks (out of space)
-+ *  other: failed to set badblocks (out of space). Parital setting will be
-+ *  treated as failure.
-  */
- int badblocks_set(struct badblocks *bb, sector_t s, int sectors,
- 			int acknowledged)
+ 	return true;
+@@ -1135,7 +1135,7 @@ static int _badblocks_clear(struct badblocks *bb, sector_t s, int sectors)
+ 		if ((BB_OFFSET(p[prev]) < bad.start) &&
+ 		    (BB_END(p[prev]) > (bad.start + bad.len))) {
+ 			/* Splitting */
+-			if ((bb->count + 1) < MAX_BADBLOCKS) {
++			if ((bb->count + 1) <= MAX_BADBLOCKS) {
+ 				len = front_splitting_clear(bb, prev, &bad);
+ 				bb->count += 1;
+ 				cleared++;
 -- 
 2.39.5
 
