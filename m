@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6219EA80B4A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94685A807AA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E1C501451
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CDD8A30E0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA2626F472;
-	Tue,  8 Apr 2025 12:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653DC374D1;
+	Tue,  8 Apr 2025 12:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRlAOp7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJpVJUuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A95C27C851;
-	Tue,  8 Apr 2025 12:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216F826B959;
+	Tue,  8 Apr 2025 12:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117043; cv=none; b=tcgFj0eY/2nx3/bTL0mNroSU4mFhieDZNh/zJFDqvfSxcUYA/GQo0SCQGRM1xe+w4hkyt7YB51yZKCCv+1isdIHlzVBGSk/kBJaqb1+b4+pCVBM5iVwDC7MvZD7RP8K+3S37O8WvV1s4x+x8F9UawgaRVwn1N8RCTFuzS/NdD9c=
+	t=1744115405; cv=none; b=uD2Gx0fYFJRNzc279IKm/yPJOfVr4SkfiQ4eoHjRPEk4kIa+JImxnEbLkOdueKyvXnzCEpYjynSO2lsrJ5G04lh3KF/QMU/3NKg6xLeMg46B07xzYBQlDC+ztqT675EJls0USo10pWqKvaZHqhOCzRMDB7Y02d7d+f+QB7uzq4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117043; c=relaxed/simple;
-	bh=Uxd6mR3tNP+UrtOwwFqp/53TsP1dWpGoeXMbOYeqAB0=;
+	s=arc-20240116; t=1744115405; c=relaxed/simple;
+	bh=AKXhEzZzytsuEMYxw4JrKxFl8UP+uPXkhR66Ki4SPi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vA5yE6Z2DKU6750OtPaYO5ulXsBS09e4+9NdZ0owRzkQ8oQyqwNc1JkFOwvtA9MgMuYxflDGfRMDXLnInxs+ryEg93oHuNk7oxZ73Hl1csHPFI4YV7W+aeQlLtFGxE0akyIfv/wrKusutH11bpGCmfS5NcEGed3y1wJTcm3F9GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRlAOp7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26511C4CEE5;
-	Tue,  8 Apr 2025 12:57:21 +0000 (UTC)
+	 MIME-Version; b=tX9argbEpFrIhxVZZ2zMkwxa32FM+17t92fr9mL0+JQibgcYgervrYOFxdryxT0mERliAFl8PBBnYBEsX+Wq8BZcdk3T9iSFCx1EyfziJh8LKKvWeSQEdc/y+nNXJpYLOFwZSizOMwB0SlJoacj36Z2OxmGxiqnZfKgOSy9u1PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJpVJUuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2028C4CEE5;
+	Tue,  8 Apr 2025 12:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117042;
-	bh=Uxd6mR3tNP+UrtOwwFqp/53TsP1dWpGoeXMbOYeqAB0=;
+	s=korg; t=1744115405;
+	bh=AKXhEzZzytsuEMYxw4JrKxFl8UP+uPXkhR66Ki4SPi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRlAOp7IE/y4X98+hFd+rMOQEzHwJpY7wsR8R600vXWywscyebM36bnAJ7k1Rr8vh
-	 mJv3EomLVXBPXvcNOFrKW3Ya6R/0OelxMCZSnA+Oe/zHDdL6JOefGM0bmKxiFG+s2M
-	 OwvVmKPYhug1za9+EPz13yj65kYgWFA3LJ/X5WKw=
+	b=oJpVJUuG25UdiCJ+gWGgeVsmAhNtKaiGsajUwyqTXGf1VtBX8QHZCHmpQfT7EXlnr
+	 Y4ajTfmI4YZIhjTLJ8pm2t2pBmZMjDi1InVz3uwfXXyG7dISEn9v3MNaHRqhW9Z37X
+	 Nq7f/Yijd/AuLNMk3CEwXvO5Q7+iP6BlWs4jJqog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 346/423] drm/amdgpu/gfx11: fix num_mec
+	Robin Murphy <robin.murphy@arm.com>,
+	"Sicelo A. Mhlongo" <absicsz@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 460/499] media: omap3isp: Handle ARM dma_iommu_mapping
 Date: Tue,  8 Apr 2025 12:51:12 +0200
-Message-ID: <20250408104853.899493081@linuxfoundation.org>
+Message-ID: <20250408104902.708664894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 4161050d47e1b083a7e1b0b875c9907e1a6f1f1f ]
+commit 6bc076eec6f85f778f33a8242b438e1bd9fcdd59 upstream.
 
-GC11 only has 1 mec.
+It's no longer practical for the OMAP IOMMU driver to trick
+arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
+same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
+the arch code's dma_iommu_mapping out of the way to avoid problems.
 
-Fixes: 3d879e81f0f9 ("drm/amdgpu: add init support for GFX11 (v2)")
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Tested-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/ti/omap3isp/isp.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index d3e8be82a1727..84cf5fd297b7f 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -1549,7 +1549,7 @@ static int gfx_v11_0_sw_init(void *handle)
- 		adev->gfx.me.num_me = 1;
- 		adev->gfx.me.num_pipe_per_me = 1;
- 		adev->gfx.me.num_queue_per_pipe = 1;
--		adev->gfx.mec.num_mec = 2;
-+		adev->gfx.mec.num_mec = 1;
- 		adev->gfx.mec.num_pipe_per_mec = 4;
- 		adev->gfx.mec.num_queue_per_pipe = 4;
- 		break;
--- 
-2.39.5
-
+--- a/drivers/media/platform/ti/omap3isp/isp.c
++++ b/drivers/media/platform/ti/omap3isp/isp.c
+@@ -1961,6 +1961,13 @@ static int isp_attach_iommu(struct isp_d
+ 	struct dma_iommu_mapping *mapping;
+ 	int ret;
+ 
++	/* We always want to replace any default mapping from the arch code */
++	mapping = to_dma_iommu_mapping(isp->dev);
++	if (mapping) {
++		arm_iommu_detach_device(isp->dev);
++		arm_iommu_release_mapping(mapping);
++	}
++
+ 	/*
+ 	 * Create the ARM mapping, used by the ARM DMA mapping core to allocate
+ 	 * VAs. This will allocate a corresponding IOMMU domain.
 
 
 
