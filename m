@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-129999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F75A80284
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAD5A7FDE9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6177A3B28C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C5A9188A152
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46542265602;
-	Tue,  8 Apr 2025 11:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FA326A0D5;
+	Tue,  8 Apr 2025 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1ye1+fB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r38lwapn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B0119AD5C;
-	Tue,  8 Apr 2025 11:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA7C26A0BD;
+	Tue,  8 Apr 2025 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112546; cv=none; b=tPUNoXSzg1sKAQLDG0oag6ACQ3Me5X0vLfTQppYP4evqpMPGQPOnIVdWn58TPHAfGhn8GXMZMQ/9neGl/st9vlyn+vlyC53e+/uauKFsO8ZM1wUdEEPoA15kYza20Fx86xMlMfrOIDt3sw3ZGah+dChB2QYICOcPf+DNWzPKU6Y=
+	t=1744109985; cv=none; b=HNfisNbT77numuzeyRqM8Rtl4kwe1RcOoi3wtA8OorfW/Ro8oKAEpGE0cjdFH/B8UlRhVHZukCE3Qn7ed5vo8/j6oxFXKFic4fMhyWdxLgpfuWmq6BJNN8iCSbvwEa9u7vfiWzIoaF2H6o5hekfv+pGaJGLkwO9Sz8um39bSeWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112546; c=relaxed/simple;
-	bh=VkloAL1c9N56OAOg4DODUFlgRQ7v7I1SmQUDfMsdjzc=;
+	s=arc-20240116; t=1744109985; c=relaxed/simple;
+	bh=ws+esh+ZQncNE8NKuDCVgipMYaxPvnqB8+Tan/SYWfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBhJKKv0ARC3dbZwEiT7hEin7CEEZ63mU6RbiLxvq78GIUyTH75dP1RJRIGZNAx2lzVgYzwrDiiTS2v/TB8/60D415RkCSxVoRBPiNz+6Q/UyF1qsqL+dohYLa+74DC4SbrpKNk/A+Ze1IKE0uWJzadshGsuwhT32rx4ggO8fi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1ye1+fB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BF8C4CEE5;
-	Tue,  8 Apr 2025 11:42:25 +0000 (UTC)
+	 MIME-Version; b=JtcEofIb7i9FY1wTK0HDcF+z4lNzRfIY4JRqrprPOdjfFY+nDvlMrEuUI/BRCYaMiD5S23PRhe/t7VyaB/BMGCWCWTL200E7tRcx0p+tH42lVPv8dj9HOJx+nU8TLzmiZjFDvn3lSlCXQSFk1XRUS4905knJarBYa8WJ1WPin0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r38lwapn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABA2C4CEE5;
+	Tue,  8 Apr 2025 10:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112545;
-	bh=VkloAL1c9N56OAOg4DODUFlgRQ7v7I1SmQUDfMsdjzc=;
+	s=korg; t=1744109985;
+	bh=ws+esh+ZQncNE8NKuDCVgipMYaxPvnqB8+Tan/SYWfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1ye1+fBcgTNV2WCHmwNdFZxRumm6HIkPeRr7KMNRIyC4dvSJV0IcLk09a61ALnsf
-	 6BSy2oFcFVPkrcNGWelzpzivtPZZdwemmTBG4IFCxQBcfJwx3FXTXyzi+FiMnvNbxe
-	 VUZuxR1LCZnEXvyPClJ4mpGFLZciNzvzq3BuL7RE=
+	b=r38lwapn2XQl2hpNUtlwX/F6RU078H3kbzDvKcQtWvw858sFsGrxFvDIIi/e4qbSs
+	 FYdws5lKr/t4txm5+LfGU1PGusjmf4df0EBV8GCNoX8MVbG3o/pUihXpO8EoYbNTx2
+	 FwE8S78D6VNp+tJwv10GZGlZBUFRS85IDatjLlFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/279] ARM: dts: bcm2711: PL011 UARTs are actually r1p5
-Date: Tue,  8 Apr 2025 12:47:44 +0200
-Message-ID: <20250408104828.528805382@linuxfoundation.org>
+	Patrik Jakobsson <pjakobsson@suse.de>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 087/227] drm/amdgpu: Fix even more out of bound writes from debugfs
+Date: Tue,  8 Apr 2025 12:47:45 +0200
+Message-ID: <20250408104822.986184553@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
 
-[ Upstream commit 0de09025f161f67c07978c4742e221243d070d41 ]
+commit 3f4e54bd312d3dafb59daf2b97ffa08abebe60f5 upstream.
 
-The ARM PL011 UART instances in BCM2711 are r1p5 spec, which means they
-have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
-Thanks to N Buchwitz for pointing this out.
+CVE-2021-42327 was fixed by:
 
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250223125614.3592-2-wahrenst@gmx.net
-Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit f23750b5b3d98653b31d4469592935ef6364ad67
+Author: Thelford Williams <tdwilliamsiv@gmail.com>
+Date:   Wed Oct 13 16:04:13 2021 -0400
+
+    drm/amdgpu: fix out of bounds write
+
+but amdgpu_dm_debugfs.c contains more of the same issue so fix the
+remaining ones.
+
+v2:
+	* Add missing fix in dp_max_bpc_write (Harry Wentland)
+
+Fixes: 918698d5c2b5 ("drm/amd/display: Return the number of bytes parsed than allocated")
+Signed-off-by: Patrik Jakobsson <pjakobsson@suse.de>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+[ Cherry-pick the fix and drop the following functions which were introduced
+  since 5.13 or later: dp_max_bpc_write() was introduced in commit cca912e0a6b4
+  ("drm/amd/display: Add max bpc debugfs") dp_dsc_passthrough_set() was
+  introduced in commit fcd1e484c8ae ("drm/amd/display: Add debugfs entry for
+  dsc passthrough"). ]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/bcm2711.dtsi | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
-index 89af57482bc8f..926bc467d4516 100644
---- a/arch/arm/boot/dts/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/bcm2711.dtsi
-@@ -133,7 +133,7 @@ uart2: serial@7e201400 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -424,7 +424,7 @@ static ssize_t dp_phy_settings_write(str
+ 	if (!wr_buf)
+ 		return -ENOSPC;
  
-@@ -144,7 +144,7 @@ uart3: serial@7e201600 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					   (long *)param, buf,
+ 					   max_param_num,
+ 					   &param_nums)) {
+@@ -576,7 +576,7 @@ static ssize_t dp_phy_test_pattern_debug
+ 	if (!wr_buf)
+ 		return -ENOSPC;
  
-@@ -155,7 +155,7 @@ uart4: serial@7e201800 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					   (long *)param, buf,
+ 					   max_param_num,
+ 					   &param_nums)) {
+@@ -1091,7 +1091,7 @@ static ssize_t dp_trigger_hotplug(struct
+ 		return -ENOSPC;
+ 	}
  
-@@ -166,7 +166,7 @@ uart5: serial@7e201a00 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 						(long *)param, buf,
+ 						max_param_num,
+ 						&param_nums)) {
+@@ -1272,7 +1272,7 @@ static ssize_t dp_dsc_clock_en_write(str
+ 		return -ENOSPC;
+ 	}
  
-@@ -1142,6 +1142,7 @@ &txp {
- };
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					    (long *)param, buf,
+ 					    max_param_num,
+ 					    &param_nums)) {
+@@ -1426,7 +1426,7 @@ static ssize_t dp_dsc_slice_width_write(
+ 		return -ENOSPC;
+ 	}
  
- &uart0 {
-+	arm,primecell-periphid = <0x00341011>;
- 	interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
- };
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					    (long *)param, buf,
+ 					    max_param_num,
+ 					    &param_nums)) {
+@@ -1580,7 +1580,7 @@ static ssize_t dp_dsc_slice_height_write
+ 		return -ENOSPC;
+ 	}
  
--- 
-2.39.5
-
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					    (long *)param, buf,
+ 					    max_param_num,
+ 					    &param_nums)) {
+@@ -1727,7 +1727,7 @@ static ssize_t dp_dsc_bits_per_pixel_wri
+ 		return -ENOSPC;
+ 	}
+ 
+-	if (parse_write_buffer_into_params(wr_buf, size,
++	if (parse_write_buffer_into_params(wr_buf, wr_buf_size,
+ 					    (long *)param, buf,
+ 					    max_param_num,
+ 					    &param_nums)) {
 
 
 
