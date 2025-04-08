@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-129621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3374A8002F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:28:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5EDA80132
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B647A4A65
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:26:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885BC441D33
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60DA26980F;
-	Tue,  8 Apr 2025 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5588A2690CC;
+	Tue,  8 Apr 2025 11:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2XdKV+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIqyHZ+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CF2269801;
-	Tue,  8 Apr 2025 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DBB22424C;
+	Tue,  8 Apr 2025 11:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111533; cv=none; b=il3OqW4Jiu071YueGhHhuF0/XtTxfUAkPK3Fn6izU3tnbphEepfbhs660Et8o/OzhnbL37QTg+wdLplkaicfWB0G7NUxyDMkWerlKdMaHIwVJshygNrnPy+dQBrQfFsRBNqaOSOA0tQKHE3XhOwlxBjw6p8ajIw5XbtRcbUev5c=
+	t=1744111666; cv=none; b=TTFA74xT+lOi2wMW7lwiQc9NLmfXArT23UszHEj9+51qMwyj6OyUgPKwocLgIv9Cf1dJz9+HFtQSG2b++S3r0Qd/VPzUqmFk2mFoRA2f729kq8olUVWtgX57RR9dV0fdFtTH0RzvSfZPc93jFhZ0r27yUSyLPe5vyR7S4BCejyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111533; c=relaxed/simple;
-	bh=WIjj6cBKFDy62lromeVUYAFrQElOLAAyPBWc880faQA=;
+	s=arc-20240116; t=1744111666; c=relaxed/simple;
+	bh=xt0cDSJpzp28U89OfebGvWs780D8TxqHtL1OJLiEmQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJTJsY5E1F+b264cwHp/wDSH2MVTgYLQuyezC6lMljwlfAcSkEOlCmDR3bqZXonp6I1ovyR3+AIjVVplNiee49GLxda5gX2GC2A0NjwmaevvYIZEUC6uSv7Cz41CYhFR/BmRZ4yP3FT7kKGVTv6PhDBF9TPk8TFHjeRxoPXfohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2XdKV+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750A9C4CEE5;
-	Tue,  8 Apr 2025 11:25:32 +0000 (UTC)
+	 MIME-Version; b=X2AWsf8Sbq6oD4GaX7Wmag5tZXNa8XzpfpBUnLNZn+g6A8r1xLKgYXyojK1EevSbxsdG2ogwz/9pXDbkUakNGl7CXWvamXN/ThbutIk/fEeBQ8Ir5kpLK9hYYfp5CAO8EmjZ5YBw3SPc9zmVdi0pfX8AyJ43sDWdbjpOBII+Cyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIqyHZ+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3335AC4CEE5;
+	Tue,  8 Apr 2025 11:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111533;
-	bh=WIjj6cBKFDy62lromeVUYAFrQElOLAAyPBWc880faQA=;
+	s=korg; t=1744111665;
+	bh=xt0cDSJpzp28U89OfebGvWs780D8TxqHtL1OJLiEmQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2XdKV+OeFi3P8h8joLqsKCmQOgSRWnPDphLkjeSwqH0JDm0MZPy8kmGNEGQSCYMV
-	 Q9dSTveBEJ5LyYCFoROwcVaa66gNzzUF1L9AXb4iekwwAUu+3WzEox4h9nw29NrnNd
-	 cfp7KFDkH+XyCPzUs5Me+/iRT3cB9tQeBOxRXmIM=
+	b=fIqyHZ+J/oEXcktYuz/yAoYKZUuA92r6cI/ids6qrra0UCDoQ0rFX7/iggpnlkhwN
+	 kcSOTfLOmSgy0GEKSHqlN1t7tDHOgkiQ7EFrudi/D9rMa9fH14LJm61eGIXu0+yReP
+	 on2n1hWngdfVmhZHppNd7FlDqEwjZkm8ISC5ggGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Zhang <wh1sper@zju.edu.cn>,
-	Mike Christie <michael.christie@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
+	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 463/731] vhost-scsi: Fix handling of multiple calls to vhost_scsi_set_endpoint
-Date: Tue,  8 Apr 2025 12:46:00 +0200
-Message-ID: <20250408104925.048885240@linuxfoundation.org>
+Subject: [PATCH 6.14 464/731] coresight-etm4x: add isb() before reading the TRCSTATR
+Date: Tue,  8 Apr 2025 12:46:01 +0200
+Message-ID: <20250408104925.071523516@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -69,174 +66,194 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
 
-[ Upstream commit 5dd639a1646ef5fe8f4bf270fad47c5c3755b9b6 ]
+[ Upstream commit 4ff6039ffb79a4a8a44b63810a8a2f2b43264856 ]
 
-If vhost_scsi_set_endpoint is called multiple times without a
-vhost_scsi_clear_endpoint between them, we can hit multiple bugs
-found by Haoran Zhang:
+As recommended by section 4.3.7 ("Synchronization when using system
+instructions to progrom the trace unit") of ARM IHI 0064H.b, the
+self-hosted trace analyzer must perform a Context synchronization
+event between writing to the TRCPRGCTLR and reading the TRCSTATR.
+Additionally, add an ISB between the each read of TRCSTATR on
+coresight_timeout() when using system instructions to program the
+trace unit.
 
-1. Use-after-free when no tpgs are found:
-
-This fixes a use after free that occurs when vhost_scsi_set_endpoint is
-called more than once and calls after the first call do not find any
-tpgs to add to the vs_tpg. When vhost_scsi_set_endpoint first finds
-tpgs to add to the vs_tpg array match=true, so we will do:
-
-vhost_vq_set_backend(vq, vs_tpg);
-...
-
-kfree(vs->vs_tpg);
-vs->vs_tpg = vs_tpg;
-
-If vhost_scsi_set_endpoint is called again and no tpgs are found
-match=false so we skip the vhost_vq_set_backend call leaving the
-pointer to the vs_tpg we then free via:
-
-kfree(vs->vs_tpg);
-vs->vs_tpg = vs_tpg;
-
-If a scsi request is then sent we do:
-
-vhost_scsi_handle_vq -> vhost_scsi_get_req -> vhost_vq_get_backend
-
-which sees the vs_tpg we just did a kfree on.
-
-2. Tpg dir removal hang:
-
-This patch fixes an issue where we cannot remove a LIO/target layer
-tpg (and structs above it like the target) dir due to the refcount
-dropping to -1.
-
-The problem is that if vhost_scsi_set_endpoint detects a tpg is already
-in the vs->vs_tpg array or if the tpg has been removed so
-target_depend_item fails, the undepend goto handler will do
-target_undepend_item on all tpgs in the vs_tpg array dropping their
-refcount to 0. At this time vs_tpg contains both the tpgs we have added
-in the current vhost_scsi_set_endpoint call as well as tpgs we added in
-previous calls which are also in vs->vs_tpg.
-
-Later, when vhost_scsi_clear_endpoint runs it will do
-target_undepend_item on all the tpgs in the vs->vs_tpg which will drop
-their refcount to -1. Userspace will then not be able to remove the tpg
-and will hang when it tries to do rmdir on the tpg dir.
-
-3. Tpg leak:
-
-This fixes a bug where we can leak tpgs and cause them to be
-un-removable because the target name is overwritten when
-vhost_scsi_set_endpoint is called multiple times but with different
-target names.
-
-The bug occurs if a user has called VHOST_SCSI_SET_ENDPOINT and setup
-a vhost-scsi device to target/tpg mapping, then calls
-VHOST_SCSI_SET_ENDPOINT again with a new target name that has tpgs we
-haven't seen before (target1 has tpg1 but target2 has tpg2). When this
-happens we don't teardown the old target tpg mapping and just overwrite
-the target name and the vs->vs_tpg array. Later when we do
-vhost_scsi_clear_endpoint, we are passed in either target1 or target2's
-name and we will only match that target's tpgs when we loop over the
-vs->vs_tpg. We will then return from the function without doing
-target_undepend_item on the tpgs.
-
-Because of all these bugs, it looks like being able to call
-vhost_scsi_set_endpoint multiple times was never supported. The major
-user, QEMU, already has checks to prevent this use case. So to fix the
-issues, this patch prevents vhost_scsi_set_endpoint from being called
-if it's already successfully added tpgs. To add, remove or change the
-tpg config or target name, you must do a vhost_scsi_clear_endpoint
-first.
-
-Fixes: 25b98b64e284 ("vhost scsi: alloc cmds per vq instead of session")
-Fixes: 4f7f46d32c98 ("tcm_vhost: Use vq->private_data to indicate if the endpoint is setup")
-Reported-by: Haoran Zhang <wh1sper@zju.edu.cn>
-Closes: https://lore.kernel.org/virtualization/e418a5ee-45ca-4d18-9b5d-6f8b6b1add8e@oracle.com/T/#me6c0041ce376677419b9b2563494172a01487ecb
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20250129210922.121533-1-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250116-etm_sync-v4-1-39f2b05e9514@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c  | 20 ++++++--
+ .../coresight/coresight-etm4x-core.c          | 48 +++++++++++++++++--
+ include/linux/coresight.h                     |  4 ++
+ 3 files changed, 62 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 718fa4e0b31ec..7aeff435c1d87 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1699,14 +1699,19 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		}
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index 0a9380350fb52..4936dc2f7a56b 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -1092,18 +1092,20 @@ static void coresight_remove_conns(struct coresight_device *csdev)
+ }
  
-+	if (vs->vs_tpg) {
-+		pr_err("vhost-scsi endpoint already set for %s.\n",
-+		       vs->vs_vhost_wwpn);
-+		ret = -EEXIST;
-+		goto out;
-+	}
+ /**
+- * coresight_timeout - loop until a bit has changed to a specific register
+- *			state.
++ * coresight_timeout_action - loop until a bit has changed to a specific register
++ *                  state, with a callback after every trial.
+  * @csa: coresight device access for the device
+  * @offset: Offset of the register from the base of the device.
+  * @position: the position of the bit of interest.
+  * @value: the value the bit should have.
++ * @cb: Call back after each trial.
+  *
+  * Return: 0 as soon as the bit has taken the desired state or -EAGAIN if
+  * TIMEOUT_US has elapsed, which ever happens first.
+  */
+-int coresight_timeout(struct csdev_access *csa, u32 offset,
+-		      int position, int value)
++int coresight_timeout_action(struct csdev_access *csa, u32 offset,
++		      int position, int value,
++			  coresight_timeout_cb_t cb)
+ {
+ 	int i;
+ 	u32 val;
+@@ -1119,7 +1121,8 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 			if (!(val & BIT(position)))
+ 				return 0;
+ 		}
+-
++		if (cb)
++			cb(csa, offset, position, value);
+ 		/*
+ 		 * Delay is arbitrary - the specification doesn't say how long
+ 		 * we are expected to wait.  Extra check required to make sure
+@@ -1131,6 +1134,13 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 
+ 	return -EAGAIN;
+ }
++EXPORT_SYMBOL_GPL(coresight_timeout_action);
 +
- 	len = sizeof(vs_tpg[0]) * VHOST_SCSI_MAX_TARGET;
- 	vs_tpg = kzalloc(len, GFP_KERNEL);
- 	if (!vs_tpg) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
--	if (vs->vs_tpg)
--		memcpy(vs_tpg, vs->vs_tpg, len);
++int coresight_timeout(struct csdev_access *csa, u32 offset,
++		      int position, int value)
++{
++	return coresight_timeout_action(csa, offset, position, value, NULL);
++}
+ EXPORT_SYMBOL_GPL(coresight_timeout);
  
- 	mutex_lock(&vhost_scsi_mutex);
- 	list_for_each_entry(tpg, &vhost_scsi_list, tv_tpg_list) {
-@@ -1722,12 +1727,6 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		tv_tport = tpg->tport;
+ u32 coresight_relaxed_read32(struct coresight_device *csdev, u32 offset)
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 2c1a60577728e..5bda265d02340 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -428,6 +428,29 @@ static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+ }
+ #endif /* CONFIG_ETM4X_IMPDEF_FEATURE */
  
- 		if (!strcmp(tv_tport->tport_name, t->vhost_wwpn)) {
--			if (vs->vs_tpg && vs->vs_tpg[tpg->tport_tpgt]) {
--				mutex_unlock(&tpg->tv_tpg_mutex);
--				mutex_unlock(&vhost_scsi_mutex);
--				ret = -EEXIST;
--				goto undepend;
--			}
- 			/*
- 			 * In order to ensure individual vhost-scsi configfs
- 			 * groups cannot be removed while in use by vhost ioctl,
-@@ -1774,15 +1773,15 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		}
- 		ret = 0;
- 	} else {
--		ret = -EEXIST;
-+		ret = -ENODEV;
-+		goto free_tpg;
- 	}
++static void etm4x_sys_ins_barrier(struct csdev_access *csa, u32 offset, int pos, int val)
++{
++	if (!csa->io_mem)
++		isb();
++}
++
++/*
++ * etm4x_wait_status: Poll for TRCSTATR.<pos> == <val>. While using system
++ * instruction to access the trace unit, each access must be separated by a
++ * synchronization barrier. See ARM IHI0064H.b section "4.3.7 Synchronization of
++ * register updates", for system instructions section, in "Notes":
++ *
++ *   "In particular, whenever disabling or enabling the trace unit, a poll of
++ *    TRCSTATR needs explicit synchronization between each read of TRCSTATR"
++ */
++static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
++{
++	if (!csa->io_mem)
++		return coresight_timeout_action(csa, TRCSTATR, pos, val,
++						etm4x_sys_ins_barrier);
++	return coresight_timeout(csa, TRCSTATR, pos, val);
++}
++
+ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ {
+ 	int i, rc;
+@@ -459,7 +482,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		isb();
  
- 	/*
--	 * Act as synchronize_rcu to make sure access to
--	 * old vs->vs_tpg is finished.
-+	 * Act as synchronize_rcu to make sure requests after this point
-+	 * see a fully setup device.
- 	 */
- 	vhost_scsi_flush(vs);
--	kfree(vs->vs_tpg);
- 	vs->vs_tpg = vs_tpg;
- 	goto out;
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1))
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1))
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 	if (drvdata->nr_pe)
+@@ -552,7 +575,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		isb();
  
-@@ -1802,6 +1801,7 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 			target_undepend_item(&tpg->se_tpg.tpg_group.cg_item);
- 		}
- 	}
-+free_tpg:
- 	kfree(vs_tpg);
- out:
- 	mutex_unlock(&vs->dev.mutex);
-@@ -1904,6 +1904,7 @@ vhost_scsi_clear_endpoint(struct vhost_scsi *vs,
- 	vhost_scsi_flush(vs);
- 	kfree(vs->vs_tpg);
- 	vs->vs_tpg = NULL;
-+	memset(vs->vs_vhost_wwpn, 0, sizeof(vs->vs_vhost_wwpn));
- 	WARN_ON(vs->vs_events_nr);
- 	mutex_unlock(&vs->dev.mutex);
- 	return 0;
+ 	/* wait for TRCSTATR.IDLE to go back down to '0' */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 0))
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 
+@@ -941,10 +964,25 @@ static void etm4_disable_hw(void *info)
+ 	tsb_csync();
+ 	etm4x_relaxed_write32(csa, control, TRCPRGCTLR);
+ 
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* wait for TRCSTATR.PMSTABLE to go to '1' */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1))
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1))
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for PM stable Trace Status\n");
++	/*
++	 * As recommended by section 4.3.7 (Synchronization of register updates)
++	 * of ARM IHI 0064H.b.
++	 */
++	isb();
++
+ 	/* read the status of the single shot comparators */
+ 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
+ 		config->ss_status[i] =
+@@ -1746,7 +1784,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 	etm4_os_lock(drvdata);
+ 
+ 	/* wait for TRCSTATR.PMSTABLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for PM Stable Status\n");
+ 		etm4_os_unlock(drvdata);
+@@ -1837,7 +1875,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+ 
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 		etm4_os_unlock(drvdata);
+diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+index 17276965ff1d0..6ddcbb8be5165 100644
+--- a/include/linux/coresight.h
++++ b/include/linux/coresight.h
+@@ -649,6 +649,10 @@ extern int coresight_enable_sysfs(struct coresight_device *csdev);
+ extern void coresight_disable_sysfs(struct coresight_device *csdev);
+ extern int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 			     int position, int value);
++typedef void (*coresight_timeout_cb_t) (struct csdev_access *, u32, int, int);
++extern int coresight_timeout_action(struct csdev_access *csa, u32 offset,
++					int position, int value,
++					coresight_timeout_cb_t cb);
+ 
+ extern int coresight_claim_device(struct coresight_device *csdev);
+ extern int coresight_claim_device_unlocked(struct coresight_device *csdev);
 -- 
 2.39.5
 
