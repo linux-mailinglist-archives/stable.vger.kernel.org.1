@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5BEA8054A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1650FA80B7B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9518F1B67DFF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2007F8C49D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C7F227BA4;
-	Tue,  8 Apr 2025 12:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8891C27C850;
+	Tue,  8 Apr 2025 12:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjUusmI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5iuZaRR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E68269825;
-	Tue,  8 Apr 2025 12:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4394E26F472;
+	Tue,  8 Apr 2025 12:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114132; cv=none; b=nkDoWt7OGw3Yr1E5LkCTuIjf3TeycpKEEeW33n3r2BxiHbHmFUCc3dePqpEX1XMoVdrEMxdduUxDEEIxh0UIiN3Wvkym02gPwKYWQSmrf81jL9Ue5oM/JzfLqi9Ffn111hLcuqNNgCifkxlcgyfH+CzF6Q8F5ThV1aM33rwvWic=
+	t=1744117037; cv=none; b=LxQa//P0CYXtSzz/nZ++7lD7WavaRK/E+ZdPEo46JM2YW4P1rANXIhIh2EEp4hf9vHCVvkqVVLNYZQ8TU7Khg+fpZQ1OeWNyn13CUJ9ePARHBoDXodJ0kbBLdwXO3zm1TFB5TPtvfs0uhPic7RsmzEO2yOqRo/MX3VWq7SHAhHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114132; c=relaxed/simple;
-	bh=1Y61BbcCTf7op7MwDN6aVCHYGXPVPcyl0weOeuALMRc=;
+	s=arc-20240116; t=1744117037; c=relaxed/simple;
+	bh=zXfM+II0If8UCZ8py85sYSCQGKihGcw+6c2QYYafX9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qs8UCRh105fFxLHKHu8EdwkKhVJyEX9bldJM98kuLSkEwOxa8aN2759lRWu/NcDIwKC5e/Cytxo+2Oz5MZuUv9poymy8POXZx/7IDcyzO5pgMD0eOeE+/9vXmIDp4il+otl43HUrUaHPlUGzhe/v8I0OzB4ZBBQlp3ltU8iYDwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjUusmI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C05C4CEE7;
-	Tue,  8 Apr 2025 12:08:51 +0000 (UTC)
+	 MIME-Version; b=rjpBP8UG6TFzgiLFdasCC+PjeuJyClPjMs2YNytMggqZLl3pJRnaUa4mO1IgA6mzYkwEbxT10nqoNyVdJbVKrhKd+B02tBaZkV5HSG3ZEIB3JTswWeaILhC3Mzj3TqDWh7eeTqkh9tcci9T9pFTJxMNUGGPUSxsMNjG/o2LYLhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5iuZaRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3315C4CEE5;
+	Tue,  8 Apr 2025 12:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114132;
-	bh=1Y61BbcCTf7op7MwDN6aVCHYGXPVPcyl0weOeuALMRc=;
+	s=korg; t=1744117037;
+	bh=zXfM+II0If8UCZ8py85sYSCQGKihGcw+6c2QYYafX9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjUusmI9dxcpfJ382Lhv78pxp2GVYUYpykpbo8ZTGB6hwDCly0B7ZriYdkol9GM1B
-	 v+zpguiGyBSDghWZpcozN/Bj5UnSuqyWRXb8/QyfpqAMh2mAj8GFUcnzfq+T41npIW
-	 W3+FkjzozqbMV2K3AvZRs1ImgNbYde42BXMs+PB8=
+	b=D5iuZaRR4GHoA5LVY2wnLngh6Pz7H3gvhWVYeZ7ucy7pViOMGu1CF+Cmlqh7kFbzg
+	 pq3FFBY/9xTinkgjY3bji5dDxvSwsPuaeYKAhCuLv8BE0uVuqOh8tLzFoGh9juyzlp
+	 6rA+sykw+vJN9eozq7H7avB+zniB/nO7QGSW88KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 5.4 147/154] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
+	Miguel Ojeda <ojeda@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 362/423] rust: Fix enabling Rust and building with GCC for LoongArch
 Date: Tue,  8 Apr 2025 12:51:28 +0200
-Message-ID: <20250408104820.012504232@linuxfoundation.org>
+Message-ID: <20250408104854.291181208@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: WANG Rui <wangrui@loongson.cn>
 
-commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
+commit 13c23cb4ed09466d73f1beae8956810b95add6ef upstream.
 
-The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
-The same call was immediately triggered by a subsequent goto statement.
-Thus avoid such a call repetition.
+This patch fixes a build issue on LoongArch when Rust is enabled and
+compiled with GCC by explicitly setting the bindgen target and skipping
+C flags that Clang doesn't support.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/test/ntb_perf.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ rust/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -838,10 +838,8 @@ static int perf_copy_chunk(struct perf_t
- 	dma_set_unmap(tx, unmap);
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -227,7 +227,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
+ 	-mfunction-return=thunk-extern -mrecord-mcount -mabi=lp64 \
+ 	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=no \
+ 	-mno-pointers-to-nested-functions -mno-string \
+-	-mno-strict-align -mstrict-align \
++	-mno-strict-align -mstrict-align -mdirect-extern-access \
++	-mexplicit-relocs -mno-check-zero-division \
+ 	-fconserve-stack -falign-jumps=% -falign-loops=% \
+ 	-femit-struct-debug-baseonly -fno-ipa-cp-clone -fno-ipa-sra \
+ 	-fno-partial-inlining -fplugin-arg-arm_ssp_per_task_plugin-% \
+@@ -241,6 +242,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
++BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
  
- 	ret = dma_submit_error(dmaengine_submit(tx));
--	if (ret) {
--		dmaengine_unmap_put(unmap);
-+	if (ret)
- 		goto err_free_resource;
--	}
- 
- 	dmaengine_unmap_put(unmap);
- 
+ # All warnings are inhibited since GCC builds are very experimental,
 
 
 
