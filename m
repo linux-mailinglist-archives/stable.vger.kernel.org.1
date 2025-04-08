@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-128905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF03A7FB27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55F2A7FB91
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D8216A05C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BF513A71D3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906D5264FB0;
-	Tue,  8 Apr 2025 10:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F8D267AE7;
+	Tue,  8 Apr 2025 10:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvgRRXHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8ITIcU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5019C8488
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA31266B4E
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106976; cv=none; b=t44U6eGiYlaynG+zxYatCQIJDpL/7KeHaTZl6zUFTXId45fEQcuLUxY5mJJAyWcY+s8Dp+Ex5fYekKrBHJOySWTKoTjVwTDnO/ZQP/gwd0qC1pUmJS5SO1ItX5DorCP3JX8ByH22N9DJT9S+Gbkxy/5+DMQrfI2LACDO3JafmYI=
+	t=1744107062; cv=none; b=M2Dl1zd9rhai6OGX3ES2VTBLyi6wM2Jvr4AittwFzteHgblLC9HHvgpwEunQTTXwfJv3O+zuB1q5lZJZFxq1SH4VwhYOLMRi66eTrzabim3woVwJiZbCOR767G+Tv2m3EY/p/L6IIFOU/FbvkvJX4a5E59tv9x9oH9Jwoi7e5J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106976; c=relaxed/simple;
-	bh=XbDXpALzNM6WhSDQ6zBhPPzbLsEv7ky96syfTRtn4co=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IbkvT5hAKcrfmilLFCyF3tyjb/5ejYCAb82nFo2P3MwC1NGbhx4ixJH3DhOotgFblQRiiLPz65gm2zJzVnH1yY/Kku0o8gdcCMFHhQdwbMTrv0d9RI3i9Om7TWkvfPoqvABIlW6/rzdUIC+IOT7xxUgpbGDyuXP/Ef4jSXNVtc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvgRRXHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77828C4CEE5;
-	Tue,  8 Apr 2025 10:09:35 +0000 (UTC)
+	s=arc-20240116; t=1744107062; c=relaxed/simple;
+	bh=bww4nWSe+BnU9IALevWyeot1S7IwLJZlVLbkjK78ieo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b7jyDVaAZc/q6IRT2jUMGBzozD6jB/Zf6PcchF9AADdty4ojnGRXF1l7Rm3/xvJ0C1PHsLLZBffEukKglGns/lBVN/Xdtihyzx8YKnqIZ6bhj+LuyFyjiifPgOJFmClDnD5bfZjNU+yBvc8t4M1h81oRzg9S5kWBFo3kddgy15Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8ITIcU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2A5C4CEE5;
+	Tue,  8 Apr 2025 10:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744106975;
-	bh=XbDXpALzNM6WhSDQ6zBhPPzbLsEv7ky96syfTRtn4co=;
+	s=korg; t=1744107061;
+	bh=bww4nWSe+BnU9IALevWyeot1S7IwLJZlVLbkjK78ieo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SvgRRXHAxAEfTHZ2DJUroN1BDrblSPv9mkXH7lG14OPYMWw38LNxx0/Oz8MkFGldZ
-	 P+f2HMXq3aZeUEDW8cQ1O+O4O/H3xs/QHFBi37GsIKtWFLNejfg6gNYHFlBQdlqbmc
-	 n6ojGWNSwJk9XhVXCa9RAahOj7cOtgZvqPtXTriU=
-Subject: FAILED: patch "[PATCH] NFSD: Never return NFS4ERR_FILE_OPEN when removing a" failed to apply to 5.10-stable tree
-To: chuck.lever@oracle.com,jlayton@kernel.org,trondmy@hammerspace.com
+	b=F8ITIcU7hIiWXEe7DqStiKS8kkcteQZ3BSNLqHxBGwh4gm1Hpr55yZHhm0M0PIIF6
+	 zqFH6n3TZRk+78GYaHumshQ6PQnMysSFHNSEQDxawXki/hwjtyR3yLFOYHiolqJKEE
+	 lnq1+Uuz7dvvD5FSqQAZ/9XyniaLFYjSOSN1fRCU=
+Subject: FAILED: patch "[PATCH] ext4: fix OOB read when checking dotdot dir" failed to apply to 5.4-stable tree
+To: acsjakub@amazon.de,adilger.kernel@dilger.ca,mngyadam@amazon.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Apr 2025 12:07:50 +0200
-Message-ID: <2025040850-carwash-detention-d475@gregkh>
+Date: Tue, 08 Apr 2025 12:09:28 +0200
+Message-ID: <2025040828-secrecy-alibi-685d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 370345b4bd184a49ac68d6591801e5e3605b355a
+git cherry-pick -x d5e206778e96e8667d3bde695ad372c296dc9353
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040850-carwash-detention-d475@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040828-secrecy-alibi-685d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,73 +77,99 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 370345b4bd184a49ac68d6591801e5e3605b355a Mon Sep 17 00:00:00 2001
-From: Chuck Lever <chuck.lever@oracle.com>
-Date: Sun, 26 Jan 2025 16:50:18 -0500
-Subject: [PATCH] NFSD: Never return NFS4ERR_FILE_OPEN when removing a
- directory
+From d5e206778e96e8667d3bde695ad372c296dc9353 Mon Sep 17 00:00:00 2001
+From: "Acs, Jakub" <acsjakub@amazon.de>
+Date: Thu, 20 Mar 2025 15:46:49 +0000
+Subject: [PATCH] ext4: fix OOB read when checking dotdot dir
 
-RFC 8881 Section 18.25.4 paragraph 5 tells us that the server
-should return NFS4ERR_FILE_OPEN only if the target object is an
-opened file. This suggests that returning this status when removing
-a directory will confuse NFS clients.
+Mounting a corrupted filesystem with directory which contains '.' dir
+entry with rec_len == block size results in out-of-bounds read (later
+on, when the corrupted directory is removed).
 
-This is a version-specific issue; nfsd_proc_remove/rmdir() and
-nfsd3_proc_remove/rmdir() already return nfserr_access as
-appropriate.
+ext4_empty_dir() assumes every ext4 directory contains at least '.'
+and '..' as directory entries in the first data block. It first loads
+the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()
+and then uses its rec_len member to compute the location of '..' dir
+entry (in ext4_next_entry). It assumes the '..' dir entry fits into the
+same data block.
 
-Unfortunately there is no quick way for nfsd4_remove() to determine
-whether the target object is a file or not, so the check is done in
-in nfsd_unlink() for now.
+If the rec_len of '.' is precisely one block (4KB), it slips through the
+sanity checks (it is considered the last directory entry in the data
+block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the
+memory slot allocated to the data block. The following call to
+ext4_check_dir_entry() on new value of de then dereferences this pointer
+which results in out-of-bounds mem access.
 
-Reported-by: Trond Myklebust <trondmy@hammerspace.com>
-Fixes: 466e16f0920f ("nfsd: check for EBUSY from vfs_rmdir/vfs_unink.")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fix this by extending __ext4_check_dir_entry() to check for '.' dir
+entries that reach the end of data block. Make sure to ignore the phony
+dir entries for checksum (by checking name_len for non-zero).
+
+Note: This is reported by KASAN as use-after-free in case another
+structure was recently freed from the slot past the bound, but it is
+really an OOB read.
+
+This issue was found by syzkaller tool.
+
+Call Trace:
+[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x67e/0x710
+[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor/5375
+[   38.595158]
+[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.0-rc7 #1
+[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   38.595304] Call Trace:
+[   38.595308]  <TASK>
+[   38.595311]  dump_stack_lvl+0xa7/0xd0
+[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0
+[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595349]  print_report+0xaa/0x250
+[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595368]  ? kasan_addr_to_slab+0x9/0x90
+[   38.595378]  kasan_report+0xab/0xe0
+[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595400]  __ext4_check_dir_entry+0x67e/0x710
+[   38.595410]  ext4_empty_dir+0x465/0x990
+[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10
+[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10
+[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0
+[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10
+[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10
+[   38.595478]  ? down_write+0xdb/0x140
+[   38.595487]  ? __pfx_down_write+0x10/0x10
+[   38.595497]  ext4_rmdir+0xee/0x140
+[   38.595506]  vfs_rmdir+0x209/0x670
+[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190
+[   38.595529]  do_rmdir+0x363/0x3c0
+[   38.595537]  ? __pfx_do_rmdir+0x10/0x10
+[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0
+[   38.595561]  __x64_sys_unlinkat+0xf0/0x130
+[   38.595570]  do_syscall_64+0x5b/0x180
+[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Mahmoud Adam <mngyadam@amazon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: security@kernel.org
+Link: https://patch.msgid.link/b3ae36a6794c4a01944c7d70b403db5b@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 749dd84bdb41..4e0a2c0549c7 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1930,9 +1930,17 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 	return err;
- }
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index d671b2c9eba2..d4164c507a90 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -104,6 +104,9 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
+ 	else if (unlikely(le32_to_cpu(de->inode) >
+ 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
+ 		error_msg = "inode out of bounds";
++	else if (unlikely(next_offset == size && de->name_len == 1 &&
++			  de->name[0] == '.'))
++		error_msg = "'.' directory cannot be the last in data block";
+ 	else
+ 		return 0;
  
--/*
-- * Unlink a file or directory
-- * N.B. After this call fhp needs an fh_put
-+/**
-+ * nfsd_unlink - remove a directory entry
-+ * @rqstp: RPC transaction context
-+ * @fhp: the file handle of the parent directory to be modified
-+ * @type: enforced file type of the object to be removed
-+ * @fname: the name of directory entry to be removed
-+ * @flen: length of @fname in octets
-+ *
-+ * After this call fhp needs an fh_put.
-+ *
-+ * Returns a generic NFS status code in network byte-order.
-  */
- __be32
- nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
-@@ -2006,10 +2014,14 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
- 	fh_drop_write(fhp);
- out_nfserr:
- 	if (host_err == -EBUSY) {
--		/* name is mounted-on. There is no perfect
--		 * error status.
-+		/*
-+		 * See RFC 8881 Section 18.25.4 para 4: NFSv4 REMOVE
-+		 * wants a status unique to the object type.
- 		 */
--		err = nfserr_file_open;
-+		if (type != S_IFDIR)
-+			err = nfserr_file_open;
-+		else
-+			err = nfserr_acces;
- 	}
- out:
- 	return err != nfs_ok ? err : nfserrno(host_err);
 
 
