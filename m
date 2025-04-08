@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-129024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B8BA7FDA6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F6A802CA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F139B19E246A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D81C462B2C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFA12686B3;
-	Tue,  8 Apr 2025 10:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A874267F4F;
+	Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbpWXl8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJlQX9nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C81A26773A;
-	Tue,  8 Apr 2025 10:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36254266EEA;
+	Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109913; cv=none; b=TrhOsvVYmCzjKJ3wXczQqBWJ3SHZr2C7B1sCC3MnyCdQgt6/m9wfgGz4JwxXeiI7JgcEcc7LRNR1Mhvq3Szt03VAYrHbOgQCmyf6cugFjc0UGbh35772uz0Ok++hYRZ1ki8Nw9epBHWjVeVZEBo18itvhk5md1qRSJzZpW1BbtE=
+	t=1744112511; cv=none; b=MXn7GPnccwvV1ftuAH5ZesPypI5cKDGnZb8ggepL+z5hhbjBRDPdlD5kUWok5cCFFqjJaaivzCOAmaPE7FbZy6FaJklITxU3ux5Yk/pmJl35brYDfhWup3M8ltpLvcyvP+ykh3+VGW5R2l6410EhTO9GykyTsBRgddSY/VhLHKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109913; c=relaxed/simple;
-	bh=kKLYswaJ30JprDBBmdGmSKYQhlUUdVUqjHMl4g2V2mY=;
+	s=arc-20240116; t=1744112511; c=relaxed/simple;
+	bh=4/SV511n+o5e2AxtKoSRjw3JIjDIIsU9yUdfqwGc81g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Foor8i7mkcdSaxCJeCXItKMVjFgN0u3tQEtHnypzPUkGWfW65UYiXDVXSHjcBG9IyUa5B176TKXJewwQaX30ZJTO7T1QLbq1HCN6aA5Mxc/352faEZHoKam7/AokVLuXMy7EesgdchpqlMVr70/bs2bMXgA3yKDXzHJuQ7t8+Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbpWXl8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC44AC4CEE5;
-	Tue,  8 Apr 2025 10:58:32 +0000 (UTC)
+	 MIME-Version; b=uWEgX8zcWE/9VsexIJxdAmnBEro5guzKoiGv4Tqq1gmt5zrIJEqhHTc+pCnyS9KCzC0clRScnWSfH7wJ6Tqe6Fnm1wfOi/XADs1f+yorbhXjNcuNpffKaUSywPLqLAUepwuHkYmFcSjua/xtDKr5IgWcFhXX++LVPVVPzY/bGpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJlQX9nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F016C4CEE5;
+	Tue,  8 Apr 2025 11:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109913;
-	bh=kKLYswaJ30JprDBBmdGmSKYQhlUUdVUqjHMl4g2V2mY=;
+	s=korg; t=1744112511;
+	bh=4/SV511n+o5e2AxtKoSRjw3JIjDIIsU9yUdfqwGc81g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbpWXl8m9nVlsLOMemLlcRGFiQ+BJQMF+Z5W5Hn5itSB2n1usXkov2aA3HY2bydU8
-	 TsEnH2uZP1jM8bpM4vSBhjcM/t43U3VVapbTfQuur5oklo2lXcMFS11xsaeDG5New+
-	 mQ1nh3DwTXgyi9abp2aDtsgvzEoDCF6iBImVokns=
+	b=oJlQX9nxargOdHVonzFxnGaSni1zid0lI11mUoXEdIVY1aRNVN3MrFz+uaPdYtQ3x
+	 rfyeFpRjGoYQP9C+XDN/UOVFe21CIE/v3ZaV+UX4H1COElqifg6UoySPyLwjvGhIVC
+	 oY/FLOgoiXDQ59lssqIVg0r2GIZvpRttzbk0ztAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruv Deshpande <dhrv.d@proton.me>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 100/227] ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
-Date: Tue,  8 Apr 2025 12:47:58 +0200
-Message-ID: <20250408104823.363677858@linuxfoundation.org>
+	stable@kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Nishanth Menon <nm@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.15 096/279] i2c: omap: fix IRQ storms
+Date: Tue,  8 Apr 2025 12:47:59 +0200
+Message-ID: <20250408104828.943880813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhruv Deshpande <dhrv.d@proton.me>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit 35ef1c79d2e09e9e5a66e28a66fe0df4368b0f3d upstream.
+commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
 
-The mute LED on this HP laptop uses ALC236 and requires a quirk to function.
-This patch enables the existing quirk for the device.
+On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+storms because NACK IRQs are enabled and therefore triggered but not
+acked.
 
-Tested on my laptop and the LED behaviour works as intended.
+Sending a reset command to the gyroscope by
+i2cset 1 0x69 0x14 0xb6
+with an additional debug print in the ISR (not the thread) itself
+causes
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Dhruv Deshpande <dhrv.d@proton.me>
-Link: https://patch.msgid.link/20250317085621.45056-1-dhrv.d@proton.me
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+repeating till infinity
+[...]
+(0x2 = NACK, 0x100 = Bus free, which is not enabled)
+Apparently no other IRQ bit gets set, so this stalls.
+
+Do not ignore enabled interrupts and make sure they are acked.
+If the NACK IRQ is not needed, it should simply not enabled, but
+according to the above log, caring about it is necessary unless
+the Bus free IRQ is enabled and handled. The assumption that is
+will always come with a ARDY IRQ, which was the idea behind
+ignoring it, proves wrong.
+It is true for simple reads from an unused address.
+
+To still avoid the i2cdetect trouble which is the reason for
+commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+avoid doing much about NACK in omap_i2c_xfer_data() which is used
+by both IRQ mode and polling mode, so also the false detection fix
+is extended to polling usage and IRQ storms are avoided.
+
+By changing this, the hardirq handler is not needed anymore to filter
+stuff.
+
+The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+hanging the system.
+
+Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+CC: stable@kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9239,6 +9239,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x881e, "HP Laptop 15s-du3xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
+ 	return 0;
+ }
+ 
+-static irqreturn_t
+-omap_i2c_isr(int irq, void *dev_id)
+-{
+-	struct omap_i2c_dev *omap = dev_id;
+-	irqreturn_t ret = IRQ_HANDLED;
+-	u16 mask;
+-	u16 stat;
+-
+-	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+-
+-	if (stat & mask)
+-		ret = IRQ_WAKE_THREAD;
+-
+-	return ret;
+-}
+-
+ static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
+ {
+ 	u16 bits;
+@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_NACK) {
+-			err |= OMAP_I2C_STAT_NACK;
++			omap->cmd_err |= OMAP_I2C_STAT_NACK;
+ 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
++
++			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
++				err = -EAGAIN;
++				break;
++			}
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_AL) {
+@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
+ 				IRQF_NO_SUSPEND, pdev->name, omap);
+ 	else
+ 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
+-				omap_i2c_isr, omap_i2c_isr_thread,
++				NULL, omap_i2c_isr_thread,
+ 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 				pdev->name, omap);
+ 
 
 
 
