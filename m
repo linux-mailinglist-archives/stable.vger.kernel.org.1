@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7879A803FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9279EA80710
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC170463943
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FBAB466416
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F63269811;
-	Tue,  8 Apr 2025 11:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E3B26A1C9;
+	Tue,  8 Apr 2025 12:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhlqM/SD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCvXc4mw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443E222257E;
-	Tue,  8 Apr 2025 11:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FC3266F17;
+	Tue,  8 Apr 2025 12:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113351; cv=none; b=e9aKzXcjdZ97eWlf49/nt/YJCoV44RVzIGqSbYLLDsVOXhF//UYG2ummF1EC9120ZI0OU/1uZLt2c0myLGe1rsN1tjw+N1UPuv+McpTcBrxvqVEAGriGJBAx3EEx+GGp6FFMzu+7eSwq5vzuCSmcf64J4h2sPQiKUjAV1TTiErc=
+	t=1744115040; cv=none; b=BSWbuHtGtNx0yvpkAEmWR3ohS3w3SJAt4r0BxmHHYoyVdIEygnhr8nI4zdG0UD1B4Tn13+wfnttlwB3Ii4KhhIicI9u7oEaNpBKiM+V5t0lUP8ng8oTW8buwBB+xt0Vk6JWmslfES0KLorKfOOzQNTo4r5GNvf3O+jE53X1xUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113351; c=relaxed/simple;
-	bh=UHd0QzkfCDUSsQSTZf5OYLW+233Uq9Gr1uBYGFjBNWM=;
+	s=arc-20240116; t=1744115040; c=relaxed/simple;
+	bh=TFNV5kwxHfB30u59t13tN9/KyghATDZQDDWpCRKKlgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKlV96+1vuHs00cqmUO3gvb3hPs2e8GZhFC9uxmynwTN3dDFW21H104nd8dF1U9IrLcWZAUomgBPU4FJrp0hWeKEDK0dlkwmssmxaESqxgMQG9pFQU0yXNdA2KrgRg9i5jgi3Kh8zcksnKWzUUMY0yJ5ePDa6xX/nTp9kS90Fso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhlqM/SD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA17EC4CEE5;
-	Tue,  8 Apr 2025 11:55:50 +0000 (UTC)
+	 MIME-Version; b=C7BuOt9RkXn+yaJGLjuqGtrbgfhDa37Cy6bfRvUPUgqjsE3fpetvURMN6Hs2BgEqvN9fokkqTegYsIggFsgFUQyEDUvfcmkO2JaXLROWnOhUxIDSAeYeVa3yGuPkkxDKjwlQiYDxY7KaQuMUtr3ThXmf2UhSZNdI/CQwnvxOkuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCvXc4mw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62315C4CEE5;
+	Tue,  8 Apr 2025 12:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113351;
-	bh=UHd0QzkfCDUSsQSTZf5OYLW+233Uq9Gr1uBYGFjBNWM=;
+	s=korg; t=1744115040;
+	bh=TFNV5kwxHfB30u59t13tN9/KyghATDZQDDWpCRKKlgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhlqM/SDTrECTOk2DjK1os/2/q624BPUIk/KucChWVyLdTGbXl+nE25YKcyzJ7lv+
-	 uqo7HeJZpnlsoJjaKaWYd3E00n4ll7pQPrW4gYfp2y3DpZEJ/a4NiQXzIYbcHtzf2U
-	 Wm212/obXmk4Wc612LCtEMSPHSFYo1UvxI2ouIuQ=
+	b=gCvXc4mwMsR/swHh5Hc+ogX3yA/7d/QlHPY7EOLWCbOnVDV7OAWD9u6uItTecU4CD
+	 qYATtZMgURyHP8jRGBFv2hv04+uQMynBofwUt36md12ZV0n3o5Snhk1bxwCairVLRU
+	 lDNZe2/sqxx79r40N/NZZX0VoB3De3xz+Oxfm50A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/268] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
+Subject: [PATCH 6.13 326/499] ALSA: hda/realtek: Add support for various ASUS Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:48:58 +0200
-Message-ID: <20250408104831.929518710@linuxfoundation.org>
+Message-ID: <20250408104859.356135807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
+[ Upstream commit 859a11917001424776e1cca02b762efcabb4044e ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. Avoid at least some loops by not requiring the
-NFSv4 state manager to scan for delegations that are marked for
-return-on-close. Instead, either mark them for immediate return (if
-possible) or else leave it up to nfs4_inode_return_delegation_on_close()
-to return them once the file is closed by the application.
+Add support for ASUS B3405CVA, B5405CVA, B5605CVA, B3605CVA.
 
-Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-5-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 4bf2526a3a189..55cfa1c4e0a65 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -570,17 +570,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
- 
- 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
- 		ret = true;
--	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
--		struct inode *inode;
--
--		spin_lock(&delegation->lock);
--		inode = delegation->inode;
--		if (inode && list_empty(&NFS_I(inode)->open_files))
--			ret = true;
--		spin_unlock(&delegation->lock);
--	}
--	if (ret)
--		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
- 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
-@@ -821,11 +810,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
- 	return nfs4_inode_return_delegation(inode);
- }
- 
--static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
--		struct nfs_delegation *delegation)
-+static void
-+nfs_mark_return_if_closed_delegation(struct nfs_server *server,
-+				     struct nfs_delegation *delegation)
- {
--	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
--	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
-+	struct inode *inode;
-+
-+	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
-+	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
-+		return;
-+	spin_lock(&delegation->lock);
-+	inode = delegation->inode;
-+	if (!inode)
-+		goto out;
-+	if (list_empty(&NFS_I(inode)->open_files))
-+		nfs_mark_return_delegation(server, delegation);
-+	else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out:
-+	spin_unlock(&delegation->lock);
- }
- 
- static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 1b216e8fa4046..b7c6f714e7690 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10667,6 +10667,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1290, "ASUS X441SA", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x1294, "ASUS B3405CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+@@ -10755,6 +10756,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+ 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+@@ -10773,6 +10775,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x3f10, "ASUS Strix G835LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3f20, "ASUS Strix G615LR_LW", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3f30, "ASUS Strix G815LR_LW", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x1043, 0x3fd0, "ASUS B3605CVA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3ff0, "ASUS B5405CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
 -- 
 2.39.5
 
