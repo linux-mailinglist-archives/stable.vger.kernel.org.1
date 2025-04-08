@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1D8A809C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE27A8067F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64461BA3095
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C7188A2875
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1C267B77;
-	Tue,  8 Apr 2025 12:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AC626A0E3;
+	Tue,  8 Apr 2025 12:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXfjJi4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUKAXI+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92832698AE;
-	Tue,  8 Apr 2025 12:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC32206F18;
+	Tue,  8 Apr 2025 12:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116410; cv=none; b=k53tUcuy7yzmWjX4RnWiSZOA/jMabcGIkfyIfgIJO785bs0gFNxrvcTmDlTiPz7EMfU9S4L79j5DNQok5fEq91wF/cRh+BNy8i3CugvtQziguUgD4WyBjhGXO2D+Ob9/26aHydQlIMpXLzaL2LH0qC3CaHKFnWPG+Gr3mWMLE4s=
+	t=1744114716; cv=none; b=aSELIl2Tc0uRHtzoF512w/z3dG64GaZ+Iuwl5bjm84ZFMUG7s9CD9pdT/lNpjHpsbQsxYSECxNZIGBFbQqBiHsq91bzi9cTnI43hPoqhFzFRoE5glPZ2xxd+znUpLIwdjyGTBJ9rxOSgrJhmht02Jivq9E7FVkcOAr7JatpB/r0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116410; c=relaxed/simple;
-	bh=/fOxvtsmGx5riNvoEY0LrhTLA+0eajNGzxqSeK3S8Xs=;
+	s=arc-20240116; t=1744114716; c=relaxed/simple;
+	bh=2ea5SoyTtV1CyQGVJhqpX6SRGrd1g4VN8xvcR6/+p+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AzbBfiZI1dEbaOP6Q7A6jHp49yn6r3s/+A0Z13KHQe7FLxrnC/e0bZI63VjxI0S6u+6SywFenRg4VRD3v/sMruWMFzI0stwvLsJTU5wrWdOHdX+rs4hkB+0RI4yY1ooARftTN5+tgJ+F4+VyPz2LVr80A7tpuJIJHR+JKvlUm8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXfjJi4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42E4C4CEE5;
-	Tue,  8 Apr 2025 12:46:49 +0000 (UTC)
+	 MIME-Version; b=EhAzr/MYe4nJzwOJKvuKvfRQ86HZbHT5Vmx9WS68lIsf5ZHLd8cqcOeorWiSDXISHgB3R/clWvwbjbJTU4O7hJKZ9gYK/HFbklAqRyrnH3J3322bTRVPYsEYDSR/X0KFoluJcUoLRioKfidKswfHReZtRxmDquUJuBs0si7FhO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUKAXI+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C747C4CEE5;
+	Tue,  8 Apr 2025 12:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116410;
-	bh=/fOxvtsmGx5riNvoEY0LrhTLA+0eajNGzxqSeK3S8Xs=;
+	s=korg; t=1744114716;
+	bh=2ea5SoyTtV1CyQGVJhqpX6SRGrd1g4VN8xvcR6/+p+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXfjJi4DRS/Ivqby/R2YWDlm4TII9WM5joC/dx/tC87OS4HR+Ot2TInUInYyh2i1s
-	 05CevhlqduwSqb7looU3zuW3Cy64fRKCnu+obY2gISiGJSM3X7R8TF7h6sB+0YatAr
-	 FobMPYNT04vb2NuK8r31+tJx1B9h4vwihjRuRcUY=
+	b=oUKAXI+XD03Ex82wYYcl6brVvbXP9ppN6No/+ClRMxls5KKPMcCJEKGij7VSAXVif
+	 NH3smamA017moSrqC5WIuqHXYYZG+ugsdLFdQtCIHIMiSX1zgHe/8LTn+EN9LEl7S8
+	 rVEaS5be1e7p8tTbO83lsoxSRUlTtTraQvdle4Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Helge Deller <deller@gmx.de>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	thomas.falcon@intel.com,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/423] fbdev: au1100fb: Move a variable assignment behind a null pointer check
+Subject: [PATCH 6.13 207/499] perf tools: Add skip check in tool_pmu__event_to_str()
 Date: Tue,  8 Apr 2025 12:46:59 +0200
-Message-ID: <20250408104847.907321515@linuxfoundation.org>
+Message-ID: <20250408104856.368480023@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
+[ Upstream commit ee8aef2d232142e5fdfed9c16132815969a0bf81 ]
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function “au1100fb_setmode”.
+Some topdown related metrics may fail on hybrid machines.
 
-This issue was detected by using the Coccinelle software.
+ $ perf stat -M tma_frontend_bound
+ Cannot resolve IDs for tma_frontend_bound:
+ cpu_atom@TOPDOWN_FE_BOUND.ALL@ / (8 * cpu_atom@CPU_CLK_UNHALTED.CORE@)
 
-Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+In the find_tool_events(), the tool_pmu__event_to_str() is used to
+compare the tool_events. It only checks the event name, no PMU or arch.
+So the tool_events[TOOL_PMU__EVENT_SLOTS] is set to true, because the
+p-core Topdown metrics has "slots" event.
+The tool_events is shared. So when parsing the e-core metrics, the
+"slots" is automatically added.
+
+The "slots" event as a tool event should only be available on arm64. It
+has a different meaning on X86. The tool_pmu__skip_event() intends
+handle the case. Apply it for tool_pmu__event_to_str() as well.
+
+There is a lack of sanity check in the expr__get_id(). Add the check.
+
+Closes: https://lore.kernel.org/lkml/608077bc-4139-4a97-8dc4-7997177d95c4@linux.intel.com/
+Fixes: 069057239a67 ("perf tool_pmu: Move expr literals to tool_pmu")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: thomas.falcon@intel.com
+Link: https://lore.kernel.org/r/20250207152844.302167-1-kan.liang@linux.intel.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1100fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/util/expr.c     | 2 ++
+ tools/perf/util/tool_pmu.c | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 840f221607635..6251a6b07b3a1 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
- 	 */
- int au1100fb_setmode(struct au1100fb_device *fbdev)
+diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
+index c221dcce66660..6413537442aa8 100644
+--- a/tools/perf/util/expr.c
++++ b/tools/perf/util/expr.c
+@@ -215,6 +215,8 @@ int expr__add_ref(struct expr_parse_ctx *ctx, struct metric_ref *ref)
+ int expr__get_id(struct expr_parse_ctx *ctx, const char *id,
+ 		 struct expr_id_data **data)
  {
--	struct fb_info *info = &fbdev->info;
-+	struct fb_info *info;
- 	u32 words;
- 	int index;
++	if (!ctx || !id)
++		return -1;
+ 	return hashmap__find(ctx->ids, id, data) ? 0 : -1;
+ }
  
- 	if (!fbdev)
- 		return -EINVAL;
+diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
+index 4fb0975784794..3a68debe71437 100644
+--- a/tools/perf/util/tool_pmu.c
++++ b/tools/perf/util/tool_pmu.c
+@@ -62,7 +62,8 @@ int tool_pmu__num_skip_events(void)
  
-+	info = &fbdev->info;
-+
- 	/* Update var-dependent FB info */
- 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
- 		if (info->var.bits_per_pixel <= 8) {
+ const char *tool_pmu__event_to_str(enum tool_pmu_event ev)
+ {
+-	if (ev > TOOL_PMU__EVENT_NONE && ev < TOOL_PMU__EVENT_MAX)
++	if ((ev > TOOL_PMU__EVENT_NONE && ev < TOOL_PMU__EVENT_MAX) &&
++	    !tool_pmu__skip_event(tool_pmu__event_names[ev]))
+ 		return tool_pmu__event_names[ev];
+ 
+ 	return NULL;
 -- 
 2.39.5
 
