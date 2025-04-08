@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71296A80369
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F75A80284
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECA546413C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6177A3B28C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976FB265633;
-	Tue,  8 Apr 2025 11:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46542265602;
+	Tue,  8 Apr 2025 11:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnWrNA9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1ye1+fB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B48268C6B;
-	Tue,  8 Apr 2025 11:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B0119AD5C;
+	Tue,  8 Apr 2025 11:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113156; cv=none; b=UCpYrXG6UAxEgbWiYsSfAdKAJe3dKA+af5+eBdFC/PhoGmWfTU02du38WxYyltvQ7kFDa+kJ/pJvmfPBLiSU0WSCy0QwqnIeox76EL+xE9D/f7YIvi5K+ul81XwKwrIME3/VIQuZdC2RxNho76CT41c6D4tNVn7YJH31q+ytA/U=
+	t=1744112546; cv=none; b=tPUNoXSzg1sKAQLDG0oag6ACQ3Me5X0vLfTQppYP4evqpMPGQPOnIVdWn58TPHAfGhn8GXMZMQ/9neGl/st9vlyn+vlyC53e+/uauKFsO8ZM1wUdEEPoA15kYza20Fx86xMlMfrOIDt3sw3ZGah+dChB2QYICOcPf+DNWzPKU6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113156; c=relaxed/simple;
-	bh=0FRFwgza53t0d2Z1USVSyF0oYLSbDxdRexafvArgSbg=;
+	s=arc-20240116; t=1744112546; c=relaxed/simple;
+	bh=VkloAL1c9N56OAOg4DODUFlgRQ7v7I1SmQUDfMsdjzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bYm4Y5pSrUlLH1G1+kZCCtttpuKnKxeMvqCIPfiK/ANWlNe/5H3sB/BUFPJUdgRD/+in3I18EXVrXhgS3E5KqJSUqB5ZPZSteWDd1q9aN2kVaIQV9lDf3QAZTQwnc+vBKK3I5VHlp+PZNhOvGOKZkDA9d8FplwXPkPf7u0b3U2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnWrNA9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9350C4CEE5;
-	Tue,  8 Apr 2025 11:52:35 +0000 (UTC)
+	 MIME-Version; b=HBhJKKv0ARC3dbZwEiT7hEin7CEEZ63mU6RbiLxvq78GIUyTH75dP1RJRIGZNAx2lzVgYzwrDiiTS2v/TB8/60D415RkCSxVoRBPiNz+6Q/UyF1qsqL+dohYLa+74DC4SbrpKNk/A+Ze1IKE0uWJzadshGsuwhT32rx4ggO8fi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1ye1+fB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BF8C4CEE5;
+	Tue,  8 Apr 2025 11:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113156;
-	bh=0FRFwgza53t0d2Z1USVSyF0oYLSbDxdRexafvArgSbg=;
+	s=korg; t=1744112545;
+	bh=VkloAL1c9N56OAOg4DODUFlgRQ7v7I1SmQUDfMsdjzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnWrNA9mTvtsrA3D3Qk6QQv9PNV4NZGw1ioi8kV8r+2M1O8MrirOJDRjCYXa50TXi
-	 5MNYa/PnVVCSqRkLg2VhDMkJ/cG97zPFJSwYJ4EbvjXGEneedzh0RrPNer/+LNUhjM
-	 Kg/M0zR44HhknHsgTZ4ERFdN2j2tyADr+5DMvOcc=
+	b=t1ye1+fBcgTNV2WCHmwNdFZxRumm6HIkPeRr7KMNRIyC4dvSJV0IcLk09a61ALnsf
+	 6BSy2oFcFVPkrcNGWelzpzivtPZZdwemmTBG4IFCxQBcfJwx3FXTXyzi+FiMnvNbxe
+	 VUZuxR1LCZnEXvyPClJ4mpGFLZciNzvzq3BuL7RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/268] PCI: xilinx-cpm: Fix IRQ domain leak in error path of probe
+Subject: [PATCH 5.15 081/279] ARM: dts: bcm2711: PL011 UARTs are actually r1p5
 Date: Tue,  8 Apr 2025 12:47:44 +0200
-Message-ID: <20250408104829.931157091@linuxfoundation.org>
+Message-ID: <20250408104828.528805382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 57b0302240741e73fe51f88404b3866e0d2933ad ]
+[ Upstream commit 0de09025f161f67c07978c4742e221243d070d41 ]
 
-The IRQ domain allocated for the PCIe controller is not freed if
-resource_list_first_type() returns NULL, leading to a resource leak.
+The ARM PL011 UART instances in BCM2711 are r1p5 spec, which means they
+have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
+Thanks to N Buchwitz for pointing this out.
 
-This fix ensures properly cleaning up the allocated IRQ domain in
-the error path.
-
-Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
-Signed-off-by: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
-[kwilczynski: added missing Fixes: tag, refactored to use one of the goto labels]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Link: https://lore.kernel.org/r/20250224155025.782179-2-thippeswamy.havalige@amd.com
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250223125614.3592-2-wahrenst@gmx.net
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-xilinx-cpm.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/bcm2711.dtsi | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-xilinx-cpm.c b/drivers/pci/controller/pcie-xilinx-cpm.c
-index 4a787a941674b..51379d791005b 100644
---- a/drivers/pci/controller/pcie-xilinx-cpm.c
-+++ b/drivers/pci/controller/pcie-xilinx-cpm.c
-@@ -594,15 +594,17 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
- 		return err;
+diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
+index 89af57482bc8f..926bc467d4516 100644
+--- a/arch/arm/boot/dts/bcm2711.dtsi
++++ b/arch/arm/boot/dts/bcm2711.dtsi
+@@ -133,7 +133,7 @@ uart2: serial@7e201400 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 	bus = resource_list_first_type(&bridge->windows, IORESOURCE_BUS);
--	if (!bus)
--		return -ENODEV;
-+	if (!bus) {
-+		err = -ENODEV;
-+		goto err_free_irq_domains;
-+	}
+@@ -144,7 +144,7 @@ uart3: serial@7e201600 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 	port->variant = of_device_get_match_data(dev);
+@@ -155,7 +155,7 @@ uart4: serial@7e201800 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 	err = xilinx_cpm_pcie_parse_dt(port, bus->res);
- 	if (err) {
- 		dev_err(dev, "Parsing DT failed\n");
--		goto err_parse_dt;
-+		goto err_free_irq_domains;
- 	}
+@@ -166,7 +166,7 @@ uart5: serial@7e201a00 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 	xilinx_cpm_pcie_init_port(port);
-@@ -626,7 +628,7 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
- 	xilinx_cpm_free_interrupts(port);
- err_setup_irq:
- 	pci_ecam_free(port->cfg);
--err_parse_dt:
-+err_free_irq_domains:
- 	xilinx_cpm_free_irq_domains(port);
- 	return err;
- }
+@@ -1142,6 +1142,7 @@ &txp {
+ };
+ 
+ &uart0 {
++	arm,primecell-periphid = <0x00341011>;
+ 	interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
+ };
+ 
 -- 
 2.39.5
 
