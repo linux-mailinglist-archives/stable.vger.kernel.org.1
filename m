@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-131743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE0FA80BC4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A62FA80989
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB76C5048E0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C974A7336
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8713C00;
-	Tue,  8 Apr 2025 13:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94585269AED;
+	Tue,  8 Apr 2025 12:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnlIda2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT3TJDXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7702B2DA;
-	Tue,  8 Apr 2025 13:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509F220330;
+	Tue,  8 Apr 2025 12:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117214; cv=none; b=INAezuHp3guifkgzsAkDDhp4IQdYGkETV7fOVlyHU32sIc4Khu2fayk80vHIc3SAhcalLRdnZft5oOlO/O7mCHZEvPnDUbKNUQp39Be1ctutXmPxD1DaESOsR87hiORjk9is+ihP3zXQFwrcCBo9ttD0rVo1cJxc7BDx3ZBF9Bg=
+	t=1744116013; cv=none; b=H03Ypd+Uc6X8vuJJT7m1cSomXs+5oDxc3vMU5dtgOTW73+YYfDGEEeoM9jgptI2SaUf6CMhxItp5XOqOJdITiCZJHyyvMLeE1IFHxmXEcsTylf1pX3rt75R9i1zVcajWIjMvCeGyxsrFuq1XDbBxum/EYdzFPeMDXjYgzFHkeSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117214; c=relaxed/simple;
-	bh=KSIstTtHqexGJ+MQKxdgvaLRqYBS3jP/E8zaVVpugdo=;
+	s=arc-20240116; t=1744116013; c=relaxed/simple;
+	bh=0/HBrhZwLftGTcWtgUdoO3YC/hGVGz5KNwwnFdNRDQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHK4xmtILKYMXi1l9KmedoV5PqirTSvN6G8absrbAJd2uggK78pUZSIQR7RztU7SCxwud6QS9Y9gJusLHDwWpn0p/rjWQkvnb3lzcKQ71pLV5ge+FS7b8DbvRnuNsVynzFWJ9VUpsDo5onhRRSC+N2+qDwidGfZyA3yu/wYqg2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnlIda2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C65AC4CEE5;
-	Tue,  8 Apr 2025 13:00:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O78dxSfU2hcK7ABMnJnJjdywc6pxNblZkfx4OJUrTrGrzlk7w+oa2UaA4juD9wVcNSiCvmBuIHMcGAd4axPVsZX6y8BntJMZ3CCPj6m+JDzkJLMZ+O5vQ0T79mTLvf6zptGRYfxutycj3wRx1EwQnSoY0RkqBnh81pzNALsLOSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wT3TJDXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2AFC4CEE5;
+	Tue,  8 Apr 2025 12:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117213;
-	bh=KSIstTtHqexGJ+MQKxdgvaLRqYBS3jP/E8zaVVpugdo=;
+	s=korg; t=1744116013;
+	bh=0/HBrhZwLftGTcWtgUdoO3YC/hGVGz5KNwwnFdNRDQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnlIda2P/uhfmll094vbbJzdVmvmm1TCagEo1NP5dpupHBnKXnvD8NBbXtvskU/I4
-	 5sQpB8x/v20gxsM8lAgCaBn4AwQUin+8Xe1NQSy7pzePsO4NEBMd5jeVC7eReYr1C+
-	 zxLJgcAOo6sW4eZh7tlmlCbSHRj7b6BNy4cnIA1g=
+	b=wT3TJDXwbimBSb0Wkan/8QXz84qJcDPyj3O4DHP7I/rXcWvHTItTlOhRvsaR2JY/j
+	 S359GFz7HNA6fzbqkgJ4uSyy4Y6g1jCDh28/sDKi4kiUnMHXJov7WKGPXrXzqLAYFH
+	 F9AuPsVpdiwZRGNRo2AhrBXhinVzzcoBkfazMViM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 391/423] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+Subject: [PATCH 6.1 187/204] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
 Date: Tue,  8 Apr 2025 12:51:57 +0200
-Message-ID: <20250408104855.002360299@linuxfoundation.org>
+Message-ID: <20250408104825.802024615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,7 +99,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/mmc/host/sdhci-pxav3.c
 +++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct plat
+@@ -401,6 +401,7 @@ static int sdhci_pxav3_probe(struct plat
  	if (!IS_ERR(pxa->clk_core))
  		clk_prepare_enable(pxa->clk_core);
  
