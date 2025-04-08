@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4663A80AAC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B37A8066D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678481BC2E0E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8847AFC9D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2740726A0D9;
-	Tue,  8 Apr 2025 12:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F65D26B2CD;
+	Tue,  8 Apr 2025 12:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRzCPNI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiKMuaeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D615B26A095;
-	Tue,  8 Apr 2025 12:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE6C269802;
+	Tue,  8 Apr 2025 12:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116642; cv=none; b=eJuOJ8Tmt8339KJ8IPa5gK6Fos6iIpTaDzIib8h+btHrR+W4oL+iiw323YJYcFn4gEAh27fklUSxbObkjK2o9Hhxwzh7gUeUz+yfPuGkAr4JqKtI+DU0tQyYCRRGTDZCTwQ8OPi5NqqsoPPDhPmegiGoTjTuLpeI2ObwpKo3FUQ=
+	t=1744114950; cv=none; b=Q5yy7iGO+I+Qeu8fxxiiLPUnuNr+g6+Uwn1KwkHgw1GNLxJ8XAWhiCKyoDBTNaRvtTV/Xg6rmNgFMEVZSQDtZhvdeGMwTF2+rQmauowygAA8/VV8X4qTAQpPQXH5JCFYyKwIvcBbEz/RENUAy5nUPPBijlrR16ajbR5EbMWSqks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116642; c=relaxed/simple;
-	bh=oriQtcV3lg7bKXEegSNB+RftGYpMdQlrzXEf6A1TzSA=;
+	s=arc-20240116; t=1744114950; c=relaxed/simple;
+	bh=OzVxyE8VOGZTM9yx9rOpXpb1NdymBT9ZFuw3DUp+SD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYqbzrGEb0pl6+pldV4pvFJZm877Ba/5OrcwT7yHzYk/2fVX1TNGHuAP9hojMfozZsdJOrCs/lc3GCw20mYniqb0iVhGBUce3xQNExarrM2ueAgCgNeG7FWYwDgis4dYCzNf34Bg4R73+eqOGl+mLLY1nfSKglOWkPz2woC48tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRzCPNI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B098C4CEE5;
-	Tue,  8 Apr 2025 12:50:41 +0000 (UTC)
+	 MIME-Version; b=b9F1InXNRJGFqp622c4q0gyss1OtKssR5RJ5gxeYJUmnVzneIGIO5UpMmkmL0gtcZDvGTRFh09seTyYBWWFgMuc9pDBEP9aNNMFvYCnliJ8s7EsDzc6GBkRlcfGjLnXJICSTz+/qmtQ4f/GCSgxrp9NkOkWbuQSNyTxRWw9tg48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiKMuaeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5780C4CEE5;
+	Tue,  8 Apr 2025 12:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116642;
-	bh=oriQtcV3lg7bKXEegSNB+RftGYpMdQlrzXEf6A1TzSA=;
+	s=korg; t=1744114950;
+	bh=OzVxyE8VOGZTM9yx9rOpXpb1NdymBT9ZFuw3DUp+SD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRzCPNI/sVaXUUCsE1dw20AVk1nb/YCfi8DWZwXjyZRyE7yDS6gqOCq3M/9fzgnus
-	 NWUpt0LwJHQYRSoO3jTYhOB0wmS8UxVNavdUan0abwLhLXG4zsDDsLfx8tHeKJc1qd
-	 A7/tA0GToJCqHxo8/ysq6GmUtuZjmzbAleUaiiJc=
+	b=HiKMuaeXVDhYqzjqDiIXXEWEyAyuEPq2w/JiOF/KO4vVSfbFJ6jJoOmo6wGfshbfz
+	 njMj4OkpxSGOQCLan68xYziMknPEZPO+YQC0u7LVHxKoX7EaqTnPHnywCxPjMaRi0Z
+	 63e+BYr/RTDwbdhDeP+CGBWrRdbhNZNPFQWu3u54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/423] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
+Subject: [PATCH 6.13 292/499] octeontx2-af: Fix mbox INTR handler when num VFs > 64
 Date: Tue,  8 Apr 2025 12:48:24 +0200
-Message-ID: <20250408104849.890478255@linuxfoundation.org>
+Message-ID: <20250408104858.497365371@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
+[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
 
-If a match was not found, then the write_raw() callback would return
-the odr index, not an error. Return -EINVAL if this occurs.
-To avoid similar issues in future, introduce j, a new indexing variable
-rather than using ret for this purpose.
+When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
+function is incorrect. Due to which mbox workqueue entries for
+VFs 0 to 63 never gets added to workqueue.
 
-Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mma8452.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 62e6369e22696..de207526babee 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -711,7 +711,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
- {
- 	struct mma8452_data *data = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, ret;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index cd0d7b7774f1a..6575c422635b7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2634,7 +2634,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
+ 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
  
- 	ret = iio_device_claim_direct_mode(indio_dev);
- 	if (ret)
-@@ -771,14 +771,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 		break;
+ 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
+-		vfs -= 64;
++		vfs = 64;
+ 	}
  
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		ret = mma8452_get_odr_index(data);
-+		j = mma8452_get_odr_index(data);
- 
- 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
--			if (mma8452_os_ratio[i][ret] == val) {
-+			if (mma8452_os_ratio[i][j] == val) {
- 				ret = mma8452_set_power_mode(data, i);
- 				break;
- 			}
- 		}
-+		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		break;
- 	default:
- 		ret = -EINVAL;
+ 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
 -- 
 2.39.5
 
