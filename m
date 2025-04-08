@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A59A7FDCA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 417C8A80383
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6994F172E57
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F76172BE6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0127268FD5;
-	Tue,  8 Apr 2025 10:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE1C269811;
+	Tue,  8 Apr 2025 11:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXL02gHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw8jyyZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C30D264FA0;
-	Tue,  8 Apr 2025 10:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D44268FFA;
+	Tue,  8 Apr 2025 11:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109945; cv=none; b=YID7/d3HH1PFFmFhWticQWYW5U0lx/13oPnYYtl9X1CqOu6CGoIrxZ2gH0IOTbbM2hZ/xcZnmSIe3RkQQZQeueOgX5SspPE5x/Im4dbPaMpVnu7miu7MIFcc7TIQd2t8wauTdKeLiG8Q50mUPY5dwGsG1Bsd6KwMmrKG4fAvEi4=
+	t=1744113218; cv=none; b=bGJzGUUPtC48DB+ayxCo9oG/0fOcJRdpdluuOlrS5WayU+hIWBXyHyzdHIWotFsd5XKzgOOy02m5+r/Z6KdELYDz+8pLV6273dI/C0RjcQaCV8aHx2DlNlKVC1WPhElXA90rGrb06LQ+x5fNYgkCby3vwYIOMEdWVokpvy3qQ3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109945; c=relaxed/simple;
-	bh=vgLnIe7rIoz8cuJT9xuMPdD7FPwzKGKr49BP/d7ls0Y=;
+	s=arc-20240116; t=1744113218; c=relaxed/simple;
+	bh=QXE0o3+QESDfqDew/May5RMnnSQACzpJzu71atN3+JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cw3nkNWtFED4ROUoydNODlAVt4XaIle34qmyEf0K3KvwPN8XL+M4fUAlzwmUW3M1jVdoOxX+uExyqimNCZ5278VQ7iURMLpshpUb9eRgT6PxlDBn1Z9lKLUjn6hWseMj4YRHBGrCnq7u5jRCv50YbWifjJzbPbxEZWL/S/0iJpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXL02gHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2BCC4CEE5;
-	Tue,  8 Apr 2025 10:59:05 +0000 (UTC)
+	 MIME-Version; b=gn9ocx0erKpg8HVpRVfulJLYoBxFNcVh4U9wktuvyMVKP/7TQDzWs9TZOmSExD2jijIUqQbY5zOEGkYawppU18Fhqg4lvvcnPPw0eHx5NiJEIFQvkJAF+8xx+1CAW122SCmPJObW0jxQt/pQTy5Qzrfd74iGbyoWg9yc48Zwgwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw8jyyZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746BEC4CEEC;
+	Tue,  8 Apr 2025 11:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109945;
-	bh=vgLnIe7rIoz8cuJT9xuMPdD7FPwzKGKr49BP/d7ls0Y=;
+	s=korg; t=1744113217;
+	bh=QXE0o3+QESDfqDew/May5RMnnSQACzpJzu71atN3+JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXL02gHoyMV2LD09zpC1gPbduFCb0X6FrmenBNADIvF+OvkVn3cMKFE88bp4Azclr
-	 7kCQK9ZoAc1a5Xkkep17wHFSkuBxZzDWsThLUnHalL9i9AYTL0oFDvF0wVgFGs3NKa
-	 9nFCxYlhzwZVDazp+DxX48jc+Z7ZXMhXbfxPWYyo=
+	b=Bw8jyyZssVUTdkc7buHKnhotM08R2UYbiYdKFTJ5kBJ5W3oElwPFkZwQ8rwZTiGqO
+	 q8C7AoiTTaNq7HpVeu0MOb6uu7PtPm12KWlHAVMnjr8uOyE8xkGJ6sDhVp8s+ae6PZ
+	 PJr6OgeiFrBdZXPrldnRSeiaUHUViFzZBOV5w3YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/227] watch_queue: fix pipe accounting mismatch
+Subject: [PATCH 6.6 078/268] pinctrl: renesas: rzg2l: Fix missing of_node_put() call
 Date: Tue,  8 Apr 2025 12:48:09 +0200
-Message-ID: <20250408104823.679577697@linuxfoundation.org>
+Message-ID: <20250408104830.600096901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
+[ Upstream commit a5779e625e2b377f16a6675c432aaf299ce5028c ]
 
-Currently, watch_queue_set_size() modifies the pipe buffers charged to
-user->pipe_bufs without updating the pipe->nr_accounted on the pipe
-itself, due to the if (!pipe_has_watch_queue()) test in
-pipe_resize_ring(). This means that when the pipe is ultimately freed,
-we decrement user->pipe_bufs by something other than what than we had
-charged to it, potentially leading to an underflow. This in turn can
-cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-To remedy this, explicitly account for the pipe usage in
-watch_queue_set_size() to match the number set via account_pipe_buffers()
+Call into of_node_put() to rectify that.
 
-(It's unclear why watch_queue_set_size() does not update nr_accounted;
-it may be due to intentional overprovisioning in watch_queue_set_size()?)
-
-Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-3-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watch_queue.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index 73717917d8164..37da8647b4ecb 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -274,6 +274,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
- 	if (ret < 0)
- 		goto error;
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 2ea6ef99cc70b..ac629c72d5927 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -1367,6 +1367,8 @@ static int rzg2l_gpio_register(struct rzg2l_pinctrl *pctrl)
+ 		return ret;
+ 	}
  
-+	/*
-+	 * pipe_resize_ring() does not update nr_accounted for watch_queue
-+	 * pipes, because the above vastly overprovisions. Set nr_accounted on
-+	 * and max_usage this pipe to the number that was actually charged to
-+	 * the user above via account_pipe_buffers.
-+	 */
-+	pipe->max_usage = nr_pages;
-+	pipe->nr_accounted = nr_pages;
++	of_node_put(of_args.np);
 +
- 	ret = -ENOMEM;
- 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
- 	if (!pages)
+ 	if (of_args.args[0] != 0 || of_args.args[1] != 0 ||
+ 	    of_args.args[2] != pctrl->data->n_port_pins) {
+ 		dev_err(pctrl->dev, "gpio-ranges does not match selected SOC\n");
 -- 
 2.39.5
 
