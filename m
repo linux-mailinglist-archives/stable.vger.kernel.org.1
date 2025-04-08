@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DD1A80B5B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAE2A8058F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 891301BA76E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4336C42768A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD6B27C16B;
-	Tue,  8 Apr 2025 12:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBA026A0A7;
+	Tue,  8 Apr 2025 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJafyjHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qshCUbCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CB826988C;
-	Tue,  8 Apr 2025 12:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AAF269B12;
+	Tue,  8 Apr 2025 12:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117010; cv=none; b=JBTst3bIC3F/X6ahajp1CmicDBhy2d2a/XMY/nwS0zZr3PvSpR1FkLSgVQnt5AZaUHoRzNrrhYAwNhG2IpekOZJ+oXZvmOONtir/Jik9lwJcjVmG+sFacf+fXVPVtSG8NgOdSUx8DBzxJ4M+ME68iW2C7EW6KNRMblNGUKaAYfQ=
+	t=1744113961; cv=none; b=uCvcnMXtFbMvnJNUFAJfbK7oMAn31VtqL8S/XC7bKeCVDni9Vzuq54MWETVkaqPbWiRRjdd968JjkGwWKowfQpAeDekPEWqJJV/Hv1qxSVu/iTl66WSTGecF1JO0WLP4AshCT+Xt/tN1OFtghOuKN6Binhgb/dAhUjqqWgM16kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117010; c=relaxed/simple;
-	bh=J7tV5IcU9WIhE8Y3kl/xLkasIut5lCAfDtlj/WDuxTU=;
+	s=arc-20240116; t=1744113961; c=relaxed/simple;
+	bh=/LKLTNUA0V2YDrUPMoMeCfFgDYrOMzdElURLkkAwxeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swlXVcg05hanuG91TqlYYehBOEaeZtKMf3CnSkm+BJQFUgwYtBWXvQShGkSvr22tOUw9W8snQgMWzvjm+GKQHrZEypKIo41H8niyNh5+wpo9qCj4Kp6i2ONCF98rAuigrLo6e3ylDrkOEWtVb4yYmYrvWCrTL1sx++cMTphiq4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJafyjHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0D6C4CEE5;
-	Tue,  8 Apr 2025 12:56:49 +0000 (UTC)
+	 MIME-Version; b=UpDlBJIsROhKNG/dSlZtLven387Ixy+rMISbTytfaY4jhDBpn/S+fUEBS2abXQ9TXAIXo+AuXEx2RAiNqx/n9xymiYckCaITG5AfcYNvQVY5R8a0mRJ90eSZNZe+pCx625HE19641x9r8k6Y3gTcqJvrDJcuP4Wt1GceXuVF7aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qshCUbCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED99C4CEE5;
+	Tue,  8 Apr 2025 12:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117010;
-	bh=J7tV5IcU9WIhE8Y3kl/xLkasIut5lCAfDtlj/WDuxTU=;
+	s=korg; t=1744113961;
+	bh=/LKLTNUA0V2YDrUPMoMeCfFgDYrOMzdElURLkkAwxeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJafyjHJdmg+3uMcjDgnVHemZoE3BYGYncAl6eUCUhhHekhAjtFez+Bruy4Gw5cmU
-	 D3k07hUQIaX+FZNOOn1nxiRNWygD4ASCZ3SbVCcO9zrrtkU/USOdNlPwg6gnhA1ys1
-	 t5FwWWNHn4IiF+90oLDq28jgApOlDQe3+hamu/FE=
+	b=qshCUbCTp/bR8l65e6rAK+Wjkvm65L1obRtXQEwBXWifZvuIlEohQdNvGJGckFja5
+	 W2J3i2xv2wNQYnTNO3j1e5VuVjRIrOjUk79jkNXGxWItZsGkWc3Q+NQ+vXDy0lwk+g
+	 1jP7fBfIpd/rXyJs6dO8pdg9sD2Mt8wTikSI3OKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/423] spufs: fix a leak on spufs_new_file() failure
+Subject: [PATCH 5.4 086/154] EDAC/ie31200: Fix the DIMM size mask for several SoCs
 Date: Tue,  8 Apr 2025 12:50:27 +0200
-Message-ID: <20250408104852.804263041@linuxfoundation.org>
+Message-ID: <20250408104818.069940639@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
+[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
 
-It's called from spufs_fill_dir(), and caller of that will do
-spufs_rmdir() in case of failure.  That does remove everything
-we'd managed to create, but... the problem dentry is still
-negative.  IOW, it needs to be explicitly dropped.
+The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
+but bits{5:0}. Fix it.
 
-Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 70236d1df3d3e..793c005607cf0 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -192,8 +192,10 @@ static int spufs_fill_dir(struct dentry *dir,
- 			return -ENOMEM;
- 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
- 					files->mode & mode, files->size, ctx);
--		if (ret)
-+		if (ret) {
-+			dput(dentry);
- 			return ret;
-+		}
- 		files++;
- 	}
- 	return 0;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index c11a46fdf3862..0fc78a922e3f3 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -154,6 +154,7 @@
+ #define IE31200_MAD_DIMM_0_OFFSET		0x5004
+ #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
+ #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
++#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
+ #define IE31200_MAD_DIMM_A_RANK			BIT(17)
+ #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
+ #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
+@@ -368,7 +369,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
+ static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
+ 				     int chan)
+ {
+-	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
++	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
+ 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
+ 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
+ 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
 -- 
 2.39.5
 
