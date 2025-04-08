@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5B6A803E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9605DA7FDE6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6379D425397
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2166189084F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E6B26981C;
-	Tue,  8 Apr 2025 11:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3C426A1CC;
+	Tue,  8 Apr 2025 10:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW/8mhqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il2AdxmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0251D2676E1;
-	Tue,  8 Apr 2025 11:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABD1265630;
+	Tue,  8 Apr 2025 10:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113247; cv=none; b=NTFheea66SUaIzXEB2NwfU2SHvWX2jNOUP5G/GK9tJSW7Fi6N0uKYV6k86x5xHWwAIKcoOeG1QSoqLgqfkxs4Rg3VsDhTYQ2nsCCPXPLOLtPxNTzozTWHKF1cxEoY9b9L8hjRsMEqR9jKl+sPKOLUxZoS7Q5v6+OD7oKz7T6TbE=
+	t=1744109975; cv=none; b=ZMQ1W+6TkPdnVaTH20hUelB13qWyDvvc31+GgVVYpUYg4f+qOQSvYt/vky5CibvpLWInURjKuQ8uCbTcAK7c3QtZbiclpLtr58iSOL0pKrHAVtBb1sy+Y5vVcpL/rgykRrqi0h29zOigsaW6MpZZGLMSLtbK7IL4tTpiuoXf6vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113247; c=relaxed/simple;
-	bh=y3UkM9B7nDwhlRI46+Uh41tSK+cH76QlgR6Z9LNui94=;
+	s=arc-20240116; t=1744109975; c=relaxed/simple;
+	bh=zw29dlTDaeQfFZnJjlYohWVfk1jAe09H+0O21vEEfsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEE43UlDvw5iQx7QAnuuf2JM7EQFSXbyi6BlWDrAZ24hz+oa9Oov35V+/o3sbne8ruOx2IJzQy1uxtMyuVzqsrJVmUo5E5B+FZ23tZ/gLWIHXt1xlDZ4ptgYqS27J56jqpGmPNH1EaSxDU7LOu2fCAtuYq9lGEjaX2Y05/88R9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW/8mhqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86105C4CEE5;
-	Tue,  8 Apr 2025 11:54:06 +0000 (UTC)
+	 MIME-Version; b=Qjaqo6rpTisHzjmBocjpwLBPL4D+SJdVpemBJVECpP4qtU/Q1eRvAVmZ7ujOp18UaNg06yAtokhAWZ5/rnJOPxryo6HjH2sM6cXvpslj2DcDLu2UZZr9UTnyQVsgXJ4qJgxEa9k9cQ7+3KLPIkKwXVGzF1GSSMkT5QMjG54gU+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il2AdxmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E783C4CEE5;
+	Tue,  8 Apr 2025 10:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113246;
-	bh=y3UkM9B7nDwhlRI46+Uh41tSK+cH76QlgR6Z9LNui94=;
+	s=korg; t=1744109974;
+	bh=zw29dlTDaeQfFZnJjlYohWVfk1jAe09H+0O21vEEfsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lW/8mhqo0Qj5YVgElJ9EzOzKa/zFOSMvrvvkkX7qOYOVXLWOtx9W4KWexPHjlsdRP
-	 /2jS2GQKRNWa9BtIZhmYOZ2GQszmJqaJ9KQ2PNLI/rvGyQRoINaeXwGuw/pBziRD/9
-	 udd6AOQB56wwBdzZfG1CSd4vyZ1u4unX5QMhHYRg=
+	b=il2AdxmLEqWtXQBkVyyhiZafjblzTuIrF9u0CqT2CuAqiXDAgl2BJxAlU/Fhs9msA
+	 bNJt/xIFPeeB0pedVbHA143nGXUm0ybC67LnF4yPK7vIkxABBNYXyH9wXtZmEuPBLq
+	 irDMNCQ1C/uDGeXMcwG/m6MFNwoyryc2LwN46CN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/268] selftests/bpf: Select NUMA_NO_NODE to create map
+Subject: [PATCH 5.10 121/227] EDAC/ie31200: Fix the error path order of ie31200_init()
 Date: Tue,  8 Apr 2025 12:48:19 +0200
-Message-ID: <20250408104830.863943627@linuxfoundation.org>
+Message-ID: <20250408104823.968293434@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 4107a1aeb20ed4cdad6a0d49de92ea0f933c71b7 ]
+[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
 
-On powerpc, a CPU does not necessarily originate from NUMA node 0.
-This contrasts with architectures like x86, where CPU 0 is not
-hot-pluggable, making NUMA node 0 a consistently valid node.
-This discrepancy can lead to failures when creating a map on NUMA
-node 0, which is initialized by default, if no CPUs are allocated
-from NUMA node 0.
+The error path order of ie31200_init() is incorrect, fix it.
 
-This patch fixes the issue by setting NUMA_NO_NODE (-1) for map
-creation for this selftest.
-
-Fixes: 96eabe7a40aa ("bpf: Allow selecting numa node during map creation")
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/cf1f61468b47425ecf3728689bc9636ddd1d910e.1738302337.git.skb99@linux.ibm.com
+Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/edac/ie31200_edac.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-index f79815b7e951b..fff16cdc93f20 100644
---- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-@@ -6,6 +6,10 @@
- #include <test_progs.h>
- #include "bloom_filter_map.skel.h"
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 0c894b4890678..cad20e87783b5 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -608,7 +608,7 @@ static int __init ie31200_init(void)
  
-+#ifndef NUMA_NO_NODE
-+#define NUMA_NO_NODE	(-1)
-+#endif
+ 	pci_rc = pci_register_driver(&ie31200_driver);
+ 	if (pci_rc < 0)
+-		goto fail0;
++		return pci_rc;
+ 
+ 	if (!mci_pdev) {
+ 		ie31200_registered = 0;
+@@ -619,11 +619,13 @@ static int __init ie31200_init(void)
+ 			if (mci_pdev)
+ 				break;
+ 		}
 +
- static void test_fail_cases(void)
- {
- 	LIBBPF_OPTS(bpf_map_create_opts, opts);
-@@ -69,6 +73,7 @@ static void test_success_cases(void)
+ 		if (!mci_pdev) {
+ 			edac_dbg(0, "ie31200 pci_get_device fail\n");
+ 			pci_rc = -ENODEV;
+-			goto fail1;
++			goto fail0;
+ 		}
++
+ 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
+ 		if (pci_rc < 0) {
+ 			edac_dbg(0, "ie31200 init fail\n");
+@@ -631,12 +633,12 @@ static int __init ie31200_init(void)
+ 			goto fail1;
+ 		}
+ 	}
+-	return 0;
  
- 	/* Create a map */
- 	opts.map_flags = BPF_F_ZERO_SEED | BPF_F_NUMA_NODE;
-+	opts.numa_node = NUMA_NO_NODE;
- 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 100, &opts);
- 	if (!ASSERT_GE(fd, 0, "bpf_map_create bloom filter success case"))
- 		return;
++	return 0;
+ fail1:
+-	pci_unregister_driver(&ie31200_driver);
+-fail0:
+ 	pci_dev_put(mci_pdev);
++fail0:
++	pci_unregister_driver(&ie31200_driver);
+ 
+ 	return pci_rc;
+ }
 -- 
 2.39.5
 
