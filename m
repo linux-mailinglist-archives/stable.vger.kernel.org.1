@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-131442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC3AA80A6D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC217A8076F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1D34E1F6F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 234678826B8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B9C1A2860;
-	Tue,  8 Apr 2025 12:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EDA26A085;
+	Tue,  8 Apr 2025 12:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwJLTQ6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/1WksAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADE268684;
-	Tue,  8 Apr 2025 12:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31FE2676CA;
+	Tue,  8 Apr 2025 12:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116407; cv=none; b=ku09+8JaaRfZyUPcJGHaJtcgXLeyGbF+9LoLtvxjXDTEWcBd8qQr3fgEpc7y+C8wR/0ewqvbDXAYUTAgNoIkLQQ0gCV1bjSOKvg+1FzUMl6212W2T4SGN1PY0i5ENQLsKuaE+OVq70UeR3VAX1Q8S3Z75pZHUryBK8rHk2p8QIk=
+	t=1744114810; cv=none; b=G6IVEnryegRocvghHi+dzbNU9V4hpODR7rSVUrC6jPsVnE5tD464GtWgqFAw4uRXs+wmKybVHnICBfi5HK58RXhIhfN8lLAZMCYveHY+s071w2HhUnEttM3ml5cA/iY7GzKb0CX2rHTpXNAs3xvkS4OGVDXfiod91xtoM33tSKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116407; c=relaxed/simple;
-	bh=TnHLQZCbrUho6gNuaa+d2oMR6VL9l4EtXovnfGeWthI=;
+	s=arc-20240116; t=1744114810; c=relaxed/simple;
+	bh=uh06CNG3xEpK/bEeMCloaNGhRAyAGlcW0xPiFJK3ARI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVx6OzSTMqU/sok4Kh6iInSE9NZfvElRYqlyw0POz7elW9AefMGS/arKgqGkNjW2MdL61LO1uHcbRrj/h2mSXs/GjOW+JTkEHNhEZGJAeF9DHyC15BlODAJF3bmzbDwXX8vhmHT60FENHRn4SuHn7lkDi70azTK02V1hSc1egeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwJLTQ6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B22CC4CEE5;
-	Tue,  8 Apr 2025 12:46:47 +0000 (UTC)
+	 MIME-Version; b=ZppbvEgAdowYIVVUcWoIi7kvMjS19PzAXSR4EG7t51LDPOcuc6HOC8xo0LKaKC6G5rcG6dc/GoiPTNALaAA06DF2hnfCYp7AQvXaPhJqe3oYbdVl4Ag6oCBV0nvLbSmHYmClluX9Syd4R/7FyW3RV+Dv2JMnvufY6m/8+S538S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/1WksAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CD4C4CEE5;
+	Tue,  8 Apr 2025 12:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116407;
-	bh=TnHLQZCbrUho6gNuaa+d2oMR6VL9l4EtXovnfGeWthI=;
+	s=korg; t=1744114810;
+	bh=uh06CNG3xEpK/bEeMCloaNGhRAyAGlcW0xPiFJK3ARI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwJLTQ6qZbnFPmjD28s9oCo1bzS3cWSwtuJHoEfVC1n8gKKjJHKcsDsnOlI/H98mI
-	 SlHbd+VhA1a3uqvxEhg9H68Icg3chHkyEIDLZ8kwFs2BdLFN6nbyshMm3E/9TK+OQS
-	 0Tj8o2eVoxCQwUUH9tXLPu5ZXpdispLB4BMqh+S8=
+	b=a/1WksAK3/0wQko0Hz1OylFZ6eKIjTNcGdXpMGnWDBZdYZZJlKRQPGtUfqjxYt37i
+	 gBlhMFO04EBCCiqyxemPOvPQyLEXviYsG3sAu16hoAc7PBazL1e42VwM2nuw4vCtgf
+	 PkqqOv+nYCZN/MMnsJ+JrQjPpo9YNN0w4tsr8TZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/423] pinctrl: renesas: rzg2l: Fix missing of_node_put() call
+Subject: [PATCH 6.13 242/499] kexec: initialize ELF lowest address to ULONG_MAX
 Date: Tue,  8 Apr 2025 12:47:34 +0200
-Message-ID: <20250408104848.708039506@linuxfoundation.org>
+Message-ID: <20250408104857.251930307@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit a5779e625e2b377f16a6675c432aaf299ce5028c ]
+[ Upstream commit 9986fb5164c8b21f6439cfd45ba36d8cc80c9710 ]
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+Patch series "powerpc/crash: use generic crashkernel reservation", v3.
 
-Call into of_node_put() to rectify that.
+Commit 0ab97169aa05 ("crash_core: add generic function to do reservation")
+added a generic function to reserve crashkernel memory.  So let's use the
+same function on powerpc and remove the architecture-specific code that
+essentially does the same thing.
 
-Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250305163753.34913-3-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The generic crashkernel reservation also provides a way to split the
+crashkernel reservation into high and low memory reservations, which can
+be enabled for powerpc in the future.
+
+Additionally move powerpc to use generic APIs to locate memory hole for
+kexec segments while loading kdump kernel.
+
+This patch (of 7):
+
+kexec_elf_load() loads an ELF executable and sets the address of the
+lowest PT_LOAD section to the address held by the lowest_load_addr
+function argument.
+
+To determine the lowest PT_LOAD address, a local variable lowest_addr
+(type unsigned long) is initialized to UINT_MAX.  After loading each
+PT_LOAD, its address is compared to lowest_addr.  If a loaded PT_LOAD
+address is lower, lowest_addr is updated.  However, setting lowest_addr to
+UINT_MAX won't work when the kernel image is loaded above 4G, as the
+returned lowest PT_LOAD address would be invalid.  This is resolved by
+initializing lowest_addr to ULONG_MAX instead.
+
+This issue was discovered while implementing crashkernel high/low
+reservation on the PowerPC architecture.
+
+Link: https://lkml.kernel.org/r/20250131113830.925179-1-sourabhjain@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250131113830.925179-2-sourabhjain@linux.ibm.com
+Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/kexec_elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 47e6552c3751d..d90685cfe2e1a 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -2583,6 +2583,8 @@ static int rzg2l_gpio_register(struct rzg2l_pinctrl *pctrl)
- 	if (ret)
- 		return dev_err_probe(pctrl->dev, ret, "Unable to parse gpio-ranges\n");
+diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+index d3689632e8b90..3a5c25b2adc94 100644
+--- a/kernel/kexec_elf.c
++++ b/kernel/kexec_elf.c
+@@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+ 			 struct kexec_buf *kbuf,
+ 			 unsigned long *lowest_load_addr)
+ {
+-	unsigned long lowest_addr = UINT_MAX;
++	unsigned long lowest_addr = ULONG_MAX;
+ 	int ret;
+ 	size_t i;
  
-+	of_node_put(of_args.np);
-+
- 	if (of_args.args[0] != 0 || of_args.args[1] != 0 ||
- 	    of_args.args[2] != pctrl->data->n_port_pins)
- 		return dev_err_probe(pctrl->dev, -EINVAL,
 -- 
 2.39.5
 
