@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF2AA80759
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0EBA8053E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609741B87B49
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C4788029A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434BD26A1A0;
-	Tue,  8 Apr 2025 12:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE5126A0D9;
+	Tue,  8 Apr 2025 12:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBOlvTm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOcqXoCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F482690D6;
-	Tue,  8 Apr 2025 12:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17126A0AF;
+	Tue,  8 Apr 2025 12:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115293; cv=none; b=CUmF9p0VKn/6qZEDYO5Ivt6kImzdB8EluisCklTNkeYo75NmaRQymcDySw/lHBlG9+riRAXiAVnBnqvL7X0JL0mHEVDdrzECcv8cpPtU6PMPjxLqSq0a9FiUYNMsy41DyjpFmqcA462O3R2/YU3rRsRa9YobprfOcVzfs+ShB3g=
+	t=1744113972; cv=none; b=h3b+tMBQSFOT+/BXfux/dWb4pxIjCZYLdZlxNUD4Qp8aUbKiwc13lMelHe9N40twNx9TH7mOh1KKlHwmAcRz/GkSmuj/3f5qvrLTqDlbe/5dwUDuem3vHupVE4fXI/DA4NcOrquHn18tklySP7SPV31xJTKW3URPcLN6Wlwq33I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115293; c=relaxed/simple;
-	bh=yYkJ52Rgx/QelqzglN+GR1esxDkGe+q0nK1zG1oewH0=;
+	s=arc-20240116; t=1744113972; c=relaxed/simple;
+	bh=TmaB5Nrg+aQqLh2cGQopSMFvzpqVBnSUt0XVQxlpVy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbJMbv/5oLHUjN8UNnQj7URdIFvMaSmntcSFMDtKbPNweRLIe44G25aWPsas4+wN7cnifqhPkpcfe5mpMGhVtI9G5HF9XM9TraLsc4zaFB4HceMEEyX87cT/4B5pjmZXOybhYjEUFuUsYc3aTT9dOtG8SLTCyGXXvusVUYaqdr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBOlvTm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC85C4CEE7;
-	Tue,  8 Apr 2025 12:28:11 +0000 (UTC)
+	 MIME-Version; b=M4NgwlJ73LVl0/tv48k9/jILh6HLFWJ7Czld+chRG0LN6z9k/8cdZxRDYVPCLqnfmhwtlhS9LKKQl42c7i36qFm5Po6ib6GbjB3gJtMikTUCfDCiZ9DwKIOPmSwIgboIbWv0P+TkcdTDO79A09fPEdj9wftqg6cga9s+IeDGg1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOcqXoCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D227FC4CEE5;
+	Tue,  8 Apr 2025 12:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115292;
-	bh=yYkJ52Rgx/QelqzglN+GR1esxDkGe+q0nK1zG1oewH0=;
+	s=korg; t=1744113972;
+	bh=TmaB5Nrg+aQqLh2cGQopSMFvzpqVBnSUt0XVQxlpVy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBOlvTm4OrIdU996PWcU0bv+FPM0gfriv5zONqrQ2u06rIqYHgbKc9hrKUqB2N6+7
-	 oUV0d8/6Kvh7NPKAPdLToKrAQEw6XFFgbUxIyruXbD8v8zXKT+Fsb3mihxN3Pq7PzA
-	 gHdTpmBX7wbVtRa0FSLxPu0WRMs1ni/pWLqhGU64=
+	b=BOcqXoCVd/hNDobUWd6JjNo821jRxVR6wijMe3UcCLZ8OdA+E5bTqw8Din2Vzsil+
+	 oL7sUDC0ch8xrT5dizm1HKRytvWoAV7cV7k7Y34Kbb55hnAXbThMzGdcPUj+efKmZU
+	 5/Dqow4AnGS5ORuxU2+RGn//WH5sSLm0GbLmPQq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Mahto <eisantosh95@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 418/499] staging: gpib: Replace semaphore with completion for one-time signaling
+Subject: [PATCH 5.4 089/154] PM: sleep: Fix handling devices with direct_complete set on errors
 Date: Tue,  8 Apr 2025 12:50:30 +0200
-Message-ID: <20250408104901.651958759@linuxfoundation.org>
+Message-ID: <20250408104818.172197333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santosh Mahto <eisantosh95@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 5d4db9cf4135d82634c7f31aac73081fba3a356e ]
+[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
 
-Replaced 'down_interruptible()' and 'up()' calls
-with 'wait_for_completion_interruptible()' and
-'complete()' respectively. The completion API
-simplifies the code and adheres to kernel best
-practices for synchronization primitive
+When dpm_suspend() fails, some devices with power.direct_complete set
+may not have been handled by device_suspend() yet, so runtime PM has
+not been disabled for them yet even though power.direct_complete is set.
 
-Signed-off-by: Santosh Mahto <eisantosh95@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20241212162112.13083-1-eisantosh95@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a239c6e91b66 ("staging: gpib: Fix Oops after disconnect in ni_usb")
+Since device_resume() expects that runtime PM has been disabled for all
+devices with power.direct_complete set, it will attempt to reenable
+runtime PM for the devices that have not been processed by device_suspend()
+which does not make sense.  Had those devices had runtime PM disabled
+before device_suspend() had run, device_resume() would have inadvertently
+enable runtime PM for them, but this is not expected to happen because
+it would require ->prepare() callbacks to return positive values for
+devices with runtime PM disabled, which would be invalid.
+
+In practice, this issue is most likely benign because pm_runtime_enable()
+will not allow the "disable depth" counter to underflow, but it causes a
+warning message to be printed for each affected device.
+
+To allow device_resume() to distinguish the "direct complete" devices
+that have been processed by device_suspend() from those which have not
+been handled by it, make device_suspend() set power.is_suspended for
+"direct complete" devices.
+
+Next, move the power.is_suspended check in device_resume() before the
+power.direct_complete check in it to make it skip the "direct complete"
+devices that have not been handled by device_suspend().
+
+This change is based on a preliminary patch from Saravana Kannan.
+
+Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
+Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
+Reported-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 16 ++++++++--------
- drivers/staging/gpib/ni_usb/ni_usb_gpib.h |  2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/base/power/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-index b7b6fb1be3790..70b8b305e13b6 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-@@ -85,7 +85,7 @@ static void ni_usb_bulk_complete(struct urb *urb)
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index ae382c4018fd8..7375624de5646 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -968,6 +968,9 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (dev->power.syscore)
+ 		goto Complete;
  
- //	printk("debug: %s: status=0x%x, error_count=%i, actual_length=%i\n",  __func__,
- //		urb->status, urb->error_count, urb->actual_length);
--	up(&context->complete);
-+	complete(&context->complete);
- }
++	if (!dev->power.is_suspended)
++		goto Complete;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -986,9 +989,6 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+ 	 */
+ 	dev->power.is_prepared = false;
  
- static void ni_usb_timeout_handler(struct timer_list *t)
-@@ -94,7 +94,7 @@ static void ni_usb_timeout_handler(struct timer_list *t)
- 	struct ni_usb_urb_ctx *context = &ni_priv->context;
+-	if (!dev->power.is_suspended)
+-		goto Unlock;
+-
+ 	if (dev->pm_domain) {
+ 		info = "power domain ";
+ 		callback = pm_op(&dev->pm_domain->ops, state);
+@@ -1028,7 +1028,6 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 	dev->power.is_suspended = false;
  
- 	context->timed_out = 1;
--	up(&context->complete);
-+	complete(&context->complete);
- };
+- Unlock:
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
  
- // I'm using nonblocking loosely here, it only means -EAGAIN can be returned in certain cases
-@@ -124,7 +124,7 @@ static int ni_usb_nonblocking_send_bulk_msg(struct ni_usb_priv *ni_priv, void *d
- 	}
- 	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	out_pipe = usb_sndbulkpipe(usb_dev, ni_priv->bulk_out_endpoint);
--	sema_init(&context->complete, 0);
-+	init_completion(&context->complete);
- 	context->timed_out = 0;
- 	usb_fill_bulk_urb(ni_priv->bulk_urb, usb_dev, out_pipe, data, data_length,
- 			  &ni_usb_bulk_complete, context);
-@@ -143,7 +143,7 @@ static int ni_usb_nonblocking_send_bulk_msg(struct ni_usb_priv *ni_priv, void *d
- 		return retval;
- 	}
- 	mutex_unlock(&ni_priv->bulk_transfer_lock);
--	down(&context->complete);    // wait for ni_usb_bulk_complete
-+	wait_for_completion(&context->complete);    // wait for ni_usb_bulk_complete
- 	if (context->timed_out) {
- 		usb_kill_urb(ni_priv->bulk_urb);
- 		dev_err(&usb_dev->dev, "%s: killed urb due to timeout\n", __func__);
-@@ -210,7 +210,7 @@ static int ni_usb_nonblocking_receive_bulk_msg(struct ni_usb_priv *ni_priv,
- 	}
- 	usb_dev = interface_to_usbdev(ni_priv->bus_interface);
- 	in_pipe = usb_rcvbulkpipe(usb_dev, ni_priv->bulk_in_endpoint);
--	sema_init(&context->complete, 0);
-+	init_completion(&context->complete);
- 	context->timed_out = 0;
- 	usb_fill_bulk_urb(ni_priv->bulk_urb, usb_dev, in_pipe, data, data_length,
- 			  &ni_usb_bulk_complete, context);
-@@ -231,7 +231,7 @@ static int ni_usb_nonblocking_receive_bulk_msg(struct ni_usb_priv *ni_priv,
- 	}
- 	mutex_unlock(&ni_priv->bulk_transfer_lock);
- 	if (interruptible) {
--		if (down_interruptible(&context->complete)) {
-+		if (wait_for_completion_interruptible(&context->complete)) {
- 			/* If we got interrupted by a signal while
- 			 * waiting for the usb gpib to respond, we
- 			 * should send a stop command so it will
-@@ -243,10 +243,10 @@ static int ni_usb_nonblocking_receive_bulk_msg(struct ni_usb_priv *ni_priv,
- 			/* now do an uninterruptible wait, it shouldn't take long
- 			 *	for the board to respond now.
- 			 */
--			down(&context->complete);
-+			wait_for_completion(&context->complete);
- 		}
- 	} else {
--		down(&context->complete);
-+		wait_for_completion(&context->complete);
- 	}
- 	if (context->timed_out) {
- 		usb_kill_urb(ni_priv->bulk_urb);
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.h b/drivers/staging/gpib/ni_usb/ni_usb_gpib.h
-index 9b21dfa0f3f6d..4b297db09a9bf 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.h
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.h
-@@ -56,7 +56,7 @@ enum hs_plus_endpoint_addresses {
- };
- 
- struct ni_usb_urb_ctx {
--	struct semaphore complete;
-+	struct completion complete;
- 	unsigned timed_out : 1;
- };
+@@ -1758,6 +1757,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+ 			pm_runtime_disable(dev);
+ 			if (pm_runtime_status_suspended(dev)) {
+ 				pm_dev_dbg(dev, state, "direct-complete ");
++				dev->power.is_suspended = true;
+ 				goto Complete;
+ 			}
  
 -- 
 2.39.5
