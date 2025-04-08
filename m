@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0219EA80C12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:25:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B788DA807AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278718C4201
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA744C39E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052B527C141;
-	Tue,  8 Apr 2025 12:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0C8269811;
+	Tue,  8 Apr 2025 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QX4QRFCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9gBNMl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75D5269823;
-	Tue,  8 Apr 2025 12:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7452686BC;
+	Tue,  8 Apr 2025 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116956; cv=none; b=AVUJKSB0lE6vQQIIl75gHKM6PO2e8zw6VDlG1FNpUafhR54sT6U5IdJ9eOYE8BkG7KYKyb+vWiG7CQsyqNrxZPuJRTlnLm7JgjiT/yTQSNFxHp7n+4eqiV85GtxVC8QAqw3j8DGhu9yCnrovm8stO2U5bOloMyU4M+QHuw/KX8g=
+	t=1744115295; cv=none; b=KPq71HB6i+uVC23MBZwM6zuSH3X8RvkPI9OjPpYT25aysnHkCETIDtE0SwLLquOIEPuUJkpm005xe98lKYLGKC6Fn1S6dvescyn0PMfjMyvuQyuFpclQa+joU1+ulsXwr7Xb0IRDQn2RX6ZmfxQ+3YmpMpLq1kQ2hBFYVvEAnoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116956; c=relaxed/simple;
-	bh=yPui536WXTEdjNxmqwp2NC0qgC570e9V2aSRImL4A4M=;
+	s=arc-20240116; t=1744115295; c=relaxed/simple;
+	bh=iBlf7nxA1bn3MLcMnWLhMRqW7Ylod0jAUMZG+n8kpNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWWLY0J8dU7uvRpBeUVlWbBVCNoHjPS0P1YCBtu7pZq4xduwU9F1b6Lddtzh0GJt0U3LiuJrb8Vzzm6XckhDn0lTkWZTLXglCHIV42tzrDFJbFuuB/6Y+eKlyMkShYUykPqfwu/uGQTwuigNz7lLBei3AoxAnEiQKdxQxnFSXfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QX4QRFCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205B0C4CEE5;
-	Tue,  8 Apr 2025 12:55:55 +0000 (UTC)
+	 MIME-Version; b=l1ToMhBfMB8eiqd/juTMbjgnmy/3WWeQFxfuhRE7NBB/UrVNqEgigxdlmxlYSIZnbnfrrpQvQVkUb8DCZNr4UFIwQ4IQAgKi4/6judGgv8E3Yfcv5Ouz0ma7AM6iNowLGf+bemgiqe4AF0aMzD4vjuppUJQi4t3gWtrKlOmqp74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9gBNMl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2A9C4CEE7;
+	Tue,  8 Apr 2025 12:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116956;
-	bh=yPui536WXTEdjNxmqwp2NC0qgC570e9V2aSRImL4A4M=;
+	s=korg; t=1744115295;
+	bh=iBlf7nxA1bn3MLcMnWLhMRqW7Ylod0jAUMZG+n8kpNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QX4QRFCivwdbCLW/1BkKhsV6FT1oZnpz6cid/zIW65Mkw8rsqZ6dC0dhQQKlbaXh8
-	 TYBpI0MVLaK0wvGukVE8Vm1xvJ0MvgDuibRCSw7cB9zQQ3BEOCNvZRpZUoOcFUVAVv
-	 bsoqYAgDNfSi/C+XW+cjXBf+UAo9wdeTysrXxLdU=
+	b=p9gBNMl0MfbhCQ6Iic300A2PzjF6GyBemEcM0rj9nEl3k2HkIlxaNLjOa8/QUhG3b
+	 ojkaLszY5wP3V6AQuwpxDw5r6/l5+CZAoTIQLWIMPH5ZZa2UhXEwJeVABRl69jsli0
+	 wQJeiugHdUeZoSScv7UYGkcSPIINVvPT+0AHEQf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5b667f9a1fee4ba3775a@syzkaller.appspotmail.com,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/423] fs/9p: fix NULL pointer dereference on mkdir
-Date: Tue,  8 Apr 2025 12:50:30 +0200
-Message-ID: <20250408104852.876469471@linuxfoundation.org>
+Subject: [PATCH 6.13 419/499] staging: gpib: Modify gpib_register_driver() to return error if it fails
+Date: Tue,  8 Apr 2025 12:50:31 +0200
+Message-ID: <20250408104901.676857095@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-[ Upstream commit 3f61ac7c65bdb26accb52f9db66313597e759821 ]
+[ Upstream commit e999bd2a897e7d70fa1fca6b80873529532322fe ]
 
-When a 9p tree was mounted with option 'posixacl', parent directory had a
-default ACL set for its subdirectories, e.g.:
+The function gpib_register_driver() can fail if kmalloc() fails,
+but it doesn't return any error if that happens.
 
-  setfacl -m default:group:simpsons:rwx parentdir
+Modify the function to return error i.e int. Return the appropriate
+error code if it fails. Remove the pr_info() statement.
 
-then creating a subdirectory crashed 9p client, as v9fs_fid_add() call in
-function v9fs_vfs_mkdir_dotl() sets the passed 'fid' pointer to NULL
-(since dafbe689736) even though the subsequent v9fs_set_create_acl() call
-expects a valid non-NULL 'fid' pointer:
-
-  [   37.273191] BUG: kernel NULL pointer dereference, address: 0000000000000000
-  ...
-  [   37.322338] Call Trace:
-  [   37.323043]  <TASK>
-  [   37.323621] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
-  [   37.324448] ? page_fault_oops (arch/x86/mm/fault.c:714)
-  [   37.325532] ? search_module_extables (kernel/module/main.c:3733)
-  [   37.326742] ? p9_client_walk (net/9p/client.c:1165) 9pnet
-  [   37.328006] ? search_bpf_extables (kernel/bpf/core.c:804)
-  [   37.329142] ? exc_page_fault (./arch/x86/include/asm/paravirt.h:686 arch/x86/mm/fault.c:1488 arch/x86/mm/fault.c:1538)
-  [   37.330196] ? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:574)
-  [   37.331330] ? p9_client_walk (net/9p/client.c:1165) 9pnet
-  [   37.332562] ? v9fs_fid_xattr_get (fs/9p/xattr.c:30) 9p
-  [   37.333824] v9fs_fid_xattr_set (fs/9p/fid.h:23 fs/9p/xattr.c:121) 9p
-  [   37.335077] v9fs_set_acl (fs/9p/acl.c:276) 9p
-  [   37.336112] v9fs_set_create_acl (fs/9p/acl.c:307) 9p
-  [   37.337326] v9fs_vfs_mkdir_dotl (fs/9p/vfs_inode_dotl.c:411) 9p
-  [   37.338590] vfs_mkdir (fs/namei.c:4313)
-  [   37.339535] do_mkdirat (fs/namei.c:4336)
-  [   37.340465] __x64_sys_mkdir (fs/namei.c:4354)
-  [   37.341455] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-  [   37.342447] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fix this by simply swapping the sequence of these two calls in
-v9fs_vfs_mkdir_dotl(), i.e. calling v9fs_set_create_acl() before
-v9fs_fid_add().
-
-Fixes: dafbe689736f ("9p fid refcount: cleanup p9_fid_put calls")
-Reported-by: syzbot+5b667f9a1fee4ba3775a@syzkaller.appspotmail.com
-Signed-off-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Message-ID: <E1tsiI6-002iMG-Kh@kylie.crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Link: https://lore.kernel.org/r/20241230185633.175690-2-niharchaithanya@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: a239c6e91b66 ("staging: gpib: Fix Oops after disconnect in ni_usb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_inode_dotl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/gpib/common/gpib_os.c | 7 ++++---
+ drivers/staging/gpib/include/gpibP.h  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 143ac03b7425c..3397939fd2d5a 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -407,8 +407,8 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
- 			 err);
- 		goto error;
- 	}
--	v9fs_fid_add(dentry, &fid);
- 	v9fs_set_create_acl(inode, fid, dacl, pacl);
-+	v9fs_fid_add(dentry, &fid);
- 	d_instantiate(dentry, inode);
- 	err = 0;
- 	inc_nlink(dir);
+diff --git a/drivers/staging/gpib/common/gpib_os.c b/drivers/staging/gpib/common/gpib_os.c
+index 0962729d7dfef..982a2fe68cf2a 100644
+--- a/drivers/staging/gpib/common/gpib_os.c
++++ b/drivers/staging/gpib/common/gpib_os.c
+@@ -2044,18 +2044,19 @@ void init_gpib_descriptor(gpib_descriptor_t *desc)
+ 	atomic_set(&desc->io_in_progress, 0);
+ }
+ 
+-void gpib_register_driver(gpib_interface_t *interface, struct module *provider_module)
++int gpib_register_driver(gpib_interface_t *interface, struct module *provider_module)
+ {
+ 	struct gpib_interface_list_struct *entry;
+ 
+ 	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
+ 	if (!entry)
+-		return;
++		return -ENOMEM;
+ 
+ 	entry->interface = interface;
+ 	entry->module = provider_module;
+ 	list_add(&entry->list, &registered_drivers);
+-	pr_info("gpib: registered %s interface\n", interface->name);
++
++	return 0;
+ }
+ EXPORT_SYMBOL(gpib_register_driver);
+ 
+diff --git a/drivers/staging/gpib/include/gpibP.h b/drivers/staging/gpib/include/gpibP.h
+index b97da577ba332..d35fdd391f7e1 100644
+--- a/drivers/staging/gpib/include/gpibP.h
++++ b/drivers/staging/gpib/include/gpibP.h
+@@ -18,7 +18,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ 
+-void gpib_register_driver(gpib_interface_t *interface, struct module *mod);
++int gpib_register_driver(gpib_interface_t *interface, struct module *mod);
+ void gpib_unregister_driver(gpib_interface_t *interface);
+ struct pci_dev *gpib_pci_get_device(const gpib_board_config_t *config, unsigned int vendor_id,
+ 				    unsigned int device_id, struct pci_dev *from);
 -- 
 2.39.5
 
