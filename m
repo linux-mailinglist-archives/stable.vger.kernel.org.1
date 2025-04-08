@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0A1A808B0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD7A80B10
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 998DD4C6405
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33CD1BA6343
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C326A1BD;
-	Tue,  8 Apr 2025 12:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0E7277816;
+	Tue,  8 Apr 2025 12:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvkeNNW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATTQ3EBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB3626461E;
-	Tue,  8 Apr 2025 12:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD107277811;
+	Tue,  8 Apr 2025 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115747; cv=none; b=XdgyCt7uOBDJBmLBEd7rhd8qomKi4g4XfZYRjD+by/QKyVI2vHmabsuXhscoiMtuuCH9Y0CHZ8ba7bAT7XFBeKW19PNRcJOG+g30b+h2iaj2uKy3eLjB7z6HGcH5lPZIKlGEpuKfq1NEQbE6tFoA6VWhYyWgpuEMFcUrNM+QZB8=
+	t=1744116863; cv=none; b=s2IdIYjBh9Enlt4ED5xkjYVJNsxnInEzXbBI4F51BoBp/FmMuu90pm6UHwKR5HAjWxpzPW+D6nMeYY4qlY/FCWz7LoWZfOwrcuEoCHCNgfmGJfpWBnrbpE7qv7mfk6R7/BbYBW2JiRTXAV3toDlXEb/lg9MZgov4wldVkc89URM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115747; c=relaxed/simple;
-	bh=r8/JN5bT213eNxj26jSQ12X194yy9UadwXg6MXCr0lk=;
+	s=arc-20240116; t=1744116863; c=relaxed/simple;
+	bh=KgDoIgwA20ge0xDo+3MHfDKLdCarOCGcCUZQTeP/GWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj3zAUMdOPnV1p8d5mpT3LL4kdGrUAcleS3jN7XvwQqeX/YD7S/Tr+TEnpWuzcvlJLZnyKvtImQuUITuRIRJ0ykW5o13r72isS1cmBYdqwBoUoKAECzcCXndP8ivbia9SHLcpihvLRZW3C6TAeTumf4NcwcnSoAmcEUuCBIdHc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvkeNNW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A68C4CEE7;
-	Tue,  8 Apr 2025 12:35:46 +0000 (UTC)
+	 MIME-Version; b=QLmPPZ07CRMmzNSbQf6rQLSGlKnhNi/9SVc5D3l1r5ICLhBl51LUjV/3uKs6UUY6YJYg2PLVOzmhRpnWvdA9BAuQeGGN19Gu1kL9w6trvB8meJ4CFD7fvSQ9ks808naHU9X8R+GYAE9zZtJp7P2FpwhmK/jacZOAgKOsE7E7WvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATTQ3EBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C0DC4CEE5;
+	Tue,  8 Apr 2025 12:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115747;
-	bh=r8/JN5bT213eNxj26jSQ12X194yy9UadwXg6MXCr0lk=;
+	s=korg; t=1744116862;
+	bh=KgDoIgwA20ge0xDo+3MHfDKLdCarOCGcCUZQTeP/GWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvkeNNW0pu8PJABc2ZJ3hsl99qAz1qIwD+/g91g5R4QoquzsiP96FfRTh/YPTbALe
-	 7R6E5m+og85VLHl0cdKm2T2/8mqq3z0EU8svPq/c/GR50lTnSiA3QeRXrCAdOmnNV1
-	 wCZO+KPUrWdDGNUcG1wzX4WgzD5rUQrLbux8thq8=
+	b=ATTQ3EBJnRJsv4Sh7beOC3mU5bYGiCVx9uYidbYfLs8K2hOhXmGZx+B2vlzUieA85
+	 5RD8vIthuETIdNIllcvAep+OL0mfJj3lnRj8LpTNs86ScBGoTTAgNlOYx/5rNeQ3p3
+	 8DGZyYQCwDUFs8SF4zhBFAwRv54m5RFouJgEzD/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/204] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
-Date: Tue,  8 Apr 2025 12:50:20 +0200
-Message-ID: <20250408104822.987291730@linuxfoundation.org>
+Subject: [PATCH 6.12 295/423] selftests: netfilter: skip br_netfilter queue tests if kernel is tainted
+Date: Tue,  8 Apr 2025 12:50:21 +0200
+Message-ID: <20250408104852.659725137@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
+[ Upstream commit c21b02fd9cbf15aed6e32c89e0fd70070281e3d1 ]
 
-If a match was not found, then the write_raw() callback would return
-the odr index, not an error. Return -EINVAL if this occurs.
-To avoid similar issues in future, introduce j, a new indexing variable
-rather than using ret for this purpose.
+These scripts fail if the kernel is tainted which leads to wrong test
+failure reports in CI environments when an unrelated test triggers some
+splat.
 
-Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Check taint state at start of script and SKIP if its already dodgy.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mma8452.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/netfilter/br_netfilter.sh      | 7 +++++++
+ .../testing/selftests/net/netfilter/br_netfilter_queue.sh  | 7 +++++++
+ tools/testing/selftests/net/netfilter/nft_queue.sh         | 1 +
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 3ba28c2ff68a3..ad7b7770d5262 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -711,7 +711,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
- {
- 	struct mma8452_data *data = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, ret;
+diff --git a/tools/testing/selftests/net/netfilter/br_netfilter.sh b/tools/testing/selftests/net/netfilter/br_netfilter.sh
+index c28379a965d83..1559ba275105e 100755
+--- a/tools/testing/selftests/net/netfilter/br_netfilter.sh
++++ b/tools/testing/selftests/net/netfilter/br_netfilter.sh
+@@ -13,6 +13,12 @@ source lib.sh
  
- 	ret = iio_device_claim_direct_mode(indio_dev);
- 	if (ret)
-@@ -771,14 +771,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 		break;
+ checktool "nft --version" "run test without nft tool"
  
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		ret = mma8452_get_odr_index(data);
-+		j = mma8452_get_odr_index(data);
++read t < /proc/sys/kernel/tainted
++if [ "$t" -ne 0 ];then
++	echo SKIP: kernel is tainted
++	exit $ksft_skip
++fi
++
+ cleanup() {
+ 	cleanup_all_ns
+ }
+@@ -165,6 +171,7 @@ if [ "$t" -eq 0 ];then
+ 	echo PASS: kernel not tainted
+ else
+ 	echo ERROR: kernel is tainted
++	dmesg
+ 	ret=1
+ fi
  
- 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
--			if (mma8452_os_ratio[i][ret] == val) {
-+			if (mma8452_os_ratio[i][j] == val) {
- 				ret = mma8452_set_power_mode(data, i);
- 				break;
- 			}
- 		}
-+		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		break;
- 	default:
- 		ret = -EINVAL;
+diff --git a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
+index 6a764d70ab06f..4788641717d93 100755
+--- a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
++++ b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
+@@ -4,6 +4,12 @@ source lib.sh
+ 
+ checktool "nft --version" "run test without nft tool"
+ 
++read t < /proc/sys/kernel/tainted
++if [ "$t" -ne 0 ];then
++	echo SKIP: kernel is tainted
++	exit $ksft_skip
++fi
++
+ cleanup() {
+ 	cleanup_all_ns
+ }
+@@ -72,6 +78,7 @@ if [ "$t" -eq 0 ];then
+ 	echo PASS: kernel not tainted
+ else
+ 	echo ERROR: kernel is tainted
++	dmesg
+ 	exit 1
+ fi
+ 
+diff --git a/tools/testing/selftests/net/netfilter/nft_queue.sh b/tools/testing/selftests/net/netfilter/nft_queue.sh
+index a9d109fcc15c2..00fe1a6c1f30c 100755
+--- a/tools/testing/selftests/net/netfilter/nft_queue.sh
++++ b/tools/testing/selftests/net/netfilter/nft_queue.sh
+@@ -593,6 +593,7 @@ EOF
+ 		echo "PASS: queue program exiting while packets queued"
+ 	else
+ 		echo "TAINT: queue program exiting while packets queued"
++		dmesg
+ 		ret=1
+ 	fi
+ }
 -- 
 2.39.5
 
