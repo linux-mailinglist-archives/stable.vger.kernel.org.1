@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-131446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F309A809C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A684A806BF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 867571BA5503
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181224C269B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22A26AA86;
-	Tue,  8 Apr 2025 12:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5EC269B0E;
+	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQ//eDxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7MZCS2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F19315B554;
-	Tue,  8 Apr 2025 12:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5352206F18;
+	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116418; cv=none; b=tPyzvozXmYPTrBkrBaRAIaS0ovmWrqzL37H49H/GJ45xfLG87FqvqZakt4IB2Qr3zulKciwpNWGhaAofyjmPZnv31nY/Itd6yb9y6zHITNE2UIcwgquC5DU5Zg5lhxleX7zUBCPfffhWK+zXwWjmXBpJxKWBxDULaYxjZ0TdMQs=
+	t=1744114735; cv=none; b=K+hQiWLEQj/ePeYKvYC3mMBu98mTwvyIC+NZ23V8kK5jIM+9tzJCrCMdIIJh2NAGM8xtaaTKZU5dexQBssiW+uvNE7iPYhMyaggb96q2+G4oeGKWD3KB6OA7o2+VrdD0dJvgWS7EesRxiJ0VIT6UBtMZTaTndyjtmN84ipnBGJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116418; c=relaxed/simple;
-	bh=HkfHrKbvGhwUaSTzk4saCTfrXDBLNKAlnD/FPCh0xeg=;
+	s=arc-20240116; t=1744114735; c=relaxed/simple;
+	bh=I1llT2oDtEOxrzhiIG46LdmlgMUuxHAWAPHfzQf/Eiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zjl0MsTVgdN+Dj56NUiQcN2K5qb2yXa1J2QJy453SgQexzpIbeJAtmZmWppGkSmhQSE6VbGo2Bu0RgGzZQr3pvy9SghLW5uGJqUzE+75sDxGgp1ezhfRsKFj1FuTDapvQP4Ynrbxars+sKAVF6qg+31olp9X4sG9/hQmfZLUslo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQ//eDxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F042C4CEE5;
-	Tue,  8 Apr 2025 12:46:57 +0000 (UTC)
+	 MIME-Version; b=U2mBA3xzYOXbEBcnZ+51mTBt/jMU9zAf3Dm0EdxIeqxJs1IanSaYViytZIGGvHcmijX75UB3aNHQSkwLzgZSG/4d9QvAkOPNg1ywcA6bWANhkpIPoDuo/bwTZUubYqeZL3ZI0NQ+DmaOM8K1wxpKfG9hkqjYjEvsJQAsHQOFmGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7MZCS2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E91C4CEE5;
+	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116418;
-	bh=HkfHrKbvGhwUaSTzk4saCTfrXDBLNKAlnD/FPCh0xeg=;
+	s=korg; t=1744114735;
+	bh=I1llT2oDtEOxrzhiIG46LdmlgMUuxHAWAPHfzQf/Eiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQ//eDxLx0Be5I47DQ9zQleB05IVpAlU9Is++/zqCRHmL2eoEjroV6GKuvLm2q5Qt
-	 0wnfxjomwGU0rKmFdjz4k7Dv+jwPmr1oVJBoVRCzY24nUNQXsfK05EjUgdCWFN6Rhi
-	 VwLUt5WNcg6Z3wf0xPVNkCp/H6JX8SBSblQkQrJQ=
+	b=Q7MZCS2xjJ5BmFCaUv10hKVHXk4AWpsoG4bGWRyxvX18KFge5muk38h7pFf7LVHVg
+	 C6dIOvPb/1I+elvsuCprJW57z8Hefxau4veeUdUBpjfO6cnxBnzD7Vc9F1cTYxu76m
+	 2Orsbu8KASbWeeoKnQp/YKSC5+YjsxN4HuvDXh0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	James Clark <james.clark@linaro.org>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/423] dummycon: fix default rows/cols
-Date: Tue,  8 Apr 2025 12:47:00 +0200
-Message-ID: <20250408104847.929920557@linuxfoundation.org>
+Subject: [PATCH 6.13 209/499] perf tests: Fix Tool PMU test segfault
+Date: Tue,  8 Apr 2025 12:47:01 +0200
+Message-ID: <20250408104856.419617768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit beefaba1978c04ea2950d34236f58fe6cf6a7f58 ]
+[ Upstream commit 615ec00b06f78912c370b372426190768402a5b9 ]
 
-dummycon fails to build on ARM/footbridge when the VGA console is
-disabled, since I got the dependencies slightly wrong in a previous
-patch:
+tool_pmu__event_to_str() now handles skipped events by returning NULL,
+so it's wrong to re-check for a skip on the resulting string. Calling
+tool_pmu__skip_event() with a NULL string results in a segfault so
+remove the unnecessary skip to fix it:
 
-drivers/video/console/dummycon.c: In function 'dummycon_init':
-drivers/video/console/dummycon.c:27:25: error: 'CONFIG_DUMMY_CONSOLE_COLUMNS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
-   27 | #define DUMMY_COLUMNS   CONFIG_DUMMY_CONSOLE_COLUMNS
-drivers/video/console/dummycon.c:28:25: error: 'CONFIG_DUMMY_CONSOLE_ROWS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
-   28 | #define DUMMY_ROWS      CONFIG_DUMMY_CONSOLE_ROWS
+  $ perf test -vv "parsing with PMU name"
 
-This only showed up after many thousand randconfig builds on Arm, and
-doesn't matter in practice, but should still be fixed. Address it by
-using the default row/columns on footbridge after all in that corner
-case.
+  12.2: Parsing with PMU name:
+  ...
+  ---- unexpected signal (11) ----
+  12.2: Parsing with PMU name         : FAILED!
 
-Fixes: 4293b0925149 ("dummycon: limit Arm console size hack to footbridge")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409151512.LML1slol-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: ee8aef2d2321 ("perf tools: Add skip check in tool_pmu__event_to_str()")
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reported-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Acked-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250212163859.1489916-1-james.clark@linaro.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/Kconfig | 4 ++--
+ tools/perf/tests/tool_pmu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index bc31db6ef7d26..c4a8f74df2493 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -52,7 +52,7 @@ config DUMMY_CONSOLE
+diff --git a/tools/perf/tests/tool_pmu.c b/tools/perf/tests/tool_pmu.c
+index 187942b749b7c..1e900ef92e378 100644
+--- a/tools/perf/tests/tool_pmu.c
++++ b/tools/perf/tests/tool_pmu.c
+@@ -27,7 +27,7 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
+ 	parse_events_error__init(&err);
+ 	ret = parse_events(evlist, str, &err);
+ 	if (ret) {
+-		if (tool_pmu__skip_event(tool_pmu__event_to_str(ev))) {
++		if (!tool_pmu__event_to_str(ev)) {
+ 			ret = TEST_OK;
+ 			goto out;
+ 		}
+@@ -59,7 +59,7 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
+ 		}
+ 	}
  
- config DUMMY_CONSOLE_COLUMNS
- 	int "Initial number of console screen columns"
--	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
-+	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
- 	default 160 if PARISC
- 	default 80
- 	help
-@@ -62,7 +62,7 @@ config DUMMY_CONSOLE_COLUMNS
- 
- config DUMMY_CONSOLE_ROWS
- 	int "Initial number of console screen rows"
--	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
-+	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
- 	default 64 if PARISC
- 	default 30 if ARM
- 	default 25
+-	if (!found && !tool_pmu__skip_event(tool_pmu__event_to_str(ev))) {
++	if (!found && tool_pmu__event_to_str(ev)) {
+ 		pr_debug("FAILED %s:%d Didn't find tool event '%s' in parsed evsels\n",
+ 			 __FILE__, __LINE__, str);
+ 		ret = TEST_FAIL;
 -- 
 2.39.5
 
