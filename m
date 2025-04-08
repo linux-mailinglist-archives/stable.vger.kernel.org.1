@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05613A808FB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2F5A80767
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6231BA277E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B3371B88244
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA9276023;
-	Tue,  8 Apr 2025 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB6E26A1B0;
+	Tue,  8 Apr 2025 12:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4BDFDaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjGk7LxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DA4276024;
-	Tue,  8 Apr 2025 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFDE2673B7;
+	Tue,  8 Apr 2025 12:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115941; cv=none; b=gFO/iX0dOz4nvLZ1M3d3PoCFnZFgvh9UllCw/yK4gt62K4x3/omcDNvA/HiHP6R5Ls8Wd3ETtF/rZMH2Q0JnjKfA7fK7sD50pThHb6/VJBzXkZ3uTvTYIypnmsET00tQaCGPAU7tQyxSKvLWu1dzctDhtaEJp02BXhJJmQ7e5/0=
+	t=1744115346; cv=none; b=eG/w/3g0WL2itJ+i/vtn1rrgqEjb1FyWxXjaymCwsotQhN+CCHa1XSBQK8ep8Mjers7FYYpvGgfgnPAsQl7GT+Ftc4pwGxwb+QK5lLTvT4H9fm/9wrULBD80KvGc32xkGIUy7CUXblRqs/CwI1/Xzjj/z0y3OEmcMX6n7JfFcac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115941; c=relaxed/simple;
-	bh=Wh3idS/OUrj1XtElwlYN8u44R1/N9tGJCYfRjeZ+8TU=;
+	s=arc-20240116; t=1744115346; c=relaxed/simple;
+	bh=BlJYq1DLHBKhGEM9TmbMmV2Yr2biclC8nmbe6vdMZT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHcbjFs0nTZV1Rx420d+dXMuDp6kfM/aokgufp0C0IMzt1rEv81xCHzibKd0sNouDV7txwpCuYe41w8ICqWCyYsmXCxpqLS71VddkGbxS+Qm1GlrMGA0lNzkfovLqOghL0EEYmG1SRl4YTLYFvzldusGzhlHZDxo20ZxLYk0zhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4BDFDaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF571C4CEE5;
-	Tue,  8 Apr 2025 12:39:00 +0000 (UTC)
+	 MIME-Version; b=ZrjY42HHFwSCMaX4+xeFZr0iekrLFm+HoWsNu/AMere+gYzJ4mRDOyT4bx8JfIxmWlb8uI9cdZVpawbJ0stcxUbntODy9O1L8fP2oat5CLdLuZv5mE1NkYR1J8yGVPHVTFK3Yok/XptW+o9DWzezaKTJmpBqm8SsbJ5/Hvx5eao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjGk7LxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E405AC4CEE5;
+	Tue,  8 Apr 2025 12:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115941;
-	bh=Wh3idS/OUrj1XtElwlYN8u44R1/N9tGJCYfRjeZ+8TU=;
+	s=korg; t=1744115346;
+	bh=BlJYq1DLHBKhGEM9TmbMmV2Yr2biclC8nmbe6vdMZT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4BDFDaG8bOUAWNnpXzpOBigv7Y8cKDfH2IFZDZeuTH5H59SxHqXPZGptkafR2D4K
-	 33zCSEEPN3/dJYAxaUAYUKVMpZcdON1+u1LKBeTB6VISV+AQN6cpXjxqZbZpzw8biT
-	 DXu3JFb1afmwBBN3JUQ2SffR14uRy+Og2kjFxpM4=
+	b=hjGk7LxNN1hEqh/RDHsqdrAL7d6fWxv2KKuKzR2ez39KYHtrNOWJnqtSIQn8ymxZW
+	 1Ul34kdrPx9cSWKeesuKgYEgmkBGSjE0Kcjlh7L1qop+XvfnI4wHUOf+WHsKc2z3Da
+	 TtBTfDvI+PTfwoMkaC7B8DcfBf+TREa+Wx4bLr8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/204] octeontx2-af: Free NIX_AF_INT_VEC_GEN irq
+	Tianyu Lan <tiala@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.13 440/499] x86/hyperv: Fix check of return value from snp_set_vmsa()
 Date: Tue,  8 Apr 2025 12:50:52 +0200
-Message-ID: <20250408104823.892035509@linuxfoundation.org>
+Message-ID: <20250408104902.202275138@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Tianyu Lan <tiala@microsoft.com>
 
-[ Upstream commit 323d6db6dc7decb06f2545efb9496259ddacd4f4 ]
+commit e792d843aa3c9d039074cdce728d5803262e57a7 upstream.
 
-Due to the incorrect initial vector number in
-rvu_nix_unregister_interrupts(), NIX_AF_INT_VEC_GEN is not
-geeting free. Fix the vector number to include NIX_AF_INT_VEC_GEN
-irq.
+snp_set_vmsa() returns 0 as success result and so fix it.
 
-Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250327094054.2312-1-gakula@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
+Signed-off-by: Tianyu Lan <tiala@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250313085217.45483-1-ltykernel@gmail.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250313085217.45483-1-ltykernel@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
+ arch/x86/hyperv/ivm.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index b9a4efb955333..32fa8f2c5f4ee 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -217,7 +217,7 @@ static void rvu_nix_unregister_interrupts(struct rvu *rvu)
- 		rvu->irq_allocated[offs + NIX_AF_INT_VEC_RVU] = false;
- 	}
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -339,7 +339,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned lon
+ 	vmsa->sev_features = sev_status >> 2;
  
--	for (i = NIX_AF_INT_VEC_AF_ERR; i < NIX_AF_INT_VEC_CNT; i++)
-+	for (i = NIX_AF_INT_VEC_GEN; i < NIX_AF_INT_VEC_CNT; i++)
- 		if (rvu->irq_allocated[offs + i]) {
- 			free_irq(pci_irq_vector(rvu->pdev, offs + i), rvu_dl);
- 			rvu->irq_allocated[offs + i] = false;
--- 
-2.39.5
-
+ 	ret = snp_set_vmsa(vmsa, true);
+-	if (!ret) {
++	if (ret) {
+ 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
+ 		free_page((u64)vmsa);
+ 		return ret;
 
 
 
