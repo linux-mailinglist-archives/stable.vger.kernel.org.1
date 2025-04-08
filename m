@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83C2A8080E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F206A80BD6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5AA8426C47
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF0F8A457F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83026A0B3;
-	Tue,  8 Apr 2025 12:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C6B26B2A3;
+	Tue,  8 Apr 2025 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP9ZgVNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQJKxo0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C124426A0AF;
-	Tue,  8 Apr 2025 12:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706ED269826;
+	Tue,  8 Apr 2025 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115217; cv=none; b=BI1STmvLf9kjIST+vPlT4Jz8/cj7W1uAz0XQ1c+OUvVizR/6oUNhDhLwrIVg2JnPwVF9cEPASOL9THsL9Ghcjf5kTVLBa6aHkTKgdImBRbj/zLAKuc67TR9f4HSeoEXuThG9zvUx4UKzlgMLR0KVBDGzk9ctyTG+A3ZXQOtwQPk=
+	t=1744116819; cv=none; b=TkbLOr84afvEGPNQ2K0s57S6GAgPak1dDCSD8IwRwgvJVQytTJjPVyILLGUiHU3b3tqb4TAtALMA960HWlwseBF2vAo7BbAhvodg1SK6/3FqHx7TzopMON+2NiN4Pm36aqJFurijOZhMHakWbKQZtZ/IAfUU174aL/U1t+waAlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115217; c=relaxed/simple;
-	bh=ruGCkA/C2pKT+5S2GpiFVK4CP7VyLZVPKFnH+w9xtF8=;
+	s=arc-20240116; t=1744116819; c=relaxed/simple;
+	bh=Lq6or8HYm6vGrWGyT+xywnUaVqTaErr4kcpkeqnYDlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntvXB8TDX/EX/LdMhieUjBY5FJEyEzyN+JhvDAojR9cA8VQToX9j2ADKsxtc85V7oTDb+SwJg2Sfrtdo2V6AA5GU6pgp8MzYXrbRNVvavxCdRKuFLvOQ0qlxBHAvUQexS1oa1WlXwL5tY/XxnOZP1M6qWHi76txh960PZFneIhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lP9ZgVNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06FBC4CEEC;
-	Tue,  8 Apr 2025 12:26:56 +0000 (UTC)
+	 MIME-Version; b=lS50xme3YuIWKfl3KtNoSKkllBYViMOmFRgeDStiZq9fu1RD2VhMmeuL7P27MErq7n+nCf8LfRUg8g3beH0MTWpOyb3kCckVs+cmfH0hMc77oXF448Jp3dRNfmQR21gm+D9t2OQKrJZgrDeCtFw3DBkthnuKgpong2t6U+++od8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQJKxo0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00713C4CEE5;
+	Tue,  8 Apr 2025 12:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115217;
-	bh=ruGCkA/C2pKT+5S2GpiFVK4CP7VyLZVPKFnH+w9xtF8=;
+	s=korg; t=1744116819;
+	bh=Lq6or8HYm6vGrWGyT+xywnUaVqTaErr4kcpkeqnYDlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lP9ZgVNwk2ExHni6QVjmv/tCr4B0wWMvkfg3xJyMFdQ2JkH10rTTMgCGFvtYFDCXq
-	 vE30LlA6ESrF1ukHi63ZuEnaiAbHXaK4G3x4ZB/F2WCNPpExKMhRnwm/aWX+kIzO6/
-	 A63NyD1Eqwd48mqlYftuPFui1XS/K+jVb8DNCYbc=
+	b=AQJKxo0bUUGEoh3a6z5MrpbbfeHh8RaAqDMXQM4zsd3k6k4MbZ1s4H7N+rZDcsNfK
+	 9NvuDHH48O4BrBOVSWhVle0m8ql4p0a1IGsWWVtWjT05UtxJ0599QffuGtrgxYeE5Z
+	 og9R13H6gESpHtfxK6r7TKT5VTTgN4jbokL8TGWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 394/499] vsock: avoid timeout during connect() if the socket is closing
+Subject: [PATCH 6.12 280/423] ALSA: hda/realtek: Add support for ASUS B3405 and B3605 Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:50:06 +0200
-Message-ID: <20250408104901.055440632@linuxfoundation.org>
+Message-ID: <20250408104852.296101687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
+[ Upstream commit 7ab61d0a9a35e32497bcf2233310fec79ee3338f ]
 
-When a peer attempts to establish a connection, vsock_connect() contains
-a loop that waits for the state to be TCP_ESTABLISHED. However, the
-other peer can be fast enough to accept the connection and close it
-immediately, thus moving the state to TCP_CLOSING.
+Add support for ASUS B3405CCA / P3405CCA, B3605CCA / P3605CCA,
+B3405CCA, B3605CCA.
 
-When this happens, the peer in the vsock_connect() is properly woken up,
-but since the state is not TCP_ESTABLISHED, it goes back to sleep
-until the timeout expires, returning -ETIMEDOUT.
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
 
-If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
-vsock_connect() can return immediately without errors or delay since the
-connection actually happened. The socket will be in a closing state,
-but this is not an issue, and subsequent calls will fail as expected.
-
-We discovered this issue while developing a test that accepts and
-immediately closes connections to stress the transport switch between
-two connect() calls, where the first one was interrupted by a signal
-(see Closes link).
-
-Reported-by: Luigi Leonardi <leonardi@redhat.com>
-Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-6-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 7e3db87ae4333..fc6afbc8d6806 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1551,7 +1551,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 	timeout = vsk->connect_timeout;
- 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 
--	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
-+	/* If the socket is already closing or it is in an error state, there
-+	 * is no point in waiting.
-+	 */
-+	while (sk->sk_state != TCP_ESTABLISHED &&
-+	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
- 		if (flags & O_NONBLOCK) {
- 			/* If we're not going to block, we schedule a timeout
- 			 * function to generate a timeout on the connection
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 7a9d996ac1a45..5c43f9d2ead1a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10640,6 +10640,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+@@ -10725,7 +10726,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
++	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
++	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
 -- 
 2.39.5
 
