@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-131125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9192A807A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9928EA80A5D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2EB7A20C8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F4DE7AED4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEC0269B0D;
-	Tue,  8 Apr 2025 12:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AFD2777E8;
+	Tue,  8 Apr 2025 12:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBoWiZcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA0m3I8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE866224AEB;
-	Tue,  8 Apr 2025 12:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1F277030;
+	Tue,  8 Apr 2025 12:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115556; cv=none; b=GCbSFhbfxM3IDBplrlHVC5ngv1xAK+p2qhWFjoF88Wl0SMqx/fg4lKYTpYrrlRB34Ggu4EUQGilYxzo4wHhCfqgD1obyTau9LZtXsruYsRvlJHKRh7tl/ycB6i1nr8I5lG9fKHrv7ewzO5sQsbCNvYTcH57GyJCL9Vu4agTSI6Q=
+	t=1744116772; cv=none; b=qtKvEylZbFnP6xDVrYYAf1lIwo2M4NVYG23Em5T7eeUlwtEqtAV+bSjTgw7YQYm8a1pQKWPOkfpj+aGnDwvpjGKNNHltNSw/WORKdZ5MaMZSU8z8fQ84840y6AvWh5qtm2x/xzzbsCgqxVYRwyXiSEg3+ZvH7VBlB2uzr5+1XQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115556; c=relaxed/simple;
-	bh=3GYEGYNGr7Tev0ODFRWYir19WvzMSwxLicQvON3CyFg=;
+	s=arc-20240116; t=1744116772; c=relaxed/simple;
+	bh=pOUjmZY8LFXZMKhhk7GOeJ58d1Jyp2VpONBZhvXWI20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWHGGxJhx4VjaEVkK0KDf+IBqVndnJrhILs5GvEiV9kcIOKoB0VmoXDvKv5MPVT1guhwKrzBfr8dvhl0chZKELgPzyez2hqBP/uAxU2FGsFtJrunMZko3738qGhNgB86VwOlRywna1kVMVq5DVk+rFo1eqz9olyMotj5eFeiQes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBoWiZcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49171C4CEE5;
-	Tue,  8 Apr 2025 12:32:35 +0000 (UTC)
+	 MIME-Version; b=Kez5iN7/LPm5Dd6GxwXu5ZdBOW7XDRBLaQu9D7ukWJc5qm/njiD1rHSNkFYuOhrA5mWUBd267JhyluZ4OtbOb9ghgN9JIzIaqXKvffic5zxHbNa2Vz2XqW/WZdxBnnityZpzWUTFUB61KXDUv59KXNHyf5foOwQxdaqlzEVU0l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AA0m3I8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0BEC4CEEC;
+	Tue,  8 Apr 2025 12:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115555;
-	bh=3GYEGYNGr7Tev0ODFRWYir19WvzMSwxLicQvON3CyFg=;
+	s=korg; t=1744116771;
+	bh=pOUjmZY8LFXZMKhhk7GOeJ58d1Jyp2VpONBZhvXWI20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBoWiZcjz/rlQ+x94oXl1L9yV1/t+JJ6FSZX3rfivl9CGPLLVFQEQFVImTKcGbDHo
-	 ZYhRUQ3cSk3RF+PV50aOffUXH2fAHuUzNo8GqEVdQ4T6+73vUrlAnFPLY6jXFB6q2h
-	 feGeLmlQO7H5iWnAI1itlr0etFa7FjoyrTn228No=
+	b=AA0m3I8umbjj5i1ENb/P3E0eYL9Yt+WXX0rF/SahV919mWuqY5wsc7kSiRmVpGW3l
+	 ocDDgjowqyMijOvm5owvCdNOby62ZWA9fPt2J33N+lqAZjv+qY0qamWOSkWTG/eG2o
+	 tbb+5aP8vAYYRrv6Ed7xFn+oDVXyr4E8KALCnOxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Marcus Meissner <meissner@suse.de>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/204] perf/ring_buffer: Allow the EPOLLRDNORM flag for poll
+Subject: [PATCH 6.12 223/423] perf tools: annotate asm_pure_loop.S
 Date: Tue,  8 Apr 2025 12:49:09 +0200
-Message-ID: <20250408104820.884288765@linuxfoundation.org>
+Message-ID: <20250408104850.921114367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Marcus Meissner <meissner@suse.de>
 
-[ Upstream commit c96fff391c095c11dc87dab35be72dee7d217cde ]
+[ Upstream commit 9a352a90e88a041f4b26d359493e12a7f5ae1a6a ]
 
-The poll man page says POLLRDNORM is equivalent to POLLIN. For poll(),
-it seems that if user sets pollfd with POLLRDNORM in userspace, perf_poll
-will not return until timeout even if perf_output_wakeup called,
-whereas POLLIN returns.
+Annotate so it is built with non-executable stack.
 
-Fixes: 76369139ceb9 ("perf: Split up buffer handling from core code")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250314030036.2543180-1-chen.dylane@linux.dev
+Fixes: 8b97519711c3 ("perf test: Add asm pureloop test tool")
+Signed-off-by: Marcus Meissner <meissner@suse.de>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250323085410.23751-1-meissner@suse.de
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 98588e96b5919..3e1655374c2ed 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -19,7 +19,7 @@
- 
- static void perf_output_wakeup(struct perf_output_handle *handle)
- {
--	atomic_set(&handle->rb->poll, EPOLLIN);
-+	atomic_set(&handle->rb->poll, EPOLLIN | EPOLLRDNORM);
- 
- 	handle->event->pending_wakeup = 1;
- 	irq_work_queue(&handle->event->pending_irq);
+diff --git a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+index 75cf084a927d3..5777600467723 100644
+--- a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
++++ b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+@@ -26,3 +26,5 @@ skip:
+ 	mov	x0, #0
+ 	mov	x8, #93 // __NR_exit syscall
+ 	svc	#0
++
++.section .note.GNU-stack, "", @progbits
 -- 
 2.39.5
 
