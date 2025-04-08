@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221E3A7FE61
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A26A80319
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 708404469F5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F031617FE89
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A9126A095;
-	Tue,  8 Apr 2025 11:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51A26461D;
+	Tue,  8 Apr 2025 11:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1qq4Oq/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmuxZl5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D51374C4;
-	Tue,  8 Apr 2025 11:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652ED2641CC;
+	Tue,  8 Apr 2025 11:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110267; cv=none; b=F0mQ15XaKpaDJyYhWNd48qIsQkkgLm/Jskn5RW+HKoQJWM7NK2RApOSRlGbhhz/xd+VvHTidWZyiiPk8P75k/oPCzAfW+5OOVpS0VTr6iPsMIX2sL+DbYrvOjQbhOp8tfIY79RWe3xWFhdzRHDyqN3lHNHbN1j4zIkbmvE6NIRw=
+	t=1744112921; cv=none; b=I6hvBQIPvUYX/agQAnIuW0XlfmkN1iD4lDckGEEJV0W8BR5HNpSsx0JYSwMSja7vdsXw0TiYavH+HAraQgb9/U+gVIUEg93G4E2al0DAhZAzLKNlxkM81spiRqETBqCPFPV/uhJT17YC3M68B8hHg0qU5iwjEK6I4F47jI0Gpig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110267; c=relaxed/simple;
-	bh=w61hcUYnm7MnJPkPL5UwIrYcy18x8zaXRaQNIKmVbPA=;
+	s=arc-20240116; t=1744112921; c=relaxed/simple;
+	bh=Da+1M8F/Y/0XUZ7E9h8LM1Z1AAgO+idBTe1Oc/LOHcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbRzCFSoSrDHdj7+CH1iE5R0L9xsbKhawxrhoThXJ7xFhzGW0FYw8g1+bL7QWcn9kkiTzHpN/75iMckZiV2ZHP46wWCkGnL9Jd8ypGOM3yQoKPuTJDesxUhH5hh4PxU7IYmiqNIfkFIjHxRts/7fIxxFuzplbUseZ91iDHXBO2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1qq4Oq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1367DC4CEE5;
-	Tue,  8 Apr 2025 11:04:26 +0000 (UTC)
+	 MIME-Version; b=o0bkNhVUOj7PXsmAia8WZ6FCYhTpdGeo8YdjAIhoD6dn+BU1ywd1B5G7Ad6vGpKDRF8uitW4QjeFcRUGAGxPERYmwU1CsvAtOzgcOiw/V8p71gSaIxpqBLiK/X39wI2QpLadNqIHhU3SfiOnAGgCAPMvQNnGvhntgq0FgHKW5L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmuxZl5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC742C4CEE5;
+	Tue,  8 Apr 2025 11:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110267;
-	bh=w61hcUYnm7MnJPkPL5UwIrYcy18x8zaXRaQNIKmVbPA=;
+	s=korg; t=1744112921;
+	bh=Da+1M8F/Y/0XUZ7E9h8LM1Z1AAgO+idBTe1Oc/LOHcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1qq4Oq/Gn3x0Quca5rBtKygXjx/Anw8ZFK2ukUDGCrnyhApQH4oQJfTtjFaJEabT
-	 m4TDFtzvSXi8Q3LC1oiQAxDk37R60LTGPX8mV/TZnAz1KRmxHQAQQxHD0TgLgRMl3E
-	 CdZSF/iRCoeKvofNfJbCZe/0qftAuAlfcriMYMj4=
+	b=qmuxZl5rDanXMKumgqktid6Sfg3GyVGXYL2U/WKE7ZJi0to/z7/DfW2/EBinTUNMt
+	 ZlQWhuIh5IV8PDEWBsfacgukzWbTLTiNOsYYS4P9vZG5os/jxasGuXFEsUFMwjPPy0
+	 O15VP3kv8EDhAC5vHu6OiEZY4f8In9tvQ43NhJqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.10 214/227] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
-Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104826.730971241@linuxfoundation.org>
+	Bart Van Assche <bvanassche@acm.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 210/279] fs/procfs: fix the comment above proc_pid_wchan()
+Date: Tue,  8 Apr 2025 12:49:53 +0200
+Message-ID: <20250408104832.012484227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
+[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
 
-On the following path, flush_tlb_range() can be used for zapping normal
-PMD entries (PMD entries that point to page tables) together with the PTE
-entries in the pointed-to page table:
+proc_pid_wchan() used to report kernel addresses to user space but that is
+no longer the case today.  Bring the comment above proc_pid_wchan() in
+sync with the implementation.
 
-    collapse_pte_mapped_thp
-      pmdp_collapse_flush
-        flush_tlb_range
-
-The arm64 version of flush_tlb_range() has a comment describing that it can
-be used for page table removal, and does not use any last-level
-invalidation optimizations. Fix the X86 version by making it behave the
-same way.
-
-Currently, X86 only uses this information for the following two purposes,
-which I think means the issue doesn't have much impact:
-
- - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
-   IPI'd to avoid issues with speculative page table walks.
- - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
-
-The patch "x86/mm: only invalidate final translations with INVLPGB" which
-is currently under review (see
-<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
-would probably be making the impact of this a lot worse.
-
-Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
+Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/tlbflush.h |    2 +-
+ fs/proc/base.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -222,7 +222,7 @@ void flush_tlb_others(const struct cpuma
- 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
- 			   ((vma)->vm_flags & VM_HUGETLB)		\
- 				? huge_page_shift(hstate_vma(vma))	\
--				: PAGE_SHIFT, false)
-+				: PAGE_SHIFT, true)
- 
- extern void flush_tlb_all(void);
- extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index d0414e566d30a..3405005199b61 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -416,7 +416,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
+ #ifdef CONFIG_KALLSYMS
+ /*
+  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
+- * Returns the resolved symbol.  If that fails, simply return the address.
++ * Returns the resolved symbol to user space.
+  */
+ static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
+ 			  struct pid *pid, struct task_struct *task)
+-- 
+2.39.5
+
 
 
 
