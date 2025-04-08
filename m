@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFCBA80130
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DCBA7FD49
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7417788174C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7628F16A877
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C6726B2A8;
-	Tue,  8 Apr 2025 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8C92690CF;
+	Tue,  8 Apr 2025 10:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7cYpF9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwZPxBbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BD3269833;
-	Tue,  8 Apr 2025 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3E72690D5;
+	Tue,  8 Apr 2025 10:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111770; cv=none; b=idnihAIZyXK7DRjAz/RPCXPSyH5Lt+H0+XPaD81lhj7t7ZeSH1Ud5NciZbhr+K1UbefHKTOfIBlqqFE2Pgq1dT3qFM3bDAd59UNizd2+Zf+e/7oZJpx2wNwC691NNJ6kH/f3zCfV9FObjGFdDeG/Pu6zWA8ZmPJjTWElwChkwF4=
+	t=1744109739; cv=none; b=JayhfZKgQgq/J9roCvE8vx7bCHMoqDUsCRzuOHKfdvfqNoM3bFWd73i+hqiN7nX7dbDAf4TZ5w+UbW1wtOOI/7f2Za7JG2Tws07JRnIiF6YQQyPsN6Fw8/iCu+lwAZcj4tPcJlG+bDbkqFjpLkizjlsvQX25P/TcW598gxINsN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111770; c=relaxed/simple;
-	bh=kn5FxPpMGKwAojjf1+QX3ErnGKkHnmhnZl+HyOS8zTY=;
+	s=arc-20240116; t=1744109739; c=relaxed/simple;
+	bh=azB8N+ztybQx6G9xA/U5ui1FZfLDjODWPDi6s11elF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZNq0V3NLa5VE4r/mbmGOA5RBWVvY5/4yovap7nzV6WOqjG69gDVEdB1M6irfFhSGblpyxPcWA+YrO/Ig8bhHqGqYS1DaMpPXttKq1JIVtXRGOCHqFh7ly06m4Q/uYQ75eC3fZK8YxElS1HesYzNsCWsyuHVh67hKlil0v+CGjh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7cYpF9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D7FC4CEE5;
-	Tue,  8 Apr 2025 11:29:29 +0000 (UTC)
+	 MIME-Version; b=jBLE4c0ijumg70MnxcxI0jGCuo67HD6Andrd1MDdanF0KNrddzPrXYNoSxDpUxYzkCPJtBgSaSoR+MYFuX3lNlIKg9PxsW4AN0P9bN8KcMZFevg+EKeG6zLqCS63Ud4oECbbbuw1DfWl+g6qNX8ATTs6LfuR9JMdt9fK/aceW8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwZPxBbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60681C4CEEB;
+	Tue,  8 Apr 2025 10:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111769;
-	bh=kn5FxPpMGKwAojjf1+QX3ErnGKkHnmhnZl+HyOS8zTY=;
+	s=korg; t=1744109738;
+	bh=azB8N+ztybQx6G9xA/U5ui1FZfLDjODWPDi6s11elF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7cYpF9breipF1+qRCbCPyuV2gzTP8VRh4nON35JKYTTgxMVGtFaTjiHBa1ZBizkd
-	 gTKSS4cYBZv9GXyc37brv9YRaCUrlc+SuL8ZhnU/5r+R4dgW/yV2mmRcmUeseSkpNe
-	 fFfN3qiMmxeC55jjrjfGGEAR9lxIp4acjVk1wC1Y=
+	b=PwZPxBbdfkhyAku2xN8J+zM9oEFNtQY9CBoggiTqBv1SUkwC1oMBM1dX+qvBso0Sz
+	 3lTPpgzHNHIlDn47yshCmEZ4n6t2nxyZCekHUbAyWN7fJlg87ElCCn8zuglyuK77qj
+	 094gHLWmFcZnVaxLjjMBFFUujtsbvBAtulaNntsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 514/731] scripts/gdb/linux/symbols.py: address changes to module_sect_attrs
+Subject: [PATCH 5.10 033/227] ASoC: rsnd: dont indicate warning on rsnd_kctrl_accept_runtime()
 Date: Tue,  8 Apr 2025 12:46:51 +0200
-Message-ID: <20250408104926.230629412@linuxfoundation.org>
+Message-ID: <20250408104821.400298853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit e0349c46cb4fbbb507fa34476bd70f9c82bad359 ]
+[ Upstream commit c3fc002b206c6c83d1e3702b979733002ba6fb2c ]
 
-When loading symbols from kernel modules we used to iterate
-from 0 to module_sect_attrs::nsections, in order to
-retrieve their name and address.
+rsnd_kctrl_accept_runtime() (1) is used for runtime convert rate
+(= Synchronous SRC Mode). Now, rsnd driver has 2 kctrls for it
 
-However module_sect_attrs::nsections has been removed from
-the struct by a previous commit.
+(A):	"SRC Out Rate Switch"
+(B):	"SRC Out Rate"		// it calls (1)
 
-Re-arrange the iteration by accessing all items in
-module_sect_attrs::grp::bin_attrs[] until NULL is found
-(it's a NULL terminated array).
+(A): can be called anytime
+(B): can be called only runtime, and will indicate warning if it was used
+   at non-runtime.
 
-At the same time the symbol address cannot be extracted
-from module_sect_attrs::attrs[]::address anymore because
-it has also been deleted. Fetch it from
-module_sect_attrs::grp::bin_attrs[]::private as described
-in 4b2c11e4aaf7.
+To use runtime convert rate (= Synchronous SRC Mode), user might uses
+command in below order.
 
-Link: https://lkml.kernel.org/r/20250221204034.4430-1-antonio@mandelbit.com
-Fixes: d8959b947a8d ("module: sysfs: Drop member 'module_sect_attrs::nsections'")
-Fixes: 4b2c11e4aaf7 ("module: sysfs: Drop member 'module_sect_attr::address'")
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(X):	> amixer set "SRC Out Rate" on
+	> aplay xxx.wav &
+(Y):	> amixer set "SRC Out Rate" 48010 // convert rate to 48010Hz
+
+(Y): calls B
+(X): calls both A and B.
+
+In this case, when user calls (X), it calls both (A) and (B), but it is not
+yet start running. So, (B) will indicate warning.
+
+This warning was added by commit b5c088689847 ("ASoC: rsnd: add warning
+message to rsnd_kctrl_accept_runtime()"), but the message sounds like the
+operation was not correct. Let's update warning message.
+
+The message is very SRC specific, implement it in src.c
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/8734gt2qed.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/symbols.py | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ sound/soc/sh/rcar/core.c | 14 --------------
+ sound/soc/sh/rcar/rsnd.h |  1 -
+ sound/soc/sh/rcar/src.c  | 18 +++++++++++++++++-
+ 3 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/gdb/linux/symbols.py b/scripts/gdb/linux/symbols.py
-index f6c1b063775a7..15d76f7d8ebce 100644
---- a/scripts/gdb/linux/symbols.py
-+++ b/scripts/gdb/linux/symbols.py
-@@ -15,6 +15,7 @@ import gdb
- import os
- import re
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index 289928d4c0c99..1471d163a7f7a 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1599,20 +1599,6 @@ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io)
+ 	return 1;
+ }
  
-+from itertools import count
- from linux import modules, utils, constants
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io)
+-{
+-	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
+-	struct rsnd_priv *priv = rsnd_io_to_priv(io);
+-	struct device *dev = rsnd_priv_to_dev(priv);
+-
+-	if (!runtime) {
+-		dev_warn(dev, "Can't update kctrl when idle\n");
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg)
+ {
+ 	cfg->cfg.val = cfg->val;
+diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
+index 6b519370fd644..b5a7741848d77 100644
+--- a/sound/soc/sh/rcar/rsnd.h
++++ b/sound/soc/sh/rcar/rsnd.h
+@@ -737,7 +737,6 @@ struct rsnd_kctrl_cfg_s {
+ #define rsnd_kctrl_vals(x)	((x).val)	/* = (x).cfg.val[0] */
  
+ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io);
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_s(struct rsnd_kctrl_cfg_s *cfg);
+ int rsnd_kctrl_new(struct rsnd_mod *mod,
+diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
+index fd52e26a3808b..577d50e2cf8c6 100644
+--- a/sound/soc/sh/rcar/src.c
++++ b/sound/soc/sh/rcar/src.c
+@@ -521,6 +521,22 @@ static irqreturn_t rsnd_src_interrupt(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
  
-@@ -95,10 +96,14 @@ lx-symbols command."""
-         except gdb.error:
-             return str(module_addr)
- 
--        attrs = sect_attrs['attrs']
--        section_name_to_address = {
--            attrs[n]['battr']['attr']['name'].string(): attrs[n]['address']
--            for n in range(int(sect_attrs['nsections']))}
-+        section_name_to_address = {}
-+        for i in count():
-+            # this is a NULL terminated array
-+            if sect_attrs['grp']['bin_attrs'][i] == 0x0:
-+                break
++static int rsnd_src_kctrl_accept_runtime(struct rsnd_dai_stream *io)
++{
++	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
 +
-+            attr = sect_attrs['grp']['bin_attrs'][i].dereference()
-+            section_name_to_address[attr['attr']['name'].string()] = attr['private']
++	if (!runtime) {
++		struct rsnd_priv *priv = rsnd_io_to_priv(io);
++		struct device *dev = rsnd_priv_to_dev(priv);
++
++		dev_warn(dev, "\"SRC Out Rate\" can use during running\n");
++
++		return 0;
++	}
++
++	return 1;
++}
++
+ static int rsnd_src_probe_(struct rsnd_mod *mod,
+ 			   struct rsnd_dai_stream *io,
+ 			   struct rsnd_priv *priv)
+@@ -584,7 +600,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
+ 			       rsnd_io_is_play(io) ?
+ 			       "SRC Out Rate" :
+ 			       "SRC In Rate",
+-			       rsnd_kctrl_accept_runtime,
++			       rsnd_src_kctrl_accept_runtime,
+ 			       rsnd_src_set_convert_rate,
+ 			       &src->sync, 192000);
  
-         textaddr = section_name_to_address.get(".text", module_addr)
-         args = []
 -- 
 2.39.5
 
