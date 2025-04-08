@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B95DA80C08
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:24:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C764FA80731
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0441988560B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C0917B09AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9926B957;
-	Tue,  8 Apr 2025 12:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC6C26A1A7;
+	Tue,  8 Apr 2025 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFoZKxrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSQh4dkM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7A26982F;
-	Tue,  8 Apr 2025 12:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6F726156E;
+	Tue,  8 Apr 2025 12:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116793; cv=none; b=WYuT13pjP/8W6ySXm+dkzaygBW//mCC9yD4aYTn/jvLwh8IU+L7tSLr0i1n7bgIdChGmYDRrn79N5+tO2WI7aAJO+OKvDa4tPvl5Iw4+GJsk8pgxe/S2ME7snUUkgGARIXAaUesCaddfQvlr4pQ9dclgYN1DbbgLEE2MzeJDGfU=
+	t=1744115306; cv=none; b=kgLQdT0DiYC+NojbZAaw4e9vi73/0rg+BJXRFCW5IqqgkXh8AkMmkH5jiX3n+wlzByRpszk1h41U8zUPs9Cr64f38BCzcVovBMi/WMHu4PF9dDGEZgHq0QWeJXL63qyWAq76uvBslcQDkTkqc8gC4ozETDpKATq1JS/1BcjFBLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116793; c=relaxed/simple;
-	bh=RM6T8D0NuKBOuQq+FcYvEEUglPAyyhH2GGZdLWXLIfg=;
+	s=arc-20240116; t=1744115306; c=relaxed/simple;
+	bh=IWEHiPa7NEbs/SFUBGU2/9acyA9CyQtTdfJXmXeB8Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8Pu3EVjD4sGq+daK5wA6pl5H7QDSqDr24U1hPrCwBAVDluJWcCzcSbfEqWYEAMxoxWVvwBpgBzalrzeVzLc0Xsrb3hKiRGCsaaC7CUBBEh9IphWAp0BfZulUU5g8mqNDCYz/jbtCiZwa/eiyJT/1gy+it+cWxZPxKE17mrnsVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFoZKxrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F063C4CEE5;
-	Tue,  8 Apr 2025 12:53:12 +0000 (UTC)
+	 MIME-Version; b=owcu9qBHkjanH7onCucZHk7cba+DNZ4HTVa5bZbsOPF3XuyF4cf03Kkoa3rcGw5epUcxSk+E8Y4zoG9vR4A2YV/2tXYG5IhfxHwlnTRDixNZ0nWoY0n5fYIllQtg3XjrvrlZNUYaMSvWu+o8Bo5Atdh0z4UkDKDJNraehZCM8Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSQh4dkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4B9C4CEE5;
+	Tue,  8 Apr 2025 12:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116792;
-	bh=RM6T8D0NuKBOuQq+FcYvEEUglPAyyhH2GGZdLWXLIfg=;
+	s=korg; t=1744115305;
+	bh=IWEHiPa7NEbs/SFUBGU2/9acyA9CyQtTdfJXmXeB8Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFoZKxrrhBp/3YNa1gP/+xcj9cFcLdjoakHUfoYl9WB4y0s3mgZBZ6SKVcZReIeEj
-	 X4lM7EdNG1N+kaxLO36eFXUyKLSd30cnM6HUIrGVurADyiyvIMSArmbILid5TWX7ro
-	 VjuewJcUkeRsVjbXcOUYcqcsRT+lE7ItI/MDVFvU=
+	b=WSQh4dkMEw4S4B7PT6L+p8iD/gJ7rbIEx3miMSkBsxslCFvaiDmeC/CD6+uCfe2bj
+	 kcBuwDdXkfyqXqrEqY9Y99BZOzF6iLqiEqP4f4n/G4Kcts2zDvBvLj8HkwYlw5opPW
+	 bMHv4mMZVbxApcFV4mcbs6ZXJM+LFU5NDpnXPMS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/423] net: dsa: rtl8366rb: dont prompt users for LED control
-Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104852.069146449@linuxfoundation.org>
+Subject: [PATCH 6.13 386/499] netfilter: nf_tables: dont unregister hook when table is dormant
+Date: Tue,  8 Apr 2025 12:49:58 +0200
+Message-ID: <20250408104900.858506634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c34424eb3be4c01db831428c0d7d483701ae820f ]
+[ Upstream commit 688c15017d5cd5aac882400782e7213d40dc3556 ]
 
-Make NET_DSA_REALTEK_RTL8366RB_LEDS a hidden symbol.
-It seems very unlikely user would want to intentionally
-disable it.
+When nf_tables_updchain encounters an error, hook registration needs to
+be rolled back.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20250228004534.3428681-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This should only be done if the hook has been registered, which won't
+happen when the table is flagged as dormant (inactive).
+
+Just move the assignment into the registration block.
+
+Reported-by: syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=53ed3a6440173ddbf499
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/realtek/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/realtek/Kconfig b/drivers/net/dsa/realtek/Kconfig
-index 10687722d14c0..d6eb6713e5f6b 100644
---- a/drivers/net/dsa/realtek/Kconfig
-+++ b/drivers/net/dsa/realtek/Kconfig
-@@ -44,7 +44,7 @@ config NET_DSA_REALTEK_RTL8366RB
- 	  Select to enable support for Realtek RTL8366RB.
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 99f6b2530b96e..712adede565c8 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2835,11 +2835,11 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 			err = nft_netdev_register_hooks(ctx->net, &hook.list);
+ 			if (err < 0)
+ 				goto err_hooks;
++
++			unregister = true;
+ 		}
+ 	}
  
- config NET_DSA_REALTEK_RTL8366RB_LEDS
--	bool "Support RTL8366RB LED control"
-+	bool
- 	depends on (LEDS_CLASS=y || LEDS_CLASS=NET_DSA_REALTEK_RTL8366RB)
- 	depends on NET_DSA_REALTEK_RTL8366RB
- 	default NET_DSA_REALTEK_RTL8366RB
+-	unregister = true;
+-
+ 	if (nla[NFTA_CHAIN_COUNTERS]) {
+ 		if (!nft_is_base_chain(chain)) {
+ 			err = -EOPNOTSUPP;
 -- 
 2.39.5
 
