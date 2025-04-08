@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C53DA808EC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3622A8056C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 111197B24E0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7917AE1E1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA8A26E15D;
-	Tue,  8 Apr 2025 12:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A90F265CD3;
+	Tue,  8 Apr 2025 12:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVQOfcsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0o/zPeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58257268FDE;
-	Tue,  8 Apr 2025 12:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7352676E1;
+	Tue,  8 Apr 2025 12:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116167; cv=none; b=N0Yyk6eG2sesugaWMFSMjfOx0oMMtcWOJiyRcfEwulhDA+OutFqf924IJBcDCG//8mD+5S/qu1/L3YRBBuVQu2zsyCDi+iKVh3kkC+he2VyJGc+gAmdqONIZzLgNQSupyucWFGlaLLfbRwr4BPj7mjCK7j1m1yk/psPTwZe8I40=
+	t=1744114564; cv=none; b=pdwYh8Y3Q8B+A0mRo4d4OFk4P9HbKJdy76pgjXKfr0CJtdMVXl6kuZT+0/1PWw0MiLkB4FC1FZ5oFzxYBqRwh9SV/Sop9+5WilnIfC8+yRAOrAqdcNzwMuENkirow0Pa9M/pm7q+BVwlFW2Hl4gI+Gec6iQ0tlXpYhyTlEJA9e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116167; c=relaxed/simple;
-	bh=YsM8u8fHnYCYzzuk97SeqGR4YfYh8kKaSQkvTnaz9Uc=;
+	s=arc-20240116; t=1744114564; c=relaxed/simple;
+	bh=E4Iq+4QFfAKxp7C6ruyBYfTg3cIhhC6LJU43tUatH9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=legI0SYcov9nktKZmXyLcFWlztJF25CTfCPkx74IZKWfk0vlCfV16O1JRlU6ZoK5gfOSSTj/dMVSFjoi0tyYZRPENneTaBBgQvwqigrQi77CjPKdYo7QkoLkfwK3g4NgAe88bpG6JSpvYz/tniVwoSKnjKmDcq6MIIrgkBarOjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVQOfcsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9B6C4CEE5;
-	Tue,  8 Apr 2025 12:42:46 +0000 (UTC)
+	 MIME-Version; b=cosO7htopD3PeK4dLkZrXQ/ks5Ax8bwjEFPfirHMWlc4gBGH38IEQYoZs3uxdeb/ebZzWmiofUaCey9UCEH1CVgSTP39YAaswTYsD1A4DltcYs00pTYFd6HEknkslLeESEkv3sOp+1GPYeYYSdAHi1QaCcxuW+M4ow2nMpqGiBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0o/zPeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6F7C4CEE5;
+	Tue,  8 Apr 2025 12:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116167;
-	bh=YsM8u8fHnYCYzzuk97SeqGR4YfYh8kKaSQkvTnaz9Uc=;
+	s=korg; t=1744114564;
+	bh=E4Iq+4QFfAKxp7C6ruyBYfTg3cIhhC6LJU43tUatH9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVQOfcsWLr15HjK1mBdU3dgE2Nl7QKeWOh/OyHEZLrIzHDs3JOYqUVhTRREvtamCn
-	 vbUWXM/Blu+Q5UFVrIEUvvvxNixRdJ8WvDnuQSesm5gEz5xHqNVyW21Gj9f7SSald1
-	 cWEUbHhMgkNivzQLCL1cpOxWJpK/YEyHWgLw/qCg=
+	b=U0o/zPeBCmVbdqBfgggJGzap3gjYtrppKm/U5D4U0GZ6kAn/TPJ/3yqLimrq2Shy3
+	 lvYOSYITLQzU0rB1Y8pYrgDDfRfiyBZwYDi/wqX8Z6OwMX8GDBskE7bXqZ7rLz9mmg
+	 HumI0pwDVz06wYbO/ugXn02No0il8GWil8I0jgvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/423] platform/x86: dell-ddv: Fix temperature calculation
+Subject: [PATCH 6.13 153/499] crypto: tegra - finalize crypto req on error
 Date: Tue,  8 Apr 2025 12:46:05 +0200
-Message-ID: <20250408104846.660724501@linuxfoundation.org>
+Message-ID: <20250408104855.002401055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit 7a248294a3145bc65eb0d8980a0a8edbb1b92db4 ]
+[ Upstream commit 1e245948ca0c252f561792fabb45de5518301d97 ]
 
-On the Dell Inspiron 3505 the battery temperature is always
-0.1 degrees larger than the temperature show inside the OEM
-application.
+Call the crypto finalize function before exiting *do_one_req() functions.
+This allows the driver to take up further requests even if the previous
+one fails.
 
-Emulate this behaviour to avoid showing strange looking values
-like 29.1 degrees.
-
-Fixes: 0331b1b0ba653 ("platform/x86: dell-ddv: Fix temperature scaling")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20250305053009.378609-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-ddv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-ddv.c b/drivers/platform/x86/dell/dell-wmi-ddv.c
-index e75cd6e1efe6a..ab5f7d3ab8249 100644
---- a/drivers/platform/x86/dell/dell-wmi-ddv.c
-+++ b/drivers/platform/x86/dell/dell-wmi-ddv.c
-@@ -665,8 +665,10 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *attr, char
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index be0a0b51f5a59..a1b469c3a55ba 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -275,8 +275,10 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 	rctx->datbuf.size = rctx->len;
+ 	rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->datbuf.size,
+ 					      &rctx->datbuf.addr, GFP_KERNEL);
+-	if (!rctx->datbuf.buf)
+-		return -ENOMEM;
++	if (!rctx->datbuf.buf) {
++		ret = -ENOMEM;
++		goto out_finalize;
++	}
  
--	/* Use 2731 instead of 2731.5 to avoid unnecessary rounding */
--	return sysfs_emit(buf, "%d\n", value - 2731);
-+	/* Use 2732 instead of 2731.5 to avoid unnecessary rounding and to emulate
-+	 * the behaviour of the OEM application which seems to round down the result.
-+	 */
-+	return sysfs_emit(buf, "%d\n", value - 2732);
- }
+ 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->src, 0, req->cryptlen, 0);
  
- static ssize_t eppid_show(struct device *dev, struct device_attribute *attr, char *buf)
+@@ -292,6 +294,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
+ 			  rctx->datbuf.buf, rctx->datbuf.addr);
+ 
++out_finalize:
+ 	crypto_finalize_skcipher_request(se->engine, req, ret);
+ 
+ 	return 0;
+@@ -1155,21 +1158,21 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
+ 
+ 	ret = tegra_ccm_crypt_init(req, se, rctx);
+ 	if (ret)
+-		return ret;
++		goto out_finalize;
+ 
+ 	/* Allocate buffers required */
+ 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
+ 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
+ 					     &rctx->inbuf.addr, GFP_KERNEL);
+ 	if (!rctx->inbuf.buf)
+-		return -ENOMEM;
++		goto out_finalize;
+ 
+ 	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
+ 	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
+ 					      &rctx->outbuf.addr, GFP_KERNEL);
+ 	if (!rctx->outbuf.buf) {
+ 		ret = -ENOMEM;
+-		goto outbuf_err;
++		goto out_free_inbuf;
+ 	}
+ 
+ 	if (rctx->encrypt) {
+@@ -1198,10 +1201,11 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
+ 			  rctx->outbuf.buf, rctx->outbuf.addr);
+ 
+-outbuf_err:
++out_free_inbuf:
+ 	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
+ 			  rctx->inbuf.buf, rctx->inbuf.addr);
+ 
++out_finalize:
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
+ 
+ 	return 0;
+@@ -1232,15 +1236,17 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
+ 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
+ 					     &rctx->inbuf.addr, GFP_KERNEL);
+-	if (!rctx->inbuf.buf)
+-		return -ENOMEM;
++	if (!rctx->inbuf.buf) {
++		ret = -ENOMEM;
++		goto out_finalize;
++	}
+ 
+ 	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
+ 	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
+ 					      &rctx->outbuf.addr, GFP_KERNEL);
+ 	if (!rctx->outbuf.buf) {
+ 		ret = -ENOMEM;
+-		goto outbuf_err;
++		goto out_free_inbuf;
+ 	}
+ 
+ 	/* If there is associated data perform GMAC operation */
+@@ -1269,11 +1275,11 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
+ 			  rctx->outbuf.buf, rctx->outbuf.addr);
+ 
+-outbuf_err:
++out_free_inbuf:
+ 	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
+ 			  rctx->inbuf.buf, rctx->inbuf.addr);
+ 
+-	/* Finalize the request if there are no errors */
++out_finalize:
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
+ 
+ 	return 0;
 -- 
 2.39.5
 
