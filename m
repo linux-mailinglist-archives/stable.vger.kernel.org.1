@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-131059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E0DA80781
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA43A80B44
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FF761BA016A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F99501D0B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B234B268FD0;
-	Tue,  8 Apr 2025 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B126F451;
+	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEPGOqw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxT8luyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E448266F17;
-	Tue,  8 Apr 2025 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A85269823;
+	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115378; cv=none; b=DLKuAxGa94M99P/QEDJB20v6J/DA8ow1RJ+oCkKZX7QaJ4DrH76j25wDb9wsQClUnJGsy+LbhDRAtOcW/H5eKDc+YH4jlKcn43r4AvoHp4XbinMR0X5oYFb0tDLKuOHTydxulsVR5LBHZlOsakbkqvHFEnO76KKLyI4QrDhcnt8=
+	t=1744116975; cv=none; b=UZui+gsgymdHXwP3V2i+NY2EVKs0iNJu8usj2kSfTs1Wme7++Tt2bH0qAP7c/QHcVn+Nr3KY07yIfDQb5df0jZ00kpKgCPf8CF375EuJme2E1AHcL9NFnYhGClxJQQ/1vxkgcgGmTjhdPgqeUTIJZgAKc2b9Lxg0uljtqrBPES0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115378; c=relaxed/simple;
-	bh=qYskY8Sm75Y61lX7uOR1Ww0Xv19+OcqWfVtbdxigl+I=;
+	s=arc-20240116; t=1744116975; c=relaxed/simple;
+	bh=ikLHNDsz3NUQz+zb76U/Fv6ImxGCrdQvyrJNTwGqErM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHdu8O+vJbwK71THkIjHBoTi+8vJ+v88gp4Kr9OYo/+BNMQYg9+OHiuT3AUycWWKBWGN5aEksXG5TfqY8ECyyNP/vapQu4V1f6StQG2Sk/qGH/vMJ92Nb3ZyvDUdms64K7mbh2XEo8IJlSd87QaR0nam1IWUa5YgUGd1CUtltgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEPGOqw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EEEC4CEE5;
-	Tue,  8 Apr 2025 12:29:37 +0000 (UTC)
+	 MIME-Version; b=qtPWeeRULGwRYiV4djWq1ZcH2QX/YDyel7qpXc+xpOCn7PlXXLqpCZpJ5K3BNFm5bBLyRQN20KTFtXX5koxqrTM6QX6OHuOdw63l38hGFLXUJ4KQX2Qqis+vVDsHIyZeQyDi6jMCn5Uidd8JgnYQVN9ADFlCcXZpvKAIQOC1kdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxT8luyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B611C4CEE5;
+	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115378;
-	bh=qYskY8Sm75Y61lX7uOR1Ww0Xv19+OcqWfVtbdxigl+I=;
+	s=korg; t=1744116975;
+	bh=ikLHNDsz3NUQz+zb76U/Fv6ImxGCrdQvyrJNTwGqErM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEPGOqw+uf6RvXqtx17DTkY6TzD331lFKv+dp/jNuXSLO+Reqk+mhYijEWqbBph7l
-	 z9ZhTS5su3sVb+lVij81wH2zEhEWGPbxURBHHW+5RW9kR69IswSOiif9dF9Bg5SBJA
-	 hNL9nmzlVxm1huoorKfmjYzMBY9WkCC8EUFRIork=
+	b=AxT8luyQ6pEpBtrHEJX9RhDKUvhRaYjB3fS0jiUaN5WXKC/MSD/ZyTpiuRdidsNs2
+	 yPMUFw/IKwZ8u4MHhJfcib7P9Au/QwPQaembD8Yu+hjof19/e0h4Izw3xwQ20RtRNz
+	 h6wkhxYp/TXxPA5F19UN5lggCPPzL6s2AoELR4sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: [PATCH 6.13 451/499] uprobes/x86: Harden uretprobe syscall trampoline check
+	Lin Ma <linma@zju.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 337/423] netfilter: nft_tunnel: fix geneve_opt type confusion addition
 Date: Tue,  8 Apr 2025 12:51:03 +0200
-Message-ID: <20250408104902.479958396@linuxfoundation.org>
+Message-ID: <20250408104853.683854150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0 upstream.
+[ Upstream commit 1b755d8eb1ace3870789d48fbd94f386ad6e30be ]
 
-Jann reported a possible issue when trampoline_check_ip returns
-address near the bottom of the address space that is allowed to
-call into the syscall if uretprobes are not set up:
+When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
+parsing logic should place every geneve_opt structure one by one
+compactly. Hence, when deciding the next geneve_opt position, the
+pointer addition should be in units of char *.
 
-   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+However, the current implementation erroneously does type conversion
+before the addition, which will lead to heap out-of-bounds write.
 
-Though the mmap minimum address restrictions will typically prevent
-creating mappings there, let's make sure uretprobe syscall checks
-for that.
+[    6.989857] ==================================================================
+[    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
+[    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
+[    6.991162]
+[    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
+[    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[    6.992281] Call Trace:
+[    6.992423]  <TASK>
+[    6.992586]  dump_stack_lvl+0x44/0x5c
+[    6.992801]  print_report+0x184/0x4be
+[    6.993790]  kasan_report+0xc5/0x100
+[    6.994252]  kasan_check_range+0xf3/0x1a0
+[    6.994486]  memcpy+0x38/0x60
+[    6.994692]  nft_tunnel_obj_init+0x977/0xa70
+[    6.995677]  nft_obj_init+0x10c/0x1b0
+[    6.995891]  nf_tables_newobj+0x585/0x950
+[    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
+[    6.998997]  nfnetlink_rcv+0x1df/0x220
+[    6.999537]  netlink_unicast+0x395/0x530
+[    7.000771]  netlink_sendmsg+0x3d0/0x6d0
+[    7.001462]  __sock_sendmsg+0x99/0xa0
+[    7.001707]  ____sys_sendmsg+0x409/0x450
+[    7.002391]  ___sys_sendmsg+0xfd/0x170
+[    7.003145]  __sys_sendmsg+0xea/0x170
+[    7.004359]  do_syscall_64+0x5e/0x90
+[    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[    7.006127] RIP: 0033:0x7ec756d4e407
+[    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+[    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
+[    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
+[    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
+[    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+[    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
 
-Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this bug with correct pointer addition and conversion in parse
+and dump code.
+
+Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/uprobes.c |   14 +++++++++-----
- include/linux/uprobes.h   |    2 ++
- kernel/events/uprobes.c   |    2 +-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ net/netfilter/nft_tunnel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned lo
- 	return &insn;
- }
- 
--static unsigned long trampoline_check_ip(void)
-+static unsigned long trampoline_check_ip(unsigned long tramp)
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 5c6ed68cc6e05..52d76b8d15db2 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -341,7 +341,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+ 				      struct nft_tunnel_opts *opts)
  {
--	unsigned long tramp = uprobe_get_trampoline_vaddr();
--
- 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
- }
+-	struct geneve_opt *opt = (struct geneve_opt *)opts->u.data + opts->len;
++	struct geneve_opt *opt = (struct geneve_opt *)(opts->u.data + opts->len);
+ 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
+ 	int err, data_len;
  
- SYSCALL_DEFINE0(uretprobe)
- {
- 	struct pt_regs *regs = task_pt_regs(current);
--	unsigned long err, ip, sp, r11_cx_ax[3];
-+	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
-+
-+	/* If there's no trampoline, we are called from wrong place. */
-+	tramp = uprobe_get_trampoline_vaddr();
-+	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
-+		goto sigill;
- 
--	if (regs->ip != trampoline_check_ip())
-+	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
-+	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
- 		goto sigill;
- 
- 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -38,6 +38,8 @@ struct page;
- 
- #define MAX_URETPROBE_DEPTH		64
- 
-+#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
-+
- struct uprobe_consumer {
- 	/*
- 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2118,8 +2118,8 @@ void uprobe_copy_process(struct task_str
-  */
- unsigned long uprobe_get_trampoline_vaddr(void)
- {
-+	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
- 	struct xol_area *area;
--	unsigned long trampoline_vaddr = -1;
- 
- 	/* Pairs with xol_add_vma() smp_store_release() */
- 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+@@ -628,7 +628,7 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 		if (!inner)
+ 			goto failure;
+ 		while (opts->len > offset) {
+-			opt = (struct geneve_opt *)opts->u.data + offset;
++			opt = (struct geneve_opt *)(opts->u.data + offset);
+ 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
+ 					 opt->opt_class) ||
+ 			    nla_put_u8(skb, NFTA_TUNNEL_KEY_GENEVE_TYPE,
+-- 
+2.39.5
+
 
 
 
