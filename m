@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-131809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FB6A811B3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:13:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE55A811B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 18:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A0A8C1FAC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 331B41BA8069
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 16:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0648241686;
-	Tue,  8 Apr 2025 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0BE22DF9F;
+	Tue,  8 Apr 2025 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3Yl+hpv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esdUv9vA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D3241683;
-	Tue,  8 Apr 2025 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A6C1DD526;
+	Tue,  8 Apr 2025 16:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744128160; cv=none; b=apeXMXmgwTf8fxraBlSLrJpkSV0uIYqvLof7w2xLBDWDpFSylSh6WNdP9nNkPEQW/ywY2jIOeCa3MrfZ4Yy//fpHUhOAoQ6uXzO7HIHbvDNZzzMn5kphli6+w2yURecZ3xbxDfLfblZZWa8/iIFwu41wbuzTQoaRMIE/nXtq3NE=
+	t=1744128233; cv=none; b=dV8JdGpVJO14Y2izRnpTGo0Hh3+JMbcqMXcNVGC9OM1S1vXysREKpsewhjdv6cWBCk+2ErUgEOMWASALDPg5WmrGY2QvxkO6BfAocp99EekQWtwssOQQcwd2so9YoIvusXzJSa248jsXHLmHOAu0BvHnTeKS3GR5MgeCZlFXLUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744128160; c=relaxed/simple;
-	bh=8AvvO/FEXZQRLI5jm/p7Uw3Rs67bmujJ67Fm23tkLZY=;
+	s=arc-20240116; t=1744128233; c=relaxed/simple;
+	bh=sYBQZuJxt5zTSvoYOaRmcgpLbpD2sLbz+LfcVceYw+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6pMleypR33br7nGwc0UbZEXnWYRlzU44ytyYeXVc559k3zucrYKZEV5CRP3rHt4IhebAMqqEWe1sLFo1CCOTSdYUbT2ynMD1Ow5MUin8CeU9qnsAYnkUNT8vrk90/G7Ie7IN7wqFCg5bclOoBe4fXI/MV1c9AiuHE2h4bzaJ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3Yl+hpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7431CC4CEE5;
-	Tue,  8 Apr 2025 16:02:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQcAM/BQ1dTeQXpJrm62hG8GAlMi96SQW71/KvdW/1wKg3ARtWhE4/mdMYDgPpVi9XrGI1cQ54ruQkOGbAt0qF/ulnJncRpzN0B4sZxcvpiKakGjmAjrSlY2s11c7BiTXl+xHvuNeN7qq0Jl43IBjuxi+CG1RznAgZxxWuyjRK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esdUv9vA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71498C4CEE5;
+	Tue,  8 Apr 2025 16:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744128160;
-	bh=8AvvO/FEXZQRLI5jm/p7Uw3Rs67bmujJ67Fm23tkLZY=;
+	s=k20201202; t=1744128232;
+	bh=sYBQZuJxt5zTSvoYOaRmcgpLbpD2sLbz+LfcVceYw+k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l3Yl+hpvKOcpUyZu4oeeHJTIk41+vPLbiVMc+CLyssBksbY+ctrMzJzoXIVBNFjzF
-	 45BiDzeW8mgfpxxPYPapTqedVTdaMkT9+HKnleGpHDVGUDMOhNHwFYRCC/kTh7fQAt
-	 5nGYWtbbw/ggsGRcYxkH+l+zu2CDLADfcn/7vUg/EPXwfJ6WKLUScNUJLzUwhBeW+/
-	 uHJltgsRY77gfOEGSj2NjRchPcFBglWHl+kp0A7e1xckC0Uq90HMdhDxDhN0zJdJgh
-	 0mduH4U21+apQdAF49CzD1w4XhYj3ACa7r7flHDqTz/kwtam4pYtQ1rbrOwtrZTNpM
-	 XNN1Ax9Ba6Enw==
-Date: Tue, 8 Apr 2025 09:02:35 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Al Cooper <alcooperx@gmail.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 253/279] mmc: sdhci-brcmstb: Add ability to increase
- max clock rate for 72116b0
-Message-ID: <20250408160235.GA3698564@ax162>
-References: <20250408104826.319283234@linuxfoundation.org>
- <20250408104833.210619151@linuxfoundation.org>
+	b=esdUv9vAPoKScFn2Aa2AEAXqWNxnf79HjKfftZgcA2I2+jsIwiYbaLUUgA1/Xh1vT
+	 /xGzNV9NliTzLT7bQNCYP4AkDqPK2VyTcOiZa0/Ga50XuRHGyQcXePD3FcWum9LrKq
+	 ud0CvYhMDp8JXnjwFZ7Hl49uXEfyO7Q+3fo0JimXG9Zeu148NbDNvX0BvP/kyqQhW9
+	 FYPx+RTPNJi+PD9F4PBslKqdjBlTdZ9l9aQXljdcQMieYjAGJERaL8Hawy3K1ehvKA
+	 dfKKKvtqLf8G0MDmXbVu1gRvhhG6y3nGU1duNZQUROfyFq5KsecqX20mD9xkpHnjoj
+	 VfM82fY43DVZw==
+Date: Tue, 8 Apr 2025 19:03:49 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: keyrings@vger.kernel.org, stable@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4] tpm: Mask TPM RC in tpm2_start_auth_session()
+Message-ID: <Z_VI5ZgavgLrgicA@kernel.org>
+References: <20250407072057.81062-1-jarkko@kernel.org>
+ <20250407122806.15400-1-jarkko@kernel.org>
+ <e7ul3n3rwvv3xiyiaf4dv5x7kbtcgb6zpcf33k6dobxf5ctdyp@z5iwi4pofj7h>
+ <Z_QV0ejAdciCO_Ma@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,47 +67,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250408104833.210619151@linuxfoundation.org>
+In-Reply-To: <Z_QV0ejAdciCO_Ma@kernel.org>
 
-Hi Greg,
-
-On Tue, Apr 08, 2025 at 12:50:36PM +0200, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
+On Mon, Apr 07, 2025 at 09:13:37PM +0300, Jarkko Sakkinen wrote:
+> On Mon, Apr 07, 2025 at 03:51:21PM +0200, Stefano Garzarella wrote:
+> > On Mon, Apr 07, 2025 at 03:28:05PM +0300, Jarkko Sakkinen wrote:
+> > > tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
+> > > 
+> > > [   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
+> > > 
+> > > Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
+> > > error codes.
+> > > 
+> > > Cc: stable@vger.kernel.org # v6.10+
+> > > Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+> > > Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
+> > > Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
+> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > ---
+> > > v4:
+> > > - tpm_to_ret()
+> > > v3:
+> > > - rc > 0
+> > > v2:
+> > > - Investigate TPM rc only after destroying tpm_buf.
+> > > ---
+> > > drivers/char/tpm/tpm2-sessions.c | 20 ++++++--------------
+> > > include/linux/tpm.h              | 21 +++++++++++++++++++++
+> > > 2 files changed, 27 insertions(+), 14 deletions(-)
+> > > 
+> > > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+> > > index 3f89635ba5e8..102e099f22c1 100644
+> > > --- a/drivers/char/tpm/tpm2-sessions.c
+> > > +++ b/drivers/char/tpm/tpm2-sessions.c
+> > > @@ -40,11 +40,6 @@
+> > >  *
+> > >  * These are the usage functions:
+> > >  *
+> > > - * tpm2_start_auth_session() which allocates the opaque auth structure
+> > > - *	and gets a session from the TPM.  This must be called before
+> > > - *	any of the following functions.  The session is protected by a
+> > > - *	session_key which is derived from a random salt value
+> > > - *	encrypted to the NULL seed.
+> > >  * tpm2_end_auth_session() kills the session and frees the resources.
+> > >  *	Under normal operation this function is done by
+> > >  *	tpm_buf_check_hmac_response(), so this is only to be used on
+> > > @@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
+> > > }
+> > > 
+> > > /**
+> > > - * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
+> > > - * @chip: the TPM chip structure to create the session with
+> > > + * tpm2_start_auth_session() - Create an a HMAC authentication session
+> > > + * @chip:	A TPM chip
+> > >  *
+> > > - * This function loads the NULL seed from its saved context and starts
+> > > - * an authentication session on the null seed, fills in the
+> > > - * @chip->auth structure to contain all the session details necessary
+> > > - * for performing the HMAC, encrypt and decrypt operations and
+> > > - * returns.  The NULL seed is flushed before this function returns.
+> > > + * Loads the ephemeral key (null seed), and starts an HMAC authenticated
+> > > + * session. The null seed is flushed before the return.
+> > >  *
+> > > - * Return: zero on success or actual error encountered.
+> > > + * Returns zero on success, or a POSIX error code.
+> > >  */
+> > > int tpm2_start_auth_session(struct tpm_chip *chip)
+> > > {
+> > > @@ -1024,7 +1016,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+> > > 	/* hash algorithm for session */
+> > > 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
+> > > 
+> > > -	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
+> > > +	rc = tpm_to_ret(tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession"));
+> > > 	tpm2_flush_context(chip, null_key);
+> > > 
+> > > 	if (rc == TPM2_RC_SUCCESS)
+> > > diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> > > index 6c3125300c00..c826d5a9d894 100644
+> > > --- a/include/linux/tpm.h
+> > > +++ b/include/linux/tpm.h
+> > > @@ -257,8 +257,29 @@ enum tpm2_return_codes {
+> > > 	TPM2_RC_TESTING		= 0x090A, /* RC_WARN */
+> > > 	TPM2_RC_REFERENCE_H0	= 0x0910,
+> > > 	TPM2_RC_RETRY		= 0x0922,
+> > > +	TPM2_RC_SESSION_MEMORY	= 0x0903,
+> > 
+> > nit: the other values are in ascending order, should we keep it or is it not
+> > important?
+> > 
+> > (more a question for me than for the patch)
 > 
-> ------------------
+> nope
 > 
-> From: Kamal Dasu <kdasu.kdev@gmail.com>
+> > 
+> > > };
+> > > 
+> > > +/*
+> > > + * Convert a return value from tpm_transmit_cmd() to a POSIX return value. The
+> > > + * fallback return value is -EFAULT.
+> > > + */
+> > > +static inline ssize_t tpm_to_ret(ssize_t ret)
+> > > +{
+> > > +	/* Already a POSIX error: */
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	switch (ret) {
+> > > +	case TPM2_RC_SUCCESS:
+> > > +		return 0;
+> > > +	case TPM2_RC_SESSION_MEMORY:
+> > > +		return -ENOMEM;
+> > > +	default:
+> > > +		return -EFAULT;
+> > > +	}
+> > > +}
+> > 
+> > I like this and in the future we could reuse it in different places like
+> > tpm2_load_context() and tpm2_save_context().
+> > 
+> > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> > 
+> > 
+> > BTW for my understading, looking at that code (sorry if the answer is
+> > obvious, but I'm learning) I'm confused about the use of tpm2_rc_value().
+> > 
+> > For example in tpm2_load_context() we have:
+> > 
+> >     	rc = tpm_transmit_cmd(chip, &tbuf, 4, NULL);
+> >     	...
+> > 	} else if (tpm2_rc_value(rc) == TPM2_RC_HANDLE ||
+> > 		   rc == TPM2_RC_REFERENCE_H0) {
+> > 
+> > While in tpm2_save_context(), we have:
+> > 
+> > 	rc = tpm_transmit_cmd(chip, &tbuf, 0, NULL);
+> > 	...
+> > 	} else if (tpm2_rc_value(rc) == TPM2_RC_REFERENCE_H0) {
+> > 
+> > So to check TPM2_RC_REFERENCE_H0 we are using tpm2_rc_value() only
+> > sometimes, what's the reason?
 > 
-> [ Upstream commit 97904a59855c7ac7c613085bc6bdc550d48524ff ]
+> Good catch, I'll update...
 > 
-> The 72116B0 has improved SDIO controllers that allow the max clock
-> rate to be increased from a max of 100MHz to a max of 150MHz. The
-> driver will need to get the clock and increase it's default rate
-> and override the caps register, that still indicates a max of 100MHz.
-> The new clock will be named "sdio_freq" in the DT node's "clock-names"
-> list. The driver will use a DT property, "clock-frequency", to
-> enable this functionality and will get the actual rate in MHz
-> from the property to allow various speeds to be requested.
-> 
-> Signed-off-by: Al Cooper <alcooperx@gmail.com>
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-> Link: https://lore.kernel.org/r/20220520183108.47358-3-kdasu.kdev@gmail.com
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Stable-dep-of: 723ef0e20dbb ("mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> TPM RC is a struct or bitfield.
 
-This change needs a fix for a clang -Wsometimes-uninitialized warning,
-commit c3c0ed75ffbf ("mmc: sdhci-brcmstb: Initialize base_clk to NULL in
-sdhci_brcmstb_probe()"), as pointed out by KernelCI.
+Applied to my -next: https://web.git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=next
 
-https://lore.kernel.org/CACo-S-297JUFPCNaeSoA0WHSP=sC+QquSZaX=rQto=JZzi1PUA@mail.gmail.com/
-
-Not exactly your fault, I had a Fixes tag on the original patch but it
-seems like it got stripped during application :/
-
-https://lore.kernel.org/20220608152757.82529-1-nathan@kernel.org/
-
-Cheers,
-Nathan
+BR, Jarkko
 
