@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-129742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC14A80185
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BADA7FDAE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA73445B16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14B119E2A5D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A0269D1B;
-	Tue,  8 Apr 2025 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE00268C6F;
+	Tue,  8 Apr 2025 10:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQcjHty6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDuutJ67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184126A087;
-	Tue,  8 Apr 2025 11:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8951E268688;
+	Tue,  8 Apr 2025 10:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111855; cv=none; b=oDbbzrFTF17bEODGshpOxtQwd/T28S1O12g/xJCtUBqJ9S8/Z6QdzSGkBkEfDRmx+0zm+WD/edyMxp8hh8O07nHbTk6KrgWSjyn70q8Hx0O2TdAOPkttr1KGKAdob+1gpiLJj+VQ3H1D4u3Mt3jxJ3Hn45qGd+2V+W7JEuWxPdY=
+	t=1744109926; cv=none; b=tX+NqCq01InHtheD3lcemzoPgzxTpgfLGJcW3YWLJir78q6ydXZZ+fgVoe3SFzRi4WuqOfEb7Nx89uodz2U6ao35xacp+PO4ZskVnpwFWg48pUeslYHfZfvRbkreGvjY26mI6D75mLPhelDftT1KvJJ+3Heo6i0TxMG5XvewsDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111855; c=relaxed/simple;
-	bh=wJkuE2Z9ix5rp1Bdr6n4ztJU0zhT7Ix8octq+08gHMg=;
+	s=arc-20240116; t=1744109926; c=relaxed/simple;
+	bh=x7QxZVQxXFY8mBVrA4UCbzi5/fI7rV3O/27JfXq4RhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UpUx9y8EESXzHCacm5FqRdLIkhb3fRHAZkAiehKv6tVhSC/CXt3DBPZP+A3lYjSgjzk9qMj7ynVxd1ih7g5UJhkAdOGyavK9zhz/6sGGBANfjCHqMt1K04WgUTXOKtsqNrSQ0dD9D0ca0AiXCFZmm2+i+VrQLc6uBjLltyu3EWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQcjHty6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C4C4CEE5;
-	Tue,  8 Apr 2025 11:30:55 +0000 (UTC)
+	 MIME-Version; b=TNp8CfhOCcniBJn9lEcvks6QNQT0MnCz/70RydFIKOV7Ife66E17XuXqbZR3JAWfT6t1uPhHzVPwzzUfzz27/68spPNFk6mv6l5ro3AcwqXAkUr6wF/K1Vo5miX4MpOCevXPVYJs09+r/3bLRZvOAoqvQwsZvVqR6/Qk3cS+uvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDuutJ67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C102C4CEE5;
+	Tue,  8 Apr 2025 10:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111855;
-	bh=wJkuE2Z9ix5rp1Bdr6n4ztJU0zhT7Ix8octq+08gHMg=;
+	s=korg; t=1744109926;
+	bh=x7QxZVQxXFY8mBVrA4UCbzi5/fI7rV3O/27JfXq4RhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQcjHty6wg5NJ58kcgL0i4V2Jf73iWwbePlSRmFqapFfGdA6W629zatcGfzPRzPKG
-	 jwYWRB5b3qFN1rQXEpu1pUwKSyPIr2BshU1sE0fyPxBb6/VvZtYQZo07HyKWT/kzFM
-	 9rD5XcizlIfJzGLpigJ3aZh0D2E0FiTxbNdQHmKQ=
+	b=dDuutJ677h77apneThpEY35zBQEkwfG9rrU0GY3yr5YawLKzKJNRcvMnpEuySNleI
+	 XPOOCXWgw1B9xTLfPSr+MKtjBIjgPuhzKcSo3ra4/wsIUmTyyLFKT+YFa6bCTKIGZ3
+	 /xxqEQS8pgzmgmhY/Wl5EvhkCsDy++be+0G1HgTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pu Lehui <pulehui@huawei.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 584/731] riscv: fgraph: Select HAVE_FUNCTION_GRAPH_TRACER depends on HAVE_DYNAMIC_FTRACE_WITH_ARGS
-Date: Tue,  8 Apr 2025 12:48:01 +0200
-Message-ID: <20250408104927.858067320@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 104/227] net: usb: qmi_wwan: add Telit Cinterion FN990B composition
+Date: Tue,  8 Apr 2025 12:48:02 +0200
+Message-ID: <20250408104823.478154588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit e8eb8e1bdae94b9e003f5909519fd311d0936890 ]
+commit 9dba9a45f8ca64a7df32aada14c20a3153af1ac8 upstream.
 
-Currently, fgraph on riscv relies on the infrastructure of
-DYNAMIC_FTRACE_WITH_ARGS. However, DYNAMIC_FTRACE_WITH_ARGS may be
-turned off on riscv, which will cause the enabled fgraph to be abnormal.
-Therefore, let's select HAVE_FUNCTION_GRAPH_TRACER depends on
-HAVE_DYNAMIC_FTRACE_WITH_ARGS.
+Add the following Telit Cinterion FN990B composition:
 
-Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503160820.dvqMpH0g-lkp@intel.com/
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250317031214.4138436-1-pulehui@huaweicloud.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250205171649.618162-3-fabio.porcedda@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 7612c52e9b1e3..5d63abc499ce7 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -149,7 +149,7 @@ config RISCV
- 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS if HAVE_DYNAMIC_FTRACE
- 	select HAVE_FTRACE_GRAPH_FUNC
- 	select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
--	select HAVE_FUNCTION_GRAPH_TRACER
-+	select HAVE_FUNCTION_GRAPH_TRACER if HAVE_DYNAMIC_FTRACE_WITH_ARGS
- 	select HAVE_FUNCTION_GRAPH_FREGS
- 	select HAVE_FUNCTION_TRACER if !XIP_KERNEL && !PREEMPTION
- 	select HAVE_EBPF_JIT if MMU
--- 
-2.39.5
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1309,6 +1309,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10d0, 0)}, /* Telit FN990B */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 
 
 
