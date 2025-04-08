@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED1BA80894
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66922A80570
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564BB189C589
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F114A03E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE2D26B0AB;
-	Tue,  8 Apr 2025 12:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521C126A0D4;
+	Tue,  8 Apr 2025 12:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoKnm6QR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMQcBCd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3326461E;
-	Tue,  8 Apr 2025 12:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10343A94A;
+	Tue,  8 Apr 2025 12:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115837; cv=none; b=W+TIMnPvFb2QBFhpAFLIxWa8tc0mXRns2ISLi7DtGeSnLyNc+xrZpoc2fjRrgCPJPYiVDETighlRjt3KvOE3+1YzXtLRK5xqX+nsVjzmNarzQhH3vSYNdHXZMfdqJjCeXkIsH0f6ZQQYiD6Hz6wsuiOPnPcKm/d9WK4b2DYVzRw=
+	t=1744114018; cv=none; b=bmjtGr2X5CZgabchblbNtRTX+zbXm0pL0agRTPfAU3itstOrm0wjnr/2B4uWdEXkpy6AiJi10+jNXVqMhWsqG2XRgGA92kMIa5YFEej/AGfvJq/sKetoARTPygKTTJOeWLjTukWKUsz5dd4etH/AKIqwM11ZDIXRiZNLa9WmTO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115837; c=relaxed/simple;
-	bh=IhFh2bLjFL6nt42bjHzhGvw2Cr5HP0XozIxaPhuWy7s=;
+	s=arc-20240116; t=1744114018; c=relaxed/simple;
+	bh=nCDwrQ2i6Pa+t11yaVzIIjD2taESw3G1MAAfdhrpnP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFDc/rTth2Yt5yLmgiDBJna6HPw3w4F3LssVgK4RavHm5JEGlwEADpAETNY6k1/OP1JtAufGFJ29IBzDkO31i6c42x77MFUXJ1d3YPL+mWGfIbZNQwXz0213tIp7ejoO3AVeWfSJoIZrOGRsIz4fJn7a3BjrJ1SMjGeE3jXkpwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoKnm6QR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDFFC4CEE5;
-	Tue,  8 Apr 2025 12:37:16 +0000 (UTC)
+	 MIME-Version; b=edjw+8FyqCfblmWUV0NeX/s8U6DqIfqGyJpuapg4Jfod2Q1fBcjNb0KOOQFVVeJrc+8F9M9iqk3Lj90LS7psaavYlosrcD5ba18H3wnONi/ABveAec8v0bFzJqOVpi6qKO6G28236MKBo0wRgv9hjFR2Tab+CV18ES6qLhYpeA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMQcBCd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA06C4CEE5;
+	Tue,  8 Apr 2025 12:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115837;
-	bh=IhFh2bLjFL6nt42bjHzhGvw2Cr5HP0XozIxaPhuWy7s=;
+	s=korg; t=1744114017;
+	bh=nCDwrQ2i6Pa+t11yaVzIIjD2taESw3G1MAAfdhrpnP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoKnm6QRQEc4uYknpDCEF5CjV9sndcngP/2Qf31+hZXqe/bClqTpUftl7coec+Xvd
-	 lTFRPKPQmAJqifeZZ2yP54almf2uqUZd4IdDY+eQArtoXCLo/PAVsb5GNezJ+1foj6
-	 d8u/xw1/xo8XIzww5q0N7NAWhtbhwz+6HcK9goYY=
+	b=UMQcBCd/SDDPUZkxq//R8LkKUrg0ex+qRVoeOlMW6EeXZfSBpt9+tSrQxaUS7p2Or
+	 yBqzuSnsOtiDl4oFh+dgL3qJMv7c+eT2HRJFkeeU2tMqTYDjjcnue95inaEIYQN8h6
+	 LS1TWDoWxykQXKgttUc7LiriW5pZaG6vbhXQa1mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Peter Geis <pgwipeout@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/204] ksmbd: fix multichannel connection failure
+Subject: [PATCH 5.4 105/154] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
 Date: Tue,  8 Apr 2025 12:50:46 +0200
-Message-ID: <20250408104823.723823996@linuxfoundation.org>
+Message-ID: <20250408104818.698592801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Peter Geis <pgwipeout@gmail.com>
 
-[ Upstream commit c1883049aa9b2b7dffd3a68c5fc67fa92c174bd9 ]
+[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
 
-ksmbd check that the session of second channel is in the session list of
-first connection. If it is in session list, multichannel connection
-should not be allowed.
+Correct the clk_ref_usb3otg parent to fix clock control for the usb3
+controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
+and the rk3328 usb3 phy clock map.
 
-Fixes: b95629435b84 ("ksmbd: fix racy issue from session lookup and expire")
-Reported-by: Sean Heelan <seanheelan@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 16 ++++++++++++++++
- fs/smb/server/mgmt/user_session.h |  2 ++
- fs/smb/server/smb2pdu.c           | 12 ++++--------
- 3 files changed, 22 insertions(+), 8 deletions(-)
+ drivers/clk/rockchip/clk-rk3328.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index b1c2219ec0b42..3bcfe739ba136 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -255,6 +255,22 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
- 	up_write(&sessions_table_lock);
- }
- 
-+bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
-+				   unsigned long long id)
-+{
-+	struct ksmbd_session *sess;
-+
-+	down_read(&conn->session_lock);
-+	sess = xa_load(&conn->sessions, id);
-+	if (sess) {
-+		up_read(&conn->session_lock);
-+		return true;
-+	}
-+	up_read(&conn->session_lock);
-+
-+	return false;
-+}
-+
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- 					   unsigned long long id)
- {
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index ce91b1d698e71..f4da293c4dbb2 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -87,6 +87,8 @@ void ksmbd_session_destroy(struct ksmbd_session *sess);
- struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id);
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- 					   unsigned long long id);
-+bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
-+				     unsigned long long id);
- int ksmbd_session_register(struct ksmbd_conn *conn,
- 			   struct ksmbd_session *sess);
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn);
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 646c4047d3b94..12bf3712ba2d3 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1723,44 +1723,38 @@ int smb2_sess_setup(struct ksmbd_work *work)
- 
- 		if (conn->dialect != sess->dialect) {
- 			rc = -EINVAL;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
- 
- 		if (!(req->hdr.Flags & SMB2_FLAGS_SIGNED)) {
- 			rc = -EINVAL;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
- 
- 		if (strncmp(conn->ClientGUID, sess->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			rc = -ENOENT;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
- 
- 		if (sess->state == SMB2_SESSION_IN_PROGRESS) {
- 			rc = -EACCES;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
- 
- 		if (sess->state == SMB2_SESSION_EXPIRED) {
- 			rc = -EFAULT;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
--		ksmbd_user_session_put(sess);
- 
- 		if (ksmbd_conn_need_reconnect(conn)) {
- 			rc = -EFAULT;
-+			ksmbd_user_session_put(sess);
- 			sess = NULL;
- 			goto out_err;
- 		}
- 
--		sess = ksmbd_session_lookup(conn, sess_id);
--		if (!sess) {
-+		if (is_ksmbd_session_in_connection(conn, sess_id)) {
- 			rc = -EACCES;
- 			goto out_err;
- 		}
-@@ -1926,6 +1920,8 @@ int smb2_sess_setup(struct ksmbd_work *work)
- 
- 			sess->last_active = jiffies;
- 			sess->state = SMB2_SESSION_EXPIRED;
-+			ksmbd_user_session_put(sess);
-+			work->sess = NULL;
- 			if (try_delay) {
- 				ksmbd_conn_set_need_reconnect(conn);
- 				ssleep(5);
+diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
+index c186a1985bf4e..e9b471a623b55 100644
+--- a/drivers/clk/rockchip/clk-rk3328.c
++++ b/drivers/clk/rockchip/clk-rk3328.c
+@@ -200,7 +200,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
+ 				    "gpll_peri",
+ 				    "hdmiphy_peri" };
+ PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
+-				    "clk_usb3otg_ref" };
++				    "clk_ref_usb3otg_src" };
+ PNAME(mux_xin24m_32k_p)		= { "xin24m",
+ 				    "clk_rtc32k" };
+ PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
 -- 
 2.39.5
 
