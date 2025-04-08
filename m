@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C902FA7FEDE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B36A801C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599C03BED52
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07613AAA36
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041DE26988A;
-	Tue,  8 Apr 2025 11:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5073C3AC1C;
+	Tue,  8 Apr 2025 11:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkHj9M9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBeNXEdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55B2269816;
-	Tue,  8 Apr 2025 11:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43C2192F2;
+	Tue,  8 Apr 2025 11:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110236; cv=none; b=t8wxWV25dbYR+ezlaEpljua/mLtUcvlh/HPZ8m1pT5RVh/H6DExSFZyP1G2aJf+rdhDNpg7V964WGswrTE8Q3Cl/5YfxCmC1K4rOubAvN3Fo7KTUncdBBDf60OHgfa5Pe+Ey36aP/L8mqBupyWnklLQfRZ783lsCD+VKOcAhh9g=
+	t=1744112145; cv=none; b=SL77/09gIuuUjE22M/GZEkKyH6ahQAtUnHXhAEi715sDGE2vZuoCU14Oq+Ukc5uEbm+YaxdhH6ZmBzpcl0DGsHgizAexWKC/oTnmNqsg1qyPJiH4ipGbHPvzsNlp2BjnHLUtZ3WU96e5Fa1XAOtkQ3hvdeuOIVemlZuo16758ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110236; c=relaxed/simple;
-	bh=yvpzMc2Yztrm8jbvNbPEyY+F6gG7f7QslcUcopKx1B4=;
+	s=arc-20240116; t=1744112145; c=relaxed/simple;
+	bh=nDmL6XNdbFdwHMF91uN1i31V71yqi+E8kHaqo71qJuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FOEoz97ZnHP2hJvJ7fr3Zd3NU0gx91RlcRXQfNtfc0GCZQGdHDXa//KKtCf3v7rKP78MYMDCaKKZzwVb3fq6+kh2x7gCmudJ764wAN9fHMVnEtZM6quHykOxQzVDxaMK0+ml7npJdPty0bnbt+MHjpMeTOvyRz6tvNG4u0QdQew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkHj9M9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF74C4CEEA;
-	Tue,  8 Apr 2025 11:03:56 +0000 (UTC)
+	 MIME-Version; b=tGSovXsM1jYgEP0Sd17m4G/UG+XbuAR9l+3Uk1Lztik/a4ByfNaWykQ5VV6k7i6O5Tt+42x7s066k+kkCwOTrQlX8vmjqIkER0HQMkAsJVzlGRXg1T70SxTat8Pm812xZKHWkv8Iku1ymhyG6egB0UWA43igCo5If/BFdAAIZdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBeNXEdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BA2C4CEE5;
+	Tue,  8 Apr 2025 11:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110236;
-	bh=yvpzMc2Yztrm8jbvNbPEyY+F6gG7f7QslcUcopKx1B4=;
+	s=korg; t=1744112144;
+	bh=nDmL6XNdbFdwHMF91uN1i31V71yqi+E8kHaqo71qJuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MkHj9M9AGwTB93XEvWP6WN/tY73Hz+EmGlUb4FmIpMegMeO3Ub6g6dSjbTHym78ze
-	 Vmx1A3tTFbDZPCRAAJqbJz2OxyNL/JciE05UUImv7IXKtBYxF8b4N+KPvvY6FN8ggD
-	 Axyfe2jBbQors/zfTnjWSZNR2+zZXksgY74lFlM0=
+	b=mBeNXEdFSPbA5BYKaC8NQimsvAHJR54DkUXz8whrefHcJ1KmHlEe38VktlGjVwfhT
+	 vM6Gz5eWf4NZ5lZnFOhjOCnP/jWZYQc/frCsiHI4ayyUclLId+FSA2YHPPFtbBiKI7
+	 njxBO/Owo39+X7xolVx1+DULSeD/NEf+i4bX/Lbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 5.10 211/227] ntb_perf: Delete duplicate dmaengine_unmap_put() call in perf_copy_chunk()
-Date: Tue,  8 Apr 2025 12:49:49 +0200
-Message-ID: <20250408104826.643034692@linuxfoundation.org>
+	Candice Li <candice.li@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 693/731] Remove unnecessary firmware version check for gc v9_4_2
+Date: Tue,  8 Apr 2025 12:49:50 +0200
+Message-ID: <20250408104930.387495808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Candice Li <candice.li@amd.com>
 
-commit 4279e72cab31dd3eb8c89591eb9d2affa90ab6aa upstream.
+commit 5b3c08ae9ed324743f5f7286940d45caeb656e6e upstream.
 
-The function call “dmaengine_unmap_put(unmap)” was used in an if branch.
-The same call was immediately triggered by a subsequent goto statement.
-Thus avoid such a call repetition.
+GC v9_4_2 uses a new versioning scheme for CP firmware, making
+the warning ("CP firmware version too old, please update!") irrelevant.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 5648e56d03fa ("NTB: ntb_perf: Add full multi-port NTB API support")
+Signed-off-by: Candice Li <candice.li@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/test/ntb_perf.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -839,10 +839,8 @@ static int perf_copy_chunk(struct perf_t
- 	dma_set_unmap(tx, unmap);
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1269,6 +1269,7 @@ static void gfx_v9_0_check_fw_write_wait
+ 	adev->gfx.mec_fw_write_wait = false;
  
- 	ret = dma_submit_error(dmaengine_submit(tx));
--	if (ret) {
--		dmaengine_unmap_put(unmap);
-+	if (ret)
- 		goto err_free_resource;
--	}
- 
- 	dmaengine_unmap_put(unmap);
- 
+ 	if ((amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 1)) &&
++	    (amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 2)) &&
+ 	    ((adev->gfx.mec_fw_version < 0x000001a5) ||
+ 	     (adev->gfx.mec_feature_version < 46) ||
+ 	     (adev->gfx.pfp_fw_version < 0x000000b7) ||
 
 
 
