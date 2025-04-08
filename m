@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-130578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7A7A80580
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E20A808EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B157F3BDAF2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AA0E4C54BD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C35026A0AE;
-	Tue,  8 Apr 2025 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CE81FCFF3;
+	Tue,  8 Apr 2025 12:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIF5cqit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wa5YhY9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAAE26A0A5;
-	Tue,  8 Apr 2025 12:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6541426FA64;
+	Tue,  8 Apr 2025 12:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114087; cv=none; b=ReBYl0leD9ay9+ES4EFh5OLNk2KHG0tRWfQYmPLDfZYSSXQ47OLuMpNSEITMWUwWiUTzgLqUCNJtSRY2S6sGafL7x2rpJX/P5Qti09w+TOfeOKDEqqkzE/DYXIk2K4vBPOxVQH/I/+vWUHTdpa8QE6so2hCzUZPiHYKFsiCH4yk=
+	t=1744115890; cv=none; b=a9rXnYrmLBPzEXDB6AFl+ps3NhUbzTszdTgxDCfKsGV4K1yEue5I38/JS0HEEz3RY++xd2mRcPd6DPmE4/7idOXg40IC6NkfAkXR7oqiye+tsxGC8+m/9IZA8C1qjRh2x9W3jzmJ29l3iKk/bGWkYCcP2ZTFFt7McNsTvpyg/Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114087; c=relaxed/simple;
-	bh=ZLMAew5PuoU9PKBzTgzHQnnnotRHV1eDpReQE7ObaOA=;
+	s=arc-20240116; t=1744115890; c=relaxed/simple;
+	bh=XzEF/5brr6dYsxlcNC+fgdQMwIjP82TA1G2MXy7FohA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjYQ7CxeCDDEPHPvmCmPDCdyj5yF/ZHiEo4iciPHy+fZqgdJM9g0dgan4opnVBH/8hB0DVrg+cse8NvmV/Bpzwbi8/FhVwBjrZvYlESK1flxvNtkscLfvRcbT51tTriN8wohobGntI7mkdUTL1qF/Ffd3rh7vWiwQnGyedQ6KQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIF5cqit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9CDC4CEE5;
-	Tue,  8 Apr 2025 12:08:06 +0000 (UTC)
+	 MIME-Version; b=SgEBc/GEnNQ3sMwEoKe8Y3RRvyaGBbkCg1GhjrQ7plvAUwuOjW4y9tdNVFeS2yaHpgI/B0vVXQLAOI/hxwAGtdFXs6QvhlDelIEX6gCFEp07sMd0irRVCrF07nxZcZRHqygM4zDyPg0iO8EG904AQdiYNys7urec4J6G19HF4ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wa5YhY9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C58AC4CEE5;
+	Tue,  8 Apr 2025 12:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114086;
-	bh=ZLMAew5PuoU9PKBzTgzHQnnnotRHV1eDpReQE7ObaOA=;
+	s=korg; t=1744115889;
+	bh=XzEF/5brr6dYsxlcNC+fgdQMwIjP82TA1G2MXy7FohA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIF5cqitW7cGLMNJvVOec+VMm7yDxOmZRTj4s3U0zuszdJFmX8P496mbMNAN2EI6b
-	 paeWZplpHyHGhgIfFdePR+Z23LASC5RhuD0co155/e84cPe54YdieJWNi9L2pAvD/Q
-	 9c3MJB3JmR7YV7edpOUwNCN9Wz2aupAMQsyuIuR8=
+	b=wa5YhY9VnadEj4bXWxJeHoAEVVmv6d6iJMlu0jUAmo2bmaqTzkyFxuV95CHaiGlz2
+	 /NSxsJL4AGJf/YzvbJJjMCpsIUR3x9/ciEO2cKjol/YVQDn5MXHrQnRgfyZoYZjIJp
+	 xlYTE8LMo10EBjAqGE5aKwwkquzUKMfBuzpNL1Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
+	Vladis Dronov <vdronov@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <sean.j.christopherson@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 131/154] affs: dont write overlarge OFS data block size fields
+Subject: [PATCH 6.1 142/204] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
 Date: Tue,  8 Apr 2025 12:51:12 +0200
-Message-ID: <20250408104819.508960288@linuxfoundation.org>
+Message-ID: <20250408104824.463173832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +68,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Vladis Dronov <vdronov@redhat.com>
 
-[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
+[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
 
-If a data sector on an OFS floppy contains a value > 0x1e8 (the
-largest amount of data that fits in the sector after its header), then
-an Amiga reading the file can return corrupt data, by taking the
-overlarge size at its word and reading past the end of the buffer it
-read the disk sector into!
+The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
+not just X86_FEATURE_SGX.
 
-The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
-the new size field for a data block was computed by adding the amount
-of data currently being written (into the block) to the existing value
-of the size field. This is correct if you're extending the file at the
-end, but if you seek backwards in the file and overwrite _existing_
-data, it can lead to the size field being larger than the maximum
-legal value.
+There is quite a number of hardware which has X86_FEATURE_SGX but not
+X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
+the /dev/sgx_enclave file and does so silently.
 
-This commit changes the calculation so that it sets the size field to
-the max of its previous size and the position within the block that we
-just wrote up to.
+Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
+users that the kernel disabled the SGX driver.
 
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
+that enables LE (Launch Enclave) hash MSRs to be writable (with
+additional opt-in required in the 'feature control' MSR) when running
+enclaves, i.e. using a custom root key rather than the Intel proprietary
+key for enclave signing.
+
+I've hit this issue myself and have spent some time researching where
+my /dev/sgx_enclave file went on SGX-enabled hardware.
+
+Related links:
+
+  https://github.com/intel/linux-sgx/issues/837
+  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
+
+[ mingo: Made the error message a bit more verbose, and added other cases
+         where the kernel fails to create the /dev/sgx_enclave device node. ]
+
+Signed-off-by: Vladis Dronov <vdronov@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/affs/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 6dae4ca09be5f..199b92f6a9941 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -724,7 +724,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		tmp = min(bsize - boff, to - from);
- 		BUG_ON(boff + tmp > bsize || tmp > bsize);
- 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
--		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
-+		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
-+			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
- 		affs_fix_checksum(sb, bh);
- 		mark_buffer_dirty_inode(bh, inode);
- 		written += tmp;
+diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
+index aa9b8b8688676..afccb69cd9a2c 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.c
++++ b/arch/x86/kernel/cpu/sgx/driver.c
+@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
+ 	u64 xfrm_mask;
+ 	int ret;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
++	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
++		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
++	}
+ 
+ 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
+ 
+ 	if (!(eax & 1))  {
+-		pr_err("SGX disabled: SGX1 instruction support not available.\n");
++		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
+ 	}
+ 
+ 	ret = misc_register(&sgx_dev_enclave);
+-	if (ret)
++	if (ret) {
++		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
+ 		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
