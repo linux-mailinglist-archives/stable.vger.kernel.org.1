@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA2AA8093B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA6AA8088A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 622BC4C4869
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F2F28A8148
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42492276040;
-	Tue,  8 Apr 2025 12:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6AE269802;
+	Tue,  8 Apr 2025 12:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU83Yjtp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQryQTBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0677270ECB;
-	Tue,  8 Apr 2025 12:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3E21FCFF3;
+	Tue,  8 Apr 2025 12:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115968; cv=none; b=mHemvua3IOMljfQHGVHHWRQvOY8iQmatbnEQbTdg+tOTF63vwwAzGcfiHLRpc2JlouEtNjHEq3mgdnnvEnhNZ+NRoXg0AOWpP4KBtF0HR1Cr3+ptIDFg+0sHZOiyI4gjNtTb/Gk+uzPqliqZIYmURpdjYxNDtaE9kzPDxXlBjeM=
+	t=1744115480; cv=none; b=NzqrkoE2yXBlMzs5Ge3TJPW3WPuHdBSMG/2k6ucQeK3gSuv6fLVH9mYd+mZ58TqhA64IyK03tVrViSzICjWiucmFo4pR6rnNbvIPz39reJMXexyb8Tqy/rwk4YXPsH17c11oiKLvDwaEZmRmMosRLDWKyPE1RkWRVCO6zy8kIkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115968; c=relaxed/simple;
-	bh=uSgovpjzsgwy/d4UzCE9SkrEcqhKcXdwUFrjl81/WXU=;
+	s=arc-20240116; t=1744115480; c=relaxed/simple;
+	bh=rGlFVMorbyTLwjuO5/DxyDrRDeVQAIuOGvashP0vM6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QViY6m7avWQ1NuIFrI4w9Or08v+825HAjxFHFQNISGsqJsETrz7mh4yEzUv82k32M2Z5ews9LiWEQPBMF2QNNXhPFagkniL3w1PtUrECEGGBT3xvBrTByf13L7AhEUpFlBrMjtQoLGI5v7PXyPKSg/VttorJOSy9fvdX2KkAERI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU83Yjtp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81788C4CEE5;
-	Tue,  8 Apr 2025 12:39:27 +0000 (UTC)
+	 MIME-Version; b=cp2Yox0q3bv1/UOhHYeJ83ongy35aX7qz0AeNoYkPbx8G5Z+PI0RHPcj49OBkHLc9u7IQusqBFPAECBS2S9r7DIzwYPZkloHzIYEMQ8iReIwuDy7nRzBeQRAVbitVBTb9qW6zgJjalt/xGFYvUputebS03iHmyNo95tlceG722I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQryQTBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6472FC4CEE5;
+	Tue,  8 Apr 2025 12:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115967;
-	bh=uSgovpjzsgwy/d4UzCE9SkrEcqhKcXdwUFrjl81/WXU=;
+	s=korg; t=1744115479;
+	bh=rGlFVMorbyTLwjuO5/DxyDrRDeVQAIuOGvashP0vM6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kU83Yjtp3Tkpv0NPm34PPJ6Fe3N8awUwrpG60DOmIsao11/xSmH4hNC/2Kl8bif+R
-	 /vMW+fGsz8o98HOAT56rZOy2p33uz7oiJP01YyToSvQIoH7z3z07DlSkX4ab8Q/HAP
-	 Wqoks3ciA8foLQsObEG4A5q675LwfnU7wkgXTrvY=
+	b=wQryQTBK3q0HNUdYBfbmekVN6z+nWEknLKu/Tkxzpey5Iib8sIKl4iJPZszuSeleW
+	 3SNaXqQmI6uC9DGtc9w01dGI835/yTj11EyPog1pLWyCJqxKIY57N/LLNDpNdAoXMh
+	 PBAmN1REfvyTAY50b3woP7fvIHcfFSHXou1nKlyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/204] tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers
+	syzbot+5bcd7c809d365e14c4df@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 490/499] media: vimc: skip .s_stream() for stopped entities
 Date: Tue,  8 Apr 2025 12:51:42 +0200
-Message-ID: <20250408104825.364006188@linuxfoundation.org>
+Message-ID: <20250408104903.578559589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit f5cb528d6441eb860250a2f085773aac4f44085e ]
+commit 36cef585e2a31e4ddf33a004b0584a7a572246de upstream.
 
-According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
-register only can be changed when the transmitter is disabled.
-So disable the transmitter before changing RS485 related registers and
-re-enable it after the change is done.
+Syzbot reported [1] a warning prompted by a check in call_s_stream()
+that checks whether .s_stream() operation is warranted for unstarted
+or stopped subdevs.
 
-Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250312022503.1342990-1-sherry.sun@nxp.com
+Add a simple fix in vimc_streamer_pipeline_terminate() ensuring that
+entities skip a call to .s_stream() unless they have been previously
+properly started.
+
+[1] Syzbot report:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5933 at drivers/media/v4l2-core/v4l2-subdev.c:460 call_s_stream+0x2df/0x350 drivers/media/v4l2-core/v4l2-subdev.c:460
+Modules linked in:
+CPU: 0 UID: 0 PID: 5933 Comm: syz-executor330 Not tainted 6.13.0-rc2-syzkaller-00362-g2d8308bf5b67 #0
+...
+Call Trace:
+ <TASK>
+ vimc_streamer_pipeline_terminate+0x218/0x320 drivers/media/test-drivers/vimc/vimc-streamer.c:62
+ vimc_streamer_pipeline_init drivers/media/test-drivers/vimc/vimc-streamer.c:101 [inline]
+ vimc_streamer_s_stream+0x650/0x9a0 drivers/media/test-drivers/vimc/vimc-streamer.c:203
+ vimc_capture_start_streaming+0xa1/0x130 drivers/media/test-drivers/vimc/vimc-capture.c:256
+ vb2_start_streaming+0x15f/0x5a0 drivers/media/common/videobuf2/videobuf2-core.c:1789
+ vb2_core_streamon+0x2a7/0x450 drivers/media/common/videobuf2/videobuf2-core.c:2348
+ vb2_streamon drivers/media/common/videobuf2/videobuf2-v4l2.c:875 [inline]
+ vb2_ioctl_streamon+0xf4/0x170 drivers/media/common/videobuf2/videobuf2-v4l2.c:1118
+ __video_do_ioctl+0xaf0/0xf00 drivers/media/v4l2-core/v4l2-ioctl.c:3122
+ video_usercopy+0x4d2/0x1620 drivers/media/v4l2-core/v4l2-ioctl.c:3463
+ v4l2_ioctl+0x1ba/0x250 drivers/media/v4l2-core/v4l2-dev.c:366
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2b85c01b19
+...
+
+Reported-by: syzbot+5bcd7c809d365e14c4df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5bcd7c809d365e14c4df
+Fixes: adc589d2a208 ("media: vimc: Add vimc-streamer for stream control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/media/test-drivers/vimc/vimc-streamer.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index e96354edff6e9..011f175936132 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1395,6 +1395,19 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
+--- a/drivers/media/test-drivers/vimc/vimc-streamer.c
++++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
+@@ -59,6 +59,12 @@ static void vimc_streamer_pipeline_termi
+ 			continue;
  
- 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
- 				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
-+	u32 ctrl;
-+
-+	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
-+	ctrl = lpuart32_read(&sport->port, UARTCTRL);
-+	if (ctrl & UARTCTRL_TE) {
-+		/* wait for the transmit engine to complete */
-+		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
-+		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
-+
-+		while (lpuart32_read(&sport->port, UARTCTRL) & UARTCTRL_TE)
-+			cpu_relax();
-+	}
-+
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	if (rs485->flags & SER_RS485_ENABLED) {
-@@ -1414,6 +1427,10 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
+ 		sd = media_entity_to_v4l2_subdev(ved->ent);
++		/*
++		 * Do not call .s_stream() to stop an already
++		 * stopped/unstarted subdev.
++		 */
++		if (!v4l2_subdev_is_streaming(sd))
++			continue;
+ 		v4l2_subdev_call(sd, video, s_stream, 0);
  	}
- 
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
-+
-+	if (ctrl & UARTCTRL_TE)
-+		lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+
- 	return 0;
  }
- 
--- 
-2.39.5
-
 
 
 
