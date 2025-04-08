@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E2DA80349
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5B0A80298
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1BF441B18
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F746075E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092622690D7;
-	Tue,  8 Apr 2025 11:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EEE266583;
+	Tue,  8 Apr 2025 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9j+uZ8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEzqOZ0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B906D269AF8;
-	Tue,  8 Apr 2025 11:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B988335973;
+	Tue,  8 Apr 2025 11:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113073; cv=none; b=a2oH2PcLk821YlY6kokVaQbNSm8pAe6i/RN53MDUI1/YOfiKCo4JPkn+PSC2JAxnKx3bumLfyFiS2hfPZ3WRNJ7ikWQRNsqN0+/2ZfWUzQvgpMGjneNetuCeSqHSZpBQuwQnaBNIiWBBmMdYJDjVmmwgLE3S6rXwMutEef83AK4=
+	t=1744112345; cv=none; b=TlqyT0L6AGlasjFn68aWVYarfOC5rNaGO3n3Jyh33RVV2yOCJszPB2j+FREijUjNFUQtSYCW0NpBmGVBLPje2uw4AD7BuJ2NdRA6wiyRBV0HLGRCLuoYwwAz7Qy/4uadG4k3GItLPk/0Th81hXfx81+OafiByQimgQn49MzYZTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113073; c=relaxed/simple;
-	bh=ubjOp9UP1hV/K464MeL2X+Y5wZTllrzEAPyR9e6R0OY=;
+	s=arc-20240116; t=1744112345; c=relaxed/simple;
+	bh=s3sofGR6TJyfSvo1FnTFnW1nxjK6Si7opQJlAv3w+nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noait5OIe+LHwAMV27ZxeFU2PNWggXOdUM2SjEgFOzN/Kk5/yQy4gyrjLrUjl3AgmBCYmsGpBwWfiG5nRyxBfFy9maLrQfQUmPiXlT987UwgwQZY3hU7OWcjHDZZTdAnRvopVwADuSBFuqrIdY8x07CpHjnqAj1oOqG4PMKPWNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9j+uZ8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E95C4CEE5;
-	Tue,  8 Apr 2025 11:51:13 +0000 (UTC)
+	 MIME-Version; b=gxmj7QgySUULZ8KKtkTsFYkbaF/3+EDIc9bUoYV/jMpFkBm9FocWlUhRgJFgQK/idhyh0RIe8txnviq+tcuuSs2eGy9YMjqTLV9E/5vwyPf9LPLbY/mL/tdGNP9RsAlTW2q3JAvddCGFLp0wqYU/7YDQkv36USEjoW7B3l1QTHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEzqOZ0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4511CC4CEE5;
+	Tue,  8 Apr 2025 11:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113073;
-	bh=ubjOp9UP1hV/K464MeL2X+Y5wZTllrzEAPyR9e6R0OY=;
+	s=korg; t=1744112345;
+	bh=s3sofGR6TJyfSvo1FnTFnW1nxjK6Si7opQJlAv3w+nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9j+uZ8xbNKykr8pDAiHsDStwRcdlI4XCRT2AN/yfNhEcLgCmAiFKOtgPpcjjuOS5
-	 ScbOjptNi80DY8FZx8s12t1gJM15qQZz98Bxl8zf0vJmSg+qnVcUSAGp5YaSqv6l2I
-	 Shp+xI5Fa20N2T0Oq21TspbNkA6d9xYV6avWWM9M=
+	b=ZEzqOZ0MkmAZWSxcfnN4d8+O7UHcSbzGLplz5KR3jmNgGBQ+s/MCxUor5JdHIvFYk
+	 GhVSoqsMTcTqR7UXXj5Pw4WRibbd6gVLAs9OShkylVBeLJvzvd65oQmspVhNUeAltE
+	 Hg5686Mjzk7scW33ztZehZ0PwhtT0BXLH2UX4H5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/268] cpufreq: governor: Fix negative idle_time handling in dbs_update()
+Subject: [PATCH 5.15 033/279] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
 Date: Tue,  8 Apr 2025 12:46:56 +0200
-Message-ID: <20250408104828.648617813@linuxfoundation.org>
+Message-ID: <20250408104827.275257511@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhan <zhanjie9@hisilicon.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
+[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
 
-We observed an issue that the CPU frequency can't raise up with a 100% CPU
-load when NOHZ is off and the 'conservative' governor is selected.
+The timestamps in the Firmware log and HID sensor samples are incorrect.
+They show 1970-01-01 because the current IPC driver only uses the first
+8 bytes of bootup time when synchronizing time with the firmware. The
+firmware converts the bootup time to UTC time, which results in the
+display of 1970-01-01.
 
-'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
-when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
-("cpufreq: governor: Fix handling of special cases in dbs_update()").
+In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
+the clock is updated according to the definition of ipc_time_update_msg.
+However, in _ish_sync_fw_clock(), the message length is specified as the
+size of uint64_t when building the doorbell. As a result, the firmware
+only receives the first 8 bytes of struct ipc_time_update_msg.
+This patch corrects the length in the doorbell to ensure the entire
+ipc_time_update_msg is sent, fixing the timestamp issue.
 
-However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
-logic in load calculation") introduced a comparison between 'idle_time' and
-'samling_rate' to detect a long idle interval.  While 'idle_time' is
-converted to int before comparison, it's actually promoted to unsigned
-again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
-wrong idle interval detection when it's in fact 100% busy and sets
-policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
-frequency to minimum because of the large 'idle_periods', such that the
-frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
-so it fortunately avoids the issue.
-
-Correct negative 'idle_time' to 0 before any use of it in dbs_update().
-
-Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
-Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
-index af44ee6a64304..1a7fcaf39cc9b 100644
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 		time_elapsed = update_time - j_cdbs->prev_update_time;
- 		j_cdbs->prev_update_time = update_time;
+diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+index ba45605fc6b52..a48f7cd514b0f 100644
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -577,14 +577,14 @@ static void fw_reset_work_fn(struct work_struct *unused)
+ static void _ish_sync_fw_clock(struct ishtp_device *dev)
+ {
+ 	static unsigned long	prev_sync;
+-	uint64_t	usec;
++	struct ipc_time_update_msg time = {};
  
--		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		/*
-+		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
-+		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
-+		 * off, where idle_time is calculated by the difference between
-+		 * time elapsed in jiffies and "busy time" obtained from CPU
-+		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
-+		 * time should grow with the same amount in two consecutive
-+		 * samples, but in practice there could be a tiny difference,
-+		 * making the accumulated idle time decrease sometimes.  Hence,
-+		 * in this case, idle_time should be regarded as 0 in order to
-+		 * make the further process correct.
-+		 */
-+		if (cur_idle_time > j_cdbs->prev_cpu_idle)
-+			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
-+		else
-+			idle_time = 0;
-+
- 		j_cdbs->prev_cpu_idle = cur_idle_time;
+ 	if (prev_sync && jiffies - prev_sync < 20 * HZ)
+ 		return;
  
- 		if (ignore_nice) {
-@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			 * calls, so the previous load value can be used then.
- 			 */
- 			load = j_cdbs->prev_load;
--		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
-+		} else if (unlikely(idle_time > 2 * sampling_rate &&
- 				    j_cdbs->prev_load)) {
- 			/*
- 			 * If the CPU had gone completely idle and a task has
-@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
- 			load = j_cdbs->prev_load;
- 			j_cdbs->prev_load = 0;
- 		} else {
--			if (time_elapsed >= idle_time) {
-+			if (time_elapsed > idle_time)
- 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
--			} else {
--				/*
--				 * That can happen if idle_time is returned by
--				 * get_cpu_idle_time_jiffy().  In that case
--				 * idle_time is roughly equal to the difference
--				 * between time_elapsed and "busy time" obtained
--				 * from CPU statistics.  Then, the "busy time"
--				 * can end up being greater than time_elapsed
--				 * (for example, if jiffies_64 and the CPU
--				 * statistics are updated by different CPUs),
--				 * so idle_time may in fact be negative.  That
--				 * means, though, that the CPU was busy all
--				 * the time (on the rough average) during the
--				 * last sampling interval and 100 can be
--				 * returned as the load.
--				 */
--				load = (int)idle_time < 0 ? 100 : 0;
--			}
-+			else
-+				load = 0;
-+
- 			j_cdbs->prev_load = load;
- 		}
+ 	prev_sync = jiffies;
+-	usec = ktime_to_us(ktime_get_boottime());
+-	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
++	/* The fields of time would be updated while sending message */
++	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
+ }
  
--		if (unlikely((int)idle_time > 2 * sampling_rate)) {
-+		if (unlikely(idle_time > 2 * sampling_rate)) {
- 			unsigned int periods = idle_time / sampling_rate;
- 
- 			if (periods < idle_periods)
+ /**
 -- 
 2.39.5
 
