@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82640A80B82
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F764A808E0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32F9C8C5ED7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 296571B66328
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC7F27C848;
-	Tue,  8 Apr 2025 12:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E064926B2CC;
+	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LepbCyne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtYqpUzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEC826F472;
-	Tue,  8 Apr 2025 12:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9E326B2BF;
+	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117029; cv=none; b=gU+FiQKsXfrgs73TLQAgmVrSQEwMrgM6C0g4FLMu+NH0ZiJTgHF6fPr15gcQkQRmSCZ8BvEbP5NzBBcpO8ut90IuDRXGLenbdisrbBlpMG/joKvI19lCKPkE2qa1OI8WqIGwSe3Etvp8T2gHsTZcJkwweF+xfNzodv6yxUXRyLQ=
+	t=1744115930; cv=none; b=MqlQC5gmSPwzGf6z6PfpfZP9EwlvfsnMNp4I2C17CP9aUE/rtnZKa/UlZMzqhT4SwkbXiG2VfmEDvj1pPYTwRniRpmDKdOtzuNXVwkNYsAxqw/vmkfp94GO3q1CiRWQmwz76HD7S6TlehPLXUecO4FeINkS4A7sKvhiTjeJVqc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117029; c=relaxed/simple;
-	bh=Sbc+Ta3GLYQRauiofZcgUh8WFGOp1Niymi73j81C2Xk=;
+	s=arc-20240116; t=1744115930; c=relaxed/simple;
+	bh=QqS3PaTnVVCDCLpxWOLpmg4WhjPxMRV4VSZgqeoDFVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feITfMrwq7sAmiLwIoWgS+PTf2n/em8EM9N/NZ4DIntMjMMjehG7U+yuxvY6hJ1KnXITQGsSAP6TDsqPT5coWi+IhIqNkClD1Jiom5B7+Kq56MkHjaAx1w75NTPHDYhv47Ic2jEqftZiDDh+/I0Pd87MOqBHGJKhFj0Bdxc7fiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LepbCyne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6F3C4CEEA;
-	Tue,  8 Apr 2025 12:57:08 +0000 (UTC)
+	 MIME-Version; b=NX3e9R/Hi5hbKOE+FZaWqFZa9qOTd7R+TfpMQgTNOofgPhn5Sn+mdH42XZMzC9PGkNbvCz+TBsE8a3RHrvpvsPlxY7qps7riE0OVp+zo5qDmMRaX/AaEu91js4+xDIEdaUY9ZU5SMckFrRQbBPs+L7C6+DfFHZIRjBmnI0IL5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtYqpUzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE9CC4CEE5;
+	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117029;
-	bh=Sbc+Ta3GLYQRauiofZcgUh8WFGOp1Niymi73j81C2Xk=;
+	s=korg; t=1744115930;
+	bh=QqS3PaTnVVCDCLpxWOLpmg4WhjPxMRV4VSZgqeoDFVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LepbCyneM35j4vuoxhz7I+i6iTjyqHsojlyBdxOhOB0aHwi8he3UBkLoi4NfkjXgO
-	 Pd6GQC+5x+bMjJklHdYKolv4Y77IkDVg7ZYIp+ec5/+TbFbnnJiPnyWZMHAMv4hiyV
-	 UnH+Z2tz0wskKOFjwy0J+sIib+mepnfcHg6Vi4ws=
+	b=WtYqpUzYgrL8yPVmxbzhFzzytRCSX7FBnlYCSnhHjkne5JpM/F62ZbkDnoKp9lFo6
+	 mZ8ppcT1sIJYDOpP2FVvlDCQYVldXmHXhGopFNWqEWFYWhgJ3HQnwGw0Hi/ZEA2wwt
+	 EmVFCz1qhS97sXYc+nTLyjij0JIMb9FGigaVDTSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 359/423] tty: serial: lpuart: only disable CTS instead of overwriting the whole UARTMODIR register
+Subject: [PATCH 6.1 155/204] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
 Date: Tue,  8 Apr 2025 12:51:25 +0200
-Message-ID: <20250408104854.218824166@linuxfoundation.org>
+Message-ID: <20250408104824.856257154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e98ab45ec5182605d2e00114cba3bbf46b0ea27f ]
+[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
 
-No need to overwrite the whole UARTMODIR register before waiting the
-transmit engine complete, actually our target here is only to disable
-CTS flow control to avoid the dirty data in TX FIFO may block the
-transmit engine complete.
-Also delete the following duplicate CTS disable configuration.
+conncount has its own GC handler which determines when to reap stale
+elements, this is convenient for dynamic sets. However, this also reaps
+non-dynamic sets with static configurations coming from control plane.
+Always run connlimit gc handler but honor feedback to reap element if
+this set is dynamic.
 
-Fixes: d5a2e0834364 ("tty: serial: lpuart: disable flow control while waiting for the transmit engine to complete")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20250307065446.1122482-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/netfilter/nft_set_hash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index c2b522843b72c..951c3cdac3b94 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2330,15 +2330,19 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
- 	/* update the per-port timeout */
- 	uart_update_timeout(port, termios->c_cflag, baud);
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 5c4209b49bda7..a592cca7a61f9 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -310,7 +310,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
  
-+	/*
-+	 * disable CTS to ensure the transmit engine is not blocked by the flow
-+	 * control when there is dirty data in TX FIFO
-+	 */
-+	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
-+
- 	/*
- 	 * LPUART Transmission Complete Flag may never be set while queuing a break
- 	 * character, so skip waiting for transmission complete when UARTCTRL_SBK is
- 	 * asserted.
- 	 */
--	if (!(old_ctrl & UARTCTRL_SBK)) {
--		lpuart32_write(port, 0, UARTMODIR);
-+	if (!(old_ctrl & UARTCTRL_SBK))
- 		lpuart32_wait_bit_set(port, UARTSTAT, UARTSTAT_TC);
--	}
+ 	nft_setelem_expr_foreach(expr, elem_expr, size) {
+ 		if (expr->ops->gc &&
+-		    expr->ops->gc(read_pnet(&set->net), expr))
++		    expr->ops->gc(read_pnet(&set->net), expr) &&
++		    set->flags & NFT_SET_EVAL)
+ 			return true;
+ 	}
  
- 	/* disable transmit and receive */
- 	lpuart32_write(port, old_ctrl & ~(UARTCTRL_TE | UARTCTRL_RE),
-@@ -2346,8 +2350,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
- 
- 	lpuart32_write(port, bd, UARTBAUD);
- 	lpuart32_serial_setbrg(sport, baud);
--	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
--	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
- 	lpuart32_write(port, ctrl, UARTCTRL);
- 	/* re-enable the CTS if needed */
 -- 
 2.39.5
 
