@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C78A80702
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22286A808B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCACF7A7358
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C6078C0735
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2C26A1C3;
-	Tue,  8 Apr 2025 12:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC2226A0AE;
+	Tue,  8 Apr 2025 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulSb74z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os8c3BoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE9526A1C4;
-	Tue,  8 Apr 2025 12:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A4126A090;
+	Tue,  8 Apr 2025 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115182; cv=none; b=MhK6CqhRfPBRvV5R8SAiihdVY5V+y/Pe7Pvnfq72ML3W9YPBNDQS8MXeLXe3T6giBGdlAQWW8mX8kSguQiacHZNjzBp14TlJdhwbMnd6NPlTLD9vbOaPl+8l5nizrhjfYmO+VoQ6PMTKiWCnnCnBJpiZ3x1ZwtfmwIeDfkLRiJ4=
+	t=1744115570; cv=none; b=dO4AKFr++3jI6LVsPyy0j7qGS5TaRG6jwemMLHU43VrHOE4WDdyia3M2aGH4+3J0x66jRsRas/F6hALjjfaUTSK7ugewKSp1t9Zhfmf5M6MrMM/5k5/U4poTRmt2zpzs9oJfyTDP9UjGRDxrnRCpAu+/2TkJc9q3qeRlJ/+v77A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115182; c=relaxed/simple;
-	bh=+tMsSGuSjyDAfvwhzJodcdKZ3ZpJ1Iq9cLNDN+xaVf0=;
+	s=arc-20240116; t=1744115570; c=relaxed/simple;
+	bh=TlqaFNNHBkyEmQ3QWcpRHdSORbgTQ11zasOVzznQThY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzHYbbeofPUuvrziHn1qmf9TsRHn/NGUF5YBv7+LDeb/MJDuPHtpHfZaFGg84Cd3uCsBhY5jb+hLNXdKo6KTcFYTZFL1QjCM345P9namNJ9N5g77O1TWf6cPDgFbblYbgEi4WgWi0SMG/JX87oDFdqKMORWw1EsreV+Ju5X2EEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulSb74z+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F59CC4CEE5;
-	Tue,  8 Apr 2025 12:26:22 +0000 (UTC)
+	 MIME-Version; b=OYRwMhaqQAwfnUe26DFhxdGaaiX0n5mc7OIArfLwM6qHDyO08l/TWhThmcUKpYQa5TaN/hdnYl7B426NmtH+gVzRLWKxN9bwCfy/LNRmb7A5G8Yk5R0NqbH0ub63RKTGvpTBBA/SAkXz3jgO4HBNrZk/wNNTqck7bAwUX9otASQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os8c3BoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1639C4CEE5;
+	Tue,  8 Apr 2025 12:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115182;
-	bh=+tMsSGuSjyDAfvwhzJodcdKZ3ZpJ1Iq9cLNDN+xaVf0=;
+	s=korg; t=1744115570;
+	bh=TlqaFNNHBkyEmQ3QWcpRHdSORbgTQ11zasOVzznQThY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulSb74z+Vie/x7B6uk40m60HdI/pRpYOnvBjZC+FirfnkjHufyhlJV2x9ySExmOwW
-	 Z9VVJTCB1/hl9P6rB3Bxu2qpKT6OK7HD4t5LMAIi0ptU4tzYzeT940mSi9QyDrl2zt
-	 kea+Tp5xbxvwI5JxgznOnpLFa37uT+/xLwzZ/Sl8=
+	b=Os8c3BoDdJHxVW7NZYEtb8A51mOFsRzKKGw6f8yFE7t+pvju7qcWk3lM13bThJPqT
+	 h1bjhkMcVWkrjdvFTMmWe1klpBjDHFTRiFsFgHrdq109eQnndvi0IjjT/goQ71iaug
+	 N1e9Erov7axjVx70eQm8F9UoO6Lp9yePxNPvwAB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 341/499] nvme-pci: fix stuck reset on concurrent DPC and HP
+Subject: [PATCH 6.1 023/204] ASoC: cs35l41: check the return value from spi_setup()
 Date: Tue,  8 Apr 2025 12:49:13 +0200
-Message-ID: <20250408104859.729611020@linuxfoundation.org>
+Message-ID: <20250408104821.003260176@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 3f674e7b670b7b7d9261935820e4eba3c059f835 ]
+[ Upstream commit ad5a0970f86d82e39ebd06d45a1f7aa48a1316f8 ]
 
-The PCIe error handling has the nvme driver quiesce the device, attempt
-to restart it, then wait for that restart to complete.
+Currently the return value from spi_setup() is not checked for a failure.
+It is unlikely it will ever fail in this particular case but it is still
+better to add this check for the sake of completeness and correctness. This
+is cheap since it is performed once when the device is being probed.
 
-A PCIe DPC event also toggles the PCIe link. If the slot doesn't have
-out-of-band presence detection, this will trigger a pciehp
-re-enumeration.
+Handle spi_setup() return value.
 
-The error handling that calls nvme_error_resume is holding the device
-lock while this happens. This lock blocks pciehp's request to disconnect
-the driver from proceeding.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Meanwhile the nvme's reset can't make forward progress because its
-device isn't there anymore with outstanding IO, and the timeout handler
-won't do anything to fix it because the device is undergoing error
-handling.
-
-End result: deadlocked.
-
-Fix this by having the timeout handler short cut the disabling for a
-disconnected PCIe device. The downside is that we're relying on an IO
-timeout to clean up this mess, which could be a minute by default.
-
-Tested-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 872fc0b6bde8 ("ASoC: cs35l41: Set the max SPI speed for the whole device")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://patch.msgid.link/20250304115643.2748-1-v.shevtsov@mt-integration.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ sound/soc/codecs/cs35l41-spi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 563118b176d1c..99022be16d2a9 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1413,9 +1413,20 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	struct nvme_dev *dev = nvmeq->dev;
- 	struct request *abort_req;
- 	struct nvme_command cmd = { };
-+	struct pci_dev *pdev = to_pci_dev(dev->dev);
- 	u32 csts = readl(dev->bar + NVME_REG_CSTS);
- 	u8 opcode;
+diff --git a/sound/soc/codecs/cs35l41-spi.c b/sound/soc/codecs/cs35l41-spi.c
+index 5c8bb24909eb4..bd73944758c6d 100644
+--- a/sound/soc/codecs/cs35l41-spi.c
++++ b/sound/soc/codecs/cs35l41-spi.c
+@@ -39,7 +39,9 @@ static int cs35l41_spi_probe(struct spi_device *spi)
+ 		return -ENOMEM;
  
-+	/*
-+	 * Shutdown the device immediately if we see it is disconnected. This
-+	 * unblocks PCIe error handling if the nvme driver is waiting in
-+	 * error_resume for a device that has been removed. We can't unbind the
-+	 * driver while the driver's error callback is waiting to complete, so
-+	 * we're relying on a timeout to break that deadlock if a removal
-+	 * occurs while reset work is running.
-+	 */
-+	if (pci_dev_is_disconnected(pdev))
-+		nvme_change_ctrl_state(&dev->ctrl, NVME_CTRL_DELETING);
- 	if (nvme_state_terminal(&dev->ctrl))
- 		goto disable;
+ 	spi->max_speed_hz = CS35L41_SPI_MAX_FREQ;
+-	spi_setup(spi);
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
  
-@@ -1423,7 +1434,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	 * the recovery mechanism will surely fail.
- 	 */
- 	mb();
--	if (pci_channel_offline(to_pci_dev(dev->dev)))
-+	if (pci_channel_offline(pdev))
- 		return BLK_EH_RESET_TIMER;
- 
- 	/*
+ 	spi_set_drvdata(spi, cs35l41);
+ 	cs35l41->regmap = devm_regmap_init_spi(spi, regmap_config);
 -- 
 2.39.5
 
