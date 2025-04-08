@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-130313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E6BA803BF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50220A7FEA7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7350819E21C1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030703BB597
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E507268685;
-	Tue,  8 Apr 2025 11:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7EA269819;
+	Tue,  8 Apr 2025 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/Yg1Xjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5RZM90P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECF32698B9;
-	Tue,  8 Apr 2025 11:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD6268691;
+	Tue,  8 Apr 2025 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113385; cv=none; b=b9Sic6WOcnGbTHgzb2o6kHwgwuPaiLoR4FRxiwma1kz9GE5eCzuJN8CEGuGOJzqTQjgB4zmMRzKWwgech+kiTyuy9/JjmnR0JkXDz7uNW6RGFELHrdSifHC5C9A7P37/UxgaOPUN/oVlNFEsFjNgEElWwHx2qHKoh/FzD6s/dps=
+	t=1744110223; cv=none; b=JwWE2pU+P7TRqcaEIUBq9ZYRUzhTsdfYH9TMesulE413fRamHDBcHj5k0TiCWcowcphVtK1I8HzX9Kn+SEOtqOnpSA6MhIED8lPkkvG8Gfn7w1j7v5u+bPD82CYccxz3lg3GwjZ62OGdPgbY3C/Bh29j61e7xcbZ9wGDkq6HHKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113385; c=relaxed/simple;
-	bh=5lMbSf1XrBBT3x3NCg0vUgMkGXOeUrWQQnxbHcHGNks=;
+	s=arc-20240116; t=1744110223; c=relaxed/simple;
+	bh=v4w6duPkLl0byoCi/rVfX3o9uGV4rGwxextmcTQdRfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUUXbf+JNTXkt6TEK4KWmKHEeT1vkuAlltoB3LF/QZTterKbgsAoS4CwoxC4y5WtLGMrfevnp1ZCv4I+CxpxHoy+fVuNVPrhf9QlygY9ee2+fWXZgZHh7Jb8ViI2XSjIvE7KREG/vQH64QM4vV+xgIDn/atsjEYBCyvnx6LRbCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/Yg1Xjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608C7C4CEE5;
-	Tue,  8 Apr 2025 11:56:25 +0000 (UTC)
+	 MIME-Version; b=Fhs6rHHS/BUp7geZUZsX3CD1j2sL5/m5sSiclYG2csJUR5KDwUvIBYtDi/S6KHO7CCQMJLHIUshF8yExWYGTddic6ID4YVOxP3DJ+xihZllilb3QbX3sX7XRh1xOUt51+fRGa4bu0xlpRftNCSE9X+Kd3Hv+Y1jQ3cQadJ/LIfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5RZM90P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D472BC4CEE7;
+	Tue,  8 Apr 2025 11:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113385;
-	bh=5lMbSf1XrBBT3x3NCg0vUgMkGXOeUrWQQnxbHcHGNks=;
+	s=korg; t=1744110223;
+	bh=v4w6duPkLl0byoCi/rVfX3o9uGV4rGwxextmcTQdRfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/Yg1XjgpRQ7Sw8gqEy87tj3EaS4VDsTBxgVELsrLCmESuI8XtGH9cTs2BIA+r3Z2
-	 q5tVvDF5fP/WLHE6lRPFIVnXnj+h9cQh61PrfqFJrdnsza3OyKpZq7bnBPIQeZALjd
-	 sGNozKrSI94mp8Zu6ggPGkYUJhmPdy7vqk2qdPTo=
+	b=F5RZM90PzhF9htaGe/8Wj+bWKNBhBMpjxEWwB2ON0MybZmw8bMlPqYezlcYW6In/o
+	 v+pIyjlq1p3GRI8CfYQvpRhCWtL+2RZsUiE+9vrE9oPhHuLMJkBZ9sLaqzPU50IJF7
+	 ssyXlTmZ5WJqQUNuunZFgorXbjTWXP2TDUjrJzr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexey Dobriyan <adobriyan@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/268] fs/procfs: fix the comment above proc_pid_wchan()
-Date: Tue,  8 Apr 2025 12:49:10 +0200
-Message-ID: <20250408104832.272375308@linuxfoundation.org>
+Subject: [PATCH 5.10 173/227] fs/procfs: fix the comment above proc_pid_wchan()
+Date: Tue,  8 Apr 2025 12:49:11 +0200
+Message-ID: <20250408104825.504162613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,10 +90,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 91fe20b7657c0..d444155581cab 100644
+index b955ba5db72cb..b09cc9e6d5914 100644
 --- a/fs/proc/base.c
 +++ b/fs/proc/base.c
-@@ -416,7 +416,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
+@@ -415,7 +415,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
  #ifdef CONFIG_KALLSYMS
  /*
   * Provides a wchan file via kallsyms in a proper one-value-per-file format.
