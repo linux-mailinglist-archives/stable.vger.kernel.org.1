@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5B5A80742
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716B5A804BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90C407B0CE8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28BA46266F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CE126A08C;
-	Tue,  8 Apr 2025 12:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C1C26A0BD;
+	Tue,  8 Apr 2025 12:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCdOMOxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyrPkT5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DAF26A087;
-	Tue,  8 Apr 2025 12:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104BE26A0AF;
+	Tue,  8 Apr 2025 12:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115324; cv=none; b=KbUdg8FSd4xTgBwc84PCyoZ0i/VOVA7nmf0rQZEYmTYeo2dJj6Gewv2vypInbh1ICOLyGDFBR0cPd3eqoBT4ZPgxy9kyfsLWCMH4y6u+9NWRGrDLBzs7iKpnkVr1Wo2UvB9bpk7PFxk61BfoMTZ8UVTsLk6pPkG1Z2t4+TugMsk=
+	t=1744113661; cv=none; b=ly2nRh5VUWug+69n8EeFhZqrb4ZrHaJ2vRXSwzqRjgJ+HkW4FjdoJpJJ7MApiyaRpDu08pefqWhoFZAenV+TyavRb4GFrvsI4BeTFj9BmdEI69fm0l+FtQ/nJRnYG7+mVmQMXlvW2mH1b5O0prA01O8LyT025OFU238mkhZItFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115324; c=relaxed/simple;
-	bh=0U5SLMSp005Ncnaby2ZmEqfAhHLNlit/Hn7ODydw8Jk=;
+	s=arc-20240116; t=1744113661; c=relaxed/simple;
+	bh=bJ7FuPpJXntvNolUjEZRbM21tktNjpOE/ux3jF6J8Qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NPr182M7d9XLzhz3wNp5raj/HNbmuD19a2gpARj2IBfiva3abd70uQTHUaxUATTIma1aUszKwudZjqXJhIxxPsKiQmekCN/CtRvZOdXET3xL8Dc11vN9t5Ir7aQHd0FJlLPkb0ZQdOFupjfGtYp0EWyyktCXju6xgYqM2rNcjvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCdOMOxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F94C4CEE5;
-	Tue,  8 Apr 2025 12:28:44 +0000 (UTC)
+	 MIME-Version; b=cNkdvY24k12Inop2dekEqmIaumzaQhMVSPzPqcP3wHIwGJ8pjJ1NdXie3rVuJxhgHPgGcNh7pDH7Q3B+/o4COvpc/MGrWiH5PAKlO6hJROAJB6zJdh02i8TKrZLjjGqpSUXQGfyQJ8J9xEiHE20tITa2PyTikJQ1SOiMK+PYC18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyrPkT5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9470CC4CEE5;
+	Tue,  8 Apr 2025 12:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115324;
-	bh=0U5SLMSp005Ncnaby2ZmEqfAhHLNlit/Hn7ODydw8Jk=;
+	s=korg; t=1744113660;
+	bh=bJ7FuPpJXntvNolUjEZRbM21tktNjpOE/ux3jF6J8Qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCdOMOxRmA8ATf2z7umqVqSyjhYZ+/VAsUNvn0QXpd9zuUcgC2TfoPCNtqtgxca+E
-	 mKOpb6igKI/xpAjCtF2O0wNSUDRvArzJaHi31LUqA160NhDorPwab65UgA4SkJot0m
-	 7oSICX+MfI6oF0XiTMKQJIzS0aSvo18MCCitW2Nk=
+	b=JyrPkT5mLTvFuiyXH2va4lpoInv9UweiojhgTk8pDL9I4c6I9peyAbaUbtU/MbC38
+	 7eIYGMuPxx3P02Fhb8gH8uJI+g1xY+DgdQ3BbCyd+kZD+9kdY+BwVX6qllCA0S1+wX
+	 JVVz8pL8h7BiUhMWb2rIwiiMrkR8KN3ovYSo7mWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Lu <luying1@xiaomi.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 433/499] usbnet:fix NPE during rx_complete
-Date: Tue,  8 Apr 2025 12:50:45 +0200
-Message-ID: <20250408104902.027412367@linuxfoundation.org>
+	Tianyu Lan <tiala@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.6 235/268] x86/hyperv: Fix check of return value from snp_set_vmsa()
+Date: Tue,  8 Apr 2025 12:50:46 +0200
+Message-ID: <20250408104834.930282657@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Lu <luying1@xiaomi.com>
+From: Tianyu Lan <tiala@microsoft.com>
 
-commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
+commit e792d843aa3c9d039074cdce728d5803262e57a7 upstream.
 
-Missing usbnet_going_away Check in Critical Path.
-The usb_submit_urb function lacks a usbnet_going_away
-validation, whereas __usbnet_queue_skb includes this check.
+snp_set_vmsa() returns 0 as success result and so fix it.
 
-This inconsistency creates a race condition where:
-A URB request may succeed, but the corresponding SKB data
-fails to be queued.
-
-Subsequent processes:
-(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
-attempt to access skb->next, triggering a NULL pointer
-dereference (Kernel Panic).
-
-Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ying Lu <luying1@xiaomi.com>
-Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
+Signed-off-by: Tianyu Lan <tiala@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250313085217.45483-1-ltykernel@gmail.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250313085217.45483-1-ltykernel@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/hyperv/ivm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
- 	    netif_device_present (dev->net) &&
- 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
- 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
--	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
-+	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
-+	    !usbnet_going_away(dev)) {
- 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
- 		case -EPIPE:
- 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
-@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
- 			tasklet_schedule (&dev->bh);
- 			break;
- 		case 0:
--			if (!usbnet_going_away(dev))
--				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
-+			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
- 		}
- 	} else {
- 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -338,7 +338,7 @@ int hv_snp_boot_ap(int cpu, unsigned lon
+ 	vmsa->sev_features = sev_status >> 2;
+ 
+ 	ret = snp_set_vmsa(vmsa, true);
+-	if (!ret) {
++	if (ret) {
+ 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
+ 		free_page((u64)vmsa);
+ 		return ret;
 
 
 
