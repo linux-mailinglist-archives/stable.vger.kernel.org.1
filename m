@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F7EA808C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDB0A8078A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12A98A7561
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13454C5041
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4DB269B02;
-	Tue,  8 Apr 2025 12:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3756A26B949;
+	Tue,  8 Apr 2025 12:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paIILS5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moqeSf7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0FC2686AA;
-	Tue,  8 Apr 2025 12:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37C7268FE4;
+	Tue,  8 Apr 2025 12:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115850; cv=none; b=ed+Rfl6UCDrl+YbCLyU+aVMj7SDlxxORrr7cnb24OUgf1hgBwex7Tv9bZ37rjwa9v2Nlr55bRjRmGCvDzA4e5rvNTAThBjJ3b2lhGPPsKlOVgroNL2nLxT6tRMhUjBHudCld43MZYSRRNe8gmzt7icXTV5evxWfXECQz3x6pAsU=
+	t=1744115365; cv=none; b=mKRmPl6O31RKAE7aLw2ZO7ZsjucgvTWIQcCtq98yTj99SpiQBm8m+rOGh4qD/rjgjT8gq0BPtS2C9lDTY8r6QkMs3oyYJOcex18NPDKM02OaJDotZ+pq5kDZMjXE9nJwDrFZfFCgY2OWLvVOekOU3FYZLQtNU/IG3l1oFQyEATs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115850; c=relaxed/simple;
-	bh=WkP3AOSutE4jsU7YaizltjT3LJJo+IEdfaE5tlr+C4Q=;
+	s=arc-20240116; t=1744115365; c=relaxed/simple;
+	bh=rNNAY9q0sQG8CZSwAoKYeWCXp5rr7fG/dsv7XYQLx3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTzYVX3gNcw61qhsBFW6AHNtrjwlovqHlauZCqbggGaP5BM5DkX+/zS5NIRfzh2bKhg91Vo1IanoPvG1WfUrm83exqGcPBum7SDJ+UJ37HlIAyH8Nz0jGcdmE8um1T7sqLV+pduGYjHZA2sSzKQ9HFefG8uDI7GybjO/Dd8LS3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paIILS5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BA1C4CEE5;
-	Tue,  8 Apr 2025 12:37:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZNI8ovI4ThazTIK/2R+R0M/ECYiVOn3Y8mYqiVeQfKFs/UGWYtXlKWgJTkOdvmIOww08MaCqXSauNGA+LiWVTiBRWtI83YsZg44XoFutpgBLRWx8h8fiWKLSdir46zKGoFXSYS/IkcFrwTBZsgx36rKb6WKC/AQn+OOUcgFUda0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moqeSf7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76329C4CEE5;
+	Tue,  8 Apr 2025 12:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115850;
-	bh=WkP3AOSutE4jsU7YaizltjT3LJJo+IEdfaE5tlr+C4Q=;
+	s=korg; t=1744115364;
+	bh=rNNAY9q0sQG8CZSwAoKYeWCXp5rr7fG/dsv7XYQLx3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=paIILS5uyV1eNXEfTKdHMbp5c0XSrXEtFD8x+q13T9DHyZiQfpZOW8UUMFI9w+R2z
-	 EIpWDq3GZPBPvv9maweNgnPxw7SIFgQFhZ6UBjeUxPnHaSrW4OWeu/n5TZSZ8+eBo+
-	 yHC4E1hf6krWT9SlnL0o0WVYU0jwF+18WD3x7iqM=
+	b=moqeSf7kdgMXDLg3SRTjDc1uaRm444AJPR4KQTXmRVonGMrMHXEHr1fw+2NjTdYV0
+	 6xtj3XFcGBJrfSdDfkR2+fWRWFSSd0LG8FQ1+xgg0BoxQuxhWdWFyTh7+pYAls8TG5
+	 dh29CaY0SohvpHDthfN5gBVcsNeVmjkFO5FmROrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/204] nvme-pci: clean up CMBMSC when registering CMB fails
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.13 447/499] platform/x86: ISST: Correct command storage data length
 Date: Tue,  8 Apr 2025 12:50:59 +0200
-Message-ID: <20250408104824.086663943@linuxfoundation.org>
+Message-ID: <20250408104902.377296324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
+commit 9462e74c5c983cce34019bfb27f734552bebe59f upstream.
 
-CMB decoding should get disabled when the CMB block isn't successfully
-registered to P2P DMA subsystem.
+After resume/online turbo limit ratio (TRL) is restored partially if
+the admin explicitly changed TRL from user space.
 
-Clean up the CMBMSC register in this error handling codepath to disable
-CMB decoding (and CMBLOC/CMBSZ registers).
+A hash table is used to store SST mail box and MSR settings when modified
+to restore those settings after resume or online. This uses a struct
+isst_cmd field "data" to store these settings. This is a 64 bit field.
+But isst_store_new_cmd() is only assigning as u32. This results in
+truncation of 32 bits.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change the argument to u64 from u32.
+
+Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index afcb9668dad98..bfca71f958a06 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1949,6 +1949,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
-+		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
- 		return;
- 	}
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -84,7 +84,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+ static DEFINE_MUTEX(isst_hash_lock);
  
--- 
-2.39.5
-
+ static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+-			      u32 data)
++			      u64 data)
+ {
+ 	struct isst_cmd *sst_cmd;
+ 
 
 
 
