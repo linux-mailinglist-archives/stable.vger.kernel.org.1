@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64635A7FDE2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9A8A80250
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E22ED443401
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E0C37A2F24
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CC826AA9A;
-	Tue,  8 Apr 2025 11:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D23268C65;
+	Tue,  8 Apr 2025 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA9dsPVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mstH2P7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8528926AA8F;
-	Tue,  8 Apr 2025 11:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D07A2686B9;
+	Tue,  8 Apr 2025 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110004; cv=none; b=q7UUXk3fOFipVii2AiEiW7xAup1wQ2W0ips//Q3G81Zq6sxUqsEOkE2dtoQz93n9EGjw+1ico3lFpUhDDeh0kjqy4ro6XdQ/36clPSHKEKySB+/ZIFOgJPRSr4F92pF2es96rzyn13qs8CLfMJYV0zJhL3LCxsMumfIVfwfcbJg=
+	t=1744112708; cv=none; b=qw2ghG7wfbk6c3rx4rP5ldqN3gOi8VsLDGWmI7K34xaZ8znn3UsyugLy+Xw9FUoLS3ojjly4Z+o3sla87Vbt9ykpqUfjQgC4H5WRAtml3pOuOj4JykAgxusfcJtWijxxuUIUnDdMr04qjpKpgfsDO53iVPaaEhmtO/IoE3FZ0qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110004; c=relaxed/simple;
-	bh=VgrjrcNSofOiZlc6Iw0unphutOGlatRzTGK54KoSydU=;
+	s=arc-20240116; t=1744112708; c=relaxed/simple;
+	bh=1eVbQNJXL1TaknzWtcZzNoYtu8+IUnB8iAkS2TiitII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LOZFbt3255/yNyI7fYNSPtrESqd4XSugEm2wDmsfiIw5iYMYIT+vC0S6SBaUWKgJEUmk/uslOhQOHnKFkKVRRupG/fwNcijrTJKpImcNbptZIHScylN2R3hcL8G/K1qrWfXeGcEBbxZW6m+pXhmjREBfrmf1ZUaPFlU7mPASegg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA9dsPVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15729C4CEEB;
-	Tue,  8 Apr 2025 11:00:03 +0000 (UTC)
+	 MIME-Version; b=FOsMHxuAOF+tLe/eJDSQxS9jImhqhcdhAI7grdawaBXh+KnnGgK3xVpVdiAKudKQEIWu+WfhpuBIA2YWSzKM2S2VkFRD65TX9466ilomb20lZFoefDGWl4LXT5xsW2oopWHF/KdCuYrPqd13cdGLEKDo/WsAy+YWGBJ/ckXcZ54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mstH2P7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04B3C4CEEA;
+	Tue,  8 Apr 2025 11:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110004;
-	bh=VgrjrcNSofOiZlc6Iw0unphutOGlatRzTGK54KoSydU=;
+	s=korg; t=1744112708;
+	bh=1eVbQNJXL1TaknzWtcZzNoYtu8+IUnB8iAkS2TiitII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA9dsPVtVe9WFTPqQ60VZJj/jGRB6bjfLbAr7QmHmCjZXGztNrY4yjgH0umI7VeHW
-	 buS5+aUE/lOYRDyh/ovmViYNEvW8bq23KGV/7EUK5W5wX6L/6l0CZ//5NH6zPdVnvd
-	 1q+hScwpyIZK4kyLOn03XBqTPABnOVKaKUU9A6rI=
+	b=mstH2P7K4DtrmkoaK50pU6Nu66hAtEbfOtGTNT31bqacjC9LjoMRg0tjfQA3x2sOS
+	 tUwH3/KCpkL7zSXO7CK0lZGvBhtXSprAPxG20q+L0CEXS3XHnsCdyHfSOPmafTeSk7
+	 xsyImlp0ZDFJs0/6x0ZUqSM0swjhZzR5RFpnl29w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/227] PCI: brcmstb: Use internal register to change link capability
+Subject: [PATCH 5.15 129/279] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
 Date: Tue,  8 Apr 2025 12:48:32 +0200
-Message-ID: <20250408104824.339157742@linuxfoundation.org>
+Message-ID: <20250408104829.823755351@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 0c97321e11e0e9e18546f828492758f6aaecec59 ]
+[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
 
-The driver has been mistakenly writing to a read-only (RO)
-configuration space register (PCI_EXP_LNKCAP) to change the
-PCIe link capability.
+The CPA_ARRAY test always uses len[1] as numpages argument to
+change_page_attr_set() although the addresses array is different each
+iteration of the test loop.
 
-Although harmless in this case, the proper write destination
-is an internal register that is reflected by PCI_EXP_LNKCAP.
+Replace len[1] with len[i] to have numpages matching the addresses array.
 
-Thus, fix the brcm_pcie_set_gen() function to correctly update
-the link capability.
-
-Fixes: c0452137034b ("PCI: brcmstb: Add Broadcom STB PCIe host controller driver")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214173944.47506-3-james.quinlan@broadcom.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
+Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/cpa-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 9c3d2982248d3..be6af5585dd6b 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -402,10 +402,10 @@ static int brcm_pcie_set_ssc(struct brcm_pcie *pcie)
- static void brcm_pcie_set_gen(struct brcm_pcie *pcie, int gen)
- {
- 	u16 lnkctl2 = readw(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
--	u32 lnkcap = readl(pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	u32 lnkcap = readl(pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
+index 0612a73638a81..7641cff719bd0 100644
+--- a/arch/x86/mm/pat/cpa-test.c
++++ b/arch/x86/mm/pat/cpa-test.c
+@@ -183,7 +183,7 @@ static int pageattr_test(void)
+ 			break;
  
- 	lnkcap = (lnkcap & ~PCI_EXP_LNKCAP_SLS) | gen;
--	writel(lnkcap, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCAP);
-+	writel(lnkcap, pcie->base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+ 		case 1:
+-			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
++			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
+ 			break;
  
- 	lnkctl2 = (lnkctl2 & ~0xf) | gen;
- 	writew(lnkctl2, pcie->base + BRCM_PCIE_CAP_REGS + PCI_EXP_LNKCTL2);
+ 		case 2:
 -- 
 2.39.5
 
