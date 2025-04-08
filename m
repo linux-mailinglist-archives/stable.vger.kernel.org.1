@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814B7A801EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960DBA802CD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E695044657A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A171A3B4C08
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B374268685;
-	Tue,  8 Apr 2025 11:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1434267F4F;
+	Tue,  8 Apr 2025 11:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vByNwkXx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9V4GDot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8BF266EFB;
-	Tue,  8 Apr 2025 11:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27A265602;
+	Tue,  8 Apr 2025 11:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112106; cv=none; b=LbEVqF7fzP4cunxL/SeLsdHsCD38w9+4Fo82qGaFUPgA+rRK5PyaOPhXPgerD6xt7EHQ94Dyoet1h4RvATpZowuE8FIQkpnqI3FlRZGxS77wt2GJ9Pc4NFVfjAik5LBiLFfw6Tmon+azQBI7PbZFnE2Om7No56FIaNJSbF6lahY=
+	t=1744112670; cv=none; b=FFJH4xPLiHsTjJGZ+cIsTrZbNBHjM0Jd54WemhOEhcA+HUXP4+5iRbBn76w6S18qwsTUhhaG24ck2OQITzqVXNUTjQpkR7FwIHZlzSWNWYRowQjHgF1XCPTwmodaPk0qRyz3cGrFDRkDsgjetbGxU28lGBZUf6DYNy2ayn7lE+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112106; c=relaxed/simple;
-	bh=xINSkJYEHSKhyTRNISy/YBKVo0PSCN2ae/CkRdBxCFw=;
+	s=arc-20240116; t=1744112670; c=relaxed/simple;
+	bh=Yf8OCvqVpisiFYIsTuI6T6zb8MXfjqFrBh+aofC+go0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgLgEZfKQj5YJMyQGAjS/7EYDCcNhn9uYN2SuEgKvOnTkHIzIlpOdwWuW4/oi99lpnHZcIsgmz6y1oVXVFaytJBNUbvUJq+7Yoy1/V807zfoZJkOEuw1Vx/3NPGs62ItZO1rODCPDeN/3eRyAGsqRnW8WjWlJVWhOVW4rJ8lVA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vByNwkXx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F160C4CEE5;
-	Tue,  8 Apr 2025 11:35:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YLNVvqrGlyZ+JGz5emHa85qp0TgdliXNCYrlnDSDYBs624vDG+U5gax74wVacPv61YdTFrE0TYNQlNHBVKqFb+35ErSNds/el1B0cDbOwFoFXXsNRV3EO73QwM2i8el9nKuNHNKCp/KSQm/eHn05Zppdlb09ZzFt3UxIA1yQZ4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9V4GDot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A888CC4CEE5;
+	Tue,  8 Apr 2025 11:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112106;
-	bh=xINSkJYEHSKhyTRNISy/YBKVo0PSCN2ae/CkRdBxCFw=;
+	s=korg; t=1744112670;
+	bh=Yf8OCvqVpisiFYIsTuI6T6zb8MXfjqFrBh+aofC+go0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vByNwkXxOdEikkq+8iC3Nttxk2Hs5LEf1+8J0qkL63OBqg/YRdRyon8RbpfXFyfY6
-	 QzH7blA7Vs7oOB2kIHw54DLvL+gAoFmPsziPKjwQnrjffVET0mZnyLRj0b6i0q8uiy
-	 yuA2kexBf0llPvt0KAPgV8X1cxtfG5wxMIBN51Gw=
+	b=l9V4GDotbQtc2bicWUZ7VW2xQEz9ts+Kh2pLRqSb7IdGohFHhff3Gv7n8SnLH4pOi
+	 2zRhMoXu5qyxKly41qgnc0djUWaOsPw2AA7UltWxPCXL0gl7iN9mKBci0KXH/Kt+0R
+	 lIjELyF6XX+lbmx4PaN9p1s028VFY/hZSR62EHFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Stodden <dns@arista.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 639/731] ipv6: Start path selection from the first nexthop
+Subject: [PATCH 5.15 153/279] PCI/ASPM: Fix link state exit during switch upstream function removal
 Date: Tue,  8 Apr 2025 12:48:56 +0200
-Message-ID: <20250408104929.132347990@linuxfoundation.org>
+Message-ID: <20250408104830.467259642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Daniel Stodden <daniel.stodden@gmail.com>
 
-[ Upstream commit 4d0ab3a6885e3e9040310a8d8f54503366083626 ]
+[ Upstream commit cbf937dcadfd571a434f8074d057b32cd14fbea5 ]
 
-Cited commit transitioned IPv6 path selection to use hash-threshold
-instead of modulo-N. With hash-threshold, each nexthop is assigned a
-region boundary in the multipath hash function's output space and a
-nexthop is chosen if the calculated hash is smaller than the nexthop's
-region boundary.
+Before 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to
+avoid use-after-free"), we would free the ASPM link only after the last
+function on the bus pertaining to the given link was removed.
 
-Hash-threshold does not work correctly if path selection does not start
-with the first nexthop. For example, if fib6_select_path() is always
-passed the last nexthop in the group, then it will always be chosen
-because its region boundary covers the entire hash function's output
-space.
+That was too late. If function 0 is removed before sibling function,
+link->downstream would point to free'd memory after.
 
-Fix this by starting the selection process from the first nexthop and do
-not consider nexthops for which rt6_score_route() provided a negative
-score.
+After above change, we freed the ASPM parent link state upon any function
+removal on the bus pertaining to a given link.
 
-Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
-Reported-by: Stanislav Fomichev <stfomichev@gmail.com>
-Closes: https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250402114224.293392-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+That is too early. If the link is to a PCIe switch with MFD on the upstream
+port, then removing functions other than 0 first would free a link which
+still remains parent_link to the remaining downstream ports.
+
+The resulting GPFs are especially frequent during hot-unplug, because
+pciehp removes devices on the link bus in reverse order.
+
+On that switch, function 0 is the virtual P2P bridge to the internal bus.
+Free exactly when function 0 is removed -- before the parent link is
+obsolete, but after all subordinate links are gone.
+
+Link: https://lore.kernel.org/r/e12898835f25234561c9d7de4435590d957b85d9.1734924854.git.dns@arista.com
+Fixes: 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to avoid use-after-free")
+Signed-off-by: Daniel Stodden <dns@arista.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/pci/pcie/aspm.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 15ce21afc8c62..07ff19ae263f5 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -412,11 +412,35 @@ static bool rt6_check_expired(const struct rt6_info *rt)
- 	return false;
- }
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index e3f81948ce724..521340126b339 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1014,16 +1014,16 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 	parent_link = link->parent;
  
-+static struct fib6_info *
-+rt6_multipath_first_sibling_rcu(const struct fib6_info *rt)
-+{
-+	struct fib6_info *iter;
-+	struct fib6_node *fn;
-+
-+	fn = rcu_dereference(rt->fib6_node);
-+	if (!fn)
+ 	/*
+-	 * link->downstream is a pointer to the pci_dev of function 0.  If
+-	 * we remove that function, the pci_dev is about to be deallocated,
+-	 * so we can't use link->downstream again.  Free the link state to
+-	 * avoid this.
++	 * Free the parent link state, no later than function 0 (i.e.
++	 * link->downstream) being removed.
+ 	 *
+-	 * If we're removing a non-0 function, it's possible we could
+-	 * retain the link state, but PCIe r6.0, sec 7.5.3.7, recommends
+-	 * programming the same ASPM Control value for all functions of
+-	 * multi-function devices, so disable ASPM for all of them.
++	 * Do not free the link state any earlier. If function 0 is a
++	 * switch upstream port, this link state is parent_link to all
++	 * subordinate ones.
+ 	 */
++	if (pdev != link->downstream)
 +		goto out;
-+	iter = rcu_dereference(fn->leaf);
-+	if (!iter)
-+		goto out;
 +
-+	while (iter) {
-+		if (iter->fib6_metric == rt->fib6_metric &&
-+		    rt6_qualify_for_ecmp(iter))
-+			return iter;
-+		iter = rcu_dereference(iter->fib6_next);
-+	}
-+
-+out:
-+	return NULL;
-+}
-+
- void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		      struct flowi6 *fl6, int oif, bool have_oif_match,
- 		      const struct sk_buff *skb, int strict)
- {
--	struct fib6_info *match = res->f6i;
-+	struct fib6_info *first, *match = res->f6i;
- 	struct fib6_info *sibling;
- 
- 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
-@@ -440,10 +464,18 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		return;
+ 	pcie_config_aspm_link(link, 0);
+ 	list_del(&link->sibling);
+ 	free_link_state(link);
+@@ -1034,6 +1034,7 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 		pcie_config_aspm_path(parent_link);
  	}
  
--	if (fl6->mp_hash <= atomic_read(&match->fib6_nh->fib_nh_upper_bound))
-+	first = rt6_multipath_first_sibling_rcu(match);
-+	if (!first)
- 		goto out;
- 
--	list_for_each_entry_rcu(sibling, &match->fib6_siblings,
-+	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
-+	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
-+			    strict) >= 0) {
-+		match = first;
-+		goto out;
-+	}
-+
-+	list_for_each_entry_rcu(sibling, &first->fib6_siblings,
- 				fib6_siblings) {
- 		const struct fib6_nh *nh = sibling->fib6_nh;
- 		int nh_upper_bound;
++ out:
+ 	mutex_unlock(&aspm_lock);
+ 	up_read(&pci_bus_sem);
+ }
 -- 
 2.39.5
 
