@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6D5A7FE67
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C58A80181
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0BF4231A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3E74168482
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A680268C44;
-	Tue,  8 Apr 2025 11:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546D7269AED;
+	Tue,  8 Apr 2025 11:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH2jPabi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSQKWLXd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2743A268688;
-	Tue,  8 Apr 2025 11:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11078269AF4;
+	Tue,  8 Apr 2025 11:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110041; cv=none; b=TL9c6KJ6bzz4uD7Nt5FEwEM1CNqJJFSkfIT0Vd7YPFQl3UqV2T2U5exINFr6g44I49dvnxTanGEVFtIKe/7ghgK8CCdWSR2ueYeZ2jOknzt12HOAvoO6tmHazRmsgx7Eo3rX5/iilY9NZq9VBy0LoAup9Jin9fnIzo5QeOQCXnI=
+	t=1744111973; cv=none; b=PCSSXql+/V1Th1HhzEEQkxt06et1kcfih66bgCsj1Merz5rlEJ0vtuEQFJljh7X36hlChTaPiy3oeVnJN+6FPPUzHK4HrUyegDxwCoTIZjHqmwkiKfAeBdUkX7qsEs7Jay+1PfOarSknTI6YtMxjGQdKtW5dUGxnmua4p1irfZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110041; c=relaxed/simple;
-	bh=S9/iQ36sJG/0r3epafB1ISRKLiEywe5vtSzoqfSvDvQ=;
+	s=arc-20240116; t=1744111973; c=relaxed/simple;
+	bh=QCEhF7gYV/DdAZW8HsSrUrG4KPQ/9WmOjGmW/CkZ07Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHHBuOoKXwRHArcDXp+5FV93AOSU41twmcvT9ztLhVawLcr1Wx8pqgxa8kWqUyKLkdgQsvy2Z9QYNj+4Em095553OnSio4zde13gI4zUjIbmkf1xJEyh4L5lM4DVyKTUFSLAHgAPVZtbGNjpWNFqmQaWCiOm1WnAL8NUvFjLz24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH2jPabi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB31AC4CEE5;
-	Tue,  8 Apr 2025 11:00:40 +0000 (UTC)
+	 MIME-Version; b=evG4ymxA8sJmvQWLOGhRxmc1dFNMA5X9c+EdK+KBQJxrCmVe9/9CygDhe+oVLSmHcd47hFqkCAclzBOX8Lv0HkuoQACERH8Xmf8WDUYK8gMxt7PaaTqPVLQtTqqj9JSMriOrS8M1CHtVfgUpoZRzK0Nx57Zz7oGXuYfPq6KdEeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSQKWLXd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B68C4CEE5;
+	Tue,  8 Apr 2025 11:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110041;
-	bh=S9/iQ36sJG/0r3epafB1ISRKLiEywe5vtSzoqfSvDvQ=;
+	s=korg; t=1744111972;
+	bh=QCEhF7gYV/DdAZW8HsSrUrG4KPQ/9WmOjGmW/CkZ07Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mH2jPabih96MANtxZmo2gWzOa4AFNgmwAstd6xr7gFpPL6/z8xZqdhTY4/xMEahGE
-	 YdBSG5ExX2TYuvZUTB5NyfTJK+voWbRMijGVt/Nn9AaPd9gfcF/mDQwT9gqS5S4Wha
-	 sYBEGQGQMpjqr6XYyhCQx9ZUdlt+4zN/YoEz1UIk=
+	b=FSQKWLXd4gbRT3BmFry8DBhk8MSrGOuxo5804oaj12vmhJtDPfcNvm6RsiYm3t6oe
+	 JLG5ts5ylmB/D81z+iLmr7qlhNICfkdAe3j5W9q3RgyO94qArKJjqmQEiIKt+4OCV6
+	 wBtuNnRR71CE9QKii/5WekyASxYEBb7u7IBWPeJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will McVicker <willmcvicker@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/227] clk: samsung: Fix UBSAN panic in samsung_clk_init()
+Subject: [PATCH 6.14 627/731] udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
 Date: Tue,  8 Apr 2025 12:48:44 +0200
-Message-ID: <20250408104824.691299856@linuxfoundation.org>
+Message-ID: <20250408104928.857526755@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will McVicker <willmcvicker@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d19d7345a7bcdb083b65568a11b11adffe0687af ]
+[ Upstream commit 5a465a0da13ee9fbd7d3cd0b2893309b0fe4b7e3 ]
 
-With UBSAN_ARRAY_BOUNDS=y, I'm hitting the below panic due to
-dereferencing `ctx->clk_data.hws` before setting
-`ctx->clk_data.num = nr_clks`. Move that up to fix the crash.
+__udp_enqueue_schedule_skb() has the following condition:
 
-  UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
-  <snip>
-  Call trace:
-   samsung_clk_init+0x110/0x124 (P)
-   samsung_clk_init+0x48/0x124 (L)
-   samsung_cmu_register_one+0x3c/0xa0
-   exynos_arm64_register_cmu+0x54/0x64
-   __gs101_cmu_top_of_clk_init_declare+0x28/0x60
-   ...
+  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+          goto drop;
 
-Fixes: e620a1e061c4 ("drivers/clk: convert VL struct to struct_size")
-Signed-off-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20250212183253.509771-1-willmcvicker@google.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+sk->sk_rcvbuf is initialised by net.core.rmem_default and later can
+be configured by SO_RCVBUF, which is limited by net.core.rmem_max,
+or SO_RCVBUFFORCE.
+
+If we set INT_MAX to sk->sk_rcvbuf, the condition is always false
+as sk->sk_rmem_alloc is also signed int.
+
+Then, the size of the incoming skb is added to sk->sk_rmem_alloc
+unconditionally.
+
+This results in integer overflow (possibly multiple times) on
+sk->sk_rmem_alloc and allows a single socket to have skb up to
+net.core.udp_mem[1].
+
+For example, if we set a large value to udp_mem[1] and INT_MAX to
+sk->sk_rcvbuf and flood packets to the socket, we can see multiple
+overflows:
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 7956736  <-- (7956736 << 12) bytes > INT_MAX * 15
+                                             ^- PAGE_SHIFT
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -1757018048 ...    <-- flipping the sign repeatedly
+         skmem:(r2537949248,rb2147483646,t0,tb212992,f1984,w0,o0,bl0,d0)
+
+Previously, we had a boundary check for INT_MAX, which was removed by
+commit 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc").
+
+A complete fix would be to revert it and cap the right operand by
+INT_MAX:
+
+  rmem = atomic_add_return(size, &sk->sk_rmem_alloc);
+  if (rmem > min(size + (unsigned int)sk->sk_rcvbuf, INT_MAX))
+          goto uncharge_drop;
+
+but we do not want to add the expensive atomic_add_return() back just
+for the corner case.
+
+Casting rmem to unsigned int prevents multiple wraparounds, but we still
+allow a single wraparound.
+
+  # cat /proc/net/sockstat | grep UDP:
+  UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> 12
+
+  # ss -uam
+  State  Recv-Q      ...
+  UNCONN -2147482816 ...   <-- INT_MAX + 831 bytes
+         skmem:(r2147484480,rb2147483646,t0,tb212992,f3264,w0,o0,bl0,d14468947)
+
+So, let's define rmem and rcvbuf as unsigned int and check skb->truesize
+only when rcvbuf is large enough to lower the overflow possibility.
+
+Note that we still have a small chance to see overflow if multiple skbs
+to the same socket are processed on different core at the same time and
+each size does not exceed the limit but the total size does.
+
+Note also that we must ignore skb->truesize for a small buffer as
+explained in commit 363dc73acacb ("udp: be less conservative with
+sock rmem accounting").
+
+Fixes: 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250401184501.67377-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/udp.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk.c b/drivers/clk/samsung/clk.c
-index 1949ae7851b2e..0468ce5506aef 100644
---- a/drivers/clk/samsung/clk.c
-+++ b/drivers/clk/samsung/clk.c
-@@ -64,11 +64,11 @@ struct samsung_clk_provider *__init samsung_clk_init(struct device_node *np,
- 	if (!ctx)
- 		panic("could not allocate clock provider context.\n");
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index a9bb9ce5438ea..31f7bfec23590 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1726,17 +1726,25 @@ static int udp_rmem_schedule(struct sock *sk, int size)
+ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct sk_buff_head *list = &sk->sk_receive_queue;
+-	int rmem, err = -ENOMEM;
++	unsigned int rmem, rcvbuf;
+ 	spinlock_t *busy = NULL;
+-	int size, rcvbuf;
++	int size, err = -ENOMEM;
  
-+	ctx->clk_data.num = nr_clks;
- 	for (i = 0; i < nr_clks; ++i)
- 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
+-	/* Immediately drop when the receive queue is full.
+-	 * Always allow at least one packet.
+-	 */
+ 	rmem = atomic_read(&sk->sk_rmem_alloc);
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+-	if (rmem > rcvbuf)
+-		goto drop;
++	size = skb->truesize;
++
++	/* Immediately drop when the receive queue is full.
++	 * Cast to unsigned int performs the boundary check for INT_MAX.
++	 */
++	if (rmem + size > rcvbuf) {
++		if (rcvbuf > INT_MAX >> 1)
++			goto drop;
++
++		/* Always allow at least one packet for small buffer. */
++		if (rmem > rcvbuf)
++			goto drop;
++	}
  
- 	ctx->reg_base = base;
--	ctx->clk_data.num = nr_clks;
- 	spin_lock_init(&ctx->lock);
+ 	/* Under mem pressure, it might be helpful to help udp_recvmsg()
+ 	 * having linear skbs :
+@@ -1746,10 +1754,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 	if (rmem > (rcvbuf >> 1)) {
+ 		skb_condense(skb);
+-
++		size = skb->truesize;
+ 		busy = busylock_acquire(sk);
+ 	}
+-	size = skb->truesize;
++
+ 	udp_set_dev_scratch(skb);
  
- 	return ctx;
+ 	atomic_add(size, &sk->sk_rmem_alloc);
 -- 
 2.39.5
 
