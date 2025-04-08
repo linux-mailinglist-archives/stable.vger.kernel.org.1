@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A674A80109
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DB9A8025B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B4847A82DD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAD21893267
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1CD2676DE;
-	Tue,  8 Apr 2025 11:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4666263C6D;
+	Tue,  8 Apr 2025 11:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCQ9oeKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWy8+xAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B77926658B;
-	Tue,  8 Apr 2025 11:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9193619AD5C;
+	Tue,  8 Apr 2025 11:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112005; cv=none; b=YjbRMUrcM2GewhfcMeUO9ejOze+aqIvciFE+i1cN0MTuGKbdCgBVFdg1Z2diM8Mqzp++u+BIzcdJs9xpkYvqH4AjWOHt/7qelzy97+vOiNSBmp/5QWz4jp4WEnz13uO//5+7YF+Rw+T0gQwfmwS7XV+foHhGzyBF6qQpGqkw96E=
+	t=1744112567; cv=none; b=D2L07bn4tC1RZDuU4JMIqFGnHU1A12Fc/U/HzNGu4BGNHsI9a8Wf4WstDsw/8UCv1xwHRQwYFi5pbRDatHlF3YivLBUUYNedPYs66yTqO9Q04PV8ESgh55GSg0Zk6mWwyOcHkP25uuVQfDrwb/YpeEZvZMY/H5SIR+4GF5T727w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112005; c=relaxed/simple;
-	bh=hRJ7WE9per4BhrkMe2NPFKEGH4WQkTDIhXKUcKH/PXc=;
+	s=arc-20240116; t=1744112567; c=relaxed/simple;
+	bh=VFVhapmxzQvrCoLO0hdE/VQeMCKeSX7BPC54yUVRJIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GoHf/gW6nOkEwxMkBwLLVX4XtuyWwLdoflM2tsBKWNct1e9BfnkIa2Xgi3X/R7osgSHAu/FIy7b249/pFzhru+9VuJ15qyT4HU8iPECms7o+GB2sGH8VT8D7rDbnebHzByGnm8jXeZ/H2u4oEKTLg48nHvMO1MpBNjmQhhM28c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCQ9oeKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB059C4CEE5;
-	Tue,  8 Apr 2025 11:33:24 +0000 (UTC)
+	 MIME-Version; b=cygNRC/mLssxhdutCM5jCT0l+rk/Ysff4okYLyu7YWMn1e8YeqIqgw6xnF59ZkRPRo7q3OSOFpjbihgeydvCbsjd/mUb4A9/tzjiGDnmaorE8Gygmh/nUz4qyeIK5azPhyryS8teQMWtO4s6k++kFBW4brzx0U97xh90BzWPptg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWy8+xAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B97CC4CEE7;
+	Tue,  8 Apr 2025 11:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112005;
-	bh=hRJ7WE9per4BhrkMe2NPFKEGH4WQkTDIhXKUcKH/PXc=;
+	s=korg; t=1744112567;
+	bh=VFVhapmxzQvrCoLO0hdE/VQeMCKeSX7BPC54yUVRJIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCQ9oeKqXtMFNmjuwenb7WXKRcMtOBLoLfP/8UuSZv4MC+yX2XnCGnwjvgKNSGyl8
-	 HxAb2WNZgzjk+QV/7/nmK0ey3HtepBPm8rStNKz7pZ2cVE8S8/dbHkR2f+3E2LwR+Q
-	 Wuon6MKYY2fQscZjkPoF+NNGZgFX/1eYFYthJWBI=
+	b=QWy8+xAPMJt4zmsyMnNJ5prqscZ8Va0ZExByQ7CNsNsze3z2OBVqWV8l/WZnqHPBk
+	 +f9wNjmg0IfoRC0hPxuCvxW6eVwfjENjEF7JJ8LnnhPP8gKhZjdcIgtUIQ2fnmBK+n
+	 DPQvI3xO4GlUkcNPlQpcWrhs4UeVkVtBbUcaxN6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 601/731] spi: cadence: Fix out-of-bounds array access in cdns_mrvl_xspi_setup_clock()
+	Yanjun Yang <yangyj.ee@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 5.15 115/279] ARM: Remove address checking for MMUless devices
 Date: Tue,  8 Apr 2025 12:48:18 +0200
-Message-ID: <20250408104928.252201645@linuxfoundation.org>
+Message-ID: <20250408104829.451064332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Yanjun Yang <yangyj.ee@gmail.com>
 
-[ Upstream commit 7ba0847fa1c22e7801cebfe5f7b75aee4fae317e ]
+commit 3ccea4784fddd96fbd6c4497eb28b45dab638c2a upstream.
 
-If requested_clk > 128, cdns_mrvl_xspi_setup_clock() iterates over the
-entire cdns_mrvl_xspi_clk_div_list array without breaking out early,
-causing 'i' to go beyond the array bounds.
+Commit 169f9102f9198b ("ARM: 9350/1: fault: Implement
+copy_from_kernel_nofault_allowed()") added the function to check address
+before use. However, for devices without MMU, addr > TASK_SIZE will
+always fail.  This patch move this function after the #ifdef CONFIG_MMU
+statement.
 
-Fix that by stopping the loop when it gets to the last entry, clamping
-the clock to the minimum 6.25 MHz.
-
-Fixes the following warning with an UBSAN kernel:
-
-  vmlinux.o: warning: objtool: cdns_mrvl_xspi_setup_clock: unexpected end of section .text.cdns_mrvl_xspi_setup_clock
-
-Fixes: 26d34fdc4971 ("spi: cadence: Add clock configuration for Marvell xSPI overlay")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503282236.UhfRsF3B-lkp@intel.com/
-Link: https://lore.kernel.org/r/gs2ooxfkblnee6cc5yfcxh7nu4wvoqnuv4lrllkhccxgcac2jg@7snmwd73jkhs
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://patch.msgid.link/h6bef6wof6zpjfp3jbhrkigqsnykdfy6j4qmmvb6gsabhianhj@k57a7hwpa3bj
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yanjun Yang <yangyj.ee@gmail.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218953
+Fixes: 169f9102f9198b ("ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()")
+Link: https://lore.kernel.org/r/20240611100947.32241-1-yangyj.ee@gmail.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-xspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/fault.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index aed98ab143346..6dcba0e0ddaa3 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -432,7 +432,7 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
- 	u32 clk_reg;
- 	bool update_clk = false;
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -24,6 +24,8 @@
  
--	while (i < ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list)) {
-+	while (i < (ARRAY_SIZE(cdns_mrvl_xspi_clk_div_list) - 1)) {
- 		clk_val = MRVL_XSPI_CLOCK_DIVIDED(
- 				cdns_mrvl_xspi_clk_div_list[i]);
- 		if (clk_val <= requested_clk)
--- 
-2.39.5
-
+ #include "fault.h"
+ 
++#ifdef CONFIG_MMU
++
+ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ {
+ 	unsigned long addr = (unsigned long)unsafe_src;
+@@ -31,8 +33,6 @@ bool copy_from_kernel_nofault_allowed(co
+ 	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
+ }
+ 
+-#ifdef CONFIG_MMU
+-
+ /*
+  * This is useful to dump out the page tables associated with
+  * 'addr' in mm 'mm'.
 
 
 
