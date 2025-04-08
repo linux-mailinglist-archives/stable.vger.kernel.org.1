@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A147CA80422
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77D5A8074A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 446AB3B60A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB0C3B86C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3163F268FED;
-	Tue,  8 Apr 2025 11:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8307126B09F;
+	Tue,  8 Apr 2025 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHhYy/zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxgIdpsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE5E20CCD8;
-	Tue,  8 Apr 2025 11:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC8F268C6B;
+	Tue,  8 Apr 2025 12:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113415; cv=none; b=m8huiXWILeXA3KkNxfvixVqIe/ZhNuPxuDnaiYcBLIoPWfoJpRXS4Xa3KC78mnOuiF9dHb6N9M3l/1qCjWvr9DRZ9FqAQpBHIXJP499l12UKMKpnE+dR3yGApqrGUTHa/qB0kfa/Nm4c7QHlHzgt+hrj5lLkTDJ0JlVZnAqEUX4=
+	t=1744115092; cv=none; b=JFrSyALBmY503JmQr3KjoiUiJY0/JLM6OCGKFyl3BnG4xV7O2hePcn0QStzPN3L2+GaLXQuPy5posp4vZTBuOp3othgRhVW5hKzECEYdD2wa/4wyuO7FzcQTeiDZjT7voydHC5he1zHjxLQibbppqMlYdL0nNeUTJEriMUq2RDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113415; c=relaxed/simple;
-	bh=2waRrnuq9mHTv6TPu/2Rt1lA0XR/I7OfoFp1817HpdQ=;
+	s=arc-20240116; t=1744115092; c=relaxed/simple;
+	bh=Sebjcgkh4Rzktdkk09eef7ayMUZLBgWPy12M5/mUzEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vABu/v/vrbfGfIn62QRCLhiGOP37tFF+jrP18YDEjaPzStkJ1/xGCGp9nACn9f+IdCQW0dtaW6Iy/8LBxL/6aTdV1AKDPTAUxymEsJrXzpPDoGCtQVIMhhMLmRZbur7hU3xCf/R7BdnUKehsauwNxi9ob1VTQHQU2OlVAifg9K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHhYy/zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8702C4CEE5;
-	Tue,  8 Apr 2025 11:56:53 +0000 (UTC)
+	 MIME-Version; b=d01qwWhp7cthBGIfDswoDxncxd7fI3q4jwhSJk42YG+4QlRIRk1CFOOLlnNwq3jm3Vag7+W4KLEOE2Ol97k7BvxXeY4j5Ozart7Jy34xyQkw3ho81N6G49WceBgv35VixXhVquzJ4lzX3+1byU23RrhL11LUQGfBVpMUezs4xqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxgIdpsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5765EC4CEEA;
+	Tue,  8 Apr 2025 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113414;
-	bh=2waRrnuq9mHTv6TPu/2Rt1lA0XR/I7OfoFp1817HpdQ=;
+	s=korg; t=1744115091;
+	bh=Sebjcgkh4Rzktdkk09eef7ayMUZLBgWPy12M5/mUzEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHhYy/zZidS3BebPD9zVKK6KJN9hXyQj81IipUcprjDDG6FlWuBIUaUoiHwvBTibw
-	 lNckkzNurlIQ8HIjRyPiHpf6/ds+1p7LFvVyNCIrfcG/XeaofiyBfPaAQLUXQ6gYk+
-	 wEtlQ3fPJZQ17P7WSotxxU5v2eljaWK/RxicXfcM=
+	b=QxgIdpsGEt17XH8OuiaUnMr2bQlosjfiAllk2bpz44kORtf26Hclyyox6AHn9rEpX
+	 JVVTjKsjH9yuhNS2CY282jsG1diwedBJbBWeJFHDpE0X94i8ngZns6V103BdqL/Z7D
+	 lT6WUsO7ZdVJ7/Pn1FMjbQCNrnDU/u+63Ceszfc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/268] ksmbd: fix multichannel connection failure
+Subject: [PATCH 6.13 347/499] can: statistics: use atomic access in hot path
 Date: Tue,  8 Apr 2025 12:49:19 +0200
-Message-ID: <20250408104832.525505144@linuxfoundation.org>
+Message-ID: <20250408104859.878999811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +64,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit c1883049aa9b2b7dffd3a68c5fc67fa92c174bd9 ]
+[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
 
-ksmbd check that the session of second channel is in the session list of
-first connection. If it is in session list, multichannel connection
-should not be allowed.
+In can_send() and can_receive() CAN messages and CAN filter matches are
+counted to be visible in the CAN procfs files.
 
-Fixes: b95629435b84 ("ksmbd: fix racy issue from session lookup and expire")
-Reported-by: Sean Heelan <seanheelan@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+KCSAN detected a data race within can_send() when two CAN frames have
+been generated by a timer event writing to the same CAN netdevice at the
+same time. Use atomic operations to access the statistics in the hot path
+to fix the KCSAN complaint.
+
+Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 16 ++++++++++++++++
- fs/smb/server/mgmt/user_session.h |  2 ++
- fs/smb/server/smb2pdu.c           | 12 ++++--------
- 3 files changed, 22 insertions(+), 8 deletions(-)
+ net/can/af_can.c | 12 ++++++------
+ net/can/af_can.h | 12 ++++++------
+ net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
+ 3 files changed, 39 insertions(+), 31 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 9a134181df61f..1ea219cbb4a18 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -255,6 +255,22 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
- 	up_write(&sessions_table_lock);
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 01f3fbb3b67dc..65230e81fa08c 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
+ 		netif_rx(newskb);
+ 
+ 	/* update statistics */
+-	pkg_stats->tx_frames++;
+-	pkg_stats->tx_frames_delta++;
++	atomic_long_inc(&pkg_stats->tx_frames);
++	atomic_long_inc(&pkg_stats->tx_frames_delta);
+ 
+ 	return 0;
+ 
+@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	int matches;
+ 
+ 	/* update statistics */
+-	pkg_stats->rx_frames++;
+-	pkg_stats->rx_frames_delta++;
++	atomic_long_inc(&pkg_stats->rx_frames);
++	atomic_long_inc(&pkg_stats->rx_frames_delta);
+ 
+ 	/* create non-zero unique skb identifier together with *skb */
+ 	while (!(can_skb_prv(skb)->skbcnt))
+@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	consume_skb(skb);
+ 
+ 	if (matches > 0) {
+-		pkg_stats->matches++;
+-		pkg_stats->matches_delta++;
++		atomic_long_inc(&pkg_stats->matches);
++		atomic_long_inc(&pkg_stats->matches_delta);
+ 	}
  }
  
-+bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
-+				   unsigned long long id)
-+{
-+	struct ksmbd_session *sess;
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 7c2d9161e2245..22f3352c77fec 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -66,9 +66,9 @@ struct receiver {
+ struct can_pkg_stats {
+ 	unsigned long jiffies_init;
+ 
+-	unsigned long rx_frames;
+-	unsigned long tx_frames;
+-	unsigned long matches;
++	atomic_long_t rx_frames;
++	atomic_long_t tx_frames;
++	atomic_long_t matches;
+ 
+ 	unsigned long total_rx_rate;
+ 	unsigned long total_tx_rate;
+@@ -82,9 +82,9 @@ struct can_pkg_stats {
+ 	unsigned long max_tx_rate;
+ 	unsigned long max_rx_match_ratio;
+ 
+-	unsigned long rx_frames_delta;
+-	unsigned long tx_frames_delta;
+-	unsigned long matches_delta;
++	atomic_long_t rx_frames_delta;
++	atomic_long_t tx_frames_delta;
++	atomic_long_t matches_delta;
+ };
+ 
+ /* persistent statistics */
+diff --git a/net/can/proc.c b/net/can/proc.c
+index bbce97825f13f..25fdf060e30d0 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	unsigned long j = jiffies; /* snapshot */
+ 
++	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
++	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
++	long matches = atomic_long_read(&pkg_stats->matches);
++	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
++	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
++	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
 +
-+	down_read(&conn->session_lock);
-+	sess = xa_load(&conn->sessions, id);
-+	if (sess) {
-+		up_read(&conn->session_lock);
-+		return true;
-+	}
-+	up_read(&conn->session_lock);
-+
-+	return false;
-+}
-+
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- 					   unsigned long long id)
- {
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index c1c4b20bd5c6c..f21348381d598 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -87,6 +87,8 @@ void ksmbd_session_destroy(struct ksmbd_session *sess);
- struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id);
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- 					   unsigned long long id);
-+bool is_ksmbd_session_in_connection(struct ksmbd_conn *conn,
-+				     unsigned long long id);
- int ksmbd_session_register(struct ksmbd_conn *conn,
- 			   struct ksmbd_session *sess);
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn);
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 58e5cc2b1f3e1..2030052421881 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1707,44 +1707,38 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 	/* restart counting in timer context on user request */
+ 	if (user_reset)
+ 		can_init_stats(net);
+@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
+ 		can_init_stats(net);
  
- 		if (conn->dialect != sess->dialect) {
- 			rc = -EINVAL;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
++	if (rx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
  
- 		if (!(req->hdr.Flags & SMB2_FLAGS_SIGNED)) {
- 			rc = -EINVAL;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
++	if (tx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
  
- 		if (strncmp(conn->ClientGUID, sess->ClientGUID,
- 			    SMB2_CLIENT_GUID_SIZE)) {
- 			rc = -ENOENT;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
+ 	/* matches overflow - very improbable */
+-	if (pkg_stats->matches > (ULONG_MAX / 100))
++	if (matches > (LONG_MAX / 100))
+ 		can_init_stats(net);
  
- 		if (sess->state == SMB2_SESSION_IN_PROGRESS) {
- 			rc = -EACCES;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
+ 	/* calc total values */
+-	if (pkg_stats->rx_frames)
+-		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
+-			pkg_stats->rx_frames;
++	if (rx_frames)
++		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
  
- 		if (sess->state == SMB2_SESSION_EXPIRED) {
- 			rc = -EFAULT;
--			ksmbd_user_session_put(sess);
- 			goto out_err;
- 		}
--		ksmbd_user_session_put(sess);
+ 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->tx_frames);
++					    tx_frames);
+ 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->rx_frames);
++					    rx_frames);
  
- 		if (ksmbd_conn_need_reconnect(conn)) {
- 			rc = -EFAULT;
-+			ksmbd_user_session_put(sess);
- 			sess = NULL;
- 			goto out_err;
- 		}
+ 	/* calc current values */
+-	if (pkg_stats->rx_frames_delta)
++	if (rx_frames_delta)
+ 		pkg_stats->current_rx_match_ratio =
+-			(pkg_stats->matches_delta * 100) /
+-			pkg_stats->rx_frames_delta;
++			(matches_delta * 100) /	rx_frames_delta;
  
--		sess = ksmbd_session_lookup(conn, sess_id);
--		if (!sess) {
-+		if (is_ksmbd_session_in_connection(conn, sess_id)) {
- 			rc = -EACCES;
- 			goto out_err;
- 		}
-@@ -1910,6 +1904,8 @@ int smb2_sess_setup(struct ksmbd_work *work)
+-	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
+-	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
++	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
++	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
  
- 			sess->last_active = jiffies;
- 			sess->state = SMB2_SESSION_EXPIRED;
-+			ksmbd_user_session_put(sess);
-+			work->sess = NULL;
- 			if (try_delay) {
- 				ksmbd_conn_set_need_reconnect(conn);
- 				ssleep(5);
+ 	/* check / update maximum values */
+ 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
+@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
+ 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
+ 
+ 	/* clear values for 'current rate' calculation */
+-	pkg_stats->tx_frames_delta = 0;
+-	pkg_stats->rx_frames_delta = 0;
+-	pkg_stats->matches_delta   = 0;
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
+ 
+ 	/* restart timer (one second) */
+ 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
+@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+ 
+ 	seq_putc(m, '\n');
+-	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
+-	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
+-	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
++	seq_printf(m, " %8ld transmitted frames (TXF)\n",
++		   atomic_long_read(&pkg_stats->tx_frames));
++	seq_printf(m, " %8ld received frames (RXF)\n",
++		   atomic_long_read(&pkg_stats->rx_frames));
++	seq_printf(m, " %8ld matched frames (RXMF)\n",
++		   atomic_long_read(&pkg_stats->matches));
+ 
+ 	seq_putc(m, '\n');
+ 
 -- 
 2.39.5
 
