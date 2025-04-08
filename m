@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E758A80713
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CF1A809FD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 146498A37D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A5C4C4C8F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2151F26A1DE;
-	Tue,  8 Apr 2025 12:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B2A26AA9C;
+	Tue,  8 Apr 2025 12:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEe07etY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXvYnYFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5E267F57;
-	Tue,  8 Apr 2025 12:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367A619DF6A;
+	Tue,  8 Apr 2025 12:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114826; cv=none; b=BlV5B/zWkNwawda9dnvzPvXn3fYgy3DdNdJvCg4BCE4Iz0+xBYbE6Nf3qy0BiEo+dZNZfKerywAXkIk1PDs0AunKiJ4jjqpAygpYg2fgnujwopVFLcIL6/cOQD6/o5QgBf2vg1CPLR4NUff7N0PXxyEuiwCxSsV2fdxofZE1hrg=
+	t=1744116429; cv=none; b=HeVii9ku04b7Os/wSCk4yToC9ugOMxfTfF9pP6noEbhZTlgcCgkAucsCFh2dJETLf9hWmFtdvO/izLnOjAG6YH6xibmluGEb8ySCH/JhkO45GqRzoPvxPeJF7YwQSZ7LsZ5VGI6a6jo3T7hfHU5cvXYqj/TBnwPBrpSZs0pwUuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114826; c=relaxed/simple;
-	bh=YJxLmvq/sH6HBWcqo4Fm6FCAcGtqBgh3Rqdm9IQA8u8=;
+	s=arc-20240116; t=1744116429; c=relaxed/simple;
+	bh=swM/9pcyHHgH6r0IzI42yNzmoVrE4WW7BLnSN2yaqz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLx9r5M6BxfhI1sOo7/dj+I2AURPV0c6vDmD8Iw0HbOtvaOaTJjgVLoL2IE8vQ8pXQNePmVm8EMi3FQbEvrf6gBGOQU4hfNKfoB3awD/IpODILeBqxpqy5CwkcpITwpKlYwCOy91ss5tJnXVZwRhOT7mn/bS/oQhTflt1hECKWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEe07etY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B15C4CEE7;
-	Tue,  8 Apr 2025 12:20:26 +0000 (UTC)
+	 MIME-Version; b=EQk9JwKLSVYBUWt+1jFIzO//N0p8YsndoWkgr6oJ52GsA0r00OnCFy4cKae9I1uIhW+NaWSRts+/FbThoLYxKAeBlDdtnrP/I9K6uye5gDhZd1DP7An0O29hcTnKXX48Zx+9ItJVIv3ov2N91ASnU8nRET7E1cp4f5fD3RUx9Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXvYnYFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7A3C4CEE5;
+	Tue,  8 Apr 2025 12:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114826;
-	bh=YJxLmvq/sH6HBWcqo4Fm6FCAcGtqBgh3Rqdm9IQA8u8=;
+	s=korg; t=1744116429;
+	bh=swM/9pcyHHgH6r0IzI42yNzmoVrE4WW7BLnSN2yaqz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEe07etYw1/mK6mXr2MbPWVEvVd8SvegNN1KavoFDJ3BvFelz9Oydlr5VejzJz+Zs
-	 cM9Z2XyS2hBsY+CNkfj0KfH2T8txNSiPAiY2IvL1Bjk8j3x13mGimEQ/GYRxRxJVBe
-	 LQxlFkB2lzOLNB7+Fv1/i2brC4L2aMTX8CUtMjGo=
+	b=nXvYnYFJ9wnzT+X6RRwhVpsK/AH8JggHEWSNlRtpQvl0oN9RIKKvs4RTpzoXFP6i8
+	 zb26DFnJG/jtRypUm+zO0bhq8OUvLqYAHAIqD1lxBpmD2qoHi3WTHxb4m0a2MoXZbN
+	 XL5bVoY6zZfnL9eLof6vjH6GMveGdP2l6xMi2Utk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Bairavi Alagappan <bairavix.alagappan@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 212/499] perf report: Switch data file correctly in TUI
+Subject: [PATCH 6.12 098/423] crypto: qat - set parity error mask for qat_420xx
 Date: Tue,  8 Apr 2025 12:47:04 +0200
-Message-ID: <20250408104856.495410043@linuxfoundation.org>
+Message-ID: <20250408104848.020119921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Bairavi Alagappan <bairavix.alagappan@intel.com>
 
-[ Upstream commit 43c2b6139b188d8a756130147f7efd5ddf99f88d ]
+[ Upstream commit f9555d18084985c80a91baa4fdb7d205b401a754 ]
 
-The 's' key is to switch to a new data file and load the data in the
-same window.  The switch_data_file() will show a popup menu to select
-which data file user wants and update the 'input_name' global variable.
+The field parerr_wat_wcp_mask in the structure adf_dev_err_mask enables
+the detection and reporting of parity errors for the wireless cipher and
+wireless authentication accelerators.
 
-But in the cmd_report(), it didn't update the data.path using the new
-'input_name' and keep usng the old file.  This is fairly an old bug and
-I assume people don't use this feature much. :)
+Set the parerr_wat_wcp_mask field, which was inadvertently omitted
+during the initial enablement of the qat_420xx driver, to ensure that
+parity errors are enabled for those accelerators.
 
-Link: https://lore.kernel.org/r/20250211060745.294289-1-namhyung@kernel.org
-Closes: https://lore.kernel.org/linux-perf-users/89e678bc-f0af-4929-a8a6-a2666f1294a4@linaro.org
-Fixes: f5fc14124c5cefdd ("perf tools: Add data object to handle perf data file")
-Reported-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+In addition, fix the string used to report such errors that was
+inadvertently set to "ath_cph" (authentication and cipher).
+
+Fixes: fcf60f4bcf54 ("crypto: qat - add support for 420xx devices")
+Signed-off-by: Bairavi Alagappan <bairavix.alagappan@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-report.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c | 1 +
+ drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c     | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index a5672749f7819..a35f754f05a12 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -1555,12 +1555,12 @@ int cmd_report(int argc, const char **argv)
- 			input_name = "perf.data";
- 	}
+diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
+index 9faef33e54bd3..a17adc4beda2e 100644
+--- a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
+@@ -420,6 +420,7 @@ static void adf_gen4_set_err_mask(struct adf_dev_err_mask *dev_err_mask)
+ 	dev_err_mask->parerr_cpr_xlt_mask = ADF_420XX_PARITYERRORMASK_CPR_XLT_MASK;
+ 	dev_err_mask->parerr_dcpr_ucs_mask = ADF_420XX_PARITYERRORMASK_DCPR_UCS_MASK;
+ 	dev_err_mask->parerr_pke_mask = ADF_420XX_PARITYERRORMASK_PKE_MASK;
++	dev_err_mask->parerr_wat_wcp_mask = ADF_420XX_PARITYERRORMASK_WAT_WCP_MASK;
+ 	dev_err_mask->ssmfeatren_mask = ADF_420XX_SSMFEATREN_MASK;
+ }
  
-+repeat:
- 	data.path  = input_name;
- 	data.force = symbol_conf.force;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
+index 2dd3772bf58a6..bf0ea09faa650 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
+@@ -695,7 +695,7 @@ static bool adf_handle_slice_hang_error(struct adf_accel_dev *accel_dev,
+ 	if (err_mask->parerr_wat_wcp_mask)
+ 		adf_poll_slicehang_csr(accel_dev, csr,
+ 				       ADF_GEN4_SLICEHANGSTATUS_WAT_WCP,
+-				       "ath_cph");
++				       "wat_wcp");
  
- 	symbol_conf.skip_empty = report.skip_empty;
- 
--repeat:
- 	perf_tool__init(&report.tool, ordered_events);
- 	report.tool.sample		 = process_sample_event;
- 	report.tool.mmap		 = perf_event__process_mmap;
+ 	return false;
+ }
 -- 
 2.39.5
 
