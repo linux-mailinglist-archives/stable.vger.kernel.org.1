@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21112A80B3B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF660A803F0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE555903726
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E415F3B455D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C3326A1BE;
-	Tue,  8 Apr 2025 12:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1EC269AE8;
+	Tue,  8 Apr 2025 11:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjAG1uNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7hxp1m8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48B126A09F;
-	Tue,  8 Apr 2025 12:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0917A22257E;
+	Tue,  8 Apr 2025 11:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116656; cv=none; b=M8DDZfy3QtofC0QVQ2HQmLhgX1fiJZrYfigEBbMBoPqsgVMmSasCQy6xXNEikC0ukhb+FvaMeZN464671rAhqB0dQwQdgqViCUPOA/DabcgCqU8occieHdPyrVtoLURAt9ubXAIs7wL4N5tGFNbGy/jOtGYnnJN5G52ra7lSujU=
+	t=1744113271; cv=none; b=m09Wm87xP+TgyLRLZFMMlXgfEfXdteoyD0O0joGIcvVsdGTg3iaoEdl4mNzXUy8s2+I05uKpyOHCjVOgpSYUGgJvqj7yICMviwRMPFLAR1huVYbWoidC59oii6+1Jyau0P+z3RG9lUsVjio4D7zXAERbqaXx+fZxiEfNavSnFLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116656; c=relaxed/simple;
-	bh=aPDPSS4GIZG+MhZvhp3uK26fcf9GjGbqXtZKqw6wWVs=;
+	s=arc-20240116; t=1744113271; c=relaxed/simple;
+	bh=cNS3FxawMP1WdVyLIrR73aVGBGLRiFuTHUXWZPxUcsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnFPB8EisgiBxxRuPNl30NvNT4aJbR4sdg642otIomP1+7G//xRpeth+W/CeUaGsKy9cwd5RtWrCmCezrWHUb+jf1f8lPRQ5GBr7rTF12t2vska9Wxfrzdsa0FYDYLi+JyOzLY+nmiYztnMumlVkzsYLQCCxJvJFlHYIysioA/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjAG1uNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9D5C4CEE5;
-	Tue,  8 Apr 2025 12:50:55 +0000 (UTC)
+	 MIME-Version; b=mBgz6FD9WHlHs2n8RQLy4ll5a232FAja5TKrCnQgYeyqU4kz5+L6Qxum9ocCE8F5aArfU4E+vhWUy40nDCKRtUu2qztwndX8RCp4Ena++TVkimrSkfFIwKijLIgrDcH6gpd6qG5v7YZZjgMNqSgziy0P5x8Mjuac4phzv7fgaeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7hxp1m8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AEFC4CEE5;
+	Tue,  8 Apr 2025 11:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116655;
-	bh=aPDPSS4GIZG+MhZvhp3uK26fcf9GjGbqXtZKqw6wWVs=;
+	s=korg; t=1744113270;
+	bh=cNS3FxawMP1WdVyLIrR73aVGBGLRiFuTHUXWZPxUcsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjAG1uNp/S5ixOpxF+o3CFqZQRrUfTKRQRy3kSO7N1O6Tp2N/vh3DV9IEoDehdzpm
-	 /QTd0eqZ8lgo+NZJt99y4zxtLKoio32+cS6ZhEHEnJXQaOxTTq9fv0bvPIBQYOP885
-	 EwR7eUXF6hw5t/UiNy1RWQIAn999gjczzVJ7HLh4=
+	b=F7hxp1m8NPgRyZ2zDQPnUhzDVcSKZisfRMXcp8NBX2tNoTPDf5B1TedA9GOiFNIyf
+	 dkU5HaogWpfTkhGCTQLAbgeSINNqVoKGS2ONxoxVtj8vb+r4Puhl664SbzqkqsNoSl
+	 f9kOz86A4zs69HaZfDc3bbHjM7OAzt9FJX25c6+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/423] perf arm-spe: Fix load-store operation checking
+Subject: [PATCH 6.6 096/268] pinctrl: renesas: rzv2m: Fix missing of_node_put() call
 Date: Tue,  8 Apr 2025 12:48:27 +0200
-Message-ID: <20250408104849.957416991@linuxfoundation.org>
+Message-ID: <20250408104831.084962451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit e1d47850bbf79a541c9b3bacdd562f5e0112274d ]
+[ Upstream commit 5a550b00704d3a2cd9d766a9427b0f8166da37df ]
 
-The ARM_SPE_OP_LD and ARM_SPE_OP_ST operations are secondary operation
-type, they are overlapping with other second level's operation types
-belonging to SVE and branch operations.  As a result, a non load-store
-operation can be parsed for data source and memory sample.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-To fix the issue, this commit introduces a is_ldst_op() macro for
-checking LDST operation, and apply the checking when synthesize data
-source and memory samples.
+Call into of_node_put() to rectify that.
 
-Fixes: a89dbc9b988f ("perf arm-spe: Set sample's data source field")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250304111240.3378214-7-leo.yan@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 92a9b8252576 ("pinctrl: renesas: Add RZ/V2M pin and gpio controller driver")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-4-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/arm-spe.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rzv2m.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 138ffc71b32dd..2c06f2a85400e 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -37,6 +37,8 @@
- #include "../../arch/arm64/include/asm/cputype.h"
- #define MAX_TIMESTAMP (~0ULL)
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzv2m.c b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
+index 52aeafaba4b69..b89ae65e71b0e 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzv2m.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
+@@ -944,6 +944,8 @@ static int rzv2m_gpio_register(struct rzv2m_pinctrl *pctrl)
+ 		return ret;
+ 	}
  
-+#define is_ldst_op(op)		(!!((op) & ARM_SPE_OP_LDST))
++	of_node_put(of_args.np);
 +
- struct arm_spe {
- 	struct auxtrace			auxtrace;
- 	struct auxtrace_queues		queues;
-@@ -520,6 +522,10 @@ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 m
- 	union perf_mem_data_src	data_src = { .mem_op = PERF_MEM_OP_NA };
- 	bool is_neoverse = is_midr_in_range_list(midr, neoverse_spe);
- 
-+	/* Only synthesize data source for LDST operations */
-+	if (!is_ldst_op(record->op))
-+		return 0;
-+
- 	if (record->op & ARM_SPE_OP_LD)
- 		data_src.mem_op = PERF_MEM_OP_LOAD;
- 	else if (record->op & ARM_SPE_OP_ST)
-@@ -619,7 +625,7 @@ static int arm_spe_sample(struct arm_spe_queue *speq)
- 	 * When data_src is zero it means the record is not a memory operation,
- 	 * skip to synthesize memory sample for this case.
- 	 */
--	if (spe->sample_memory && data_src) {
-+	if (spe->sample_memory && is_ldst_op(record->op)) {
- 		err = arm_spe__synth_mem_sample(speq, spe->memory_id, data_src);
- 		if (err)
- 			return err;
+ 	if (of_args.args[0] != 0 || of_args.args[1] != 0 ||
+ 	    of_args.args[2] != pctrl->data->n_port_pins) {
+ 		dev_err(pctrl->dev, "gpio-ranges does not match selected SOC\n");
 -- 
 2.39.5
 
