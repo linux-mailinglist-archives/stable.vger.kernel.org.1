@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FBDA801BA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEB4A8031E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 965FB3A5EB1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8142F44305E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E022192F2;
-	Tue,  8 Apr 2025 11:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EF1268FD2;
+	Tue,  8 Apr 2025 11:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja1AeBkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVcvimhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671A26561C;
-	Tue,  8 Apr 2025 11:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA875268C66;
+	Tue,  8 Apr 2025 11:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112160; cv=none; b=J4+UkqC2SlkxNgT3BHDlzMZQ08N2zRnTKWrN/f7qzbVhVkRKzrCNtv8S0RErCZjgBwwoiVo0fnzFyelSxT1YxtZidj6tOxzocNd2b4sclxgXAS0y4e69/55Ao7SnO48UHNVM6eR0LipATGKwExdMOj3F0vrY4fIT3UgcEsGedXY=
+	t=1744112932; cv=none; b=GF46ZtCDNmLFpI79liCAZl7nMHaigqbSUppJE7MyeZ4OoGsSVrZz59aZTfyM1jv5DG8je6L77nQWQWnG1IN9beS+yd3s5emgQq4SQp6tCGodisp2+R8N4cn7mfoYCatUqCw+ORiwQGxK2uZ1zkDQ+RTOFiuS5qQnwIt8Fl3hX6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112160; c=relaxed/simple;
-	bh=gSm8hnzAmMWnrvBzQZeZs60khRSYt6GNyS5GrDubMt0=;
+	s=arc-20240116; t=1744112932; c=relaxed/simple;
+	bh=Ug0cG+BLf6W8aJsxA9xqa2BKlCn7y9ra4+xuYcSmxBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rddA9CeZ6BUk8gjyvbH9rctJgrWSlU6oEtAavrUYGUeho6UCp/jL1mcW0yRgZh7JZgq6GSWQbyYpsryaM5eEd6ySiujE0xJjYUkIi05UcO3VTDxWa8WFN3NrINr7MRZVfhJI6z0xf7cWLdWmnN49nDpJtu4Sk7ziX8QyUZNadrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja1AeBkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43824C4CEE5;
-	Tue,  8 Apr 2025 11:36:00 +0000 (UTC)
+	 MIME-Version; b=Xdz82gLw0JWXEYnj4xFA6NIL6FK7fPdTJGTHpJNDKlve4QHGHPnRItsw89INRQbB8INPqfRHaBYFA1zHyt9DPCC+9/VGSGCo46dfMsQmQA3qqq06NJRR0nEPcPGv329mayy6r6NFpybOFxR8a+S9ErB9zc0KfrrcNCBLNIyTu/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVcvimhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF26C4CEE5;
+	Tue,  8 Apr 2025 11:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112160;
-	bh=gSm8hnzAmMWnrvBzQZeZs60khRSYt6GNyS5GrDubMt0=;
+	s=korg; t=1744112931;
+	bh=Ug0cG+BLf6W8aJsxA9xqa2BKlCn7y9ra4+xuYcSmxBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ja1AeBkp4RCp6poMHINPJYq6r6P/5/ODJISEgui/UYwSpYqiaEEssYrY2Iip1654Q
-	 b0toxphbJnbzWapjZIhnmOdXzvJ1x7B+tjj2xPGSj6Iab0FjRpfBuiDGxqSsonfIpZ
-	 TFATieli0316zGuICkFMgjm6/Emkjb57XMLY2Rd8=
+	b=bVcvimhGlv7RtiYzeqcVMHmGztPNP7aFPS1m43Hb3wOKUIlvhkNcw3CjiEaueKVxl
+	 bQs3y/hl4yanU4ujw8pzuYoPXDjR+wt2mgFU97nWpoxUFc5R8mh+XM5ClnTVzgM/Lj
+	 mh41cOuibCDAiAd/FsmYa9/gevWiZgeQrdN91m0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
+	syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 698/731] ksmbd: add bounds check for durable handle context
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 212/279] exfat: fix the infinite loop in exfat_find_last_cluster()
 Date: Tue,  8 Apr 2025 12:49:55 +0200
-Message-ID: <20250408104930.504219853@linuxfoundation.org>
+Message-ID: <20250408104832.069406552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
+[ Upstream commit b0522303f67255926b946aa66885a0104d1b2980 ]
 
-Add missing bounds check for durable handle context.
+In exfat_find_last_cluster(), the cluster chain is traversed until
+the EOF cluster. If the cluster chain includes a loop due to file
+system corruption, the EOF cluster cannot be traversed, resulting
+in an infinite loop.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
+If the number of clusters indicated by the file size is inconsistent
+with the cluster chain length, exfat_find_last_cluster() will return
+an error, so if this inconsistency is found, the traversal can be
+aborted without traversing to the EOF cluster.
+
+Reported-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f7d147e6db52b1e09dba
+Tested-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Fixes: 31023864e67a ("exfat: add fat entry operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ fs/exfat/fatent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2704,6 +2704,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 9c116a58544da..c5f6015a947ce 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -264,7 +264,7 @@ int exfat_find_last_cluster(struct super_block *sb, struct exfat_chain *p_chain,
+ 		clu = next;
+ 		if (exfat_ent_get(sb, clu, &next))
+ 			return -EIO;
+-	} while (next != EXFAT_EOF_CLUSTER);
++	} while (next != EXFAT_EOF_CLUSTER && count <= p_chain->size);
  
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_v2_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
- 			persistent_id = recon_v2->Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2737,6 +2744,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
- 
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon = (struct create_durable_reconn_req *)context;
- 			persistent_id = recon->Data.Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2761,6 +2775,13 @@ static int parse_durable_handle_context(
- 				err = -EINVAL;
- 				goto out;
- 			}
-+
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_req_v2)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
- 
- 			durable_v2_blob =
- 				(struct create_durable_req_v2 *)context;
+ 	if (p_chain->size != count) {
+ 		exfat_fs_error(sb,
+-- 
+2.39.5
+
 
 
 
