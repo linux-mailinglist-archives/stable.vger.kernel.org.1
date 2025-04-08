@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE71A8047D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF86A80930
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5270C189FBD3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7907F8C3E71
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887D26A0DC;
-	Tue,  8 Apr 2025 12:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D610E26B947;
+	Tue,  8 Apr 2025 12:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWLPsbwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZSjvssX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F22265CAF;
-	Tue,  8 Apr 2025 12:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CE726461E;
+	Tue,  8 Apr 2025 12:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113671; cv=none; b=CR0k5vC29BtSo8mXVcNFd85a3My7CphARul7Gmltio1eIRAyvCrZ0zcT8HOZVc6INht4DiMTHpgQu0UCcVS3qw9UFa7dY9bFNpZGCJ0vCZS68MBwPvR3TS7NrnRI1Z2cKxbtFaZcLqNE5uncSe4WpurWWMH9phDxf7SdxHpvBho=
+	t=1744115848; cv=none; b=u5d6RkFmeAnwJOrBmsuwyVeH5qJYArDKbr9E1U5Os2SjrLHs0SHlip9wod6VKSYCZJurBE5YAZ0BclkXGby74LZVcTg9Ak9VlRCwkg/QdObEsu+Gk/v5AokfNt3zeKkEYrt8RpEzW2wjkgdwYloXACs3DmFDkP4p7+OAEROB2q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113671; c=relaxed/simple;
-	bh=SjO06+4dUpBtKNS9AYndfM/GZ8pHWPiyk0EH00Wo6U0=;
+	s=arc-20240116; t=1744115848; c=relaxed/simple;
+	bh=km8jtQ/IUHZ2RmfrFr052cR+MCvsI6sJQOc0+GW46J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qKRcO/jC4CHJ7IdqRpuR4nvUhinric020PIfN7vXyfn7U/NHGQiINWWQq3cytFlrzQ7jmTfx9uOYAA/9RFpX9b9ywDRoMi3gNcLZxvawHZEACcQhBOWJJTtrRntIxNiyxFqpiU0axfNk5QEOybkN6opqnQPbOPIqi2WMVuO62zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWLPsbwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BF8C4CEE5;
-	Tue,  8 Apr 2025 12:01:11 +0000 (UTC)
+	 MIME-Version; b=IMG3RpEaClMsqwt/fLCk1hL+MzrtS2h0xHm73KaJmo7s5kPcowmuAlFyFewJIlvRLzaLbf5LNDXCPcKjsxbSBWxJHWZ9eA+9SwU0TNQrM4o2BWpVrZe7Pn9A4P1+dy6D3PafkNP/N0KF235ZhH/fIB0vKZavqKI49oXj6Jn7Hck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZSjvssX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CCDC4CEE5;
+	Tue,  8 Apr 2025 12:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113671;
-	bh=SjO06+4dUpBtKNS9AYndfM/GZ8pHWPiyk0EH00Wo6U0=;
+	s=korg; t=1744115848;
+	bh=km8jtQ/IUHZ2RmfrFr052cR+MCvsI6sJQOc0+GW46J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWLPsbwdPy6z4sF1I4ShMBQ6yKET7Ydsh2PjYJC07VhVHDOfkyPNtN4xcEGD/FaCi
-	 tiUV2FCOPaY4Wapo1cXV7NlxHZSr5kEOlyjfik3M8Bj0aOhppmK1o0dXIWEHI04A52
-	 kl/V8M7XjPXyLjRrGYnN4Q7liBvXhmNZ4d1m3ubU=
+	b=QZSjvssX4l1uu9jES51ghD+GwDjufGgzIspKLm+RUGb58pEXO69oohdydpb/2YrF+
+	 UdZ7MFJMZCLcCMTe9m24F/1a+FDk+CXdymxr0xvPM4YlJxJANeInJZMpvlcE91ihLu
+	 3efPRtXqBM7yaBtYh3jrPBw9Eo3GbJN6V0JTM+us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Anton Shyndin <mrcold.il@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 247/268] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
+	Zhang Guanghui <zhang.guanghui@cestc.cn>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/204] nvme-tcp: fix possible UAF in nvme_tcp_poll
 Date: Tue,  8 Apr 2025 12:50:58 +0200
-Message-ID: <20250408104835.249088251@linuxfoundation.org>
+Message-ID: <20250408104824.059352112@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
+[ Upstream commit 8c1624b63a7d24142a2bbc3a5ee7e95f004ea36e ]
 
-Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
-X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
-the kernel overrides to EdgeHigh breaking the keyboard.
+nvme_tcp_poll() may race with the send path error handler because
+it may complete the request while it is actively being polled for
+completion, resulting in a UAF panic [1]:
 
-    $ sudo dmidecode
-    […]
-    System Information
-            Manufacturer: ASUSTeK COMPUTER INC.
-            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
-    […]
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                 IRQ (Level, ActiveLow, Exclusive, )
-                     {1}
+We should make sure to stop polling when we see an error when
+trying to read from the socket. Hence make sure to propagate the
+error so that the block layer breaks the polling cycle.
 
-Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+[1]:
+--
+[35665.692310] nvme nvme2: failed to send request -13
+[35665.702265] nvme nvme2: unsupported pdu type (3)
+[35665.702272] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[35665.702542] nvme nvme2: queue 1 receive failed:  -22
+[35665.703209] #PF: supervisor write access in kernel mode
+[35665.703213] #PF: error_code(0x0002) - not-present page
+[35665.703214] PGD 8000003801cce067 P4D 8000003801cce067 PUD 37e6f79067 PMD 0
+[35665.703220] Oops: 0002 [#1] SMP PTI
+[35665.703658] nvme nvme2: starting error recovery
+[35665.705809] Hardware name: Inspur aaabbb/YZMB-00882-104, BIOS 4.1.26 09/22/2022
+[35665.705812] Workqueue: kblockd blk_mq_requeue_work
+[35665.709172] RIP: 0010:_raw_spin_lock+0xc/0x30
+[35665.715788] Call Trace:
+[35665.716201]  <TASK>
+[35665.716613]  ? show_trace_log_lvl+0x1c1/0x2d9
+[35665.717049]  ? show_trace_log_lvl+0x1c1/0x2d9
+[35665.717457]  ? blk_mq_request_bypass_insert+0x2c/0xb0
+[35665.717950]  ? __die_body.cold+0x8/0xd
+[35665.718361]  ? page_fault_oops+0xac/0x140
+[35665.718749]  ? blk_mq_start_request+0x30/0xf0
+[35665.719144]  ? nvme_tcp_queue_rq+0xc7/0x170 [nvme_tcp]
+[35665.719547]  ? exc_page_fault+0x62/0x130
+[35665.719938]  ? asm_exc_page_fault+0x22/0x30
+[35665.720333]  ? _raw_spin_lock+0xc/0x30
+[35665.720723]  blk_mq_request_bypass_insert+0x2c/0xb0
+[35665.721101]  blk_mq_requeue_work+0xa5/0x180
+[35665.721451]  process_one_work+0x1e8/0x390
+[35665.721809]  worker_thread+0x53/0x3d0
+[35665.722159]  ? process_one_work+0x390/0x390
+[35665.722501]  kthread+0x124/0x150
+[35665.722849]  ? set_kthread_struct+0x50/0x50
+[35665.723182]  ret_from_fork+0x1f/0x30
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Anton Shyndin <mrcold.il@gmail.com>
-Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Zhang Guanghui <zhang.guanghui@cestc.cn>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/tcp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1404VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
-+		},
-+	},
-+	{
- 		/* Asus Vivobook X1504VAP */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index da9d510d3d4f1..6dd19322c7f8e 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -2518,6 +2518,7 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+ {
+ 	struct nvme_tcp_queue *queue = hctx->driver_data;
+ 	struct sock *sk = queue->sock->sk;
++	int ret;
+ 
+ 	if (!test_bit(NVME_TCP_Q_LIVE, &queue->flags))
+ 		return 0;
+@@ -2525,9 +2526,9 @@ static int nvme_tcp_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+ 	set_bit(NVME_TCP_Q_POLLING, &queue->flags);
+ 	if (sk_can_busy_loop(sk) && skb_queue_empty_lockless(&sk->sk_receive_queue))
+ 		sk_busy_loop(sk, true);
+-	nvme_tcp_try_recv(queue);
++	ret = nvme_tcp_try_recv(queue);
+ 	clear_bit(NVME_TCP_Q_POLLING, &queue->flags);
+-	return queue->nr_cqe;
++	return ret < 0 ? ret : queue->nr_cqe;
+ }
+ 
+ static int nvme_tcp_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
+-- 
+2.39.5
+
 
 
 
