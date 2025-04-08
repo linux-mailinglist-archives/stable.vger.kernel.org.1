@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F2BA80980
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E28A3A80B5F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41EF74E476C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD24A4C60C0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F413A27700B;
-	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5E727CB22;
+	Tue,  8 Apr 2025 12:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGRHXu17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7unpNlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C526B0A2;
-	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16626F47A;
+	Tue,  8 Apr 2025 12:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115994; cv=none; b=pc07CC4h2i5PwWP+h3f8A32N/3k7ZgJSQH3uB8mobcJiAzH+NRRsc9VhFd+gBKm/gQtfxBe5q/TtjBlsIvhKkozEZSpHrrK6h/1HDoUVWqnp/93x5b+/yA4BJEUpJmpnqiSpVMx2RvfpB2iuU2vua3cWJZqsIvuFRRqdxidO0p0=
+	t=1744117108; cv=none; b=AFyjT+4mHrZ3P3+t5fW7nxRiFXjnygdTmgViX9JCL7JVI82x8G/2mssFKHF5UvggNBxwfaecrFEtq4qi+n0+yVcqoVvvaP7qpupW9+dCwenO1u1wt2hJY4Kx1EWUu9uJEFY4k1HO9BnV66dI0WVVKYoVJVvMUHRNP8OsBbLVZ5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115994; c=relaxed/simple;
-	bh=pwWZORsjgRlShLnqNdke0yZnbSpz+1iZxfDAfJEk7Tc=;
+	s=arc-20240116; t=1744117108; c=relaxed/simple;
+	bh=g18HDSRfK518+95IS0pJcT4chErZqw6dmAjl3INEXE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok2q6ca+bItOQOpPLW43uYaeN5ZdBqYLsxyzx+Jbdl7Ldw4zyp3KfRksUvf1jeO8qrcYfRxzh9+brHeOT7XNVvGBybaQVz8Smi92AqYP9n1TUrIiEQKC3SJzlDeqeVX7JbRJOB9WB1I/7usNvEIDklo81QGNTJsW3gIDcKOKF5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGRHXu17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34926C4CEE7;
-	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
+	 MIME-Version; b=lz8VW7q6BWU353Ai3j10AFB6tH3PhVpw5ILajGVwilW7GDnagpJr4X1GT0DLnO/R/OGkp86vnzpZxdfJrPjvyNReXGEyNv5LEcBxtIW5mf0Dpn4xx3QAJITTWSLM3oilQym0qGiMQqm1qAvvHc/E0PmWrWgrryUBIui4I0POLr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7unpNlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D271C4CEE7;
+	Tue,  8 Apr 2025 12:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115994;
-	bh=pwWZORsjgRlShLnqNdke0yZnbSpz+1iZxfDAfJEk7Tc=;
+	s=korg; t=1744117108;
+	bh=g18HDSRfK518+95IS0pJcT4chErZqw6dmAjl3INEXE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGRHXu17OAm7kiMkm3LW+F/caCP2da+9BCQEe1L4J9tqc/7gNuOcL5IMrAvg3rbCK
-	 L9OxFo2592A8O2pTAlGZ28Ey6azS1GSf5DQyV2Bd4k+72CYXptbWY+q/+j5nWHByKH
-	 n/rZsacSSvjRhrXHgDujEuHeYZH6V0b3+2de031g=
+	b=H7unpNlCBnrRSHlm5NyWF1VxkEZwK0bEEJAgRj6wqvFAXzvsjnc1K4dxOcwsunqVH
+	 781MKH7/7KwvBoRMqGNK5zTXts0m0ZE20W99quECK4LyBfrCUB7PAY7cHbrV4opnil
+	 hoaF1MsjlUE/BZ5D87hVkYQIH0hDF069PchXNB4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 181/204] kunit/overflow: Fix UB in overflow_allocation_test
+	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.12 385/423] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
 Date: Tue,  8 Apr 2025 12:51:51 +0200
-Message-ID: <20250408104825.629732002@linuxfoundation.org>
+Message-ID: <20250408104854.853363479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Orlov <ivan.orlov0322@gmail.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 92e9bac18124682c4b99ede9ee3bcdd68f121e92 upstream.
+commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
 
-The 'device_name' array doesn't exist out of the
-'overflow_allocation_test' function scope. However, it is being used as
-a driver name when calling 'kunit_driver_create' from
-'kunit_device_register'. It produces the kernel panic with KASAN
-enabled.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-Since this variable is used in one place only, remove it and pass the
-device name into kunit_device_register directly as an ascii string.
+Furthermore, it is best to return EINVAL immediately upon seeing the
+invalid user input.  The WARNING is insufficient to prevent further
+undefined behavior based on other invalid user input.
 
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
+
+[iweiny: update commit message]
+
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/overflow_kunit.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/acpi/nfit/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/overflow_kunit.c
-+++ b/lib/overflow_kunit.c
-@@ -608,7 +608,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kf
- 
- static void overflow_allocation_test(struct kunit *test)
- {
--	const char device_name[] = "overflow-test";
- 	struct device *dev;
- 	int count = 0;
- 
-@@ -618,7 +617,7 @@ static void overflow_allocation_test(str
- } while (0)
- 
- 	/* Create dummy device for devm_kmalloc()-family tests. */
--	dev = root_device_register(device_name);
-+	dev = root_device_register("overflow-test");
- 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
- 			       "Cannot register test device\n");
- 
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
 
 
 
