@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2491A80394
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE8AA80241
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830A63BEC1B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EDD28826DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0823268688;
-	Tue,  8 Apr 2025 11:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6353266583;
+	Tue,  8 Apr 2025 11:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnpqqtfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZHW4Pqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F18C269899;
-	Tue,  8 Apr 2025 11:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83251219301;
+	Tue,  8 Apr 2025 11:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113098; cv=none; b=ANADxmbsBrdwlh62kRMvhEvacqjM39k4l531AdmouPD4UsJy8CPR8T0rU6Xt54tNwaXwRtFkT21AkHPLkEFI+PsQjy0Qcm+OyzwlP8ewNYGWF4qfcT3vD0oIXXgCc5OALYAzo+hT3SMuG/005uWXKH8TqSCimi8h3bZGzSAgaE8=
+	t=1744112420; cv=none; b=fDdDcKSguWd19CzGUJJk9MCywFoHt3qLOxYaGXmAixCl6D1BhoWbgfuoM5B20HzGpXhRLq6aqJRcQgX1FdOEgvKFpUzes4ApFaLj6u4jRX61ginYx9xjXUTzt6GsmnMXu0hfz7RqgoFS3K1XKKkRdC4rD0aMtV/fHSTm0ey/a10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113098; c=relaxed/simple;
-	bh=C+t+o5T+m8vIERIu/AjJUy3hD4kpnGYeY3nGbeE42IU=;
+	s=arc-20240116; t=1744112420; c=relaxed/simple;
+	bh=59xlMi2BIInT51bWNMoVy1ZVkPrxjUNtFrPLOxVCqmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5/M/P1s4ccTxgoMnQ2VXvxi23Sym2NYfW/nybzRdvIgebMtNFDJMCzU2cRZHCof3a7AzvzDTYru4//1C7waqmuCAkOdsTavE6RQ/D3ti34lF9ISS8xWszsvsI3icbEwLXZvlBZCE0e0uouMifExjIFL8UWtQOejmSCdDLFBr00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnpqqtfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0344EC4CEEB;
-	Tue,  8 Apr 2025 11:51:37 +0000 (UTC)
+	 MIME-Version; b=h1iqFXztRzda+2o/LWuDtSW7nAavG4Tl0NYVyIXTbiNFcxb8i0BIKgTA6+9virBKwuCiwfvO8PsmCQ+gzBMLTiCd2h2P/sCPDtk7Vvm9YHDvPpTrIS9Wk2Y+5mNGtVob7AY1O9aTS5NW4lRqUduXrUZrEjgF2tNQn4qo5WB9ME4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZHW4Pqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D4DC4CEE5;
+	Tue,  8 Apr 2025 11:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113098;
-	bh=C+t+o5T+m8vIERIu/AjJUy3hD4kpnGYeY3nGbeE42IU=;
+	s=korg; t=1744112420;
+	bh=59xlMi2BIInT51bWNMoVy1ZVkPrxjUNtFrPLOxVCqmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnpqqtfhByUtaKES6A7sHMt3LcQ3lL5x6ggrUsvzT1lte216BG7KXHJ9QY6wk7OKU
-	 pILxP44/Xmj9oVKzT1D8U3POnpMA24L75vetzTdNgAwDfaVQzEvZONKk/zbOhcZgKr
-	 +3Kf77lOH7fVBSrDaE3vCIqtIjfpbDrnMiYyIN8A=
+	b=aZHW4PqztdbsPgqXNzkhQ6ZRPP65tsnVSpZrTTLyXIYp4eDfR6/jhqR7voTcgM7H5
+	 EsiZwb3uhsx5A6u3wObKWfSYKnYSfpFl/OLnKPoVZInUSlgsH1Dk86vzr/K3CW39u/
+	 QtQXPeLSbXwB+Wuk7q3AngoSqMKWyGfHiDfnK3k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <Hermes.wu@ite.com.tw>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/268] drm/bridge: it6505: fix HDCP V match check is not performed correctly
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 062/279] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
 Date: Tue,  8 Apr 2025 12:47:25 +0200
-Message-ID: <20250408104829.420932034@linuxfoundation.org>
+Message-ID: <20250408104828.022024154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <Hermes.wu@ite.com.tw>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit a5072fc77fb9e38fa9fd883642c83c3720049159 ]
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-Fix a typo where V compare incorrectly compares av[] with av[] itself,
-which can result in HDCP failure.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-The loop of V compare is expected to iterate for 5 times
-which compare V array form av[0][] to av[4][].
-It should check loop counter reach the last statement "i == 5"
-before return true
-
-Fixes: 0989c02c7a5c ("drm/bridge: it6505: fix HDCP CTS compare V matching")
-Signed-off-by: Hermes Wu <Hermes.wu@ite.com.tw>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250121-fix-hdcp-v-comp-v4-1-185f45c728dc@ite.com.tw
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index fe33b988d7523..e094165e584a5 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2039,12 +2039,13 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- 			continue;
- 		}
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
--		for (i = 0; i < 5; i++) {
-+		for (i = 0; i < 5; i++)
- 			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
--			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
-+			    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
- 				break;
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
++	}
  
--			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
-+		if (i == 5) {
-+			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d", retry);
- 			return true;
- 		}
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2168,8 +2170,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
  	}
--- 
-2.39.5
-
+ 
+ 	return 0;
 
 
 
