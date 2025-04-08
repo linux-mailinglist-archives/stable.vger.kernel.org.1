@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D1CA80BBF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26016A80923
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4AB4E4C89
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 691AD4E2CF9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B09C26F454;
-	Tue,  8 Apr 2025 12:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9198B26AAB5;
+	Tue,  8 Apr 2025 12:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSmih8so"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XH3nSoqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E675C26988C;
-	Tue,  8 Apr 2025 12:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6951AAA32;
+	Tue,  8 Apr 2025 12:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117000; cv=none; b=qChfGY1pKvggpHnYIUu/ZHVxsd9zqBAKcRf7BnSE/wfhQul+3UfKabnnFQuc1rI9uXmXl8Soutsw9AXTOSa3zDmYoShhue/TTSqHfyIj7AcjHqgTi3BSZPm0wO9+V+qpopp7eY28RTHvDwtNFH+9wT5wPOKz6+qchzr5GpOVYn8=
+	t=1744115787; cv=none; b=g0OhyYRBdV7ojxq8irfNxPuOzlxKaJXcb17oA1UeKBJsj3BXJa5seYoU9dHWMUmaXX1nMBLKyQWJE+fWHp0Y6SxxjnaCad3aaiTh69wbwfBauq4P64TvEAO21+GZfGNIU1uYMHCo36Ti/ap2b82ivC1KAHKajBkUhEtWdh21wtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117000; c=relaxed/simple;
-	bh=BCkeWY8hXwX4y/XKnbLE6EyDq/LXc+swQ7uMvinZhLU=;
+	s=arc-20240116; t=1744115787; c=relaxed/simple;
+	bh=TcflWlFgNcNjflpyHo3MF8onswx90waotIpgaRHDKoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkSaRoC16QflQxBEKUYEzjWAZe4DoU4w1o13T7l+W4elQTBbm5pLaHmbb5vjv9Vi2aIn7Kt2AXdTioo61OezaHgyUR+rbvMyOenan9QS2HvmX4VP71J9YDZOFlfiC7zH3f2CU4eGs1GNpg+M7Rl3ZKWhyGmnMVQeg/3MgZlUnsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSmih8so; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DAEC4CEE5;
-	Tue,  8 Apr 2025 12:56:38 +0000 (UTC)
+	 MIME-Version; b=fCpxFI4Ewg8dyS2qXPBepX7NLEOKbQoOYSWEKJlhs9vR+Y3Z/jCmVKEqW6y2Kat9HmvjiEnPKRU+lYa1WW6M3Wc9C/3u4LAP0bMq28R5EY1aUc9lW49zjhZ45CiO3kx64itsGwDQEhQz2o9HwVFG4LkJGG9+0qu6dRjsHe2LjWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XH3nSoqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE9DC4CEE5;
+	Tue,  8 Apr 2025 12:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116999;
-	bh=BCkeWY8hXwX4y/XKnbLE6EyDq/LXc+swQ7uMvinZhLU=;
+	s=korg; t=1744115787;
+	bh=TcflWlFgNcNjflpyHo3MF8onswx90waotIpgaRHDKoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSmih8soNEGMOekJ4ax3/7krvfR9snwuW3k/3wl0OyGcDfOP5rkJisMIC3GEeFKPD
-	 Fvoc6gkB92YirUtpUqxIxTlTjnQ/Ik3xFbQL5YwLogOB0KCQ0/JgV7+Jn6Eyy9juTA
-	 xnwITV76KcBI5Ut098gwm2a+nzOa2Tkx0Nrpm9DQ=
+	b=XH3nSoqzh+gJcMDLJi+EwXmGEn/4YUyYYnkTa0Syaq3GUT6cZm3QUiLUCo2PrFyHG
+	 6FOrXhMnTlrRbD912TCviOA3pYSn67m5dn7jaHjl2FwNbtpmbycp3qEqyFOTUv9zsv
+	 b+6FZGsARmQTr+eGLzdhaLK0US4oaVaT4DrDM9rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/423] ntb: intel: Fix using link status DBs
+Subject: [PATCH 6.1 103/204] i3c: master: svc: Fix missing the IBI rules
 Date: Tue,  8 Apr 2025 12:50:33 +0200
-Message-ID: <20250408104852.949834595@linuxfoundation.org>
+Message-ID: <20250408104823.360149751@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
+[ Upstream commit 9cecad134d84d14dc72a0eea7a107691c3e5a837 ]
 
-Make sure we are not using DB's which were remapped for link status.
+The code does not add IBI rules for devices with controller capability.
+However, the secondary controller has the controller capability and works
+at target mode when the device is probed. Therefore, add IBI rules for
+such devices.
 
-Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-2-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i3c/master/svc-i3c-master.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-index ffcfc3e02c353..a5aa96a31f4a6 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
- 	}
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 9039ebef8648a..157ff26d40be9 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -943,7 +943,7 @@ static int svc_i3c_update_ibirules(struct svc_i3c_master *master)
  
- 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
-+	/* Make sure we are not using DB's used for link status */
-+	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
-+		ndev->db_valid_mask &= ~ndev->db_link_mask;
+ 	/* Create the IBIRULES register for both cases */
+ 	i3c_bus_for_each_i3cdev(&master->base.bus, dev) {
+-		if (I3C_BCR_DEVICE_ROLE(dev->info.bcr) == I3C_BCR_I3C_MASTER)
++		if (!(dev->info.bcr & I3C_BCR_IBI_REQ_CAP))
+ 			continue;
  
- 	ndev->reg->db_iowrite(ndev->db_valid_mask,
- 			      ndev->self_mmio +
+ 		if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD) {
 -- 
 2.39.5
 
