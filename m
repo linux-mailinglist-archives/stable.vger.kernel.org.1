@@ -1,92 +1,57 @@
-Return-Path: <stable+bounces-130301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B14A803FE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 389BCA80B41
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B044637B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831F750432C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A77526981F;
-	Tue,  8 Apr 2025 11:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DEA26A1A9;
+	Tue,  8 Apr 2025 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0VNetaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+cUJ8EI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC71267F4F;
-	Tue,  8 Apr 2025 11:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F026A0AC;
+	Tue,  8 Apr 2025 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113354; cv=none; b=mVtLcGhDvOKEQmLAjbQy+9oM85GTXAvEH+F76YTNzmloZMIaZjoXvyTGARfoBOCZ8dFYOMQxjH7Yc9sZNKf3xz3sibWWxMd3tBTThVGbDCNE1ccJfP4F/un5ezRl3RFvRXpwFb2B1+O1sSzIJLLq+FLsse+ljxykttc7fg7uZDQ=
+	t=1744116645; cv=none; b=HpLBkkulSac1XDDMi7s31Zp1PUBWTWVFd+86dTj0WmLLUyjCXq0oBKJYHW2y35R9ecfNdOZfDXPo4oQAECymHL8ka6sLhKE2Lnsq+v42cDr9RP6ASiok5lPyGL84mav/55+Xtte9hBsSNtMjGbiB8+TTBnn2X9FFNiz8lGUvaZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113354; c=relaxed/simple;
-	bh=3h3bvkSarsQlesgQGi6qVUgl0Y1FIFb8TlXcPtbL0mo=;
+	s=arc-20240116; t=1744116645; c=relaxed/simple;
+	bh=LpQ6gkfPpQ0mtC3bT058f6MZCKYPB5HEyGtLACjSi/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0VkAQ6eOS+sx/cZspwgtwdyalnehQCjEMiqPZ3s9Wtl1go20XbyyDU5aOiHUEOgJQJODpLHJ7F7awAVz5jfZqi+RDmcFWmAst/ZNzYPN5CGrDeDn49cW4y/63+geD7888qkzMUyLXik1Vg9gCsBLSZH5cOmL/F+yRrgXI8TEsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0VNetaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523FEC4CEE5;
-	Tue,  8 Apr 2025 11:55:53 +0000 (UTC)
+	 MIME-Version; b=Ny+fTS73UAnEcC27kmRpty44JOMuAPSgfyuwbk157dHEh3b2cxCZCtnrF1Xep/OGZ2xwf8jiDvQ84zwmgHnDiBgQH/v8SSUB+jncGOB1ZaK3NDjo8XtAsWIZSgVm4SSBvIO3kY2tXcgbFw7WUiZPB6yfDxm7RXIt0wlZewzH4SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+cUJ8EI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6118C4CEEB;
+	Tue,  8 Apr 2025 12:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113353;
-	bh=3h3bvkSarsQlesgQGi6qVUgl0Y1FIFb8TlXcPtbL0mo=;
+	s=korg; t=1744116645;
+	bh=LpQ6gkfPpQ0mtC3bT058f6MZCKYPB5HEyGtLACjSi/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0VNetaIhyapTfKj+Mth6bPMU1vdd2YkCNXZaoGh0859aQgmkh5sOV8yFJ2S/LXnn
-	 Hkwf36S0xdlO9VjMo4rZwcGJ5TW1XO72X8FxZXuSeIC4+5zbmasvlM2sT/Fv7Mbo8E
-	 BBESBTs0WwpYMmvkzNsG6AzXI4+yi2c1/tBONn3E=
+	b=E+cUJ8EIna29KNWpIQgCuuuy9lk6+Pn891hXQgbqYq3o3eVIpyE9q8BhLpf29UvgM
+	 Q6IAi0unrbw86mVK8y4EGOjD4OzWjdrN3U02DPB2o4YQH+FEx627KA302c0jkGoExR
+	 k/6iSDYz/8cUbQuNSSOoZZGAbAiB8OLYwukiI0TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Popple <apopple@nvidia.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	linmiaohe <linmiaohe@huawei.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	=?UTF-8?q?Michael=20 Camp=20Drill=20Sergeant =20Ellerman?= <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ted Tso <tytso@mit.edu>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/268] fuse: fix dax truncate/punch_hole fault path
-Date: Tue,  8 Apr 2025 12:48:59 +0200
-Message-ID: <20250408104831.958583594@linuxfoundation.org>
+Subject: [PATCH 6.12 214/423] perf python: Check if there is space to copy all the event
+Date: Tue,  8 Apr 2025 12:49:00 +0200
+Message-ID: <20250408104850.715883228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -98,148 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Popple <apopple@nvidia.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 7851bf649d423edd7286b292739f2eefded3d35c ]
+[ Upstream commit 89aaeaf84231157288035b366cb6300c1c6cac64 ]
 
-Patch series "fs/dax: Fix ZONE_DEVICE page reference counts", v9.
+The pyrf_event__new() method copies the event obtained from the perf
+ring buffer to a structure that will then be turned into a python object
+for further consumption, so it copies perf_event.header.size bytes to
+its 'event' member:
 
-Device and FS DAX pages have always maintained their own page reference
-counts without following the normal rules for page reference counting.  In
-particular pages are considered free when the refcount hits one rather
-than zero and refcounts are not added when mapping the page.
+  $ pahole -C pyrf_event /tmp/build/perf-tools-next/python/perf.cpython-312-x86_64-linux-gnu.so
+  struct pyrf_event {
+  	PyObject                   ob_base;              /*     0    16 */
+  	struct evsel *             evsel;                /*    16     8 */
+  	struct perf_sample         sample;               /*    24   312 */
 
-Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
-mechanism for allowing GUP to hold references on the page (see
-get_dev_pagemap).  However there doesn't seem to be any reason why FS DAX
-pages need their own reference counting scheme.
+  	/* XXX last struct has 7 bytes of padding, 2 holes */
 
-By treating the refcounts on these pages the same way as normal pages we
-can remove a lot of special checks.  In particular pXd_trans_huge()
-becomes the same as pXd_leaf(), although I haven't made that change here.
-It also frees up a valuable SW define PTE bit on architectures that have
-devmap PTE bits defined.
+  	/* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
+  	union perf_event           event;                /*   336  4168 */
 
-It also almost certainly allows further clean-up of the devmap managed
-functions, but I have left that as a future improvment.  It also enables
-support for compound ZONE_DEVICE pages which is one of my primary
-motivators for doing this work.
+  	/* size: 4504, cachelines: 71, members: 4 */
+  	/* member types with holes: 1, total: 2 */
+  	/* paddings: 1, sum paddings: 7 */
+  	/* last cacheline: 24 bytes */
+  };
 
-This patch (of 20):
+  $
 
-FS DAX requires file systems to call into the DAX layout prior to
-unlinking inodes to ensure there is no ongoing DMA or other remote access
-to the direct mapped page.  The fuse file system implements
-fuse_dax_break_layouts() to do this which includes a comment indicating
-that passing dmap_end == 0 leads to unmapping of the whole file.
+It was doing so without checking if the event just obtained has more
+than that space, fix it.
 
-However this is not true - passing dmap_end == 0 will not unmap anything
-before dmap_start, and further more dax_layout_busy_page_range() will not
-scan any of the range to see if there maybe ongoing DMA access to the
-range.  Fix this by passing -1 for dmap_end to fuse_dax_break_layouts()
-which will invalidate the entire file range to
-dax_layout_busy_page_range().
+This isn't a proper, final solution, as we need to support larger
+events, but for the time being we at least bounds check and document it.
 
-Link: https://lkml.kernel.org/r/cover.8068ad144a7eea4a813670301f4d2a86a8e68ec4.1740713401.git-series.apopple@nvidia.com
-Link: https://lkml.kernel.org/r/f09a34b6c40032022e4ddee6fadb7cc676f08867.1740713401.git-series.apopple@nvidia.com
-Fixes: 6ae330cad6ef ("virtiofs: serialize truncate/punch_hole and dax fault path")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Tested-by: Alison Schofield <alison.schofield@intel.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Asahi Lina <lina@asahilina.net>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Chunyan Zhang <zhang.lyra@gmail.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: linmiaohe <linmiaohe@huawei.com>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Michael "Camp Drill Sergeant" Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Ted Ts'o <tytso@mit.edu>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-7-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dax.c  | 1 -
- fs/fuse/dir.c  | 2 +-
- fs/fuse/file.c | 4 ++--
- 3 files changed, 3 insertions(+), 4 deletions(-)
+ tools/perf/util/python.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/fuse/dax.c b/fs/fuse/dax.c
-index 12ef91d170bb3..7faf1af59d5d8 100644
---- a/fs/fuse/dax.c
-+++ b/fs/fuse/dax.c
-@@ -681,7 +681,6 @@ static int __fuse_dax_break_layouts(struct inode *inode, bool *retry,
- 			0, 0, fuse_wait_dax_page(inode));
- }
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 71c37bde178a2..e7f36ea9e2fa1 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -512,6 +512,11 @@ static PyObject *pyrf_event__new(union perf_event *event)
+ 	      event->header.type == PERF_RECORD_SWITCH_CPU_WIDE))
+ 		return NULL;
  
--/* dmap_end == 0 leads to unmapping of whole file */
- int fuse_dax_break_layouts(struct inode *inode, u64 dmap_start,
- 				  u64 dmap_end)
- {
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 89bffaed421fa..e4d6cc0d2332a 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1875,7 +1875,7 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
- 	if (FUSE_IS_DAX(inode) && is_truncate) {
- 		filemap_invalidate_lock(mapping);
- 		fault_blocked = true;
--		err = fuse_dax_break_layouts(inode, 0, 0);
-+		err = fuse_dax_break_layouts(inode, 0, -1);
- 		if (err) {
- 			filemap_invalidate_unlock(mapping);
- 			return err;
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index ceb9f7d230388..3e4c3fcb588ba 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -241,7 +241,7 @@ int fuse_open_common(struct inode *inode, struct file *file, bool isdir)
- 
- 	if (dax_truncate) {
- 		filemap_invalidate_lock(inode->i_mapping);
--		err = fuse_dax_break_layouts(inode, 0, 0);
-+		err = fuse_dax_break_layouts(inode, 0, -1);
- 		if (err)
- 			goto out_inode_unlock;
- 	}
-@@ -3023,7 +3023,7 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
- 	inode_lock(inode);
- 	if (block_faults) {
- 		filemap_invalidate_lock(inode->i_mapping);
--		err = fuse_dax_break_layouts(inode, 0, 0);
-+		err = fuse_dax_break_layouts(inode, 0, -1);
- 		if (err)
- 			goto out;
- 	}
++	// FIXME this better be dynamic or we need to parse everything
++	// before calling perf_mmap__consume(), including tracepoint fields.
++	if (sizeof(pevent->event) < event->header.size)
++		return NULL;
++
+ 	ptype = pyrf_event__type[event->header.type];
+ 	pevent = PyObject_New(struct pyrf_event, ptype);
+ 	if (pevent != NULL)
 -- 
 2.39.5
 
