@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-131451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AABA809C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D4BA80A08
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA97E1BA57A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B7794C5AC9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4766626AAAA;
-	Tue,  8 Apr 2025 12:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9901269B1E;
+	Tue,  8 Apr 2025 12:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjncFbJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp99aV2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044FE26AAA3;
-	Tue,  8 Apr 2025 12:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8700D2638B8;
+	Tue,  8 Apr 2025 12:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116432; cv=none; b=BzxXhY6jYkWKc92vVPKAB5CArC8KxLIl0N4RFFwT5+Az7MH7HZohEGy1No/LhKNTTT1uubJ6Oxx8Hs82luGgkHjIeyNEHxFELdBH7cV+Q3lNO97XEkG/VVwSGHU2WtIONbA6KEs4GMNKXBXO7S6GjqTa98AmZ2r2Mp0eSdU1hNI=
+	t=1744116321; cv=none; b=GiYlSjPlnYmjeO7ODKMgnoioFUmx2DkXcAoMlRDt8+h4hcO/6WncSI1lsnNHGwMNBuaktoEJSjS/Ej0Fj2VdcvomWc7qCEhAIroCDRAiTF2B0o2VCHW+igU6QmV3VgQm9pMAx9nAfw8b6ErqBVyPs4Iuyxy6r5nAQWlr57yzah4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116432; c=relaxed/simple;
-	bh=oFERqbAc0ThQVFTz4ssVYn9UyMkj9P7E2IV4MAwwu6c=;
+	s=arc-20240116; t=1744116321; c=relaxed/simple;
+	bh=0qO3gNytZKxhmtPuBTL2qKw+Nb+EUwCBvDal65rccEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A/MJqSxccYz8NJPaTdm10xdiHfK2SrQ7DLeBecZF097WW88sfC1g9VU2ieyU4nc5Yc8sW0uR5WgXs0FWg4+CG44Vy7uvsqQIyO8eqRQMi2kOG44qC2RtznmAyGR4Nm5NcDGR+wljoVqKH/iS5knQB6SEtKWlIAt2+rfUzz4t4Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjncFbJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBAAC4CEE5;
-	Tue,  8 Apr 2025 12:47:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rPUvdKdwDPRO3VMWyImjqWft2sEGkRIaC0IOQmzFhanJaaH46UShBZ49l0otOit7bKVbycmsKVjnjnVtFezQHzWVm60ehiFTnA89ZG/zNWoQdBe0nwXUVWvFZw/piH18LS5E+YBIF0GFgdkatkUwUheh3cjgMYbJVJAaYfOgmIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp99aV2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FFBC4CEE5;
+	Tue,  8 Apr 2025 12:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116431;
-	bh=oFERqbAc0ThQVFTz4ssVYn9UyMkj9P7E2IV4MAwwu6c=;
+	s=korg; t=1744116321;
+	bh=0qO3gNytZKxhmtPuBTL2qKw+Nb+EUwCBvDal65rccEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjncFbJAhMzGErkOfbVJA116qRx5AJVWObKLqhnEbPleMABg+wYm3jQYGANigPG15
-	 T2GZ8X0OfIMt3Dy5Licy5/PolJXTKdlSpTAwLdshL/lbovIEz3Rd9CZzWVoqWxONv9
-	 i6VU/gU4ma0GKbE+PkjdRF2J4vRcbcOClQKLyJQs=
+	b=yp99aV2s1NbL798YvpC9HfUOuaO6Zan9Ds8nCy+xQzXthwc9kfEGaZ+QrL75pHOt9
+	 KIHWyzlziCvgq8rGPNkjUjzy3NBPAJuSQS9R2wU9+crY6ieokJRUOqJ2rUWANKoHfN
+	 ss8RYDhg+iRnH4JVv1NwE279Y8/wzo4Mf1josjEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/423] PCI: dwc: ep: Return -ENOMEM for allocation failures
-Date: Tue,  8 Apr 2025 12:46:55 +0200
-Message-ID: <20250408104847.813112285@linuxfoundation.org>
+Subject: [PATCH 6.12 090/423] PCI: histb: Fix an error handling path in histb_pcie_probe()
+Date: Tue,  8 Apr 2025 12:46:56 +0200
+Message-ID: <20250408104847.836649960@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -69,39 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 8189aa56dbed0bfb46b7b30d4d231f57ab17b3f4 ]
+[ Upstream commit b36fb50701619efca5f5450b355d42575cf532ed ]
 
-If the bitmap or memory allocations fail, then dw_pcie_ep_init_registers()
-will incorrectly return a success.
+If an error occurs after a successful phy_init() call, then phy_exit()
+should be called.
 
-Return -ENOMEM instead.
+Add the missing call, as already done in the remove function.
 
-Fixes: 869bc5253406 ("PCI: dwc: ep: Fix DBI access failure for drivers requiring refclk from host")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-[kwilczynski: commit log]
+Fixes: bbd11bddb398 ("PCI: hisi: Add HiSilicon STB SoC PCIe controller driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+[kwilczynski: remove unnecessary hipcie->phy NULL check from
+histb_pcie_probe() and squash a patch that removes similar NULL
+check for hipcie-phy from histb_pcie_remove() from
+https://lore.kernel.org/linux-pci/c369b5d25e17a44984ae5a889ccc28a59a0737f7.1742058005.git.christophe.jaillet@wanadoo.fr]
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/36dcb6fc-f292-4dd5-bd45-a8c6f9dc3df7@stanley.mountain
+Link: https://lore.kernel.org/r/8301fc15cdea5d2dac21f57613e8e6922fb1ad95.1740854531.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/dwc/pcie-histb.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index b58e89ea566b8..dea19250598a6 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -755,6 +755,7 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/pci/controller/dwc/pcie-histb.c b/drivers/pci/controller/dwc/pcie-histb.c
+index 7a11c618b9d9c..5538e5bf99fb6 100644
+--- a/drivers/pci/controller/dwc/pcie-histb.c
++++ b/drivers/pci/controller/dwc/pcie-histb.c
+@@ -409,16 +409,21 @@ static int histb_pcie_probe(struct platform_device *pdev)
+ 	ret = histb_pcie_host_enable(pp);
+ 	if (ret) {
+ 		dev_err(dev, "failed to enable host\n");
+-		return ret;
++		goto err_exit_phy;
+ 	}
  
-+	ret = -ENOMEM;
- 	if (!ep->ib_window_map) {
- 		ep->ib_window_map = devm_bitmap_zalloc(dev, pci->num_ib_windows,
- 						       GFP_KERNEL);
+ 	ret = dw_pcie_host_init(pp);
+ 	if (ret) {
+ 		dev_err(dev, "failed to initialize host\n");
+-		return ret;
++		goto err_exit_phy;
+ 	}
+ 
+ 	return 0;
++
++err_exit_phy:
++	phy_exit(hipcie->phy);
++
++	return ret;
+ }
+ 
+ static void histb_pcie_remove(struct platform_device *pdev)
+@@ -427,8 +432,7 @@ static void histb_pcie_remove(struct platform_device *pdev)
+ 
+ 	histb_pcie_host_disable(hipcie);
+ 
+-	if (hipcie->phy)
+-		phy_exit(hipcie->phy);
++	phy_exit(hipcie->phy);
+ }
+ 
+ static const struct of_device_id histb_pcie_of_match[] = {
 -- 
 2.39.5
 
