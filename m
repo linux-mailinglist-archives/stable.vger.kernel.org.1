@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71646A80AF3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AA0A806E5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4138A4EF7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8AFE4C4A00
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D3B269825;
-	Tue,  8 Apr 2025 12:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2560326B94F;
+	Tue,  8 Apr 2025 12:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yc9KnmNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZDy/GcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBC32676CF;
-	Tue,  8 Apr 2025 12:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513326B94A;
+	Tue,  8 Apr 2025 12:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116451; cv=none; b=J7UmzgDp1HOoK7cwnXJcgQtAxidKYU/atW/Prjgh120cjAYhcH0xBJ3yvBd399Ump8LNE9HJOnVEiSbomTRHWYHfiBLmjD4bps1jPYR6ebXzdFw85lSdW6O3Tl38CKjhZSqJB9wIHATfUd6yPxg8wQ7XF9X/Flg1vhE/YmB8UOA=
+	t=1744114963; cv=none; b=uOMT8YAJUp7BXjbxGpckIM5rU03q3qDemNd+6izsaZTbuQMTww5GMF6OsjmpINgRZuNqtZ9Cob3lVdH4q/mTkoReUvVnW3N9/6anUg/Y4qlR6CvSYt7lHZFgdlsxqy+wkUjfTWWpOpJF63z4UeSRaEfA+yFN5US33snOuOGQFw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116451; c=relaxed/simple;
-	bh=rumsjApYbzaYCQaDVuDHGvZwduumu2pmVwYnaqKk1wA=;
+	s=arc-20240116; t=1744114963; c=relaxed/simple;
+	bh=u7VoE2v8f43/zdy7Yvc2jwJi0wu9vpHf9ecTEt2nV3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAYLm9O7g5JdI9wTCyliYJI425l/Iiwr5k2bw4KrdolKE4yzsckO0kTfTGfLgUazCCxuXMli5NnZuEsA/f3ep5Hl9/QDIO+bd5A3O48IOyMXGNv47FiOB7JPZCjxbAgJRDkB7zSPpHQNwV8H+dLBnnAlkWwOidREcGlOp9JAALo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yc9KnmNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30242C4CEED;
-	Tue,  8 Apr 2025 12:47:30 +0000 (UTC)
+	 MIME-Version; b=oaLl9zOlChFkmw37m81ErlO5fo0HVb6n7glwRBc1m51zW66lhvySAW4nuKfpcSI2dYPoHZiQxony2YradDFtL/UrptvgWa67wzLqAGndOrtnTwun7GkBBAUUsWo/lgX6F++HTFFzmvd9kVOjk1ywSpjqZmC1jGUcRqyQahES7G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZDy/GcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534ADC4CEE5;
+	Tue,  8 Apr 2025 12:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116450;
-	bh=rumsjApYbzaYCQaDVuDHGvZwduumu2pmVwYnaqKk1wA=;
+	s=korg; t=1744114963;
+	bh=u7VoE2v8f43/zdy7Yvc2jwJi0wu9vpHf9ecTEt2nV3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yc9KnmNo0NbH42OkBSgNnp8Gk201wsR65XW/lwW18LjQdIZUlrkXbnYhJpn5IX+v8
-	 /ur49x1t0T5iD5pFTlZBb510Hb57sqSKaBIzRzy4sdX6r7jNAKK+crw4SEzsTSJUyG
-	 SYUREmPJSrGjIL27swMwWrIb0FKKgZUESOnm3/Yc=
+	b=rZDy/GcEUNLgvqD5dcExFV0N2Vf2AqHG0vyKKAn+Ne/SpRTk3zClGtxC0OH/NWxNP
+	 ReBqizAysnLKbxBCMbkmM+yG92kDPgEFGOyXJuBui2Ra82XTLCTA1xissSwVUw103P
+	 rtyNaBRyZnV8SPpe88uqOU+ekKVHwgxlr8x86qq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/423] clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
+Subject: [PATCH 6.13 260/499] perf dso: fix dso__is_kallsyms() check
 Date: Tue,  8 Apr 2025 12:47:52 +0200
-Message-ID: <20250408104849.131117148@linuxfoundation.org>
+Message-ID: <20250408104857.696379930@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-[ Upstream commit 91be7d27099dedf813b80702e4ca117d1fb38ce6 ]
+[ Upstream commit ebf0b332732dcc64239119e554faa946562b0b93 ]
 
-The DSP and OCRAM_A modules from AUDIOMIX are clocked by
-AUDIO_AXI_CLK_ROOT, not AUDIO_AHB_CLK_ROOT. Update the clock data
-accordingly.
+Kernel modules for which we cannot find a file on-disk will have a
+dso->long_name that looks like "[module_name]". Prior to the commit
+listed in the fixes, the dso->kernel field would be zero (for user
+space), so dso__is_kallsyms() would return false. After the commit,
+kernel module DSOs are correctly labeled, but the result is that
+dso__is_kallsyms() erroneously returns true for those modules without a
+filesystem path.
 
-Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250226164513.33822-3-laurentiumihalcea111@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Later, build_id_cache__add() consults this value of is_kallsyms, and
+when true, it copies /proc/kallsyms into the cache. Users with many
+kernel modules without a filesystem path (e.g. ksplice or possibly
+kernel live patch modules) have reported excessive disk space usage in
+the build ID cache directory due to this behavior.
+
+To reproduce the issue, it's enough to build a trivial out-of-tree hello
+world kernel module, load it using insmod, and then use:
+
+   perf record -ag -- sleep 1
+
+In the build ID directory, there will be a directory for your module
+name containing a kallsyms file.
+
+Fix this up by changing dso__is_kallsyms() to consult the
+dso_binary_type enumeration, which is also symmetric to the above checks
+for dso__is_vmlinux() and dso__is_kcore(). With this change, kallsyms is
+not cached in the build-id cache for out-of-tree modules.
+
+Fixes: 02213cec64bbe ("perf maps: Mark module DSOs with kernel type")
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/r/20250318230012.2038790-1-stephen.s.brennan@oracle.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/dso.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index c409fc7e06186..775f62dddb11d 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -180,14 +180,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
- 	CLK_GATE("asrc", ASRC_IPG),
- 	CLK_GATE("pdm", PDM_IPG),
- 	CLK_GATE("earc", EARC_IPG),
--	CLK_GATE("ocrama", OCRAMA_IPG),
-+	CLK_GATE_PARENT("ocrama", OCRAMA_IPG, "axi"),
- 	CLK_GATE("aud2htx", AUD2HTX_IPG),
- 	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
- 	CLK_GATE("sdma2", SDMA2_ROOT),
- 	CLK_GATE("sdma3", SDMA3_ROOT),
- 	CLK_GATE("spba2", SPBA2_ROOT),
--	CLK_GATE("dsp", DSP_ROOT),
--	CLK_GATE("dspdbg", DSPDBG_ROOT),
-+	CLK_GATE_PARENT("dsp", DSP_ROOT, "axi"),
-+	CLK_GATE_PARENT("dspdbg", DSPDBG_ROOT, "axi"),
- 	CLK_GATE("edma", EDMA_ROOT),
- 	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
- 	CLK_GATE("mu2", MU2_ROOT),
+diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+index bb8e8f444054d..c0472a41147c3 100644
+--- a/tools/perf/util/dso.h
++++ b/tools/perf/util/dso.h
+@@ -808,7 +808,9 @@ static inline bool dso__is_kcore(const struct dso *dso)
+ 
+ static inline bool dso__is_kallsyms(const struct dso *dso)
+ {
+-	return RC_CHK_ACCESS(dso)->kernel && RC_CHK_ACCESS(dso)->long_name[0] != '/';
++	enum dso_binary_type bt = dso__binary_type(dso);
++
++	return bt == DSO_BINARY_TYPE__KALLSYMS || bt == DSO_BINARY_TYPE__GUEST_KALLSYMS;
+ }
+ 
+ bool dso__is_object_file(const struct dso *dso);
 -- 
 2.39.5
 
