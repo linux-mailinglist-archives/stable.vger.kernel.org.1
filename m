@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31EAA803F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC57A80545
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 612BE7ABAE2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0F554A5D72
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8866226B968;
-	Tue,  8 Apr 2025 12:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145F726A0AA;
+	Tue,  8 Apr 2025 12:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1Xj6m7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0j2U9ms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4378426AA82;
-	Tue,  8 Apr 2025 12:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64F72676CF;
+	Tue,  8 Apr 2025 12:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113724; cv=none; b=huhBxp/MkydJjl1RWyKx9jYRPF6NC41grGs7jVJ4ft8fHcDvU0xsRG6wKJdo6rhsTz5Ivi3rHTA9OZA2MWpQa2sDnYJz70CaI2Il9JNGXj60Nvw/Z/ekioXi7HcyK6Not5eJ4WdguUvT2UBUhC33Wft3PehH0auIMWsbe3BCmt0=
+	t=1744114094; cv=none; b=owRRY5ri9jD4IkBbnY499gH3wKkFfodPdxbo8U5rvTV+YdHlgtToKYSu2X0MFIiCtBM3anrwa6tiNHhkF58KPQUlMZl/0XSspxnxkObo8luUVX0y0VRKicuGAkQAAznHRUyMG2IY+x1UqxaRQxYDIfdg9U5AOo+rEdwGsjQq8+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113724; c=relaxed/simple;
-	bh=pNHcuT30TTlEjg7iPsnLvwHNkDHIaT3BAfGb0gKhXCM=;
+	s=arc-20240116; t=1744114094; c=relaxed/simple;
+	bh=j44VFr7hSqHKuxLEKNLnsY1TLaZRpG5VsKntnExEr5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlKSl2gWMUC1l1SNNXtbQdzbA+Hfcu1T7HEitffKVO5FAY2B047Tj+uGajnRLfH0vUR/emZ7zYlZYuC6gESR+7xX5y6qOmEI+mSypPPizawUcpOEkMPVyOpjx24jFaQ4Jfejdd++PEmFC+7x2X2toTC42JmDE+kGVTeZx5QNwlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1Xj6m7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C281C4CEE5;
-	Tue,  8 Apr 2025 12:02:03 +0000 (UTC)
+	 MIME-Version; b=rEaPHhsC9x47p9uusuM/QYavNUkAVKM40dEU4HqhlOtv3NsYz7fk/u8w1nTzT3i8ayzP/mm0GQvWWjBy0pHApOGdWopujjJ0qcyeNgvm4EagQENiXut0Sd1PiZOF66bbnBgN0Eg5BTsq9T4LkGUQ4IuhHJm5SMEfW11zrnTSLkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0j2U9ms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EFEC4CEE5;
+	Tue,  8 Apr 2025 12:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113723;
-	bh=pNHcuT30TTlEjg7iPsnLvwHNkDHIaT3BAfGb0gKhXCM=;
+	s=korg; t=1744114094;
+	bh=j44VFr7hSqHKuxLEKNLnsY1TLaZRpG5VsKntnExEr5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1Xj6m7ezLcQrnOkFC6w3Up3xp2d3VROtGfxz2tqXjK+ZaTaQg9XSvHFpBI618Ucd
-	 7VyiXRV7EP10lFwjELz6eFt8EaQ+jjPVILi1yJIQNcRpJgOu5+8Zvuz3SX8NenZ464
-	 el9fc6r1N126hlZJMgQdS8kqxWSiiCcu1pwAszgY=
+	b=W0j2U9ms47JMYoamad1/BSlrG9/U+ecpWYLbBGjueGDU9rzSZ0cyAP6MFE42TGEKh
+	 4+CH5HLuPsDmCZV2a5R5bQQEpO+zMa/VTrpNeQz+GbaoAF03XvGHBd+C+fKF2R1+V8
+	 vb49P33E1LiwRuLwTot5C2JXkzfyJfQg7CoHNXis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.6 264/268] jfs: add index corruption check to DT_GETPAGE()
+	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 134/154] can: statistics: use atomic access in hot path
 Date: Tue,  8 Apr 2025 12:51:15 +0200
-Message-ID: <20250408104835.698881541@linuxfoundation.org>
+Message-ID: <20250408104819.608931366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
+[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
 
-If the file system is corrupted, the header.stblindex variable
-may become greater than 127. Because of this, an array access out
-of bounds may occur:
+In can_send() and can_receive() CAN messages and CAN filter matches are
+counted to be visible in the CAN procfs files.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
-index 237 is out of range for type 'struct dtslot[128]'
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
- dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
- jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
- wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
- iterate_dir+0x571/0x800 fs/readdir.c:108
- __do_sys_getdents64 fs/readdir.c:403 [inline]
- __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace ]---
+KCSAN detected a data race within can_send() when two CAN frames have
+been generated by a timer event writing to the same CAN netdevice at the
+same time. Use atomic operations to access the statistics in the hot path
+to fix the KCSAN complaint.
 
-Add a stblindex check for corruption.
-
-Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/can/af_can.c | 12 ++++++------
+ net/can/af_can.h | 12 ++++++------
+ net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
+ 3 files changed, 39 insertions(+), 31 deletions(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -117,7 +117,8 @@ do {									\
- 	if (!(RC)) {							\
- 		if (((P)->header.nextindex >				\
- 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
--		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
-+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
-+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
- 			BT_PUTPAGE(MP);					\
- 			jfs_error((IP)->i_sb,				\
- 				  "DT_GETPAGE: dtree page corrupt\n");	\
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index bc06016a4fe90..d2fd12da30c60 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -288,8 +288,8 @@ int can_send(struct sk_buff *skb, int loop)
+ 		netif_rx_ni(newskb);
+ 
+ 	/* update statistics */
+-	pkg_stats->tx_frames++;
+-	pkg_stats->tx_frames_delta++;
++	atomic_long_inc(&pkg_stats->tx_frames);
++	atomic_long_inc(&pkg_stats->tx_frames_delta);
+ 
+ 	return 0;
+ 
+@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	int matches;
+ 
+ 	/* update statistics */
+-	pkg_stats->rx_frames++;
+-	pkg_stats->rx_frames_delta++;
++	atomic_long_inc(&pkg_stats->rx_frames);
++	atomic_long_inc(&pkg_stats->rx_frames_delta);
+ 
+ 	/* create non-zero unique skb identifier together with *skb */
+ 	while (!(can_skb_prv(skb)->skbcnt))
+@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	consume_skb(skb);
+ 
+ 	if (matches > 0) {
+-		pkg_stats->matches++;
+-		pkg_stats->matches_delta++;
++		atomic_long_inc(&pkg_stats->matches);
++		atomic_long_inc(&pkg_stats->matches_delta);
+ 	}
+ }
+ 
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 7c2d9161e2245..22f3352c77fec 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -66,9 +66,9 @@ struct receiver {
+ struct can_pkg_stats {
+ 	unsigned long jiffies_init;
+ 
+-	unsigned long rx_frames;
+-	unsigned long tx_frames;
+-	unsigned long matches;
++	atomic_long_t rx_frames;
++	atomic_long_t tx_frames;
++	atomic_long_t matches;
+ 
+ 	unsigned long total_rx_rate;
+ 	unsigned long total_tx_rate;
+@@ -82,9 +82,9 @@ struct can_pkg_stats {
+ 	unsigned long max_tx_rate;
+ 	unsigned long max_rx_match_ratio;
+ 
+-	unsigned long rx_frames_delta;
+-	unsigned long tx_frames_delta;
+-	unsigned long matches_delta;
++	atomic_long_t rx_frames_delta;
++	atomic_long_t tx_frames_delta;
++	atomic_long_t matches_delta;
+ };
+ 
+ /* persistent statistics */
+diff --git a/net/can/proc.c b/net/can/proc.c
+index a5fc63c78370e..ea442ddd4fd9d 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -123,6 +123,13 @@ void can_stat_update(struct timer_list *t)
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	unsigned long j = jiffies; /* snapshot */
+ 
++	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
++	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
++	long matches = atomic_long_read(&pkg_stats->matches);
++	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
++	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
++	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
++
+ 	/* restart counting in timer context on user request */
+ 	if (user_reset)
+ 		can_init_stats(net);
+@@ -132,35 +139,33 @@ void can_stat_update(struct timer_list *t)
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
++	if (rx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
++	if (tx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* matches overflow - very improbable */
+-	if (pkg_stats->matches > (ULONG_MAX / 100))
++	if (matches > (LONG_MAX / 100))
+ 		can_init_stats(net);
+ 
+ 	/* calc total values */
+-	if (pkg_stats->rx_frames)
+-		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
+-			pkg_stats->rx_frames;
++	if (rx_frames)
++		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
+ 
+ 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->tx_frames);
++					    tx_frames);
+ 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->rx_frames);
++					    rx_frames);
+ 
+ 	/* calc current values */
+-	if (pkg_stats->rx_frames_delta)
++	if (rx_frames_delta)
+ 		pkg_stats->current_rx_match_ratio =
+-			(pkg_stats->matches_delta * 100) /
+-			pkg_stats->rx_frames_delta;
++			(matches_delta * 100) /	rx_frames_delta;
+ 
+-	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
+-	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
++	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
++	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
+ 
+ 	/* check / update maximum values */
+ 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
+@@ -173,9 +178,9 @@ void can_stat_update(struct timer_list *t)
+ 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
+ 
+ 	/* clear values for 'current rate' calculation */
+-	pkg_stats->tx_frames_delta = 0;
+-	pkg_stats->rx_frames_delta = 0;
+-	pkg_stats->matches_delta   = 0;
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
+ 
+ 	/* restart timer (one second) */
+ 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
+@@ -217,9 +222,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+ 
+ 	seq_putc(m, '\n');
+-	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
+-	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
+-	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
++	seq_printf(m, " %8ld transmitted frames (TXF)\n",
++		   atomic_long_read(&pkg_stats->tx_frames));
++	seq_printf(m, " %8ld received frames (RXF)\n",
++		   atomic_long_read(&pkg_stats->rx_frames));
++	seq_printf(m, " %8ld matched frames (RXMF)\n",
++		   atomic_long_read(&pkg_stats->matches));
+ 
+ 	seq_putc(m, '\n');
+ 
+-- 
+2.39.5
+
 
 
 
