@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D40A8071E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657BEA80414
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B052E427015
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23009465764
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6350A26AA8C;
-	Tue,  8 Apr 2025 12:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A426C269899;
+	Tue,  8 Apr 2025 11:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F60518lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYxxZ8ja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF63224AEB;
-	Tue,  8 Apr 2025 12:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E2F268C66;
+	Tue,  8 Apr 2025 11:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115057; cv=none; b=nADqXiV6Slc5kjLqw9bQuheogcTgaKQl+PcqQoIZyo7UqGUQkvB6VN80DD0nki1qHp/Qi3RYQC1zcw1dwLudqA11/ySFpaotFFIAG6R6w1z62briZc9O1r6n1yPK4ytk+RlDXVtFhZ7LDx0G+OmbTdUlRxjAJDXm+VLLtKHFzl8=
+	t=1744113367; cv=none; b=dTqx0gRuStbDgLKeMtP3xa0uVlaKrPuNjC7dDPg4xBPbXNV5Pn/UZxjHXU0EUU9m1VaSA8q1xeXNu8lYTtjutuG9fQz8x+kMFB+VnwfuRzteVZqqlPMUN7LBZIV9Ui4q0IMup1F5klmvqdJwEmnF4DH2Y0g9XcOftDd1JzgVjD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115057; c=relaxed/simple;
-	bh=A06r6HIQgYAn7B20NmV6gmW30NAcGpw5hjfDw9kguGk=;
+	s=arc-20240116; t=1744113367; c=relaxed/simple;
+	bh=+7sh84ocRXAQYxNjR1hvttPaKHiXrQVdvXV1iDqXHyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J4glcrd/+XddiONGrfYfmWp0Gj1fyY1ctevIviKGs9YCR+Y27l2uxQFxYv6Kew+eEBQiAx5IIlP5j57ftaYj05iAubUrEnEOrbW5WC1UHoHRR0T6CW3VY6ceUdSjcxyqg9xgBnYrT+nMh1BisebckcnYSQGJQMZ8p4z/OXxkmXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F60518lb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C03C4CEE5;
-	Tue,  8 Apr 2025 12:24:16 +0000 (UTC)
+	 MIME-Version; b=WHSToKcRZxjn5EbCv9NAIqBwyzbSHQg06USNP6RVAfbJy8kGsHKxjC7XpPx0FtyNNIl0V6noxRkim6lnmd7pQln5C+MTWhiR/V8Ud/upqvqdu3R9ejLY6dNe1Nxw/Gorwf3MKtRoF2Y5NN3Lno/IuE3chP1bgYI5sYYiTEj+xXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYxxZ8ja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0575C4CEE7;
+	Tue,  8 Apr 2025 11:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115057;
-	bh=A06r6HIQgYAn7B20NmV6gmW30NAcGpw5hjfDw9kguGk=;
+	s=korg; t=1744113367;
+	bh=+7sh84ocRXAQYxNjR1hvttPaKHiXrQVdvXV1iDqXHyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F60518lbqS6pm1XFpUHXxP71QlIM5pby+zAk3rxJKAoNnyY412TPAWRhGKko0CHcb
-	 qhjjkpDE0BtFyQHZ4DAkibz7ndmvmUuFCjLLEfXV24Tcc+m8o7cupIlHTgB+b9L7e0
-	 czDWdr9vePV+Mv1zVFTfIIt4K/Ed1ScelUcBY6Vw=
+	b=OYxxZ8ja8wEcmzUuS4Jnxg4aM89ES6C6ZWrV4QYEkNDiPt1sH55lxpL7iV6i9ECM1
+	 3EGoq0M9YzXWKBn9wCHYfLeF4W0uUslfDx+7GWGRHb8QofSrtW0aAUYXndYq9ioMDd
+	 8UMD9Ge+UqJZhfHjCp1r08myCRqhJspjBOIMkqrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 332/499] ASoC: codecs: wsa884x: report temps to hwmon in millidegree of Celsius
+Subject: [PATCH 6.6 133/268] perf python: Fixup description of sample.id event member
 Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104859.506851565@linuxfoundation.org>
+Message-ID: <20250408104832.102822470@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit d776f016d24816f15033169dcd081f077b6c10f4 ]
+[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
 
-Temperatures are reported in units of Celsius however hwmon expects
-values to be in millidegree of Celsius. Userspace tools observe values
-close to zero and report it as "Not available" or incorrect values like
-0C or 1C. Add a simple conversion to fix that.
+Some old cut'n'paste error, its "ip", so the description should be
+"event ip", not "event type".
 
-Before the change:
-
-wsa884x-virtual-0
-Adapter: Virtual device
-temp1:         +0.0°C
---
-wsa884x-virtual-0
-Adapter: Virtual device
-temp1:         +0.0°C
-
-Also reported as N/A before first amplifier power on.
-
-After this change and initial wsa884x power on:
-
-wsa884x-virtual-0
-Adapter: Virtual device
-temp1:        +39.0°C
---
-wsa884x-virtual-0
-Adapter: Virtual device
-temp1:        +37.0°C
-
-Tested on sm8550 only.
-
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250221044024.1207921-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa884x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
-index 86df5152c547b..560a2c04b6955 100644
---- a/sound/soc/codecs/wsa884x.c
-+++ b/sound/soc/codecs/wsa884x.c
-@@ -1875,7 +1875,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
- 		 * Reading temperature is possible only when Power Amplifier is
- 		 * off. Report last cached data.
- 		 */
--		*temp = wsa884x->temperature;
-+		*temp = wsa884x->temperature * 1000;
- 		return 0;
- 	}
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index b01b0e5510563..8753c9d3670ac 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -238,7 +238,7 @@ struct pyrf_event {
+ };
  
-@@ -1934,7 +1934,7 @@ static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
- 	if ((val > WSA884X_LOW_TEMP_THRESHOLD) &&
- 	    (val < WSA884X_HIGH_TEMP_THRESHOLD)) {
- 		wsa884x->temperature = val;
--		*temp = val;
-+		*temp = val * 1000;
- 		ret = 0;
- 	} else {
- 		ret = -EAGAIN;
+ #define sample_members \
+-	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
++	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
+ 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
+ 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
+ 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
 -- 
 2.39.5
 
