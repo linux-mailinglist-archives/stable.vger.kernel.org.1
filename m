@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28A3A80B5F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE22FA8084C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD24A4C60C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9048E8A3875
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5E727CB22;
-	Tue,  8 Apr 2025 12:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F8D26A1A8;
+	Tue,  8 Apr 2025 12:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7unpNlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgB7jlT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16626F47A;
-	Tue,  8 Apr 2025 12:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2868268C4F;
+	Tue,  8 Apr 2025 12:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117108; cv=none; b=AFyjT+4mHrZ3P3+t5fW7nxRiFXjnygdTmgViX9JCL7JVI82x8G/2mssFKHF5UvggNBxwfaecrFEtq4qi+n0+yVcqoVvvaP7qpupW9+dCwenO1u1wt2hJY4Kx1EWUu9uJEFY4k1HO9BnV66dI0WVVKYoVJVvMUHRNP8OsBbLVZ5M=
+	t=1744115506; cv=none; b=MfBR1v5F59Bn2chlrJ6meqN5P35uQk4eEv3DEXRt2SH8AaDAj5xGb/wXQy9HY6rLNBxd4O6gejQxJblvhcwUZB349twDk8awFNoa3h4/hAgrSGxM8BU7h2eGM3x/8IJn/a+UkmxMii5tOLnmY88oPYIVd1eg9+DdEBqvWnuaJOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117108; c=relaxed/simple;
-	bh=g18HDSRfK518+95IS0pJcT4chErZqw6dmAjl3INEXE0=;
+	s=arc-20240116; t=1744115506; c=relaxed/simple;
+	bh=Tfq1VcWKM8rcfSPqQbwJi4MQ8Oc6HWrrx+zPMNH94iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lz8VW7q6BWU353Ai3j10AFB6tH3PhVpw5ILajGVwilW7GDnagpJr4X1GT0DLnO/R/OGkp86vnzpZxdfJrPjvyNReXGEyNv5LEcBxtIW5mf0Dpn4xx3QAJITTWSLM3oilQym0qGiMQqm1qAvvHc/E0PmWrWgrryUBIui4I0POLr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7unpNlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D271C4CEE7;
-	Tue,  8 Apr 2025 12:58:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GaHJsCPnN9Cl0JxfphBnAjQqYeE0uHTv2V9KLOENY/bD5kdGYZMrpBQ/SE+WgmLzF81kZVPNgwSga0GJ4t+2PaHfxYzywPMvczxFHsQp6sBfVtmVCbC4dMKiLKFrdOgYrp88Ch1+T3csREghqBz8FWI6MIRP4shtUNCHX0I/riU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgB7jlT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321CAC4CEE5;
+	Tue,  8 Apr 2025 12:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117108;
-	bh=g18HDSRfK518+95IS0pJcT4chErZqw6dmAjl3INEXE0=;
+	s=korg; t=1744115506;
+	bh=Tfq1VcWKM8rcfSPqQbwJi4MQ8Oc6HWrrx+zPMNH94iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7unpNlCBnrRSHlm5NyWF1VxkEZwK0bEEJAgRj6wqvFAXzvsjnc1K4dxOcwsunqVH
-	 781MKH7/7KwvBoRMqGNK5zTXts0m0ZE20W99quECK4LyBfrCUB7PAY7cHbrV4opnil
-	 hoaF1MsjlUE/BZ5D87hVkYQIH0hDF069PchXNB4I=
+	b=qgB7jlT7Erxcs+i4U0uwMwmvcuJ/DR3BM/Wx2E7s4Lu5tkEopSO0GH3NLO2mN0MEc
+	 YqBJQPu2rQDln5Xb9yJ+fFWJwJXsWeFZnsXp5zvO3tICvRif3fZk96+m7QCHGRozHS
+	 qNviYkH3lAe8sPG2r91wiOs0Im1HXZ9lldteEC88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 6.12 385/423] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.13 499/499] platform/x86/amd/pmf: fix cleanup in amd_pmf_init_smart_pc()
 Date: Tue,  8 Apr 2025 12:51:51 +0200
-Message-ID: <20250408104854.853363479@linuxfoundation.org>
+Message-ID: <20250408104903.806537828@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
+commit 5b1122fc4995f308b21d7cfc64ef9880ac834d20 upstream.
 
-Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
-bus families can be translated". This warning is emited if the argument
-is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
-verifies that a user-provided value call_pkg->nd_family of type u64 is
-not equal to 0. Then the value is converted to int, and only after that
-is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
-argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
-the lower 32 bits are zero.
+There are a few problems in this code:
 
-Furthermore, it is best to return EINVAL immediately upon seeing the
-invalid user input.  The WARNING is insufficient to prevent further
-undefined behavior based on other invalid user input.
+First, if amd_pmf_tee_init() fails then the function returns directly
+instead of cleaning up.  We cannot simply do a "goto error;" because
+the amd_pmf_tee_init() cleanup calls tee_shm_free(dev->fw_shm_pool);
+and amd_pmf_tee_deinit() calls it as well leading to a double free.
+I have re-written this code to use an unwind ladder to free the
+allocations.
 
-All checks of the input value should be applied to the original variable
-call_pkg->nd_family.
+Second, if amd_pmf_start_policy_engine() fails on every iteration though
+the loop then the code calls amd_pmf_tee_deinit() twice which is also a
+double free.  Call amd_pmf_tee_deinit() inside the loop for each failed
+iteration.  Also on that path the error codes are not necessarily
+negative kernel error codes.  Set the error code to -EINVAL.
 
-[iweiny: update commit message]
+There is a very subtle third bug which is that if the call to
+input_register_device() in amd_pmf_register_input_device() fails then
+we call input_unregister_device() on an input device that wasn't
+registered.  This will lead to a reference counting underflow
+because of the device_del(&dev->dev) in __input_unregister_device().
+It's unlikely that anyone would ever hit this bug in real life.
 
-Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 376a8c2a1443 ("platform/x86/amd/pmf: Update PMF Driver for Compatibility with new PMF-TA")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/232231fc-6a71-495e-971b-be2a76f6db4c@stanley.mountain
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/nfit/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/tee-if.c |   36 +++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
- 		cmd_mask = nd_desc->cmd_mask;
- 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
- 			family = call_pkg->nd_family;
--			if (family > NVDIMM_BUS_FAMILY_MAX ||
-+			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
- 			    !test_bit(family, &nd_desc->bus_family_mask))
- 				return -EINVAL;
- 			family = array_index_nospec(family,
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -510,18 +510,18 @@ int amd_pmf_init_smart_pc(struct amd_pmf
+ 
+ 	ret = amd_pmf_set_dram_addr(dev, true);
+ 	if (ret)
+-		goto error;
++		goto err_cancel_work;
+ 
+ 	dev->policy_base = devm_ioremap_resource(dev->dev, dev->res);
+ 	if (IS_ERR(dev->policy_base)) {
+ 		ret = PTR_ERR(dev->policy_base);
+-		goto error;
++		goto err_free_dram_buf;
+ 	}
+ 
+ 	dev->policy_buf = kzalloc(dev->policy_sz, GFP_KERNEL);
+ 	if (!dev->policy_buf) {
+ 		ret = -ENOMEM;
+-		goto error;
++		goto err_free_dram_buf;
+ 	}
+ 
+ 	memcpy_fromio(dev->policy_buf, dev->policy_base, dev->policy_sz);
+@@ -531,13 +531,13 @@ int amd_pmf_init_smart_pc(struct amd_pmf
+ 	dev->prev_data = kzalloc(sizeof(*dev->prev_data), GFP_KERNEL);
+ 	if (!dev->prev_data) {
+ 		ret = -ENOMEM;
+-		goto error;
++		goto err_free_policy;
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(amd_pmf_ta_uuid); i++) {
+ 		ret = amd_pmf_tee_init(dev, &amd_pmf_ta_uuid[i]);
+ 		if (ret)
+-			return ret;
++			goto err_free_prev_data;
+ 
+ 		ret = amd_pmf_start_policy_engine(dev);
+ 		switch (ret) {
+@@ -550,27 +550,41 @@ int amd_pmf_init_smart_pc(struct amd_pmf
+ 			status = false;
+ 			break;
+ 		default:
+-			goto error;
++			ret = -EINVAL;
++			amd_pmf_tee_deinit(dev);
++			goto err_free_prev_data;
+ 		}
+ 
+ 		if (status)
+ 			break;
+ 	}
+ 
+-	if (!status && !pb_side_load)
+-		goto error;
++	if (!status && !pb_side_load) {
++		ret = -EINVAL;
++		goto err_free_prev_data;
++	}
+ 
+ 	if (pb_side_load)
+ 		amd_pmf_open_pb(dev, dev->dbgfs_dir);
+ 
+ 	ret = amd_pmf_register_input_device(dev);
+ 	if (ret)
+-		goto error;
++		goto err_pmf_remove_pb;
+ 
+ 	return 0;
+ 
+-error:
+-	amd_pmf_deinit_smart_pc(dev);
++err_pmf_remove_pb:
++	if (pb_side_load && dev->esbin)
++		amd_pmf_remove_pb(dev);
++	amd_pmf_tee_deinit(dev);
++err_free_prev_data:
++	kfree(dev->prev_data);
++err_free_policy:
++	kfree(dev->policy_buf);
++err_free_dram_buf:
++	kfree(dev->buf);
++err_cancel_work:
++	cancel_delayed_work_sync(&dev->pb_work);
+ 
+ 	return ret;
+ }
 
 
 
