@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB3CA80AA0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDB3A80704
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94864E38A0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27154661C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0E526FA60;
-	Tue,  8 Apr 2025 12:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093D12638B8;
+	Tue,  8 Apr 2025 12:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V808kqmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYiBbSoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF63B26B961;
-	Tue,  8 Apr 2025 12:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB331267731;
+	Tue,  8 Apr 2025 12:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116562; cv=none; b=jfyYNXCfx+um/vRnnAYizq6Yx43I5H+E8nkSuiHOc5h2RZrBPwoAMnJ/lsPDCrcHMZryOs55FJNPuR3WSwNUZDF1ctejPzGMQsgq89BjTcf7O5eq/yzHc+/JHIuQ1P+V2KYO8qdM9kSS4rDjP7tl9I2LFFgM5XqFDVgbRtv0kls=
+	t=1744115075; cv=none; b=hnhEiIWDGY1opub3VpCqUmK3gDZv9ztHZrGA8P08yOUjnrHLJHLRj/+6uv+1OJ1WK7raM9fgr/jz1Ek9tfrn/s4SMpsctbOknitpl2QH6xtjN7wCBsjhKAz6oNBDwbzYlMYl9T5TIF44s9KXxHfIgyaN4buvYN+sNyWARDHOcIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116562; c=relaxed/simple;
-	bh=WUKT7pDTHBVA+p75P90PLNRhT7YZfuKlV4IKmqYoMR0=;
+	s=arc-20240116; t=1744115075; c=relaxed/simple;
+	bh=cvGnORBftZLwpvAu3SGEYc+mIVUGdduWXVYVj3BUbwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmxcWvOGxgb4LBoiRokA3/Oq6/rDrc6ec1eF/v3k7++N+fpzCI7HnEF1CgocpSpcDjSOuVsTjd5AxaggbalgCCDxrnaZSehnz391ed38rQjot9SNq7ehw2s3fgR5oiu1rePekPHfzEnax/SHoW0DDls+PBlvpknwS+cKjwMt7jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V808kqmq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B729C4CEE7;
-	Tue,  8 Apr 2025 12:49:21 +0000 (UTC)
+	 MIME-Version; b=WDXv9urCpUZMPj2GAvx05ybrgxiyacShJ+Nhzwag4DNEPdIL0v/GFe0D8Dy/qvj7Sdvb1MMOfLSK2xbcdsKCos3WSm9x+oa30ijiInGsVruvIt7duxT5kWfqBemMJj5pkmyzXj4FN62Fwz96XWe1Creeg4M2KOEbV8tX2TGkdtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYiBbSoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE1C4CEE5;
+	Tue,  8 Apr 2025 12:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116561;
-	bh=WUKT7pDTHBVA+p75P90PLNRhT7YZfuKlV4IKmqYoMR0=;
+	s=korg; t=1744115075;
+	bh=cvGnORBftZLwpvAu3SGEYc+mIVUGdduWXVYVj3BUbwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V808kqmqn+a8mEUnTvlw1zTKNPnSjRZLTYBw5ruxD9EwSZXVds+JH+qnpi82Zdvfa
-	 SO3NiLp1M6bEqkg032Tm9NchTHKgOvBw4W9QeWgZETYHPsg5HnY6S5/WaXVBIpcdlU
-	 8rBOpSOufHPzLACa3m0SnVYrUIkR5AqHCefII3qI=
+	b=WYiBbSojiwudppWpXx7XtE07qQDI/5oGJXbGdfabPyxJ0o58CnWKeYKVZ939qRqZ1
+	 uw61RrmPYom4YjcPt8DWR+OsPkBwxfT2JdTTEUi5zGR7CV496y0+DFe/81AmPp59Ig
+	 K1QfVsKvR6lGN6KcgkRJJgprXcBzp9is6qhQCQFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/423] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
+Subject: [PATCH 6.13 300/499] wifi: mac80211: Cleanup sta TXQs on flush
 Date: Tue,  8 Apr 2025 12:48:32 +0200
-Message-ID: <20250408104850.073717846@linuxfoundation.org>
+Message-ID: <20250408104858.698454136@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit c9c59da76ce9cb3f215b66eb3708cda1134a5206 ]
+[ Upstream commit 5b999006e35ea9c11116ddff7e375b256421d0af ]
 
-There is kernel dump when do module test:
-sysfs: cannot create duplicate filename
-/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
- __dma_async_device_channel_register+0x128/0x19c
- dma_async_device_register+0x150/0x454
- fsl_edma_probe+0x6cc/0x8a0
- platform_probe+0x68/0xc8
+Drop the sta TXQs on flush when the drivers is not supporting
+flush.
 
-fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
-dma_async_device_unregister  needs the link to do
-__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
-after dma_async_device_unregister to make sure channel could be freed.
+ieee80211_set_disassoc() tries to clean up everything for the sta.
+But it ignored queued frames in the sta TX queues when the driver
+isn't supporting the flush driver ops.
 
-So clean up chan after dma_async_device_unregister to address this.
-
-Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250228071720.3780479-1-peng.fan@oss.nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://patch.msgid.link/20250204123129.9162-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/util.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 70cb7fda757a9..db5f06b8575db 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -699,9 +699,9 @@ static void fsl_edma_remove(struct platform_device *pdev)
- 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 5ee7fc81ff8cf..de84260247ef1 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -685,7 +685,7 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
+ 			      struct ieee80211_sub_if_data *sdata,
+ 			      unsigned int queues, bool drop)
+ {
+-	if (!local->ops->flush)
++	if (!local->ops->flush && !drop)
+ 		return;
  
- 	fsl_edma_irq_exit(pdev, fsl_edma);
--	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
- 	of_dma_controller_free(np);
- 	dma_async_device_unregister(&fsl_edma->dma_dev);
-+	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
- 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
- }
+ 	/*
+@@ -712,7 +712,8 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
+ 		}
+ 	}
  
+-	drv_flush(local, sdata, queues, drop);
++	if (local->ops->flush)
++		drv_flush(local, sdata, queues, drop);
+ 
+ 	ieee80211_wake_queues_by_reason(&local->hw, queues,
+ 					IEEE80211_QUEUE_STOP_REASON_FLUSH,
 -- 
 2.39.5
 
