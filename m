@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA303A80159
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE494A7FDEF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B188825A4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456934440B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BDF266B54;
-	Tue,  8 Apr 2025 11:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D33267F73;
+	Tue,  8 Apr 2025 11:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/dBmRzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCBQW8E8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3788219301;
-	Tue,  8 Apr 2025 11:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81866267F6E;
+	Tue,  8 Apr 2025 11:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111953; cv=none; b=pUJEHV1UMdbATzEeUxF+ZmxEYx+fLS9ly9zj+wWtZgyKMptzOL8CHaegZcTECoBQAjLYmDYjNHaAqs6l1zy6NFSunxnvuUR4vtdIx20hcRbkL4y6j5RaKlmKnSlpPw+PMuiRgOElqkBrSjSF49UREUn5+o5w8AgcVf56E61luME=
+	t=1744110023; cv=none; b=uA2jeR/3RQ1ouTrrCX3JNamgwPj0guNAMOBDifUEmzA441JSW+9yWcESx9lHJy91QO4Abg6goVGXyC6zqXZGTTIW7EeMoUVwnQXqFm2i61MJxSkwEFVuvcf+pL9rda6Zpw6NErBNaHCwAdNIh+VKvs+GFhoyOrUc2oV6Trw3ASo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111953; c=relaxed/simple;
-	bh=3btJzbsnsanMjp5kVPZXojXOLwTVvH16T7ZIrW1qSkI=;
+	s=arc-20240116; t=1744110023; c=relaxed/simple;
+	bh=LkQoU/Up0aYTclKLFkVSQsqTVx3sELIzWbqG1NYD1a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTitTkMBi2qCqF1osxSjVbpTpEOUrWqNXlXK/QlKZ1xUPYc0g6fBjq0K8Jg5w2uqkkgsRt7gE2WlCR3hj0hi6cM2lfwOOUF1uTFttgyoOCMtpzwDfWb1gIs5XQsvNL7cUt/NzDJ8keGwDdquaDtHw2nnwf5aYyVUYPzNLviJM8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/dBmRzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EC8C4CEE5;
-	Tue,  8 Apr 2025 11:32:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LOY8QmwLwu1inDBEWnKBg0mZZXzxNA4f59hUtKSixSTzQy+U3uGFBWfMZ1DObD7s/n5Ks2lbxibTtwtVEZFpeGQhEV59778MUEJ34m/ZoPgxt00tatNKt+V4IZEcV1OoA8/SuaFAGEr7hHQNOf5xdJYPkeZsU1y/zB9aJp4k6wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCBQW8E8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17DEC4CEE5;
+	Tue,  8 Apr 2025 11:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111953;
-	bh=3btJzbsnsanMjp5kVPZXojXOLwTVvH16T7ZIrW1qSkI=;
+	s=korg; t=1744110023;
+	bh=LkQoU/Up0aYTclKLFkVSQsqTVx3sELIzWbqG1NYD1a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/dBmRzwKTtJ+xgRjK3Ic5oE/uOkzOsWKMVb5rKfLagkWcc2YYIyaZrb0ShUZmpuX
-	 tcR7B6Br3CB/BZksfr4JM3jkXntnjplBdc77dNaUvebrS13dlBpNNk2NJT4PmyJlCd
-	 15s/tmO91eU4M+SyzJrvc0f35bLgr9lzQcQQ/430=
+	b=LCBQW8E8jfa+VXJE7AOJz76K9maUtNRhMrxBy/1ivbSqqE3k0uhnwgB+irkupw37I
+	 OY4CS3JLbItmBxq6IQqTl96DYXOEWTFRP9iMrLZXMvRBjtM+XySsOwRbJ3BP2TTyGB
+	 HIZJrp1CoN/AzCLVzimSQkjgSRcAeW1R3If60GkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
-	Nishanth Devarajan <ndev2021@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 621/731] net_sched: skbprio: Remove overly strict queue assertions
-Date: Tue,  8 Apr 2025 12:48:38 +0200
-Message-ID: <20250408104928.717813138@linuxfoundation.org>
+Subject: [PATCH 5.10 141/227] fbdev: au1100fb: Move a variable assignment behind a null pointer check
+Date: Tue,  8 Apr 2025 12:48:39 +0200
+Message-ID: <20250408104824.534540565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
+[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
 
-In the current implementation, skbprio enqueue/dequeue contains an assertion
-that fails under certain conditions when SKBPRIO is used as a child qdisc under
-TBF with specific parameters. The failure occurs because TBF sometimes peeks at
-packets in the child qdisc without actually dequeuing them when tokens are
-unavailable.
+The address of a data structure member was determined before
+a corresponding null pointer check in the implementation of
+the function “au1100fb_setmode”.
 
-This peek operation creates a discrepancy between the parent and child qdisc
-queue length counters. When TBF later receives a high-priority packet,
-SKBPRIO's queue length may show a different value than what's reflected in its
-internal priority queue tracking, triggering the assertion.
+This issue was detected by using the Coccinelle software.
 
-The fix removes this overly strict assertions in SKBPRIO, they are not
-necessary at all.
-
-Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
-Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
-Cc: Nishanth Devarajan <ndev2021@gmail.com>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_skbprio.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/video/fbdev/au1100fb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
-index 20ff7386b74bd..f485f62ab721a 100644
---- a/net/sched/sch_skbprio.c
-+++ b/net/sched/sch_skbprio.c
-@@ -123,8 +123,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	/* Check to update highest and lowest priorities. */
- 	if (skb_queue_empty(lp_qdisc)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			/* The incoming packet is the only packet in queue. */
--			BUG_ON(sch->q.qlen != 1);
- 			q->lowest_prio = prio;
- 			q->highest_prio = prio;
- 		} else {
-@@ -156,7 +154,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
- 	/* Update highest priority field. */
- 	if (skb_queue_empty(hpq)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			BUG_ON(sch->q.qlen);
- 			q->highest_prio = 0;
- 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
- 		} else {
+diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
+index 37a6512feda0f..abb769824840e 100644
+--- a/drivers/video/fbdev/au1100fb.c
++++ b/drivers/video/fbdev/au1100fb.c
+@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
+ 	 */
+ int au1100fb_setmode(struct au1100fb_device *fbdev)
+ {
+-	struct fb_info *info = &fbdev->info;
++	struct fb_info *info;
+ 	u32 words;
+ 	int index;
+ 
+ 	if (!fbdev)
+ 		return -EINVAL;
+ 
++	info = &fbdev->info;
++
+ 	/* Update var-dependent FB info */
+ 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
+ 		if (info->var.bits_per_pixel <= 8) {
 -- 
 2.39.5
 
