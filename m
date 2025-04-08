@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CBBA80898
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C12DA807C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61231B814B3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8861B4C7377
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324B926AAB9;
-	Tue,  8 Apr 2025 12:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8607126A1BA;
+	Tue,  8 Apr 2025 12:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cStclAe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBVCApdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AF21AAA32;
-	Tue,  8 Apr 2025 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4318A263F4D;
+	Tue,  8 Apr 2025 12:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115790; cv=none; b=h5acrdMJ7XmQFUIgYvDs+eTlj+mw0dfbZSpPSFIDV5uowidmXelWty1Ef+5HHoNJ/nsPIVHnPHDbmmBvHccGZJ5+dkgaUp2ubpW14t4PKeQBw9YQBCbeioKHxrwuS3QM6dzYM5py98HY9iUvJDtCK6n+TwnWYQztbJcbL0UI0oA=
+	t=1744115373; cv=none; b=dkwySJyGv1jbLuAgZ/FKuH3Pnc4sJ63/7lm38/tb+4oCKR6WSu+4H4+XRjoOcPf8B87odO+TQiQqKm5YJN5vZgJ645xTUqt5Qjp7RWn48O47f03ejB+hZoVZMcIRCrDrYEHz9shs3EioGEspPIdu30mk4EIFTRzG/uWD2C9MlQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115790; c=relaxed/simple;
-	bh=f/lNBnP38XS/u/yQmFZzIgL1fJSnVC3D9KsyXQlkXzU=;
+	s=arc-20240116; t=1744115373; c=relaxed/simple;
+	bh=OYKxhML6i7nOsUu9cclVIW3PQNhAlanIXSkE+ZwZQz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slque0WVMFlW4SeINtZr+R891S9EfUW/FJ9vtrypTTOI2SroizeaFjUkYHWO3YeBSFuYM6TDvvFDUSkQCERYBkwKBVVCDodWvewlgWoUJLuB5TNtvWmslWz9klj/+EX5uCWjUNJ1FXMjd12zL+4CStjKgzEBrXz/kSR4xF44iII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cStclAe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D13C4CEE5;
-	Tue,  8 Apr 2025 12:36:29 +0000 (UTC)
+	 MIME-Version; b=SZDqpSIt+RmB2PxZmawHN1Z8CCf5TgXzci8dYAe6LWHMaXOqO2YL0PY0TtxOY3xYjMv6oZCVbw+PZLM2uRAksMKaSFFzR+AyynW0ROevjS7GqG9MidUpPmEQFRb1C58lqn9ihHjLxRdNLqyICyO+tHCTOrPMaInphFbYYPo25S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBVCApdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677B8C4CEE5;
+	Tue,  8 Apr 2025 12:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115789;
-	bh=f/lNBnP38XS/u/yQmFZzIgL1fJSnVC3D9KsyXQlkXzU=;
+	s=korg; t=1744115372;
+	bh=OYKxhML6i7nOsUu9cclVIW3PQNhAlanIXSkE+ZwZQz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cStclAe0Iaw3fjbCkLCyyPT2gCkb2WuCPdnkxeLzZWe5Df43Kn6ZnGyPVeiSW39ac
-	 27eifEmFVn0jlhtr2dK1AXN207mk1CgxX83b8DPbQCXaa3FyjsQ9fMfc2DuQoWh0FW
-	 zRlMs+oN6IPemJG1/f7PZjRVMAOVK2wcMGmiRkh0=
+	b=nBVCApdLZNk52azOfPLlqKnavxFM65rWLk/CaGE93OZ5A4JwVGiUwdwBK72BXzvPA
+	 Nssrs04KG7PY5Gtp5Lk/fBtwE7JonhpcV59VZxQXoAUwr3Y89sHUfozel8epX3eanx
+	 mEoe97jwVrEYpfR2H3UznGcIPjHGGlfoIvIFadyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/204] perf python: Fixup description of sample.id event member
-Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104823.387341969@linuxfoundation.org>
+Subject: [PATCH 6.13 423/499] staging: gpib: agilent_82357a: Handle gpib_register_driver() errors
+Date: Tue,  8 Apr 2025 12:50:35 +0200
+Message-ID: <20250408104901.776191854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-[ Upstream commit 1376c195e8ad327bb9f2d32e0acc5ac39e7cb30a ]
+[ Upstream commit 9e43ebc613e2adb9b9e900e11a4099e104b61f2d ]
 
-Some old cut'n'paste error, its "ip", so the description should be
-"event ip", not "event type".
+The usb_register() function can fail and returns an error value which
+is not returned. The function gpib_register_driver() can also fail
+which can result in semi-registered module.
 
-Fixes: 877108e42b1b9ba6 ("perf tools: Initial python binding")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-2-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+In case gpib_register_driver() fails unregister the previous usb driver
+registering function. Return the error value if gpib_register_driver()
+or usb_register() functions fail. Add pr_err when registering driver
+fails also indicating the error value.
+
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Link: https://lore.kernel.org/r/20241230185633.175690-4-niharchaithanya@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8491e73a5223 ("staging: gpib: Fix Oops after disconnect in agilent usb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../staging/gpib/agilent_82357a/agilent_82357a.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 5be5fa2391de2..9ae5ffea91b48 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -181,7 +181,7 @@ struct pyrf_event {
- };
+diff --git a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
+index bf05fb4a736b3..261fb6d2e9916 100644
+--- a/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
++++ b/drivers/staging/gpib/agilent_82357a/agilent_82357a.c
+@@ -1691,12 +1691,24 @@ static struct usb_driver agilent_82357a_bus_driver = {
+ static int __init agilent_82357a_init_module(void)
+ {
+ 	int i;
++	int ret;
  
- #define sample_members \
--	sample_member_def(sample_ip, ip, T_ULONGLONG, "event type"),			 \
-+	sample_member_def(sample_ip, ip, T_ULONGLONG, "event ip"),			 \
- 	sample_member_def(sample_pid, pid, T_INT, "event pid"),			 \
- 	sample_member_def(sample_tid, tid, T_INT, "event tid"),			 \
- 	sample_member_def(sample_time, time, T_ULONGLONG, "event timestamp"),		 \
+ 	pr_info("agilent_82357a_gpib driver loading");
+ 	for (i = 0; i < MAX_NUM_82357A_INTERFACES; ++i)
+ 		agilent_82357a_driver_interfaces[i] = NULL;
+-	usb_register(&agilent_82357a_bus_driver);
+-	gpib_register_driver(&agilent_82357a_gpib_interface, THIS_MODULE);
++
++	ret = usb_register(&agilent_82357a_bus_driver);
++	if (ret) {
++		pr_err("agilent_82357a: usb_register failed: error = %d\n", ret);
++		return ret;
++	}
++
++	ret = gpib_register_driver(&agilent_82357a_gpib_interface, THIS_MODULE);
++	if (ret) {
++		pr_err("agilent_82357a: gpib_register_driver failed: error = %d\n", ret);
++		usb_deregister(&agilent_82357a_bus_driver);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
