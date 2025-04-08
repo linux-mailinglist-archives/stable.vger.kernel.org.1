@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE31A800EB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C27EA7FD36
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EEBE880CBB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF0E116846D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDEF267B7F;
-	Tue,  8 Apr 2025 11:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0CC267F68;
+	Tue,  8 Apr 2025 10:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGqaYtsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJE3HkDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36858267F4F;
-	Tue,  8 Apr 2025 11:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09009264FB6;
+	Tue,  8 Apr 2025 10:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111615; cv=none; b=Jq2v0Bax7otWm1Ut/D2GsmS08UFmcZy6qRgU4GTQO9yy+D7EY/HSI18PgErFq7DxqwpIxHJJrVtdGTIKg2QyhPwZbevjvKZt9xyAcmhH7HWKXbFG9KOpoPTVQizPHNOMB0KUyleqFP8mZ9oYnECE8c4V4cHi5/AQWGeV/QeCeco=
+	t=1744109681; cv=none; b=NzEZct10V/nCZ66ItHSYuVh5l8tlf1d+/sm0KsWF6XkMLAPBaTPAJPso/r+8QdKURex7zHdy5IULuDqtLrAm2kUcdE2+OQ1NvWIE7IO6djJqHVyhnp6yaVH3LKoPtytxmOzoVAhL988fB0IKytHcsPhzZnpelnwXe0aNkcPDz9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111615; c=relaxed/simple;
-	bh=MqVNFkfQDCi3Ew2Dy+P1n6bGUqxs5fy7tT+8zGKnFwQ=;
+	s=arc-20240116; t=1744109681; c=relaxed/simple;
+	bh=UbC2TeFX1uPhpFqvj5XpTryhx3i5MjFmEXEgbKPD7Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hYivPBckJEF4lrZ3uI5OtNqBhXU7oTx0rNOProzdCZjFUpxa00e6QwDcdFNkq2I1s1ctWysgqY2E4KIvb8S1QkNUyowGrYqp1k0yRsejDq0t2aHW00knUCxUdDO5hmPvqMsZ9oIT/AJqfDulPbw6veHGxhFc9rslWptqul+cuUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGqaYtsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F4BC4CEE5;
-	Tue,  8 Apr 2025 11:26:54 +0000 (UTC)
+	 MIME-Version; b=pm2/H9vQd9k/wIkugvh+6PIsdYmH+gN7E0OCgE4iM/uopD2qtLIBEegHysLuaLLg9ukjH58NGRbO+0kuF7IngAYdBnpj1RCqaAOTexAMRuEBEEEZzdb3dooo0b9LhnL03Wib1+ZS8FISKSN39z2Yhv/txcXlj3PM6UiFCar7S3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJE3HkDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AB8C4CEE5;
+	Tue,  8 Apr 2025 10:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111614;
-	bh=MqVNFkfQDCi3Ew2Dy+P1n6bGUqxs5fy7tT+8zGKnFwQ=;
+	s=korg; t=1744109679;
+	bh=UbC2TeFX1uPhpFqvj5XpTryhx3i5MjFmEXEgbKPD7Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGqaYtsUAcqKBIQEsEks9wsFkS44lStcdvXTkr9xYPpD0FEfAzwf13NuB9o8OVhPG
-	 ljw7xmQwmbR1tZgxcUdJ0vk/LAMTsk5s9J7skueHYToqc8FUd40Fj7mRGWUZHFk2rE
-	 Nn/Lt9icqxvrCMpLwARg9579kQSKp+wiejBBh58A=
+	b=gJE3HkDUx3rGRenCfvv2f70nB9sn/NfajYTqnOQ0/xioOccE/d/wHh3bDZDIaXj99
+	 bMHMEpFq6Eyc0RcJ3+JvJUICFz8zrHFJZk9i6+z1Je1EQr1ZqnEztZk78RPeJWuSGG
+	 4fA/DljXpBu4N6a1gVHU4KvN5VOf2WaKjRHf/E7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 494/731] iio: adc: ad7173: Fix comparison of channel configs
-Date: Tue,  8 Apr 2025 12:46:31 +0200
-Message-ID: <20250408104925.765294085@linuxfoundation.org>
+Subject: [PATCH 5.10 014/227] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Date: Tue,  8 Apr 2025 12:46:32 +0200
+Message-ID: <20250408104820.821599814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 7b6033ed5a9e1a369a9cf58018388ae4c5f17e41 ]
+[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+The VMBus driver manages the MMIO space it owns via the hyperv_mmio
+resource tree. Because the synthetic video framebuffer portion of the
+MMIO space is initially setup by the Hyper-V host for each guest, the
+VMBus driver does an early reserve of that portion of MMIO space in the
+hyperv_mmio resource tree. It saves a pointer to that resource in
+fb_mmio. When a VMBus driver requests MMIO space and passes "true"
+for the "fb_overlap_ok" argument, the reserved framebuffer space is
+used if possible. In that case it's not necessary to do another request
+against the "shadow" hyperv_mmio resource tree because that resource
+was already requested in the early reserve steps.
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+However, the vmbus_free_mmio() function currently does no special
+handling for the fb_mmio resource. When a framebuffer device is
+removed, or the driver is unbound, the current code for
+vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
+pointing to memory that has been freed. If the same or another
+driver is subsequently bound to the device, vmbus_allocate_mmio()
+checks against fb_mmio, and potentially gets garbage. Furthermore
+a second unbind operation produces this "nonexistent resource" error
+because of the unbalanced behavior between vmbus_allocate_mmio() and
+vmbus_free_mmio():
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a static_assert guard to (somewhat) ensure that when
-struct ad7173_channel_config::config_props is expanded, the comparison
-is adapted, too.
+[   55.499643] resource: Trying to free nonexistent
+			resource <0x00000000f0000000-0x00000000f07fffff>
 
-This issue is somewhat theoretic, but using memcmp() on a struct is a
-bad pattern that is worth fixing.
+Fix this by adding logic to vmbus_free_mmio() to recognize when
+MMIO space in the fb_mmio reserved area would be released, and don't
+release it. This filtering ensures the fb_mmio resource always exists,
+and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
 
-Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250303114659.1672695-14-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7173.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/hv/vmbus_drv.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 6645a811764fd..4f8810e35a8d1 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -189,7 +189,11 @@ struct ad7173_channel_config {
- 	u8 cfg_slot;
- 	bool live;
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 39339b152b8ba..e8bea7c791691 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2331,12 +2331,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
+ 	struct resource *iter;
  
--	/* Following fields are used to compare equality. */
-+	/*
-+	 * Following fields are used to compare equality. If you
-+	 * make adaptations in it, you most likely also have to adapt
-+	 * ad7173_find_live_config(), too.
-+	 */
- 	struct_group(config_props,
- 		bool bipolar;
- 		bool input_buf;
-@@ -717,15 +721,28 @@ static struct ad7173_channel_config *
- ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
- {
- 	struct ad7173_channel_config *cfg_aux;
--	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = sizeof_field(struct ad7173_channel_config, config_props);
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad7173_channel_config was changed.
-+	 */
-+	static_assert(sizeof_field(struct ad7173_channel_config, config_props) ==
-+		      sizeof(struct {
-+				     bool bipolar;
-+				     bool input_buf;
-+				     u8 odr;
-+				     u8 ref_sel;
-+			     }));
+ 	mutex_lock(&hyperv_mmio_lock);
 +
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
++	/*
++	 * If all bytes of the MMIO range to be released are within the
++	 * special case fb_mmio shadow region, skip releasing the shadow
++	 * region since no corresponding __request_region() was done
++	 * in vmbus_allocate_mmio().
++	 */
++	if (fb_mmio && start >= fb_mmio->start &&
++	    (start + size - 1 <= fb_mmio->end))
++		goto skip_shadow_release;
++
+ 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
+ 		if ((iter->start >= start + size) || (iter->end <= start))
+ 			continue;
  
- 		if (cfg_aux->live &&
--		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
-+		    cfg->bipolar == cfg_aux->bipolar &&
-+		    cfg->input_buf == cfg_aux->input_buf &&
-+		    cfg->odr == cfg_aux->odr &&
-+		    cfg->ref_sel == cfg_aux->ref_sel)
- 			return cfg_aux;
+ 		__release_region(iter, start, size);
  	}
- 	return NULL;
++
++skip_shadow_release:
+ 	release_mem_region(start, size);
+ 	mutex_unlock(&hyperv_mmio_lock);
+ 
 -- 
 2.39.5
 
