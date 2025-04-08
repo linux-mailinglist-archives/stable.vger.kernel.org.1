@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF8AA7FE12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DEE8A8014A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F352A16DB19
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1518C19E0ACD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F3626A0DD;
-	Tue,  8 Apr 2025 11:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9332676DE;
+	Tue,  8 Apr 2025 11:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+WefixP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xx/3Idem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84853267B77;
-	Tue,  8 Apr 2025 11:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569D7266583;
+	Tue,  8 Apr 2025 11:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110134; cv=none; b=QCMoJFXBMnn/zYToZqjvh40Ags1ICgXagL7muQp+QphWqGu5NyzYQrmdkJYhHZaIDk9+Mqepyxb/okYb2typN3NXmYz2WqBDlmHIAsNPTTxp01J1WkTadQxHCLVCVtNm5nPC5EqBWr29GFTSIgn7wUKcIkI01wYZxK9RZT8Hoj8=
+	t=1744112064; cv=none; b=L/0e8wkKFZ/opB4f5Ki26USbyUOY46D00stKT/jhx0VhcbJwUw1TaUKyxUUb5l3p2c2xeoH7C3NEf7RddcxPbPr2o3tKw1xYV3JZs1n32ibrzrN+UeqVT/raOKB9qM6L9Z61xVbL3WcVg8A+uk8HLSptCUklid7ofQaqngX0AFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110134; c=relaxed/simple;
-	bh=JGyhzWwDdTnpFO0Sr/ZJVW1CZCGIRV6AMJSjRdeZoR4=;
+	s=arc-20240116; t=1744112064; c=relaxed/simple;
+	bh=By1irPhWeC6IM+eP8idOACIVEbRfV5d5EDKmIqskLiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iILlgVFb1d6wBawaM3RhdjyoTZ+xts3J234yw3by7/a4WcDrTkE+k5fKXKVtr0NsnVldUJrXRcJ24HhyeQXnx8TlHsjNnsk/6qsF1SkOKVFJlHGIX1Tl3XczdK8ju/ISCMbisdc1jBc+WZOjzs4AcKdCqFf9uQN5UKh4o5iXJAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+WefixP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168E6C4CEE5;
-	Tue,  8 Apr 2025 11:02:13 +0000 (UTC)
+	 MIME-Version; b=BFAzAXDZJ+Y+e34vgNNOq0PUZq1/qH7duz5jud3MY8vrh07UhDxBVf9EzfK9rCGf/Pl/nlA9fe8+hTKZzOzY1nP/zEb94vyDrmXwCAd9g64/HDGYAGbG6LuI4vGTOpgCH70BPNlPs+2CNvBz5/OPdofQkz5DklNXr4BYQsHHUGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx/3Idem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB482C4CEE5;
+	Tue,  8 Apr 2025 11:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110134;
-	bh=JGyhzWwDdTnpFO0Sr/ZJVW1CZCGIRV6AMJSjRdeZoR4=;
+	s=korg; t=1744112064;
+	bh=By1irPhWeC6IM+eP8idOACIVEbRfV5d5EDKmIqskLiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+WefixPh72pTFX1Pv8+mj3awaLHAx5RX8vpTArUH6QBpb+UQoYOcZH9P+Bdbp4mP
-	 SIX0bo3FzPKyBQ8mAqV5uzydBi1WTUJxFfwRbXBDyVu/btcFa2WgljRQpMcA+kZXkR
-	 egpDWgbdBZtOSg6kQr1jeMfMz0G9+bUFsSViMl+w=
+	b=Xx/3Idem1UY7yMM4djDRX3jY5MWrfpvYSxRy4oUry/BBJRj4N2M5DDDaVKZHYelkM
+	 xF+ovdrHMcWxFlnmZSN0YvFL/zMrE+Doz2JiY/DXDe7Sglgamr1XuB9JCmd7NBrPI6
+	 uAckzz9kYphE3as0GPN+jOiachLPlJ9uZ3xOEymY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/227] wifi: iwlwifi: fw: allocate chained SG tables for dump
+	Miguel Ojeda <ojeda@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 662/731] rust: Fix enabling Rust and building with GCC for LoongArch
 Date: Tue,  8 Apr 2025 12:49:19 +0200
-Message-ID: <20250408104825.740672560@linuxfoundation.org>
+Message-ID: <20250408104929.665233855@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: WANG Rui <wangrui@loongson.cn>
 
-[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
+commit 13c23cb4ed09466d73f1beae8956810b95add6ef upstream.
 
-The firmware dumps can be pretty big, and since we use single
-pages for each SG table entry, even the table itself may end
-up being an order-5 allocation. Build chained tables so that
-we need not allocate a higher-order table here.
+This patch fixes a build issue on LoongArch when Rust is enabled and
+compiled with GCC by explicitly setting the bindgen target and skipping
+C flags that Clang doesn't support.
 
-This could be improved and cleaned up, e.g. by using the SG
-pool code or simply kvmalloc(), but all of that would require
-also updating the devcoredump first since that frees it all,
-so we need to be more careful. SG pool might also run against
-the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
-here.
-
-Also use _devcd_free_sgtable() for the error paths now, much
-simpler especially since it's in two places now.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+ rust/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 79d08e5d9a81c..558caf78a56da 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -619,41 +619,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
- }
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -232,7 +232,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
+ 	-mfunction-return=thunk-extern -mrecord-mcount -mabi=lp64 \
+ 	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=no \
+ 	-mno-pointers-to-nested-functions -mno-string \
+-	-mno-strict-align -mstrict-align \
++	-mno-strict-align -mstrict-align -mdirect-extern-access \
++	-mexplicit-relocs -mno-check-zero-division \
+ 	-fconserve-stack -falign-jumps=% -falign-loops=% \
+ 	-femit-struct-debug-baseonly -fno-ipa-cp-clone -fno-ipa-sra \
+ 	-fno-partial-inlining -fplugin-arg-arm_ssp_per_task_plugin-% \
+@@ -246,6 +247,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-3
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
++BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
  
- /*
-- * alloc_sgtable - allocates scallerlist table in the given size,
-- * fills it with pages and returns it
-+ * alloc_sgtable - allocates (chained) scatterlist in the given size,
-+ *	fills it with pages and returns it
-  * @size: the size (in bytes) of the table
--*/
--static struct scatterlist *alloc_sgtable(int size)
-+ */
-+static struct scatterlist *alloc_sgtable(ssize_t size)
- {
--	int alloc_size, nents, i;
--	struct page *new_page;
--	struct scatterlist *iter;
--	struct scatterlist *table;
-+	struct scatterlist *result = NULL, *prev;
-+	int nents, i, n_prev;
- 
- 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
--	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
--	if (!table)
--		return NULL;
--	sg_init_table(table, nents);
--	iter = table;
--	for_each_sg(table, iter, sg_nents(table), i) {
--		new_page = alloc_page(GFP_KERNEL);
--		if (!new_page) {
--			/* release all previous allocated pages in the table */
--			iter = table;
--			for_each_sg(table, iter, sg_nents(table), i) {
--				new_page = sg_page(iter);
--				if (new_page)
--					__free_page(new_page);
--			}
--			kfree(table);
-+
-+#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
-+	/*
-+	 * We need an additional entry for table chaining,
-+	 * this ensures the loop can finish i.e. we can
-+	 * fit at least two entries per page (obviously,
-+	 * many more really fit.)
-+	 */
-+	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
-+
-+	while (nents > 0) {
-+		struct scatterlist *new, *iter;
-+		int n_fill, n_alloc;
-+
-+		if (nents <= N_ENTRIES_PER_PAGE) {
-+			/* last needed table */
-+			n_fill = nents;
-+			n_alloc = nents;
-+			nents = 0;
-+		} else {
-+			/* fill a page with entries */
-+			n_alloc = N_ENTRIES_PER_PAGE;
-+			/* reserve one for chaining */
-+			n_fill = n_alloc - 1;
-+			nents -= n_fill;
-+		}
-+
-+		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
-+		if (!new) {
-+			if (result)
-+				_devcd_free_sgtable(result);
- 			return NULL;
- 		}
--		alloc_size = min_t(int, size, PAGE_SIZE);
--		size -= PAGE_SIZE;
--		sg_set_page(iter, new_page, alloc_size, 0);
-+		sg_init_table(new, n_alloc);
-+
-+		if (!result)
-+			result = new;
-+		else
-+			sg_chain(prev, n_prev, new);
-+		prev = new;
-+		n_prev = n_alloc;
-+
-+		for_each_sg(new, iter, n_fill, i) {
-+			struct page *new_page = alloc_page(GFP_KERNEL);
-+
-+			if (!new_page) {
-+				_devcd_free_sgtable(result);
-+				return NULL;
-+			}
-+
-+			sg_set_page(iter, new_page, PAGE_SIZE, 0);
-+		}
- 	}
--	return table;
-+
-+	return result;
- }
- 
- static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
--- 
-2.39.5
-
+ # All warnings are inhibited since GCC builds are very experimental,
 
 
 
