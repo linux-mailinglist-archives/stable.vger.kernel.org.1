@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB96EA7FE44
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722FDA801C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1214170C4D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CBDD880ED8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCCD2690CB;
-	Tue,  8 Apr 2025 11:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5E7268FEF;
+	Tue,  8 Apr 2025 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMEFM3kP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnBgF5My"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C884268FE9;
-	Tue,  8 Apr 2025 11:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4C6268FDE;
+	Tue,  8 Apr 2025 11:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110207; cv=none; b=g9L97p69gjqy4sD9lmTSSZpARCfNT1eqZH0UzNEyCrOWLPINai/cBcgTdQkOJdpkCWnUaTrbOU3ETkLHCcBlSS7vj7dsBkAaAZmCqJEh5dJJl5UrqHIRSMU5fv3jS1XpfoWaNzbEohn9+806Pf7C47nZrWC416dP31onrBOyWVc=
+	t=1744112129; cv=none; b=gVeI3DESJo+DraqctldeELaJJ1LmNAxDTTiV1x4Ai/zpGEYTQvTQBAYYok6F0LrI9cMK+p2WObgVDXDd1dOQpgR3Qlce2Inx2g4KKsQcfK5B8gumIsDhGBoFRouvibUQkqFGL+5zDHn7ZnGTDgHZoaOmkcKfPgnGr+/cXKij3Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110207; c=relaxed/simple;
-	bh=UNwETjNugt+jzLtBkRXnCWJcLQbv4VithZPXaLqzm2o=;
+	s=arc-20240116; t=1744112129; c=relaxed/simple;
+	bh=oWjYnZCZlf1fCIaiN4sz+LZA6/lM1A1Ct3vEL6ZLyIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIRtEIwYR1xORR4XENMEHMQxYNWv8Qo0TekUq/EiMSa4sVQUzNwE/6TSMUMuFbjC3yKw+ONBf7JlR/Z0QCgYvwlyzJLEcuoUHZ2uoF/fS+KB4wBOeVtfuKkNceeA26TDThS00U9p/+MqoqslM42phTvx6ljVOn1rnAdeeEq01hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMEFM3kP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D65C4CEEB;
-	Tue,  8 Apr 2025 11:03:26 +0000 (UTC)
+	 MIME-Version; b=WZ1cexTxNWWbukUa4z7wCLRHx33qdrIxAwAfrMft5Ncso1fmu1WDfWU5f0gDH8EmhpjT4hpUmJYWrchFuKoaTEk7xOM+FEBCyNKTgEmPW2AAXmPo2I5K4H2GVb7/O86wfWDeZn+saSxZJYsAN16os1257o3HeCytFyMbXsIkq8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnBgF5My; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14387C4CEE5;
+	Tue,  8 Apr 2025 11:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110207;
-	bh=UNwETjNugt+jzLtBkRXnCWJcLQbv4VithZPXaLqzm2o=;
+	s=korg; t=1744112128;
+	bh=oWjYnZCZlf1fCIaiN4sz+LZA6/lM1A1Ct3vEL6ZLyIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMEFM3kPDx7sqdZTg6Qk+OgKDv/zY6cn5mG4npbU0bT2MUx3ZyC5uSnyo90j1fsM8
-	 fLQX0STqacLdM0UBQsG12Ek4+pGbaD5/PCczB+NvgobruzINncZARPRcau6amM+TFv
-	 kyHWbivJjSMheEgGshJAN2CGb8ES3fVOGwggOoIY=
+	b=wnBgF5MyxJEDNy75wK5CXqm0mp5n3p69ClQiEAWY0CLFCTCsft8Dr9Mw0mkRIQFdK
+	 gnPQ3/jxGnBIkHCrdv4EkiFRwDjnIUKokl31Y69gF76l+2LAfn2bQ9pS9p6KuU3qqx
+	 I24yfzkYfraSZI/pYjhTzaGzzl3S5pIQO0BTLh2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/227] can: flexcan: only change CAN state when link up in system PM
+	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.14 687/731] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
 Date: Tue,  8 Apr 2025 12:49:44 +0200
-Message-ID: <20250408104826.492842050@linuxfoundation.org>
+Message-ID: <20250408104930.247285594@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit fd99d6ed20234b83d65b9c5417794343577cf3e5 ]
+commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
 
-After a suspend/resume cycle on a down interface, it will come up as
-ERROR-ACTIVE.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
+Furthermore, it is best to return EINVAL immediately upon seeing the
+invalid user input.  The WARNING is insufficient to prevent further
+undefined behavior based on other invalid user input.
 
-$ sudo systemctl suspend
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+[iweiny: update commit message]
 
-And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
-
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/flexcan.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/nfit/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/flexcan.c b/drivers/net/can/flexcan.c
-index 429950241de32..586c13d855e09 100644
---- a/drivers/net/can/flexcan.c
-+++ b/drivers/net/can/flexcan.c
-@@ -2113,8 +2113,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
- 		}
- 		netif_stop_queue(dev);
- 		netif_device_detach(dev);
-+
-+		priv->can.state = CAN_STATE_SLEEPING;
- 	}
--	priv->can.state = CAN_STATE_SLEEPING;
- 
- 	return 0;
- }
-@@ -2125,7 +2126,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
- 
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	if (netif_running(dev)) {
- 		netif_device_attach(dev);
- 		netif_start_queue(dev);
-@@ -2143,6 +2143,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 			if (err)
- 				return err;
- 		}
-+
-+		priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	}
- 
- 	return 0;
--- 
-2.39.5
-
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
 
 
 
