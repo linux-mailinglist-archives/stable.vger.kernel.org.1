@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6A8A7FDF1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D0EA801C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07B0188840C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577CC16DBFA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A88726A0E2;
-	Tue,  8 Apr 2025 10:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FC5269AE4;
+	Tue,  8 Apr 2025 11:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX0CpHq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF1JuC7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0380326988E;
-	Tue,  8 Apr 2025 10:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A87224F6;
+	Tue,  8 Apr 2025 11:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109999; cv=none; b=nAkvBNlFOvuw7sagTAAn7t2ypbPdiB7xpPZJHCqXSXrXD0ydb8pG61SAfgFJmyvHI8I6xad0gjzE2aQba7Q/WI2hPa1e1uDVjGVCzvewJRZXYhgbQJpEt2vyKfnliheErirX8s0pxAvQTqOSAyH2l0QrF7YN8S4OZpupBshQC5Y=
+	t=1744111794; cv=none; b=tE5yONx7jctPWq3ymOqmxLswymQN8JV9qoD6wlfNhdh60WUPHemgemQVjtg2keIiG7CwIwV0VBVd287saIYcJRVDSlz/Q8l/4sqPhm3BcWClJlWQMO1wgdYh0wYYknBl/IAYBT1q6WllRJG4KQ7jzMe3Ofe1Pkv/xNb+hrV+cSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109999; c=relaxed/simple;
-	bh=xxd+qKH9v+/2EZuPe2xRnHgwpVfcyvIDrrsTUGfzd68=;
+	s=arc-20240116; t=1744111794; c=relaxed/simple;
+	bh=DNPBfZb256eirFeuhmrc4sSUqD52UdZXxAy5z894foo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ck0bmDMQERw+cBo39+I0Jw3ZUXxhgFULxgouxRi0FoRBYVIyjGXDQBkSuF+ovw5gTKL1c//GTjpRw8jmjL4dY41EfXH9JrUw7hRFyHgjKtT/bipgjpjDMBuyNepY13GCWTHR07Wqf9BceftJoYosERIwprQHgsN8wlPCBQLwbbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JX0CpHq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882B5C4CEE5;
-	Tue,  8 Apr 2025 10:59:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QV3e5LYG6YbsP68399i45t6+M/fYq4QQKsGB4xB6YkP+xzvfjD0Ip1uiGtbHesku+Fe64tdmAoDTPfVltfvbugfWwoxhHjSswkVqYT2eV9hgJZqult2Ns0gaugCDEDAYKvKqlAS+Sih/4HrV4JpXCmvKvnoqCKK5299EEFM/VoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF1JuC7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08D2C4CEE7;
+	Tue,  8 Apr 2025 11:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109998;
-	bh=xxd+qKH9v+/2EZuPe2xRnHgwpVfcyvIDrrsTUGfzd68=;
+	s=korg; t=1744111794;
+	bh=DNPBfZb256eirFeuhmrc4sSUqD52UdZXxAy5z894foo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JX0CpHq5G1NRzCeodRD/PyCgHccZB+C+SexEv2SZPbstmSIfe6bKKwSoUHzybQ/bJ
-	 QC/STW9DKCy7Uw9O5dSyhOwWQ7MU0zJ73IQgyeiaPXFEWgw4KprFuIdeEj48P19LRv
-	 y1Y1iq53sVTnWz7+yeAgmCLwOn+z3P6+7F+OBsTY=
+	b=mF1JuC7U/qGF/1pyWxeo7aCG0GFTkspoEoS0RMcNWZHQMtjb96RFfSIYf/g31o22e
+	 VMa0p6+MAoc+fI42fIUdYw+nhNDMO3KOx9cx6LOOG7rICpkmGKEmni7m4zuDLAiOMf
+	 S4lA3WxAx3NHn5O8S4daY3mQQI9Qe47Rl4i/M6V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 5.10 082/227] drm/v3d: Dont run jobs that have errors flagged in its fence
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 563/731] LoongArch: Fix help text of CMDLINE_EXTEND in Kconfig
 Date: Tue,  8 Apr 2025 12:47:40 +0200
-Message-ID: <20250408104822.848993055@linuxfoundation.org>
+Message-ID: <20250408104927.369492715@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
+[ Upstream commit be216cbc1ddf99a51915414ce147311c0dfd50a2 ]
 
-The V3D driver still relies on `drm_sched_increase_karma()` and
-`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
-The function `drm_sched_increase_karma()` marks the job as guilty, while
-`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
-that guilty job.
+It is the built-in command line appended to the bootloader command line,
+not the bootloader command line appended to the built-in command line.
 
-Because of this, we must check whether the job’s DMA fence has been
-flagged with an error before executing the job. Otherwise, the same guilty
-job may be resubmitted indefinitely, causing repeated GPU resets.
-
-This patch adds a check for an error on the job's fence to prevent running
-a guilty job that was previously flagged when the GPU timed out.
-
-Note that the CPU and CACHE_CLEAN queues do not require this check, as
-their jobs are executed synchronously once the DRM scheduler starts them.
-
-Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fa96b57c1490 ("LoongArch: Add build infrastructure")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/loongarch/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -188,11 +188,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 2b8bd27a852fe..bdb989c49c094 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -382,8 +382,8 @@ config CMDLINE_BOOTLOADER
+ config CMDLINE_EXTEND
+ 	bool "Use built-in to extend bootloader kernel arguments"
+ 	help
+-	  The command-line arguments provided during boot will be
+-	  appended to the built-in command line. This is useful in
++	  The built-in command line will be appended to the command-
++	  line arguments provided during boot. This is useful in
+ 	  cases where the provided arguments are insufficient and
+ 	  you don't want to or cannot modify them.
  
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
-+	v3d->tfu_job = job;
-+
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
- 		return NULL;
- 
--	v3d->tfu_job = job;
- 	if (job->base.irq_fence)
- 		dma_fence_put(job->base.irq_fence);
- 	job->base.irq_fence = dma_fence_get(fence);
-@@ -226,6 +230,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
- 	struct dma_fence *fence;
- 	int i;
- 
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
- 	v3d->csd_job = job;
- 
- 	v3d_invalidate_caches(v3d);
+-- 
+2.39.5
+
 
 
 
