@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-130307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6389A80399
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBB2A7FE57
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A345F7A69A4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C38419E179E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469F926A0D1;
-	Tue,  8 Apr 2025 11:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6890426983B;
+	Tue,  8 Apr 2025 11:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDKgpuVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHtwk3IK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A10269AE3;
-	Tue,  8 Apr 2025 11:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D6A269838;
+	Tue,  8 Apr 2025 11:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113370; cv=none; b=DtooqIFHam79skFp7lxQ5/EBPUbjWcTmU9ZVH3EpCBNI9/ShrxIkRnesbJ2LDraxs08X9qfSg8cONhOB+Zlzc6Nqd7r8XiBGMGqYspDI8bCIQtGde2GMGvuQC7XGzKi88EwsqRQLhSsfGLuFKiCk+XJJiDeAgGg8ixlMfLXKIPA=
+	t=1744110234; cv=none; b=nKZnwFlXNIjFx5vphhgY3tCJW/87PzBlivEUTf1irchH+IG2JnZ0qeRRHWe5a2jaWpbsS0Ui/lBFUVCybhBa3WlXEpZQEHm+RhM37tuapwULbsGTCw5vFg7iK7dhzNNwgCvr/yN6+v9fSp0ew5Jkn8ZJqyfFFgxJW4eihbOXOY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113370; c=relaxed/simple;
-	bh=UHcRt/b3iB3W0aQLvXOpLOl8uXmosSK565x7DtR6ZfE=;
+	s=arc-20240116; t=1744110234; c=relaxed/simple;
+	bh=CYr7/urEiZdqlfcBGxMapV7sXTiAIXX3xvVQyTT070M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4+farkT8FMKsq6BcvRrCOHV26j1+9DzSI1XdHHXphs6U+xcGZfYh3kQghqSpl50x/ozqrD0lw5CkPOsNrOwesYlHbnrJnnFxj29XBE5ZKPAoxvyT5GU5gyddWvek+OsOervZNc/7j4tTvDEairfaeYKSV0yQOoHQoanfyYA25U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDKgpuVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C7AC4CEE5;
-	Tue,  8 Apr 2025 11:56:09 +0000 (UTC)
+	 MIME-Version; b=CKRM4NKTK/YIZ5a7Wz8iv7a1Q7VhUXsM5v7buZYVsWDzkPJaRvdwFE+A+iDUrkVf4SjMQjwiWCEEM4RTSD0j/gZrcy8gOqMbWNfE9G6DgS0GGt9tYc6Bfx7JEKEUkB5Ca/yy5xmlhIEIcZi5oSsZN0bC7v2EUr0d7k8eecrad1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHtwk3IK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A905C4CEE5;
+	Tue,  8 Apr 2025 11:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113369;
-	bh=UHcRt/b3iB3W0aQLvXOpLOl8uXmosSK565x7DtR6ZfE=;
+	s=korg; t=1744110234;
+	bh=CYr7/urEiZdqlfcBGxMapV7sXTiAIXX3xvVQyTT070M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDKgpuVZ5c/5noRuhED452Ovsw7NCV9DpqPBL061Bo6nWMMgmR8sTPxrrB/1brxxW
-	 hmJyqiLG9XdSPKVozVJkNI5kThPwy9Z2Wk/lfh40G74G1p+ez9llaJi00WC4mtbwTQ
-	 41tX80kKlUIkpkDUl/61Z0PgRq8xf4o42f4db2vY=
+	b=QHtwk3IKlWkYtis6Pdz6KY98fh7pW01BSfZ4lIxH6pukYuL60xgN4A5uDYZCMj3B0
+	 T/TuPOmUG3kE8/n58Mrp3Vy+HndtYfbyoQkHvB86in0h5teOEQIXv7A7dAMJZBu8p2
+	 yhI7XpQnK2vKGbrawUqVNxgZd4vAqxGShD/uL0fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Kurt Hackel <kurt.hackel@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/268] perf python: Decrement the refcount of just created event on failure
+Subject: [PATCH 5.10 167/227] ocfs2: validate l_tree_depth to avoid out-of-bounds access
 Date: Tue,  8 Apr 2025 12:49:05 +0200
-Message-ID: <20250408104832.130187341@linuxfoundation.org>
+Message-ID: <20250408104825.327513005@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +70,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
+[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
 
-To avoid a leak if we have the python object but then something happens
-and we need to return the operation, decrement the offset of the newly
-created object.
+The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
+limited to OCFS2_MAX_PATH_DEPTH.
 
-Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
+value, which may occur when reading from a corrupted mounted disk [1].
+
+Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ocfs2/alloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 8753c9d3670ac..47c43b9c72fe7 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -1170,6 +1170,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index a9a6276ff29bd..94c7acfebe183 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -1798,6 +1798,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
  
- 		evsel = evlist__event2evsel(evlist, event);
- 		if (!evsel) {
-+			Py_DECREF(pyevent);
- 			Py_INCREF(Py_None);
- 			return Py_None;
- 		}
-@@ -1181,9 +1182,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
- 		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
- 
--		if (err)
-+		if (err) {
-+			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
- 					    "perf: can't parse sample, err=%d", err);
+ 	el = root_el;
+ 	while (el->l_tree_depth) {
++		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
++			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
++				    "Owner %llu has invalid tree depth %u in extent list\n",
++				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
++				    le16_to_cpu(el->l_tree_depth));
++			ret = -EROFS;
++			goto out;
 +		}
-+
- 		return pyevent;
- 	}
- end:
+ 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
+ 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+ 				    "Owner %llu has empty extent list at depth %u\n",
 -- 
 2.39.5
 
