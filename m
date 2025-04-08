@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85CCA807DD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2777A8057D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B11FA4C13A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D0124A177C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3F2269826;
-	Tue,  8 Apr 2025 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8EE2673B7;
+	Tue,  8 Apr 2025 12:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTRJQUyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmaxbYSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E651FCFF3;
-	Tue,  8 Apr 2025 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8835A264FB6;
+	Tue,  8 Apr 2025 12:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115485; cv=none; b=E7pKXVoJM5LnmcP7iKvpromcsIFkBOrZJtSySU03HlMY16uexYqCB76SV3H79zvKo7nE5diQJwLlwh7LQBnEnAw5oYLOsUa58bEPlaobk9619qMr1sYirW87p+ps5s0ZcD8miTAkVB9FsIEGsipOsu1WrxNnPohEKmcRSzZgLRg=
+	t=1744114100; cv=none; b=jya+geE5qmZ/h1I8YpAqF56d/hss0TSOlqOyqi6+A+26bNbSLfv+k1WEeDXU3hKhDzMfNHHm850VRdV8szp8+uQRV7i/Kucugh/vKj7syj1BRlZoGLvC7DD89mN6zf8aeTW3VfeiebVkE8eP7DcBkMjhMg2uoGsubm6oetCZvKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115485; c=relaxed/simple;
-	bh=Bja0JJF075JqHfxKo41rPGZpyNiiHYECMNO8BSUIKw4=;
+	s=arc-20240116; t=1744114100; c=relaxed/simple;
+	bh=DeVkP3jWyYXApd71Vz/WKPFaqNgP6kDAzScTlaIujIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmU5Y2XegB4ayl9Wb4EQCymTtsVTLlZ9GugW1nHdi0szJnUAP5eNS3/4lonU0dMMOgose8sgBW/hj5q9D0MQ3ff24L7rEGmQ7jrwXaGTxI+1cOO32jZzilkDUsx/hyhva2dPvM/csthu0QY0se8C6LwCvFvKQZrhlXuOBAr8YTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTRJQUyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C84C4CEE5;
-	Tue,  8 Apr 2025 12:31:24 +0000 (UTC)
+	 MIME-Version; b=iz+zwyTTGgrXvisG8QxMl3nEtWqFyBM2tLZviyiLxvLE6Ya9VYyoatlgqmFj855L2pqgrm0tk+HrddxzWHX8M5wAYu8VJIQ3Ut4YY416YEqus5mdHrRbGmY0J0zxbuoh6XGUax9tiQWLv9J+L2ym8e++9zX8vuyyjH1yUFdKO8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmaxbYSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18ACC4CEE5;
+	Tue,  8 Apr 2025 12:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115485;
-	bh=Bja0JJF075JqHfxKo41rPGZpyNiiHYECMNO8BSUIKw4=;
+	s=korg; t=1744114100;
+	bh=DeVkP3jWyYXApd71Vz/WKPFaqNgP6kDAzScTlaIujIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTRJQUyjJhp0u5mausXr4Uvm0EJCQ9XtSDJfbG9yiyIQdDqnhFhOyV8Th4Gr4NDqs
-	 ZxpmgN/ZMPCh3hsuVnuUAkXa3gnvUVfYNvgkw3um5GCOZns+oUPOBDceSGrJawLyJp
-	 HgvJygQwbHPZuSkOQDz9PziiJWR4VXhGqOYlJIzg=
+	b=GmaxbYSga32p0un9ssbtf59E1jPLjHYSEYYyCF/RlstYLj+PO+pe41KwsU36V6Ccg
+	 jgDk8AnVKORYNLBCS+BqpJ0vKqx5asTCmOdXkJc5MeRlhof7LGvqWLleHhEfTV5pJR
+	 0WwZHzCMThmK4kXGRdOWOoP+G9cwwd/0coXcN0ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 465/499] KVM: SVM: Dont change target vCPU state on AP Creation VMGEXIT error
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 136/154] spufs: fix a leak on spufs_new_file() failure
 Date: Tue,  8 Apr 2025 12:51:17 +0200
-Message-ID: <20250408104902.836686332@linuxfoundation.org>
+Message-ID: <20250408104819.671964800@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit d26638bfcdfc5c8c4e085dc3f5976a0443abab3c upstream.
+[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
 
-If KVM rejects an AP Creation event, leave the target vCPU state as-is.
-Nothing in the GHCB suggests the hypervisor is *allowed* to muck with vCPU
-state on failure, let alone required to do so.  Furthermore, kicking only
-in the !ON_INIT case leads to divergent behavior, and even the "kick" case
-is non-deterministic.
+It's called from spufs_fill_dir(), and caller of that will do
+spufs_rmdir() in case of failure.  That does remove everything
+we'd managed to create, but... the problem dentry is still
+negative.  IOW, it needs to be explicitly dropped.
 
-E.g. if an ON_INIT request fails, the guest can successfully retry if the
-fixed AP Creation request is made prior to sending INIT.  And if a !ON_INIT
-fails, the guest can successfully retry if the fixed AP Creation request is
-handled before the target vCPU processes KVM's
-KVM_REQ_UPDATE_PROTECTED_GUEST_STATE.
-
-Fixes: e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/r/20250227012541.3234589-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3945,16 +3945,12 @@ static int sev_snp_ap_creation(struct vc
- 
- 	/*
- 	 * The target vCPU is valid, so the vCPU will be kicked unless the
--	 * request is for CREATE_ON_INIT. For any errors at this stage, the
--	 * kick will place the vCPU in an non-runnable state.
-+	 * request is for CREATE_ON_INIT.
- 	 */
- 	kick = true;
- 
- 	mutex_lock(&target_svm->sev_es.snp_vmsa_mutex);
- 
--	target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
--	target_svm->sev_es.snp_ap_waiting_for_reset = true;
--
- 	/* Interrupt injection mode shouldn't change for AP creation */
- 	if (request < SVM_VMGEXIT_AP_DESTROY) {
- 		u64 sev_features;
-@@ -4000,20 +3996,23 @@ static int sev_snp_ap_creation(struct vc
- 		target_svm->sev_es.snp_vmsa_gpa = svm->vmcb->control.exit_info_2;
- 		break;
- 	case SVM_VMGEXIT_AP_DESTROY:
-+		target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
- 		break;
- 	default:
- 		vcpu_unimpl(vcpu, "vmgexit: invalid AP creation request [%#x] from guest\n",
- 			    request);
- 		ret = -EINVAL;
--		break;
-+		goto out;
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 99e688498a9cb..1183e264ff421 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -189,8 +189,10 @@ static int spufs_fill_dir(struct dentry *dir,
+ 			return -ENOMEM;
+ 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
+ 					files->mode & mode, files->size, ctx);
+-		if (ret)
++		if (ret) {
++			dput(dentry);
+ 			return ret;
++		}
+ 		files++;
  	}
- 
--out:
-+	target_svm->sev_es.snp_ap_waiting_for_reset = true;
-+
- 	if (kick) {
- 		kvm_make_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, target_vcpu);
- 		kvm_vcpu_kick(target_vcpu);
- 	}
- 
-+out:
- 	mutex_unlock(&target_svm->sev_es.snp_vmsa_mutex);
- 
- 	return ret;
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
