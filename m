@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC28A809B4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAD7A8062A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48414E2568
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD4F8A0FCE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D372326B972;
-	Tue,  8 Apr 2025 12:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D82D26A1CC;
+	Tue,  8 Apr 2025 12:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcY+GHx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccNS4GFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123F26B94D;
-	Tue,  8 Apr 2025 12:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8F2269AE4;
+	Tue,  8 Apr 2025 12:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116137; cv=none; b=m297DOiIq1QZFBvgUx9AYMy5TiOHcwNkw+tlI3GfiGoWlaDe8QlNogXIc2uSsntQgi5dtg71rnMhjh3FyZBia52iIWb+Px+HvuG/1kjrPI5pzL8xvmIkunmCbRqUq4Sf3RJ2UlonYqcfxzJsvRQfWCTa08KitzPDPammLtfKxjw=
+	t=1744114538; cv=none; b=YY+17CFkEh/kz5Zcr0grAs5xTHiENCuWQztmrUMhM24/mPts6/cok5uUXxiGVHPGWzRgJysMF1thvJ13+sUNl54QQiPhLKgmDkKTmXVqN/ZXFw7l9DZfSrtuAsa/HrzPfN2vNjgeQNkTUX97HIHA18X9zZhsB2OkvdKrX5Wxpqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116137; c=relaxed/simple;
-	bh=FvWvNLxLgLE4qQBdOYwvK+km0XGn937UOgmKIROYeU8=;
+	s=arc-20240116; t=1744114538; c=relaxed/simple;
+	bh=FxEf+1oJzVIBbWKzjEDiSc/vttc9ls7ry4n03PK3GNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLq0ZW3MEzQoxlAGM3g+sNDL5+8MSBr67PAfGUA2Z3APa6VUC1m6rguYQ1R9OphmGw6gSvWt5IPLoH5vg0hpSRiHgXrEv9XOPC5td5gRExWjtoQfcseCOZb10j8fN3XLY0VLKjVOiJyV/8U43r0xfafN3DhTT9aEIpAcnHi2wfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcY+GHx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245B6C4CEE5;
-	Tue,  8 Apr 2025 12:42:16 +0000 (UTC)
+	 MIME-Version; b=fQ/qjWDQ0f1GzmrA13seRyBeh0eGVa+Ego12L1Q+yNSTB4uVLIm9EHBtMyK5QvzTkhOcCvMDisZKx/pWAlZuOVwYiB7FdJItpclMRoEodsDdJuAc4fvHIghzwM39jc2CVuQYbyLUmHV6TCyCV8U15QR7b/OSHLiIOx0cIRI8Tvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccNS4GFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3B0C4CEE5;
+	Tue,  8 Apr 2025 12:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116137;
-	bh=FvWvNLxLgLE4qQBdOYwvK+km0XGn937UOgmKIROYeU8=;
+	s=korg; t=1744114538;
+	bh=FxEf+1oJzVIBbWKzjEDiSc/vttc9ls7ry4n03PK3GNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcY+GHx0kRL6Qrx2S/TMB7t/g7MwVjGkQSFlHjZb/kgrbiOp5V7yj+oQkPSB02r7g
-	 Ur58I0LRB86NqAzn+djNcaOYPg0uW6ioq04fBHBlVp+jUobNxPhO5UKZx3mE9H6bnk
-	 I2cQfELd1Za5qcd1WJ9xVY9SYcc1pWexQpT15PsU=
+	b=ccNS4GFbIDqjCRAyJXfNB8XVni76rV1qQlRqzUhDlaYu0xOLLJrUDyRb+LMwsaGCK
+	 48SSsoL9UVxHobJzbn9SHbx/CqD2AekPbsYBuVtB2KqWANQ2FHXET5Z+dg0YTnoXrQ
+	 2kfUyWNCfCOTWYMvmPBKt+S/Yv+W/Aj2HiCRsC2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Brendan Jackman <jackmanb@google.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/423] x86/traps: Make exc_double_fault() consistently noreturn
-Date: Tue,  8 Apr 2025 12:45:55 +0200
-Message-ID: <20250408104846.427783768@linuxfoundation.org>
+Subject: [PATCH 6.13 144/499] pinctrl: nuvoton: npcm8xx: Fix error handling in npcm8xx_gpio_fw()
+Date: Tue,  8 Apr 2025 12:45:56 +0200
+Message-ID: <20250408104854.780219709@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 8085fcd78c1a3dbdf2278732579009d41ce0bc4e ]
+[ Upstream commit d6c6fd77e5816e3f6689a2767cdd777797506f24 ]
 
-The CONFIG_X86_ESPFIX64 version of exc_double_fault() can return to its
-caller, but the !CONFIG_X86_ESPFIX64 version never does.  In the latter
-case the compiler and/or objtool may consider it to be implicitly
-noreturn.
+fwnode_irq_get() was changed to not return 0, fix this by checking
+for negative error, also update the error log.
 
-However, due to the currently inflexible way objtool detects noreturns,
-a function's noreturn status needs to be consistent across configs.
-
-The current workaround for this issue is to suppress unreachable
-warnings for exc_double_fault()'s callers.  Unfortunately that can
-result in ORC coverage gaps and potentially worse issues like inert
-static calls and silently disabled CPU mitigations.
-
-Instead, prevent exc_double_fault() from ever being implicitly marked
-noreturn by forcing a return behind a never-taken conditional.
-
-Until a more integrated noreturn detection method exists, this is likely
-the least objectionable workaround.
-
-Fixes: 55eeab2a8a11 ("objtool: Ignore exc_double_fault() __noreturn warnings")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Brendan Jackman <jackmanb@google.com>
-Link: https://lore.kernel.org/r/d1f4026f8dc35d0de6cc61f2684e0cb6484009d1.1741975349.git.jpoimboe@kernel.org
+Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/20250118031334.243324-1-yuehaibing@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/traps.c | 18 +++++++++++++++++-
- tools/objtool/check.c   | 31 +------------------------------
- 2 files changed, 18 insertions(+), 31 deletions(-)
+ drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 2dbadf347b5f4..5e3e036e6e537 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -379,6 +379,21 @@ __visible void __noreturn handle_stack_overflow(struct pt_regs *regs,
- }
- #endif
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+index d09a5e9b2eca5..17825bbe14213 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+@@ -2361,8 +2361,8 @@ static int npcm8xx_gpio_fw(struct npcm8xx_pinctrl *pctrl)
+ 			return dev_err_probe(dev, ret, "gpio-ranges fail for GPIO bank %u\n", id);
  
-+/*
-+ * Prevent the compiler and/or objtool from marking the !CONFIG_X86_ESPFIX64
-+ * version of exc_double_fault() as noreturn.  Otherwise the noreturn mismatch
-+ * between configs triggers objtool warnings.
-+ *
-+ * This is a temporary hack until we have compiler or plugin support for
-+ * annotating noreturns.
-+ */
-+#ifdef CONFIG_X86_ESPFIX64
-+#define always_true() true
-+#else
-+bool always_true(void);
-+bool __weak always_true(void) { return true; }
-+#endif
-+
- /*
-  * Runs on an IST stack for x86_64 and on a special task stack for x86_32.
-  *
-@@ -514,7 +529,8 @@ DEFINE_IDTENTRY_DF(exc_double_fault)
+ 		ret = fwnode_irq_get(child, 0);
+-		if (!ret)
+-			return dev_err_probe(dev, ret, "No IRQ for GPIO bank %u\n", id);
++		if (ret < 0)
++			return dev_err_probe(dev, ret, "Failed to retrieve IRQ for bank %u\n", id);
  
- 	pr_emerg("PANIC: double fault, error_code: 0x%lx\n", error_code);
- 	die("double fault", regs, error_code);
--	panic("Machine halted.");
-+	if (always_true())
-+		panic("Machine halted.");
- 	instrumentation_end();
- }
- 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 3c3e5760e81b8..24a1adca30dbc 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4575,35 +4575,6 @@ static int validate_sls(struct objtool_file *file)
- 	return warnings;
- }
- 
--static bool ignore_noreturn_call(struct instruction *insn)
--{
--	struct symbol *call_dest = insn_call_dest(insn);
--
--	/*
--	 * FIXME: hack, we need a real noreturn solution
--	 *
--	 * Problem is, exc_double_fault() may or may not return, depending on
--	 * whether CONFIG_X86_ESPFIX64 is set.  But objtool has no visibility
--	 * to the kernel config.
--	 *
--	 * Other potential ways to fix it:
--	 *
--	 *   - have compiler communicate __noreturn functions somehow
--	 *   - remove CONFIG_X86_ESPFIX64
--	 *   - read the .config file
--	 *   - add a cmdline option
--	 *   - create a generic objtool annotation format (vs a bunch of custom
--	 *     formats) and annotate it
--	 */
--	if (!strcmp(call_dest->name, "exc_double_fault")) {
--		/* prevent further unreachable warnings for the caller */
--		insn->sym->warned = 1;
--		return true;
--	}
--
--	return false;
--}
--
- static int validate_reachable_instructions(struct objtool_file *file)
- {
- 	struct instruction *insn, *prev_insn;
-@@ -4620,7 +4591,7 @@ static int validate_reachable_instructions(struct objtool_file *file)
- 		prev_insn = prev_insn_same_sec(file, insn);
- 		if (prev_insn && prev_insn->dead_end) {
- 			call_dest = insn_call_dest(prev_insn);
--			if (call_dest && !ignore_noreturn_call(prev_insn)) {
-+			if (call_dest) {
- 				WARN_INSN(insn, "%s() is missing a __noreturn annotation",
- 					  call_dest->name);
- 				warnings++;
+ 		pctrl->gpio_bank[id].irq = ret;
+ 		pctrl->gpio_bank[id].irq_chip = npcmgpio_irqchip;
 -- 
 2.39.5
 
