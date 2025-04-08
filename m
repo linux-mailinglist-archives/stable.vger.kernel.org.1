@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77BBA800E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F01A7FD96
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633CC1887B5A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F26EB16E095
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471CC224AEF;
-	Tue,  8 Apr 2025 11:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D6026A0D9;
+	Tue,  8 Apr 2025 10:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jhrXAt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjLbhMYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A4819AD5C;
-	Tue,  8 Apr 2025 11:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B6726A0C5;
+	Tue,  8 Apr 2025 10:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111810; cv=none; b=KyFmW5U4besOglPhlxyMlHeUrMVs2gu+GhoAN+2CBde/HNQRyZKA7sUB3NgE32aNcpm7gn5HsCwy8zaMI0amPh5cnTeSVQ1r3FUCsLRyQWDaeRCIw+pmbjh4gyNj/zQ2iVTshwAgwallCcYKzWsYbaclRrFl2kU45imIy0QfGaI=
+	t=1744109837; cv=none; b=JIclxavk1+DHByXh5QcsJ+RRru9uNeQtlrUhA7pa3qkEDWEnBV+zMYSNicL0+KTcw3ppbiJQy9D5QWot2FP5gc+wbgPvzCyJhyiEyeWrcfp+h0GMcOgH9TEqW+coqCCyyid/ubM5+YcX5rR0LleK4VdpbUC6E7EoSkEYHALeod4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111810; c=relaxed/simple;
-	bh=6Y1UxT96F48oGhZcOr0VvPYZh/9XKMriTe4s3XPtG70=;
+	s=arc-20240116; t=1744109837; c=relaxed/simple;
+	bh=/zgzjqlHXFoziw0ik+BjE4wWd4/Cr2qhYWcA/KQFnEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTFq5nMuSddkfiSoBxt8VN3MMLd/MYQX2EQZ4ITi7MiLj6ba838UUEu5EvagiQpodwxSU8r7khzdSqeeNCyKziD5bjoRgwwsG3Cmt4kn8vqYzwnU6fBMmRFZ4jBWdCh+quqhiddj+bc4B3EFCk3YfoP9KvItccbE6h1j5xdbOYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jhrXAt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C627C4CEE5;
-	Tue,  8 Apr 2025 11:30:09 +0000 (UTC)
+	 MIME-Version; b=qENka7BmGtuRB3gnHlFH8+I8w/RFDdguZvF0aUQr6aprNyVMi+kRw86iFb7xAKTuGjakmbXBlvN5cnaye/tPAzpuNSvN6uUvTce+kr00kAGKpD8/SJxUEPqgC6pvI40X9Ysc1tQbdyrxJUyn8mb91GevUjAHgMKg0klvvCHlrT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjLbhMYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14534C4CEEB;
+	Tue,  8 Apr 2025 10:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111809;
-	bh=6Y1UxT96F48oGhZcOr0VvPYZh/9XKMriTe4s3XPtG70=;
+	s=korg; t=1744109837;
+	bh=/zgzjqlHXFoziw0ik+BjE4wWd4/Cr2qhYWcA/KQFnEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jhrXAt6W+rv08t1Th/wUM0AVus9ncq4Cz+uAt6wLFCTGFgQqRVk9jjgoY8KVMuyF
-	 Y7duD1KjS88W2uGwSRwGR9LHSMU3ymVhlanBWidUp5H8EzPLC0ySmCPPPRtQ7nCAY1
-	 kE1TQyQDu8IGlnImq4fAoPD+fIgqKcetZvKtgIVc=
+	b=mjLbhMYFBU2TNYBTARhx1rGBKPerZ425z4KPRPi3DGpqhUBSM83dF07qMRAGLDtaL
+	 frjPgyo0x+5fuaaQL8NfL4DRGHKRMLGkKgQi+Q6EnPLcBdcDxby5rnYG6b6oJadSCr
+	 Vm8foMyJRGw+3JRN0Tb2Nxy3ilopY6B2HFSB89bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 551/731] NFS: Shut down the nfs_client only after all the superblocks
+Subject: [PATCH 5.10 070/227] RDMA/bnxt_re: Add missing paranthesis in map_qp_id_to_tbl_indx
 Date: Tue,  8 Apr 2025 12:47:28 +0200
-Message-ID: <20250408104927.093700517@linuxfoundation.org>
+Message-ID: <20250408104822.501416665@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 2d3e998a0bc7fe26a724f87a8ce217848040520e ]
+[ Upstream commit 67ee8d496511ad8e1cb88f72944847e7b3e4e47c ]
 
-The nfs_client manages state for all the superblocks in the
-"cl_superblocks" list, so it must not be shut down until all of them are
-gone.
+The modulo operation returns wrong result without the
+paranthesis and that resulted in wrong QP table indexing.
 
-Fixes: 7d3e26a054c8 ("NFS: Cancel all existing RPC tasks when shutdown")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 84cf229f4001 ("RDMA/bnxt_re: Fix the qp table indexing")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1741021178-2569-3-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/sysfs.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index 7b59a40d40c06..784f7c1d003bf 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -14,6 +14,7 @@
- #include <linux/rcupdate.h>
- #include <linux/lockd/lockd.h>
- 
-+#include "internal.h"
- #include "nfs4_fs.h"
- #include "netns.h"
- #include "sysfs.h"
-@@ -228,6 +229,25 @@ static void shutdown_client(struct rpc_clnt *clnt)
- 	rpc_cancel_tasks(clnt, -EIO, shutdown_match_client, NULL);
- }
- 
-+/*
-+ * Shut down the nfs_client only once all the superblocks
-+ * have been shut down.
-+ */
-+static void shutdown_nfs_client(struct nfs_client *clp)
-+{
-+	struct nfs_server *server;
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(server, &clp->cl_superblocks, client_link) {
-+		if (!(server->flags & NFS_MOUNT_SHUTDOWN)) {
-+			rcu_read_unlock();
-+			return;
-+		}
-+	}
-+	rcu_read_unlock();
-+	nfs_mark_client_ready(clp, -EIO);
-+	shutdown_client(clp->cl_rpcclient);
-+}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+index 69aa1a52c7f8d..db98fac4b5624 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+@@ -218,9 +218,10 @@ int bnxt_qplib_deinit_rcfw(struct bnxt_qplib_rcfw *rcfw);
+ int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
+ 			 struct bnxt_qplib_ctx *ctx, int is_virtfn);
+ void bnxt_qplib_mark_qp_error(void *qp_handle);
 +
- static ssize_t
- shutdown_show(struct kobject *kobj, struct kobj_attribute *attr,
- 				char *buf)
-@@ -259,7 +279,6 @@ shutdown_store(struct kobject *kobj, struct kobj_attribute *attr,
- 
- 	server->flags |= NFS_MOUNT_SHUTDOWN;
- 	shutdown_client(server->client);
--	shutdown_client(server->nfs_client->cl_rpcclient);
- 
- 	if (!IS_ERR(server->client_acl))
- 		shutdown_client(server->client_acl);
-@@ -267,6 +286,7 @@ shutdown_store(struct kobject *kobj, struct kobj_attribute *attr,
- 	if (server->nlm_host)
- 		shutdown_client(server->nlm_host->h_rpcclnt);
- out:
-+	shutdown_nfs_client(server->nfs_client);
- 	return count;
+ static inline u32 map_qp_id_to_tbl_indx(u32 qid, struct bnxt_qplib_rcfw *rcfw)
+ {
+ 	/* Last index of the qp_tbl is for QP1 ie. qp_tbl_size - 1*/
+-	return (qid == 1) ? rcfw->qp_tbl_size - 1 : qid % rcfw->qp_tbl_size - 2;
++	return (qid == 1) ? rcfw->qp_tbl_size - 1 : (qid % (rcfw->qp_tbl_size - 2));
  }
- 
+ #endif /* __BNXT_QPLIB_RCFW_H__ */
 -- 
 2.39.5
 
