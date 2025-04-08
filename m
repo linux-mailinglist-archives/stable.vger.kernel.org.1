@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791FEA80439
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68A9A80AF2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CBFA3BB003
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D41E4E7C21
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FEA269B1B;
-	Tue,  8 Apr 2025 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D412C276057;
+	Tue,  8 Apr 2025 12:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiHaTEfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQpzvq/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0289F269885;
-	Tue,  8 Apr 2025 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9251B26A0E0;
+	Tue,  8 Apr 2025 12:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113460; cv=none; b=hmuumU36rl0uAQ/j9IDSaCPtqKykj0EGv/0qVR0HQuN2k98Q9tpc1QLXMQ5MgjCS+GvDcLAQIML1VMLn8no3kRPdd3fCThCikEwyN2r9WBeI75HFSxrNOvar/1/kqKQVHQHpfljYO6XiCJ2pochw/JdVw+0RsDCAmr76GAWkgbo=
+	t=1744116747; cv=none; b=lIrVHPI7jt6FFsclQ6lO2i4YQV3GaibL7xew12UoL9y6p1g8LUbluSO+YNbQJ6x2aUudP33ZjMQGg8KeC+c9JwMcAjPrCxUItuaxk+I6chxJKrQnY7pRIzz1dKtBgKWvYdFFRupQCzz7Wl3k4/tReJA3mrV9MMkcoO2wx7WXqs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113460; c=relaxed/simple;
-	bh=6vrp2dhiWkBJA42bvN85osYUzuF4IQ6+np81/jrDekY=;
+	s=arc-20240116; t=1744116747; c=relaxed/simple;
+	bh=bhaUW8cI5SeeAj1+cXU8wsquJjbkcR854bzMCqnYqNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKg7H+SK9BwAmTKN2IcNxQX6UW4Yh326SFns+N9SpvbolVRBZv7+B3NNIivRoHiFvGPjyx77HBxNHCNp6QnoRHuz6xjbXJLDbfaQkWTktgOunpDAyJZrJOYXHHlVuy3Rlp4rHPnrgFzxgybZDp5BXjZtjo5ZySZeHW1Kej2NO1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiHaTEfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E2C4CEE5;
-	Tue,  8 Apr 2025 11:57:39 +0000 (UTC)
+	 MIME-Version; b=N39uOelow1nkT928BZFRpm93I3gTIcbfewpNxACSkAqMvK7sj8p7WO1nxHTDP8lr1KoE9v4sUFobWZNFw44X1DpYfAQA87W55mudVh3vrjsPALrsrDnAHnHZPmd8R8szWWjZ+LqiNPN852LNk8iBX1ZQLxhcwa/8Ow6t2GOgrNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQpzvq/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F48C4CEEA;
+	Tue,  8 Apr 2025 12:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113459;
-	bh=6vrp2dhiWkBJA42bvN85osYUzuF4IQ6+np81/jrDekY=;
+	s=korg; t=1744116747;
+	bh=bhaUW8cI5SeeAj1+cXU8wsquJjbkcR854bzMCqnYqNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiHaTEfeZVNS5xMvNA8uu5efHaXNoTMwyK1xmqDSnrMNCii0XMcmTRy1LCiXJZy+B
-	 ZuSLI9UIstUWuN22oZhErdNw8C3fen6RflGMCNgF2vAciK82apc5fkvdPePPxAPx+A
-	 1HaIlqgLu5zf13Sa4N3qMVsqI9sRvrAdk54Wv6N0=
+	b=NQpzvq/+ZEwrK5AhSI34qqgByfvbg5VPdPoBTHxLRbi9dbcPHcPZYf69HxHSyStjP
+	 K+mR5QuDJEcCE+Fz2cmVcaGadt0Cz19w2qMYyVYoDfZ9cUK78iLeoOc0Q8SWexBELg
+	 52yCP4CcR7ZFXS83LiTNMTMtaBLBn8FEcaEgXywI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/268] affs: generate OFS sequence numbers starting at 1
+Subject: [PATCH 6.12 253/423] wifi: mac80211: Cleanup sta TXQs on flush
 Date: Tue,  8 Apr 2025 12:49:39 +0200
-Message-ID: <20250408104833.080249349@linuxfoundation.org>
+Message-ID: <20250408104851.633930334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit e4cf8ec4de4e13f156c1d61977d282d90c221085 ]
+[ Upstream commit 5b999006e35ea9c11116ddff7e375b256421d0af ]
 
-If I write a file to an OFS floppy image, and try to read it back on
-an emulated Amiga running Workbench 1.3, the Amiga reports a disk
-error trying to read the file. (That is, it's unable to read it _at
-all_, even to copy it to the NIL: device. It isn't a matter of getting
-the wrong data and being unable to parse the file format.)
+Drop the sta TXQs on flush when the drivers is not supporting
+flush.
 
-This is because the 'sequence number' field in the OFS data block
-header is supposed to be based at 1, but affs writes it based at 0.
-All three locations changed by this patch were setting the sequence
-number to a variable 'bidx' which was previously obtained by dividing
-a file position by bsize, so bidx will naturally use 0 for the first
-block. Therefore all three should add 1 to that value before writing
-it into the sequence number field.
+ieee80211_set_disassoc() tries to clean up everything for the sta.
+But it ignored queued frames in the sta TX queues when the driver
+isn't supporting the flush driver ops.
 
-With this change, the Amiga successfully reads the file.
-
-For data block reference: https://wiki.osdev.org/FFS_(Amiga)
-
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://patch.msgid.link/20250204123129.9162-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/affs/file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/util.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 04c018e196028..8fd1a7c5958a8 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -597,7 +597,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 		BUG_ON(tmp > bsize);
- 		AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 		AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 		affs_fix_checksum(sb, bh);
- 		bh->b_state &= ~(1UL << BH_New);
-@@ -748,7 +748,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(bsize);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
-@@ -782,7 +782,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 2b6e8e7307ee5..a98ae563613c0 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -685,7 +685,7 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
+ 			      struct ieee80211_sub_if_data *sdata,
+ 			      unsigned int queues, bool drop)
+ {
+-	if (!local->ops->flush)
++	if (!local->ops->flush && !drop)
+ 		return;
+ 
+ 	/*
+@@ -712,7 +712,8 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
+ 		}
+ 	}
+ 
+-	drv_flush(local, sdata, queues, drop);
++	if (local->ops->flush)
++		drv_flush(local, sdata, queues, drop);
+ 
+ 	ieee80211_wake_queues_by_reason(&local->hw, queues,
+ 					IEEE80211_QUEUE_STOP_REASON_FLUSH,
 -- 
 2.39.5
 
