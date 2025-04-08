@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5571EA809FF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59FAA8071A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D072E4E77CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C008A2C80
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3934126AA9A;
-	Tue,  8 Apr 2025 12:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D96B268681;
+	Tue,  8 Apr 2025 12:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9o/Q5Nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgLEc/CH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACC02690EC;
-	Tue,  8 Apr 2025 12:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F212686BC;
+	Tue,  8 Apr 2025 12:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116424; cv=none; b=Ny+ZdJauFl8qZkzACmvH6xpRcrBtaOE6d7AE88uJVsDkL1c8S6phrzFqqfaqMXbsLVNtP78oxsuYvP3EA74fqE7xmrdIKXkaImHmApm5mieD4T+PPVr8S+Tcj3bMliD3IxGShy3tP/LBZ9DoqQ4MYpJjUSVI2BVgSyf5kAvPmE4=
+	t=1744114765; cv=none; b=FYw8ATaZCUFxotLVfeMo21z59yUEY2yWnXDeVNtOjya4+9AN1Xq6eJqhjcuaSF1a8bC0yGm3o0LzJMstD6LBv5CgvmMFKpBVUOsgIioL0Aa/QJERiOoEhbHCKi3xygEw3ttdYDfmjNF79NmcWNwozROzjUgdxguMW5PBzXVYx4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116424; c=relaxed/simple;
-	bh=/LeXGP7LyZvqdzP/WT36nBlntGUEynJZTu8I5QDEW5I=;
+	s=arc-20240116; t=1744114765; c=relaxed/simple;
+	bh=n1++BejQaiEtu2Sa2N8jjCSjJBlMcuiQc32ZVM0pDwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvpc5suHX1ESALnOO7pYfXZsRCw0FSqyQLr7pJDXgFne1B2FYUEfVA6wgZdqCCnb1KQRshbwDWc+WArk7H2dDYJO5kXOXk6V1x2rc5sQGZhktF/BIci7JJsrJ8mRNKdrruOT+fkJ8Mme3+QfQdtHNmau/x0JjTU9crz0NT2ynLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9o/Q5Nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BE5C4CEE5;
-	Tue,  8 Apr 2025 12:47:03 +0000 (UTC)
+	 MIME-Version; b=OeSLeyB4Tf/vDKLU0nIQn3ofAgUQQ8UREz13uJ30/dp+6Qs5nJ9ue8vppgXkfm8ufaITZUQs04g9XG3JuGLjRImd2q/n5pp1443FEliOGxc1Owz1nJVnCgK2yWAzzj4Aq2c4ndiY5vf7Xd6msfTocokSi4EuGsCyHC5wqYKAR48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgLEc/CH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3FDC4CEE7;
+	Tue,  8 Apr 2025 12:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116423;
-	bh=/LeXGP7LyZvqdzP/WT36nBlntGUEynJZTu8I5QDEW5I=;
+	s=korg; t=1744114765;
+	bh=n1++BejQaiEtu2Sa2N8jjCSjJBlMcuiQc32ZVM0pDwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9o/Q5Nw4SCkAdIiW7F4oN02BMxAgv8N5jXAvy0b3goZLDiv/FNUQ87VperAJNN4H
-	 INuwaCYyDC9SmGe0MK7OZ/FnIzIYCqtngTh77tcIm8cyr/5xdXUrfSFuGfnS/qwXar
-	 s02z//Bsw0o/DyKC1IysNtRI1ih/qyAlszeHMhXU=
+	b=zgLEc/CHq9/DciCKbTSY56btohad9F2ueoeQAlKKdoByfsk1eXQlOhV3o1aPBv+Kk
+	 zQHcmJYjPCJ5sNejkVuGrVIaL7lNgsMbfMSAEWqXOv3/KB2mCAItSG9WSg7aNezMl0
+	 QN6jX+uruh1ps7hlLjPsk7ox/FNK3UqAZ7fUFs+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danila Chernetsov <listdansp@mail.ru>,
-	Helge Deller <deller@gmx.de>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/423] fbdev: sm501fb: Add some geometry checks.
+Subject: [PATCH 6.13 210/499] soundwire: slave: fix an OF node reference leak in soundwire slave device
 Date: Tue,  8 Apr 2025 12:47:02 +0200
-Message-ID: <20250408104847.975328745@linuxfoundation.org>
+Message-ID: <20250408104856.445485703@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danila Chernetsov <listdansp@mail.ru>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit aee50bd88ea5fde1ff4cc021385598f81a65830c ]
+[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
 
-Added checks for xoffset, yoffset settings.
-Incorrect settings of these parameters can lead to errors
-in sm501fb_pan_ functions.
+When initializing a soundwire slave device, an OF node is stored to the
+device with refcount incremented. However, the refcount is not
+decremented in .release(), thus call of_node_put() in
+sdw_slave_release().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5fc404e47bdf ("[PATCH] fb: SM501 framebuffer driver")
-Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sm501fb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/soundwire/slave.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
-index 86ecbb2d86db8..2eb27ebf822e8 100644
---- a/drivers/video/fbdev/sm501fb.c
-+++ b/drivers/video/fbdev/sm501fb.c
-@@ -326,6 +326,13 @@ static int sm501fb_check_var(struct fb_var_screeninfo *var,
- 	if (var->xres_virtual > 4096 || var->yres_virtual > 2048)
- 		return -EINVAL;
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index 4869b073b11c2..d2d99555ec5a5 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -13,6 +13,7 @@ static void sdw_slave_release(struct device *dev)
+ {
+ 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
  
-+	/* geometry sanity checks */
-+	if (var->xres + var->xoffset > var->xres_virtual)
-+		return -EINVAL;
-+
-+	if (var->yres + var->yoffset > var->yres_virtual)
-+		return -EINVAL;
-+
- 	/* can cope with 8,16 or 32bpp */
- 
- 	if (var->bits_per_pixel <= 8)
++	of_node_put(slave->dev.of_node);
+ 	mutex_destroy(&slave->sdw_dev_lock);
+ 	kfree(slave);
+ }
 -- 
 2.39.5
 
