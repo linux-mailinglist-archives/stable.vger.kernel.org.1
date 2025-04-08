@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5CDA80A05
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26223A8064E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A46A8C0174
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1C018A0A46
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8AB26981C;
-	Tue,  8 Apr 2025 12:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C8B269B02;
+	Tue,  8 Apr 2025 12:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URFrSC92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2N3514/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDCF269839;
-	Tue,  8 Apr 2025 12:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924EB26156E;
+	Tue,  8 Apr 2025 12:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116203; cv=none; b=MG+tFxr10vBJrVYJKhu1FsMANI3QlLXxFUNRCSKcIPlP0mz5BpkeGpsD8UZAFid6Fg6ZMGd2iUfotSIJB+RuYJYy4lcidc91xd1iUBHspycesgBAH35Hgl8x+NcRDl8paDBixhaV1lk2NysM4tFwZNOozIVdiw7NW+D3Ui9rnVY=
+	t=1744114469; cv=none; b=mh+/hMmDKayT2KNmai/gRmQAYFGT0t9iyHUif4qTIQQ7MUqcX3IkrEqsurx4PrW+b5wRgilWfJr8oHmDnUUHjt/z6Zoo53Y0PoH/3zN/mqa4ami1U+EjcJkw1Ra9XGh5BFC+UX9/NktimtnEjSir+VQQCFApvWjINPFCEeIY9xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116203; c=relaxed/simple;
-	bh=TbMD1O2bNwuA0GuAdVKTOM4zy9X+GYomprMBwXglD2s=;
+	s=arc-20240116; t=1744114469; c=relaxed/simple;
+	bh=CHauP/8kSt1FmWvnp/PqIqC8BvtiWSTmKLD/J6aBWE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfaQxQ3HcSWPWjSSeabMT4t7qa3x13LIp8ov2OPEF34hrHMApHP4AB52+kkepElwB56bKr+TYpRy1QEPXqvyGJV3AkuNAGITZdFJUv1fPEI+wkocUlNPPfokw4j8x09dXBmV6hCaNjNDYybkK3UwY1bPXephQNyQFupE7Zb6O78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URFrSC92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3D3C4CEE5;
-	Tue,  8 Apr 2025 12:43:23 +0000 (UTC)
+	 MIME-Version; b=hlWoMdB3V/MBf2Hp0CmjBlaFiuzVypOhEsVjbiPghKK09khhXjELGXP2mhMaIvPJF7wTsW+vXFpQg3VcbgY0vETkFx/U/SwTpd0on4+ZSy9IqeM2qM2LPmonjYoFe1yZP50n0jZixkJYQfNUG9fPs6nEYgLv4n13Pr0KtEYYAXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2N3514/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D68C4CEE5;
+	Tue,  8 Apr 2025 12:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116203;
-	bh=TbMD1O2bNwuA0GuAdVKTOM4zy9X+GYomprMBwXglD2s=;
+	s=korg; t=1744114469;
+	bh=CHauP/8kSt1FmWvnp/PqIqC8BvtiWSTmKLD/J6aBWE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URFrSC92ZMa6YKY4y4xNTg0g2sLz5dSg56t7pFnxVFMfOvRD31FJt0dHjzaAN8mL8
-	 ox9nLQuQIhQzUooaza2VXlAzkBuKfTILrrnkAYBS7A+2FeDiFB5RJlXI1fBDRIKwGX
-	 A6mGYhLnh5ayfsp3dDZnckIZioXeiNXO+DFFy15o=
+	b=t2N3514/z9Ws5OyiLxEdy4SGKw+6Hk5jxb7xHI7EV2MJammxUBGPnuv3Z60maqB9J
+	 zn3FV+VnM/7Rb8pc5GR62ba+iuRYMaHyy861JLY9bOvoZjN/f0/HOz5Y/qpu5wZ1h3
+	 H+fGqlWa7JGmkYJ9Ila2jyemUD68BcFVLBjEqNXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zuoqian <zuoqian113@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/423] cpufreq: scpi: compare kHz instead of Hz
+Subject: [PATCH 6.13 117/499] dummycon: fix default rows/cols
 Date: Tue,  8 Apr 2025 12:45:29 +0200
-Message-ID: <20250408104845.769701489@linuxfoundation.org>
+Message-ID: <20250408104854.119572882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zuoqian <zuoqian113@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
+[ Upstream commit beefaba1978c04ea2950d34236f58fe6cf6a7f58 ]
 
-The CPU rate from clk_get_rate() may not be divisible by 1000
-(e.g., 133333333). But the rate calculated from frequency(kHz) is
-always divisible by 1000 (e.g., 133333000).
-Comparing the rate causes a warning during CPU scaling:
-"cpufreq: __target_index: Failed to change cpu frequency: -5".
-When we choose to compare kHz here, the issue does not occur.
+dummycon fails to build on ARM/footbridge when the VGA console is
+disabled, since I got the dependencies slightly wrong in a previous
+patch:
 
-Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
-Signed-off-by: zuoqian <zuoqian113@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+drivers/video/console/dummycon.c: In function 'dummycon_init':
+drivers/video/console/dummycon.c:27:25: error: 'CONFIG_DUMMY_CONSOLE_COLUMNS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
+   27 | #define DUMMY_COLUMNS   CONFIG_DUMMY_CONSOLE_COLUMNS
+drivers/video/console/dummycon.c:28:25: error: 'CONFIG_DUMMY_CONSOLE_ROWS' undeclared (first use in this function); did you mean 'CONFIG_DUMMY_CONSOLE'?
+   28 | #define DUMMY_ROWS      CONFIG_DUMMY_CONSOLE_ROWS
+
+This only showed up after many thousand randconfig builds on Arm, and
+doesn't matter in practice, but should still be fixed. Address it by
+using the default row/columns on footbridge after all in that corner
+case.
+
+Fixes: 4293b0925149 ("dummycon: limit Arm console size hack to footbridge")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409151512.LML1slol-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scpi-cpufreq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/video/console/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index 8d73e6e8be2a5..f2d913a91be9e 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -39,8 +39,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
- static int
- scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
- {
--	u64 rate = policy->freq_table[index].frequency * 1000;
-+	unsigned long freq_khz = policy->freq_table[index].frequency;
- 	struct scpi_data *priv = policy->driver_data;
-+	unsigned long rate = freq_khz * 1000;
- 	int ret;
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index bc31db6ef7d26..c4a8f74df2493 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -52,7 +52,7 @@ config DUMMY_CONSOLE
  
- 	ret = clk_set_rate(priv->clk, rate);
-@@ -48,7 +49,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
- 	if (ret)
- 		return ret;
+ config DUMMY_CONSOLE_COLUMNS
+ 	int "Initial number of console screen columns"
+-	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
++	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
+ 	default 160 if PARISC
+ 	default 80
+ 	help
+@@ -62,7 +62,7 @@ config DUMMY_CONSOLE_COLUMNS
  
--	if (clk_get_rate(priv->clk) != rate)
-+	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
- 		return -EIO;
- 
- 	return 0;
+ config DUMMY_CONSOLE_ROWS
+ 	int "Initial number of console screen rows"
+-	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
++	depends on DUMMY_CONSOLE && !(ARCH_FOOTBRIDGE && VGA_CONSOLE)
+ 	default 64 if PARISC
+ 	default 30 if ARM
+ 	default 25
 -- 
 2.39.5
 
