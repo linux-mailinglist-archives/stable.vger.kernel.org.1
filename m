@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C272EA7FE1D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9765A802E9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B389E16A503
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6693ACC62
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3774226A0E3;
-	Tue,  8 Apr 2025 11:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AFA269811;
+	Tue,  8 Apr 2025 11:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3GT68XW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uw7O8esX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F15267B7F;
-	Tue,  8 Apr 2025 11:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78592690F9;
+	Tue,  8 Apr 2025 11:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110140; cv=none; b=YtpjmqP/XuGr2Y/27aIpkIx3B4B69E39diAXHY2zvp+qj+4cBwl0bZ9O7b35SGl0q4Mjx6H9/ppgwGIKSAcBorWGyjd5m7o605RvH+0ZiHBW9/p1eaVedqPQ6j+mbPfEXLSnUOGlo9HlKPnxRasS4Sf6joRKnuS8CTLP59RPN9U=
+	t=1744112732; cv=none; b=egsRxSIq5TtjM5iHl/OITpkoy2mSjsilJcD62FDwMnlb5nT1PqsjwvJo7dDcrW8mDJV1g2P3AVVRc79Ty1N+jZgxk7OUXHTUk4KV0iWfiF8olcXXZV27T1OiY3cPwuwmbnEwUSo2Js5Ki7zODJEiZoxVW+NEV8T1JRQQK4C6dqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110140; c=relaxed/simple;
-	bh=bpKYVpNIh4DkLI6b42QBpQi6f/xnP0Xy41jKcawWy84=;
+	s=arc-20240116; t=1744112732; c=relaxed/simple;
+	bh=7iwW+MSj660PVIFLxix5OLUARcorjqZgPeSftqztwB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOZzIiS1cPqsqLD93R1KSFdPg++HbjbvvycoXPHsqX8O6ax2bii/Ks8aO9C3i0xiU+44VxWwL8xEcd26oRFdIcsANEURXmXZPo3u1UILT/k02aZVSnEw6yw9/EfR58kQO9KSyVNO7ia94ZxNDer3JPRFT9Dv2Z3UUdKQJSzHiVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3GT68XW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FA0C4CEE5;
-	Tue,  8 Apr 2025 11:02:19 +0000 (UTC)
+	 MIME-Version; b=OXUtI3hxZUvEQbs/n3G3Hd6FaotNnGSzIFqISfKcx2SS9iB0r8HY5Ih7Q8Ls7BVGxqP9LkgPc9euETFea+S8z2qOYsUHOeJE9biiG3PwcbGmwacBEamg2JBB5de+xJNOqQQmni99/CCRMR2u1XeEZ9N3P56BJy8+pjXQOod/EtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uw7O8esX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D2C4CEE7;
+	Tue,  8 Apr 2025 11:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110139;
-	bh=bpKYVpNIh4DkLI6b42QBpQi6f/xnP0Xy41jKcawWy84=;
+	s=korg; t=1744112732;
+	bh=7iwW+MSj660PVIFLxix5OLUARcorjqZgPeSftqztwB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3GT68XW0zdmNbBT70M85J5sCjgk389q3bU2J/rdwt1stWS+uMLBFiCGPs139n2vy
-	 zcjrBO98s45hm5gPSkbFqDOBZN/TkQPZG3PZKdaOZrZdqZGlVFkmKo9hw2i8Fw4O4E
-	 rnIHR2/H4wcZo3QmlY2uVKlx40By0rrkfTNbAEZU=
+	b=uw7O8esXHOT/xWcGV6mS803ieCryfKbsd28mUaEA0o3fNg6k+CPT5sWA2Gr01r0uT
+	 AaFVHJNzPZVUWhilxIk08MlfJ5kWeAxg75aXE8SnHPCt0EzgiYKUtevpdtw3xo2HOZ
+	 /MeN0+BC7lBc6/YZhGijh5gTY8b3BMh4wxkIR00A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Peter Geis <pgwipeout@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/227] nvme-pci: clean up CMBMSC when registering CMB fails
+Subject: [PATCH 5.15 178/279] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
 Date: Tue,  8 Apr 2025 12:49:21 +0200
-Message-ID: <20250408104825.798571989@linuxfoundation.org>
+Message-ID: <20250408104831.133521231@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Peter Geis <pgwipeout@gmail.com>
 
-[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
+[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
 
-CMB decoding should get disabled when the CMB block isn't successfully
-registered to P2P DMA subsystem.
+Correct the clk_ref_usb3otg parent to fix clock control for the usb3
+controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
+and the rk3328 usb3 phy clock map.
 
-Clean up the CMBMSC register in this error handling codepath to disable
-CMB decoding (and CMBLOC/CMBSZ registers).
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/rockchip/clk-rk3328.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index ae04bdce560a1..7993acdfd3185 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1888,6 +1888,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
- 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
- 		dev_warn(dev->ctrl.device,
- 			 "failed to register the CMB\n");
-+		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
- 		return;
- 	}
- 
+diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
+index 267ab54937d3d..a3587c500de28 100644
+--- a/drivers/clk/rockchip/clk-rk3328.c
++++ b/drivers/clk/rockchip/clk-rk3328.c
+@@ -201,7 +201,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
+ 				    "gpll_peri",
+ 				    "hdmiphy_peri" };
+ PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
+-				    "clk_usb3otg_ref" };
++				    "clk_ref_usb3otg_src" };
+ PNAME(mux_xin24m_32k_p)		= { "xin24m",
+ 				    "clk_rtc32k" };
+ PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
 -- 
 2.39.5
 
