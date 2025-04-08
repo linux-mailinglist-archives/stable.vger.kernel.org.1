@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C7CA80A62
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:04:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E119A806D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE72A4E72D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA278A2BA4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAE6268FE7;
-	Tue,  8 Apr 2025 12:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B86026B961;
+	Tue,  8 Apr 2025 12:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znb3sT/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db8/Kqxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3C3265CD3;
-	Tue,  8 Apr 2025 12:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF5C269819;
+	Tue,  8 Apr 2025 12:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116353; cv=none; b=EA8MxUm1/qTkBbeQGmQ289Oop2u58MXi/XnOO68/AJ0RSMYl6hA4wAXoCmzIQyGhCSszxKToYKz6tV4lN0wTEZfOnFZfzH69i3N45ga9M6w9UFFlJcvZ0snyMpSq5nnUhz4a5qe5NdV4zAg8+imHZ5sBFA7vJNBv0mhAZMWLzQQ=
+	t=1744114752; cv=none; b=WwYCmLNpl4RdaK2qGLaJ+gMGP64AqChplZU5PqvF+iakpmVIUkTemnM8rZzxOdq0aRFDZOq3JQeBgFoDUJ04KLHmg+uYvlvUnBYtDpue52F/xbl5F7UurzMtFyOmXI41z4/0uW4oWJwwprtK7xbJMKt7xTidBAgwyVI6xxLS+EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116353; c=relaxed/simple;
-	bh=2uRhgucfM3i927+jXi7ByOWgAexwF8a2fNg9XWXiL4I=;
+	s=arc-20240116; t=1744114752; c=relaxed/simple;
+	bh=uIVMioTSCw3PM0SMtoqo+MPRCtZGRw0747nkJY7FjTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdCAk0d/cJA/5SL/4lF1erkJt7Dtiub/8bYCNCVRMun9PVnhGKiGJueMiqzF+pLWKbizpfRYZCi49N2nR8aDsJDFw3xwFYW/H2+SX+/Hl5kOW+ulkLMOofS3zK541NB5/MXxBZNv0drjwANXARGA7tlaaFQZv2oBK/Pg346RwPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znb3sT/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D046C4CEE5;
-	Tue,  8 Apr 2025 12:45:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b1bF2N2iIPApOQ40ieZ4RU6QHvavpQ0tGqHdMoQ/b9z80l8Y7Yzt32P5XiDd/CtF7HiJRbOHvigYLmyeTw5zBuxw+NUlu8mF1Sj/oGq7p9NhXSi2tmuSeLLjYoWNJOrmI/zxo0qpsgT9WHqn91rDnIKa/S9yi+qsNRPj7o3XFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db8/Kqxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5500EC4CEE5;
+	Tue,  8 Apr 2025 12:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116353;
-	bh=2uRhgucfM3i927+jXi7ByOWgAexwF8a2fNg9XWXiL4I=;
+	s=korg; t=1744114751;
+	bh=uIVMioTSCw3PM0SMtoqo+MPRCtZGRw0747nkJY7FjTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Znb3sT/ED17JTrmHvuoeb1MlawCtCP3Qx/4rtpt6U9XufEWloQi73DwS397nYi8Ti
-	 30kZ/frZMeac9WjtAM1KL4OGJGkBWpwKa3FLGGF+UJ1MCD0FEnkpAIsttPi5P7V5iX
-	 n2i6uHIrq9iH9suVm6JuKeo3dEb6F1/86M9js0/s=
+	b=db8/KqxxWR0zgnQprnzpP2m7lUlBlvU4v7mbMiqAEUqvSZu7nSnVhUDdF+9in3lZi
+	 avGg/LgxISUjYD7zxbgPWJnqxgPtW0atGzJbPx2mHuBgwPeaI5rfhEeaQPRIMUj7i0
+	 CiujZlLgiZZ9rc+iXg7UmlbzZzw2twBqLuCp8ixQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/423] pinctrl: renesas: rzg2l: Suppress binding attributes
+Subject: [PATCH 6.13 223/499] iio: backend: make sure to NULL terminate stack buffer
 Date: Tue,  8 Apr 2025 12:47:15 +0200
-Message-ID: <20250408104848.271798929@linuxfoundation.org>
+Message-ID: <20250408104856.772269092@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-[ Upstream commit ea4065345643f3163e812e58ed8add2c75c3ee46 ]
+[ Upstream commit 035b4989211dc1c8626e186d655ae8ca5141bb73 ]
 
-Suppress binding attributes for the rzg2l pinctrl driver, as it is an
-essential block for Renesas SoCs.  Unbinding the driver leads to
-warnings from __device_links_no_driver() and can eventually render the
-system inaccessible.
+Make sure to NULL terminate the buffer in
+iio_backend_debugfs_write_reg() before passing it to sscanf(). It is a
+stack variable so we should not assume it will 0 initialized.
 
-Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250215131235.228274-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: cdf01e0809a4 ("iio: backend: add debugFs interface")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250218-dev-iio-misc-v1-1-bf72b20a1eb8@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/industrialio-backend.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 5081c7d8064fa..47e6552c3751d 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -3180,6 +3180,7 @@ static struct platform_driver rzg2l_pinctrl_driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = of_match_ptr(rzg2l_pinctrl_of_table),
- 		.pm = pm_sleep_ptr(&rzg2l_pinctrl_pm_ops),
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe = rzg2l_pinctrl_probe,
- };
+diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+index 3632812720352..aa2b8b38ab587 100644
+--- a/drivers/iio/industrialio-backend.c
++++ b/drivers/iio/industrialio-backend.c
+@@ -155,10 +155,12 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
+ 	ssize_t rc;
+ 	int ret;
+ 
+-	rc = simple_write_to_buffer(buf, sizeof(buf), ppos, userbuf, count);
++	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
+ 	if (rc < 0)
+ 		return rc;
+ 
++	buf[count] = '\0';
++
+ 	ret = sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
+ 
+ 	switch (ret) {
 -- 
 2.39.5
 
