@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EA3A803EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0351A80725
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A577F426460
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4CCD4C4D5B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA133AC1C;
-	Tue,  8 Apr 2025 11:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80834269D04;
+	Tue,  8 Apr 2025 12:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDPKjWV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEx/kDuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42994268FE7;
-	Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D93F206F18;
+	Tue,  8 Apr 2025 12:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113322; cv=none; b=K75sZrg5N0IMVAM2Dn/z9P6sbVR4aDBgPmSo6x6dwbJHWPza/dZn3GaMYN6kLecsBKfmPQhhf7frD33POVI+32omNsCzfOvX+zdk+1iCarbs9/F7epnsPaZWDez2PU6FdoIk8+jy4c+Ni1jxfWaiJ6h8XYb3X8i0wcSn7HqjMes=
+	t=1744115010; cv=none; b=YcHsH7M3nAJ6vBTzFGS0GIVddUqESOdLeRsewYsxO3R4mCZrzRroC/PDUBXxBEZa4VDdIVHSvUl+yuE43wYu7oyataXHrnOrj26CxO8awmVUewRAttCryfAr3J2mZcMbqgl0bWBi35btm9gibl8k7/FNOS8RvqzzPZMh9GSGyhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113322; c=relaxed/simple;
-	bh=ZuIWmZJTDq1mcGB7Y4+gpBjS3oHydLC0x+NNfQYbDtM=;
+	s=arc-20240116; t=1744115010; c=relaxed/simple;
+	bh=h5/uLMriOmqM26txTM43XB0S7wA1fDeG+TX4Ea1TCd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPLzdSNNwd9j5270RZdnabPcF7vr56KWiXdrZu46v4hyBX/2SUSDSAxDO96agDQooIYYBotw5aZYvhBOf3c8zXTFa0jBCGUI04ex1SC95paDfyjZwg5ks2gMhiSP5eAGlbi6WvCVt0vb1DzJHuc+O/9SX5dhI4D+X5Lymc9mk+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDPKjWV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECF2C4CEE5;
-	Tue,  8 Apr 2025 11:55:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tw+SXkX6ITv1BXf8lYRMfgkG96yaiIqMvhpYgZVmw3tNWRvFsu4CdKBmiPBJOlwTM8dokBbjyXf57XQhA1mtwiyGFlRxSkrXxu1/TSIEr9u1M+lkaXRXqmyZo0//hvfywoVZ0yyS1uBiG1HIUo0fn2dO7+5R+T/1K/mE8ULPVuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEx/kDuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DDEC4CEE5;
+	Tue,  8 Apr 2025 12:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113321;
-	bh=ZuIWmZJTDq1mcGB7Y4+gpBjS3oHydLC0x+NNfQYbDtM=;
+	s=korg; t=1744115010;
+	bh=h5/uLMriOmqM26txTM43XB0S7wA1fDeG+TX4Ea1TCd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDPKjWV89iAEFeK50I8DYUcZs5t6HiNFGcOgdCLYZ6C0XLX6oowWhbrGnpocf4Tbm
-	 oNRf5CgSci8gklQrg5qJv2xchDWcziwsGq/CWD55639OqxV7LUgfjrhFTEOEd+ieKI
-	 j5bso6aUsjgab6K5UxF7jfmjbqIe4Hnnvg//B0fc=
+	b=eEx/kDuws8pBowXyVZq67L3ldxWipD6K8fM3uc7Zm5KfUto2BDujcpcD8zzqJio/K
+	 k19rNFkpmwglJeToE3XYz7njzdCkl2t9asxDbSS3RoQ3+7V0O27D1L0XfeB+8jAM35
+	 n5DKgPFlnpTR8ZE1Wn39PrxsQKQ9jDa3RatYb6Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/268] fs/ntfs3: Prevent integer overflow in hdr_first_de()
+Subject: [PATCH 6.13 316/499] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
 Date: Tue,  8 Apr 2025 12:48:48 +0200
-Message-ID: <20250408104831.653210128@linuxfoundation.org>
+Message-ID: <20250408104859.099678207@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
+[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
 
-The "de_off" and "used" variables come from the disk so they both need to
-check.  The problem is that on 32bit systems if they're both greater than
-UINT_MAX - 16 then the check does work as intended because of an integer
-overflow.
+Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
+Add Surface Go 4 DMI match to button_array_table to fix this.
 
-Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 964e27c7b9016..c1d1c4a7cf4d6 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
- 	struct NTFS_DE *e;
- 	u16 esize;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 927a2993f6160..88a1a9ff2f344 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -139,6 +139,13 @@ static const struct dmi_system_id button_array_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
+ 		},
+ 	},
++	{
++		.ident = "Microsoft Surface Go 4",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
++		},
++	},
+ 	{ }
+ };
  
--	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
-+	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
- 		return NULL;
- 
- 	e = Add2Ptr(hdr, de_off);
 -- 
 2.39.5
 
