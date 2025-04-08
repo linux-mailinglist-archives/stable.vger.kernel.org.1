@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DD2A80227
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18544A7FE23
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D266461241
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7634116DDF0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BED126982F;
-	Tue,  8 Apr 2025 11:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DA3263C6D;
+	Tue,  8 Apr 2025 11:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6sPVkLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSQATpqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AB4268FEB;
-	Tue,  8 Apr 2025 11:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5318E26A0EA;
+	Tue,  8 Apr 2025 11:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112080; cv=none; b=rQ9qCNk4kryMH/GdKz8Fvhha6OC5bCwE5l9Ufoz3Hve2lkYjYmTKw7NQS4bQWG2kTiGZSNovPDXoOMkut5vr9/CczYoGoaPL+0z8ACzT/pSQ6KGtArZI4ch2cmvWicDqXRRhPT6nJEr9jTkfiTbQPBq3o/dawKUtMiMM3CUu3R8=
+	t=1744110148; cv=none; b=eI01rPcUsvWWQqJ7XnoPO5NRExgeeMEzgeZKouI0ZToLpNYXqZ3x+IadEqmJiXD0anpmZh7/4UOPFY3wMt7iGFlh9OkHRIPbMtzemSUvap2jQ6cF9yQU/MfTDJHXxwdN8wO1UTQUU7NHo+lIw156MoIQLY48ChjQSK9nIVsn1QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112080; c=relaxed/simple;
-	bh=fgpgr6VBSY2AyNsqhptCLjji5GIAD66g1kPgVl3PKwY=;
+	s=arc-20240116; t=1744110148; c=relaxed/simple;
+	bh=yskLhDd2knqP1e6nqt3cqzefTZn6GyMOK9i5wODA5wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRcm5gnC6bhfzBfbPMWccwkTv9L3pbV9xN4UII7CY2vwbYSNuTtemXEwVaayVw8/asFzwt8sZVpeBzYhPbH1BkP6G1jt9oKvz1P1iJWrKv6F+59P+ykAV/LOxfn8sBwKYvyMM9W4q8B6ns9TV8cXU6fyeE4ZgF1oHqP16hj7Oa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6sPVkLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1A0C4CEE7;
-	Tue,  8 Apr 2025 11:34:39 +0000 (UTC)
+	 MIME-Version; b=FGZAgKWUPxR+Y1MPrmvZ2aDNSI6XoXYIwTy4lHUYLx+4snTcz8ysu7bj0Y6SUs4FiCbOQ/t94zmyW9h8Fra7yJv9HwFTbU1W6oz20XKbXRzbSkwgR+dP0ItwLSO30mA8l6nnGaJI/eE2xY9dXqrnRpTkvZRQ/2s6D5CuEkj3sl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSQATpqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AC9C4CEE5;
+	Tue,  8 Apr 2025 11:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112080;
-	bh=fgpgr6VBSY2AyNsqhptCLjji5GIAD66g1kPgVl3PKwY=;
+	s=korg; t=1744110147;
+	bh=yskLhDd2knqP1e6nqt3cqzefTZn6GyMOK9i5wODA5wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6sPVkLSFt1RnJyQCiVdpblYuH+ArhlW4p83+k6+A702FotH7IiJBpGLDnCriKvj9
-	 5DcUtuvIdbONwH6X3UYb814rmJH3wlg2qBMFo5V1/QVE+gS27lDVScpzk0YpAax1Hz
-	 hVpHdeT6QCuGI6IojaRnHyUTfZIhIubbQusA5xEw=
+	b=fSQATpqWwzEL0gplRWcjaU8icaMJCz5xSsok8VBH7UDqaon87+ITnuAiH5DrCvivm
+	 vGJ0V/Uv0xQ5rSeXWaz70T2K7ADZk0DhJX5d3HB731p29GQYBvwOqrJFmgipRw0zGl
+	 rkTZlOeTJDNjd/iwkEkWeqjU3o69RldD4QRBTxbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 667/731] LoongArch: BPF: Use move_addr() for BPF_PSEUDO_FUNC
+	Simon Tatham <anakin@pobox.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 186/227] affs: dont write overlarge OFS data block size fields
 Date: Tue,  8 Apr 2025 12:49:24 +0200
-Message-ID: <20250408104929.781635558@linuxfoundation.org>
+Message-ID: <20250408104825.885014668@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Simon Tatham <anakin@pobox.com>
 
-commit 52266f1015a8b5aabec7d127f83d105f702b388e upstream.
+[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
 
-Vincent reported that running XDP synproxy program on LoongArch results
-in the following error:
+If a data sector on an OFS floppy contains a value > 0x1e8 (the
+largest amount of data that fits in the sector after its header), then
+an Amiga reading the file can return corrupt data, by taking the
+overlarge size at its word and reading past the end of the buffer it
+read the disk sector into!
 
-    JIT doesn't support bpf-to-bpf calls
+The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
+the new size field for a data block was computed by adding the amount
+of data currently being written (into the block) to the existing value
+of the size field. This is correct if you're extending the file at the
+end, but if you seek backwards in the file and overwrite _existing_
+data, it can lead to the size field being larger than the maximum
+legal value.
 
-With dmesg:
+This commit changes the calculation so that it sets the size field to
+the max of its previous size and the position within the block that we
+just wrote up to.
 
-    multi-func JIT bug 1391 != 1390
-
-The root cause is that verifier will refill the imm with the correct
-addresses of bpf_calls for BPF_PSEUDO_FUNC instructions and then run
-the last pass of JIT. So we generate different JIT code for the same
-instruction in two passes (one for placeholder and the other for the
-real address). Let's use move_addr() instead.
-
-See commit 64f50f6575721ef0 ("LoongArch, bpf: Use 4 instructions for
-function address in JIT") for a similar fix.
-
-Cc: stable@vger.kernel.org
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
-Reported-by: Vincent Li <vincent.mc.li@gmail.com>
-Tested-by: Vincent Li <vincent.mc.li@gmail.com>
-Closes: https://lore.kernel.org/loongarch/CAK3+h2yfM9FTNiXvEQBkvtuoJrvzmN4c_NZsFXqEk4Cj1tsBNA@mail.gmail.com/T/#u
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Simon Tatham <anakin@pobox.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/affs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -935,7 +935,10 @@ static int build_insn(const struct bpf_i
- 	{
- 		const u64 imm64 = (u64)(insn + 1)->imm << 32 | (u32)insn->imm;
- 
--		move_imm(ctx, dst, imm64, is32);
-+		if (bpf_pseudo_func(insn))
-+			move_addr(ctx, dst, imm64);
-+		else
-+			move_imm(ctx, dst, imm64, is32);
- 		return 1;
- 	}
- 
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index 7738fafcccfc1..bc88ba29d393c 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -725,7 +725,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		tmp = min(bsize - boff, to - from);
+ 		BUG_ON(boff + tmp > bsize || tmp > bsize);
+ 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
+-		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
++		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
++			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
+ 		affs_fix_checksum(sb, bh);
+ 		mark_buffer_dirty_inode(bh, inode);
+ 		written += tmp;
+-- 
+2.39.5
+
 
 
 
