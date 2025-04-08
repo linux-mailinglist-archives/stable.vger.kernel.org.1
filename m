@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E79A7FD41
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61ACA80228
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37AEC16A838
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1C8D3A9AF5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA9D268FD8;
-	Tue,  8 Apr 2025 10:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C664224239;
+	Tue,  8 Apr 2025 11:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4IqYUDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ak012gJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1E9263C71;
-	Tue,  8 Apr 2025 10:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3910935973;
+	Tue,  8 Apr 2025 11:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109715; cv=none; b=cV5eB5dOxuYAH384i42CZS67+59c1JY1iy5DPb5iCzRDVQCCsEWWVxWZmos6go3bwjBsgz/OL7sb3pHqwoYFBRNwjChJIvckQiimx8CeMEpb2MqBm8ljp8VZE9SwUn4Gj8c8udSiOB/A3xE5sqv4KehH9/ab5eM/+DvAwyR4vNE=
+	t=1744112310; cv=none; b=tfJWuIEaharEAADW1OIQbusSWlIth3tGHzZKLN0iMUVDzeVMQtQ7Fo51AMXfiZH+sZyD24PgdeCuByD7ARDgwTbd1y3E9W6rBuN+rYX6TKFKmEBBHJh4g6K8IiIUvyL8HMjljFzE3WQBGorbXeD59ujEXsb1vg0d6CEKwHnfv8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109715; c=relaxed/simple;
-	bh=IE3wH3ZxQRy4XoR8hjPlpZ+fO3vWCsycl6y1JlvAWFI=;
+	s=arc-20240116; t=1744112310; c=relaxed/simple;
+	bh=VoQrCgGfl1c1PIN8RuN0FKxePul0dnLND0MpHauPH7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z44RLLP0Qa4ShQ1EAo/oQ9cXTw/OkwlWdFkrD9j7NGCtUPq9X5d4t9vyY3j5FTM7IB+c6+nLRF8EXsFkD7LxrzkgL02eBWgpUr/1W7ObbLYtk724muz3dRcHsJWfqalAHN0dEgJx7NILWBoJnB1HPKrmOHRDrddu/f9ZkDrUZ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4IqYUDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1951C4CEE5;
-	Tue,  8 Apr 2025 10:55:14 +0000 (UTC)
+	 MIME-Version; b=VCTJusmgalh+cukmTaftkL0zhgJbbBDfT1OcCN+twTlLBwSBBRBWcjVt/Bs74sx/LJqPlbMc3uP9UMR4/Kno9v2NODD+cxV7q01+4WEqhXqe0Nt3ETo+GFZF22G40bBQ7HN8IKI+jXn+ApSiSnWDYGgEr9V+MjLvRzUlikPji2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ak012gJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECE8C4CEE5;
+	Tue,  8 Apr 2025 11:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109715;
-	bh=IE3wH3ZxQRy4XoR8hjPlpZ+fO3vWCsycl6y1JlvAWFI=;
+	s=korg; t=1744112310;
+	bh=VoQrCgGfl1c1PIN8RuN0FKxePul0dnLND0MpHauPH7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4IqYUDO1w5OnQrQgcv0Ferx4e9tuk6kpjnJey4zscii0ybbGY8/i6fmvYyEEiGs0
-	 o8WzgYxov1wA9d41R1kQ4hSIe9g4SpU3l8a5L0st50qw9EGORC9O/aVfbo2VJzWpwH
-	 3kzjQqBfsu2Tk4eeqUM3greK4YiH/qZft6LEBM9E=
+	b=Ak012gJF1BceUSdCVJk7Vo4inCOT70xwOpmUHJmYjDot3MlEr+oBTKoXZCXnOZbO5
+	 QXAWbQjmQiThHg4jp/09FpdIOn3zFA0F1+YE/D91fl2y1NBRgKvl7ntRWZy5CiBces
+	 Iyb145EV/WaCUKRG3rhKgd7kGzudPVQB45jq9Dog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gannon Kolding <gannon.kolding@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/227] ACPI: resource: IRQ override for Eluktronics MECH-17
+Subject: [PATCH 5.15 021/279] net: openvswitch: remove misbehaving actions length check
 Date: Tue,  8 Apr 2025 12:46:44 +0200
-Message-ID: <20250408104821.181272187@linuxfoundation.org>
+Message-ID: <20250408104826.955060338@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gannon Kolding <gannon.kolding@gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
+[ Upstream commit a1e64addf3ff9257b45b78bc7d743781c3f41340 ]
 
-The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-keyboard to work.
+The actions length check is unreliable and produces different results
+depending on the initial length of the provided netlink attribute and
+the composition of the actual actions inside of it.  For example, a
+user can add 4088 empty clone() actions without triggering -EMSGSIZE,
+on attempt to add 4089 such actions the operation will fail with the
+-EMSGSIZE verdict.  However, if another 16 KB of other actions will
+be *appended* to the previous 4089 clone() actions, the check passes
+and the flow is successfully installed into the openvswitch datapath.
 
-Adding a DMI_MATCH entry for this laptop model makes the internal
-keyboard function normally.
+The reason for a such a weird behavior is the way memory is allocated.
+When ovs_flow_cmd_new() is invoked, it calls ovs_nla_copy_actions(),
+that in turn calls nla_alloc_flow_actions() with either the actual
+length of the user-provided actions or the MAX_ACTIONS_BUFSIZE.  The
+function adds the size of the sw_flow_actions structure and then the
+actually allocated memory is rounded up to the closest power of two.
 
-Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
-Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+So, if the user-provided actions are larger than MAX_ACTIONS_BUFSIZE,
+then MAX_ACTIONS_BUFSIZE + sizeof(*sfa) rounded up is 32K + 24 -> 64K.
+Later, while copying individual actions, we look at ksize(), which is
+64K, so this way the MAX_ACTIONS_BUFSIZE check is not actually
+triggered and the user can easily allocate almost 64 KB of actions.
+
+However, when the initial size is less than MAX_ACTIONS_BUFSIZE, but
+the actions contain ones that require size increase while copying
+(such as clone() or sample()), then the limit check will be performed
+during the reserve_sfa_size() and the user will not be allowed to
+create actions that yield more than 32 KB internally.
+
+This is one part of the problem.  The other part is that it's not
+actually possible for the userspace application to know beforehand
+if the particular set of actions will be rejected or not.
+
+Certain actions require more space in the internal representation,
+e.g. an empty clone() takes 4 bytes in the action list passed in by
+the user, but it takes 12 bytes in the internal representation due
+to an extra nested attribute, and some actions require less space in
+the internal representations, e.g. set(tunnel(..)) normally takes
+64+ bytes in the action list provided by the user, but only needs to
+store a single pointer in the internal implementation, since all the
+data is stored in the tunnel_info structure instead.
+
+And the action size limit is applied to the internal representation,
+not to the action list passed by the user.  So, it's not possible for
+the userpsace application to predict if the certain combination of
+actions will be rejected or not, because it is not possible for it to
+calculate how much space these actions will take in the internal
+representation without knowing kernel internals.
+
+All that is causing random failures in ovs-vswitchd in userspace and
+inability to handle certain traffic patterns as a result.  For example,
+it is reported that adding a bit more than a 1100 VMs in an OpenStack
+setup breaks the network due to OVS not being able to handle ARP
+traffic anymore in some cases (it tries to install a proper datapath
+flow, but the kernel rejects it with -EMSGSIZE, even though the action
+list isn't actually that large.)
+
+Kernel behavior must be consistent and predictable in order for the
+userspace application to use it in a reasonable way.  ovs-vswitchd has
+a mechanism to re-direct parts of the traffic and partially handle it
+in userspace if the required action list is oversized, but that doesn't
+work properly if we can't actually tell if the action list is oversized
+or not.
+
+Solution for this is to check the size of the user-provided actions
+instead of the internal representation.  This commit just removes the
+check from the internal part because there is already an implicit size
+check imposed by the netlink protocol.  The attribute can't be larger
+than 64 KB.  Realistically, we could reduce the limit to 32 KB, but
+we'll be risking to break some existing setups that rely on the fact
+that it's possible to create nearly 64 KB action lists today.
+
+Vast majority of flows in real setups are below 100-ish bytes.  So
+removal of the limit will not change real memory consumption on the
+system.  The absolutely worst case scenario is if someone adds a flow
+with 64 KB of empty clone() actions.  That will yield a 192 KB in the
+internal representation consuming 256 KB block of memory.  However,
+that list of actions is not meaningful and also a no-op.  Real world
+very large action lists (that can occur for a rare cases of BUM
+traffic handling) are unlikely to contain a large number of clones and
+will likely have a lot of tunnel attributes making the internal
+representation comparable in size to the original action list.
+So, it should be fine to just remove the limit.
+
+Commit in the 'Fixes' tag is the first one that introduced the
+difference between internal representation and the user-provided action
+lists, but there were many more afterwards that lead to the situation
+we have today.
+
+Fixes: 7d5437c709de ("openvswitch: Add tunneling interface.")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250308004609.2881861-1-i.maximets@ovn.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/openvswitch/flow_netlink.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b00dad7ea8d40..532674936a0de 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -482,6 +482,12 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-+		},
-+	},
- 	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index b8607c3fee4be..d9bef3decd70c 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2273,14 +2273,10 @@ int ovs_nla_put_mask(const struct sw_flow *flow, struct sk_buff *skb)
+ 				OVS_FLOW_ATTR_MASK, true, skb);
+ }
+ 
+-#define MAX_ACTIONS_BUFSIZE	(32 * 1024)
+-
+ static struct sw_flow_actions *nla_alloc_flow_actions(int size)
+ {
+ 	struct sw_flow_actions *sfa;
+ 
+-	WARN_ON_ONCE(size > MAX_ACTIONS_BUFSIZE);
+-
+ 	sfa = kmalloc(kmalloc_size_roundup(sizeof(*sfa) + size), GFP_KERNEL);
+ 	if (!sfa)
+ 		return ERR_PTR(-ENOMEM);
+@@ -2436,15 +2432,6 @@ static struct nlattr *reserve_sfa_size(struct sw_flow_actions **sfa,
+ 
+ 	new_acts_size = max(next_offset + req_size, ksize(*sfa) * 2);
+ 
+-	if (new_acts_size > MAX_ACTIONS_BUFSIZE) {
+-		if ((next_offset + req_size) > MAX_ACTIONS_BUFSIZE) {
+-			OVS_NLERR(log, "Flow action size exceeds max %u",
+-				  MAX_ACTIONS_BUFSIZE);
+-			return ERR_PTR(-EMSGSIZE);
+-		}
+-		new_acts_size = MAX_ACTIONS_BUFSIZE;
+-	}
+-
+ 	acts = nla_alloc_flow_actions(new_acts_size);
+ 	if (IS_ERR(acts))
+ 		return (void *)acts;
+@@ -3463,7 +3450,7 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 	int err;
+ 	u32 mpls_label_count = 0;
+ 
+-	*sfa = nla_alloc_flow_actions(min(nla_len(attr), MAX_ACTIONS_BUFSIZE));
++	*sfa = nla_alloc_flow_actions(nla_len(attr));
+ 	if (IS_ERR(*sfa))
+ 		return PTR_ERR(*sfa);
+ 
 -- 
 2.39.5
 
