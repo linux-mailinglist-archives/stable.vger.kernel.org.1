@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F764A808E0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5302AA8083B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 296571B66328
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D20954C4047
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E064926B2CC;
-	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94F326A0B0;
+	Tue,  8 Apr 2025 12:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtYqpUzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFC9N1OM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9E326B2BF;
-	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2B268684;
+	Tue,  8 Apr 2025 12:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115930; cv=none; b=MqlQC5gmSPwzGf6z6PfpfZP9EwlvfsnMNp4I2C17CP9aUE/rtnZKa/UlZMzqhT4SwkbXiG2VfmEDvj1pPYTwRniRpmDKdOtzuNXVwkNYsAxqw/vmkfp94GO3q1CiRWQmwz76HD7S6TlehPLXUecO4FeINkS4A7sKvhiTjeJVqc8=
+	t=1744115432; cv=none; b=TyGTelq1o+P/YLIblASUT63qSNfVQeLzuP13pL6dIs34sITQeWt0G8Vc12hQsFVhjNv577H4Gbwivtbxv/3vPCNQjjcnBkkVK85O8FNxFaJmfNZq7bcSSZ1YdVjhhxFbS3y4R9G86dr41SEIob1fo8gJ8rkGQx1MOJSzVCVYFZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115930; c=relaxed/simple;
-	bh=QqS3PaTnVVCDCLpxWOLpmg4WhjPxMRV4VSZgqeoDFVA=;
+	s=arc-20240116; t=1744115432; c=relaxed/simple;
+	bh=JCUKbqJItoEuTcvwIFqsemBIpEyqUbCyBnEwqLkhwRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NX3e9R/Hi5hbKOE+FZaWqFZa9qOTd7R+TfpMQgTNOofgPhn5Sn+mdH42XZMzC9PGkNbvCz+TBsE8a3RHrvpvsPlxY7qps7riE0OVp+zo5qDmMRaX/AaEu91js4+xDIEdaUY9ZU5SMckFrRQbBPs+L7C6+DfFHZIRjBmnI0IL5ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtYqpUzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE9CC4CEE5;
-	Tue,  8 Apr 2025 12:38:50 +0000 (UTC)
+	 MIME-Version; b=Mym/3lOvlRyTEOy2yoo696tQpIIB9mluexSUDmUUCDyKRQYtUrR5Higmpo3NXAne+1nY+Icm58kbxvNj7Si+GaMQnt1TBa5F7ki3JRSajYBhbbO2um0BP1rCH8zyBEY6C8Km92eToMwxqq4fvnECZr4NT8SZxlIso0JFPKwdEf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFC9N1OM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91309C4CEE5;
+	Tue,  8 Apr 2025 12:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115930;
-	bh=QqS3PaTnVVCDCLpxWOLpmg4WhjPxMRV4VSZgqeoDFVA=;
+	s=korg; t=1744115431;
+	bh=JCUKbqJItoEuTcvwIFqsemBIpEyqUbCyBnEwqLkhwRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtYqpUzYgrL8yPVmxbzhFzzytRCSX7FBnlYCSnhHjkne5JpM/F62ZbkDnoKp9lFo6
-	 mZ8ppcT1sIJYDOpP2FVvlDCQYVldXmHXhGopFNWqEWFYWhgJ3HQnwGw0Hi/ZEA2wwt
-	 EmVFCz1qhS97sXYc+nTLyjij0JIMb9FGigaVDTSQ=
+	b=SFC9N1OMjdRRWNmnuDbOvTt9v/pmkwP2hwBTdggYUKpgyjIqMClb1uzvmC8McMvfh
+	 SsjUVmfrvGRO/g9zVIoQ71nG/Vv7I4AZ24lJ3cm/b+J5Azirs06UV98LNVeQ+We8Dy
+	 nsc4sU7HT8CUvTg/aga4VMxxAvrqVo+u3jbpI63c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/204] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.13 473/499] exfat: fix random stack corruption after get_block
 Date: Tue,  8 Apr 2025 12:51:25 +0200
-Message-ID: <20250408104824.856257154@linuxfoundation.org>
+Message-ID: <20250408104903.151847292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
+commit 1bb7ff4204b6d4927e982cd256286c09ed4fd8ca upstream.
 
-conncount has its own GC handler which determines when to reap stale
-elements, this is convenient for dynamic sets. However, this also reaps
-non-dynamic sets with static configurations coming from control plane.
-Always run connlimit gc handler but honor feedback to reap element if
-this set is dynamic.
+When get_block is called with a buffer_head allocated on the stack, such
+as do_mpage_readpage, stack corruption due to buffer_head UAF may occur in
+the following race condition situation.
 
-Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+     <CPU 0>                      <CPU 1>
+mpage_read_folio
+  <<bh on stack>>
+  do_mpage_readpage
+    exfat_get_block
+      bh_read
+        __bh_read
+	  get_bh(bh)
+          submit_bh
+          wait_on_buffer
+                              ...
+                              end_buffer_read_sync
+                                __end_buffer_read_notouch
+                                   unlock_buffer
+          <<keep going>>
+        ...
+      ...
+    ...
+  ...
+<<bh is not valid out of mpage_read_folio>>
+   .
+   .
+another_function
+  <<variable A on stack>>
+                                   put_bh(bh)
+                                     atomic_dec(bh->b_count)
+  * stack corruption here *
+
+This patch returns -EAGAIN if a folio does not have buffers when bh_read
+needs to be called. By doing this, the caller can fallback to functions
+like block_read_full_folio(), create a buffer_head in the folio, and then
+call get_block again.
+
+Let's do not call bh_read() with on-stack buffer_head.
+
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+Cc: stable@vger.kernel.org
+Tested-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_hash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/exfat/inode.c |   39 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 33 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 5c4209b49bda7..a592cca7a61f9 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -310,7 +310,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
+--- a/fs/exfat/inode.c
++++ b/fs/exfat/inode.c
+@@ -344,7 +344,8 @@ static int exfat_get_block(struct inode
+ 			 * The block has been partially written,
+ 			 * zero the unwritten part and map the block.
+ 			 */
+-			loff_t size, off, pos;
++			loff_t size, pos;
++			void *addr;
  
- 	nft_setelem_expr_foreach(expr, elem_expr, size) {
- 		if (expr->ops->gc &&
--		    expr->ops->gc(read_pnet(&set->net), expr))
-+		    expr->ops->gc(read_pnet(&set->net), expr) &&
-+		    set->flags & NFT_SET_EVAL)
- 			return true;
+ 			max_blocks = 1;
+ 
+@@ -355,17 +356,41 @@ static int exfat_get_block(struct inode
+ 			if (!bh_result->b_folio)
+ 				goto done;
+ 
++			/*
++			 * No buffer_head is allocated.
++			 * (1) bmap: It's enough to fill bh_result without I/O.
++			 * (2) read: The unwritten part should be filled with 0
++			 *           If a folio does not have any buffers,
++			 *           let's returns -EAGAIN to fallback to
++			 *           per-bh IO like block_read_full_folio().
++			 */
++			if (!folio_buffers(bh_result->b_folio)) {
++				err = -EAGAIN;
++				goto done;
++			}
++
+ 			pos = EXFAT_BLK_TO_B(iblock, sb);
+ 			size = ei->valid_size - pos;
+-			off = pos & (PAGE_SIZE - 1);
++			addr = folio_address(bh_result->b_folio) +
++			       offset_in_folio(bh_result->b_folio, pos);
+ 
+-			folio_set_bh(bh_result, bh_result->b_folio, off);
++			/* Check if bh->b_data points to proper addr in folio */
++			if (bh_result->b_data != addr) {
++				exfat_fs_error_ratelimit(sb,
++					"b_data(%p) != folio_addr(%p)",
++					bh_result->b_data, addr);
++				err = -EINVAL;
++				goto done;
++			}
++
++			/* Read a block */
+ 			err = bh_read(bh_result, 0);
+ 			if (err < 0)
+-				goto unlock_ret;
++				goto done;
+ 
+-			folio_zero_segment(bh_result->b_folio, off + size,
+-					off + sb->s_blocksize);
++			/* Zero unwritten part of a block */
++			memset(bh_result->b_data + size, 0,
++			       bh_result->b_size - size);
+ 		} else {
+ 			/*
+ 			 * The range has not been written, clear the mapped flag
+@@ -376,6 +401,8 @@ static int exfat_get_block(struct inode
  	}
- 
--- 
-2.39.5
-
+ done:
+ 	bh_result->b_size = EXFAT_BLK_TO_B(max_blocks, sb);
++	if (err < 0)
++		clear_buffer_mapped(bh_result);
+ unlock_ret:
+ 	mutex_unlock(&sbi->s_lock);
+ 	return err;
 
 
 
