@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640E9A80546
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD95A808F8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8411676F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57B381BA207F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3198B26982F;
-	Tue,  8 Apr 2025 12:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58D526FDBC;
+	Tue,  8 Apr 2025 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loqssiTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kiAihjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47AF227BA4;
-	Tue,  8 Apr 2025 12:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512226B2CF;
+	Tue,  8 Apr 2025 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114119; cv=none; b=VIXkDtX9PLReribQMxBGFCeKKCqB/3yWIJi+X762p5wkQXyIo4bsihbiMAwzxab2RvRfjMNpaNxTlCO38JV7uQJqf1LyzWXh/wkLQl06Ni6exJWPS3eH3eLl/3iD+FZ15kabU9MgMKtrqXZcDU6+ByXsXBYyMhs/zNd9FQTrfGk=
+	t=1744115925; cv=none; b=Q5z3g6/GOV+OhNKatDh/g1k1k6rFAWkICrnXijWElpYXlA3IuFlzPHUi/XZtkPEfnEYOXogXWzVbxYy0dr/39SUClbzLkVLF+a7DD7y65Vb5XS5ndJS5IeAKyaJusblJXUqQotMtrE8q2zn1d44qAdntrMqS7Psqgqido66o0O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114119; c=relaxed/simple;
-	bh=1HzEKMxLyJj1MXfo8p6W778mH3arsg4V2RKX4xXIl8g=;
+	s=arc-20240116; t=1744115925; c=relaxed/simple;
+	bh=qos0KurL1Q0VM/AlfoRlDpjs9JmcBSXk/Nx/oTsRmwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxUth3bdJvXMqvWlHiZ+MrT+bH5POntrdOVhGCqOFdRYFmeC+8ax41wu7alFNZNTp8I4Hj6rGxoYVwVsE7sosoYKG0uKOiUFtLorQ0BfWA6PV/mU655XljMDKwE44zNYw126sua6olGJTW4HoOBdIJsBXC1O4uyfYg8Ya/y7ixs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loqssiTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7301DC4CEE5;
-	Tue,  8 Apr 2025 12:08:38 +0000 (UTC)
+	 MIME-Version; b=soeiRAMUNNkLPPx0Q14ZjDE6/RpIvlI1jr4wYCB9IT5LkhPZOSsd7EeiRmJ6FowDRt+rTpuqEiiv0LQqMqv9u1uIEgEVTBL82aqFlET5obhrYpFzBsfP4VX5pr55xO7/pGg2FJU3WdCYxZ/mIJOUlQd5uQyXee2FVXH0oi9SVrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kiAihjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF33C4CEE5;
+	Tue,  8 Apr 2025 12:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114118;
-	bh=1HzEKMxLyJj1MXfo8p6W778mH3arsg4V2RKX4xXIl8g=;
+	s=korg; t=1744115925;
+	bh=qos0KurL1Q0VM/AlfoRlDpjs9JmcBSXk/Nx/oTsRmwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loqssiTp8QTqbNkl5E0sdJEBPtbZvqZ1IHhtBdeSpkVtOyKbtlqkcEWi5oFfSy/6a
-	 96aNuA2is9/v/K4Gl8dSKRNk4M78QGr4wfbCyWPMBHv120IiUwiSCvHZ7HA7dAkswk
-	 eYz0/LLAlRgqbtLuIFu+ugfSDYQIcAbME8i21WD8=
+	b=2kiAihjTJ8fg3636mr3sJKmg8MxDlhkTI0nNwpPwUnoCkNU9ZIY5+4a1wdSWH/sqj
+	 FVR63MbkgJrjzPczS9quZ7M/KGV3C2LpZw2ZEd3M5lglVq0350yZKWo384nXmWekrQ
+	 +8Sk0KV3TQdd/t9TJWcdN/QrykVvkFN3xnmUn3r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/154] vsock: avoid timeout during connect() if the socket is closing
-Date: Tue,  8 Apr 2025 12:51:23 +0200
-Message-ID: <20250408104819.863587602@linuxfoundation.org>
+Subject: [PATCH 6.1 154/204] ASoC: imx-card: Add NULL check in imx_card_probe()
+Date: Tue,  8 Apr 2025 12:51:24 +0200
+Message-ID: <20250408104824.826858226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
+[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
 
-When a peer attempts to establish a connection, vsock_connect() contains
-a loop that waits for the state to be TCP_ESTABLISHED. However, the
-other peer can be fast enough to accept the connection and close it
-immediately, thus moving the state to TCP_CLOSING.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+imx_card_probe() does not check for this case, which results in a NULL
+pointer dereference.
 
-When this happens, the peer in the vsock_connect() is properly woken up,
-but since the state is not TCP_ESTABLISHED, it goes back to sleep
-until the timeout expires, returning -ETIMEDOUT.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
-vsock_connect() can return immediately without errors or delay since the
-connection actually happened. The socket will be in a closing state,
-but this is not an issue, and subsequent calls will fail as expected.
-
-We discovered this issue while developing a test that accepts and
-immediately closes connections to stress the transport switch between
-two connect() calls, where the first one was interrupted by a signal
-(see Closes link).
-
-Reported-by: Luigi Leonardi <leonardi@redhat.com>
-Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 5d490633a7f11..7877515a6962e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1204,7 +1204,11 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
- 	timeout = vsk->connect_timeout;
- 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 
--	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
-+	/* If the socket is already closing or it is in an error state, there
-+	 * is no point in waiting.
-+	 */
-+	while (sk->sk_state != TCP_ESTABLISHED &&
-+	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
- 		if (flags & O_NONBLOCK) {
- 			/* If we're not going to block, we schedule a timeout
- 			 * function to generate a timeout on the connection
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 9c1631c444229..c6d55b21f9496 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -759,6 +759,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].sink =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Playback");
++				if (!data->dapm_routes[i].sink)
++					return -ENOMEM;
+ 				data->dapm_routes[i].source = "CPU-Playback";
+ 			}
+ 		}
+@@ -776,6 +778,8 @@ static int imx_card_probe(struct platform_device *pdev)
+ 				data->dapm_routes[i].source =
+ 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+ 						       i + 1, "Capture");
++				if (!data->dapm_routes[i].source)
++					return -ENOMEM;
+ 				data->dapm_routes[i].sink = "CPU-Capture";
+ 			}
+ 		}
 -- 
 2.39.5
 
