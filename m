@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70500A80539
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5DEA8086F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38529883E4B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8D21B83B82
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208F26AA96;
-	Tue,  8 Apr 2025 12:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A273269AFB;
+	Tue,  8 Apr 2025 12:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQdN+0y6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ZHFweQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A2326AA85;
-	Tue,  8 Apr 2025 12:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07479224AEB;
+	Tue,  8 Apr 2025 12:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113903; cv=none; b=T8joO3u9BXevwzeeHTogjnH4OkEqcoiHSu6Jlhhde6JZ3fQuuKz4ajVdzfUzf+dPutvcxr1ALYflIa33JmFu85yHR7duRyou2h/K1AVKCG9adoXiqcpEoS+WCgunH828RqnZanjQxdUl1XTxAW+sxi6pH/T/5bCBtuYXlyUaa9Y=
+	t=1744115723; cv=none; b=PwSukN+Wrrfddhr2d6TY6NO9YcQvFA7ceTQ8imqO5MX19q3OiZ9ueXRQXC8cBjNXwtlGWXqQF+rBmTyDKNSOHdciTwuu3Ysp36Wuzdg4AlSNWENLE4cgJnL3ihGVoIJn/7T0DFvUZDC8bF23VJITTWen4ak4QxLBQp1GFlT9vPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113903; c=relaxed/simple;
-	bh=5jHgiu7eqOxHSAyHGRjgP7xALi5YAi1Gltd1/C4+wec=;
+	s=arc-20240116; t=1744115723; c=relaxed/simple;
+	bh=ofsXOf4SEkCm/g7hAEtQ1v++73qr8OVeS8dxj5iH3ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6Mcitb63GrmzQl/fCK2yNeRen10IRtQ8ZlJ5rzxSawBF0EUhbSisaNGcmNCeM8Fbm5huYSZxnX4/nfwItbDHouT6H82VnJGA76jZ4qSGlPlBS5WCI8yN8ZlR7Bh5/5U5sOXxIt0gznKRfn2W9wqb08si53gAGu+XFBCB+PxVQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQdN+0y6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F10C4CEE5;
-	Tue,  8 Apr 2025 12:05:02 +0000 (UTC)
+	 MIME-Version; b=hdax1tfy5gpkU4HSW/6Koz8/S9WdGygWSt0wdiHp/kA2x03Jkk4fxLIwTAkTwlmaZNCgte7JXV0qhu6c4mkTsEY5A419WpiKj4kV39RxI5u+34aFpNjEYV36r6ty+ksRvegx1yqR42nj8acWU+I2nI1uL3ReVfMmPE1GE6+aVqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ZHFweQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8C7C4CEE5;
+	Tue,  8 Apr 2025 12:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113903;
-	bh=5jHgiu7eqOxHSAyHGRjgP7xALi5YAi1Gltd1/C4+wec=;
+	s=korg; t=1744115722;
+	bh=ofsXOf4SEkCm/g7hAEtQ1v++73qr8OVeS8dxj5iH3ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQdN+0y6FECObWusrdQ4zsjgBJEN18KKu91jvOkOGii/LZs2pfASQo80Jf7ITN935
-	 n/izJ3S/3F1kqBp+gresNd52IWACIaFbhMzB7e77xNycPGGkttlXsWhp1EhHdPNcxi
-	 yJ+Q9aJNuhFNApGxdagnnxZbbmo8iutfISr6JwEQ=
+	b=U2ZHFweQIWkicC7LNdiErveHE96gxN3AIHNWOYzQ7vLqaAxvafTtlTm/hQHKtCW6z
+	 +fna7Im2I8CMRh89ttYVxp0W1FVwn8i6pkRbarJqnrIHHvzlqxQDWLze9V7+ygjy4P
+	 9CFppDfB+KMkNzxLxIh1kgjEUvWkxf/l8LS1Afn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gu Bowen <gubowen5@huawei.com>,
-	Aubin Constans <aubin.constans@microchip.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 062/154] mmc: atmel-mci: Add missing clk_disable_unprepare()
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/204] clk: amlogic: gxbb: drop non existing 32k clock parent
 Date: Tue,  8 Apr 2025 12:50:03 +0200
-Message-ID: <20250408104817.278854240@linuxfoundation.org>
+Message-ID: <20250408104822.500643091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gu Bowen <gubowen5@huawei.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit e51a349d2dcf1df8422dabb90b2f691dc7df6f92 upstream.
+[ Upstream commit 7915d7d5407c026fa9343befb4d3343f7a345f97 ]
 
-The error path when atmci_configure_dma() set dma fails in atmci driver
-does not correctly disable the clock.
-Add the missing clk_disable_unprepare() to the error path for pair with
-clk_prepare_enable().
+The 32k clock reference a parent 'cts_slow_oscin' with a fixme note saying
+that this clock should be provided by AO controller.
 
-Fixes: 467e081d23e6 ("mmc: atmel-mci: use probe deferring if dma controller is not ready yet")
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
-Acked-by: Aubin Constans <aubin.constans@microchip.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225022856.3452240-1-gubowen5@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The HW probably has this clock but it does not exist at the moment in
+any controller implementation. Furthermore, referencing clock by the global
+name should be avoided whenever possible.
+
+There is no reason to keep this hack around, at least for now.
+
+Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-2-baca56ecf2db@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/atmel-mci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/meson/gxbb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/host/atmel-mci.c
-+++ b/drivers/mmc/host/atmel-mci.c
-@@ -2502,8 +2502,10 @@ static int atmci_probe(struct platform_d
- 	/* Get MCI capabilities and set operations according to it */
- 	atmci_get_cap(host);
- 	ret = atmci_configure_dma(host);
--	if (ret == -EPROBE_DEFER)
-+	if (ret == -EPROBE_DEFER) {
-+		clk_disable_unprepare(host->mck);
- 		goto err_dma_probe_defer;
-+	}
- 	if (ret == 0) {
- 		host->prepare_data = &atmci_prepare_data_dma;
- 		host->submit_data = &atmci_submit_data_dma;
+diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
+index 48c47503ea752..35bc13e73c0dd 100644
+--- a/drivers/clk/meson/gxbb.c
++++ b/drivers/clk/meson/gxbb.c
+@@ -1270,14 +1270,13 @@ static struct clk_regmap gxbb_cts_i958 = {
+ 	},
+ };
+ 
++/*
++ * This table skips a clock named 'cts_slow_oscin' in the documentation
++ * This clock does not exist yet in this controller or the AO one
++ */
++static u32 gxbb_32k_clk_parents_val_table[] = { 0, 2, 3 };
+ static const struct clk_parent_data gxbb_32k_clk_parent_data[] = {
+ 	{ .fw_name = "xtal", },
+-	/*
+-	 * FIXME: This clock is provided by the ao clock controller but the
+-	 * clock is not yet part of the binding of this controller, so string
+-	 * name must be use to set this parent.
+-	 */
+-	{ .name = "cts_slow_oscin", .index = -1 },
+ 	{ .hw = &gxbb_fclk_div3.hw },
+ 	{ .hw = &gxbb_fclk_div5.hw },
+ };
+@@ -1287,6 +1286,7 @@ static struct clk_regmap gxbb_32k_clk_sel = {
+ 		.offset = HHI_32K_CLK_CNTL,
+ 		.mask = 0x3,
+ 		.shift = 16,
++		.table = gxbb_32k_clk_parents_val_table,
+ 		},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "32k_clk_sel",
+-- 
+2.39.5
+
 
 
 
