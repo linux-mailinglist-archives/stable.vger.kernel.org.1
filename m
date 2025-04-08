@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78376A7FDB9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB6DA80293
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2871734EE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 523B33B63FD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75362686A2;
-	Tue,  8 Apr 2025 10:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AC7264A76;
+	Tue,  8 Apr 2025 11:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cnJ2MjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCx1m3KF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E721DDA0C;
-	Tue,  8 Apr 2025 10:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3D25FA13;
+	Tue,  8 Apr 2025 11:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109953; cv=none; b=GfQ5JIY8KcVMQZjv3Fkk9Jj20kzINg/inBQFt6QSqNlLwVNrXaRoRROY+qPy/B/sGkvOslJCkWYaChTsBUzf3zZ1JJzEh2mhIO7uTrABhABvBPMM0DOvOkS0j3CY+qsUe//4dRjA187xl/zWPUFLmC/v5XcvfrnrPW/gCQ6xwW0=
+	t=1744112548; cv=none; b=AVbv44NKmpYE6EkOBbqoZSxQt1D+R7N687bwIxIBnUJl1yKJVmiqMlFZSDMFhYiAMAVpJjxueWeywEQmoYkNvvx1WSdVHfqzSWg0pXbxary+ZxYkMnPY9Fq2CCMAdhz0FBXLBfGYCT5phjtVr8+vqo4TvB22Wnjgzh4jiHC1szc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109953; c=relaxed/simple;
-	bh=Y4yEZmkQagMz0rq+mZrsGxmXv4Nv7zZPzgeldQbDBMI=;
+	s=arc-20240116; t=1744112548; c=relaxed/simple;
+	bh=G8k57NmaKyqNhuPv/HZNJMu4cCJdjTC/nEVrtrquU8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjC8e6Hgs4M45i7wkEii8YqgS3icXQCEoubOujOGZWKWbv659m7clhKOK1f0fXhZndLOF8BE1AKF+xEXAXzWfnWloeN+SvI/98rgBPzEr1zjbFUJJT3aEDSusfnkhCFf32drhph416Ti4MZVa4AOKLu8f+Z7J9vfFQp5nUikuUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cnJ2MjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272C3C4CEE5;
-	Tue,  8 Apr 2025 10:59:12 +0000 (UTC)
+	 MIME-Version; b=Vx8Jc9rXHMkatM3CpAX2SvmwcgTGGYn7kUu9zC1EKZuVrAX2qsByPhtJd4m/OeP6fZikFIvSzUv1r3AgQM3kLD8RrzM+kCnzaj+VvcgVx2FgMoiyW7ViHmKDE5XXIMVW5k5TuLrXfd2gtfd5om8dblMEfWRXXKE32xd1Zu4odHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCx1m3KF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31356C4CEE5;
+	Tue,  8 Apr 2025 11:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109953;
-	bh=Y4yEZmkQagMz0rq+mZrsGxmXv4Nv7zZPzgeldQbDBMI=;
+	s=korg; t=1744112548;
+	bh=G8k57NmaKyqNhuPv/HZNJMu4cCJdjTC/nEVrtrquU8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2cnJ2MjVwNjMl6sDI+/tH01BVqBTeKOjx0qXPmJGoOie06W1FLIH8vksCWA1qXWW7
-	 gkfmgz2sTZATsWW7CsSGF3wbb59rtlBv+rYA9PfACDmga5z5+n9cgWoPiQjuXYW1Up
-	 ofYkzqg7ImVLKHqe0B9wjNU0ctlZHtKwoA/Uo/68=
+	b=KCx1m3KFrjgOwFKLVtDnZQPTJzDkvJi2pf7HYNUMdHE/5DGVHztTMzyB4Pv+2Ta9m
+	 LgYLSiEVwGYafpZDqvBluvZjqx9NvcD/RHE2JT/LIqWAne0WvXniob/J95H4ns5swL
+	 m/CsCUi0U73PwyS8IwlbCqXi+Xi2OmpoSFQqEESQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zuoqian <zuoqian113@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/227] cpufreq: scpi: compare kHz instead of Hz
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 108/279] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
 Date: Tue,  8 Apr 2025 12:48:11 +0200
-Message-ID: <20250408104823.736290842@linuxfoundation.org>
+Message-ID: <20250408104829.259431921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zuoqian <zuoqian113@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
+commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
 
-The CPU rate from clk_get_rate() may not be divisible by 1000
-(e.g., 133333333). But the rate calculated from frequency(kHz) is
-always divisible by 1000 (e.g., 133333000).
-Comparing the rate causes a warning during CPU scaling:
-"cpufreq: __target_index: Failed to change cpu frequency: -5".
-When we choose to compare kHz here, the issue does not occur.
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
 
-Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
-Signed-off-by: zuoqian <zuoqian113@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CVE: CVE-2024-8805
+Cc: stable@vger.kernel.org
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scpi-cpufreq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index e5140ad63db83..c79cdf1be7803 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -47,8 +47,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
- static int
- scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
- {
--	u64 rate = policy->freq_table[index].frequency * 1000;
-+	unsigned long freq_khz = policy->freq_table[index].frequency;
- 	struct scpi_data *priv = policy->driver_data;
-+	unsigned long rate = freq_khz * 1000;
- 	int ret;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4859,19 +4859,16 @@ static void hci_user_confirm_request_evt
+ 		goto unlock;
+ 	}
  
- 	ret = clk_set_rate(priv->clk, rate);
-@@ -56,7 +57,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
- 	if (ret)
- 		return ret;
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
  
--	if (clk_get_rate(priv->clk) != rate)
-+	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
- 		return -EIO;
- 
- 	return 0;
--- 
-2.39.5
-
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			BT_DBG("Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 
 
 
