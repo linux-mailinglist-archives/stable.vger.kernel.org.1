@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-131472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9C1A809E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB82A806F9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9B4A1BA45BD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA63167086
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FB526E141;
-	Tue,  8 Apr 2025 12:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A6B26A0CF;
+	Tue,  8 Apr 2025 12:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUjGjofV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEGaBU03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59C8269802;
-	Tue,  8 Apr 2025 12:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEB52676E1;
+	Tue,  8 Apr 2025 12:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116492; cv=none; b=KFT8kptGiCNtj209BZwGbYYyzkv1ARA8mSjK1XgpEKIKr3BlrMu/xvrf3qelacvCzxjYqXtA4OZhI5gHda55YnhLsqU5F0AADWgFVst9QO9OQdqKCpimXLlVBAyj9+HWc3FMZB1g3Fj/wJWrk+FSIo1XI8VgYOXFU/q8slhSHv8=
+	t=1744114893; cv=none; b=UTz0++a9wO8Yr2XjiYwKf8G6W/FPpoQaHB5WlVpuIUHmbjELTOcTjhKv6C626xLgN2fpO8YOwmt3x99ZERjrc18PYpado4+L89G4cbBBVBEeXnP38HvJNvFWT5i1uYAz5cuIU6KfK5RrOlu8W6M6B64VkExGam01zL9lOM1KxlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116492; c=relaxed/simple;
-	bh=ykGDGnDuuqPhR5/CDYKyivI4TYitnMIImIbxcyRgmYM=;
+	s=arc-20240116; t=1744114893; c=relaxed/simple;
+	bh=Vi9H5ik+XHA904uJuvffo0493WrzmsA6YPDdOoyOr4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8bwUL82MCei7FUTZ6kKkJbl1txBtPtlRPAbbFlxtiDTrE9+NMVt6znFtxdE3KT/KxqjKyVjjjl+rBQvFcoFyYSljAfO0XaWRkJIg9b5/qWdFoQDDs+0uDENl0WUZvIhFWfTzErwaVAb118SnhhVA9hZjpQm4rNaS5RhgpVl05I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUjGjofV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7305AC4CEE5;
-	Tue,  8 Apr 2025 12:48:11 +0000 (UTC)
+	 MIME-Version; b=Mcpjb1lfbyxo0D3bPqqGyXvlrGJ+hU/s4gsdNzd3HeoKT9pVwwP/ODquqYW7nj5h96AEW/13zd8kvhmzSi1RkpWozV9eQ472vvqwb3IxD7TycD/q27o64zF/HLY5b/TxpOz6tPrf+cWa8OnsFoFl1O/AaCHIbI6Y690QYSnMKKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEGaBU03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5238AC4CEE5;
+	Tue,  8 Apr 2025 12:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116491;
-	bh=ykGDGnDuuqPhR5/CDYKyivI4TYitnMIImIbxcyRgmYM=;
+	s=korg; t=1744114893;
+	bh=Vi9H5ik+XHA904uJuvffo0493WrzmsA6YPDdOoyOr4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUjGjofVgqbEGH1CZy4dhkogWpnIzq/O6MSeYweRhjNEspTHQ2DWaHNjmhr+s0nw1
-	 wLQWNUtCT/RBtG/vfJwl3cL/lm61Qn64/v+ZAm2Zp18dg8qQgeO70chh+WZ2g2yiCr
-	 3HonX/iNsgGbLEc2/JYh3cJTcBluCqq7Pf5GtHdk=
+	b=PEGaBU03Yce/xZR3CIWBsFRorTxKgROVA+AJq5ovUaiAjxf2AO5IUAalbJEbvMUlF
+	 HAPhtIdm5h1wky43fk6XCNUfBjPSWDnUwoZZAJ3weDVw75YV9acqBKY9hIW6Tb1xzz
+	 Eyyka5+S9mtQCjukJAIVAmAfwpUUJ8GJFOros+Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/423] crypto: hisilicon/sec2 - fix for aead auth key length
-Date: Tue,  8 Apr 2025 12:48:05 +0200
-Message-ID: <20250408104849.443866115@linuxfoundation.org>
+Subject: [PATCH 6.13 274/499] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Date: Tue,  8 Apr 2025 12:48:06 +0200
+Message-ID: <20250408104858.049571103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 1b284ffc30b02808a0de698667cbcf5ce5f9144e ]
+[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
 
-According to the HMAC RFC, the authentication key
-can be 0 bytes, and the hardware can handle this
-scenario. Therefore, remove the incorrect validation
-for this case.
+If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
+is a divide-by-zero.  Prevent that from happening.
 
-Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes the following warning with an UBSAN kernel:
+
+  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
+
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/media/dvb-frontends/dib8000.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 0d2917b3e8158..8605cb3cae92c 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -1085,11 +1085,6 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
- 	struct crypto_shash *hash_tfm = ctx->hash_tfm;
- 	int blocksize, digestsize, ret;
+diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
+index 2f5165918163d..cfe59c3255f70 100644
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
+ 	u8 ratio;
  
--	if (!keys->authkeylen) {
--		pr_err("hisi_sec2: aead auth key error!\n");
--		return -EINVAL;
--	}
--
- 	blocksize = crypto_shash_blocksize(hash_tfm);
- 	digestsize = crypto_shash_digestsize(hash_tfm);
- 	if (keys->authkeylen > blocksize) {
-@@ -1101,7 +1096,8 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
- 		}
- 		ctx->a_key_len = digestsize;
- 	} else {
--		memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
-+		if (keys->authkeylen)
-+			memcpy(ctx->a_key, keys->authkey, keys->authkeylen);
- 		ctx->a_key_len = keys->authkeylen;
- 	}
- 
+ 	if (state->revision == 0x8090) {
++		u32 internal = dib8000_read32(state, 23) / 1000;
++
+ 		ratio = 4;
+-		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
++
++		unit_khz_dds_val = (1<<26) / (internal ?: 1);
+ 		if (offset_khz < 0)
+ 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
+ 		else
 -- 
 2.39.5
 
