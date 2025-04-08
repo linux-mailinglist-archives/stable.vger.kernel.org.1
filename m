@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC2FA80ABC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC617A803F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAEF64C624C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D9244274D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962F826869D;
-	Tue,  8 Apr 2025 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8B1268FEB;
+	Tue,  8 Apr 2025 11:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnXEx7Bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRTryQ0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528942676CA;
-	Tue,  8 Apr 2025 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6124022257E;
+	Tue,  8 Apr 2025 11:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116610; cv=none; b=kqtDQh5yCQcUmDyFpesxLU5RvGeqJkIMerODW1d4lJ9I8hZhMSS2tE7JVackRA4QXc6Q+pXerED5oCWEgrz8QZImiohLuNg6Ly8cVtjO2mhqBPC7jigQuWDxqjNcmmczuLZddGkeijCvBVtdT5QYkxZwgIbQejzl3Fky1LDA1AI=
+	t=1744113324; cv=none; b=o4vIg4HnMZN+vJNduQADAyBj2dhkqiXK7BaoN9/dVTqSglIRjGhB0wAi4JEH+DMw3N9ExVB4ZL6CvDJhKap1jDS2noLX4eM69elPhSbKjUXN0HnXsPD3IAVcaD6TD5HbRFWVI/LGNw/LBqEV9LhTXCYMOzAUcfr924gvBkDldas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116610; c=relaxed/simple;
-	bh=8LCGspsU/qogxlSDz+46cJeoGpn11KsPubZvkiWCNgQ=;
+	s=arc-20240116; t=1744113324; c=relaxed/simple;
+	bh=zKiaUj/8HfElq06piJwtHm5mJKj96N8jp9Mt8pm80OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fi2brIAGVyxMxjIKC13EZ3dIinOo0hfdgLUZrkQ9XezcqdQ5hBFts5Mv0TlbUxlNSWd/OVTXl3xwML8iWNosbaq7MUjtmbAUW95uASqJDov+9YXvLu0ybuPf0gfkUfm0okILXMdDz4RbH9/iflcsVWCoh5tJu6bqPFXCIZh7MZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnXEx7Bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45B9C4CEE5;
-	Tue,  8 Apr 2025 12:50:09 +0000 (UTC)
+	 MIME-Version; b=R/Tfjz2g/u48EFZNoXLnhKaVsUbcYmUHulfMcz95ejciGwgBMbQ9pL6WRsnKyzig2Tiouf4KfJz7gATB7n/S5kShQjsnQelhv7NzYmBukmGZIj7BHcMxjNJRxT/GERGw1h5E1SJteXTzYvkBEABvLoEIzyyLuEHoojx11VmJtDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRTryQ0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA467C4CEE5;
+	Tue,  8 Apr 2025 11:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116610;
-	bh=8LCGspsU/qogxlSDz+46cJeoGpn11KsPubZvkiWCNgQ=;
+	s=korg; t=1744113324;
+	bh=zKiaUj/8HfElq06piJwtHm5mJKj96N8jp9Mt8pm80OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnXEx7BkRRewzjtzAR4EaIocO4Ax9a5uD5KeCYhOEwaD2zupuvlLU1aePm62IZs/V
-	 M0fQHyxIhjqvKwdd3JwtgLTlAoSdR90nH+cRQkmhe/xZ7N2HEyVwU5XeWFmnaGku9V
-	 V2/JuyW0xy6a9H0cZR27a/leibBmS4Zji9N8vxns=
+	b=gRTryQ0bxuDyhWbJ1nCg6PZnTq0WLcRrk5tl75muOysElBtjOdkM5F6LJ3rRKuH+6
+	 ffVjxU4Y4BtpiaAhzfpEBFVIokHOh9Vym5L+QOB7pYr6xJKqkHalaDrVpG7HXYb4zQ
+	 er2PvKWG+j8aOo9WRD5CHdiLn4cHNp+TKsv3P5GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/423] NFSv4: Avoid unnecessary scans of filesystems for delayed delegations
+Subject: [PATCH 6.6 118/268] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
 Date: Tue,  8 Apr 2025 12:48:49 +0200
-Message-ID: <20250408104850.465948516@linuxfoundation.org>
+Message-ID: <20250408104831.679434829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit e767b59e29b8327d25edde65efc743f479f30d0a ]
+[ Upstream commit c9c59da76ce9cb3f215b66eb3708cda1134a5206 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. If the state manager was asked to manage the
-delayed return of delegations, then only scan those filesystems
-containing delegations that were marked as being delayed.
+There is kernel dump when do module test:
+sysfs: cannot create duplicate filename
+/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
+ __dma_async_device_channel_register+0x128/0x19c
+ dma_async_device_register+0x150/0x454
+ fsl_edma_probe+0x6cc/0x8a0
+ platform_probe+0x68/0xc8
 
-Fixes: be20037725d1 ("NFSv4: Fix delegation return in cases where we have to retry")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
+dma_async_device_unregister  needs the link to do
+__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
+after dma_async_device_unregister to make sure channel could be freed.
+
+So clean up chan after dma_async_device_unregister to address this.
+
+Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250228071720.3780479-1-peng.fan@oss.nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 18 ++++++++++++------
- include/linux/nfs_fs_sb.h |  1 +
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/dma/fsl-edma-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index abd952cc47e4b..325ba0663a6de 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -331,14 +331,16 @@ nfs_start_delegation_return(struct nfs_inode *nfsi)
- }
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index cd394eae47d17..cc9923ab686dc 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -675,9 +675,9 @@ static int fsl_edma_remove(struct platform_device *pdev)
+ 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
  
- static void nfs_abort_delegation_return(struct nfs_delegation *delegation,
--					struct nfs_client *clp, int err)
-+					struct nfs_server *server, int err)
- {
--
- 	spin_lock(&delegation->lock);
- 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
- 	if (err == -EAGAIN) {
- 		set_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
--		set_bit(NFS4CLNT_DELEGRETURN_DELAYED, &clp->cl_state);
-+		set_bit(NFS4SERV_DELEGRETURN_DELAYED,
-+			&server->delegation_flags);
-+		set_bit(NFS4CLNT_DELEGRETURN_DELAYED,
-+			&server->nfs_client->cl_state);
- 	}
- 	spin_unlock(&delegation->lock);
- }
-@@ -548,7 +550,7 @@ int nfs_inode_set_delegation(struct inode *inode, const struct cred *cred,
-  */
- static int nfs_end_delegation_return(struct inode *inode, struct nfs_delegation *delegation, int issync)
- {
--	struct nfs_client *clp = NFS_SERVER(inode)->nfs_client;
-+	struct nfs_server *server = NFS_SERVER(inode);
- 	unsigned int mode = O_WRONLY | O_RDWR;
- 	int err = 0;
+ 	fsl_edma_irq_exit(pdev, fsl_edma);
+-	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
++	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
  
-@@ -570,11 +572,11 @@ static int nfs_end_delegation_return(struct inode *inode, struct nfs_delegation
- 		/*
- 		 * Guard against state recovery
- 		 */
--		err = nfs4_wait_clnt_recover(clp);
-+		err = nfs4_wait_clnt_recover(server->nfs_client);
- 	}
- 
- 	if (err) {
--		nfs_abort_delegation_return(delegation, clp, err);
-+		nfs_abort_delegation_return(delegation, server, err);
- 		goto out;
- 	}
- 
-@@ -678,6 +680,9 @@ static bool nfs_server_clear_delayed_delegations(struct nfs_server *server)
- 	struct nfs_delegation *d;
- 	bool ret = false;
- 
-+	if (!test_and_clear_bit(NFS4SERV_DELEGRETURN_DELAYED,
-+				&server->delegation_flags))
-+		goto out;
- 	list_for_each_entry_rcu (d, &server->delegations, super_list) {
- 		if (!test_bit(NFS_DELEGATION_RETURN_DELAYED, &d->flags))
- 			continue;
-@@ -685,6 +690,7 @@ static bool nfs_server_clear_delayed_delegations(struct nfs_server *server)
- 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &d->flags);
- 		ret = true;
- 	}
-+out:
- 	return ret;
- }
- 
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index f4cb1f4850a0c..81ab18658d72d 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -254,6 +254,7 @@ struct nfs_server {
- 	unsigned long		delegation_flags;
- #define NFS4SERV_DELEGRETURN		(1)
- #define NFS4SERV_DELEGATION_EXPIRED	(2)
-+#define NFS4SERV_DELEGRETURN_DELAYED	(3)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
+ 	return 0;
 -- 
 2.39.5
 
