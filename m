@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-130071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AA9A80306
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A7BA801DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B569C463B59
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F03A64628C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462CD26988A;
-	Tue,  8 Apr 2025 11:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B222B26981C;
+	Tue,  8 Apr 2025 11:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A84b4Fjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZa7zXQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03113269839;
-	Tue,  8 Apr 2025 11:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A63269811;
+	Tue,  8 Apr 2025 11:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112738; cv=none; b=YxXavd+UjP7xkcR4K+cQ70MCCGNPSymjc9lfJUBF2uf7uymT1ljgwT3Wvd+MtjPAWYWMRHkn81OpFWBzpZnWX+u4lz7AiioSzzNnNG4cKhAOzZe6Qe+7jKxxaNa4/V9sA1iyrdHS0e3Gj54aoJjsdDFuwuH6TUcpp+I+i3as5mE=
+	t=1744112077; cv=none; b=M0sRtOsbl6KouGRQXGFCEzqKBJr4xzojF/knrbm3qEwVlIJwas3BiCOJ2ruhIgdsCaTIYI9NGMHv8zeiBEWbLpFch4gyVvc8zTPUJsm8v9ZD7REqlUxXMGLmXUhIr7zNBbZODHsXSFm32iRtKF+PFA1hXNgARX3tM6xz2UkNeJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112738; c=relaxed/simple;
-	bh=vQkYNniP98RzCn7WycmLYscpmpCHd2gyTW3/dkafiqc=;
+	s=arc-20240116; t=1744112077; c=relaxed/simple;
+	bh=Tz5jVhnmUdPO9RlBcqZZOgxkbX7883OG70gtktv/Q/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DReCQkZyYFeO71PLyXJT9x55enejC0QzbfaYtYny82vdMqWX63SHjSkr8gp1mfnQqBXqI4nzUrXUPAKAHaBL6nbkwdx6ydr+4d6ldjbRrsupS90jN7bMBNDMO7HRwNtRPt480xb1qFje3PgzTK1sAUuUr1CvuMn3BxV4+ytusg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A84b4Fjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AD8C4CEE5;
-	Tue,  8 Apr 2025 11:45:36 +0000 (UTC)
+	 MIME-Version; b=QvVeG3BpwZ+A6DdchveVdsj/7SvgDUIXj1rZepURcd3bnUdtSO3hwjTIM5Nga/NrWqYG1ilYPV5b5+JuMC7Ra1x2uUkzWrmDEtW6k+K1czqjNrt8upp+VEdqiXmJL/wT/rjyI94SOPKOSWMUHGbCSuDRWoMnSYmet/OFR+wDhHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZa7zXQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0247BC4CEF0;
+	Tue,  8 Apr 2025 11:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112737;
-	bh=vQkYNniP98RzCn7WycmLYscpmpCHd2gyTW3/dkafiqc=;
+	s=korg; t=1744112077;
+	bh=Tz5jVhnmUdPO9RlBcqZZOgxkbX7883OG70gtktv/Q/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A84b4FjmRiZ9B9eN4L+BdNaabJOKsj4oTSVVubWSgqNERj8X3QGhchCIskNOnPMeV
-	 bUHn/yu5MOZau+DYh+BD99F3I5kYwaWcl/AZ6Y3ZZecJ6lxVRvMqW3iD0SI0+w5TMC
-	 EuZdqfZPfgz0dZfrMwQKuhPN7n9peViMsun6Tz08=
+	b=rZa7zXQyIgtx+KO9DRe892BcNKnlwp9Qo52IpWZT+RIZjd7rFZ0kW8m0LemaKmoaI
+	 TnCOm338VEyo2mPL1Wd7bVEbKok8Az4i2Qu+Q+nyuZBulzLi+YIaFHLwUSRANXJRuS
+	 +VjN1FvP8F4JKAdQkbqYT3ZtHk46yN1SRnhURozw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 180/279] remoteproc: qcom_q6v5_mss: Handle platforms with one power domain
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 666/731] LoongArch: BPF: Dont override subprogs return value
 Date: Tue,  8 Apr 2025 12:49:23 +0200
-Message-ID: <20250408104831.190330525@linuxfoundation.org>
+Message-ID: <20250408104929.757643966@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@lucaweiss.eu>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 4641840341f37dc8231e0840ec1514b4061b4322 ]
+commit 60f3caff1492e5b8616b9578c4bedb5c0a88ed14 upstream.
 
-For example MSM8974 has mx voltage rail exposed as regulator and only cx
-voltage rail is exposed as power domain. This power domain (cx) is
-attached internally in power domain and cannot be attached in this driver.
+The verifier test `calls: div by 0 in subprog` triggers a panic at the
+ld.bu instruction. The ld.bu insn is trying to load byte from memory
+address returned by the subprog. The subprog actually set the correct
+address at the a5 register (dedicated register for BPF return values).
+But at commit 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
+we also sign extended a5 to the a0 register (return value in LoongArch).
+For function call insn, we later propagate the a0 register back to a5
+register. This is right for native calls but wrong for bpf2bpf calls
+which expect zero-extended return value in a5 register. So only move a0
+to a5 for native calls (i.e. non-BPF_PSEUDO_CALL).
 
-Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
-Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Link: https://lore.kernel.org/r/20250217-msm8226-modem-v5-4-2bc74b80e0ae@lucaweiss.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 73c359d1d356 ("LoongArch: BPF: Sign-extend return values")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/loongarch/net/bpf_jit.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 7fe1f2c5480af..7acd60de18c8f 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1594,6 +1594,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- 	while (pd_names[num_pds])
- 		num_pds++;
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -907,7 +907,10 @@ static int build_insn(const struct bpf_i
  
-+	/* Handle single power domain */
-+	if (num_pds == 1 && dev->pm_domain) {
-+		devs[0] = dev;
-+		pm_runtime_enable(dev);
-+		return 1;
-+	}
+ 		move_addr(ctx, t1, func_addr);
+ 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
+-		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
 +
- 	for (i = 0; i < num_pds; i++) {
- 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
- 		if (IS_ERR_OR_NULL(devs[i])) {
-@@ -1614,8 +1621,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
- 			    size_t pd_count)
- {
-+	struct device *dev = qproc->dev;
- 	int i;
++		if (insn->src_reg != BPF_PSEUDO_CALL)
++			move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
++
+ 		break;
  
-+	/* Handle single power domain */
-+	if (pd_count == 1 && dev->pm_domain) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
-+
- 	for (i = 0; i < pd_count; i++)
- 		dev_pm_domain_detach(pds[i], false);
- }
-@@ -2081,13 +2095,13 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 			.supply = "pll",
- 			.uA = 100000,
- 		},
--		{}
--	},
--	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "mx",
- 			.uV = 1050000,
- 		},
-+		{}
-+	},
-+	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
- 		{
- 			.supply = "cx",
- 			.uA = 100000,
-@@ -2113,7 +2127,6 @@ static const struct rproc_hexagon_res msm8974_mss = {
- 		NULL
- 	},
- 	.proxy_pd_names = (char*[]){
--		"mx",
- 		"cx",
- 		NULL
- 	},
--- 
-2.39.5
-
+ 	/* tail call */
 
 
 
