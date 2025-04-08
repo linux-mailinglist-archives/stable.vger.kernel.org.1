@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-130241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965B7A803AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285FAA801FA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6AF3AB2AF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DF619E1E27
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E72686AD;
-	Tue,  8 Apr 2025 11:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFD3263C78;
+	Tue,  8 Apr 2025 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUQ5Zlzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB82TKxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9DB22257E;
-	Tue,  8 Apr 2025 11:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D772192F2;
+	Tue,  8 Apr 2025 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113196; cv=none; b=m+63hDC3k+z2J49Iu2tfxR/E7+d+ozyxmrb/rxsDrlHj8GT5vNWKdwWhg2zH76TGdBzmu+hN2dCM/QY7cPW/Pk/Q2ltN0y38VQZ3gssClp+mkF0D+3wkMKdhPwyCVkdbFSzDWIxjWTY8+hlQ1mR+PgnIESCCkCrAwooqhMqGVKU=
+	t=1744112407; cv=none; b=W5b8e7S6t4Y2wEVWMBQz91hn9B8SMNpi0y6TN1jTrZGDw+7BjwHWRzj5NczCxTsDusWNuTJtGJEIGhwBb5MRKKMUKxn2ucxZnyxMeYsC4mrejiL2GfWqFrP+HrypmloZ8eXtD7FunE3FNkPrDSZB/ayas2HpCenVuHZptkXJWzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113196; c=relaxed/simple;
-	bh=BrFnvSWShk5M2wabR6vRqPlPE1Cj2sMEnq3AK7LNnZo=;
+	s=arc-20240116; t=1744112407; c=relaxed/simple;
+	bh=4z7I+tDEnAQP+1hoWg475y7VeX/qYDOAtrL0vr7E0zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=debTml0X7vxMpKvY30lzKAKVpui9dwpvR0XGGbVIgPanl+nTVvbZpAifyPiPuMNLSIL2gKZrVM/MuygLePDFqzZChftxfzzOnZieVfnjePiXHb3GD/Dnmz3FV+6G72U/6djG6YvZJLtDobotwkDcyvUfV9/k2a7xG5+VpDAj6LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUQ5Zlzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086F1C4CEE5;
-	Tue,  8 Apr 2025 11:53:15 +0000 (UTC)
+	 MIME-Version; b=Av/epaK2mdWPH/7T08kwliIBUBjeNyNZuRd9iKhZ1pbkJd78mUyz80588yoi2WG9cGEUANoljfmsQdi8RYweJqmh13Xs4J8dsjajIBNb3TjsG9PRQSogrX1+q69V75BCpeHB7qWQMP/XVyKEkoysG170qS5pRkvPEjt3Umz18Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB82TKxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9CAC4CEE5;
+	Tue,  8 Apr 2025 11:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113196;
-	bh=BrFnvSWShk5M2wabR6vRqPlPE1Cj2sMEnq3AK7LNnZo=;
+	s=korg; t=1744112407;
+	bh=4z7I+tDEnAQP+1hoWg475y7VeX/qYDOAtrL0vr7E0zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUQ5ZlzqnjxCJNaGxafrQw6ow5RLhdVYsWufYFyr2sedLDNiP1I0Xt7VE/0cjnMQV
-	 eddgkmLFYTonlz9m243wtPBf+WSc0UKu4IUxPPjZNihohPISc/zTFZ6jC+U74N24TK
-	 fVYDy3Ol/e+75r8xILR9zpeAGfos2NmOruyb+kEU=
+	b=JB82TKxqjXp64vMRXpan5VwVclgwb9nWwyIPWhI0hVbDHDKm8ON5VeD4zfAlIjId7
+	 thd5hGTMFvGqhMSynSexcVg1kLAUWccq8qHcR+zJ4dfb2faDtPbjVob3D5d1nWQgTV
+	 qW5kqVVg4xHCrnpSEt0h7H/VD5dj6xjw+/cP7PAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/268] dt-bindings: vendor-prefixes: add GOcontroll
+	Florent Revest <revest@chromium.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 057/279] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
 Date: Tue,  8 Apr 2025 12:47:20 +0200
-Message-ID: <20250408104829.290371145@linuxfoundation.org>
+Message-ID: <20250408104827.895636727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit 5f0d2de417166698c8eba433b696037ce04730da ]
+commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
 
-GOcontroll produces embedded linux systems and IO modules to use in
-these systems, add its prefix.
+Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
+CPU masks and unconditionally accesses per-CPU data for the first CPU of each
+mask.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Link: https://patch.msgid.link/20250226-initial_display-v2-2-23fafa130817@gocontroll.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+According to Documentation/admin-guide/mm/numaperf.rst:
+
+  "Some memory may share the same node as a CPU, and others are provided as
+  memory only nodes."
+
+Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
+
+On a machine with far memory (and therefore CPU-less NUMA nodes):
+- cpumask_of_node(nid) is 0
+- cpumask_first(0) is CONFIG_NR_CPUS
+- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
+  index that is 1 out of bounds
+
+This does not have any security implications since flashing microcode is
+a privileged operation but I believe this has reliability implications by
+potentially corrupting memory while flashing a microcode update.
+
+When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
+a microcode update. I get the following splat:
+
+  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
+  index 512 is out of range for type 'unsigned long[512]'
+  [...]
+  Call Trace:
+   dump_stack
+   __ubsan_handle_out_of_bounds
+   load_microcode_amd
+   request_microcode_amd
+   reload_store
+   kernfs_fop_write_iter
+   vfs_write
+   ksys_write
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
+
+Change the loop to go over only NUMA nodes which have CPUs before determining
+whether the first CPU on the respective node needs microcode update.
+
+  [ bp: Massage commit message, fix typo. ]
+
+Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 12a16031d7b6d..dc275ab60e534 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -524,6 +524,8 @@ patternProperties:
-     description: GlobalTop Technology, Inc.
-   "^gmt,.*":
-     description: Global Mixed-mode Technology, Inc.
-+  "^gocontroll,.*":
-+    description: GOcontroll Modular Embedded Electronics B.V.
-   "^goldelico,.*":
-     description: Golden Delicious Computers GmbH & Co. KG
-   "^goodix,.*":
--- 
-2.39.5
-
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -861,7 +861,7 @@ static enum ucode_state load_microcode_a
+ 		return ret;
+ 	}
+ 
+-	for_each_node(nid) {
++	for_each_node_with_cpus(nid) {
+ 		cpu = cpumask_first(cpumask_of_node(nid));
+ 		c = &cpu_data(cpu);
+ 
 
 
 
