@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59313A80ACE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E53A80A32
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF1337ACC12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A8CE8C0E9F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BA027C85D;
-	Tue,  8 Apr 2025 12:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1B827816F;
+	Tue,  8 Apr 2025 12:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4o6rQNr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiCNi84Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571E327935B;
-	Tue,  8 Apr 2025 12:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A96F27816A;
+	Tue,  8 Apr 2025 12:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117053; cv=none; b=Mld/ADolwo4/TRK6kc4ZCc6s9x0X/wUM9ovFZY32hM5/2tMGcly4qIWwdOtLxUjDK9Q3PIncmxdc5clHiN1/MBycXLdRp0eWCmjAEzufgtohFZAKOZMG17f4mP3VG58HzzkFeGrxQQZKZuqiGWW1ctpR7WV6NYDCODO4u0PATgA=
+	t=1744116053; cv=none; b=XczQuZAm/dsi6TLNo6ZR5iFNoKQV6OJf93lTZvqGdtkEMTOOUn0oh3SusgCmqpPM6E56NNLye+GN9GcGhGcjFN7OaoW4muJ6zkPISFoFjgGp2hbBhEi/b+UFoaVHW9qzKdOrFWjkDMsyOADxVEyxY8Tqs6Jld+C99xeqoEuhui4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117053; c=relaxed/simple;
-	bh=yW4itkjGsfDj0hlXqDxavmM73JQjI1gN/WagPW7fxjQ=;
+	s=arc-20240116; t=1744116053; c=relaxed/simple;
+	bh=K98DubAt15OYlI8ZV3Vo/C5YhIR32i1o5GSsFsgFkR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcfZ6l0fzmadEIaTIsFcTTnvPk+HO3juve0ob1FvMIgcp5CKnyes8Wd05umJljUZbggNM6sM7jSCvFm5C4tiyWr6TK2sLQo0ezGVRepvZ0hFB1syJN8EI0/ZWPTceLgn+mbx0Bd6I3DQ8HLChJmVT6ylSZ6bcDOK/8nVTjfWRJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4o6rQNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD1BC4CEE5;
-	Tue,  8 Apr 2025 12:57:32 +0000 (UTC)
+	 MIME-Version; b=jujg1w4H1PnhGGxGzT3nicKGjt/lnDuZaaDFs5uP0L1jLM4iTXbxmhH1dr8XVe7PaZnBZ3qNfN0SW+q8KWLxGcQu1W2aiCwz3rprg/saVz1S63cdVTbSqfRtC1hXO2p1nMGPOaTd0hGTWsIpVl2rJtVlDYOYNwtESjtOxqyv5mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiCNi84Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72CCC4CEE7;
+	Tue,  8 Apr 2025 12:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117053;
-	bh=yW4itkjGsfDj0hlXqDxavmM73JQjI1gN/WagPW7fxjQ=;
+	s=korg; t=1744116053;
+	bh=K98DubAt15OYlI8ZV3Vo/C5YhIR32i1o5GSsFsgFkR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4o6rQNrV5Q+mNqjbXt4ArqZXXB4AnMvzrmINP3U53SwTVAMAMzWaUsKnyPrD17oy
-	 DxDDXVfRBdV9PjyxZhSgwDqP1aoRu+Z3jcnYUQ8v/T762uhePbTauPeHB2Diw8HDcG
-	 oOL5vxkBv1wdKahOydWghpnaOQbhpx0rDH72UODM=
+	b=jiCNi84YXXdHz1AMsYT3DaF3PXClmXHtgsSSff5jQ+Pvzpbhrc96DP6PTv1NKnanf
+	 jaDdiuq5GVR2WDU9sChNIac8ggzlyy1fmGR8QL6oCavSAo1k4KLduedICg4gro301G
+	 4sEtpM2wTSWDDHwUJg85FDiD5LfmgHtkhPTNjg9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 367/423] LoongArch: BPF: Use move_addr() for BPF_PSEUDO_FUNC
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 163/204] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
 Date: Tue,  8 Apr 2025 12:51:33 +0200
-Message-ID: <20250408104854.412012602@linuxfoundation.org>
+Message-ID: <20250408104825.100754524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-commit 52266f1015a8b5aabec7d127f83d105f702b388e upstream.
+[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
 
-Vincent reported that running XDP synproxy program on LoongArch results
-in the following error:
+Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
+netlink attributes on link dump. This causes issues on userspace tools,
+e.g iproute2 is not rendering address generation mode as it should due
+to missing netlink attribute.
 
-    JIT doesn't support bpf-to-bpf calls
+Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
+helper function guarded by a flag check to avoid hitting the same
+situation in the future.
 
-With dmesg:
-
-    multi-func JIT bug 1391 != 1390
-
-The root cause is that verifier will refill the imm with the correct
-addresses of bpf_calls for BPF_PSEUDO_FUNC instructions and then run
-the last pass of JIT. So we generate different JIT code for the same
-instruction in two passes (one for placeholder and the other for the
-real address). Let's use move_addr() instead.
-
-See commit 64f50f6575721ef0 ("LoongArch, bpf: Use 4 instructions for
-function address in JIT") for a similar fix.
-
-Cc: stable@vger.kernel.org
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
-Reported-by: Vincent Li <vincent.mc.li@gmail.com>
-Tested-by: Vincent Li <vincent.mc.li@gmail.com>
-Closes: https://lore.kernel.org/loongarch/CAK3+h2yfM9FTNiXvEQBkvtuoJrvzmN4c_NZsFXqEk4Cj1tsBNA@mail.gmail.com/T/#u
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -935,7 +935,10 @@ static int build_insn(const struct bpf_i
- 	{
- 		const u64 imm64 = (u64)(insn + 1)->imm << 32 | (u32)insn->imm;
- 
--		move_imm(ctx, dst, imm64, is32);
-+		if (bpf_pseudo_func(insn))
-+			move_addr(ctx, dst, imm64);
-+		else
-+			move_imm(ctx, dst, imm64, is32);
- 		return 1;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index f52527c86e71c..0811cc8956a3a 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5718,6 +5718,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
  	}
+ }
  
++static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
++					struct inet6_dev *idev)
++{
++	struct nlattr *nla;
++
++	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
++
++	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 				  u32 ext_filter_mask)
+ {
+@@ -5739,18 +5760,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 
+ 	/* XXX - MC not implemented */
+ 
+-	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
+-		return 0;
+-
+-	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
+-
+-	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
++		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
++			goto nla_put_failure;
++	}
+ 
+ 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
+ 	if (!nla)
+-- 
+2.39.5
+
 
 
 
