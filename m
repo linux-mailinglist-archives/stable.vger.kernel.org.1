@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-128948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF49A7FD7A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AE6A80084
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0B963B671A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E45F57A8170
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4D0268FCB;
-	Tue,  8 Apr 2025 10:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C58E26A08E;
+	Tue,  8 Apr 2025 11:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NHwWuuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5xXNm6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49755268685;
-	Tue,  8 Apr 2025 10:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B2263C90;
+	Tue,  8 Apr 2025 11:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109707; cv=none; b=CJVYZ08kM15lxg6Z1mY6MvbAEn7QANI0TphxgLZANmnjdvb4chEbaluiXp72jGUTs33SOUin9g8TX+bD+CQVLRJjf9VMG6oBs/3JCyETZeG6r59Bm9Rv/u+PFT9xr/I7PW9edmvGJlJZ30bg2Q2Xyrfp6+EMMlpybBIZfhRTJgo=
+	t=1744111644; cv=none; b=XR96L5YESyRZzyhqVKH8HMmeTrTN7512GLDOp6m8TFRyao/MuKNPsIb/9HIW12bTIfK7yryZ3vXik4lHN9tdxEMVGYM+gc4zCDC3BHoHD2dGbE03XkHUQF3yjF2Yvz/PLMyfX7rFtOGeijtWA8T9FpeIJyrsaNglQqT17wKG3nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109707; c=relaxed/simple;
-	bh=grofnWkjnHZGM2xtToPMWQ4OqicTxYTOv8T95E3yuHw=;
+	s=arc-20240116; t=1744111644; c=relaxed/simple;
+	bh=EDu7uQPsFn5CVvl81+K++sc1Yfm+9fJRWkXwHdbk8vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nkz7sisb/fTHUHEs0PZAG2LlFBdfAyNAoUqFqVlEZR8asNBcMOybnIlnomyGaKHRf7jSNCeWzlM4C0hKrriqEPEz8L+8ypb9i/M6Ye6I+Ouz3afrynFAwvrOrw+Rp1XFAYmxUx9YWBfM8UiH/oS0aaRgIpGaelUXkfJTSEE9fdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NHwWuuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6F5C4CEE5;
-	Tue,  8 Apr 2025 10:55:06 +0000 (UTC)
+	 MIME-Version; b=ZOLgJ66YR9qqZg8YoVD/GqnXb9Lc5n7Etlho1eh1wSc3ytZVfZHGCuZFUtQsTHGaUXHP0uM/J/Z/O/pLs5v70lVU9y4ix0H4FTP0wbQUxAM7izVy4z5tEyWUWpIqtbVxMuSejKLzBTQCkX5aJFHEaefwUA7nR02qXtrEZalu2SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5xXNm6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C201FC4CEE5;
+	Tue,  8 Apr 2025 11:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109707;
-	bh=grofnWkjnHZGM2xtToPMWQ4OqicTxYTOv8T95E3yuHw=;
+	s=korg; t=1744111644;
+	bh=EDu7uQPsFn5CVvl81+K++sc1Yfm+9fJRWkXwHdbk8vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NHwWuuZLY5FaTGLyERk7TZZUCx59gPhXLZeXii11O4cxifeXm0bJ/Ij10t7ViibQ
-	 /97Pil/WzS/yX5oVZ0qXhVYQr1uRg47dh6ruIyG3lNKEoR+GmwXmBrVFotS98Yl4UT
-	 Ki1s5RFZp9IRXdhVwOoCQ6jS0qEao8cUZ95mQSBc=
+	b=Z5xXNm6V9pvrcSVXQUZkQPGiYPM3gCvsqocpNdvGOCXxEh/hOX8VoeeearMQZhC5T
+	 C9ovM9dLEATxGDRvxE9Bt3OO93sK7YKK6+tZVpto9/1rYCTFMqeCtd1l5GPdNd/lVQ
+	 qSyO68wT8x5UcIZ6TMmWE8BAPLa3s1NBWEg2stgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/227] powercap: call put_device() on an error path in powercap_register_control_type()
+Subject: [PATCH 6.14 504/731] kexec: initialize ELF lowest address to ULONG_MAX
 Date: Tue,  8 Apr 2025 12:46:41 +0200
-Message-ID: <20250408104821.090094647@linuxfoundation.org>
+Message-ID: <20250408104925.997322214@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 93c66fbc280747ea700bd6199633d661e3c819b3 ]
+[ Upstream commit 9986fb5164c8b21f6439cfd45ba36d8cc80c9710 ]
 
-powercap_register_control_type() calls device_register(), but does not
-release the refcount of the device when it fails.
+Patch series "powerpc/crash: use generic crashkernel reservation", v3.
 
-Call put_device() before returning an error to balance the refcount.
+Commit 0ab97169aa05 ("crash_core: add generic function to do reservation")
+added a generic function to reserve crashkernel memory.  So let's use the
+same function on powerpc and remove the architecture-specific code that
+essentially does the same thing.
 
-Since the kfree(control_type) will be done by powercap_release(), remove
-the lines in powercap_register_control_type() before returning the error.
+The generic crashkernel reservation also provides a way to split the
+crashkernel reservation into high and low memory reservations, which can
+be enabled for powerpc in the future.
 
-This bug was found by an experimental verifier that I am developing.
+Additionally move powerpc to use generic APIs to locate memory hole for
+kexec segments while loading kdump kernel.
 
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20250110010554.1583411-1-joe@pf.is.s.u-tokyo.ac.jp
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This patch (of 7):
+
+kexec_elf_load() loads an ELF executable and sets the address of the
+lowest PT_LOAD section to the address held by the lowest_load_addr
+function argument.
+
+To determine the lowest PT_LOAD address, a local variable lowest_addr
+(type unsigned long) is initialized to UINT_MAX.  After loading each
+PT_LOAD, its address is compared to lowest_addr.  If a loaded PT_LOAD
+address is lower, lowest_addr is updated.  However, setting lowest_addr to
+UINT_MAX won't work when the kernel image is loaded above 4G, as the
+returned lowest PT_LOAD address would be invalid.  This is resolved by
+initializing lowest_addr to ULONG_MAX instead.
+
+This issue was discovered while implementing crashkernel high/low
+reservation on the PowerPC architecture.
+
+Link: https://lkml.kernel.org/r/20250131113830.925179-1-sourabhjain@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250131113830.925179-2-sourabhjain@linux.ibm.com
+Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/powercap_sys.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/kexec_elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index 7a3109a538813..fe5d05da7ce7a 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -627,8 +627,7 @@ struct powercap_control_type *powercap_register_control_type(
- 	dev_set_name(&control_type->dev, "%s", name);
- 	result = device_register(&control_type->dev);
- 	if (result) {
--		if (control_type->allocated)
--			kfree(control_type);
-+		put_device(&control_type->dev);
- 		return ERR_PTR(result);
- 	}
- 	idr_init(&control_type->idr);
+diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+index d3689632e8b90..3a5c25b2adc94 100644
+--- a/kernel/kexec_elf.c
++++ b/kernel/kexec_elf.c
+@@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+ 			 struct kexec_buf *kbuf,
+ 			 unsigned long *lowest_load_addr)
+ {
+-	unsigned long lowest_addr = UINT_MAX;
++	unsigned long lowest_addr = ULONG_MAX;
+ 	int ret;
+ 	size_t i;
+ 
 -- 
 2.39.5
 
