@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-130473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F04FA804AF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D150A80848
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1CC1B60EAE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB394C4E9D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B83269D0D;
-	Tue,  8 Apr 2025 12:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1276220330;
+	Tue,  8 Apr 2025 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="st8P7DPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phHWGpiF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6467269808;
-	Tue,  8 Apr 2025 12:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BBB26989E;
+	Tue,  8 Apr 2025 12:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113804; cv=none; b=JOxY8M0MXNAcY81wavnZN7YM0HRSjH7hPh/GTKiw7l3hWG4cpuBG/lRWirWukJkajRaM2ITHwT8UhawC+cKILSRYtjJ7v99kCQzvMuyUIIr40aEC7Xd/UJgqpf23N2OSLgLNa8C/AQkP3B3Zd/4myDEuf1iuqOoO1O/u2uQWHPM=
+	t=1744115541; cv=none; b=hxUfp50+L8dMbDsHbHEwADSufikt8/7DNEg4W3/W4PxVPd1TiokMZh4CcD0fbHGRTHGqnx/vyjWaK63KhijUx9ug8nWHYTpWPoFWu4hOEqyGv0jM1OvgXo1X45Q3Op5Bvwy6MN4M+j1jcSgs0nQL7R9dptifU4dI7FnlnDf7250=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113804; c=relaxed/simple;
-	bh=FVjYBBRJz0SnmivlIbS+g8UuLKs4lLco4cHbdwJf20s=;
+	s=arc-20240116; t=1744115541; c=relaxed/simple;
+	bh=shpgbdOJ88iBSIzaL1D5QORN/TlUz6XdLYyY3v+X2EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MheoiG6L6wvQy4mp2H5dBPMPVdTUtwhiGPGY6A8svOn718ejpUIe9qCkUgdQ0q4vuDm5IDdphc5rd1+xFGtuE1DmF5I06cDaJ4+FewbTbUDF1bc1teoUNExukq95arQa/Be8R5RudjMuagOoIvXWKYkoE8V8+oTw9Tg/DSQ/Ygg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=st8P7DPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4DAC4CEE5;
-	Tue,  8 Apr 2025 12:03:23 +0000 (UTC)
+	 MIME-Version; b=FHIpRLGlgePy2DgT6s9iEJxDtkXI77jYPcD/Kwg/eK4Q8hIRr6rFCGpykiKTAjlDwOrC4uwqBP2+fXnsVh5g1g1ey+U5baYDyFBDf83bII2raPybsmnN9vHMoJDhfFqQOxR8BNqa9HoGox2gmCol78oOwNOx1v00EBg+jBFEttE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phHWGpiF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B90C4CEE5;
+	Tue,  8 Apr 2025 12:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113804;
-	bh=FVjYBBRJz0SnmivlIbS+g8UuLKs4lLco4cHbdwJf20s=;
+	s=korg; t=1744115541;
+	bh=shpgbdOJ88iBSIzaL1D5QORN/TlUz6XdLYyY3v+X2EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=st8P7DPybzCZSzSJU5X9jPhltkDvxXtpgw768kSD/mNLhwXiLdXxiorg+MBTwkO61
-	 ZV6OFrEFT80UMPN7wVpZ9uJoCB4CwXoE4ZnWWHRuquLfM+HCmPqQfpEbogTOt7fdEw
-	 6snjxzttyVQCOeFnVylIoklm59sM/SdA2C5UGjlk=
+	b=phHWGpiFV15tPJPQzexzDeRh8m/CyzEX9611z2QkkaRuIydubRIaNniUEM58orW1w
+	 WcJliRT2AWRNWNLn858RCXkr0/9OApoyZcX/O0CpCodnizPkjb7icJQYNEL7vcjGo3
+	 cnFpK3u0iNjg/ZKS5yW77DmjWGb79O6ez5BsUiXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris von Recklinghausen <crecklin@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-Subject: [PATCH 5.4 003/154] sched/isolation: Prevent boot crash when the boot CPU is nohz_full
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/204] EDAC/ie31200: Fix the DIMM size mask for several SoCs
 Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104815.404967297@linuxfoundation.org>
+Message-ID: <20250408104820.732292496@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
-include the boot CPU, which is no longer true after:
+[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
 
-  08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
+but bits{5:0}. Fix it.
 
-However after:
-
-  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
-
-the kernel will crash at boot time in this case; housekeeping_any_cpu()
-returns an invalid CPU number until smp_init() brings the first
-housekeeping CPU up.
-
-Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
-return smp_processor_id() in this case.
-
-This is just the simple and backportable workaround which fixes the
-symptom, but smp_processor_id() at boot time should be safe at least for
-type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
-logic.
-
-There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
-offline tick_do_timer_cpu (the 1st online housekeeping CPU).
-
-[ Apply only documentation changes as commit which causes boot
-  crash when boot CPU is nohz_full is not backported to stable
-  kernels - Krishanth ]
-
-Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
-Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
-Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-[ strip out upstream commit and Fixes: so tools don't get confused that
-  this commit actually does anything real - gregkh]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/timers/no_hz.rst |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/edac/ie31200_edac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Documentation/timers/no_hz.rst
-+++ b/Documentation/timers/no_hz.rst
-@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-ad
- online to handle timekeeping tasks in order to ensure that system
- calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
- (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
--user processes to observe slight drifts in clock rate.)  Therefore, the
--boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
--"nohz_full=" mask that includes the boot CPU will result in a boot-time
--error message, and the boot CPU will be removed from the mask.  Note that
--this means that your system must have at least two CPUs in order for
-+user processes to observe slight drifts in clock rate.) Note that this
-+means that your system must have at least two CPUs in order for
- CONFIG_NO_HZ_FULL=y to do anything for you.
- 
- Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 98d74c604d726..92714dd88b3f6 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -162,6 +162,7 @@
+ #define IE31200_MAD_DIMM_0_OFFSET		0x5004
+ #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
+ #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
++#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
+ #define IE31200_MAD_DIMM_A_RANK			BIT(17)
+ #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
+ #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
+@@ -375,7 +376,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
+ static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
+ 				     int chan)
+ {
+-	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
++	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
+ 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
+ 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
+ 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
+-- 
+2.39.5
+
 
 
 
