@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780A1A80483
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A50EA8052B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0831B63A7E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A97717B28E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBFB26A0FD;
-	Tue,  8 Apr 2025 12:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5003326A08F;
+	Tue,  8 Apr 2025 12:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJpW0Drt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqDYJCIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF88268C66;
-	Tue,  8 Apr 2025 12:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020B8269D1B;
+	Tue,  8 Apr 2025 12:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113701; cv=none; b=Y5foQhlxE5RchKKZ4Qt/MgY15UPjRmKmhu+kYP6eLbL1edHPKMK03+xbtOS7HXS6JJTzqXtUkxp//a5VvnjyDFfQqaP3DuK3zgvPVVHqgUCZ3waBWRhwOO2f9LbmFhzHI9YnV5cclnF6cFqJIv+dMisKtryo9AywIOfS5w86zG4=
+	t=1744114074; cv=none; b=hJIg3kZSk0kZeC7HCG9Btdh2XRHfdG3Vag+nsCkkWQNu7GJX62IJmfX7vpk2yqBLwPjJDrBx4pawnSqaiXUmyJzY3yr7G+sWyqaf+hP2z70PGZCMi+GIQTPmmMUWz+4eUgp9rl/kygqrrpa/4ohR+JfC8A5tBifW3KSIvfzak6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113701; c=relaxed/simple;
-	bh=4e5w0xwvr7XWWIWjuUJMkEZ+zIRAx91F/wSy+olfS+E=;
+	s=arc-20240116; t=1744114074; c=relaxed/simple;
+	bh=nm39z3hxOvb5CpF3tzFatY1VTvt5C3H71deKMZPevps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoXJYMIir38sC7LBpXu/2KOf7CyNzmE9dNSvxjC2FQrgoZf+oO276IvxJjXFiU82EhuDG9RLisPXaqdPK8rZZRKiYkEJ/xJzxWm/P14pyam1GtIOUe7CCei+824xMAOBPG0z+d61ET+eR8rXbQK+EaRVTyxT8zKFhNpVgiSAaLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJpW0Drt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FD4C4CEE5;
-	Tue,  8 Apr 2025 12:01:40 +0000 (UTC)
+	 MIME-Version; b=QQxrZe2+3Fbw/8icIr1QWTwB02FM1Vmmy4EzmEJrBe+jwNk7XNJ3YnzH9nAJyvthuAgYCbvlB0f3AdyTgWVPmbt6McpHQoYp8365ipE707gFSUG+VTJis2ibGeKfaXUTv0FvsDFFCU6rIe64aDeWs2VQawCGaFElB3n7f9G+QOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqDYJCIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFBDC4CEE5;
+	Tue,  8 Apr 2025 12:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113700;
-	bh=4e5w0xwvr7XWWIWjuUJMkEZ+zIRAx91F/wSy+olfS+E=;
+	s=korg; t=1744114073;
+	bh=nm39z3hxOvb5CpF3tzFatY1VTvt5C3H71deKMZPevps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJpW0DrthffxnyzCg+4G+DJEAAhg3Jiv/ayOcnwKM/nthoyi8Egmvgx7wd2f5N/ft
-	 un/psZwVZnrLVg3VWXGaX5FPuMEOC74dueGl1f0nihK0tUgq14EJyrM7pxfOvvfg9X
-	 X2IGrv3t8PtwkYpiz3NPByryHdfYuiHWH9s49CaM=
+	b=CqDYJCIHdkzWDtBoeSPiG9pFubLzhnJT+Po7/qsVWBBD+otr9HkHHEPWM9UIlgzho
+	 P1sB3qvvPe156XSVJQUpeHltN8gmb1Nea1AYxVUfqUiQ8Qn0shzc+1n1YFc2xYeryM
+	 Wm9n1Uq/OhjBsE9pK9MIQrk0mF6OI4fHzI58rCHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 257/268] tracing: Ensure module defining synth event cannot be unloaded while tracing
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 127/154] octeontx2-af: Fix mbox INTR handler when num VFs > 64
 Date: Tue,  8 Apr 2025 12:51:08 +0200
-Message-ID: <20250408104835.514493997@linuxfoundation.org>
+Message-ID: <20250408104819.380690306@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Raillard <douglas.raillard@arm.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit 21581dd4e7ff6c07d0ab577e3c32b13a74b31522 upstream.
+[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
 
-Currently, using synth_event_delete() will fail if the event is being
-used (tracing in progress), but that is normally done in the module exit
-function. At that stage, failing is problematic as returning a non-zero
-status means the module will become locked (impossible to unload or
-reload again).
+When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
+function is incorrect. Due to which mbox workqueue entries for
+VFs 0 to 63 never gets added to workqueue.
 
-Instead, ensure the module exit function does not get called in the
-first place by increasing the module refcnt when the event is enabled.
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 35ca5207c2d11 ("tracing: Add synthetic event command generation functions")
-Link: https://lore.kernel.org/20250318180906.226841-1-douglas.raillard@arm.com
-Signed-off-by: Douglas Raillard <douglas.raillard@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_synth.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -859,6 +859,34 @@ static struct trace_event_fields synth_e
- 	{}
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index f569a98e35a02..57e3a11451b56 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1740,7 +1740,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
+ 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
  
-+static int synth_event_reg(struct trace_event_call *call,
-+		    enum trace_reg type, void *data)
-+{
-+	struct synth_event *event = container_of(call, struct synth_event, call);
-+
-+	switch (type) {
-+	case TRACE_REG_REGISTER:
-+	case TRACE_REG_PERF_REGISTER:
-+		if (!try_module_get(event->mod))
-+			return -EBUSY;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	int ret = trace_event_reg(call, type, data);
-+
-+	switch (type) {
-+	case TRACE_REG_UNREGISTER:
-+	case TRACE_REG_PERF_UNREGISTER:
-+		module_put(event->mod);
-+		break;
-+	default:
-+		break;
-+	}
-+	return ret;
-+}
-+
- static int register_synth_event(struct synth_event *event)
- {
- 	struct trace_event_call *call = &event->call;
-@@ -888,7 +916,7 @@ static int register_synth_event(struct s
- 		goto out;
+ 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
+-		vfs -= 64;
++		vfs = 64;
  	}
- 	call->flags = TRACE_EVENT_FL_TRACEPOINT;
--	call->class->reg = trace_event_reg;
-+	call->class->reg = synth_event_reg;
- 	call->class->probe = trace_event_raw_event_synth;
- 	call->data = event;
- 	call->tp = event->tp;
+ 
+ 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
+-- 
+2.39.5
+
 
 
 
