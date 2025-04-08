@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BD4A7FE60
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EAFA80113
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E764423B6A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:02:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A07A1894795
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2951311AC;
-	Tue,  8 Apr 2025 11:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC53268685;
+	Tue,  8 Apr 2025 11:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azvJs5zW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWM99u35"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A85A264FB6;
-	Tue,  8 Apr 2025 11:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE6D224239;
+	Tue,  8 Apr 2025 11:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110030; cv=none; b=Z876md+aPo4z75BugR/ufpAz/BqK947m3Pz5CgWYKryC4C6Hnx+FWTkUDRSFAYrqCCtKYB0qpaPWzz4/AE3cYUhifHA9uvOofNAcMLkGLlJcOFAu4Mo7ihYOt1uLJ7AgXmhRbDNhmZYynzG//wPGyvoZPyaiYSTzVqivXDz2oHg=
+	t=1744111964; cv=none; b=bwOd8sXO+RdOCngLDEJmz1ffcvFx1GqqEwVmiH1ljaWXLOyPkZ90+taGCqU6Oau2YjQCzHSQ3dSM6sGA42obelw31dxwV2TaZhPKw1pxw0vulCKdXFTBwL9/pfLjZeIkDttfZNdbOFA3Rr/mAeHZDqtEGL7U+1XO+9BBhlZfajg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110030; c=relaxed/simple;
-	bh=cRLTUpm9aXlqfAaL5CPX3DKbqXCFHRrFPZ2fhgGgv/8=;
+	s=arc-20240116; t=1744111964; c=relaxed/simple;
+	bh=9Ymk4L7Q0S6KGGS0fB4XDXPPHQbD5ODvRvPvdJLu9qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0EfKmhh17VE/7TZrE6s9h2+lmfZDDDobD7B0SVjOujI7cx4t7cUuS8SEv/ozAY8gcrqsnZiVW9J8lHOBy6ZqPA+5hM+JXaNvlg5LZyyYRzCnZHLIEwY6YJqyNcoQktfqIL+aibKpsaqPXY6+ZEkZ5KemDtqxTsKVmvhDCG6Vq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azvJs5zW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAC2C4CEE5;
-	Tue,  8 Apr 2025 11:00:29 +0000 (UTC)
+	 MIME-Version; b=ggcljNiCs1FK8fC6Lb7UtjM4n5flbujA0vrxUax/AoK5Sy7qy0Tk+4OOCxo+tN8rV+wcU7mXB3Gx/Hvg3U8KmeH0hXFekHqqk/cx13ugSoDV+s2oc1YLZ/kPoPu9EKYQ0+vvxXviSgJOTZL3ycRJskZx8c2jPbxf+zg3Jphq8OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWM99u35; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A62C4CEE5;
+	Tue,  8 Apr 2025 11:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110030;
-	bh=cRLTUpm9aXlqfAaL5CPX3DKbqXCFHRrFPZ2fhgGgv/8=;
+	s=korg; t=1744111964;
+	bh=9Ymk4L7Q0S6KGGS0fB4XDXPPHQbD5ODvRvPvdJLu9qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azvJs5zWpHdZ6woDaiUPajqkW79HVGZpLkRfYieK5bwiuOXNohPSybnAw3LDsfDCb
-	 21oX+g7Wy9wdYduOGRfxjrPe2HrKC9ENjNeWDg9CSsvB4/VXQnEZu0MtY+8AZ/gfLj
-	 Qg9eA0mKkm93RKidFVVta/tF6xJAoWKQlb+8gisU=
+	b=BWM99u35bAtVNsT5OfCONe1UPndZcXNXAqkduIaKa9xYNERK0wGr9KwURliLW1VnD
+	 nKKjRErwM9PhB4cRQ5cyLZQBuutSBCMOAMJU4HBHHqMXziRXbYN5KrVYeaEgzEqYqE
+	 DNsPhxsbhwbhXYiDA9iLHvd2Hig/9K5upvzE/FcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danila Chernetsov <listdansp@mail.ru>,
-	Helge Deller <deller@gmx.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 143/227] fbdev: sm501fb: Add some geometry checks.
+Subject: [PATCH 6.14 624/731] net: airoha: Fix ETS priomap validation
 Date: Tue,  8 Apr 2025 12:48:41 +0200
-Message-ID: <20250408104824.592847385@linuxfoundation.org>
+Message-ID: <20250408104928.787989558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danila Chernetsov <listdansp@mail.ru>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit aee50bd88ea5fde1ff4cc021385598f81a65830c ]
+[ Upstream commit 367579274f60cb23c570ae5348966ab51e1509a4 ]
 
-Added checks for xoffset, yoffset settings.
-Incorrect settings of these parameters can lead to errors
-in sm501fb_pan_ functions.
+ETS Qdisc schedules SP bands in a priority order assigning band-0 the
+highest priority (band-0 > band-1 > .. > band-n) while EN7581 arranges
+SP bands in a priority order assigning band-7 the highest priority
+(band-7 > band-6, .. > band-n).
+Fix priomap check in airoha_qdma_set_tx_ets_sched routine in order to
+align ETS Qdisc and airoha_eth driver SP priority ordering.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5fc404e47bdf ("[PATCH] fb: SM501 framebuffer driver")
-Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: b56e4d660a96 ("net: airoha: Enforce ETS Qdisc priomap")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/20250331-airoha-ets-validate-priomap-v1-1-60a524488672@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sm501fb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
-index 6a52eba645596..3c46838651b06 100644
---- a/drivers/video/fbdev/sm501fb.c
-+++ b/drivers/video/fbdev/sm501fb.c
-@@ -326,6 +326,13 @@ static int sm501fb_check_var(struct fb_var_screeninfo *var,
- 	if (var->xres_virtual > 4096 || var->yres_virtual > 2048)
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 71975c490822b..0c244ea5244cc 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -2793,7 +2793,7 @@ static int airoha_qdma_set_tx_ets_sched(struct airoha_gdm_port *port,
+ 	struct tc_ets_qopt_offload_replace_params *p = &opt->replace_params;
+ 	enum tx_sched_mode mode = TC_SCH_SP;
+ 	u16 w[AIROHA_NUM_QOS_QUEUES] = {};
+-	int i, nstrict = 0, nwrr, qidx;
++	int i, nstrict = 0;
+ 
+ 	if (p->bands > AIROHA_NUM_QOS_QUEUES)
  		return -EINVAL;
+@@ -2811,17 +2811,17 @@ static int airoha_qdma_set_tx_ets_sched(struct airoha_gdm_port *port,
+ 	 * lowest priorities with respect to SP ones.
+ 	 * e.g: WRR0, WRR1, .., WRRm, SP0, SP1, .., SPn
+ 	 */
+-	nwrr = p->bands - nstrict;
+-	qidx = nstrict && nwrr ? nstrict : 0;
+-	for (i = 1; i <= p->bands; i++) {
+-		if (p->priomap[i % AIROHA_NUM_QOS_QUEUES] != qidx)
++	for (i = 0; i < nstrict; i++) {
++		if (p->priomap[p->bands - i - 1] != i)
+ 			return -EINVAL;
+-
+-		qidx = i == nwrr ? 0 : qidx + 1;
+ 	}
  
-+	/* geometry sanity checks */
-+	if (var->xres + var->xoffset > var->xres_virtual)
-+		return -EINVAL;
+-	for (i = 0; i < nwrr; i++)
++	for (i = 0; i < p->bands - nstrict; i++) {
++		if (p->priomap[i] != nstrict + i)
++			return -EINVAL;
 +
-+	if (var->yres + var->yoffset > var->yres_virtual)
-+		return -EINVAL;
-+
- 	/* can cope with 8,16 or 32bpp */
+ 		w[i] = p->weights[nstrict + i];
++	}
  
- 	if (var->bits_per_pixel <= 8)
+ 	if (!nstrict)
+ 		mode = TC_SCH_WRR8;
 -- 
 2.39.5
 
