@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0EBA8053E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0219EA80C12
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C4788029A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278718C4201
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE5126A0D9;
-	Tue,  8 Apr 2025 12:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052B527C141;
+	Tue,  8 Apr 2025 12:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOcqXoCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QX4QRFCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17126A0AF;
-	Tue,  8 Apr 2025 12:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75D5269823;
+	Tue,  8 Apr 2025 12:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113972; cv=none; b=h3b+tMBQSFOT+/BXfux/dWb4pxIjCZYLdZlxNUD4Qp8aUbKiwc13lMelHe9N40twNx9TH7mOh1KKlHwmAcRz/GkSmuj/3f5qvrLTqDlbe/5dwUDuem3vHupVE4fXI/DA4NcOrquHn18tklySP7SPV31xJTKW3URPcLN6Wlwq33I=
+	t=1744116956; cv=none; b=AVUJKSB0lE6vQQIIl75gHKM6PO2e8zw6VDlG1FNpUafhR54sT6U5IdJ9eOYE8BkG7KYKyb+vWiG7CQsyqNrxZPuJRTlnLm7JgjiT/yTQSNFxHp7n+4eqiV85GtxVC8QAqw3j8DGhu9yCnrovm8stO2U5bOloMyU4M+QHuw/KX8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113972; c=relaxed/simple;
-	bh=TmaB5Nrg+aQqLh2cGQopSMFvzpqVBnSUt0XVQxlpVy8=;
+	s=arc-20240116; t=1744116956; c=relaxed/simple;
+	bh=yPui536WXTEdjNxmqwp2NC0qgC570e9V2aSRImL4A4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4NgwlJ73LVl0/tv48k9/jILh6HLFWJ7Czld+chRG0LN6z9k/8cdZxRDYVPCLqnfmhwtlhS9LKKQl42c7i36qFm5Po6ib6GbjB3gJtMikTUCfDCiZ9DwKIOPmSwIgboIbWv0P+TkcdTDO79A09fPEdj9wftqg6cga9s+IeDGg1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOcqXoCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D227FC4CEE5;
-	Tue,  8 Apr 2025 12:06:11 +0000 (UTC)
+	 MIME-Version; b=aWWLY0J8dU7uvRpBeUVlWbBVCNoHjPS0P1YCBtu7pZq4xduwU9F1b6Lddtzh0GJt0U3LiuJrb8Vzzm6XckhDn0lTkWZTLXglCHIV42tzrDFJbFuuB/6Y+eKlyMkShYUykPqfwu/uGQTwuigNz7lLBei3AoxAnEiQKdxQxnFSXfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QX4QRFCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205B0C4CEE5;
+	Tue,  8 Apr 2025 12:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113972;
-	bh=TmaB5Nrg+aQqLh2cGQopSMFvzpqVBnSUt0XVQxlpVy8=;
+	s=korg; t=1744116956;
+	bh=yPui536WXTEdjNxmqwp2NC0qgC570e9V2aSRImL4A4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOcqXoCVd/hNDobUWd6JjNo821jRxVR6wijMe3UcCLZ8OdA+E5bTqw8Din2Vzsil+
-	 oL7sUDC0ch8xrT5dizm1HKRytvWoAV7cV7k7Y34Kbb55hnAXbThMzGdcPUj+efKmZU
-	 5/Dqow4AnGS5ORuxU2+RGn//WH5sSLm0GbLmPQq4=
+	b=QX4QRFCivwdbCLW/1BkKhsV6FT1oZnpz6cid/zIW65Mkw8rsqZ6dC0dhQQKlbaXh8
+	 TYBpI0MVLaK0wvGukVE8Vm1xvJ0MvgDuibRCSw7cB9zQQ3BEOCNvZRpZUoOcFUVAVv
+	 bsoqYAgDNfSi/C+XW+cjXBf+UAo9wdeTysrXxLdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+5b667f9a1fee4ba3775a@syzkaller.appspotmail.com,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/154] PM: sleep: Fix handling devices with direct_complete set on errors
+Subject: [PATCH 6.12 304/423] fs/9p: fix NULL pointer dereference on mkdir
 Date: Tue,  8 Apr 2025 12:50:30 +0200
-Message-ID: <20250408104818.172197333@linuxfoundation.org>
+Message-ID: <20250408104852.876469471@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
+[ Upstream commit 3f61ac7c65bdb26accb52f9db66313597e759821 ]
 
-When dpm_suspend() fails, some devices with power.direct_complete set
-may not have been handled by device_suspend() yet, so runtime PM has
-not been disabled for them yet even though power.direct_complete is set.
+When a 9p tree was mounted with option 'posixacl', parent directory had a
+default ACL set for its subdirectories, e.g.:
 
-Since device_resume() expects that runtime PM has been disabled for all
-devices with power.direct_complete set, it will attempt to reenable
-runtime PM for the devices that have not been processed by device_suspend()
-which does not make sense.  Had those devices had runtime PM disabled
-before device_suspend() had run, device_resume() would have inadvertently
-enable runtime PM for them, but this is not expected to happen because
-it would require ->prepare() callbacks to return positive values for
-devices with runtime PM disabled, which would be invalid.
+  setfacl -m default:group:simpsons:rwx parentdir
 
-In practice, this issue is most likely benign because pm_runtime_enable()
-will not allow the "disable depth" counter to underflow, but it causes a
-warning message to be printed for each affected device.
+then creating a subdirectory crashed 9p client, as v9fs_fid_add() call in
+function v9fs_vfs_mkdir_dotl() sets the passed 'fid' pointer to NULL
+(since dafbe689736) even though the subsequent v9fs_set_create_acl() call
+expects a valid non-NULL 'fid' pointer:
 
-To allow device_resume() to distinguish the "direct complete" devices
-that have been processed by device_suspend() from those which have not
-been handled by it, make device_suspend() set power.is_suspended for
-"direct complete" devices.
+  [   37.273191] BUG: kernel NULL pointer dereference, address: 0000000000000000
+  ...
+  [   37.322338] Call Trace:
+  [   37.323043]  <TASK>
+  [   37.323621] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
+  [   37.324448] ? page_fault_oops (arch/x86/mm/fault.c:714)
+  [   37.325532] ? search_module_extables (kernel/module/main.c:3733)
+  [   37.326742] ? p9_client_walk (net/9p/client.c:1165) 9pnet
+  [   37.328006] ? search_bpf_extables (kernel/bpf/core.c:804)
+  [   37.329142] ? exc_page_fault (./arch/x86/include/asm/paravirt.h:686 arch/x86/mm/fault.c:1488 arch/x86/mm/fault.c:1538)
+  [   37.330196] ? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:574)
+  [   37.331330] ? p9_client_walk (net/9p/client.c:1165) 9pnet
+  [   37.332562] ? v9fs_fid_xattr_get (fs/9p/xattr.c:30) 9p
+  [   37.333824] v9fs_fid_xattr_set (fs/9p/fid.h:23 fs/9p/xattr.c:121) 9p
+  [   37.335077] v9fs_set_acl (fs/9p/acl.c:276) 9p
+  [   37.336112] v9fs_set_create_acl (fs/9p/acl.c:307) 9p
+  [   37.337326] v9fs_vfs_mkdir_dotl (fs/9p/vfs_inode_dotl.c:411) 9p
+  [   37.338590] vfs_mkdir (fs/namei.c:4313)
+  [   37.339535] do_mkdirat (fs/namei.c:4336)
+  [   37.340465] __x64_sys_mkdir (fs/namei.c:4354)
+  [   37.341455] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+  [   37.342447] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Next, move the power.is_suspended check in device_resume() before the
-power.direct_complete check in it to make it skip the "direct complete"
-devices that have not been handled by device_suspend().
+Fix this by simply swapping the sequence of these two calls in
+v9fs_vfs_mkdir_dotl(), i.e. calling v9fs_set_create_acl() before
+v9fs_fid_add().
 
-This change is based on a preliminary patch from Saravana Kannan.
-
-Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
-Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
-Reported-by: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
+Fixes: dafbe689736f ("9p fid refcount: cleanup p9_fid_put calls")
+Reported-by: syzbot+5b667f9a1fee4ba3775a@syzkaller.appspotmail.com
+Signed-off-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Message-ID: <E1tsiI6-002iMG-Kh@kylie.crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/9p/vfs_inode_dotl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index ae382c4018fd8..7375624de5646 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -968,6 +968,9 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (dev->power.syscore)
- 		goto Complete;
- 
-+	if (!dev->power.is_suspended)
-+		goto Complete;
-+
- 	if (dev->power.direct_complete) {
- 		/* Match the pm_runtime_disable() in __device_suspend(). */
- 		pm_runtime_enable(dev);
-@@ -986,9 +989,6 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 	 */
- 	dev->power.is_prepared = false;
- 
--	if (!dev->power.is_suspended)
--		goto Unlock;
--
- 	if (dev->pm_domain) {
- 		info = "power domain ";
- 		callback = pm_op(&dev->pm_domain->ops, state);
-@@ -1028,7 +1028,6 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 	error = dpm_run_callback(callback, dev, state, info);
- 	dev->power.is_suspended = false;
- 
-- Unlock:
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
- 
-@@ -1758,6 +1757,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
- 			pm_runtime_disable(dev);
- 			if (pm_runtime_status_suspended(dev)) {
- 				pm_dev_dbg(dev, state, "direct-complete ");
-+				dev->power.is_suspended = true;
- 				goto Complete;
- 			}
- 
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 143ac03b7425c..3397939fd2d5a 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -407,8 +407,8 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
+ 			 err);
+ 		goto error;
+ 	}
+-	v9fs_fid_add(dentry, &fid);
+ 	v9fs_set_create_acl(inode, fid, dacl, pacl);
++	v9fs_fid_add(dentry, &fid);
+ 	d_instantiate(dentry, inode);
+ 	err = 0;
+ 	inc_nlink(dir);
 -- 
 2.39.5
 
