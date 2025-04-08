@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E77A8055C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83674A8096B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 018237AE080
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847FF1BA4B85
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1E126A087;
-	Tue,  8 Apr 2025 12:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F073426B94F;
+	Tue,  8 Apr 2025 12:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q68tqYkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMBNfCyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB19267393;
-	Tue,  8 Apr 2025 12:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4826B956;
+	Tue,  8 Apr 2025 12:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114522; cv=none; b=Bv9Asv8yGglUX4QTMkIHMZ/0Fybtvhj0XncnVVZnKTdxELznxTgWePBynr381Elo03TXlP8x4LcUXpQvQ0/IzNY3FHqMprPuS1w54fIrXl3gDvXvh7v+VA16hILth5EWs2CxUyCckcVrSZElUa3FrnVXyyEyvBPeMWviaF9vhRY=
+	t=1744116129; cv=none; b=WQErwOrhtSKQv8hcPn8at25jB5M8wHM6LoCGdE/Jn4DAyuopgUWytFce8ln7CPNGd3f1OWYM23g/MwiKbgrwy718N7XD03r9uU5YtwmaLA6d4tnS/ZvPlyo5MHcz6w0t6/Hth/WsUHFfHFxBR7qbo7qU2Y4o1CcBvc3Te4sVkr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114522; c=relaxed/simple;
-	bh=+2Zj+fAnmuhhvYmGfIA92bNvdKyrN64hPKNTj3GwDAY=;
+	s=arc-20240116; t=1744116129; c=relaxed/simple;
+	bh=sEuCoMXeFvNzGyKh4VBPlqPbkYYOEwlAuzR81WvlrYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eI0GMWlA0PgiQX8iiOgw+wS1JSZSdvMxk3X6MpnxSau7rg8rvsWWu+Bs/lund2bifyibZFbUQHsn9jwelLSDNBx202whaTgDsTihF5fywGdCWYR4AhOe5YpTjd4yy/qiDVw+5y7RYquYf40gpqX84NCbUO3tsdaK7jcFj2HzDBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q68tqYkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487A5C4CEE5;
-	Tue,  8 Apr 2025 12:15:22 +0000 (UTC)
+	 MIME-Version; b=Tr0LBGu2K8grnB/bXjfLE1cZSqJnDiq8kTBjkCP6F5z8QcjPzOa6RegkyEBFKmFumon2z0OpZIN3D5stLoV268/8P4ZbDqc/w9AOryKMQ5t01HDb+GRFMB0HTvX2YPpo999GFWly36fBGp3vSH/iexxar/mKRFUAUehROLwoqoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMBNfCyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41045C4CEE5;
+	Tue,  8 Apr 2025 12:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114522;
-	bh=+2Zj+fAnmuhhvYmGfIA92bNvdKyrN64hPKNTj3GwDAY=;
+	s=korg; t=1744116129;
+	bh=sEuCoMXeFvNzGyKh4VBPlqPbkYYOEwlAuzR81WvlrYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q68tqYkvHzuDIfEw08hpSxwg/pYtkLbJ4ahJxfV/2AlNhsQP51BZcnRlgIm+unj5C
-	 EaJefLurpSDOI2YmfDLLEl0kfhmywdEw68QFuga5sluMIui4EK3aNVXgV0IPlKcv2E
-	 dltU3vSojVQNGaPX+etD9iMcgTk6/Z4lL83U//BQ=
+	b=CMBNfCyLzkX88dPf31kLtr2ougjA1aoQo3ERTmz+XroCatX7ySMxrzTCInHB6bevT
+	 4yp0hrElEJwZlK76IqrTx96ffvZ5sNIXS+MA9Ftgu8QimMaiDkJuwS5yUvCcGGpd3r
+	 2HLo2AkFujI6Me2kJN2atxsmmko4qsSC1nbQF6pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Viktor Malik <vmalik@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 139/499] selftests/bpf: Fix string read in strncmp benchmark
-Date: Tue,  8 Apr 2025 12:45:51 +0200
-Message-ID: <20250408104854.658255580@linuxfoundation.org>
+Subject: [PATCH 6.12 026/423] PM: sleep: Fix handling devices with direct_complete set on errors
+Date: Tue,  8 Apr 2025 12:45:52 +0200
+Message-ID: <20250408104846.357662861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit de07b182899227d5fd1ca7a1a7d495ecd453d49c ]
+[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
 
-The strncmp benchmark uses the bpf_strncmp helper and a hand-written
-loop to compare two strings. The values of the strings are filled from
-userspace. One of the strings is non-const (in .bss) while the other is
-const (in .rodata) since that is the requirement of bpf_strncmp.
+When dpm_suspend() fails, some devices with power.direct_complete set
+may not have been handled by device_suspend() yet, so runtime PM has
+not been disabled for them yet even though power.direct_complete is set.
 
-The problem is that in the hand-written loop, Clang optimizes the reads
-from the const string to always return 0 which breaks the benchmark.
+Since device_resume() expects that runtime PM has been disabled for all
+devices with power.direct_complete set, it will attempt to reenable
+runtime PM for the devices that have not been processed by device_suspend()
+which does not make sense.  Had those devices had runtime PM disabled
+before device_suspend() had run, device_resume() would have inadvertently
+enable runtime PM for them, but this is not expected to happen because
+it would require ->prepare() callbacks to return positive values for
+devices with runtime PM disabled, which would be invalid.
 
-Use barrier_var to prevent the optimization.
+In practice, this issue is most likely benign because pm_runtime_enable()
+will not allow the "disable depth" counter to underflow, but it causes a
+warning message to be printed for each affected device.
 
-The effect can be seen on the strncmp-no-helper variant.
+To allow device_resume() to distinguish the "direct complete" devices
+that have been processed by device_suspend() from those which have not
+been handled by it, make device_suspend() set power.is_suspended for
+"direct complete" devices.
 
-Before this change:
+Next, move the power.is_suspended check in device_resume() before the
+power.direct_complete check in it to make it skip the "direct complete"
+devices that have not been handled by device_suspend().
 
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 (112.309us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   1 (-23.238us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   2 ( 58.994us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   3 (-30.466us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   4 ( 29.996us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   5 ( 16.949us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   6 (-60.035us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Summary: hits    0.000 ± 0.000M/s (  0.000M/prod), drops    0.000 ± 0.000M/s, total operations    0.000 ± 0.000M/s
+This change is based on a preliminary patch from Saravana Kannan.
 
-After this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 ( 77.711us): hits    5.534M/s (  5.534M/prod), drops    0.000M/s, total operations    5.534M/s
-    Iter   1 ( 11.215us): hits    6.006M/s (  6.006M/prod), drops    0.000M/s, total operations    6.006M/s
-    Iter   2 (-14.253us): hits    5.931M/s (  5.931M/prod), drops    0.000M/s, total operations    5.931M/s
-    Iter   3 ( 59.087us): hits    6.005M/s (  6.005M/prod), drops    0.000M/s, total operations    6.005M/s
-    Iter   4 (-21.379us): hits    6.010M/s (  6.010M/prod), drops    0.000M/s, total operations    6.010M/s
-    Iter   5 (-20.310us): hits    5.861M/s (  5.861M/prod), drops    0.000M/s, total operations    5.861M/s
-    Iter   6 ( 53.937us): hits    6.004M/s (  6.004M/prod), drops    0.000M/s, total operations    6.004M/s
-    Summary: hits    5.969 ± 0.061M/s (  5.969M/prod), drops    0.000 ± 0.000M/s, total operations    5.969 ± 0.061M/s
-
-Fixes: 9c42652f8be3 ("selftests/bpf: Add benchmark for bpf_strncmp() helper")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20250313122852.1365202-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
+Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
+Reported-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/strncmp_bench.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/base/power/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/strncmp_bench.c b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-index 18373a7df76e6..f47bf88f8d2a7 100644
---- a/tools/testing/selftests/bpf/progs/strncmp_bench.c
-+++ b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-@@ -35,7 +35,10 @@ static __always_inline int local_strncmp(const char *s1, unsigned int sz,
- SEC("tp/syscalls/sys_enter_getpgid")
- int strncmp_no_helper(void *ctx)
- {
--	if (local_strncmp(str, cmp_str_len + 1, target) < 0)
-+	const char *target_str = target;
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index d4875c3712ede..1abe61f11525d 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -913,6 +913,9 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (dev->power.syscore)
+ 		goto Complete;
+ 
++	if (!dev->power.is_suspended)
++		goto Complete;
 +
-+	barrier_var(target_str);
-+	if (local_strncmp(str, cmp_str_len + 1, target_str) < 0)
- 		__sync_add_and_fetch(&hits, 1);
- 	return 0;
- }
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -931,9 +934,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+ 	 */
+ 	dev->power.is_prepared = false;
+ 
+-	if (!dev->power.is_suspended)
+-		goto Unlock;
+-
+ 	if (dev->pm_domain) {
+ 		info = "power domain ";
+ 		callback = pm_op(&dev->pm_domain->ops, state);
+@@ -973,7 +973,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 	dev->power.is_suspended = false;
+ 
+- Unlock:
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
+ 
+@@ -1627,6 +1626,7 @@ static int device_suspend(struct device *dev, pm_message_t state, bool async)
+ 			pm_runtime_disable(dev);
+ 			if (pm_runtime_status_suspended(dev)) {
+ 				pm_dev_dbg(dev, state, "direct-complete ");
++				dev->power.is_suspended = true;
+ 				goto Complete;
+ 			}
+ 
 -- 
 2.39.5
 
