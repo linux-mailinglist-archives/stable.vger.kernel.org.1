@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22286A808B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B64A804A7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C6078C0735
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359151B608D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC2226A0AE;
-	Tue,  8 Apr 2025 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E7A269836;
+	Tue,  8 Apr 2025 12:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os8c3BoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilFnnk2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A4126A090;
-	Tue,  8 Apr 2025 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26288269811;
+	Tue,  8 Apr 2025 12:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115570; cv=none; b=dO4AKFr++3jI6LVsPyy0j7qGS5TaRG6jwemMLHU43VrHOE4WDdyia3M2aGH4+3J0x66jRsRas/F6hALjjfaUTSK7ugewKSp1t9Zhfmf5M6MrMM/5k5/U4poTRmt2zpzs9oJfyTDP9UjGRDxrnRCpAu+/2TkJc9q3qeRlJ/+v77A=
+	t=1744113764; cv=none; b=m2ka97kbAquDHlEGGPax8vAnDXjIs/0BoKsY1R7r+CpaDYmGgCYIjEoaxDOcjJ9SRcuFqCb7oKbLmlvamng+pqFeX8ucaJBuf1HwxQHvwweIBoyiS1C4FytoC0dXEfcKvfL8JyIcShzdCr4FF/F34ofX9wkK9LsCHbnmOFqtiuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115570; c=relaxed/simple;
-	bh=TlqaFNNHBkyEmQ3QWcpRHdSORbgTQ11zasOVzznQThY=;
+	s=arc-20240116; t=1744113764; c=relaxed/simple;
+	bh=eEM14DEzRLhJ1lVPgIEEpfuEi5ygaddBZ5fEZ2WMCyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYRwMhaqQAwfnUe26DFhxdGaaiX0n5mc7OIArfLwM6qHDyO08l/TWhThmcUKpYQa5TaN/hdnYl7B426NmtH+gVzRLWKxN9bwCfy/LNRmb7A5G8Yk5R0NqbH0ub63RKTGvpTBBA/SAkXz3jgO4HBNrZk/wNNTqck7bAwUX9otASQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os8c3BoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1639C4CEE5;
-	Tue,  8 Apr 2025 12:32:49 +0000 (UTC)
+	 MIME-Version; b=ryM83llV89wcXvx5kz64V/SWg/r8v7IJDw5pOMNAE4SX5hx5r5zENgNGHLNICKFU1QYa5fTRTzxPiydedfU+h2A/LDB2Llf3rZDpcUPQy44cdUQWA/kOfIWuSOhTPE5Ik3G+/dr0dyCWbFVQRNZIgNF2Blw48J1YA46ZfpCw0Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilFnnk2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDD9C4CEEA;
+	Tue,  8 Apr 2025 12:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115570;
-	bh=TlqaFNNHBkyEmQ3QWcpRHdSORbgTQ11zasOVzznQThY=;
+	s=korg; t=1744113764;
+	bh=eEM14DEzRLhJ1lVPgIEEpfuEi5ygaddBZ5fEZ2WMCyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Os8c3BoDdJHxVW7NZYEtb8A51mOFsRzKKGw6f8yFE7t+pvju7qcWk3lM13bThJPqT
-	 h1bjhkMcVWkrjdvFTMmWe1klpBjDHFTRiFsFgHrdq109eQnndvi0IjjT/goQ71iaug
-	 N1e9Erov7axjVx70eQm8F9UoO6Lp9yePxNPvwAB0=
+	b=ilFnnk2TAaEvBvZwOdSr5KAtbpiJ07EH6PEINGcrEnVHx/IEe2WWROnOT9wXEzqvU
+	 pg86jAziTqSfXBUP4roNckfs/51Q4GaKNENTdFl5LpvZisE88wmUdTzvwEbjTc2Qkb
+	 YaIBR6qfD92sml5hsDQh3ySbEnNpBu9dfkUavp5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/204] ASoC: cs35l41: check the return value from spi_setup()
+Subject: [PATCH 5.4 012/154] netpoll: netpoll_send_skb() returns transmit status
 Date: Tue,  8 Apr 2025 12:49:13 +0200
-Message-ID: <20250408104821.003260176@linuxfoundation.org>
+Message-ID: <20250408104815.681236997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ad5a0970f86d82e39ebd06d45a1f7aa48a1316f8 ]
+[ Upstream commit 1ddabdfaf70c202b88925edd74c66f4707dbd92e ]
 
-Currently the return value from spi_setup() is not checked for a failure.
-It is unlikely it will ever fail in this particular case but it is still
-better to add this check for the sake of completeness and correctness. This
-is cheap since it is performed once when the device is being probed.
+Some callers want to know if the packet has been sent or
+dropped, to inform upper stacks.
 
-Handle spi_setup() return value.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 872fc0b6bde8 ("ASoC: cs35l41: Set the max SPI speed for the whole device")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Link: https://patch.msgid.link/20250304115643.2748-1-v.shevtsov@mt-integration.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41-spi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/netpoll.h |  2 +-
+ net/core/netpoll.c      | 11 +++++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l41-spi.c b/sound/soc/codecs/cs35l41-spi.c
-index 5c8bb24909eb4..bd73944758c6d 100644
---- a/sound/soc/codecs/cs35l41-spi.c
-+++ b/sound/soc/codecs/cs35l41-spi.c
-@@ -39,7 +39,9 @@ static int cs35l41_spi_probe(struct spi_device *spi)
- 		return -ENOMEM;
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 2db513437d2c0..f8f5270a891d0 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -63,7 +63,7 @@ int netpoll_setup(struct netpoll *np);
+ void __netpoll_cleanup(struct netpoll *np);
+ void __netpoll_free(struct netpoll *np);
+ void netpoll_cleanup(struct netpoll *np);
+-void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
++netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
  
- 	spi->max_speed_hz = CS35L41_SPI_MAX_FREQ;
--	spi_setup(spi);
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return ret;
+ #ifdef CONFIG_NETPOLL
+ static inline void *netpoll_poll_lock(struct napi_struct *napi)
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 5eefbb2e145a4..408fc07007900 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -323,7 +323,7 @@ static int netpoll_owner_active(struct net_device *dev)
+ }
  
- 	spi_set_drvdata(spi, cs35l41);
- 	cs35l41->regmap = devm_regmap_init_spi(spi, regmap_config);
+ /* call with IRQ disabled */
+-static void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
++static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	netdev_tx_t status = NETDEV_TX_BUSY;
+ 	struct net_device *dev;
+@@ -338,7 +338,7 @@ static void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 
+ 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
+ 		dev_kfree_skb_irq(skb);
+-		return;
++		return NET_XMIT_DROP;
+ 	}
+ 
+ 	/* don't get messages out of order, and no recursion */
+@@ -377,15 +377,18 @@ static void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 		skb_queue_tail(&npinfo->txq, skb);
+ 		schedule_delayed_work(&npinfo->tx_work,0);
+ 	}
++	return NETDEV_TX_OK;
+ }
+ 
+-void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
++netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	unsigned long flags;
++	netdev_tx_t ret;
+ 
+ 	local_irq_save(flags);
+-	__netpoll_send_skb(np, skb);
++	ret = __netpoll_send_skb(np, skb);
+ 	local_irq_restore(flags);
++	return ret;
+ }
+ EXPORT_SYMBOL(netpoll_send_skb);
+ 
 -- 
 2.39.5
 
