@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A594A7FD7B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479B9A8010F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7443118912D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930623B9446
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F04F269D09;
-	Tue,  8 Apr 2025 10:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F37266583;
+	Tue,  8 Apr 2025 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp4wXmfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLH8l9r5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC195269D03;
-	Tue,  8 Apr 2025 10:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83210267B10;
+	Tue,  8 Apr 2025 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109779; cv=none; b=szxLIox3hRNCIHrFikzU233kM5wxe0qSP3jBJcBE9wvUFINYBsra74wbm88PQcOtsYS7tXjQpmFMFieoOJGTZXplxL7+04U9frYnnITxwA4+K4A6GGWawtXBRo1cRLxG7pFbegSS6t+Bkh/vih2qbMkWNcxym4SuUilCmViNc60=
+	t=1744111714; cv=none; b=KROHX26nNirlk0viJs1CFXVbeV4hXwXyPIwwTpwwtKb5CKPhR+XxuTLUOLh6PQ3/Wz9XOor+gu4/URxVoYJq8vpJ7Ts/N9xWRoWCnksaYYEpBuTv3SDKYageMhtO7/N03frnPkQoFNJn0+gTJ1yLu7P/88VS/gZ2EjUx0UQcdis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109779; c=relaxed/simple;
-	bh=fMzzqHp1VbsEGzCjCho1a5tVxe+HOcsxOtbvSTIskpY=;
+	s=arc-20240116; t=1744111714; c=relaxed/simple;
+	bh=pqkPk6WPkV5CdDFgT/Z/dwAIFBXb+qq0Ub/X3W7Sch8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brMpEWzhGjX+KQOblbOaMS4bqgcAfBsUOeYm4+pJLsL4NxkQLfKAKvRg9BOyoJvteTG4TKK/i/7vbCgUI1K5fiN0Bm3meUgM+OM5De04AxV2K+327SZNxxKMfc1qSjnmANy/kAUDirFyk7MgpH50Jl2oEZUx5QdtCeg7up2OoyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp4wXmfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C399C4CEE5;
-	Tue,  8 Apr 2025 10:56:18 +0000 (UTC)
+	 MIME-Version; b=lTyU29t54bMjPPeMqTo2GXVKSNyyB3NkxLGNyyaJ7NctmYdYmnMJli/axZ+46NHD7JA6La9TlB7motM/ERsQNukbCwdG2Hi83PLAUj6X+wJBmjn3NQeifH3ABmD1S8LE1c/ql8jpRcAJJQfEnxn0zgMbNV3PbH3LowZya7EQj50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLH8l9r5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D8EC4CEE5;
+	Tue,  8 Apr 2025 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109778;
-	bh=fMzzqHp1VbsEGzCjCho1a5tVxe+HOcsxOtbvSTIskpY=;
+	s=korg; t=1744111714;
+	bh=pqkPk6WPkV5CdDFgT/Z/dwAIFBXb+qq0Ub/X3W7Sch8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp4wXmfquF+FA6++3Imud9wIcSPn1dReY6j/Unr9F5aODWcBpY+LQMCcwb2xc8faQ
-	 nF/qWC/8uBKg+LQCUwoqj045Soz1mblrmR7fQ2srgsAh+OgzmFEHK/TXmXmrJBPqo9
-	 n4P1tyXdtKqe4oFhQxSa+MSnfL3Zbg9divYaxB0g=
+	b=qLH8l9r5zj6U1ktE1qWdE+TMmeJvhmVtpv/+arzMc09PtTTBfD8W61gvP+FWbSvOf
+	 W7oB0m6Ssf3ReyIBeNQwHaZHyAMcn/8fLwRmHNlYyAwey4e8cv4t/s9jzRf9g/RQfY
+	 BTZJ3m0yyHaypjmMmQc1Y5TJ/sYkf60TS7+wbRdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 050/227] USB: serial: option: match on interface class for Telit FN990B
-Date: Tue,  8 Apr 2025 12:47:08 +0200
-Message-ID: <20250408104821.898031566@linuxfoundation.org>
+	Thomas Richter <tmricht@linux.ibm.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 532/731] perf pmu: Handle memory failure in tool_pmu__new()
+Date: Tue,  8 Apr 2025 12:47:09 +0200
+Message-ID: <20250408104926.649538270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
+[ Upstream commit 431db90a7303cb394c5a881b4479946f64052727 ]
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
+On linux-next
+commit 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
+allocated PMU named "tool" dynamicly. However that allocation
+can fail and a NULL pointer is returned. That case is currently
+not handled and would result in an invalid address reference.
+Add a check for NULL pointer.
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
-
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250319122820.2898333-1-tmricht@linux.ibm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ tools/perf/util/pmus.c     | 3 ++-
+ tools/perf/util/tool_pmu.c | 8 ++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
+index 6498021acef01..7959af59908c2 100644
+--- a/tools/perf/util/pmus.c
++++ b/tools/perf/util/pmus.c
+@@ -269,7 +269,8 @@ static void pmu_read_sysfs(unsigned int to_read_types)
+ 	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
+ 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
+ 		tool_pmu = tool_pmu__new();
+-		list_add_tail(&tool_pmu->list, &other_pmus);
++		if (tool_pmu)
++			list_add_tail(&tool_pmu->list, &other_pmus);
+ 	}
+ 	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
+ 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) == 0)
+diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
+index 9156745ea180d..d43d6cf6e4a20 100644
+--- a/tools/perf/util/tool_pmu.c
++++ b/tools/perf/util/tool_pmu.c
+@@ -494,12 +494,20 @@ struct perf_pmu *tool_pmu__new(void)
+ {
+ 	struct perf_pmu *tool = zalloc(sizeof(struct perf_pmu));
+ 
++	if (!tool)
++		goto out;
+ 	tool->name = strdup("tool");
++	if (!tool->name) {
++		zfree(&tool);
++		goto out;
++	}
++
+ 	tool->type = PERF_PMU_TYPE_TOOL;
+ 	INIT_LIST_HEAD(&tool->aliases);
+ 	INIT_LIST_HEAD(&tool->caps);
+ 	INIT_LIST_HEAD(&tool->format);
+ 	tool->events_table = find_core_events_table("common", "common");
+ 
++out:
+ 	return tool;
+ }
+-- 
+2.39.5
+
 
 
 
