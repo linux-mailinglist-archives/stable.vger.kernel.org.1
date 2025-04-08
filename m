@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDBBA80678
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2F9A80A84
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 703947B0091
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74A71B87B69
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8EC26B955;
-	Tue,  8 Apr 2025 12:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8543526FD8E;
+	Tue,  8 Apr 2025 12:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZQdJ8Vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APNkPzye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4697826773A;
-	Tue,  8 Apr 2025 12:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B122686BC;
+	Tue,  8 Apr 2025 12:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114985; cv=none; b=CwZR2F06SqaaoSFM+KAo/bZzEkySwjdJXlrOsg/2mfbuYolb7fm5Hpv64ZqhsG3VyBWedApohaXScZX6faC18dnE9vd+/RaSAwMUdJCuh3OhVjzXrE8t11b6yqcx9fkPAAhNJxhyAsPPOg+72NbdN9PxKnnxaW7y0PkltozMpL8=
+	t=1744116586; cv=none; b=t49oRTJjkO0giUWJ9J08z6avuHNqOg+eyz6QKesf/eX9LQxldtB2v4hgvqhEd7zU4VYr6zAdD0JtU4eGlp0k6Go5He3aGgNpFuHirpf2XMWHjEknuAhFdVnFChDdVui/DqGDF796EheEURI76l2vGbpaT7lJd9XOdUHDLbuCBKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114985; c=relaxed/simple;
-	bh=LYxvKkgTLcBZUhy7jgHQYJGKJN1ulP61AwQqdVNTkK4=;
+	s=arc-20240116; t=1744116586; c=relaxed/simple;
+	bh=HoLeRRum2yyKMPeDprDytTuTtEdXJfYUdrSadoPuZI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z++ZJZSZ69Ef5Miwuj2qdB6bRPlgP64nD0bYt1x5qj/n0vGvnCCxQkUPd9vxiIXIu6/X9o3XTTCOIgnP0pnk22e4hCrIk2y3y5DjQfjvwqwj5PI2Wa0n+42iHky9vHjaNWQizaE54U/s1PiVxYjm1Ukalri3eGYJpEHHA5kjU8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZQdJ8Vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C113EC4CEE5;
-	Tue,  8 Apr 2025 12:23:04 +0000 (UTC)
+	 MIME-Version; b=OSzleTig8dUjiKcKWivrLMQGSYyjpX/6pD6CbBGgmVVi2zxWMYsZv3em/m5pHNW9ZVHk0OvsKILtDkFU84lLk6JMjS0WvfNlMkOP6iqs+zv/YGdGFtfL7g3KYVmhyAa638wUISsKqcr26NBTsLkHS8JZqbaG9A0o9mc3TeTjLRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APNkPzye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CD4C4CEE5;
+	Tue,  8 Apr 2025 12:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114985;
-	bh=LYxvKkgTLcBZUhy7jgHQYJGKJN1ulP61AwQqdVNTkK4=;
+	s=korg; t=1744116586;
+	bh=HoLeRRum2yyKMPeDprDytTuTtEdXJfYUdrSadoPuZI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZQdJ8VvDhF3/SKNe78Yn+oF8NuJ7faOL2nB1XpmACsBp/Zh57jlpeC+1Pqhp4k05
-	 vMHeO9dn78w9OAOyCZ92ODxHOWpcOvjEX5vd0nQlv2tnXM3lVxuQAHkbo8R4VQwxbE
-	 kBKXD5vDfvnywYh7IXltuxpVhe9U8DCEr4Hq1Unc=
+	b=APNkPzyepc4/Gezyy06mTfUMXRjTq/BcfoosIS1TmIHrH+ZIj+uHrHeyjP4oKSYk9
+	 XVcZ+VdcH9SF0JyWI/s/yaFTVz/+OKKmWoSL8Z4RvjskUv1dTKtN9/8Rc3ajnLnVZs
+	 gFBiUkEAB/Sez/lhfcKK6CYcbf9G5X9B+GXPjqRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Proske <email@matthias-proske.de>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 308/499] wifi: brcmfmac: keep power during suspend if board requires it
+Subject: [PATCH 6.12 194/423] perf evlist: Add success path to evlist__create_syswide_maps
 Date: Tue,  8 Apr 2025 12:48:40 +0200
-Message-ID: <20250408104858.896355310@linuxfoundation.org>
+Message-ID: <20250408104850.254643406@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Proske <email@matthias-proske.de>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 8c3170628a9ce24a59647bd24f897e666af919b8 ]
+[ Upstream commit fe0ce8a9d85a48642880c9b78944cb0d23e779c5 ]
 
-After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
-unless WOWL is used"), the wifi adapter by default is turned off on
-suspend and then re-probed on resume.
+Over various refactorings evlist__create_syswide_maps has been made to
+only ever return with -ENOMEM. Fix this so that when
+perf_evlist__set_maps is successfully called, 0 is returned.
 
-This conflicts with some embedded boards that require to remain powered.
-They will fail on resume with:
-
-brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
-ieee80211 phy1: brcmf_bus_started: failed: -110
-ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
-brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
-
-This commit checks for the Device Tree property 'cap-power-off-cards'.
-If this property is not set, it means that we do not have the capability
-to power off and should therefore remain powered.
-
-Signed-off-by: Matthias Proske <email@matthias-proske.de>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250212185941.146958-2-email@matthias-proske.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/r/20250228222308.626803-3-irogers@google.com
+Fixes: 8c0498b6891d7ca5 ("perf evlist: Fix create_syswide_maps() not propagating maps")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 20 ++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ tools/perf/util/evlist.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 42d991d9f8cb4..a70780372c9bb 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -1167,6 +1167,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	struct brcmf_bus *bus_if;
- 	struct brcmf_sdio_dev *sdiodev;
- 	mmc_pm_flag_t sdio_flags;
-+	bool cap_power_off;
- 	int ret = 0;
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index a9df84692d4a8..dac87dccaaaa5 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -1434,19 +1434,18 @@ static int evlist__create_syswide_maps(struct evlist *evlist)
+ 	 */
+ 	cpus = perf_cpu_map__new_online_cpus();
+ 	if (!cpus)
+-		goto out;
++		return -ENOMEM;
  
- 	func = container_of(dev, struct sdio_func, dev);
-@@ -1174,19 +1175,23 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	if (func->num != 1)
- 		return 0;
+ 	threads = perf_thread_map__new_dummy();
+-	if (!threads)
+-		goto out_put;
++	if (!threads) {
++		perf_cpu_map__put(cpus);
++		return -ENOMEM;
++	}
  
-+	cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 	perf_evlist__set_maps(&evlist->core, cpus, threads);
+-
+ 	perf_thread_map__put(threads);
+-out_put:
+ 	perf_cpu_map__put(cpus);
+-out:
+-	return -ENOMEM;
++	return 0;
+ }
  
- 	bus_if = dev_get_drvdata(dev);
- 	sdiodev = bus_if->bus_priv.sdio;
- 
--	if (sdiodev->wowl_enabled) {
-+	if (sdiodev->wowl_enabled || !cap_power_off) {
- 		brcmf_sdiod_freezer_on(sdiodev);
- 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
- 
- 		sdio_flags = MMC_PM_KEEP_POWER;
--		if (sdiodev->settings->bus.sdio.oob_irq_supported)
--			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
--		else
--			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
-+
-+		if (sdiodev->wowl_enabled) {
-+			if (sdiodev->settings->bus.sdio.oob_irq_supported)
-+				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
-+			else
-+				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
-+		}
- 
- 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
- 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
-@@ -1208,18 +1213,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
- 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
- 	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
- 	int ret = 0;
-+	bool cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
- 
- 	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
- 	if (func->num != 2)
- 		return 0;
- 
--	if (!sdiodev->wowl_enabled) {
-+	if (!sdiodev->wowl_enabled && cap_power_off) {
- 		/* bus was powered off and device removed, probe again */
- 		ret = brcmf_sdiod_probe(sdiodev);
- 		if (ret)
- 			brcmf_err("Failed to probe device on resume\n");
- 	} else {
--		if (sdiodev->settings->bus.sdio.oob_irq_supported)
-+		if (sdiodev->wowl_enabled && sdiodev->settings->bus.sdio.oob_irq_supported)
- 			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
- 
- 		brcmf_sdiod_freezer_off(sdiodev);
+ int evlist__open(struct evlist *evlist)
 -- 
 2.39.5
 
