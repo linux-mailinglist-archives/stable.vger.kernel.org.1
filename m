@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129B9A80A87
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CF9A80630
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA6290216F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51A967A9E1A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29F6280A21;
-	Tue,  8 Apr 2025 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CED326A097;
+	Tue,  8 Apr 2025 12:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkd8vJB8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsT+exlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C4F27F4F3;
-	Tue,  8 Apr 2025 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE2268FE4;
+	Tue,  8 Apr 2025 12:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116551; cv=none; b=CYYe3+9SH7q8GV6WyBzqEs6gCLKMBY3wsOvOOKuArLP3z3Eau6ldpilnFw5ojqLgekgTIr66U/vtxE3UDhCjxpd9v4XCL3NrIdYvzGleZ20THA/aNrUwt5P+KvbcNlER3WwTeeTZBieWJy4Z7hWb/LbIYfUw1dgsOLsrQGKeqPw=
+	t=1744114818; cv=none; b=j06vGjztv0eJFhDS0hxu4ii5WzeKd6TV804jkBZezNiweVfEKuVaztJYQWmC+acgfN9aG5vuU+yhjzzo1p9paeh9PIo2EyeHBLUUDhMxYyGl1n4RnyiXUUh2ohUTqUVPx4ezWzM/cHA1dJZMyfxlEgRwXXB+FpEIvj3hhmruU48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116551; c=relaxed/simple;
-	bh=mN0Pkx0OFxDs7oa0NXJLtkEMa8LkBdkOt4rR8qd7bCg=;
+	s=arc-20240116; t=1744114818; c=relaxed/simple;
+	bh=jjUS84lyDrMx5AQYhBt0Mg6Xs5AR1XlBACJju2ZmdNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1RuM6fCYd+uc2dtv4KR+8+qXWLqQt7Ex6EnlkmYCXO8+YZlT2Aa0GoIkg8YI/yQzy0kw2wwMiHHabzZOEM7niWAjnzaFSimUhOV61bcSyaITr0N6+ThW7iSz/7MoEinfHcWJMWfFCnasn0maFIO5LJ1DCheKEhfhhlZVe93mjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkd8vJB8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED9CC4CEE7;
-	Tue,  8 Apr 2025 12:49:10 +0000 (UTC)
+	 MIME-Version; b=A+9LLXl9I4jqJUnA+YByCnT7tFV2badnhh91c7vlNLUp6rhYZ4wsQmg9/Smhd0PmY5d/YFuOsuo4MEVDT6vaeoWnuC6mChNO0IZ0inVuovpRw2u+fLKphWGQQSMyNJ9D/08mNnRwJWTAvJ0Ys/LL1Hwi5OnMa2bwugvPh23fuA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsT+exlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D34C4CEE5;
+	Tue,  8 Apr 2025 12:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116551;
-	bh=mN0Pkx0OFxDs7oa0NXJLtkEMa8LkBdkOt4rR8qd7bCg=;
+	s=korg; t=1744114818;
+	bh=jjUS84lyDrMx5AQYhBt0Mg6Xs5AR1XlBACJju2ZmdNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkd8vJB8nc9JIt6OO5Dc3u6k4NekA8w2FwebP7PnpL5b5EB+glH6jP8MPUp2oAIbS
-	 fNt3znb4uiUSUCJPkT6ooZFemOjHMpTRXYd/NItga6ScM9iwfTZZ8QTEf6lP/eQwUY
-	 Pa0LDcY0WRV48pe2CGzwl7uRo6Ws+b774HWcPFjg=
+	b=CsT+exlrfMOWC+1Z79b1Ptk9E89sBPJm9wH9S4HWFJUkFn/A/GxNc2+yLBpmJINB4
+	 voD9NicF0u3IlccY+McyLqU327pw1uRSuzriurkMHPhNeuPRdIqRPwAYIqSgCkki70
+	 8ILDWODwgQ24R0rNiyXadOPH/WPS4MGTWYEquvUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Geis <pgwipeout@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/423] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
+Subject: [PATCH 6.13 245/499] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
 Date: Tue,  8 Apr 2025 12:47:37 +0200
-Message-ID: <20250408104848.777916157@linuxfoundation.org>
+Message-ID: <20250408104857.323597600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Geis <pgwipeout@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
+[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
 
-Correct the clk_ref_usb3otg parent to fix clock control for the usb3
-controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
-and the rk3328 usb3 phy clock map.
+The amount of looping through the list of delegations is occasionally
+leading to soft lockups. Avoid at least some loops by not requiring the
+NFSv4 state manager to scan for delegations that are marked for
+return-on-close. Instead, either mark them for immediate return (if
+possible) or else leave it up to nfs4_inode_return_delegation_on_close()
+to return them once the file is closed by the application.
 
-Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
-Signed-off-by: Peter Geis <pgwipeout@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3328.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
-index 3bb87b27b662d..cf60fcf2fa5cd 100644
---- a/drivers/clk/rockchip/clk-rk3328.c
-+++ b/drivers/clk/rockchip/clk-rk3328.c
-@@ -201,7 +201,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
- 				    "gpll_peri",
- 				    "hdmiphy_peri" };
- PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
--				    "clk_usb3otg_ref" };
-+				    "clk_ref_usb3otg_src" };
- PNAME(mux_xin24m_32k_p)		= { "xin24m",
- 				    "clk_rtc32k" };
- PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 4db912f562305..df77d68d9ff99 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -590,17 +590,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
+ 
+ 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
+ 		ret = true;
+-	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
+-		struct inode *inode;
+-
+-		spin_lock(&delegation->lock);
+-		inode = delegation->inode;
+-		if (inode && list_empty(&NFS_I(inode)->open_files))
+-			ret = true;
+-		spin_unlock(&delegation->lock);
+-	}
+-	if (ret)
+-		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+ 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
+ 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
+@@ -878,11 +867,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
+ 	return nfs4_inode_return_delegation(inode);
+ }
+ 
+-static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
+-		struct nfs_delegation *delegation)
++static void
++nfs_mark_return_if_closed_delegation(struct nfs_server *server,
++				     struct nfs_delegation *delegation)
+ {
+-	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
+-	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
++	struct inode *inode;
++
++	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
++	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
++		return;
++	spin_lock(&delegation->lock);
++	inode = delegation->inode;
++	if (!inode)
++		goto out;
++	if (list_empty(&NFS_I(inode)->open_files))
++		nfs_mark_return_delegation(server, delegation);
++	else
++		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
++out:
++	spin_unlock(&delegation->lock);
+ }
+ 
+ static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
 -- 
 2.39.5
 
