@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEAAA807BA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E473AA809A6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097241B86436
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC518A5C11
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C14E26980C;
-	Tue,  8 Apr 2025 12:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE98726FDAE;
+	Tue,  8 Apr 2025 12:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgUv4cqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C002X7Qy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F7206F18;
-	Tue,  8 Apr 2025 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B22A1E489;
+	Tue,  8 Apr 2025 12:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115523; cv=none; b=fv53K5OhFbeNC/a70BhfTa9fhsHxulDCAcEygf+JxEllm8bzjITdFMU2AGSsna5V5W+DL0WEOrDmTFE2EpZe1wtgMHS6CdoAseyyKeAYY1+kGqAefD2TLXySTdcYlkSLZgW36Uy/eqnCb/EXw0BE0DYGtX+twpfaQqslt23PtYs=
+	t=1744115922; cv=none; b=Ihzberxx26AvTJR9CIdr/QdbfYeSRd0bGtqLEhNUQigX/KkU1Vsx0dkyXudb9/jTVlqGzGWg/N9Y+8xrFERAS/BJ7icHgv/ez4OhN/gLUeBleTUhq+cDpB2UVsXnljilwFKhMdoRId/YxWsY5f3UWxn6Sfp7StwWIfjBd4MzxGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115523; c=relaxed/simple;
-	bh=NhQmOC1qg30eleAs+FwP/Sm0cjyeZciDQKdfPB8RWIc=;
+	s=arc-20240116; t=1744115922; c=relaxed/simple;
+	bh=w7Tph13PZEm5SOg1s9IaPMQjV66DQqLW4A/7Fs54wQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFymc6qEA6n0343/6ten4O2eok18HkcFaHYFI7gqrIy9wPnoICCH4DlGMoh3bE9tRSCOmfAIjELu60kH39nCTHIuD+byHaGLuKHeOudWpJoqt/78pcObYNMyD1WqeSfmV6pGqgRsx7Bw4vR7iGQrz4FXvfdjm8deiWn97L5c1QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgUv4cqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB3DC4CEE5;
-	Tue,  8 Apr 2025 12:32:02 +0000 (UTC)
+	 MIME-Version; b=eAeOWQ72xm4l4QGyBJ2tgCkGPp5A/0EQu5XpP1ya3pJx7HM/rNsGaf+W8RNw0kIKrl1SFqRIbIwnGUv7jFhpDtYt57L0WvBF1+gVeTlNFZ1oWVz6w4IvumsC7mwTZwiAvUdyyQrjDDDzur1kIREYYd2+9rEKLPc1lo1LoAr4ypU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C002X7Qy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2FEC4CEE5;
+	Tue,  8 Apr 2025 12:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115522;
-	bh=NhQmOC1qg30eleAs+FwP/Sm0cjyeZciDQKdfPB8RWIc=;
+	s=korg; t=1744115922;
+	bh=w7Tph13PZEm5SOg1s9IaPMQjV66DQqLW4A/7Fs54wQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgUv4cqRAHMW8tZs6IM1GXarNzvaFNpJvfv7/oVm7jhFvIZwdDxqno6mxUK4Fp8TS
-	 NB5Un4l8NiMh+Hg6G4Ajb0VCP8fDjCsOiFM+kRLaRqnIpulqf/LarkmofpVKnlaPJZ
-	 bMUWDhrzjhKC4H+VfcA+vL72R4vHdIEH+10fYvbA=
+	b=C002X7QyUOG52fQ20yTVJ/NT8eM53Nw46OpvoChP+QQDPn+xUH54OZj+YGdzZ8p/D
+	 yf3RVjlPn5G+mjzCsrd+u6EWJKsOVOsHeLAJH5cZNtdyS3Z9S9b+CjK8Fww2pgfTVb
+	 KrYBPCE3RAyXSzDb4NvApazFpykn4PbAH7vdxeDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 471/499] ksmbd: validate zero num_subauth before sub_auth is accessed
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/204] ntb: intel: Fix using link status DBs
 Date: Tue,  8 Apr 2025 12:51:23 +0200
-Message-ID: <20250408104903.099239042@linuxfoundation.org>
+Message-ID: <20250408104824.796004963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit bf21e29d78cd2c2371023953d9c82dfef82ebb36 upstream.
+[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
 
-Access psid->sub_auth[psid->num_subauth - 1] without checking
-if num_subauth is non-zero leads to an out-of-bounds read.
-This patch adds a validation step to ensure num_subauth != 0
-before sub_auth is accessed.
+Make sure we are not using DB's which were remapped for link status.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -270,6 +270,11 @@ static int sid_to_id(struct mnt_idmap *i
- 		return -EIO;
+diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
+index ffcfc3e02c353..a5aa96a31f4a6 100644
+--- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
++++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
+@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
  	}
  
-+	if (psid->num_subauth == 0) {
-+		pr_err("%s: zero subauthorities!\n", __func__);
-+		return -EIO;
-+	}
-+
- 	if (sidtype == SIDOWNER) {
- 		kuid_t uid;
- 		uid_t id;
+ 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
++	/* Make sure we are not using DB's used for link status */
++	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
++		ndev->db_valid_mask &= ~ndev->db_link_mask;
+ 
+ 	ndev->reg->db_iowrite(ndev->db_valid_mask,
+ 			      ndev->self_mmio +
+-- 
+2.39.5
+
 
 
 
