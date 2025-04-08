@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-129716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C78A80153
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1145A80255
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15D614621C1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6810D3B3C51
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331F82698AE;
-	Tue,  8 Apr 2025 11:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6010F264A70;
+	Tue,  8 Apr 2025 11:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jrc6O22g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+Fa4gtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D0B268C6F;
-	Tue,  8 Apr 2025 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5862192F2;
+	Tue,  8 Apr 2025 11:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111789; cv=none; b=ctdzVufZGgAlhJkZCUrh9PUxc528yuMR9vSo12jnopIfD1LWEFTD4CZOAoShdJLvte5vTbBIHarz7v8Fv8OLB387b6ZedrOXlbRqiEAwg5fhJD0xcM7Hht7C9nXu9k47dBeokVOUatSzf3m7n+F5RT+vxmwK0rj1QEgTzJpyoLU=
+	t=1744112461; cv=none; b=JRIWgNaJ+VQlUrP0fDFEmATdezEvBIP0xgxuo6Vkf4bMOlCkx92prTemI8svlzqijBe+COA05ugWPr2AKmZN7s5S8Q3WMjqSA3cs4k5XplyQ+hRPt/ImK271qX1Jcbu61FGBuLZVQGgNxJubRxHrkoLa6ootmFZX2+Wdyn1bAqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111789; c=relaxed/simple;
-	bh=aKMieBuES7FlZi0EeXloDCJiWsN0tzO7w3e82R6iLzE=;
+	s=arc-20240116; t=1744112461; c=relaxed/simple;
+	bh=Tf1AWkaTLcCwjnnUUfBywIqOZrMdEZdLmmfrK9VBtGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOrWSFn2Mt59ux2vOvU0Flm/UPWQFZhTs9gLI0z+uUMzxOaAZnGHTyd7gDAf/3fC/6VhUWGbpCcYyIxbFoFhzkcDM9vtDj4gQ9TTyQXyi0JQfJAq3DvlxDdLbZotkfjJz9qiROUfb7XjUAShv66whz3uIksNRXhtjM2TFgLZN7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jrc6O22g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7745EC4CEE5;
-	Tue,  8 Apr 2025 11:29:48 +0000 (UTC)
+	 MIME-Version; b=q3+h5k3bFuD6erGeZO+7C9I2d3CQxka3rGifmBayFHNKoeOBptXt5iULdPrM/iBFj/2R6UdUXFnKLezmkhUZKPNhJ2ZocaE8KOsmxpBzi1vKl/RwFbZUox05lRVWDpXgQe40HBukuWhBfMMKMgAA9RQuvBK8JVAkDgi9xKm9ilA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+Fa4gtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6A9C4CEEA;
+	Tue,  8 Apr 2025 11:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111788;
-	bh=aKMieBuES7FlZi0EeXloDCJiWsN0tzO7w3e82R6iLzE=;
+	s=korg; t=1744112461;
+	bh=Tf1AWkaTLcCwjnnUUfBywIqOZrMdEZdLmmfrK9VBtGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jrc6O22gnDtdCSc2wlKNE5jODh8wArob/7fOv3J3eyDnWkaH4XjR6Yc7g35WInZYQ
-	 oomkC1juBDUG+SfDBhZIQ6D/+zURHQD+mVSrDGh1Y9SqjioWmOm8YOa9TYDEL2x64m
-	 DkkqXkUey/aLOfvlACE2RhhO3A6qRDSpjvIFiBck=
+	b=A+Fa4gtJVtZ3rDzVzpz+dYo7etZlPOsoHaLTO0zWVxwIigq+t5Whaul9rD+gdClf/
+	 LYaKQ6JsYoQMoKMN7yzldnmbUb//mzzNi4Uic24hfqqA3ud7ryVsOM6E2uTtIKyyqi
+	 Jz1QJJyatUtNDzeknmIsVJF+ubMmEgdr9/iBdzso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Yang <yangfeng@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 561/731] ring-buffer: Fix bytes_dropped calculation issue
+Subject: [PATCH 5.15 075/279] drm/amd/display: Check for invalid input params when building scaling params
 Date: Tue,  8 Apr 2025 12:47:38 +0200
-Message-ID: <20250408104927.323758639@linuxfoundation.org>
+Message-ID: <20250408104828.370358399@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Yang <yangfeng@kylinos.cn>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit c73f0b69648501978e8b3e8fa7eef7f4197d0481 ]
+[ Upstream commit 73b1da69f5314d96e1f963468863eaa884ee1030 ]
 
-The calculation of bytes-dropped and bytes_dropped_nested is reversed.
-Although it does not affect the final calculation of total_dropped,
-it should still be modified.
+[WHY]
+Function to calculate scaling ratios can be called with invalid plane
+src/dest, causing a divide by zero.
 
-Link: https://lore.kernel.org/20250223070106.6781-1-yangfeng59949@163.com
-Fixes: 6c43e554a2a5 ("ring-buffer: Add ring buffer startup selftest")
-Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[HOW]
+Fail building scaling params if plane state src/dest rects are
+unpopulated
+
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 374c9faac5a7 ("drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index bb6089c2951e5..510409f979923 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7411,9 +7411,9 @@ static __init int rb_write_something(struct rb_test_data *data, bool nested)
- 		/* Ignore dropped events before test starts. */
- 		if (started) {
- 			if (nested)
--				data->bytes_dropped += len;
--			else
- 				data->bytes_dropped_nested += len;
-+			else
-+				data->bytes_dropped += len;
- 		}
- 		return len;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index f29299fb25c4d..de5192ee2b022 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1025,6 +1025,15 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
+ 	bool res = false;
+ 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+ 
++	/* Invalid input */
++	if (!plane_state->dst_rect.width ||
++			!plane_state->dst_rect.height ||
++			!plane_state->src_rect.width ||
++			!plane_state->src_rect.height) {
++		ASSERT(0);
++		return false;
++	}
++
+ 	pipe_ctx->plane_res.scl_data.format = convert_pixel_format_to_dalsurface(
+ 			pipe_ctx->plane_state->format);
+ 
 -- 
 2.39.5
 
