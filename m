@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5A4A806B8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5954AA80A71
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D54A1B813F2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217074E4E73
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFC9269802;
-	Tue,  8 Apr 2025 12:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BED126A0E8;
+	Tue,  8 Apr 2025 12:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smePyt3e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrVyFDwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E56C2686BC;
-	Tue,  8 Apr 2025 12:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6B62676CF;
+	Tue,  8 Apr 2025 12:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114958; cv=none; b=tqerNZ+v7dwRmDrzQS+pxg042jZUeA+gJs9pLSLeWIX4KbU+E3YbwrAYu+aSeFOo/QdQPC7zzNluXq/ypOMCiLELjVzqNCzeepfNgiHxggjSYSkV38gVTacEuh/y3NO4swQxknLZ1pNnaY721hECz4WR+zRbbj0MEX9wJJA20Aw=
+	t=1744116448; cv=none; b=LdRTKQnYUNU5mf966hytS+tb2x9yeqfSvoFV6BBT9c+6vncm8rX2xVKc3faazIfFt9bP5fWLXaIJGzAcIXq8CHztzCec4LKbhan8ycjDKts7aSn3rzgfqp7BzHlj0acpOugApug1BFZsrEHTi1CdbPldQFYdOqtavs8/qCr6etM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114958; c=relaxed/simple;
-	bh=v3klfMIGpo/hseEGi6qA+FUYDE5wbHai4vBdhzIcJDU=;
+	s=arc-20240116; t=1744116448; c=relaxed/simple;
+	bh=Qk/JU/+a/TLzm5e/pnT+TeyV1rY5IgW4V5LPVZo7GzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CvsHVmwF2PlVOKlsJxMBNl2OOpGCgqnzoFjMTmyN9uJkxKmOw0WkNuXnEnx5ZH7uBT8s5ws6ERCTC9g3ZxqxFZh8JAEYsoJOvNpG3NAFynMPdHtlPNGzYW005jrYB2w4HgHi/02AyGKafdjbRBu22z8y2XkoP4IiUG2aABc78H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smePyt3e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4194C4CEE5;
-	Tue,  8 Apr 2025 12:22:37 +0000 (UTC)
+	 MIME-Version; b=eRxRmI9yK/+TMTdkvoJU/dN3PDB8V1p8EwnQ3ngSu/lIZE7LXZFGvAAjW3YD5hNDB8X6Qqs3gI258sLDLJcdNcOlpl6WtgoHtpQI0Mov92sRWqsDCNR0ysrv/11FBbBNAA4LPdS6nE8VWDGBcowoN+b7MpptDvuEUoC7Ak9+gXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrVyFDwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBC0C4CEE5;
+	Tue,  8 Apr 2025 12:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114958;
-	bh=v3klfMIGpo/hseEGi6qA+FUYDE5wbHai4vBdhzIcJDU=;
+	s=korg; t=1744116447;
+	bh=Qk/JU/+a/TLzm5e/pnT+TeyV1rY5IgW4V5LPVZo7GzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smePyt3eT0a1KWr47w43tXxhQfq7Ky1zjAfMwNUqKe8dNbLYeIqIXLeYiMyFU3aKM
-	 ExCAVlhMZP/N7Dn1lLT4g4haZyNYbBIOxt9GaFURCbiTMmM6kBWCypjdQ/7Bm34zDP
-	 0IavzF/7ik7TBKcQvQT9bieRUN7dL/FxrQG5bCFM=
+	b=PrVyFDwun9fUoluSsO11eST4qVSFCTe5xM5gQLbZWJ5FTimJEREcBxwTZeY9Cr4MA
+	 kGK9uFiVovOrzGNNuNT3ICiZyWEjxoutjW5QrcZVCUro22+BbwvU3wypDXVhNmRSeq
+	 wBKRjw5wDKwV8ns/+zMwEPoE4Rvu8h1pBcYSm/8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Bairavi Alagappan <bairavix.alagappan@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 258/499] perf python: Dont keep a raw_data pointer to consumed ring buffer space
-Date: Tue,  8 Apr 2025 12:47:50 +0200
-Message-ID: <20250408104857.645652621@linuxfoundation.org>
+Subject: [PATCH 6.12 145/423] crypto: qat - remove access to parity register for QAT GEN4
+Date: Tue,  8 Apr 2025 12:47:51 +0200
+Message-ID: <20250408104849.109058504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Bairavi Alagappan <bairavix.alagappan@intel.com>
 
-[ Upstream commit f3fed3ae34d606819d87a63d970cc3092a5be7ab ]
+[ Upstream commit 92c6a707d82f0629debf1c21dd87717776d96af2 ]
 
-When processing tracepoints the perf python binding was parsing the
-event before calling perf_mmap__consume(&md->core) in
-pyrf_evlist__read_on_cpu().
+The firmware already handles parity errors reported by the accelerators
+by clearing them through the corresponding SSMSOFTERRORPARITY register.
+To ensure consistent behavior and prevent race conditions between the
+driver and firmware, remove the logic that checks the SSMSOFTERRORPARITY
+registers.
 
-But part of this event parsing was to set the perf_sample->raw_data
-pointer to the payload of the event, which then could be overwritten by
-other event before tracepoint fields were asked for via event.prev_comm
-in a python program, for instance.
+Additionally, change the return type of the function
+adf_handle_rf_parr_err() to void, as it consistently returns false.
+Parity errors are recoverable and do not necessitate a device reset.
 
-This also happened with other fields, but strings were were problems
-were surfacing, as there is UTF-8 validation for the potentially garbled
-data.
-
-This ended up showing up as (with some added debugging messages):
-
-  ( field 'prev_comm' ret=0x7f7c31f65110, raw_size=68 )  ( field 'prev_pid' ret=0x7f7c23b1bed0, raw_size=68 )  ( field 'prev_prio' ret=0x7f7c239c0030, raw_size=68 )  ( field 'prev_state' ret=0x7f7c239c0250, raw_size=68 ) time 14771421785867 prev_comm= prev_pid=1919907691 prev_prio=796026219 prev_state=0x303a32313175 ==>
-  ( XXX '��' len=16, raw_size=68)  ( field 'next_comm' ret=(nil), raw_size=68 ) Traceback (most recent call last):
-   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 51, in <module>
-     main()
-   File "/home/acme/git/perf-tools-next/tools/perf/python/tracepoint.py", line 46, in main
-     event.next_comm,
-     ^^^^^^^^^^^^^^^
-  AttributeError: 'perf.sample_event' object has no attribute 'next_comm'
-
-When event.next_comm was asked for, the PyUnicode_FromString() python
-API would fail and that tracepoint field wouldn't be available, stopping
-the tools/perf/python/tracepoint.py test tool.
-
-But, since we already do a copy of the whole event in pyrf_event__new,
-just use it and while at it remove what was done in in e8968e654191390a
-("perf python: Fix pyrf_evlist__read_on_cpu event consuming") because we
-don't really need to wait for parsing the sample before declaring the
-event as consumed.
-
-This copy is questionable as is now, as it limits the maximum event +
-sample_type and tracepoint payload to sizeof(union perf_event), this all
-has been "working" because 'struct perf_event_mmap2', the largest entry
-in 'union perf_event' is:
-
-  $ pahole -C perf_event ~/bin/perf | grep mmap2
-	struct perf_record_mmap2   mmap2;              /*     0  4168 */
-  $
-
-Fixes: bae57e3825a3dded ("perf python: Add support to resolve tracepoint fields")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250312203141.285263-6-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 895f7d532c84 ("crypto: qat - add handling of errors from ERRSOU2 for QAT GEN4")
+Signed-off-by: Bairavi Alagappan <bairavix.alagappan@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/python.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../intel/qat/qat_common/adf_gen4_ras.c       | 57 ++-----------------
+ 1 file changed, 5 insertions(+), 52 deletions(-)
 
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index 88404e5c462f6..3453d150fd237 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -1018,11 +1018,9 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
+index bf0ea09faa650..0f7f00a19e7dc 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_ras.c
+@@ -1043,63 +1043,16 @@ static bool adf_handle_ssmcpppar_err(struct adf_accel_dev *accel_dev,
+ 	return reset_required;
+ }
  
- 		pevent->evsel = evsel;
- 
--		err = evsel__parse_sample(evsel, event, &pevent->sample);
+-static bool adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
++static void adf_handle_rf_parr_err(struct adf_accel_dev *accel_dev,
+ 				   void __iomem *csr, u32 iastatssm)
+ {
+-	struct adf_dev_err_mask *err_mask = GET_ERR_MASK(accel_dev);
+-	u32 reg;
 -
--		/* Consume the even only after we parsed it out. */
- 		perf_mmap__consume(&md->core);
+ 	if (!(iastatssm & ADF_GEN4_IAINTSTATSSM_SSMSOFTERRORPARITY_BIT))
+-		return false;
+-
+-	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC);
+-	reg &= ADF_GEN4_SSMSOFTERRORPARITY_SRC_BIT;
+-	if (reg) {
+-		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_SRC, reg);
+-	}
+-
+-	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH);
+-	reg &= err_mask->parerr_ath_cph_mask;
+-	if (reg) {
+-		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_ATH_CPH, reg);
+-	}
+-
+-	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT);
+-	reg &= err_mask->parerr_cpr_xlt_mask;
+-	if (reg) {
+-		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_CPR_XLT, reg);
+-	}
+-
+-	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS);
+-	reg &= err_mask->parerr_dcpr_ucs_mask;
+-	if (reg) {
+-		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_DCPR_UCS, reg);
+-	}
+-
+-	reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE);
+-	reg &= err_mask->parerr_pke_mask;
+-	if (reg) {
+-		ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-		ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_PKE, reg);
+-	}
+-
+-	if (err_mask->parerr_wat_wcp_mask) {
+-		reg = ADF_CSR_RD(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP);
+-		reg &= err_mask->parerr_wat_wcp_mask;
+-		if (reg) {
+-			ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-			ADF_CSR_WR(csr, ADF_GEN4_SSMSOFTERRORPARITY_WAT_WCP,
+-				   reg);
+-		}
+-	}
++		return;
  
-+		err = evsel__parse_sample(evsel, &pevent->event, &pevent->sample);
- 		if (err) {
- 			Py_DECREF(pyevent);
- 			return PyErr_Format(PyExc_OSError,
++	ADF_RAS_ERR_CTR_INC(accel_dev->ras_errors, ADF_RAS_UNCORR);
+ 	dev_err(&GET_DEV(accel_dev), "Slice ssm soft parity error reported");
+ 
+-	return false;
++	return;
+ }
+ 
+ static bool adf_handle_ser_err_ssmsh(struct adf_accel_dev *accel_dev,
+@@ -1171,8 +1124,8 @@ static bool adf_handle_iaintstatssm(struct adf_accel_dev *accel_dev,
+ 	reset_required |= adf_handle_slice_hang_error(accel_dev, csr, iastatssm);
+ 	reset_required |= adf_handle_spppar_err(accel_dev, csr, iastatssm);
+ 	reset_required |= adf_handle_ssmcpppar_err(accel_dev, csr, iastatssm);
+-	reset_required |= adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
+ 	reset_required |= adf_handle_ser_err_ssmsh(accel_dev, csr, iastatssm);
++	adf_handle_rf_parr_err(accel_dev, csr, iastatssm);
+ 
+ 	ADF_CSR_WR(csr, ADF_GEN4_IAINTSTATSSM, iastatssm);
+ 
 -- 
 2.39.5
 
