@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-130032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5073A8022B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EDAA801E1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 181667A5F18
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFA85462403
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9A1224B0E;
-	Tue,  8 Apr 2025 11:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1D8269839;
+	Tue,  8 Apr 2025 11:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW/zbrJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIVDFMtI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067B5263C6D;
-	Tue,  8 Apr 2025 11:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DADB26A0D0;
+	Tue,  8 Apr 2025 11:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112632; cv=none; b=iiFHgSrIpJtTVzy2u9A0xm5WF4KvGcnMWhmQ6VcrXVRMTS5VFvVEgOp5xc16YXIakqT/L4J9881UCgg86C52rOOXZ2ctF7DufoV9e5Ftd0zLaes0JhMzYNH4O01nZWFg3LjesIIKpyhpzbfrC2Wfw7CvT6iQmLJl7rqlXAK/mdw=
+	t=1744111919; cv=none; b=rpu6zPCJd/yI28dZEXv/Miw+UDdNoboLNV+eitt4bgaxww+hZ8LqO/FjPW32O7bnSKPpQyHZdvDyNs5kwmuKi25ZfZz8iWsUMc4g1P29AaGPDRBNrXS+pks0y5EwnyFrA1U39ZgAbKJnsmzsWd97E+76bsl0jYXWYACWPeXPeDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112632; c=relaxed/simple;
-	bh=M3KDe40m0SngWMwhBK2xlujGPUJZn5PVEK0H3VbAt0E=;
+	s=arc-20240116; t=1744111919; c=relaxed/simple;
+	bh=fT5GOIaWNFz/3bRgELgIj+PxHC1khr8/Ih6yXSFuBAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIscxdSRgCGfihJGSaDCoucX6NPkU6AkEZCXnjYAOZm8R9lHp1TNLqaFdCGhheIQgKWi9XUzO4SADKenO8rc8IWf881BDkaKLCZTkG5vwfESmMimadlvigFa5QZXMwxZVQFyWoJajbmoMjnkmUmndTtAeseQENnCzobpZkNScSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW/zbrJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D4DC4CEE5;
-	Tue,  8 Apr 2025 11:43:51 +0000 (UTC)
+	 MIME-Version; b=E/6VfH1A9A2BU8okhGTSGlcWx9/QDIzjma5OPVmF5TgjFXnowxsqXXxh8rsu+QIvs9gaREMBn/FHrNoBIGtnSKXjU5Y4AZ5SasDoSeTtM2EtoNDHqy4s9ZvkAxehzABycptepCGnnwFqUFfRtXO1zKmYuBIGdT6hdcPRSGxOoNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIVDFMtI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0704C4CEE5;
+	Tue,  8 Apr 2025 11:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112631;
-	bh=M3KDe40m0SngWMwhBK2xlujGPUJZn5PVEK0H3VbAt0E=;
+	s=korg; t=1744111919;
+	bh=fT5GOIaWNFz/3bRgELgIj+PxHC1khr8/Ih6yXSFuBAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW/zbrJFovCph+HCpPiLI5qNfCnWQEWGrRtv6rXh0Ovh3R84Y0CjJ6DOYRXULHEE2
-	 abRqeU3N59r4xf/reN9sXz4/CZ/XYu99xNKDA2d52eUr4a+eWFSRsU/lfjoUSCJUVz
-	 7nyWLYOoNF77+17Gk9Fb6e7/NzB9eiBhIeuGkByM=
+	b=kIVDFMtI7IjYIjU4jDoY8P1jtK/pNvrNpeheb1VI75WahN2Fda0PgX0fD1E4vpia1
+	 uNSNrRvJXkxDC153MB+pLRiFXG9v4h9GPCFG0XFr8BlQg6/TR8p85zYgmDDt7Hd7uW
+	 KW0QlD4tH75W7yl+Y5iWHIKuu7mOTz5kDPhxCYE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 123/279] net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 609/731] ALSA: hda/realtek: Fix built-in mic on another ASUS VivoBook model
 Date: Tue,  8 Apr 2025 12:48:26 +0200
-Message-ID: <20250408104829.666666374@linuxfoundation.org>
+Message-ID: <20250408104928.437496182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e8cdd91926aac2c53a23925c538ad4c44be4201f upstream.
+[ Upstream commit 8983dc1b66c0e1928a263b8af0bb06f6cb9229c4 ]
 
-Add the following Telit Cinterion FE990B composition:
-0x10b0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
-        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+There is another VivoBook model which built-in mic got broken recently
+by the fix of the pin sort.  Apply the correct quirk
+ALC256_FIXUP_ASUS_MIC_NO_PRESENCE to this model for addressing the
+regression, too.
 
-usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10b0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE990
-S:  SerialNumber=28c2595e
-C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Link: https://patch.msgid.link/20250227112441.3653819-2-fabio.porcedda@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Closes: https://lore.kernel.org/Z95s5T6OXFPjRnKf@eldamar.lan
+Link: https://patch.msgid.link/20250402074208.7347-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    1 +
+ sound/pci/hda/patch_realtek.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1367,6 +1367,7 @@ static const struct usb_device_id produc
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10b0, 0)}, /* Telit FE990B */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9df400f7a144e..65ece19a6dd7d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10776,6 +10776,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1c43, "ASUS UX8406MA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1c63, "ASUS GU605M", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
++	SND_PCI_QUIRK(0x1043, 0x1c80, "ASUS VivoBook TP401", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-- 
+2.39.5
+
 
 
 
