@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EAAA801E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6773BA80100
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89DD019E0F5B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E5188124B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4556B227BAA;
-	Tue,  8 Apr 2025 11:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18E26A1AF;
+	Tue,  8 Apr 2025 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UDajh0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sc5Zexxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01764263C90;
-	Tue,  8 Apr 2025 11:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4B9269801;
+	Tue,  8 Apr 2025 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112370; cv=none; b=STwUh4GpcXqKtn2ppLCVd279JzrQqsAat0nO8a4oGO405YTYyoOCRLVR/TYAOX8vXd/yPwdX/VRKwvdAqY++RMDxPMR1KkJ/UbIvA5Ssc7MDN0jqL9kBS09PdBk5C4gXQ/mA28EQ4LSMmYN4dQP9cp8V2yU3WvSyPRwPXcYlbPg=
+	t=1744111684; cv=none; b=R59OkBLdSwcC/Ng6oYX3fpHpDFc2dwLoGR62vAyLZGngaTaM0dU986jTodz7MXglU7atb2rq8i4wirmGhY7Fka1TfdY48APgZwxwJFZRJii5YszOjVcEGZq0pDCd7D+P4lZnd9aOsV7W87inxVvpMpJ/uge/6dQ5HzAkcww+zss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112370; c=relaxed/simple;
-	bh=HdQYK4PlNBSzlmxtHsU9QwRzmVH8puVh6zojT/LSwrg=;
+	s=arc-20240116; t=1744111684; c=relaxed/simple;
+	bh=a3ggA/NbDwKn8K+O8BfArYRN2enF4P52OhPjlAVS6g4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYL4KDpmE+qvVlmGa2AkcC3CQ5qL/OyWQvPEMbGIvMpwefLFkta8GhZ0hqDFH0/32zJio8Ooq1IOg6WA5Ia3VtEtAbkA0BMnHcsC+2SD7YGQviODPGa4GzpPd7swZrcq1Xk9D9j90t/n9iaia4ZcV8oE6OPkwf5BC3px9VvuO6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UDajh0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E05C4CEE5;
-	Tue,  8 Apr 2025 11:39:29 +0000 (UTC)
+	 MIME-Version; b=lj99uCEscmF/FqLRBadURWRJeT9mEOpyVP5P3j4krpGr7JZPW6CigboS/qVBUZNyvRnNATgTzd4kSRzjLNmNJTUX9WcCevGuXwicS0emFcPzK6FWhXdgATLx/TL5DRx54I4VFP59rOWe/BarENaQgTTXuelVL3A2Ybq5g5zhp6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sc5Zexxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CB3C4CEE5;
+	Tue,  8 Apr 2025 11:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112369;
-	bh=HdQYK4PlNBSzlmxtHsU9QwRzmVH8puVh6zojT/LSwrg=;
+	s=korg; t=1744111684;
+	bh=a3ggA/NbDwKn8K+O8BfArYRN2enF4P52OhPjlAVS6g4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UDajh0be7/1i5rgKQNtPQycg4g7YUa0caE8PA4BFphvs5DTeqn/MAssjLQ4LsWmb
-	 Wmsfhj6TbxIUvZESk22Q9lHRr+rdeu0dn/nNuoOy+TMiMTSCmkxV1wqoUcoCfwI7nY
-	 G+VKgDU4YiyfRCxaYizEUNQkFqylkv5uMfuEbOts=
+	b=Sc5ZexxuY5E4oykeirSA2/GzcTxEunrTcekpv+FCWD3RsiDkDqv9gmUczUJa9X4Ww
+	 xrVTGy5RoQmoHdclYVB/BijDzMIufMTyyAwSkGpNZyd9925mQLaCKSnZlyCQHa1/vr
+	 B1hy4WcSKa+Ivhx8yTeNWdLRVQ9VNOw+fNzDjyfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	David Gow <davidgow@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/279] s390/cio: Fix CHPID "configure" attribute caching
+Subject: [PATCH 6.14 522/731] um: Pass the correct Rust target and options with gcc
 Date: Tue,  8 Apr 2025 12:46:59 +0200
-Message-ID: <20250408104827.355361556@linuxfoundation.org>
+Message-ID: <20250408104926.413735503@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: David Gow <davidgow@google.com>
 
-[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
+[ Upstream commit 5550187c4c21740942c32a9ae56f9f472a104cb4 ]
 
-In some environments, the SCLP firmware interface used to query a
-CHPID's configured state is not supported. On these environments,
-rapidly reading the corresponding sysfs attribute produces inconsistent
-results:
+In order to work around some issues with disabling SSE on older versions
+of gcc (compilation would fail upon seeing a function declaration
+containing a float, even if it was never called or defined), the
+corresponding CFLAGS and RUSTFLAGS were only set when using clang.
 
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  3
+However, this led to two problems:
+- Newer gcc versions also wouldn't get the correct flags, despite not
+  having the bug.
+- The RUSTFLAGS for setting the rust target definition were not set,
+  despite being unrelated. This works by chance for x86_64, as the
+  built-in default target is close enough, but not for 32-bit x86.
 
-This occurs for example when Linux is run as a KVM guest. The
-inconsistency is a result of CIO using cached results for generating
-the value of the "configure" attribute while failing to handle the
-situation where no data was returned by SCLP.
+Move the target definition outside the conditional block, and update the
+condition to take into account the gcc version.
 
-Fix this by not updating the cache-expiration timestamp when SCLP
-returns no data. With the fix applied, the system response is
-consistent:
-
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Tested-by: Eric Farman <farman@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: a3046a618a28 ("um: Only disable SSE on clang to work around old GCC bugs")
+Signed-off-by: David Gow <davidgow@google.com>
+Link: https://patch.msgid.link/20250210105353.2238769-2-davidgow@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/chp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/Makefile.um | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
-index 1097e76982a5d..6b0f1b8bf2790 100644
---- a/drivers/s390/cio/chp.c
-+++ b/drivers/s390/cio/chp.c
-@@ -661,7 +661,8 @@ static int info_update(void)
- 	if (time_after(jiffies, chp_info_expires)) {
- 		/* Data is too old, update. */
- 		rc = sclp_chp_read_info(&chp_info);
--		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
-+		if (!rc)
-+			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
- 	}
- 	mutex_unlock(&info_lock);
+diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+index a46b1397ad01c..c86cbd9cbba38 100644
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -7,12 +7,13 @@ core-y += arch/x86/crypto/
+ # GCC versions < 11. See:
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
+ #
+-ifeq ($(CONFIG_CC_IS_CLANG),y)
+-KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+-KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
++ifeq ($(call gcc-min-version, 110000)$(CONFIG_CC_IS_CLANG),y)
++KBUILD_CFLAGS +=  -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+ endif
+ 
++KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
++
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
  
 -- 
 2.39.5
