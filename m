@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-131156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7E0A80879
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEFAA80756
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAFE8A5F29
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4911F466E1F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5DC26E162;
-	Tue,  8 Apr 2025 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F93726A0D6;
+	Tue,  8 Apr 2025 12:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwy4tynm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGjK5UYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294282690EB;
-	Tue,  8 Apr 2025 12:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D9268C6B;
+	Tue,  8 Apr 2025 12:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115641; cv=none; b=brvfHIhJCTxxJf7ifE3bikFkIxs4N/k+qDtUHmuQjIM1XX/UlWG8G2zASCCALT4Ys/VVntXQ44M+hgXLJoaibp9VWIvuLTuGTXzyp3ALHrAHFfGidPujCRNaxGxlKWgOlb+Y2Nzizj3rYmv5SDR1uVFsDpGCWDIwG0y0p5Rauho=
+	t=1744115100; cv=none; b=F5JsAIUqazWq9bb5083PYtaxo2JREJzFZAGUrVWpYWTwwv935lTgRQM11gZQ2Pc9PcgJW2UXuP+h4SP0rBTvyw527oSsczVqekSkx3HQWt43GfmjIC6Lyx74ItGroOcQuEH/fKxQ+/T8YYu7M+Labpg6oBWjIv90ibzzxZ+lPpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115641; c=relaxed/simple;
-	bh=z3eplziqngVVrPdufZ+1F1NVAQopHeGiGqip0R5mqa4=;
+	s=arc-20240116; t=1744115100; c=relaxed/simple;
+	bh=dmYhj/3oIgeotgbQyyFD8Q9Yeg5h7XEyIavb33Hk0ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPp7sd/3qoWjArdIRa7dYEbLpWUe29crVUJBglcfafmaFsgs04ocZv1CFb+zs5F+9ag3pZGyyFkZQ2eOIRW0p+aHLN25SUwaU9ZdJ+IcuxuXBqvtyhEqJhgeiG0fDWdaOYD/3Zy1nxr5x5V4YEDNu5b1GU8n0eVeBo39G0PQaac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwy4tynm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2872CC4CEE5;
-	Tue,  8 Apr 2025 12:33:59 +0000 (UTC)
+	 MIME-Version; b=pqPPUqrb62nVmhktN6znjJss+P2otFHrwRbBVLtUAiC4gVQIc3O6Ro3qtR9Q3+ezjPKR4onVvN53gblLVK71cSaV2u9IiVT1CgSc0WXA8PWJSsJMuC5tD2FobQ/yqumCQkEs+QBOKedzBXTz7QuGrRn7uju56lY4Dnnfy1jlFl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGjK5UYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C19FC4CEE5;
+	Tue,  8 Apr 2025 12:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115640;
-	bh=z3eplziqngVVrPdufZ+1F1NVAQopHeGiGqip0R5mqa4=;
+	s=korg; t=1744115099;
+	bh=dmYhj/3oIgeotgbQyyFD8Q9Yeg5h7XEyIavb33Hk0ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwy4tynmztli8WMw8w2cpRZNkBHTaEvQ4nF9mp8m6kvhDw1nxHh+OTx5ByJNgS0n8
-	 lnjqrxzdu5q800SyMdnWYX/Y6sGBHBE5y3gjaN1FviFgS0j823LOaNdG7wT8PIRHLD
-	 yL0UgWbMUAURbO/wR1IdWbV9nd8kZTKbfKamS/yA=
+	b=JGjK5UYyrC3RPG92+jG3KtxC8/nYySi1fc64L3QqzPdhPA10J3JmUjdxdjXHn6IuG
+	 n2FfKgZuy9Qy8501WeaGyaN8dhFMIGXMH8cueHDeUpWQKXnjELYNoXzwsVN6UknHPo
+	 9/LsL4BFD1zvpKOQgYdafmjFuT++ftQoFFY0UrpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Carol Soto <csoto@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Chris Chiu <chris.chiu@canonical.com>,
+	David Howells <dhowells@redhat.com>,
+	Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/204] PCI: Use downstream bridges for distributing resources
+Subject: [PATCH 6.13 350/499] smb: client: dont retry IO on failed negprotos with soft mounts
 Date: Tue,  8 Apr 2025 12:49:22 +0200
-Message-ID: <20250408104821.275198719@linuxfoundation.org>
+Message-ID: <20250408104859.954977522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +64,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 1a596ad00ffe9b37fc60a93cbdd4daead3bf95f3 ]
+[ Upstream commit 7643dbd9db09fffebb4a62cd27599f17f4148b17 ]
 
-7180c1d08639 ("PCI: Distribute available resources for root buses, too")
-breaks BAR assignment on some devices:
+If @server->tcpStatus is set to CifsNeedReconnect after acquiring
+@ses->session_mutex in smb2_reconnect() or cifs_reconnect_tcon(), it
+means that a concurrent thread failed to negotiate, in which case the
+server is no longer responding to any SMB requests, so there is no
+point making the caller retry the IO by returning -EAGAIN.
 
-  pci 0006:03:00.0: BAR 0 [mem 0x6300c0000000-0x6300c1ffffff 64bit pref]: assigned
-  pci 0006:03:00.1: BAR 0 [mem 0x6300c2000000-0x6300c3ffffff 64bit pref]: assigned
-  pci 0006:03:00.2: BAR 0 [mem size 0x00800000 64bit pref]: can't assign; no space
-  pci 0006:03:00.0: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
-  pci 0006:03:00.1: VF BAR 0 [mem size 0x02000000 64bit pref]: can't assign; no space
+Fix this by returning -EHOSTDOWN to the callers on soft mounts.
 
-The apertures of domain 0006 before 7180c1d08639:
-
-  6300c0000000-63ffffffffff : PCI Bus 0006:00
-    6300c0000000-6300c9ffffff : PCI Bus 0006:01
-      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
-        6300c0000000-6300c8ffffff : PCI Bus 0006:03      #   144MB
-          6300c0000000-6300c1ffffff : 0006:03:00.0       #     32MB
-          6300c2000000-6300c3ffffff : 0006:03:00.1       #     32MB
-          6300c4000000-6300c47fffff : 0006:03:00.2       #      8MB
-          6300c4800000-6300c67fffff : 0006:03:00.0       #     32MB
-          6300c6800000-6300c87fffff : 0006:03:00.1       #     32MB
-        6300c9000000-6300c9bfffff : PCI Bus 0006:04      #    12MB
-          6300c9000000-6300c9bfffff : PCI Bus 0006:05    #    12MB
-            6300c9000000-6300c91fffff : PCI Bus 0006:06  #      2MB
-            6300c9200000-6300c93fffff : PCI Bus 0006:07  #      2MB
-            6300c9400000-6300c95fffff : PCI Bus 0006:08  #      2MB
-            6300c9600000-6300c97fffff : PCI Bus 0006:09  #      2MB
-
-After 7180c1d08639:
-
-  6300c0000000-63ffffffffff : PCI Bus 0006:00
-    6300c0000000-6300c9ffffff : PCI Bus 0006:01
-      6300c0000000-6300c9ffffff : PCI Bus 0006:02        # 160MB
-        6300c0000000-6300c43fffff : PCI Bus 0006:03      #    68MB
-          6300c0000000-6300c1ffffff : 0006:03:00.0       #      32MB
-          6300c2000000-6300c3ffffff : 0006:03:00.1       #      32MB
-              --- no space ---      : 0006:03:00.2       #       8MB
-              --- no space ---      : 0006:03:00.0       #      32MB
-              --- no space ---      : 0006:03:00.1       #      32MB
-        6300c4400000-6300c4dfffff : PCI Bus 0006:04      #    10MB
-          6300c4400000-6300c4dfffff : PCI Bus 0006:05    #      10MB
-            6300c4400000-6300c45fffff : PCI Bus 0006:06  #        2MB
-            6300c4600000-6300c47fffff : PCI Bus 0006:07  #        2MB
-            6300c4800000-6300c49fffff : PCI Bus 0006:08  #        2MB
-            6300c4a00000-6300c4bfffff : PCI Bus 0006:09  #        2MB
-
-We can see that the window to 0006:03 gets shrunken too much and 0006:04
-eats away the window for 0006:03:00.2.
-
-The offending commit distributes the upstream bridge's resources multiple
-times to every downstream bridge, hence makes the aperture smaller than
-desired because calculation of io_per_b, mmio_per_b and mmio_pref_per_b
-becomes incorrect.
-
-Instead, distribute downstream bridges' own resources to resolve the issue.
-
-Link: https://lore.kernel.org/r/20241204022457.51322-1-kaihengf@nvidia.com
-Fixes: 7180c1d08639 ("PCI: Distribute available resources for root buses, too")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219540
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Carol Soto <csoto@nvidia.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Chris Chiu <chris.chiu@canonical.com>
+Cc: David Howells <dhowells@redhat.com>
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/client/cifssmb.c | 46 ++++++++++++--------
+ fs/smb/client/smb2pdu.c | 96 ++++++++++++++++++-----------------------
+ 2 files changed, 69 insertions(+), 73 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index b8cb990044fb2..8c1ad20a21ec5 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -2027,8 +2027,7 @@ pci_root_bus_distribute_available_resources(struct pci_bus *bus,
- 		 * in case of root bus.
- 		 */
- 		if (bridge && pci_bridge_resources_not_assigned(dev))
--			pci_bridge_distribute_available_resources(bridge,
--								  add_list);
-+			pci_bridge_distribute_available_resources(dev, add_list);
- 		else
- 			pci_root_bus_distribute_available_resources(b, add_list);
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index a993d4ac58411..dd5211d268f48 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -114,19 +114,23 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 
+ 	mutex_lock(&ses->session_mutex);
+ 	/*
+-	 * Recheck after acquire mutex. If another thread is negotiating
+-	 * and the server never sends an answer the socket will be closed
+-	 * and tcpStatus set to reconnect.
++	 * Handle the case where a concurrent thread failed to negotiate or
++	 * killed a channel.
+ 	 */
+ 	spin_lock(&server->srv_lock);
+-	if (server->tcpStatus == CifsNeedReconnect) {
++	switch (server->tcpStatus) {
++	case CifsExiting:
+ 		spin_unlock(&server->srv_lock);
+ 		mutex_unlock(&ses->session_mutex);
+-
+-		if (tcon->retry)
+-			goto again;
+-		rc = -EHOSTDOWN;
+-		goto out;
++		return -EHOSTDOWN;
++	case CifsNeedReconnect:
++		spin_unlock(&server->srv_lock);
++		mutex_unlock(&ses->session_mutex);
++		if (!tcon->retry)
++			return -EHOSTDOWN;
++		goto again;
++	default:
++		break;
  	}
+ 	spin_unlock(&server->srv_lock);
+ 
+@@ -152,16 +156,20 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	spin_unlock(&ses->ses_lock);
+ 
+ 	rc = cifs_negotiate_protocol(0, ses, server);
+-	if (!rc) {
+-		rc = cifs_setup_session(0, ses, server, ses->local_nls);
+-		if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
+-			/*
+-			 * Try alternate password for next reconnect if an alternate
+-			 * password is available.
+-			 */
+-			if (ses->password2)
+-				swap(ses->password2, ses->password);
+-		}
++	if (rc) {
++		mutex_unlock(&ses->session_mutex);
++		if (!tcon->retry)
++			return -EHOSTDOWN;
++		goto again;
++	}
++	rc = cifs_setup_session(0, ses, server, ses->local_nls);
++	if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
++		/*
++		 * Try alternate password for next reconnect if an alternate
++		 * password is available.
++		 */
++		if (ses->password2)
++			swap(ses->password2, ses->password);
+ 	}
+ 
+ 	/* do we need to reconnect tcon? */
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 7ece98c742bdb..23ae73c9c5e97 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -300,32 +300,23 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 
+ 	mutex_lock(&ses->session_mutex);
+ 	/*
+-	 * if this is called by delayed work, and the channel has been disabled
+-	 * in parallel, the delayed work can continue to execute in parallel
+-	 * there's a chance that this channel may not exist anymore
++	 * Handle the case where a concurrent thread failed to negotiate or
++	 * killed a channel.
+ 	 */
+ 	spin_lock(&server->srv_lock);
+-	if (server->tcpStatus == CifsExiting) {
++	switch (server->tcpStatus) {
++	case CifsExiting:
+ 		spin_unlock(&server->srv_lock);
+ 		mutex_unlock(&ses->session_mutex);
+-		rc = -EHOSTDOWN;
+-		goto out;
+-	}
+-
+-	/*
+-	 * Recheck after acquire mutex. If another thread is negotiating
+-	 * and the server never sends an answer the socket will be closed
+-	 * and tcpStatus set to reconnect.
+-	 */
+-	if (server->tcpStatus == CifsNeedReconnect) {
++		return -EHOSTDOWN;
++	case CifsNeedReconnect:
+ 		spin_unlock(&server->srv_lock);
+ 		mutex_unlock(&ses->session_mutex);
+-
+-		if (tcon->retry)
+-			goto again;
+-
+-		rc = -EHOSTDOWN;
+-		goto out;
++		if (!tcon->retry)
++			return -EHOSTDOWN;
++		goto again;
++	default:
++		break;
+ 	}
+ 	spin_unlock(&server->srv_lock);
+ 
+@@ -350,43 +341,41 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	spin_unlock(&ses->ses_lock);
+ 
+ 	rc = cifs_negotiate_protocol(0, ses, server);
+-	if (!rc) {
+-		/*
+-		 * if server stopped supporting multichannel
+-		 * and the first channel reconnected, disable all the others.
+-		 */
+-		if (ses->chan_count > 1 &&
+-		    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+-			rc = cifs_chan_skip_or_disable(ses, server,
+-						       from_reconnect);
+-			if (rc) {
+-				mutex_unlock(&ses->session_mutex);
+-				goto out;
+-			}
+-		}
+-
+-		rc = cifs_setup_session(0, ses, server, ses->local_nls);
+-		if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
+-			/*
+-			 * Try alternate password for next reconnect (key rotation
+-			 * could be enabled on the server e.g.) if an alternate
+-			 * password is available and the current password is expired,
+-			 * but do not swap on non pwd related errors like host down
+-			 */
+-			if (ses->password2)
+-				swap(ses->password2, ses->password);
+-		}
+-
+-		if ((rc == -EACCES) && !tcon->retry) {
+-			mutex_unlock(&ses->session_mutex);
+-			rc = -EHOSTDOWN;
+-			goto failed;
+-		} else if (rc) {
++	if (rc) {
++		mutex_unlock(&ses->session_mutex);
++		if (!tcon->retry)
++			return -EHOSTDOWN;
++		goto again;
++	}
++	/*
++	 * if server stopped supporting multichannel
++	 * and the first channel reconnected, disable all the others.
++	 */
++	if (ses->chan_count > 1 &&
++	    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
++		rc = cifs_chan_skip_or_disable(ses, server,
++					       from_reconnect);
++		if (rc) {
+ 			mutex_unlock(&ses->session_mutex);
+ 			goto out;
+ 		}
+-	} else {
++	}
++
++	rc = cifs_setup_session(0, ses, server, ses->local_nls);
++	if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
++		/*
++		 * Try alternate password for next reconnect (key rotation
++		 * could be enabled on the server e.g.) if an alternate
++		 * password is available and the current password is expired,
++		 * but do not swap on non pwd related errors like host down
++		 */
++		if (ses->password2)
++			swap(ses->password2, ses->password);
++	}
++	if (rc) {
+ 		mutex_unlock(&ses->session_mutex);
++		if (rc == -EACCES && !tcon->retry)
++			return -EHOSTDOWN;
+ 		goto out;
+ 	}
+ 
+@@ -490,7 +479,6 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	case SMB2_IOCTL:
+ 		rc = -EAGAIN;
+ 	}
+-failed:
+ 	return rc;
+ }
+ 
 -- 
 2.39.5
 
