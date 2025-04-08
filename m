@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-129212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29A7A7FED8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:16:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BDFA7FE8E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00CF518958FE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:08:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B6C44377B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F02268C65;
-	Tue,  8 Apr 2025 11:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70102268C78;
+	Tue,  8 Apr 2025 11:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUHYndi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDlZ0ljt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3743F2673B7;
-	Tue,  8 Apr 2025 11:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6CF2135CD;
+	Tue,  8 Apr 2025 11:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110421; cv=none; b=n4LAQ+sbvUOXLt3j925GaIaamEXLwjnl9r/yRsf4aGKqFyay/N+R1Z6i1yO/UMdYnvXknRVyb/6+oq2NXCtz68vTu8x0fDG1KJ+Sqfr3J30ZHgTwu4LlKBOGxil0wPJFGcDA8l6VbQcxvykwX8J4veR6NHsm4AcMEwdF1Wy/JE4=
+	t=1744110426; cv=none; b=j5s78OvKmKupb0mn7MhObfMrGMGDklDfWDlIvtCTNA9XMz5Ck2AQqXo5ELBvwyHOqeJYWQcF6kM6FMfelH14LKCVDhzeaTxKfV0hpYt7LYAOkGqwwhXLBn9OWsHfAnipvz5AcvgAdGFyBhWA1Q63iNhqMX0gkFoevbsFG1o07kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110421; c=relaxed/simple;
-	bh=hdePo94eVsixFTkkVRAGWBh7P6CGRKBhHciqSdXL4b4=;
+	s=arc-20240116; t=1744110426; c=relaxed/simple;
+	bh=L3x9ecEmpX4H/GzwSDH7Hfg0qXWEQAK4GeE2WB6BJJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3oJ0mxyupfV8cfPFlwtDMW9hb1Yp7TAuPT3+elvXLxTgmVwHmSOGBXnfREy37WwkuvUFwhqqrgXhtMOaswjhT2CfHM6g/Bnu2NTh6sW3v8lXu6rO6jKVAplinqJUtc6ysLqzIDJQhsDxzvIkJ5nqoo6ixLmWikFhO95DrTaWTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUHYndi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D3FC4CEE5;
-	Tue,  8 Apr 2025 11:07:00 +0000 (UTC)
+	 MIME-Version; b=JzXCFHMud9Ut4Pcjtxl7NSfT49CItyuYnFVbrDwBj5ZHNeo/LjaPjn8yorCGTj6I7+Mp7lUUraSs3p9vb2msJFbImtyHTzX0FecmR10874TbLkHBADrDUcff5ODUIYGTZInTz68DBb+vuybBegPQ/a+7ObZzmVzxhJOLpYw21i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDlZ0ljt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D0C4CEE5;
+	Tue,  8 Apr 2025 11:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110420;
-	bh=hdePo94eVsixFTkkVRAGWBh7P6CGRKBhHciqSdXL4b4=;
+	s=korg; t=1744110426;
+	bh=L3x9ecEmpX4H/GzwSDH7Hfg0qXWEQAK4GeE2WB6BJJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUHYndi6ty/GVLzz9PNZsnlMDYegCpDe+FESG8VwCBfhcirEOywuC6AZV9hszUatp
-	 J4pc6ZougyGUKM7HgRD2+RKSjldtN/FHoz5VaPV03urfwQc6Ingq2r+qVUh7ssix3F
-	 6aYDGnbHLjPRutzoK8TRo0XXgcYAJ+BiPzgkRMUQ=
+	b=UDlZ0ljtmKTTE83BZ5fl6SQNIcxHRlv7j5M+axMDy3HtSfFDPdZNLI+gOZ51rbjlA
+	 g3eYxwIiFdGCbTr96OLUf2ITxbPtYqeQcMngLlLFnkpk+OSMBMLa1q3+qAL6k9ubBZ
+	 vcqEJ/oAdvoClQq9hBKfcZnyQzg4I3GCl06EEU9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 058/731] auxdisplay: MAX6959 should select BITREVERSE
-Date: Tue,  8 Apr 2025 12:39:15 +0200
-Message-ID: <20250408104915.622488829@linuxfoundation.org>
+Subject: [PATCH 6.14 059/731] media: verisilicon: HEVC: Initialize start_bit field
+Date: Tue,  8 Apr 2025 12:39:16 +0200
+Message-ID: <20250408104915.644896685@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,36 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit fce85f3da08b76c1b052f53a9f6f9c40a8a10660 ]
+[ Upstream commit 7fcb42b3835e90ef18d68555934cf72adaf58402 ]
 
-If CONFIG_BITREVERSE is not enabled:
+The HEVC driver needs to set the start_bit field explicitly to avoid
+causing corrupted frames when the VP9 decoder is used in parallel. The
+reason for this problem is that the VP9 and the HEVC decoder share this
+register.
 
-    max6959.c:(.text+0x92): undefined reference to `byte_rev_table'
-
-Fixes: a9bcd02fa42217c7 ("auxdisplay: Add driver for MAX695x 7-segment LED controllers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/202502161703.3Vr4M7qg-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: cb5dd5a0fa51 ("media: hantro: Introduce G2/HEVC decoder")
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/Kconfig | 1 +
+ drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
-index 8934e6ad5772b..bedc6133f970a 100644
---- a/drivers/auxdisplay/Kconfig
-+++ b/drivers/auxdisplay/Kconfig
-@@ -503,6 +503,7 @@ config HT16K33
- config MAX6959
- 	tristate "Maxim MAX6958/6959 7-segment LED controller"
- 	depends on I2C
-+	select BITREVERSE
- 	select REGMAP_I2C
- 	select LINEDISP
- 	help
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+index 85a44143b3786..0e212198dd65b 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -518,6 +518,7 @@ static void set_buffers(struct hantro_ctx *ctx)
+ 	hantro_reg_write(vpu, &g2_stream_len, src_len);
+ 	hantro_reg_write(vpu, &g2_strm_buffer_len, src_buf_len);
+ 	hantro_reg_write(vpu, &g2_strm_start_offset, 0);
++	hantro_reg_write(vpu, &g2_start_bit, 0);
+ 	hantro_reg_write(vpu, &g2_write_mvs_e, 1);
+ 
+ 	hantro_write_addr(vpu, G2_TILE_SIZES_ADDR, ctx->hevc_dec.tile_sizes.dma);
 -- 
 2.39.5
 
