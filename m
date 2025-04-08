@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-131700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D94EA80BE8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:22:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EE1A80916
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 740B64273E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28B631BA09C1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ECF27CB0F;
-	Tue,  8 Apr 2025 12:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B179277006;
+	Tue,  8 Apr 2025 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuXbg1//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG6Z9qbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA164263C76;
-	Tue,  8 Apr 2025 12:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5723C268FF0;
+	Tue,  8 Apr 2025 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117100; cv=none; b=hDy+kv/vQIqgsj0xHbVxBuqSjzqPD98yvHt6BbMd92bnCXeXfATWmEsErwLHNQIzgWVMYydnX5/CzWg4n+xERMPM/LYB2HMZzJE60TOuvJr04Tz+ACAZOrPvwEmtPHtCbP+gi3De6xPKoQ295QP2wxlnpibt/2aSRIlm2Il4FNg=
+	t=1744115989; cv=none; b=SWUMySOdQ/afAlM9PBnpZp++lV+jLr1wkKmiqq3OC7U7ApzLAoc/TNrQJp02VA+POuen+wWRsPksPfFcA7V7agfk9bxSHi1vjhmbFE7XJeR/Goj9JH+rTF2pet45f5XY4LjsyUA1wsWzXgc0uSI/xRZ+K6GOmQPxwOqNesbhAHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117100; c=relaxed/simple;
-	bh=fBDTDiAYErTW+XiF0jr472BUEycMOeGpzRc5SzBYjyg=;
+	s=arc-20240116; t=1744115989; c=relaxed/simple;
+	bh=61CQuMh5qGDP0QxHhpzleq1u/n1QKwv77DvT7UQMk2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddD1VtdKPKBWthyXV86++Xv3du2cPxKgEEdRYjFkWhD7vruLLRua/gvEPh4ZonhGwqzW1BEjw/djJ5zNS0lfbMLUQasezNR99BkjbrVEPFdORupslClMyp7Iv+bk6NZCvYFrvQu3tWjyzubA/IMRhtIMInKe29a6LhD2J3qOLac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuXbg1//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC67C4CEE5;
-	Tue,  8 Apr 2025 12:58:20 +0000 (UTC)
+	 MIME-Version; b=oMyDLa2PjoJHOT6Rb0Sn5jn6PCPCS2RkeB/hnb4JadKqrPIdo99BowpSvRp7eRCk03VTei65oKl9G5m+24qBJ9ZRN6c2UQnlkF2S/kXYV7u8lWgozeO2lGh3tcOXM8/4v6GOJSH7ivvEt+akzMVHN3oOp8CA6t0r0ETk6a1hNWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KG6Z9qbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE12BC4CEE5;
+	Tue,  8 Apr 2025 12:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117100;
-	bh=fBDTDiAYErTW+XiF0jr472BUEycMOeGpzRc5SzBYjyg=;
+	s=korg; t=1744115989;
+	bh=61CQuMh5qGDP0QxHhpzleq1u/n1QKwv77DvT7UQMk2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yuXbg1//Ypz2nf6hWsucpYetnlyKIqL5WauSvCPCn64198axG4OaKPjDF4wE/YLvx
-	 DVRyMewmdXPvBAYy9zYvX/EfdczSHrqJa5ap69eJZxJVJLWu3ANSTgsfkdFLIwwFOp
-	 wm1gzuqwEIoxmfmipmxNB+hm3RnxS6YsTDtYTo3w=
+	b=KG6Z9qbVHQmsW6VMGbVEJqS2oilKvUzUY5OFT2MUqs1JNXFOJ0SoTrzgD2RBqiTWf
+	 LBKhxZB5q2R77b1iK84W57nqmNouHJI6SLYxIXVp8RzVe6AWanAnOUCQHDCKxRhxKN
+	 foZyO2N5yVVWohpVUoauSZSojMgMjcUWg3YxvdqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 383/423] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 6.1 179/204] perf/x86/intel: Apply static call for drain_pebs
 Date: Tue,  8 Apr 2025 12:51:49 +0200
-Message-ID: <20250408104854.804643499@linuxfoundation.org>
+Message-ID: <20250408104825.572562736@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
+commit 314dfe10576912e1d786b13c5d4eee8c51b63caa upstream.
 
-On the following path, flush_tlb_range() can be used for zapping normal
-PMD entries (PMD entries that point to page tables) together with the PTE
-entries in the pointed-to page table:
+The x86_pmu_drain_pebs static call was introduced in commit 7c9903c9bf71
+("x86/perf, static_call: Optimize x86_pmu methods"), but it's not really
+used to replace the old method.
 
-    collapse_pte_mapped_thp
-      pmdp_collapse_flush
-        flush_tlb_range
+Apply the static call for drain_pebs.
 
-The arm64 version of flush_tlb_range() has a comment describing that it can
-be used for page table removal, and does not use any last-level
-invalidation optimizations. Fix the X86 version by making it behave the
-same way.
-
-Currently, X86 only uses this information for the following two purposes,
-which I think means the issue doesn't have much impact:
-
- - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
-   IPI'd to avoid issues with speculative page table walks.
- - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
-
-The patch "x86/mm: only invalidate final translations with INVLPGB" which
-is currently under review (see
-<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
-would probably be making the impact of this a lot worse.
-
-Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
-Signed-off-by: Jann Horn <jannh@google.com>
+Fixes: 7c9903c9bf71 ("x86/perf, static_call: Optimize x86_pmu methods")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
+Link: https://lkml.kernel.org/r/20250121152303.3128733-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/tlbflush.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c |    2 +-
+ arch/x86/events/intel/ds.c   |    2 +-
+ arch/x86/events/perf_event.h |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumas
- 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
- 			   ((vma)->vm_flags & VM_HUGETLB)		\
- 				? huge_page_shift(hstate_vma(vma))	\
--				: PAGE_SHIFT, false)
-+				: PAGE_SHIFT, true)
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2975,7 +2975,7 @@ static int handle_pmi_common(struct pt_r
  
- extern void flush_tlb_all(void);
- extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 		handled++;
+ 		x86_pmu_handle_guest_pebs(regs, &data);
+-		x86_pmu.drain_pebs(regs, &data);
++		static_call(x86_pmu_drain_pebs)(regs, &data);
+ 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 		/*
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -793,7 +793,7 @@ static inline void intel_pmu_drain_pebs_
+ {
+ 	struct perf_sample_data data;
+ 
+-	x86_pmu.drain_pebs(NULL, &data);
++	static_call(x86_pmu_drain_pebs)(NULL, &data);
+ }
+ 
+ /*
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1047,6 +1047,7 @@ extern struct x86_pmu x86_pmu __read_mos
+ 
+ DECLARE_STATIC_CALL(x86_pmu_set_period, *x86_pmu.set_period);
+ DECLARE_STATIC_CALL(x86_pmu_update,     *x86_pmu.update);
++DECLARE_STATIC_CALL(x86_pmu_drain_pebs,	*x86_pmu.drain_pebs);
+ 
+ static __always_inline struct x86_perf_task_context_opt *task_context_opt(void *ctx)
+ {
 
 
 
