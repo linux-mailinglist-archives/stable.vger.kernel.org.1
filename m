@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33B9A8069B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC42A80A2A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B652425375
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837B08C23A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5447F26AA8D;
-	Tue,  8 Apr 2025 12:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FE926FA60;
+	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPTXkSk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTO1NxeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A53F263F3B;
-	Tue,  8 Apr 2025 12:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7CF26656B;
+	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114660; cv=none; b=F+J9hGNy/WPpJVC7EeBnZjyjL1/RudICmHfeLLXmpu6nDrj3vHoiAks/2aYdoa8vggcbyqFzdlV2pfRlCrMpRQn3nu8LZwQP1fJSQZwibvVsL+nLAigFiWLoXjDRdowIDPS+c8HMGUurOEQy2C/K/cYWC90++kad/MtiUimpss0=
+	t=1744116259; cv=none; b=TdMxhRYzoWyHUiQnfrPcyYdleEtMs+/WU5HpKeBPvmLDlvK9btXjWo0bHKqMyWdVoqyRdOmHTeVgyfpwwJ2SkBgXN69w87oTwwIF590aN0UUeu2CnFXal5BXcNhCi3CJ613L9Bxz9QPNNEX7ad+glYfRY9j5UrhFX1ag+KaqGlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114660; c=relaxed/simple;
-	bh=NOOkuvI6QmHwgPcnNwuckBWmuc4G/AYSabGsqCGyUUw=;
+	s=arc-20240116; t=1744116259; c=relaxed/simple;
+	bh=r78IIhURiMwWPnxMRMrvtonZ8pMHpizA21GyyEWWPWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPCwkjJSxHHqIMKxuBCSupEFA5VB7JD+i4nebE/SwTZscZDrsMjKqaXNLTsHxrn5hiU8dCLocI6ESH3zzxdeYACWDoM/FiMTx4ibQ2xit6SPUvD3FH19ZHHDDEqZ8VJe2TzIyiSz57PzY2XpWM8iaQvsv4vfmX4otnNN89OwMkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPTXkSk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AD2C4CEE5;
-	Tue,  8 Apr 2025 12:17:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dhLoJ2CKYRM0XLuww4+eRPVu+txBPESTfSEIspfTdlGhCrmGtWyjAcaozsonimir4TPr+nenLkqSOVQN/XHnj8qdFFopnaTw076+oRYIFh9KUf9M9voLcuwV5nZPk/yhNObSlZzwXng5DPCZn9KeD4myXfj+NWLREhIKNlJfC2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTO1NxeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB6DC4CEE5;
+	Tue,  8 Apr 2025 12:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114659;
-	bh=NOOkuvI6QmHwgPcnNwuckBWmuc4G/AYSabGsqCGyUUw=;
+	s=korg; t=1744116259;
+	bh=r78IIhURiMwWPnxMRMrvtonZ8pMHpizA21GyyEWWPWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPTXkSk5UqWqDkB/UDgbDnZeie1HjJ/DLjREuNanv1WnJJRaix2rhcxqAKDXae1s8
-	 buBIxqQFegvt+pj4gE2tH4oJcCQg1nczMIiUArVgYJzDEA9Rugn4/J+0KC/Phn/ANE
-	 ydfllQo1PpPI7t6ERuTqpncARygr1+9WZQxnBeR4=
+	b=YTO1NxeRJelNxWnc358nLKznv2Iki3hz3hTuTMUqnSoSXy0+mJJGxXLCApt6lM7ko
+	 OeYGIcbos9mpn+irCSAi0SgfMRe3w0IsIoBDqIjnI2c5alnZintwol/YmWdJ7pxFWW
+	 5BQ3XWb+Kgjsrs/lx2Xn9XGOkUnF6lG1YcTswjtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 188/499] pinctrl: renesas: rzv2m: Fix missing of_node_put() call
+Subject: [PATCH 6.12 074/423] PCI: brcmstb: Fix error path after a call to regulator_bulk_get()
 Date: Tue,  8 Apr 2025 12:46:40 +0200
-Message-ID: <20250408104855.864534720@linuxfoundation.org>
+Message-ID: <20250408104847.470243965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-[ Upstream commit 5a550b00704d3a2cd9d766a9427b0f8166da37df ]
+[ Upstream commit 3651ad5249c51cf7eee078e12612557040a6bdb4 ]
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+If the regulator_bulk_get() returns an error and no regulators
+are created, we need to set their number to zero.
 
-Call into of_node_put() to rectify that.
+If we don't do this and the PCIe link up fails, a call to the
+regulator_bulk_free() will result in a kernel panic.
 
-Fixes: 92a9b8252576 ("pinctrl: renesas: Add RZ/V2M pin and gpio controller driver")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250305163753.34913-4-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+While at it, print the error value, as we cannot return an error
+upwards as the kernel will WARN() on an error from add_bus().
+
+Fixes: 9e6be018b263 ("PCI: brcmstb: Enable child bus device regulators from DT")
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250214173944.47506-5-james.quinlan@broadcom.com
+[kwilczynski: commit log, use comma in the message to match style with
+other similar messages]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzv2m.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/pcie-brcmstb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzv2m.c b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-index 4062c56619f59..8c7169db4fcce 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-@@ -940,6 +940,8 @@ static int rzv2m_gpio_register(struct rzv2m_pinctrl *pctrl)
- 		return ret;
- 	}
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 3bb35f096b45b..31778b5a949d7 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1368,7 +1368,8 @@ static int brcm_pcie_add_bus(struct pci_bus *bus)
  
-+	of_node_put(of_args.np);
-+
- 	if (of_args.args[0] != 0 || of_args.args[1] != 0 ||
- 	    of_args.args[2] != pctrl->data->n_port_pins) {
- 		dev_err(pctrl->dev, "gpio-ranges does not match selected SOC\n");
+ 		ret = regulator_bulk_get(dev, sr->num_supplies, sr->supplies);
+ 		if (ret) {
+-			dev_info(dev, "No regulators for downstream device\n");
++			dev_info(dev, "Did not get regulators, err=%d\n", ret);
++			pcie->sr = NULL;
+ 			goto no_regulators;
+ 		}
+ 
 -- 
 2.39.5
 
