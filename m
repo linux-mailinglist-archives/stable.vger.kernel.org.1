@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-128961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9FBA7FD6C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D50A80342
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F362C1893078
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A222460EE7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A78B269808;
-	Tue,  8 Apr 2025 10:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3E92698BC;
+	Tue,  8 Apr 2025 11:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQZ/2nKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS6+Sd1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C0D268688;
-	Tue,  8 Apr 2025 10:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D25268FE5;
+	Tue,  8 Apr 2025 11:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109744; cv=none; b=lW7ZyJ0BGZYveDDW+udL/RhPXyuGdsz5uh3Je/e+vSYcKcjhVAWnLrQCwXroJX41UBAVq3dEB8W2I/uIooraT/SceecIs4YPsy6PFmH3XQgEDRWc4axwWNcuw8uYsicTlIEU4XdlxyR2bTgBFG1vFh/Z3zW9W8dH2Tt4lACcN4g=
+	t=1744113060; cv=none; b=CUyuOxbLK6s0x21SX1C+DxKgxztBezXnDjf2t3a8VpScfP/FZwwZa8cp+qVIiDeZ4W5a4vgxxXUqvFx9vn5a9qtF8/eTZDKlQWj9Z49toKSQQXks5k2/2PT3uG7Q3p2EZvKbyuAwlLM3mUUISkaEDQPBfqaMfHZkTgflDbkpX0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109744; c=relaxed/simple;
-	bh=bp3mEkVdNUNPKAMXS1L/Atf8eLLx4IMtAs9lRUdqGBo=;
+	s=arc-20240116; t=1744113060; c=relaxed/simple;
+	bh=OtlbReXhe57uQrEkFplNuFJBYj/oZPVA8XSpvkyuOPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IrxtZ60FBYYw2hCuMyEd0oKGYKHd6FnotQ6Jyq4iyPtmtGfTUnDYRymDBW9OodLyYJSjRF0UFQnSPqG8jCU92iRgOSNu0O18L76b/dAjfvj0ytNV57JCfYsF38QUUdCJIVYIDInCVfDBfIk8dgEhVB4BT3bHfOB+0jiAaaAt/80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQZ/2nKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD02EC4CEE5;
-	Tue,  8 Apr 2025 10:55:43 +0000 (UTC)
+	 MIME-Version; b=kB2ZFPyYO2+dPNdHXb30bMWVBGSJWgy8iBK2SkS9PoW5eUyjXFCJYI8RC61UtytZbfkJly6p1kPymN4ErcCA5J2rMQsiNlYb/E4lHvsYPgBwHES1fQyPZtORM6kEH9qLnD6MNjy0U6jEKUdDfGiip19IYjpW9HVFMaey3n33TtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fS6+Sd1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF98CC4CEE5;
+	Tue,  8 Apr 2025 11:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109744;
-	bh=bp3mEkVdNUNPKAMXS1L/Atf8eLLx4IMtAs9lRUdqGBo=;
+	s=korg; t=1744113060;
+	bh=OtlbReXhe57uQrEkFplNuFJBYj/oZPVA8XSpvkyuOPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQZ/2nKQcoo83LSh48N+I11Sc7YTWkW6FuuF10TtN8xUZIwuEVp6KVwKwKepKuz8/
-	 UT/9QGTxy43giHQv8ZNceekBJvd/ap6aRrOl1uMLEctQaVXXV+TW/DsyhdWO1j6KC+
-	 r6WE1le25Pg2WXlg7sx5e2Es9rjVaGsqAohAivOI=
+	b=fS6+Sd1jnFDrGnwqI2b1HRosPJUBra5KsHYrwykWYyUmMnmtlK6hhcD8iKIVPBVPu
+	 ae/dYyw4l2zJ/vr1O9Av4ywBe2e6RPgovnPBEyZHgWtbRJvIJhKVSk0clZezmxJ+Kh
+	 iErA/+qOgvpEMHD2/zVZKGvDKEw7yPUxgkPkz88k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Cheong <htcheong@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Johny Lin <lpg76627@gmail.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/227] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
+Subject: [PATCH 6.6 002/268] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
 Date: Tue,  8 Apr 2025 12:46:53 +0200
-Message-ID: <20250408104821.463509849@linuxfoundation.org>
+Message-ID: <20250408104828.568447865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Cheong <htcheong@chromium.org>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
+[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
 
-In enviornment without KMOD requesting module may fail to load
-snd-hda-codec-hdmi, resulting in HDMI audio not usable.
-Add softdep to loading HDMI codec module first to ensure we can load it
-correctly.
+The CPA_ARRAY test always uses len[1] as numpages argument to
+change_page_attr_set() although the addresses array is different each
+iteration of the test loop.
 
-Signed-off-by: Terry Cheong <htcheong@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Johny Lin <lpg76627@gmail.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Replace len[1] with len[i] to have numpages matching the addresses array.
+
+Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
+Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-codec.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/mm/pat/cpa-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
-index 8d65004c917a1..aed8440ef525a 100644
---- a/sound/soc/sof/intel/hda-codec.c
-+++ b/sound/soc/sof/intel/hda-codec.c
-@@ -260,6 +260,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
- }
- EXPORT_SYMBOL_NS(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
+diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
+index 3d2f7f0a6ed14..ad3c1feec990d 100644
+--- a/arch/x86/mm/pat/cpa-test.c
++++ b/arch/x86/mm/pat/cpa-test.c
+@@ -183,7 +183,7 @@ static int pageattr_test(void)
+ 			break;
  
-+MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
- #endif
+ 		case 1:
+-			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
++			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
+ 			break;
  
- MODULE_LICENSE("Dual BSD/GPL");
+ 		case 2:
 -- 
 2.39.5
 
