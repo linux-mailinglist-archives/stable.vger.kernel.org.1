@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1203A802D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AB4A801BD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 221A6461027
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216E43A621F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC76C265602;
-	Tue,  8 Apr 2025 11:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C032676DE;
+	Tue,  8 Apr 2025 11:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOiviZiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6etUpR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B1B224B0E;
-	Tue,  8 Apr 2025 11:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ED4207E14;
+	Tue,  8 Apr 2025 11:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112673; cv=none; b=cR5uwipde+p1OYKSnctlcZFA++sQ7SCac7i2tfTcZYVXRF7oE9PdVfGFFQPjiQz3nixiQQjpSLPHbI9HEoBSE0jaI33S72tarQcxE3vGuCOhmKJzAgy/XcLFQDHi6wxj2WtUxnQ6O8WZsN6n51yzbD4vph+q+BfrvlGNJpiUWhw=
+	t=1744112112; cv=none; b=c8vRlTgZ9CliMBayawdm4840m/oXthF0+ctzgSbC7zCqwV6QJkLLGNQmOdP6+ZsRhIES9+pMQOIdOBEOpT1zkFNRc9c1rSZIr2nv+06XvFlw1JwW0PBboVO6Nt4gs5wixpX0CCAZ8B9PPMp3JlhhZ9SgecExA0YHljoBpmXdBnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112673; c=relaxed/simple;
-	bh=Bln3rdshrbeiW9AlTWTItOnV5ogsl10BDYAIUZmFYeY=;
+	s=arc-20240116; t=1744112112; c=relaxed/simple;
+	bh=3Bx+dEttfrq31VRjkgdE/6xPmiWkJOmzzraUE+pCPSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VMKE1YtsksGMIii9yeDGqn9YvnMvykX0VgSQmYeWY2UHEIgNAS5SW7IvI1ZfZ+6GJFDojlvHkqrHk1WT1sZwABBKPWI3Wtdm4hmJfK8/i2zjRL+YqkQPMb3Yqyntv3ZbEqa7c7wun/ldsLRP6qBiWiMXUOyuaAgsWnF3oOOnEk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOiviZiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA8FC4CEE5;
-	Tue,  8 Apr 2025 11:44:32 +0000 (UTC)
+	 MIME-Version; b=ef1WW4/5oBzZUn8GfKGyWBi3eyB0017cgAq65tvK7qHmMlHqM1IwWbsaBQ/eYlB5UvFl2gbErlfdwSc11sx/79IhZFWbSjlh54NQA3FGV2US7UOsl/RhaeP5DjMMsAmnpjmF02vMtss34NZppOY4lXviBUWd3zvfwuzA+BXcWF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6etUpR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A8AC4CEE5;
+	Tue,  8 Apr 2025 11:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112673;
-	bh=Bln3rdshrbeiW9AlTWTItOnV5ogsl10BDYAIUZmFYeY=;
+	s=korg; t=1744112112;
+	bh=3Bx+dEttfrq31VRjkgdE/6xPmiWkJOmzzraUE+pCPSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOiviZiFIsr5JfJGiOpumPTsRAdxxP3WBSb5IeN2xNYukwowwgs49Ujy2C8PZxJD4
-	 UxauPUOcRYvkld4II3Dh910XrUTpvSO4d0Cv8GuzdcrdDRs8l3Ef7I6UkmpnMz8Rno
-	 TQB8aTYr/ZJnuQdfd9TqHZhXF2wJqEYsYEcQbjUg=
+	b=F6etUpR1qQ9d3znUm/6bjBZSQiBXEMCCPIk8d6aYeg77PQ6gEmqYzkGlm0rZC4XyB
+	 5YeWHfK5eI7kLfdlG1TB8zPYAvY7enCxJ/dsBSW9fAYT136eyLa/R2E2Xo0fDTQeNZ
+	 jv5LOxwQ9tZJWvCNv6kTDkXmsOKQrWDsAUSc3vyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Hans Zhang <hans.zhang@cixtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/279] PCI: cadence-ep: Fix the driver to send MSG TLP for INTx without data payload
-Date: Tue,  8 Apr 2025 12:48:57 +0200
-Message-ID: <20250408104830.494724810@linuxfoundation.org>
+Subject: [PATCH 6.14 641/731] arcnet: Add NULL check in com20020pci_probe()
+Date: Tue,  8 Apr 2025 12:48:58 +0200
+Message-ID: <20250408104929.178028055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 3ac47fbf4f6e8c3a7c3855fac68cc3246f90f850 ]
+[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
 
-Per the Cadence's "PCIe Controller IP for AX14" user guide, Version
-1.04, Section 9.1.7.1, "AXI Subordinate to PCIe Address Translation
-Registers", Table 9.4, the bit 16 of the AXI Subordinate Address
-(axi_s_awaddr) when set corresponds to MSG with data, and when not set,
-to MSG without data.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+com20020pci_probe() does not check for this case, which results in a
+NULL pointer dereference.
 
-However, the driver is currently doing the opposite and due to this,
-the INTx is never received on the host.
+Add NULL check after devm_kasprintf() to prevent this issue and ensure
+no resources are left allocated.
 
-So, fix the driver to reflect the documentation and also make INTx work.
-
-Fixes: 37dddf14f1ae ("PCI: cadence: Add EndPoint Controller driver for Cadence PCIe controller")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214165724.184599-1-18255117159@163.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 3 +--
- drivers/pci/controller/cadence/pcie-cadence.h    | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index 18e32b8ffd5ef..90d1e2ac774e0 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -354,8 +354,7 @@ static void cdns_pcie_ep_assert_intx(struct cdns_pcie_ep *ep, u8 fn, u8 intx,
- 	spin_unlock_irqrestore(&ep->lock, flags);
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index c5e571ec94c99..0472bcdff1307 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -251,18 +251,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
+ 							GFP_KERNEL, "arc%d-%d-tx",
+ 							dev->dev_id, i);
++			if (!card->tx_led.default_trigger) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"pci:green:tx:%d-%d",
+ 							dev->dev_id, i);
+-
++			if (!card->tx_led.name) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->tx_led.dev = &dev->dev;
+ 			card->recon_led.brightness_set = led_recon_set;
+ 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
+ 							GFP_KERNEL, "arc%d-%d-recon",
+ 							dev->dev_id, i);
++			if (!card->recon_led.default_trigger) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"pci:red:recon:%d-%d",
+ 							dev->dev_id, i);
++			if (!card->recon_led.name) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->recon_led.dev = &dev->dev;
  
- 	offset = CDNS_PCIE_NORMAL_MSG_ROUTING(MSG_ROUTING_LOCAL) |
--		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code) |
--		 CDNS_PCIE_MSG_NO_DATA;
-+		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code);
- 	writel(0, ep->irq_cpu_addr + offset);
- }
- 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 262421e5d9178..ef649c807af4e 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -235,7 +235,7 @@ struct cdns_pcie_rp_ib_bar {
- #define CDNS_PCIE_NORMAL_MSG_CODE_MASK		GENMASK(15, 8)
- #define CDNS_PCIE_NORMAL_MSG_CODE(code) \
- 	(((code) << 8) & CDNS_PCIE_NORMAL_MSG_CODE_MASK)
--#define CDNS_PCIE_MSG_NO_DATA			BIT(16)
-+#define CDNS_PCIE_MSG_DATA			BIT(16)
- 
- struct cdns_pcie;
- 
+ 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
 -- 
 2.39.5
 
