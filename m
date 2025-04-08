@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F47A80700
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01532A804B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C341B84EC8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17551B64C25
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B4426B2BE;
-	Tue,  8 Apr 2025 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9AB26A0BD;
+	Tue,  8 Apr 2025 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt7M9+GM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZpm749l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C326B2B5;
-	Tue,  8 Apr 2025 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2748A26980C;
+	Tue,  8 Apr 2025 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115118; cv=none; b=vC9eQRqcAXpEvY6zMY1yoWXJPI5jFUQ0SH0p69LlREDyv0dmaYMD7TX/RjEFSbqHEKvrXkPJW5HF3pDxazpu4Hloy/J8fQ7ASwYmDBD0BmEFSs5qWhJPULFmDgzTbfqLzU54DRLKz2Ez4xVOFcDX1mwX7MD7ZhgKMsRE5g6QJnc=
+	t=1744113826; cv=none; b=SP773ULueU9pTc24Fb488jqE8JOZpNaMyK7/6AYsbsvv2nrjBVbFQR714zp1TtedOf3TF3aZNjkq1go1ToAmckfjFv7rwUEhPt5CDjwlonqUmJybQgYka04HLY8g2qV3Ow6Rv1ajbCP7NB4BTGYBN8fV20DO+shcBPo0b7NOoVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115118; c=relaxed/simple;
-	bh=Nl+uBCnhE/AVymn+Amq+GJFVtbruHblMuhPsX0K7XbU=;
+	s=arc-20240116; t=1744113826; c=relaxed/simple;
+	bh=rjO1pQgvUUH571dK4IX1N+n/cDBv7ReHM7lJyTwQU6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzuVtKCosO6viswcQMQ5Raon4iPKn1cLnxxZwSzk8pPKjH9+kzbN9uPliJv5Qt1g+bwuMd9qsss0C4/8PsPd5x7uWebaF8EOgGWg1MkunhBtl7KRREi30h/si55nJQkFPVljIjnwG98EgFncO3FMmYRcvGSlzPDnaos+srItcwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt7M9+GM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26552C4CEE5;
-	Tue,  8 Apr 2025 12:25:17 +0000 (UTC)
+	 MIME-Version; b=jbd6BZ7gOzmzCoURvXhaZiQ/ol8kGPbXjiLFph/b7OySgGY4dksQ9GLbUAJUJoO/fjT21s82pYxtX4MR9HZVL4sNoTqvwt+QUY9sLAWrUFvYsmbsXas0qamhHJiJNyBSvwSSVx2bDc0Y8y1bD0UHp6ln+W5KJOvGHg2ELozLV7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZpm749l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8207EC4CEE7;
+	Tue,  8 Apr 2025 12:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115118;
-	bh=Nl+uBCnhE/AVymn+Amq+GJFVtbruHblMuhPsX0K7XbU=;
+	s=korg; t=1744113826;
+	bh=rjO1pQgvUUH571dK4IX1N+n/cDBv7ReHM7lJyTwQU6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vt7M9+GMvmbHFJwHkzWgcsFf+aRTOXUwTc/t3TM/J8/DeBJg56dFtlksktz/G7Z2E
-	 DSWoJ+TY2TXeSH4XsetCrieZ3DY5ajgqFPkWnNcQ4B7yL8pGgvybK0buNiIHFKWzBA
-	 FOuv4RRj7pi3HQqs/NqpsBRBkOxqNKJfFNmQsMik=
+	b=MZpm749lZShbH+G9V1mrIwHlPLLAq7vwtuJ8m6fmb5FAmYPlrbCzj3SR+ZtSNR0bW
+	 7j8+JN71fkTbTadtKmyt2G5kvKXEm6LXBZFYO45LEoZaibP0iUTp/EZXLfm8ufZQIf
+	 jx0vM3m4714rNXaYjfRfuZNZ4/RbFiNHZD5kBSxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 356/499] spufs: fix a leak in spufs_create_context()
+Subject: [PATCH 5.4 027/154] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
 Date: Tue,  8 Apr 2025 12:49:28 +0200
-Message-ID: <20250408104900.112026996@linuxfoundation.org>
+Message-ID: <20250408104816.134402363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
+[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
 
-Leak fixes back in 2008 missed one case - if we are trying to set affinity
-and spufs_mkdir() fails, we need to drop the reference to neighbor.
+The timestamps in the Firmware log and HID sensor samples are incorrect.
+They show 1970-01-01 because the current IPC driver only uses the first
+8 bytes of bootup time when synchronizing time with the firmware. The
+firmware converts the bootup time to UTC time, which results in the
+display of 1970-01-01.
 
-Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
+the clock is updated according to the definition of ipc_time_update_msg.
+However, in _ish_sync_fw_clock(), the message length is specified as the
+size of uint64_t when building the doorbell. As a result, the firmware
+only receives the first 8 bytes of struct ipc_time_update_msg.
+This patch corrects the length in the doorbell to ensure the entire
+ipc_time_update_msg is sent, fixing the timestamp issue.
+
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index c566e7997f2c1..9f9e4b8716278 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -460,8 +460,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	}
+diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+index 8f8dfdf64833e..871f043eeba1e 100644
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -549,14 +549,14 @@ static void fw_reset_work_fn(struct work_struct *unused)
+ static void _ish_sync_fw_clock(struct ishtp_device *dev)
+ {
+ 	static unsigned long	prev_sync;
+-	uint64_t	usec;
++	struct ipc_time_update_msg time = {};
  
- 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
--	if (ret)
-+	if (ret) {
-+		if (neighbor)
-+			put_spu_context(neighbor);
- 		goto out_aff_unlock;
-+	}
+ 	if (prev_sync && jiffies - prev_sync < 20 * HZ)
+ 		return;
  
- 	if (affinity) {
- 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
+ 	prev_sync = jiffies;
+-	usec = ktime_to_us(ktime_get_boottime());
+-	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
++	/* The fields of time would be updated while sending message */
++	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
+ }
+ 
+ /**
 -- 
 2.39.5
 
